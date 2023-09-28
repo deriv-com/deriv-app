@@ -1,6 +1,6 @@
+import React from 'react';
 import debounce from 'lodash.debounce';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import {
     LocalStore,
@@ -48,40 +48,40 @@ export default class NotificationStore extends BaseStore {
         super({ root_store });
 
         makeObservable(this, {
-            is_notifications_visible: observable,
-            notifications: observable,
-            notification_messages: observable,
-            marked_notifications: observable,
-            push_notifications: observable,
-            client_notifications: observable,
-            should_show_popups: observable,
-            p2p_order_props: observable,
-            p2p_redirect_to: observable,
-            custom_notifications: computed,
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
-            showCompletedOrderNotification: action.bound,
             addVerificationNotifications: action.bound,
+            client_notifications: observable,
             filterNotificationMessages: action.bound,
+            getP2pCompletedOrders: action.bound,
             handleClientNotifications: action.bound,
+            is_notifications_empty: computed,
+            is_notifications_visible: observable,
+            marked_notifications: observable,
             markNotificationMessage: action.bound,
+            notification_messages: observable,
+            notifications: observable,
+            p2p_completed_orders: observable,
+            p2p_order_props: observable,
+            p2p_redirect_to: observable,
+            push_notifications: observable,
             refreshNotifications: action.bound,
             removeAllNotificationMessages: action.bound,
-            removeNotifications: action.bound,
             removeNotificationByKey: action.bound,
             removeNotificationMessage: action.bound,
             removeNotificationMessageByKey: action.bound,
+            removeNotifications: action.bound,
             resetVirtualBalanceNotification: action.bound,
             setClientNotifications: action.bound,
             setP2POrderProps: action.bound,
             setP2PRedirectTo: action.bound,
             setShouldShowPopups: action.bound,
+            should_show_popups: observable,
+            showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
-            p2p_completed_orders: observable,
-            getP2pCompletedOrders: action.bound,
         });
 
         const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
@@ -133,29 +133,8 @@ export default class NotificationStore extends BaseStore {
         );
     }
 
-    get custom_notifications() {
-        const { has_malta_account, can_have_mlt_account, is_uk } = this.root_store.client;
-        const notification_content = {
-            mx_mlt_notification: {
-                header: () => {
-                    if (has_malta_account || can_have_mlt_account) {
-                        return localize('Your Options account is scheduled to be closed');
-                    } else if (is_uk) {
-                        return localize('Your Gaming account is scheduled to be closed');
-                    }
-                    return localize('Your account is scheduled to be closed');
-                },
-                main: () => {
-                    if (has_malta_account || can_have_mlt_account) {
-                        return localize('Withdraw all funds from your Options account.');
-                    } else if (is_uk) {
-                        return localize('Please withdraw all your funds as soon as possible.');
-                    }
-                    return localize('Please proceed to withdraw your funds before 30 November 2021.');
-                },
-            },
-        };
-        return notification_content;
+    get is_notifications_empty() {
+        return !this.notifications.length;
     }
 
     addNotificationBar(message) {
@@ -178,6 +157,7 @@ export default class NotificationStore extends BaseStore {
 
                 if (is_existing_message) {
                     this.markNotificationMessage({ key: notification.key });
+                    return;
                 }
 
                 const sortFn = isMobile() ? sortNotificationsMobile : sortNotifications;
@@ -187,7 +167,7 @@ export default class NotificationStore extends BaseStore {
                     ['svg', 'p2p'].some(key => notification.key?.includes(key)) ||
                     (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
-                    this.updateNotifications(this.notification_messages);
+                    this.updateNotifications();
                 }
             }
         }
@@ -277,14 +257,11 @@ export default class NotificationStore extends BaseStore {
             account_status,
             account_open_date,
             accounts,
-            has_iom_account,
-            has_malta_account,
             isAccountOfType,
             is_eu,
             is_identity_verification_needed,
             is_logged_in,
             is_tnc_needed,
-            is_uk,
             landing_company_shortcode,
             loginid,
             obj_total_balance,
@@ -306,7 +283,6 @@ export default class NotificationStore extends BaseStore {
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
-        const virtual_account = landing_company_shortcode === 'virtual';
         const cr_account = landing_company_shortcode === 'svg';
         const is_website_up = website_status.site_status === 'up';
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
@@ -332,8 +308,6 @@ export default class NotificationStore extends BaseStore {
                 cashier_validation,
             } = account_status;
 
-            const hidden_close_account_notification =
-                parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
             const {
                 cashier_locked,
                 deposit_locked,
@@ -369,18 +343,6 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.poa_older_than_six_months });
             }
             if (loginid !== LocalStore.get('active_loginid')) return;
-
-            if (is_uk && malta_account) {
-                this.addNotificationMessage(this.client_notifications.close_uk_account);
-            }
-
-            if (
-                (has_iom_account || has_malta_account) &&
-                (!malta_account || !virtual_account) &&
-                !hidden_close_account_notification
-            ) {
-                this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
-            }
 
             if (is_financial_assessment_needed) {
                 this.addNotificationMessage(this.client_notifications.notify_financial_assessment);
@@ -591,9 +553,6 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
-            if (client && this.root_store.client.mt5_login_list.length > 0) {
-                this.addNotificationMessage(this.client_notifications.mt5_notification);
-            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
@@ -731,8 +690,6 @@ export default class NotificationStore extends BaseStore {
         const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
         const { setMT5NotificationModal } = this.root_store.traders_hub;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
-        const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
-        const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
 
         const platform_name_trader = getPlatformSettings('trader').name;
         const platform_name_go = getPlatformSettings('go').name;
@@ -850,37 +807,6 @@ export default class NotificationStore extends BaseStore {
                 className: 'trustpilot',
                 type: 'trustpilot',
             },
-            close_mx_mlt_account: {
-                key: 'close_mx_mlt_account',
-                header: mx_mlt_custom_header,
-                message: mx_mlt_custom_content,
-                secondary_btn: {
-                    text: localize('Learn more'),
-                    onClick: () => {
-                        ui.showCloseMxMltAccountPopup(true);
-                    },
-                },
-                img_src: getUrlBase('/public/images/common/close_account_banner.png'),
-                img_alt: 'close mx mlt account',
-                type: 'close_mx_mlt',
-            },
-            close_uk_account: {
-                key: 'close_uk_account',
-                header: localize('Your account is scheduled to be closed'),
-                message: localize('Please withdraw all your funds.'),
-                action: {
-                    text: localize('Learn more'),
-                    onClick: () => {
-                        ui.showCloseUKAccountPopup(true);
-                        this.removeNotificationByKey({ key: this.client_notifications.close_uk_account.key });
-                        this.removeNotificationMessage({
-                            key: this.client_notifications.close_uk_account.key,
-                            should_show_again: false,
-                        });
-                    },
-                },
-                type: 'danger',
-            },
             currency: {
                 key: 'currency',
                 header: localize('You have not selected your account currency'),
@@ -925,7 +851,6 @@ export default class NotificationStore extends BaseStore {
                         />
                     ),
                     platform: 'P2P',
-                    should_show_again: false,
                     type: 'announce',
                 };
             },
@@ -1577,8 +1502,8 @@ export default class NotificationStore extends BaseStore {
         this.marked_notifications = this.marked_notifications.filter(item => key !== item);
     }
 
-    updateNotifications(notifications_array) {
-        this.notifications = notifications_array.filter(message =>
+    updateNotifications() {
+        this.notifications = this.notification_messages.filter(message =>
             ['svg', 'p2p'].some(key => message.key?.includes(key))
                 ? message
                 : excluded_notifications && !excluded_notifications.includes(message.key)

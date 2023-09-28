@@ -17,6 +17,10 @@ export type TCFDStore = {
         demo: string;
         real: string;
     };
+    ctrader_tokens: {
+        demo: string;
+        real: string;
+    };
     mt5_trade_account: Required<
         DetailsOfEachMT5Loginid & { market_type?: TTradingPlatformAvailableAccount['market_type'] | 'synthetic' }
     >;
@@ -51,10 +55,12 @@ export type TCFDStore = {
     error_message: string;
     error_type?: string;
     getAccountStatus: (platform: string) => void;
+    mt5_migration_error: string;
     has_cfd_error: boolean;
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     setCFDSuccessDialog: (value: boolean) => void;
+    setMT5MigrationError: (value: string) => void;
     setError: (state: boolean, obj?: Error) => void;
     submitMt5Password: (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
     submitCFDPassword: (

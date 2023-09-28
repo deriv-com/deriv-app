@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { getLocation, PlatformContext, SessionStore } from '@deriv/shared';
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
-import { getLocation, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
@@ -71,6 +71,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             setApiError(error);
         } else {
             isModalVisible(false);
+            SessionStore.remove('signup_query_param');
             enableApp();
         }
     };

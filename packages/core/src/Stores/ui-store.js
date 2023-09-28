@@ -85,12 +85,6 @@ export default class UIStore extends BaseStore {
     // Welcome modal
     is_welcome_modal_visible = false;
 
-    // Remove MX & MLT
-    is_close_mx_mlt_account_modal_visible = false;
-
-    // Remove MF account modal
-    is_close_uk_account_modal_visible = false;
-
     // set currency modal
     is_set_currency_modal_visible = false;
 
@@ -138,6 +132,7 @@ export default class UIStore extends BaseStore {
 
     // MT5 account needed modal
     is_account_needed_modal_on = false;
+    is_mt5_migration_modal_open = false;
     account_needed_modal_props = {
         target: '',
         target_label: '',
@@ -171,6 +166,7 @@ export default class UIStore extends BaseStore {
     is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
+    is_mt5_migration_modal_enabled = false;
     sub_section_index = 0;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
@@ -251,8 +247,6 @@ export default class UIStore extends BaseStore {
             is_cashier_visible: observable,
             is_cfd_page: observable,
 
-            is_close_mx_mlt_account_modal_visible: observable,
-            is_close_uk_account_modal_visible: observable,
             is_closing_create_real_account_modal: observable,
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
@@ -276,6 +270,8 @@ export default class UIStore extends BaseStore {
             is_trading_assessment_for_existing_user_enabled: observable,
             is_trading_assessment_for_new_user_enabled: observable,
             is_welcome_modal_visible: observable,
+            is_mt5_migration_modal_open: observable,
+            is_mt5_migration_modal_enabled: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
             notification_messages_ui: observable,
@@ -376,8 +372,7 @@ export default class UIStore extends BaseStore {
             setShouldShowWarningModal: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
-            showCloseMxMltAccountPopup: action.bound,
-            showCloseUKAccountPopup: action.bound,
+            setMT5MigrationModalEnabled: action.bound,
             toggleAccountsDialog: action.bound,
             toggleAccountSettings: action.bound,
             toggleAccountSignupModal: action.bound,
@@ -397,6 +392,7 @@ export default class UIStore extends BaseStore {
             toggleLanguageSettingsModal: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
+            toggleMT5MigrationModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -483,20 +479,12 @@ export default class UIStore extends BaseStore {
         this.promptFn = cb;
     }
 
-    showCloseMxMltAccountPopup(is_open) {
-        this.is_close_mx_mlt_account_modal_visible = is_open;
-    }
-
-    showCloseUKAccountPopup(is_open) {
-        this.is_close_uk_account_modal_visible = is_open;
-    }
-
     get is_mobile() {
         return this.screen_width <= MAX_MOBILE_WIDTH;
     }
 
     get is_tablet() {
-        return this.screen_width <= MAX_TABLET_WIDTH;
+        return MAX_MOBILE_WIDTH < this.screen_width && this.screen_width <= MAX_TABLET_WIDTH;
     }
 
     get is_account_switcher_disabled() {
@@ -923,5 +911,13 @@ export default class UIStore extends BaseStore {
 
     setSubSectionIndex(index) {
         this.sub_section_index = index;
+    }
+
+    setMT5MigrationModalEnabled(val) {
+        this.is_mt5_migration_modal_enabled = !!val;
+    }
+
+    toggleMT5MigrationModal() {
+        this.is_mt5_migration_modal_open = !this.is_mt5_migration_modal_open;
     }
 }

@@ -10,7 +10,7 @@ import WorkspaceControl from './workspace-control';
 
 const LocalComponent = observer(() => {
     const { dashboard, load_modal } = useDBotStore();
-    const { active_tab, has_started_bot_builder_tour } = dashboard;
+    const { active_tab, active_tour } = dashboard;
     const { handleFileChange, loaded_local_file, setLoadedLocalFile } = load_modal;
 
     const file_input_ref = React.useRef(null);
@@ -22,7 +22,7 @@ const LocalComponent = observer(() => {
             <div className='load-strategy__container load-strategy__container--has-footer'>
                 <div
                     className={classNames('load-strategy__local-preview', {
-                        'load-strategy__local-preview--active': active_tab === 1 && has_started_bot_builder_tour,
+                        'load-strategy__local-preview--active': active_tab === 1 && active_tour,
                     })}
                 >
                     <div className='load-strategy__title'>
@@ -52,7 +52,7 @@ const LocalComponent = observer(() => {
                 <input
                     type='file'
                     ref={file_input_ref}
-                    accept='.xml'
+                    accept='application/xml, text/xml'
                     style={{ display: 'none' }}
                     onChange={e => setIsFileSupported(handleFileChange(e, false))}
                 />

@@ -140,7 +140,8 @@
                 align-items: center;
                 gap: 0.8rem;
                 .dc-popover__target {
-                    height: 1.6rem;
+                    height: 1.8rem;
+                    border-bottom: 1px dotted var(--text-general);
                 }
             }
         }
@@ -230,7 +231,7 @@
             color: inherit;
         }
         & ~ .trade-container__input {
-            padding: 0 30px;
+            padding: 0 3.7rem 0.2rem !important;
         }
     }
 
@@ -548,6 +549,10 @@
         }
     }
     &__amount {
+        .trade-container__input:disabled {
+            color: var(--text-general);
+            opacity: 0.5;
+        }
         &--multipliers {
             & .trade-container__input {
                 left: 3.6rem;
@@ -608,13 +613,16 @@
             margin-top: 0.8rem;
             /* postcss-bem-linter: ignore */
             .dc-dropdown__display-text {
+                padding-left: 0 !important;
                 padding-right: unset;
-                padding-left: 1em;
             }
             /* postcss-bem-linter: ignore */
             .dc-dropdown__display-text,
             .dc-list__item-text {
                 text-transform: unset;
+            }
+            .dc-dropdown__select-arrow {
+                left: 1rem !important;
             }
         }
         /* postcss-bem-linter: ignore */
@@ -825,6 +833,27 @@
             }
         }
     }
+    &__sell-button {
+        padding: 1.6rem 0.8rem;
+        &__stake {
+            padding-right: 0.5rem;
+        }
+        .dc-btn--sell {
+            margin-bottom: 0.5rem;
+            @include mobile {
+                margin-bottom: 1rem;
+            }
+        }
+        @include mobile {
+            padding: 0;
+            margin-bottom: 0;
+        }
+    }
+    &__notification {
+        @include mobile {
+            margin-bottom: 0.6rem;
+        }
+    }
     &__loading {
         background: rgba(255, 255, 255, 0.6);
         border-radius: $BORDER_RADIUS;
@@ -898,7 +927,7 @@
     //    &-icon {
     //        width: 64px;
     //        height: 64px;
-    //        @extend %inline-icon.white;
+    //        @extend %inline-icon-white;
     //    }
     //    &-button {
     //        height: 32px;

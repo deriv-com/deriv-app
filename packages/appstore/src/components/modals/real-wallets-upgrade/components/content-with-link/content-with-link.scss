@@ -1,7 +1,19 @@
 .content-with-link {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: center;
+
+    @include mobile {
+        flex-direction: column-reverse;
+    }
+
+    &--right-forked {
+        flex-direction: row;
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
 
     &__content {
         display: flex;
@@ -9,31 +21,60 @@
         align-items: center;
         justify-content: center;
         gap: 1.6rem;
-    }
-
-    &__fork {
-        border: 1px solid var(--brand-red-coral);
-        border-left: none;
-        opacity: 0.5;
+        margin: 0rem;
+        margin-left: 1.6rem;
 
         @include mobile {
-            width: 24.4rem;
-            height: 0.8rem;
-            border-top: none;
+            margin: 0;
+            margin-top: 1.2rem;
+        }
+
+        &--right-forked {
+            margin: 0;
+            margin-right: 1.6rem;
+
+            @include mobile {
+                margin: 0;
+                margin-bottom: 1.2rem;
+            }
         }
     }
 
-    &__neck {
+    &__link {
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: center;
-        opacity: 0.5;
 
-        &-line {
-            width: 10px;
+        @include mobile {
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        &-fork {
+            order: -1;
+            border: 1px solid var(--brand-red-coral);
+            border-left: none;
+            opacity: 0.5;
+
+            @include mobile {
+                width: 24.4rem;
+                height: 0.8rem;
+                border: 1px solid var(--brand-red-coral);
+                border-top: none;
+                // rotate: 90deg;
+            }
+        }
+
+        &-neck {
             height: 1px;
+            opacity: 0.5;
             background: var(--brand-red-coral);
+
+            @include mobile {
+                // rotate: 90deg;
+                width: 1px;
+                height: 15px;
+            }
         }
     }
 }

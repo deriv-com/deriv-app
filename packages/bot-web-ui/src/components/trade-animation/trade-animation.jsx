@@ -43,7 +43,7 @@ const TradeAnimation = observer(({ className }) => {
         is_stop_button_visible,
         is_stop_button_disabled,
         onRunButtonClick,
-        onStopButtonClick,
+        onStopBotClick,
         performSelfExclusionCheck,
         should_show_overlay,
         show_bot_stop_message,
@@ -98,7 +98,7 @@ const TradeAnimation = observer(({ className }) => {
                 onClick={() => {
                     updateIsButtonDisabled(true);
                     if (is_stop_button_visible) {
-                        onStopButtonClick();
+                        onStopBotClick();
                         return;
                     }
                     onRunButtonClick();

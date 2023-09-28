@@ -11,6 +11,7 @@ import {
     getAccountVerficationStatus,
     isMt5AccountAdded,
     isDxtradeAccountAdded,
+    isCTraderAccountAdded,
 } from '../../Helpers/compare-accounts-config';
 
 const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TCompareAccountsCard) => {
@@ -66,6 +67,8 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         is_account_added = isMt5AccountAdded(current_list, market_type_shortcode, is_demo);
     } else if (trading_platforms.platform === CFD_PLATFORMS.DXTRADE) {
         is_account_added = isDxtradeAccountAdded(current_list, is_demo);
+    } else if (trading_platforms.platform === CFD_PLATFORMS.CTRADER) {
+        is_account_added = isCTraderAccountAdded(current_list, is_demo);
     }
 
     React.useEffect(() => {

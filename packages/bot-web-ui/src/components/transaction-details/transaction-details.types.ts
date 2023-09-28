@@ -34,6 +34,7 @@ export type TTransaction = {
 export type TTransactions = {
     data: TTransaction;
     type: 'contract' | 'divider';
+    loginid: string;
 };
 
 export type TStatistics = {
@@ -46,7 +47,7 @@ export type TStatistics = {
 };
 
 export type TTransactionStore = {
-    elements: TTransactions[];
+    transactions: TTransactions[];
     is_transaction_details_modal_open: boolean;
     toggleTransactionDetailsModal: (is_open: boolean) => void;
 };
@@ -61,6 +62,8 @@ export type TDesktopTransactionTable = {
     transactions: TTransactions[] | undefined;
     result_columns: TColumn[];
     result: TStatistics | undefined;
+    account: string;
+    balance: string | number;
 };
 
 export type TTableCell = {

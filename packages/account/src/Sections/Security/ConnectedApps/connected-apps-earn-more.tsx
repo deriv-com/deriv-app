@@ -1,14 +1,13 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import AccountArticle from 'Components/article';
+import Article from 'Components/article';
 
 const openDerivAPIWebsite = () => {
     window.open('https://api.deriv.com/', '_blank', 'noopener');
 };
 
 const ConnectedAppsEarnMore = () => (
-    <AccountArticle
-        className='connected-apps__article'
+    <Article
         title={localize('Earn more with Deriv API')}
         descriptions={[
             <Localize

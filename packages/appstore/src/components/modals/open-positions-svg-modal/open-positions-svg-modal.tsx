@@ -1,6 +1,14 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import {
+    CFD_PLATFORMS,
+    getCFDPlatformLabel,
+    getFormattedJurisdictionCode,
+    Jurisdiction,
+    JURISDICTION_MARKET_TYPES,
+} from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 
 type TOpenPositionsSVGModal = {
     market_type: string;
@@ -15,15 +23,17 @@ const OpenPositionsSVGModal = ({
     is_modal_open,
     setModalOpen,
 }: TOpenPositionsSVGModal) => {
+    const { eligible_account_to_migrate_label } = useMT5SVGEligibleToMigrate();
+    const title = open_order_position_status ? 'No new positions' : 'Account closed';
+    const account_type =
+        market_type === JURISDICTION_MARKET_TYPES.FINANCIAL
+            ? JURISDICTION_MARKET_TYPES.FINANCIAL
+            : JURISDICTION_MARKET_TYPES.DERIVED;
+    const from_account = getFormattedJurisdictionCode(Jurisdiction.SVG);
+    const cfd_platform = getCFDPlatformLabel(CFD_PLATFORMS.MT5);
     const onClick = () => {
         setModalOpen(false);
     };
-    const title = open_order_position_status ? 'No new positions' : 'Account closed';
-    const content = open_order_position_status
-        ? 'You can no longer open new positions with your MT5 {{account_type}} SVG account. Please use your MT5 {{account_type}} BVI account to open new positions.'
-        : 'Your MT5 {{account_type}} SVG account will be archived after 30 days of inactivity. You can still access your trade history until the account is archived.';
-    const account_type = market_type === 'financial' ? 'Financial' : 'Derived';
-
     return (
         <Modal
             is_open={is_modal_open}
@@ -36,11 +46,23 @@ const OpenPositionsSVGModal = ({
                     <Localize i18n_default_text='{{title}}' values={{ title }} />
                 </Text>
                 <Text as='p' color='prominent ' size='xs' line_height='m'>
-                    <Localize i18n_default_text='{{content}}' values={{ account_type, content }} />
+                    {open_order_position_status ? (
+                        <Localize
+                            i18n_default_text='You can no longer open new positions with your {{cfd_platform}} {{account_type}} {{from_account}} account. Please use your {{cfd_platform}} {{account_type}} {{eligible_account_to_migrate_label}} account to open new positions.'
+                            values={{ account_type, from_account, eligible_account_to_migrate_label, cfd_platform }}
+                        />
+                    ) : (
+                        <Localize
+                            i18n_default_text='Your {{cfd_platform}} {{account_type}} {{from_account}} account will be archived after 30 days of inactivity. You can still access your trade history until the account is archived.'
+                            values={{ account_type, from_account, cfd_platform }}
+                        />
+                    )}
                 </Text>
             </Modal.Body>
             <Modal.Footer className='open-positions-svg__modal-footer'>
-                <Button has_effect text={localize('OK')} onClick={onClick} secondary large />
+                <Button has_effect onClick={onClick} secondary large>
+                    <Localize i18n_default_text='OK' />
+                </Button>
             </Modal.Footer>
         </Modal>
     );

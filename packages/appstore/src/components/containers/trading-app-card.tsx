@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
@@ -102,7 +102,7 @@ const TradingAppCard = ({
         else;
     };
 
-    const [is_modal_open, setModalOpen] = useState(false);
+    const [is_modal_open, setModalOpen] = React.useState(false);
     const status_text = open_order_position_status ? 'No new positions' : 'Account closed';
 
     return (
@@ -154,8 +154,8 @@ const TradingAppCard = ({
                     {is_open_order_position_status_present && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
-                            account_status={'open-order-position'}
-                            icon={'IcAlertWarning'}
+                            account_status='open-order-position'
+                            icon='IcAlertWarning'
                             text={
                                 <Localize
                                     i18n_default_text='<0>{{status_text}}</0>'
@@ -165,7 +165,7 @@ const TradingAppCard = ({
                                             key={0}
                                             weight='bold'
                                             size='xxxs'
-                                            color='var(--status-warning)'
+                                            color='warning'
                                             onClick={() => {
                                                 setModalOpen(!is_modal_open);
                                             }}

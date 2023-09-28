@@ -1,8 +1,10 @@
 .open-positions-svg {
-    &__modal-title {
-        margin-bottom: 2.4rem;
-    }
-    &__modal-footer {
-        padding: 0 2.4rem 2.4rem !important;
+    &__modal {
+        &-title {
+            margin-bottom: 2.4rem;
+        }
+        &-footer {
+            padding: 0 2.4rem 2.4rem !important;
+        }
     }
 }

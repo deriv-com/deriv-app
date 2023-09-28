@@ -254,8 +254,17 @@ export default class BuySellStore extends BaseStore {
         const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
 
         if (error) {
-            setErrorMessage(error.message);
-            this.setFormErrorCode(error.code);
+            const { code, message } = error;
+
+            if (code === api_error_codes.ORDER_CREATE_FAIL_RATE_SLIPPAGE) {
+                general_store.showModal({
+                    key: 'MarketRateChangeErrorModal',
+                    props: { message },
+                });
+            } else {
+                setErrorMessage(error.message);
+                this.setFormErrorCode(error.code);
+            }
         } else {
             if (subscription?.id && !this.is_create_order_subscribed) {
                 this.setIsCreateOrderSubscribed(true);

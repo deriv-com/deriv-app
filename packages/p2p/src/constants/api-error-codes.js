@@ -9,6 +9,7 @@ export const api_error_codes = Object.freeze({
     ORDER_EMAIL_VERIFICATION_REQUIRED: 'OrderEmailVerificationRequired',
     ORDER_CREATE_FAIL_CLIENT_BALANCE: 'OrderCreateFailClientBalance',
     ORDER_CREATE_FAIL_RATE_CHANGED: 'OrderCreateFailRateChanged',
+    ORDER_CREATE_FAIL_RATE_SLIPPAGE: 'OrderCreateFailRateSlippage',
     PERMISSION_DENIED: 'PermissionDenied',
     RESTRICTED_COUNTRY: 'RestrictedCountry',
     TEMPORARY_BAR: 'TemporaryBar',

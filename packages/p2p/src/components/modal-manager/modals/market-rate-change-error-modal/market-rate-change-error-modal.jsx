@@ -4,14 +4,16 @@ import { isMobile } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const MarketRateChangeErrorModal = () => {
+const MarketRateChangeErrorModal = ({ message }) => {
     const { is_modal_open, hideModal } = useModalManagerContext();
 
     return (
         <Modal is_open={is_modal_open} onExited={hideModal} small>
             <Modal.Body>
                 <Text as='p' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
-                    <Localize i18n_default_text={'The advertiser changed the rate before you confirmed the order.'} />
+                    {message ?? (
+                        <Localize i18n_default_text='The rate of the advert has changed. Please try creating your order again.' />
+                    )}
                 </Text>
             </Modal.Body>
             <Modal.Footer>

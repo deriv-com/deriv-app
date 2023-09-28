@@ -15,7 +15,6 @@ import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-c
 import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodIcon from 'Components/payment-method-icon';
 import './buy-sell-form.scss';
 
@@ -24,7 +23,6 @@ const BuySellForm = props => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
     buy_sell_store.setFormProps(props);
-    const { showModal } = useModalManagerContext();
     const { data: p2p_advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
 
     const { setPageFooterParent } = props;
@@ -45,8 +43,18 @@ const BuySellForm = props => {
     const { getRate } = useExchangeRate();
     const exchange_rate = getRate(local_currency);
 
-    const [previous_rate, setPreviousRate] = React.useState(exchange_rate);
+    const [current_effective_rate, setCurrentEffectiveRate] = React.useState(0);
+    const [current_display_effective_rate, setCurrentDisplayEffectiveRate] = React.useState(0);
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
+
+    const { effective_rate, display_effective_rate } = generateEffectiveRate({
+        price,
+        rate_type,
+        rate,
+        local_currency,
+        exchange_rate,
+        market_rate,
+    });
 
     const { advertiser_buy_limit, advertiser_sell_limit, balance } = general_store;
 
@@ -59,15 +67,6 @@ const BuySellForm = props => {
         cursor: should_disable_field ? 'not-allowed' : 'pointer',
     };
 
-    const { effective_rate, display_effective_rate } = generateEffectiveRate({
-        price,
-        rate_type,
-        rate,
-        local_currency,
-        exchange_rate,
-        market_rate,
-    });
-
     const calculated_rate = removeTrailingZeros(roundOffDecimal(effective_rate, setDecimalPlaces(effective_rate, 6)));
 
     React.useEffect(
@@ -76,6 +75,8 @@ const BuySellForm = props => {
             my_profile_store.setSelectedPaymentMethod('');
             my_profile_store.setSelectedPaymentMethodDisplayName('');
             buy_sell_store.setHasPaymentMethods(!!payment_method_names);
+            setCurrentEffectiveRate(effective_rate);
+            setCurrentDisplayEffectiveRate(display_effective_rate);
 
             const disposeReceiveAmountReaction = reaction(
                 () => buy_sell_store.receive_amount,
@@ -105,19 +106,7 @@ const BuySellForm = props => {
         const receive_amount = input_amount * calculated_rate;
         buy_sell_store.setReceiveAmount(receive_amount);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [input_amount, effective_rate]);
-
-    React.useEffect(() => {
-        if (exchange_rate !== previous_rate && rate_type === ad_type.FLOAT) {
-            setPreviousRate(exchange_rate);
-            showModal({
-                key: 'RateChangeModal',
-                props: {
-                    currency: buy_sell_store.local_currency,
-                },
-            });
-        }
-    }, [exchange_rate, previous_rate]);
+    }, [input_amount, current_effective_rate]);
 
     const onClickPaymentMethodCard = payment_method => {
         if (!should_disable_field) {
@@ -166,7 +155,7 @@ const BuySellForm = props => {
                     amount: min_order_amount_limit,
                     contact_info: general_store.contact_info,
                     payment_info: general_store.payment_info,
-                    rate: rate_type === ad_type.FLOAT ? effective_rate : null,
+                    rate: rate_type === ad_type.FLOAT ? current_effective_rate : null,
                 }}
                 initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
                 onSubmit={(...args) => buy_sell_store.handleSubmit(() => isMounted(), ...args)}
@@ -203,7 +192,7 @@ const BuySellForm = props => {
                                             />
                                         </Text>
                                         <Text as='p' size='xs'>
-                                            {display_effective_rate} {local_currency}
+                                            {current_display_effective_rate} {local_currency}
                                         </Text>
                                     </div>
                                 </div>

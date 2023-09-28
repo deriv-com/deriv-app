@@ -4,6 +4,10 @@ export type TTextValueStrings = {
     text: string;
     value: string;
 };
+export type TTextValueNumber = {
+    text: string;
+    value: number;
+};
 
 export type TProposalTypeInfo = TTradeStore['proposal_info'][string];
 

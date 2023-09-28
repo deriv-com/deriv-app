@@ -16,8 +16,8 @@ type TInput = {
     currency: string;
     current_focus: string | null;
     error_messages?: string[];
-    is_single_currency: boolean;
     is_disabled?: boolean;
+    is_single_currency: boolean;
     onChange: (e: { target: { name: string; value: number | string } }) => void;
     setCurrentFocus: (name: string | null) => void;
 };
@@ -58,7 +58,7 @@ export const Input = ({
     />
 );
 
-const Amount = observer(({ is_minimized }: { is_minimized: boolean }) => {
+const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) => {
     const { ui, client } = useStore();
     const { currencies_list, is_single_currency } = client;
     const { setCurrentFocus, current_focus } = ui;

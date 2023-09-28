@@ -43,7 +43,7 @@ describe('BalanceText', () => {
             wrapper,
         });
         expect(container).toBeInTheDocument();
-        expect(screen.getByTestId('dt_balance-text__container')).toHaveClass('balance-text--dotted');
+        expect(screen.getByTestId('dt_balance_text_container')).toHaveClass('balance-text--dotted');
     });
 
     it('should have classname ending with demo if user has selected_account_type demo and has an active real account ', () => {
@@ -118,6 +118,6 @@ describe('BalanceText', () => {
             wrapper,
         });
         expect(container).toBeInTheDocument();
-        expect(screen.getByTestId('dt_balance-text__container')).toHaveClass('balance-text__container');
+        expect(screen.getByTestId('dt_balance_text_container')).toHaveClass('balance-text__container');
     });
 });

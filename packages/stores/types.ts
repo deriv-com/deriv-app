@@ -16,6 +16,7 @@ import type {
     SetFinancialAssessmentResponse,
     StatesList,
     Transaction,
+    ActiveSymbols,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
@@ -266,6 +267,7 @@ type TClientStore = {
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
+    clients_country: string;
     cfd_score: number;
     setCFDScore: (score: number) => void;
     country_standpoint: TCountryStandpoint;
@@ -286,6 +288,7 @@ type TClientStore = {
     is_eu_country: boolean;
     is_eu: boolean;
     is_uk: boolean;
+    is_unwelcome: boolean;
     is_social_signup: boolean;
     has_residence: boolean;
     is_authorize: boolean;
@@ -326,6 +329,7 @@ type TClientStore = {
     standpoint: TStandPoint;
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
+    selectCurrency: (currency: string) => void;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
     setVisibilityRealityCheck: (value: boolean) => void;
@@ -410,15 +414,14 @@ type TClientStore = {
 };
 
 type TCommonStoreError = {
-    app_routing_history?: TAppRoutingHistory[];
-    header: string | JSX.Element;
+    header?: string | JSX.Element;
     message: string | JSX.Element;
-    redirect_label: string;
+    redirect_label?: string;
     redirect_to?: string;
-    redirectOnClick: (() => void) | null;
-    setError?: (has_error: boolean, error: React.ReactNode | null) => void;
+    redirectOnClick?: (() => void) | null;
     should_clear_error_on_click?: boolean;
-    should_show_refresh: boolean;
+    should_redirect?: boolean;
+    should_show_refresh?: boolean;
     type?: string;
 };
 
@@ -437,7 +440,7 @@ type TCommonStore = {
     platform: 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
-    server_time?: Moment;
+    server_time: Moment;
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
@@ -445,6 +448,10 @@ type TCommonStore = {
     is_socket_opened: boolean;
     services_error: TCommonStoreServicesError;
     setAppstorePlatform: (value: string) => void;
+    setError?: (has_error: boolean, error: TCommonStoreError) => void;
+    setSelectedContractType: (contract_type: string) => void;
+    setServicesError: (error: TCommonStoreServicesError) => void;
+    showError: (error: TCommonStoreError) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
     network_status: Record<string, never> | { [key: string]: string };
@@ -461,10 +468,13 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
     is_account_settings_visible: boolean;
-    is_loading: boolean;
+    is_advanced_duration: boolean;
     is_cashier_visible: boolean;
+    is_chart_asset_info_visible?: boolean;
+    is_chart_layout_default: boolean;
     is_closing_create_real_account_modal: boolean;
     is_dark_mode_on: boolean;
+    is_loading: boolean;
     is_reports_visible: boolean;
     is_route_modal_on: boolean;
     is_language_settings_modal_on: boolean;
@@ -473,6 +483,7 @@ type TUiStore = {
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     is_unsupported_contract_modal_visible: boolean;
+    openPositionsDrawer: () => void;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
@@ -488,10 +499,11 @@ type TUiStore = {
               ]
             | []
     ) => void;
+    resetPurchaseStates: () => void;
     setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
-    setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
+    setHasOnlyForwardingContracts: (has_only_forward_starting_contracts?: boolean) => void;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
@@ -566,17 +578,21 @@ type TPortfolioStore = {
     active_positions: TPortfolioPosition[];
     active_positions_count: number;
     all_positions: TPortfolioPosition[];
+    barriers: TBarriers;
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
     is_loading: boolean;
     is_multiplier: boolean;
     is_accumulator: boolean;
+    onBuyResponse: (contract_info: { contract_id: number; longcode: string; contract_type: string }) => void;
     onHoverPosition: (is_over: boolean, position: TPortfolioPosition, underlying: string) => void;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onMount: () => void;
+    open_accu_contract: TPortfolioPosition | null;
     positions: TPortfolioPosition[];
     removePositionById: (id: number) => void;
+    setContractType: (contract_type: string) => void;
 };
 
 type TAccumulatorBarriersData = {
@@ -592,15 +608,42 @@ type TAccumulatorContractBarriersData = TAccumulatorBarriersData & {
     should_update_contract_barriers: boolean;
 };
 type TAddContractParams = {
-    barrier: string;
-    contract_id: string;
+    barrier: number | null;
+    contract_id: number;
     contract_type: string;
     start_time: number;
     longcode: string;
     underlying: string;
     is_tick_contract: boolean;
-    limit_order: ProposalOpenContract['limit_order'];
+    limit_order?: ProposalOpenContract['limit_order'];
 };
+type TOnChartBarrierChange = null | ((barrier_1: string, barrier_2?: string) => void);
+type TOnChangeParams = { high: string | number; low?: string | number };
+type TBarriers = Array<{
+    color: string;
+    lineStyle: string;
+    shade?: string;
+    shadeColor?: string;
+    high?: string | number;
+    low?: string | number;
+    onChange: (barriers: TOnChangeParams) => void;
+    relative: boolean;
+    draggable: boolean;
+    hidePriceLines: boolean;
+    hideBarrierLine?: boolean;
+    hideOffscreenLine?: boolean;
+    title?: string;
+    onChartBarrierChange: TOnChartBarrierChange | null;
+    key?: string;
+    hideOffscreenBarrier?: boolean;
+    isSingleBarrier?: boolean;
+    onBarrierChange: (barriers: TOnChangeParams) => void;
+    updateBarrierColor: (is_dark_mode: boolean) => void;
+    updateBarriers: (high: string | number, low?: string | number, isFromChart?: boolean) => void;
+    updateBarrierShade: (should_display: boolean, contract_type: string) => void;
+    barrier_count: number;
+    default_shade: string;
+}>;
 
 type TContractTradeStore = {
     accountSwitchListener: () => Promise<void>;
@@ -623,7 +666,7 @@ type TContractTradeStore = {
     contracts: TContractStore[];
     error_message: string;
     getContractById: (contract_id?: number) => TContractStore;
-    granularity: string | number;
+    granularity: null | number;
     has_crossed_accu_barriers: boolean;
     has_error: boolean;
     last_contract: TContractStore | Record<string, never>;
@@ -646,9 +689,9 @@ type TContractTradeStore = {
     }>;
     onUnmount: () => void;
     prev_chart_type: string;
-    prev_granularity: string | number | null;
+    prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
-    savePreviousChartMode: (chart_type: string, granularity: string | number | null) => void;
+    savePreviousChartMode: (chart_type: string, granularity: number | null) => void;
     setNewAccumulatorBarriersData: (
         new_barriers_data: TAccumulatorBarriersData,
         should_update_contract_barriers?: boolean
@@ -705,7 +748,13 @@ type TNotificationStore = {
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
+    setShouldShowPopups: (should_show_popups: boolean) => void;
     toggleNotificationsModal: () => void;
+};
+
+type TActiveSymbolsStore = {
+    active_symbols: ActiveSymbols;
+    setActiveSymbols: () => Promise<void>;
 };
 
 type TBalance = {
@@ -823,7 +872,7 @@ export type TCoreStores = {
     pushwoosh: Record<string, unknown>;
     contract_replay: TContractReplay;
     chart_barrier_store: Record<string, unknown>;
-    active_symbols: Record<string, unknown>;
+    active_symbols: TActiveSymbolsStore;
 };
 
 export type TStores = TCoreStores & {

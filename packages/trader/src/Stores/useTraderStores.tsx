@@ -1,14 +1,8 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
-import TradeStore, { TValidationErrors } from './Modules/Trading/trade-store';
+import TradeStore from './Modules/Trading/trade-store';
 
-type TOverrideTradeStore = Omit<TradeStore, 'validation_errors'> & {
-    //TODO: these types can be removed from here and trade-store after base-store is migrated to TS
-    validation_errors?: TValidationErrors;
-    validation_rules: TradeStore['validation_rules'];
-};
-
-const TraderStoreContext = React.createContext<TOverrideTradeStore | null>(null);
+const TraderStoreContext = React.createContext<TradeStore | null>(null);
 
 export const TraderStoreProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const { modules } = useStore();

@@ -1,5 +1,5 @@
 import merge from 'lodash.merge';
-import type { TStores } from '../types';
+import type { TCoreStores, TStores } from '../types';
 
 const mock = (): TStores & { is_mock: boolean } => {
     const common_store_error = {
@@ -12,7 +12,6 @@ const mock = (): TStores & { is_mock: boolean } => {
         should_clear_error_on_click: false,
         should_show_refresh: false,
         redirectOnClick: jest.fn(),
-        setError: jest.fn(),
     };
     return {
         is_mock: true,
@@ -108,6 +107,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
             balance: '',
             can_change_fiat_currency: false,
+            clients_country: '',
             country_standpoint: {
                 is_belgium: false,
                 is_france: false,
@@ -149,6 +149,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_switching: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,
+            is_unwelcome: false,
             is_virtual: false,
             is_withdrawal_lock: false,
             is_populating_account_list: false,
@@ -197,6 +198,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             active_accounts: [],
             account_list: [],
             available_crypto_currencies: [],
+            selectCurrency: jest.fn(),
             setAccountStatus: jest.fn(),
             setBalanceOtherAccounts: jest.fn(),
             setInitialized: jest.fn(),
@@ -280,7 +282,11 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_network_online: false,
             network_status: {},
             services_error: {},
-            server_time: undefined,
+            server_time: new Date() as unknown as TCoreStores['common']['server_time'],
+            setError: jest.fn(),
+            setSelectedContractType: jest.fn(),
+            setServicesError: jest.fn(),
+            showError: jest.fn(),
             is_language_changing: false,
             setAppstorePlatform: jest.fn(),
             app_routing_history: [],
@@ -293,8 +299,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
             current_focus: null,
             is_account_settings_visible: false,
+            is_advanced_duration: false,
             is_loading: false,
             is_cashier_visible: false,
+            is_chart_layout_default: false,
             is_closing_create_real_account_modal: false,
             is_dark_mode_on: false,
             is_language_settings_modal_on: false,
@@ -317,6 +325,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_only_forward_starting_contracts: false,
             has_real_account_signup_ended: false,
             notification_messages_ui: jest.fn(),
+            openPositionsDrawer: jest.fn(),
             openRealAccountSignup: jest.fn(),
             setHasOnlyForwardingContracts: jest.fn(),
             setIsClosingCreateRealAccountModal: jest.fn(),
@@ -332,6 +341,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             addToast: jest.fn(),
             removeToast: jest.fn(),
             reports_route_tab_index: 1,
+            resetPurchaseStates: jest.fn(),
             should_show_cancellation_warning: false,
             toggleCancellationWarning: jest.fn(),
             toggleUnsupportedContractModal: jest.fn(),
@@ -453,23 +463,28 @@ const mock = (): TStores & { is_mock: boolean } => {
             setP2POrderProps: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
+            setShouldShowPopups: jest.fn(),
             toggleNotificationsModal: jest.fn(),
         },
         portfolio: {
             active_positions: [],
             active_positions_count: 0,
             all_positions: [],
+            barriers: [],
             error: '',
             getPositionById: jest.fn(),
             is_loading: false,
             is_accumulator: false,
             is_multiplier: false,
             onHoverPosition: jest.fn(),
+            onBuyResponse: jest.fn(),
             onClickCancel: jest.fn(),
             onClickSell: jest.fn(),
             onMount: jest.fn(),
+            open_accu_contract: null,
             positions: [],
             removePositionById: jest.fn(),
+            setContractType: jest.fn(),
         },
         contract_trade: {
             accountSwitchListener: jest.fn(),
@@ -536,7 +551,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
         },
         chart_barrier_store: {},
-        active_symbols: {},
+        active_symbols: {
+            active_symbols: [],
+            setActiveSymbols: jest.fn(),
+        },
     };
 };
 

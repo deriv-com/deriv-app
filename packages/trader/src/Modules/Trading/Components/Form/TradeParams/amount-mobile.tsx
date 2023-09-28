@@ -4,8 +4,18 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Localize, localize } from '@deriv/translations';
 import { Money, Numpad, Tabs } from '@deriv/components';
-import { getDecimalPlaces, isEmptyObject, isVanillaContract } from '@deriv/shared';
+import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
 import MinMaxStakeInfo from './min-max-stake-info';
+
+type TAmountMobile = Pick<
+    React.ComponentProps<typeof Basis>,
+    'toggleModal' | 'duration_value' | 'duration_unit' | 'has_duration_error' | 'setAmountError' | 'setSelectedAmount'
+> & {
+    amount_tab_idx?: number;
+    setAmountTabIdx?: React.ComponentProps<typeof Tabs>['onTabItemClick'];
+    stake_value: string | number;
+    payout_value?: string | number;
+};
 
 type TBasis = {
     basis: string;
@@ -42,13 +52,8 @@ const Basis = observer(
             duration_unit: trade_duration_unit,
             duration: trade_duration,
             stake_boundary,
-            vanilla_trade_type,
         } = useTraderStore();
-        const { min_stake, max_stake } =
-            (isVanillaContract(contract_type)
-                ? stake_boundary[vanilla_trade_type]
-                : stake_boundary[contract_type.toUpperCase()]) || {};
-
+        const { min_stake, max_stake } = stake_boundary[contract_type.toUpperCase()] || {};
         const user_currency_decimal_places = getDecimalPlaces(currency);
         const onNumberChange = (num: number | string) => {
             setSelectedAmount(basis, num);
@@ -110,7 +115,7 @@ const Basis = observer(
                     )}
                     <div
                         className={classNames('trade-params__amount-keypad', {
-                            strike__pos: contract_type === 'vanilla',
+                            strike__pos: is_vanilla,
                         })}
                     >
                         <Numpad
@@ -145,16 +150,6 @@ const Basis = observer(
         );
     }
 );
-
-type TAmountMobile = Pick<
-    React.ComponentProps<typeof Basis>,
-    'toggleModal' | 'duration_value' | 'duration_unit' | 'has_duration_error' | 'setAmountError' | 'setSelectedAmount'
-> & {
-    amount_tab_idx?: number;
-    setAmountTabIdx?: React.ComponentProps<typeof Tabs>['onTabItemClick'];
-    stake_value: string | number;
-    payout_value?: string | number;
-};
 
 const Amount = observer(
     ({

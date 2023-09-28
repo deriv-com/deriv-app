@@ -88,6 +88,7 @@ const TradeParamsMobile = observer(({ toggleModal }: { toggleModal: TToggleModal
             <div className='trade-params__multiplier-ic-info-wrapper'>
                 <Popover
                     alignment='right'
+                    classNameBubble='dc-popover__trade-params'
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
                     zIndex='9999'

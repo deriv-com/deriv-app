@@ -42,6 +42,7 @@ const MultiplierOptions = observer(({ toggleModal }: TMultiplierOptions) => {
     return (
         <React.Fragment>
             <RadioGroupWithInfoMobile
+                popover_alignment='bottom'
                 contract_name='multiplier'
                 current_value_object={{ name: 'multiplier', value: multiplier }}
                 info={localize(

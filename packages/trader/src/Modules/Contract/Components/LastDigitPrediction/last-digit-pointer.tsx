@@ -1,9 +1,18 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
 
-const LastDigitPointer = ({ is_lost, is_trade_page, is_won, position }) => (
+type TLastDigitPointer = {
+    is_lost?: boolean;
+    is_trade_page?: boolean;
+    is_won?: boolean;
+    position: {
+        left: number;
+        top: number;
+    };
+};
+
+const LastDigitPointer = ({ is_lost, is_trade_page, is_won, position }: TLastDigitPointer) => (
     <React.Fragment>
         {!!position && (
             <span
@@ -23,12 +32,5 @@ const LastDigitPointer = ({ is_lost, is_trade_page, is_won, position }) => (
         )}
     </React.Fragment>
 );
-
-LastDigitPointer.propTypes = {
-    is_lost: PropTypes.bool,
-    is_trade_page: PropTypes.bool,
-    is_won: PropTypes.bool,
-    position: PropTypes.object,
-};
 
 export default LastDigitPointer;

@@ -8,7 +8,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TAccumulatorsAmountMobile = {
-    is_nativepicker: boolean;
+    is_nativepicker?: boolean;
 };
 
 const AccumulatorsAmountMobile = observer(({ is_nativepicker }: TAccumulatorsAmountMobile) => {

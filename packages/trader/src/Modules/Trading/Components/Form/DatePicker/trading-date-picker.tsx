@@ -125,7 +125,6 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
         async (e = toMoment().format('YYYY-MM-DD')) => {
             const new_market_events: TMarketEvent[] = [];
             let new_disabled_days: number[] = [];
-            // @ts-expect-error TODO: check if TS error is gone after contract-type is converted to TS
             const events = await ContractType.getTradingEvents(e, symbol);
             // @ts-expect-error TODO: check if TS error is gone after contract-type is converted to TS
             events.forEach(evt => {

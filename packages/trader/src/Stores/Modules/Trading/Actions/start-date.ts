@@ -3,10 +3,10 @@ import { TTradeStore } from 'Types';
 
 export const onChangeStartDate = async (store: TTradeStore) => {
     const { contract_type, duration_unit, start_date } = store;
-    const server_time = store.root_store.common.server_time;
+    const server_time = store.root_store?.common.server_time;
     let { start_time, expiry_type } = store;
 
-    start_time = start_time || server_time.clone().add(6, 'minute').format('HH:mm'); // when there is not a default value for start_time, it should be set more than 5 min after server_time
+    start_time = start_time || server_time?.clone().add(6, 'minute').format('HH:mm'); // when there is not a default value for start_time, it should be set more than 5 min after server_time
 
     const obj_contract_start_type = ContractType.getStartType(start_date);
     const contract_start_type = obj_contract_start_type.contract_start_type;

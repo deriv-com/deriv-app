@@ -7,7 +7,7 @@ import { WideWrapper } from '../WideWrapper';
 type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 
 const MT5AccountTypeModal = () => {
-    const [selectedMarketType, setSelectedMarketType] = useState<TMarketTypes>(undefined);
+    const [selectedMarketType, setSelectedMarketType] = React.useState<TMarketTypes>(undefined);
 
     return (
         <WalletModal>

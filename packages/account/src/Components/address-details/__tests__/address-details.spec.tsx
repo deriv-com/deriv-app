@@ -188,7 +188,6 @@ describe('<AddressDetails/>', () => {
             expect(screen.getByLabelText(address_town)).toBeInTheDocument();
             expect(screen.getByText(use_address_info)).toBeInTheDocument();
         });
-
         expect(screen.queryByText(address_line_1_marked)).not.toBeInTheDocument();
         expect(screen.queryByText(address_line_2_marked)).not.toBeInTheDocument();
         expect(screen.queryByText(address_postcode_marked)).not.toBeInTheDocument();

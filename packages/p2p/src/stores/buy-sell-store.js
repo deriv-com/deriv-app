@@ -35,7 +35,6 @@ export default class BuySellStore extends BaseStore {
     show_advertiser_page = false;
     show_filter_payment_methods = false;
     sort_by = 'rate';
-    submitForm = () => {};
     table_type = buy_sell.BUY;
     form_props = {};
     is_create_order_subscribed = false;
@@ -76,7 +75,6 @@ export default class BuySellStore extends BaseStore {
             show_advertiser_page: observable,
             show_filter_payment_methods: observable,
             sort_by: observable,
-            submitForm: observable,
             table_type: observable,
             form_props: observable,
             is_create_order_subscribed: observable,
@@ -96,7 +94,6 @@ export default class BuySellStore extends BaseStore {
             hideVerification: action.bound,
             onChangeTableType: action.bound,
             onClickApply: action.bound,
-            onConfirmClick: action.bound,
             onLocalCurrencySelect: action.bound,
             setCreateSellAdFromNoAds: action.bound,
             setErrorMessage: action.bound,
@@ -126,7 +123,6 @@ export default class BuySellStore extends BaseStore {
             setSortBy: action.bound,
             setTableType: action.bound,
             setSelectedAdvert: action.bound,
-            setSubmitFormFn: action.bound,
             showAdvertiserPage: action.bound,
             showVerification: action.bound,
             validatePopup: action.bound,
@@ -288,13 +284,6 @@ export default class BuySellStore extends BaseStore {
         this.setSelectedPaymentMethodText(payment_method_text);
     }
 
-    onConfirmClick(order_info) {
-        const { general_store, order_store } = this.root_store;
-
-        order_store.props.setOrderId(order_info.id);
-        general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
-    }
-
     onLocalCurrencySelect(local_currency) {
         this.setSelectedLocalCurrency(local_currency);
         this.setLocalCurrency(local_currency);
@@ -450,10 +439,6 @@ export default class BuySellStore extends BaseStore {
                 key: 'BuySellModal',
             });
         }
-    }
-
-    setSubmitFormFn(submitFormFn) {
-        this.submitForm = submitFormFn;
     }
 
     setIsCreateOrderSubscribed(is_create_order_subscribed) {

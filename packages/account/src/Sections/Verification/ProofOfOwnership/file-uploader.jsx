@@ -1,7 +1,7 @@
 import React from 'react';
+import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Button, Input, Icon } from '@deriv/components';
-import classNames from 'classnames';
 import { compressImageFiles } from '@deriv/shared';
 import PropTypes from 'prop-types';
 
@@ -44,7 +44,7 @@ const FileUploader = ({
         await updateErrors(index, item_index, sub_index);
     };
     return (
-        <div className={`file-uploader ${class_name}`}>
+        <div className={classNames('poo-file-uploader', class_name)}>
             <input
                 type='file'
                 accept='image/png, image/jpeg, image/jpg, application/pdf'

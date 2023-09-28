@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { toJS } from 'mobx';
 import { DesktopWrapper, MobileWrapper, Popover, Text } from '@deriv/components';
-import { isMobile, useIsMounted, isContractElapsed, getMarketNamesMap } from '@deriv/shared';
+import { getMarketNamesMap, isMobile, useIsMounted, isContractElapsed } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';

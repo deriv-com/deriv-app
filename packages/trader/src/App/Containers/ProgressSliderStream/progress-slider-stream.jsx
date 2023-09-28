@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ProgressSlider } from '@deriv/components';
-import { getCurrentTick, getCardLabels } from '@deriv/shared';
+import { getCardLabels, getCurrentTick } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const ProgressSliderStream = observer(({ contract_info }) => {

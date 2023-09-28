@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     useActiveWalletAccount,
     useAvailableMT5Accounts,
@@ -18,7 +18,7 @@ type TProps = {
 };
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
-    const [password, setPassword] = React.useState('');
+    const [password, setPassword] = useState('');
     const { isSuccess, mutate } = useCreateMT5Account();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: mt5Accounts } = useMT5AccountsList();

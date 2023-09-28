@@ -21,6 +21,7 @@ import TurbosTradeDescription from './Description/turbos-trade-description';
 import TouchTradeDescription from './Description/touch-trade-description';
 import TickHighLowTradeDescription from './Description/tick-high-low-trade-description';
 import VanillaTradeDescription from './Description/vanilla-trade-description';
+import { VANILLALONG, TURBOS } from '@deriv/shared';
 
 const TradeCategories = ({
     category,
@@ -87,11 +88,12 @@ const TradeCategories = ({
             case 'multiplier':
                 TradeTypeTemplate = <MultiplierTradeDescription />;
                 break;
-            case 'turbosshort':
-            case 'turboslong':
+            case TURBOS.LONG:
+            case TURBOS.SHORT:
                 TradeTypeTemplate = <TurbosTradeDescription />;
                 break;
-            case 'vanilla':
+            case VANILLALONG.CALL:
+            case VANILLALONG.PUT:
                 TradeTypeTemplate = <VanillaTradeDescription onClick={onClick} />;
                 break;
             default:

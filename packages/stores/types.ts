@@ -118,7 +118,7 @@ type TAccountsList = {
             Derived: React.SVGAttributes<SVGElement>;
             Financial: React.SVGAttributes<SVGElement>;
             Options: React.SVGAttributes<SVGElement>;
-            CFDs: React.SVGAttributes<SVGAElement>;
+            CFDs: React.SVGAttributes<SVGElement>;
         };
         text?: JSX.Element | string;
         value?: string;
@@ -430,6 +430,11 @@ type TCommonStoreServicesError = {
     message?: string;
     type?: string;
 };
+type TCommonStoreServicesError = {
+    code?: string;
+    message?: string;
+    type?: string;
+};
 
 type TCommonStore = {
     isCurrentLanguage(language_code: string): boolean;
@@ -445,8 +450,8 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
-    is_socket_opened: boolean;
     services_error: TCommonStoreServicesError;
+    is_socket_opened: boolean;
     setAppstorePlatform: (value: string) => void;
     setError?: (has_error: boolean, error: TCommonStoreError) => void;
     setSelectedContractType: (contract_type: string) => void;
@@ -458,6 +463,7 @@ type TCommonStore = {
 };
 
 type TUiStore = {
+    advanced_duration_unit: string;
     addToast: (toast_config: TAddToastProps) => void;
     account_switcher_disabled_message: string;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;

@@ -72,9 +72,12 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         is_vanilla,
         has_equals_only,
         has_open_accu_contract,
+        stake_boundary,
         onChange,
         validation_errors,
     } = useTraderStore();
+
+    const { min_stake, max_stake } = stake_boundary[contract_type.toUpperCase()] || {};
 
     if (is_minimized) {
         return (
@@ -112,7 +115,7 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
         <Fieldset
             className='trade-container__fieldset center-text'
             header={
-                is_multiplier || ['high_low', 'vanilla'].includes(contract_type) || is_accumulator || is_turbos
+                contract_type === 'high_low' || is_multiplier || is_accumulator || is_vanilla || is_turbos
                     ? localize('Stake')
                     : undefined
             }
@@ -187,7 +190,9 @@ const Amount = observer(({ is_minimized, is_nativepicker }) => {
                     />
                 </React.Fragment>
             )}
-            {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
+            {(is_turbos || is_vanilla) && (
+                <MinMaxStakeInfo currency={currency} max_stake={max_stake} min_stake={min_stake} />
+            )}
         </Fieldset>
     );
 });

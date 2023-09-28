@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
 import { isMobile } from '@deriv/shared';
 
 type TMinMaxStakeInfo = {
@@ -12,7 +11,7 @@ type TMinMaxStakeInfo = {
     currency?: string;
 };
 
-const MinMaxStakeInfo = observer(({ className, currency, max_stake, min_stake }: TMinMaxStakeInfo) => {
+const MinMaxStakeInfo = ({ className, currency, max_stake, min_stake }: TMinMaxStakeInfo) => {
     return (
         <section className={classNames('trade-container__stake-field', className)}>
             {!isNaN(Number(min_stake)) &&
@@ -41,6 +40,6 @@ const MinMaxStakeInfo = observer(({ className, currency, max_stake, min_stake }:
                 ))}
         </section>
     );
-});
+};
 
 export default MinMaxStakeInfo;

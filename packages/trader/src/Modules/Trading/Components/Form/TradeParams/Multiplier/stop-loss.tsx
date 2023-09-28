@@ -47,6 +47,7 @@ const StopLoss = observer((props: TStopLossProps) => {
             <InputWithCheckbox
                 addToast={addToast}
                 removeToast={removeToast}
+                classNameBubble='dc-popover__trade-params'
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 className={classNames({

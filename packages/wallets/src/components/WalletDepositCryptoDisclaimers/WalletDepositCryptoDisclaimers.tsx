@@ -5,20 +5,20 @@ import { InlineMessage } from '../InlineMessage';
 import './WalletDepositCryptoDisclaimers.scss';
 
 // Check with BE to see if we can get the network name from the API.
-const crypto_currency_to_network_mapper: Record<string, string> = {
+const cryptoCurrencyToNetworkMapper: Record<string, string> = {
     BTC: 'Bitcoin (BTC)',
     ETH: 'Ethereum (ETH)',
-    LTC: 'Litecoin (LTC)',
-    UST: 'Omnicore',
-    USDC: 'Ethereum (ERC20)',
     eUSDT: 'Ethereum (ERC20) ',
+    LTC: 'Litecoin (LTC)',
     tUSDT: 'Tron (TRC20) ',
+    USDC: 'Ethereum (ERC20)',
+    UST: 'Omnicore',
 };
 
 const WalletDepositCryptoDisclaimers = () => {
     const { data } = useActiveWalletAccount();
-    const { is_mobile } = useDevice();
-    const { currency, currency_config } = data || {};
+    const { isMobile } = useDevice();
+    const { currency } = data || {};
 
     return (
         <div className='wallets-deposit-crypto-disclaimers'>
@@ -26,9 +26,9 @@ const WalletDepositCryptoDisclaimers = () => {
                 <div className='wallets-deposit-crypto-disclaimers__content'>
                     <p>To avoid loss of funds:</p>
                     <br />
-                    {currency_config?.minimum_deposit && (
+                    {data?.currency_config?.minimum_deposit && (
                         <li>
-                            A minimum deposit value of {currency_config?.minimum_deposit} {currency} is required.
+                            A minimum deposit value of {data?.currency_config?.minimum_deposit} {currency} is required.
                             Otherwise, the funds will be lost and cannot be recovered.
                         </li>
                     )}
@@ -36,15 +36,12 @@ const WalletDepositCryptoDisclaimers = () => {
                     <li>Make sure to copy your Deriv account address correctly into your crypto wallet.</li>
                     <li>
                         In your cryptocurrency wallet, make sure to select{' '}
-                        <strong>{currency && crypto_currency_to_network_mapper[currency]} network</strong> when you
-                        transfer funds to Deriv.
+                        <strong>{currency && cryptoCurrencyToNetworkMapper[currency]} network</strong> when you transfer
+                        funds to Deriv.
                     </li>
                 </div>
             </InlineMessage>
-            <p
-                className='wallets-deposit-crypto-disclaimers__note'
-                style={{ fontSize: is_mobile ? ' 1rem' : '1.2rem' }}
-            >
+            <p className='wallets-deposit-crypto-disclaimers__note' style={{ fontSize: isMobile ? ' 1rem' : '1.2rem' }}>
                 <strong>Note:</strong> You’ll receive an email when your deposit start being processed.
             </p>
         </div>

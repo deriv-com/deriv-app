@@ -17,6 +17,12 @@ import DataListCell, { TColIndex, TDataListCell } from './data-list-cell';
 import DataListRow from './data-list-row';
 import ThemedScrollbars from '../themed-scrollbars';
 import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
+import { TTableRowItem, TPassThrough, TRow } from '../types/common.types';
+
+const List = _List as unknown as React.FC<ListProps>;
+const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
+const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
+export type TRowRenderer = (params: Partial<TMobileRowRenderer>) => React.ReactNode;
 
 type TMobileRowRenderer = {
     row?: TRow;
@@ -26,19 +32,14 @@ type TMobileRowRenderer = {
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     measure?: () => void;
+    passthrough?: TPassThrough;
 };
-const List = _List as unknown as React.FC<ListProps>;
-const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
-const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
-export type TRowRenderer = (params: Partial<TMobileRowRenderer>) => React.ReactNode;
-export type TPassThrough = { isTopUp: (item: TRow) => boolean };
-export type TRow = { [key: string]: any };
 
 export type TDataList = {
     className?: string;
     data_source: TRow[];
     footer?: TRow;
-    getRowAction?: (row: TRow) => { component: JSX.Element } | string;
+    getRowAction?: (row: TRow) => TTableRowItem;
     getRowSize?: (params: { index: number }) => number;
     keyMapper?: (row: TRow) => number | string;
     onRowsRendered?: (params: IndexRange) => void;
@@ -121,6 +122,7 @@ const DataList = React.memo(
 
             const getContent = ({ measure }: GetContentType = {}) => (
                 <DataListRow
+                    //@ts-expect-error needs refactor
                     action_desc={action_desc}
                     destination_link={destination_link}
                     is_new_row={!items_transition_map_ref.current[row_key]}

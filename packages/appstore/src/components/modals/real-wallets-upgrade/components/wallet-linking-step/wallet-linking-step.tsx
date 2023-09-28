@@ -1,14 +1,24 @@
 import React from 'react';
-import { Text, ThemedScrollbars, WalletCard } from '@deriv/components';
+import { Icon, Text, ThemedScrollbars, WalletCard } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import WalletAccount from '../wallet-account/wallet-account';
 import WalletLinkWrapper, { TWalletLinkWrapper } from '../wallet-link/wallet-link-wrapper';
 import './wallet-linking-step.scss';
-import WalletAccount from '../wallet-account/wallet-account';
-import classNames from 'classnames';
 
 type TWalletLinkingStep = {
-    data: { title: string; wallets: TWalletLinkWrapper[] };
+    data: {
+        title: string;
+        wallets: Array<{
+            wallet_details: React.ComponentProps<typeof WalletCard>['wallet'];
+            account_list: {
+                balance: number;
+                currency: string;
+                account_name: string;
+                icon: string;
+            }[];
+        }>;
+    };
 };
 
 const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
@@ -46,7 +56,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                     return (
                         <WalletLinkWrapper
                             key={wallet.wallet_details.name}
-                            show_left_fork={wallet.account_list.length > 1 || is_mobile}
+                            has_left_fork={wallet.account_list.length > 1 || is_mobile}
                             left={() => {
                                 return (
                                     <>
@@ -74,6 +84,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                                     </>
                                 );
                             }}
+                            center={() => <Icon icon='IcAppstoreWalletsLink' size={40} />}
                             right={() => {
                                 return (
                                     <div style={{ height: '13.6rem', position: 'relative' }}>

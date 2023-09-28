@@ -37,7 +37,7 @@ const WalletTransferFormDropdown: React.FC<TProps> = ({ fieldName, initialAccoun
             <div className='wallets-transfer-form-dropdown__icons'>
                 {selectedAccount && (
                     <WalletListCardBadge
-                        is_demo={selectedAccount?.is_virtual}
+                        isDemo={selectedAccount?.is_virtual}
                         label={selectedAccount?.landing_company_name}
                     />
                 )}

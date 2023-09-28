@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contract';
+import { shouldShowCancellation, shouldShowExpiration, TURBOS, VANILLALONG } from '../contract';
 
 export const getLocalizedBasis = () =>
     ({
@@ -22,7 +22,7 @@ type TContractTypesConfig = {
     basis: string[];
     components: string[];
     barrier_count?: number;
-    config?: { hide_duration?: boolean; should_override?: boolean };
+    config?: { hide_duration?: boolean };
 };
 
 type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
@@ -162,13 +162,19 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         barrier_count: 1,
         components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
     },
-    vanilla: {
+    vanillalongcall: {
         title: localize('Call/Put'),
-        trade_types: ['VANILLALONGCALL', 'VANILLALONGPUT'],
+        trade_types: ['VANILLALONGCALL'],
         basis: ['stake'],
         components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
         barrier_count: 1,
-        config: { should_override: true },
+    },
+    vanillalongput: {
+        title: localize('Call/Put'),
+        trade_types: ['VANILLALONGPUT'],
+        basis: ['stake'],
+        components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
+        barrier_count: 1,
     },
 });
 
@@ -185,7 +191,7 @@ export const getContractCategoriesConfig = () =>
         'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
         'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
         Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
-        Vanillas: { name: localize('Vanillas'), categories: ['vanilla'] },
+        Vanillas: { name: localize('Vanillas'), categories: [VANILLALONG.CALL, VANILLALONG.PUT] },
         Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
     } as const);
 

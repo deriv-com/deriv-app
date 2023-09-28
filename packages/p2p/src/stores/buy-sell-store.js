@@ -262,8 +262,8 @@ export default class BuySellStore extends BaseStore {
                     props: { message },
                 });
             } else {
-                setErrorMessage(error.message);
-                this.setFormErrorCode(error.code);
+                setErrorMessage(message);
+                this.setFormErrorCode(code);
             }
         } else {
             if (subscription?.id && !this.is_create_order_subscribed) {

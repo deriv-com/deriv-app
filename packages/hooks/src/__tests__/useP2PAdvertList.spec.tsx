@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
+import { APIProvider, useQuery } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PAdvertList from '../useP2PAdvertList';
@@ -10,16 +10,16 @@ type TWrapper = {
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
+    useQuery: jest.fn(),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'p2p_advert_list'>>;
+const mockUseQuery = useQuery as jest.MockedFunction<typeof useQuery<'p2p_advert_list'>>;
 
 describe('useP2PAdvertList', () => {
     it('should return an empty array if there is no response', () => {
         const mock_store = mockStore({});
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({});
+        // @ts-expect-error need to come up with a way to mock the return type of useQuery
+        mockUseQuery.mockReturnValue({});
 
         const wrapper = ({ children }: TWrapper) => (
             <APIProvider>
@@ -36,11 +36,11 @@ describe('useP2PAdvertList', () => {
             client: { currency: 'USD' },
         });
 
-        mockUseFetch.mockReturnValue({
+        mockUseQuery.mockReturnValue({
             data: {
                 p2p_advert_list: {
                     list: [
-                        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+                        // @ts-expect-error need to come up with a way to mock the return type of useQuery
                         {
                             account_currency: 'USD',
                             amount: 50,

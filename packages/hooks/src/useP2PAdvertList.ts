@@ -1,17 +1,17 @@
 import React from 'react';
-import { useFetch } from '@deriv/api';
+import { useQuery } from '@deriv/api';
 import useExchangeRate from './useExchangeRate';
 
 /**
  * This custom hook returns available adverts for use with 'p2p_order_create' by calling 'p2p_advert_list' endpoint
  */
-const useP2PAdvertList = (payload?: NonNullable<Parameters<typeof useFetch<'p2p_advert_list'>>[1]>['payload']) => {
+const useP2PAdvertList = (payload?: NonNullable<Parameters<typeof useQuery<'p2p_advert_list'>>[1]>['payload']) => {
     const { getRate } = useExchangeRate();
 
     const limit: number = payload?.limit || 50;
     const [offset, setOffset] = React.useState<number>(payload?.offset || 0);
 
-    const { data, ...rest } = useFetch('p2p_advert_list', {
+    const { data, ...rest } = useQuery('p2p_advert_list', {
         payload: { ...payload, offset, limit },
         options: { keepPreviousData: true },
     });

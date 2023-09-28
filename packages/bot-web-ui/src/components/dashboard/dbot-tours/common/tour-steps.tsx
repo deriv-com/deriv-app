@@ -1,8 +1,7 @@
 import React from 'react';
 import { getUUID } from '@deriv/bot-skeleton/src/services/tradeEngine/utils/helpers';
-import { Icon, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
 
 type TTourSteps = {
     content: string[] | React.ReactElement[];
@@ -15,9 +14,6 @@ type TTourSteps = {
 
 const TourSteps = observer(
     ({ content, media, label, step_index, has_localize_component = false, show_actions = true }: TTourSteps) => {
-        const { dashboard } = useDBotStore();
-        const { onCloseTour } = dashboard;
-
         return (
             <React.Fragment>
                 <div className='onboard'>
@@ -26,9 +22,6 @@ const TourSteps = observer(
                             <Text color='less-prominent' line_height='l'>
                                 {step_index}/6
                             </Text>
-                            <span onClick={onCloseTour}>
-                                <Icon icon='IcCross' className='db-contract-card__result-icon' />
-                            </span>
                         </div>
                     )}
                     <div className='onboard__steps'>

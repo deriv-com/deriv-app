@@ -5,6 +5,7 @@ import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import OnboardTourHandler from '../dbot-tours/onboarding-tour';
 import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';
@@ -59,7 +60,7 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
 const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { load_modal, dashboard } = useDBotStore();
     const { dashboard_strategies } = load_modal;
-    const { setActiveTab, setActiveTabTutorial, has_started_onboarding_tour } = dashboard;
+    const { setActiveTab, setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const is_mobile = isMobile();
 
@@ -67,7 +68,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
         <React.Fragment>
             <div
                 className={classNames('tab__dashboard', {
-                    'tab__dashboard--tour-active': has_started_onboarding_tour,
+                    'tab__dashboard--tour-active': active_tour,
                 })}
             >
                 <div className='tab__dashboard__content'>
@@ -128,6 +129,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                 </div>
             </div>
             <InfoPanel />
+            {active_tab === 0 && <OnboardTourHandler />}
         </React.Fragment>
     );
 });

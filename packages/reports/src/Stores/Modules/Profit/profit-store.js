@@ -1,13 +1,6 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, makeObservable, override } from 'mobx';
-import {
-    extractInfoFromShortcode,
-    getContractTypeFeatureFlag,
-    isHighLow,
-    LocalStore,
-    toMoment,
-    WS,
-} from '@deriv/shared';
+import { filterDisabledPositions, toMoment, WS } from '@deriv/shared';
 
 import getDateBoundaries from './Helpers/format-request';
 import { formatProfitTableTransactions } from './Helpers/format-response';
@@ -108,17 +101,7 @@ export default class ProfitTableStore extends BaseStore {
                     this.root_store.active_symbols.active_symbols
                 )
             )
-            .filter(transaction => {
-                // filter out transactions for trade types with disabled feature flag
-                return Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {}).every(
-                    ([key, value]) =>
-                        key !==
-                            getContractTypeFeatureFlag(
-                                extractInfoFromShortcode(transaction.shortcode).category.toUpperCase(),
-                                isHighLow(transaction)
-                            ) || value
-                );
-            });
+            .filter(filterDisabledPositions);
 
         this.data = [...this.data, ...formatted_transactions];
         this.has_loaded_all = formatted_transactions.length < batch_size;

@@ -15,10 +15,13 @@ import { observer, useStore } from '@deriv/stores';
 const FeatureFlagsSection = observer(() => {
     const { feature_flags } = useStore();
     const visible_feature_flags = Object.entries(feature_flags.data ?? {})?.reduce(
-        (flags, [key, value]) => ({
-            ...flags,
-            ...(location.hostname === website_domain && TRADE_FEATURE_FLAGS.includes(key) ? {} : { [key]: value }),
-        }),
+        (flags, [key, value]) => {
+            const is_production = location.hostname === website_domain;
+            if (!is_production || !TRADE_FEATURE_FLAGS.includes(key)) {
+                flags[key] = value;
+            }
+            return flags;
+        },
         {} // hiding flags for trade types in production
     );
     if (!feature_flags.data) return null;

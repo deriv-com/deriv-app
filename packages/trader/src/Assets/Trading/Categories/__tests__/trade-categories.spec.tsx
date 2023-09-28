@@ -102,8 +102,8 @@ describe('<TradeCategores />', () => {
         render(<TradeCategories category='turbosshort' onClick={jest.fn()} />);
         expect(screen.getByText(/mockedTurbosTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedVanillaTradeDescription is rendered correctly when trade category is "vanilla"', () => {
-        render(<TradeCategories category='vanilla' onClick={jest.fn()} />);
+    it('Ensure mockedVanillaTradeDescription is rendered correctly when trade category is "vanillalongcall"', () => {
+        render(<TradeCategories category='vanillalongcall' onClick={jest.fn()} />);
         expect(screen.getByText(/mockedVanillaTradeDescription/i)).toBeInTheDocument();
     });
     it('Ensure description is not found is rendered when trade category doesnt exist', () => {

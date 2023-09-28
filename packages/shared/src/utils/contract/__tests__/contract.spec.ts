@@ -1,5 +1,5 @@
 import * as ContractUtils from '../contract';
-import { TContractInfo, TDigitsInfo, TTickItem } from '../contract-types';
+import { TContractInfo, TContractStore, TDigitsInfo, TTickItem } from '../contract-types';
 
 describe('getFinalPrice', () => {
     it("should return sell_price as final price when it's available", () => {
@@ -583,5 +583,31 @@ describe('getContractStatus', () => {
                 status: 'won',
             })
         ).toBe('won');
+    });
+});
+
+describe('getLastContractMarkerIndex', () => {
+    let markers: TContractStore[];
+    beforeEach(() => {
+        markers = [
+            {
+                contract_info: {
+                    date_start: 1001,
+                },
+            },
+            {
+                contract_info: {
+                    date_start: 1000,
+                },
+            },
+        ] as TContractStore[];
+    });
+    it('should return index of a marker that has the biggest date_start', () => {
+        expect(ContractUtils.getLastContractMarkerIndex(markers)).toEqual(0);
+    });
+    it('should return index of the last marker if a marker with the biggest date_start is not found', () => {
+        delete markers[0].contract_info.date_start;
+        delete markers[1].contract_info.date_start;
+        expect(ContractUtils.getLastContractMarkerIndex(markers)).toEqual(1);
     });
 });

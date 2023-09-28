@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { unique } from '../object';
 import { capitalizeFirstLetter } from '../string/string_util';
-import { TContractInfo, TDigitsInfo, TLimitOrder, TTickItem } from './contract-types';
+import { TContractInfo, TContractStore, TDigitsInfo, TLimitOrder, TTickItem } from './contract-types';
 
 type TGetAccuBarriersDTraderTimeout = (params: {
     barriers_update_timestamp: number;
@@ -116,6 +116,14 @@ export const getCurrentTick = (contract_info: TContractInfo) => {
             ? tick_stream.length
             : tick_stream.length - 1;
     return !current_tick || current_tick < 0 ? 0 : current_tick;
+};
+
+export const getLastContractMarkerIndex = (markers: TContractStore[] = []) => {
+    const sorted_markers = [...markers].sort(
+        (a, b) => Number(b.contract_info.date_start) - Number(a.contract_info.date_start)
+    );
+    const index = sorted_markers[0].contract_info.date_start ? markers.indexOf(sorted_markers[0]) : -1;
+    return index >= 0 ? index : markers.length - 1;
 };
 
 export const getLastTickFromTickStream = (tick_stream: TTickItem[] = []) => tick_stream[tick_stream.length - 1] || {};

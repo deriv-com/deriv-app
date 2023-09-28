@@ -26,22 +26,17 @@
         align-items: center;
         justify-content: center;
         gap: 1.6rem;
-        margin: 0rem;
-        margin-left: 1.6rem;
+        margin: 0rem 0rem 0rem 1.6rem;
 
         @include mobile {
-            gap: 0.8rem;
-            margin: 0;
-            margin-top: 1.2rem;
+            margin: 1.2rem 0rem 0rem;
         }
 
         &--right-forked {
-            margin: 0rem;
-            margin-right: 1.6rem;
+            margin: 0rem 1.6rem 0rem 0rem;
 
             @include mobile {
-                margin: 0rem;
-                margin-bottom: 1.2rem;
+                margin: 0rem 0rem 1.2rem;
             }
         }
     }

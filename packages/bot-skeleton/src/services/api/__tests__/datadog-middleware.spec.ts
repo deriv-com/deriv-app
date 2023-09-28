@@ -101,6 +101,14 @@ describe('APIMiddleware', () => {
         expect(spydefineMeasure).toHaveBeenCalledWith('authorize');
     });
 
+    it('Should invoke the method sendWillBeCalled()', async () => {
+        const spysendWillBeCalled = jest.spyOn(api_middleware, 'sendWillBeCalled');
+
+        await api_middleware.sendWillBeCalled({ args: [{ buy: 1 }] });
+
+        expect(spysendWillBeCalled).toHaveBeenCalledWith({ args: [{ buy: 1 }] });
+    });
+
     describe('Define measure', () => {
         it('Should define measure of history API call', () => {
             const spydefineMeasure = jest.spyOn(api_middleware, 'defineMeasure');
@@ -117,20 +125,15 @@ describe('APIMiddleware', () => {
             const result = api_middleware.defineMeasure('proposal');
 
             expect(spydefineMeasure).toHaveBeenCalledWith('proposal');
-            expect(mockMeasure).toHaveBeenCalledWith(
-                'run_proposal_or_direct_buy',
-                'bot-start',
-                'first_proposal_or_run_end'
-            );
-            expect(clearMarks).toBeCalledTimes(1);
+            expect(mockMeasure).toHaveBeenCalledWith('proposal', 'proposal_start', 'proposal_end');
             expect(result).toBeDefined();
         });
 
-        it('Should define measure for API calls except of proposal and history', () => {
+        it('Should define measure for API calls except of history', () => {
             const spydefineMeasure = jest.spyOn(api_middleware, 'defineMeasure');
 
             REQUESTS.forEach(request_name => {
-                if (request_name !== 'proposal' && request_name !== 'history') {
+                if (request_name !== 'history') {
                     const result = api_middleware.defineMeasure(request_name);
                     expect(spydefineMeasure).toHaveBeenCalledWith(request_name);
                     expect(mockMeasure).toHaveBeenCalledWith(

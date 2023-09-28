@@ -76,17 +76,6 @@ class APIMiddleware {
     defineMeasure = res_type => {
         if (res_type) {
             let measure;
-            if (res_type === 'proposal' || res_type === 'buy') {
-                performance.mark('first_proposal_or_run_end');
-                if (performance.getEntriesByName('bot-start', 'mark').length) {
-                    measure = performance.measure(
-                        'run_proposal_or_direct_buy',
-                        'bot-start',
-                        'first_proposal_or_run_end'
-                    );
-                    performance.clearMarks('bot-start');
-                }
-            }
             if (res_type === 'history') {
                 performance.mark('ticks_history_end');
                 measure = performance.measure('ticks_history', 'ticks_history_start', 'ticks_history_end');
@@ -98,6 +87,17 @@ class APIMiddleware {
         }
         return false;
     };
+
+    sendWillBeCalled({ args: [request] }) {
+        const req_type = this.getRequestType(request);
+        if (req_type === 'buy') {
+            performance.mark('first_proposal_or_run_end');
+            if (performance.getEntriesByName('bot-start', 'mark').length) {
+                performance.measure('run_proposal_or_direct_buy', 'bot-start', 'first_proposal_or_run_end');
+                performance.clearMarks('bot-start');
+            }
+        }
+    }
 
     sendIsCalled = ({ response_promise, args: [request] }) => {
         const req_type = this.getRequestType(request);

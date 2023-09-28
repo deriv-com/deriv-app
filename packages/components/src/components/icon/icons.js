@@ -625,6 +625,7 @@ import './contract/ic-contract-start-time-circle.svg';
 import './contract/ic-contract-start-time.svg';
 import './contract/ic-contract-strike.svg';
 import './contract/ic-contract-target.svg';
+import './ctrader/ic-ctrader.svg';
 import './currency/ic-currency-aud.svg';
 import './currency/ic-currency-bch.svg';
 import './currency/ic-currency-btc.svg';

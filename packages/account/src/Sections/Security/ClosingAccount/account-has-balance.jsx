@@ -12,6 +12,9 @@ const getCurrMT5Account = (mt5_login_list, login_id) =>
 const getCurrDxtradeAccount = (dxtrade_accounts_list, login_id) =>
     dxtrade_accounts_list.find(account_obj => account_obj.account_id === login_id);
 
+const getCurrCtraderAccount = (ctrader_accounts_list, login_id) =>
+    ctrader_accounts_list.find(account_obj => account_obj.account_id === login_id);
+
 const Wrapper = ({ children, title, desc }) => (
     <div className='closing-account-error'>
         <Text as='p' line_height='s' size='xs' weight='bold' color='prominent' className='closing-account-error__title'>
@@ -49,6 +52,7 @@ const AccountHasPendingConditions = ({
     details,
     mt5_login_list,
     dxtrade_accounts_list,
+    ctrader_accounts_list,
     client_accounts,
     onBackClick,
     is_eu,
@@ -60,6 +64,8 @@ const AccountHasPendingConditions = ({
     const account_pending_withdrawals = [];
     const dxtrade_open_positions = [];
     const dxtrade_balance = [];
+    const ctrader_open_positions = [];
+    const ctrader_balance = [];
 
     if (details.pending_withdrawals) {
         Object.keys(details.pending_withdrawals).forEach(login_id => {
@@ -90,6 +96,10 @@ const AccountHasPendingConditions = ({
                 if (dxtrade_account) {
                     dxtrade_open_positions.push({ ...dxtrade_account, ...info });
                 }
+                const ctrader_account = getCurrCtraderAccount(ctrader_accounts_list, login_id);
+                if (ctrader_account) {
+                    ctrader_open_positions.push({ ...ctrader_account, ...info });
+                }
             }
         });
     }
@@ -111,6 +121,10 @@ const AccountHasPendingConditions = ({
                 const dxtrade_account = getCurrDxtradeAccount(dxtrade_accounts_list, login_id);
                 if (dxtrade_account) {
                     dxtrade_balance.push({ ...dxtrade_account, ...info });
+                }
+                const ctrader_account = getCurrCtraderAccount(ctrader_accounts_list, login_id);
+                if (ctrader_account) {
+                    ctrader_balance.push({ ...ctrader_account, ...info });
                 }
             }
         });
@@ -257,6 +271,55 @@ const AccountHasPendingConditions = ({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.DXTRADE,
+                                    is_eu,
+                                })}
+                                value={
+                                    <Money
+                                        currency={account.currency}
+                                        amount={formatMoney(account.currency, account.balance, true)}
+                                        should_format={false}
+                                    />
+                                }
+                            />
+                        ))}
+                    </Wrapper>
+                )}
+                {!!ctrader_open_positions.length && (
+                    <Wrapper title={localize('Please close your positions in the following Deriv cTrader account(s):')}>
+                        {ctrader_open_positions.map(account => (
+                            <Content
+                                key={account.login}
+                                currency_icon='IcCtrader'
+                                loginid={account.display_login}
+                                title={getCFDAccountDisplay({
+                                    market_type: account.market_type,
+                                    sub_account_type: account.sub_account_type,
+                                    platform: CFD_PLATFORMS.CTRADER,
+                                    is_eu,
+                                })}
+                                value={
+                                    <Localize
+                                        i18n_default_text='{{number_of_positions}} position(s)'
+                                        values={{ number_of_positions: account.positions }}
+                                    />
+                                }
+                            />
+                        ))}
+                    </Wrapper>
+                )}
+                {!!ctrader_balance.length && (
+                    <Wrapper
+                        title={localize('Please withdraw your funds from the following Deriv cTrader account(s):')}
+                    >
+                        {ctrader_balance.map(account => (
+                            <Content
+                                key={account.login}
+                                currency_icon='IcCtrader'
+                                loginid={account.display_login}
+                                title={getCFDAccountDisplay({
+                                    market_type: account.market_type,
+                                    sub_account_type: account.sub_account_type,
+                                    platform: CFD_PLATFORMS.CTRADER,
                                     is_eu,
                                 })}
                                 value={

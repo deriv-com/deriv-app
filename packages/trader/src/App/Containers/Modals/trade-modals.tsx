@@ -65,7 +65,6 @@ const TradeModals = observer(() => {
                 is_visible={is_services_error_visible}
                 is_virtual={is_virtual}
                 is_logged_in={is_logged_in}
-                mf_account_status={mf_account_status}
             />
 
             <AccountVerificationPendingModal

@@ -3,9 +3,10 @@ import classNames from 'classnames';
 import { Icon, ProgressBarTracker, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { getSetting } from 'Utils/settings';
 import { useDBotStore } from 'Stores/useDBotStore';
+import TourButton from '../common/tour-button';
 import { DBOT_ONBOARDING_MOBILE, TMobileTourConfig } from '../config';
-import TourButton from './common/tour-button';
 
 const default_tour_data = {
     content: [],
@@ -19,9 +20,9 @@ type TTourData = TMobileTourConfig & {
     tour_step_key: number;
 };
 
-const OnboardingTour = observer(() => {
+const OnboardingTourMobile = observer(() => {
     const { dashboard } = useDBotStore();
-    const { onCloseTour, onTourEnd, setTourActiveStep } = dashboard;
+    const { onCloseTour, onTourEnd, setTourActiveStep, active_tour, active_tab, setActiveTour } = dashboard;
     const [tour_step, setStep] = React.useState<number>(1);
     const [tour_data, setTourData] = React.useState<TTourData>(default_tour_data);
     const { content, header, img, media, tour_step_key } = tour_data;
@@ -29,6 +30,7 @@ const OnboardingTour = observer(() => {
     const tour_button_text = tour_step === 8 ? localize('Got it, thanks!') : start_button;
     const test_id = tour_step_key === 8 ? 'finish-onboard-tour' : 'next-onboard-tour';
     const hide_prev_button = [1, 2, 8];
+    const is_tour_active = active_tour === 'onboarding';
 
     React.useEffect(() => {
         DBOT_ONBOARDING_MOBILE.forEach(data => {
@@ -38,6 +40,14 @@ const OnboardingTour = observer(() => {
             setTourActiveStep(tour_step);
         });
     }, [tour_step]);
+
+    const token = getSetting('onboard_tour_token');
+    if (!token && active_tab === 0) setActiveTour('onboarding');
+
+    if (!active_tour) {
+        return null;
+    }
+
     return (
         <div
             className={classNames('dbot-slider', {
@@ -148,7 +158,7 @@ const OnboardingTour = observer(() => {
                         type='danger'
                         onClick={() => {
                             setStep(tour_step + 1);
-                            onTourEnd(tour_step, true);
+                            onTourEnd(tour_step, is_tour_active);
                         }}
                         label={tour_button_text}
                         data-testid={test_id}
@@ -159,4 +169,4 @@ const OnboardingTour = observer(() => {
     );
 });
 
-export default OnboardingTour;
+export default OnboardingTourMobile;

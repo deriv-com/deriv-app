@@ -1,5 +1,5 @@
-import { Formik, Field, FormikProps, FormikValues } from 'formik';
 import React from 'react';
+import { Formik, Field, FormikProps, FormikValues } from 'formik';
 import { StatesList } from '@deriv/api-types';
 import {
     Modal,
@@ -102,16 +102,24 @@ const AddressDetails = ({
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
     React.useEffect(() => {
-        const { cancel, promise } = makeCancellablePromise(props.fetchStatesList());
-        promise.then(() => {
+        let cancelFn: (() => void) | undefined;
+        if (states_list.length) {
             setHasFetchedStatesList(true);
-            if (props.value.address_state) {
-                setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
-            }
-        });
+        } else {
+            const { cancel, promise } = makeCancellablePromise(props.fetchStatesList());
+            cancelFn = cancel;
+            promise.then(() => {
+                setHasFetchedStatesList(true);
+                if (props.value?.address_state) {
+                    setAddressStateToDisplay(getLocation(states_list, props.value?.address_state, 'text'));
+                }
+            });
+        }
         return () => {
             setHasFetchedStatesList(false);
-            cancel();
+            if (cancelFn) {
+                cancelFn();
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

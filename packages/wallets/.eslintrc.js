@@ -38,18 +38,6 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/sort-type-constituents': 'error',
         '@typescript-eslint/no-explicit-any': 'error',
-        '@typescript-eslint/naming-convention': [
-            'error',
-            {
-                selector: 'typeLike',
-                format: ['PascalCase'],
-                custom: {
-                    regex: '^T[A-Z]',
-                    match: true,
-                    overrideReplaces: false,
-                },
-            },
-        ],
         'import/first': 'error',
         'import/newline-after-import': 'error',
         'import/no-duplicates': 'error',

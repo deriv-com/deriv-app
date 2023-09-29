@@ -3,16 +3,16 @@ import useQuery from '../useQuery';
 
 /** A custom hook that gets the residence list. */
 const useResidenceList = () => {
-    const { data: residence_list, ...residence_list_rest } = useQuery('residence_list');
+    const { data, ...residence_list_rest } = useQuery('residence_list');
 
     /** Modify the residence list data. */
     const modified_residence_list = useMemo(() => {
-        if (!residence_list || !residence_list.residence_list) return [];
+        if (!data || !data.residence_list) return [];
 
-        return residence_list.residence_list.map(residence => ({
+        return data.residence_list.map(residence => ({
             ...residence,
         }));
-    }, [residence_list]);
+    }, [data]);
 
     return {
         /** The residence list */

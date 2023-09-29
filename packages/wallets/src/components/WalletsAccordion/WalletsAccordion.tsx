@@ -1,46 +1,52 @@
-import React, { ReactElement, useEffect } from 'react';
-import { useAuthorize, useWalletAccountsList } from '@deriv/api';
+import React, { useEffect, useRef } from 'react';
 import IcDropdown from '../../public/images/ic-dropdown.svg';
 import './WalletsAccordion.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
-    content: ReactElement;
-    header: ReactElement;
+    isDemo?: boolean;
+    isOpen?: boolean;
+    onToggle?: () => void;
+    renderHeader: () => React.ReactNode;
 };
 
-const WalletsAccordion: React.FC<TProps> = ({ account: { is_active, is_virtual, loginid }, content, header }) => {
-    const { switchAccount } = useAuthorize();
-    const accordionRef = React.useRef<HTMLDivElement>(null);
+const WalletsAccordion: React.FC<React.PropsWithChildren<TProps>> = ({
+    children,
+    isDemo = false,
+    isOpen = false,
+    onToggle,
+    renderHeader,
+}) => {
+    const accordionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (is_active && accordionRef?.current) {
+        if (isOpen && accordionRef?.current) {
             accordionRef.current.style.scrollMarginTop = '24px';
             accordionRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [is_active]);
+    }, [isOpen]);
 
     return (
         <div
             className={`wallets-accordion wallets-accordion ${
-                is_virtual ? 'wallets-accordion wallets-accordion--virtual' : ''
+                isDemo ? 'wallets-accordion wallets-accordion--virtual' : ''
             }`}
+            ref={accordionRef}
         >
             <div
                 className={`wallets-accordion__header wallets-accordion__header ${
-                    is_virtual ? 'wallets-accordion__header wallets-accordion__header--virtual' : ''
+                    isDemo ? 'wallets-accordion__header wallets-accordion__header--virtual' : ''
                 }`}
             >
-                {header}
+                {renderHeader()}
                 <div
-                    className={`wallets-accordion__dropdown ${is_active ? 'wallets-accordion__dropdown--open' : ''}`}
-                    onClick={() => switchAccount(loginid)}
+                    className={`wallets-accordion__dropdown ${isOpen ? 'wallets-accordion__dropdown--open' : ''}`}
+                    onClick={onToggle}
                 >
                     <IcDropdown />
                 </div>
             </div>
-            <div className={`wallets-accordion__content ${is_active ? 'wallets-accordion__content--visible' : ''}`}>
-                {is_active && content}
+            <div className={`wallets-accordion__content ${isOpen ? 'wallets-accordion__content--visible' : ''}`}>
+                {isOpen && children}
             </div>
         </div>
     );

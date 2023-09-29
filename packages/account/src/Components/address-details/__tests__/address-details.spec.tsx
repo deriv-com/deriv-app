@@ -1,8 +1,8 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import AddressDetails from '../address-details';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { FormikProps, FormikValues } from 'formik';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import AddressDetails from '../address-details';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -18,6 +18,15 @@ jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
         warnings: {},
     })),
 }));
+
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+
+    return {
+        ...original_module,
+        Loading: jest.fn(() => 'mockedLoading'),
+    };
+});
 
 describe('<AddressDetails/>', () => {
     const address_line_1 = 'First line of address';
@@ -106,6 +115,31 @@ describe('<AddressDetails/>', () => {
         expect(inputs).toHaveLength(5);
         const required_fields = inputs.filter(input => input.required === true);
         expect(required_fields).toHaveLength(2);
+    });
+
+    it('should call fetchResidenceList if states list is empty', async () => {
+        render(<AddressDetails {...mock_props} />);
+        expect(mock_props.fetchStatesList).toHaveBeenCalled();
+    });
+
+    it('should not call fetchResidenceList if states list is empty', async () => {
+        render(
+            <AddressDetails
+                {...mock_props}
+                states_list={[
+                    { text: 'State 1', value: 'State 1' },
+                    { text: 'State 2', value: 'State 2' },
+                ]}
+            />
+        );
+
+        expect(mock_props.fetchStatesList).not.toHaveBeenCalled();
+        expect(screen.queryByText('mockedLoading')).not.toBeInTheDocument();
+    });
+
+    it('should show a loader when states list is not fully fetched', async () => {
+        render(<AddressDetails {...mock_props} states_list={[]} />);
+        expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should render AddressDetails component and trigger buttons', async () => {

@@ -16,13 +16,13 @@ import { connect } from 'Stores/connect';
 const RouteWithSubRoutes = route => {
     const validateRoute = pathname => {
         if (pathname.startsWith('/cashier') && !pathname.includes('p2p') && !!route.routes) {
-            return route.path === pathname || !!route?.routes.find(r => pathname === r.path);
+            return route.path === pathname || !!route?.routes.find(({ path }) => pathname === path);
         } else if (pathname.includes('p2p') && !!route.routes) {
-            const cashier_subroutes = route?.routes.find(r => r.path === '/cashier/p2p');
+            const cashier_subroutes = route?.routes.find(({ path }) => path === '/cashier/p2p');
             const p2p_subroutes =
                 pathname === '/cashier/p2p'
                     ? routes.p2p_buy_sell
-                    : cashier_subroutes?.routes.find(r => pathname === r.path);
+                    : cashier_subroutes?.routes.find(({ path }) => pathname === path);
 
             return route.path === pathname || !!p2p_subroutes;
         }

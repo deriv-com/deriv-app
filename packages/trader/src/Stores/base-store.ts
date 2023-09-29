@@ -177,9 +177,7 @@ export default class BaseStore {
         if (this.session_storage_properties.length) {
             reaction(
                 () => this.session_storage_properties.map(i => this[i as keyof this]),
-                () => {
-                    this.saveToStorage(this.session_storage_properties, BaseStore.STORAGES.SESSION_STORAGE);
-                }
+                () => this.saveToStorage(this.session_storage_properties, BaseStore.STORAGES.SESSION_STORAGE)
             );
         }
     }
@@ -193,12 +191,7 @@ export default class BaseStore {
      */
     saveToStorage(properties: string[] = [], storage = Symbol('')) {
         const snapshot = JSON.stringify(this.getSnapshot(properties), (key, value) => {
-            if (
-                value !== null &&
-                // if the property already exists in sessionStorage, then we remove it from localStorage
-                (storage !== BaseStore.STORAGES.LOCAL_STORAGE || !this.session_storage_properties.includes(key))
-            )
-                return value;
+            if (value !== null) return value;
             return undefined;
         });
 

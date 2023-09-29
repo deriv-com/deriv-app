@@ -47,7 +47,7 @@ jest.mock('App/Components/Elements/ContentLoader', () => ({
     ...jest.requireActual('App/Components/Elements/ContentLoader'),
     TradeParamsLoader: jest.fn(() => <div>TradeParamsLoader</div>),
 }));
-jest.mock('../Modules/Contract/Components/AccumulatorsStats', () => jest.fn(() => <div>AccumulatorsStats</div>));
+jest.mock('Modules/Contract/Components/AccumulatorsStats', () => jest.fn(() => <div>AccumulatorsStats</div>));
 jest.mock('Modules/Trading/Containers/contract-type', () => jest.fn(() => <div>ContractType</div>));
 jest.mock('Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx', () => ({
     ...jest.requireActual('Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx'),
@@ -60,6 +60,28 @@ jest.mock('Modules/Trading/Containers/trade-params-mobile.jsx', () => ({
     BarrierMobile: jest.fn(() => <div>BarrierMobile</div>),
     LastDigitMobile: jest.fn(() => <div>LastDigitMobile</div>),
 }));
+jest.mock('Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector', () =>
+    jest.fn(() => <div>BarrierSelector</div>)
+);
+jest.mock('Modules/Trading/Components/Form/TradeParams/strike.jsx', () => jest.fn(() => <div>Strike</div>));
+jest.mock('Modules/Trading/Components/Elements/mobile-widget.jsx', () => jest.fn(() => <div>MobileWidget</div>));
+jest.mock('Modules/Trading/Containers/allow-equals', () => jest.fn(() => <div>AllowEqualsMobile</div>));
+jest.mock('Modules/Trading/Components/Elements/Multiplier/risk-management-info.jsx', () =>
+    jest.fn(() => <div>RiskManagementInfo</div>)
+);
+jest.mock('Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-amount-mobile', () =>
+    jest.fn(() => <div>AccumulatorsAmountMobile</div>)
+);
+jest.mock('Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx', () =>
+    jest.fn(() => <div>TakeProfit</div>)
+);
+jest.mock('Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display', () =>
+    jest.fn(() => <div>AccumulatorsInfoDisplay</div>)
+);
+jest.mock('Modules/Trading/Components/Elements/payout-per-point-mobile', () =>
+    jest.fn(() => <div>PayoutPerPointMobile</div>)
+);
+jest.mock('Modules/Trading/Containers/purchase', () => jest.fn(() => <div>Purchase</div>));
 // jest.mock('@deriv/shared', () => ({
 //     ...jest.requireActual('@deriv/shared'),
 //     isMobile: jest.fn(() => false),
@@ -81,5 +103,10 @@ describe('<ScreenSmall />', () => {
     });
     it('should render CollapsibleTradeParams if is_trade_enabled === true', () => {
         render(mockScreenSmall(mockStore(default_mock_store), default_mock_props));
+
+        expect(screen.getByText(/ContractType/i)).toBeInTheDocument();
+        expect(screen.getByText(/MobileWidget/i)).toBeInTheDocument();
+        expect(screen.getByText(/Purchase/i)).toBeInTheDocument();
+        expect(screen.queryByText(/TradeParamsLoader/i)).not.toBeInTheDocument();
     });
 });

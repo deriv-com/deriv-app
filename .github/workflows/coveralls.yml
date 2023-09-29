@@ -10,7 +10,7 @@ jobs:
 
   build:
     name: Reporter
-    runs-on: Runner_16cores
+    runs-on: Runner_16cores_Deriv-app
     container:
       image: node:18.16.0
       options: --user 1000

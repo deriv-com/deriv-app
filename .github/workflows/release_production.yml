@@ -7,7 +7,7 @@ jobs:
   build_test_and_upload_artifact:
     name: Build, Test and upload artifacts 
     environment: Production
-    runs-on: Runner_16cores
+    runs-on: Runner_16cores_Deriv-app
     container:
       image: node:18.16.0
       options: --user 1000
@@ -59,7 +59,7 @@ jobs:
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
   send_slack_notification:
       name: Send Slack notification
-      runs-on: Runner_16cores
+      runs-on: Runner_16cores_Deriv-app
       environment: Common
       if: always()
       needs: [build_test_and_upload_artifact, publish_cloudflare_production]

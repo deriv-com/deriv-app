@@ -23,7 +23,10 @@ const ChatMessages = observer(() => {
         }
     };
 
-    sendbird_store.setMessagesRef(scroll_ref);
+    React.useEffect(() => {
+        sendbird_store.setMessagesRef(scroll_ref);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (sendbird_store.chat_messages.length) {
         let current_date = null;

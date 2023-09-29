@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Money, ThemedScrollbars, Text } from '@deriv/components';
-import { formatMoney, getCFDAccount, getCFDAccountDisplay, CFD_PLATFORMS } from '@deriv/shared';
+import { formatMoney, getCFDAccount, getCFDAccountDisplay, CFD_PLATFORMS, CFD_text } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const getDerivAccount = (client_accounts, login_id) =>
@@ -285,7 +285,14 @@ const AccountHasPendingConditions = ({
                     </Wrapper>
                 )}
                 {!!ctrader_open_positions.length && (
-                    <Wrapper title={localize('Please close your positions in the following Deriv cTrader account(s):')}>
+                    <Wrapper
+                        title={
+                            <Localize
+                                i18n_default_text='Please close your positions in the following {{platform}} account(s):'
+                                values={{ platform: CFD_text[CFD_PLATFORMS.CTRADER] }}
+                            />
+                        }
+                    >
                         {ctrader_open_positions.map(account => (
                             <Content
                                 key={account.login}
@@ -309,7 +316,12 @@ const AccountHasPendingConditions = ({
                 )}
                 {!!ctrader_balance.length && (
                     <Wrapper
-                        title={localize('Please withdraw your funds from the following Deriv cTrader account(s):')}
+                        title={
+                            <Localize
+                                i18n_default_text='Please withdraw your funds from the following {{platform}} account(s):'
+                                values={{ platform: CFD_text[CFD_PLATFORMS.CTRADER] }}
+                            />
+                        }
                     >
                         {ctrader_balance.map(account => (
                             <Content

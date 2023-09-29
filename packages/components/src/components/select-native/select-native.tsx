@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import type { ResidenceList } from '@deriv/api-types';
 import Field from '../field/field';
 import Text from '../text/text';
 import Icon from '../icon/icon';
@@ -18,7 +19,11 @@ type TSelectNative = {
     hide_selected_value?: boolean;
     hide_top_placeholder?: boolean;
     value: string | number;
-    list_items: Array<TListItem> | { [key: string]: Array<TListItem> };
+    list_items:
+        | Array<TListItem>
+        | { [key: string]: Array<TListItem> }
+        | ResidenceList
+        | { [key: string]: string | JSX.Element };
 } & Omit<TSelectNativeOptions, 'list_items'> &
     Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'value'>; // Default type of value in HTMLSelectElement is only string but here string | number is required
 
@@ -37,7 +42,10 @@ type TListItem = {
     id?: string;
 };
 
-const getDisplayText = (list_items: Array<TListItem> | { [key: string]: Array<TListItem> }, value: string | number) => {
+const getDisplayText = (
+    list_items: Array<TListItem> | { [key: string]: Array<TListItem> } | ResidenceList,
+    value: string | number
+) => {
     const dropdown_items = Array.isArray(list_items)
         ? list_items
         : ([] as Array<TListItem>).concat(...Object.values(list_items)); //typecasting since [] is inferred to be type never[]

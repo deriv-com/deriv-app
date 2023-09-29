@@ -24,7 +24,6 @@ import {
     filterObjProperties,
     getBrandWebsiteName,
     getLocation,
-    isMobile,
     regex_checks,
     removeObjProperties,
     routes,
@@ -52,16 +51,17 @@ import { salutation_list } from './constants';
 import TaxResidenceSelect from './tax-residence-select';
 import InputGroup from './input-group';
 import { TAutoComplete, TInputFieldValues } from 'Types';
+import { BrowserHistory } from 'history';
 
 type TRestState = {
     show_form: boolean;
     errors?: boolean;
     api_error?: string;
     changeable_fields?: string[];
-    form_initial_values?: TInputFieldValues;
+    form_initial_values?: Record<string, any>;
 };
 
-export const PersonalDetailsForm = observer(({ history }) => {
+export const PersonalDetailsForm = observer(({ history }: { history: BrowserHistory }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
     const [is_state_loading, setIsStateLoading] = useStateCallback(false);
@@ -69,7 +69,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
 
     const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
-    const { client, notifications, common } = useStore();
+    const { client, notifications, common, ui } = useStore();
 
     const {
         authentication_status,
@@ -98,6 +98,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
     } = notifications;
 
     const { is_language_changing } = common;
+    const { is_mobile } = ui;
     const is_mf = landing_company_shortcode === 'maltainvest';
     const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = React.useState<TRestState>({
@@ -149,7 +150,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
         return () => {
             clearTimeout(timeout_id);
         };
-    }, [start_on_submit_timeout.is_timeout_started]);
+    }, [setIsSubmitSuccess, start_on_submit_timeout.is_timeout_started, start_on_submit_timeout.timeout_callback]);
 
     const makeSettingsRequest = (settings: { [key: string]: string }) => {
         if (is_virtual) return { email_consent: +settings.email_consent };
@@ -477,7 +478,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                 form_initial_values.tax_residence = getLocation(residence_list, first_tax_residence, 'text');
             } else {
                 // otherwise show all tax residences in a disabled input field
-                const tax_residences = [];
+                const tax_residences: (string | undefined)[] = [];
                 form_initial_values.tax_residence.split(',').forEach((residence: string) => {
                     tax_residences.push(getLocation(residence_list, residence, 'text'));
                 });
@@ -502,7 +503,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
         } else if (!is_poa_verified) {
             return '/account/proof-of-address';
         }
-        return null;
+        return undefined;
     };
 
     return (
@@ -522,7 +523,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                 dirty,
             }) => (
                 <React.Fragment>
-                    <LeaveConfirm onDirty={isMobile() ? showForm : null} />
+                    <LeaveConfirm onDirty={is_mobile ? showForm : null} />
                     {show_form && (
                         <Form
                             noValidate
@@ -532,7 +533,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                             onSubmit={handleSubmit}
                             data-testid='dt_account_personal_details_section'
                         >
-                            <FormBody scroll_offset={isMobile() ? '199px' : '80px'}>
+                            <FormBody scroll_offset={is_mobile ? '199px' : '80px'}>
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
                                     <React.Fragment>
@@ -546,7 +547,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                 <fieldset className='account-form__fieldset'>
                                                     <DesktopWrapper>
                                                         <Field name='salutation'>
-                                                            {({ field }) => (
+                                                            {({ field }: FormikValues) => (
                                                                 <Autocomplete
                                                                     {...field}
                                                                     data-lpignore='true'
@@ -654,7 +655,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
                                                     <Field name='place_of_birth'>
-                                                        {({ field }) => (
+                                                        {({ field }: FormikValues) => (
                                                             <Autocomplete
                                                                 {...field}
                                                                 data-lpignore='true'
@@ -709,7 +710,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                     label={localize('Date of birth*')}
                                                     error={errors.date_of_birth}
                                                     onBlur={() => setTouched({ date_of_birth: true })}
-                                                    onChange={({ target }) =>
+                                                    onChange={({ target }: React.ChangeEvent<HTMLInputElement>) =>
                                                         setFieldValue(
                                                             'date_of_birth',
                                                             target?.value
@@ -726,7 +727,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
                                                     <Field name='citizen'>
-                                                        {({ field }) => (
+                                                        {({ field }: FormikValues) => (
                                                             <Autocomplete
                                                                 {...field}
                                                                 data-lpignore='true'
@@ -843,7 +844,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                 {'tax_residence' in values && (
                                                     <fieldset className='account-form__fieldset'>
                                                         <Field name='tax_residence'>
-                                                            {({ field }) => (
+                                                            {({ field }: FormikValues) => (
                                                                 <React.Fragment>
                                                                     {Array.isArray(values.tax_residence) &&
                                                                     !isChangeableField('tax_residence') ? (
@@ -863,8 +864,6 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                                 'tax_residence'
                                                                             )}
                                                                             field={field}
-                                                                            id={'tax_residence'}
-                                                                            touched={touched}
                                                                             errors={errors}
                                                                             setFieldValue={setFieldValue}
                                                                             values={values}
@@ -911,8 +910,9 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                 onChange={handleChange}
                                                                 handleBlur={handleBlur}
                                                                 error={
-                                                                    touched.employment_status &&
-                                                                    errors.employment_status
+                                                                    touched.employment_status
+                                                                        ? errors.employment_status
+                                                                        : undefined
                                                                 }
                                                             />
                                                         </DesktopWrapper>
@@ -925,8 +925,9 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                 list_items={getEmploymentStatusList()}
                                                                 value={values.employment_status}
                                                                 error={
-                                                                    touched.employment_status &&
-                                                                    errors.employment_status
+                                                                    touched.employment_status
+                                                                        ? errors.employment_status
+                                                                        : undefined
                                                                 }
                                                                 onChange={e => {
                                                                     setFieldTouched('employment_status', true);
@@ -1002,7 +1003,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                             <>
                                                                 <DesktopWrapper>
                                                                     <Field name='address_state'>
-                                                                        {({ field }) => (
+                                                                        {({ field }: FormikValues) => (
                                                                             <Autocomplete
                                                                                 {...field}
                                                                                 data-lpignore='true'
@@ -1116,7 +1117,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                     {is_account_verified ? (
                                                         <Checkbox
                                                             name='request_professional_status'
-                                                            value={values.request_professional_status}
+                                                            value={!!values.request_professional_status}
                                                             onChange={() => {
                                                                 setFieldValue(
                                                                     'request_professional_status',
@@ -1181,7 +1182,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                     <fieldset className='account-form__fieldset'>
                                         <Checkbox
                                             name='email_consent'
-                                            value={values.email_consent}
+                                            value={!!values.email_consent}
                                             onChange={() => {
                                                 setFieldValue('email_consent', !values.email_consent);
                                                 setFieldTouched('email_consent', true, true);

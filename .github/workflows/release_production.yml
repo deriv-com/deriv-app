@@ -12,7 +12,7 @@ jobs:
       image: node:18.16.0
       options: --user 1001
     steps:
-    - uses: actions/checkout@v3.6.0
+    - uses: actions/checkout@v4
     - uses: "./.github/actions/npm_install_from_cache"
     - uses: "./.github/actions/build"
       with:
@@ -48,7 +48,7 @@ jobs:
       NODE_ENV: production
 
     steps:
-    - uses: actions/checkout@v3.6.0
+    - uses: actions/checkout@v4
     - uses: actions/download-artifact@v3.0.1
       with:
         path: packages

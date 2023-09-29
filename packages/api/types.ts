@@ -226,7 +226,7 @@ import type {
     VerifyEmailRequest,
     VerifyEmailResponse,
 } from '@deriv/api-types';
-import type { useMutation, useQuery } from '@tanstack/react-query';
+import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
     service_token: {
@@ -1646,12 +1646,22 @@ export type TSocketRequestQueryOptions<T extends TSocketEndpointNames> = Paramet
     typeof useQuery<TSocketResponseData<T>, unknown>
 >[2];
 
+export type TSocketRequestInfiniteQueryOptions<T extends TSocketEndpointNames> = Parameters<
+    typeof useInfiniteQuery<TSocketResponseData<T>, unknown>
+>[2];
+
 export type TSocketRequestMutationOptions<T extends TSocketEndpointNames> = Parameters<
     typeof useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>
 >[2];
 
-type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
-    TSocketRequestPayload<T> & { options?: TSocketRequestQueryOptions<T> },
+type TSocketRequestWithOptions<
+    T extends TSocketEndpointNames,
+    O extends boolean = false,
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+> = Omit<
+    TSocketRequestPayload<T> & {
+        options?: OT extends 'useQuery' ? TSocketRequestQueryOptions<T> : TSocketRequestInfiniteQueryOptions<T>;
+    },
     | (TSocketRequestPayload<T>['payload'] extends Record<string, never> ? 'payload' : never)
     | (TNever<TSocketRequestPayload<T>['payload']> extends undefined ? 'payload' : never)
     | (O extends true ? never : 'options')
@@ -1659,18 +1669,21 @@ type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean
 
 type TNever<T> = T extends Record<string, never> ? never : T;
 
-type TSocketRequestProps<T extends TSocketEndpointNames, O extends boolean = false> = TNever<
-    TSocketRequestWithOptions<T, O>
->;
+type TSocketRequestProps<
+    T extends TSocketEndpointNames,
+    O extends boolean = false,
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+> = TNever<TSocketRequestWithOptions<T, O, OT>>;
 
-export type TSocketAcceptableProps<T extends TSocketEndpointNames, O extends boolean = false> = TSocketRequestProps<
-    T,
-    O
-> extends never
+export type TSocketAcceptableProps<
+    T extends TSocketEndpointNames,
+    O extends boolean = false,
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+> = TSocketRequestProps<T, O, OT> extends never
     ? [undefined?]
-    : Partial<TSocketRequestProps<T, O>> extends TSocketRequestProps<T, O>
-    ? [TSocketRequestProps<T, O>?]
-    : [TSocketRequestProps<T, O>];
+    : Partial<TSocketRequestProps<T, O, OT>> extends TSocketRequestProps<T, O, OT>
+    ? [TSocketRequestProps<T, O, OT>?]
+    : [TSocketRequestProps<T, O, OT>];
 
 export type TSocketPaginateableEndpointNames = KeysMatching<
     TSocketEndpoints,

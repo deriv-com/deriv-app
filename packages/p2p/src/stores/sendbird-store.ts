@@ -200,7 +200,7 @@ export default class SendbirdStore extends BaseStore {
         const chat_messages: Array<UserMessage | FileMessage> = [];
 
         const is_inclusive_of_timestamp = false;
-        const reverse_results = false;
+        const reverse_results = this.chat_messages.length > 0;
         const custom_type = ['', 'admin'];
         const result_size = 50;
 
@@ -220,6 +220,7 @@ export default class SendbirdStore extends BaseStore {
                 chat_messages.push(message);
             }
         });
+
         return chat_messages;
     }
 
@@ -306,11 +307,9 @@ export default class SendbirdStore extends BaseStore {
                 this.getPreviousMessages(oldest_message_timestamp)
                     .then(chat_messages => {
                         if (chat_messages && chat_messages.length > 0) {
-                            const previous_messages = chat_messages.map(chat_message =>
-                                convertFromChannelMessage(chat_message)
+                            chat_messages.forEach(chat_message =>
+                                this.replaceChannelMessage(0, 0, convertFromChannelMessage(chat_message))
                             );
-
-                            this.replaceChannelMessage(0, 0, previous_messages[0]);
                         }
                     })
                     .catch(error => {

@@ -7,7 +7,7 @@ let CFD_text_translated: { [key: string]: () => void };
 export const CFD_text: { [key: string]: string } = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
-    mt5_cfds: 'CFDs real',
+    mt5_cfds: 'CFDs',
     cfd: 'CFDs',
     ctrader: 'cTrader',
     derivez: 'DerivEz',

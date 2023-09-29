@@ -171,6 +171,11 @@ export default class ContractTradeStore extends BaseStore {
         const tick_update_timestamp = should_update_contract_barriers
             ? this.accumulator_contract_barriers_data.tick_update_timestamp
             : this.accumulator_barriers_data.tick_update_timestamp;
+        if (document.hidden) {
+            clearTimeout(this.accu_barriers_timeout_id);
+            this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
+            return;
+        }
         this.accu_barriers_timeout_id = setTimeout(
             () => {
                 runInAction(() => {

@@ -26,6 +26,7 @@ import NicknameForm from 'Components/nickname-form';
 import AddPaymentMethodForm from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { ad_type } from 'Constants/floating-rate';
 
 const LowBalanceMessage = () => (
     <div className='buy-sell-modal--error-message'>
@@ -123,6 +124,8 @@ const BuySellModal = () => {
     const table_type = buy_sell_store.show_advertiser_page
         ? advertiser_page_store.counterparty_type
         : buy_sell_store.table_type;
+
+    const is_fixed_rate = buy_sell_store?.advert?.rate_type === ad_type.FIXED;
 
     React.useEffect(() => {
         const disposeHasRateChangedReaction = reaction(
@@ -231,7 +234,7 @@ const BuySellModal = () => {
     const has_rate_changed =
         (!!error_message && buy_sell_store.form_error_code === api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) ||
         has_rate_changed_recently;
-    const onSubmit = has_rate_changed ? onSubmitWhenRateChanged : submitForm.current;
+    const onSubmit = has_rate_changed && is_fixed_rate ? onSubmitWhenRateChanged : submitForm.current;
 
     React.useEffect(() => {
         const balance_check =

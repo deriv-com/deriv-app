@@ -33,6 +33,7 @@ describe('ReactJoyrideWrapper', () => {
             },
         ],
         styles: {},
+        handleCallback: jest.fn(),
         run: true,
     };
 

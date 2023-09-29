@@ -6,7 +6,7 @@ on:
 jobs:
   build_and_test:
     name: Build And Test
-    runs-on: ubuntu-latest
+    runs-on: Runner_16cores
     environment: Preview
     container:
       image: node:18.16.0

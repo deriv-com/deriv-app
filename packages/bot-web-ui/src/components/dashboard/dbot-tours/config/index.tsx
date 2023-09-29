@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { getUrlBase, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import TourSteps from '../desktop-tours/common/tour-steps';
+import TourSteps from '../common/tour-steps';
 
 const is_mobile = isMobile();
 

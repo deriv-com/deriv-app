@@ -10,7 +10,7 @@ jobs:
     environment: Preview
     container:
       image: node:18.16.0
-      options: --user 1001
+      options: --user 1000
     steps:
     - uses: actions/checkout@v4
     - name: Install dependencies

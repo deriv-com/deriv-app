@@ -10,7 +10,7 @@ jobs:
     runs-on: Runner_16cores
     container:
       image: node:18.16.0
-      options: --user 1001
+      options: --user 1000
     steps:
     - uses: actions/checkout@v4
     - uses: "./.github/actions/npm_install_from_cache"
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: node:18.16.0
-      options: --user 1001
+      options: --user 1000
     needs:
     - build_test_and_upload_artifact
     env:

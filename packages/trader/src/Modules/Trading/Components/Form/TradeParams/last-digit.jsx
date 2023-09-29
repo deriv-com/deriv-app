@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import NumberSelector from 'App/Components/Form/number-selector.jsx';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import NumberSelector from 'App/Components/Form/number-selector';
+import Fieldset from 'App/Components/Form/fieldset';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 

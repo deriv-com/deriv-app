@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
@@ -19,7 +19,7 @@ type TPurchaseFieldset = {
     is_disabled: boolean;
     is_high_low: boolean;
     is_loading: boolean;
-    is_market_closed: boolean;
+    is_market_closed?: boolean;
     is_multiplier: boolean;
     is_proposal_empty: boolean;
     is_proposal_error: boolean;

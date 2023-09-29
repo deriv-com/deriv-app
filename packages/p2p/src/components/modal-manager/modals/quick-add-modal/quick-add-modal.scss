@@ -31,12 +31,8 @@
         margin-bottom: 1.3rem;
     }
 
-    &__footer {
-        display: none;
-    }
-
-    &__icon {
-        margin-right: 0.8rem;
+    &--text {
+        display: flex;
     }
 
     &__scroll {

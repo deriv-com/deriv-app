@@ -492,8 +492,8 @@ const RealAccountSignup = ({
     const handleOnAccept = async () => {
         setLoading(true);
         try {
-            setShouldShowAppropriatenessWarningModal(false);
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
+            setShouldShowAppropriatenessWarningModal(false);
             if (real_account_signup_target === 'maltainvest') {
                 showStatusDialog(response.new_account_maltainvest.currency.toLowerCase());
             }
@@ -578,7 +578,14 @@ const RealAccountSignup = ({
                 footer_content={
                     <React.Fragment>
                         <Button type='button' large text={localize('Decline')} secondary onClick={handleOnDecline} />
-                        <Button type='button' large text={localize('Accept')} primary onClick={handleOnAccept} />
+                        <Button
+                            type='button'
+                            large
+                            text={localize('Accept')}
+                            primary
+                            onClick={handleOnAccept}
+                            is_loading={is_loading}
+                        />
                     </React.Fragment>
                 }
             />

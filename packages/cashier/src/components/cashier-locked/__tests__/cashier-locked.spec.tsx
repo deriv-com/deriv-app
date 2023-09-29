@@ -49,11 +49,9 @@ describe('<CashierLocked />', () => {
                 wrapWithRouter(<CashierProviders store={mock_store}>{children}</CashierProviders>),
         });
 
-        expect(
-            screen.getByText(
-                'Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText('Cashier is currently down for maintenance')).toBeInTheDocument();
+        expect(screen.getByText(/Please check back in a few minutes/i)).toBeInTheDocument();
+        expect(screen.getByText(/Thank you for your patience./i)).toBeInTheDocument();
     });
 
     it('should show the proper message if crypto withdrawal is suspended', () => {
@@ -99,11 +97,7 @@ describe('<CashierLocked />', () => {
                 wrapWithRouter(<CashierProviders store={mock_store}>{children}</CashierProviders>),
         });
 
-        expect(
-            screen.getByText(
-                'Our cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText('Cashier is currently down for maintenance')).toBeInTheDocument();
     });
 
     it('should show the proper message if the client does not provide residence', () => {

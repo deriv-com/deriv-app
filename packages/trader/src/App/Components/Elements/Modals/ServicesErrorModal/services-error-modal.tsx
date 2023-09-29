@@ -8,9 +8,9 @@ import CompanyWideLimitExceededModal from './company-wide-limit-exceeded-modal';
 import AccountVerificationRequiredModal from './account-verification-required-modal';
 
 type TServicesError = {
-    code: string;
-    message: string;
-    type: string;
+    code?: string;
+    message?: string;
+    type?: string;
 };
 
 type TPropServicesErrorModel = {

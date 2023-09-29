@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import AUDIcon from '../../public/images/currencies/aud.svg';
 import BTCIcon from '../../public/images/currencies/btc.svg';
 import ETHIcon from '../../public/images/currencies/eth.svg';
@@ -28,7 +28,7 @@ type TWalletCurrencyIconProps = {
 };
 
 const WalletAddMoreCurrencyIcon = ({ currency }: TWalletCurrencyIconProps) => {
-    const CurrencyIcon = React.useMemo(() => currencies[currency as keyof typeof currencies], [currency]);
+    const CurrencyIcon = useMemo(() => currencies[currency as keyof typeof currencies], [currency]);
 
     if (CurrencyIcon) {
         return (

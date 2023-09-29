@@ -27,7 +27,7 @@ const getSortedIndex = (type: string, index: number) => {
     }
 };
 
-const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) => {
+const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean }) => {
     const {
         portfolio: { all_positions, onClickSell },
         ui: { purchase_states: purchased_states_arr, is_mobile, setPurchaseState },
@@ -130,7 +130,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
                     components.push(purchase_fieldset);
                     break;
             }
-        } else if (vanilla_trade_type === type) {
+        } else if (contract_type.toUpperCase() === type) {
             components.push(purchase_fieldset);
         } else if (is_accumulator && has_open_accu_contract) {
             components.push(

@@ -17,6 +17,7 @@ import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-h
 import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
 import ImageTurbos from 'Assets/SvgComponents/trade_explanations/img-turbos.svg';
 import ContractTypeDescriptionVideo from './contract-type-description-video';
+import { VANILLALONG, TURBOS } from '@deriv/shared';
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs
 const TradeCategoriesGIF = ({
@@ -64,12 +65,13 @@ const TradeCategoriesGIF = ({
             return <ImageTickHighLow />;
         case 'touch':
             return <ImageTouch />;
-        case 'turbosshort':
-        case 'turboslong':
+        case TURBOS.LONG:
+        case TURBOS.SHORT:
             return <ImageTurbos />;
-        case 'vanilla':
+        case VANILLALONG.CALL:
+        case VANILLALONG.PUT:
         case 'vanilla_fx':
-            return <ContractTypeDescriptionVideo selected_contract_type={'vanilla'} />;
+            return <ContractTypeDescriptionVideo selected_contract_type='vanilla' />;
         default:
             return null;
     }

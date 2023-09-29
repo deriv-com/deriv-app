@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { VANILLALONG } from '@deriv/shared';
 
 const ContractTypeGlossary = ({ category }: { category: string }) => {
     let content;
@@ -39,7 +40,8 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                     },
                 ];
                 break;
-            case 'vanilla':
+            case VANILLALONG.CALL:
+            case VANILLALONG.PUT:
                 content = [
                     { type: 'heading', text: localize('Payout') },
                     {

@@ -82,7 +82,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Call/Put',
-                            value: 'vanilla',
+                            value: 'vanillalongcall',
                         },
                     ],
                     icon: 'IcVanilla',
@@ -125,7 +125,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Call/Put',
-                    value: 'vanilla',
+                    value: 'vanillalongcall',
                 },
             ],
             icon: 'IcCatAll',
@@ -211,7 +211,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Call/Put',
-                            value: 'vanilla',
+                            value: 'vanillalongcall',
                         },
                     ],
                     icon: 'IcVanilla',
@@ -250,7 +250,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Call/Put',
-                    value: 'vanilla',
+                    value: 'vanillalongcall',
                 },
             ],
             icon: 'IcCatOptions',
@@ -289,8 +289,8 @@ describe('<Info />', () => {
     });
     it('Should render toggle buttons if vanilla info page is open', () => {
         mocked_props.item.text = 'Call/Put';
-        mocked_props.item.value = 'vanilla';
-        render(mockInfo(mock_root_store));
+        mocked_props.item.value = 'vanillalongcall';
+        render(<Info {...mocked_props} />);
         const trade_type_button = screen.getByText('Choose Call/Put');
         expect(screen.getByText('Description')).toBeInTheDocument();
         expect(screen.getByText(/glossary/i)).toBeInTheDocument();

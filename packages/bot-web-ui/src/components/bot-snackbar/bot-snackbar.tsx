@@ -4,7 +4,7 @@ import { Localize } from '@deriv/translations';
 
 type TBotSnackbar = {
     className?: string;
-    is_open?: boolean;
+    is_open: boolean;
     onClick?: React.MouseEventHandler<HTMLDivElement>;
     handleClose: () => void;
     type?: 'error' | 'info' | 'notification';
@@ -14,10 +14,10 @@ type TBotSnackbar = {
 };
 
 const BotSnackbar = ({
-    message = '',
+    message,
     msg_localize_components = [],
     timeout = 6000,
-    is_open = false,
+    is_open,
     onClick,
     handleClose,
     type,
@@ -34,6 +34,7 @@ const BotSnackbar = ({
                 setNotificationTimer(timeout);
             }}
             className={className ?? 'bot-snackbar'}
+            data-testid='bot-snackbar-notification-container'
         >
             <Toast is_open={is_open} type={type} timeout={notification_timer} onClick={onClick} onClose={handleClose}>
                 <div>{message && <Localize i18n_default_text={message} components={msg_localize_components} />}</div>

@@ -28,9 +28,9 @@ const WalletsCarouselContent: React.FC = () => {
 
     useEffect(() => {
         walletsCarouselEmblaApi?.on('settle', () => {
-            const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
-            const loginid = walletAccountsList?.[scrollSnapIndex]?.loginid;
-            switchAccount(loginid || '');
+            // const scroll_snap_index = walletsCarouselEmblaApi?.selectedScrollSnap();
+            // const loginid = wallet_accounts_list[scroll_snap_index]?.loginid;
+            // switchAccount(loginid);
         });
 
         walletsCarouselEmblaApi?.on('select', () => {

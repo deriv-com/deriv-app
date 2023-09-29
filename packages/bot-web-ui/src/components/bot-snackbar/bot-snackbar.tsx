@@ -28,7 +28,7 @@ const BotSnackbar = ({
     return (
         <div
             onMouseOver={() => {
-                setNotificationTimer(20000);
+                setNotificationTimer(0);
             }}
             onMouseLeave={() => {
                 setNotificationTimer(timeout);

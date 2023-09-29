@@ -258,6 +258,9 @@ const AdvertiserPage = () => {
                                 {rating_average ? (
                                     <React.Fragment>
                                         <div className='advertiser-page__rating--row'>
+                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_average_decimal}
+                                            </Text>
                                             <StarRating
                                                 empty_star_className='advertiser-page__rating--star'
                                                 empty_star_icon='IcEmptyStar'
@@ -270,9 +273,6 @@ const AdvertiserPage = () => {
                                                 star_size={isMobile() ? 17 : 20}
                                             />
                                             <div className='advertiser-page__rating--text'>
-                                                <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                    {rating_average_decimal}
-                                                </Text>
                                                 <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                                     {rating_count === 1 ? (
                                                         <Localize

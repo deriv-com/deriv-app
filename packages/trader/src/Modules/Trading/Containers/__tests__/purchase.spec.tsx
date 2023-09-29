@@ -15,6 +15,7 @@ const default_mock_store = {
             is_multiplier: false,
             growth_rate: 0.03,
             has_cancellation: false,
+            has_open_accu_contract: false,
             is_purchase_enabled: false,
             is_turbos: false,
             is_vanilla: false,
@@ -40,6 +41,9 @@ jest.mock('Modules/Trading/Components/Elements/purchase-fieldset', () =>
 jest.mock('Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx', () =>
     jest.fn(() => <div>PurchaseButtonsOverlay component</div>)
 );
+jest.mock('Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-sell-button', () =>
+    jest.fn(() => <div>Accu sell button</div>)
+);
 
 describe('<Purchase />', () => {
     const mockPurchaseModal = (mocked_store: TCoreStores) => {
@@ -57,7 +61,7 @@ describe('<Purchase />', () => {
         expect(screen.getAllByText(/PurchaseField component/i)).toHaveLength(2);
     });
 
-    it('should render PurchaseButtonsOverlay component over PurchaseField if accumulator contract is already in active positions', () => {
+    it('should render Sell button if accumulator contract is already in active positions', () => {
         const new_mocked_store: TNewMockedProps = {
             ...default_mock_store,
             portfolio: {
@@ -66,11 +70,12 @@ describe('<Purchase />', () => {
         };
         new_mocked_store.modules.trade.trade_types = { ACCU: 'Accumulator Up' };
         new_mocked_store.modules.trade.is_accumulator = true;
+        new_mocked_store.modules.trade.has_open_accu_contract = true;
         const mock_root_store = mockStore(new_mocked_store);
         render(mockPurchaseModal(mock_root_store));
 
-        expect(screen.getByText(/PurchaseField component/i)).toBeInTheDocument();
-        expect(screen.getByText(/PurchaseButtonsOverlay component/i)).toBeInTheDocument();
+        expect(screen.queryByText(/PurchaseField component/i)).not.toBeInTheDocument();
+        expect(screen.getByText(/accu sell button/i)).toBeInTheDocument();
     });
 
     it('should render only one PurchaseField component if it is vanilla trade type', () => {
@@ -79,8 +84,7 @@ describe('<Purchase />', () => {
         new_mocked_store.modules.trade.is_vanilla = true;
         new_mocked_store.modules.trade.contract_type = 'vanilla';
         new_mocked_store.modules.trade.trade_types = {
-            VANILLALONGCALL: 'Vanilla Long Call',
-            VANILLALONGPUT: 'Vanilla Long Put',
+            VANILLA: 'Vanilla Long Call',
         };
         const mock_root_store = mockStore(new_mocked_store);
         render(mockPurchaseModal(mock_root_store));

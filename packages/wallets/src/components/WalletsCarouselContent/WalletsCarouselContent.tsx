@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useAuthorize, useWalletAccountsList } from '@deriv/api';
 import { ProgressBar } from '../ProgressBar';
@@ -20,7 +20,7 @@ const WalletsCarouselContent: React.FC = () => {
             0,
         [walletAccountsList, walletsCarouselEmblaApi]
     );
-    const [progressBarActiveIndex, setProgressBarActiveIndex] = React.useState(activeWalletIndex + 1);
+    const [progressBarActiveIndex, setProgressBarActiveIndex] = useState(activeWalletIndex + 1);
 
     useEffect(() => {
         walletsCarouselEmblaApi?.scrollTo(activeWalletIndex);

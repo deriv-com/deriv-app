@@ -29,6 +29,10 @@
         height: 100%;
         margin-left: 1.6rem;
         padding: 0 2rem;
+
+        @include mobile {
+            width: 22rem;
+        }
     }
 
     &__actions {

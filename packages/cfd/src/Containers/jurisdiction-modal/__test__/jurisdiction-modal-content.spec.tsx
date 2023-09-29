@@ -201,7 +201,7 @@ describe('JurisdictionModalContent', () => {
     it('should display content of 3 types of jurisdiction correctly for synthetics account', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='synthetic' />);
         expect(screen.getAllByText('Assets')).toHaveLength(3);
-        expect(screen.getAllByText('Synthetics, Baskets and Derived FX')).toHaveLength(3);
+        expect(screen.getAllByText('Synthetic indices, Basket indices and Derived FX')).toHaveLength(3);
         expect(screen.getAllByText('40+')).toHaveLength(3);
         expect(screen.getAllByText('Leverage')).toHaveLength(3);
         expect(screen.getAllByText('1:1000')).toHaveLength(3);
@@ -347,7 +347,7 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(screen.getByText('Deriv (SVG) LLC (company no. 273 LLC 2020)')).toBeInTheDocument();
         expect(screen.getByText('40+')).toBeInTheDocument();
-        expect(screen.getByText('Synthetics, Baskets and Derived FX')).toBeInTheDocument();
+        expect(screen.getByText('Synthetic indices, Basket indices and Derived FX')).toBeInTheDocument();
     });
 
     it('should display cfd-jurisdiction-card--all__wrapper in class name', () => {

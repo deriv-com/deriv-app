@@ -107,7 +107,7 @@ describe('JurisdictionCard', () => {
         render(<JurisdictionCard {...mock_props} />);
         expect(screen.getByText('Vanuatu')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
-        expect(screen.getByText('90+')).toBeInTheDocument();
+        expect(screen.getByText('170+')).toBeInTheDocument();
         expect(screen.getByText('Forex, Stock indices, Commodities and Cryptocurrencies')).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
@@ -187,7 +187,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('40+')).toBeInTheDocument();
-        expect(screen.getByText('Synthetics, Baskets and Derived FX')).toBeInTheDocument();
+        expect(screen.getByText('Synthetic indices, Basket indices and Derived FX')).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();

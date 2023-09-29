@@ -40,7 +40,7 @@ const BotSnackbar = ({
                 <div>{message && <Localize i18n_default_text={message} components={msg_localize_components} />}</div>
                 <Icon
                     icon='IcCross'
-                    className={'bot-snackbar-notification-close'}
+                    className={'notification-close'}
                     data_testid={'bot-snackbar-notification-close'}
                     onClick={handleClose}
                 />

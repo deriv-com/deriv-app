@@ -31,7 +31,6 @@ const SetResidenceForm = ({
                             {...field}
                             autoComplete='off'
                             input_id='dt_core_set-residence-form_signup-residence-select'
-                            className={`${class_prefix}__residence-field`}
                             type='text'
                             label={localize('Country of residence')}
                             historyValue={history_value}

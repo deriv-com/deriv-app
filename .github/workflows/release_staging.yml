@@ -11,6 +11,7 @@ jobs:
     environment: Staging
     container:
       image: node:18.16.0
+      options: --user 1001
     steps:
     - uses: actions/checkout@v3.6.0
     - uses: "./.github/actions/npm_install_from_cache"
@@ -38,10 +39,11 @@ jobs:
 
   publish_cloudflare_staging:
     name: Publish to Cloudflare Pages Staging 
-    runs-on: ubuntu-latest
+    runs-on: Runner_16cores
     environment: Common
     container:
       image: node:18.16.0
+      options: --user 1001
     needs:
     - build_test_and_upload_artifact
     steps:

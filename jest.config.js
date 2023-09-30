@@ -1,5 +1,5 @@
 module.exports = {
-    collectCoverage: true,
+    collectCoverage: false,
     collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
     coverageReporters: ['lcov'],
     coverageDirectory: './coverage/',
@@ -12,4 +12,5 @@ module.exports = {
     },
     testRegex: '(/__tests__/.*|(\\.)(test|spec))\\.(js|jsx|tsx|ts)?$',
     transformIgnorePatterns: ['/node_modules/(?!@enykeev/react-virtualized).+\\.js$'],
+    testPathIgnorePatterns: ['/integration-tests/'],
 };

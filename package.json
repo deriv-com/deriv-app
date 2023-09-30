@@ -80,7 +80,7 @@
         "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
         "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint-all && npm run test:jest  ;}; f",
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
-        "test:jest": "jest --all --maxWorkers=75%",
+        "test:jest": "jest --ci --all --maxWorkers=75%",
         "test:e2e": "npx playwright test",
         "test:e2e-dev": "npx playwright test --trace on && npx playwright show-report",
         "test:performance": "cd e2e-tests &&  jest -c ./jest.config.js --detectOpenHandles performance",

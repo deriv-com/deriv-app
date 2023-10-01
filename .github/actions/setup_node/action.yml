@@ -4,5 +4,5 @@ runs:
   steps:
   - name: Use Node.js 18.x
     uses: actions/setup-node@v3
-      with:
-        node-version: 18.x
+    with:
+      node-version: 18.x

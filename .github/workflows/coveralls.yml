@@ -1,4 +1,4 @@
-on: ["push", "pull_request"]
+on: ["pull_request"]
 
 name: Coveralls
 
@@ -8,19 +8,16 @@ jobs:
     name: Reporter
     runs-on: Runner_16cores_Deriv-app
     steps:
-
-      - uses: actions/checkout@v3
-
+      - uses: actions/checkout@v4
       - name: Use Node.js 18.x
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-
-      - name: Bootstrap, Build, and make test-coverage
-        run: |
-          npm ci
-          npm run bootstrap
-          npm run build:all
-          JEST_MAX_WORKERS=10 npm run test:jest -- --collectCoverage
+      - name: Install dependencies
+        uses: "./.github/actions/npm_install_from_cache"
+      - name: Build
+        uses: "./.github/actions/build"
+      - name: Test
+        run: JEST_MAX_WORKERS=14 npm run test:jest -- --collectCoverage
       - name: Coveralls
         uses: coverallsapp/github-action@v2

@@ -80,6 +80,7 @@
         "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
         "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint-all && JEST_MAX_WORKERS=10 npm run test:jest  ;}; f",
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
+        "test:ci": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint-all ;}; f",
         "test:jest": "jest --all --maxWorkers=${JEST_MAX_WORKERS:-'75%'}",
         "test:e2e": "npx playwright test",
         "test:e2e-dev": "npx playwright test --trace on && npx playwright show-report",

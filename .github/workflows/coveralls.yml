@@ -6,7 +6,7 @@ jobs:
 
   build:
     name: Reporter
-    runs-on: ubuntu-latest
+    runs-on: Runner_16cores_Deriv-app
     steps:
 
       - uses: actions/checkout@v3
@@ -21,6 +21,6 @@ jobs:
           npm ci
           npm run bootstrap
           npm run build:all
-          JEST_MAX_WORKERS=3 npm run test:jest
+          JEST_MAX_WORKERS=10 npm run test:jest
       - name: Coveralls
         uses: coverallsapp/github-action@v2

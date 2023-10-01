@@ -9,11 +9,12 @@ jobs:
     name: Build, Test and upload artifacts 
     runs-on: Runner_16cores_Deriv-app
     environment: Staging
-    container:
-      image: node:18.16.0
-      options: --user 1000
     steps:
     - uses: actions/checkout@v4
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
     - uses: "./.github/actions/npm_install_from_cache"
     - uses: "./.github/actions/invalidate_master_cache"
     - uses: "./.github/actions/build"

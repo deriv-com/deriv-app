@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Field, FieldProps } from 'formik';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
@@ -27,9 +28,10 @@ const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
 type TSymbolSelect = {
     value?: string;
     onChange?: ({ symbol }: { symbol: string }) => void;
+    fullwidth?: boolean;
 };
 
-const SymbolSelect: React.FC<TSymbolSelect> = ({ value, onChange }) => {
+const SymbolSelect: React.FC<TSymbolSelect> = ({ value, onChange, fullwidth = false }) => {
     const [active_symbols, setActiveSymbols] = React.useState([]);
     const [selected, setSelected] = React.useState(value);
 
@@ -57,7 +59,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ value, onChange }) => {
     const selected_symbol = symbols.find(symbol => symbol.value === selected);
 
     return (
-        <div className='qs__form__field full-width'>
+        <div className={classNames('qs__form__field', { 'full-width': fullwidth })}>
             <Field name='asset' key='asset' id='asset'>
                 {({ field }: FieldProps<string, TFormValues>) => (
                     <>

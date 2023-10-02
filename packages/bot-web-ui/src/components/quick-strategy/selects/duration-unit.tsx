@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Field, FieldProps } from 'formik';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete } from '@deriv/components';
@@ -25,9 +26,10 @@ type TDurationUnit = {
         trade_type?: string;
     };
     onChange?: ({ duration_unit }: { duration_unit: string }) => void;
+    fullwidth?: boolean;
 };
 
-const DurationUnit: React.FC<TDurationUnit> = ({ value, onChange, data }) => {
+const DurationUnit: React.FC<TDurationUnit> = ({ value, onChange, data, fullwidth = false }) => {
     const [selected, setSelected] = React.useState(value);
     const [list, setList] = React.useState<TSymbol[]>([]);
     const { symbol, trade_type } = data;
@@ -62,7 +64,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ value, onChange, data }) => {
     const selected_item = list?.find(item => item.value === selected);
 
     return (
-        <div>
+        <div className={classNames('qs__form__field', { 'full-width': fullwidth })}>
             <Field name='asset' key='asset' id='asset'>
                 {({ field }: FieldProps<string, TFormValues>) => (
                     <Autocomplete

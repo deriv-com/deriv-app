@@ -7,9 +7,10 @@ type TQSInput = {
     value?: string | number;
     onChange?: (data: { [key: string]: string | number }) => void;
     type?: string;
+    fullwidth?: boolean;
 };
 
-const QSInput: React.FC<TQSInput> = ({ value, onChange, type = 'text' }) => {
+const QSInput: React.FC<TQSInput> = ({ value, onChange, type = 'text', fullwidth = false }) => {
     const [input_value, setValue] = React.useState(value);
     const error = false;
 
@@ -20,22 +21,24 @@ const QSInput: React.FC<TQSInput> = ({ value, onChange, type = 'text' }) => {
     };
 
     return (
-        <Popover
-            alignment='bottom'
-            message={localize('Enter an amount between 1 and 10000')}
-            is_open={error}
-            zIndex='9999'
-            classNameBubble='qs__warning-bubble'
-        >
-            <Input
-                className={classNames('qs__input', { error })}
-                type={type}
-                leading_icon={<button>-</button>}
-                trailing_icon={<button>+</button>}
-                value={input_value}
-                onChange={handleChange}
-            />
-        </Popover>
+        <div className={classNames('qs__form__field', { 'full-width': fullwidth })}>
+            <Popover
+                alignment='bottom'
+                message={localize('Enter an amount between 1 and 10000')}
+                is_open={error}
+                zIndex='9999'
+                classNameBubble='qs__warning-bubble'
+            >
+                <Input
+                    className={classNames('qs__input', { error })}
+                    type={type}
+                    leading_icon={<button>-</button>}
+                    trailing_icon={<button>+</button>}
+                    value={input_value}
+                    onChange={handleChange}
+                />
+            </Popover>
+        </div>
     );
 };
 

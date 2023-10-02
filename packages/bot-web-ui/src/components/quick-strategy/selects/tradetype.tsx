@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Field, FieldProps } from 'formik';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, IconTradeTypes, Text } from '@deriv/components';
@@ -30,9 +31,10 @@ type TTradeTypeSelect = {
     value?: string;
     symbol?: string;
     onChange?: ({ trade_type }: { trade_type: string }) => void;
+    fullwidth?: boolean;
 };
 
-const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ value, symbol, onChange }) => {
+const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ value, symbol, onChange, fullwidth = false }) => {
     const [selected, setSelected] = React.useState(value);
     const [trade_types, setTradeTypes] = React.useState([]);
 
@@ -69,7 +71,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ value, symbol, onChange }
 
     const selected_trade_type = trade_type_dropdown_options?.find(trade_type => trade_type.value === selected);
     return (
-        <div className='qs__form__field full-width'>
+        <div className={classNames('qs__form__field', { 'full-width': fullwidth })}>
             <Field name='asset' key='asset' id='asset'>
                 {({ field }: FieldProps<string, TFormValues>) => (
                     <Autocomplete

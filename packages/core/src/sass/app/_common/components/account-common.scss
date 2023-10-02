@@ -199,6 +199,15 @@
                     width: 100%;
                     margin-bottom: 0.8rem;
                 }
+                                 &__example {
+                                     @include mobile {
+                                         flex-direction: column;
+                                     }
+                
+                                     &-image {
+                                         align-self: center;
+                                     }
+                                 }
             }
 
             &-content {
@@ -208,6 +217,12 @@
                     width: 100%;
                 }
             }
+                        @include desktop {
+                            &--reversed {
+                                grid-template-areas: 'section-content section-side-note';
+                                grid-template-columns: 1fr auto;
+                            }
+                        }
         }
 
         &__footer {
@@ -224,6 +239,12 @@
             border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
             border-top: 1px solid var(--general-section-1);
             background-color: var(--general-main-1);
+
+            &--reset {
+                    padding: 2.4rem 0;
+                    position: relative;
+                    margin-top: 2rem;
+                }
 
             .back-btn {
                 margin-right: 8px;
@@ -842,5 +863,11 @@
                 margin-top: 2.4rem;
             }
         }
+    }
+}
+
+@include mobile {
+    .formik__confirmation-checkbox {
+        margin-bottom: 1.6rem;
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
-import { GetSettings, ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Button, HintBox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
@@ -13,6 +13,7 @@ import {
     formatIDVFormValues,
     isMobile,
 } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import FormBody from 'Components/form-body';
@@ -29,26 +30,24 @@ import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
 } from 'Helpers/utils';
-import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
 import { DUPLICATE_ACCOUNT_ERROR_MESSAGE, GENERIC_ERROR_MESSAGE } from 'Configs/poi-error-config';
+import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
 
 type TIDVDocumentSubmitProps = {
-    handleBack: () => void;
+    handleBack: React.MouseEventHandler;
     handleViewComplete: () => void;
+    is_from_external: boolean;
     selected_country: ResidenceList[0];
-    account_settings: GetSettings;
     getChangeableFields: () => Array<string>;
 };
 
 type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm;
 
-const IdvDocumentSubmit = ({
-    handleBack,
-    handleViewComplete,
-    selected_country,
-    account_settings,
-    getChangeableFields,
-}: TIDVDocumentSubmitProps) => {
+const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_country }: TIDVDocumentSubmitProps) => {
+    const {
+        client: { account_settings, getChangeableFields },
+    } = useStore();
+
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
     const side_note_image = <PoiNameDobExample />;
 
@@ -60,7 +59,7 @@ const IdvDocumentSubmit = ({
         form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
     }
 
-    const changeable_fields = [...getChangeableFields()];
+    const changeable_fields = getChangeableFields();
 
     const initial_values: TIdvDocumentSubmitForm = {
         document_type: {
@@ -142,7 +141,14 @@ const IdvDocumentSubmit = ({
     };
 
     return (
-        <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
+        <Formik
+            initialValues={{ ...initial_values }}
+            validate={validateFields}
+            initialStatus={{
+                is_confirmed: false,
+            }}
+            onSubmit={submitHandler}
+        >
             {({ dirty, isSubmitting, isValid, values, status }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset'>
                     {status?.error_message && (
@@ -172,7 +178,7 @@ const IdvDocumentSubmit = ({
                             })}
                             is_rendered_for_idv
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={changeable_fields}
+                            editable_fields={status?.is_confirmed ? [] : changeable_fields}
                             side_note={side_note_image}
                             inline_note_text={
                                 <Localize
@@ -182,7 +188,7 @@ const IdvDocumentSubmit = ({
                             }
                         />
                     </FormBody>
-                    <FormFooter className='proof-of-identity__footer'>
+                    <FormFooter className='proof-of-identity__footer account-form__footer--reset'>
                         {isDesktop() && (
                             <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
                                 <BackButtonIcon className='back-btn-icon' /> {localize('Go Back')}
@@ -192,7 +198,7 @@ const IdvDocumentSubmit = ({
                             className='proof-of-identity__submit-button'
                             type='submit'
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid}
+                            is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
                             text={localize('Verify')}
                             large
                             primary
@@ -202,6 +208,6 @@ const IdvDocumentSubmit = ({
             )}
         </Formik>
     );
-};
+});
 
 export default IdvDocumentSubmit;

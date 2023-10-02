@@ -20,6 +20,7 @@ import { DateOfBirthField, FormInputField } from './form-fields.jsx';
 import FormBodySection from '../form-body-section';
 import FormSubHeader from '../form-sub-header';
 import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
+import ConfirmationCheckbox from './confirmation-checkbox';
 import { isFieldImmutable } from '../../Helpers/utils';
 
 const PersonalDetailsForm = props => {
@@ -103,6 +104,11 @@ const PersonalDetailsForm = props => {
     // need to put this check related to DIEL clients
     const is_svg_only = is_svg && !is_mf;
 
+    // need to disable the checkbox if the user has not filled in the name and dob fields initially
+    const is_confirmation_checkbox_disabled = ['first_name', 'last_name', 'date_of_birth'].some(
+        field => !values[field] || errors[field]
+    );
+
     return (
         <React.Fragment>
             <div
@@ -123,6 +129,8 @@ const PersonalDetailsForm = props => {
                 <FormBodySection
                     has_side_note={is_rendered_for_idv_or_onfido && !should_hide_helper_image}
                     side_note={side_note}
+                    side_note_position='right'
+                    type='image'
                 >
                     <fieldset className='account-form__fieldset'>
                         {'salutation' in values && (
@@ -511,6 +519,14 @@ const PersonalDetailsForm = props => {
                         )}
                     </fieldset>
                 </FormBodySection>
+                {is_rendered_for_idv && (
+                    <ConfirmationCheckbox
+                        disabled={is_confirmation_checkbox_disabled}
+                        label={
+                            <Localize i18n_default_text='I confirm that the name and date of birth above match my chosen identity document' />
+                        }
+                    />
+                )}
             </div>
 
             {is_svg_only && (

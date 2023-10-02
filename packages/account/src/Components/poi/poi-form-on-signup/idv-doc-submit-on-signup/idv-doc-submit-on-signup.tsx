@@ -70,7 +70,7 @@ export const IdvDocSubmitOnSignup = ({
         form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
     }
 
-    const changeable_fields = [...getChangeableFields()];
+    const changeable_fields = getChangeableFields();
 
     const initial_values = {
         document_type: {
@@ -94,6 +94,9 @@ export const IdvDocSubmitOnSignup = ({
             validateOnMount
             validateOnChange
             validateOnBlur
+            initialStatus={{
+                is_confirmed: false,
+            }}
         >
             {({ isSubmitting, isValid, dirty, values }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
@@ -125,7 +128,7 @@ export const IdvDocSubmitOnSignup = ({
                             className='proof-of-identity__submit-button'
                             type='submit'
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid}
+                            is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
                             text={localize('Next')}
                             large
                             primary

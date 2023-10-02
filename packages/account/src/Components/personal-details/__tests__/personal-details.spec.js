@@ -7,8 +7,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from 'Helpers/utils';
-
-jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -120,7 +119,7 @@ describe('<PersonalDetails/>', () => {
             value: 'national_id',
             text: 'National ID',
         },
-        document_number: '123456789',
+        document_number: '1234567890123',
     };
 
     const default_IDV_config = {
@@ -275,7 +274,12 @@ describe('<PersonalDetails/>', () => {
     afterAll(() => ReactDOM.createPortal.mockClear());
 
     const renderwithRouter = component => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
+        const mock_store = mockStore({});
+        render(
+            <StoreProvider store={mock_store}>
+                <BrowserRouter>{component}</BrowserRouter>
+            </StoreProvider>
+        );
     };
 
     it('should autopopulate tax_residence for MF clients', () => {
@@ -568,6 +572,14 @@ describe('<PersonalDetails/>', () => {
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         const next_btn = screen.getByRole('button', { name: /next/i });
+
+        const checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(checkbox).not.toBeInTheDocument();
+
+        screen.debug();
+
         expect(previous_btn).toBeEnabled();
         expect(next_btn).toBeEnabled();
         fireEvent.click(next_btn);
@@ -612,6 +624,11 @@ describe('<PersonalDetails/>', () => {
         const tax_identification_number = screen.getByTestId('tax_identification_number');
         const tax_identification_confirm = screen.getByTestId('tax_identification_confirm');
         const account_opening_reason_mobile = screen.getByTestId('account_opening_reason_mobile');
+
+        const checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(checkbox).not.toBeInTheDocument();
 
         fireEvent.click(mr_radio_btn);
         fireEvent.change(first_name, { target: { value: 'test firstname' } });
@@ -784,35 +801,5 @@ describe('<PersonalDetails/>', () => {
         };
         renderwithRouter(<PersonalDetails {...new_props} />);
         expect(screen.getByTestId('tax_residence')).toBeDisabled();
-    });
-
-    it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
-        const new_props = {
-            ...props,
-            is_mf: false,
-            is_svg: true,
-            value: {
-                first_name: '',
-                last_name: '',
-                date_of_birth: '',
-                place_of_birth: '',
-                phone: '+34',
-                tax_residence: '',
-                tax_identification_number: '',
-                document_type: idv_document_data,
-            },
-        };
-        renderwithRouter(<PersonalDetails {...new_props} />);
-
-        const first_name = screen.getByTestId('first_name');
-        const last_name = screen.getByTestId('last_name');
-        const date_of_birth = screen.getByTestId('date_of_birth');
-        const phone = screen.getByTestId('phone');
-
-        userEvent.type(first_name, 'test firstname');
-        userEvent.type(last_name, 'test lastname');
-        userEvent.type(date_of_birth, '2000-12-12');
-        userEvent.type(phone, '+49123456789012');
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
     });
 });

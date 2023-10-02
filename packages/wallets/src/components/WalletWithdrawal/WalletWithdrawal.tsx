@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSettings, useVerifyEmail } from '@deriv/api';
 import useCountdown from '../../hooks/useCountdown';
 import { WalletWithdrawalVerification } from '../WalletWithdrawalVerification';

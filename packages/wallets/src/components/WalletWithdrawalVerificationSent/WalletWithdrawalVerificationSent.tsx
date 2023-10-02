@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useCountdown from '../../hooks/useCountdown';
 import EmailSent from '../../public/images/email-sent.svg';
 import './WalletWithdrawalVerificationSent.scss';

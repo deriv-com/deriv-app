@@ -338,6 +338,10 @@ const occupation_enum = () => [
     },
     {
         value: 'Government Officers',
+        text: localize('Government Officers'),
+    },
+    {
+        value: 'Students',
         text: localize('Students'),
     },
     {

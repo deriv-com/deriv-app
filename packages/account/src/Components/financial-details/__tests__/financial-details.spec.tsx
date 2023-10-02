@@ -40,8 +40,18 @@ const fields_enums: TFinancialInformationAndTradingExperience = {
         { value: 'net income 2', text: 'net income 2' },
     ],
     occupation_enum: [
-        { value: 'occupation 1', text: 'occupation 1' },
-        { value: 'occupation 2', text: 'occupation 2' },
+        {
+            value: 'Government Officers',
+            text: 'Government Officers',
+        },
+        {
+            value: 'Students',
+            text: 'Students',
+        },
+        {
+            value: 'Unemployed',
+            text: 'Unemployed',
+        },
     ],
 
     source_of_wealth_enum: [
@@ -64,6 +74,7 @@ describe('<FinancialDetails />', () => {
         validate: jest.fn(() => ({ errors: {} })),
         goToPreviousStep: jest.fn(() => ({ errors: {} })),
         value: {},
+        employment_status: '',
         income_source_enum: [{}],
         employment_status_enum: [{}],
         employment_industry_enum: [{}],
@@ -101,13 +112,40 @@ describe('<FinancialDetails />', () => {
         expect(screen.getByText('Source of wealth')).toBeInTheDocument();
     };
 
+    const setFormValues = () => {
+        const select_inputs = screen.getAllByRole('combobox');
+        const account_turnover_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'account_turnover'
+        );
+        const education_level_select = select_inputs.find((option: FormikValues) => option.name === 'education_level');
+        const employment_indystry_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'employment_industry'
+        );
+        const estimated_worth_select = select_inputs.find((option: FormikValues) => option.name === 'estimated_worth');
+        const income_source_select = select_inputs.find((option: FormikValues) => option.name === 'income_source');
+        const net_income_select = select_inputs.find((option: FormikValues) => option.name === 'net_income');
+
+        const source_of_wealth_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'source_of_wealth'
+        );
+
+        fireEvent.change(account_turnover_select as HTMLElement, { target: { value: 'account turnover 1' } });
+
+        fireEvent.change(education_level_select as HTMLElement, { target: { value: 'education level 2' } });
+        fireEvent.change(employment_indystry_select as HTMLElement, { target: { value: 'employment industry 1' } });
+        fireEvent.change(estimated_worth_select as HTMLElement, { target: { value: 'estimated worth 2' } });
+        fireEvent.change(income_source_select as HTMLElement, { target: { value: 'income source 1' } });
+        fireEvent.change(net_income_select as HTMLElement, { target: { value: 'net income 1' } });
+        fireEvent.change(source_of_wealth_select as HTMLElement, { target: { value: 'source of wealth 1' } });
+    };
+
     it('should render "FinancialDetails" for desktop', () => {
         render(<FinancialDetails {...mock_props} />);
 
         fieldsRenderCheck();
 
         const inputs = screen.getAllByTestId('dti_dropdown_display');
-        expect(inputs.length).toBe(8);
+        expect(inputs).toHaveLength(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
@@ -122,7 +160,7 @@ describe('<FinancialDetails />', () => {
         fieldsRenderCheck();
 
         const inputs = screen.getAllByRole('combobox');
-        expect(inputs.length).toBe(8);
+        expect(inputs).toHaveLength(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
@@ -173,7 +211,7 @@ describe('<FinancialDetails />', () => {
         fireEvent.change(estimated_worth_select as HTMLElement, { target: { value: 'estimated worth 2' } });
         fireEvent.change(income_source_select as HTMLElement, { target: { value: 'income source 1' } });
         fireEvent.change(net_income_select as HTMLElement, { target: { value: 'net income 1' } });
-        fireEvent.change(occuppation_select as HTMLElement, { target: { value: 'occupation 2' } });
+        fireEvent.change(occuppation_select as HTMLElement, { target: { value: 'Government Officers' } });
 
         fireEvent.change(source_of_wealth_select as HTMLElement, { target: { value: 'source of wealth 1' } });
 
@@ -183,6 +221,58 @@ describe('<FinancialDetails />', () => {
         fireEvent.click(btns[1]);
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    it('should not show "Unemployed" in occupation list if employment status is "Employed"', async () => {
+        const new_mock_props = {
+            ...mock_props,
+            employment_status: 'Employed',
+        };
+        render(<FinancialDetails {...new_mock_props} />);
+
+        fieldsRenderCheck();
+        const select_inputs = screen.getAllByRole('combobox');
+        setFormValues();
+        const occuppation_select = select_inputs.find((option: FormikValues) => option.name === 'occupation');
+
+        expect(screen.queryByText('Unemployed')).not.toBeInTheDocument();
+
+        fireEvent.change(occuppation_select as HTMLElement, { target: { value: 'Students' } });
+
+        const next_btn = screen.getByRole('button', { name: 'Next' });
+        expect(next_btn).toBeEnabled();
+
+        fireEvent.click(next_btn);
+        await waitFor(() => {
+            expect(mock_props.onSubmit).toHaveBeenCalled();
+        });
+    });
+
+    it('should show "Unemployed" in occupation list if employment status is not "Employed"', async () => {
+        const new_mock_props = {
+            ...mock_props,
+            employment_status: 'Pensioner',
+        };
+        render(<FinancialDetails {...new_mock_props} />);
+
+        fieldsRenderCheck();
+
+        const select_inputs = screen.getAllByRole('combobox');
+
+        setFormValues();
+        const occuppation_select = select_inputs.find((option: FormikValues) => option.name === 'occupation');
+
+        expect(screen.getByText('Unemployed')).toBeInTheDocument();
+
+        fireEvent.change(occuppation_select as HTMLElement, { target: { value: 'Unemployed' } });
+
+        const next_btn = screen.getByRole('button', { name: 'Next' });
+        expect(next_btn).toBeEnabled();
+
+        fireEvent.click(next_btn);
+        await waitFor(() => {
+            expect(mock_props.onSubmit).toHaveBeenCalled();
         });
     });
 });

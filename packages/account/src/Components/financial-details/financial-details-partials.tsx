@@ -189,6 +189,7 @@ export const Occupation = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
+                        {...field}
                         placeholder={localize('Occupation')}
                         is_align_text_left
                         name={field.name}
@@ -198,12 +199,12 @@ export const Occupation = ({
                         handleBlur={handleBlur}
                         error={touched?.occupation && errors?.occupation}
                         list_portal_id='modal_root'
-                        {...field}
                         required
                     />
                 </DesktopWrapper>
                 <MobileWrapper>
                     <SelectNative
+                        {...field}
                         placeholder={localize('Please select')}
                         name={field.name}
                         label={localize('Occupation')}
@@ -218,7 +219,6 @@ export const Occupation = ({
                                 setFieldValue('occupation', e.target.value, true);
                             }
                         }}
-                        {...field}
                         required
                     />
                 </MobileWrapper>

@@ -343,6 +343,9 @@ const AccountWizard = props => {
     if (!mounted) return null;
 
     if (!finished) {
+        const employment_status = state_items.find(item => item.form_value.employment_status)?.form_value
+            .employment_status;
+
         const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);
             const BodyComponent = step.body;
@@ -353,6 +356,7 @@ const AccountWizard = props => {
                     onSubmit={updateValue}
                     onCancel={prevStep}
                     onSave={saveFormData}
+                    employment_status={employment_status}
                     closeRealAccountSignup={props.closeRealAccountSignup}
                     is_virtual={props.is_virtual}
                     has_currency={props.has_currency}

@@ -24,6 +24,7 @@ import {
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export type TFinancialDetails = {
+    employment_status: string;
     goToPreviousStep: () => void;
     goToNextStep: () => void;
     getCurrentStep: () => number;
@@ -58,6 +59,26 @@ export type TFinancialInformationAndTradingExperience = {
     cfd_trading_frequency_enum?: object[];
     other_instruments_trading_experience_enum?: object[];
     other_instruments_trading_frequency_enum?: object[];
+};
+
+type TFinancailAssessmenFormValues = {
+    income_source?: string;
+    employment_status?: string;
+    employment_industry?: string;
+    occupation?: string;
+    source_of_wealth?: string;
+    education_level?: string;
+    net_income?: string;
+    estimated_worth?: string;
+    account_turnover?: string;
+    forex_trading_experience?: string;
+    forex_trading_frequency?: string;
+    binary_options_trading_experience?: string;
+    binary_options_trading_frequency?: string;
+    cfd_trading_experience?: string;
+    cfd_trading_frequency?: string;
+    other_instruments_trading_experience?: string;
+    other_instruments_trading_frequency?: string;
 };
 
 const FinancialInformation = ({
@@ -96,6 +117,13 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
         const { errors } = splitValidationResultTypes(props.validate(values));
         return errors;
     };
+    const getFormattedOccupation = () =>
+        props.employment_status === 'Employed'
+            ? props.occupation_enum.filter(item => item.value !== 'Unemployed')
+            : props.occupation_enum;
+
+    const getFormattedOccupationValues = (values: TFinancailAssessmenFormValues) =>
+        props.employment_status === 'Employed' && values?.occupation === 'Unemployed' ? '' : values?.occupation;
 
     return (
         <Formik
@@ -108,7 +136,7 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
         >
             {({ handleSubmit, isSubmitting, errors, values, setFieldValue, handleChange, handleBlur, touched }) => {
                 const shared_props = {
-                    values,
+                    values: { ...values, occupation: getFormattedOccupationValues(values) },
                     handleChange,
                     handleBlur,
                     touched,
@@ -162,7 +190,7 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                                                 income_source_enum={props.income_source_enum}
                                                 employment_status_enum={props.employment_status_enum}
                                                 employment_industry_enum={props.employment_industry_enum}
-                                                occupation_enum={props.occupation_enum}
+                                                occupation_enum={getFormattedOccupation()}
                                                 source_of_wealth_enum={props.source_of_wealth_enum}
                                                 education_level_enum={props.education_level_enum}
                                                 net_income_enum={props.net_income_enum}

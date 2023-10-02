@@ -6,6 +6,7 @@ import ExpiryText from './expiry-text.jsx';
 import DurationRangeText from './duration-range-text';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import classNames from 'classnames';
 import moment from 'moment';
 
 const submit_label = localize('OK');
@@ -197,7 +198,11 @@ const Numbers = observer(
 
         return (
             <div className='trade-params__amount-keypad'>
-                <div className='text-container'>
+                <div
+                    className={classNames('text-container', {
+                        'text-container--vanilla': is_vanilla,
+                    })}
+                >
                     {is_vanilla && <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />}
                     {show_expiry && <ExpiryText fixed_date={fixed_date} />}
                 </div>

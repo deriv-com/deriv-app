@@ -1,9 +1,11 @@
-on: ["pull_request"]
-
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, edited]    
 name: Coveralls
-
 jobs:
-
   build:
     name: Reporter
     runs-on: Runner_16cores_Deriv-app

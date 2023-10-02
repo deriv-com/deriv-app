@@ -10,9 +10,13 @@ jobs:
     runs-on: Runner_16cores_Deriv-app
     steps:
     - uses: actions/checkout@v4
+      name: Checkout
     - uses: "./.github/actions/setup_node"
+      name: Setup Node
     - uses: "./.github/actions/npm_install_from_cache"
+      name: Install Dependencies
     - uses: "./.github/actions/build"
+      name: Build
       with:
         NODE_ENV: production
         DATADOG_APPLICATION_ID: ${{ vars.DATADOG_APPLICATION_ID }} 
@@ -29,9 +33,11 @@ jobs:
     - name: Run tests
       run: npm test
     - uses: "./.github/actions/versioning"
+      name: Versioning
       with:
         version_name: production
     - uses: actions/upload-artifact@v3.1.1
+      name: Upload artifact
       with:
         path: packages/core
 
@@ -47,6 +53,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: "./.github/actions/setup_node"
+      name: Setup Node
     - uses: actions/download-artifact@v3.0.1
       with:
         path: packages
@@ -64,6 +71,7 @@ jobs:
       steps:
       - uses: technote-space/workflow-conclusion-action@v3
       - uses: "./.github/actions/send_slack_notifications"
+        name: Send Slack notification
         with:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           status: ${{ env.WORKFLOW_CONCLUSION }}

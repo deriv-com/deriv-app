@@ -13,10 +13,13 @@ jobs:
     environment: Staging
     steps:
     - uses: actions/checkout@v4
+      name: Checkout
     - uses: "./.github/actions/setup_node"
+      name: Setup Node
     - uses: "./.github/actions/npm_install_from_cache"
-    - uses: "./.github/actions/invalidate_master_cache"
+      name: Install Dependencies
     - uses: "./.github/actions/build"
+      name: Build
       with:
         NODE_ENV: staging
         DATADOG_APPLICATION_ID: ${{ vars.DATADOG_APPLICATION_ID }} 
@@ -48,6 +51,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: "./.github/actions/setup_node"
+      name: Setup Node
     - uses: actions/download-artifact@v3.0.1
       with:
         path: packages

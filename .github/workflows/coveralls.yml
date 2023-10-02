@@ -11,6 +11,7 @@ jobs:
     runs-on: Runner_16cores_Deriv-app
     steps:
       - uses: actions/checkout@v4
+        name: Setup Node
       - uses: './.github/actions/setup_node'
       - name: Install dependencies
         uses: "./.github/actions/npm_install_from_cache"

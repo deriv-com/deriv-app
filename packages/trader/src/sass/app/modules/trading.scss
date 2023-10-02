@@ -965,13 +965,27 @@
     }
 }
 
-.expiry-text-container {
-    margin-top: 0.4rem;
+.expiry-text-container,
+.range-text-container {
+    margin-top: 0.5rem;
 
-    &--mobile {
+    @include mobile {
         margin: 0 0 0.8rem;
         position: relative;
         top: -0.8rem;
+    }
+}
+
+.text-container:has(.range-text-container) {
+    min-height: 5rem;
+    padding-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .expiry-text-container,
+    .range-text-container {
+        top: 0;
     }
 }
 

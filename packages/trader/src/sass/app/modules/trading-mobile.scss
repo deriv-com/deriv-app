@@ -358,6 +358,9 @@
                     }
                 }
             }
+            &-keypad:has(.range-text-container) {
+                padding: 0.4rem 1.6rem 1.6rem;
+            }
         }
         &__header {
             @include mobile {

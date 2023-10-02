@@ -1,13 +1,14 @@
-import { action, computed, observable, toJS, makeObservable, override, reaction, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, override, reaction, runInAction,toJS } from 'mobx';
+
 import {
     getAccuBarriersDTraderTimeout,
     getContractTypesConfig,
     isAccumulatorContract,
     isAccumulatorContractOpen,
     isCallPut,
-    isHighLow,
     isDesktop,
     isEnded,
+    isHighLow,
     isMobile,
     isMultiplierContract,
     isTurbosContract,
@@ -15,8 +16,9 @@ import {
     LocalStore,
     switch_to_tick_chart,
 } from '@deriv/shared';
-import ContractStore from './contract-store';
+
 import BaseStore from './base-store';
+import ContractStore from './contract-store';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -137,13 +139,13 @@ export default class ContractTradeStore extends BaseStore {
         underlying,
     }) {
         if (current_spot) {
-            const previous_tick_time = prev_spot_time ?? this.accumulator_barriers_data.current_spot_time;
+            const ticks_history_prev_spot_time = prev_spot_time ?? this.accumulator_barriers_data.current_spot_time;
             // update current tick coming from ticks_history while skipping an update for duplicate data
-            if (current_spot_time === previous_tick_time) return;
+            if (current_spot_time === ticks_history_prev_spot_time) return;
             const current_spot_data = {
                 current_spot,
                 current_spot_time,
-                previous_tick_time,
+                ticks_history_prev_spot_time,
                 tick_update_timestamp: Date.now(),
             };
             this.setNewAccumulatorBarriersData(current_spot_data, true);
@@ -155,7 +157,7 @@ export default class ContractTradeStore extends BaseStore {
             accumulators_low_barrier,
             barrier_spot_distance,
             should_update_contract_barriers,
-            previous_spot_time: current_spot_time,
+            proposal_prev_spot_time: current_spot_time,
         };
         if (
             (this.accumulator_barriers_data.current_spot_time &&
@@ -268,8 +270,8 @@ export default class ContractTradeStore extends BaseStore {
             accumulators_high_barrier,
             accumulators_low_barrier,
             current_spot,
-            previous_spot_time,
-            previous_tick_time,
+            proposal_prev_spot_time,
+            ticks_history_prev_spot_time,
         } =
             (isAccumulatorContractOpen(this.last_contract.contract_info)
                 ? this.accumulator_contract_barriers_data
@@ -279,7 +281,8 @@ export default class ContractTradeStore extends BaseStore {
             accumulators_high_barrier &&
             accumulators_low_barrier &&
             (current_spot >= accumulators_high_barrier || current_spot <= accumulators_low_barrier);
-        const is_relevant_barrier = previous_tick_time && previous_tick_time === previous_spot_time;
+        const is_relevant_barrier =
+            ticks_history_prev_spot_time && ticks_history_prev_spot_time === proposal_prev_spot_time;
         const should_highlight_contract_barriers =
             entry_spot && entry_spot !== contract_current_spot && underlying === symbol;
         return !!(
@@ -300,7 +303,7 @@ export default class ContractTradeStore extends BaseStore {
             markers[markers.length - 1].is_last_contract = true;
         }
         const { current_spot_time, entry_tick_time, exit_tick_time } = this.last_contract.contract_info || {};
-        const { accumulators_high_barrier, accumulators_low_barrier, barrier_spot_distance, previous_spot_time } =
+        const { accumulators_high_barrier, accumulators_low_barrier, barrier_spot_distance, proposal_prev_spot_time } =
             (((isAccumulatorContractOpen(this.last_contract.contract_info) &&
                 entry_tick_time &&
                 entry_tick_time !== current_spot_time) ||
@@ -309,7 +312,7 @@ export default class ContractTradeStore extends BaseStore {
                 this.accumulator_contract_barriers_data) ||
             this.accumulator_barriers_data ||
             {};
-        if (trade_type === 'accumulator' && previous_spot_time && accumulators_high_barrier) {
+        if (trade_type === 'accumulator' && proposal_prev_spot_time && accumulators_high_barrier) {
             markers.push({
                 type: 'TickContract',
                 contract_info: {
@@ -324,7 +327,7 @@ export default class ContractTradeStore extends BaseStore {
                 },
                 key: 'dtrader_accumulator_barriers',
                 price_array: [accumulators_high_barrier, accumulators_low_barrier],
-                epoch_array: [previous_spot_time],
+                epoch_array: [proposal_prev_spot_time],
             });
         }
         return markers;

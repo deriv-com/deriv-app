@@ -1,12 +1,11 @@
 module.exports = {
     root: true,
     extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended'],
-    parserOptions: {
-        sourceType: 'module',
-    },
+    parserOptions: { sourceType: 'module' },
     env: { es6: true },
-    plugins: ['simple-import-sort'],
+    plugins: ['eslint-plugin-local-rules', 'simple-import-sort', 'sort-destructure-keys', 'typescript-sort-keys'],
     rules: {
+        camelcase: 'error',
         'simple-import-sort/imports': [
             'error',
             {
@@ -35,13 +34,34 @@ module.exports = {
                 ],
             },
         ],
-        'simple-import-sort/exports': 'error',
+        '@typescript-eslint/array-type': 'error',
+        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/sort-type-constituents': 'error',
+        '@typescript-eslint/no-explicit-any': 'error',
         'import/first': 'error',
         'import/newline-after-import': 'error',
         'import/no-duplicates': 'error',
-        camelcase: 'warn',
-        '@typescript-eslint/array-type': 'error',
-        '@typescript-eslint/sort-type-constituents': 'error',
-        '@typescript-eslint/no-unused-vars': 'error',
+        'import/no-extraneous-dependencies': ['off', { devDependencies: ['**/*.spec.*', '**/*.test.*', '**/*.d.ts*'] }],
+        'lines-around-comment': ['error', { allowObjectStart: true }],
+        'local-rules/no-react-namespace': 'error',
+        'no-unneeded-ternary': 'error',
+        'no-useless-return': 'error',
+        'object-shorthand': 'error',
+        'prefer-const': 'error',
+        'react/jsx-pascal-case': 'error',
+        'react/jsx-sort-props': 'warn',
+        'simple-import-sort/exports': 'error',
+        'sort-destructure-keys/sort-destructure-keys': 'warn',
+        'sort-keys': 'warn',
+        'typescript-sort-keys/interface': 'warn',
+        'typescript-sort-keys/string-enum': 'warn',
     },
+    overrides: [
+        {
+            files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
+            rules: {
+                'no-undef': 'off',
+            },
+        },
+    ],
 };

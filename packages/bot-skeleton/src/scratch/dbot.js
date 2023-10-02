@@ -123,7 +123,7 @@ class DBot {
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
-                    if (event.type === 'endDrag') validateErrorOnBlockDelete();
+                    if (event.type === 'endDrag' && !is_mobile) validateErrorOnBlockDelete();
                 });
 
                 Blockly.derivWorkspace = this.workspace;
@@ -296,7 +296,7 @@ class DBot {
     async stopBot() {
         api_base.setIsRunning(false);
 
-        await this.interpreter.terminateSession();
+        await this.interpreter.stop();
         this.is_bot_running = false;
         this.interpreter = null;
         this.interpreter = Interpreter();

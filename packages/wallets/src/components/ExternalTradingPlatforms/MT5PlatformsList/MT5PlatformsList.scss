@@ -1,7 +1,6 @@
 .wallets-mt5-list {
     &__title {
         color: #333;
-        font-family: 'IBM Plex Sans';
         font-size: 16px;
         font-style: normal;
         font-weight: 700;
@@ -12,6 +11,12 @@
         display: grid;
         gap: 1.6rem 4.8rem;
         grid-template-columns: repeat(3, 1fr);
+        padding-bottom: 24px;
+
+        @include mobile {
+            grid-template-rows: repeat(3, 1fr);
+            grid-template-columns: auto;
+        }
 
         &__details {
             flex-grow: 1;

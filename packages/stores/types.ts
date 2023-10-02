@@ -540,7 +540,6 @@ type TUiStore = {
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
-    setIsAcuityModalOpen: (value: boolean) => void;
     is_switch_to_deriv_account_modal_visible: boolean;
     openSwitchToRealAccountModal: () => void;
     openDerivRealAccountNeededModal: () => void;

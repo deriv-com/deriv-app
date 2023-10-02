@@ -1,0 +1,16 @@
+.wallets-jurisdiction-card-tag {
+    background-color: #dfeaff;
+    border-radius: 13px 13px 0 0;
+    padding: 8px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    &__label {
+        color: #377cfc;
+        font-size: 12px;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+    }
+}

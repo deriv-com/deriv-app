@@ -11,7 +11,7 @@ import MT5PasswordIcon from '../../public/images/ic-mt5-password.svg';
 import { CreatePassword } from '../CreatePassword';
 import { EnterPassword } from '../EnterPassword';
 import { useModal } from '../ModalProvider';
-import { WalletModal } from '../WalletModal';
+import { ModalWrapper } from '../ModalWrapper';
 
 type TProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
@@ -52,7 +52,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
     }, [hide, isSuccess]);
 
     return (
-        <WalletModal>
+        <ModalWrapper>
             {hasMT5Account ? (
                 <EnterPassword
                     marketType={marketType}
@@ -68,7 +68,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
                     platform='mt5'
                 />
             )}
-        </WalletModal>
+        </ModalWrapper>
     );
 };
 

@@ -6,7 +6,7 @@ jest.mock('App/Components/Elements/ContentLoader', () => ({
     ...jest.requireActual('App/Components/Elements/ContentLoader'),
     TradeParamsLoader: jest.fn(() => 'MockedLoader'),
 }));
-jest.mock('../../../Containers/contract-type.jsx', () => jest.fn(() => 'MockedContractType'));
+jest.mock('../../../Containers/contract-type', () => jest.fn(() => 'MockedContractType'));
 jest.mock('../../../Containers/purchase', () => jest.fn(() => 'MockedPurchase'));
 jest.mock('../../../Containers/trade-params.jsx', () => jest.fn(() => 'MockedTradeParams'));
 

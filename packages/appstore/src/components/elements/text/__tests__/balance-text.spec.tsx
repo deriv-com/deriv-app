@@ -3,16 +3,18 @@ import BalanceText from '../balance-text';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
+const createWrapper = (mock: ReturnType<typeof mockStore>) => {
+    const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
+
+    return wrapper;
+};
+
 describe('BalanceText', () => {
     it('should render the component', () => {
         const mock = mockStore({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='none' />, {
-            wrapper,
+            wrapper: createWrapper(mock),
         });
         expect(container).toBeInTheDocument();
     });
@@ -20,12 +22,8 @@ describe('BalanceText', () => {
     it('should render the correct balance and currency', () => {
         const mock = mockStore({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='none' />, {
-            wrapper,
+            wrapper: createWrapper(mock),
         });
         expect(container).toBeInTheDocument();
         expect(screen.getByText('1,000.00')).toBeInTheDocument();
@@ -35,12 +33,8 @@ describe('BalanceText', () => {
     it('should render the correct div class for dotted underline_style', () => {
         const mock = mockStore({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='dotted' />, {
-            wrapper,
+            wrapper: createWrapper(mock),
         });
         expect(container).toBeInTheDocument();
         expect(screen.getByTestId('dt_balance_text_container')).toHaveClass('balance-text--dotted');
@@ -56,12 +50,8 @@ describe('BalanceText', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='none' />, {
-            wrapper,
+            wrapper: createWrapper(mock),
         });
         expect(container).toBeInTheDocument();
         expect(screen.getByText('1,000.00')).toHaveClass('balance-text__text--demo');
@@ -77,12 +67,8 @@ describe('BalanceText', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='none' />, {
-            wrapper,
+            wrapper: createWrapper(mock),
         });
         expect(container).toBeInTheDocument();
         expect(screen.getByText('1,000.00')).toHaveClass('balance-text__text--real');
@@ -95,12 +81,8 @@ describe('BalanceText', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='none' />, {
-            wrapper,
+            wrapper: createWrapper(mock),
         });
         expect(container).toBeInTheDocument();
         expect(screen.getByText('1,000.00')).not.toHaveClass('balance-text__text--real');
@@ -110,12 +92,8 @@ describe('BalanceText', () => {
     it('should have classname as container if underline_style is none', () => {
         const mock = mockStore({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='none' />, {
-            wrapper,
+            wrapper: createWrapper(mock),
         });
         expect(container).toBeInTheDocument();
         expect(screen.getByTestId('dt_balance_text_container')).toHaveClass('balance-text__container');

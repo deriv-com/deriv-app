@@ -1372,6 +1372,7 @@ export default class TradeStore extends BaseStore {
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
+        this.clearContracts();
         this.onClientInit(this.clientInitListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         this.onThemeChange(this.themeChangeListener);

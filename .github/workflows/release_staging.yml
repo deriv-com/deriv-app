@@ -53,7 +53,7 @@ jobs:
         path: packages
     - name: Display structure of downloaded files
       run: |
-          cd artifact
+          cd packages/artifact
           ls -R
         # - uses: "./.github/actions/publish_to_pages_staging"
     #   with:       

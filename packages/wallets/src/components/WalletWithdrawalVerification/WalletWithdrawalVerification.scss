@@ -1,0 +1,54 @@
+.wallets-withdrawal-verification {
+    width: 772px;
+    height: 100%;
+    padding: 72px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    &__description {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        color: #000;
+        text-align: center;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px; /* 142.857% */
+    }
+
+    &__send-button {
+        all: unset;
+        cursor: pointer;
+        display: inline-flex;
+        margin-top: 42px;
+        height: 40px;
+        padding: 0 16px;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        border-radius: 4px;
+        background: var(--button-primary-default, #ff444f);
+        color: var(--system-dark-1-prominent-text, #fff);
+        text-align: center;
+
+        /* desktop/paragraph/P2 - bold */
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px; /* 142.857% */
+    }
+
+    &__title {
+        color: #000;
+        text-align: center;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 24px; /* 150% */
+        padding-top: 24px;
+    }
+}

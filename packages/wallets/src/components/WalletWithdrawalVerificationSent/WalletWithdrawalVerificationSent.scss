@@ -1,0 +1,96 @@
+.wallets-withdrawal-verification-sent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding-top: 40px;
+
+    &__description {
+        color: #000;
+        text-align: center;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px; /* 142.857% */
+    }
+
+    &__link-button {
+        all: unset;
+        cursor: pointer;
+        display: inline-flex;
+        height: 40px;
+        padding: 0 16px;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        color: var(--button-primary-default, #ff444f);
+        text-align: center;
+
+        /* desktop/paragraph/P2 - bold */
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px; /* 142.857% */
+    }
+
+    &__resend {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        padding-top: 32px;
+
+        &-button {
+            all: unset;
+            cursor: pointer;
+            display: inline-flex;
+            height: 40px;
+            padding: 0 16px;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+
+            border-radius: 4px;
+            background: var(--button-primary-default, #ff444f);
+            color: var(--system-dark-1-prominent-text, #fff);
+            text-align: center;
+
+            /* desktop/paragraph/P2 - bold */
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px; /* 142.857% */
+
+            &:disabled {
+                cursor: not-allowed;
+                opacity: 0.32;
+            }
+        }
+
+        &-content {
+            color: #000;
+            text-align: center;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px; /* 142.857% */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+
+            &__title {
+                font-weight: 700;
+            }
+        }
+    }
+
+    &__title {
+        color: var(--system-light-2-general-text, #333);
+        text-align: center;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 24px; /* 150% */
+    }
+}

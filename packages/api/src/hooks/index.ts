@@ -19,6 +19,7 @@ export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDerivezAccountsList } from './useDerivezAccountsList';
+export { default as useDerivezServiceToken } from './useDerivezServiceToken';
 export { default as useDxtradeAccountsList } from './useDxtradeAccountsList';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
 export { default as useLandingCompany } from './useLandingCompany';
@@ -31,5 +32,5 @@ export { default as useTradingPlatformInvestorPasswordChange } from './useTradin
 export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';
 export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
+export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
-export { default as useDerivezServiceToken } from './useDerivezServiceToken';

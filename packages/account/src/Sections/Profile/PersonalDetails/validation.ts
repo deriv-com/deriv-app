@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import * as Yup from 'yup';
 import { address_permitted_special_characters_message } from '@deriv/shared';
 
-export const PersonalDetailSchema = Yup.object().shape({
+export const BaseSchema = Yup.object().shape({
     first_name: Yup.string()
         .required(localize('First name is required.'))
         .min(2, localize('You should enter 2-50 characters.'))
@@ -39,23 +39,32 @@ export const PersonalDetailSchema = Yup.object().shape({
                 interpolation: { escapeValue: false },
             })
         ),
-    tax_identification_number: Yup.string()
-        .max(25, localize("Tax Identification Number can't be longer than 25 characters."))
-        .matches(
-            /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
-            localize('Only letters, numbers, space, hyphen, period, and forward slash are allowed.')
-        )
-        .matches(
-            /^[a-zA-Z0-9].*$/,
-            localize('Should start with letter or number and may contain a hyphen, period and slash.')
-        ),
     address_city: Yup.string()
         .required(localize('Town/City is required.'))
         .matches(
             /^[A-Za-z]+([a-zA-Z.' -])*[a-zA-Z.' -]+$/,
             localize('Only letters, space, hyphen, period, and apostrophe are allowed.')
         ),
-    tax_residence: Yup.string().required(localize('Tax residence is required.')),
-    employment_status: Yup.string().required(localize('Employment status is required.')),
     citizen: Yup.string().required(localize('Citizen is required.')),
 });
+
+export const getPersonalDetailsValidationSchema = (is_eu: boolean) => {
+    if (!is_eu) return BaseSchema;
+    return BaseSchema.concat(
+        Yup.object().shape({
+            tax_identification_number: Yup.string()
+                .required(localize('TIN is required.'))
+                .max(25, localize("Tax Identification Number can't be longer than 25 characters."))
+                .matches(
+                    /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
+                    localize('Only letters, numbers, space, hyphen, period, and forward slash are allowed.')
+                )
+                .matches(
+                    /^[a-zA-Z0-9].*$/,
+                    localize('Should start with letter or number and may contain a hyphen, period and slash.')
+                ),
+            tax_residence: Yup.string().required(localize('Tax residence is required.')),
+            employment_status: Yup.string().required(localize('Employment status is required.')),
+        })
+    );
+};

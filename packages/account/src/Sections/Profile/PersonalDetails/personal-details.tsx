@@ -52,7 +52,7 @@ import TaxResidenceSelect from './tax-residence-select';
 import InputGroup from './input-group';
 import { TAutoComplete, TInputFieldValues } from 'Types';
 import { BrowserHistory } from 'history';
-import { PersonalDetailSchema } from './validation';
+import { getPersonalDetailsValidationSchema } from './validation';
 
 type TRestState = {
     show_form: boolean;
@@ -98,7 +98,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         showPOAAddressMismatchFailureNotification,
     } = notifications;
 
-    const { is_language_changing } = common;
+    const { is_language_changing, current_language } = common;
     const { is_mobile } = ui;
     const is_mf = landing_company_shortcode === 'maltainvest';
     const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');
@@ -477,6 +477,11 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         return undefined;
     };
 
+    const PersonalDetailSchema = React.useMemo(
+        () => getPersonalDetailsValidationSchema(is_eu),
+        [current_language, is_eu]
+    );
+
     return (
         <Formik
             initialValues={form_initial_values}
@@ -852,12 +857,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                     </fieldset>
                                                 )}
                                                 {'tax_identification_number' in values && (
-                                                    <fieldset
-                                                        className={classNames('account-form__fieldset', {
-                                                            'account-form__fieldset--tin':
-                                                                getWarningMessages(values).tax_identification_number,
-                                                        })}
-                                                    >
+                                                    <fieldset className='account-form__fieldset'>
                                                         <Input
                                                             data-lpignore='true'
                                                             type='text'
@@ -867,7 +867,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                             value={values.tax_identification_number}
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
-                                                            warn={getWarningMessages(values).tax_identification_number}
                                                             error={errors.tax_identification_number}
                                                             disabled={!isChangeableField('tax_identification_number')}
                                                             required

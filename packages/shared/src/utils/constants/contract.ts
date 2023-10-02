@@ -182,7 +182,6 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         basis: ['stake'],
         components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
         barrier_count: 1,
-        config: { should_override: true },
     },
 });
 
@@ -199,7 +198,7 @@ export const getContractCategoriesConfig = () =>
         'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
         'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
         Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
-        Vanillas: { name: localize('Vanillas'), categories: [VANILLALONG.CALL, VANILLALONG.PUT, 'vanilla_fx'] },
+        Vanillas: { name: localize('Vanillas'), categories: [VANILLALONG.CALL, VANILLALONG.PUT, VANILLALONG.FX] },
         Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
     } as const);
 

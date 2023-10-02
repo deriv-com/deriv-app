@@ -112,7 +112,7 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                     },
                 ];
                 break;
-            case 'vanilla_fx':
+            case VANILLALONG.FX:
                 content = [
                     { type: 'heading', text: localize('Strike price') },
                     {

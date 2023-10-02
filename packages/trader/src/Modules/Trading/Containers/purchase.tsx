@@ -53,7 +53,6 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
         symbol,
         trade_types,
         validation_errors,
-        vanilla_trade_type,
     } = useTraderStore();
 
     const is_high_low = /^high_low$/.test(contract_type.toLowerCase());

@@ -35,6 +35,7 @@ export const TURBOS = {
 export const VANILLALONG = {
     CALL: 'vanillalongcall',
     PUT: 'vanillalongput',
+    FX: 'vanilla_fx',
 } as const;
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {

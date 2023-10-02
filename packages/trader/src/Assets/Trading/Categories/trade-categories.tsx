@@ -443,7 +443,7 @@ const TradeCategories = ({ category, is_vanilla_fx, onClick }: TTradeCategoriesP
                 break;
             case VANILLALONG.CALL:
             case VANILLALONG.PUT:
-            case 'vanilla_fx':
+            case VANILLALONG.FX:
                 TradeTypeTemplate = (
                     <React.Fragment>
                         <Text as='p'>

@@ -19,7 +19,7 @@ type TPurchaseButton = {
     is_loading: boolean;
     is_multiplier: boolean;
     is_proposal_empty: boolean;
-    is_vanilla_fx: boolean;
+    is_vanilla_fx?: boolean;
     is_vanilla: boolean;
     is_turbos: boolean;
     onClickPurchase: (proposal_id: string, price: string | number, type: string) => void;

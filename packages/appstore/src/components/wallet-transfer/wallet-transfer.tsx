@@ -267,7 +267,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                     message_list.some(el => el.type === 'error')
                                 }
                             >
-                                {localize('Transfer')}
+                                <Localize i18n_default_text='Transfer' />
                             </Button>
                         </div>
                     </Form>

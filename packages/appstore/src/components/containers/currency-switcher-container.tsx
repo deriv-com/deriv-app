@@ -11,7 +11,7 @@ interface CurrentSwitcherContainerProps extends Omit<React.HTMLAttributes<HTMLDi
     actions?: React.ReactNode;
     has_interaction?: boolean;
     icon: Currency | 'Options';
-    title: React.ReactNode;
+    title?: React.ReactNode;
     show_dropdown?: boolean;
 }
 type CurrencyPlatformIconProps = {

@@ -2,9 +2,9 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { useWalletTransactions } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import NonPendingTransaction from './non-pending-transaction';
+import CompletedTransaction from './completed-transaction';
 
-export const TransactionsForADay = observer(
+export const TransactionsForOneDay = observer(
     ({
         day,
         transaction_list,
@@ -37,7 +37,7 @@ export const TransactionsForADay = observer(
                     ) {
                         display_transaction = { ...transaction, amount: -transaction.amount };
                     }
-                    return <NonPendingTransaction key={transaction.transaction_id} transaction={display_transaction} />;
+                    return <CompletedTransaction key={transaction.transaction_id} transaction={display_transaction} />;
                 })}
             </div>
         );

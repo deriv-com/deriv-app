@@ -111,12 +111,12 @@ const AmountInput = ({
     };
 
     return (
-        <div className='amount-input-wrapper'>
+        <div className='amount-input__wrapper'>
             <Text size={isMobile() ? 'xxs' : 'xs'}>{label}</Text>
             <div
-                className={classNames('amount-input-container', {
-                    'amount-input-container--error': has_error,
-                    'amount-input-container--disabled': disabled,
+                className={classNames('amount-input__container', {
+                    'amount-input__container--error': has_error,
+                    'amount-input__container--disabled': disabled,
                 })}
             >
                 <Input

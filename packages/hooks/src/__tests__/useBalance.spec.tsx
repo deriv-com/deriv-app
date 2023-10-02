@@ -6,7 +6,23 @@ import useBalance from '../useBalance';
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn((name: string) => {
-        if (name === 'balance') {
+        if (name === 'authorize') {
+            return {
+                data: {
+                    authorize: {
+                        account_list: [
+                            {
+                                account_category: 'wallet',
+                                landing_company_name: 'svg',
+                                is_virtual: 0,
+                                currency: 'USD',
+                                loginid: 'CR1003',
+                            },
+                        ],
+                    },
+                },
+            };
+        } else if (name === 'balance') {
             return {
                 data: {
                     balance: {

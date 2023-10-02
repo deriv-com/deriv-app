@@ -64,6 +64,11 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
 
     const grouped_transactions = groupTransactionsByDay(transactions);
 
+    const onValueChange = (e: { target: { name: string; value: string } }) => {
+        reset();
+        setFilter(e.target.value as typeof filter);
+    };
+
     const scrollContainerRef = React.useRef(null);
 
     React.useEffect(() => {

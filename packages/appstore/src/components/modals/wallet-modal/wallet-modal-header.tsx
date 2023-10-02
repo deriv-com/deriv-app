@@ -1,9 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Icon, Text, WalletIcon } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import { getAccountName } from 'Constants/utils';
+
 import { WalletJurisdictionBadge } from 'Components/wallet-jurisdiction-badge';
+import { getAccountName } from 'Constants/utils';
 import type { TWalletAccount } from 'Types';
 
 type TWalletModalHeaderProps = {
@@ -83,6 +85,7 @@ const WalletModalHeader = ({
                         size={is_mobile ? 'xsm' : 'm'}
                         weight='bold'
                         className={getStylesByClassName(`${header_class_name}__title-balance`)}
+                        data-testid='dt_wallet_balance'
                     >
                         {formatMoney(currency || '', balance, true)} {display_currency_code}
                     </Text>

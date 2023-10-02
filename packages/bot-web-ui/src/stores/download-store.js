@@ -1,4 +1,5 @@
 import { action, makeObservable } from 'mobx';
+
 import { log_types } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
 
@@ -14,7 +15,7 @@ export default class DownloadStore {
     }
 
     getSuccessJournalMessage = (message, extra) => {
-        const { profit, sold_for, longcode, transaction_id } = extra;
+        const { profit, sold_for, longcode, transaction_id, current_currency } = extra;
         switch (message) {
             case log_types.LOAD_BLOCK: {
                 return localize('Blocks are loaded successfully');
@@ -35,7 +36,17 @@ export default class DownloadStore {
                 return localize('Loss amount: {{profit}}', { profit });
             }
             case log_types.WELCOME_BACK: {
+                if (current_currency)
+                    return localize(
+                        'Welcome back! Your messages have been restored. You are using your {{current_currency}} account.',
+                        { current_currency }
+                    );
                 return localize('Welcome back! Your messages have been restored.');
+            }
+            case log_types.WELCOME: {
+                if (current_currency)
+                    return localize('You are using your {{current_currency}} account.', { current_currency });
+                break;
             }
             default:
                 return null;
@@ -103,7 +114,7 @@ export default class DownloadStore {
             } else {
                 array_message = this.getSuccessJournalMessage(item.message.toString(), item.extra);
             }
-            const arr = [item.date, item.time, array_message.replace('&#x2F;', '/')];
+            const arr = [item.date, item.time, array_message?.replace('&#x2F;', '/')];
             journal_csv_titles.push(arr);
         });
 

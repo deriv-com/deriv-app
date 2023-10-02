@@ -1,22 +1,24 @@
 import React from 'react';
-import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
-import { localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
+
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
-import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import { filterObjProperties, removeEmptyPropertiesFromObject, toMoment } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+
 import {
-    validate,
-    validateName,
-    isDocumentTypeValid,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
+    isDocumentTypeValid,
     shouldHideHelperImage,
+    validate,
+    validateName,
 } from '../../../../Helpers/utils';
+import FormFooter from '../../../form-footer';
 import FormSubHeader from '../../../form-sub-header';
 import IDVForm from '../../../forms/idv-form';
 import PersonalDetailsForm from '../../../forms/personal-details-form.jsx';
-import FormFooter from '../../../form-footer';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
@@ -69,7 +71,7 @@ export const IdvDocSubmitOnSignup = ({
         form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
     }
 
-    const changeable_fields = [...getChangeableFields()];
+    const changeable_fields = getChangeableFields();
 
     const initial_values = {
         document_type: {
@@ -93,8 +95,22 @@ export const IdvDocSubmitOnSignup = ({
             validateOnMount
             validateOnChange
             validateOnBlur
+            initialStatus={{
+                is_confirmed: false,
+            }}
         >
-            {({ errors, handleBlur, handleChange, isSubmitting, isValid, setFieldValue, touched, dirty, values }) => (
+            {({
+                errors,
+                handleBlur,
+                handleChange,
+                isSubmitting,
+                isValid,
+                setFieldValue,
+                touched,
+                dirty,
+                values,
+                status,
+            }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
                     <section className='mt5-layout__container'>
                         <FormSubHeader title={localize('Identity verification')} />
@@ -119,7 +135,7 @@ export const IdvDocSubmitOnSignup = ({
                             is_qualified_for_idv
                             is_appstore
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={changeable_fields}
+                            editable_fields={status?.is_confirmed ? [] : changeable_fields}
                             residence_list={residence_list}
                         />
                     </section>
@@ -128,7 +144,7 @@ export const IdvDocSubmitOnSignup = ({
                             className='proof-of-identity__submit-button'
                             type='submit'
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid}
+                            is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
                             text={localize('Next')}
                             large
                             primary

@@ -1,25 +1,28 @@
 import React from 'react';
-import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
-import { daysSince, isMobile } from '@deriv/shared';
+import { useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useHistory } from 'react-router-dom';
-import { useStores } from 'Stores';
+
+import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
+import { daysSince, isMobile } from '@deriv/shared';
+
 import { Localize, localize } from 'Components/i18next';
-import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { api_error_codes } from 'Constants/api-error-codes';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 import PageReturn from 'Components/page-return';
 import RecommendedBy from 'Components/recommended-by';
-import UserAvatar from 'Components/user/user-avatar';
-import AdvertiserPageStats from './advertiser-page-stats.jsx';
-import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import StarRating from 'Components/star-rating';
-import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from 'Components/trade-badge';
+import UserAvatar from 'Components/user/user-avatar';
+import { api_error_codes } from 'Constants/api-error-codes';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores';
+
 import BlockUserOverlay from './block-user/block-user-overlay';
-import classNames from 'classnames';
-import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
+import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
+import AdvertiserPageStats from './advertiser-page-stats.jsx';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
@@ -255,6 +258,9 @@ const AdvertiserPage = () => {
                                 {rating_average ? (
                                     <React.Fragment>
                                         <div className='advertiser-page__rating--row'>
+                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_average_decimal}
+                                            </Text>
                                             <StarRating
                                                 empty_star_className='advertiser-page__rating--star'
                                                 empty_star_icon='IcEmptyStar'
@@ -267,9 +273,6 @@ const AdvertiserPage = () => {
                                                 star_size={isMobile() ? 17 : 20}
                                             />
                                             <div className='advertiser-page__rating--text'>
-                                                <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                    {rating_average_decimal}
-                                                </Text>
                                                 <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                                     {rating_count === 1 ? (
                                                         <Localize

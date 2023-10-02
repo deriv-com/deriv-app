@@ -1,13 +1,15 @@
-import SendbirdChat, { BaseChannel } from '@sendbird/chat';
+import { action, computed, IReactionDisposer, makeObservable, observable, reaction } from 'mobx';
+
+import { P2PAdvertiserCreate, P2PAdvertiserInfo } from '@deriv/api-types';
 import { epochToMoment, toMoment } from '@deriv/shared';
-import { action, computed, observable, reaction, makeObservable, IReactionDisposer } from 'mobx';
+import { TCoreStores } from '@deriv/stores/types';
+import SendbirdChat, { BaseChannel } from '@sendbird/chat';
+import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
+import { BaseMessage, FileMessage, MessageType, MessageTypeFilter, UserMessage } from '@sendbird/chat/message';
+
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
 import { requestWS } from 'Utils/websocket';
-import { TCoreStores } from '@deriv/stores/types';
-import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
-import { BaseMessage, FileMessage, MessageType, MessageTypeFilter, UserMessage } from '@sendbird/chat/message';
-import { P2PAdvertiserCreate, P2PAdvertiserInfo } from '@deriv/api-types';
 
 type TChatInfo = { app_id: string; user_id: string; token?: string };
 
@@ -197,9 +199,9 @@ export default class SendbirdStore extends BaseStore {
         const chat_messages: Array<UserMessage | FileMessage> = [];
 
         const is_inclusive_of_timestamp = false;
-        const result_size = 50;
         const reverse_results = false;
         const custom_type = ['', 'admin'];
+        const result_size = 50;
 
         const messages_timestamp =
             timestamp ?? toMoment(this.root_store.general_store.server_time.get()).utc().valueOf();
@@ -207,7 +209,7 @@ export default class SendbirdStore extends BaseStore {
         const retrieved_messages = await this.active_chat_channel?.getMessagesByTimestamp(messages_timestamp, {
             isInclusive: is_inclusive_of_timestamp,
             prevResultSize: result_size,
-            nextResultSize: result_size,
+            nextResultSize: 0,
             reverse: reverse_results,
             messageTypeFilter: MessageTypeFilter.ALL,
             customTypesFilter: custom_type,
@@ -294,7 +296,6 @@ export default class SendbirdStore extends BaseStore {
             if (!this.messages_ref?.current) return;
 
             if (this.messages_ref.current.scrollTop === 0) {
-                this.setIsChatLoading(true);
                 const oldest_message_timestamp = this.chat_messages.reduce(
                     (prev_created_at, chat_message) =>
                         chat_message.created_at < prev_created_at ? chat_message.created_at : prev_created_at,
@@ -309,7 +310,6 @@ export default class SendbirdStore extends BaseStore {
 
                             this.replaceChannelMessage(0, 0, previous_messages[0]);
                         }
-                        this.setIsChatLoading(false);
                     })
                     .catch(error => {
                         // eslint-disable-next-line no-console

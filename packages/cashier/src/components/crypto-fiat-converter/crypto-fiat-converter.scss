@@ -5,7 +5,7 @@
 
     @include desktop {
         max-width: 100%;
-        margin: 0 auto 2.4rem;
+        margin: 0 auto;
         .dc-icon {
             margin-top: 1rem;
         }
@@ -46,5 +46,9 @@
         margin-left: 0;
         color: var(--text-less-prominent);
         align-self: start;
+    }
+
+    .dc-input__hint {
+        margin: 0.1rem 0 0 1.3rem;
     }
 }

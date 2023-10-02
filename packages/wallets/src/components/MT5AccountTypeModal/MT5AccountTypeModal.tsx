@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { MT5AccountType } from '../ExternalTradingPlatforms/MT5AccountType';
 import { ModalStepWrapper } from '../ModalStepWrapper';
-import { ModalWrapper } from '../ModalWrapper';
 import { PrimaryActionButton } from '../PrimaryActionButton';
 
 type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];

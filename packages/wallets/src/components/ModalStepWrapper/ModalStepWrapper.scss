@@ -1,0 +1,52 @@
+.wallets-modal-step-wrapper {
+    background-color: #ffffff;
+    border-radius: 8px;
+    width: 85vw;
+
+    @include mobile {
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    &__header {
+        padding: 2rem;
+        border-bottom: 2px solid #f2f3f4;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 24px; /* 150% */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &-close-icon {
+            cursor: pointer;
+        }
+
+        @include mobile {
+            background-color: #ffffff;
+            font-size: 14px;
+            position: fixed;
+            z-index: 99;
+            width: 100%;
+        }
+    }
+
+    &__footer {
+        padding: 2rem;
+        height: 10%;
+        width: 100%;
+        bottom: 0;
+        border-top: 2px solid #f2f3f4;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        @include mobile {
+            background-color: #ffffff;
+            position: fixed;
+            z-index: 99;
+        }
+    }
+}

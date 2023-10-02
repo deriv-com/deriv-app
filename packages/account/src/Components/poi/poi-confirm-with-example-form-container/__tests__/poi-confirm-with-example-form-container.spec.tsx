@@ -66,7 +66,7 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         expect(checkbox_el.checked).toBeFalsy();
 
         const input_fields: HTMLInputElement[] = screen.getAllByRole('textbox');
-        expect(input_fields.length).toBe(3);
+        expect(input_fields).toHaveLength(3);
         expect(input_fields[0].name).toBe('first_name');
         expect(input_fields[1].name).toBe('last_name');
         expect(input_fields[2].name).toBe('date_of_birth');

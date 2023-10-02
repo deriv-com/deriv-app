@@ -132,15 +132,18 @@ export default class ContractTradeStore extends BaseStore {
         barrier_spot_distance,
         current_spot,
         current_spot_time,
+        prev_spot_time,
         should_update_contract_barriers,
         underlying,
     }) {
         if (current_spot) {
+            const previous_tick_time = prev_spot_time ?? this.accumulator_barriers_data.current_spot_time;
             // update current tick coming from ticks_history while skipping an update for duplicate data
-            if (current_spot_time === this.accumulator_barriers_data.current_spot_time) return;
+            if (current_spot_time === previous_tick_time) return;
             const current_spot_data = {
                 current_spot,
                 current_spot_time,
+                previous_tick_time,
                 tick_update_timestamp: Date.now(),
             };
             this.setNewAccumulatorBarriersData(current_spot_data, true);
@@ -260,31 +263,35 @@ export default class ContractTradeStore extends BaseStore {
 
     get has_crossed_accu_barriers() {
         const { symbol } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
+        const { current_spot: contract_current_spot, entry_spot, underlying } = this.last_contract.contract_info || {};
         const {
-            current_spot: contract_current_spot,
-            entry_spot,
-            underlying,
-        } = this.root_store.portfolio.active_positions.find(
-            ({ type, contract_info: _contract_info }) =>
-                isAccumulatorContract(type) && _contract_info.underlying === symbol
-        )?.contract_info || {};
-        const { accumulators_high_barrier, accumulators_low_barrier, current_spot } =
+            accumulators_high_barrier,
+            accumulators_low_barrier,
+            current_spot,
+            previous_spot_time,
+            previous_tick_time,
+        } =
             (isAccumulatorContractOpen(this.last_contract.contract_info)
                 ? this.accumulator_contract_barriers_data
                 : this.accumulator_barriers_data) || {};
-        return !!(
+        const is_knock_out =
             current_spot &&
             accumulators_high_barrier &&
             accumulators_low_barrier &&
-            (current_spot >= accumulators_high_barrier || current_spot <= accumulators_low_barrier) &&
-            (!isAccumulatorContractOpen(this.last_contract.contract_info) ||
-                (entry_spot && entry_spot !== contract_current_spot && underlying === symbol))
+            (current_spot >= accumulators_high_barrier || current_spot <= accumulators_low_barrier);
+        const is_relevant_barrier = previous_tick_time && previous_tick_time === previous_spot_time;
+        const should_highlight_contract_barriers =
+            entry_spot && entry_spot !== contract_current_spot && underlying === symbol;
+        return !!(
+            is_knock_out &&
+            is_relevant_barrier &&
+            (!isAccumulatorContractOpen(this.last_contract.contract_info) || should_highlight_contract_barriers)
         );
     }
 
     get markers_array() {
         let markers = [];
-        const { contract_type: trade_type, symbol } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
+        const { contract_type: trade_type } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
         markers = this.applicable_contracts()
             .map(c => c.marker)
             .filter(m => m)
@@ -292,11 +299,7 @@ export default class ContractTradeStore extends BaseStore {
         if (markers.length) {
             markers[markers.length - 1].is_last_contract = true;
         }
-        const { current_spot_time, entry_tick_time, exit_tick_time } =
-            this.root_store.portfolio.active_positions.find(
-                ({ type, contract_info: _contract_info }) =>
-                    isAccumulatorContract(type) && _contract_info.underlying === symbol
-            )?.contract_info || {};
+        const { current_spot_time, entry_tick_time, exit_tick_time } = this.last_contract.contract_info || {};
         const { accumulators_high_barrier, accumulators_low_barrier, barrier_spot_distance, previous_spot_time } =
             (((isAccumulatorContractOpen(this.last_contract.contract_info) &&
                 entry_tick_time &&
@@ -402,7 +405,7 @@ export default class ContractTradeStore extends BaseStore {
 
     get last_contract() {
         const applicable_contracts = this.applicable_contracts();
-        const length = applicable_contracts.length;
+        const length = this.contracts[0]?.contract_info.current_spot_time ? applicable_contracts.length : -1;
         return length > 0 ? applicable_contracts[length - 1] : {};
     }
 

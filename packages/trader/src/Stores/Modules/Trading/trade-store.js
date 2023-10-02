@@ -1465,6 +1465,7 @@ export default class TradeStore extends BaseStore {
                     current_spot_data = {
                         current_spot: prices[prices.length - 1],
                         current_spot_time: times[times.length - 1],
+                        prev_spot_time: times[times.length - 2],
                     };
                 } else {
                     return;

@@ -38,6 +38,7 @@ export default class UIStore extends BaseStore {
     is_unsupported_contract_modal_visible = false;
     is_new_account = localStorage.getItem('isNewAccount') || false;
     is_account_signup_modal_visible = false;
+    is_link_expired_modal_visible = false;
     is_set_residence_modal_visible = false;
     is_reset_password_modal_visible = false;
     is_reset_email_modal_visible = false;
@@ -68,9 +69,6 @@ export default class UIStore extends BaseStore {
     duration_h = 1;
     duration_d = 1;
 
-    // vanilla trade type selection
-    vanilla_trade_type = 'VANILLALONGCALL';
-
     // purchase button states
     purchase_states = [false, false];
 
@@ -87,12 +85,6 @@ export default class UIStore extends BaseStore {
     // Welcome modal
     is_welcome_modal_visible = false;
 
-    // Remove MX & MLT
-    is_close_mx_mlt_account_modal_visible = false;
-
-    // Remove MF account modal
-    is_close_uk_account_modal_visible = false;
-
     // set currency modal
     is_set_currency_modal_visible = false;
 
@@ -108,9 +100,6 @@ export default class UIStore extends BaseStore {
 
     // MT5 create real STP from demo, show only real accounts from switcher
     should_show_real_accounts_list = false;
-
-    // MT5 acuity download
-    is_acuity_modal_open = false;
 
     // Real account signup
     real_account_signup = {
@@ -214,6 +203,7 @@ export default class UIStore extends BaseStore {
             is_unsupported_contract_modal_visible: observable,
             is_new_account: observable,
             is_account_signup_modal_visible: observable,
+            is_link_expired_modal_visible: observable,
             is_set_residence_modal_visible: observable,
             is_reset_password_modal_visible: observable,
             is_reset_email_modal_visible: observable,
@@ -246,14 +236,11 @@ export default class UIStore extends BaseStore {
             is_account_settings_visible: observable,
 
             is_accounts_switcher_on: observable,
-            is_acuity_modal_open: observable,
 
             is_app_disabled: observable,
             is_cashier_visible: observable,
             is_cfd_page: observable,
 
-            is_close_mx_mlt_account_modal_visible: observable,
-            is_close_uk_account_modal_visible: observable,
             is_closing_create_real_account_modal: observable,
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
@@ -301,7 +288,6 @@ export default class UIStore extends BaseStore {
             show_positions_toggle: observable,
             simple_duration_unit: observable,
             toasts: observable.shallow,
-            vanilla_trade_type: observable,
             addToast: action.bound,
             closeAccountNeededModal: action.bound,
             closeRealAccountSignup: action.bound,
@@ -344,7 +330,6 @@ export default class UIStore extends BaseStore {
             setDarkMode: action.bound,
             setHasOnlyForwardingContracts: action.bound,
             setHashedValue: action.bound,
-            setIsAcuityModalOpen: action.bound,
             setIsClosingCreateRealAccountModal: action.bound,
             setIsNativepickerVisible: action.bound,
             setReportsTabIndex: action.bound,
@@ -378,14 +363,13 @@ export default class UIStore extends BaseStore {
             setShouldShowWarningModal: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
-            showCloseMxMltAccountPopup: action.bound,
-            showCloseUKAccountPopup: action.bound,
             toggleAccountsDialog: action.bound,
             toggleAccountSettings: action.bound,
             toggleAccountSignupModal: action.bound,
             toggleCancellationWarning: action.bound,
             toggleCashier: action.bound,
             toggleHistoryTab: action.bound,
+            toggleLinkExpiredModal: action.bound,
             toggleOnScreenKeyboard: action.bound,
             togglePositionsDrawer: action.bound,
             toggleReports: action.bound,
@@ -484,20 +468,12 @@ export default class UIStore extends BaseStore {
         this.promptFn = cb;
     }
 
-    showCloseMxMltAccountPopup(is_open) {
-        this.is_close_mx_mlt_account_modal_visible = is_open;
-    }
-
-    showCloseUKAccountPopup(is_open) {
-        this.is_close_uk_account_modal_visible = is_open;
-    }
-
     get is_mobile() {
         return this.screen_width <= MAX_MOBILE_WIDTH;
     }
 
     get is_tablet() {
-        return this.screen_width <= MAX_TABLET_WIDTH;
+        return MAX_MOBILE_WIDTH < this.screen_width && this.screen_width <= MAX_TABLET_WIDTH;
     }
 
     get is_account_switcher_disabled() {
@@ -737,6 +713,10 @@ export default class UIStore extends BaseStore {
         this.is_reset_password_modal_visible = state_change;
     }
 
+    toggleLinkExpiredModal(state_change = !this.is_link_expired_modal_visible) {
+        this.is_link_expired_modal_visible = state_change;
+    }
+
     toggleResetEmailModal(state_change = !this.is_reset_email_modal_visible) {
         this.is_reset_email_modal_visible = state_change;
     }
@@ -840,10 +820,6 @@ export default class UIStore extends BaseStore {
 
     toggleShouldShowRealAccountsList(value) {
         this.should_show_real_accounts_list = value;
-    }
-
-    setIsAcuityModalOpen(value) {
-        this.is_acuity_modal_open = value;
     }
 
     toggleShouldShowMultipliersOnboarding(value) {

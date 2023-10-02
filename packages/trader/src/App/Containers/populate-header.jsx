@@ -3,6 +3,7 @@ import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggl
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
+import { TURBOS, VANILLALONG, isTurbosContract, isVanillaContract } from '@deriv/shared';
 
 const PopulateHeader = observer(() => {
     const { portfolio, ui, client } = useStore();
@@ -14,28 +15,35 @@ const PopulateHeader = observer(() => {
         all_positions: positions,
         error: positions_error,
         onClickSell: onPositionsSell,
-        removePositionById: onPositionsRemove,
         onClickCancel: onPositionsCancel,
     } = portfolio;
 
-    const symbol_positions = positions.filter(
+    const filtered_positions = positions.filter(
         p =>
             p.contract_info &&
             symbol === p.contract_info.underlying &&
-            filterByContractType(p.contract_info, trade_contract_type)
+            (isTurbosContract(trade_contract_type) || isVanillaContract(trade_contract_type)
+                ? filterByContractType(
+                      p.contract_info,
+                      isTurbosContract(trade_contract_type) ? TURBOS.SHORT : VANILLALONG.CALL
+                  ) ||
+                  filterByContractType(
+                      p.contract_info,
+                      isTurbosContract(trade_contract_type) ? TURBOS.LONG : VANILLALONG.PUT
+                  )
+                : filterByContractType(p.contract_info, trade_contract_type))
     );
 
     return (
         <TogglePositionsMobile
             active_positions_count={active_positions_count}
-            all_positions={positions}
+            filtered_positions={filtered_positions}
             currency={positions_currency}
             disableApp={disableApp}
-            is_empty={!symbol_positions.length}
+            is_empty={!filtered_positions.length}
             enableApp={enableApp}
             error={positions_error}
             onClickSell={onPositionsSell}
-            onClickRemove={onPositionsRemove}
             onClickCancel={onPositionsCancel}
         />
     );

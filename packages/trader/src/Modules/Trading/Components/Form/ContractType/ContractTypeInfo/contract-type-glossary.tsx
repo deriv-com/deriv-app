@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
+import { VANILLALONG } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const ContractTypeGlossary = ({ category }: { category: string }) => {
@@ -34,12 +35,13 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                     {
                         type: 'paragraph',
                         text: localize(
-                            'The spot price may change by the time your order reaches our servers. When this happens, your payout maybe affected.'
+                            'The spot price may change by the time your order reaches our servers. When this happens, your payout may be affected.'
                         ),
                     },
                 ];
                 break;
-            case 'vanilla':
+            case VANILLALONG.CALL:
+            case VANILLALONG.PUT:
                 content = [
                     { type: 'heading', text: localize('Payout') },
                     {

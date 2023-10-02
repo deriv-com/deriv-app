@@ -13,7 +13,6 @@ const SetCitizenshipForm = ({ class_prefix, errors, touched, setFieldValue, citi
                         {...field}
                         autoComplete='off'
                         input_id='dt_core_set-citizenship-form_signup-citizenship-select'
-                        className={`${class_prefix}__residence-field`}
                         type='text'
                         label={localize('Citizenship')}
                         error={touched.citizenship && errors.citizenship}

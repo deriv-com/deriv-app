@@ -52,7 +52,7 @@ const Xml = ({ ...props }) => {
 
 export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
     <Xml xmlns='http://www.w3.org/1999/xhtml' id='toolbox'>
-        <Category id='trade_parameters' name={localize('Set up your trade')}>
+        <Category id='trade_parameters' name={localize('Trade parameters')}>
             <Block type='trade_definition'>
                 <Statement name='TRADE_OPTIONS'>
                     <Block type='trade_definition_market' deletable='false' movable='false'>
@@ -141,15 +141,15 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 </Value>
             </Block>
         </Category>
-        <Category id='purchase_conditions' name={localize('Purchase contract')}>
+        <Category id='purchase_conditions' name={localize('Purchase conditions')}>
             <Block type='before_purchase' />
             <Block type='purchase' />
         </Category>
-        <Category id='sell_conditions' name={localize('Sell contract (optional)')}>
+        <Category id='sell_conditions' name={localize('Sell conditions (optional)')}>
             <Block type='during_purchase' />
             <Block type='sell_at_market' />
         </Category>
-        <Category id='trade_results' name={localize('Trade again')}>
+        <Category id='trade_results' name={localize('Restart trading conditions')}>
             <Block type='after_purchase' />
             <Block type='trade_again' />
         </Category>

@@ -26,7 +26,7 @@ const EmailVerificationModal = (
             toggleModal={hideModal}
             width='440px'
         >
-            <Modal.Body className='email-verification-modal--body'>
+            <Modal.Body className='email-verification-modal__body'>
                 <Icon icon='IcEmailSentP2p' size='128' />
                 <Text
                     align='center'
@@ -40,12 +40,12 @@ const EmailVerificationModal = (
                 <Text align='center' className='email-verification-modal--email__text' color='prominent' weight='bold'>
                     <Localize i18n_default_text='Hit the link in the email we sent you to authorise this transaction.' />
                 </Text>
-                <Text align='center' color='prominent' size='s'>
+                <Text align='center' color='prominent'>
                     {/* TODO: Uncomment when time is available in BE response */}
                     <Localize i18n_default_text='The link will expire in 10 minutes.' />
                 </Text>
                 <Text
-                    className='email-verification-modal--receive_email_text'
+                    className='email-verification-modal__receive_email_text'
                     color='loss-danger'
                     onClick={() => setShouldShowReasonsIfNoEmail(true)}
                     size='xs'
@@ -55,27 +55,27 @@ const EmailVerificationModal = (
                 </Text>
                 {should_show_reasons_if_no_email && (
                     <React.Fragment>
-                        <div className='email-verification-modal--reason'>
+                        <div className='email-verification-modal__reason'>
                             <Icon icon='IcEmailSpam' size={36} />
-                            <Text className='email-verification-modal--reason__text' color='prominent' size='xxs'>
+                            <Text className='email-verification-modal__reason__text' color='prominent' size='xxs'>
                                 <Localize i18n_default_text='The email is in your spam folder (sometimes things get lost there).' />
                             </Text>
                         </div>
-                        <div className='email-verification-modal--reason'>
+                        <div className='email-verification-modal__reason'>
                             <Icon icon='IcEmail' size={36} />
-                            <Text className='email-verification-modal--reason__text' color='prominent' size='xxs'>
+                            <Text className='email-verification-modal__reason__text' color='prominent' size='xxs'>
                                 <Localize i18n_default_text='You accidentally gave us another email address (usually a work or a personal one instead of the one you meant).' />
                             </Text>
                         </div>
-                        <div className='email-verification-modal--reason'>
+                        <div className='email-verification-modal__reason'>
                             <Icon icon='IcEmailTypo' size={36} />
-                            <Text className='email-verification-modal--reason__text' color='prominent' size='xxs'>
+                            <Text className='email-verification-modal__reason__text' color='prominent' size='xxs'>
                                 <Localize i18n_default_text='The email address you entered had a mistake or typo (happens to the best of us).' />
                             </Text>
                         </div>
-                        <div className='email-verification-modal--reason'>
+                        <div className='email-verification-modal__reason'>
                             <Icon icon='IcEmailFirewall' size={36} />
-                            <Text className='email-verification-modal--reason__text' color='prominent' size='xxs'>
+                            <Text className='email-verification-modal__reason__text' color='prominent' size='xxs'>
                                 <Localize i18n_default_text="We can't deliver the email to this address (usually because of firewalls or filtering)." />
                             </Text>
                         </div>
@@ -83,7 +83,7 @@ const EmailVerificationModal = (
                 )}
             </Modal.Body>
             {should_show_reasons_if_no_email && (
-                <Modal.Footer className='email-verification-modal--footer'>
+                <Modal.Footer className='email-verification-modal__footer'>
                     <Button
                         large
                         primary

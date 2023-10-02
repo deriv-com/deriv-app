@@ -114,6 +114,10 @@ const copyConfig = base => {
             from: path.resolve(__dirname, '../src/public/images/common/static_images/'),
             to: 'public/images/common',
         },
+        {
+            from: path.resolve(__dirname, '../src/public/videos/'),
+            to: 'public/videos',
+        },
         // { from: path.resolve(__dirname, '../src/public/images/common/og_image.gif'), to: 'images/common/og_image.gif' }, // Once the design for og_image is ready, bring this back.
         {
             from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/'),
@@ -132,10 +136,6 @@ const copyConfig = base => {
             transform(content, transform_path) {
                 return transformContentUrlBase(content, transform_path, base);
             },
-        },
-        {
-            from: path.resolve(__dirname, '../src/public/pdf'),
-            to: 'public/pdf',
         },
     ];
 

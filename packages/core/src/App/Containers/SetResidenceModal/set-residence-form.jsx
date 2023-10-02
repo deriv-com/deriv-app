@@ -9,6 +9,7 @@ const SetResidenceForm = ({
     default_value,
     history_value,
     errors,
+    onResidenceSelectionChanged,
     touched,
     setFieldTouched,
     setFieldValue,
@@ -30,14 +31,16 @@ const SetResidenceForm = ({
                             {...field}
                             autoComplete='off'
                             input_id='dt_core_set-residence-form_signup-residence-select'
-                            className={`${class_prefix}__residence-field`}
                             type='text'
                             label={localize('Country of residence')}
                             historyValue={history_value}
                             error={touched.residence && errors.residence}
                             required
                             list_items={residence_list}
-                            onItemSelection={({ value, text }) => setFieldValue('residence', value ? text : '', true)}
+                            onItemSelection={({ value, text }) => {
+                                setFieldValue('residence', value ? text : '', true);
+                                onResidenceSelectionChanged?.();
+                            }}
                         />
                     </React.Fragment>
                 )}
@@ -56,6 +59,7 @@ SetResidenceForm.propTypes = {
     default_value: PropTypes.string,
     history_value: PropTypes.string,
     errors: PropTypes.object,
+    onResidenceSelectionChanged: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
     setFieldTouched: PropTypes.func,
     setFieldValue: PropTypes.func,

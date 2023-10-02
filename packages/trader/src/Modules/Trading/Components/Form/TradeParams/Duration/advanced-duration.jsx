@@ -32,7 +32,7 @@ const AdvancedDuration = observer(
     }) => {
         const { ui } = useStore();
         const { current_focus, setCurrentFocus } = ui;
-        const { contract_expiry_type, is_vanilla, validation_errors } = useTraderStore();
+        const { contract_expiry_type, validation_errors } = useTraderStore();
 
         let is_24_hours_contract = false;
 
@@ -96,7 +96,7 @@ const AdvancedDuration = observer(
                                     is_24_hours_contract={is_24_hours_contract}
                                 />
                             )}
-                            {advanced_duration_unit === 'd' && is_vanilla && (
+                            {advanced_duration_unit === 'd' && (
                                 <ExpiryText expiry_epoch={expiry_epoch} has_error={has_error} />
                             )}
                             {advanced_duration_unit !== 't' && advanced_duration_unit !== 'd' && (
@@ -128,9 +128,7 @@ const AdvancedDuration = observer(
                                 is_24_hours_contract && <TradingTimePicker />
                                 // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
                             }
-                            {!is_24_hours_contract && is_vanilla && (
-                                <ExpiryText expiry_epoch={expiry_epoch} />
-                            )}
+                            {!is_24_hours_contract && <ExpiryText expiry_epoch={expiry_epoch} />}
                         </div>
                     </>
                 )}

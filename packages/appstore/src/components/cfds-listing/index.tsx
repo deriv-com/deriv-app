@@ -324,6 +324,7 @@ const CFDsListing = observer(() => {
                                   }
                               }}
                               key={`trading_app_card_${account.name}`}
+                              is_new={true}
                           />
                       );
                   })

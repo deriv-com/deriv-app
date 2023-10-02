@@ -33,6 +33,7 @@ const TradingAppCard = ({
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
+    is_new = false,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const {
         common,
@@ -124,15 +125,22 @@ const TradingAppCard = ({
                             </Text>
                         )}
                     </div>
-                    <Text
-                        className='title'
-                        size='xs'
-                        line_height='s'
-                        weight='bold'
-                        color={action_type === 'trade' ? 'prominent' : 'general'}
-                    >
-                        {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
-                    </Text>
+                    <div>
+                        <Text
+                            className='title'
+                            size='xs'
+                            line_height='s'
+                            weight='bold'
+                            color={action_type === 'trade' ? 'prominent' : 'general'}
+                        >
+                            {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
+                        </Text>
+                        {is_new && (
+                            <Text className='trading-app-card__details__new' weight='bolder' size='xxs' line_height='s'>
+                                {localize('NEW!')}
+                            </Text>
+                        )}
+                    </div>
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {appDescription()}
                     </Text>

@@ -289,6 +289,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             network_status: {},
         },
         ui: {
+            advanced_duration_unit: 't',
             account_switcher_disabled_message: '',
             app_contents_scroll_ref: {
                 current: null,

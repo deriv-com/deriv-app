@@ -355,7 +355,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
-            setIsAcuityModalOpen: jest.fn(),
             is_switch_to_deriv_account_modal_visible: false,
             openSwitchToRealAccountModal: jest.fn(),
             is_top_up_virtual_open: false,

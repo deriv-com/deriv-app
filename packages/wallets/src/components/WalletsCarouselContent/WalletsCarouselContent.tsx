@@ -1,8 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
+
 import { useAuthorize, useWalletAccountsList } from '@deriv/api';
+
 import { ProgressBar } from '../ProgressBar';
 import { WalletCard } from '../WalletCard';
+
 // import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
 
@@ -28,9 +31,9 @@ const WalletsCarouselContent: React.FC = () => {
 
     useEffect(() => {
         walletsCarouselEmblaApi?.on('settle', () => {
-            // const scroll_snap_index = walletsCarouselEmblaApi?.selectedScrollSnap();
-            // const loginid = wallet_accounts_list[scroll_snap_index]?.loginid;
-            // switchAccount(loginid);
+            const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
+            const loginid = walletAccountsList?.[scrollSnapIndex]?.loginid;
+            switchAccount(loginid || '');
         });
 
         walletsCarouselEmblaApi?.on('select', () => {

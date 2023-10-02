@@ -1,13 +1,14 @@
-import { action, computed, observable, toJS, makeObservable, override, reaction, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, override, reaction, runInAction,toJS } from 'mobx';
+
 import {
     getAccuBarriersDTraderTimeout,
     getContractTypesConfig,
     isAccumulatorContract,
     isAccumulatorContractOpen,
     isCallPut,
-    isHighLow,
     isDesktop,
     isEnded,
+    isHighLow,
     isMobile,
     isMultiplierContract,
     isTurbosContract,
@@ -15,8 +16,9 @@ import {
     LocalStore,
     switch_to_tick_chart,
 } from '@deriv/shared';
-import ContractStore from './contract-store';
+
 import BaseStore from './base-store';
+import ContractStore from './contract-store';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -332,8 +334,11 @@ export default class ContractTradeStore extends BaseStore {
         is_tick_contract,
         limit_order = {},
     }) {
-        const contract_exists = this.contracts_map[contract_id];
-        if (contract_exists) {
+        const existing_contract = this.contracts_map[contract_id];
+        if (existing_contract) {
+            if (this.contracts.every(c => c.contract_id !== contract_id)) {
+                this.contracts.push(existing_contract);
+            }
             return;
         }
 

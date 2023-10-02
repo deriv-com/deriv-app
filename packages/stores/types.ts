@@ -1,3 +1,6 @@
+import type { RouteComponentProps } from 'react-router';
+import type { Moment } from 'moment';
+
 import type {
     AccountLimitsResponse,
     Authorize,
@@ -6,10 +9,10 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
-    Portfolio1,
     GetSettings,
     LandingCompany,
     LogOutResponse,
+    Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
@@ -17,8 +20,7 @@ import type {
     StatesList,
     Transaction,
 } from '@deriv/api-types';
-import type { Moment } from 'moment';
-import type { RouteComponentProps } from 'react-router';
+
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
 
 type TRoutes =
@@ -603,7 +605,6 @@ type TUiStore = {
     is_need_real_account_for_cashier_modal_visible: boolean;
     is_chart_layout_default: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
-    setIsAcuityModalOpen: (value: boolean) => void;
     is_switch_to_deriv_account_modal_visible: boolean;
     openSwitchToRealAccountModal: () => void;
     openDerivRealAccountNeededModal: () => void;

@@ -1,27 +1,30 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Form } from 'formik';
+import { Form,Formik } from 'formik';
+
 import {
-    Modal,
     AutoHeightWrapper,
     Div100vhContainer,
     FormSubmitButton,
-    ThemedScrollbars,
+    Modal,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { isDesktop, isMobile, getIDVNotApplicableOption, removeEmptyPropertiesFromObject } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import { Localize,localize } from '@deriv/translations';
+
 import {
-    shouldShowIdentityInformation,
-    isDocumentTypeValid,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
+    isDocumentTypeValid,
     shouldHideHelperImage,
+    shouldShowIdentityInformation,
 } from 'Helpers/utils';
-import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+
+import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
-import FormSubHeader from '../form-sub-header';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -116,7 +119,15 @@ const PersonalDetails = ({
     const citizen = account_settings?.citizen || residence;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
-    const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
+    const getEditableFields = is_confirmed => {
+        const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
+
+        if (is_confirmed && is_qualified_for_idv) {
+            return editable_fields.filter(field => !['first_name', 'last_name', 'date_of_birth'].includes(field));
+        }
+
+        return editable_fields;
+    };
 
     return (
         <Formik
@@ -124,11 +135,13 @@ const PersonalDetails = ({
             initialValues={{ ...props.value }}
             validate={handleValidate}
             validateOnMount
+            enableReinitialize
+            initialStatus={{ is_confirmed: !is_qualified_for_idv }}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
+            {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur, status }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form
@@ -184,7 +197,7 @@ const PersonalDetails = ({
                                             is_svg={is_svg}
                                             is_mf={is_mf}
                                             is_qualified_for_idv={is_qualified_for_idv}
-                                            editable_fields={editable_fields}
+                                            editable_fields={getEditableFields(status?.is_confirmed)}
                                             residence_list={residence_list}
                                             has_real_account={has_real_account}
                                             is_fully_authenticated={is_fully_authenticated}
@@ -202,7 +215,7 @@ const PersonalDetails = ({
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     has_cancel
-                                    is_disabled={isSubmitDisabled(errors)}
+                                    is_disabled={!status?.is_confirmed || isSubmitDisabled(errors)}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}

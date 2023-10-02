@@ -35,8 +35,7 @@ const EmptyState: React.FC<TProps> = ({ icon, title, description, action }) => (
         </div>
         {action && (
             <Button
-                large={!isMobile()}
-                medium={isMobile()}
+                large
                 has_effect
                 text={action.label}
                 onClick={action.onClick}

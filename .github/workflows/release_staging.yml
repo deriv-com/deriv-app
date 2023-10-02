@@ -53,13 +53,8 @@ jobs:
         path: packages
     - name: Display structure of downloaded files
       run: |
-          cd packages
+          cd artifacts
           ls -R
-          cd core
-          ls -R 
-          cd dist 
-          ls -R
-      
         # - uses: "./.github/actions/publish_to_pages_staging"
     #   with:       
     #     NODE_ENV: staging

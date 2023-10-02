@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, override, reaction, runInAction,toJS } from 'mobx';
+import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS } from 'mobx';
 
 import {
     getAccuBarriersDTraderTimeout,
@@ -95,7 +95,7 @@ export default class ContractTradeStore extends BaseStore {
                         should_update_contract_barriers: true,
                         underlying,
                     });
-                } else if (is_sold) {
+                } else if (!isAccumulatorContractOpen(this.last_contract.contract_info)) {
                     this.clearAccumulatorBarriersData(true, false);
                 }
             }

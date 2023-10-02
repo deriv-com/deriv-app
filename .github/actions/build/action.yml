@@ -4,6 +4,7 @@ inputs:
   NODE_ENV:
     description: 'Node environment'
     required: false
+    default: 'staging'
   DATADOG_CLIENT_TOKEN:
     description: 'Datadog client token'
     required: false
@@ -43,7 +44,7 @@ runs:
   steps:
   - name: Build all packages
     env:
-      NODE_ENV: staging
+      NODE_ENV: ${{ inputs.NODE_ENV }}
       DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }} 
       DATADOG_CLIENT_TOKEN: ${{ inputs.DATADOG_CLIENT_TOKEN }}
       DATADOG_CLIENT_TOKEN_LOGS: ${{ inputs.DATADOG_CLIENT_TOKEN_LOGS }}

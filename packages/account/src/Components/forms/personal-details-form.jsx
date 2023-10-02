@@ -97,6 +97,12 @@ const PersonalDetailsForm = props => {
         }
     }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
+    const handleSalutationSelection = event => {
+        if (event.target?.type === 'radio') {
+            setFieldValue('salutation', event.target?.value);
+        }
+    };
+
     const poa_clarification_message = (
         <Localize i18n_default_text='For faster verification, input the same address here as in your proof of address document (see section below)' />
     );
@@ -162,27 +168,29 @@ const PersonalDetailsForm = props => {
                             />
                         )}
                         {'salutation' in values && (
-                            <RadioGroup
-                                className='dc-radio__input'
-                                name='salutation'
-                                selected={values.salutation}
-                                onToggle={e => {
-                                    e.persist();
-                                    setFieldValue('salutation', e.target.value);
-                                }}
-                                required
-                            >
-                                {salutation_list.map(item => (
-                                    <RadioGroup.Item
-                                        key={item.value}
-                                        label={item.label}
-                                        value={item.value}
-                                        disabled={
-                                            !!values.salutation && isFieldImmutable('salutation', editable_fields)
-                                        }
-                                    />
-                                ))}
-                            </RadioGroup>
+                            <span onClick={handleSalutationSelection}>
+                                <RadioGroup
+                                    className='dc-radio__input'
+                                    name='salutation'
+                                    selected={values.salutation}
+                                    onToggle={e => {
+                                        e.persist();
+                                        setFieldValue('salutation', e.target.value);
+                                    }}
+                                    required
+                                >
+                                    {salutation_list.map(item => (
+                                        <RadioGroup.Item
+                                            key={item.value}
+                                            label={item.label}
+                                            value={item.value}
+                                            disabled={
+                                                !!values.salutation && isFieldImmutable('salutation', editable_fields)
+                                            }
+                                        />
+                                    ))}
+                                </RadioGroup>
+                            </span>
                         )}
                         {'first_name' in values && (
                             <FormInputField

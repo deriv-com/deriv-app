@@ -6,7 +6,7 @@ const FlyoutImage = props => {
     const style = { width };
 
     return (
-        <div className='flyout__item'>
+        <div className='flyout__item' data-testid='dt_flyout_image'>
             <img src={url} className='flyout__image' style={style} />
         </div>
     );

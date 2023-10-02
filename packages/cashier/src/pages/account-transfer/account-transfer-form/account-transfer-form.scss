@@ -6,6 +6,7 @@
     &__hint {
         color: var(--text-general);
         margin-top: 0.5rem;
+
         &__disabled {
             color: var(--text-less-prominent);
         }
@@ -23,10 +24,12 @@
             margin-right: 0.4rem;
         }
     }
+
     &__crypto {
         &--disabled {
             pointer-events: none;
         }
+
         &--percentage-selector {
             display: flex;
             flex-direction: column;
@@ -34,6 +37,7 @@
             margin-bottom: 2.4rem;
         }
     }
+
     &__inline-warning-message {
         margin-bottom: 3rem;
 
@@ -42,6 +46,7 @@
             width: 100%;
         }
     }
+
     &__drop-down-wrapper {
         @include mobile {
             margin-top: 1.2rem;
@@ -51,6 +56,7 @@
             }
         }
     }
+
     &__drop-down {
         display: inline-block;
         min-width: 20.3rem;
@@ -58,9 +64,11 @@
         line-height: 1.43;
         text-align: left;
         margin: 0 auto 5.1rem;
+
         @include desktop {
             max-width: 40rem;
         }
+
         @include mobile {
             width: 100%;
             min-width: auto;
@@ -71,21 +79,26 @@
             @include desktop {
                 margin: 0 auto 3.3rem;
             }
+
             @include mobile {
                 margin-bottom: 2.4rem;
             }
         }
+
         & .dc-dropdown__display-text {
             width: 100%;
             align-items: center;
         }
+
         & .dc-field--error {
             padding-top: 0.5rem;
+
             .link {
                 pointer-events: all;
             }
         }
     }
+
     &__notes {
         @include mobile {
             padding: 1.6rem 0;
@@ -99,6 +112,7 @@
             margin-top: 0;
         }
     }
+
     &__bullet {
         background-color: var(--text-general);
         border-radius: 100%;
@@ -113,10 +127,12 @@
             margin-bottom: 0.8rem;
         }
     }
+
     &__wrapper {
         .cashier__form-submit {
-            margin-top: 3rem;
+            margin-top: 1rem;
         }
+
         .account-transfer-form__input {
             min-width: 40rem;
             height: 6.5rem;
@@ -125,12 +141,15 @@
             .dc-input__hint {
                 margin: 0.5rem 0 -1.9rem 1.3rem;
             }
+
             .dc-field--error {
                 margin-top: 0.5rem;
             }
+
             &-fit-content {
                 width: fit-content;
             }
+
             @include mobile {
                 width: 100%;
                 min-width: auto;
@@ -141,14 +160,17 @@
             }
         }
     }
+
     &__currency,
     &__balance {
         line-height: 1.43;
     }
+
     &__currency {
         &-icon {
             align-self: center;
         }
+
         &-wrapper {
             display: flex;
             flex-direction: column;
@@ -158,13 +180,16 @@
             margin-right: 8px;
         }
     }
+
     &__icon {
         display: flex;
         justify-content: center;
     }
+
     &__balance {
         margin-left: auto;
     }
+
     &__form-submit {
         display: flex;
         flex-direction: column;
@@ -175,6 +200,7 @@
         > * {
             width: auto;
         }
+
         &--align-end {
             align-items: flex-end;
 
@@ -213,11 +239,13 @@
         &-wrapper {
             display: flex;
             height: 100%;
+
             @include mobile {
                 height: initial;
             }
         }
     }
+
     @include desktop {
         &__form-submit {
             min-width: 36rem;
@@ -226,14 +254,17 @@
         }
     }
 }
+
 .dc-modal__container_account_transfer {
     &_switch_modal {
         transition: none;
+
         .dc-modal {
             @include mobile() {
                 &-header__close {
                     margin: 2.4rem 1.6rem 0;
                 }
+
                 &-body {
                     font-size: 1.4rem;
                 }
@@ -242,9 +273,11 @@
             &-header__title {
                 padding: 2.4rem 2.4rem 0;
             }
+
             &-body {
                 padding: 2.4rem;
             }
+
             &-footer {
                 padding: 0 2.4rem 2.4rem;
             }

@@ -25,6 +25,10 @@ const ChatMessages = observer(() => {
 
     React.useEffect(() => {
         sendbird_store.setMessagesRef(scroll_ref);
+        if (sendbird_store.chat_messages.length > 0 && scroll_ref.current) {
+            // Scroll all the way to the bottom of the container.
+            scroll_ref.current.scrollTop = scroll_ref.current.scrollHeight;
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

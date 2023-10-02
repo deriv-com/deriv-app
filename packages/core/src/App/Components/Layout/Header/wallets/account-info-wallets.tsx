@@ -125,44 +125,41 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     const { data: wallets_list } = useWalletAccountsList();
     const { data: linked_accounts } = useLinkedWalletsAccounts();
 
-    let linked_dtrade_trading_account_loginind = active_account?.loginid;
+    let linked_dtrade_trading_account_loginid = active_account?.loginid;
 
     if (active_wallet) {
         // get 'dtrade' loginid account linked to the current wallet
-        linked_dtrade_trading_account_loginind = active_wallet.dtrade_loginid || linked_accounts.dtrade?.[0]?.loginid;
+        linked_dtrade_trading_account_loginid = active_wallet.dtrade_loginid || linked_accounts.dtrade?.[0]?.loginid;
 
         // switch to dtrade account
         if (
-            linked_dtrade_trading_account_loginind &&
-            linked_dtrade_trading_account_loginind !== active_account?.loginid
+            linked_dtrade_trading_account_loginid &&
+            linked_dtrade_trading_account_loginid !== active_account?.loginid
         ) {
-            switchAccount(linked_dtrade_trading_account_loginind);
+            switchAccount(linked_dtrade_trading_account_loginid);
         }
     }
 
-    const linked_wallet = wallets_list?.find(
-        wallet => wallet.dtrade_loginid === linked_dtrade_trading_account_loginind
-    );
+    const linked_wallet = wallets_list?.find(wallet => wallet.dtrade_loginid === linked_dtrade_trading_account_loginid);
 
     if (!linked_wallet) return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
 
     const show_badge = linked_wallet.is_malta_wallet || linked_wallet.is_virtual;
 
+    const { is_disabled, balance, currency, is_virtual, currency_config } = active_account || {};
+
     return (
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
-            <AccountInfoWrapper
-                is_disabled={active_account?.is_disabled}
-                disabled_message={account_switcher_disabled_message}
-            >
+            <AccountInfoWrapper is_disabled={is_disabled} disabled_message={account_switcher_disabled_message}>
                 <div
                     data-testid='dt_acc_info'
                     id='dt_core_account-info_acc-info'
                     className={classNames('acc-info acc-info__wallets', {
                         'acc-info--show': is_dialog_on,
-                        'acc-info--is-disabled': active_account?.is_disabled,
+                        'acc-info--is-disabled': is_disabled,
                     })}
-                    onClick={active_account?.is_disabled ? undefined : () => toggleDialog()}
+                    onClick={is_disabled ? undefined : () => toggleDialog()}
                 >
                     {is_mobile ? (
                         <MobileInfoIcons wallet_account={linked_wallet} />
@@ -170,15 +167,15 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                         <DesktopInfoIcons wallet_account={linked_wallet} />
                     )}
                     <BalanceLabel
-                        balance={active_account?.balance}
-                        currency={active_account?.currency}
-                        is_virtual={active_account?.is_virtual}
-                        display_code={active_account?.currency_config?.display_code}
+                        balance={balance}
+                        currency={currency}
+                        is_virtual={is_virtual}
+                        display_code={currency_config?.display_code}
                     />
                     {show_badge && (
                         <WalletBadge is_demo={linked_wallet?.is_virtual} label={linked_wallet?.landing_company_name} />
                     )}
-                    <DropdownArrow is_disabled={active_account?.is_disabled} />
+                    <DropdownArrow is_disabled={is_disabled} />
                 </div>
             </AccountInfoWrapper>
             {is_mobile ? (

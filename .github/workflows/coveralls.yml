@@ -15,6 +15,6 @@ jobs:
       - name: Build
         uses: "./.github/actions/build"
       - name: Test
-        run: JEST_MAX_WORKERS=14 npm run test:jest -- --collectCoverage
+        run: JEST_MAX_WORKERS=75% npm run test:jest -- --collectCoverage
       - name: Coveralls
         uses: coverallsapp/github-action@v2

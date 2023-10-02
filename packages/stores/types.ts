@@ -424,6 +424,7 @@ type TClientStore = {
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
     prev_account_type: string;
+    is_alpha_chart: boolean;
 };
 
 type TCommonStoreError = {

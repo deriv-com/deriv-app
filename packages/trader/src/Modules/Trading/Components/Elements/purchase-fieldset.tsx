@@ -16,6 +16,7 @@ type TPurchaseFieldset = {
     index: number;
     info: TProposalTypeInfo;
     is_accumulator: boolean;
+    is_alpha_chart: boolean;
     is_disabled: boolean;
     is_high_low: boolean;
     is_loading: boolean;
@@ -41,6 +42,7 @@ const PurchaseFieldset = ({
     info,
     index,
     is_accumulator,
+    is_alpha_chart,
     is_disabled,
     is_high_low,
     is_loading,
@@ -132,6 +134,11 @@ const PurchaseFieldset = ({
                         }}
                         onMouseLeave={() => {
                             if (!is_disabled) {
+                                onHoverPurchase(false, type);
+                            }
+                        }}
+                        onClick={() => {
+                            if (!is_disabled && is_alpha_chart) {
                                 onHoverPurchase(false, type);
                             }
                         }}

@@ -23,7 +23,7 @@ import {
 import { getChartConfig } from './Helpers/logic';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
 import { ChartBarrierStore } from './chart-barrier-store';
-import { createChartMarkers } from './Helpers/chart-markers';
+import { createChartMarkers, calculateMarker, getAccumulatorMarkers } from './Helpers/chart-markers';
 import BaseStore from './base-store';
 
 export default class ContractStore extends BaseStore {
@@ -63,6 +63,7 @@ export default class ContractStore extends BaseStore {
             clearContractUpdateConfigValues: action.bound,
             onChange: action.bound,
             updateLimitOrder: action.bound,
+            getMarkersArray: action.bound,
         });
 
         this.root_store = root_store;
@@ -109,7 +110,7 @@ export default class ContractStore extends BaseStore {
     // ---- Normal properties ---
     is_ongoing_contract = false;
 
-    populateConfig(contract_info) {
+    populateConfig(contract_info, is_last_contract = false) {
         const prev_contract_info = this.contract_info;
         this.contract_info = contract_info;
         this.end_time = getEndTime(this.contract_info);
@@ -119,7 +120,12 @@ export default class ContractStore extends BaseStore {
         // TODO: don't update the barriers & markers if they are not changed
         this.updateBarriersArray(contract_info, this.root_store.ui.is_dark_mode_on);
         this.markers_array = createChartMarkers(this.contract_info);
-        this.marker = calculate_marker(this.contract_info, { accu_high_barrier, accu_low_barrier });
+        this.marker = this.root_store.client.is_alpha_chart
+            ? calculateMarker(this.contract_info, this.root_store.ui.is_dark_mode_on, is_last_contract, {
+                  accu_high_barrier,
+                  accu_low_barrier,
+              })
+            : calculate_marker(this.contract_info, { accu_high_barrier, accu_low_barrier });
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
@@ -206,10 +212,15 @@ export default class ContractStore extends BaseStore {
                     },
                     is_dark_mode
                 );
-                this.marker = calculate_marker(this.contract_info, {
-                    accu_high_barrier: this.accu_high_barrier,
-                    accu_low_barrier: this.accu_low_barrier,
-                }); // this.marker is rendered as DelayedAccuBarriersMarker component
+                this.marker = this.root_store.client.is_alpha_chart
+                    ? calculateMarker(this.contract_info, this.root_store.ui.is_dark_mode_on, false, {
+                          accu_high_barrier: this.accu_high_barrier,
+                          accu_low_barrier: this.accu_low_barrier,
+                      })
+                    : calculate_marker(this.contract_info, {
+                          accu_high_barrier: this.accu_high_barrier,
+                          accu_low_barrier: this.accu_low_barrier,
+                      }); // this.marker is rendered as DelayedAccuBarriersMarker component
                 return;
             }
             setTimeout(
@@ -326,6 +337,26 @@ export default class ContractStore extends BaseStore {
             // Update portfolio store
             this.root_store.portfolio.populateContractUpdate(response, this.contract_id);
         });
+    }
+
+    getMarkersArray() {
+        const { contract_type, high_barrier, low_barrier, tick_stream: ticks } = this.contract_info;
+
+        if (!isAccumulatorContract(contract_type)) return [];
+        const exit = ticks[ticks.length - 1];
+        const previous_tick = ticks[ticks.length - 2] || exit;
+
+        if (!previous_tick) return [];
+        const marker = getAccumulatorMarkers({
+            high_barrier,
+            low_barrier,
+            epoch: previous_tick.epoch,
+            is_dark_mode_on: this.root_store.ui.is_dark_mode_on,
+            contract_info: this.contract_info,
+            in_contract_details: true,
+        });
+
+        return [marker];
     }
 }
 

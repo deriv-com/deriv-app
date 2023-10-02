@@ -67,6 +67,8 @@ export const isAccumulatorContractOpen = (contract_info: TContractInfo = {}) => 
 
 export const isMultiplierContract = (contract_type = '') => /MULT/i.test(contract_type);
 
+export const isTouchContract = (contract_type: string) => /TOUCH/i.test(contract_type);
+
 export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_type);
 
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);

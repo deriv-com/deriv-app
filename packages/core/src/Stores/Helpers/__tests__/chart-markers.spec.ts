@@ -1,5 +1,5 @@
 import { TContractInfo } from '@deriv/shared';
-import { createTickMarkers } from '../chart-markers';
+import { createTickMarkers, getMarkerContractType, getStartText } from '../chart-markers';
 
 describe('createTickMarkers', () => {
     const previous_spot_classname = 'chart-spot__spot chart-spot__spot--accumulator-middle';
@@ -94,5 +94,31 @@ describe('createTickMarkers', () => {
         expect(result_for_closed_contract[result_for_closed_contract.length - 2].content_config.spot_className).toBe(
             `${previous_spot_classname}--preexit`
         );
+    });
+
+    it('should get the correct contract type', () => {
+        contract_info.contract_type = 'ACCU';
+        expect(getMarkerContractType(contract_info)).toBe('AccumulatorContract');
+
+        contract_info.contract_type = 'DIGITMATCH';
+        expect(getMarkerContractType(contract_info)).toBe('DigitContract');
+
+        contract_info.contract_type = 'CALL';
+        contract_info.tick_count = 1;
+        expect(getMarkerContractType(contract_info)).toBe('TickContract');
+    });
+
+    it('should get the correct start text', () => {
+        contract_info.contract_type = 'ACCU';
+        contract_info.tick_count = undefined;
+        Object.assign(contract_info, {
+            contract_type: 'CALL',
+            tick_count: undefined,
+            profit: '1',
+            barrier: '1000',
+            currency: 'USD',
+        });
+        const result = getStartText(contract_info);
+        expect(result).toBe('+$1.00');
     });
 });

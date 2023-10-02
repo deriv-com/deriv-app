@@ -14,6 +14,7 @@ import {
 import {
     getDurationPeriod,
     getDurationUnitText,
+    getEndTime,
     getPlatformRedirect,
     isAccumulatorContract,
     isDesktop,
@@ -195,7 +196,7 @@ export default ContractReplay;
 
 const ReplayChart = observer(({ is_accumulator_contract }) => {
     const trade = useTraderStore();
-    const { contract_replay, common, ui } = useStore();
+    const { contract_replay, client, common, ui } = useStore();
     const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
     const {
         accumulator_previous_spot_time,
@@ -230,8 +231,9 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const scroll_to_epoch = allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined;
     const all_ticks = audit_details ? audit_details.all_ticks : [];
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
+    const { is_alpha_chart } = client;
 
-    const accu_barriers_marker_component = !is_alpha ? allMarkers[accumulators_barriers_marker?.type] : undefined;
+    const accu_barriers_marker_component = !is_alpha_chart ? allMarkers[accumulators_barriers_marker?.type] : undefined;
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && is_digit_contract;
@@ -251,9 +253,12 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     };
     const prev_start_epoch = usePrevious(start_epoch);
 
+    const has_ended = !!getEndTime(contract_info);
+
     return (
         <SmartChartSwitcher
-            is_alpha={false}
+            id={'replay'}
+            is_alpha={is_alpha_chart}
             barriers={barriers_array}
             bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : null}
             chartControlsWidgets={null}
@@ -291,8 +296,11 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             }
             shouldDrawTicksFromContractInfo={is_accumulator_contract}
             contractInfo={contract_info}
+            markers_array={getMarkersArray()}
+            isLive={!has_ended}
+            startWithDataFitMode={true}
         >
-            {is_alpha &&
+            {is_alpha_chart &&
                 markers_array.map(({ content_config, marker_config, react_key }) => (
                     <ChartMarkerAlpha
                         key={react_key}
@@ -301,7 +309,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                         is_bottom_widget_visible={isBottomWidgetVisible()}
                     />
                 ))}
-            {!is_alpha &&
+            {!is_alpha_chart &&
                 markers_array.map(({ content_config, marker_config, react_key }) => (
                     <ChartMarker
                         key={react_key}
@@ -310,7 +318,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                         is_bottom_widget_visible={isBottomWidgetVisible()}
                     />
                 ))}
-            {!is_alpha && is_accumulator_contract && !!markers_array && (
+            {!is_alpha_chart && is_accumulator_contract && !!markers_array && (
                 <DelayedAccuBarriersMarker
                     marker_component={accu_barriers_marker_component}
                     key={accumulators_barriers_marker.key}

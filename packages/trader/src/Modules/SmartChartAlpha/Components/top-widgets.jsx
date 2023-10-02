@@ -10,9 +10,9 @@ import { observer, useStore } from '@deriv/stores';
 
 const RecentTradeInfo = observer(() => {
     const { contract_trade } = useStore();
-    const { granularity, markers_array } = contract_trade;
+    const { granularity, filtered_contracts } = contract_trade;
 
-    const latest_tick_contract = markers_array[markers_array.length - 1];
+    const latest_tick_contract = filtered_contracts[filtered_contracts.length - 1];
     if (
         !latest_tick_contract ||
         !latest_tick_contract.contract_info.tick_stream ||

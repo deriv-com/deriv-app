@@ -10,9 +10,9 @@ import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from './toolbar-widgets';
 
-const Chart = observer(({ is_alpha, show_digits_stats }: { is_alpha: boolean; show_digits_stats: boolean }) => {
+const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) => {
     const barriers: [] = [];
-    const { common, ui } = useStore();
+    const { common, ui, client } = useStore();
     const { chart_store, run_panel } = useDBotStore();
 
     const {
@@ -46,7 +46,7 @@ const Chart = observer(({ is_alpha, show_digits_stats }: { is_alpha: boolean; sh
                 'dashboard__chart-wrapper--expanded': is_drawer_open && !isMobile(),
             })}
         >
-            {is_alpha && (
+            {client.is_alpha_chart && (
                 <SmartChartAlpha
                     id='dbot'
                     barriers={barriers}
@@ -73,7 +73,7 @@ const Chart = observer(({ is_alpha, show_digits_stats }: { is_alpha: boolean; sh
                     isLive={true}
                 />
             )}
-            {!is_alpha && (
+            {!client.is_alpha_chart && (
                 <SmartChart
                     id='dbot'
                     barriers={barriers}

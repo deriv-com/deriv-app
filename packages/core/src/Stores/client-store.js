@@ -84,6 +84,7 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
+    is_alpha_chart = false;
 
     // All possible landing companies of user between all
     standpoint = {
@@ -406,6 +407,7 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
+            is_alpha_chart: observable,
         });
 
         reaction(

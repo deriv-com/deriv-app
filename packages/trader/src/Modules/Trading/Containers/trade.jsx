@@ -245,9 +245,7 @@ export default Trade;
 /* eslint-disable */
 import SmartChartSwitcher from './smart-chart-switcher.jsx';
 
-const SmartChartWithRef = React.forwardRef((props, ref) => (
-    <SmartChartSwitcher is_alpha={false} innerRef={ref} {...props} />
-));
+const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChartSwitcher innerRef={ref} {...props} />);
 
 // ChartMarkers --------------------------
 const ChartMarkers = observer(config => {
@@ -278,14 +276,15 @@ const ChartTrade = observer(props => {
         accumulator_contract_barriers_data,
         chart_type,
         granularity,
+        markers_array,
         has_crossed_accu_barriers,
         updateGranularity,
         updateChartType,
     } = contract_trade;
     const { all_positions } = portfolio;
-    const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
+    const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on, is_positions_drawer_on } = ui;
     const { is_socket_opened, current_language } = common;
-    const { currency, should_show_eu_content } = client;
+    const { currency, is_alpha_chart, should_show_eu_content } = client;
     const {
         chartStateChange,
         is_trade_enabled,
@@ -352,6 +351,7 @@ const ChartTrade = observer(props => {
         <SmartChartWithRef
             ref={charts_ref}
             barriers={barriers}
+            markers_array={markers_array}
             bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={isMobile() ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
@@ -399,8 +399,11 @@ const ChartTrade = observer(props => {
             yAxisMargin={{
                 top: isMobile() ? 76 : 106,
             }}
+            isLive={true}
+            leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
+            is_alpha={is_alpha_chart}
         >
-            <ChartMarkers />
+            {!is_alpha_chart && <ChartMarkers />}
             {is_accumulator && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}

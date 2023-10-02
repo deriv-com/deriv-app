@@ -263,6 +263,15 @@
             width: 3px;
         }
     }
+
+    &__icon-alpha {
+        position: absolute;
+        bottom: 0;
+        left: -11px;
+        white-space: nowrap;
+        background-color: var(--general-main-1);
+    }
+
     &__icon {
         position: absolute;
         bottom: -23px;

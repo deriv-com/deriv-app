@@ -15,6 +15,7 @@ import {
 } from '@deriv/shared';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
+import { getAccumulatorMarkers } from './Helpers/chart-markers';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -26,6 +27,7 @@ export default class ContractTradeStore extends BaseStore {
     // Chart specific observables
     granularity = +LocalStore.get('contract_trade.granularity') || 0;
     chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
+    alpha_chart_type = LocalStore.get('contract_trade.chart_style') || 'line';
     prev_chart_type = '';
     prev_granularity = null;
 
@@ -52,6 +54,7 @@ export default class ContractTradeStore extends BaseStore {
             updateChartType: action.bound,
             updateGranularity: action.bound,
             markers_array: computed,
+            filtered_contracts: computed,
             addContract: action.bound,
             removeContract: action.bound,
             accountSwitchListener: action.bound,
@@ -189,11 +192,28 @@ export default class ContractTradeStore extends BaseStore {
         this.chart_type = type;
     }
 
+    updateAlphaChartType(type) {
+        LocalStore.set('contract_trade.chart_style', type);
+        this.chart_type = type;
+    }
+
     updateGranularity(granularity) {
         const tick_chart_types = ['mountain', 'line', 'colored_line', 'spline', 'baseline'];
-        if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
-            this.chart_type = 'mountain';
+        const tick_alpha_chart_types = ['line', 'candles', 'hollow', 'ohlc'];
+
+        switch (this.root_store.client.is_alpha_chart) {
+            case true:
+                if (granularity === 0 && tick_alpha_chart_types.indexOf(this.alpha_chart_type) === -1) {
+                    this.alpha_chart_type = 'line';
+                }
+                break;
+            default:
+                if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
+                    this.chart_type = 'mountain';
+                }
+                break;
         }
+
         LocalStore.set('contract_trade.granularity', granularity);
         this.granularity = granularity;
         if (this.granularity === 0) {
@@ -271,6 +291,10 @@ export default class ContractTradeStore extends BaseStore {
         );
     }
 
+    get filtered_contracts() {
+        return this.applicable_contracts();
+    }
+
     get markers_array() {
         let markers = [];
         const { contract_type: trade_type, symbol } = JSON.parse(localStorage.getItem('trade_store')) || {};
@@ -278,14 +302,20 @@ export default class ContractTradeStore extends BaseStore {
             .map(c => c.marker)
             .filter(m => m)
             .map(m => toJS(m));
-        if (markers.length) {
-            markers[markers.length - 1].is_last_contract = true;
+
+        if (!this.root_store.client.is_alpha_chart) {
+            if (markers.length) {
+                markers[markers.length - 1].is_last_contract = true;
+            }
         }
-        const { current_spot_time, entry_tick_time, exit_tick_time } =
+        const contract_info =
             this.root_store.portfolio.active_positions.find(
                 ({ type, contract_info: _contract_info }) =>
                     isAccumulatorContract(type) && _contract_info.underlying === symbol
             )?.contract_info || {};
+
+        const { current_spot_time, entry_tick_time, exit_tick_time } = contract_info;
+
         const { accumulators_high_barrier, accumulators_low_barrier, barrier_spot_distance, previous_spot_time } =
             (((isAccumulatorContractOpen(this.last_contract.contract_info) &&
                 entry_tick_time &&
@@ -296,22 +326,38 @@ export default class ContractTradeStore extends BaseStore {
             this.accumulator_barriers_data ||
             {};
         if (trade_type === 'accumulator' && previous_spot_time && accumulators_high_barrier) {
-            markers.push({
-                type: 'TickContract',
-                contract_info: {
-                    accu_barriers_difference: barrier_spot_distance && {
-                        top: `+${barrier_spot_distance}`,
-                        bottom: `-${barrier_spot_distance}`,
-                        font: isMobile() ? '10px IBM Plex Sans' : '14px IBM Plex Sans',
+            if (this.root_store.client.is_alpha_chart) {
+                markers.push(
+                    getAccumulatorMarkers({
+                        high_barrier: accumulators_high_barrier,
+                        low_barrier: accumulators_low_barrier,
+                        barrier_spot_distance,
+                        epoch: previous_spot_time,
+                        has_crossed_accu_barriers: this.has_crossed_accu_barriers,
+                        is_dark_theme: this.root_store.ui.is_dark_mode_on,
+                        contract_info,
+                        is_accumulator_trade_without_contract: this.last_contract.contract_info?.status !== 'open',
+                    })
+                );
+            }
+            if (!this.root_store.client.is_alpha_chart) {
+                markers.push({
+                    type: 'TickContract',
+                    contract_info: {
+                        accu_barriers_difference: barrier_spot_distance && {
+                            top: `+${barrier_spot_distance}`,
+                            bottom: `-${barrier_spot_distance}`,
+                            font: isMobile() ? '10px IBM Plex Sans' : '14px IBM Plex Sans',
+                        },
+                        has_crossed_accu_barriers: this.has_crossed_accu_barriers,
+                        is_accumulator_trade_without_contract:
+                            !isAccumulatorContractOpen(this.last_contract.contract_info) || !entry_tick_time,
                     },
-                    has_crossed_accu_barriers: this.has_crossed_accu_barriers,
-                    is_accumulator_trade_without_contract:
-                        !isAccumulatorContractOpen(this.last_contract.contract_info) || !entry_tick_time,
-                },
-                key: 'dtrader_accumulator_barriers',
-                price_array: [accumulators_high_barrier, accumulators_low_barrier],
-                epoch_array: [previous_spot_time],
-            });
+                    key: 'dtrader_accumulator_barriers',
+                    price_array: [accumulators_high_barrier, accumulators_low_barrier],
+                    epoch_array: [previous_spot_time],
+                });
+            }
         }
         return markers;
     }
@@ -331,15 +377,20 @@ export default class ContractTradeStore extends BaseStore {
             return;
         }
 
+        const is_last_contract = contract_id === this.last_contract.contract_id;
+
         const contract = new ContractStore(this.root_store, { contract_id });
-        contract.populateConfig({
-            date_start: start_time,
-            barrier,
-            contract_type,
-            longcode,
-            underlying,
-            limit_order,
-        });
+        contract.populateConfig(
+            {
+                date_start: start_time,
+                barrier,
+                contract_type,
+                longcode,
+                underlying,
+                limit_order,
+            },
+            is_last_contract
+        );
 
         this.contracts.push(contract);
         this.contracts_map[contract_id] = contract;
@@ -378,7 +429,13 @@ export default class ContractTradeStore extends BaseStore {
         if (response.proposal_open_contract) {
             const contract_id = +response.proposal_open_contract.contract_id;
             const contract = this.contracts_map[contract_id];
-            contract.populateConfig(response.proposal_open_contract);
+            if (this.root_store.client.is_alpha_chart) {
+                const is_last_contract = contract_id === this.last_contract.contract_id;
+                contract.populateConfig(response.proposal_open_contract, is_last_contract);
+            }
+            if (!this.root_store.client.is_alpha_chart) {
+                contract.populateConfig(response.proposal_open_contract);
+            }
             if (response.proposal_open_contract.is_sold) {
                 this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
                 contract.cacheProposalOpenContractResponse(response);

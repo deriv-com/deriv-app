@@ -82,6 +82,9 @@ const MyProfileName = () => {
                             {rating_average ? (
                                 <React.Fragment>
                                     <div className='my-profile-name__rating__row'>
+                                        <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                            {rating_average_decimal}
+                                        </Text>
                                         <StarRating
                                             empty_star_icon='IcEmptyStar'
                                             full_star_icon='IcFullStar'
@@ -89,12 +92,9 @@ const MyProfileName = () => {
                                             is_readonly
                                             number_of_stars={5}
                                             should_allow_hover_effect={false}
-                                            star_size={isMobile() ? 17 : 20}
+                                            star_size={isMobile() ? 9 : 12}
                                         />
                                         <div className='my-profile-name__rating__text'>
-                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                {rating_average_decimal}
-                                            </Text>
                                             <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                                 {rating_count === 1 ? (
                                                     <Localize

@@ -27,6 +27,15 @@ jest.mock('@deriv/hooks', () => ({
     useStatesList: jest.fn(() => ({ data: [], isFetched: true })),
 }));
 
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+
+    return {
+        ...original_module,
+        Loading: jest.fn(() => 'mockedLoading'),
+    };
+});
+
 describe('<AddressDetails/>', () => {
     const address_line_1 = 'First line of address';
     const address_line_1_marked = 'First line of address*';
@@ -126,6 +135,16 @@ describe('<AddressDetails/>', () => {
         expect(inputs).toHaveLength(5);
         const required_fields = inputs.filter(input => input.required === true);
         expect(required_fields).toHaveLength(2);
+    });
+
+    it('should show a loader when states list is not fully fetched', async () => {
+        (useStatesList as jest.Mock).mockReturnValue({
+            data: [],
+            isFetched: false,
+        });
+
+        renderComponent({});
+        expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should render AddressDetails component and trigger buttons', async () => {

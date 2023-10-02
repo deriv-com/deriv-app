@@ -2,6 +2,7 @@ import type {
     AccountLimitsResponse,
     Authorize,
     ContractUpdate,
+    ContractUpdateHistory,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
@@ -85,25 +86,6 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
-type TPortfolioPosition = {
-    contract_info: ProposalOpenContract &
-        Portfolio1 & {
-            contract_update?: ContractUpdate;
-        };
-    details?: string;
-    display_name: string;
-    id?: number;
-    indicative: number;
-    payout?: number;
-    purchase?: number;
-    reference: number;
-    type?: string;
-    is_unsupported: boolean;
-    contract_update: ProposalOpenContract['limit_order'];
-    is_sell_requested: boolean;
-    profit_loss: number;
-};
-
 type TAppRoutingHistory = {
     action: string;
     hash: string;
@@ -136,7 +118,7 @@ type TAccountsList = {
             Derived: React.SVGAttributes<SVGElement>;
             Financial: React.SVGAttributes<SVGElement>;
             Options: React.SVGAttributes<SVGElement>;
-            CFDs: React.SVGAttributes<SVGAElement>;
+            CFDs: React.SVGAttributes<SVGElement>;
         };
         text?: JSX.Element | string;
         value?: string;
@@ -196,7 +178,9 @@ type TMenuItem = {
 
 type TAddToastProps = {
     key: string;
-    content: string;
+    content: string | React.ReactNode;
+    is_bottom?: boolean;
+    timeout?: number;
     type: string;
 };
 
@@ -296,6 +280,7 @@ type TClientStore = {
     setCFDScore: (score: number) => void;
     country_standpoint: TCountryStandpoint;
     currency: string;
+    currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
     current_currency_type?: string;
     current_fiat_currency?: string;
     has_any_real_account: boolean;
@@ -326,8 +311,8 @@ type TClientStore = {
     is_pending_proof_of_ownership: boolean;
     is_populating_dxtrade_account_list: boolean;
     is_social_signup: boolean;
-    is_switching: boolean;
     is_single_currency: boolean;
+    is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
@@ -454,11 +439,15 @@ type TCommonStoreError = {
     should_show_refresh: boolean;
     type?: string;
 };
+type TCommonStoreServicesError = {
+    code?: string;
+    message?: string;
+    type?: string;
+};
 
 type TCommonStore = {
     isCurrentLanguage(language_code: string): boolean;
     error: TCommonStoreError;
-    services_error: { code: string; message: string; type: string } | Record<string, never>;
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
@@ -470,6 +459,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    services_error: TCommonStoreServicesError;
     is_socket_opened: boolean;
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
@@ -478,20 +468,20 @@ type TCommonStore = {
 };
 
 type TUiStore = {
+    advanced_duration_unit: string;
     addToast: (toast_config: TAddToastProps) => void;
     account_switcher_disabled_message: string;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;
+    has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
+    header_extension: JSX.Element | null;
     is_account_settings_visible: boolean;
     is_loading: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
-    is_unsupported_contract_modal_visible: boolean;
-    has_only_forward_starting_contracts: boolean;
-    header_extension: JSX.Element | null;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_route_modal_on: boolean;
@@ -503,17 +493,30 @@ type TUiStore = {
     is_tablet: boolean;
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
+    is_unsupported_contract_modal_visible: boolean;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
     notification_messages_ui: React.ElementType;
-    setCurrentFocus: (value: string) => void;
+    populateFooterExtensions: (
+        footer_extensions:
+            | [
+                  {
+                      position?: string;
+                      Component?: React.FunctionComponent;
+                      has_right_separator?: boolean;
+                  }
+              ]
+            | []
+    ) => void;
+    setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
+    setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
+    setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
-    setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
@@ -524,14 +527,14 @@ type TUiStore = {
     toggleLinkExpiredModal: (state_change: boolean) => void;
     togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
+    toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
-    toggleServicesErrorModal: () => void;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
-    toggleCancellationWarning: (state_change: boolean) => void;
+    toggleCancellationWarning: (state_change?: boolean) => void;
     toggleUnsupportedContractModal: (state_change: boolean) => void;
     toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
@@ -561,18 +564,26 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
-    setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
-    populateFooterExtensions: (
-        footer_extensions:
-            | [
-                  {
-                      position?: string;
-                      Component?: React.FunctionComponent;
-                      has_right_separator?: boolean;
-                  }
-              ]
-            | []
-    ) => void;
+    vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
+};
+
+type TPortfolioPosition = {
+    contract_info: ProposalOpenContract &
+        Portfolio1 & {
+            contract_update?: ContractUpdate;
+        };
+    details?: string;
+    display_name: string;
+    id?: number;
+    indicative: number;
+    payout?: number;
+    purchase?: number;
+    reference: number;
+    type?: string;
+    is_unsupported: boolean;
+    contract_update: ProposalOpenContract['limit_order'];
+    is_sell_requested: boolean;
+    profit_loss: number;
 };
 
 type TPortfolioStore = {
@@ -591,13 +602,30 @@ type TPortfolioStore = {
     removePositionById: (id: number) => void;
 };
 
-type TContractStore = {
-    getContractById: (id: number) => ProposalOpenContract;
+type TContractTradeStore = {
     contract_info: TPortfolioPosition['contract_info'];
     contract_update_stop_loss: string;
     contract_update_take_profit: string;
+    getContractById: (id: number) => TContractStore;
     has_contract_update_stop_loss: boolean;
     has_contract_update_take_profit: boolean;
+};
+
+type TContractStore = {
+    clearContractUpdateConfigValues: () => void;
+    contract_info: TPortfolioPosition['contract_info'];
+    contract_update_history: ContractUpdateHistory;
+    contract_update_take_profit: number | string;
+    contract_update_stop_loss: number | string;
+    digits_info: { [key: number]: { digit: number; spot: string } };
+    display_status: string;
+    has_contract_update_take_profit: boolean;
+    has_contract_update_stop_loss: boolean;
+    is_digit_contract: boolean;
+    is_ended: boolean;
+    onChange: (param: { name: string; value: string | number | boolean }) => void;
+    updateLimitOrder: () => void;
+    validation_errors: { contract_update_stop_loss: string[]; contract_update_take_profit: string[] };
 };
 
 type TMenuStore = {
@@ -725,13 +753,17 @@ export type TCoreStores = {
     menu: TMenuStore;
     ui: TUiStore;
     portfolio: TPortfolioStore;
-    contract_trade: TContractStore;
+    contract_trade: TContractTradeStore;
     // This should be `any` as this property will be handled in each package.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     modules: Record<string, any>;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
     gtm: TGtmStore;
+    pushwoosh: Record<string, unknown>;
+    contract_replay: Record<string, unknown>;
+    chart_barrier_store: Record<string, unknown>;
+    active_symbols: Record<string, unknown>;
 };
 
 export type TStores = TCoreStores & {

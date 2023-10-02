@@ -58,7 +58,6 @@ type TAddressDetails = {
     selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
     has_real_account: boolean;
-    fetchStatesList: () => Promise<unknown>;
 };
 
 type TAutoComplete = {
@@ -79,7 +78,6 @@ type TAutoComplete = {
  * @param onSubmit - function to submit form values
  * @param is_gb_residence - is residence Great Britan
  * @param selected_step_ref - reference to selected step
- * @param fetchStatesList - function to fetch states list
  * @param value - form values
  * @param disabled_items - array of disabled fields
  * @param has_real_account - has real account

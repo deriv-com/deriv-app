@@ -38,12 +38,14 @@ const WalletsAccordion: React.FC<React.PropsWithChildren<TProps>> = ({
                 }`}
             >
                 {renderHeader()}
-                <div
-                    className={`wallets-accordion__dropdown ${isOpen ? 'wallets-accordion__dropdown--open' : ''}`}
-                    onClick={onToggle}
-                >
-                    <IcDropdown />
-                </div>
+                {!isOpen && (
+                    <div
+                        className={`wallets-accordion__dropdown ${isOpen ? 'wallets-accordion__dropdown--open' : ''}`}
+                        onClick={onToggle}
+                    >
+                        <IcDropdown />
+                    </div>
+                )}
             </div>
             <div className={`wallets-accordion__content ${isOpen ? 'wallets-accordion__content--visible' : ''}`}>
                 {isOpen && children}

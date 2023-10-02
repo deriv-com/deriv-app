@@ -7,6 +7,7 @@ const ConnectedAppsEmpty = observer(() => {
     const { ui } = useStore();
     const { is_mobile } = ui;
 
+    const text_size = is_mobile ? 'xxxs' : 'xxs';
     const bullets = [
         {
             key: '1.',
@@ -24,16 +25,16 @@ const ConnectedAppsEmpty = observer(() => {
 
     return (
         <div className='connected-apps__empty--wrapper'>
-            <Text size={is_mobile ? 'xxs' : 'xs'} align='center' weight='bold'>
+            <Text size={text_size} align='center' weight='bold'>
                 <Localize i18n_default_text="You currently don't have any third-party authorised apps associated with your account." />
             </Text>
             <div className='connected-apps__empty--bullets'>
                 {bullets.map(bullet => (
-                    <div key={bullet.key} className='connected-apps__empty--bullets--entry'>
-                        <Text size={is_mobile ? 'xxxs' : 'xxs'} color='primary'>
+                    <div key={bullet.key} className='connected-apps__empty--entry'>
+                        <Text size={text_size} color='primary'>
                             <Localize i18n_default_text={bullet.key} />
                         </Text>
-                        <Text size={is_mobile ? 'xxxs' : 'xxs'} color='primary'>
+                        <Text size={text_size} color='primary'>
                             <Localize i18n_default_text={bullet.text} />
                         </Text>
                     </div>

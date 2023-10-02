@@ -52,6 +52,7 @@ import TaxResidenceSelect from './tax-residence-select';
 import InputGroup from './input-group';
 import { TAutoComplete, TInputFieldValues } from 'Types';
 import { BrowserHistory } from 'history';
+import { PersonalDetailSchema } from './validation';
 
 type TRestState = {
     show_form: boolean;
@@ -259,7 +260,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     // TODO: standardize validations and refactor this
     const validateFields = (values: TInputFieldValues) => {
-        setIsSubmitSuccess(false);
         const errors: Record<string, string | undefined> = {};
         const validateValues = validate(errors, values);
 
@@ -306,35 +306,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                     "Tax Identification Number can't be longer than 25 characters."
                 );
             }
-        }
-        if (values.first_name) errors.first_name = validateName(values.first_name);
-        if (values.last_name) errors.last_name = validateName(values.last_name);
-
-        if (values.phone) {
-            // minimum characters required is 9 numbers (excluding +- signs or space)
-            const min_phone_number = 9;
-            const max_phone_number = 35;
-            // phone_trim uses regex that trims non-digits
-            const phone_trim = values.phone.replace(/\D/g, '');
-            const phone_error_message = localize('Please enter a valid phone number (e.g. +15417541234).');
-
-            if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
-                errors.phone = localize('You should enter {{min}}-{{max}} numbers.', {
-                    min: min_phone_number,
-                    max: max_phone_number,
-                });
-            } else if (!validPhone(values.phone)) {
-                errors.phone = phone_error_message;
-            }
-        }
-
-        const address_line_1_validation_result = validAddress(values.address_line_1, { is_required: true });
-        if (!address_line_1_validation_result.is_ok) {
-            errors.address_line_1 = address_line_1_validation_result.message;
-        }
-        const address_line_2_validation_result = validAddress(values.address_line_2);
-        if (!address_line_2_validation_result.is_ok) {
-            errors.address_line_2 = address_line_2_validation_result.message;
         }
 
         if (values.address_city && !validLetterSymbol(values.address_city)) {
@@ -507,7 +478,12 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
     };
 
     return (
-        <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
+        <Formik
+            initialValues={form_initial_values}
+            enableReinitialize
+            onSubmit={onSubmit}
+            validationSchema={PersonalDetailSchema}
+        >
             {({
                 values,
                 errors,

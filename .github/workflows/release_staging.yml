@@ -57,7 +57,7 @@ jobs:
   send_slack_notification:
       name: Send Slack notification
       environment: Common
-      runs-on: ubuntu-latest
+      runs-on: Runner_16cores_Deriv-app
       if: always()
       needs: [build_test_and_upload_artifact, publish_cloudflare_staging]
       steps:

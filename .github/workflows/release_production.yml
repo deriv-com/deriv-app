@@ -36,7 +36,7 @@ jobs:
   publish_cloudflare_production:
     name: Publish to cloudflare Pages Production
     environment: Common
-    runs-on: ubuntu-latest
+    runs-on: Runner_16cores_Deriv-app
     needs:
     - build_test_and_upload_artifact
     env:

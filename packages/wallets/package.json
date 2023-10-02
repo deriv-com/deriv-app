@@ -6,6 +6,7 @@
     "dependencies": {
         "@deriv/api": "^1.0.0",
         "@deriv/utils": "^1.0.0",
+        "classnames": "^2.2.6",
         "embla-carousel-react": "^8.0.0-rc12",
         "formik": "^2.1.4",
         "qrcode.react": "^1.0.0",
@@ -15,6 +16,7 @@
         "usehooks-ts": "^2.7.0"
     },
     "devDependencies": {
+        "@types/react-dom": "^18.0.0",
         "@typescript-eslint/eslint-plugin": "5.45.0",
         "@typescript-eslint/parser": "5.45.0",
         "eslint-plugin-local-rules": "2.0.0",

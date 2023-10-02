@@ -18,6 +18,7 @@ const typeToIconMapper = {
     eUSDT: Tether,
     GBP,
     LTC,
+    tUSDT: Tether,
     USD,
     USDC,
     UST: Tether,

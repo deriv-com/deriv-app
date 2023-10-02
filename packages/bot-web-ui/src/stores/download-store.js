@@ -1,4 +1,5 @@
 import { action, makeObservable } from 'mobx';
+
 import { log_types } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
 
@@ -113,7 +114,7 @@ export default class DownloadStore {
             } else {
                 array_message = this.getSuccessJournalMessage(item.message.toString(), item.extra);
             }
-            const arr = [item.date, item.time, array_message.replace('&#x2F;', '/')];
+            const arr = [item.date, item.time, array_message?.replace('&#x2F;', '/')];
             journal_csv_titles.push(arr);
         });
 

@@ -74,7 +74,7 @@ export type TJournalItemProps = {
     measure: () => void;
 };
 
-export type TJournalItemExtra = TExtraFilterMessage & TExtraJournal & { sold_for: string };
+export type TJournalItemExtra = TExtraFilterMessage & TExtraJournal & { sold_for: string; current_currency?: string };
 
 export type TFormatMessageProps = {
     logType: string;

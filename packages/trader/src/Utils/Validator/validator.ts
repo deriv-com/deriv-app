@@ -1,6 +1,4 @@
-import { template } from '_common/utility';
-import { getPreBuildDVRs } from '@deriv/shared';
-import Error from './errors';
+import { Errors, getPreBuildDVRs, template } from '@deriv/shared';
 import { getValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { TTradeStore } from 'Types';
 
@@ -35,14 +33,14 @@ class Validator {
     input: Partial<TTradeStore>;
     rules: Partial<TInitPreBuildDVRs>;
     store: TTradeStore;
-    errors: Error;
+    errors: Errors;
     error_count: number;
 
     constructor(input: Partial<TTradeStore>, rules: Partial<TInitPreBuildDVRs>, store: TTradeStore) {
         this.input = input;
         this.rules = rules;
         this.store = store;
-        this.errors = new Error();
+        this.errors = new Errors();
 
         this.error_count = 0;
     }
@@ -61,13 +59,13 @@ class Validator {
         if (rule.name === 'length') {
             message = template(message, [
                 rule.options.min === rule.options.max
-                    ? rule.options.min?.toString()
+                    ? rule.options.min?.toString() || ''
                     : `${rule.options.min}-${rule.options.max}`,
             ]);
         } else if (rule.name === 'min') {
-            message = template(message, [rule.options.min?.toString()]);
+            message = template(message, [rule.options.min?.toString() || '']);
         } else if (rule.name === 'not_equal') {
-            message = template(message, [rule.options.name1, rule.options.name2]);
+            message = template(message, [rule.options.name1 || '', rule.options.name2 || '']);
         }
         this.errors.add(attribute, message);
         this.error_count++;

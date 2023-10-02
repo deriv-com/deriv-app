@@ -12,31 +12,35 @@ import {
     removeEmptyPropertiesFromObject,
     formatIDVFormValues,
 } from '@deriv/shared';
-import { documentAdditionalError, getRegex, validate, makeSettingsRequest, validateName } from 'Helpers/utils';
+import {
+    documentAdditionalError,
+    isDocumentNumberValid,
+    validate,
+    makeSettingsRequest,
+    validateName,
+    getExampleFormat,
+} from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormSubHeader from 'Components/form-sub-header';
-import { GetSettings, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
-import { TIDVFormValues, TInputFieldValues, TDocumentList } from 'Types';
+import { observer, useStore } from '@deriv/stores';
+import { ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { TDocument, TInputFieldValues, TIDVFormValues } from 'Types';
 
 type TIDVDocumentSubmitProps = {
-    account_settings: GetSettings;
-    getChangeableFields: () => Array<string>;
     handleBack: React.MouseEventHandler;
     handleViewComplete: () => void;
     is_from_external: boolean;
     selected_country: ResidenceList[0];
 };
 
-const IdvDocumentSubmit = ({
-    handleBack,
-    handleViewComplete,
-    selected_country,
-    account_settings,
-    getChangeableFields,
-}: TIDVDocumentSubmitProps) => {
+const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_country }: TIDVDocumentSubmitProps) => {
+    const {
+        client: { account_settings, getChangeableFields },
+    } = useStore();
+
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
     const form_initial_values = filterObjProperties(account_settings, visible_settings) || {};
 
@@ -44,7 +48,7 @@ const IdvDocumentSubmit = ({
         form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
     }
 
-    const changeable_fields = [...getChangeableFields()];
+    const changeable_fields = getChangeableFields();
 
     const initial_values = {
         document_type: {
@@ -58,38 +62,21 @@ const IdvDocumentSubmit = ({
         ...form_initial_values,
     };
 
-    const getExampleFormat = (example_format: string) => {
-        return example_format ? localize('Example: ') + example_format : '';
-    };
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
     const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
 
-    const isDocumentTypeValid = (document_type: TDocumentList) => {
+    const isDocumentTypeValid = (document_type: TDocument) => {
         if (!document_type?.text) {
             return localize('Please select a document type.');
         }
         return undefined;
     };
 
-    const isAdditionalDocumentValid = (document_type: TDocumentList, document_additional: string) => {
+    const isAdditionalDocumentValid = (document_type: TDocument, document_additional: string) => {
         const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
         if (error_message) {
             return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
-        }
-        return undefined;
-    };
-
-    const isDocumentNumberValid = (document_number: string, document_type: Required<TDocumentList>) => {
-        const is_document_number_invalid = document_number === document_type.example_format;
-        if (!document_number) {
-            return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (is_document_number_invalid) {
-            return localize('Please enter a valid ID number.');
-        }
-        const format_regex = getRegex(document_type.value);
-        if (!format_regex.test(document_number)) {
-            return localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
         }
         return undefined;
     };
@@ -157,7 +144,14 @@ const IdvDocumentSubmit = ({
     };
 
     return (
-        <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
+        <Formik
+            initialValues={{ ...initial_values }}
+            validate={validateFields}
+            initialStatus={{
+                is_confirmed: false,
+            }}
+            onSubmit={submitHandler}
+        >
             {({
                 dirty,
                 errors,
@@ -169,6 +163,7 @@ const IdvDocumentSubmit = ({
                 setFieldValue,
                 touched,
                 values,
+                status,
             }) => (
                 <div className='proof-of-identity__container proof-of-identity__container--reset'>
                     <section className='form-body'>
@@ -194,10 +189,10 @@ const IdvDocumentSubmit = ({
                             })}
                             is_qualified_for_idv
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={changeable_fields}
+                            editable_fields={status?.is_confirmed ? [] : changeable_fields}
                         />
                     </section>
-                    <FormFooter className='proof-of-identity__footer'>
+                    <FormFooter className='proof-of-identity__footer account-form__footer--reset'>
                         {isDesktop() && (
                             <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
                                 <BackButtonIcon className='back-btn-icon' /> {localize('Go Back')}
@@ -208,7 +203,7 @@ const IdvDocumentSubmit = ({
                             type='submit'
                             onClick={handleSubmit}
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid}
+                            is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
                             text={localize('Verify')}
                             large
                             primary
@@ -218,6 +213,6 @@ const IdvDocumentSubmit = ({
             )}
         </Formik>
     );
-};
+});
 
 export default IdvDocumentSubmit;

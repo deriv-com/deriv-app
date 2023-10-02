@@ -1,19 +1,3 @@
-import { WS } from '@deriv/shared';
-import { TSocketEndpointNames, TSocketRequestPayload, TSocketResponseData } from '../types';
-
-export const send = async <T extends TSocketEndpointNames>(
-    name: T,
-    payload?: TSocketRequestPayload<T>
-): Promise<TSocketResponseData<T>> => {
-    const response = await WS.send({ [name]: 1, ...(payload || {}) });
-
-    if (response.error) {
-        throw response.error;
-    }
-
-    return response;
-};
-
 export const getQueryKeys = (name: string, props?: Record<string, unknown>) => {
     if (!props) return [name];
 

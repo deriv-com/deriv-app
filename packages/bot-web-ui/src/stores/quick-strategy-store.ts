@@ -89,19 +89,25 @@ export default class QuickStrategyStore {
 
         this.root_store = root_store;
     }
-    selected_symbol: TMarketOption = (this.qs_cache.selected_symbol as TMarketOption) || {};
+    selected_symbol: TMarketOption =
+        (this.qs_cache.selected_symbol as TMarketOption) || {
+            group: 'Continuous Indices',
+            text: 'Volatility 100 Index',
+            value: 'R_100',
+        } ||
+        {};
     selected_trade_type: TTradeType = (this.qs_cache.selected_trade_type as TTradeType) || {};
     selected_type_strategy: TTypeStrategy = (this.qs_cache.selected_type_strategy as TTypeStrategy) || {};
     selected_duration_unit: TDurationOptions = (this.qs_cache.selected_duration_unit as TDurationOptions) || {};
-    input_duration_value: string | number = this.qs_cache.input_duration_value || '';
-    input_stake: string = this.qs_cache.input_stake || '';
-    input_martingale_size: string = this.qs_cache.input_martingale_size || '';
-    input_alembert_unit: string = this.qs_cache.input_alembert_unit || '';
-    input_oscar_unit: string = this.qs_cache.input_oscar_unit || '';
-    input_loss: string = this.qs_cache.input_loss || '';
-    input_profit: string = this.qs_cache.input_profit || '';
-    active_index: number = this.selected_type_strategy.index || 0;
-    description: string = this.qs_cache.selected_type_strategy?.description || '';
+    input_duration_value: string | number = this.qs_cache.input_duration_value ?? '';
+    input_stake: string = this.qs_cache.input_stake ?? '';
+    input_martingale_size: string = this.qs_cache.input_martingale_size ?? '';
+    input_alembert_unit: string = this.qs_cache.input_alembert_unit ?? '';
+    input_oscar_unit: string = this.qs_cache.input_oscar_unit ?? '';
+    input_loss: string = this.qs_cache.input_loss ?? '';
+    input_profit: string = this.qs_cache.input_profit ?? '';
+    active_index: number = this.selected_type_strategy.index ?? 0;
+    description: string = this.qs_cache.selected_type_strategy?.description ?? '';
     types_strategies_dropdown: TTypeStrategiesDropdown = [];
     symbol_dropdown: TSymbolDropdown = [];
     trade_type_dropdown: TTradeTypeDropdown = [];
@@ -139,7 +145,7 @@ export default class QuickStrategyStore {
 
     setDescription(type_strategy: TTypeStrategy): void {
         this.description =
-            this.types_strategies_dropdown?.find(strategy => strategy.value === type_strategy.value)?.description || '';
+            this.types_strategies_dropdown?.find(strategy => strategy.value === type_strategy.value)?.description ?? '';
     }
 
     setDurationUnitDropdown(duration_unit_options: TDurationUnitDropdown): void {
@@ -485,7 +491,7 @@ export default class QuickStrategyStore {
         let first_duration_unit: TDurationOptions = duration_options[0];
         if (this.selected_duration_unit && duration_options?.some(e => e.value === this.selected_duration_unit.value)) {
             first_duration_unit =
-                duration_options?.find(e => e.value === this.selected_duration_unit.value) ||
+                duration_options?.find(e => e.value === this.selected_duration_unit.value) ??
                 this.selected_duration_unit;
             runInAction(() => {
                 first_duration_unit.text = this.getFieldValue(duration_options, this.selected_duration_unit.value);
@@ -496,7 +502,7 @@ export default class QuickStrategyStore {
         if (first_duration_unit) {
             this.setSelectedDurationUnit(first_duration_unit);
             this.updateDurationValue(
-                this.qs_cache?.selected_duration_unit?.value || this.selected_duration_unit.value,
+                this.qs_cache?.selected_duration_unit?.value ?? this.selected_duration_unit.value,
                 setFieldValue
             );
 

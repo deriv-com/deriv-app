@@ -19,31 +19,6 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(false);
     });
 
-    it('should show the proper message if there is a crypto cashier maintenance', () => {
-        const mock_root_store = mockStore({
-            client: {
-                account_status: { cashier_validation: ['system_maintenance'] },
-                current_currency_type: 'crypto',
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-        });
-
-        render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
-        });
-
-        expect(
-            screen.getByText(
-                'Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
-            )
-        ).toBeInTheDocument();
-    });
-
     it('should show the proper message if crypto withdrawal is suspended', () => {
         const mock_root_store = mockStore({
             client: {
@@ -114,11 +89,7 @@ describe('<CashierLocked />', () => {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
-        expect(
-            screen.getByText(
-                'Our cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText('Cashier is currently down for maintenance')).toBeInTheDocument();
     });
 
     it('should show the proper message if the client does not provide residence', () => {

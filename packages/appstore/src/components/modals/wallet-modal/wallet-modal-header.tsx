@@ -83,6 +83,7 @@ const WalletModalHeader = ({
                         size={is_mobile ? 'xsm' : 'm'}
                         weight='bold'
                         className={getStylesByClassName(`${header_class_name}__title-balance`)}
+                        data-testid='dt_wallet_balance'
                     >
                         {formatMoney(currency || '', balance, true)} {display_currency_code}
                     </Text>

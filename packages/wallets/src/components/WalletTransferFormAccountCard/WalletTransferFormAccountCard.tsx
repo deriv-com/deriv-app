@@ -44,7 +44,7 @@ const WalletTransferFromAccountCard: React.FC<TProps> = ({ account, type = 'moda
                 </div>
             </div>
             {type === 'modal' && (
-                <WalletListCardBadge is_demo={account?.is_virtual} label={account?.landing_company_name} />
+                <WalletListCardBadge isDemo={account?.is_virtual} label={account?.landing_company_name} />
             )}
         </div>
     );

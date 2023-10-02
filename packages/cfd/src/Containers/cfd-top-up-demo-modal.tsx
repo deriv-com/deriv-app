@@ -89,7 +89,6 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
                 className='top-up-virtual'
                 title={localize('Fund top up')}
                 width='384px'
-                min_height='367px'
             >
                 <div className='dc-modal__container_top-up-virtual__body'>
                     <Text

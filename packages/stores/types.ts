@@ -183,7 +183,7 @@ type TAccountsList = {
             Derived: React.SVGAttributes<SVGElement>;
             Financial: React.SVGAttributes<SVGElement>;
             Options: React.SVGAttributes<SVGElement>;
-            CFDs: React.SVGAttributes<SVGAElement>;
+            CFDs: React.SVGAttributes<SVGElement>;
         };
         text?: JSX.Element | string;
         value?: string;
@@ -500,6 +500,11 @@ type TCommonStoreError = {
     should_show_refresh: boolean;
     type?: string;
 };
+type TCommonStoreServicesError = {
+    code?: string;
+    message?: string;
+    type?: string;
+};
 
 type TCommonStore = {
     isCurrentLanguage(language_code: string): boolean;
@@ -515,8 +520,8 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    services_error: TCommonStoreServicesError;
     is_socket_opened: boolean;
-    services_error: { code: string; message: string; type: string } | Record<string, never>;
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
@@ -524,6 +529,7 @@ type TCommonStore = {
 };
 
 type TUiStore = {
+    advanced_duration_unit: string;
     addToast: (toast_config: TAddToastProps) => void;
     account_switcher_disabled_message: string;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
@@ -806,6 +812,10 @@ export type TCoreStores = {
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
     gtm: TGtmStore;
+    pushwoosh: Record<string, unknown>;
+    contract_replay: Record<string, unknown>;
+    chart_barrier_store: Record<string, unknown>;
+    active_symbols: Record<string, unknown>;
 };
 
 export type TStores = TCoreStores & {

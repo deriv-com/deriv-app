@@ -37,9 +37,6 @@ jobs:
     name: Publish to cloudflare Pages Production
     environment: Common
     runs-on: ubuntu-latest
-    container:
-      image: node:18.16.0
-      options: --user 1000
     needs:
     - build_test_and_upload_artifact
     env:
@@ -47,6 +44,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - uses: "./.github/actions/setup_node"
     - uses: actions/download-artifact@v3.0.1
       with:
         path: packages

@@ -1636,11 +1636,29 @@ type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
     TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'
 >;
 
-export type TSocketRequestPayload<T extends TSocketEndpointNames> = Partial<
-    TSocketRequestCleaned<T>
-> extends TSocketRequestCleaned<T>
-    ? { payload?: TSocketRequestCleaned<T> }
-    : { payload: TSocketRequestCleaned<T> };
+export type TSocketPaginatateableRequestCleaned<T extends TSocketPaginateableEndpointNames> = Omit<
+    TSocketRequest<T>,
+    TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'
+> & {
+    /** Number of records to skip */
+    offset?: number;
+    /** Number of records to return */
+    limit?: number;
+};
+
+export type TSocketRequestPayload<
+    T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames
+> = Partial<TSocketRequestCleaned<T>> extends TSocketRequestCleaned<T>
+    ? {
+          payload?: T extends TSocketPaginateableEndpointNames
+              ? TSocketPaginatateableRequestCleaned<T>
+              : TSocketRequestCleaned<T>;
+      }
+    : {
+          payload: T extends TSocketPaginateableEndpointNames
+              ? TSocketPaginatateableRequestCleaned<T>
+              : TSocketRequestCleaned<T>;
+      };
 
 export type TSocketRequestQueryOptions<T extends TSocketEndpointNames> = Parameters<
     typeof useQuery<TSocketResponseData<T>, unknown>

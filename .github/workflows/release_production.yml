@@ -26,6 +26,8 @@ jobs:
         GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
         RUDDERSTACK_PRODUCTION_KEY: ${{ vars.RUDDERSTACK_STAGING_KEY }}
         RUDDERSTACK_URL: ${{ vars.RUDDERSTACK_URL }}
+    - name: Run tests
+      run: npm test
     - uses: "./.github/actions/versioning"
       with:
         version_name: production

@@ -37,4 +37,4 @@ jobs:
     - name: Check tests for @deriv/analytics
       run: bash ./scripts/check-tests.sh packages/analytics/src
     - name: Run tests
-      run: npm test
+      run: npm run test:ci

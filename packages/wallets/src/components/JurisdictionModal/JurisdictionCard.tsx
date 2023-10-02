@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import JurisdictionCardRow from './JurisdictionCardRow';
 import JurisdictionCardTag from './JurisdictionCardTag';
@@ -12,7 +12,7 @@ type TJurisdictionCardProps = {
 };
 
 const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisdiction, onSelect, tag }) => {
-    const [shouldFlip, setShouldFlip] = React.useState(false);
+    const [shouldFlip, setShouldFlip] = useState(false);
 
     return (
         <div

@@ -19,12 +19,7 @@ const WalletLinkWrapper = observer(({ left, center, right, has_left_fork, has_ri
             {left && (
                 <div className='wallet-link-wrapper__left'>
                     <div className='wallet-link-wrapper__accounts'>
-                        <ContentWithLink
-                            is_mobile={is_mobile}
-                            is_right_forked
-                            has_fork={has_left_fork}
-                            fork_margin={24}
-                        >
+                        <ContentWithLink is_mobile={is_mobile} has_fork={has_left_fork} fork_margin={24}>
                             {left()}
                         </ContentWithLink>
                     </div>
@@ -33,7 +28,7 @@ const WalletLinkWrapper = observer(({ left, center, right, has_left_fork, has_ri
             {center && <div className='wallet-link-wrapper__center'>{center()}</div>}
             {right && (
                 <div className='wallet-link-wrapper__right'>
-                    <ContentWithLink is_mobile={is_mobile} has_fork={has_right_fork} fork_margin={24}>
+                    <ContentWithLink is_mobile={is_mobile} rtl has_fork={has_right_fork} fork_margin={24}>
                         {right()}
                     </ContentWithLink>
                 </div>

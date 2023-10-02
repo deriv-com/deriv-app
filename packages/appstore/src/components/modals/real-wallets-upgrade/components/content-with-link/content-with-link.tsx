@@ -5,7 +5,7 @@ import './content-with-link.scss';
 type TContentWithLinkProps = {
     children: JSX.Element | Array<JSX.Element>;
     is_mobile?: boolean;
-    is_right_forked?: boolean;
+    rtl?: boolean;
     has_fork?: boolean;
     fork_width?: number;
     fork_margin?: number;
@@ -14,7 +14,7 @@ type TContentWithLinkProps = {
 const ContentWithLink: React.FC<TContentWithLinkProps> = ({
     children,
     is_mobile,
-    is_right_forked,
+    rtl,
     has_fork,
     fork_width = 15,
     fork_margin = 0,
@@ -22,12 +22,12 @@ const ContentWithLink: React.FC<TContentWithLinkProps> = ({
     <div
         className={classNames('content-with-link', {
             'content-with-link--has-fork': has_fork,
-            'content-with-link--right-forked': is_right_forked,
+            'content-with-link--rtl': rtl,
         })}
     >
         <div
             className={classNames('content-with-link__content', {
-                'content-with-link__content--right-forked': is_right_forked,
+                'content-with-link__content--rtl': rtl,
             })}
         >
             {children}
@@ -36,7 +36,7 @@ const ContentWithLink: React.FC<TContentWithLinkProps> = ({
             {has_fork && (
                 <div
                     className={classNames('content-with-link__link-fork', {
-                        'content-with-link__link-fork--right-forked': is_right_forked,
+                        'content-with-link__link-fork--rtl': rtl,
                     })}
                     style={{
                         width: is_mobile ? '24.4rem' : `${fork_width}px`,

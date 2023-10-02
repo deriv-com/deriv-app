@@ -1,22 +1,22 @@
 .content-with-link {
     height: auto;
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     justify-content: center;
 
     @include mobile {
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 
     &--has-fork {
         height: 100%;
     }
 
-    &--right-forked {
-        flex-direction: row;
+    &--rtl {
+        flex-direction: row-reverse;
 
         @include mobile {
-            flex-direction: column;
+            flex-direction: column-reverse;
         }
     }
 
@@ -26,17 +26,18 @@
         align-items: center;
         justify-content: center;
         gap: 1.6rem;
-        margin: 0rem 0rem 0rem 1.6rem;
+
+        margin: 0rem 1.6rem 0rem 0rem;
 
         @include mobile {
-            margin: 1.2rem 0rem 0rem;
+            margin: 0rem 0rem 1.2rem;
         }
 
-        &--right-forked {
-            margin: 0rem 1.6rem 0rem 0rem;
+        &--rtl {
+            margin: 0rem 0rem 0rem 1.6rem;
 
             @include mobile {
-                margin: 0rem 0rem 1.2rem;
+                margin: 1.2rem 0rem 0rem;
             }
         }
     }

@@ -38,7 +38,6 @@ const Download = observer(({ tab }: TDownloadProps) => {
                 className='download__button'
                 icon={<Icon icon='IcDownload' color={disabled ? 'disabled' : undefined} className='download__icon' />}
                 text={localize('Download')}
-                icon={<Icon icon='IcDbotDownload' size={18} />}
                 onClick={clickFunction}
             />
         </Popover>

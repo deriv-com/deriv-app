@@ -62,14 +62,14 @@ const currency_to_icon_mapper: Record<string, Record<'light' | 'dark', string>> 
 /** A custom hook to get the list of wallets for the current user. */
 const useWalletsList = () => {
     const { client, ui } = useStore();
-    const { loginid, is_authorize } = client;
+    const { loginid } = client;
     const { is_dark_mode_on } = ui;
     const { getConfig } = useCurrencyConfig();
 
-    const { data: authorize_data, ...rest } = useAuthorize();
+    const { data: authorize_data, isSuccess, ...rest } = useAuthorize();
     const { data: balance_data } = useFetch('balance', {
         payload: { account: 'all' },
-        options: { enabled: is_authorize },
+        options: { enabled: isSuccess },
     });
 
     // Filter out non-wallet accounts.

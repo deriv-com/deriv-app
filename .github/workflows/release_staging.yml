@@ -52,7 +52,13 @@ jobs:
       with:
         path: packages
     - name: Display structure of downloaded files
-      run: ls -R
+      run: |
+          cd packages
+          ls -R
+          cd core
+          ls -R 
+          cd dist 
+          ls -R
       
         # - uses: "./.github/actions/publish_to_pages_staging"
     #   with:       

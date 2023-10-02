@@ -51,9 +51,9 @@ const ConnectedApps = observer(() => {
             }, {} as { [k in TColumn['col_index']]: TColumn }),
         [handleToggleModal]
     );
-
+    type TMobileRowRenderer = Parameters<React.ComponentProps<typeof DataList>['rowRenderer']>[0];
     const mobileRowRenderer = React.useCallback(
-        ({ row }: { row: TColumn['renderCellContent'] }) => (
+        (row: Partial<TMobileRowRenderer>) => (
             <React.Fragment>
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={columns_map.name} />
@@ -106,6 +106,7 @@ const ConnectedApps = observer(() => {
                                     className='connected-apps'
                                     data_source={connected_apps}
                                     columns={GetConnectedAppsColumnsTemplate(handleToggleModal)}
+                                    content_loader='span'
                                 />
                             )}
                         </div>
@@ -118,7 +119,7 @@ const ConnectedApps = observer(() => {
                 <ConnectedAppsKnowMore />
                 <ConnectedAppsEarnMore />
             </section>
-            <Modal is_open={is_modal_open} className='connected-apps' toggleModal={handleToggleModal} width='44rem'>
+            <Modal is_open={is_modal_open} className='connected-apps' width='44rem'>
                 <Modal.Body>
                     <div className='connected-apps-modal--wrapper'>
                         <div className='connected-apps-modal--icon'>
@@ -128,7 +129,7 @@ const ConnectedApps = observer(() => {
                             </Text>
                         </div>
                         <div className='connected-apps-modal--buttons'>
-                            <Button large secondary onClick={handleToggleModal}>
+                            <Button large secondary onClick={() => handleToggleModal()}>
                                 <Localize i18n_default_text='Back' />
                             </Button>
                             <Button large primary onClick={handleRevokeAccess}>

@@ -65,7 +65,7 @@ const LinkedWallet = ({
     is_mobile: boolean;
 }) => {
     return (
-        <div style={{ height: '13.6rem', position: 'relative' }}>
+        <div className='linked-wallet'>
             <WalletCard wallet={wallet.wallet_details} size='large' state='default' />
             {is_mobile && (
                 <Text

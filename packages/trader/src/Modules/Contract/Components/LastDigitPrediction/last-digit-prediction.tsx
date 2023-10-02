@@ -1,11 +1,27 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
-import DigitDisplay from './digit-display.jsx';
-import LastDigitPointer from './last-digit-pointer.jsx';
+import DigitDisplay from './digit-display';
+import LastDigitPointer from './last-digit-pointer';
+import { ProposalOpenContract, TicksStreamResponse } from '@deriv/api-types';
 
+type TLastDigitPrediction = Pick<
+    React.ComponentProps<typeof DigitDisplay>,
+    'barrier' | 'is_digit_contract' | 'has_entry_spot' | 'onLastDigitSpot'
+> & {
+    contract_type?: string;
+    digits: number[];
+    digits_info: { [key: string]: { digit: number; spot: string } };
+    dimension: number;
+    is_ended?: boolean;
+    is_trade_page: boolean;
+    onDigitChange: (event: { target: { name: string; value: number } }) => void;
+    selected_digit: number | boolean;
+    status?: ProposalOpenContract['status'];
+    tick?: TicksStreamResponse['tick'];
+    trade_type?: string;
+};
 const display_array = Array.from(Array(10).keys()); // digits array [0 - 9]
 
 const LastDigitPrediction = ({
@@ -24,8 +40,8 @@ const LastDigitPrediction = ({
     status,
     tick,
     trade_type,
-}) => {
-    const [digit_offset] = React.useState({
+}: TLastDigitPrediction) => {
+    const [digit_offset] = React.useState<Record<number, Record<'left' | 'top', number>>>({
         0: { left: 6, top: 0 },
         1: { left: 6 + dimension * 1, top: 0 },
         2: { left: 6 + dimension * 2, top: 0 },
@@ -38,7 +54,7 @@ const LastDigitPrediction = ({
         9: { left: 6 + dimension * 9, top: 0 },
     });
 
-    const [digit_offset_mobile] = React.useState({
+    const [digit_offset_mobile] = React.useState<Record<number, Record<'left' | 'top', number>>>({
         0: { left: 6, top: -60 },
         1: { left: 6 + dimension * 1, top: -60 },
         2: { left: 6 + dimension * 2, top: -60 },
@@ -51,21 +67,23 @@ const LastDigitPrediction = ({
         9: { left: 6 + dimension * 4, top: 8 },
     });
 
-    const handleSelect = digit_value => {
+    const handleSelect = (digit_value: number) => {
         if (!isSelectableDigitType()) return;
         if (digit_value !== selected_digit && typeof onDigitChange === 'function') {
             onDigitChange({ target: { name: 'last_digit', value: digit_value } });
         }
     };
 
-    const getBarrier = num => {
-        const barrier_map = {
-            DIGITMATCH: val => val === barrier,
-            DIGITDIFF: val => val !== barrier && !isNaN(barrier),
-            DIGITOVER: val => val > barrier,
-            DIGITUNDER: val => val < barrier,
-            DIGITODD: val => val % 2,
-            DIGITEVEN: val => !(val % 2),
+    const getBarrier = (num: number | null): number | null => {
+        const barrier_map: {
+            [key: string]: (val: number | null) => boolean;
+        } = {
+            DIGITMATCH: (val: number | null) => val === barrier,
+            DIGITDIFF: (val: number | null) => val !== barrier && !!barrier && !isNaN(barrier),
+            DIGITOVER: (val: number | null) => !!(val && barrier) && val > barrier,
+            DIGITUNDER: (val: number | null) => !!(val && barrier) && val < barrier,
+            DIGITODD: (val: number | null) => !!val && Boolean(val % 2),
+            DIGITEVEN: (val: number | null) => !!val && !(val % 2),
         };
         if (!contract_type || !barrier_map[contract_type]) return null;
         return barrier_map[contract_type](num) ? num : null;
@@ -74,10 +92,9 @@ const LastDigitPrediction = ({
     const getOffset = () => (isMobile() ? digit_offset_mobile : digit_offset);
 
     const isSelectableDigitType = () => (isMobile() ? trade_type !== 'even_odd' : false);
-
     const digits_array = Object.keys(digits_info)
-        .sort()
-        .map(spot_time => digits_info[spot_time]);
+        .sort((a, b) => +a - +b)
+        .map(spot_time => digits_info[+spot_time]);
     const last_contract_digit = digits_array.slice(-1)[0] || {};
 
     // 'won' or 'lost' status exists after contract expiry
@@ -93,9 +110,9 @@ const LastDigitPrediction = ({
     // latest last digit refers to digit and spot values from latest price
     // latest contract digit refers to digit and spot values from last digit contract in contracts array
     const latest_tick_pip_size = tick ? +tick.pip_size : null;
-    const latest_tick_ask_price = tick && tick.ask ? tick.ask.toFixed(latest_tick_pip_size) : null;
-    const latest_tick_digit = latest_tick_ask_price ? +latest_tick_ask_price.split('').pop() : null;
-    const position = tick ? getOffset()[latest_tick_digit] : getOffset()[last_contract_digit.digit];
+    const latest_tick_ask_price = tick?.ask && latest_tick_pip_size ? tick.ask.toFixed(latest_tick_pip_size) : null;
+    const latest_tick_digit = latest_tick_ask_price ? +(latest_tick_ask_price.split('').pop() || '') : null;
+    const position = tick ? getOffset()[latest_tick_digit ?? -1] : getOffset()[last_contract_digit.digit];
     const latest_digit = !(is_won || is_lost)
         ? { digit: latest_tick_digit, spot: latest_tick_ask_price }
         : last_contract_digit;
@@ -111,7 +128,6 @@ const LastDigitPrediction = ({
                     has_entry_spot={has_entry_spot}
                     is_digit_contract={is_digit_contract}
                     is_lost={is_lost}
-                    is_trade_page={is_trade_page}
                     is_won={is_won}
                     key={idx}
                     is_max={digits ? digits[idx] === max : null}
@@ -128,24 +144,6 @@ const LastDigitPrediction = ({
             <LastDigitPointer is_lost={is_lost} is_trade_page={is_trade_page} is_won={is_won} position={position} />
         </div>
     );
-};
-
-LastDigitPrediction.propTypes = {
-    barrier: PropTypes.number,
-    contract_type: PropTypes.string,
-    digits: PropTypes.array,
-    digits_info: PropTypes.object,
-    dimension: PropTypes.number,
-    has_entry_spot: PropTypes.bool,
-    is_digit_contract: PropTypes.bool,
-    is_ended: PropTypes.bool,
-    is_trade_page: PropTypes.bool,
-    status: PropTypes.string,
-    trade_type: PropTypes.string,
-    onDigitChange: PropTypes.func,
-    onLastDigitSpot: PropTypes.func,
-    selected_digit: PropTypes.number,
-    tick: PropTypes.object,
 };
 
 export default observer(LastDigitPrediction);

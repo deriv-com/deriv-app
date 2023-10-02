@@ -22,7 +22,8 @@ const useWalletMigration = () => {
         payload: { wallet_migration: 'state' },
         options: {
             refetchInterval: response => (response?.wallet_migration?.state === 'in_progress' ? 500 : false),
-            enabled: isSuccess,
+            // delete it later
+            enabled: is_authorize && isSuccess,
         },
     });
 

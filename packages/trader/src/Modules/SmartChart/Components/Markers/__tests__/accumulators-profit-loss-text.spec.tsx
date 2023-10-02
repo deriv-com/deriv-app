@@ -13,12 +13,16 @@ describe('AccumulatorsProfitLossText', () => {
         currency: 'USD',
         profit: +0.35,
     };
-
     it('should render AccumulatorsProfitLossText', () => {
         render(<AccumulatorsProfitLossText {...props} />);
-        const text_el = screen.getByTestId('dt_accumulator_profit_text');
-        expect(text_el).toHaveClass('profit-loss-text__profit');
+        const whole_number = screen.getByText(/\+0./i);
+        expect(whole_number).toBeInTheDocument();
         expect(screen.getByText('3')).toHaveClass('profit-loss-text__sliding-tenth');
         expect(screen.getByText('USD')).toHaveClass('profit-loss-text__currency');
+    });
+    it('should render AccumulatorsProfitLossText with a value of >= 1K correctly', () => {
+        render(<AccumulatorsProfitLossText {...props} profit={1040} />);
+        const whole_number = screen.getByText(/\+1,040./i);
+        expect(whole_number).toBeInTheDocument();
     });
 });

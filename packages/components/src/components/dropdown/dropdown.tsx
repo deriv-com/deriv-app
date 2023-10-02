@@ -25,6 +25,7 @@ type TDropdown = {
     };
     has_symbol?: boolean;
     hint?: string;
+    id?: string;
     initial_offset?: number;
     initial_height_offset?: number;
     is_align_text_left?: boolean;

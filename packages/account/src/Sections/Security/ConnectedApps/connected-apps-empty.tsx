@@ -27,9 +27,9 @@ const ConnectedAppsEmpty = observer(() => {
             <Text size={is_mobile ? 'xxs' : 'xs'} align='center' weight='bold'>
                 <Localize i18n_default_text="You currently don't have any third-party authorised apps associated with your account." />
             </Text>
-            <div className='connected-apps__bullets--wrapper'>
+            <div className='connected-apps__empty--bullets'>
                 {bullets.map(bullet => (
-                    <div key={bullet.key} className='connected-apps__bullets--entry'>
+                    <div key={bullet.key} className='connected-apps__empty--bullets--entry'>
                         <Text size={is_mobile ? 'xxxs' : 'xxs'} color='primary'>
                             <Localize i18n_default_text={bullet.key} />
                         </Text>

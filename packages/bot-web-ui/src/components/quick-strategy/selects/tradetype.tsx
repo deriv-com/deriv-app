@@ -69,7 +69,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ value, symbol, onChange }
 
     const selected_trade_type = trade_type_dropdown_options?.find(trade_type => trade_type.value === selected);
     return (
-        <div>
+        <div className='qs__form__field full-width'>
             <Field name='asset' key='asset' id='asset'>
                 {({ field }: FieldProps<string, TFormValues>) => (
                     <Autocomplete

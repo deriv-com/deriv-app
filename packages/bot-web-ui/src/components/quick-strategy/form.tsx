@@ -28,16 +28,10 @@ const QuickStrategyForm = observer(() => {
     // eslint-disable-next-line no-console
     console.log(form_data, 'form_data');
 
-    const Symbol = () => (
-        <div className='qs__form__field full-width'>
-            <SymbolSelect value={form_data.symbol} onChange={handleChange} />
-        </div>
-    );
+    const Symbol = () => <SymbolSelect value={form_data.symbol} onChange={handleChange} />;
 
     const TradeType = () => (
-        <div className='qs__form__field full-width'>
-            <TradeTypeSelect value={form_data.trade_type} symbol={form_data.symbol} onChange={handleChange} />
-        </div>
+        <TradeTypeSelect value={form_data.trade_type} symbol={form_data.symbol} onChange={handleChange} />
     );
 
     return (

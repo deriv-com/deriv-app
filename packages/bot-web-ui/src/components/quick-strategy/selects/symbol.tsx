@@ -57,7 +57,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ value, onChange }) => {
     const selected_symbol = symbols.find(symbol => symbol.value === selected);
 
     return (
-        <div>
+        <div className='qs__form__field full-width'>
             <Field name='asset' key='asset' id='asset'>
                 {({ field }: FieldProps<string, TFormValues>) => (
                     <>

@@ -21,16 +21,18 @@ export type TProps = {
 const EmptyState: React.FC<TProps> = ({ icon, title, description, action }) => (
     <div className='empty-state'>
         {icon && <Icon icon={icon} size={128} />}
-        {title && (
-            <Text size={isMobile() ? 'xs' : 's'} weight='bold' align='center' data-testid='dt_empty_state_title'>
-                {title}
-            </Text>
-        )}
-        {description && (
-            <Text size={isMobile() ? 'xxs' : 's'} align='center' data-testid='dt_empty_state_description'>
-                {description}
-            </Text>
-        )}
+        <div className='empty-state__content'>
+            {title && (
+                <Text weight='bold' align='center' data-testid='dt_empty_state_title' size={isMobile() ? 'xs' : 's'}>
+                    {title}
+                </Text>
+            )}
+            {description && (
+                <Text align='center' data-testid='dt_empty_state_description' size={isMobile() ? 'xs' : 's'}>
+                    {description}
+                </Text>
+            )}
+        </div>
         {action && (
             <Button
                 large={!isMobile()}
@@ -41,6 +43,7 @@ const EmptyState: React.FC<TProps> = ({ icon, title, description, action }) => (
                 primary={action.primary || true}
                 tertiary={action.tertiary}
                 is_disabled={action.disabled}
+                className='empty-state__action'
                 data-testid='dt_empty_state_action'
             />
         )}

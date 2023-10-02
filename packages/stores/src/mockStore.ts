@@ -2,6 +2,18 @@ import merge from 'lodash.merge';
 import type { TStores } from '../types';
 
 const mock = (): TStores & { is_mock: boolean } => {
+    const common_store_error = {
+        app_routing_history: [],
+        header: '',
+        message: '',
+        type: '',
+        redirect_label: '',
+        redirect_to: '',
+        should_clear_error_on_click: false,
+        should_show_refresh: false,
+        redirectOnClick: jest.fn(),
+        setError: jest.fn(),
+    };
     return {
         is_mock: true,
         client: {
@@ -105,6 +117,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 is_united_kingdom: false,
             },
             currency: '',
+            currencies_list: [{ text: '', value: '', has_tool_tip: false }],
             current_currency_type: '',
             current_fiat_currency: '',
             cfd_score: 0,
@@ -133,8 +146,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_logging_in: false,
             is_pending_proof_of_ownership: false,
             is_poa_older_than_six_months: false,
-            is_switching: false,
             is_single_currency: false,
+            is_switching: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,
             is_virtual: false,
@@ -256,19 +269,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setPrevAccountType: jest.fn(),
         },
         common: {
-            error: {
-                app_routing_history: [],
-                header: '',
-                message: '',
-                type: '',
-                redirect_label: '',
-                redirect_to: '',
-                should_clear_error_on_click: false,
-                should_show_refresh: false,
-                redirectOnClick: jest.fn(),
-                setError: jest.fn(),
-            },
-            services_error: {},
+            error: common_store_error,
             current_language: 'EN',
             isCurrentLanguage: jest.fn(),
             is_from_derivgo: false,
@@ -279,6 +280,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             changeCurrentLanguage: jest.fn(),
             changeSelectedLanguage: jest.fn(),
             is_network_online: false,
+            services_error: {},
             server_time: undefined,
             is_language_changing: false,
             is_socket_opened: false,
@@ -288,6 +290,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             network_status: {},
         },
         ui: {
+            advanced_duration_unit: 't',
             account_switcher_disabled_message: '',
             app_contents_scroll_ref: {
                 current: null,
@@ -300,8 +303,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_closing_create_real_account_modal: false,
             is_dark_mode_on: false,
             is_language_settings_modal_on: false,
-            is_unsupported_contract_modal_visible: false,
-            has_only_forward_starting_contracts: false,
             header_extension: null,
             is_link_expired_modal_visible: false,
             is_mobile: false,
@@ -309,6 +310,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_reports_visible: false,
             is_route_modal_on: false,
             is_services_error_visible: false,
+            is_unsupported_contract_modal_visible: false,
             disableApp: jest.fn(),
             enableApp: jest.fn(),
             setCurrentFocus: jest.fn(),
@@ -318,18 +320,19 @@ const mock = (): TStores & { is_mock: boolean } => {
             togglePositionsDrawer: jest.fn(),
             setDarkMode: jest.fn(),
             setReportsTabIndex: jest.fn(),
+            has_only_forward_starting_contracts: false,
             has_real_account_signup_ended: false,
             notification_messages_ui: jest.fn(),
             openRealAccountSignup: jest.fn(),
+            setHasOnlyForwardingContracts: jest.fn(),
             setIsClosingCreateRealAccountModal: jest.fn(),
             setRealAccountSignupEnd: jest.fn(),
             setPurchaseState: jest.fn(),
-            setHasOnlyForwardingContracts: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleLanguageSettingsModal: jest.fn(),
+            toggleServicesErrorModal: jest.fn(),
             toggleLinkExpiredModal: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),
-            toggleServicesErrorModal: jest.fn(),
             addToast: jest.fn(),
             removeToast: jest.fn(),
             reports_route_tab_index: 1,
@@ -373,6 +376,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setResetTradingPasswordModalOpen: jest.fn(),
             setMT5MigrationModalEnabled: jest.fn(),
             toggleMT5MigrationModal: jest.fn(),
+            vanilla_trade_type: 'VANILLALONGCALL',
         },
         traders_hub: {
             getAccount: jest.fn(),
@@ -519,6 +523,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             eventHandler: jest.fn(),
             setLoginFlag: jest.fn(),
         },
+        pushwoosh: {},
+        contract_replay: {},
+        chart_barrier_store: {},
+        active_symbols: {},
     };
 };
 

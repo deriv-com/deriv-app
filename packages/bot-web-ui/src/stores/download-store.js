@@ -1,5 +1,4 @@
 import { action, makeObservable } from 'mobx';
-
 import { log_types } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
 

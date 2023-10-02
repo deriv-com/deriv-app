@@ -1,24 +1,19 @@
 import React from 'react';
-import classNames from 'classnames';
-import {
-    DesktopWrapper,
-    MobileWrapper,
-    Button,
-    Modal,
-    Icon,
-    DataTable,
-    DataList,
-    Loading,
-    Text,
-} from '@deriv/components';
-import ConnectedAppsArticle from './connected-apps-article';
-import { PlatformContext, WS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Button, Modal, Icon, DataTable, DataList, Loading, Text } from '@deriv/components';
+import { WS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
 import GetConnectedAppsColumnsTemplate from './data-table-template';
+import ConnectedAppsKnowMore from './connected-apps-know-more';
+import ConnectedAppsEarnMore from './connected-apps-earn-more';
+import ConnectedAppsEmpty from './connected-apps-empty';
+import './connected-apps.scss';
 
-const ConnectedApps = () => {
-    const { is_appstore } = React.useContext(PlatformContext);
+const ConnectedApps = observer(() => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+
     const [is_loading, setLoading] = React.useState(true);
     const [is_modal_open, setModalVisibility] = React.useState(false);
     const [selected_app_id, setAppId] = React.useState<number | null>(null);
@@ -48,7 +43,6 @@ const ConnectedApps = () => {
     );
 
     type TColumn = ReturnType<typeof GetConnectedAppsColumnsTemplate>[number];
-
     const columns_map = React.useMemo(
         () =>
             GetConnectedAppsColumnsTemplate(app_id => handleToggleModal(app_id)).reduce((map, item) => {
@@ -60,18 +54,18 @@ const ConnectedApps = () => {
 
     const mobileRowRenderer = React.useCallback(
         ({ row }: { row: TColumn['renderCellContent'] }) => (
-            <div className='data-list__row'>
-                <div className='data-list__col'>
+            <React.Fragment>
+                <div className='data-list__row'>
                     <DataList.Cell row={row} column={columns_map.name} />
-                    <DataList.Cell row={row} column={columns_map.scopes} />
-                </div>
-                <div className={is_appstore ? 'data-list__col--dashboard' : 'data-list__col--small'}>
                     <DataList.Cell row={row} column={columns_map.last_used} />
-                    <DataList.Cell row={row} column={columns_map.app_id} is_footer={!is_appstore} />
                 </div>
-            </div>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={columns_map.scopes} />
+                    <DataList.Cell row={row} column={columns_map.app_id} is_footer={true} />
+                </div>
+            </React.Fragment>
         ),
-        [columns_map, is_appstore]
+        [columns_map]
     );
 
     const revokeConnectedApp = React.useCallback(async (app_id: number | null) => {
@@ -90,74 +84,62 @@ const ConnectedApps = () => {
         revokeConnectedApp(selected_app_id);
     }, [revokeConnectedApp, selected_app_id]);
 
-    return (
-        <section
-            className={classNames('connected-apps__wrapper', {
-                'connected-apps__wrapper--dashboard': is_appstore,
-            })}
-        >
-            <Text color='prominent' weight='bold' as='p' className='connected-apps__title'>
-                {localize('Authorised applications')}
-            </Text>
-            {is_error && <ErrorComponent />}
-            <div
-                className={classNames('connected-apps__container', 'connected-apps__wrapper', {
-                    'connected-apps__wrapper--dashboard': is_appstore,
-                })}
-            >
-                {is_loading ? (
-                    <Loading is_fullscreen={false} />
+    return is_loading ? (
+        <Loading is_fullscreen={false} />
+    ) : (
+        <div className='connected-apps__wrapper'>
+            <section>
+                {is_error && <ErrorComponent />}
+                {connected_apps.length ? (
+                    <div className='connected-apps__content--wrapper'>
+                        <div>TODO: Replace this div with message component</div>
+                        <div className='connected-apps__list--wrapper'>
+                            {is_mobile ? (
+                                <DataList
+                                    className='connected-apps'
+                                    data_source={connected_apps}
+                                    row_gap={10}
+                                    rowRenderer={mobileRowRenderer}
+                                />
+                            ) : (
+                                <DataTable
+                                    className='connected-apps'
+                                    data_source={connected_apps}
+                                    columns={GetConnectedAppsColumnsTemplate(handleToggleModal)}
+                                />
+                            )}
+                        </div>
+                    </div>
                 ) : (
-                    <React.Fragment>
-                        <DesktopWrapper>
-                            <DataTable
-                                className='connected-apps'
-                                data_source={connected_apps}
-                                columns={GetConnectedAppsColumnsTemplate(handleToggleModal)}
-                            />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <DataList
-                                className='connected-apps'
-                                data_source={connected_apps}
-                                row_gap={is_appstore ? 16 : 10}
-                                rowRenderer={mobileRowRenderer}
-                            />
-                        </MobileWrapper>
-                    </React.Fragment>
+                    <ConnectedAppsEmpty />
                 )}
-
-                {!is_loading && !!connected_apps.length && <ConnectedAppsArticle />}
-            </div>
-
-            <Modal is_open={is_modal_open} className='connected-apps' toggleModal={handleToggleModal}>
+            </section>
+            <section className='connected-apps__articles--wrapper'>
+                <ConnectedAppsKnowMore />
+                <ConnectedAppsEarnMore />
+            </section>
+            <Modal is_open={is_modal_open} className='connected-apps' toggleModal={handleToggleModal} width='44rem'>
                 <Modal.Body>
-                    <div className='connected-app-modal'>
-                        <Icon
-                            icon={is_appstore ? 'IcAccountTrashCanDashboard' : 'IcAccountTrashCan'}
-                            size={128}
-                            className='connected-app-modal__icon'
-                        />
-                        <Text as='p' color='prominent' weight='bold'>
-                            {localize('Confirm revoke access?')}
-                        </Text>
-                        <div
-                            className={classNames('connected-app-modal__confirmation', {
-                                'connected-app-modal__confirmation-dashboard': is_appstore,
-                            })}
-                        >
-                            <Button secondary onClick={handleToggleModal}>
-                                {localize('Back')}
+                    <div className='connected-apps-modal--wrapper'>
+                        <div className='connected-apps-modal--icon'>
+                            <Icon icon='IcAccountTrashCan' size={128} />
+                            <Text as='p' color='prominent' weight='bold'>
+                                <Localize i18n_default_text='Confirm revoke access?' />
+                            </Text>
+                        </div>
+                        <div className='connected-apps-modal--buttons'>
+                            <Button large secondary onClick={handleToggleModal}>
+                                <Localize i18n_default_text='Back' />
                             </Button>
-                            <Button primary onClick={handleRevokeAccess}>
-                                {localize('Confirm')}
+                            <Button large primary onClick={handleRevokeAccess}>
+                                <Localize i18n_default_text='Confirm' />
                             </Button>
                         </div>
                     </div>
                 </Modal.Body>
             </Modal>
-        </section>
+        </div>
     );
-};
+});
 
 export default ConnectedApps;

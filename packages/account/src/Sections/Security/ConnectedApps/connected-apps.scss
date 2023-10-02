@@ -1,0 +1,137 @@
+.connected-apps {
+    &__wrapper {
+        display: grid;
+        gap: 1.6rem;
+        grid-template-rows: min-content;
+        grid-template-columns: 1fr min-content;
+        @include mobile {
+            grid-template-columns: 1fr;
+            padding: 1.6rem;
+        }
+    }
+
+    &__content {
+        &--wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2.4rem;
+            @include mobile {
+                gap: 1.6rem;
+            }
+        }
+    }
+
+    &__list {
+        &--wrapper {
+            height: 28rem;
+        }
+    }
+
+    &__articles {
+        &--wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.6rem;
+            margin-left: 0.8rem;
+            @include mobile {
+                margin-left: 0;
+            }
+
+            .da-article {
+                margin: 0;
+                @include mobile {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    &__empty {
+        &--wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 9.6rem;
+            @include mobile {
+                gap: 1.6rem;
+                margin-top: 0;
+            }
+        }
+
+        &--bullets {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            @include mobile {
+                gap: 0.4rem;
+            }
+        }
+
+        &--entry {
+            display: flex;
+            gap: 0.4rem;
+        }
+    }
+
+    // Styling for DataTable displayed in Desktop view
+    .table__body .table__row {
+        border-bottom: 1px solid var(--general-section-1);
+    }
+
+    &__table {
+        height: 100%;
+        flex: 1;
+    }
+
+    &__row {
+        grid-template-columns: 169px 198px 80px 104px;
+        padding: 0;
+        column-gap: 42px;
+        text-align: left;
+
+        .table__cell {
+            min-height: 5.6rem;
+            white-space: pre-wrap;
+            padding: 0;
+
+            .name {
+                &__content {
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+
+    // Styling for DataList displayed in Mobile view
+    &__data-list-body {
+        .data-list {
+            &__item {
+                padding: 1.6rem;
+                background: var(--general-section-1);
+            }
+
+            &__row {
+                & > * {
+                    flex: auto;
+                }
+                padding: 0;
+
+                .last_used {
+                    display: flex;
+                    flex-direction: column;
+                    padding-left: 6.4rem;
+                    width: 1.2rem;
+                }
+
+                .app_id {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                }
+            }
+        }
+    }
+}

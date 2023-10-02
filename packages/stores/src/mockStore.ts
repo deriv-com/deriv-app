@@ -348,7 +348,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_need_real_account_for_cashier_modal_visible: false,
             is_chart_layout_default: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
-            setIsAcuityModalOpen: jest.fn(),
             setAppContentsScrollRef: jest.fn(),
             is_switch_to_deriv_account_modal_visible: false,
             openSwitchToRealAccountModal: jest.fn(),

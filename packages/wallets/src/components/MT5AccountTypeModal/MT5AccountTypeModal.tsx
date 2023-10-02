@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MT5AccountType } from '../ExternalTradingPlatforms/MT5AccountType';
 import { PrimaryActionButton } from '../PrimaryActionButton';
 import { WalletModal } from '../WalletModal';
@@ -7,7 +7,7 @@ import { WideWrapper } from '../WideWrapper';
 type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 
 const MT5AccountTypeModal = () => {
-    const [selectedMarketType, setSelectedMarketType] = React.useState<TMarketTypes>(undefined);
+    const [selectedMarketType, setSelectedMarketType] = useState<TMarketTypes>(undefined);
 
     return (
         <WalletModal>

@@ -5,6 +5,7 @@ module.exports = {
     env: { es6: true },
     plugins: ['eslint-plugin-local-rules', 'simple-import-sort', 'sort-destructure-keys', 'typescript-sort-keys'],
     rules: {
+        camelcase: 'error',
         'simple-import-sort/imports': [
             'error',
             {
@@ -36,12 +37,15 @@ module.exports = {
         '@typescript-eslint/array-type': 'error',
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/sort-type-constituents': 'error',
+        '@typescript-eslint/no-explicit-any': 'error',
         'import/first': 'error',
         'import/newline-after-import': 'error',
         'import/no-duplicates': 'error',
+        'import/no-extraneous-dependencies': ['off', { devDependencies: ['**/*.spec.*', '**/*.test.*', '**/*.d.ts*'] }],
         'lines-around-comment': ['error', { allowObjectStart: true }],
         'local-rules/no-react-namespace': 'error',
         'no-unneeded-ternary': 'error',
+        'no-useless-return': 'error',
         'object-shorthand': 'error',
         'prefer-const': 'error',
         'react/jsx-pascal-case': 'error',
@@ -51,8 +55,6 @@ module.exports = {
         'sort-keys': 'warn',
         'typescript-sort-keys/interface': 'warn',
         'typescript-sort-keys/string-enum': 'warn',
-        camelcase: 'error',
-        'import/no-extraneous-dependencies': ['off', { devDependencies: ['**/*.spec.*', '**/*.test.*', '**/*.d.ts*'] }],
     },
     overrides: [
         {

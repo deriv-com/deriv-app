@@ -12,21 +12,29 @@ type TContractTypeDialog = {
 
 type TContractTypeDialogProps = Pick<
     React.ComponentProps<typeof ContractTypeMenu>,
-    'selected' | 'categories' | 'onBackButtonClick' | 'onChangeInput' | 'onCategoryClick' | 'show_loading' | 'item'
+    | 'selected'
+    | 'categories'
+    | 'onBackButtonClick'
+    | 'onChangeInput'
+    | 'onCategoryClick'
+    | 'onSearchBlur'
+    | 'show_loading'
+    | 'item'
 > &
     TContractTypeDialog;
 
 const ContractTypeDialog = ({
+    categories,
     children,
     is_info_dialog_open,
-    onClose,
     is_open,
     item,
     selected,
-    categories,
     onBackButtonClick,
-    onChangeInput,
     onCategoryClick,
+    onChangeInput,
+    onClose,
+    onSearchBlur,
     show_loading,
 }: React.PropsWithChildren<TContractTypeDialogProps>) => {
     const current_mobile_title = is_info_dialog_open ? (
@@ -57,6 +65,7 @@ const ContractTypeDialog = ({
                     item={item}
                     selected={selected}
                     categories={categories}
+                    onSearchBlur={onSearchBlur}
                     onBackButtonClick={onBackButtonClick}
                     onChangeInput={onChangeInput}
                     onCategoryClick={onCategoryClick}

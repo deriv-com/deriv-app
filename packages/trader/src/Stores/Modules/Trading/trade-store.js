@@ -12,17 +12,18 @@ import {
     getPropertyValue,
     getContractSubtype,
     isBarrierSupported,
+    isAccumulatorContract,
     isCryptocurrency,
     isDesktop,
     isEmptyObject,
     isMarketClosed,
     isMobile,
     isTurbosContract,
+    isVanillaContract,
     pickDefaultSymbol,
     removeBarrier,
     resetEndTimeOnVolatilityIndices,
     showDigitalOptionsUnavailableError,
-    showMxMltUnavailableError,
     showUnavailableLocationError,
     formatMoney,
     getCurrencyDisplayCode,
@@ -30,6 +31,7 @@ import {
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
 } from '@deriv/shared';
+import { RudderStack } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
@@ -46,6 +48,7 @@ import BaseStore from '../../base-store';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
+import { STATE_TYPES, getChartAnalyticsData } from './Helpers/chart';
 
 const store_name = 'trade_store';
 const g_subscribers_map = {}; // blame amin.m
@@ -156,7 +159,7 @@ export default class TradeStore extends BaseStore {
     short_barriers = {};
 
     // Vanilla trade params
-    vanilla_trade_type = 'VANILLALONGCALL';
+    strike_price_choices = {};
 
     // Mobile
     is_trade_params_expanded = true;
@@ -182,7 +185,6 @@ export default class TradeStore extends BaseStore {
             'barrier_2',
             'basis',
             'contract_start_type',
-            'contract_type',
             'duration',
             'duration_unit',
             'expiry_date',
@@ -194,19 +196,21 @@ export default class TradeStore extends BaseStore {
             'hovered_barrier',
             'short_barriers',
             'long_barriers',
+            'strike_price_choices',
             'is_equal',
             'last_digit',
             'multiplier',
             'start_date',
             'start_time',
-            'symbol',
             'stop_loss',
             'take_profit',
             'is_trade_params_expanded',
         ];
+        const session_storage_properties = ['contract_type', 'symbol'];
         super({
             root_store,
             local_storage_properties,
+            session_storage_properties,
             store_name,
             validation_rules: getValidationRules(),
         });
@@ -244,6 +248,7 @@ export default class TradeStore extends BaseStore {
             growth_rate: observable,
             has_cancellation: observable,
             has_equals_only: observable,
+            has_open_accu_contract: computed,
             has_stop_loss: observable,
             has_take_profit: observable,
             hovered_barrier: observable,
@@ -280,6 +285,7 @@ export default class TradeStore extends BaseStore {
             start_date: observable,
             start_dates_list: observable,
             start_time: observable,
+            strike_price_choices: observable,
             stop_loss: observable,
             stop_out: observable,
             symbol: observable,
@@ -311,7 +317,6 @@ export default class TradeStore extends BaseStore {
             loadActiveSymbols: action.bound,
             logoutListener: action.bound,
             main_barrier_flattened: computed,
-            manageMxMltRemovalNotification: action.bound,
             networkStatusChangeListener: action.bound,
             onAllowEqualsChange: action.bound,
             onChange: action.bound,
@@ -352,7 +357,6 @@ export default class TradeStore extends BaseStore {
             updateLimitOrderBarriers: action.bound,
             updateStore: action.bound,
             updateSymbol: action.bound,
-            vanilla_trade_type: observable,
         });
 
         // Adds intercept to change min_max value of duration validation
@@ -434,6 +438,16 @@ export default class TradeStore extends BaseStore {
         );
     }
 
+    get has_open_accu_contract() {
+        return (
+            this.is_accumulator &&
+            !!this.root_store.portfolio.open_accu_contract &&
+            !!this.root_store.portfolio.active_positions.find(
+                ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === this.symbol
+            )
+        );
+    }
+
     resetAccumulatorData() {
         if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
             this.root_store.contract_trade.clearAccumulatorBarriersData();
@@ -501,13 +515,9 @@ export default class TradeStore extends BaseStore {
 
     async setActiveSymbols() {
         const is_on_mf_account = this.root_store.client.landing_company_shortcode === 'maltainvest';
-        const hide_close_mx_mlt_storage_flag = !!parseInt(
-            localStorage.getItem('hide_close_mx_mlt_account_notification')
-        );
         const is_logged_in = this.root_store.client.is_logged_in;
         const clients_country = this.root_store.client.clients_country;
         const showError = this.root_store.common.showError;
-        const setError = this.root_store.common.setError;
 
         // To resolve infinite load for Belgium and Isle of man logout IPs
         if (['be', 'im'].includes(clients_country) && !is_logged_in) {
@@ -527,26 +537,7 @@ export default class TradeStore extends BaseStore {
              * This logic is related to EU country checks
              * Avoid moving this upward in the scope since mobx will lose reactivity
              */
-            const can_have_mx_account = this.root_store.client.can_have_mx_account;
-            const can_have_mlt_account = this.root_store.client.can_have_mlt_account;
-            const can_have_mlt_or_mx_account = can_have_mlt_account || can_have_mx_account;
-
-            if (can_have_mlt_or_mx_account && is_logged_in && !hide_close_mx_mlt_storage_flag) {
-                setError(true, {
-                    type: 'mx_mlt_removal',
-                });
-            } else if (is_logged_in && hide_close_mx_mlt_storage_flag) {
-                showMxMltUnavailableError(showError, can_have_mlt_account, can_have_mx_account);
-            } else if (!is_on_mf_account) {
-                if (!hide_close_mx_mlt_storage_flag) {
-                    setError(true, {
-                        type: 'mx_mlt_removal',
-                    });
-                } else {
-                    showUnavailableLocationError(showError, is_logged_in);
-                }
-                return;
-            } else if (is_on_mf_account) {
+            if (is_on_mf_account) {
                 showDigitalOptionsUnavailableError(showError, {
                     text: localize(
                         'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
@@ -559,7 +550,10 @@ export default class TradeStore extends BaseStore {
                     }),
                 });
                 return;
+            } else if (!is_on_mf_account) {
+                showUnavailableLocationError(showError, is_logged_in);
             }
+            showUnavailableLocationError(showError, is_logged_in);
         }
         await this.processNewValuesAsync({ active_symbols });
     }
@@ -1387,30 +1381,6 @@ export default class TradeStore extends BaseStore {
             await this.prepareTradeStore();
             this.root_store.notifications.setShouldShowPopups(true);
         });
-        // TODO: remove this function when the closure of MX and MLT accounts is completed.
-        this.manageMxMltRemovalNotification();
-    }
-
-    manageMxMltRemovalNotification() {
-        const { addNotificationMessage, client_notifications, notification_messages, unmarkNotificationMessage } =
-            this.root_store.notifications;
-        const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages'));
-        const { has_iom_account, has_malta_account, is_logged_in } = this.root_store.client;
-        unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
-        if (get_notification_messages !== null && is_logged_in && (has_iom_account || has_malta_account)) {
-            when(
-                () => is_logged_in && notification_messages.length === 0,
-                () => {
-                    const hidden_close_account_notification =
-                        parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
-                    const should_retain_notification =
-                        (has_iom_account || has_malta_account) && !hidden_close_account_notification;
-                    if (should_retain_notification) {
-                        addNotificationMessage(client_notifications.close_mx_mlt_account);
-                    }
-                }
-            );
-        }
     }
 
     setChartStatus(status) {
@@ -1447,6 +1417,9 @@ export default class TradeStore extends BaseStore {
             this.prev_chart_layout.is_used = false;
         }
         this.resetAccumulatorData();
+        if (this.is_vanilla) {
+            this.setBarrierChoices([]);
+        }
     }
 
     prev_chart_layout = null;
@@ -1541,15 +1514,21 @@ export default class TradeStore extends BaseStore {
     };
 
     chartStateChange(state, option) {
-        const market_close_prop = 'isClosed';
-        switch (state) {
-            case 'MARKET_STATE_CHANGE':
-                if (option && market_close_prop in option) {
-                    if (this.is_trade_component_mounted && option[market_close_prop] !== this.is_market_closed)
-                        this.prepareTradeStore(false);
-                }
-                break;
-            default:
+        if (
+            state === STATE_TYPES.MARKET_STATE_CHANGE &&
+            this.is_trade_component_mounted &&
+            option?.isClosed &&
+            option.isClosed !== this.is_market_closed
+        ) {
+            this.prepareTradeStore(false);
+        }
+        const { data, event_type } = getChartAnalyticsData(state, option);
+        if (data) {
+            RudderStack.track(event_type, {
+                ...data,
+                device_type: isMobile() ? 'mobile' : 'desktop',
+                form_name: 'default',
+            });
         }
     }
 
@@ -1574,7 +1553,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_vanilla() {
-        return this.contract_type === 'vanilla';
+        return isVanillaContract(this.contract_type);
     }
 
     setContractPurchaseToastbox(response) {
@@ -1614,6 +1593,9 @@ export default class TradeStore extends BaseStore {
             } else {
                 this.short_barriers = stored_barriers_data;
             }
+        }
+        if (this.is_vanilla) {
+            this.strike_price_choices = { barrier: this.barrier_1, barrier_choices };
         }
     }
 

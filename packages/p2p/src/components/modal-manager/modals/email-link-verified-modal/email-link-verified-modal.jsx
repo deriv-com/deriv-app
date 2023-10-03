@@ -26,17 +26,17 @@ const EmailLinkVerifiedModal = () => {
                 >
                     <Modal.Body className='email-verified-modal'>
                         <Icon icon='IcEmailVerificationLinkValid' size='128' />
-                        <Text className='email-verified-modal--text' color='prominent' size='s' weight='bold'>
+                        <Text className='email-verified-modal__text' color='prominent' weight='bold'>
                             <Localize i18n_default_text="We've verified your order" />
                         </Text>
-                        <Text align='center' color='prominent' size='s'>
+                        <Text align='center' color='prominent'>
                             <Localize
                                 i18n_default_text="Please ensure you've received {{amount}} {{local_currency}} in your account and hit Confirm to complete the transaction."
                                 values={{ amount, local_currency }}
                             />
                         </Text>
                     </Modal.Body>
-                    <Modal.Footer className='email-verified-modal--footer'>
+                    <Modal.Footer className='email-verified-modal__footer'>
                         <Button
                             large
                             primary

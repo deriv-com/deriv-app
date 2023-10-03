@@ -1,0 +1,12 @@
+.wallets-transactions-table {
+    padding-block: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &-row {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+}

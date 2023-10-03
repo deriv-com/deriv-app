@@ -38,6 +38,9 @@ inputs:
   RUDDERSTACK_URL:
     description: 'Rudderstack url'
     required: false
+  DATADOG_SESSION_SAMPLE_RATE_LOGS:
+    description: 'Datadog session sample rate for logs'
+    required: false
 
 runs:
   using: composite

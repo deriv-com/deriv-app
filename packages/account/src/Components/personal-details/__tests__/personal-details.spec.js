@@ -273,6 +273,10 @@ describe('<PersonalDetails/>', () => {
 
     afterAll(() => ReactDOM.createPortal.mockClear());
 
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     const renderwithRouter = component => {
         const mock_store = mockStore({});
         render(
@@ -281,6 +285,135 @@ describe('<PersonalDetails/>', () => {
             </StoreProvider>
         );
     };
+
+    it('should have validation errors on form fields', async () => {
+        isMobile.mockReturnValue(false);
+        isDesktop.mockReturnValue(true);
+
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+        const date_of_birth = await screen.getByTestId('date_of_birth');
+        const place_of_birth = screen.getByTestId('place_of_birth');
+        const citizenship = screen.getByTestId('citizenship');
+        const phone = screen.getByTestId('phone');
+        const tax_residence = screen.getByTestId('tax_residence');
+        const tax_identification_number = screen.getByTestId('tax_identification_number');
+
+        fireEvent.blur(first_name);
+        fireEvent.blur(last_name);
+        fireEvent.blur(date_of_birth);
+        fireEvent.blur(place_of_birth);
+        fireEvent.blur(citizenship);
+        fireEvent.blur(phone);
+        fireEvent.blur(tax_residence);
+        fireEvent.blur(tax_identification_number);
+
+        expect(await screen.findByText(/first name is required\./i)).toBeInTheDocument();
+        expect(await screen.findByText(/last name is required\./i)).toBeInTheDocument();
+        expect(await screen.findByText(/date of birth is required\./i)).toBeInTheDocument();
+        expect(await screen.findByText(/place of birth is required\./i)).toBeInTheDocument();
+        expect(await screen.findByText(/citizenship is required/i)).toBeInTheDocument();
+        expect(await screen.findByText(/phone is required\./i)).toBeInTheDocument();
+        expect(await screen.findByText(/tax residence is required\./i)).toBeInTheDocument();
+        expect(await screen.findByText(/tax identification number is required\./i)).toBeInTheDocument();
+        splitValidationResultTypes.mockReturnValue({
+            ...mock_warnings,
+            errors: {
+                ...mock_errors.errors,
+                first_name: 'letters, spaces, periods, hyphens, apostrophes only',
+                last_name: 'last name should be between 2 and 50 characters.',
+                date_of_birth: 'You must be 18 years old and above.',
+                tax_identification_number: "Tax Identification Number can't be longer than 25 characters.",
+            },
+        });
+        fireEvent.change(first_name, { target: { value: '123' } });
+        fireEvent.change(last_name, { target: { value: 'a' } });
+        fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
+        fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
+
+        expect(await screen.findByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toBeInTheDocument();
+        expect(await screen.findByText(/last name should be between 2 and 50 characters/i)).toBeInTheDocument();
+        expect(await screen.findByText(/you must be 18 years old and above\./i)).toBeInTheDocument();
+        expect(
+            await screen.findByText(/tax Identification Number can't be longer than 25 characters\./i)
+        ).toBeInTheDocument();
+    });
+
+    it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
+        const new_props = {
+            ...props,
+            is_mf: false,
+            is_svg: true,
+            value: {
+                first_name: '',
+                last_name: '',
+                date_of_birth: '',
+                place_of_birth: '',
+                phone: '+34',
+                tax_residence: '',
+                tax_identification_number: '',
+                document_type: 'none',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+        const date_of_birth = screen.getByTestId('date_of_birth');
+        const phone = screen.getByTestId('phone');
+
+        userEvent.type(first_name, 'test firstname');
+        userEvent.type(last_name, 'test lastname');
+        userEvent.type(date_of_birth, '2000-12-12');
+        userEvent.type(phone, '+49123456789012');
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+    });
+
+    it('should not display confirmation checkbox if opt-out of IDV', async () => {
+        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        const new_props = {
+            ...props,
+            value: {
+                first_name: '',
+                last_name: '',
+                date_of_birth: '',
+                phone: '+93',
+                account_opening_reason: '',
+                place_of_birth: '',
+                document_type: 'none',
+            },
+        };
+
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+        const date_of_birth = screen.getByTestId('date_of_birth');
+        const phone = screen.getByTestId('phone');
+
+        userEvent.type(first_name, 'test firstname');
+        userEvent.type(last_name, 'test lastname');
+        userEvent.type(date_of_birth, '2000-12-12');
+        userEvent.type(phone, '+49123456789012');
+
+        const previous_btn = screen.getByRole('button', { name: /previous/i });
+        const next_btn = screen.getByRole('button', { name: /next/i });
+
+        const confirmation_checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(confirmation_checkbox).not.toBeInTheDocument();
+
+        expect(previous_btn).toBeEnabled();
+        expect(next_btn).toBeEnabled();
+        userEvent.click(next_btn);
+
+        await waitFor(() => {
+            expect(new_props.onSubmit).toBeCalled();
+        });
+    });
 
     it('should autopopulate tax_residence for MF clients', () => {
         const new_props = {
@@ -472,61 +605,6 @@ describe('<PersonalDetails/>', () => {
 
         const { getByText } = within(screen.getAllByTestId('selected_value')[0]);
         expect(getByText('Afghanistan')).toBeInTheDocument();
-    });
-
-    it('should have validation errors on form fields', async () => {
-        isMobile.mockReturnValue(false);
-        isDesktop.mockReturnValue(true);
-
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
-
-        const first_name = screen.getByTestId('first_name');
-        const last_name = screen.getByTestId('last_name');
-        const date_of_birth = await screen.getByTestId('date_of_birth');
-        const place_of_birth = screen.getByTestId('place_of_birth');
-        const citizenship = screen.getByTestId('citizenship');
-        const phone = screen.getByTestId('phone');
-        const tax_residence = screen.getByTestId('tax_residence');
-        const tax_identification_number = screen.getByTestId('tax_identification_number');
-
-        fireEvent.blur(first_name);
-        fireEvent.blur(last_name);
-        fireEvent.blur(date_of_birth);
-        fireEvent.blur(place_of_birth);
-        fireEvent.blur(citizenship);
-        fireEvent.blur(phone);
-        fireEvent.blur(tax_residence);
-        fireEvent.blur(tax_identification_number);
-
-        expect(await screen.findByText(/first name is required\./i)).toBeInTheDocument();
-        expect(await screen.findByText(/last name is required\./i)).toBeInTheDocument();
-        expect(await screen.findByText(/date of birth is required\./i)).toBeInTheDocument();
-        expect(await screen.findByText(/place of birth is required\./i)).toBeInTheDocument();
-        expect(await screen.findByText(/citizenship is required/i)).toBeInTheDocument();
-        expect(await screen.findByText(/phone is required\./i)).toBeInTheDocument();
-        expect(await screen.findByText(/tax residence is required\./i)).toBeInTheDocument();
-        expect(await screen.findByText(/tax identification number is required\./i)).toBeInTheDocument();
-        splitValidationResultTypes.mockReturnValue({
-            ...mock_warnings,
-            errors: {
-                ...mock_errors.errors,
-                first_name: 'letters, spaces, periods, hyphens, apostrophes only',
-                last_name: 'last name should be between 2 and 50 characters.',
-                date_of_birth: 'You must be 18 years old and above.',
-                tax_identification_number: "Tax Identification Number can't be longer than 25 characters.",
-            },
-        });
-        fireEvent.change(first_name, { target: { value: '123' } });
-        fireEvent.change(last_name, { target: { value: 'a' } });
-        fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
-        fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
-
-        expect(await screen.findByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toBeInTheDocument();
-        expect(await screen.findByText(/last name should be between 2 and 50 characters/i)).toBeInTheDocument();
-        expect(await screen.findByText(/you must be 18 years old and above\./i)).toBeInTheDocument();
-        expect(
-            await screen.findByText(/tax Identification Number can't be longer than 25 characters\./i)
-        ).toBeInTheDocument();
     });
 
     it('should show error for invalid TIN', async () => {
@@ -801,78 +879,5 @@ describe('<PersonalDetails/>', () => {
         };
         renderwithRouter(<PersonalDetails {...new_props} />);
         expect(screen.getByTestId('tax_residence')).toBeDisabled();
-    });
-
-    it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
-        const new_props = {
-            ...props,
-            is_mf: false,
-            is_svg: true,
-            value: {
-                first_name: '',
-                last_name: '',
-                date_of_birth: '',
-                place_of_birth: '',
-                phone: '+34',
-                tax_residence: '',
-                tax_identification_number: '',
-            },
-        };
-        renderwithRouter(<PersonalDetails {...new_props} />);
-
-        const first_name = screen.getByTestId('first_name');
-        const last_name = screen.getByTestId('last_name');
-        const date_of_birth = screen.getByTestId('date_of_birth');
-        const phone = screen.getByTestId('phone');
-
-        userEvent.type(first_name, 'test firstname');
-        userEvent.type(last_name, 'test lastname');
-        userEvent.type(date_of_birth, '2000-12-12');
-        userEvent.type(phone, '+49123456789012');
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
-    });
-
-    it('should not display confirmation checkbox if opt-out of IDV', async () => {
-        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
-        const new_props = {
-            ...props,
-            value: {
-                first_name: '',
-                last_name: '',
-                date_of_birth: '',
-                phone: '+93',
-                account_opening_reason: '',
-                place_of_birth: '',
-                document_type: 'none',
-            },
-        };
-
-        renderwithRouter(<PersonalDetails {...new_props} />);
-
-        const first_name = screen.getByTestId('first_name');
-        const last_name = screen.getByTestId('last_name');
-        const date_of_birth = screen.getByTestId('date_of_birth');
-        const phone = screen.getByTestId('phone');
-
-        userEvent.type(first_name, 'test firstname');
-        userEvent.type(last_name, 'test lastname');
-        userEvent.type(date_of_birth, '2000-12-12');
-        userEvent.type(phone, '+49123456789012');
-
-        const previous_btn = screen.getByRole('button', { name: /previous/i });
-        const next_btn = screen.getByRole('button', { name: /next/i });
-
-        const confirmation_checkbox = screen.queryByLabelText(
-            /i confirm that the name and date of birth above match my chosen identity document/i
-        );
-        expect(confirmation_checkbox).not.toBeInTheDocument();
-
-        expect(previous_btn).toBeEnabled();
-        expect(next_btn).toBeEnabled();
-        userEvent.click(next_btn);
-
-        await waitFor(() => {
-            expect(new_props.onSubmit).toBeCalled();
-        });
     });
 });

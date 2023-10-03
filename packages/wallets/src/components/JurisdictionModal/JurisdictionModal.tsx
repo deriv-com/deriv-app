@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ComponentProps, FC, useState } from 'react';
 import classNames from 'classnames';
 import { useModal } from '../ModalProvider';
 import { ModalStepWrapper } from '../ModalStepWrapper';
@@ -9,7 +9,7 @@ import './JurisdictionModal.scss';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
-    const { show } = useModal();
+    const { modalState, show } = useModal();
 
     const jurisdictions = ['St. Vincent & Grenadines', 'British Virgin Islands', 'Vanuatu'];
 
@@ -21,7 +21,7 @@ const JurisdictionModal = () => {
                         className={classNames('wallets-jurisdiction-modal__button', {
                             'wallets-jurisdiction-modal__button--disabled': !selectedJurisdiction,
                         })}
-                        onClick={() => show(<MT5PasswordModal marketType='financial' />)}
+                        onClick={() => show(<MT5PasswordModal marketType={modalState?.marketType || 'all'} />)}
                     >
                         Next
                     </PrimaryActionButton>

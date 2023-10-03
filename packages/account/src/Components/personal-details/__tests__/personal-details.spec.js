@@ -6,6 +6,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 import userEvent from '@testing-library/user-event';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -236,7 +237,12 @@ describe('<PersonalDetails/>', () => {
     afterAll(() => ReactDOM.createPortal.mockClear());
 
     const renderwithRouter = component => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
+        const mock_store = mockStore({});
+        render(
+            <StoreProvider store={mock_store}>
+                <BrowserRouter>{component}</BrowserRouter>
+            </StoreProvider>
+        );
     };
 
     it('should autopopulate tax_residence for MF clients', () => {
@@ -529,6 +535,12 @@ describe('<PersonalDetails/>', () => {
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         const next_btn = screen.getByRole('button', { name: /next/i });
+
+        const checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(checkbox).not.toBeInTheDocument();
+
         expect(previous_btn).toBeEnabled();
         expect(next_btn).toBeEnabled();
         fireEvent.click(next_btn);
@@ -573,6 +585,11 @@ describe('<PersonalDetails/>', () => {
         const tax_identification_number = screen.getByTestId('tax_identification_number');
         const tax_identification_confirm = screen.getByTestId('tax_identification_confirm');
         const account_opening_reason_mobile = screen.getByTestId('account_opening_reason_mobile');
+
+        const checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(checkbox).not.toBeInTheDocument();
 
         fireEvent.click(mr_radio_btn);
         fireEvent.change(first_name, { target: { value: 'test firstname' } });

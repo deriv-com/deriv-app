@@ -21,7 +21,7 @@
         "@commitlint/cli": "^17.1.2",
         "@commitlint/config-conventional": "^17.1.0",
         "@commitlint/config-nx-scopes": "^17.0.0",
-        "@deriv/eslint-config-deriv": "^1.0.0-beta.5",
+        "@deriv/eslint-config-deriv": "^1.0.0-beta.3",
         "@jest/globals": "^26.5.3",
         "@nrwl/nx-cloud": "latest",
         "@playwright/test": "^1.37.1",

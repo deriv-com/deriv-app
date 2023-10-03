@@ -84,7 +84,7 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
-    is_alpha_chart = false;
+    is_alpha_chart = true;
 
     // All possible landing companies of user between all
     standpoint = {

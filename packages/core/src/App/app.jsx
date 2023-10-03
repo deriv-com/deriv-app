@@ -21,6 +21,7 @@ import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
 // TODO: Lazy load smartchart styles
 import '@deriv/deriv-charts/dist/smartcharts.css';
+import '@deriv/deriv-charts-alpha/dist/smartcharts.css';
 import 'Sass/app.scss';
 
 const AppWithoutTranslation = ({ root_store }) => {

@@ -259,7 +259,7 @@ export type TJurisdictionModalContentProps = {
 export type TJurisdictionModalTitleProps = {
     show_eu_related_content: boolean;
     account_type: string;
-    platform: TCFDsPlatformType;
+    platform?: TCFDsPlatformType;
 };
 
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;

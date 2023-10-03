@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field, FieldProps } from 'formik';
 import { localize } from '@deriv/translations';
 import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
-import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
+import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative } from '@deriv/components';
 import {
     getDocumentData,
     preventEmptyClipboardPaste,
@@ -254,20 +254,6 @@ const IDVForm = ({
                                         </fieldset>
                                     )}
                                 </div>
-                                {/* {document_image && (
-                                    <div className='proof-of-identity__sample-container'>
-                                        <Text size='xxs' weight='bold'>
-                                            {localize('Sample:')}
-                                        </Text>
-                                        <div className='proof-of-identity__image-container'>
-                                            <img
-                                                className='proof-of-identity__image'
-                                                src={document_image}
-                                                alt='document sample image'
-                                            />
-                                        </div>
-                                    </div>
-                                )} */}
                             </div>
                         </div>
                     </div>

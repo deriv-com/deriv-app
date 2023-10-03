@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
-/** A custom hook to get the currency config information from `website_status` endpoint and `crypto_config` endpoint */
+/** A custom hook to get the currency config information from `website_status` endpoint and `crypto_config` endpoint. */
 const useCurrencyConfig = () => {
-    const { data: website_status_data, ...rest } = useFetch('website_status');
-    const { data: crypto_config_data } = useFetch('crypto_config');
+    const { data: website_status_data, ...rest } = useQuery('website_status');
+    const { data: crypto_config_data } = useQuery('crypto_config');
 
     // Add additional information to the currency config.
     const modified_currencies_config = useMemo(() => {

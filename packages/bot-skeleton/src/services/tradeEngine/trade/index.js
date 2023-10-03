@@ -83,7 +83,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.options = options;
         this.startPromise = this.loginAndGetBalance(token);
 
-        this.watchTicks(symbol);
+        if (!this.checkTicksPromiseExists()) this.watchTicks(symbol);
     }
 
     start(tradeOptions) {
@@ -93,10 +93,12 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         globalObserver.emit('bot.running');
 
-        this.tradeOptions = tradeOptions;
+        const validated_trade_options = this.validateTradeOptions(tradeOptions);
+
+        this.tradeOptions = validated_trade_options;
         this.store.dispatch(start());
-        this.checkLimits(tradeOptions);
-        this.makeProposals({ ...this.options, ...tradeOptions });
+        this.checkLimits(validated_trade_options);
+        this.makeProposals({ ...this.options, ...validated_trade_options });
         this.checkProposalReady();
     }
 
@@ -104,6 +106,11 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         if (this.token === token) {
             return Promise.resolve();
         }
+        // for strategies using total runs, GetTotalRuns function is trying to get loginid and it gets called before Proposals calls.
+        // the below required loginid to be set in Proposal calls where loginAndGetBalance gets resolved.
+        // Earlier this used to happen as soon as we get ticks_history response and by the time GetTotalRuns gets called we have required info.
+        this.accountInfo = api_base.account_info;
+        this.token = api_base.token;
         return new Promise(resolve => {
             // Try to recover from a situation where API doesn't give us a correct response on
             // "proposal_open_contract" which would make the bot run forever. When there's a "sell"
@@ -123,8 +130,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                         }
                     }, 1500);
                 }
-                this.accountInfo = api_base.account_info;
-                this.token = api_base.token;
                 resolve();
             });
             api_base.pushSubscription(subscription);

@@ -226,9 +226,365 @@ import type {
     VerifyEmailRequest,
     VerifyEmailResponse,
 } from '@deriv/api-types';
-import type { useMutation, useQuery } from '@tanstack/react-query';
+import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    service_token: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            service_token: 1;
+            /**
+             * [Optional] The 2-letter country code.
+             */
+            country?: string;
+            /**
+             * [Optional] The URL of the web page where the Web SDK will be used.
+             */
+            referrer?: string;
+            /**
+             * Server (dxtrade and derivez).
+             */
+            server?: 'demo' | 'real';
+            /**
+             * The service(s) to retrieve token(s) for.
+             */
+            service:
+                | ('onfido' | 'sendbird' | 'banxa' | 'wyre' | 'dxtrade' | 'pandats' | 'ctrader')
+                | ('onfido' | 'sendbird' | 'banxa' | 'wyre' | 'pandats')[];
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * Service specific tokens and data.
+             */
+            service_token?: {
+                /**
+                 * Banxa order data.
+                 */
+                banxa?: {
+                    /**
+                     * Created order id reference token.
+                     */
+                    token?: string;
+                    /**
+                     * Banxa order checkout url.
+                     */
+                    url?: string;
+                    /**
+                     * Banxa order checkout iframe url.
+                     */
+                    url_iframe?: string;
+                };
+                /**
+                 * CTrader data.
+                 */
+                ctrader?: {
+                    /**
+                     * CTrader One Time token
+                     */
+                    token?: string;
+                };
+                /**
+                 * Deriv X data.
+                 */
+                dxtrade?: {
+                    /**
+                     * Deriv X login token.
+                     */
+                    token?: string;
+                };
+                /**
+                 * Onfido data.
+                 */
+                onfido?: {
+                    /**
+                     * Onfido token.
+                     */
+                    token?: string;
+                };
+                /**
+                 * Deriv EZ data.
+                 */
+                pandats?: {
+                    /**
+                     * Deriv EZ SSO token
+                     */
+                    token?: string;
+                };
+                /**
+                 * Sendbird data.
+                 */
+                sendbird?: {
+                    /**
+                     * Sendbird application ID.
+                     */
+                    app_id?: string;
+                    /**
+                     * The epoch time in which the token will be expired. Note: the token could be expired sooner than this, due to different reasons.
+                     */
+                    expiry_time?: number;
+                    /**
+                     * Sendbird token.
+                     */
+                    token?: string;
+                };
+                /**
+                 * Wyre reservation data.
+                 */
+                wyre?: {
+                    /**
+                     * Wyre reservation id token
+                     */
+                    token?: string;
+                    /**
+                     * Wyre reservation URL
+                     */
+                    url?: string;
+                };
+            };
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'service_token';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
+    trading_platform_investor_password_reset: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_investor_password_reset: 1;
+            /**
+             * Trading account ID.
+             */
+            account_id: string;
+            /**
+             * New password of the account. For validation (Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address).
+             */
+            new_password: string;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'mt5';
+            /**
+             * Email verification code (received from a `verify_email` call, which must be done first)
+             */
+            verification_code: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            trading_platform_investor_password_reset?: 0 | 1;
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_investor_password_reset';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
+    trading_platform_password_change: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_password_change: 1;
+            /**
+             * New trading password. Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address.
+             */
+            new_password: string;
+            /**
+             * Old password for validation. Must be empty if a password has not been set yet.
+             */
+            old_password?: string;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'dxtrade' | 'mt5';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            trading_platform_password_change?: 0 | 1;
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_password_change';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
+    trading_platform_new_account: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_new_account: 1;
+            /**
+             * Account type.
+             */
+            account_type: 'demo' | 'real';
+            /**
+             * [Optional] Name of the client's company (For DerivEZ only)
+             */
+            company?: string;
+            /**
+             * [Optional] Trading account currency, the default value will be the qualified account currency.
+             */
+            currency?: string;
+            /**
+             * [Optional] If set to 1, only validation is performed.
+             */
+            dry_run?: 0 | 1;
+            /**
+             * Market type
+             */
+            market_type: 'financial' | 'synthetic' | 'all';
+            /**
+             * The master password of the account. For validation (Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address). Only for DXTrade.
+             */
+            password?: string;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'dxtrade' | 'derivez' | 'ctrader';
+            /**
+             * [Optional] Sub account type.
+             */
+            sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * ID of Trading account.
+             */
+            account_id?: string;
+            /**
+             * Account type.
+             */
+            account_type?: 'demo' | 'real' | 'all';
+            /**
+             * Agent Details.
+             */
+            agent?: null | string;
+            /**
+             * Balance of the Trading account.
+             */
+            balance?: number;
+            /**
+             * Currency of the Trading account.
+             */
+            currency?: string;
+            /**
+             * Account balance, formatted to appropriate decimal places.
+             */
+            display_balance?: string;
+            /**
+             * Account enabled status
+             */
+            enabled?: number;
+            /**
+             * Landing company shortcode of the Trading account.
+             */
+            landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu' | 'seychelles';
+            /**
+             * Login name used to log in into Trading platform.
+             */
+            login?: string;
+            /**
+             * Market type.
+             */
+            market_type?: 'financial' | 'synthetic' | 'all';
+            /**
+             * Name of trading platform.
+             */
+            platform?: 'dxtrade' | 'derivez' | 'ctrader';
+            /**
+             * Sub account type.
+             */
+            sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_new_account';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
     trading_platform_available_accounts: {
         request: {
             /**
@@ -339,7 +695,7 @@ type TPrivateSocketEndpoints = {
             /**
              * Trading platform name
              */
-            platform: 'dxtrade' | 'mt5' | 'derivez';
+            platform: 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
             /**
              * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
              */
@@ -479,7 +835,7 @@ type TPrivateSocketEndpoints = {
                 /**
                  * Name of trading platform.
                  */
-                platform?: 'dxtrade' | 'mt5';
+                platform?: 'dxtrade' | 'mt5' | 'ctrader';
                 /**
                  * Trade server name of the MT5 account.
                  */
@@ -602,7 +958,7 @@ type TPrivateSocketEndpoints = {
                     /**
                      * The status code of the transaction.
                      * Possible values for **deposit:** `PENDING|CONFIRMED|ERROR`,
-                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED`.
+                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED|REVERTING|REVERTED`.
                      */
                     status_code:
                         | 'CANCELLED'
@@ -613,6 +969,8 @@ type TPrivateSocketEndpoints = {
                         | 'PERFORMING_BLOCKCHAIN_TXN'
                         | 'PROCESSING'
                         | 'REJECTED'
+                        | 'REVERTED'
+                        | 'REVERTING'
                         | 'SENT'
                         | 'VERIFIED';
                     /**
@@ -742,6 +1100,58 @@ type TPrivateSocketEndpoints = {
             req_id?: number;
             [k: string]: unknown;
         };
+    };
+    trading_platform_investor_password_change: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_investor_password_change: 1;
+            /**
+             * Trading account ID.
+             */
+            account_id: string;
+            /**
+             * New investor password. Accepts any printable ASCII character. Must be within 8-25 characters, and include numbers, lowercase and uppercase letters. Must not be the same as the user's email address.
+             */
+            new_password: string;
+            /**
+             * Old investor password for validation (non-empty string, accepts any printable ASCII character)
+             */
+            old_password: string;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'mt5';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            trading_platform_password_change?: 0 | 1;
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_investor_password_change';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
     };
 };
 
@@ -1226,22 +1636,50 @@ type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
     TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'
 >;
 
-export type TSocketRequestPayload<T extends TSocketEndpointNames> = Partial<
-    TSocketRequestCleaned<T>
-> extends TSocketRequestCleaned<T>
-    ? { payload?: TSocketRequestCleaned<T> }
-    : { payload: TSocketRequestCleaned<T> };
+export type TSocketPaginatateableRequestCleaned<T extends TSocketPaginateableEndpointNames> = Omit<
+    TSocketRequest<T>,
+    TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'
+> & {
+    /** Number of records to skip */
+    offset?: number;
+    /** Number of records to return */
+    limit?: number;
+};
+
+export type TSocketRequestPayload<
+    T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames
+> = Partial<TSocketRequestCleaned<T>> extends TSocketRequestCleaned<T>
+    ? {
+          payload?: T extends TSocketPaginateableEndpointNames
+              ? TSocketPaginatateableRequestCleaned<T>
+              : TSocketRequestCleaned<T>;
+      }
+    : {
+          payload: T extends TSocketPaginateableEndpointNames
+              ? TSocketPaginatateableRequestCleaned<T>
+              : TSocketRequestCleaned<T>;
+      };
 
 export type TSocketRequestQueryOptions<T extends TSocketEndpointNames> = Parameters<
     typeof useQuery<TSocketResponseData<T>, unknown>
+>[2];
+
+export type TSocketRequestInfiniteQueryOptions<T extends TSocketEndpointNames> = Parameters<
+    typeof useInfiniteQuery<TSocketResponseData<T>, unknown>
 >[2];
 
 export type TSocketRequestMutationOptions<T extends TSocketEndpointNames> = Parameters<
     typeof useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>
 >[2];
 
-type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
-    TSocketRequestPayload<T> & { options?: TSocketRequestQueryOptions<T> },
+type TSocketRequestWithOptions<
+    T extends TSocketEndpointNames,
+    O extends boolean = false,
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+> = Omit<
+    TSocketRequestPayload<T> & {
+        options?: OT extends 'useQuery' ? TSocketRequestQueryOptions<T> : TSocketRequestInfiniteQueryOptions<T>;
+    },
     | (TSocketRequestPayload<T>['payload'] extends Record<string, never> ? 'payload' : never)
     | (TNever<TSocketRequestPayload<T>['payload']> extends undefined ? 'payload' : never)
     | (O extends true ? never : 'options')
@@ -1249,18 +1687,21 @@ type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean
 
 type TNever<T> = T extends Record<string, never> ? never : T;
 
-type TSocketRequestProps<T extends TSocketEndpointNames, O extends boolean = false> = TNever<
-    TSocketRequestWithOptions<T, O>
->;
+type TSocketRequestProps<
+    T extends TSocketEndpointNames,
+    O extends boolean = false,
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+> = TNever<TSocketRequestWithOptions<T, O, OT>>;
 
-export type TSocketAcceptableProps<T extends TSocketEndpointNames, O extends boolean = false> = TSocketRequestProps<
-    T,
-    O
-> extends never
+export type TSocketAcceptableProps<
+    T extends TSocketEndpointNames,
+    O extends boolean = false,
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+> = TSocketRequestProps<T, O, OT> extends never
     ? [undefined?]
-    : Partial<TSocketRequestProps<T, O>> extends TSocketRequestProps<T, O>
-    ? [TSocketRequestProps<T, O>?]
-    : [TSocketRequestProps<T, O>];
+    : Partial<TSocketRequestProps<T, O, OT>> extends TSocketRequestProps<T, O, OT>
+    ? [TSocketRequestProps<T, O, OT>?]
+    : [TSocketRequestProps<T, O, OT>];
 
 export type TSocketPaginateableEndpointNames = KeysMatching<
     TSocketEndpoints,

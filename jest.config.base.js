@@ -3,8 +3,8 @@
  */
 
 module.exports = {
-    collectCoverage: true,
-    collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
+    collectCoverage: false,
+    collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**', '!**/dist/**', '!/integration-tests/'],
     coverageReporters: ['lcov'],
     coverageDirectory: './coverage/',
     testRegex: '(/__tests__/.*|(\\.)(test|spec))\\.(js|jsx|tsx|ts)?$',
@@ -12,4 +12,5 @@ module.exports = {
     transformIgnorePatterns: ['/node_modules/(?!@enykeev/react-virtualized).+\\.js$'],
     setupFiles: ['<rootDir>/../../jest.setup.js'],
     setupFilesAfterEnv: ['<rootDir>/../../setupTests.js'],
+    testPathIgnorePatterns: ['/integration-tests/'],
 };

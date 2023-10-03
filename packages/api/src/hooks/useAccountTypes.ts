@@ -1,21 +1,18 @@
 import { useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
-/**
- * A custom hook to get available account types for a specific landing company
- *
- *  @param landing_company {string} - The landing company shortcode
- */
+/** A custom hook to get available account types for a specific landing company. */
 const useAccountTypes = (landing_company?: string) => {
-    const { data, ...rest } = useFetch('get_account_types', {
+    const { data, ...rest } = useQuery('get_account_types', {
         payload: { company: landing_company },
+        options: { enabled: Boolean(landing_company) },
     });
 
-    const modified_data = useMemo(() => {
+    // Add additional information to the account types response.
+    const modified_account_types = useMemo(() => {
         if (!data?.get_account_types) return;
 
         return {
-            /** List of available account types */
             ...data.get_account_types,
             /** Landing company for the account types */
             landing_company,
@@ -23,7 +20,8 @@ const useAccountTypes = (landing_company?: string) => {
     }, [data?.get_account_types, landing_company]);
 
     return {
-        data: modified_data,
+        /** The account types response. */
+        data: modified_account_types,
         ...rest,
     };
 };

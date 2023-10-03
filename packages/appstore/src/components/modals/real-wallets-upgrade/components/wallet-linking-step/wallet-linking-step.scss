@@ -58,6 +58,11 @@
     &__accounts-text {
         border-radius: 8px 8px 0 0;
     }
+}
+
+.linked-wallet {
+    height: 13.6rem;
+    position: relative;
 
     &__wallet-card-text {
         position: absolute;
@@ -65,9 +70,4 @@
         bottom: 0;
         border-radius: 0 0 8px 8px;
     }
-}
-
-.linked-wallet {
-    height: '13.6rem';
-    position: 'relative';
 }

@@ -69,7 +69,7 @@ const LinkedWallet = ({
             <WalletCard wallet={wallet.wallet_details} size='large' state='default' />
             {is_mobile && (
                 <Text
-                    className='wallet-linking-step__title-text wallet-linking-step__wallet-card-text'
+                    className='wallet-linking-step__title-text linked-wallet__wallet-card-text'
                     color='prominent'
                     size='xxxs'
                 >

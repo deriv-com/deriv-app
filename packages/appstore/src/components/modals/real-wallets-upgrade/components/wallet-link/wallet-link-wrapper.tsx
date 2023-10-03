@@ -2,6 +2,8 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { ContentWithLink } from '../content-with-link';
 import './wallet-link-wrapper.scss';
+import { LeftContentWithLink } from '../left-content-with-link';
+import { RightContentWithLink } from '../right-content-with-link';
 
 export type TWalletLinkWrapper = {
     left?: () => JSX.Element | Array<JSX.Element>;
@@ -19,18 +21,14 @@ const WalletLinkWrapper = observer(({ left, center, right, has_left_fork, has_ri
             {left && (
                 <div className='wallet-link-wrapper__left'>
                     <div className='wallet-link-wrapper__accounts'>
-                        <ContentWithLink is_mobile={is_mobile} has_fork={has_left_fork} fork_margin={24}>
-                            {left()}
-                        </ContentWithLink>
+                        <LeftContentWithLink>{left()}</LeftContentWithLink>
                     </div>
                 </div>
             )}
             {center && <div className='wallet-link-wrapper__center'>{center()}</div>}
             {right && (
                 <div className='wallet-link-wrapper__right'>
-                    <ContentWithLink is_mobile={is_mobile} rtl has_fork={has_right_fork} fork_margin={24}>
-                        {right()}
-                    </ContentWithLink>
+                    <RightContentWithLink>{right()}</RightContentWithLink>
                 </div>
             )}
         </div>

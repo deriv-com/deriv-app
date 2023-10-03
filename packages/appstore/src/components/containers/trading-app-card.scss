@@ -46,8 +46,8 @@
             height: fit-content;
             width: fit-content;
             margin-left: 1rem;
-            background-color: $color-red;
-            color: $color-white;
+            background-color: var(--brand-red-coral);
+            color: var(--text-colored-background);
             border-radius: $BORDER_RADIUS * 4;
         }
     }

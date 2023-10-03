@@ -1,10 +1,13 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { isMobile, WS } from '@deriv/shared';
-import type { TSettings } from '@deriv/shared/src/utils/files/file-uploader-utils';
+// import type { TSettings } from '@deriv/shared/src/utils/files/file-uploader-utils';
 import { Localize } from '@deriv/translations';
 import FileUploader from './file-uploader';
 import { TFile } from '../../Types';
+import { useFileUploader } from '@deriv/hooks';
+
+type TSettings = Partial<Parameters<ReturnType<typeof useFileUploader>['uploader']>[1]>;
 
 type TFileUploaderContainer = {
     getSocket?: () => WebSocket;

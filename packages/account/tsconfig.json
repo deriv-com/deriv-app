@@ -17,9 +17,5 @@
             "@deriv/*": ["../*/src"]
         }
     },
-    "include": [
-      "src",
-      "globals.d.ts",
-      "index.d.ts"
-    ]
+    "include": ["src", "globals.d.ts"]
 }

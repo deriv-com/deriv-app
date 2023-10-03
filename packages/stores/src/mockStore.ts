@@ -289,6 +289,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             network_status: {},
         },
         ui: {
+            advanced_duration_unit: 't',
             account_switcher_disabled_message: '',
             app_contents_scroll_ref: {
                 current: null,
@@ -328,9 +329,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             setPurchaseState: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleLanguageSettingsModal: jest.fn(),
+            toggleServicesErrorModal: jest.fn(),
             toggleLinkExpiredModal: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),
-            toggleServicesErrorModal: jest.fn(),
             addToast: jest.fn(),
             removeToast: jest.fn(),
             reports_route_tab_index: 1,
@@ -347,7 +348,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_need_real_account_for_cashier_modal_visible: false,
             is_chart_layout_default: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
-            setIsAcuityModalOpen: jest.fn(),
             setAppContentsScrollRef: jest.fn(),
             is_switch_to_deriv_account_modal_visible: false,
             openSwitchToRealAccountModal: jest.fn(),
@@ -513,6 +513,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             eventHandler: jest.fn(),
             setLoginFlag: jest.fn(),
         },
+        pushwoosh: {},
+        contract_replay: {},
+        chart_barrier_store: {},
+        active_symbols: {},
     };
 };
 

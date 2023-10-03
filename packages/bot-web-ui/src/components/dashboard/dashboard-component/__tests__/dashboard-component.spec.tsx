@@ -48,7 +48,6 @@ export const mocked_props = {
     is_dialog_open: true,
     onOkButtonClick: jest.fn(),
     setActiveTab: jest.fn(() => 3),
-    setHasTourEnded: jest.fn(),
     setOnBoardTourRunState: jest.fn(),
     setTourActiv: jest.fn(),
     setTourDialogVisibility: jest.fn(),

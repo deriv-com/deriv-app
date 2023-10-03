@@ -19,6 +19,7 @@ import {
     isMarketClosed,
     isMobile,
     isTurbosContract,
+    isVanillaContract,
     pickDefaultSymbol,
     removeBarrier,
     resetEndTimeOnVolatilityIndices,
@@ -158,7 +159,7 @@ export default class TradeStore extends BaseStore {
     short_barriers = {};
 
     // Vanilla trade params
-    vanilla_trade_type = 'VANILLALONGCALL';
+    strike_price_choices = {};
 
     // Mobile
     is_trade_params_expanded = true;
@@ -195,6 +196,7 @@ export default class TradeStore extends BaseStore {
             'hovered_barrier',
             'short_barriers',
             'long_barriers',
+            'strike_price_choices',
             'is_equal',
             'last_digit',
             'multiplier',
@@ -283,6 +285,7 @@ export default class TradeStore extends BaseStore {
             start_date: observable,
             start_dates_list: observable,
             start_time: observable,
+            strike_price_choices: observable,
             stop_loss: observable,
             stop_out: observable,
             symbol: observable,
@@ -354,7 +357,6 @@ export default class TradeStore extends BaseStore {
             updateLimitOrderBarriers: action.bound,
             updateStore: action.bound,
             updateSymbol: action.bound,
-            vanilla_trade_type: observable,
         });
 
         // Adds intercept to change min_max value of duration validation
@@ -1415,6 +1417,9 @@ export default class TradeStore extends BaseStore {
             this.prev_chart_layout.is_used = false;
         }
         this.resetAccumulatorData();
+        if (this.is_vanilla) {
+            this.setBarrierChoices([]);
+        }
     }
 
     prev_chart_layout = null;
@@ -1548,7 +1553,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_vanilla() {
-        return this.contract_type === 'vanilla';
+        return isVanillaContract(this.contract_type);
     }
 
     setContractPurchaseToastbox(response) {
@@ -1588,6 +1593,9 @@ export default class TradeStore extends BaseStore {
             } else {
                 this.short_barriers = stored_barriers_data;
             }
+        }
+        if (this.is_vanilla) {
+            this.strike_price_choices = { barrier: this.barrier_1, barrier_choices };
         }
     }
 

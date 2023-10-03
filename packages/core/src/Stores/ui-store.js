@@ -101,9 +101,6 @@ export default class UIStore extends BaseStore {
     // MT5 create real STP from demo, show only real accounts from switcher
     should_show_real_accounts_list = false;
 
-    // MT5 acuity download
-    is_acuity_modal_open = false;
-
     // Real account signup
     real_account_signup = {
         active_modal_index: -1,
@@ -239,7 +236,6 @@ export default class UIStore extends BaseStore {
             is_account_settings_visible: observable,
 
             is_accounts_switcher_on: observable,
-            is_acuity_modal_open: observable,
 
             is_app_disabled: observable,
             is_cashier_visible: observable,
@@ -335,7 +331,6 @@ export default class UIStore extends BaseStore {
             setDarkMode: action.bound,
             setHasOnlyForwardingContracts: action.bound,
             setHashedValue: action.bound,
-            setIsAcuityModalOpen: action.bound,
             setIsClosingCreateRealAccountModal: action.bound,
             setIsNativepickerVisible: action.bound,
             setReportsTabIndex: action.bound,
@@ -831,10 +826,6 @@ export default class UIStore extends BaseStore {
 
     toggleShouldShowRealAccountsList(value) {
         this.should_show_real_accounts_list = value;
-    }
-
-    setIsAcuityModalOpen(value) {
-        this.is_acuity_modal_open = value;
     }
 
     toggleShouldShowMultipliersOnboarding(value) {

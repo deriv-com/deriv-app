@@ -3,10 +3,10 @@ import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { website_name } from '@deriv/shared';
-import ResidenceForm from './set-residence-form.jsx';
+import SetResidenceForm from './set-residence-form.jsx';
 import 'Sass/app/modules/set-residence.scss';
 
 // TODO: Move some of these functions to helpers since some of them are shared with AccountSignUpModal
@@ -56,16 +56,14 @@ const SetResidence = ({ enableApp, onSetResidence, residence_list, toggleModalVi
                 {({ isSubmitting, errors, values, setFieldValue, touched }) => (
                     <Form>
                         <React.Fragment>
-                            <ResidenceForm
+                            <SetResidenceForm
                                 errors={errors}
                                 touched={touched}
                                 setFieldValue={setFieldValue}
                                 residence_list={residence_list}
                             >
                                 <Text as='p' size='xxs' weight='bold' className='set-residence__subtext'>
-                                    {localize(
-                                        'We need this to make sure our service complies with laws and regulations in your country.'
-                                    )}
+                                    <Localize i18n_default_text='We need this to make sure our service complies with laws and regulations in your country.' />
                                 </Text>
                                 <Button
                                     className={classNames('set-residence__btn', {
@@ -74,10 +72,12 @@ const SetResidence = ({ enableApp, onSetResidence, residence_list, toggleModalVi
                                     })}
                                     type='submit'
                                     is_disabled={!values.residence || !!errors.residence || isSubmitting}
-                                    text={localize('Set residence')}
                                     primary
-                                />
-                            </ResidenceForm>
+                                    large
+                                >
+                                    <Localize i18n_default_text='Set residence' />
+                                </Button>
+                            </SetResidenceForm>
                         </React.Fragment>
                     </Form>
                 )}

@@ -164,7 +164,7 @@ export const faq_content: TFaqContent[] = [
             },
             {
                 type: 'text',
-                content: localize('3. Set your trade parameters and hit <strong>Create</strong>.'),
+                content: localize('3. Set your trade parameters and hit <strong>Run</strong>.'),
             },
             {
                 type: 'text',

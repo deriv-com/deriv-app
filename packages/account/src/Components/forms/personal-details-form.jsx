@@ -1,12 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
-import { Link } from 'react-router-dom';
+
 import {
     Autocomplete,
     Checkbox,
-    Dropdown,
     DesktopWrapper,
+    Dropdown,
     MobileWrapper,
     Popover,
     RadioGroup,
@@ -15,14 +16,16 @@ import {
 } from '@deriv/components';
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import InlineNoteWithIcon from '../inline-note-with-icon';
-import FormSubHeader from '../form-sub-header';
+
 import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
-import FormBodySection from '../form-body-section';
-import { DateOfBirthField, FormInputField } from './form-fields';
-import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
-import ConfirmationCheckbox from './confirmation-checkbox';
 import { isFieldImmutable } from '../../Helpers/utils';
+import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
+import FormBodySection from '../form-body-section';
+import FormSubHeader from '../form-sub-header';
+import InlineNoteWithIcon from '../inline-note-with-icon';
+
+import ConfirmationCheckbox from './confirmation-checkbox';
+import { DateOfBirthField, FormInputField } from './form-fields.jsx';
 
 const PersonalDetailsForm = props => {
     const {
@@ -44,6 +47,7 @@ const PersonalDetailsForm = props => {
         setShouldCloseTooltip,
         class_name,
         states_list,
+        no_confirmation_needed,
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
@@ -51,7 +55,8 @@ const PersonalDetailsForm = props => {
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
 
-    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
+    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched, setStatus, status } =
+        useFormikContext();
 
     React.useEffect(() => {
         if (should_close_tooltip) {
@@ -59,6 +64,12 @@ const PersonalDetailsForm = props => {
             setShouldCloseTooltip(false);
         }
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
+
+    React.useEffect(() => {
+        if (no_confirmation_needed && typeof status === 'object' && !status.is_confirmed) {
+            setStatus({ ...status, is_confirmed: true });
+        }
+    }, [no_confirmation_needed, setStatus, status]);
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
@@ -535,7 +546,7 @@ const PersonalDetailsForm = props => {
                         )}
                     </fieldset>
                 </FormBodySection>
-                {is_qualified_for_idv && (
+                {!no_confirmation_needed && is_qualified_for_idv && (
                     <ConfirmationCheckbox
                         disabled={is_confirmation_checkbox_disabled}
                         label={

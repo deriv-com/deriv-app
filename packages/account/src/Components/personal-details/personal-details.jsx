@@ -1,27 +1,30 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
+
 import {
-    Modal,
     AutoHeightWrapper,
     Div100vhContainer,
     FormSubmitButton,
-    ThemedScrollbars,
+    Modal,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { isDesktop, isMobile, getIDVNotApplicableOption, removeEmptyPropertiesFromObject } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
+
 import {
-    shouldShowIdentityInformation,
-    isDocumentTypeValid,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
+    isDocumentTypeValid,
     shouldHideHelperImage,
+    shouldShowIdentityInformation,
 } from 'Helpers/utils';
-import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+
+import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
-import FormSubHeader from '../form-sub-header';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -104,8 +107,10 @@ const PersonalDetails = ({
     const citizen = account_settings?.citizen || residence;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
-    const getEditableFields = is_confirmed => {
+    const getEditableFields = (is_confirmed, selected_document_type_id) => {
         const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
+
+        if (IDV_NOT_APPLICABLE_OPTION.id === selected_document_type_id) return editable_fields;
 
         if (is_confirmed && is_qualified_for_idv) {
             return editable_fields.filter(field => !['first_name', 'last_name', 'date_of_birth'].includes(field));
@@ -182,7 +187,10 @@ const PersonalDetails = ({
                                             is_svg={is_svg}
                                             is_mf={is_mf}
                                             is_qualified_for_idv={is_qualified_for_idv}
-                                            editable_fields={getEditableFields(status?.is_confirmed)}
+                                            editable_fields={getEditableFields(
+                                                status?.is_confirmed,
+                                                values?.document_type?.id
+                                            )}
                                             residence_list={residence_list}
                                             has_real_account={has_real_account}
                                             is_fully_authenticated={is_fully_authenticated}
@@ -192,6 +200,9 @@ const PersonalDetails = ({
                                             should_close_tooltip={should_close_tooltip}
                                             setShouldCloseTooltip={setShouldCloseTooltip}
                                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                                            no_confirmation_needed={
+                                                values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
+                                            }
                                         />
                                     </div>
                                 </ThemedScrollbars>

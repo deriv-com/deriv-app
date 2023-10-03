@@ -10,7 +10,7 @@ type Column = {
     renderCellContent: React.FC<{ cell_value: string & number & string[] }>;
 };
 
-type TGetConnectedAppsColumnsTemplate = {
+type TDataTableTemplate = {
     handleToggleModal: (app_id: number | null) => void;
 };
 
@@ -18,9 +18,7 @@ type Permissions = {
     [key: string]: string;
 };
 
-const GetConnectedAppsColumnsTemplate = (
-    handleToggleModal: TGetConnectedAppsColumnsTemplate['handleToggleModal']
-): Column[] => [
+const DataTableTemplate = (handleToggleModal: TDataTableTemplate['handleToggleModal']): Column[] => [
     {
         title: localize('Name'),
         col_index: 'name',
@@ -51,10 +49,7 @@ const GetConnectedAppsColumnsTemplate = (
     },
 ];
 
-const PrepareConnectedAppsAction = (
-    app_id: number,
-    handleToggleModal: TGetConnectedAppsColumnsTemplate['handleToggleModal']
-) => {
+const PrepareConnectedAppsAction = (app_id: number, handleToggleModal: TDataTableTemplate['handleToggleModal']) => {
     return (
         <Button className='revoke_access' small secondary onClick={() => handleToggleModal(app_id)}>
             {localize('Revoke access')}
@@ -96,4 +91,4 @@ const PrepareConnectedAppsScopes = (permissions_list: string[]) => {
     return <div>{sorted_app_list}</div>;
 };
 
-export default GetConnectedAppsColumnsTemplate;
+export default DataTableTemplate;

@@ -23,6 +23,39 @@
 
     &__list {
         &--wrapper {
+            display: flex;
+            flex-direction: column;
+            background: var(--general-section-1);
+            padding: 1.6rem;
+            border-radius: $BORDER_RADIUS * 2;
+            gap: 0.4rem;
+        }
+
+        &--row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.6rem;
+        }
+
+        &--name,
+        &--last-login,
+        &--permission,
+        &--revoke {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &--last-login {
+            width: min-content;
+        }
+
+        &--revoke {
+            justify-content: flex-end;
+        }
+    }
+
+    &__tabular {
+        &--wrapper {
             height: 28rem;
         }
     }
@@ -100,36 +133,6 @@
                     text-overflow: ellipsis;
                     width: 100%;
                     overflow: hidden;
-                }
-            }
-        }
-    }
-
-    // Styling for DataList displayed in Mobile view
-    &__data-list-body {
-        .data-list {
-            &__item {
-                padding: 1.6rem;
-                background: var(--general-section-1);
-            }
-
-            &__row {
-                & > * {
-                    flex: auto;
-                }
-                padding: 0;
-
-                .last_used {
-                    display: flex;
-                    flex-direction: column;
-                    padding-left: 6.4rem;
-                    width: 1.2rem;
-                }
-
-                .app_id {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: flex-end;
                 }
             }
         }

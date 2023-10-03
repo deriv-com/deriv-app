@@ -1,14 +1,17 @@
 import React from 'react';
-import { Button, Modal, Icon, DataTable, DataList, Loading, Text } from '@deriv/components';
+import { Button, Modal, Icon, DataTable, Loading, Text } from '@deriv/components';
 import { WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
-import GetConnectedAppsColumnsTemplate from './data-table-template';
 import ConnectedAppsKnowMore from './connected-apps-know-more';
 import ConnectedAppsEarnMore from './connected-apps-earn-more';
 import ConnectedAppsEmpty from './connected-apps-empty';
+import DataListTemplate from './data-list-template';
+import DataTableTemplate from './data-table-template';
 import './connected-apps.scss';
+
+type TConnectedAppsEntry = React.ComponentProps<typeof DataListTemplate>['data_source'];
 
 const ConnectedApps = observer(() => {
     const { ui } = useStore();
@@ -18,7 +21,7 @@ const ConnectedApps = observer(() => {
     const [is_modal_open, setModalVisibility] = React.useState(false);
     const [selected_app_id, setAppId] = React.useState<number | null>(null);
     const [is_error, setError] = React.useState(false);
-    const [connected_apps, setConnectedApps] = React.useState([]);
+    const [connected_apps, setConnectedApps] = React.useState<TConnectedAppsEntry[]>([]);
 
     React.useEffect(() => {
         /* eslint-disable no-console */
@@ -36,36 +39,10 @@ const ConnectedApps = observer(() => {
 
     const handleToggleModal = React.useCallback(
         (app_id: number | null = null) => {
-            setModalVisibility(!is_modal_open);
             setAppId(app_id);
+            setModalVisibility(!is_modal_open);
         },
         [is_modal_open]
-    );
-
-    type TColumn = ReturnType<typeof GetConnectedAppsColumnsTemplate>[number];
-    const columns_map = React.useMemo(
-        () =>
-            GetConnectedAppsColumnsTemplate(app_id => handleToggleModal(app_id)).reduce((map, item) => {
-                map[item.col_index] = item;
-                return map;
-            }, {} as { [k in TColumn['col_index']]: TColumn }),
-        [handleToggleModal]
-    );
-    type TMobileRowRenderer = Parameters<React.ComponentProps<typeof DataList>['rowRenderer']>[0];
-    const mobileRowRenderer = React.useCallback(
-        (row: Partial<TMobileRowRenderer>) => (
-            <React.Fragment>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.name} />
-                    <DataList.Cell row={row} column={columns_map.last_used} />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.scopes} />
-                    <DataList.Cell row={row} column={columns_map.app_id} is_footer={true} />
-                </div>
-            </React.Fragment>
-        ),
-        [columns_map]
     );
 
     const revokeConnectedApp = React.useCallback(async (app_id: number | null) => {
@@ -93,23 +70,26 @@ const ConnectedApps = observer(() => {
                 {connected_apps.length ? (
                     <div className='connected-apps__content--wrapper'>
                         <div>TODO: Replace this div with message component</div>
-                        <div className='connected-apps__list--wrapper'>
-                            {is_mobile ? (
-                                <DataList
-                                    className='connected-apps'
-                                    data_source={connected_apps}
-                                    row_gap={10}
-                                    rowRenderer={mobileRowRenderer}
-                                />
-                            ) : (
+                        {is_mobile ? (
+                            <div className='connected-apps__list--wrapper'>
+                                {connected_apps.map(connected_app => (
+                                    <DataListTemplate
+                                        key={connected_app.app_id}
+                                        data_source={connected_app}
+                                        handleToggleModal={handleToggleModal}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className='connected-apps__tabular--wrapper'>
                                 <DataTable
                                     className='connected-apps'
                                     data_source={connected_apps}
-                                    columns={GetConnectedAppsColumnsTemplate(handleToggleModal)}
+                                    columns={DataTableTemplate(handleToggleModal)}
                                     content_loader='span'
                                 />
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <ConnectedAppsEmpty />

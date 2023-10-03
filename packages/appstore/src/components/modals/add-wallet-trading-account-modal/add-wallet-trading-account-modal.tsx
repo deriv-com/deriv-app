@@ -1,7 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import { WalletSuccessDialog } from '@deriv/components';
-import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import WalletAppCard from 'Components/wallet-app-card';
 import { getAccountName } from 'Constants/utils';
@@ -10,8 +8,14 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { getWalletSuccessText } from 'Constants/wallet-success-text';
 
 const AddWalletTradingAccountModal = observer(() => {
-    const { traders_hub } = useStore();
-    const { is_wallet_create_new_account_modal, setWalletCreateNewAccountModal } = traders_hub;
+    const { ui, traders_hub } = useStore();
+    const { setIsWalletModalVisible } = ui;
+    const {
+        is_wallet_create_new_account_modal,
+        setWalletCreateNewAccountModal,
+        setWalletModalActiveWalletID,
+        setWalletModalActiveTab,
+    } = traders_hub;
 
     const active_wallet = useActiveWallet();
     const { data: active_wallet_account } = useActiveWalletAccount();
@@ -38,8 +42,6 @@ const AddWalletTradingAccountModal = observer(() => {
         is_demo: active_wallet?.is_demo,
     };
 
-    const history = useHistory();
-
     const wallet_success_text = getWalletSuccessText('add-trading', account_title, currency_title);
 
     return (
@@ -51,7 +53,9 @@ const AddWalletTradingAccountModal = observer(() => {
             text_cancel={wallet_success_text?.text_cancel}
             onSubmit={() => {
                 setWalletCreateNewAccountModal(false);
-                history.push(routes.cashier_deposit);
+                setWalletModalActiveTab('Transfer');
+                setIsWalletModalVisible(true);
+                setWalletModalActiveWalletID(active_wallet?.loginid);
             }}
             onCancel={() => setWalletCreateNewAccountModal(false)}
             is_open={is_wallet_create_new_account_modal}

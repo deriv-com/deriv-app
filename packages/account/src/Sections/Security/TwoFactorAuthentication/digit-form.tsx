@@ -4,13 +4,13 @@ import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { Input, Button } from '@deriv/components';
 import { useSendUserOTP } from '@deriv/api';
 import { localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 
 type TDigitFormValues = {
     digit_code: string;
 };
 
-const DigitForm = () => {
+const DigitForm = observer(() => {
     const { client, common } = useStore();
     const { is_language_changing } = common;
     const { has_enabled_two_fa, setTwoFAChangedStatus, setTwoFAStatus } = client;
@@ -114,6 +114,6 @@ const DigitForm = () => {
             )}
         </Formik>
     );
-};
+});
 
 export default DigitForm;

@@ -8,7 +8,7 @@ export const CFD_text: { [key: string]: string } = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
     mt5_cfds: 'CFDs',
-    cfd: 'CFDs',
+    cfd: 'CFDs Demo',
     ctrader: 'cTrader',
     derivez: 'DerivEz',
     synthetic: 'Derived',
@@ -186,9 +186,8 @@ export const getCFDAccountDisplay = ({
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
     if (!cfd_account_key) return undefined;
 
-    if (cfd_account_key === 'financial' && is_eu) {
-        if (is_mt5_trade_modal) cfd_account_key = 'mt5_cfds';
-        else cfd_account_key = 'cfd';
+    if (is_eu && is_mt5_trade_modal) {
+        cfd_account_key === 'financial' ? (cfd_account_key = 'mt5_cfds') : (cfd_account_key = 'cfd');
     }
 
     const cfd_account_display = CFD_text_translated[cfd_account_key]();

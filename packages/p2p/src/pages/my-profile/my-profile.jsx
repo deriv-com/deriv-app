@@ -1,14 +1,17 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
+
 import { AutoSizer, DesktopWrapper, Loading, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+
+import DailyLimitModal from 'Components/daily-limit-modal';
+import Verification from 'Components/verification';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores';
+
+import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container/my-profile-details-container.jsx';
 import MyProfileContent from './my-profile-content.jsx';
 import MyProfileHeader from './my-profile-header';
-import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container/my-profile-details-container.jsx';
-import DailyLimitModal from 'Components/daily-limit-modal';
-import Verification from 'Components/verification/verification.jsx';
 
 const MyProfile = () => {
     const { general_store, my_profile_store } = useStores();

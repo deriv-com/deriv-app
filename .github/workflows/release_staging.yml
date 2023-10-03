@@ -3,23 +3,22 @@ on:
   push:
     branches:
     - master
-  pull_request:
-      
 
 jobs:
-  build_test_and_upload_artifact:
-    name: Build, Test and upload artifacts 
+  build_test_and_publish:
+    name: Build, Test and Publish to Cloudflare Staging 
     runs-on: Runner_16cores_Deriv-app
-    environment: Staging
+    environment: 
+      name: Staging
     steps:
-    - uses: actions/checkout@v4
-      name: Checkout
-    - uses: "./.github/actions/setup_node"
-      name: Setup Node
-    - uses: "./.github/actions/npm_install_from_cache"
-      name: Install Dependencies
-    - uses: "./.github/actions/build"
-      name: Build
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Node
+      uses: "./.github/actions/setup_node"
+    - name: Install Dependencies
+      uses: "./.github/actions/npm_install_from_cache"
+    - name: Build
+      uses: "./.github/actions/build"
       with:
         NODE_ENV: staging
         DATADOG_APPLICATION_ID: ${{ vars.DATADOG_APPLICATION_ID }} 
@@ -35,48 +34,31 @@ jobs:
         RUDDERSTACK_URL: ${{ vars.RUDDERSTACK_URL }}
     - name: Run tests
       run: npm test
-    - uses: "./.github/actions/versioning"
+    - name: Versioning
+      uses: "./.github/actions/versioning"
       with:
         version_name: staging
-    - uses: actions/upload-artifact@v3.1.1
-      with:
-        path: packages/core/dist
-
-  publish_cloudflare_staging:
-    name: Publish to Cloudflare Pages Staging 
-    runs-on: Runner_16cores_Deriv-app
-    environment: Common
-    needs:
-    - build_test_and_upload_artifact
-    steps:
-    - uses: actions/checkout@v4
-    - uses: "./.github/actions/setup_node"
-      name: Setup Node
-    - uses: actions/download-artifact@v3.0.1
-      with:
-        path: packages
-    - name: Display structure of downloaded files
-      run: |
-          cd packages/artifact
-          ls -R
-        # - uses: "./.github/actions/publish_to_pages_staging"
-    #   with:       
-    #     NODE_ENV: staging
-    #     CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-    #     CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    - name: Publish to Cloudflare Pages Staging 
+      uses: "./.github/actions/publish_to_pages_staging"
+      with:       
+        NODE_ENV: staging
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
 
   send_slack_notification:
       name: Send Slack notification
-      environment: Common
+      environment: Staging
       runs-on: Runner_16cores_Deriv-app
       if: always()
-      needs: [build_test_and_upload_artifact, publish_cloudflare_staging]
+      needs: [build_test_and_publish]
       steps:
-      - uses: technote-space/workflow-conclusion-action@v3
-      # - uses: "./.github/actions/send_slack_notifications"
-      #   with:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      #     status: ${{ env.WORKFLOW_CONCLUSION }}
-      #     release_type: Production 
-      #     version: $(echo cat packages/core/dist/version | bash)
+      - name: Conclusion
+        uses: technote-space/workflow-conclusion-action@v3
+      - name: Send Slack Notification
+        uses: "./.github/actions/send_slack_notifications"
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          status: ${{ env.WORKFLOW_CONCLUSION }}
+          release_type: Production 
+          version: $(echo cat packages/core/dist/version | bash)

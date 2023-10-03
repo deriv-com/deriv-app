@@ -5,6 +5,7 @@ import { useStore } from '@deriv/stores';
 
 import useAuthorize from './useAuthorize';
 import useCurrencyConfig from './useCurrencyConfig';
+import useBalance from './useBalance';
 
 const currency_to_icon_mapper: Record<string, Record<'light' | 'dark', string>> = {
     Demo: {
@@ -64,16 +65,12 @@ const currency_to_icon_mapper: Record<string, Record<'light' | 'dark', string>> 
 /** A custom hook to get the list of wallets for the current user. */
 /** @deprecated Use `useWalletAccountsList` instead. */
 const useWalletsList = () => {
-    const { ui, client } = useStore();
+    const { ui } = useStore();
     const { is_dark_mode_on } = ui;
-    const { is_authorize } = client;
     const { getConfig } = useCurrencyConfig();
 
-    const { data: authorize_data, isSuccess, ...rest } = useAuthorize();
-    const { data: balance_data } = useFetch('balance', {
-        payload: { account: 'all' },
-        options: { enabled: is_authorize && isSuccess },
-    });
+    const { data: authorize_data, ...rest } = useAuthorize();
+    const { data: balance_data } = useBalance();
 
     // Filter out non-wallet accounts.
     const wallets = useMemo(
@@ -87,9 +84,9 @@ const useWalletsList = () => {
             wallets?.map(wallet => ({
                 ...wallet,
                 /** Wallet balance */
-                balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
+                balance: balance_data?.accounts?.[wallet.loginid || '']?.balance || 0,
             })),
-        [balance_data?.balance?.accounts, wallets]
+        [balance_data?.accounts, wallets]
     );
 
     // Add additional information to each wallet.

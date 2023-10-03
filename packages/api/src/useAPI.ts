@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import type {
     TSocketEndpointNames,
@@ -12,6 +12,13 @@ import APIContext from './APIContext';
 
 const useAPI = () => {
     const api = useContext(APIContext);
+    const [isReady, setIsReady] = useState<boolean>(api?.get()?.connection?.readyState === 1);
+
+    useEffect(() => {
+        if ((api?.get()?.connection?.readyState === 1) !== isReady) {
+            setIsReady(api?.get()?.connection?.readyState === 1);
+        }
+    }, [api, isReady]);
 
     const send = useCallback(
         async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(
@@ -49,6 +56,7 @@ const useAPI = () => {
     return {
         send,
         subscribe,
+        isReady,
     };
 };
 

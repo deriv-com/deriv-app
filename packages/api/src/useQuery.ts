@@ -15,9 +15,12 @@ const useQuery = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcce
     const prop = props?.[0];
     const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
     const options = prop && 'options' in prop ? (prop.options as TSocketRequestQueryOptions<T>) : undefined;
-    const { send } = useAPI();
+    const { send, isReady } = useAPI();
 
-    return _useQuery<TSocketResponseData<T>, unknown>(getQueryKeys(name, payload), () => send(name, payload), options);
+    return _useQuery<TSocketResponseData<T>, unknown>(getQueryKeys(name, payload), () => send(name, payload), {
+        ...options,
+        enabled: isReady && (options?.enabled ?? true),
+    });
 };
 
 export default useQuery;

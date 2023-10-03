@@ -37,7 +37,10 @@ const getDerivAPIInstance = (): DerivAPIBasic => {
     }
 
     if (!window.DerivAPI?.[wss]) {
-        window.DerivAPI[wss] = new DerivAPIBasic({ connection: new WebSocket(wss) });
+        const DerivAPIBasicInstance = new DerivAPIBasic({ connection: new WebSocket(wss) });
+        window.DerivAPI[wss] = DerivAPIBasicInstance;
+        // add this to be consistent with socket_base
+        window.DerivAPI[wss].get = () => DerivAPIBasicInstance;
     }
 
     return window.DerivAPI?.[wss];

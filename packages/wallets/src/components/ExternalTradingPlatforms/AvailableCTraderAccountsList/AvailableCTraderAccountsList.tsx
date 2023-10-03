@@ -12,7 +12,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         mutate({
             payload: {
                 account_type: 'demo',
-                market_type: 'synthetic',
+                market_type: 'all',
                 platform: 'ctrader',
             },
         });

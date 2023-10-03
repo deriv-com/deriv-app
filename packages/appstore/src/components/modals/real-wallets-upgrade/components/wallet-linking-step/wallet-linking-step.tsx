@@ -22,64 +22,6 @@ type TWalletLinkingStep = {
     };
 };
 
-const LinkedAccountList = ({
-    wallet,
-    is_mobile,
-}: {
-    wallet: ArrayElement<TWalletLinkingStep['data']['wallets']>;
-    is_mobile: boolean;
-}) => {
-    return (
-        <>
-            {is_mobile && (
-                <Text
-                    as='div'
-                    className='wallet-linking-step__title-text wallet-linking-step__accounts-text '
-                    color='prominent'
-                    size='xxxs'
-                >
-                    <Localize i18n_default_text='Your current trading account(s)' />
-                </Text>
-            )}
-            {wallet.account_list.map(account => {
-                return (
-                    <WalletAccount
-                        key={`${account.account_name}-${account.currency}}`}
-                        balance={account.balance}
-                        currency={account.currency}
-                        icon={account.icon}
-                        name={account.account_name}
-                        is_mobile={is_mobile}
-                    />
-                );
-            })}
-        </>
-    );
-};
-
-const LinkedWallet = ({
-    wallet,
-    is_mobile,
-}: {
-    wallet: ArrayElement<TWalletLinkingStep['data']['wallets']>;
-    is_mobile: boolean;
-}) => {
-    return (
-        <div className='linked-wallet'>
-            <WalletCard wallet={wallet.wallet_details} size='large' state='default' />
-            {is_mobile && (
-                <Text
-                    className='wallet-linking-step__title-text linked-wallet__wallet-card-text'
-                    color='prominent'
-                    size='xxxs'
-                >
-                    <Localize i18n_default_text='Your new Wallet' />
-                </Text>
-            )}
-        </div>
-    );
-};
-
 const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
@@ -112,15 +54,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
             )}
             <ThemedScrollbars className='wallet-linking-step__content'>
                 {data.wallets.map(wallet => {
-                    return (
-                        <WalletLinkWrapper
-                            key={wallet.wallet_details.name}
-                            has_left_fork={wallet.account_list.length > 1 || is_mobile}
-                            left={() => <LinkedAccountList wallet={wallet} is_mobile={is_mobile} />}
-                            center={() => <Icon icon='IcAppstoreWalletsLink' size={40} />}
-                            right={() => <LinkedWallet wallet={wallet} is_mobile={is_mobile} />}
-                        />
-                    );
+                    return <WalletLinkWrapper key={wallet.wallet_details.name} wallet={wallet} />;
                 })}
             </ThemedScrollbars>
         </div>

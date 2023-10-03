@@ -1,38 +1,78 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { ContentWithLink } from '../content-with-link';
-import './wallet-link-wrapper.scss';
+import { Icon, Text, WalletCard } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { LeftContentWithLink } from '../left-content-with-link';
 import { RightContentWithLink } from '../right-content-with-link';
+import WalletAccount from '../wallet-account/wallet-account';
+import './wallet-link-wrapper.scss';
+import { useStore } from '@deriv/stores';
 
 export type TWalletLinkWrapper = {
-    left?: () => JSX.Element | Array<JSX.Element>;
-    center?: () => JSX.Element;
-    right?: () => JSX.Element | Array<JSX.Element>;
-    has_left_fork?: boolean;
-    has_right_fork?: boolean;
+    wallet_details: React.ComponentProps<typeof WalletCard>['wallet'];
+    account_list: {
+        balance: number;
+        currency: string;
+        account_name: string;
+        icon: string;
+    }[];
 };
 
-const WalletLinkWrapper = observer(({ left, center, right, has_left_fork, has_right_fork }: TWalletLinkWrapper) => {
+const WalletLinkWrapper = ({ wallet }: { wallet: TWalletLinkWrapper }) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     return (
         <div className='wallet-link-wrapper'>
-            {left && (
-                <div className='wallet-link-wrapper__left'>
-                    <div className='wallet-link-wrapper__accounts'>
-                        <LeftContentWithLink>{left()}</LeftContentWithLink>
+            <div className='wallet-link-wrapper__left'>
+                <div className='wallet-link-wrapper__accounts'>
+                    <LeftContentWithLink>
+                        <React.Fragment>
+                            {is_mobile && (
+                                <Text
+                                    as='div'
+                                    className='wallet-linking-step__title-text wallet-linking-step__accounts-text '
+                                    color='prominent'
+                                    size='xxxs'
+                                >
+                                    <Localize i18n_default_text='Your current trading account(s)' />
+                                </Text>
+                            )}
+                            {wallet.account_list.map(account => {
+                                return (
+                                    <WalletAccount
+                                        key={`${account.account_name}-${account.currency}}`}
+                                        balance={account.balance}
+                                        currency={account.currency}
+                                        icon={account.icon}
+                                        name={account.account_name}
+                                        is_mobile={is_mobile}
+                                    />
+                                );
+                            })}
+                        </React.Fragment>
+                    </LeftContentWithLink>
+                </div>
+            </div>
+            <div className='wallet-link-wrapper__center'>
+                <Icon icon='IcAppstoreWalletsLink' size={40} />
+            </div>
+            <div className='wallet-link-wrapper__right'>
+                <RightContentWithLink>
+                    <div className='linked-wallet'>
+                        <WalletCard wallet={wallet.wallet_details} size='large' state='default' />
+                        {is_mobile && (
+                            <Text
+                                className='wallet-linking-step__title-text linked-wallet__wallet-card-text'
+                                color='prominent'
+                                size='xxxs'
+                            >
+                                <Localize i18n_default_text='Your new Wallet' />
+                            </Text>
+                        )}
                     </div>
-                </div>
-            )}
-            {center && <div className='wallet-link-wrapper__center'>{center()}</div>}
-            {right && (
-                <div className='wallet-link-wrapper__right'>
-                    <RightContentWithLink>{right()}</RightContentWithLink>
-                </div>
-            )}
+                </RightContentWithLink>
+            </div>
         </div>
     );
-});
+};
 
 export default WalletLinkWrapper;

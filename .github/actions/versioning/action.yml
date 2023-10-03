@@ -7,6 +7,9 @@ inputs:
 runs:
   using: composite
   steps:
+  - uses: actions/download-artifact@v3.0.1
+    with:
+      path: packages/core/dist
   - name: Tag
     run: echo "${{ inputs.version_name }}-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
     shell: bash

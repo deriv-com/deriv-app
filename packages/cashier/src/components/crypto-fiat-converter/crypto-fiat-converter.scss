@@ -50,4 +50,10 @@
     .dc-input__hint {
         margin: 0.1rem 0 0 1.3rem;
     }
+
+    @include mobile {
+        .dc-input__hint {
+            margin: 0.1rem 0 -1.9rem 1.3rem;
+        }
+    }
 }

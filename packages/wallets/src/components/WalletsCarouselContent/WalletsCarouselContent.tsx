@@ -1,44 +1,67 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api';
 import { ProgressBar } from '../ProgressBar';
 import { WalletCard } from '../WalletCard';
-import { WalletListCardIActions } from '../WalletListCardIActions';
+import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
 
 const WalletsCarouselContent: React.FC = () => {
-    const [wallet_embla_ref, emblaApi] = useEmblaCarousel({ skipSnaps: true, containScroll: false });
-    const [active_index, setActiveIndex] = useState(0);
-    const { data: wallet_accounts_list } = useWalletAccountsList();
+    const { switchAccount } = useAuthorize();
+    const [walletsCarouselEmblaRef, walletsCarouselEmblaApi] = useEmblaCarousel({
+        containScroll: false,
+        skipSnaps: true,
+    });
+    const { data: walletAccountsList } = useWalletAccountsList();
+    const { data: activeWallet } = useActiveWalletAccount();
+    const activeWalletIndex = useMemo(
+        () =>
+            walletAccountsList?.findIndex(item => item?.is_active) ||
+            walletsCarouselEmblaApi?.selectedScrollSnap() ||
+            0,
+        [walletAccountsList, walletsCarouselEmblaApi]
+    );
+    const [progressBarActiveIndex, setProgressBarActiveIndex] = useState(activeWalletIndex + 1);
 
-    React.useEffect(() => {
-        emblaApi?.scrollTo(active_index);
-    }, [active_index, emblaApi]);
+    useEffect(() => {
+        walletsCarouselEmblaApi?.scrollTo(activeWalletIndex);
+    }, [activeWalletIndex, walletsCarouselEmblaApi]);
 
-    React.useEffect(() => {
-        emblaApi?.on('select', () => {
-            const scroll_snap_index = emblaApi.selectedScrollSnap();
-            setActiveIndex(scroll_snap_index);
+    useEffect(() => {
+        walletsCarouselEmblaApi?.on('settle', () => {
+            const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
+            const loginid = walletAccountsList?.[scrollSnapIndex]?.loginid;
+            switchAccount(loginid || '');
         });
-    }, [emblaApi]);
-    const amount_of_steps = Array.from({ length: wallet_accounts_list?.length || 0 }, (_, idx) => idx + 1);
+
+        walletsCarouselEmblaApi?.on('select', () => {
+            const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
+            setProgressBarActiveIndex(scrollSnapIndex + 1);
+        });
+    }, [walletsCarouselEmblaApi, switchAccount, walletAccountsList]);
+
+    const amountOfSteps = useMemo(() => walletAccountsList?.map(wallet => wallet.loginid), [walletAccountsList]);
 
     return (
-        <div className='wallets-carousel-content' ref={wallet_embla_ref}>
+        <div className='wallets-carousel-content' ref={walletsCarouselEmblaRef}>
             <div className='wallets-carousel-content__container'>
-                {wallet_accounts_list?.map(wallet => (
-                    <WalletCard key={`wallet-card-${wallet.loginid}`} account={wallet} />
+                {walletAccountsList?.map(account => (
+                    <WalletCard account={account} key={`wallet-card-${account.loginid}`} />
                 ))}
             </div>
             <div className='wallets-carousel-content__progress-bar'>
                 <ProgressBar
-                    active_index={active_index + 1}
-                    indexes={amount_of_steps}
-                    setActiveIndex={setActiveIndex}
-                    is_transition
+                    activeIndex={progressBarActiveIndex}
+                    indexes={amountOfSteps || []}
+                    isTransition
+                    setActiveIndex={switchAccount}
                 />
             </div>
-            <WalletListCardIActions />
+            <WalletListCardActions
+                isActive={activeWallet?.is_active || false}
+                isDemo={activeWallet?.is_virtual || false}
+                loginid={activeWallet?.loginid || ''}
+            />
         </div>
     );
 };

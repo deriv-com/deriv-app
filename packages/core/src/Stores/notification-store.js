@@ -1,5 +1,5 @@
-import { action, makeObservable, observable, reaction } from 'mobx';
 import React from 'react';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { StaticUrl } from '@deriv/components';
 import {
     LocalStore,
@@ -47,39 +47,40 @@ export default class NotificationStore extends BaseStore {
         super({ root_store });
 
         makeObservable(this, {
-            is_notifications_visible: observable,
-            notifications: observable,
-            notification_messages: observable,
-            marked_notifications: observable,
-            push_notifications: observable,
-            client_notifications: observable,
-            should_show_popups: observable,
-            p2p_order_props: observable,
-            p2p_redirect_to: observable,
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
-            showCompletedOrderNotification: action.bound,
             addVerificationNotifications: action.bound,
+            client_notifications: observable,
             filterNotificationMessages: action.bound,
+            getP2pCompletedOrders: action.bound,
             handleClientNotifications: action.bound,
+            is_notifications_empty: computed,
+            is_notifications_visible: observable,
+            marked_notifications: observable,
             markNotificationMessage: action.bound,
+            notification_messages: observable,
+            notifications: observable,
+            p2p_completed_orders: observable,
+            p2p_order_props: observable,
+            p2p_redirect_to: observable,
+            push_notifications: observable,
             refreshNotifications: action.bound,
             removeAllNotificationMessages: action.bound,
-            removeNotifications: action.bound,
             removeNotificationByKey: action.bound,
             removeNotificationMessage: action.bound,
             removeNotificationMessageByKey: action.bound,
+            removeNotifications: action.bound,
             resetVirtualBalanceNotification: action.bound,
             setClientNotifications: action.bound,
             setP2POrderProps: action.bound,
             setP2PRedirectTo: action.bound,
             setShouldShowPopups: action.bound,
+            should_show_popups: observable,
+            showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
-            p2p_completed_orders: observable,
-            getP2pCompletedOrders: action.bound,
         });
 
         reaction(
@@ -129,6 +130,10 @@ export default class NotificationStore extends BaseStore {
         );
     }
 
+    get is_notifications_empty() {
+        return !this.notifications.length;
+    }
+
     addNotificationBar(message) {
         this.push_notifications.push(message);
         this.push_notifications = unique(this.push_notifications, 'msg_type');
@@ -149,6 +154,7 @@ export default class NotificationStore extends BaseStore {
 
                 if (is_existing_message) {
                     this.markNotificationMessage({ key: notification.key });
+                    return;
                 }
 
                 const sortFn = isMobile() ? sortNotificationsMobile : sortNotifications;
@@ -158,7 +164,7 @@ export default class NotificationStore extends BaseStore {
                     ['svg', 'p2p'].some(key => notification.key?.includes(key)) ||
                     (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
-                    this.updateNotifications(this.notification_messages);
+                    this.updateNotifications();
                 }
             }
         }
@@ -169,15 +175,14 @@ export default class NotificationStore extends BaseStore {
     }
 
     addVerificationNotifications(identity, document, has_restricted_mt5_account, has_mt5_account_with_rejected_poa) {
-        //identity
         if (identity.status === 'verified') {
+            //identity
             this.addNotificationMessage(this.client_notifications.poi_verified);
-        } else if (!['none', 'pending'].includes(identity.status)) {
+        } else if (!['none', 'pending', 'expired'].includes(identity.status)) {
             this.addNotificationMessage(this.client_notifications.poi_failed);
         }
 
         // document
-
         if (document.status === 'verified') {
             this.addNotificationMessage(this.client_notifications.poa_verified);
         } else if (has_restricted_mt5_account) {
@@ -188,7 +193,7 @@ export default class NotificationStore extends BaseStore {
             }
         } else if (has_mt5_account_with_rejected_poa) {
             this.addNotificationMessage(this.client_notifications.poa_rejected_for_mt5);
-        } else if (!['none', 'pending'].includes(document.status)) {
+        } else if (!['none', 'pending', 'expired'].includes(document.status)) {
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
     }
@@ -278,9 +283,6 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot.key
         );
-        const has_acuity_mt5_download = LocalStore.getObject('notification_messages')[loginid]?.includes(
-            this.client_notifications.acuity_mt5_download.key
-        );
 
         let has_missing_required_field;
 
@@ -334,12 +336,6 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.notify_financial_assessment);
             } else {
                 this.removeNotificationByKey({ key: this.client_notifications.notify_financial_assessment.key });
-            }
-
-            // Acuity notification is available for both Demo and Real desktop clients
-            this.addNotificationMessage(this.client_notifications.acuity);
-            if (!has_acuity_mt5_download && getPathname() === platform_name.DMT5) {
-                this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
             }
 
             if (has_changed_two_fa) {
@@ -681,52 +677,6 @@ export default class NotificationStore extends BaseStore {
         const platform_name_go = getPlatformSettings('go').name;
 
         const notifications = {
-            acuity: {
-                key: 'acuity',
-                header: localize('New trading tools for MT5'),
-                message: localize('Power up your Financial trades with intuitive tools from Acuity.'),
-                secondary_btn: {
-                    text: localize('Learn More'),
-                    onClick: () => {
-                        ui.setIsAcuityModalOpen(true);
-                        this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
-                        this.removeNotificationMessage({
-                            key: this.client_notifications.acuity.key,
-                            should_show_again: false,
-                        });
-                    },
-                },
-                platform: [platform_name.DTrader],
-                is_disposable: true,
-                img_src: getUrlBase('/public/images/common/acuity_banner.png'),
-                img_alt: 'Acuity',
-                className: 'acuity',
-                type: 'news',
-            },
-            acuity_mt5_download: {
-                key: 'acuity_mt5_download',
-                header: localize('Power up your trades with Acuity'),
-                message: localize(
-                    'Download intuitive trading tools to keep track of market events. The Acuity suite is only available for Windows, and is most recommended for financial assets.'
-                ),
-                secondary_btn: {
-                    text: localize('Learn More'),
-                    onClick: () => {
-                        ui.setIsAcuityModalOpen(true);
-                        this.removeNotificationByKey({ key: this.client_notifications.acuity_mt5_download.key });
-                        this.removeNotificationMessage({
-                            key: this.client_notifications.acuity_mt5_download.key,
-                            should_show_again: false,
-                        });
-                    },
-                },
-                platform: [platform_name.DMT5],
-                img_src: getUrlBase('/public/images/common/acuity_software.png'),
-                img_alt: 'Acuity Download',
-                className: 'acuity-mt5',
-                icon: 'IcCloseDark',
-                type: 'news',
-            },
             ask_financial_risk_approval: {
                 key: 'ask_financial_risk_approval',
                 header: localize('Complete your Appropriateness Test'),
@@ -1437,7 +1387,7 @@ export default class NotificationStore extends BaseStore {
                 type: 'warning',
                 action: {
                     route: routes.proof_of_identity,
-                    text: localize('Submit proof of identity'),
+                    text: localize('Resubmit proof of identity'),
                 },
             },
             mt5_notification: {
@@ -1478,8 +1428,8 @@ export default class NotificationStore extends BaseStore {
         this.marked_notifications = this.marked_notifications.filter(item => key !== item);
     }
 
-    updateNotifications(notifications_array) {
-        this.notifications = notifications_array.filter(message =>
+    updateNotifications() {
+        this.notifications = this.notification_messages.filter(message =>
             ['svg', 'p2p'].some(key => message.key?.includes(key))
                 ? message
                 : excluded_notifications && !excluded_notifications.includes(message.key)

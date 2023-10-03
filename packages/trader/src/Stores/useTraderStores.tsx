@@ -9,10 +9,8 @@ type TTextValueStrings = {
 };
 
 type TContractTypesList = {
-    [key: string]: {
-        name: string;
-        categories: TTextValueStrings[];
-    };
+    name: string;
+    categories: TTextValueStrings[];
 };
 
 type TContractCategoriesList = {
@@ -63,9 +61,13 @@ type TOverrideTradeStore = Omit<
     | 'market_close_times'
     | 'market_open_times'
     | 'multiplier_range_list'
+    | 'multiplier'
     | 'sessions'
+    | 'setIsTradeParamsExpanded'
     | 'start_dates_list'
     | 'start_time'
+    | 'symbol'
+    | 'take_profit'
     | 'proposal_info'
     | 'trade_types'
     | 'ticks_history_stats'
@@ -85,8 +87,10 @@ type TOverrideTradeStore = Omit<
     expiry_time: string | null;
     expiry_type: string | null;
     form_components: string[];
+    long_barriers: Record<string, never> | { barrier: string; barrier_choices: string[] };
     market_open_times: string[];
     market_close_times: string[];
+    multiplier: number;
     multiplier_range_list: number[];
     proposal_info: {
         [key: string]: {
@@ -104,8 +108,13 @@ type TOverrideTradeStore = Omit<
         };
     };
     sessions: Array<{ open: moment.Moment; close: moment.Moment }>;
+    setIsTradeParamsExpanded: (value: boolean) => void;
+    short_barriers: Record<string, never> | { barrier: string; barrier_choices: string[] };
+    strike_price_choices: Record<string, never> | { barrier: string; barrier_choices: string[] };
     start_dates_list: Array<{ text: string; value: number }>;
-    start_time: string | null;
+    start_time?: string | null;
+    symbol: string;
+    take_profit?: string;
     ticks_history_stats: {
         ticks_stayed_in?: number[];
         last_tick_epoch?: number;

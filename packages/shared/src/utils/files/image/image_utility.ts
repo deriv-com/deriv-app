@@ -56,7 +56,7 @@ const compressImg = (image: TImage): Promise<Blob> =>
         };
     });
 
-const convertToBase64 = (file: TFile) =>
+const convertToBase64 = (file: File) =>
     new Promise(resolve => {
         const reader = new FileReader();
         reader.readAsDataURL(file);

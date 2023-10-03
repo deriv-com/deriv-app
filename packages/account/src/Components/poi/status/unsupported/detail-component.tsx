@@ -84,7 +84,7 @@ const DetailComponent = ({
                     pageType,
                     expirationDate: expiration_date,
                     documentId: data.document_id || '',
-                    lifetimeValid: +(lifetime_valid && !expiration_date),
+                    lifetimeValid: lifetime_valid && !expiration_date,
                     document_issuing_country: country_code_key,
                 })
                     .then(response => {

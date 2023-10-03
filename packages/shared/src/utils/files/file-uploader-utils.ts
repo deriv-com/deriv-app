@@ -1,27 +1,11 @@
 import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage } from './image/image_utility';
+import { DocumentUploadRequest } from '@deriv/api-types';
 
 export type TFile = File & { file: Blob };
 
 export type TSettings = {
-    documentType: {
-        passport: string;
-        national_identity_card: string;
-        driving_licence: string;
-        utility_bill: string;
-        bankstatement: string;
-        power_of_attorney: string;
-        amlglobalcheck: string;
-        docverification: string;
-        proofid: string;
-        driverslicense: string;
-        proofaddress: string;
-        other: string;
-    };
-    pageType: {
-        front: string;
-        back: string;
-        photo: string;
-    };
+    documentType: DocumentUploadRequest['document_type'];
+    pageType: DocumentUploadRequest['page_type'];
     expirationDate?: string;
     documentId?: string;
     lifetimeValid?: boolean;
@@ -45,20 +29,18 @@ export const getFileExtension = (file: TFile) => {
     return f && f[0];
 };
 
-export const compressImageFiles = (files: TFile[]) => {
+export const compressImageFiles = (files?: FileList | null) => {
+    if (!files?.length) return Promise.resolve([]);
+
     const promises: Promise<Blob>[] = [];
-    files.forEach(f => {
+    Array.from(files).forEach(file => {
         const promise = new Promise<Blob>(resolve => {
-            if (isImageType(f.type)) {
-                convertToBase64(f).then(img => {
-                    compressImg(img as TImage).then(compressed_img => {
-                        const file_arr = f;
-                        file_arr.file = compressed_img;
-                        resolve(file_arr.file);
-                    });
+            if (isImageType(file.type)) {
+                convertToBase64(file).then(img => {
+                    compressImg(img as TImage).then(resolve);
                 });
             } else {
-                resolve(f);
+                resolve(file);
             }
         });
         promises.push(promise);
@@ -67,7 +49,7 @@ export const compressImageFiles = (files: TFile[]) => {
     return Promise.all(promises);
 };
 
-export const readFiles = (files: TFile[], getFileReadErrorMessage: (t: string) => string, settings: TSettings) => {
+export const readFiles = (files: Blob[], getFileReadErrorMessage: (t: string) => string, settings: TSettings) => {
     const promises: Promise<TFileObject | { message: string }>[] = [];
 
     files.forEach(f => {
@@ -106,28 +88,6 @@ export const readFiles = (files: TFile[], getFileReadErrorMessage: (t: string) =
 export const max_document_size = 8388608;
 
 export const supported_filetypes = 'image/png, image/jpeg, image/jpg, image/gif, application/pdf';
-
-export const DOCUMENT_TYPE = {
-    passport: 'passport',
-    national_identity_card: 'national_identity_card',
-    driving_licence: 'driving_licence',
-    utility_bill: 'utility_bill',
-    bankstatement: 'bankstatement',
-    power_of_attorney: 'power_of_attorney',
-    amlglobalcheck: 'amlglobalcheck',
-    docverification: 'docverification',
-    proofid: 'proofid',
-    driverslicense: 'driverslicense',
-    proofaddress: 'proofaddress',
-    proof_of_ownership: 'proof_of_ownership',
-    other: 'other',
-};
-
-export const PAGE_TYPE = {
-    front: 'front',
-    back: 'back',
-    photo: 'photo',
-};
 
 export const getSupportedFiles = (filename: string) =>
     /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|pdf|PDF)$/.test(filename);

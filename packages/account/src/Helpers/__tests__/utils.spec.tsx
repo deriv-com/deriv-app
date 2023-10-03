@@ -119,7 +119,6 @@ describe('getDocumentData', () => {
         expect(getDocumentData('zw', 'national_id')).toEqual({
             new_display_name: 'National ID',
             example_format: '081234567F53',
-            sample_image: '/public/images/common/zw_national_identity_card.png',
         });
     });
 });

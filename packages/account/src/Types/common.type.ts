@@ -163,7 +163,6 @@ export type TDocument = {
     id: string;
     text: string;
     value?: string;
-    sample_image?: string;
     example_format?: string;
     additional?: {
         display_name?: string;

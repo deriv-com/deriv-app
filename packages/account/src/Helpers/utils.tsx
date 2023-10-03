@@ -59,7 +59,6 @@ export const getDocumentData = (country_code: string, document_type: string) => 
     const DEFAULT_CONFIG = {
         new_display_name: '',
         example_format: '',
-        sample_image: '',
     };
     const IDV_DOCUMENT_DATA: any = getIDVDocuments(country_code);
     return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;

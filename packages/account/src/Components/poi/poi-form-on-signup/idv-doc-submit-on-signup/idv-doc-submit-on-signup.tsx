@@ -77,7 +77,6 @@ export const IdvDocSubmitOnSignup = ({
             text: '',
             value: '',
             example_format: '',
-            sample_image: '',
         },
         document_number: '',
         ...form_initial_values,

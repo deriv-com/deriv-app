@@ -177,7 +177,6 @@ export const personal_details_config = ({
                 text: '',
                 value: '',
                 example_format: '',
-                sample_image: '',
             },
             supported_in: ['svg'],
             rules: [],

@@ -100,6 +100,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             current_fiat_currency: '',
             cfd_score: 0,
             ctrader_accounts_list: [],
+            email_address: '',
             setCFDScore: jest.fn(),
             getLimits: jest.fn(),
             has_active_real_account: false,

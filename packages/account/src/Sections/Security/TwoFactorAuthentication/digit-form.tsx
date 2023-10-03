@@ -1,16 +1,23 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { Input, Button } from '@deriv/components';
-import { getPropertyValue, WS } from '@deriv/shared';
+import { useSendUserOTP } from '@deriv/api';
 import { localize } from '@deriv/translations';
+import { useStore, observer } from '@deriv/stores';
 
-const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_language_changing }) => {
-    const [is_success, setSuccess] = React.useState(false);
-    const [is_ready_for_verification, setReadyForVerification] = React.useState(false);
-    const button_text = is_enabled ? localize('Disable') : localize('Enable');
-    const formik_ref = React.useRef();
-    let enable_response;
+type TDigitFormValues = {
+    digit_code: string;
+};
+
+const DigitForm = observer(() => {
+    const { client, common } = useStore();
+    const { is_language_changing } = common;
+    const { has_enabled_two_fa, setTwoFAChangedStatus, setTwoFAStatus } = client;
+
+    const { is_TwoFA_enabled, error, isSuccess, sendUserOTP } = useSendUserOTP();
+    const button_text = has_enabled_two_fa ? localize('Disable') : localize('Enable');
+    const formik_ref = React.useRef<FormikProps<TDigitFormValues>>(null);
 
     const initial_form = {
         digit_code: '',
@@ -18,11 +25,36 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
 
     React.useEffect(() => {
         if (is_language_changing) {
-            formik_ref.current.setFieldTouched('digit_code');
+            formik_ref.current?.setFieldTouched('digit_code');
         }
     }, [is_language_changing]);
 
-    const validateFields = async values => {
+    React.useEffect(() => {
+        if (error) {
+            if (typeof error === 'object' && 'code' in error && 'message' in error) {
+                const { code, message } = error;
+                if (code === 'InvalidOTP')
+                    formik_ref.current?.setFieldError(
+                        'digit_code',
+                        localize("That's not the right code. Please try again.")
+                    );
+                else {
+                    formik_ref.current?.setFieldError('digit_code', message as string);
+                }
+            }
+        }
+    }, [error]);
+
+    React.useEffect(() => {
+        if (isSuccess) {
+            setTwoFAStatus(is_TwoFA_enabled);
+            setTwoFAChangedStatus(true);
+            formik_ref.current?.resetForm();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSuccess, is_TwoFA_enabled]);
+
+    const validateFields = async (values: TDigitFormValues) => {
         const digit_code = values.digit_code;
         if (!digit_code) {
             return { digit_code: localize('Digit code is required.') };
@@ -30,35 +62,13 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
             return { digit_code: localize('Length of digit code must be 6 characters.') };
         } else if (!/^[0-9]{6}$/g.test(digit_code)) {
             return { digit_code: localize('Digit code must only contain numbers.') };
-        } else if (is_ready_for_verification) {
-            if (formik_ref.current.isValid) {
-                const totp_action = is_enabled ? 'disable' : 'enable';
-                enable_response = await WS.authorized.accountSecurity({
-                    account_security: 1,
-                    totp_action,
-                    otp: values.digit_code,
-                });
-                if (enable_response.error) {
-                    const { code, message } = enable_response.error;
-                    if (code === 'InvalidOTP')
-                        return { digit_code: localize("That's not the right code. Please try again.") };
-                    return { digit_code: message };
-                }
-            } else {
-                return { digit_code: localize("That's not the right code. Please try again.") };
-            }
         }
         return {};
     };
 
-    const handleSubmit = async (values, { resetForm }) => {
-        if (!enable_response.error) {
-            const is_enabled_response = !!getPropertyValue(enable_response, ['account_security', 'totp', 'is_enabled']);
-            setSuccess(true);
-            resetForm();
-            setTwoFAStatus(is_enabled_response);
-            setTwoFAChangedStatus(true);
-        }
+    const handleSubmit = async (values: TDigitFormValues) => {
+        const action = has_enabled_two_fa ? 'disable' : 'enable';
+        sendUserOTP({ totp_action: action, otp: values.digit_code });
     };
 
     return (
@@ -67,7 +77,7 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
                 <Form noValidate>
                     <div className='two-factor__input-group'>
                         <Field name='digit_code'>
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                                 <Input
                                     {...field}
                                     data-lpignore='true'
@@ -77,27 +87,25 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
                                     value={values.digit_code}
                                     onChange={e => {
                                         handleChange(e);
-                                        setReadyForVerification(false);
                                     }}
                                     onBlur={handleBlur}
                                     required
-                                    error={touched.digit_code && errors.digit_code}
-                                    maxLength='6'
+                                    error={touched.digit_code && errors.digit_code ? errors.digit_code : undefined}
+                                    maxLength={6}
                                     autoComplete='off'
                                 />
                             )}
                         </Field>
                         <Button
                             className={classNames('two-factor__button', {
-                                'two-factor__button--success': is_success,
+                                'two-factor__button--success': isSuccess,
                             })}
                             type='submit'
                             is_disabled={isSubmitting || !isValid || !dirty}
                             has_effect
                             is_loading={isSubmitting}
-                            is_submit_success={is_success}
+                            is_submit_success={isSuccess}
                             text={button_text}
-                            onClick={() => setReadyForVerification(true)}
                             large
                             primary
                         />
@@ -106,6 +114,6 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
             )}
         </Formik>
     );
-};
+});
 
 export default DigitForm;

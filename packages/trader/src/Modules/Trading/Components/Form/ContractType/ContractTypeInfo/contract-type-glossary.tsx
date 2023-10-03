@@ -3,8 +3,9 @@ import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { VANILLALONG } from '@deriv/shared';
 
-const ContractTypeGlossary = ({ category }: { category: string }) => {
+const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; is_vanilla_fx?: boolean }) => {
     let content;
+    if (category === 'vanillalongcall' && is_vanilla_fx) category = VANILLALONG.FX;
     if (category) {
         switch (category) {
             case 'accumulator':

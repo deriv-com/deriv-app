@@ -60,7 +60,6 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
 
     const cards = contract_types?.map((type: TContractType) => {
         if (type.value !== item.value) return null;
-        if (type.value === VANILLALONG.CALL && is_vanilla_fx) type.value = VANILLALONG.FX;
         return (
             <div key={type.value} className='contract-type-info__card'>
                 <ThemedScrollbars
@@ -93,7 +92,7 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
                                 />
                             </React.Fragment>
                         ) : (
-                            <ContractTypeGlossary category={type.value} />
+                            <ContractTypeGlossary category={type.value} is_vanilla_fx={is_vanilla_fx} />
                         )}
                     </div>
                 </ThemedScrollbars>

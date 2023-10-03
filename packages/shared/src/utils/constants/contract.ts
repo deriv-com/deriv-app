@@ -176,13 +176,6 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
         barrier_count: 1,
     },
-    vanilla_fx: {
-        title: localize('Call/Put'),
-        trade_types: ['VANILLALONGCALL', 'VANILLALONGPUT'],
-        basis: ['stake'],
-        components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
-        barrier_count: 1,
-    },
 });
 
 // Config for rendering trade options
@@ -198,7 +191,7 @@ export const getContractCategoriesConfig = () =>
         'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
         'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
         Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
-        Vanillas: { name: localize('Vanillas'), categories: [VANILLALONG.CALL, VANILLALONG.PUT, VANILLALONG.FX] },
+        Vanillas: { name: localize('Vanillas'), categories: [VANILLALONG.CALL, VANILLALONG.PUT] },
         Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
     } as const);
 

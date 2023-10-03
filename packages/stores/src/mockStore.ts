@@ -351,7 +351,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_mt5_migration_modal_enabled: false,
             is_mt5_migration_modal_open: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
-            setIsAcuityModalOpen: jest.fn(),
             setAppContentsScrollRef: jest.fn(),
             is_switch_to_deriv_account_modal_visible: false,
             openSwitchToRealAccountModal: jest.fn(),

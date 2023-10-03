@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { useAvailableMT5Accounts, useCreateOtherCFDAccount } from '@deriv/api';
+
 import PasswordShowIcon from '../../public/images/ic-password-show.svg';
+
 import './CreatePassword.scss';
 
 type TPlatformMT5 = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number]['platform'];
@@ -34,7 +37,7 @@ const CreatePassword: React.FC<TProps> = ({ icon, onPasswordChange, onPrimaryCli
                 You can use this password for all your {title} accounts.
             </span>
             <div className='wallets-create-password-input'>
-                <input onChange={onPasswordChange} placeholder={`${title}} password`} type='password' />
+                <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
                 <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
             </div>
             <button className='wallets-create-password-button' onClick={onPrimaryClick}>

@@ -1,12 +1,14 @@
 import React from 'react';
-import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
+import classNames from 'classnames';
+
+import { useOnClickOutside } from '../../hooks';
+import Icon from '../icon/icon';
+import Text from '../text/text';
+
 import Body from './modal-body';
 import Footer from './modal-footer';
-import Text from '../text/text';
-import Icon from '../icon/icon';
-import { useOnClickOutside } from '../../hooks';
 
 interface IClickEvent extends MouseEvent {
     path?: HTMLElement[];
@@ -28,7 +30,6 @@ type TModalElement = {
     is_vertical_bottom?: boolean;
     is_vertical_centered?: boolean;
     is_vertical_top?: boolean;
-    min_height?: string;
     onMount?: () => void;
     onUnmount?: () => void;
     portalId?: string;
@@ -58,7 +59,6 @@ const ModalElement = ({
     is_vertical_bottom,
     is_vertical_centered,
     is_vertical_top,
-    min_height,
     onMount,
     onUnmount,
     portalId,
@@ -148,7 +148,6 @@ const ModalElement = ({
             style={{
                 height: height || 'auto',
                 width: width || 'auto',
-                minHeight: min_height || 0,
             }}
         >
             {!is_risk_warning_visible && (header || title || rendered_title) && (
@@ -235,7 +234,6 @@ const Modal = ({
     is_vertical_bottom,
     is_vertical_centered,
     is_vertical_top,
-    min_height,
     onEntered,
     onExited,
     onMount,
@@ -282,7 +280,6 @@ const Modal = ({
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
             height={height}
-            min_height={min_height}
             onMount={onMount}
             onUnmount={onUnmount}
             portalId={portalId}

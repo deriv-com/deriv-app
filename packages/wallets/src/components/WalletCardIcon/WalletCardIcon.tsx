@@ -1,4 +1,5 @@
 import React from 'react';
+
 import useDevice from '../../hooks/useDevice';
 import Bitcoin from '../../public/images/bitcoin.svg';
 import Demo from '../../public/images/demo.svg';
@@ -18,6 +19,7 @@ const typeToIconMapper = {
     eUSDT: Tether,
     GBP,
     LTC,
+    tUSDT: Tether,
     USD,
     USDC,
     UST: Tether,

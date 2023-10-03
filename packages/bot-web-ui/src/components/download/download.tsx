@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { Button, Icon, Popover } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type TDownloadProps = {

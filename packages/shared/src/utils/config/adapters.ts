@@ -1,7 +1,6 @@
 import { getIDVNotApplicableOption } from '../constants/default-options';
-import { FormikValues } from 'formik';
 
-type TDocumentList = Array<{
+type TDocument = {
     id: string;
     text: string;
     value?: string;
@@ -11,10 +10,10 @@ type TDocumentList = Array<{
         display_name: string;
         format: string;
     };
-}>;
+};
 
 type TIDVFormValues = {
-    document_type: TDocumentList[0];
+    document_type: TDocument;
     document_number: string;
     document_additional?: string;
     error_message?: string;
@@ -26,7 +25,7 @@ type TIDVFormValues = {
  * @param country_code - Country code of the user
  * @returns IDV form values
  */
-export const formatIDVFormValues = (idv_form_value: FormikValues, country_code: string) => {
+export const formatIDVFormValues = (idv_form_value: TIDVFormValues, country_code: string) => {
     const IDV_NOT_APPLICABLE_OPTION = getIDVNotApplicableOption();
     const idv_submit_data = {
         document_number:

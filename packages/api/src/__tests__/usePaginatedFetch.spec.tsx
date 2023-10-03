@@ -5,7 +5,8 @@ import APIProvider from '../APIProvider';
 import usePaginatedFetch from '../usePaginatedFetch';
 
 jest.mock('@deriv/shared', () => ({
-    WS: {
+    ...jest.requireActual('@deriv/shared'),
+    useWS: () => ({
         send: jest.fn(() =>
             Promise.resolve<TSocketResponse<'p2p_advert_list'>>({
                 p2p_advert_list: {
@@ -23,7 +24,7 @@ jest.mock('@deriv/shared', () => ({
                 req_id: 1,
             })
         ),
-    },
+    }),
 }));
 
 describe('usePaginatedFetch', () => {

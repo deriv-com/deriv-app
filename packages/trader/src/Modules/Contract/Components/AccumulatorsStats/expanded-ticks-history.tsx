@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
 import TicksHistoryCounter from './ticks-history-counter';
 
@@ -18,6 +17,7 @@ const ExpandedTicksHistory = ({ history_text_size, rows }: TExpandedTicksHistory
             >
                 {row.map((counter, idx) => (
                     <TicksHistoryCounter
+                        ticks_history_counter_testid='dt_accu_stats_history_counter'
                         key={idx.toString() + counter}
                         value={counter}
                         has_progress_dots={i === 0 && idx === 0}
@@ -27,10 +27,5 @@ const ExpandedTicksHistory = ({ history_text_size, rows }: TExpandedTicksHistory
         ))}
     </Text>
 );
-
-ExpandedTicksHistory.propTypes = {
-    history_text_size: PropTypes.string,
-    rows: PropTypes.array,
-};
 
 export default React.memo(ExpandedTicksHistory);

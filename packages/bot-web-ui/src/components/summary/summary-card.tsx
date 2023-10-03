@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { ContractCard, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { getCardLabels, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import ContractCardLoader from 'Components/contract-card-loading';
-import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
+import { getContractTypeDisplay } from 'Constants/contract';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TSummaryCardProps } from './summary-card.types';
 
@@ -34,7 +34,7 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
         <ContractCard.Body
             addToast={addToast}
             contract_info={contract_info}
-            currency={contract_info && contract_info.currency}
+            currency={contract_info?.currency ?? ''}
             current_focus={current_focus}
             error_message_alignment='left'
             getCardLabels={getCardLabels}

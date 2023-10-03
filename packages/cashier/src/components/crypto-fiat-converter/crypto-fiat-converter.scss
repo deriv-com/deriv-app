@@ -6,12 +6,17 @@
     @include desktop {
         max-width: 36rem;
         margin: 0 auto;
+
         .dc-icon {
             margin-top: 1rem;
         }
 
         .dc-input {
             margin-bottom: unset;
+        }
+
+        .dc-input__hint {
+            margin: 0.1rem 0 0 1.3rem;
         }
     }
 
@@ -45,13 +50,5 @@
         margin-left: 0;
         color: var(--text-less-prominent);
         align-self: start;
-    }
-
-    .dc-input__hint {
-        margin: 0.1rem 0 0 1.3rem;
-
-        @include mobile {
-            margin: 0.1rem 0 -1.9rem 1.3rem;
-        }
     }
 }

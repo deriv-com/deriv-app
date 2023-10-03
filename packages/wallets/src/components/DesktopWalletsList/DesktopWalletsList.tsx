@@ -11,21 +11,21 @@ const DesktopWalletsList: React.FC = () => {
 
     return (
         <div className='wallets-desktop-wallets-list'>
-            {wallets?.map(wallet => {
+            {wallets?.map(account => {
                 return (
                     <WalletsAccordion
-                        isDemo={wallet.is_virtual}
-                        isOpen={wallet.is_active}
-                        key={`wallets-accordion-${wallet.loginid}`}
-                        onToggle={() => switchAccount(wallet.loginid)}
+                        isDemo={account.is_virtual}
+                        isOpen={account.is_active}
+                        key={`wallets-accordion-${account.loginid}`}
+                        onToggle={() => switchAccount(account.loginid)}
                         renderHeader={() => (
                             <WalletListCard
-                                badge={wallet.landing_company_name}
-                                balance={wallet.display_balance}
-                                currency={wallet.wallet_currency_type || 'USD'}
-                                isActive={wallet.is_active}
-                                isDemo={wallet.is_virtual}
-                                loginid={wallet.loginid}
+                                badge={account.landing_company_name}
+                                balance={account.display_balance}
+                                currency={account.wallet_currency_type || 'USD'}
+                                isActive={account.is_active}
+                                isDemo={account.is_virtual}
+                                loginid={account.loginid}
                             />
                         )}
                     >

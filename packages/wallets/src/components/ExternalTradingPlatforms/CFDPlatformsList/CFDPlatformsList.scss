@@ -5,6 +5,44 @@
     @include desktop {
         border-top: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
     }
+    &__cfd-empty-state {
+        display: flex;
+        padding: 24px 0px 48px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        align-self: stretch;
+
+        &__description {
+            color: #333;
+            text-align: center;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 24px; /* 150% */
+        }
+
+        &__transfer-button {
+            all: unset;
+            cursor: pointer;
+            display: flex;
+            height: 40px;
+            padding: 0 16px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            background: var(--button-primary-light-default, rgba(255, 68, 79, 0.16));
+            color: var(--brand-coral, #ff444f);
+            text-align: center;
+
+            /* desktop/paragraph/P2 - bold */
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px; /* 142.857% */
+        }
+    }
 
     &__header {
         padding: 24px 0;

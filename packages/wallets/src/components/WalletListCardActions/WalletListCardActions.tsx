@@ -80,8 +80,8 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                 <button
                     className='wallets-header__button'
                     key={button.name}
-                    onClick={async () => {
-                        await switchAccount(loginid);
+                    onClick={() => {
+                        switchAccount(loginid);
                         history.push(`/appstore/traders-hub/cashier/${button.name}`);
                     }}
                 >

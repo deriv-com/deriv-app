@@ -105,104 +105,106 @@ const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => 
         return undefined;
     };
 
-    if (is_loading) return <Loading />;
-
     return (
         <div className='cashier__wrapper crypto-withdraw-form__container' data-testid='dt_crypto_withdraw_form'>
-            <div
-                className={classNames('crypto-withdraw-form__form', {
-                    'crypto-withdraw-form__form--cashier': !is_wallet,
-                })}
-            >
-                <Header currency={currency} />
-                <div className='crypto-withdraw-form__messages'>
-                    <InlineMessage message={<Messages />} type='warning' />
-                </div>
-                <Formik
-                    initialValues={{
-                        address: '',
-                    }}
-                    onSubmit={() => requestWithdraw(verification_code)}
+            {is_loading ? (
+                <Loading />
+            ) : (
+                <div
+                    className={classNames('crypto-withdraw-form__form', {
+                        'crypto-withdraw-form__form--cashier': !is_wallet,
+                    })}
                 >
-                    {({
-                        errors,
-                        isSubmitting,
-                        touched,
-                        setFieldTouched,
-                        handleChange,
-                        handleSubmit,
-                        values,
-                    }: FormikProps<TFormValues>) => (
-                        <form className='crypto-withdraw-form' onSubmit={handleSubmit} autoComplete='off'>
-                            <Field name='address' validate={validateAddress}>
-                                {({ field }: FieldProps<string, TFormValues>) => (
-                                    <Input
-                                        {...field}
-                                        onChange={(e: TReactChangeEvent) => {
-                                            handleChange(e);
-                                            setBlockchainAddress(e.target.value);
-                                            setFieldTouched('address', true, false);
-                                        }}
-                                        className='cashier__input withdraw__input'
-                                        data-testid='dt_address_input'
-                                        type='text'
-                                        label={
-                                            <Localize
-                                                i18n_default_text='Your {{currency_symbol}} cryptocurrency wallet address'
-                                                values={{
-                                                    currency_symbol: currency?.toUpperCase(),
-                                                }}
-                                            />
-                                        }
-                                        error={touched.address ? errors.address : ''}
-                                        required
-                                        autoComplete='off'
-                                    />
-                                )}
-                            </Field>
-                            <div className='crypto-withdraw-form__percentage-container'>
-                                <div className='crypto-withdraw-form__percentage-selector'>
-                                    <PercentageSelector
-                                        amount={Number(balance)}
-                                        getCalculatedAmount={setWithdrawPercentageSelectorResult}
-                                        percentage={percentage}
-                                        should_percentage_reset={should_percentage_reset}
+                    <Header currency={currency} />
+                    <div className='crypto-withdraw-form__messages'>
+                        <InlineMessage message={<Messages />} type='warning' />
+                    </div>
+                    <Formik
+                        initialValues={{
+                            address: '',
+                        }}
+                        onSubmit={() => requestWithdraw(verification_code)}
+                    >
+                        {({
+                            errors,
+                            isSubmitting,
+                            touched,
+                            setFieldTouched,
+                            handleChange,
+                            handleSubmit,
+                            values,
+                        }: FormikProps<TFormValues>) => (
+                            <form className='crypto-withdraw-form' onSubmit={handleSubmit} autoComplete='off'>
+                                <Field name='address' validate={validateAddress}>
+                                    {({ field }: FieldProps<string, TFormValues>) => (
+                                        <Input
+                                            {...field}
+                                            onChange={(e: TReactChangeEvent) => {
+                                                handleChange(e);
+                                                setBlockchainAddress(e.target.value);
+                                                setFieldTouched('address', true, false);
+                                            }}
+                                            className='cashier__input withdraw__input'
+                                            data-testid='dt_address_input'
+                                            type='text'
+                                            label={
+                                                <Localize
+                                                    i18n_default_text='Your {{currency_symbol}} cryptocurrency wallet address'
+                                                    values={{
+                                                        currency_symbol: currency?.toUpperCase(),
+                                                    }}
+                                                />
+                                            }
+                                            error={touched.address ? errors.address : ''}
+                                            required
+                                            autoComplete='off'
+                                        />
+                                    )}
+                                </Field>
+                                <div className='crypto-withdraw-form__percentage-container'>
+                                    <div className='crypto-withdraw-form__percentage-selector'>
+                                        <PercentageSelector
+                                            amount={Number(balance)}
+                                            getCalculatedAmount={setWithdrawPercentageSelectorResult}
+                                            percentage={percentage}
+                                            should_percentage_reset={should_percentage_reset}
+                                            from_currency={crypto_currency}
+                                            to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
+                                        />
+                                    </div>
+                                    <CryptoFiatConverter
                                         from_currency={crypto_currency}
+                                        onChangeConverterFromAmount={onChangeConverterFromAmount}
+                                        onChangeConverterToAmount={onChangeConverterToAmount}
+                                        resetConverter={resetConverter}
                                         to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
+                                        validateFromAmount={validateWithdrawFromAmount}
+                                        validateToAmount={validateWithdrawToAmount}
                                     />
+                                    <div className='crypto-withdraw-form__submit'>
+                                        <Button
+                                            is_disabled={
+                                                !!validateAddress(values.address) ||
+                                                !!converter_from_error ||
+                                                !!converter_to_error ||
+                                                !converter_from_amount ||
+                                                !converter_to_amount ||
+                                                isSubmitting ||
+                                                !blockchain_address
+                                            }
+                                            type='submit'
+                                            primary
+                                            large
+                                        >
+                                            <Localize i18n_default_text='Withdraw' />
+                                        </Button>
+                                    </div>
                                 </div>
-                                <CryptoFiatConverter
-                                    from_currency={crypto_currency}
-                                    onChangeConverterFromAmount={onChangeConverterFromAmount}
-                                    onChangeConverterToAmount={onChangeConverterToAmount}
-                                    resetConverter={resetConverter}
-                                    to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
-                                    validateFromAmount={validateWithdrawFromAmount}
-                                    validateToAmount={validateWithdrawToAmount}
-                                />
-                                <div className='crypto-withdraw-form__submit'>
-                                    <Button
-                                        is_disabled={
-                                            !!validateAddress(values.address) ||
-                                            !!converter_from_error ||
-                                            !!converter_to_error ||
-                                            !converter_from_amount ||
-                                            !converter_to_amount ||
-                                            isSubmitting ||
-                                            !blockchain_address
-                                        }
-                                        type='submit'
-                                        primary
-                                        large
-                                    >
-                                        <Localize i18n_default_text='Withdraw' />
-                                    </Button>
-                                </div>
-                            </div>
-                        </form>
-                    )}
-                </Formik>
-            </div>
+                            </form>
+                        )}
+                    </Formik>
+                </div>
+            )}
 
             {isCryptocurrency(currency) && <CryptoTransactionsSideNoteRecentTransaction />}
         </div>

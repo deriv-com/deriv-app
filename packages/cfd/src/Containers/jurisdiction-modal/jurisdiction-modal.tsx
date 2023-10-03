@@ -38,7 +38,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
             })}
         >
             <JurisdictionModalContentWrapper openPasswordModal={openPasswordModal} />
-            <DynamicLeverageModalContent />
+            {account_type.type === 'financial' && <DynamicLeverageModalContent />}{' '}
         </div>
     );
 

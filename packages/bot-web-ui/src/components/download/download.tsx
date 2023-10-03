@@ -9,17 +9,20 @@ type TDownloadProps = {
 };
 
 const Download = observer(({ tab }: TDownloadProps) => {
-    const { download, run_panel } = useDBotStore();
+    const { download, run_panel, transactions } = useDBotStore();
     const { is_clear_stat_disabled } = run_panel;
     const { onClickDownloadTransaction, onClickDownloadJournal } = download;
-
+    const { elements } = transactions;
+    let disabled = false;
     let clickFunction, popover_message;
     if (tab === 'transactions') {
         clickFunction = onClickDownloadTransaction;
         popover_message = localize('Download your transaction history.');
+        disabled = !elements.length;
     } else if (tab === 'journal') {
         clickFunction = onClickDownloadJournal;
         popover_message = localize('Download your journal.');
+        disabled = is_clear_stat_disabled;
     }
     return (
         <Popover
@@ -31,10 +34,10 @@ const Download = observer(({ tab }: TDownloadProps) => {
         >
             <Button
                 id='download-button'
-                is_disabled={is_clear_stat_disabled}
+                is_disabled={disabled}
+                className='download__button'
+                icon={<Icon icon='IcDownload' color={disabled ? 'disabled' : undefined} className='download__icon' />}
                 text={localize('Download')}
-                icon={<Icon icon='IcDbotDownload' size={18} />}
-                secondary
                 onClick={clickFunction}
             />
         </Popover>

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { useModal } from '../ModalProvider';
 import { ModalStepWrapper } from '../ModalStepWrapper';
+import { MT5PasswordModal } from '../MT5PasswordModal';
 import { PrimaryActionButton } from '../PrimaryActionButton';
 import JurisdictionCard from './JurisdictionCard';
 import './JurisdictionModal.scss';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
+    const { show } = useModal();
 
     const jurisdictions = ['St. Vincent & Grenadines', 'British Virgin Islands', 'Vanuatu'];
 
@@ -18,6 +21,7 @@ const JurisdictionModal = () => {
                         className={classNames('wallets-jurisdiction-modal__button', {
                             'wallets-jurisdiction-modal__button--disabled': !selectedJurisdiction,
                         })}
+                        onClick={() => show(<MT5PasswordModal marketType='financial' />)}
                     >
                         Next
                     </PrimaryActionButton>

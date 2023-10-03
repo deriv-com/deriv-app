@@ -290,7 +290,7 @@ describe('<Info />', () => {
     it('Should render toggle buttons if vanilla info page is open', () => {
         mocked_props.item.text = 'Call/Put';
         mocked_props.item.value = 'vanillalongcall';
-        render(<Info {...mocked_props} />);
+        render(mockInfo(mock_root_store));
         const trade_type_button = screen.getByText('Choose Call/Put');
         expect(screen.getByText('Description')).toBeInTheDocument();
         expect(screen.getByText(/glossary/i)).toBeInTheDocument();

@@ -1,7 +1,5 @@
-export * from './AddedCTraderAccountsList';
 export * from './AddedDxtradeAccountsList';
 export * from './AddedMT5AccountsList';
-export * from './AvailableCTraderAccountsList';
 export * from './AvailableDerivezAccountsList';
 export * from './AvailableDxtradeAccountsList';
 export * from './AvailableMT5AccountsList';

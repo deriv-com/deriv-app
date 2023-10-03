@@ -32,8 +32,8 @@ jobs:
         RUDDERSTACK_URL: ${{ vars.RUDDERSTACK_URL }}
     - name: Run tests
       run: npm test
-    - uses: "./.github/actions/versioning"
-      name: Versioning
+    - name: Versioning
+      uses: "./.github/actions/versioning"
       with:
         version_name: production
     - name: Publish to Cloudflare Pages Production

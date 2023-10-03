@@ -47,6 +47,7 @@ const PersonalDetailsForm = props => {
         setShouldCloseTooltip,
         class_name,
         states_list,
+        no_confirmation_needed,
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
@@ -54,7 +55,8 @@ const PersonalDetailsForm = props => {
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
 
-    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
+    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched, setStatus, status } =
+        useFormikContext();
 
     React.useEffect(() => {
         if (should_close_tooltip) {
@@ -62,6 +64,12 @@ const PersonalDetailsForm = props => {
             setShouldCloseTooltip(false);
         }
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
+
+    React.useEffect(() => {
+        if (no_confirmation_needed && typeof status === 'object' && !status.is_confirmed) {
+            setStatus({ ...status, is_confirmed: true });
+        }
+    }, [no_confirmation_needed, setStatus, status]);
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
@@ -538,7 +546,7 @@ const PersonalDetailsForm = props => {
                         )}
                     </fieldset>
                 </FormBodySection>
-                {is_qualified_for_idv && (
+                {!no_confirmation_needed && is_qualified_for_idv && (
                     <ConfirmationCheckbox
                         disabled={is_confirmation_checkbox_disabled}
                         label={

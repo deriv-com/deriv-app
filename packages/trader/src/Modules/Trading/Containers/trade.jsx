@@ -44,6 +44,7 @@ const Trade = observer(() => {
         prepareTradeStore,
         setContractTypes,
         setMobileDigitView,
+        setIsDigitsWidgetActive,
         show_digits_stats,
         is_accumulator,
         symbol,
@@ -67,7 +68,6 @@ const Trade = observer(() => {
     const [try_open_markets, setTryOpenMarkets] = React.useState(false);
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
-    const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
     const charts_ref = React.useRef();
 
     const open_market = React.useMemo(() => {
@@ -142,11 +142,10 @@ const Trade = observer(() => {
                 open_market={open_market}
                 open={try_synthetic_indices || try_open_markets}
                 charts_ref={charts_ref}
-                is_digits_widget_active={is_digits_widget_active}
                 {...params}
             />
         ),
-        [open_market, try_synthetic_indices, try_open_markets, charts_ref, is_digits_widget_active]
+        [open_market, try_synthetic_indices, try_open_markets]
     );
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
@@ -387,7 +386,11 @@ const ChartTrade = observer(props => {
             isConnectionOpened={is_socket_opened}
             clearChart={false}
             toolbarWidget={() => (
-                <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                <ToolbarWidgets
+                    is_alpha_chart={is_alpha_chart}
+                    updateChartType={updateChartType}
+                    updateGranularity={updateGranularity}
+                />
             )}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}

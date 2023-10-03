@@ -204,6 +204,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
         marker: accumulators_barriers_marker,
         is_digit_contract,
         barriers_array,
+        getMarkersArray,
         markers_array,
         contract_info,
     } = contract_store;
@@ -318,17 +319,18 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                         is_bottom_widget_visible={isBottomWidgetVisible()}
                     />
                 ))}
-            {!is_alpha_chart && is_accumulator_contract && !!markers_array && (
-                <DelayedAccuBarriersMarker
-                    marker_component={accu_barriers_marker_component}
-                    key={accumulators_barriers_marker.key}
-                    is_dark_theme={is_dark_theme}
-                    granularity={granularity}
-                    is_in_contract_details
-                    previous_spot_time={accumulator_previous_spot_time}
-                    {...accumulators_barriers_marker}
-                />
-            )}
+            {!is_alpha_chart ||
+                (is_accumulator_contract && !!markers_array && (
+                    <DelayedAccuBarriersMarker
+                        marker_component={accu_barriers_marker_component}
+                        key={accumulators_barriers_marker.key}
+                        is_dark_theme={is_dark_theme}
+                        granularity={granularity}
+                        is_in_contract_details
+                        previous_spot_time={accumulator_previous_spot_time}
+                        {...accumulators_barriers_marker}
+                    />
+                ))}
         </SmartChartSwitcher>
     );
 });

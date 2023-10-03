@@ -55,7 +55,11 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     enabledChartFooter={false}
                     chartStatusListener={v => setChartStatus(!v)}
                     toolbarWidget={() => (
-                        <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                        <ToolbarWidgets
+                            is_alpha_chart={client.is_alpha_chart}
+                            updateChartType={updateChartType}
+                            updateGranularity={updateGranularity}
+                        />
                     )}
                     chartType={chart_type}
                     isMobile={isMobile()}
@@ -82,7 +86,11 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     enabledChartFooter={false}
                     chartStatusListener={v => setChartStatus(!v)}
                     toolbarWidget={() => (
-                        <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                        <ToolbarWidgets
+                            is_alpha_chart={client.is_alpha_chart}
+                            updateChartType={updateChartType}
+                            updateGranularity={updateGranularity}
+                        />
                     )}
                     chartType={chart_type}
                     isMobile={isMobile()}

@@ -21,6 +21,7 @@ import {
     isVanillaContract,
     getContractStatus,
     unique,
+    isTurbosContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
@@ -247,8 +248,8 @@ export const getTickStreamMarkers = (contract_info, barrier_price) => {
     const is_digit_contract = isDigitContract(contract_type);
     const is_accumulator_contract = isAccumulatorContract(contract_type);
 
-    const last_tick = tick_stream[tick_stream.length - 1];
-    const ticks = getTicks();
+    const last_tick = tick_stream.length > 1 ? tick_stream[tick_stream.length - 1] : null;
+    const [, ...ticks] = getTicks();
 
     const markers = ticks.map(t => ({
         epoch: t.epoch,
@@ -259,8 +260,13 @@ export const getTickStreamMarkers = (contract_info, barrier_price) => {
     if (!is_digit_contract && !is_accumulator_contract && last_tick) {
         markers.push({
             epoch: last_tick.epoch,
-            quote: barrier_price,
+            quote: last_tick.quote,
             type: 'latestTick',
+        });
+        markers.push({
+            epoch: last_tick.epoch,
+            quote: barrier_price,
+            type: 'latestTickBarrier',
         });
     }
 
@@ -297,6 +303,7 @@ export function calculateMarker(contract_info, is_dark_theme, is_last_contract) 
     const is_non_tick_contract = !is_tick_contract;
     const is_high_low_contract = isHighLow({ shortcode });
     const is_touch_contract = isTouchContract(contract_type);
+    const is_turbos = isTurbosContract(contract_type);
 
     const end_time = is_tick_contract ? exit_tick_time : getEndTime(contract_info) || date_expiry;
 
@@ -351,7 +358,7 @@ export function calculateMarker(contract_info, is_dark_theme, is_last_contract) 
             type: 'entry',
         });
 
-        if (is_high_low_contract || is_touch_contract) {
+        if (is_high_low_contract || is_touch_contract || is_turbos) {
             markers.push({
                 epoch: entry_tick_time,
                 quote: entry_tick,

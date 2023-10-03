@@ -69,9 +69,8 @@ const WalletSuccessDialog = ({
                     className='wallet-success-dialog'
                     is_open={is_open}
                     toggleModal={toggleModal}
-                    has_close_icon={false}
                     small
-                    shouldCloseOnEscape={false}
+                    shouldCloseOnEscape
                 >
                     <Modal.Body>
                         <ModalContent />

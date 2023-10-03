@@ -1,33 +1,28 @@
 import React from 'react';
-import classNames from 'classnames';
+
 import { Dialog, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+
 import { DBOT_TABS } from 'Constants/bot-contents';
+
 import { useDBotStore } from '../../../../stores/useDBotStore';
 import { bot_builder_tour_header, onboarding_tour_header, tourDialogAction, tourDialogInfo } from '../config';
-import { setTourSettings, tour_type } from '../utils';
+import { setTourSettings, tour_list } from '../utils';
 
 const TourStartDialog = observer(() => {
     const { dashboard } = useDBotStore();
-    const {
-        active_tab,
-        has_tour_ended,
-        is_tour_dialog_visible,
-        setTourDialogVisibility,
-        toggleOnConfirm,
-        setBotBuilderTourState,
-        setOnBoardTourRunState,
-        setTourActive,
-    } = dashboard;
+    const { active_tab, is_tour_dialog_visible, setTourDialogVisibility, setActiveTour, setShowMobileTourDialog } =
+        dashboard;
 
     const is_mobile = isMobile();
-    const current_tour_type_key = tour_type?.key;
-    const toggleTour = (value: boolean, type: string) => {
-        if (type === 'onConfirm') toggleOnConfirm(active_tab, value);
-        setTourSettings(new Date().getTime(), `${current_tour_type_key}_token`);
+    const tour_token = active_tab === 0 ? 'onboard_tour_token' : 'bot_builder_token';
+    const toggleTour = () => {
+        if (is_mobile) setShowMobileTourDialog(false);
         setTourDialogVisibility(false);
+        setActiveTour('');
+        setTourSettings(new Date().getTime(), tour_token);
     };
 
     const onboard_tour = active_tab === DBOT_TABS.DASHBOARD;
@@ -59,28 +54,25 @@ const TourStartDialog = observer(() => {
     };
 
     const onHandleConfirm = () => {
-        setTourActive(true);
-        if (onboard_tour) setOnBoardTourRunState(true);
-        else setBotBuilderTourState(true);
+        setActiveTour(tour_list[active_tab]);
+        if (is_mobile) setShowMobileTourDialog(false);
         setTourDialogVisibility(false);
+        setTourSettings(new Date().getTime(), tour_token);
     };
     const header_text_size = is_mobile ? 'xs' : 's';
     const content_text_size = is_mobile ? 'xxs' : 'xs';
 
     const tour_headers = active_tab === 0 ? onboarding_tour_header : bot_builder_tour_header;
-
     return (
         <div>
             <Dialog
                 is_visible={is_tour_dialog_visible}
                 cancel_button_text={localize('Skip')}
-                onCancel={() => toggleTour(false, 'onCancel')}
+                onCancel={() => toggleTour()}
                 confirm_button_text={localize('Start')}
                 onConfirm={onHandleConfirm}
                 is_mobile_full_width
-                className={classNames('dc-dialog tour-dialog', {
-                    'tour-dialog--end': has_tour_ended,
-                })}
+                className={'dc-dialog tour-dialog'}
                 has_close_icon={false}
             >
                 <div className='dc-dialog__content__header'>

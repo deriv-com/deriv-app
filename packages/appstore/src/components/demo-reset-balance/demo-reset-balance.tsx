@@ -69,7 +69,7 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
                         large={!is_mobile}
                         medium={is_mobile}
                         primary
-                        onClick={() => resetBalance()}
+                        onClick={resetBalance}
                     >
                         <Localize i18n_default_text='Reset balance' />
                     </Button>

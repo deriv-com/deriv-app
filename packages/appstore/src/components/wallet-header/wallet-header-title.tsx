@@ -9,8 +9,11 @@ const WalletHeaderTitle = ({ is_demo, currency, landing_company_name }: TWalletH
     return (
         <div className='wallet-header__description-title'>
             <Text weight='bold' size='sm'>
-                {is_demo && <Localize i18n_default_text='Demo {{currency}} Wallet' values={{ currency }} />}
-                {!is_demo && <Localize i18n_default_text='{{currency}} Wallet' values={{ currency }} />}
+                {is_demo ? (
+                    <Localize i18n_default_text='Demo {{currency}} Wallet' values={{ currency }} />
+                ) : (
+                    <Localize i18n_default_text='{{currency}} Wallet' values={{ currency }} />
+                )}
             </Text>
             {!is_demo && (
                 <Badge

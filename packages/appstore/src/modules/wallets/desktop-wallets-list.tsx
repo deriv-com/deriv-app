@@ -7,11 +7,11 @@ const DesktopWalletsList = observer(() => {
     const { data } = useWalletsList();
 
     return (
-        <>
+        <React.Fragment>
             {data?.map(wallet => (
                 <Wallet key={wallet.loginid} wallet_account={wallet} />
             ))}
-        </>
+        </React.Fragment>
     );
 });
 

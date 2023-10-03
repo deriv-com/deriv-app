@@ -74,5 +74,12 @@ export const priority_toast_messages = [
     'wallets_migrated',
     'wallets_failed',
     'notify_financial_assessment',
+    'svg_needs_poi_poa',
+    'svg_needs_poa',
+    'svg_needs_poi',
+    'poi_failed',
+    'poa_failed',
+    'svg_poi_expired',
+    'mt5_notification',
     ...maintenance_notifications,
 ];

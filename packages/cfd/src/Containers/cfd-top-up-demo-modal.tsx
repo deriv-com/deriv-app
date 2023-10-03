@@ -1,17 +1,19 @@
 import React from 'react';
+
+import { Button, Icon, Modal, Money, Text } from '@deriv/components';
+import { CFD_PLATFORMS, getCFDPlatformLabel } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+
 import SuccessDialog from '../Components/success-dialog.jsx';
-import { Icon, Modal, Button, Money, Text } from '@deriv/components';
-import { getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { getTopUpConfig } from '../Helpers/constants';
 import {
+    getCTraderCompanies,
+    TCTraderCompanies,
+    TDerivezCompanies,
     TDxCompanies,
     TMtCompanies,
-    TDerivezCompanies,
-    TCTraderCompanies,
-    getCTraderCompanies,
 } from '../Stores/Modules/CFD/Helpers/cfd-config';
-import { getTopUpConfig } from '../Helpers/constants';
-import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCFDTopUpDemoModalProps = {

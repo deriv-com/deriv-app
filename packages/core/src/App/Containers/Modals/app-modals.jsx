@@ -1,24 +1,24 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { ContentFlag, routes, moduleLoader, SessionStore } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import MT5Notification from './mt5-notification';
+
+import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
+
+import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
-import CooldownWarningModal from './cooldown-warning-modal.jsx';
-import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
+import { connect } from 'Stores/connect';
+
+import WalletsMigrationInProgress from './wallets-upgrade-in-progress/wallets-migration-in-progress';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
-import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
+import CooldownWarningModal from './cooldown-warning-modal.jsx';
+import MT5Notification from './mt5-notification';
+import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
-import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
-import WalletsMigrationInProgress from './wallets-upgrade-in-progress/wallets-migration-in-progress';
+import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
-);
-const AcuityDownloadModal = React.lazy(() =>
-    import(/* webpackChunkName: "acuity-download-modal"  */ '../AcuityDownloadModal')
 );
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
@@ -54,7 +54,6 @@ const WarningCloseCreateRealAccountModal = React.lazy(() =>
 
 const AppModals = ({
     is_account_needed_modal_on,
-    is_acuity_modal_open,
     is_closing_create_real_account_modal,
     is_welcome_modal_visible,
     is_reality_check_visible,
@@ -133,8 +132,6 @@ const AppModals = ({
         content_flag !== ContentFlag.LOW_RISK_CR_NON_EU
     ) {
         ComponentToLoad = <TradingAssessmentExistingUser />;
-    } else if (is_acuity_modal_open) {
-        ComponentToLoad = <AcuityDownloadModal />;
     } else if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
     } else if (is_closing_create_real_account_modal) {
@@ -177,7 +174,6 @@ const AppModals = ({
 export default connect(({ client, ui, traders_hub }) => ({
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
-    is_acuity_modal_open: ui.is_acuity_modal_open,
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,

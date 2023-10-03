@@ -2,7 +2,9 @@ import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useIsMounted } from '@deriv/shared';
-import { TPassThrough, TRow, TRowRenderer } from './data-list';
+import { TRowRenderer } from './data-list';
+import { TPassThrough } from '../types/common.types';
+import { TSource } from '../data-table/data-table';
 
 type TDataListRow = {
     action_desc?: {
@@ -17,7 +19,7 @@ type TDataListRow = {
     is_new_row: boolean;
     is_scrolling: boolean;
     passthrough?: TPassThrough;
-    row: TRow;
+    row: TSource;
 };
 
 const DataListRow = ({

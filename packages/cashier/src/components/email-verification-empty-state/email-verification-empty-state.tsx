@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { EmptyState } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
+
 import EmailVerificationResendEmptyState from './email-verification-resend-empty-state';
+
 import './email-verification-empty-state.scss';
 
 type TEmailVerificationEmptyStateProps = {

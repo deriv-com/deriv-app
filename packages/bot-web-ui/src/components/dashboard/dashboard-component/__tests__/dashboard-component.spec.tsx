@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { isMobile } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import UserGuide from '../user-guide';
 
 jest.mock('@deriv/components', () => {
@@ -48,7 +50,6 @@ export const mocked_props = {
     is_dialog_open: true,
     onOkButtonClick: jest.fn(),
     setActiveTab: jest.fn(() => 3),
-    setHasTourEnded: jest.fn(),
     setOnBoardTourRunState: jest.fn(),
     setTourActiv: jest.fn(),
     setTourDialogVisibility: jest.fn(),

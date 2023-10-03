@@ -50,6 +50,8 @@ jobs:
       if: always()
       needs: [build_test_and_publish]
       steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Conclusion
         uses: technote-space/workflow-conclusion-action@v3
       - name: Send Slack Notification

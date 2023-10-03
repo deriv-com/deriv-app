@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { isDesktop, isMobile } from '@deriv/shared';
 import FinancialDetails, { TFinancialInformationAndTradingExperience, TFinancialDetails } from '../financial-details';
 import { FormikValues } from 'formik';
@@ -129,14 +130,14 @@ describe('<FinancialDetails />', () => {
             (option: FormikValues) => option.name === 'source_of_wealth'
         );
 
-        fireEvent.change(account_turnover_select as HTMLElement, { target: { value: 'account turnover 1' } });
+        userEvent.type(account_turnover_select as HTMLElement, 'account turnover 1');
 
-        fireEvent.change(education_level_select as HTMLElement, { target: { value: 'education level 2' } });
-        fireEvent.change(employment_indystry_select as HTMLElement, { target: { value: 'employment industry 1' } });
-        fireEvent.change(estimated_worth_select as HTMLElement, { target: { value: 'estimated worth 2' } });
-        fireEvent.change(income_source_select as HTMLElement, { target: { value: 'income source 1' } });
-        fireEvent.change(net_income_select as HTMLElement, { target: { value: 'net income 1' } });
-        fireEvent.change(source_of_wealth_select as HTMLElement, { target: { value: 'source of wealth 1' } });
+        userEvent.type(education_level_select as HTMLElement, 'education level 2');
+        userEvent.type(employment_indystry_select as HTMLElement, 'employment industry 1');
+        userEvent.type(estimated_worth_select as HTMLElement, 'estimated worth 2');
+        userEvent.type(income_source_select as HTMLElement, 'income source 1');
+        userEvent.type(net_income_select as HTMLElement, 'net income 1');
+        userEvent.type(source_of_wealth_select as HTMLElement, 'source of wealth 1');
     };
 
     it('should render "FinancialDetails" for desktop', () => {
@@ -174,7 +175,7 @@ describe('<FinancialDetails />', () => {
         const btns = screen.getAllByRole('button');
         expect(btns[0]).toHaveTextContent('Previous');
 
-        fireEvent.click(btns[0]);
+        userEvent.click(btns[0]);
         expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(1);
     });
 
@@ -204,21 +205,21 @@ describe('<FinancialDetails />', () => {
             (option: FormikValues) => option.name === 'source_of_wealth'
         );
 
-        fireEvent.change(account_turnover_select as HTMLElement, { target: { value: 'account turnover 1' } });
+        userEvent.type(account_turnover_select as HTMLElement, 'account turnover 1');
 
-        fireEvent.change(education_level_select as HTMLElement, { target: { value: 'education level 2' } });
-        fireEvent.change(employment_indystry_select as HTMLElement, { target: { value: 'employment industry 1' } });
-        fireEvent.change(estimated_worth_select as HTMLElement, { target: { value: 'estimated worth 2' } });
-        fireEvent.change(income_source_select as HTMLElement, { target: { value: 'income source 1' } });
-        fireEvent.change(net_income_select as HTMLElement, { target: { value: 'net income 1' } });
-        fireEvent.change(occuppation_select as HTMLElement, { target: { value: 'Government Officers' } });
+        userEvent.type(education_level_select as HTMLElement, 'education level 2');
+        userEvent.type(employment_indystry_select as HTMLElement, 'employment industry 1');
+        userEvent.type(estimated_worth_select as HTMLElement, 'estimated worth 2');
+        userEvent.type(income_source_select as HTMLElement, 'income source 1');
+        userEvent.type(net_income_select as HTMLElement, 'net income 1');
+        userEvent.type(occuppation_select as HTMLElement, 'Government Officers');
 
-        fireEvent.change(source_of_wealth_select as HTMLElement, { target: { value: 'source of wealth 1' } });
+        userEvent.type(source_of_wealth_select as HTMLElement, 'source of wealth 1');
 
         const btns = screen.getAllByRole('button');
         expect(btns[1]).toHaveTextContent('Next');
 
-        fireEvent.click(btns[1]);
+        userEvent.click(btns[1]);
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalledTimes(1);
         });
@@ -238,12 +239,12 @@ describe('<FinancialDetails />', () => {
 
         expect(screen.queryByText('Unemployed')).not.toBeInTheDocument();
 
-        fireEvent.change(occuppation_select as HTMLElement, { target: { value: 'Students' } });
+        userEvent.type(occuppation_select as HTMLElement, 'Students');
 
         const next_btn = screen.getByRole('button', { name: 'Next' });
         expect(next_btn).toBeEnabled();
 
-        fireEvent.click(next_btn);
+        userEvent.click(next_btn);
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalled();
         });
@@ -265,12 +266,12 @@ describe('<FinancialDetails />', () => {
 
         expect(screen.getByText('Unemployed')).toBeInTheDocument();
 
-        fireEvent.change(occuppation_select as HTMLElement, { target: { value: 'Unemployed' } });
+        userEvent.type(occuppation_select as HTMLElement, 'Unemployed');
 
         const next_btn = screen.getByRole('button', { name: 'Next' });
         expect(next_btn).toBeEnabled();
 
-        fireEvent.click(next_btn);
+        userEvent.click(next_btn);
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalled();
         });

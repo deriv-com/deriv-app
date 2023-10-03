@@ -26,22 +26,15 @@ export default class JournalStore {
             filterMessage: action.bound,
             clear: action.bound,
             welcomeBackUser: action.bound,
+            welcomeUser: action.bound,
             registerReactions: action.bound,
+            restoreStoredJournals: action.bound,
         });
 
         this.root_store = root_store;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
-
-        // Add a "Welcome back!" message when messages were restored.
-        when(
-            () => this.unfiltered_messages,
-            () => {
-                if (this.unfiltered_messages.length > 0) {
-                    this.welcomeBackUser();
-                }
-            }
-        );
+        this.restoreStoredJournals();
     }
 
     JOURNAL_CACHE = 'journal_cache';
@@ -53,9 +46,14 @@ export default class JournalStore {
         { id: message_types.NOTIFY, label: localize('Notifications') },
         { id: message_types.SUCCESS, label: localize('System') },
     ];
+    journal_filters = [];
+    unfiltered_messages = [];
 
-    journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
-    unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, this.core?.client.loginid, []);
+    restoreStoredJournals() {
+        const { loginid } = this.core?.client;
+        this.journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
+        this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
+    }
 
     getServerTime() {
         return this.core?.common.server_time.get();
@@ -101,6 +99,16 @@ export default class JournalStore {
     }
 
     pushMessage(message, message_type, className, extra = {}) {
+        const { client } = this.core;
+        const { loginid, account_list } = client;
+
+        if (loginid) {
+            const current_account = account_list?.find(account => account?.loginid === loginid);
+            extra.current_currency = current_account?.is_virtual ? 'Demo' : current_account?.title;
+        } else if (message === log_types.WELCOME) {
+            return;
+        }
+
         const date = formatDate(this.getServerTime());
         const time = formatDate(this.getServerTime(), 'HH:mm:ss [GMT]');
         const unique_id = Blockly.utils.genUid();
@@ -143,6 +151,10 @@ export default class JournalStore {
         this.pushMessage(log_types.WELCOME_BACK, message_types.SUCCESS, 'journal__text');
     }
 
+    welcomeUser() {
+        this.pushMessage(log_types.WELCOME, message_types.SUCCESS, 'journal__text');
+    }
+
     registerReactions() {
         const { client } = this.core;
 
@@ -151,29 +163,25 @@ export default class JournalStore {
             () => this.unfiltered_messages,
             unfiltered_messages => {
                 const stored_journals = getStoredItemsByKey(this.JOURNAL_CACHE, {});
+                stored_journals[client.loginid] = unfiltered_messages.slice(0, 5000);
 
-                stored_journals[client.loginid] = unfiltered_messages.slice(0, 5000).filter(unfiltered_message => {
-                    // Filter out "Welcome back!" message. This can be extended.
-                    const is_welcome_back =
-                        unfiltered_message.message_type === message_types.SUCCESS &&
-                        unfiltered_message.message === log_types.WELCOME_BACK;
-
-                    return !is_welcome_back;
-                });
                 setStoredItemsByKey(this.JOURNAL_CACHE, stored_journals);
             }
         );
 
         // Attempt to load cached journal messages on client loginid change.
         const disposeJournalMessageListener = reaction(
-            () => client.loginid,
-            () => {
-                this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, client.loginid, []);
-
-                if (this.unfiltered_messages.length > 0) {
+            () => client?.loginid,
+            async loginid => {
+                await when(() => client.account_list?.find(account => account.loginid === loginid)?.title ?? false);
+                this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
+                if (this.unfiltered_messages.length === 0) {
+                    this.welcomeUser();
+                } else if (this.unfiltered_messages.length > 0) {
                     this.welcomeBackUser();
                 }
-            }
+            },
+            { fireImmediately: true } // For initial welcome message
         );
 
         return () => {

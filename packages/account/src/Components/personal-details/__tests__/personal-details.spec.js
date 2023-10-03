@@ -748,4 +748,48 @@ describe('<PersonalDetails/>', () => {
         userEvent.type(phone, '+49123456789012');
         expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
     });
+
+    it('should not display confirmation checkbox if opt-out of IDV', async () => {
+        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        const new_props = {
+            ...props,
+            value: {
+                first_name: '',
+                last_name: '',
+                date_of_birth: '',
+                phone: '+93',
+                account_opening_reason: '',
+                place_of_birth: '',
+                document_type: 'none',
+            },
+        };
+
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+        const date_of_birth = screen.getByTestId('date_of_birth');
+        const phone = screen.getByTestId('phone');
+
+        userEvent.type(first_name, 'test firstname');
+        userEvent.type(last_name, 'test lastname');
+        userEvent.type(date_of_birth, '2000-12-12');
+        userEvent.type(phone, '+49123456789012');
+
+        const previous_btn = screen.getByRole('button', { name: /previous/i });
+        const next_btn = screen.getByRole('button', { name: /next/i });
+
+        const confirmation_checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(confirmation_checkbox).not.toBeInTheDocument();
+
+        expect(previous_btn).toBeEnabled();
+        expect(next_btn).toBeEnabled();
+        userEvent.click(next_btn);
+
+        await waitFor(() => {
+            expect(new_props.onSubmit).toBeCalled();
+        });
+    });
 });

@@ -106,45 +106,29 @@ const has_crypto = false;
 <a id="import-rules-require"></a>
 **[Require:](#import-rules-require)** Prefer `import` in import statements.
 
-<a id="import-rules-react"></a>
-**[Require:](#import-rules-react)** `react` package and all the other external packages are comming first.
-
-<a id="import-rules-deriv"></a>
-**[Require:](#import-rules-deriv)** Packages from `@deriv` come next.
-
-<a id="import-rules-absolute"></a>
-**[Require:](#import-rules-absolute)** Absolute imports like aliases `Components/...` after that.
-
-<a id="import-rules-parent"></a>
-**[Require:](#import-rules-parent)** Parent imports like `../`.
-
-<a id="import-rules-folder"></a>
-**[Require:](#import-rules-folder)** imports from same folders come next `./`.
-
-<a id="import-rules-style"></a>
-**[Require:](#import-rules-style)** Style imports at the end `../`.
-
 <a id="import-rules-alphabetical-ordering"></a>
-**[Alphabetical ordering:](#import-rules-alphabetical-ordering)** It will be sorted alphabetically in each category:
+**[Alphabetical ordering:](#import-rules-alphabetical-ordering)** The order is important; it should be sorted alphabetically according to path:
+
+-   `moment` comes first as it's not a relative path.
+-   `s` is before `u` so `./storage` comes before `./utility`.
+-   Both `applyToAllElements` and `createElement` are from the same file, but `a` is before `c`
+-   Unassigned `require` goes to the end
+
+Imports are grouped by: 3rd-party first, then local absolute imports, then local relative
+
+<a id="import-rules-combining-require"></a>
+**[Combining require:](#import-rules-combining-require)** When there are many functions being imported from the same file, consider combining it into one import line.
 
 ```JavaScript
-    import React from 'react';
-    import classNames from 'classnames';
+import React from 'react';
 
-    import { ButtonToggle, DesktopWrapper, Div100vhContainer, MobileWrapper, Text } from '@deriv/components';
-    import { ContentFlag, isDesktop, routes } from '@deriv/shared';
-    import { observer, useStore } from '@deriv/stores';
-    import { Localize, localize } from '@deriv/translations';
+...
 
-    import CFDsListing from 'Components/cfds-listing';
-    import MainTitleBar from 'Components/main-title-bar';
-    import ModalManager from 'Components/modals/modal-manager';
-    import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
-    import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
-
-    import TourGuide from '../tour-guide/tour-guide';
-
-    import './traders-hub.scss';
+class ABC extends React.Component { ... }
+...
+React.useCallback(...);
+React.useEffect(...);
+...
 ```
 
 ## JSX Rules

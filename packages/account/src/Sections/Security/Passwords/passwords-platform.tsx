@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRequest } from '@deriv/api';
+import { useMutation } from '@deriv/api';
 import { CFD_PLATFORMS, getPlatformSettings } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -21,7 +21,7 @@ type TPasswordsPlatformProps = {
  */
 const PasswordsPlatform = observer(
     ({ has_dxtrade_accounts = false, has_mt5_accounts = false }: TPasswordsPlatformProps) => {
-        const { mutate } = useRequest('verify_email');
+        const { mutate } = useMutation('verify_email');
 
         const {
             client: { email },

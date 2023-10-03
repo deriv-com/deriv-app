@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from '../icon/icon';
 import { TIconProps } from '../types';
+import { VANILLALONG, TURBOS } from '@deriv/shared';
 
 type TIconTradeTypes = Omit<TIconProps, 'icon'> & {
     type: string;
@@ -76,15 +77,15 @@ const IconTradeTypes = ({ type, className, ...props }: TIconTradeTypes) => {
             return <Icon icon='IcTradetypeTickhigh' className={className} color='brand' {...props} />;
         case 'ticklow':
             return <Icon icon='IcTradetypeTicklow' className={className} color='brand' {...props} />;
-        case 'turboslong':
+        case TURBOS.LONG:
             return <Icon icon='IcTradetypeTurboslong' className={className} color='brand' {...props} />;
-        case 'turbosshort':
+        case TURBOS.SHORT:
             return <Icon icon='IcTradetypeTurbosshort' className={className} color='brand' {...props} />;
         case 'upordown':
             return <Icon icon='IcTradetypeUpordown' className={className} color='brand' {...props} />;
-        case 'vanillalongcall':
+        case VANILLALONG.CALL:
             return <Icon icon='IcTradetypeVanillaLongCall' className={className} color='brand' {...props} />;
-        case 'vanillalongput':
+        case VANILLALONG.PUT:
             return <Icon icon='IcTradetypeVanillaLongPut' className={className} color='brand' {...props} />;
         default:
             return <Icon icon='IcUnknown' className={className} {...props} />;

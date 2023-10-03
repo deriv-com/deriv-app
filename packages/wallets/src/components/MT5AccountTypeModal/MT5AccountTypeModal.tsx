@@ -1,32 +1,32 @@
 import React, { useState } from 'react';
 import { MT5AccountType } from '../ExternalTradingPlatforms/MT5AccountType';
-import { PrimaryActionButton } from '../PrimaryActionButton';
-import { WalletModal } from '../WalletModal';
-import { WideWrapper } from '../WideWrapper';
+import { JurisdictionModal } from '../JurisdictionModal';
+import { useModal } from '../ModalProvider';
+import { ModalStepWrapper } from '../ModalStepWrapper';
+import './MT5AccountTypeModal.scss';
 
 type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 
 const MT5AccountTypeModal = () => {
     const [selectedMarketType, setSelectedMarketType] = useState<TMarketTypes>(undefined);
+    const { show } = useModal();
 
     return (
-        <WalletModal>
-            <WideWrapper
-                renderFooter={() => (
-                    <PrimaryActionButton
-                        disabled={!selectedMarketType}
-                        onClick={() => {
-                            //Jurisdiction modal here
-                        }}
-                    >
-                        <p className='wallets-get-more-mt5-accounts-text'>Next</p>
-                    </PrimaryActionButton>
-                )}
-                renderHeader={() => <div>Select Deriv MT5’s account type</div>}
-            >
-                <MT5AccountType onMarketTypeSelect={setSelectedMarketType} selectedMarketType={selectedMarketType} />
-            </WideWrapper>
-        </WalletModal>
+        <ModalStepWrapper
+            renderFooter={() => (
+                <button
+                    className={`wallets-mt5-account-type-modal-next-button${!selectedMarketType ? '-disabled' : ''}`}
+                    onClick={() => {
+                        show(<JurisdictionModal />);
+                    }}
+                >
+                    <p className='wallets-mt5-account-type-modal-text'>Next</p>
+                </button>
+            )}
+            title='Select Deriv MT5’s account type'
+        >
+            <MT5AccountType onMarketTypeSelect={setSelectedMarketType} selectedMarketType={selectedMarketType} />
+        </ModalStepWrapper>
     );
 };
 

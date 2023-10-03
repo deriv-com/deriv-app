@@ -5,9 +5,10 @@ import { VANILLALONG } from '@deriv/shared';
 
 const ContractTypeGlossary = ({ category, is_vanilla_fx }: { category: string; is_vanilla_fx?: boolean }) => {
     let content;
-    if (category === 'vanillalongcall' && is_vanilla_fx) category = VANILLALONG.FX;
+    let trade_category = category;
+    if (trade_category === 'vanillalongcall' && is_vanilla_fx) trade_category = VANILLALONG.FX;
     if (category) {
-        switch (category) {
+        switch (trade_category) {
             case 'accumulator':
                 content = [
                     { type: 'heading', text: localize('Growth rate') },

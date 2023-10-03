@@ -39,6 +39,7 @@
         display: flex;
         gap: 16px;
         justify-content: center;
+        width: 100%;
 
         @include mobile {
             flex-direction: column;

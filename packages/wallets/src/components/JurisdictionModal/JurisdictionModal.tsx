@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useModal } from '../ModalProvider';
 import { ModalStepWrapper } from '../ModalStepWrapper';
 import { MT5PasswordModal } from '../MT5PasswordModal';
 import JurisdictionCard from './JurisdictionCard';
 import './JurisdictionModal.scss';
+import { useAccountTypes, useAvailableMT5Accounts } from '@deriv/api';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
     const { modalState, show } = useModal();
+    const { data, isLoading } = useAvailableMT5Accounts();
 
-    const jurisdictions = ['St. Vincent & Grenadines', 'British Virgin Islands', 'Vanuatu'];
+    const jurisdictions = useMemo(
+        () => data?.filter(account => account.market_type === modalState?.marketType).map(account => account.shortcode),
+        [isLoading]
+    );
+
+    if (isLoading) return <h1>Loading...</h1>;
 
     return (
         <ModalStepWrapper

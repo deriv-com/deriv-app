@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
 import { isEmptyObject, addComma, getDurationMinMaxValues, getUnitMap } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -197,7 +198,11 @@ const Numbers = observer(
 
         return (
             <div className='trade-params__amount-keypad'>
-                <div className='text-container'>
+                <div
+                    className={classNames('text-container', {
+                        'text-container--vanilla': is_vanilla,
+                    })}
+                >
                     {is_vanilla && <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />}
                     {show_expiry && <ExpiryText fixed_date={fixed_date} />}
                 </div>

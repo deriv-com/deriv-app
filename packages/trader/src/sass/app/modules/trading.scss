@@ -976,7 +976,7 @@
     }
 }
 
-.text-container:has(.range-text-container) {
+.text-container--vanilla {
     min-height: 5rem;
     padding-top: 0.5rem;
     display: flex;

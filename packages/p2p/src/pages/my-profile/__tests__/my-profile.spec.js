@@ -28,8 +28,8 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
-jest.mock('Components/verification/verification.jsx', () => jest.fn(() => <div>Verification</div>));
-jest.mock('../my-profile-content', () => jest.fn(() => <div>MyProfileContent</div>));
+jest.mock('Components/verification', () => jest.fn(() => <div>Verification</div>));
+jest.mock('../my-profile-content.jsx', () => jest.fn(() => <div>MyProfileContent</div>));
 jest.mock('../my-profile-stats/my-profile-details-container', () =>
     jest.fn(() => <div>MyProfileDetailsContainer</div>)
 );

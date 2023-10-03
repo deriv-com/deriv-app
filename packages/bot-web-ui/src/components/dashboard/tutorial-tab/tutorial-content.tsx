@@ -1,5 +1,6 @@
-import { getImageLocation } from '../../../public-path';
 import { localize } from '@deriv/translations';
+
+import { getImageLocation } from '../../../public-path';
 
 export type TDescription = Pick<TContent, 'type' | 'content' | 'src' | 'imageclass'>;
 
@@ -164,7 +165,7 @@ export const faq_content: TFaqContent[] = [
             },
             {
                 type: 'text',
-                content: localize('3. Set your trade parameters and hit <strong>Create</strong>.'),
+                content: localize('3. Set your trade parameters and hit <strong>Run</strong>.'),
             },
             {
                 type: 'text',

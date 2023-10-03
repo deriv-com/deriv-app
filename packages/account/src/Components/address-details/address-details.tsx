@@ -1,8 +1,9 @@
-import { Formik, Field, FormikProps, FormikValues } from 'formik';
 import React from 'react';
+import classNames from 'classnames';
+import { Field, Formik, FormikProps, FormikValues } from 'formik';
+
 import { StatesList } from '@deriv/api-types';
 import {
-    Modal,
     Autocomplete,
     AutoHeightWrapper,
     DesktopWrapper,
@@ -11,14 +12,15 @@ import {
     Input,
     Loading,
     MobileWrapper,
-    ThemedScrollbars,
+    Modal,
     SelectNative,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
+import { getLocation, isDesktop, isMobile, makeCancellablePromise, PlatformContext } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
+
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import classNames from 'classnames';
 
 type TAddressDetails = {
     disabled_items: string[];
@@ -102,16 +104,24 @@ const AddressDetails = ({
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
     React.useEffect(() => {
-        const { cancel, promise } = makeCancellablePromise(props.fetchStatesList());
-        promise.then(() => {
+        let cancelFn: (() => void) | undefined;
+        if (states_list.length) {
             setHasFetchedStatesList(true);
-            if (props.value.address_state) {
-                setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
-            }
-        });
+        } else {
+            const { cancel, promise } = makeCancellablePromise(props.fetchStatesList());
+            cancelFn = cancel;
+            promise.then(() => {
+                setHasFetchedStatesList(true);
+                if (props.value?.address_state) {
+                    setAddressStateToDisplay(getLocation(states_list, props.value?.address_state, 'text'));
+                }
+            });
+        }
         return () => {
             setHasFetchedStatesList(false);
-            cancel();
+            if (cancelFn) {
+                cancelFn();
+            }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

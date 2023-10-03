@@ -2,10 +2,10 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import { mockStore, StoreProvider } from '@deriv/stores';
-import WalletHeader from '..';
-import { TWalletAccount } from 'Types';
 import { getStatusBadgeConfig } from '@deriv/account';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { TWalletAccount } from 'Types';
+import WalletHeader from '..';
 
 const mockedRootStore = mockStore({});
 
@@ -283,13 +283,13 @@ describe('<WalletHeader />', () => {
                 </StoreProvider>
             );
 
-            const btn1 = screen.getByRole('button', { name: /Transfer/i });
-            const btn2 = screen.getByRole('button', { name: /Transactions/i });
-            const btn3 = screen.getByRole('button', { name: /Reset balance/i });
+            const transfer_btn = screen.getByRole('button', { name: /Transfer/i });
+            const transactions_btn = screen.getByRole('button', { name: /Transactions/i });
+            const reset_btn = screen.getByRole('button', { name: /Reset balance/i });
 
-            expect(btn1).toBeInTheDocument();
-            expect(btn2).toBeInTheDocument();
-            expect(btn3).toBeInTheDocument();
+            expect(transfer_btn).toBeInTheDocument();
+            expect(transactions_btn).toBeInTheDocument();
+            expect(reset_btn).toBeInTheDocument();
         });
 
         it('Check buttons for real', () => {
@@ -312,15 +312,15 @@ describe('<WalletHeader />', () => {
                 </StoreProvider>
             );
 
-            const btn1 = screen.getByRole('button', { name: /Deposit/i });
-            const btn2 = screen.getByRole('button', { name: /Withdraw/i });
-            const btn3 = screen.getByRole('button', { name: /Transfer/i });
-            const btn4 = screen.getByRole('button', { name: /Transactions/i });
+            const deposit_btn = screen.getByRole('button', { name: /Deposit/i });
+            const withdraw_btn = screen.getByRole('button', { name: /Withdraw/i });
+            const transfer_btn = screen.getByRole('button', { name: /Transfer/i });
+            const transactions_btn = screen.getByRole('button', { name: /Transactions/i });
 
-            expect(btn1).toBeInTheDocument();
-            expect(btn2).toBeInTheDocument();
-            expect(btn3).toBeInTheDocument();
-            expect(btn4).toBeInTheDocument();
+            expect(deposit_btn).toBeInTheDocument();
+            expect(withdraw_btn).toBeInTheDocument();
+            expect(transfer_btn).toBeInTheDocument();
+            expect(transactions_btn).toBeInTheDocument();
         });
     });
 });

@@ -1,8 +1,9 @@
 import React from 'react';
-import classNames from 'classnames';
-import { observer, useStore } from '@deriv/stores';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
+
 import { Icon } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { getAllowedLanguages } from '@deriv/translations';
 
 export type TLanguageLink = {
@@ -54,9 +55,9 @@ const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, tog
                     id={`dt_settings_${lang}_button`}
                     key={lang}
                     onClick={async () => {
+                        toggleModal?.();
                         await changeSelectedLanguage(lang);
                         await i18n.changeLanguage?.(lang);
-                        toggleModal?.();
                     }}
                     className={classNames('settings-language__language-link', {
                         'settings-language__language-link--active': is_active,

@@ -82,8 +82,10 @@ describe('<WalletTransferBlock />', () => {
             </StoreProvider>
         );
 
-        const loginid = wallet_account?.linked_to?.[0]?.loginid;
-        const loginid_title = screen.getByText(loginid!);
+        const loginid = wallet_account.linked_to?.[0].loginid || '';
+
+        const loginid_title = screen.getByText(String(loginid));
+
         expect(loginid_title).toBeInTheDocument();
     });
 });

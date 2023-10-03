@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
+
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
+
 import useAuthorize from './useAuthorize';
 import useCurrencyConfig from './useCurrencyConfig';
 
@@ -62,13 +64,15 @@ const currency_to_icon_mapper: Record<string, Record<'light' | 'dark', string>> 
 /** A custom hook to get the list of wallets for the current user. */
 /** @deprecated Use `useWalletAccountsList` instead. */
 const useWalletsList = () => {
-    const { client, ui } = useStore();
-    const { loginid } = client;
+    const { ui } = useStore();
     const { is_dark_mode_on } = ui;
     const { getConfig } = useCurrencyConfig();
 
-    const { data: authorize_data, ...rest } = useAuthorize();
-    const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
+    const { data: authorize_data, isSuccess, ...rest } = useAuthorize();
+    const { data: balance_data } = useFetch('balance', {
+        payload: { account: 'all' },
+        options: { enabled: isSuccess },
+    });
 
     // Filter out non-wallet accounts.
     const wallets = useMemo(
@@ -99,7 +103,7 @@ const useWalletsList = () => {
             return {
                 ...wallet,
                 /** Indicating whether the wallet is the currently selected wallet. */
-                is_selected: wallet.loginid === loginid,
+                is_selected: wallet.loginid === authorize_data?.loginid,
                 /** Indicating whether the wallet is a virtual-money wallet. */
                 is_demo: wallet.is_virtual === 1,
                 /** Returns the wallet's currency type. ex: `Demo`, `USD`, etc. */
@@ -120,7 +124,7 @@ const useWalletsList = () => {
                 is_fiat_currency: wallet.is_virtual !== 1 && fiat_currencies.includes(wallet.currency || 'USD'),
             } as const;
         });
-    }, [getConfig, is_dark_mode_on, loginid, wallets_with_balance]);
+    }, [getConfig, is_dark_mode_on, authorize_data?.loginid, wallets_with_balance]);
 
     // Sort wallets alphabetically by fiat, crypto, then virtual.
     const sorted_wallets = useMemo(() => {

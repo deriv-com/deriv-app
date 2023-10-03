@@ -3,25 +3,18 @@ import React from 'react';
 import { Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { isVanillaContract } from '@deriv/shared';
-import { useTraderStore } from 'Stores/useTraderStores';
 
 type TMinMaxStakeInfo = {
     className?: string;
+    min_stake: number;
+    max_stake: number;
+    currency: string;
 };
-type TStakeBoundary = { [key: string]: { min_stake: number; max_stake: number } };
 
-const MinMaxStakeInfo = observer(({ className }: TMinMaxStakeInfo) => {
-    const { contract_type, currency, stake_boundary, vanilla_trade_type } = useTraderStore();
+const MinMaxStakeInfo = observer(({ className, currency, max_stake, min_stake }: TMinMaxStakeInfo) => {
     const {
         ui: { is_mobile },
     } = useStore();
-    // remove assertion and local TStakeBoundary type after TS migration for trade package is complete
-    const { min_stake, max_stake } =
-        (isVanillaContract(contract_type)
-            ? (stake_boundary as TStakeBoundary)[vanilla_trade_type]
-            : (stake_boundary as TStakeBoundary)[contract_type.toUpperCase()]) || {};
-
     return (
         <section className={classNames('trade-container__stake-field', className)}>
             {!isNaN(min_stake) &&

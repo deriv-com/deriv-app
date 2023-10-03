@@ -1,7 +1,7 @@
 import React from 'react';
 import { InputWithCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -37,6 +37,7 @@ const StopLoss = observer(props => {
             <InputWithCheckbox
                 addToast={addToast}
                 removeToast={removeToast}
+                classNameBubble='dc-popover__trade-params'
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 className={isDesktop() ? 'trade-container__amount trade-container__amount--multipliers' : null}

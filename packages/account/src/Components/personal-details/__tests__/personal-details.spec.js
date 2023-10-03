@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
+import userEvent from '@testing-library/user-event';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -40,9 +42,6 @@ const mock_errors = {
     tax_identification_number: 'Tax Identification Number is required.',
     tax_identification_confirm: 'Please confirm your tax information.',
 };
-
-const fake_alert_messaget =
-    /we need this for verification\. if the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw\./i;
 
 const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
@@ -238,7 +237,12 @@ describe('<PersonalDetails/>', () => {
     afterAll(() => ReactDOM.createPortal.mockClear());
 
     const renderwithRouter = component => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
+        const mock_store = mockStore({});
+        render(
+            <StoreProvider store={mock_store}>
+                <BrowserRouter>{component}</BrowserRouter>
+            </StoreProvider>
+        );
     };
 
     it('should autopopulate tax_residence for MF clients', () => {
@@ -262,26 +266,6 @@ describe('<PersonalDetails/>', () => {
     it('should render PersonalDetails component', () => {
         renderwithRouter(<PersonalDetails {...props} />);
         expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
-    });
-
-    it('should show fake-alert message when is_appstore is true', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
-                <PersonalDetails {...props} />
-            </PlatformContext.Provider>
-        );
-
-        expect(screen.getByText(fake_alert_messaget)).toBeInTheDocument();
-    });
-
-    it('should not show fake_alert_message when is_appstore is false ', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} />
-            </PlatformContext.Provider>
-        );
-
-        expect(screen.queryByText(fake_alert_messaget)).not.toBeInTheDocument();
     });
 
     it('should show proper salutation message when is_virtual is true', () => {
@@ -343,15 +327,10 @@ describe('<PersonalDetails/>', () => {
         expect(mrs_radio_btn.checked).toEqual(false);
     });
 
-    it('should display the correct field details when is_appstore is true ', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
-                <PersonalDetails {...props} />
-            </PlatformContext.Provider>
-        );
+    it('should display the correct field details ', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
 
         expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/family name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
@@ -359,12 +338,8 @@ describe('<PersonalDetails/>', () => {
         runCommonFormfieldsTests(props.is_svg);
     });
 
-    it('should display the correct field details when is_appstore is false and is_svg is true ', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} />
-            </PlatformContext.Provider>
-        );
+    it('should display the correct field details when is_svg is true ', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
 
         expect(screen.getByRole('heading', { name: /title and name/i })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
@@ -377,12 +352,8 @@ describe('<PersonalDetails/>', () => {
         runCommonFormfieldsTests(props.is_svg);
     });
 
-    it('should display the correct field details when is_appstore is false and is_svg is false ', () => {
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} is_svg={false} />
-            </PlatformContext.Provider>
-        );
+    it('should display the correct field details when is_svg is false ', () => {
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
 
         expect(screen.getByRole('heading', { name: 'Title and name' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
@@ -390,24 +361,18 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText('First name')).toBeInTheDocument();
         expect(screen.getByText('Last name')).toBeInTheDocument();
         expect(screen.getByText('Date of birth')).toBeInTheDocument();
+        expect(screen.getByText('Phone number*')).toBeInTheDocument();
+        expect(screen.getByLabelText('Phone number*')).toBeInTheDocument();
 
         runCommonFormfieldsTests(false);
     });
 
     it('should not enable fields which are disabled and empty', () => {
         renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails
-                    {...props}
-                    disabled_items={[
-                        'salutation',
-                        'first_name',
-                        'last_name',
-                        'date_of_birth',
-                        'account_opening_reason',
-                    ]}
-                />
-            </PlatformContext.Provider>
+            <PersonalDetails
+                {...props}
+                disabled_items={['salutation', 'first_name', 'last_name', 'date_of_birth', 'account_opening_reason']}
+            />
         );
         expect(screen.getByRole('radio', { name: /mr/i })).not.toBeDisabled();
         expect(screen.getByRole('radio', { name: /ms/i })).not.toBeDisabled();
@@ -426,12 +391,7 @@ describe('<PersonalDetails/>', () => {
                 citizen: 'france',
             },
         };
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                (<PersonalDetails {...new_props} is_fully_authenticated={true} />
-                );
-            </PlatformContext.Provider>
-        );
+        renderwithRouter(<PersonalDetails {...new_props} is_fully_authenticated={true} />);
 
         expect(screen.getByTestId('citizenship')).toBeDisabled();
     });
@@ -439,11 +399,7 @@ describe('<PersonalDetails/>', () => {
     it('should display proper data in mobile mode', () => {
         isMobile.mockReturnValue(true);
         isDesktop.mockReturnValue(false);
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} is_svg={false} />
-            </PlatformContext.Provider>
-        );
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
 
         expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
@@ -470,11 +426,7 @@ describe('<PersonalDetails/>', () => {
         isMobile.mockReturnValue(true);
         isDesktop.mockReturnValue(false);
 
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} is_svg={false} />
-            </PlatformContext.Provider>
-        );
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
         const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
 
         expect(place_of_birth_mobile).toBeInTheDocument();
@@ -548,11 +500,7 @@ describe('<PersonalDetails/>', () => {
             },
         };
         splitValidationResultTypes.mockReturnValue(newvalidate);
-        renderwithRouter(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
-                <PersonalDetails {...props} />
-            </PlatformContext.Provider>
-        );
+        renderwithRouter(<PersonalDetails {...props} />);
         const tax_identification_number = screen.getByTestId('tax_identification_number');
 
         fireEvent.blur(tax_identification_number);
@@ -587,6 +535,12 @@ describe('<PersonalDetails/>', () => {
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         const next_btn = screen.getByRole('button', { name: /next/i });
+
+        const checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(checkbox).not.toBeInTheDocument();
+
         expect(previous_btn).toBeEnabled();
         expect(next_btn).toBeEnabled();
         fireEvent.click(next_btn);
@@ -631,6 +585,11 @@ describe('<PersonalDetails/>', () => {
         const tax_identification_number = screen.getByTestId('tax_identification_number');
         const tax_identification_confirm = screen.getByTestId('tax_identification_confirm');
         const account_opening_reason_mobile = screen.getByTestId('account_opening_reason_mobile');
+
+        const checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(checkbox).not.toBeInTheDocument();
 
         fireEvent.click(mr_radio_btn);
         fireEvent.change(first_name, { target: { value: 'test firstname' } });
@@ -759,5 +718,34 @@ describe('<PersonalDetails/>', () => {
         };
         renderwithRouter(<PersonalDetails {...new_props} />);
         expect(screen.getByTestId('tax_residence')).toBeDisabled();
+    });
+
+    it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
+        const new_props = {
+            ...props,
+            is_mf: false,
+            is_svg: true,
+            value: {
+                first_name: '',
+                last_name: '',
+                date_of_birth: '',
+                place_of_birth: '',
+                phone: '+34',
+                tax_residence: '',
+                tax_identification_number: '',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+        const date_of_birth = screen.getByTestId('date_of_birth');
+        const phone = screen.getByTestId('phone');
+
+        userEvent.type(first_name, 'test firstname');
+        userEvent.type(last_name, 'test lastname');
+        userEvent.type(date_of_birth, '2000-12-12');
+        userEvent.type(phone, '+49123456789012');
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
     });
 });

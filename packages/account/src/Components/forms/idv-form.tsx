@@ -4,8 +4,13 @@ import { Field, FieldProps } from 'formik';
 import { localize } from '@deriv/translations';
 import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
-import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText, getExampleFormat } from 'Helpers/utils';
-import { TDocumentList, TIDVForm } from 'Types';
+import {
+    getDocumentData,
+    preventEmptyClipboardPaste,
+    generatePlaceholderText,
+    getExampleFormat,
+} from '../../Helpers/utils';
+import { TDocument, TIDVForm } from 'Types';
 
 const IDVForm = ({
     errors,
@@ -19,7 +24,7 @@ const IDVForm = ({
     hide_hint,
     can_skip_document_verification = false,
 }: TIDVForm) => {
-    const [document_list, setDocumentList] = React.useState<TDocumentList[]>([]);
+    const [document_list, setDocumentList] = React.useState<TDocument[]>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
@@ -45,19 +50,18 @@ const IDVForm = ({
 
             const new_document_list = filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
-                const { new_display_name, example_format, sample_image } = getDocumentData(
-                    selected_country.value ?? '',
-                    key
-                );
+                const { new_display_name, example_format, sample_image, additional_document_example_format } =
+                    getDocumentData(selected_country.value ?? '', key);
                 const needs_additional_document = !!document_data[key].additional;
 
                 if (needs_additional_document) {
                     return {
                         id: key,
-                        text: new_display_name || display_name,
+                        text: display_name ?? new_display_name, // Display document name from API if available, else use the one from the helper function
                         additional: {
                             display_name: document_data[key].additional?.display_name,
                             format: document_data[key].additional?.format,
+                            example_format: additional_document_example_format,
                         },
                         value: format,
                         sample_image,
@@ -66,7 +70,7 @@ const IDVForm = ({
                 }
                 return {
                     id: key,
-                    text: new_display_name || display_name,
+                    text: display_name ?? new_display_name, // Display document name from API if available, else use the one from the helper function
                     value: format,
                     sample_image,
                     example_format,
@@ -98,7 +102,7 @@ const IDVForm = ({
         setFieldValue(document_name, current_input, true);
     };
 
-    const bindDocumentData = (item: TDocumentList) => {
+    const bindDocumentData = (item: TDocument) => {
         setFieldValue('document_type', item, true);
         setSelectedDoc(item?.id);
         if (item?.id === IDV_NOT_APPLICABLE_OPTION.id) {
@@ -149,7 +153,7 @@ const IDVForm = ({
                                                                     }
                                                                 }}
                                                                 onChange={handleChange}
-                                                                onItemSelection={(item: TDocumentList) => {
+                                                                onItemSelection={(item: TDocument) => {
                                                                     if (
                                                                         item.text === 'No results found' ||
                                                                         !item.text
@@ -189,76 +193,75 @@ const IDVForm = ({
                                             )}
                                         </Field>
                                     </fieldset>
-                                    <fieldset
-                                        className={classNames({
-                                            'proof-of-identity__fieldset-input': !hide_hint,
-                                        })}
-                                    >
-                                        <Field name='document_number'>
-                                            {({ field }: FieldProps) => (
-                                                <React.Fragment>
-                                                    <Input
-                                                        {...field}
-                                                        name='document_number'
-                                                        bottom_label={
-                                                            values.document_type &&
-                                                            getExampleFormat(values.document_type.example_format ?? '')
-                                                        }
-                                                        disabled={
-                                                            !values.document_type.id ||
-                                                            values.document_type.id === IDV_NOT_APPLICABLE_OPTION.id
-                                                        }
-                                                        error={
-                                                            (touched.document_number && errors.document_number) ||
-                                                            errors.error_message
-                                                        }
-                                                        autoComplete='off'
-                                                        placeholder={generatePlaceholderText(selected_doc)}
-                                                        value={values.document_number}
-                                                        onPaste={preventEmptyClipboardPaste}
-                                                        onBlur={handleBlur}
-                                                        onChange={handleChange}
-                                                        onKeyUp={(e: { target: HTMLInputElement }) =>
-                                                            onKeyUp(e, 'document_number')
-                                                        }
-                                                        required
-                                                        label={generatePlaceholderText(selected_doc)}
-                                                    />
-                                                    {values.document_type.additional?.display_name && (
+                                    {values.document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && (
+                                        <fieldset
+                                            className={classNames({
+                                                'proof-of-identity__fieldset-input': !hide_hint,
+                                            })}
+                                        >
+                                            <Field name='document_number'>
+                                                {({ field }: FieldProps) => (
+                                                    <React.Fragment>
                                                         <Input
                                                             {...field}
-                                                            name='document_additional'
+                                                            name='document_number'
                                                             bottom_label={
-                                                                values.document_type.additional &&
+                                                                values.document_type &&
                                                                 getExampleFormat(
-                                                                    values.document_type.additional?.example_format
+                                                                    values.document_type.example_format ?? ''
                                                                 )
                                                             }
-                                                            disabled={
-                                                                !values.document_type.id ||
-                                                                values.document_type.id === IDV_NOT_APPLICABLE_OPTION.id
-                                                            }
+                                                            disabled={!values.document_type.id}
                                                             error={
-                                                                (touched.document_additional &&
-                                                                    errors.document_additional) ||
+                                                                (touched.document_number && errors.document_number) ||
                                                                 errors.error_message
                                                             }
                                                             autoComplete='off'
-                                                            placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
-                                                            value={values.document_additional}
+                                                            placeholder={generatePlaceholderText(selected_doc)}
+                                                            value={values.document_number}
                                                             onPaste={preventEmptyClipboardPaste}
                                                             onBlur={handleBlur}
                                                             onChange={handleChange}
                                                             onKeyUp={(e: { target: HTMLInputElement }) =>
-                                                                onKeyUp(e, 'document_additional')
+                                                                onKeyUp(e, 'document_number')
                                                             }
+                                                            className='additional-field'
                                                             required
+                                                            label={generatePlaceholderText(selected_doc)}
                                                         />
-                                                    )}
-                                                </React.Fragment>
-                                            )}
-                                        </Field>
-                                    </fieldset>
+                                                        {values.document_type.additional?.display_name && (
+                                                            <Input
+                                                                {...field}
+                                                                name='document_additional'
+                                                                bottom_label={
+                                                                    values.document_type.additional &&
+                                                                    getExampleFormat(
+                                                                        values.document_type.additional?.example_format
+                                                                    )
+                                                                }
+                                                                disabled={!values.document_type.id}
+                                                                error={
+                                                                    (touched.document_additional &&
+                                                                        errors.document_additional) ||
+                                                                    errors.error_message
+                                                                }
+                                                                autoComplete='off'
+                                                                placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
+                                                                value={values.document_additional}
+                                                                onPaste={preventEmptyClipboardPaste}
+                                                                onBlur={handleBlur}
+                                                                onChange={handleChange}
+                                                                onKeyUp={(e: { target: HTMLInputElement }) =>
+                                                                    onKeyUp(e, 'document_additional')
+                                                                }
+                                                                required
+                                                            />
+                                                        )}
+                                                    </React.Fragment>
+                                                )}
+                                            </Field>
+                                        </fieldset>
+                                    )}
                                 </div>
                                 {document_image && (
                                     <div className='proof-of-identity__sample-container'>

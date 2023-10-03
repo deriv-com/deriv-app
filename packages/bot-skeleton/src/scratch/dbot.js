@@ -5,7 +5,7 @@ import DBotStore from './dbot-store';
 import { save_types } from '../constants';
 import { config } from '../constants/config';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
-import { observer as globalObserver } from '../utils/observer';
+import { observer as globalObserver, compareXml } from '../utils';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { api_base } from '../services/api/api-base';
@@ -123,7 +123,7 @@ class DBot {
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
-                    if (event.type === 'endDrag') validateErrorOnBlockDelete();
+                    if (event.type === 'endDrag' && !is_mobile) validateErrorOnBlockDelete();
                 });
 
                 Blockly.derivWorkspace = this.workspace;
@@ -173,8 +173,37 @@ class DBot {
         });
     }
 
+    /** Compare stored strategy xml with currently running xml */
+    isStrategyUpdated(current_xml_dom, recent_files) {
+        if (recent_files && recent_files.length) {
+            const stored_strategy = recent_files.filter(
+                strategy => strategy?.id === this.workspace?.current_strategy_id
+            )?.[0];
+            if (stored_strategy?.xml) {
+                const stored_strategy_xml = stored_strategy?.xml;
+                const current_xml = Blockly.Xml.domToText(current_xml_dom);
+                const is_same_strategy = compareXml(stored_strategy_xml, current_xml);
+                if (is_same_strategy) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /** Saves the current workspace to local storage
+     * and update saved status if strategy changes  */
     async saveRecentWorkspace() {
-        await saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
+        const current_xml_dom = this?.workspace ? Blockly?.Xml?.workspaceToDom(this.workspace) : null;
+        try {
+            const recent_files = await getSavedWorkspaces();
+            if (current_xml_dom && this.isStrategyUpdated(current_xml_dom, recent_files)) {
+                await saveWorkspaceToRecent(current_xml_dom, save_types.UNSAVED);
+            }
+        } catch (error) {
+            globalObserver.emit('Error', error);
+            await saveWorkspaceToRecent(current_xml_dom, save_types.UNSAVED);
+        }
     }
 
     /**
@@ -296,7 +325,7 @@ class DBot {
     async stopBot() {
         api_base.setIsRunning(false);
 
-        await this.interpreter.terminateSession();
+        await this.interpreter.stop();
         this.is_bot_running = false;
         this.interpreter = null;
         this.interpreter = Interpreter();

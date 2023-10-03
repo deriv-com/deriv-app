@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { InputField } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 
 const LabeledQuantityInputMobile = ({ input_label, ...props }) => (
     <div

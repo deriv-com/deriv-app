@@ -4,7 +4,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, DataList, Text, PositionsDrawerCard } from '@deriv/components';
-import { routes, useNewRowTransition } from '@deriv/shared';
+import { routes, useNewRowTransition, TURBOS, VANILLALONG, isTurbosContract, isVanillaContract } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { filterByContractType } from './helpers';
@@ -100,9 +100,17 @@ const PositionsDrawer = observer(({ ...props }) => {
         p =>
             p.contract_info &&
             symbol === p.contract_info.underlying &&
-            filterByContractType(p.contract_info, trade_contract_type)
+            (isTurbosContract(trade_contract_type) || isVanillaContract(trade_contract_type)
+                ? filterByContractType(
+                      p.contract_info,
+                      isTurbosContract(trade_contract_type) ? TURBOS.SHORT : VANILLALONG.CALL
+                  ) ||
+                  filterByContractType(
+                      p.contract_info,
+                      isTurbosContract(trade_contract_type) ? TURBOS.LONG : VANILLALONG.PUT
+                  )
+                : filterByContractType(p.contract_info, trade_contract_type))
     );
-
     const body_content = (
         <DataList
             data_source={positions}

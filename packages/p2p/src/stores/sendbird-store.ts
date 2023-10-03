@@ -12,7 +12,7 @@ import { P2PAdvertiserCreate, P2PAdvertiserInfo } from '@deriv/api-types';
 type TChatInfo = { app_id: string; user_id: string; token?: string };
 
 export default class SendbirdStore extends BaseStore {
-    active_chat_channel?: GroupChannel;
+    active_chat_channel: GroupChannel | null = null;
     chat_channel_url: string | null = null;
     chat_info: TChatInfo = { app_id: '', user_id: '' };
     chat_messages: Array<ChatMessage> = [];
@@ -45,7 +45,6 @@ export default class SendbirdStore extends BaseStore {
             should_show_chat_on_orders: observable,
             has_chat_info: computed,
             is_chat_frozen: computed,
-            last_other_user_activity: computed,
             addChannelMessage: action.bound,
             createChatForNewOrder: action.bound,
             replaceChannelMessage: action.bound,
@@ -66,15 +65,6 @@ export default class SendbirdStore extends BaseStore {
 
     get is_chat_frozen() {
         return this.active_chat_channel?.isFrozen;
-    }
-
-    get last_other_user_activity() {
-        const message = this.chat_messages
-            .slice()
-            .reverse()
-            .find(chat_message => chat_message.sender_user_id !== this.chat_info.user_id);
-
-        return message ? epochToMoment(Math.floor(message.created_at / 1000)).fromNow() : null;
     }
 
     addChannelMessage(chat_message: ChatMessage) {
@@ -101,7 +91,7 @@ export default class SendbirdStore extends BaseStore {
         this.chat_messages.splice(idx_to_replace, num_items_to_delete, chat_message);
     }
 
-    setActiveChatChannel(active_chat_channel: GroupChannel) {
+    setActiveChatChannel(active_chat_channel: GroupChannel | null) {
         this.active_chat_channel = active_chat_channel;
     }
 
@@ -163,7 +153,8 @@ export default class SendbirdStore extends BaseStore {
                 await this.initialiseOrderChannel();
             }
         } catch (error) {
-            this.setChatError();
+            // eslint-disable-next-line no-console
+            console.warn(error);
         }
     }
 
@@ -172,14 +163,14 @@ export default class SendbirdStore extends BaseStore {
         this.setIsChatLoading(true);
         try {
             const group_channel = await this.sendbird_api?.groupChannel.getChannel(this.chat_channel_url ?? '');
-
             if (!group_channel) {
                 this.setHasChatError(true);
             } else {
                 this.setActiveChatChannel(group_channel);
             }
         } catch (error) {
-            this.setChatError();
+            // eslint-disable-next-line no-console
+            console.warn(error);
         } finally {
             this.setIsChatLoading(false);
         }
@@ -187,13 +178,15 @@ export default class SendbirdStore extends BaseStore {
 
     async initialiseOrderMessages() {
         this.setHasChatError(false);
+        this.setIsChatLoading(true);
         try {
             const chat_messages = await this.getPreviousMessages();
             if (chat_messages && chat_messages.length > 0) {
                 this.setChannelMessages(chat_messages.map(msg => convertFromChannelMessage(msg)));
             }
         } catch (error) {
-            this.setHasChatError(true);
+            // eslint-disable-next-line no-console
+            console.warn(error);
         } finally {
             this.setIsChatLoading(false);
         }
@@ -204,9 +197,9 @@ export default class SendbirdStore extends BaseStore {
         const chat_messages: Array<UserMessage | FileMessage> = [];
 
         const is_inclusive_of_timestamp = false;
-        const result_size = 50;
         const reverse_results = false;
-        const custom_type = [''];
+        const custom_type = ['', 'admin'];
+        const result_size = 50;
 
         const messages_timestamp =
             timestamp ?? toMoment(this.root_store.general_store.server_time.get()).utc().valueOf();
@@ -214,7 +207,7 @@ export default class SendbirdStore extends BaseStore {
         const retrieved_messages = await this.active_chat_channel?.getMessagesByTimestamp(messages_timestamp, {
             isInclusive: is_inclusive_of_timestamp,
             prevResultSize: result_size,
-            nextResultSize: result_size,
+            nextResultSize: 0,
             reverse: reverse_results,
             messageTypeFilter: MessageTypeFilter.ALL,
             customTypesFilter: custom_type,
@@ -244,7 +237,6 @@ export default class SendbirdStore extends BaseStore {
 
                 const { server_time } = this.root_store.general_store;
                 const { service_token } = service_token_response;
-
                 this.setChatInfo({
                     app_id: service_token.sendbird.app_id,
                     token: service_token.sendbird.token,
@@ -279,7 +271,8 @@ export default class SendbirdStore extends BaseStore {
                 }
             }
         } catch (error) {
-            this.setHasChatError(true);
+            // eslint-disable-next-line no-console
+            console.warn(error);
         }
     }
 
@@ -316,8 +309,9 @@ export default class SendbirdStore extends BaseStore {
                             this.replaceChannelMessage(0, 0, previous_messages[0]);
                         }
                     })
-                    .catch(() => {
-                        this.setHasChatError(true);
+                    .catch(error => {
+                        // eslint-disable-next-line no-console
+                        console.warn(error);
                     });
             } else {
                 (async () => {
@@ -353,6 +347,7 @@ export default class SendbirdStore extends BaseStore {
                     this.setChannelMessages([]);
                     this.setIsChatLoading(true);
                     this.setShouldShowChatModal(false);
+                    this.setActiveChatChannel(null);
                 }
             }
         );
@@ -373,11 +368,9 @@ export default class SendbirdStore extends BaseStore {
 
         this.disposeActiveChatChannelReaction = reaction(
             () => this.active_chat_channel,
-            (active_chat_channel?: GroupChannel) => {
+            active_chat_channel => {
                 if (active_chat_channel) {
-                    (async () => {
-                        await this.initialiseOrderMessages();
-                    })();
+                    this.initialiseOrderMessages();
                 } else {
                     this.setChannelMessages([]);
                 }
@@ -430,7 +423,7 @@ export default class SendbirdStore extends BaseStore {
             });
     }
 
-    sendMessage(message: string) {
+    sendMessage(message: string, custom_type = '') {
         const modified_message = message.trim();
 
         if (modified_message.length === 0) {
@@ -448,6 +441,7 @@ export default class SendbirdStore extends BaseStore {
             message_type: MessageType.USER,
             sender_user_id: this.chat_info.user_id,
             status: ChatMessage.STATUS_PENDING,
+            custom_type,
         };
 
         this.addChannelMessage(new ChatMessage(placeholder_msg_options));
@@ -456,6 +450,7 @@ export default class SendbirdStore extends BaseStore {
             ?.sendUserMessage({
                 message: modified_message,
                 data: msg_identifier,
+                customType: custom_type,
             })
             .onSucceeded(channel_message => {
                 const msg_idx = this.chat_messages.findIndex(msg => msg.id === msg_identifier);

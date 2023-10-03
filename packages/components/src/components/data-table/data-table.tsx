@@ -22,7 +22,7 @@ const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
 
 export type TSource = {
-    [key: string]: string;
+    [key: string]: unknown;
 };
 
 type TMeasure = {
@@ -40,19 +40,19 @@ type TDataTable = {
     className: string;
     content_loader: React.ElementType;
     columns: TSource[];
-    contract_id: number;
-    getActionColumns: (params: { row_obj?: TSource; is_header?: boolean; is_footer: boolean }) => TTableRowItem[];
+    contract_id?: number;
+    getActionColumns?: (params: { row_obj?: TSource; is_header?: boolean; is_footer: boolean }) => TTableRowItem[];
     getRowSize?: ((params: { index: number }) => number) | number;
-    measure: () => void;
+    measure?: () => void;
     getRowAction?: (item: TSource) => TTableRowItem;
-    onScroll: React.UIEventHandler<HTMLDivElement>;
-    id: number;
-    passthrough: (item: TSource) => boolean;
+    onScroll?: React.UIEventHandler<HTMLDivElement>;
+    id?: number;
+    passthrough?: React.ComponentProps<typeof TableRow>['passthrough'];
     autoHide?: boolean;
-    footer: boolean;
-    preloaderCheck: (param: TSource) => boolean;
-    data_source: TSource[];
-    keyMapper: (row: TSource) => number | string;
+    footer?: Record<string, unknown> | React.ReactNode;
+    preloaderCheck?: (param: TSource) => boolean;
+    data_source?: TSource[];
+    keyMapper?: (row: TSource) => number | string;
 };
 
 const DataTable = ({
@@ -82,7 +82,8 @@ const DataTable = ({
             cache_ref.current = new CellMeasurerCache({
                 fixedWidth: true,
                 keyMapper: row_index => {
-                    if (row_index < data_source.length) return keyMapper?.(data_source[row_index]) || row_index;
+                    if (data_source && row_index < data_source.length)
+                        return keyMapper?.(data_source[row_index]) || row_index;
                     return row_index;
                 },
             });
@@ -101,10 +102,13 @@ const DataTable = ({
     };
 
     const rowRenderer = ({ style, index, key, parent }: TRowRenderer) => {
-        const item = data_source[index];
-        const action = getRowAction && getRowAction(item);
-        const contract_id = item.contract_id || item.id;
-        const row_key = keyMapper?.(item) || key;
+        const item = data_source?.[index];
+        const contract_id = (item?.contract_id || item?.id) as string;
+        let action: TTableRowItem | undefined, row_key;
+        if (item) {
+            action = getRowAction && getRowAction(item);
+            row_key = keyMapper?.(item) || key;
+        }
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
         const getContent = ({ measure }: TMeasure) => (
@@ -113,13 +117,13 @@ const DataTable = ({
                 columns={columns}
                 content_loader={content_loader}
                 getActionColumns={getActionColumns}
-                id={contract_id}
+                id={contract_id as string}
                 key={id}
                 measure={measure}
                 passthrough={passthrough}
                 replace={typeof action === 'object' ? action : undefined}
                 row_obj={item}
-                show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : false}
+                show_preloader={typeof preloaderCheck === 'function' && item ? preloaderCheck(item) : false}
                 to={typeof action === 'string' ? action : undefined}
                 is_dynamic_height={is_dynamic_height}
                 is_footer={false}
@@ -128,7 +132,13 @@ const DataTable = ({
         );
 
         return is_dynamic_height ? (
-            <CellMeasurer cache={cache_ref.current!} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+            <CellMeasurer
+                cache={cache_ref.current as CellMeasurerCache}
+                columnIndex={0}
+                key={row_key}
+                rowIndex={index}
+                parent={parent}
+            >
                 {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
             </CellMeasurer>
         ) : (
@@ -179,7 +189,7 @@ const DataTable = ({
                                     height={height}
                                     overscanRowCount={1}
                                     ref={(ref: Grid) => (list_ref.current = ref)}
-                                    rowCount={data_source.length}
+                                    rowCount={data_source?.length || 0}
                                     rowHeight={
                                         is_dynamic_height && cache_ref?.current?.rowHeight
                                             ? cache_ref?.current?.rowHeight

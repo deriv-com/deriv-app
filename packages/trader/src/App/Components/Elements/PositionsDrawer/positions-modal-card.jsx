@@ -6,22 +6,24 @@ import { CSSTransition } from 'react-transition-group';
 import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     getContractPath,
-    isAccumulatorContract,
-    isCryptoContract,
-    isMultiplierContract,
-    isHighLow,
-    isCryptocurrency,
-    hasContractEntered,
-    isOpen,
+    getContractTypeDisplay,
+    getCardLabels,
     getSymbolDisplayName,
     getEndTime,
     getTotalProfit,
+    hasContractEntered,
+    isAccumulatorContract,
+    isCryptoContract,
+    isMultiplierContract,
+    isTurbosContract,
+    isHighLow,
+    isCryptocurrency,
+    isOpen,
     isVanillaContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import ResultMobile from './result-mobile.jsx';
 import { observer, useStore } from '@deriv/stores';
@@ -69,6 +71,7 @@ const PositionsModalCard = observer(
         );
         const is_multiplier = isMultiplierContract(contract_info.contract_type);
         const is_accumulator = isAccumulatorContract(contract_info.contract_type);
+        const is_turbos = isTurbosContract(contract_info.contract_type);
         const is_vanilla = isVanillaContract(contract_info.contract_type);
         const is_crypto = isCryptoContract(contract_info.underlying);
         const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
@@ -358,6 +361,7 @@ const PositionsModalCard = observer(
                 is_multiplier={is_multiplier}
                 is_positions
                 is_sold={!!contract_info.is_sold}
+                is_turbos={is_turbos}
                 has_progress_slider={is_mobile && has_progress_slider && !has_ended}
                 removeToast={removeToast}
                 server_time={server_time}
@@ -398,7 +402,7 @@ const PositionsModalCard = observer(
         );
 
         const options_el = is_vanilla ? contract_vanilla_el : contract_options_el;
-        const contract_el = is_multiplier || is_accumulator ? custom_contract_el : options_el;
+        const contract_el = is_multiplier || is_accumulator || is_turbos ? custom_contract_el : options_el;
 
         return (
             <div id={`dt_drawer_card_${id}`} className={classNames('positions-modal-card__wrapper', className)}>
@@ -442,7 +446,6 @@ PositionsModalCard.propTypes = {
     is_sell_requested: PropTypes.bool,
     is_unsupported: PropTypes.bool,
     is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
-    onClickRemove: PropTypes.func,
     onClickSell: PropTypes.func,
     onClickCancel: PropTypes.func,
     profit_loss: PropTypes.number,

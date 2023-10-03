@@ -1,4 +1,5 @@
 import React from 'react';
+import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -27,7 +28,7 @@ const WorkspaceGroup = observer(
         toggleSaveModal,
     }: TWorkspaceGroup) => {
         const { dashboard } = useDBotStore();
-        const { setPreviewOnPopup } = dashboard;
+        const { setPreviewOnPopup, setEnabledModalChart } = dashboard;
 
         return (
             <div className='toolbar__group toolbar__group-btn'>
@@ -58,6 +59,14 @@ const WorkspaceGroup = observer(
                     icon_id='db-toolbar__sort-button'
                     action={onSortClick}
                 />
+                {!isMobile() && (
+                    <ToolbarIcon
+                        popover_message={localize('Charts')}
+                        icon='IcChartsTabDbot'
+                        icon_id='db-toolbar__sort-button'
+                        action={() => setEnabledModalChart()}
+                    />
+                )}
                 <div className='vertical-divider' />
                 <ToolbarIcon
                     popover_message={localize('Undo')}

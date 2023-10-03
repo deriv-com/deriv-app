@@ -33,6 +33,7 @@ export interface IDashboardStore {
     showVideoDialog: (param: { [key: string]: string }) => void;
     strategy_save_type: string;
     toast_message: string;
+    is_enabled_modal_chart: boolean;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -78,6 +79,7 @@ export default class DashboardStore implements IDashboardStore {
             toast_message: observable,
             setStrategySaveType: action.bound,
             setShowMobileTourDialog: action.bound,
+            is_enabled_modal_chart: observable,
         });
         this.root_store = root_store;
         const {
@@ -134,6 +136,7 @@ export default class DashboardStore implements IDashboardStore {
     strategy_save_type = 'unsaved';
     toast_message = '';
     is_web_socket_intialised = true;
+    is_enabled_modal_chart = false;
 
     get is_dark_mode() {
         const {
@@ -157,6 +160,10 @@ export default class DashboardStore implements IDashboardStore {
     setOpenSettings = (toast_message: string, show_toast = true) => {
         this.toast_message = toast_message;
         this.show_toast = show_toast;
+    };
+
+    setEnabledModalChart = () => {
+        this.is_enabled_modal_chart = !this.is_enabled_modal_chart;
     };
 
     setIsFileSupported = (is_file_supported: boolean) => {

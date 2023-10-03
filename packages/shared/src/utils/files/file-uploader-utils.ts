@@ -1,16 +1,19 @@
+import { useFileUploader } from '@deriv/hooks';
 import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage } from './image/image_utility';
 import { DocumentUploadRequest } from '@deriv/api-types';
 
 export type TFile = File & { file: Blob };
 
-export type TSettings = {
-    documentType: DocumentUploadRequest['document_type'];
-    pageType: DocumentUploadRequest['page_type'];
+export type TSetting = {
+    documentType?: DocumentUploadRequest['document_type'];
+    pageType?: DocumentUploadRequest['page_type'];
     expirationDate?: string;
     documentId?: string;
     lifetimeValid?: boolean;
     document_issuing_country?: string;
 };
+
+export type TSettings = Partial<Parameters<ReturnType<typeof useFileUploader>['uploader']>[1]>;
 
 type TFileObject = TSettings & {
     filename: File['name'];
@@ -19,14 +22,14 @@ type TFileObject = TSettings & {
     file_size: File['size'];
 };
 
-export const truncateFileName = (file: TFile, limit: number) => {
+export const truncateFileName = (file: File | Blob, limit: number) => {
     const string_limit_regex = new RegExp(`(.{${limit || 30}})..+`);
     return file?.name?.replace(string_limit_regex, `$1….${getFileExtension(file)}`);
 };
 
-export const getFileExtension = (file: TFile) => {
-    const f = file?.type?.match(/[^/]+$/);
-    return f && f[0];
+export const getFileExtension = (file: Blob) => {
+    const f = RegExp(/[^/]+$/).exec(file?.type);
+    return f?.[0];
 };
 
 export const compressImageFiles = (files?: FileList | null) => {
@@ -49,22 +52,22 @@ export const compressImageFiles = (files?: FileList | null) => {
     return Promise.all(promises);
 };
 
-export const readFiles = (files: Blob[], getFileReadErrorMessage: (t: string) => string, settings: TSettings) => {
+export const readFiles = (files: Blob[], getFileReadErrorMessage: (t: string) => string, settings?: TSettings) => {
     const promises: Promise<TFileObject | { message: string }>[] = [];
 
     files.forEach(f => {
         const fr = new FileReader();
         const promise = new Promise<TFileObject | { message: string }>(resolve => {
             fr.onload = () => {
-                const file_obj = {
+                const file_metadata = {
                     filename: f.name,
                     buffer: fr.result,
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
+                    documentType: settings?.document_type ?? DOCUMENT_TYPES.utility_bill,
                     ...settings,
-                    documentType: settings?.documentType || 'utility_bill',
                 };
-                resolve(file_obj);
+                resolve(file_metadata);
             };
 
             fr.onerror = () => {
@@ -91,3 +94,19 @@ export const supported_filetypes = 'image/png, image/jpeg, image/jpg, image/gif,
 
 export const getSupportedFiles = (filename: string) =>
     /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|pdf|PDF)$/.test(filename);
+
+export const DOCUMENT_TYPES = {
+    passport: 'passport',
+    national_identity_card: 'national_identity_card',
+    driving_licence: 'driving_licence',
+    utility_bill: 'utility_bill',
+    bankstatement: 'bankstatement',
+    power_of_attorney: 'power_of_attorney',
+    amlglobalcheck: 'amlglobalcheck',
+    docverification: 'docverification',
+    proofid: 'proofid',
+    driverslicense: 'driverslicense',
+    proofaddress: 'proofaddress',
+    proof_of_ownership: 'proof_of_ownership',
+    other: 'other',
+};

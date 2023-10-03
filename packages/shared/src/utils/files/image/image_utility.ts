@@ -68,7 +68,7 @@ const convertToBase64 = (file: File) =>
 
 const isImageType = (filename: string) => /(gif|jpg|jpeg|tiff|png)$/i.test(filename);
 
-const getFormatFromMIME = (file: TFile) =>
+const getFormatFromMIME = <T>(file: T extends Blob ? T : Blob) =>
     (file.type.split('/')[1] || (file.name.match(/\.([\w\d]+)$/) || [])[1] || '').toUpperCase();
 
 export { compressImg, convertToBase64, isImageType, getFormatFromMIME };

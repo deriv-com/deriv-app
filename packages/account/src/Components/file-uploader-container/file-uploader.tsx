@@ -1,4 +1,3 @@
-//TODO all file upload process has to be checked and refactored with TS. skipping checks for passing CFD build
 import React from 'react';
 import classNames from 'classnames';
 import DocumentUploader from '@binary-com/binary-document-uploader';
@@ -14,6 +13,7 @@ import {
     TSettings,
 } from '@deriv/shared';
 import { TFile } from 'Types';
+import { useFileUploader } from '@deriv/hooks';
 
 type TFileObject = {
     file: TFile;
@@ -45,11 +45,18 @@ const fileReadErrorMessage = (filename: string) => {
 
 const FileUploader = React.forwardRef<
     HTMLElement,
-    { onFileDrop: (file: TFile | undefined) => void; getSocket: () => WebSocket; settings?: Partial<TSettings> }
->(({ onFileDrop, getSocket, settings = {} }, ref) => {
-    const [document_file, setDocumentFile] = useStateCallback({ files: [], error_message: null });
+    { onFileDrop: (file: TFile | undefined) => void; getSocket: () => WebSocket; settings?: TSettings }
+>(({ onFileDrop, getSocket, settings }, ref) => {
+    const [document_file, setDocumentFile] = useStateCallback<{
+        files: FileList | File[];
+        error_message?: string | null;
+    }>({
+        files: [],
+        error_message: null,
+    });
+    const { uploader } = useFileUploader();
 
-    const handleAcceptedFiles = (files: TFileObject[]) => {
+    const handleAcceptedFiles = (files: File[]) => {
         if (files.length > 0) {
             setDocumentFile({ files, error_message: null }, (file: TFile) => {
                 onFileDrop(file);
@@ -75,40 +82,41 @@ const FileUploader = React.forwardRef<
     const upload = () => {
         if (!!document_file.error_message || document_file.files.length < 1) return 0;
 
+        uploader(document_file.files, settings, () => onFileDrop(undefined));
         // File uploader instance connected to binary_socket
-        const uploader = new DocumentUploader({ connection: getSocket() });
+        // const uploader = new DocumentUploader({ connection: getSocket() });
 
-        let is_any_file_error = false;
+        // let is_any_file_error = false;
 
-        return new Promise((resolve, reject) => {
-            compressImageFiles(document_file.files)
-                .then(files_to_process => {
-                    readFiles(files_to_process, fileReadErrorMessage, settings)
-                        .then(processed_files => {
-                            processed_files.forEach(file => {
-                                if (file.message) {
-                                    is_any_file_error = true;
-                                    reject(file);
-                                }
-                            });
-                            const total_to_upload = processed_files.length;
-                            if (is_any_file_error || !total_to_upload) {
-                                onFileDrop(undefined);
-                                return; // don't start submitting files until all front-end validation checks pass
-                            }
+        // return new Promise((resolve, reject) => {
+        //     compressImageFiles(document_file.files)
+        //         .then(files_to_process => {
+        //             readFiles(files_to_process, fileReadErrorMessage, settings)
+        //                 .then(processed_files => {
+        //                     processed_files.forEach(file => {
+        //                         if (file.message) {
+        //                             is_any_file_error = true;
+        //                             reject(file);
+        //                         }
+        //                     });
+        //                     const total_to_upload = processed_files.length;
+        //                     if (is_any_file_error || !total_to_upload) {
+        //                         onFileDrop(undefined);
+        //                         return; // don't start submitting files until all front-end validation checks pass
+        //                     }
 
-                            // send files
-                            const uploader_promise = uploader
-                                .upload(processed_files[0])
-                                .then((api_response: unknown) => api_response);
-                            resolve(uploader_promise);
-                        })
-                        /* eslint-disable no-console */
-                        .catch(error => console.error('error: ', error));
-                })
-                /* eslint-disable no-console */
-                .catch(error => console.error('error: ', error));
-        });
+        //                     // send files
+        //                     const uploader_promise = uploader
+        //                         .upload(processed_files[0])
+        //                         .then((api_response: unknown) => api_response);
+        //                     resolve(uploader_promise);
+        //                 })
+        //                 /* eslint-disable no-console */
+        //                 .catch(error => console.error('error: ', error));
+        //         })
+        //         /* eslint-disable no-console */
+        //         .catch(error => console.error('error: ', error));
+        // });
     };
 
     React.useImperativeHandle(ref, () => ({

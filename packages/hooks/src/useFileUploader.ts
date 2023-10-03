@@ -1,28 +1,42 @@
 import { DocumentUploader } from '@binary-com/binary-document-uploader';
-import { TFile, TSettings, WS, compressImageFiles, readFiles } from '@deriv/shared';
+import { useMutation } from '@deriv/api';
+import { WS, compressImageFiles, readFiles } from '@deriv/shared';
 import { useCallback, useRef, useState } from 'react';
+
+type TSettingsPayload = NonNullable<
+    NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>>[0]>['payload']
+>;
 
 const fileReadErrorMessage = (filename: string) => {
     return `Unable to read file ${filename}`;
 };
 
+/**
+ * Custom hook to handle file uploading with the binary-document-uploader package
+ */
 const useFileUploader = () => {
     const [error, setError] = useState<string | null>(null);
+    const ref = useRef<HTMLInputElement>(null);
 
-    const inputRef = useRef<HTMLInputElement>(null);
-    const upload = useCallback((settings?: TSettings) => {
+    /**
+     * Uploads a file to the server
+     * @param {FileList} files - list of files to upload
+     * @param {TSettings} settings - settings for the file upload
+     * @returns {Promise} - a promise that resolves when the upload is complete
+     */
+    const uploader = useCallback((files: FileList, settings?: TSettingsPayload, onError?: () => void) => {
+        if (!ref.current?.files?.length) return Promise.reject(new Error('No files selected'));
+
         const uploader = new DocumentUploader({ connection: WS.getSocket() });
 
         // if no settings, return uploader instance
         if (!settings) return uploader;
 
         return new Promise((resolve, reject) => {
-            if (!inputRef.current?.files?.length) reject(new Error('No files selected'));
-
             let is_any_file_error = false;
             let file_error: string | null = null;
 
-            compressImageFiles(inputRef.current?.files)
+            compressImageFiles(files)
                 .then(files_to_process => {
                     readFiles(files_to_process, fileReadErrorMessage, settings)
                         .then(processed_files => {
@@ -35,7 +49,8 @@ const useFileUploader = () => {
                             });
                             const total_to_upload = processed_files.length;
                             if (is_any_file_error || !total_to_upload) {
-                                return reject(new Error(file_error || 'Something went wrong!')); // don't start submitting files until all front-end validation checks pass
+                                onError?.();
+                                return reject(new Error(file_error ?? 'Something went wrong!')); // don't start submitting files until all front-end validation checks pass
                             }
 
                             // send files
@@ -51,9 +66,9 @@ const useFileUploader = () => {
     }, []);
 
     return {
-        files,
-        setFiles,
         error,
-        upload,
+        uploader,
     };
 };
+
+export default useFileUploader;

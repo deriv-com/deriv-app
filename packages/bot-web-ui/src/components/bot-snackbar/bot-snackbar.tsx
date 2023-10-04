@@ -25,6 +25,12 @@ const BotSnackbar = ({
 }: TBotSnackbar) => {
     const [notification_timer, setNotificationTimer] = useState(timeout);
 
+    React.useEffect(() => {
+        if (is_open) {
+            setNotificationTimer(timeout);
+        }
+    }, [is_open, timeout]);
+
     return (
         <div
             onMouseOver={() => {

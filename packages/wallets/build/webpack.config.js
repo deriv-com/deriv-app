@@ -188,11 +188,6 @@ module.exports = function (env) {
                         name: 'shared',
                         chunks: 'all',
                     },
-                    api: {
-                        test: /[\\/]api[\\/]/,
-                        name: 'api',
-                        chunks: 'all',
-                    },
                 },
             },
         },

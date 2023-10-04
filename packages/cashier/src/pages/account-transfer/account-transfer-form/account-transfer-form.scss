@@ -130,7 +130,11 @@
 
     &__wrapper {
         .cashier__form-submit {
-            margin-top: 1rem;
+            margin-top: 1.1rem;
+
+            @include mobile {
+                margin-top: 3rem;
+            }
         }
 
         .account-transfer-form__input {

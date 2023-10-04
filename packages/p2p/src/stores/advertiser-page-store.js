@@ -102,7 +102,7 @@ export default class AdvertiserPageStore extends BaseStore {
                     const { list } = response?.p2p_advert_list ?? {};
 
                     this.setAdverts(list);
-                    this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
+                    this.setHasMoreAdvertsToLoad(list?.length >= general_store.list_item_limit);
                 }
                 this.setIsLoadingAdverts(false);
                 resolve();

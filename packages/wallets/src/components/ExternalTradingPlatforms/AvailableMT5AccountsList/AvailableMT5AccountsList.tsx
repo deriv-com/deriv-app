@@ -10,7 +10,7 @@ import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableMT5AccountsList.scss';
 
 const marketTypeToDescriptionMapper = {
-    all: 'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.',
+    all: 'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs',
     financial: 'This account offers CFDs on financial instruments.',
     synthetic: 'This account offers CFDs on derived instruments.',
 };

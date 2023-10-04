@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, DatePicker, Icon, InputField, MobileDialog } from '@deriv/components';
+import { Button, DatePicker, InputField, MobileDialog } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 import CompositeCalendarMobileFooter from './composite-calendar-mobile-footer';

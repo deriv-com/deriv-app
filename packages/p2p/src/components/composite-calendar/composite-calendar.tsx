@@ -167,19 +167,13 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
                         value={getToDateLabel()}
                     />
                 </div>
-                {show_to && (
-                    <div className='composite-calendar' ref={wrapper_ref}>
-                        <CalendarSideList from={from} to={to} items={days_duration_list} />
-                        <TwoMonthPickerLoadable value={to} onChange={setToDate} isPeriodDisabled={isPeriodDisabledTo} />
-                    </div>
-                )}
-                {show_from && (
+                {(show_to || show_from) && (
                     <div className='composite-calendar' ref={wrapper_ref}>
                         <CalendarSideList from={from} to={to} items={days_duration_list} />
                         <TwoMonthPickerLoadable
-                            value={from}
-                            onChange={setFromDate}
-                            isPeriodDisabled={isPeriodDisabledFrom}
+                            value={show_to ? to : from}
+                            onChange={show_to ? setToDate : setFromDate}
+                            isPeriodDisabled={show_to ? isPeriodDisabledTo : isPeriodDisabledFrom}
                         />
                     </div>
                 )}

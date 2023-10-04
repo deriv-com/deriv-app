@@ -7,10 +7,15 @@ import { getContractTypeCategoryIcons, findContractCategory } from '../../../Hel
 import { TContractCategory, TContractType, TList } from './types';
 
 type TContractTypeWidget = {
-    name?: string;
+    name: string;
     value: TContractType['value'];
     list: TContractCategory[];
-    onChange: (event: DeepPartial<React.ChangeEvent<HTMLInputElement>>) => void;
+    onChange: (e: {
+        target: {
+            name: string;
+            value: unknown;
+        };
+    }) => Promise<void>;
     languageChanged?: boolean;
 };
 

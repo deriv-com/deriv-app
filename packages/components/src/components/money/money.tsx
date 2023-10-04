@@ -19,8 +19,8 @@ const Money = ({
     show_currency = false,
 }: Partial<TMoneyProps>) => {
     let sign = '';
-    if (+amount && (amount < 0 || has_sign)) {
-        sign = amount > 0 ? '+' : '-';
+    if (Number(amount) && (Number(amount) < 0 || has_sign)) {
+        sign = Number(amount) > 0 ? '+' : '-';
     }
 
     // if it's formatted already then don't make any changes unless we should remove extra -/+ signs

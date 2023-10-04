@@ -3,25 +3,28 @@ import { MT5AccountType } from '../ExternalTradingPlatforms/MT5AccountType';
 import { JurisdictionModal } from '../JurisdictionModal';
 import { useModal } from '../ModalProvider';
 import { ModalStepWrapper } from '../ModalStepWrapper';
-import './MT5AccountTypeModal.scss';
+import { PrimaryActionButton } from '../PrimaryActionButton';
 
 type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 
 const MT5AccountTypeModal = () => {
     const [selectedMarketType, setSelectedMarketType] = useState<TMarketTypes>(undefined);
-    const { show } = useModal();
+    const { setModalState, show } = useModal();
 
     return (
         <ModalStepWrapper
             renderFooter={() => (
-                <button
-                    className={`wallets-mt5-account-type-modal-next-button${!selectedMarketType ? '-disabled' : ''}`}
+                <PrimaryActionButton
+                    disabled={!selectedMarketType}
                     onClick={() => {
+                        setModalState({
+                            marketType: selectedMarketType,
+                        });
                         show(<JurisdictionModal />);
                     }}
                 >
-                    <p className='wallets-mt5-account-type-modal-text'>Next</p>
-                </button>
+                    <p className='wallets-get-more-mt5-accounts-text'>Next</p>
+                </PrimaryActionButton>
             )}
             title='Select Deriv MT5’s account type'
         >

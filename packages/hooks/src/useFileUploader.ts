@@ -1,7 +1,7 @@
-import { DocumentUploader } from '@binary-com/binary-document-uploader';
 import { useMutation } from '@deriv/api';
 import { WS, compressImageFiles, readFiles } from '@deriv/shared';
 import { useCallback, useRef, useState } from 'react';
+import { DocumentUploader } from '@binary-com/binary-document-uploader'; // Using require because this package has no types defined
 
 type TSettingsPayload = NonNullable<
     NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>>[0]>['payload']

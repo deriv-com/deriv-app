@@ -4,16 +4,7 @@ import { DocumentUploadRequest } from '@deriv/api-types';
 
 export type TFile = File & { file: Blob };
 
-export type TSetting = {
-    documentType?: DocumentUploadRequest['document_type'];
-    pageType?: DocumentUploadRequest['page_type'];
-    expirationDate?: string;
-    documentId?: string;
-    lifetimeValid?: boolean;
-    document_issuing_country?: string;
-};
-
-export type TSettings = Partial<Parameters<ReturnType<typeof useFileUploader>['uploader']>[1]>;
+type TSettings = Partial<Parameters<ReturnType<typeof useFileUploader>['uploader']>[1]>;
 
 type TFileObject = TSettings & {
     filename: File['name'];

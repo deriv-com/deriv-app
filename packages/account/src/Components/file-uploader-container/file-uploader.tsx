@@ -2,13 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import { FileDropzone, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { isMobile, getSupportedFiles, max_document_size, supported_filetypes, TSettings } from '@deriv/shared';
+import { isMobile, getSupportedFiles, max_document_size, supported_filetypes } from '@deriv/shared';
 import { TFile } from 'Types';
 import { useFileUploader } from '@deriv/hooks';
 
 type TFileObject = {
     file: TFile;
 };
+type TSettings = Partial<Parameters<ReturnType<typeof useFileUploader>['uploader']>[1]>;
 
 const UploadMessage = () => {
     return (

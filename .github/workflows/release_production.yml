@@ -35,7 +35,7 @@ jobs:
     - name: Versioning
       uses: "./.github/actions/versioning"
       with:
-        version_name: production
+        release_type: production
     - name: Publish to Cloudflare Pages Production
       uses: "./.github/actions/publish_to_pages_production"
       with:
@@ -60,4 +60,4 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           status: ${{ env.WORKFLOW_CONCLUSION }}
           release_type: Production 
-          version: $(echo cat packages/core/dist/version | bash)
+          version: ${{ $(echo cat packages/core/dist/version) }}

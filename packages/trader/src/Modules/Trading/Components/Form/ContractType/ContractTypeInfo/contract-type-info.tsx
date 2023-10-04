@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
 import { isMobile, TURBOS, VANILLALONG } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -25,7 +26,7 @@ const TABS = {
     GLOSSARY: 'glossary',
 };
 
-const Info = ({ handleSelect, item, list }: TInfo) => {
+const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
@@ -143,6 +144,6 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
             </div>
         </React.Fragment>
     );
-};
+});
 
 export default Info;

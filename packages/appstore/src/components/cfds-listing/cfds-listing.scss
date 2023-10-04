@@ -118,6 +118,7 @@
             flex-direction: column;
             align-items: center;
             overflow-y: scroll;
+            height: 100%;
         }
     }
     &--selected {
@@ -810,7 +811,7 @@
 
         @include mobile {
             grid-template-columns: 1fr;
-            margin: 0 6.5rem;
+            margin: 0 6.5rem 3rem;
         }
     }
 

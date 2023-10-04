@@ -1,12 +1,12 @@
 import React from 'react';
-import { Icon, Text, WalletCard } from '@deriv/components';
+import { Icon, WalletCard } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { LeftContentWithLink } from '../left-content-with-link';
 import { RightContentWithLink } from '../right-content-with-link';
+import { TitleText } from '../title-text';
 import WalletAccount from '../wallet-account/wallet-account';
 import './wallet-link-wrapper.scss';
-import { useStore } from '@deriv/stores';
-import { TitleText } from '../title-text';
 
 export type TWalletLinkWrapper = {
     wallet_details: React.ComponentProps<typeof WalletCard>['wallet'];

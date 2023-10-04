@@ -1,7 +1,7 @@
 import React from 'react';
-import './left-content-with-link.scss';
 import classNames from 'classnames';
 import { useStore } from '@deriv/stores';
+import './left-content-with-link.scss';
 
 type TContentWithLinkProps = {
     children: JSX.Element | Array<JSX.Element>;

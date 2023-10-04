@@ -2,9 +2,9 @@ import React from 'react';
 import { Text, ThemedScrollbars, WalletCard } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { TitleText } from '../title-text';
 import WalletLinkWrapper from '../wallet-link/wallet-link-wrapper';
 import './wallet-linking-step.scss';
-import { TitleText } from '../title-text';
 
 type TWalletLinkingStep = {
     data: {
@@ -43,15 +43,10 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
             </TitleText>
             {!is_mobile && (
                 <div className='wallet-linking-step__heading'>
-                    {/* <Text className='wallet-linking-step__title-text' color='prominent' size='xxxs'>
-                        <Localize i18n_default_text='Your current trading account(s)' />
-                    </Text> */}
                     <TitleText className='wallet-linking-step__heading-text'>
                         <Localize i18n_default_text='Your current trading account(s)' />
                     </TitleText>
-                    {/* <Text className='wallet-linking-step__title-text' color='prominent' size='xxxs'>
-                        <Localize i18n_default_text='Your new Wallet(s)' />
-                    </Text> */}
+
                     <TitleText className='wallet-linking-step__heading-text'>
                         <Localize i18n_default_text='Your new Wallet(s)' />
                     </TitleText>

@@ -34,7 +34,7 @@ jest.mock('../connected-apps-earn-more', () => jest.fn(() => <div>Mocked Earn Mo
 jest.mock('../connected-apps-empty', () => jest.fn(() => <div>Mocked Empty Apps</div>));
 jest.mock('../connected-apps-know-more', () => jest.fn(() => <div>Mocked Know More</div>));
 
-describe('Connected Apps', () => {
+describe('ConnectedApps', () => {
     const originalOffsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
     const originalOffsetWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth');
     let modal_root_el: HTMLDivElement;

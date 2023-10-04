@@ -2,7 +2,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -50,6 +50,7 @@ module.exports = function (env) {
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
+        plugins: [new BundleAnalyzerPlugin()],
         module: {
             rules: [
                 {
@@ -161,6 +162,39 @@ module.exports = function (env) {
                       new CssMinimizerPlugin(),
                   ]
                 : [],
+            splitChunks: {
+                chunks: 'all',
+                minSize: 102400,
+                minSizeReduction: 102400,
+                minChunks: 1,
+                maxAsyncRequests: 5,
+                maxInitialRequests: 3,
+                automaticNameDelimiter: '~',
+                enforceSizeThreshold: 500000,
+                cacheGroups: {
+                    default: {
+                        minChunks: 2,
+                        minSize: 102400,
+                        priority: -20,
+                        reuseExistingChunk: true,
+                    },
+                    defaultVendors: {
+                        idHint: 'vendors',
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10,
+                    },
+                    shared: {
+                        test: /[\\/]shared[\\/]/,
+                        name: 'shared',
+                        chunks: 'all',
+                    },
+                    api: {
+                        test: /[\\/]api[\\/]/,
+                        name: 'api',
+                        chunks: 'all',
+                    },
+                },
+            },
         },
         devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [

@@ -8,9 +8,10 @@ import TradersHubOnboarding from './traders-hub-onboarding';
 
 type TDefaultMobileLinks = {
     handleClickCashier: () => void;
+    is_next_wallet_enabled?: boolean;
 };
 
-const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLinks) => (
+const DefaultMobileLinks = React.memo(({ handleClickCashier, is_next_wallet_enabled = false }: TDefaultMobileLinks) => (
     <React.Fragment>
         <div className='traders-hub-header__menu-right--items--onboarding'>
             <TradersHubOnboarding />
@@ -29,11 +30,13 @@ const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLin
                 <Icon icon='IcUserOutline' size={20} />
             </BinaryLink>
         </Popover>
-        <div className='traders-hub-header__cashier-button'>
-            <Button primary small onClick={handleClickCashier}>
-                <Localize i18n_default_text='Cashier' />
-            </Button>
-        </div>
+        {!is_next_wallet_enabled && (
+            <div className='traders-hub-header__cashier-button'>
+                <Button primary small onClick={handleClickCashier}>
+                    <Localize i18n_default_text='Cashier' />
+                </Button>
+            </div>
+        )}
     </React.Fragment>
 ));
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, StaticUrl } from '@deriv/components';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useFeatureFlags, useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { routes, platforms, formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -53,6 +53,7 @@ const TradersHubHeader = observer(() => {
     const cashier_routes = pathname.startsWith(routes.cashier);
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
     const account_balance = formatMoney(currency, balance ?? '', true);
+    const { is_next_wallet_enabled } = useFeatureFlags();
 
     const filterPlatformsForClients = (payload: TPlatformConfig) =>
         payload.filter(config => {
@@ -170,7 +171,10 @@ const TradersHubHeader = observer(() => {
                                 </div>
                             </React.Fragment>
                         ) : (
-                            <DefaultMobileLinks handleClickCashier={handleClickCashier} />
+                            <DefaultMobileLinks
+                                handleClickCashier={handleClickCashier}
+                                is_next_wallet_enabled={is_next_wallet_enabled}
+                            />
                         )}
                     </div>
                 </div>

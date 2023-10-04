@@ -286,6 +286,7 @@ export default class SendbirdStore extends BaseStore {
             (channel_message.isUserMessage() || channel_message.isFileMessage())
         ) {
             this.addChannelMessage(convertFromChannelMessage(channel_message));
+            this.messages_ref?.current?.scrollTo(0, this.messages_ref.current.scrollHeight);
         }
     }
 

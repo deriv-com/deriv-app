@@ -16,7 +16,7 @@ let mockRootStore: ReturnType<typeof mockStore>;
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useIsMt5LoginListStatusPresent: jest.fn(() => false),
+    useIsMt5LoginListStatusPresent: jest.fn(() => ({ is_flag_present: false, flag_value: undefined })),
 }));
 const mockedUseIsMt5LoginListStatusPresent = useIsMt5LoginListStatusPresent as jest.MockedFunction<
     typeof useIsMt5LoginListStatusPresent

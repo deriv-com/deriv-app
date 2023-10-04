@@ -23,7 +23,7 @@ import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 
 import ConfirmationCheckbox from './confirmation-checkbox';
-import { DateOfBirthField, FormInputField } from './form-fields.jsx';
+import { DateOfBirthField, FormInputField } from './form-fields';
 
 const PersonalDetailsForm = props => {
     const {

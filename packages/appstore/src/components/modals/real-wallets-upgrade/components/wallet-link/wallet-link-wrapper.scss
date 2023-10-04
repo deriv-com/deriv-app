@@ -11,4 +11,13 @@
         flex-direction: column;
         gap: 1.2rem;
     }
+
+    &__right {
+        &-content {
+            height: 13.6rem;
+            position: relative;
+        }
+        &:first-child span {
+        }
+    }
 }

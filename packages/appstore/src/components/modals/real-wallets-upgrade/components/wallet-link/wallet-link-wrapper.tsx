@@ -24,7 +24,7 @@ const WalletLinkWrapper = ({ wallet }: { wallet: TWalletLinkWrapper }) => {
         <div className='wallet-link-wrapper'>
             <div className='wallet-link-wrapper__left'>
                 <div className='wallet-link-wrapper__accounts'>
-                    <LeftContentWithLink>
+                    <LeftContentWithLink show_fork={wallet.account_list.length > 1}>
                         <React.Fragment>
                             {is_mobile && (
                                 <Text
@@ -57,11 +57,12 @@ const WalletLinkWrapper = ({ wallet }: { wallet: TWalletLinkWrapper }) => {
             </div>
             <div className='wallet-link-wrapper__right'>
                 <RightContentWithLink>
-                    <div className='linked-wallet'>
+                    <div className='wallet-link-wrapper__right-content'>
                         <WalletCard wallet={wallet.wallet_details} size='large' state='default' />
                         {is_mobile && (
                             <Text
-                                className='wallet-linking-step__title-text linked-wallet__wallet-card-text'
+                                as='div'
+                                className='wallet-linking-step__title-text wallet-linking-step__wallet-card-text'
                                 color='prominent'
                                 size='xxxs'
                             >

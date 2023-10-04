@@ -1,11 +1,9 @@
 import React from 'react';
-import { Icon, Text, ThemedScrollbars, WalletCard } from '@deriv/components';
+import { Text, ThemedScrollbars, WalletCard } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import WalletAccount from '../wallet-account/wallet-account';
 import WalletLinkWrapper from '../wallet-link/wallet-link-wrapper';
 import './wallet-linking-step.scss';
-import { ArrayElement } from 'Types';
 
 type TWalletLinkingStep = {
     data: {

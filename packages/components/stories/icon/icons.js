@@ -702,7 +702,6 @@ export const icons =
         'IcFlagZhTw',
     ],
     'mt5': [
-        'IcMt5Acuity',
         'IcMt5BviDerived',
         'IcMt5BviFinancial',
         'IcMt5CfdPlatform',

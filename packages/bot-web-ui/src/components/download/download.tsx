@@ -17,8 +17,10 @@ const Download = observer(({ tab }: TDownloadProps) => {
     let clickFunction, popover_message;
     if (tab === 'transactions') {
         clickFunction = onClickDownloadTransaction;
-        popover_message = localize('Download your transaction history.');
         disabled = !transaction_list.length || is_running;
+        if (is_running) popover_message = localize('Download is unavailable while your bot is running.');
+        else if (!transaction_list.length) popover_message = localize('No transaction or activity yet.');
+        else popover_message = localize('Download your transaction history.');
     } else if (tab === 'journal') {
         clickFunction = onClickDownloadJournal;
         popover_message = localize('Download your journal.');

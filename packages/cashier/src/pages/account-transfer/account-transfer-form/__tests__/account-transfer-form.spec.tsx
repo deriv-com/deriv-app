@@ -289,14 +289,14 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should display no new positions can be opened when transferring amount to a migrated svg account', () => {
-        mockedUseIsMt5LoginListStatusPresent.mockReturnValue(true);
+        mockedUseIsMt5LoginListStatusPresent.mockReturnValue({ is_flag_present: true, flag_value: 1 });
         renderAccountTransferForm();
         expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
         expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
     });
 
     it('should display the number of transfers remaining when transferring amount to a non migrated svg accounts', () => {
-        mockedUseIsMt5LoginListStatusPresent.mockReturnValue(false);
+        mockedUseIsMt5LoginListStatusPresent.mockReturnValue({ is_flag_present: false, flag_value: undefined });
         renderAccountTransferForm();
         expect(screen.getByText(/You have 0 transfer remaining for today./i)).toBeInTheDocument();
         expect(screen.queryByText(/You can no longer open new positions with this account./i)).not.toBeInTheDocument();

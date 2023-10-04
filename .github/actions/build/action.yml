@@ -62,3 +62,8 @@ runs:
 
     run: npm run build:prod
     shell: bash
+  - name: Check Node Environment
+    env:
+      NODE_ENV: ${{ inputs.NODE_ENV }}
+    run: echo "NODE_ENV: $NODE_ENV"
+    shell: bash

@@ -102,7 +102,7 @@ const TradingAppCard = ({
         else;
     };
 
-    const [is_modal_open, setModalOpen] = React.useState(false);
+    const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
     const status_text = open_order_position_status ? 'No new positions' : 'Account closed';
 
     return (
@@ -155,7 +155,7 @@ const TradingAppCard = ({
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
                             onClick={() => {
-                                setModalOpen(!is_modal_open);
+                                setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
                             }}
                             account_status='open-order-position'
                             icon='IcAlertWarning'
@@ -168,12 +168,12 @@ const TradingAppCard = ({
                             }
                         />
                     )}
-                    {is_modal_open && (
+                    {is_open_position_svg_modal_open && (
                         <OpenPositionsSVGModal
                             market_type={market_type}
                             open_order_position_status={open_order_position_status}
-                            is_modal_open={is_modal_open}
-                            setModalOpen={setModalOpen}
+                            is_modal_open={is_open_position_svg_modal_open}
+                            setModalOpen={setIsOpenPositionSvgModalOpen}
                         />
                     )}
                 </div>

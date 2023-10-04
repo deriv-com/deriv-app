@@ -200,7 +200,6 @@ $MIN_HEIGHT_FLOATING: calc(
         overflow: hidden;
     }
 
-
     &-form {
         overflow: hidden;
         height: 100%;
@@ -1843,6 +1842,8 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 }
+
+/* stylelint-enable */
 
 /** @define closing-account; weak */
 .closing-account {

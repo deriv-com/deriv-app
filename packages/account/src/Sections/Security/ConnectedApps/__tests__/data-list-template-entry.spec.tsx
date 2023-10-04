@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import DataListTemplateEntry from '../data-list-template-entry';
 
 describe('DataListTemplateEntry', () => {
-    it("should render the 'Know more' section with correct details", () => {
+    it("should render the 'DataListTemplateEntry' component with correct details", () => {
         const mock_props = { title: 'MOCK_TITLE', content: 'MOCK_CONTENT' };
         render(<DataListTemplateEntry {...mock_props} />);
 

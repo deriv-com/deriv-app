@@ -24,7 +24,7 @@ const AmountInput = ({
     initial_value = 0,
     label,
     locale,
-    max_digits = 8,
+    max_digits = 14,
     onChange,
 }: TAmountInput) => {
     const [value, setValue] = useState(initial_value);

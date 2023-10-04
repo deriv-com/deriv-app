@@ -1,21 +1,16 @@
 import React from 'react';
 import { Text } from '@deriv/components';
+import { useCountdown } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
-
-type TCountdown = {
-    count: number;
-    reset: VoidFunction;
-    start: VoidFunction;
-};
 
 type TTimerProps = {
     className?: string;
-    countdown: TCountdown;
+    from: number;
     onComplete?: VoidFunction;
 };
 
-const Timer = ({ className, countdown, onComplete }: TTimerProps) => {
-    const { count, reset, start } = countdown;
+const Timer = ({ className, from, onComplete }: TTimerProps) => {
+    const { count, reset, start } = useCountdown({ from });
 
     React.useEffect(() => start(), [start]);
 

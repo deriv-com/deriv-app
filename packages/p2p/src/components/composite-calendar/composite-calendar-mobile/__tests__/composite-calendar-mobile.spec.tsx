@@ -1,8 +1,8 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { DatePicker, MobileDialog } from '@deriv/components';
 import CompositeCalendarMobile from '../composite-calendar-mobile';
-import { DatePicker, InputField, MobileDialog } from '@deriv/components';
 
 const mock_props = {
     duration_list: [

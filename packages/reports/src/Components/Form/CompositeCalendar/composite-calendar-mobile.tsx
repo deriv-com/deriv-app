@@ -185,7 +185,7 @@ const CompositeCalendarMobile = React.memo(
                         icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
                         onClick={openDialog}
                         setCurrentFocus={setCurrentFocus}
-                        value={applied_date_range?.label ?? ''}
+                        value={applied_date_range?.label}
                     />
                 </div>
                 <MobileDialog

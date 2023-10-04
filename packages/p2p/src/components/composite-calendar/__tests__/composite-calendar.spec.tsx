@@ -1,10 +1,10 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { toMoment } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import CompositeCalendar from '../composite-calendar';
 import TwoMonthPicker from '../two-month-picker';
-import { toMoment } from '@deriv/shared';
 
 const mock_props = {
     input_date_range: {

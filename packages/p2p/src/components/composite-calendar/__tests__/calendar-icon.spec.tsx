@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CalendarIcon from '../calendar-icon';
-import userEvent from '@testing-library/user-event';
 
 describe('<CalendarIcon />', () => {
     it('should render icon', () => {

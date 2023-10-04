@@ -113,7 +113,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
         if (typeof onChange === 'function' && e.target) {
             onChange({
                 target: {
-                    name: e.target.name,
+                    name: e.target.name || '',
                     value: hasRangeSelection() ? e.target.value : toMoment(e.target.value).format('YYYY-MM-DD'),
                 },
             });

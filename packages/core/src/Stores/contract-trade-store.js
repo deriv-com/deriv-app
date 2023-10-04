@@ -188,30 +188,21 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     updateChartType(type) {
-        LocalStore.set('contract_trade.chart_type', type);
-        this.chart_type = type;
-    }
-
-    updateAlphaChartType(type) {
-        LocalStore.set('contract_trade.chart_style', type);
+        if (this.root_store.client.is_alpha_chart) {
+            LocalStore.set('contract_trade.chart_style', type);
+        } else {
+            LocalStore.set('contract_trade.chart_type', type);
+        }
         this.chart_type = type;
     }
 
     updateGranularity(granularity) {
-        const tick_chart_types = ['mountain', 'line', 'colored_line', 'spline', 'baseline'];
-        const tick_alpha_chart_types = ['line', 'candles', 'hollow', 'ohlc'];
+        const tick_chart_types = this.root_store.client.is_alpha_chart
+            ? ['line', 'candles', 'hollow', 'ohlc']
+            : ['mountain', 'line', 'colored_line', 'spline', 'baseline'];
 
-        switch (this.root_store.client.is_alpha_chart) {
-            case true:
-                if (granularity === 0 && tick_alpha_chart_types.indexOf(this.alpha_chart_type) === -1) {
-                    this.alpha_chart_type = 'line';
-                }
-                break;
-            default:
-                if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
-                    this.chart_type = 'mountain';
-                }
-                break;
+        if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
+            this.chart_type = this.root_store.client.is_alpha_chart ? 'line' : 'mountain';
         }
 
         LocalStore.set('contract_trade.granularity', granularity);
@@ -380,17 +371,29 @@ export default class ContractTradeStore extends BaseStore {
         const is_last_contract = contract_id === this.last_contract.contract_id;
 
         const contract = new ContractStore(this.root_store, { contract_id });
-        contract.populateConfig(
-            {
+
+        if (this.root_store.client.is_alpha_chart) {
+            contract.populateConfig(
+                {
+                    date_start: start_time,
+                    barrier,
+                    contract_type,
+                    longcode,
+                    underlying,
+                    limit_order,
+                },
+                is_last_contract
+            );
+        } else {
+            contract.populateConfig({
                 date_start: start_time,
                 barrier,
                 contract_type,
                 longcode,
                 underlying,
                 limit_order,
-            },
-            is_last_contract
-        );
+            });
+        }
 
         this.contracts.push(contract);
         this.contracts_map[contract_id] = contract;

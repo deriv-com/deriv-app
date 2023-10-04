@@ -30,7 +30,7 @@ const CompositeCalendarMobile = ({
     from,
     to,
 }: TCompositeCalendarMobileProps) => {
-    const date_range = input_date_range || duration_list?.find(range => range.value === 'all_time');
+    const date_range = input_date_range ?? duration_list?.find(range => range.value === 'all_time');
 
     const [from_date, setFrom] = React.useState(from ? toMoment(from).format('YYYY-MM-DD') : undefined);
     const [to_date, setTo] = React.useState(to ? toMoment(to).format('YYYY-MM-DD') : undefined);
@@ -105,7 +105,7 @@ const CompositeCalendarMobile = ({
 
     const onDateRangeChange = (date_range: TInputDateRange) => {
         setSelectedDateRange(
-            duration_list?.find(range => date_range && range.value === date_range.value) || date_range
+            duration_list?.find(range => date_range && range.value === date_range.value) ?? date_range
         );
     };
 

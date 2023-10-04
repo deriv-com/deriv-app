@@ -20,8 +20,6 @@ const mock_props = {
 
 jest.mock('../composite-calendar-mobile', () => jest.fn(() => <div>CompositeCalendarMobile</div>));
 
-// jest.mock('../calendar-side-list', () =>jest.fn(() => <div>CalendarSideList</div>));
-
 jest.mock('../two-month-picker', () => jest.fn(() => <div>TwoMonthPicker</div>));
 
 describe('<CompositeCalendar />', () => {

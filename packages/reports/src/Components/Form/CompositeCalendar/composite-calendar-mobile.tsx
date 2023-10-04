@@ -4,6 +4,7 @@ import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 import { TInputDateRange } from 'Types';
+import CalendarIcon from './calendar-icon';
 
 type TRadioButton = {
     id: string;
@@ -182,7 +183,7 @@ const CompositeCalendarMobile = React.memo(
                         id='dt_calendar_input'
                         current_focus={current_focus}
                         is_read_only={true}
-                        icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
+                        icon={CalendarIcon}
                         onClick={openDialog}
                         setCurrentFocus={setCurrentFocus}
                         value={applied_date_range?.label}

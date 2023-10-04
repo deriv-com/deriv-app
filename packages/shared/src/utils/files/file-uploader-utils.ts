@@ -1,12 +1,13 @@
-import { useFileUploader } from '@deriv/hooks';
+import { type useMutation } from '@deriv/api';
 import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage } from './image/image_utility';
-import { DocumentUploadRequest } from '@deriv/api-types';
 
 export type TFile = File & { file: Blob };
 
-type TSettings = Partial<Parameters<ReturnType<typeof useFileUploader>['uploader']>[1]>;
+type TSettings = NonNullable<
+    NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>>[0]>['payload']
+>;
 
-type TFileObject = TSettings & {
+export type TFileObject = TSettings & {
     filename: File['name'];
     buffer: FileReader['result'];
     documentFormat: string;
@@ -44,7 +45,7 @@ export const compressImageFiles = (files?: FileList | null) => {
 };
 
 export const readFiles = (files: Blob[], getFileReadErrorMessage: (t: string) => string, settings?: TSettings) => {
-    const promises: Promise<TFileObject | { message: string }>[] = [];
+    const promises: Array<Promise<TFileObject | { message: string }>> = [];
 
     files.forEach(f => {
         const fr = new FileReader();

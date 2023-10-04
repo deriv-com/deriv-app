@@ -12,7 +12,7 @@ type TConnectedAppsEntry = {
     scopes: string[];
 };
 
-type TDataListTemplate = { data_source: TConnectedAppsEntry; handleToggleModal: (app_id: number | null) => void };
+type TDataListTemplate = { data_source: TConnectedAppsEntry; handleToggleModal: (app_id: number) => void };
 
 const DataListTemplate = ({ data_source, handleToggleModal }: TDataListTemplate) => {
     const permissions = data_source.scopes

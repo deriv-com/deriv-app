@@ -1,4 +1,4 @@
-import { DocumentUploader } from '@binary-com/binary-document-uploader';
+const { DocumentUploader } = require('@binary-com/binary-document-uploader'); // Using require because this package has no types defined
 import { useMutation } from '@deriv/api';
 import { WS, compressImageFiles, readFiles } from '@deriv/shared';
 import { useCallback, useRef, useState } from 'react';

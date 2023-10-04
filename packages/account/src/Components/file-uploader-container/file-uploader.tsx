@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import DocumentUploader from '@binary-com/binary-document-uploader';
+// import DocumentUploader from '@binary-com/binary-document-uploader';
 import { FileDropzone, Icon, Text, useStateCallback } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
@@ -10,14 +10,14 @@ import {
     getSupportedFiles,
     max_document_size,
     supported_filetypes,
-    TSettings,
 } from '@deriv/shared';
-import { TFile } from 'Types';
+import { TFile } from '../../Types';
 import { useFileUploader } from '@deriv/hooks';
 
 type TFileObject = {
     file: TFile;
 };
+type TSettings = Partial<Parameters<ReturnType<typeof useFileUploader>['uploader']>[1]>;
 
 const UploadMessage = () => {
     return (

@@ -1,16 +1,17 @@
 .order-table {
     @include mobile {
-        height: 7.7rem;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
         border-bottom: 1px solid var(--general-section-1);
     }
 
     &__toggle-wrapper {
-        width: fit-content;
+        .toggle-container {
+            @include tablet-up {
+                margin: 2.4rem 0 4.8rem;
+            }
+        }
         border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
 
         &-filter {
             .dc-button-menu__wrapper {
@@ -24,6 +25,34 @@
         }
         @include mobile {
             align-self: center;
+            flex-direction: column;
+            width: 100%;
+        }
+        &--search {
+            display: flex;
+            margin: 2.4rem 0 4.8rem;
+            gap: 0.8rem;
+            align-items: center;
+
+            @include mobile {
+                margin: 0 1.6rem 3.2rem;
+            }
+
+            &-icon {
+                border: 1px solid var(--general-active);
+                align-self: center;
+                border-radius: 0.4rem;
+                padding: 0.6rem 0.8rem;
+                width: 3.2rem;
+                height: 3.2rem;
+                &:hover {
+                    cursor: pointer;
+                }
+                @include mobile {
+                    width: 4rem;
+                    height: 4rem;
+                }
+            }
         }
     }
 

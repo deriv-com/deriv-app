@@ -14,7 +14,7 @@ export type TButtonType = 'button' | 'submit' | 'reset';
 // supports more than two different types of 'value' as a prop.
 // Quick Solution - Pass two different props to input field.
 type TInputField = {
-    ariaLabel: string;
+    ariaLabel?: string;
     checked?: boolean;
     className?: string;
     classNameDynamicSuffix?: string;
@@ -22,7 +22,7 @@ type TInputField = {
     classNameInput?: string;
     classNamePrefix?: string;
     classNameWrapper?: string; // CSS class for the component wrapper
-    currency: string;
+    currency?: string;
     current_focus?: string | null;
     data_testid?: string;
     data_tip?: string;
@@ -31,44 +31,44 @@ type TInputField = {
     error_message_alignment?: string;
     error_messages?: string[];
     format?: (new_value?: string) => string;
-    fractional_digits: number;
+    fractional_digits?: number;
     helper?: string;
     icon?: React.ElementType;
     id?: string;
     increment_button_type?: TButtonType;
     inline_prefix?: string;
     inputmode?: TInputMode;
-    is_autocomplete_disabled: boolean;
+    is_autocomplete_disabled?: boolean;
     is_disabled?: boolean;
-    is_error_tooltip_hidden: boolean;
-    is_float: boolean;
-    is_hj_whitelisted: boolean;
+    is_error_tooltip_hidden?: boolean;
+    is_float?: boolean;
+    is_hj_whitelisted?: boolean;
     is_incrementable_on_long_press?: boolean;
-    is_incrementable: boolean;
-    is_negative_disabled: boolean;
+    is_incrementable?: boolean;
+    is_negative_disabled?: boolean;
     is_read_only?: boolean;
     is_signed?: boolean;
     is_unit_at_right?: boolean;
     label?: string;
-    max_length: number;
+    max_length?: number;
     max_value?: number;
     min_value?: number;
     name: string;
     onBlur?: React.FocusEventHandler<HTMLInputElement>;
-    onChange: (e: TChangeEvent) => void;
+    onChange?: (e: TChangeEvent) => void;
     onClick?: React.MouseEventHandler<HTMLInputElement>;
     onClickInputWrapper?: React.MouseEventHandler<HTMLDivElement>;
     placeholder?: string;
     prefix?: string;
     required?: boolean;
     setCurrentFocus: (name: string | null) => void;
-    type: string;
+    type?: string;
     unit?: string;
     value: number | string;
 };
 
 const InputField = ({
-    ariaLabel,
+    ariaLabel = '',
     checked,
     className,
     classNameDynamicSuffix,
@@ -76,46 +76,48 @@ const InputField = ({
     classNameInput,
     classNamePrefix,
     classNameWrapper,
-    currency,
+    currency = '',
     current_focus,
     data_tip,
     data_value,
     decimal_point_change,
     error_messages,
     error_message_alignment,
-    fractional_digits,
+    fractional_digits = 0,
     helper,
     icon,
     id,
     inline_prefix,
-    is_autocomplete_disabled,
+    is_autocomplete_disabled = false,
     is_disabled,
     is_error_tooltip_hidden = false,
-    is_float,
+    is_float = false,
     is_hj_whitelisted = false,
-    is_incrementable,
+    is_incrementable = false,
     is_incrementable_on_long_press,
-    is_negative_disabled,
+    is_negative_disabled = false,
     is_read_only = false,
     is_signed = false,
     is_unit_at_right = false,
     inputmode,
     increment_button_type,
     label,
-    max_length,
+    max_length = 0,
     max_value,
     min_value,
     name,
     format,
     onBlur,
-    onChange,
+    onChange = () => {
+        // do nothing
+    },
     onClick,
     onClickInputWrapper,
     placeholder,
     prefix,
     required,
     setCurrentFocus,
-    type,
+    type = '',
     unit,
     value,
     data_testid,

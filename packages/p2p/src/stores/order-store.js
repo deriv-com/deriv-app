@@ -1,4 +1,4 @@
-import { cloneObject } from '@deriv/shared';
+import { cloneObject, toMoment } from '@deriv/shared';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
@@ -13,8 +13,11 @@ export default class OrderStore {
             cancellation_block_duration: observable,
             cancellation_count_period: observable,
             cancellation_limit: observable,
+            date_from: observable,
+            date_to: observable,
             error_code: observable,
             error_message: observable,
+            filtered_date_range: observable,
             has_more_items_to_load: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
@@ -37,6 +40,7 @@ export default class OrderStore {
             getP2POrderList: action.bound,
             getSettings: action.bound,
             getWebsiteStatus: action.bound,
+            handleDateChange: action.bound,
             handleRating: action.bound,
             hideDetails: action.bound,
             loadMoreOrders: action.bound,
@@ -90,8 +94,11 @@ export default class OrderStore {
     cancellation_block_duration = 0;
     cancellation_count_period = 0;
     cancellation_limit = 0;
+    date_from = null;
+    date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     error_code = '';
     error_message = '';
+    filtered_date_range = null;
     has_more_items_to_load = false;
     is_invalid_verification_link_modal_open = false;
     should_navigate_to_buy_sell = false;
@@ -193,6 +200,21 @@ export default class OrderStore {
         });
     }
 
+    handleDateChange(date_values, { date_range } = {}) {
+        const { from, to, is_batch } = date_values;
+
+        this.filtered_date_range = date_range;
+
+        if (from) {
+            this.date_from = toMoment(from).unix();
+        } else if (is_batch) {
+            this.date_from = null;
+        }
+
+        if (to) this.date_to = toMoment(to).unix();
+        this.loadMoreOrders({}, true);
+    }
+
     getP2POrderList() {
         requestWS({ p2p_order_list: 1 }).then(response => {
             if (response) {
@@ -249,17 +271,21 @@ export default class OrderStore {
         this.setActiveOrder(null);
     }
 
-    loadMoreOrders({ startIndex }) {
+    loadMoreOrders({ startIndex = 0 }, should_reset = false) {
         this.setApiErrorMessage('');
         return new Promise(resolve => {
             const { general_store } = this.root_store;
             const active = general_store.is_active_tab ? 1 : 0;
-            requestWS({
+            const order_request = {
                 p2p_order_list: 1,
                 active,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
-            }).then(response => {
+            };
+            if (this.date_from) order_request.date_from = this.date_from;
+            if (this.date_to) order_request.date_to = this.date_to;
+
+            requestWS(order_request).then(response => {
                 if (!response?.error) {
                     // Ignore any responses that don't match our request. This can happen
                     // due to quickly switching between Active/Past tabs.
@@ -267,7 +293,7 @@ export default class OrderStore {
                         const { list } = response.p2p_order_list;
                         this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
 
-                        const old_list = [...this.orders];
+                        const old_list = should_reset ? [] : [...this.orders];
                         const new_list = [];
 
                         list?.forEach(order => {

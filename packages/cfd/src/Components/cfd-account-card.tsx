@@ -1,10 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
+import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { CFDAccountCopy } from './cfd-account-copy';
 import {
     getDXTradeWebTerminalLink,
     getPlatformDXTradeDownloadLink,
@@ -13,8 +12,6 @@ import {
 } from '../Helpers/constants';
 import {
     TAccountIconValues,
-    TSpecBoxProps,
-    TPasswordBoxProps,
     TCFDAccountCardActionProps,
     TCFDAccountCard,
     TTradingPlatformAccounts,
@@ -24,6 +21,8 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { FormikValues } from 'formik';
+import SpecBox from './specbox';
+import PasswordBox from './passwordbox';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
@@ -60,48 +59,6 @@ const AddAccountButton = React.forwardRef<HTMLDivElement, { onSelectAccount: () 
 );
 
 AddAccountButton.displayName = 'AddAccountButton';
-
-const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
-    <div className='cfd-account-card__spec-box'>
-        <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-account-card__spec-text'>
-            {value}
-        </Text>
-        <CFDAccountCopy text={value} className='cfd-account-card__spec-copy' />
-    </div>
-);
-
-const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
-    <div className='cfd-account-card__password-box'>
-        <div className='cfd-account-card__password-text'>
-            <Popover
-                alignment='right'
-                message={localize(
-                    'Use these credentials to log in to your {{platform}} account on the website and mobile apps.',
-                    {
-                        platform: getCFDPlatformLabel(platform),
-                    }
-                )}
-                classNameBubble='cfd-account-card__password-tooltip'
-            >
-                <Text size='xs'>•••••••••••••••</Text>
-            </Popover>
-        </div>
-        <Popover alignment='bottom' message={localize('Change Password')}>
-            <Button
-                className='cfd-account-card__password-action'
-                transparent
-                onClick={onClick}
-                icon={
-                    <Icon
-                        icon='IcEdit'
-                        className='da-article__learn-more-icon'
-                        custom_color='var(--text-less-prominent)'
-                    />
-                }
-            />
-        </Popover>
-    </div>
-);
 
 const CFDAccountCardAction = ({
     button_label,

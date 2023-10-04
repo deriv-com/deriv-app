@@ -303,11 +303,12 @@ export default class ContractTradeStore extends BaseStore {
             markers[markers.length - 1].is_last_contract = true;
         }
         const { current_spot_time, entry_tick_time, exit_tick_time } = this.last_contract.contract_info || {};
+        const should_show_poc_barriers =
+            (entry_tick_time && entry_tick_time !== current_spot_time) ||
+            (exit_tick_time && current_spot_time <= exit_tick_time);
         const { accumulators_high_barrier, accumulators_low_barrier, barrier_spot_distance, proposal_prev_spot_time } =
-            (((isAccumulatorContractOpen(this.last_contract.contract_info) &&
-                entry_tick_time &&
-                entry_tick_time !== current_spot_time) ||
-                (exit_tick_time && current_spot_time <= exit_tick_time)) &&
+            (isAccumulatorContractOpen(this.last_contract.contract_info) &&
+                should_show_poc_barriers &&
                 this.accumulator_contract_barriers_data?.accumulators_high_barrier &&
                 this.accumulator_contract_barriers_data) ||
             this.accumulator_barriers_data ||

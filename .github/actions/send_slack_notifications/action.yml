@@ -18,11 +18,16 @@ runs:
   using: composite
   steps:
   - name: Send Slack Notification on Success
+    env:
+      SLACK_WEBHOOK_URL: ${{ inputs.SLACK_WEBHOOK_URL }}
+      RELEASE_TYPE: ${{ inputs.release_type }}
+      VERSION: ${{ inputs.version }}
+
     if: inputs.status == 'success'
     run: |-
         curl -X POST -H 'Content-type: application/json' \
         --data '{
-        "text": "'"${{ inputs.release_type }}"' Release succeeded for app.deriv.com with version *'"${{ inputs.version }}"'*"
+        "text": "$RELEASE_TYPE Release succeeded for app.deriv.com with version *'$VERSION'*"
         }' \
           $SLACK_WEBHOOK_URL
     shell: bash
@@ -32,7 +37,7 @@ runs:
     run: |-
           curl -X POST -H 'Content-type: application/json' \
           --data '{
-            "text": "'"${{ inputs.release_type }}"' Release failed for app.deriv.com with version *'"${{ inputs.version }}"'*"
+            "text": "$RELEASE_TYPE Release failed for app.deriv.com with version *'"$VERSION"'*"
           }' \
           $SLACK_WEBHOOK_URL
     shell: bash

@@ -247,7 +247,7 @@ const CFDsListing = observer(() => {
                                 }}
                                 openFailedVerificationModal={openFailedVerificationModal}
                                 is_open_order_position_status_present={is_open_order_position_status_present}
-                                open_order_position_status={open_order_position_status}
+                                open_order_position_status={!!open_order_position_status}
                                 market_type={existing_account?.market_type}
                             />
                         );

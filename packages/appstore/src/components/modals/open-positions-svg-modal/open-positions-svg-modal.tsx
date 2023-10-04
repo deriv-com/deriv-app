@@ -13,7 +13,7 @@ import { Localize } from '@deriv/translations';
 
 type TOpenPositionsSVGModal = {
     market_type: string;
-    open_order_position_status: boolean;
+    open_order_position_status: boolean | undefined;
     is_modal_open: boolean;
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };

@@ -64,7 +64,7 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     platform?: TPlatform;
     openFailedVerificationModal?: (from_account: string) => void;
     is_open_order_position_status_present?: boolean;
-    open_order_position_status: boolean;
+    open_order_position_status: boolean | undefined;
     market_type: string;
 };
 

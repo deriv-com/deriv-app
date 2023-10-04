@@ -28,6 +28,11 @@ describe('<AccountTransferForm />', () => {
                         mt5: {},
                     },
                 },
+                authentication_status: {
+                    document_status: 'verified',
+                    identity_status: 'verified',
+                },
+                is_eu: false,
                 mt5_login_list: [
                     {
                         login: 'value',
@@ -177,6 +182,21 @@ describe('<AccountTransferForm />', () => {
         fireEvent.click(submit_button);
 
         expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
+    });
+
+    it('should show an error if poa or poi is pending and is an eu user and transfer button should be disabled', async () => {
+        mockRootStore.client.is_eu = true;
+        mockRootStore.client.authentication_status = {
+            document_status: 'pending',
+            identity_status: 'verified',
+        };
+
+        renderAccountTransferForm();
+
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '1' } });
+
+        expect(await screen.findByText('Unavailable as your documents are still under review')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Transfer' })).toBeDisabled();
     });
 
     it('should not allow to do transfer if accounts from and to are same', () => {

@@ -40,7 +40,7 @@ const WalletCashierHeader = () => {
                         {data?.wallet_currency_type && <WalletCardIcon size='xl' type={data?.wallet_currency_type} />}
                         <button
                             className='wallets-cashier-header__close-button'
-                            onClick={() => history.push('/appstore/traders-hub')}
+                            onClick={() => history.push('/wallets')}
                         >
                             <CloseIcon />
                         </button>
@@ -50,12 +50,12 @@ const WalletCashierHeader = () => {
                     {tabs.map(tab => (
                         <button
                             className={`wallets-cashier-header__tabs__tab ${
-                                location.pathname === `/appstore/traders-hub/cashier/${tab}`
+                                location.pathname === `/wallets/cashier/${tab}`
                                     ? 'wallets-cashier-header__tabs__tab--active'
                                     : ''
                             }`}
                             key={`cashier-tab-${tab}`}
-                            onClick={() => history.push(`/appstore/traders-hub/cashier/${tab}`)}
+                            onClick={() => history.push(`/wallets/cashier/${tab}`)}
                         >
                             {tab}
                         </button>

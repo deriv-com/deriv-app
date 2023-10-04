@@ -16,13 +16,13 @@ const WalletTransactionsNoDataState = () => {
             <div className='wallets-transactions-no-data-state__buttons'>
                 <button
                     className='wallets-transactions-no-data-state__buttons__transfer'
-                    onClick={() => history.push('/appstore/traders-hub/cashier/transfer')}
+                    onClick={() => history.push('/wallets/cashier/transfer')}
                 >
                     Transfer funds
                 </button>
                 <button
                     className='wallets-transactions-no-data-state__buttons__deposit'
-                    onClick={() => history.push('/appstore/traders-hub/cashier/deposit')}
+                    onClick={() => history.push('/wallets/cashier/deposit')}
                 >
                     Deposit funds
                 </button>

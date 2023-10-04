@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import NumberSelector from 'App/Components/Form/number-selector.jsx';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import NumberSelector from 'App/Components/Form/number-selector';
+import Fieldset from 'App/Components/Form/fieldset';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
 import classNames from 'classnames';
 import { observer } from '@deriv/stores';

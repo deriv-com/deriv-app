@@ -29,7 +29,13 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
             <Text as='div' color='prominent' size={is_mobile ? 's' : 'm'} weight='bold'>
                 {data.title}
             </Text>
-            <Text as='div' className='wallet-linking-step__description' color='prominent' size={is_mobile ? 'xs' : 's'}>
+            <Text
+                as='div'
+                className='wallet-linking-step__description'
+                align='center'
+                color='prominent'
+                size={is_mobile ? 'xs' : 's'}
+            >
                 <Localize i18n_default_text='This is how we link your accounts with your new Wallet.' />
             </Text>
             <TitleText className='wallet-linking-step__note'>

@@ -32,7 +32,7 @@ type TAccountTransferFormProps = {
     setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
-const AccountOption = ({ account, idx }: TAccountsList) => {
+const AccountOption = ({ account, idx, is_pending, is_selected_from }: TAccountsList) => {
     const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt || account.is_derivez;
 
     return (
@@ -55,12 +55,18 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
             </div>
 
             <span className='account-transfer-form__balance'>
-                <Money
-                    amount={account.balance}
-                    currency={account.currency}
-                    has_sign={Boolean(account.balance && Number(account.balance) < 0)}
-                    show_currency
-                />
+                {is_pending && is_selected_from ? (
+                    <Text color='warning' size='xs'>
+                        <Localize i18n_default_text='Pending verification' />
+                    </Text>
+                ) : (
+                    <Money
+                        amount={account.balance}
+                        currency={account.currency}
+                        has_sign={Boolean(account.balance && Number(account.balance) < 0)}
+                        show_currency
+                    />
+                )}
             </span>
         </React.Fragment>
     );
@@ -88,7 +94,7 @@ const AccountTransferForm = observer(
         } = useStore();
 
         const { is_mobile } = ui;
-        const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
+        const { account_limits, authentication_status, is_eu, is_dxtrade_allowed, getLimits: onMount } = client;
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
 
         const {
@@ -138,12 +144,19 @@ const AccountTransferForm = observer(
         const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
         const is_derivez_transfer = selected_to.is_derivez || selected_from.is_derivez;
 
+        const is_poa_or_poi_pending_for_mf =
+            (authentication_status?.document_status === 'pending' ||
+                authentication_status?.identity_status === 'pending') &&
+            is_eu;
+
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
         const history = useHistory();
 
         const validateAmount = (amount: string) => {
             if (!amount) return localize('This field is required.');
+
+            if (is_poa_or_poi_pending_for_mf) return localize('Unavailable as your documents are still under review');
 
             const { is_ok, message } = validNumber(amount, {
                 type: 'float',
@@ -199,7 +212,15 @@ const AccountTransferForm = observer(
             derivez_accounts_to = [];
 
             accounts_list.forEach((account, idx) => {
-                const text = <AccountOption idx={idx} account={account} />;
+                const is_selected_from = account.value === selected_from.value;
+                const text = (
+                    <AccountOption
+                        idx={idx}
+                        account={account}
+                        is_pending={is_poa_or_poi_pending_for_mf}
+                        is_selected_from={is_selected_from}
+                    />
+                );
                 const value = account.value;
 
                 const is_cfd_account = account.is_mt || account.is_ctrader || account.is_dxtrade || account.is_derivez;
@@ -213,7 +234,6 @@ const AccountTransferForm = observer(
                         account.balance
                     } ${is_cfd_account ? account.currency : account.text})`,
                 });
-                const is_selected_from = account.value === selected_from.value;
 
                 if (
                     (selected_from.is_mt && (account.is_dxtrade || account.is_ctrader)) ||
@@ -450,11 +470,15 @@ const AccountTransferForm = observer(
                                         >
                                             <Dropdown
                                                 id='transfer_from'
-                                                className='account-transfer-form__drop-down'
+                                                className={classNames('account-transfer-form__drop-down', {
+                                                    'account-transfer-form__drop-down--disabled':
+                                                        is_poa_or_poi_pending_for_mf,
+                                                })}
                                                 classNameDisplay='cashier__drop-down-display'
                                                 classNameDisplaySpan='cashier__drop-down-display-span'
                                                 classNameItems='cashier__drop-down-items'
                                                 classNameLabel='cashier__drop-down-label'
+                                                disabled={is_poa_or_poi_pending_for_mf}
                                                 test_id='dt_account_transfer_form_drop_down'
                                                 is_large
                                                 label={localize('From')}

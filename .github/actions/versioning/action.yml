@@ -1,0 +1,12 @@
+name: versioning
+description: Versioning
+inputs:
+  version_name:
+    description: Version name
+    required: false
+runs:
+  using: composite
+  steps:
+  - name: Tag
+    run: echo "${{ inputs.version_name }}-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
+    shell: bash

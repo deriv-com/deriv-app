@@ -117,7 +117,7 @@ type TAccountsList = {
             Derived: React.SVGAttributes<SVGElement>;
             Financial: React.SVGAttributes<SVGElement>;
             Options: React.SVGAttributes<SVGElement>;
-            CFDs: React.SVGAttributes<SVGAElement>;
+            CFDs: React.SVGAttributes<SVGElement>;
         };
         text?: JSX.Element | string;
         value?: string;
@@ -473,6 +473,7 @@ type TUiStore = {
     is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
+    is_mobile_language_menu_open: boolean;
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     is_unsupported_contract_modal_visible: boolean;
@@ -495,6 +496,7 @@ type TUiStore = {
     setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
+    setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
@@ -524,7 +526,6 @@ type TUiStore = {
     is_need_real_account_for_cashier_modal_visible: boolean;
     is_chart_layout_default: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
-    setIsAcuityModalOpen: (value: boolean) => void;
     is_switch_to_deriv_account_modal_visible: boolean;
     openSwitchToRealAccountModal: () => void;
     openDerivRealAccountNeededModal: () => void;

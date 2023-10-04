@@ -110,6 +110,7 @@ type TOverrideTradeStore = Omit<
     sessions: Array<{ open: moment.Moment; close: moment.Moment }>;
     setIsTradeParamsExpanded: (value: boolean) => void;
     short_barriers: Record<string, never> | { barrier: string; barrier_choices: string[] };
+    strike_price_choices: Record<string, never> | { barrier: string; barrier_choices: string[] };
     start_dates_list: Array<{ text: string; value: number }>;
     start_time?: string | null;
     symbol: string;

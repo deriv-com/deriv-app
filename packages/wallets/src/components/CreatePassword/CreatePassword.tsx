@@ -34,7 +34,7 @@ const CreatePassword: React.FC<TProps> = ({ icon, onPasswordChange, onPrimaryCli
                 You can use this password for all your {title} accounts.
             </span>
             <div className='wallets-create-password-input'>
-                <input onChange={onPasswordChange} placeholder={`${title}} password`} type='password' />
+                <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
                 <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
             </div>
             <button className='wallets-create-password-button' onClick={onPrimaryClick}>

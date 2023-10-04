@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, useFetch } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletCardsCarousel from '..';
 
@@ -96,6 +96,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 jest.mock('./../cards-slider-swiper', () => jest.fn(() => <div>slider</div>));
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
 describe('<WalletCardsCarousel />', () => {
     const wrapper = (mock: ReturnType<typeof mockStore>) => {
@@ -133,6 +134,23 @@ describe('<WalletCardsCarousel />', () => {
 
     it('Should render buttons for DEMO', () => {
         const mock = mockStore({ client: { accounts: { VRW10001: { token: '12345' } }, loginid: 'VRW10001' } });
+
+        mockUseFetch.mockReturnValue({
+            data: {
+                authorize: {
+                    account_list: [
+                        {
+                            account_category: 'wallet',
+                            account_type: 'doughflow',
+                            currency: 'USD',
+                            is_virtual: 1,
+                            loginid: 'VRW10001',
+                        },
+                    ],
+                    loginid: 'VRW10001',
+                },
+            },
+        } as unknown as ReturnType<typeof mockUseFetch>);
 
         render(<WalletCardsCarousel />, { wrapper: wrapper(mock) });
 

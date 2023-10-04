@@ -32,6 +32,7 @@ describe('useWalletsList', () => {
                             loginid: 'CRW909900',
                         },
                     ],
+                    loginid: 'CRW909900',
                 },
                 statement: {
                     transactions: [

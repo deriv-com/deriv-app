@@ -20,6 +20,7 @@ import {
     shouldHideHelperImage,
     shouldShowIdentityInformation,
 } from 'Helpers/utils';
+import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
 
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
@@ -52,6 +53,8 @@ const PersonalDetails = ({
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const is_submit_disabled_ref = React.useRef(true);
 
+    const PoiNameDobExampleIcon = PoiNameDobExample;
+
     const isSubmitDisabled = errors => {
         return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
     };
@@ -71,7 +74,8 @@ const PersonalDetails = ({
         onCancel(current_step, goToPreviousStep);
     };
 
-    const is_qualified_for_idv = shouldShowIdentityInformation({
+    //is_rendered_for_idv is used for configuring the components when they are used in idv page
+    const is_rendered_for_idv = shouldShowIdentityInformation({
         account_status,
         account_settings,
         residence,
@@ -99,7 +103,7 @@ const PersonalDetails = ({
 
     const handleValidate = values => {
         let idv_error = {};
-        if (is_qualified_for_idv) {
+        if (is_rendered_for_idv) {
             idv_error = validateIDV(values);
         }
         const { errors } = splitValidationResultTypes(validate(values));
@@ -124,7 +128,7 @@ const PersonalDetails = ({
 
         if (IDV_NOT_APPLICABLE_OPTION.id === selected_document_type_id) return editable_fields;
 
-        if (is_confirmed && is_qualified_for_idv) {
+        if (is_confirmed && is_rendered_for_idv) {
             return editable_fields.filter(field => !['first_name', 'last_name', 'date_of_birth'].includes(field));
         }
 
@@ -138,12 +142,12 @@ const PersonalDetails = ({
             validate={handleValidate}
             validateOnMount
             enableReinitialize
-            initialStatus={{ is_confirmed: !is_qualified_for_idv }}
+            initialStatus={{ is_confirmed: !is_rendered_for_idv }}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur, status }) => (
+            {({ handleSubmit, errors, values, status }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form
@@ -154,7 +158,7 @@ const PersonalDetails = ({
                             data-testid='personal_details_form'
                         >
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
-                                {!is_qualified_for_idv && (
+                                {!is_rendered_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>
                                         <Localize
                                             i18n_default_text={
@@ -172,17 +176,11 @@ const PersonalDetails = ({
                                         className={classNames('details-form__elements', 'personal-details-form')}
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
-                                        {is_qualified_for_idv && (
+                                        {is_rendered_for_idv && (
                                             <React.Fragment>
                                                 <FormSubHeader title={localize('Identity verification')} />
                                                 <IDVForm
                                                     selected_country={selected_country}
-                                                    errors={errors}
-                                                    touched={touched}
-                                                    values={values}
-                                                    handleChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    setFieldValue={setFieldValue}
                                                     hide_hint={true}
                                                     can_skip_document_verification={true}
                                                 />
@@ -192,13 +190,14 @@ const PersonalDetails = ({
                                         <PersonalDetailsForm
                                             class_name={classNames({
                                                 'account-form__poi-confirm-example_container':
-                                                    is_qualified_for_idv &&
+                                                    is_rendered_for_idv &&
                                                     !shouldHideHelperImage(values?.document_type?.id),
                                             })}
                                             is_virtual={is_virtual}
                                             is_svg={is_svg}
                                             is_mf={is_mf}
-                                            is_qualified_for_idv={is_qualified_for_idv}
+                                            side_note={<PoiNameDobExampleIcon />}
+                                            is_rendered_for_idv={is_rendered_for_idv}
                                             editable_fields={getEditableFields(
                                                 status?.is_confirmed,
                                                 values?.document_type?.id
@@ -212,6 +211,12 @@ const PersonalDetails = ({
                                             should_close_tooltip={should_close_tooltip}
                                             setShouldCloseTooltip={setShouldCloseTooltip}
                                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                                            inline_note_text={
+                                                <Localize
+                                                    i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                                    components={[<strong key={0} />]}
+                                                />
+                                            }
                                             no_confirmation_needed={
                                                 values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
                                             }

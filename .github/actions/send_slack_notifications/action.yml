@@ -23,21 +23,21 @@ runs:
       RELEASE_TYPE: ${{ inputs.release_type }}
       VERSION: ${{ inputs.version }}
 
-    if: inputs.status == 'success'
+    if: env.status == 'success'
     run: |-
         curl -X POST -H 'Content-type: application/json' \
         --data '{
-        "text": "$RELEASE_TYPE Release succeeded for app.deriv.com with version *'$VERSION'*"
+        "text": "$env.RELEASE_TYPE Release succeeded for app.deriv.com with version *'$env.VERSION'*"
         }' \
-          $SLACK_WEBHOOK_URL
+          ${{env.SLACK_WEBHOOK_URL}}
     shell: bash
   
   - name: Send Slack Notification on Failure
-    if: inputs.status == 'failure'
+    if: env.status == 'failure'
     run: |-
           curl -X POST -H 'Content-type: application/json' \
           --data '{
-            "text": "$RELEASE_TYPE Release failed for app.deriv.com with version *'"$VERSION"'*"
+            "text": "$env.RELEASE_TYPE Release failed for app.deriv.com with version *'"$env.VERSION"'*"
           }' \
-          $SLACK_WEBHOOK_URL
+          ${{ env.SLACK_WEBHOOK_URL }}
     shell: bash

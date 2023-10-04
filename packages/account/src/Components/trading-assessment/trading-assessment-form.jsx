@@ -34,9 +34,6 @@ const TradingAssessmentForm = ({
 
     const verifyIfAllFieldsFilled = () => {
         shouldInformUser(!is_section_filled);
-        setTimeout(() => {
-            shouldInformUser(false);
-        }, 500);
     };
 
     React.useEffect(() => {
@@ -133,7 +130,6 @@ const TradingAssessmentForm = ({
                             <Form className='trading-assessment__form--layout'>
                                 <div
                                     className={classNames('trading-assessment__form--fields', {
-                                        highlight: should_inform_user,
                                         'field-layout': ['ID', 'FR'].includes(getLanguage()),
                                     })}
                                 >
@@ -145,13 +141,18 @@ const TradingAssessmentForm = ({
                                             setFieldValue={setFieldValue}
                                             setEnableNextSection={setIsSectionFilled}
                                             disabled_items={disabled_items ?? []}
+                                            has_error={should_inform_user}
                                         />
                                     ) : (
                                         <TradingAssessmentRadioButton
                                             text={question_text}
                                             list={answer_options ?? []}
-                                            onChange={e => handleValueSelection(e, form_control, setFieldValue, values)}
+                                            onChange={e => {
+                                                handleValueSelection(e, form_control, setFieldValue, values);
+                                                shouldInformUser(false);
+                                            }}
                                             values={values}
+                                            has_error={should_inform_user}
                                             form_control={form_control}
                                             setEnableNextSection={setIsSectionFilled}
                                             disabled_items={disabled_items ?? []}

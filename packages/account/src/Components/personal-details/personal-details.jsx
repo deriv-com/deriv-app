@@ -165,7 +165,9 @@ const PersonalDetails = ({
                             onClick={closeToolTip}
                             data-testid='personal_details_form'
                         >
-                            {should_scroll_to_error_field && <ScrollToFieldWithError />}
+                            {should_scroll_to_error_field && (
+                                <ScrollToFieldWithError fields_to_scroll_end={['account_opening_reason']} />
+                            )}
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {!is_qualified_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>

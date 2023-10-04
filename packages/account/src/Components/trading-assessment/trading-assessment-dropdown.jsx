@@ -11,6 +11,7 @@ const TradingAssessmentDropdown = ({
     values,
     setFieldValue,
     setEnableNextSection,
+    has_error,
 }) => {
     React.useEffect(() => {
         checkIfAllFieldsFilled();
@@ -32,19 +33,16 @@ const TradingAssessmentDropdown = ({
             {item_list.map(question => (
                 <Field name={question.form_control} key={question.form_control}>
                     {() => {
+                        const has_input_error = !values[question.form_control];
                         return (
                             <React.Fragment>
                                 <DesktopWrapper>
                                     <Dropdown
-                                        classNameDisplay={classNames(
-                                            'trading-assessment__wrapper__dropdown--mobile--display',
-                                            {
-                                                'trading-frequency--field':
-                                                    question.form_control ===
-                                                        'trading_frequency_financial_instruments' &&
-                                                    ['ID', 'FR'].includes(getLanguage()),
-                                            }
-                                        )}
+                                        classNameDisplay={classNames({
+                                            'trading-frequency--field':
+                                                question.form_control === 'trading_frequency_financial_instruments' &&
+                                                ['ID', 'FR'].includes(getLanguage()),
+                                        })}
                                         is_align_text_left
                                         name={question?.question_text}
                                         placeholder={question?.question_text}
@@ -52,6 +50,7 @@ const TradingAssessmentDropdown = ({
                                         onChange={e => onChange(e, question.form_control, setFieldValue)}
                                         value={values[question.form_control]}
                                         disabled={disabled_items.includes(question.form_control)}
+                                        error={has_error && has_input_error && localize('Please select an option')}
                                     />
                                 </DesktopWrapper>
                                 <MobileWrapper>

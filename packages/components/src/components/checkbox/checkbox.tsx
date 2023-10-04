@@ -14,6 +14,7 @@ type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'label'>
     onChange?: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value?: boolean;
     withTabIndex?: number;
+    has_error?: boolean;
 };
 
 const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
@@ -29,6 +30,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
             value = false,
             withTabIndex = 0,
             greyDisabled = false,
+            has_error = false,
             ...otherProps
         },
         ref
@@ -84,7 +86,13 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
                         {!!checked && <Icon icon='IcCheckmark' color='active' />}
                     </span>
                 </span>
-                <Text size='xs' line_height='unset' className={classNames('dc-checkbox__label', classNameLabel)}>
+                <Text
+                    size='xs'
+                    line_height='unset'
+                    className={classNames('dc-checkbox__label', classNameLabel, {
+                        'dc-checkbox__label--error': has_error,
+                    })}
+                >
                     {label}
                 </Text>
             </label>

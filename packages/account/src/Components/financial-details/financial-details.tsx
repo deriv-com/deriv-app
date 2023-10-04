@@ -11,6 +11,7 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import ScrollToFieldWithError from 'Components/forms/scroll-to-field-with-error';
 import {
     AccountTurnover,
     IncomeSource,
@@ -106,7 +107,17 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
             }}
             validateOnMount
         >
-            {({ handleSubmit, isSubmitting, errors, values, setFieldValue, handleChange, handleBlur, touched }) => {
+            {({
+                handleSubmit,
+                isSubmitting,
+                isValid,
+                errors,
+                values,
+                setFieldValue,
+                handleChange,
+                handleBlur,
+                touched,
+            }) => {
                 const shared_props = {
                     values,
                     handleChange,
@@ -126,6 +137,10 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                             height?: number | string;
                         }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
+                                <ScrollToFieldWithError
+                                    fields_to_scroll_top={['income_source']}
+                                    fields_to_scroll_end={['account_turnover']}
+                                />
                                 <Div100vhContainer
                                     className={classNames('details-form', 'financial-assessment')}
                                     height_offset='110px'
@@ -174,10 +189,7 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                                 </Div100vhContainer>
                                 <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
-                                        is_disabled={
-                                            // eslint-disable-next-line no-unused-vars
-                                            isSubmitting || Object.keys(errors).length > 0
-                                        }
+                                        is_disabled={isSubmitting}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         has_cancel

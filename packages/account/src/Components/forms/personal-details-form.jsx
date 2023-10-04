@@ -206,6 +206,7 @@ const PersonalDetailsForm = props => {
                                             disabled={
                                                 !!values.salutation && isFieldImmutable('salutation', editable_fields)
                                             }
+                                            has_error={touched.salutation && errors.salutation}
                                         />
                                     ))}
                                 </RadioGroup>
@@ -529,6 +530,9 @@ const PersonalDetailsForm = props => {
                                         )}
                                         withTabIndex={0}
                                         data-testid='tax_identification_confirm'
+                                        has_error={
+                                            touched.tax_identification_confirm && errors.tax_identification_confirm
+                                        }
                                     />
                                 )}
                             </React.Fragment>

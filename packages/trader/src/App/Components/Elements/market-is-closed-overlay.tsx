@@ -1,14 +1,29 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import MarketCountdownTimer from './market-countdown-timer.jsx';
+import MarketCountdownTimer from './market-countdown-timer';
+import { useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores.js';
 
-const MarketIsClosedOverlay = ({ is_eu, is_synthetics_trading_market_available, onClick, onMarketOpen, symbol }) => {
+type TMarketIsClosedOverlay = {
+    is_eu: ReturnType<typeof useStore>['client']['is_eu'];
+    is_synthetics_trading_market_available: ReturnType<typeof useTraderStore>['is_synthetics_trading_market_available'];
+    onClick: () => void;
+    onMarketOpen: React.ComponentProps<typeof MarketCountdownTimer>['onMarketOpen'];
+    symbol: ReturnType<typeof useTraderStore>['symbol'];
+};
+
+const MarketIsClosedOverlay = ({
+    is_eu,
+    is_synthetics_trading_market_available,
+    onClick,
+    onMarketOpen,
+    symbol,
+}: TMarketIsClosedOverlay) => {
     const [is_timer_loading, setIsTimerLoading] = React.useState(true);
 
-    let message = (
+    let message: JSX.Element | null = (
         <Localize i18n_default_text='In the meantime, try our synthetic indices. They simulate real-market volatility and are open 24/7.' />
     );
     let btn_lbl = localize('Try Synthetic Indices');
@@ -43,14 +58,6 @@ const MarketIsClosedOverlay = ({ is_eu, is_synthetics_trading_market_available, 
             )}
         </div>
     );
-};
-
-MarketIsClosedOverlay.propTypes = {
-    is_eu: PropTypes.bool,
-    is_synthetics_trading_market_available: PropTypes.bool,
-    onClick: PropTypes.func,
-    onMarketOpen: PropTypes.func,
-    symbol: PropTypes.string,
 };
 
 export default MarketIsClosedOverlay;

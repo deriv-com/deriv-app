@@ -6,24 +6,32 @@ import { localize } from '@deriv/translations';
 import { NavLink } from 'react-router-dom';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
-import TogglePositions from './toggle-positions.jsx';
+import TogglePositions from './toggle-positions';
 import { observer, useStore } from '@deriv/stores';
+
+type TTogglePositionsMobile = Pick<
+    ReturnType<typeof useStore>['portfolio'],
+    'active_positions_count' | 'error' | 'onClickSell' | 'onClickCancel'
+> & {
+    currency: ReturnType<typeof useStore>['client']['currency'];
+    filtered_positions: ReturnType<typeof useStore>['portfolio']['all_positions'];
+    is_empty: boolean;
+};
+
+type THiddenPositionsId = TTogglePositionsMobile['filtered_positions'][0]['id'];
 
 const TogglePositionsMobile = observer(
     ({
         active_positions_count,
         currency,
-        disableApp,
-        enableApp,
         error,
         filtered_positions,
         is_empty,
         onClickSell,
         onClickCancel,
-        toggleUnsupportedContractModal,
-    }) => {
-        const { togglePositionsDrawer, is_positions_drawer_on } = useStore().ui;
-        const [hidden_positions_ids, setHiddenPositionsIds] = React.useState([]);
+    }: TTogglePositionsMobile) => {
+        const { togglePositionsDrawer, toggleUnsupportedContractModal, is_positions_drawer_on } = useStore().ui;
+        const [hidden_positions_ids, setHiddenPositionsIds] = React.useState<THiddenPositionsId[]>([]);
         const displayed_positions = filtered_positions
             .filter(p =>
                 hidden_positions_ids.every(hidden_position_id => hidden_position_id !== p.contract_info.contract_id)
@@ -57,6 +65,7 @@ const TogglePositionsMobile = observer(
                             unmountOnExit
                         >
                             <PositionsModalCard
+                                //@ts-expect-error observer wrapped component needs to be ts migrated first
                                 onClickSell={onClickSell}
                                 onClickCancel={onClickCancel}
                                 key={portfolio_position.id}
@@ -84,8 +93,6 @@ const TogglePositionsMobile = observer(
                     id='dt_mobile_positions'
                     is_vertical_top
                     has_close_icon
-                    enableApp={enableApp}
-                    disableApp={disableApp}
                     width='calc(100vw - 32px)'
                 >
                     <Div100vhContainer className='positions-modal' height_offset='48px'>

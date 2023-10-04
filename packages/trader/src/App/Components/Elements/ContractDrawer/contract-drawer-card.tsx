@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard, useHover } from '@deriv/components';
 import {
@@ -9,18 +8,45 @@ import {
     getContractTypeDisplay,
     isCryptoContract,
     isDesktop,
+    toMoment,
 } from '@deriv/shared';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
-import { SwipeableContractDrawer } from './swipeable-components.jsx';
-import MarketClosedContractOverlay from './market-closed-contract-overlay.jsx';
+import { SwipeableContractDrawer } from './swipeable-components';
+import MarketClosedContractOverlay from './market-closed-contract-overlay';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
+
+type TContractCardBodyProps = React.ComponentProps<typeof ContractCard.Body>;
+type TContractCardFooterProps = React.ComponentProps<typeof ContractCard.Footer>;
+type TSwipeableContractDrawerProps = React.ComponentProps<typeof SwipeableContractDrawer>;
+
+type TContractDrawerCardProps = {
+    currency?: string;
+    is_collapsed: boolean;
+    is_market_closed: boolean;
+    is_smarttrader_contract: boolean;
+    result?: string;
+    server_time?: moment.Moment;
+    toggleContractAuditDrawer: () => void;
+} & Pick<
+    TContractCardBodyProps,
+    | 'contract_info'
+    | 'contract_update'
+    | 'is_accumulator'
+    | 'is_mobile'
+    | 'is_multiplier'
+    | 'is_turbos'
+    | 'is_vanilla'
+    | 'status'
+> &
+    Pick<TContractCardFooterProps, 'is_sell_requested' | 'onClickCancel' | 'onClickSell'> &
+    Pick<TSwipeableContractDrawerProps, 'onSwipedDown' | 'onSwipedUp'>;
 
 const ContractDrawerCard = observer(
     ({
         contract_info,
         contract_update,
-        currency,
+        currency = '',
         is_accumulator,
         is_collapsed,
         is_market_closed,
@@ -35,10 +61,10 @@ const ContractDrawerCard = observer(
         onSwipedUp,
         onSwipedDown,
         result,
-        server_time,
+        server_time = toMoment(),
         status,
         toggleContractAuditDrawer,
-    }) => {
+    }: TContractDrawerCardProps) => {
         const { ui, contract_trade } = useStore();
         const { active_symbols } = useTraderStore();
         const {
@@ -50,13 +76,13 @@ const ContractDrawerCard = observer(
             toggleCancellationWarning,
         } = ui;
         const { getContractById } = contract_trade;
-        const [hover_ref, should_hide_closed_overlay] = useHover();
+        const [hover_ref, should_hide_closed_overlay] = useHover<HTMLDivElement>();
 
         const { profit, validation_error } = contract_info;
         const is_sold = !!getEndTime(contract_info);
         const display_name = getSymbolDisplayName(
             active_symbols,
-            getMarketInformation(contract_info.shortcode).underlying
+            getMarketInformation(contract_info.shortcode || '').underlying
         );
 
         const is_crypto = isCryptoContract(contract_info.underlying);
@@ -83,7 +109,7 @@ const ContractDrawerCard = observer(
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
-                current_focus={current_focus}
+                current_focus={current_focus ?? ''}
                 getCardLabels={getCardLabels}
                 getContractById={getContractById}
                 is_accumulator={is_accumulator}
@@ -97,7 +123,7 @@ const ContractDrawerCard = observer(
                 server_time={server_time}
                 setCurrentFocus={setCurrentFocus}
                 should_show_cancellation_warning={should_show_cancellation_warning}
-                status={status}
+                status={status ?? ''}
                 toggleCancellationWarning={toggleCancellationWarning}
             />
         );
@@ -111,7 +137,6 @@ const ContractDrawerCard = observer(
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}
                 server_time={server_time}
-                status={status}
             />
         );
 
@@ -127,13 +152,13 @@ const ContractDrawerCard = observer(
                 contract_info={contract_info}
                 getCardLabels={getCardLabels}
                 is_multiplier={is_multiplier}
-                profit_loss={profit}
+                profit_loss={Number(profit)}
                 should_show_result_overlay={false}
             >
                 <div
                     className={classNames('dc-contract-card', {
-                        'dc-contract-card--green': profit > 0 && !result,
-                        'dc-contract-card--red': profit < 0 && !result,
+                        'dc-contract-card--green': Number(profit) > 0 && !result,
+                        'dc-contract-card--red': Number(profit) < 0 && !result,
                         'contract-card__market-closed--disabled': is_market_closed && should_hide_closed_overlay,
                     })}
                     ref={hover_ref}
@@ -175,13 +200,4 @@ const ContractDrawerCard = observer(
     }
 );
 
-ContractDrawerCard.propTypes = {
-    currency: PropTypes.string,
-    is_accumulator: PropTypes.bool,
-    is_smarttrader_contract: PropTypes.bool,
-    is_collapsed: PropTypes.bool,
-    is_turbos: PropTypes.bool,
-    onClickCancel: PropTypes.func,
-    onClickSell: PropTypes.func,
-};
 export default ContractDrawerCard;

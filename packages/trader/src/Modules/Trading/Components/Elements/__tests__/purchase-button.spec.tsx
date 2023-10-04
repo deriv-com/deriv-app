@@ -31,7 +31,7 @@ const default_mocked_props = {
     should_fade: false,
     setPurchaseState: jest.fn(),
     type: 'VANILLALONGCALL',
-};
+} as unknown as React.ComponentProps<typeof PurchaseButton>;
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

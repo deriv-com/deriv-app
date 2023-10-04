@@ -1,9 +1,17 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { formatDate, formatTime } from '@deriv/shared';
 import { Text } from '@deriv/components';
 
-const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }) => (
+type TContractAuditItem = {
+    icon?: React.ReactNode;
+    id: string;
+    label?: string;
+    timestamp?: number;
+    value: React.ReactNode;
+    value2?: React.ReactNode;
+};
+
+const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }: TContractAuditItem) => (
     <div id={id} className='contract-audit__grid' data-testid={id}>
         {icon && <div className='contract-audit__icon'>{icon}</div>}
         <div className='contract-audit__item'>
@@ -33,14 +41,5 @@ const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }) => (
         )}
     </div>
 );
-
-ContractAuditItem.propTypes = {
-    icon: PropTypes.node,
-    id: PropTypes.string,
-    label: PropTypes.string,
-    timestamp: PropTypes.string,
-    value: PropTypes.PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.node]),
-    value2: PropTypes.PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-};
 
 export default ContractAuditItem;

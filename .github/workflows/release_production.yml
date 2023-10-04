@@ -2,7 +2,7 @@ name: Deriv App Production Workflow
 on:
   push:
     tags:
-    - production.*
+    - production_*
 jobs:
   build_test_and_publish:
     name: Build, Test and Publish to Cloudflare Pages Production

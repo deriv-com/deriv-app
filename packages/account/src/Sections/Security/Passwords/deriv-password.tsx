@@ -1,79 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Icon, Popover, Text } from '@deriv/components';
-import { getBrandWebsiteName, getPlatformSettings, toTitleCase, WS } from '@deriv/shared';
+import { useVerifyEmail } from '@deriv/api';
+import { getBrandWebsiteName, getPlatformSettings, toTitleCase } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
+import PlatformDescription from './platform-description';
 
-const PlatformDescription = ({ brand_website_name, platform_values, is_eu_user, financial_restricted_countries }) => {
+/**
+ * Displays a change password button and with instructions on how to change the password.
+ * @name DerivPassword
+ * @returns {React.ReactNode}
+ */
+const DerivPassword = observer(() => {
     const {
-        platform_name_trader,
-        platform_name_dbot,
-        platform_name_smarttrader,
-        platform_name_go,
-        platform_name_ctrader,
-    } = platform_values;
-    if (is_eu_user) {
-        return (
-            <Localize
-                i18n_default_text={
-                    'Use the <0>Deriv password</0> to log in to {{brand_website_name}} and {{platform_name_trader}}.'
-                }
-                components={[<strong key={0} />]}
-                values={{
-                    brand_website_name,
-                    platform_name_trader,
-                }}
-            />
-        );
-    } else if (financial_restricted_countries) {
-        return (
-            <Localize
-                i18n_default_text={
-                    'Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_trader}} and {{platform_name_go}}.'
-                }
-                components={[<strong key={0} />]}
-                values={{
-                    brand_website_name,
-                    platform_name_trader,
-                    platform_name_go,
-                }}
-            />
-        );
-    }
-    return (
-        <Localize
-            i18n_default_text={
-                'Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, {{platform_name_dbot}} and {{platform_name_ctrader}}.'
-            }
-            components={[<strong key={0} />]}
-            values={{
-                brand_website_name,
-                platform_name_trader,
-                platform_name_dbot,
-                platform_name_smarttrader,
-                platform_name_go,
-                platform_name_ctrader,
-            }}
-        />
-    );
-};
-const DerivPassword = ({
-    email,
-    is_eu_user,
-    is_social_signup,
-    social_identity_provider,
-    financial_restricted_countries,
-}) => {
+        traders_hub: { is_eu_user, financial_restricted_countries },
+        client: { social_identity_provider, is_social_signup, email },
+    } = useStore();
+    const { mutate } = useVerifyEmail();
+
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const onClickSendEmail = () => {
         if (social_identity_provider === 'apple') {
-            WS.verifyEmail(email, 'request_email');
+            mutate({ verify_email: email, type: 'request_email' });
         } else {
-            WS.verifyEmail(email, 'reset_password');
+            mutate({ verify_email: email, type: 'reset_password' });
         }
         setIsSentEmailModalOpen(true);
     };
@@ -226,15 +180,6 @@ const DerivPassword = ({
             </div>
         </React.Fragment>
     );
-};
-
-DerivPassword.propTypes = {
-    email: PropTypes.string,
-    is_dark_mode_on: PropTypes.bool,
-    is_eu_user: PropTypes.bool,
-    financial_restricted_countries: PropTypes.bool,
-    is_social_signup: PropTypes.bool,
-    social_identity_provider: PropTypes.string,
-};
+});
 
 export default DerivPassword;

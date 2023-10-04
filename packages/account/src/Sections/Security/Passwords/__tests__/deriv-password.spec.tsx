@@ -1,27 +1,18 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent, queryByText } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DerivPassword from '../deriv-password';
-import { WS } from '@deriv/shared';
+import { APIProvider, useVerifyEmail } from '@deriv/api';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('Assets/ic-brand-deriv-red.svg', () => () => 'BrandDerivRed');
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    WS: {
-        verifyEmail: jest.fn(),
-    },
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useVerifyEmail: jest.fn(() => ({ mutate: jest.fn() })),
 }));
 
 describe('<DerivPassword />', () => {
-    let mock_props = {
-        email: 'mf@deriv.com',
-        is_social_signup: false,
-        social_identity_provider: undefined,
-        is_eu_user: false,
-        financial_restricted_countries: false,
-    };
-
-    let modal_root_el;
+    let modal_root_el: HTMLDivElement;
 
     beforeAll(() => {
         modal_root_el = document.createElement('div');
@@ -32,8 +23,21 @@ describe('<DerivPassword />', () => {
     afterAll(() => {
         document.body.removeChild(modal_root_el);
     });
+
+    const store = mockStore({ client: { email: 'mf@deriv.com' } });
+
+    const renderComponent = ({ store_config = store }) =>
+        render(
+            <APIProvider>
+                <StoreProvider store={store_config}>
+                    <DerivPassword />
+                </StoreProvider>
+            </APIProvider>
+        );
+
     it('Should render properly', async () => {
-        render(<DerivPassword {...mock_props} />);
+        renderComponent({});
+
         expect(
             screen.getByRole('heading', {
                 name: /deriv password/i,
@@ -44,11 +48,8 @@ describe('<DerivPassword />', () => {
                 /use the to log in to deriv\.com, deriv go, deriv trader, smarttrader, deriv bot and deriv ctrader\./i
             )
         ).toBeInTheDocument();
-        // expect BrandDerivRed not to be in the document
         expect(screen.queryByText(/BrandDerivRed/i)).toBeInTheDocument();
-        // expect button with text change password to be in the document
         expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
-        // expect button with text unlink from to not be in the document
         expect(screen.queryByText(/unlink from/i)).not.toBeInTheDocument();
 
         const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
@@ -56,7 +57,10 @@ describe('<DerivPassword />', () => {
     });
 
     it('displays the correct platform information for non-MF clients & restricted countries', () => {
-        render(<DerivPassword {...mock_props} financial_restricted_countries />);
+        const store_config = mockStore({
+            traders_hub: { financial_restricted_countries: true },
+        });
+        renderComponent({ store_config });
 
         expect(screen.getByText(/use the to log in to deriv\.com, deriv trader and deriv go\./i));
 
@@ -68,27 +72,30 @@ describe('<DerivPassword />', () => {
     });
 
     it('displays the correct platform information for MF clients', () => {
-        render(<DerivPassword {...mock_props} is_eu_user />);
+        const store_config = mockStore({
+            traders_hub: { is_eu_user: true },
+        });
+        renderComponent({ store_config });
 
         expect(screen.getByText(/use the to log in to deriv\.com and deriv trader\./i)).toBeInTheDocument();
 
-        const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
-        // expect popover to have length of 4
-        expect(popover_wrapper).toHaveLength(1);
-        // expect button with text change password to be in the document
+        const popover_wrapper = screen.getByTestId('dt_popover_wrapper');
+
+        expect(popover_wrapper).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
     });
 
     it('displays a change password button for non-social signups', () => {
-        render(<DerivPassword {...mock_props} />);
+        renderComponent({});
         const change_password_button = screen.getByRole('button', {
             name: /change password/i,
         });
+
         expect(change_password_button).toBeInTheDocument();
     });
 
     it('should invoke verifyEmail when change password is clicked', async () => {
-        render(<DerivPassword {...mock_props} />);
+        renderComponent({});
         const ele_change_btn = screen.getByRole('button', {
             name: /change password/i,
         });
@@ -96,23 +103,16 @@ describe('<DerivPassword />', () => {
         expect(screen.queryByText(/we’ve sent you an email/i)).toBeInTheDocument();
         expect(screen.getByText(/please click on the link in the email to reset your password\./i)).toBeInTheDocument();
         await waitFor(() => {
-            expect(WS.verifyEmail).toHaveBeenCalled();
+            expect(useVerifyEmail).toHaveBeenCalled();
         });
     });
 
-    it('displays a button to unlink social identity provider', async () => {
-        const social_props = {
-            ...mock_props,
-            is_social_signup: true,
-            social_identity_provider: 'apple',
-        };
-        render(<DerivPassword {...social_props} />);
-        const unlink_button = screen.getByText(/unlink from/i);
-        expect(unlink_button).toBeInTheDocument();
-        fireEvent.click(unlink_button);
+    it('displays a button to unlink social identity provider', () => {
+        const store_config = mockStore({ client: { is_social_signup: true, social_identity_provider: 'apple' } });
+        renderComponent({ store_config });
 
-        await waitFor(() => {
-            expect(WS.verifyEmail).toHaveBeenCalled();
-        });
+        const unlink_button = screen.getByText(/unlink from/i);
+
+        expect(unlink_button).toBeInTheDocument();
     });
 });

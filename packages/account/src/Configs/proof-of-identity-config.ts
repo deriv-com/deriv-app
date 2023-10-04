@@ -1,3 +1,4 @@
+import React from 'react';
 import { GetSettings } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 

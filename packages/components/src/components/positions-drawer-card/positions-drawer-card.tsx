@@ -33,7 +33,7 @@ type TPositionsDrawerCardProps = {
     profit_loss?: number;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
-    onClickRemove: (contract_id: number) => void;
+    onClickRemove: (contract_id?: number) => void;
     onFooterEntered?: () => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;

@@ -2,7 +2,6 @@ import type {
     AccountLimitsResponse,
     Authorize,
     ContractUpdate,
-    ContractUpdateHistory,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
@@ -15,6 +14,7 @@ import type {
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
+    ContractUpdateHistory,
     Transaction,
     ActiveSymbols,
 } from '@deriv/api-types';
@@ -289,6 +289,7 @@ type TClientStore = {
     is_eu: boolean;
     is_uk: boolean;
     is_unwelcome: boolean;
+    is_single_currency: boolean;
     is_social_signup: boolean;
     has_residence: boolean;
     is_authorize: boolean;
@@ -301,7 +302,6 @@ type TClientStore = {
     is_logging_in: boolean;
     is_low_risk: boolean;
     is_pending_proof_of_ownership: boolean;
-    is_single_currency: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
@@ -594,7 +594,7 @@ type TPortfolioStore = {
     onMount: () => void;
     open_accu_contract: TPortfolioPosition | null;
     positions: TPortfolioPosition[];
-    removePositionById: (id: number) => void;
+    removePositionById: (contract_id?: number) => void;
     setContractType: (contract_type: string) => void;
 };
 
@@ -647,7 +647,6 @@ type TBarriers = Array<{
     barrier_count: number;
     default_shade: string;
 }>;
-
 type TContractTradeStore = {
     accountSwitchListener: () => Promise<void>;
     accu_barriers_timeout_id: NodeJS.Timeout | null;

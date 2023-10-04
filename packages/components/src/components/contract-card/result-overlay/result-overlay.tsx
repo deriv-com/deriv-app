@@ -14,7 +14,7 @@ type TResultOverlayProps = {
     is_unsupported?: boolean;
     is_visible: boolean;
     onClick: () => void;
-    onClickRemove?: (contract_id: number) => void;
+    onClickRemove?: (contract_id?: number) => void;
     result: string;
 };
 

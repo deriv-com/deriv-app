@@ -1,28 +1,31 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Table, Button, Text, Popover } from '@deriv/components';
+
+import { GetAccountSettingsResponse, GetSettings } from '@deriv/api-types';
+import { Button, Popover, Table, Text } from '@deriv/components';
+import { CFD_PLATFORMS, ContentFlag, getAuthenticationStatusInfo, isDesktop, Jurisdiction, WS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag, Jurisdiction } from '@deriv/shared';
+
 import {
-    TDMT5CompareModalContentProps,
-    TCompareAccountContentProps,
-    TCompareAccountFooterButtonData,
-    TCompareAccountContentValues,
-    TCompareAccountRowProps,
-    TCompareAccountRowItem,
-} from './props.types';
-import {
-    getEuRealContent,
     getCrRealContent,
     getCrRealFooterButtons,
+    getEuFooterButtons,
+    getEuRealContent,
     getPreappstoreCrDemoContent,
     getPreappstoreCrDemoFooterButtons,
     getPreappstoreEuDemoContent,
-    getEuFooterButtons,
 } from '../Constants/cfd_compare_account_content';
-import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
-import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+
+import {
+    TCompareAccountContentProps,
+    TCompareAccountContentValues,
+    TCompareAccountFooterButtonData,
+    TCompareAccountRowItem,
+    TCompareAccountRowProps,
+    TDMT5CompareModalContentProps,
+} from './props.types';
 
 const Row = ({
     id,
@@ -391,7 +394,7 @@ const DMT5CompareModalContent = observer(
                         toggleCFDVerificationModal();
                     }
                     break;
-                case 'derivx':
+                case 'dxtrade':
                     setAppstorePlatform(CFD_PLATFORMS.DXTRADE);
                     openPasswordModal(type_of_account);
                     break;

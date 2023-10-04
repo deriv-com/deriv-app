@@ -1,31 +1,23 @@
 import React from 'react';
-import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
+import { Formik, FormikErrors, FormikHelpers } from 'formik';
+
 import { SentEmailModal } from '@deriv/account';
-import {
-    getDxCompanies,
-    getMtCompanies,
-    getDerivezCompanies,
-    getFormattedJurisdictionCode,
-    TMtCompanies,
-    TDxCompanies,
-    TDerivezCompanies,
-} from '../Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
     Icon,
     MobileDialog,
     Modal,
+    MultiStep,
     PasswordInput,
     PasswordMeter,
     Text,
-    MultiStep,
 } from '@deriv/components';
 import {
     CFD_PLATFORMS,
-    getCFDPlatformNames,
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
+    getCFDPlatformNames,
     getErrorMessages,
     getLegalEntityName,
     isDesktop,
@@ -36,13 +28,25 @@ import {
     validPassword,
     WS,
 } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from '../Components/success-dialog.jsx';
-import '../sass/cfd.scss';
-import ChangePasswordConfirmation from './cfd-change-password-confirmation';
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import SuccessDialog from '../Components/success-dialog.jsx';
+import {
+    getDerivezCompanies,
+    getDxCompanies,
+    getFormattedJurisdictionCode,
+    getMtCompanies,
+    TDerivezCompanies,
+    TDxCompanies,
+    TMtCompanies,
+} from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+
+import ChangePasswordConfirmation from './cfd-change-password-confirmation';
+
+import '../sass/cfd.scss';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -485,7 +489,7 @@ const CFDPasswordForm = ({
         switch (platform) {
             case 'ctrader':
             case 'derivez':
-            case 'derivx':
+            case 'dxtrade':
                 return 'CFD';
             default:
                 return account_title;

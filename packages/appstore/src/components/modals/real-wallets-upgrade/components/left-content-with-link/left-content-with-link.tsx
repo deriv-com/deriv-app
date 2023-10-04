@@ -3,12 +3,7 @@ import classNames from 'classnames';
 import { useStore } from '@deriv/stores';
 import './left-content-with-link.scss';
 
-type TContentWithLinkProps = {
-    children: JSX.Element | Array<JSX.Element>;
-    show_fork?: boolean;
-};
-
-const LeftContentWithLink: React.FC<TContentWithLinkProps> = ({ children, show_fork }) => {
+const LeftContentWithLink = ({ children, show_fork }: React.PropsWithChildren<{ show_fork: boolean }>) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     return (

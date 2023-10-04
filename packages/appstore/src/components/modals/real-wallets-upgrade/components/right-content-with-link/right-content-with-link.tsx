@@ -1,7 +1,7 @@
 import React from 'react';
 import './right-content-with-link.scss';
 
-const RightContentWithLink = ({ children }: { children: JSX.Element }) => (
+const RightContentWithLink = ({ children }: React.PropsWithChildren) => (
     <div className='right-content-with-link'>
         <div className='right-content-with-link__link'>
             <div className='right-content-with-link__link-neck' />

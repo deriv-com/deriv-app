@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import './title-text.scss';
 
-const TitleText = ({ children, className }: { children: JSX.Element; className?: string }) => {
+const TitleText = ({ children, className }: React.PropsWithChildren<{ className?: string }>) => {
     return (
         <Text as='span' className={classNames('title-text', className)} color='prominent' align='center'>
             {children}

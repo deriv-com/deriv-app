@@ -491,6 +491,7 @@ type TUiStore = {
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
     is_tablet: boolean;
+    is_mobile_language_menu_open: boolean;
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     is_unsupported_contract_modal_visible: boolean;
@@ -513,6 +514,7 @@ type TUiStore = {
     setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
+    setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;

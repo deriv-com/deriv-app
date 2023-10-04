@@ -37,13 +37,7 @@ const ModalManager = () => {
         getRealFinancialAccountsExistingData,
         getRealSwapfreeAccountsExistingData,
     } = modules.cfd;
-    const {
-        enableApp,
-        disableApp,
-        setShouldShowCooldownModal,
-        is_reset_trading_password_modal_visible,
-        setResetTradingPasswordModalOpen,
-    } = ui;
+    const { enableApp, disableApp, is_reset_trading_password_modal_visible, setResetTradingPasswordModalOpen } = ui;
     const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{

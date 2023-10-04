@@ -44,7 +44,6 @@ const BuySellForm = props => {
     const exchange_rate = getRate(local_currency);
 
     const [current_effective_rate, setCurrentEffectiveRate] = React.useState(0);
-    const [current_display_effective_rate, setCurrentDisplayEffectiveRate] = React.useState(0);
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
     const { effective_rate, display_effective_rate } = generateEffectiveRate({
@@ -76,7 +75,6 @@ const BuySellForm = props => {
             my_profile_store.setSelectedPaymentMethodDisplayName('');
             buy_sell_store.setHasPaymentMethods(!!payment_method_names);
             setCurrentEffectiveRate(effective_rate);
-            setCurrentDisplayEffectiveRate(display_effective_rate);
 
             const disposeReceiveAmountReaction = reaction(
                 () => buy_sell_store.receive_amount,
@@ -106,7 +104,7 @@ const BuySellForm = props => {
         const receive_amount = input_amount * calculated_rate;
         buy_sell_store.setReceiveAmount(receive_amount);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [input_amount, current_effective_rate]);
+    }, [input_amount, effective_rate]);
 
     const onClickPaymentMethodCard = payment_method => {
         if (!should_disable_field) {
@@ -192,7 +190,7 @@ const BuySellForm = props => {
                                             />
                                         </Text>
                                         <Text as='p' size='xs'>
-                                            {current_display_effective_rate} {local_currency}
+                                            {display_effective_rate} {local_currency}
                                         </Text>
                                     </div>
                                 </div>

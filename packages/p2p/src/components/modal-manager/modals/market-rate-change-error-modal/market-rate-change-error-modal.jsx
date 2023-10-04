@@ -10,11 +10,11 @@ const MarketRateChangeErrorModal = ({ message }) => {
     return (
         <Modal is_open={is_modal_open} onExited={hideModal} small>
             <Modal.Body>
-                <Text as='p' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
-                    {message ?? (
+                {message ?? (
+                    <Text as='p' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
                         <Localize i18n_default_text='The rate of the advert has changed. Please try creating your order again.' />
-                    )}
-                </Text>
+                    </Text>
+                )}
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={hideModal} text={localize('Try again')} primary large />

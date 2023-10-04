@@ -32,6 +32,32 @@ const TwoMonthPickerLoadable = Loadable({
     },
 });
 
+type TDateFieldComponentProps = {
+    label: string;
+    placeholder: string;
+    showCalendar: (e: string) => void;
+    value: string;
+};
+
+const DateFieldComponent = ({ label, placeholder, showCalendar, value }: TDateFieldComponentProps) => {
+    const { ui } = useStore();
+    const { current_focus, setCurrentFocus } = ui;
+
+    return (
+        <InputField
+            current_focus={current_focus}
+            data_testid={`dt_calendar_input_${label}`}
+            icon={CalendarIcon}
+            is_read_only
+            name={`${label}_date`}
+            onClick={() => showCalendar(label)}
+            placeholder={placeholder}
+            setCurrentFocus={setCurrentFocus}
+            value={value}
+        />
+    );
+};
+
 const CompositeCalendar = (props: TCompositeCalendarProps) => {
     const { ui } = useStore();
     const { current_focus, setCurrentFocus } = ui;
@@ -106,11 +132,11 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
         setShowTo(false);
     };
 
-    const showCalendar = (e: string) => {
-        if (e === 'from') {
+    const showCalendar = (label: string) => {
+        if (label === 'from') {
             setShowFrom(true);
         }
-        if (e === 'to') {
+        if (label === 'to') {
             setShowTo(true);
         }
     };
@@ -125,45 +151,36 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
         validateClickOutside
     );
 
-    const setToDate = (date: moment.Moment) => {
-        onChange({ to: toMoment(date).endOf('day') });
+    const setFromToDate = (date: moment.Moment, label: string) => {
+        if (label === 'to') {
+            onChange({ to: toMoment(date).endOf('day') });
+        } else {
+            onChange({ from: toMoment(date) });
+            hideCalendar();
+        }
     };
 
-    const setFromDate = (date: moment.Moment) => {
-        onChange({ from: toMoment(date) });
-        hideCalendar();
-    };
-
-    const isPeriodDisabledTo = (date: moment.Moment) => {
+    const isPeriodDisabled = (date: moment.Moment, label: string) => {
+        if (label === 'from') {
+            return date.unix() > to;
+        }
         return date.unix() < from || date.unix() > toMoment().endOf('day').unix();
     };
-
-    const isPeriodDisabledFrom = (date: moment.Moment) => date.unix() > to;
 
     return (
         <React.Fragment>
             <DesktopWrapper>
                 <div className='composite-calendar__input-fields'>
-                    <InputField
-                        current_focus={current_focus}
-                        data_testid='dt_calendar_input_from'
-                        icon={CalendarIcon}
-                        is_read_only
-                        name='from_date'
-                        onClick={() => showCalendar('from')}
+                    <DateFieldComponent
+                        label='from'
+                        showCalendar={showCalendar}
                         placeholder={localize('Date from')}
-                        setCurrentFocus={setCurrentFocus}
                         value={getFromDateLabel()}
                     />
-                    <InputField
-                        current_focus={current_focus}
-                        data_testid='dt_calendar_input_to'
-                        icon={CalendarIcon}
-                        is_read_only
-                        name='to_date'
-                        onClick={() => showCalendar('to')}
+                    <DateFieldComponent
+                        label='to'
+                        showCalendar={showCalendar}
                         placeholder={localize('Date to')}
-                        setCurrentFocus={setCurrentFocus}
                         value={getToDateLabel()}
                     />
                 </div>
@@ -172,8 +189,8 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
                         <CalendarSideList from={from} to={to} items={days_duration_list} />
                         <TwoMonthPickerLoadable
                             value={show_to ? to : from}
-                            onChange={show_to ? setToDate : setFromDate}
-                            isPeriodDisabled={show_to ? isPeriodDisabledTo : isPeriodDisabledFrom}
+                            onChange={date => setFromToDate(date, show_to ? 'to' : 'from')}
+                            isPeriodDisabled={date => isPeriodDisabled(date, show_to ? 'to' : 'from')}
                         />
                     </div>
                 )}

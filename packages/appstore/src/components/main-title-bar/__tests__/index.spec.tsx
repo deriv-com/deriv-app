@@ -4,8 +4,8 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider /*useFetch*/ } from '@deriv/api';
 import MainTitleBar from '..';
 
+//TODO: Uncomment once useWalletMigration hook is optimized for production release.
 // jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
-
 // const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
 jest.mock('@deriv/api', () => ({
@@ -78,12 +78,12 @@ describe('MainTitleBar', () => {
     //     expect(screen.queryByText('WalletsBanner')).not.toBeInTheDocument();
     // });
 
+    //TODO: Uncomment once useWalletMigration hook is optimized for production release.
     // it('should render WalletsBanner component if wallet feature flag is enabled', () => {
     //     const mock_store = mockStore({
     //         client: { accounts: { CR123456: { token: '12345' } }, loginid: 'CR123456' },
     //         feature_flags: { data: { wallet: true } },
     //     });
-
     //     // @ts-expect-error need to come up with a way to mock the return type of useFetch
     //     mockUseFetch.mockReturnValue({
     //         data: {
@@ -98,7 +98,6 @@ describe('MainTitleBar', () => {
     //             },
     //         },
     //     });
-
     //     render_container(mock_store);
     //     expect(screen.getByText('WalletsBanner')).toBeInTheDocument();
     // });

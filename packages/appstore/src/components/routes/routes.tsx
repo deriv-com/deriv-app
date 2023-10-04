@@ -11,7 +11,7 @@ import { Switch } from 'react-router-dom';
 import RouteWithSubroutes from './route-with-sub-routes.jsx';
 
 const Routes: React.FC = observer(() => {
-    //TODO: useWalletList is making redundant authorize requests eventhough it's not required until Wallets is launched. This needs to be handled more elegantly.
+    //TODO: Uncomment once useWalletList hook is optimized for production release.
     const { /*is_wallet_enabled,*/ is_next_wallet_enabled } = useFeatureFlags();
     // const { has_wallet, isLoading } = useWalletsList();
     // const should_show_wallets = is_wallet_enabled && has_wallet;

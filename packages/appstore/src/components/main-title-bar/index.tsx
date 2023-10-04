@@ -24,6 +24,7 @@ const MainTitleBar = () => {
         setActiveIndex(selected_region === 'Non-EU' ? 0 : 1);
     }, [selected_region]);
 
+    // TODO: Uncomment once useWalletMigration hook is optimized for production release.
     // const { is_wallet_enabled } = useFeatureFlags();
 
     // TODO: Remove this when we have BE API ready

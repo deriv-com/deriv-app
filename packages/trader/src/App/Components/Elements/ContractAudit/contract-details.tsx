@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -17,6 +16,7 @@ import {
     isEndedBeforeCancellationExpired,
     isUserCancelled,
     toGMTFormat,
+    TContractInfo,
 } from '@deriv/shared';
 import {
     addCommaToNumber,
@@ -24,10 +24,26 @@ import {
     getBarrierValue,
     isDigitType,
 } from 'App/Components/Elements/PositionsDrawer/helpers';
-import ContractAuditItem from './contract-audit-item.jsx';
+import ContractAuditItem from './contract-audit-item';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
 
-const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot, is_vanilla }) => {
+type TContractDetails = {
+    contract_end_time?: number;
+    contract_info: TContractInfo;
+    duration: number | string;
+    duration_unit: string;
+    exit_spot?: string;
+    is_vanilla?: boolean;
+};
+
+const ContractDetails = ({
+    contract_end_time,
+    contract_info,
+    duration,
+    duration_unit,
+    exit_spot,
+    is_vanilla,
+}: TContractDetails) => {
     const {
         commission,
         contract_type,
@@ -45,15 +61,16 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         display_number_of_contracts,
     } = contract_info;
 
-    const is_profit = profit >= 0;
+    const is_profit = Number(profit) >= 0;
     const cancellation_price = getCancellationPrice(contract_info);
     const show_barrier = !is_vanilla && !isAccumulatorContract(contract_type) && !isSmartTraderContract(contract_type);
-    const show_duration = !isAccumulatorContract(contract_type) || !isNaN(contract_end_time);
+    const show_duration = !isAccumulatorContract(contract_type) || !isNaN(Number(contract_end_time));
     const show_payout_per_point = isTurbosContract(contract_type) || is_vanilla;
+    const ticks_label = Number(tick_count) < 2 ? localize('tick') : localize('ticks');
     const show_strike_barrier = is_vanilla || isAsiansContract(contract_type);
     const ticks_duration_text = isAccumulatorContract(contract_type)
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
-        : `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`;
+        : `${tick_count} ${ticks_label}`;
 
     const getLabel = () => {
         if (isUserSold(contract_info) && isEndedBeforeCancellationExpired(contract_info))
@@ -62,7 +79,6 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         if (isCancellationExpired(contract_info)) return localize('Deal cancellation (expired)');
         return localize('Deal cancellation (active)');
     };
-
     return (
         <ThemedScrollbars is_bypassed={isMobile()}>
             <div className='contract-audit__tabs-content'>
@@ -79,7 +95,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                             id='dt_commission_label'
                             icon={<Icon icon='IcContractCommission' size={24} />}
                             label={localize('Commission')}
-                            value={<Money amount={commission} currency={currency} show_currency />}
+                            value={<Money amount={commission ?? ''} currency={currency} show_currency />}
                         />
                         {!!cancellation_price && (
                             <ContractAuditItem
@@ -97,7 +113,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                 id='dt_duration_label'
                                 icon={<Icon icon='IcContractDuration' size={24} />}
                                 label={localize('Duration')}
-                                value={tick_count > 0 ? ticks_duration_text : `${duration} ${duration_unit}`}
+                                value={Number(tick_count) > 0 ? ticks_duration_text : `${duration} ${duration_unit}`}
                             />
                         )}
                         {show_strike_barrier && (
@@ -144,7 +160,11 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                 id='dt_bt_label'
                                 icon={<Icon icon='IcContractPayout' size={24} />}
                                 label={localize('Payout per point')}
-                                value={`${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
+                                value={
+                                    display_number_of_contracts
+                                        ? `${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}`
+                                        : ' - '
+                                }
                             />
                         )}
                     </React.Fragment>
@@ -153,7 +173,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                     id='dt_start_time_label'
                     icon={<Icon icon='IcContractStartTime' size={24} />}
                     label={localize('Start time')}
-                    value={toGMTFormat(epochToMoment(date_start)) || ' - '}
+                    value={toGMTFormat(epochToMoment(Number(date_start))) || ' - '}
                 />
                 {!isDigitType(contract_type) && (
                     <ContractAuditItem
@@ -161,39 +181,29 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                         icon={<Icon icon='IcContractEntrySpot' size={24} />}
                         label={localize('Entry spot')}
                         value={addCommaToNumber(entry_spot_display_value) || ' - '}
-                        value2={toGMTFormat(epochToMoment(entry_tick_time)) || ' - '}
+                        value2={toGMTFormat(epochToMoment(Number(entry_tick_time))) || ' - '}
                     />
                 )}
-                {!isNaN(exit_spot) && (
+                {!isNaN(Number(exit_spot)) && (
                     <ContractAuditItem
                         id='dt_exit_spot_label'
                         icon={<Icon icon='IcContractExitSpot' size={24} />}
                         label={localize('Exit spot')}
                         value={addCommaToNumber(exit_spot) || ' - '}
-                        value2={toGMTFormat(epochToMoment(exit_tick_time)) || ' - '}
+                        value2={toGMTFormat(epochToMoment(Number(exit_tick_time))) || ' - '}
                     />
                 )}
-                {!isNaN(contract_end_time) && (
+                {!isNaN(Number(contract_end_time)) && (
                     <ContractAuditItem
                         id='dt_exit_time_label'
                         icon={<Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />}
                         label={localize('Exit time')}
-                        value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
+                        value={toGMTFormat(epochToMoment(Number(contract_end_time))) || ' - '}
                     />
                 )}
             </div>
         </ThemedScrollbars>
     );
-};
-
-ContractDetails.propTypes = {
-    contract_end_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    contract_info: PropTypes.object,
-    date_start: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    duration_unit: PropTypes.string,
-    exit_spot: PropTypes.string,
-    is_vanilla: PropTypes.bool,
 };
 
 export default ContractDetails;

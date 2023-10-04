@@ -163,10 +163,10 @@ export const hasIntradayDurationUnit = (duration_units_list: TUnit[]) => {
  * On switching symbols, end_time value of volatility indices should be set to today
  *
  * @param {String} symbol
- * @param {String} expiry_type
+ * @param {String | null} expiry_type
  * @returns {*}
  */
-export const resetEndTimeOnVolatilityIndices = (symbol: string, expiry_type: string) =>
+export const resetEndTimeOnVolatilityIndices = (symbol: string, expiry_type: string | null) =>
     /^R_/.test(symbol) && expiry_type === 'endtime' ? toMoment(null).format('DD MMM YYYY') : null;
 
 export const getDurationMinMaxValues = (

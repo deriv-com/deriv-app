@@ -72,7 +72,7 @@ describe('<ContractTypeWidget />', () => {
     };
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
-        render(<ContractTypeWidget onChange={jest.fn()} list={list} value={item.value} />);
+        render(<ContractTypeWidget name='test_name' onChange={jest.fn()} list={list} value={item.value} />);
         expect(screen.getByTestId('dt_contract_widget')).toBeInTheDocument();
     });
 });

@@ -1,15 +1,19 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text, usePrevious } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset';
-import { ValueMovement } from '../Purchase/contract-info';
+import ValueMovement from '../Purchase/value-movement';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../LabeledQuantityInputMobile';
 
-const Barrier = observer(({ is_minimized, is_absolute_only }) => {
+type TBarrier = {
+    is_minimized?: boolean;
+    is_absolute_only?: boolean;
+};
+
+const Barrier = observer(({ is_minimized, is_absolute_only }: TBarrier) => {
     const { ui } = useStore();
     const { current_focus, setCurrentFocus } = ui;
     const {
@@ -25,11 +29,12 @@ const Barrier = observer(({ is_minimized, is_absolute_only }) => {
     } = useTraderStore();
     const [show_modal, setShowModal] = React.useState(false);
     const type_with_current_spot = Object.keys(trade_types).find(type => proposal_info?.[type]?.spot);
-    const contract_info = proposal_info?.[type_with_current_spot];
+    let contract_info, has_spot_increased;
+    if (type_with_current_spot) contract_info = proposal_info?.[type_with_current_spot];
     const current_spot = contract_info?.spot || '';
     const current_barrier_price = contract_info?.barrier || '';
     const previous_spot = usePrevious(current_spot);
-    const has_spot_increased = current_spot > previous_spot;
+    if (previous_spot) has_spot_increased = Number(current_spot) > previous_spot;
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
     const has_error_or_not_loaded = contract_info?.has_error || !contract_info?.id;
 
@@ -49,7 +54,7 @@ const Barrier = observer(({ is_minimized, is_absolute_only }) => {
     // TODO: Some contracts yet to be implemented in app.deriv.com allow only absolute barrier, hence the prop
     const is_absolute_barrier = is_day_duration || is_absolute_only;
 
-    const format = value => {
+    const format = (value: string) => {
         const float_value = parseFloat(value);
         let final_value;
         if (Math.sign(float_value) === -1) {
@@ -86,7 +91,7 @@ const Barrier = observer(({ is_minimized, is_absolute_only }) => {
                             )}
                             current_focus={current_focus}
                             onChange={onChange}
-                            error_messages={validation_errors.barrier_1 || []}
+                            error_messages={validation_errors?.barrier_1 || []}
                             is_float
                             is_signed
                             setCurrentFocus={setCurrentFocus}
@@ -103,7 +108,7 @@ const Barrier = observer(({ is_minimized, is_absolute_only }) => {
                                     classNameInput='trade-container__input'
                                     current_focus={current_focus}
                                     onChange={onChange}
-                                    error_messages={validation_errors.barrier_2}
+                                    error_messages={validation_errors?.barrier_2}
                                     is_float
                                     is_signed
                                     setCurrentFocus={setCurrentFocus}
@@ -155,7 +160,7 @@ const Barrier = observer(({ is_minimized, is_absolute_only }) => {
                         current_focus={current_focus}
                         onChange={onChange}
                         error_messages={
-                            (barrier_count === 1 ? validation_errors.barrier_1 : validation_errors.barrier_2) || []
+                            (barrier_count === 1 ? validation_errors?.barrier_1 : validation_errors?.barrier_2) || []
                         }
                         error_message_alignment='top'
                         is_float
@@ -218,10 +223,5 @@ const Barrier = observer(({ is_minimized, is_absolute_only }) => {
         </React.Fragment>
     );
 });
-
-Barrier.propTypes = {
-    is_absolute_only: PropTypes.bool,
-    is_minimized: PropTypes.bool,
-};
 
 export default Barrier;

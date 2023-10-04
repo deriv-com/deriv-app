@@ -65,8 +65,6 @@ const OnfidoSdkView = ({
                     <HintBox
                         className='onfido-container__status-message'
                         icon='IcAlertAnnounce'
-                        icon_height={16}
-                        icon_width={16}
                         message={
                             <Text as='p' size='xxxs'>
                                 <Localize i18n_default_text='Your personal details have been saved successfully.' />
@@ -80,8 +78,6 @@ const OnfidoSdkView = ({
                 <HintBox
                     className='onfido-container__info-message'
                     icon='IcInfoBlue'
-                    icon_height={16}
-                    icon_width={16}
                     message={
                         <Text as='p' size='xxxs'>
                             <Localize i18n_default_text='Hit the checkbox above to choose your document.' />

@@ -117,7 +117,7 @@ type TAccountsList = {
             Derived: React.SVGAttributes<SVGElement>;
             Financial: React.SVGAttributes<SVGElement>;
             Options: React.SVGAttributes<SVGElement>;
-            CFDs: React.SVGAttributes<SVGAElement>;
+            CFDs: React.SVGAttributes<SVGElement>;
         };
         text?: JSX.Element | string;
         value?: string;
@@ -524,7 +524,6 @@ type TUiStore = {
     is_need_real_account_for_cashier_modal_visible: boolean;
     is_chart_layout_default: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
-    setIsAcuityModalOpen: (value: boolean) => void;
     is_switch_to_deriv_account_modal_visible: boolean;
     openSwitchToRealAccountModal: () => void;
     openDerivRealAccountNeededModal: () => void;

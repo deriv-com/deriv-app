@@ -61,7 +61,9 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                             <button
                                 className='wallets-mobile-actions-content-icon'
                                 key={button.name}
-                                onClick={button.action}
+                                onClick={() => {
+                                    history.push(`/appstore/traders-hub/cashier/${button.name}`);
+                                }}
                             >
                                 {button.icon}
                             </button>

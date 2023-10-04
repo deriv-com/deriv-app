@@ -1,0 +1,10 @@
+.title-text {
+    width: fit-content;
+    text-align: center;
+
+    background-color: var(--general-section-2);
+
+    @include mobile {
+        width: 100%;
+    }
+}

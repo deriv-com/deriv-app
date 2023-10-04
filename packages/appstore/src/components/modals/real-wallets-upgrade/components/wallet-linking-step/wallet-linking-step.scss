@@ -27,8 +27,18 @@
         }
     }
 
-    &__title {
-        width: fit-content;
+    &__note {
+        margin-top: 2.4rem;
+        padding: 0.8rem 1.6rem;
+        border-radius: $BORDER_RADIUS;
+        font-size: var(--text-size-xxs);
+
+        @include mobile {
+            padding: 0.4rem 0.8rem;
+        }
+    }
+
+    &__heading {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -37,22 +47,10 @@
         margin-top: 5.6rem;
 
         &-text {
-            text-align: center;
             padding: 0.4rem 0.8rem;
-
             border-radius: 24px;
-            background-color: var(--general-section-2);
-
-            @include mobile {
-                width: 100%;
-            }
+            font-size: var(--text-size-xxxs);
         }
-    }
-
-    &__note {
-        margin-top: 2.4rem;
-        padding: 0.8rem 1.6rem;
-        border-radius: $BORDER_RADIUS;
     }
 
     &__accounts-text {

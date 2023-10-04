@@ -6,6 +6,7 @@ import { RightContentWithLink } from '../right-content-with-link';
 import WalletAccount from '../wallet-account/wallet-account';
 import './wallet-link-wrapper.scss';
 import { useStore } from '@deriv/stores';
+import { TitleText } from '../title-text';
 
 export type TWalletLinkWrapper = {
     wallet_details: React.ComponentProps<typeof WalletCard>['wallet'];
@@ -27,14 +28,9 @@ const WalletLinkWrapper = ({ wallet }: { wallet: TWalletLinkWrapper }) => {
                     <LeftContentWithLink show_fork={wallet.account_list.length > 1}>
                         <React.Fragment>
                             {is_mobile && (
-                                <Text
-                                    as='div'
-                                    className='wallet-linking-step__title-text wallet-linking-step__accounts-text '
-                                    color='prominent'
-                                    size='xxxs'
-                                >
+                                <TitleText className='wallet-link-wrapper__heading wallet-link-wrapper__heading--top'>
                                     <Localize i18n_default_text='Your current trading account(s)' />
-                                </Text>
+                                </TitleText>
                             )}
                             {wallet.account_list.map(account => {
                                 return (
@@ -60,14 +56,9 @@ const WalletLinkWrapper = ({ wallet }: { wallet: TWalletLinkWrapper }) => {
                     <div className='wallet-link-wrapper__right-content'>
                         <WalletCard wallet={wallet.wallet_details} size='large' state='default' />
                         {is_mobile && (
-                            <Text
-                                as='div'
-                                className='wallet-linking-step__title-text wallet-linking-step__wallet-card-text'
-                                color='prominent'
-                                size='xxxs'
-                            >
+                            <TitleText className='wallet-link-wrapper__heading wallet-link-wrapper__heading--bottom'>
                                 <Localize i18n_default_text='Your new Wallet' />
-                            </Text>
+                            </TitleText>
                         )}
                     </div>
                 </RightContentWithLink>

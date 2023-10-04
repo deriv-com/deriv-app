@@ -4,6 +4,7 @@ import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import WalletLinkWrapper from '../wallet-link/wallet-link-wrapper';
 import './wallet-linking-step.scss';
+import { TitleText } from '../title-text';
 
 type TWalletLinkingStep = {
     data: {
@@ -31,23 +32,23 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
             <Text as='div' className='wallet-linking-step__description' color='prominent' size={is_mobile ? 'xs' : 's'}>
                 <Localize i18n_default_text='This is how we link your accounts with your new Wallet.' />
             </Text>
-            <Text
-                as='span'
-                className='wallet-linking-step__note wallet-linking-step__title-text'
-                color='prominent'
-                align='center'
-                size='xxs'
-            >
+            <TitleText className='wallet-linking-step__note'>
                 <Localize i18n_default_text='Your existing funds will remain in your trading account(s) and can be transferred to your Wallet after the upgrade.' />
-            </Text>
+            </TitleText>
             {!is_mobile && (
-                <div className='wallet-linking-step__title'>
-                    <Text className='wallet-linking-step__title-text' color='prominent' size='xxxs'>
+                <div className='wallet-linking-step__heading'>
+                    {/* <Text className='wallet-linking-step__title-text' color='prominent' size='xxxs'>
                         <Localize i18n_default_text='Your current trading account(s)' />
-                    </Text>
-                    <Text className='wallet-linking-step__title-text' color='prominent' size='xxxs'>
+                    </Text> */}
+                    <TitleText className='wallet-linking-step__heading-text'>
+                        <Localize i18n_default_text='Your current trading account(s)' />
+                    </TitleText>
+                    {/* <Text className='wallet-linking-step__title-text' color='prominent' size='xxxs'>
                         <Localize i18n_default_text='Your new Wallet(s)' />
-                    </Text>
+                    </Text> */}
+                    <TitleText className='wallet-linking-step__heading-text'>
+                        <Localize i18n_default_text='Your new Wallet(s)' />
+                    </TitleText>
                 </div>
             )}
             <ThemedScrollbars className='wallet-linking-step__content'>

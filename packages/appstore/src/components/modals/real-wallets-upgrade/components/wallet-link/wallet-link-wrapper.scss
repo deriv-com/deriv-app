@@ -12,12 +12,26 @@
         gap: 1.2rem;
     }
 
+    &__heading {
+        font-size: var(--text-size-xxxs);
+        padding: 0.4rem 0.8rem;
+
+        &--top {
+            border-radius: 8px 8px 0px 0px;
+        }
+
+        &--bottom {
+            width: 21.6rem;
+            position: absolute;
+            bottom: 0;
+            border-radius: 0px 0px 8px 8px;
+        }
+    }
+
     &__right {
         &-content {
             height: 13.6rem;
             position: relative;
-        }
-        &:first-child span {
         }
     }
 }

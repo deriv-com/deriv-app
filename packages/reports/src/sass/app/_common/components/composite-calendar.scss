@@ -1,3 +1,4 @@
+/* @define .composite-calendar; weak; */
 .composite-calendar {
     display: grid;
     grid-template-columns: minmax(max-content, 158px) minmax(min-content, 280px) minmax(min-content, 280px);

@@ -1233,7 +1233,12 @@ export const PersonalDetailsForm = observer(({ history }) => {
                             <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 {!is_virtual && !(isSubmitting || is_submit_success || (status && status.msg)) && (
-                                    <Text className='account-form__footer-note' size='xxxs'>
+                                    <Text
+                                        className='account-form__footer-note'
+                                        size='xxs'
+                                        color='prominent'
+                                        align={isMobile() ? 'center' : 'right'}
+                                    >
                                         {localize(
                                             'Please make sure your information is correct or it may affect your trading experience.'
                                         )}

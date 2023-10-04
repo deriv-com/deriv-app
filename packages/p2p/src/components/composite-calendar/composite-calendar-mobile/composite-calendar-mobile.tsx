@@ -5,6 +5,7 @@ import { toMoment } from '@deriv/shared';
 import CompositeCalendarMobileFooter from './composite-calendar-mobile-footer';
 import CalendarRadioButton from '../calendar-radio-buton';
 import { TInputDateRange } from '../composite-calendar';
+import CalendarIcon from '../calendar-icon';
 
 const CUSTOM_KEY = 'custom';
 
@@ -121,7 +122,7 @@ const CompositeCalendarMobile = ({
                     id='dt_calendar_input'
                     current_focus={current_focus}
                     is_read_only
-                    icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
+                    icon={CalendarIcon}
                     onClick={openDialog}
                     setCurrentFocus={setCurrentFocus}
                     value={applied_date_range?.label}

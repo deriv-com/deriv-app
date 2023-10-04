@@ -1,15 +1,15 @@
 /** Add types that are shared between components */
+import React from 'react';
+import { FormikHandlers, FormikProps, FormikValues } from 'formik';
+import { Redirect, RouteProps } from 'react-router-dom';
+import { TPage404 } from '../Constants/routes-config';
 import {
     Authorize,
     DetailsOfEachMT5Loginid,
     IdentityVerificationAddDocumentResponse,
     ResidenceList,
 } from '@deriv/api-types';
-import React from 'react';
-import { FormikHandlers, FormikProps, FormikValues } from 'formik';
-import { Redirect, RouteProps } from 'react-router-dom';
-import { CFD_PLATFORMS } from '@deriv/shared';
-import { TPage404 } from '../Constants/routes-config';
+import { CFD_PLATFORMS, Platforms } from '@deriv/shared';
 
 export type TToken = {
     display_name: string;
@@ -75,6 +75,7 @@ export type TRoute = {
     to?: string;
     component?: ((props?: RouteProps['component']) => JSX.Element) | Partial<typeof Redirect> | TPage404;
     getTitle?: () => string;
+    is_disabled?: boolean;
     subroutes?: TRoute[];
 };
 
@@ -190,6 +191,8 @@ export type TIDVForm = {
     can_skip_document_verification: boolean;
 } & Partial<FormikHandlers> &
     FormikProps<TIDVFormValues>;
+
+export type TPlatforms = typeof Platforms[keyof typeof Platforms];
 
 export type TServerError = {
     code: string;

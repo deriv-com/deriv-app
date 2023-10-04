@@ -1,37 +1,54 @@
-import React, { ReactElement } from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import React, { useEffect, useRef } from 'react';
 import IcDropdown from '../../public/images/ic-dropdown.svg';
 import './WalletsAccordion.scss';
 
 type TProps = {
-    wallet: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
-    content: ReactElement;
-    header: ReactElement;
+    isDemo?: boolean;
+    isOpen?: boolean;
+    onToggle?: () => void;
+    renderHeader: () => React.ReactNode;
 };
 
-const WalletsAccordion: React.FC<TProps> = ({ wallet, header, content }) => {
-    const switchAccount = (loginid?: string) => {
-        // if (!loginid) return;
-        // implement switch account here
-    };
+const WalletsAccordion: React.FC<React.PropsWithChildren<TProps>> = ({
+    children,
+    isDemo = false,
+    isOpen = false,
+    onToggle,
+    renderHeader,
+}) => {
+    const accordionRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (isOpen && accordionRef?.current) {
+            accordionRef.current.style.scrollMarginTop = '24px';
+            accordionRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [isOpen]);
 
     return (
-        <div className={`wallets-accordion wallets-accordion${wallet?.is_virtual ? '--virtual' : ''}`}>
+        <div
+            className={`wallets-accordion wallets-accordion ${
+                isDemo ? 'wallets-accordion wallets-accordion--virtual' : ''
+            }`}
+            ref={accordionRef}
+        >
             <div
-                className={`wallets-accordion__header wallets-accordion__header${
-                    wallet?.is_virtual ? '--virtual' : ''
+                className={`wallets-accordion__header wallets-accordion__header ${
+                    isDemo ? 'wallets-accordion__header wallets-accordion__header--virtual' : ''
                 }`}
             >
-                {header}
-                <div
-                    className={`wallets-accordion__dropdown${wallet.is_active ? '--open' : ''}`}
-                    onClick={() => switchAccount(wallet?.loginid)}
-                >
-                    <IcDropdown />
-                </div>
+                {renderHeader()}
+                {!isOpen && (
+                    <div
+                        className={`wallets-accordion__dropdown ${isOpen ? 'wallets-accordion__dropdown--open' : ''}`}
+                        onClick={onToggle}
+                    >
+                        <IcDropdown />
+                    </div>
+                )}
             </div>
-            <div className={`wallets-accordion__content${wallet.is_active ? '--visible' : ''}`}>
-                {wallet.is_active && content}
+            <div className={`wallets-accordion__content ${isOpen ? 'wallets-accordion__content--visible' : ''}`}>
+                {isOpen && children}
             </div>
         </div>
     );

@@ -26,7 +26,7 @@ const Toolbox = observer(() => {
         toolbox_dom,
     } = toolbox;
 
-    const { setVisibility } = flyout;
+    const { setVisibility, selected_category } = flyout;
     const { loadDataStrategy } = quick_strategy;
 
     const toolbox_ref = React.useRef(ToolboxItems);
@@ -80,14 +80,17 @@ const Toolbox = observer(() => {
                         />
                         <div className='db-toolbox__category-menu'>
                             {toolbox_dom &&
-                                (Array.from(toolbox_dom.childNodes) as HTMLElement[]).map((category, index) => {
+                                Array.from(toolbox_dom.childNodes as HTMLElement[]).map((category, index) => {
                                     if (category.tagName.toUpperCase() === 'CATEGORY') {
                                         const has_sub_category = hasSubCategory(category.children);
                                         const is_sub_category_open = sub_category_index.includes(index);
                                         return (
                                             <div
                                                 key={`db-toolbox__row--${category.getAttribute('id')}`}
-                                                className='db-toolbox__row'
+                                                className={classNames('db-toolbox__row', {
+                                                    'db-toolbox__row--active':
+                                                        selected_category?.getAttribute('id') === category?.id,
+                                                })}
                                             >
                                                 <div
                                                     className='db-toolbox__item'
@@ -123,7 +126,15 @@ const Toolbox = observer(() => {
                                                                     key={`db-toolbox__sub-category-row--${subCategory.getAttribute(
                                                                         'id'
                                                                     )}`}
-                                                                    className='db-toolbox__sub-category-row'
+                                                                    className={classNames(
+                                                                        'db-toolbox__sub-category-row',
+                                                                        {
+                                                                            'db-toolbox__sub-category-row--active':
+                                                                                selected_category?.getAttribute(
+                                                                                    'id'
+                                                                                ) === subCategory?.id,
+                                                                        }
+                                                                    )}
                                                                     onClick={() => {
                                                                         onToolboxItemClick(subCategory);
                                                                     }}

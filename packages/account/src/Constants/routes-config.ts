@@ -29,7 +29,7 @@ const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: 
 export type TPage404 = typeof Page404;
 
 // Order matters
-const initRoutesConfig = (): TRouteConfig[] => [
+const initRoutesConfig = () => [
     {
         path: routes.account_closed,
         component: AccountClosed,
@@ -127,11 +127,13 @@ const initRoutesConfig = (): TRouteConfig[] => [
                         component: LoginHistory,
                         getTitle: () => localize('Login history'),
                     },
-                    {
-                        path: routes.api_token,
-                        component: ApiToken,
-                        getTitle: () => localize('API token'),
-                    },
+                    ...[
+                        {
+                            path: routes.api_token,
+                            component: ApiToken,
+                            getTitle: () => localize('API token'),
+                        },
+                    ],
                     {
                         path: routes.connected_apps,
                         component: ConnectedApps,

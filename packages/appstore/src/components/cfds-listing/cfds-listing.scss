@@ -557,7 +557,29 @@
                         background-color: var(--button-secondary-hover);
                     }
                 }
+                &-hide {
+                    @include mobile {
+                        display: none;
+                    }
+                }
             }
+            &-ctrader {
+                &-container {
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 4rem;
+                    margin-bottom: 6rem;
+                    @include mobile {
+                        margin-top: 5rem;
+                        margin-bottom: 0;
+                    }
+                }
+                &__banner-text {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+
             &--windows {
                 display: flex;
                 gap: 1.6rem;
@@ -627,6 +649,11 @@
                 align-items: center;
                 border: 1px solid var(--border-disabled);
                 border-radius: 5px;
+                &-hide {
+                    @include mobile {
+                        display: none;
+                    }
+                }
             }
         }
         &-text {

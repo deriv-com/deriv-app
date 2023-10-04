@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import getRoutesConfig from 'Constants/routes-config';
+import getRoutesConfig from '../../Constants/routes-config';
 import { findRouteByPath, normalizePath } from './helpers';
 
 type TBinaryLink = {

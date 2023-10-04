@@ -586,6 +586,7 @@ type TPortfolioStore = {
     is_loading: boolean;
     is_multiplier: boolean;
     is_accumulator: boolean;
+    is_turbos: boolean;
     onBuyResponse: (contract_info: { contract_id: number; longcode: string; contract_type: string }) => void;
     onHoverPosition: (is_over: boolean, position: TPortfolioPosition, underlying: string) => void;
     onClickCancel: (contract_id?: number) => void;

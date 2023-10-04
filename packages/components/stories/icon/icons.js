@@ -217,6 +217,7 @@ export const icons =
         'IcCashierTetherDark',
         'IcCashierTetherLight',
         'IcCashierTopUp',
+        'IcCashierUnderMaintenance',
         'IcCashierUpiDark',
         'IcCashierUpiLight',
         'IcCashierUsdCoinDark',
@@ -698,7 +699,6 @@ export const icons =
         'IcFlagZhTw',
     ],
     'mt5': [
-        'IcMt5Acuity',
         'IcMt5CfdPlatform',
         'IcMt5Cfds',
         'IcMt5Derived',

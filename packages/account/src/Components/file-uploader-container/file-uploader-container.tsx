@@ -4,28 +4,25 @@ import { isMobile, WS } from '@deriv/shared';
 import type { TSettings } from '@deriv/shared/src/utils/files/file-uploader-utils';
 import { Localize } from '@deriv/translations';
 import FileUploader from './file-uploader';
-import { TFile } from '../../Types';
 
 type TFileUploaderContainer = {
-    getSocket?: () => WebSocket;
-    onFileDrop: (file: TFile | undefined) => void;
+    onFileDrop: (files?: File[]) => void;
     onRef: (ref: React.RefObject<null | { upload: () => void }> | undefined) => void;
     settings?: Partial<TSettings>;
     files_description: React.ReactNode;
     examples: React.ReactNode;
+    onError?: (error_message: string) => void;
 };
 
 const FileUploaderContainer = ({
     examples,
     files_description,
-    getSocket,
     onFileDrop,
     onRef,
     settings,
+    onError,
 }: TFileUploaderContainer) => {
     const ref = React.useRef(null);
-
-    const getSocketFunc = getSocket ?? WS.getSocket;
 
     React.useEffect(() => {
         if (ref) {
@@ -41,7 +38,7 @@ const FileUploaderContainer = ({
                 <Localize i18n_default_text='Upload file' />
             </Text>
             <div className='file-uploader__file-dropzone-wrapper'>
-                <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} settings={settings} />
+                <FileUploader onError={onError} ref={ref} onFileDrop={onFileDrop} settings={settings} />
             </div>
             <div className='file-uploader__file-supported-formats'>
                 <Text size={isMobile() ? 'xxxs' : 'xxs'}>

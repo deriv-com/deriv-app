@@ -64,8 +64,8 @@ export const readFiles = (files: Blob[], getFileReadErrorMessage: (t: string) =>
                     buffer: fr.result,
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
-                    documentType: settings?.document_type ?? DOCUMENT_TYPES.utility_bill,
                     ...settings,
+                    documentType: settings?.document_type ?? DOCUMENT_TYPES.utility_bill,
                 };
                 resolve(file_metadata);
             };

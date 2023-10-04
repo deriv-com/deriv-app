@@ -15,7 +15,7 @@ const fileReadErrorMessage = (filename: string) => {
  * Custom hook to handle file uploading with the binary-document-uploader package
  */
 const useFileUploader = () => {
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<unknown>(null);
     const ref = useRef<HTMLInputElement>(null);
 
     /**

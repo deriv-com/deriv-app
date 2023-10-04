@@ -1,6 +1,3 @@
-//TODO all file upload process has to be checked and refactored with TS. skipping checks for passing CFD build
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { DocumentUploadResponse } from '@deriv/api-types';
@@ -73,7 +70,8 @@ const ProofOfAddressForm = observer(
             removeNotificationMessage,
             removeNotificationByKey,
         } = notifications;
-        const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
+        const [document_files, setDocumentFiles] = React.useState<File[] | undefined>([]);
+        const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
         const [is_loading, setIsLoading] = React.useState(true);
         const [form_values, setFormValues] = React.useState<TFormInitialValues>({
             address_line_1: '',
@@ -277,19 +275,7 @@ const ProofOfAddressForm = observer(
         };
         return (
             <Formik initialValues={form_initial_values} onSubmit={onSubmitValues} validate={validateFields}>
-                {({
-                    values,
-                    errors,
-                    status,
-                    touched,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    isSubmitting,
-                    setFieldValue,
-                    setFieldTouched,
-                    isValid,
-                }) => (
+                {({ status, handleSubmit, isSubmitting, isValid }) => (
                     <>
                         <LeaveConfirm onDirty={isMobile() ? showForm : undefined} />
                         {form_state.should_show_form && (
@@ -318,27 +304,18 @@ const ProofOfAddressForm = observer(
                                         <FormSubHeader title={localize('Address')} title_text_size='s' />
                                         <PersonalDetailsForm
                                             is_qualified_for_poa
-                                            errors={errors}
-                                            touched={touched}
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            setFieldTouched={setFieldTouched}
                                             editable_fields={changeable_fields}
                                             states_list={states_list}
                                         />
                                         <FormSubHeader title={localize('Document submission')} title_text_size='s' />
                                         <FormBodySection>
                                             <FileUploaderContainer
+                                                // @ts-expect-error  FIXME: Type 'void' is not assignable to type 'Promise<DocumentUploadResponse>'
                                                 onRef={ref => (file_uploader_ref = ref)}
-                                                onFileDrop={df => {
-                                                    setDocumentFile({
-                                                        files: df.files,
-                                                        error_message: df.error_message,
-                                                    });
+                                                onFileDrop={files => {
+                                                    setDocumentFiles(files);
                                                 }}
-                                                getSocket={WS.getSocket}
+                                                onError={setFileSelectionError}
                                                 files_description={<FilesDescription />}
                                                 examples={<CommonMistakeExamples />}
                                             />
@@ -351,8 +328,8 @@ const ProofOfAddressForm = observer(
                                             is_disabled={
                                                 isSubmitting ||
                                                 !isValid ||
-                                                (document_file.files && document_file.files.length < 1) ||
-                                                !!document_file.error_message
+                                                (document_files && document_files.length < 1) ||
+                                                !!file_selection_error
                                             }
                                             label={localize('Continue')}
                                             is_absolute={isMobile()}
@@ -368,8 +345,8 @@ const ProofOfAddressForm = observer(
                                             is_disabled={
                                                 isSubmitting ||
                                                 !isValid ||
-                                                (document_file.files && document_file.files.length < 1) ||
-                                                !!document_file.error_message
+                                                (document_files && document_files.length < 1) ||
+                                                !!file_selection_error
                                             }
                                             has_effect
                                             is_loading={form_state.is_btn_loading}

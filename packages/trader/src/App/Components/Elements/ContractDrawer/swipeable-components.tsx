@@ -1,13 +1,21 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { SwipeableWrapper } from '@deriv/components';
 
+type TSwipeableContractAuditProps = React.PropsWithChildren<{
+    is_multiplier?: boolean;
+    onSwipedDown?: () => void;
+}>;
+type TSwipeableContractDrawerProps = React.PropsWithChildren<{
+    onSwipedDown?: () => void;
+    onSwipedUp?: () => void;
+}>;
+
 /**
  * Swipeable components
  */
-export const SwipeableContractAudit = ({ is_multiplier, children, onSwipedDown }) => {
+export const SwipeableContractAudit = ({ is_multiplier, children, onSwipedDown }: TSwipeableContractAuditProps) => {
     const swipe_handlers = SwipeableWrapper.useSwipeable({
         onSwipedDown,
     });
@@ -31,23 +39,11 @@ export const SwipeableContractAudit = ({ is_multiplier, children, onSwipedDown }
     );
 };
 
-SwipeableContractAudit.propTypes = {
-    is_multiplier: PropTypes.bool,
-    children: PropTypes.node,
-    onSwipedDown: PropTypes.func,
-};
-
-export const SwipeableContractDrawer = ({ children, onSwipedDown, onSwipedUp }) => {
+export const SwipeableContractDrawer = ({ children, onSwipedDown, onSwipedUp }: TSwipeableContractDrawerProps) => {
     const swipe_handlers = SwipeableWrapper.useSwipeable({
         onSwipedDown,
         onSwipedUp,
     });
 
     return <div {...swipe_handlers}>{children}</div>;
-};
-
-SwipeableContractDrawer.propTypes = {
-    children: PropTypes.node,
-    onSwipedDown: PropTypes.func,
-    onSwipedUp: PropTypes.func,
 };

@@ -43,23 +43,3 @@ jobs:
         version: $(echo cat packages/core/dist/version | bash)
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-
-
-  send_slack_notification:
-      name: Send Slack notification
-      environment: Staging
-      runs-on: Runner_16cores_Deriv-app
-      if: always()
-      needs: [build_test_and_publish]
-      steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Conclusion
-        uses: technote-space/workflow-conclusion-action@v3
-      - name: Send Slack Notification
-        uses: "./.github/actions/send_slack_notifications"
-        with:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          status: ${{ env.WORKFLOW_CONCLUSION }}
-          release_type: Production 
-          version: $(echo cat packages/core/dist/version | bash)

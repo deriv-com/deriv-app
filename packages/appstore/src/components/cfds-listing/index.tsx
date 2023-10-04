@@ -1,6 +1,7 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
 import { Text, StaticUrl } from '@deriv/components';
+import { useCFDCanGetMoreMT5Accounts, useIsMt5LoginListStatusPresent } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
@@ -13,7 +14,6 @@ import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
-import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -192,8 +192,11 @@ const CFDsListing = observer(() => {
                                       existing_account?.landing_company_short
                                   )
                                 : null;
-                        const is_open_order_position_status_present = true;
-                        const open_order_position_status = false;
+                        //TODO replace status with open_order_position_status once key is available in BE response and in type TSocketResponseData<"mt5_login_list">
+                        const {
+                            is_flag_present: is_open_order_position_status_present,
+                            flag_value: open_order_position_status,
+                        } = useIsMt5LoginListStatusPresent('landing_company_short', existing_account?.login ?? '');
 
                         return (
                             <TradingAppCard

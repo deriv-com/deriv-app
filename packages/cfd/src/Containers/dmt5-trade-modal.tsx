@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, Icon, Money } from '@deriv/components';
+import { Text, Icon, Money, StatusBadge } from '@deriv/components';
+import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
 import { TTradingPlatformAccounts } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import {
@@ -69,6 +70,12 @@ const DMT5TradeModal = ({
         else if (mt5_trade_account.market_type === 'all') return 'SwapFree';
         return 'Financial';
     };
+
+    //TODO replace status with open_order_position_status once key is available in BE response and in type TSocketResponseData<"mt5_login_list">
+    const { is_flag_present: is_open_order_position_status_present, flag_value: open_order_position_status } =
+        useIsMt5LoginListStatusPresent('landing_company_short', mt5_trade_account?.login ?? '');
+    const status_text = open_order_position_status ? 'No new positions' : 'Account closed';
+
     return (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
@@ -83,16 +90,32 @@ const DMT5TradeModal = ({
                         </Text>
                     )}
                 </div>
-                {mt5_trade_account?.display_balance && (
-                    <Text size='xs' color='profit-success' className='cfd-trade-modal__desc-balance' weight='bold'>
-                        <Money
-                            amount={mt5_trade_account.display_balance}
-                            currency={mt5_trade_account.currency}
-                            has_sign={!!mt5_trade_account.balance && mt5_trade_account.balance < 0}
-                            show_currency
+                <div className='cfd-trade-modal__acc_status'>
+                    {mt5_trade_account?.display_balance && (
+                        <Text size='xs' color='profit-success' className='cfd-trade-modal__desc-balance' weight='bold'>
+                            <Money
+                                amount={mt5_trade_account.display_balance}
+                                currency={mt5_trade_account.currency}
+                                has_sign={!!mt5_trade_account.balance && mt5_trade_account.balance < 0}
+                                show_currency
+                            />
+                        </Text>
+                    )}
+                    {is_open_order_position_status_present && (
+                        <StatusBadge
+                            className='cfd-trade-modal__acc_status_badge'
+                            account_status='open-order-position'
+                            icon='IcAlertWarning'
+                            text={
+                                <Localize
+                                    i18n_default_text='<0>{{status_text}}</0>'
+                                    values={{ status_text }}
+                                    components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
+                                />
+                            }
                         />
-                    </Text>
-                )}
+                    )}
+                </div>
             </div>
             <div className='cfd-trade-modal__login-specs'>
                 <div className='cfd-trade-modal__login-specs-item'>

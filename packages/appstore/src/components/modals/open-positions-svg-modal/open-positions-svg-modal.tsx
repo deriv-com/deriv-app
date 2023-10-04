@@ -5,6 +5,7 @@ import {
     CFD_PLATFORMS,
     getCFDPlatformLabel,
     getFormattedJurisdictionCode,
+    getFormattedJurisdictionMarketTypes,
     Jurisdiction,
     JURISDICTION_MARKET_TYPES,
 } from '@deriv/shared';
@@ -27,10 +28,11 @@ const OpenPositionsSVGModal = ({
     const title = open_order_position_status ? 'No new positions' : 'Account closed';
     const account_type =
         market_type === JURISDICTION_MARKET_TYPES.FINANCIAL
-            ? JURISDICTION_MARKET_TYPES.FINANCIAL
-            : JURISDICTION_MARKET_TYPES.DERIVED;
+            ? getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL)
+            : getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.DERIVED);
     const from_account = getFormattedJurisdictionCode(Jurisdiction.SVG);
     const cfd_platform = getCFDPlatformLabel(CFD_PLATFORMS.MT5);
+
     const onClick = () => {
         setModalOpen(false);
     };
@@ -45,7 +47,7 @@ const OpenPositionsSVGModal = ({
                 <Text as='h1' color='prominent' weight='bold' className='open-positions-svg__modal-title'>
                     <Localize i18n_default_text='{{title}}' values={{ title }} />
                 </Text>
-                <Text as='p' color='prominent ' size='xs' line_height='m'>
+                <Text as='p' color='prominent ' size='xs'>
                     {open_order_position_status ? (
                         <Localize
                             i18n_default_text='You can no longer open new positions with your {{cfd_platform}} {{account_type}} {{from_account}} account. Please use your {{cfd_platform}} {{account_type}} {{eligible_account_to_migrate_label}} account to open new positions.'

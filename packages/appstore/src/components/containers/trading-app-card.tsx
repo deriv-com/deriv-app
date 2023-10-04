@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     getAppstorePlatforms,
@@ -14,9 +15,8 @@ import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
-import { Localize, localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
-import OpenPositionsSVGModal from 'Components/modals/open-positions-svg-modal';
+import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 
 const TradingAppCard = ({
     availability,
@@ -154,23 +154,16 @@ const TradingAppCard = ({
                     {is_open_order_position_status_present && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
+                            onClick={() => {
+                                setModalOpen(!is_modal_open);
+                            }}
                             account_status='open-order-position'
                             icon='IcAlertWarning'
                             text={
                                 <Localize
                                     i18n_default_text='<0>{{status_text}}</0>'
                                     values={{ status_text }}
-                                    components={[
-                                        <Text
-                                            key={0}
-                                            weight='bold'
-                                            size='xxxs'
-                                            color='warning'
-                                            onClick={() => {
-                                                setModalOpen(!is_modal_open);
-                                            }}
-                                        />,
-                                    ]}
+                                    components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
                                 />
                             }
                         />

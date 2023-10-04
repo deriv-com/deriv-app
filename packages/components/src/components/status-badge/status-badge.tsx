@@ -8,9 +8,16 @@ type StatusBadgeProps = {
     account_status: any;
     icon: string;
     text: ReactNode;
+    onClick?: () => void;
 };
 
-const StatusBadge = ({ account_status, icon, text, className }: StatusBadgeProps & HTMLAttributes<HTMLDivElement>) => {
+const StatusBadge = ({
+    account_status,
+    icon,
+    text,
+    className,
+    onClick,
+}: StatusBadgeProps & HTMLAttributes<HTMLDivElement>) => {
     return (
         <div
             className={classNames(
@@ -18,6 +25,7 @@ const StatusBadge = ({ account_status, icon, text, className }: StatusBadgeProps
                 className,
                 `switcher-status-badge__container--${account_status || 'failed'}`
             )}
+            onClick={onClick}
         >
             <div
                 className={classNames(

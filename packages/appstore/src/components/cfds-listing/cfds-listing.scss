@@ -391,6 +391,11 @@
     margin: 2.4rem;
     align-items: center;
     gap: 0.8rem;
+    &__acc_status {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-less-prominent);

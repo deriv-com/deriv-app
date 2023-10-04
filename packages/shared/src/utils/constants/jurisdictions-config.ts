@@ -55,3 +55,20 @@ export const JURISDICTION_MARKET_TYPES = {
     FINANCIAL: 'financial',
     DERIVED: 'derived',
 } as const;
+
+export const getFormattedJurisdictionMarketTypes = (jurisdiction_market_type: string) => {
+    let formatted_market_type = '';
+
+    switch (jurisdiction_market_type) {
+        case JURISDICTION_MARKET_TYPES.DERIVED:
+            formatted_market_type = localize('Derived');
+            break;
+        case JURISDICTION_MARKET_TYPES.FINANCIAL:
+            formatted_market_type = localize('Financial');
+            break;
+        default:
+            formatted_market_type = jurisdiction_market_type?.toUpperCase();
+            break;
+    }
+    return formatted_market_type;
+};

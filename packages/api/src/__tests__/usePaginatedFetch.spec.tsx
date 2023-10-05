@@ -24,6 +24,7 @@ jest.mock('@deriv/shared', () => ({
                 req_id: 1,
             })
         ),
+        get: jest.fn(() => ({ connection: { readyState: 1 } })),
     }),
 }));
 

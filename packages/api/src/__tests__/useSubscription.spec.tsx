@@ -29,6 +29,7 @@ describe('useSubscription', () => {
                     },
                 };
             }),
+            get: jest.fn(() => ({ connection: { readyState: 1 } })),
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;

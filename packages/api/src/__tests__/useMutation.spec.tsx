@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { TSocketResponse } from '../../types';
 import APIProvider from '../APIProvider';
 import useMutation from '../useMutation';
+import useAPI from '../useAPI';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -14,11 +15,13 @@ jest.mock('@deriv/shared', () => ({
                 echo_req: {},
             })
         ),
+        get: jest.fn(() => ({ connection: { readyState: 1 } })),
     }),
 }));
 
 describe('useMutation', () => {
     test('should call verify_email and get 1 in response', async () => {
+        useAPI;
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result, waitFor } = renderHook(() => useMutation('verify_email'), { wrapper });

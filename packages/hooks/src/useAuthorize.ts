@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useQuery } from '@deriv/api';
+import { useFetch } from '@deriv/api';
 import { getActiveAuthTokenIDFromLocalStorage } from '@deriv/utils';
 
 /** A custom hook that authorize the user with the given token. If no token is given,
@@ -8,9 +8,13 @@ import { getActiveAuthTokenIDFromLocalStorage } from '@deriv/utils';
 const useAuthorize = () => {
     const current_token = getActiveAuthTokenIDFromLocalStorage();
 
-    const { data, ...rest } = useQuery('authorize', {
+    const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: current_token || '' },
-        options: { enabled: Boolean(current_token), staleTime: Infinity, keepPreviousData: true },
+        options: {
+            enabled: Boolean(current_token),
+            /** infinite cache. Invalidate it when the user creates new wallet or new DTrader account */
+            staleTime: Infinity,
+        },
     });
 
     // Add additional information to the authorize response.

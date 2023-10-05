@@ -64,6 +64,7 @@ const ProofOfIdentityContainerForMt5 = observer(({ onStateChange, citizen_data }
         <POISubmissionForMT5
             idv={idv}
             is_idv_disallowed={is_idv_disallowed}
+            identity_last_attempt={identity_last_attempt}
             onfido={onfido}
             onStateChange={onStateChange}
             residence_list={residence_list}

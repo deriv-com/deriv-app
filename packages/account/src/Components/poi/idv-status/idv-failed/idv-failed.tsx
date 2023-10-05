@@ -106,10 +106,10 @@ const IdvFailed = ({
      */
     const chosen_country = React.useMemo(
         () =>
-            is_document_upload_required
+            is_document_upload_required && !is_from_external
                 ? selected_country ?? {}
                 : residence_list.find(residence_data => residence_data.value === latest_status?.country_code) ?? {},
-        [selected_country, is_document_upload_required, latest_status?.country_code, residence_list]
+        [selected_country, is_document_upload_required, latest_status?.country_code, residence_list, is_from_external]
     );
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
@@ -322,6 +322,8 @@ const IdvFailed = ({
     if (is_loading && Object.keys(rest_state?.form_initial_values ?? {}).length === 0) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
+
+    console.log('chosen_country: ', chosen_country);
 
     return (
         <Formik

@@ -15,7 +15,9 @@ const ListItem = ({ onClick, is_active, label }: TListItem) => (
         })}
         onClick={onClick}
     >
-        <Text weight={is_active ? 'bold' : 'normal'} size='xs' line_height='xl'>{label}</Text>
+        <Text weight={is_active ? 'bold' : 'normal'} size='xs' line_height='xl'>
+            {label}
+        </Text>
     </li>
 );
 

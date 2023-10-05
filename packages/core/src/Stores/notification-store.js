@@ -1,4 +1,5 @@
 import React from 'react';
+import debounce from 'lodash.debounce';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { StaticUrl } from '@deriv/components';
 import {
@@ -83,6 +84,8 @@ export default class NotificationStore extends BaseStore {
             updateNotifications: action.bound,
         });
 
+        const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
+
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
             () => {
@@ -111,7 +114,7 @@ export default class NotificationStore extends BaseStore {
                     Object.keys(root_store.client.landing_companies || {}).length > 0 &&
                     root_store.client.is_p2p_enabled
                 ) {
-                    await this.getP2pCompletedOrders();
+                    await debouncedGetP2pCompletedOrders();
                 }
 
                 if (
@@ -1524,8 +1527,8 @@ export default class NotificationStore extends BaseStore {
         await WS.wait('authorize');
         const response = await WS.send?.({ p2p_order_list: 1, active: 0 });
 
-        if (!response?.error && response?.p2p_order_list?.list) {
-            this.p2p_completed_orders = response.p2p_order_list.list;
+        if (!response?.error) {
+            this.p2p_completed_orders = response?.p2p_order_list?.list || [];
         }
     }
 }

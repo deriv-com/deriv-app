@@ -103,7 +103,7 @@ const TradingAppCard = ({
     };
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
-    const status_text = open_order_position_status ? 'No new positions' : 'Account closed' ?? '';
+    const status_text = open_order_position_status ? 'No new positions' : 'Account closed';
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>

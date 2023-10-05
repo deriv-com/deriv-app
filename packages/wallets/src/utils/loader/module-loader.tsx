@@ -1,4 +1,4 @@
-export const moduleLoader = (lazyComponent: () => Promise<unknown>, attempts = 2, interval = 1500) => {
+export const moduleLoader = (lazyComponent: () => Promise<unknown>, attempts = 3, interval = 1500) => {
     return new Promise((resolve, reject) => {
         lazyComponent()
             .then(resolve)

@@ -3,7 +3,13 @@ import { Text } from '@deriv/components';
 import { VANILLALONG } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const ContractTypeGlossary = ({ category }: { category: string }) => {
+const ContractTypeGlossary = ({
+    category,
+    is_multiplier_fx = false,
+}: {
+    category: string;
+    is_multiplier_fx?: boolean;
+}) => {
     let content;
     if (category) {
         switch (category) {
@@ -135,9 +141,9 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                             'If you select this feature, your trade will be closed automatically at the nearest available asset price when your loss reaches or exceeds the stop loss amount. Your loss may be more than the amount you entered depending on the market price at closing.'
                         ),
                     },
-                    { type: 'heading', text: localize('Deal cancellation') },
+                    { type: is_multiplier_fx ? '' : 'heading', text: localize('Deal cancellation') },
                     {
-                        type: 'paragraph',
+                        type: is_multiplier_fx ? '' : 'paragraph',
                         text: localize(
                             'If you select this feature, you can cancel your trade within a chosen time frame if the asset price moves against your favour. You will get your stake back without profit/loss. We charge a small fee for this. Take profit and stop loss are disabled when deal cancellation is active.'
                         ),
@@ -152,9 +158,13 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                     { type: 'heading', text: localize('Entry spot') },
                     {
                         type: 'paragraph',
-                        text: localize(
-                            'We use current-tick-execution mechanism, which is the latest asset price when the trade opening is processed by our servers for Volatility Index, Basket Indices, Jump Indices and Crash/Boom Indices.'
-                        ),
+                        text: is_multiplier_fx
+                            ? localize(
+                                  'We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers for Major Pairs.'
+                              )
+                            : localize(
+                                  'We use current-tick-execution mechanism, which is the latest asset price when the trade opening is processed by our servers for Volatility Index, Basket Indices, Jump Indices and Crash/Boom Indices.'
+                              ),
                     },
                     { type: 'heading', text: localize('Exit spot') },
                     {

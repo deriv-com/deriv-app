@@ -91,7 +91,7 @@ const Info = ({ handleSelect, item, is_multiplier_fx, list }: TInfo) => {
                                 />
                             </React.Fragment>
                         ) : (
-                            <ContractTypeGlossary category={type.value} />
+                            <ContractTypeGlossary category={type.value} is_multiplier_fx={is_multiplier_fx} />
                         )}
                     </div>
                 </ThemedScrollbars>

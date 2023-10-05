@@ -67,7 +67,7 @@ describe('MenuLink', () => {
 
         renderCheck();
         const link = screen.getByTestId('dt_menu_link');
-        expect(link.onclick).toBeFalsy();
+        expect(link.getAttribute('href')).toBeFalsy();
     });
 
     it('should render menu link if deriv_static_url', () => {

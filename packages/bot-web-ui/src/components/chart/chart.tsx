@@ -12,7 +12,7 @@ import ToolbarWidgets from './toolbar-widgets';
 const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) => {
     const barriers: [] = [];
     const { common, ui } = useStore();
-    const { chart_store, run_panel } = useDBotStore();
+    const { chart_store, run_panel, dashboard } = useDBotStore();
 
     const {
         chart_type,
@@ -29,6 +29,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         wsSubscribe,
     } = chart_store;
     const { is_drawer_open } = run_panel;
+    const { is_enabled_modal_chart } = dashboard;
     const is_socket_opened = common.is_socket_opened;
     const settings = {
         assetInformation: false, // ui.is_chart_asset_info_visible,
@@ -43,6 +44,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         <div
             className={classNames('dashboard__chart-wrapper', {
                 'dashboard__chart-wrapper--expanded': is_drawer_open && !isMobile(),
+                'dashboard__chart-wrapper--modal': is_enabled_modal_chart && !isMobile(),
             })}
         >
             <SmartChart

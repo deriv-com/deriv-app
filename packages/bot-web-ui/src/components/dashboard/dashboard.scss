@@ -10,16 +10,20 @@
     @include mobile {
         padding: 2rem;
     }
+
     .dc-dialog {
         position: relative;
+
         &__header-wrapper {
             margin: 0 0 2.4rem;
         }
+
         &__content {
             &__header {
                 display: flex;
                 justify-content: space-between;
                 margin: 0 0 2.4rem;
+
                 .dc-icon {
                     cursor: pointer;
                 }
@@ -29,10 +33,12 @@
         @include mobile {
             &__footer {
                 flex-wrap: unset;
+
                 .dc-dialog__button {
                     &:first-child {
                         margin-right: 1rem;
                     }
+
                     padding: 0;
                     width: 40%;
                     min-width: unset;
@@ -201,6 +207,17 @@
         &--expanded {
             width: calc(100vw - 39.8rem);
         }
+
+        &--modal {
+            // position: fixed !important;
+            z-index: 99999999 !important;
+            width: 400px !important;
+            height: 500px !important;
+            // top: 0;
+            // left: calc(100% - 80rem);
+            // position: absolute;
+            // dashboard_chart-wrapper
+        }
     }
 
     &__toolbox {
@@ -298,13 +315,16 @@
 
     .injectionDiv {
         height: calc(100vh - 20rem);
+
         .blocklyTrash {
             transition: all 0.4s;
+
             @include mobile {
                 display: none;
             }
         }
     }
+
     &--tour-active {
         .blocklyTrash {
             display: none;
@@ -376,6 +396,7 @@
 
     &__content {
         text-align: left;
+
         p {
             font-size: 1.4rem;
         }
@@ -390,10 +411,12 @@
 
 .joyride-content {
     font-size: 1.4rem;
+
     @media (max-height: 790px) {
         max-height: 46vh;
         overflow-y: auto;
     }
+
     &__left {
         text-align: left;
 
@@ -460,6 +483,7 @@
 
     &--tour-position {
         top: 0;
+
         .progress-bar-circle:first-child {
             display: none;
         }
@@ -711,6 +735,7 @@
 
     .dc-toast {
         width: 100%;
+
         &__message {
             background: var(--text-prominent);
             color: var(--general-main-1);

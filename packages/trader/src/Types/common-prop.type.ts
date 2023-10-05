@@ -4,7 +4,6 @@ export type TTextValueStrings = {
     text: string;
     value: string;
 };
-
 export type TTextValueNumber = {
     text: string;
     value: number;

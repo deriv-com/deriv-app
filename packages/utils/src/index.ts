@@ -4,4 +4,5 @@ export { default as getActiveLoginIDFromLocalStorage } from './getActiveLoginIDF
 export { getLocalStorage } from './getLocalStorage';
 export { default as getTradingAccountName } from './getTradingAccountName';
 export { default as groupTransactionsByDay } from './groupTransactionsByDay';
+export { default as getTruncatedString } from './getTruncatedString';
 export { default as unFormatLocaleString } from './unFormatLocaleString';

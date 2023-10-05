@@ -58,6 +58,7 @@ export { default as useWalletMigration } from './useWalletMigration';
 export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useWalletTransfer } from './useWalletTransfer';
 export { default as useWalletsList } from './useWalletsList';
+export { default as useStatesList } from './useStatesList';
 export { default as useP2PConfig } from './useP2PConfig';
 export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';
 export { default as useCFDCanGetMoreMT5Accounts } from './useCFDCanGetMoreMT5Accounts';

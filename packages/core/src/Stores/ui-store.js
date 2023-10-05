@@ -1,4 +1,4 @@
-import { action, autorun, computed, makeObservable,observable } from 'mobx';
+import { action, autorun, computed, makeObservable, observable } from 'mobx';
 
 import { isMobile, isTouchDevice, LocalStore, routes } from '@deriv/shared';
 
@@ -29,6 +29,7 @@ export default class UIStore extends BaseStore {
     is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
     is_settings_modal_on = false;
     is_language_settings_modal_on = false;
+    is_mobile_language_menu_open = false;
     is_accounts_switcher_on = false;
     account_switcher_disabled_message = '';
 
@@ -253,6 +254,7 @@ export default class UIStore extends BaseStore {
             is_history_tab_active: observable,
             is_landscape: observable,
             is_language_settings_modal_on: observable,
+            is_mobile_language_menu_open: observable,
             is_nativepicker_visible: observable,
 
             is_positions_drawer_on: observable,
@@ -306,6 +308,7 @@ export default class UIStore extends BaseStore {
             init: action.bound,
             installWithDeferredPrompt: action.bound,
             is_account_switcher_disabled: computed,
+            is_desktop: computed,
             is_mobile: computed,
             is_tablet: computed,
             is_warning_scam_message_modal_visible: computed,
@@ -369,6 +372,7 @@ export default class UIStore extends BaseStore {
             setShouldShowWarningModal: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
+            setMobileLanguageMenuOpen: action.bound,
             toggleAccountsDialog: action.bound,
             toggleAccountSettings: action.bound,
             toggleAccountSignupModal: action.bound,
@@ -482,6 +486,11 @@ export default class UIStore extends BaseStore {
         return MAX_MOBILE_WIDTH < this.screen_width && this.screen_width <= MAX_TABLET_WIDTH;
     }
 
+    get is_desktop() {
+        // TODO: remove tablet once there is a design for the specific size.
+        return this.is_tablet || this.screen_width > MAX_TABLET_WIDTH;
+    }
+
     get is_account_switcher_disabled() {
         return !!this.account_switcher_disabled_message;
     }
@@ -574,6 +583,10 @@ export default class UIStore extends BaseStore {
         }
 
         return this.is_dark_mode_on;
+    }
+
+    setMobileLanguageMenuOpen(is_mobile_language_menu_open) {
+        this.is_mobile_language_menu_open = is_mobile_language_menu_open;
     }
 
     toggleSetCurrencyModal() {

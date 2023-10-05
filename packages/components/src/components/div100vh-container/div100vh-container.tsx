@@ -19,8 +19,8 @@ type TDiv100vhContainer = {
     is_bypassed?: boolean;
     is_disabled?: boolean;
     max_height_offset?: string;
-    max_autoheight_offset?: string;
     className?: string;
+    max_autoheight_offset?: string;
     id?: string;
 } & React.ComponentProps<'div'>;
 

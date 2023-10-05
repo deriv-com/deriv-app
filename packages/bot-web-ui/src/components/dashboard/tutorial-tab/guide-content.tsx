@@ -1,17 +1,25 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Dialog, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { useDBotStore } from 'Stores/useDBotStore';
 import { removeKeyValue } from 'Utils/settings';
+import { useDBotStore } from 'Stores/useDBotStore';
+
+type TGuideList = {
+    content?: string;
+    id: number;
+    src?: string;
+    subtype?: string;
+    type: string;
+    url?: string;
+    imageclass?: string;
+};
 
 type TGuideContent = {
-    guide_list: [];
+    guide_list: TGuideList[];
 };
 
 const GuideContent = observer(({ guide_list }: TGuideContent) => {
@@ -27,6 +35,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
         setActiveTour,
         setShowMobileTourDialog,
     } = dashboard;
+    const is_mobile = isMobile();
 
     const triggerTour = (type: string) => {
         if (type === 'OnBoard') {
@@ -41,7 +50,6 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
             if (is_mobile) setShowMobileTourDialog(true);
         }
     };
-    const is_mobile = isMobile();
 
     return React.useMemo(
         () => (

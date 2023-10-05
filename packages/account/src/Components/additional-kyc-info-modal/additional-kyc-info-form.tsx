@@ -112,7 +112,10 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                 />
                             </fieldset>
                             <fieldset className='additional-kyc-info-modal__form-field--info'>
-                                <FormInputField {...fields.tax_identification_number} />
+                                <FormInputField
+                                    {...fields.tax_identification_number}
+                                    data_testId='dt_tax_identification_number'
+                                />
                                 <FormFieldInfo
                                     message={
                                         <Localize

@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Text } from '@deriv/components';
 
 type TListItem = {
     label: string | React.ReactElement | Array<string>;
@@ -14,7 +15,7 @@ const ListItem = ({ onClick, is_active, label }: TListItem) => (
         })}
         onClick={onClick}
     >
-        {label}
+        <Text weight={is_active ? 'bold' : 'normal'} size='xs' line_height='xl'>{label}</Text>
     </li>
 );
 

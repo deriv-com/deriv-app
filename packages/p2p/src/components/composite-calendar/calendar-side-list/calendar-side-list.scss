@@ -6,9 +6,7 @@
     border-radius: 0.4rem 0 0 0.4rem;
 
     &--is-active {
-        color: var(--text-prominent);
         background-color: var(--state-active);
-        font-weight: bold;
     }
     & li {
         cursor: pointer;

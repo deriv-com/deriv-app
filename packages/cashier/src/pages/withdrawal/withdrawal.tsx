@@ -11,9 +11,9 @@ import { DepositCryptoSideNotes } from '../../modules/deposit-crypto/components'
 import { useCashierStore } from '../../stores/useCashierStores';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
-import Withdraw from './withdraw';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
+import { WithdrawalFiatModule } from '../../modules/withdrawal-fiat';
 
 const WithdrawalSideNotes = observer(() => {
     const currency_config = useCurrentCurrencyConfig();
@@ -52,7 +52,7 @@ const WithdrawalPageContent = observer(() => {
     if (!currency_config.is_crypto && verification_code)
         return (
             <PageContainer hide_breadcrumb>
-                <Withdraw />
+                <WithdrawalFiatModule />
             </PageContainer>
         );
 

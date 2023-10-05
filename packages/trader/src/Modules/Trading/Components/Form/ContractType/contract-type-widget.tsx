@@ -7,6 +7,7 @@ import { getContractTypeCategoryIcons, findContractCategory } from '../../../Hel
 import { TContractCategory, TContractType, TList } from './types';
 
 type TContractTypeWidget = {
+    is_multiplier_fx?: boolean;
     name: string;
     value: TContractType['value'];
     list: TContractCategory[];
@@ -19,7 +20,14 @@ type TContractTypeWidget = {
     languageChanged?: boolean;
 };
 
-const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TContractTypeWidget) => {
+const ContractTypeWidget = ({
+    is_multiplier_fx,
+    name,
+    value,
+    list,
+    onChange,
+    languageChanged,
+}: TContractTypeWidget) => {
     const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
     const [is_dialog_open, setDialogVisibility] = React.useState<boolean | null>();
     const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
@@ -268,6 +276,7 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
                     <ContractType.Info
                         handleSelect={handleSelect}
                         item={item || { value }}
+                        is_multiplier_fx={is_multiplier_fx}
                         list={list_with_category()}
                     />
                 ) : (

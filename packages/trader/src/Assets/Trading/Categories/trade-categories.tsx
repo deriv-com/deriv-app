@@ -7,7 +7,15 @@ import { TurbosTradeDescription } from './turbos-trade-description';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 // TODO: refactor the rest of descriptions to use them as components like AccumulatorTradeDescription
-const TradeCategories = ({ category, onClick }: { category?: string; onClick: () => void }) => {
+const TradeCategories = ({
+    category,
+    onClick,
+    is_multiplier_fx = false,
+}: {
+    category?: string;
+    onClick: () => void;
+    is_multiplier_fx?: boolean;
+}) => {
     let TradeTypeTemplate;
     if (category) {
         switch (category) {
@@ -394,16 +402,29 @@ const TradeCategories = ({ category, onClick }: { category?: string; onClick: ()
                             />
                         </Text>
                         <Text as='p'>
-                            <Localize
-                                i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>”, “<0>Stop loss</0>” and “<0>Deal cancellation</0>” allow you to adjust your level of risk aversion.'
-                                components={[
-                                    <span
-                                        className='contract-type-info__content-definition'
-                                        onClick={onClick}
-                                        key={0}
-                                    />,
-                                ]}
-                            />
+                            {is_multiplier_fx ? (
+                                <Localize
+                                    i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>” and “<0>Stop loss</0>” allow you to adjust your level of risk aversion.'
+                                    components={[
+                                        <span
+                                            className='contract-type-info__content-definition'
+                                            onClick={onClick}
+                                            key={0}
+                                        />,
+                                    ]}
+                                />
+                            ) : (
+                                <Localize
+                                    i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>”, “<0>Stop loss</0>” and “<0>Deal cancellation</0>” allow you to adjust your level of risk aversion.'
+                                    components={[
+                                        <span
+                                            className='contract-type-info__content-definition'
+                                            onClick={onClick}
+                                            key={0}
+                                        />,
+                                    ]}
+                                />
+                            )}
                         </Text>
                         <Text as='p'>
                             <Localize

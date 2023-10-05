@@ -16,6 +16,7 @@ type TInfo = {
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
     ) => void;
     item: TContractType;
+    is_multiplier_fx?: boolean;
     list: TList[];
 };
 
@@ -24,7 +25,7 @@ const TABS = {
     GLOSSARY: 'glossary',
 };
 
-const Info = ({ handleSelect, item, list }: TInfo) => {
+const Info = ({ handleSelect, item, is_multiplier_fx, list }: TInfo) => {
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
@@ -83,7 +84,11 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
                         {is_description_tab_selected ? (
                             <React.Fragment>
                                 <TradeCategoriesGIF category={type.value} selected_contract_type={item?.value} />
-                                <TradeCategories category={type.value} onClick={onClickGlossary} />
+                                <TradeCategories
+                                    category={type.value}
+                                    onClick={onClickGlossary}
+                                    is_multiplier_fx={is_multiplier_fx}
+                                />
                             </React.Fragment>
                         ) : (
                             <ContractTypeGlossary category={type.value} />

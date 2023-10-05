@@ -42,7 +42,6 @@ const PersonalDetails = ({
     is_virtual,
     is_fully_authenticated,
     account_opening_reason_list,
-    onSubmitEnabledChange,
     selected_step_ref,
     closeRealAccountSignup,
     has_real_account,
@@ -50,19 +49,9 @@ const PersonalDetails = ({
 }) => {
     const { account_status, account_settings, residence, real_account_signup_target } = props;
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
-    const is_submit_disabled_ref = React.useRef(true);
 
     const isSubmitDisabled = errors => {
         return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
-    };
-
-    const checkSubmitStatus = errors => {
-        const is_submit_disabled = isSubmitDisabled(errors);
-
-        if (is_submit_disabled_ref.current !== is_submit_disabled) {
-            is_submit_disabled_ref.current = is_submit_disabled;
-            onSubmitEnabledChange?.(!is_submit_disabled);
-        }
     };
 
     const handleCancel = values => {
@@ -104,7 +93,6 @@ const PersonalDetails = ({
         }
         const { errors } = splitValidationResultTypes(validate(values));
         const error_data = { ...idv_error, ...errors };
-        checkSubmitStatus(error_data);
         return error_data;
     };
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
+import { Authorize, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Platforms } from '@deriv/shared';
 
 export type TToken = {
@@ -103,15 +104,6 @@ type TIdentity = {
             is_country_supported: 0 | 1;
         };
     };
-};
-
-export type TResidenseList = {
-    identity: TIdentity;
-    phone_idd: string;
-    tin_format: string[];
-    disabled: string;
-    text: string;
-    value: string;
 };
 
 export type TFile = {

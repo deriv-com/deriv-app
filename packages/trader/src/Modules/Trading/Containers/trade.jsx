@@ -349,92 +349,103 @@ const ChartTrade = observer(props => {
     if (!symbol || active_symbols.length === 0) return null;
 
     return (
-        <SmartChartWithRef
-            ref={charts_ref}
-            barriers={barriers}
-            markers_array={markers_array}
-            bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
-            crosshair={isMobile() ? 0 : undefined}
-            crosshairTooltipLeftAllow={560}
-            showLastDigitStats={isDesktop() ? show_digits_stats : false}
-            chartControlsWidgets={null}
-            chartStatusListener={v => setChartStatus(!v)}
-            chartType={chart_type}
-            initialData={{
-                activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
-            }}
-            chartData={{
-                activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
-            }}
-            feedCall={{
-                activeSymbols: false,
-            }}
-            enabledNavigationWidget={isDesktop()}
-            enabledChartFooter={false}
-            id='trade'
-            isMobile={isMobile()}
-            maxTick={isMobile() ? max_ticks : undefined}
-            granularity={show_digits_stats || is_accumulator ? 0 : granularity}
-            requestAPI={wsSendRequest}
-            requestForget={wsForget}
-            requestForgetStream={wsForgetStream}
-            requestSubscribe={wsSubscribe}
-            settings={settings}
-            should_show_eu_content={should_show_eu_content}
-            allowTickChartTypeOnly={show_digits_stats || is_accumulator}
-            stateChangeListener={chartStateChange}
-            symbol={symbol}
-            topWidgets={is_trade_enabled ? topWidgets : null}
-            isConnectionOpened={is_socket_opened}
-            clearChart={false}
-            toolbarWidget={() => {
-                if (is_alpha_chart) {
-                    return (
-                        <ToolbarWidgetsAlpha updateChartType={updateChartType} updateGranularity={updateGranularity} />
-                    );
-                } else <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />;
-            }}
-            importedLayout={chart_layout}
-            onExportLayout={exportLayout}
-            shouldFetchTradingTimes={!end_epoch}
-            hasAlternativeSource={has_alternative_source}
-            refToAddTick={refToAddTick}
-            getMarketsOrder={getMarketsOrder}
-            should_zoom_out_on_yaxis={is_accumulator}
-            yAxisMargin={{
-                top: isMobile() ? 76 : 106,
-            }}
-            isLive={true}
-            leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
-            is_alpha={is_alpha_chart}
-        >
-            {!is_alpha_chart && <ChartMarkers />}
-            {is_accumulator && is_alpha_chart && (
-                <AccumulatorsChartElementsAlpha
-                    all_positions={all_positions}
-                    current_spot={current_spot}
-                    current_spot_time={current_spot_time}
-                    has_crossed_accu_barriers={has_crossed_accu_barriers}
-                    should_show_profit_text={
-                        !!accumulator_contract_barriers_data.accumulators_high_barrier &&
-                        getDecimalPlaces(currency) <= 2
-                    }
-                    symbol={symbol}
-                />
-            )}
-            {is_accumulator && !is_alpha_chart && (
-                <AccumulatorsChartElements
-                    all_positions={all_positions}
-                    current_spot={current_spot}
-                    current_spot_time={current_spot_time}
-                    has_crossed_accu_barriers={has_crossed_accu_barriers}
-                    should_show_profit_text={
-                        !!accumulator_contract_barriers_data.accumulators_high_barrier &&
-                        getDecimalPlaces(currency) <= 2
-                    }
-                    symbol={symbol}
-                />
-            )}
-        </SmartChartWithRef>
+        <>
+            {console.log({ granularity })};
+            <SmartChartWithRef
+                ref={charts_ref}
+                barriers={barriers}
+                markers_array={markers_array}
+                bottomWidgets={
+                    (is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets
+                }
+                crosshair={isMobile() ? 0 : undefined}
+                crosshairTooltipLeftAllow={560}
+                showLastDigitStats={isDesktop() ? show_digits_stats : false}
+                chartControlsWidgets={null}
+                chartStatusListener={v => setChartStatus(!v)}
+                chartType={chart_type}
+                initialData={{
+                    activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
+                }}
+                chartData={{
+                    activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
+                }}
+                feedCall={{
+                    activeSymbols: false,
+                }}
+                enabledNavigationWidget={isDesktop()}
+                enabledChartFooter={false}
+                id='trade'
+                isMobile={isMobile()}
+                maxTick={isMobile() ? max_ticks : undefined}
+                granularity={show_digits_stats || is_accumulator ? 0 : granularity}
+                requestAPI={wsSendRequest}
+                requestForget={wsForget}
+                requestForgetStream={wsForgetStream}
+                requestSubscribe={wsSubscribe}
+                settings={settings}
+                should_show_eu_content={should_show_eu_content}
+                allowTickChartTypeOnly={show_digits_stats || is_accumulator}
+                stateChangeListener={chartStateChange}
+                symbol={symbol}
+                topWidgets={is_trade_enabled ? topWidgets : null}
+                isConnectionOpened={is_socket_opened}
+                clearChart={false}
+                toolbarWidget={() => {
+                    if (is_alpha_chart) {
+                        return (
+                            <ToolbarWidgetsAlpha
+                                updateChartType={updateChartType}
+                                updateGranularity={updateGranularity}
+                            />
+                        );
+                    } else
+                        return (
+                            <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                        );
+                }}
+                importedLayout={chart_layout}
+                onExportLayout={exportLayout}
+                shouldFetchTradingTimes={!end_epoch}
+                hasAlternativeSource={has_alternative_source}
+                refToAddTick={refToAddTick}
+                getMarketsOrder={getMarketsOrder}
+                should_zoom_out_on_yaxis={is_accumulator}
+                yAxisMargin={{
+                    top: isMobile() ? 76 : 106,
+                }}
+                isLive={true}
+                leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
+                is_alpha={is_alpha_chart}
+            >
+                {!is_alpha_chart && <ChartMarkers />}
+                {is_accumulator && is_alpha_chart && (
+                    <AccumulatorsChartElementsAlpha
+                        all_positions={all_positions}
+                        current_spot={current_spot}
+                        current_spot_time={current_spot_time}
+                        has_crossed_accu_barriers={has_crossed_accu_barriers}
+                        should_show_profit_text={
+                            !!accumulator_contract_barriers_data.accumulators_high_barrier &&
+                            getDecimalPlaces(currency) <= 2
+                        }
+                        symbol={symbol}
+                    />
+                )}
+                {is_accumulator && !is_alpha_chart && (
+                    <AccumulatorsChartElements
+                        all_positions={all_positions}
+                        current_spot={current_spot}
+                        current_spot_time={current_spot_time}
+                        has_crossed_accu_barriers={has_crossed_accu_barriers}
+                        should_show_profit_text={
+                            !!accumulator_contract_barriers_data.accumulators_high_barrier &&
+                            getDecimalPlaces(currency) <= 2
+                        }
+                        symbol={symbol}
+                    />
+                )}
+            </SmartChartWithRef>
+        </>
     );
 });

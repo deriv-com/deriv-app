@@ -97,7 +97,7 @@ const DMT5TradeModal = ({
             <div className='cfd-trade-modal__login-specs'>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                    <SpecBox is_bold is_broker value={'Deriv Holdings (Guernsey) Limited'} />
+                    <SpecBox is_bold is_broker value={'Deriv.com'} />
                 </div>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>

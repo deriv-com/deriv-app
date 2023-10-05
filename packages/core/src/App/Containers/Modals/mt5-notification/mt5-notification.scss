@@ -16,7 +16,8 @@
     }
 }
 .mt5-notification-list {
-    list-style: none;
+    list-style: lower-alpha;
+    margin-left: 3rem;
     &-container {
         list-style: auto;
         padding: 1.5rem;

@@ -4,7 +4,7 @@ import TwoMonthPicker from '../two-month-picker';
 
 const mock_props = {
     onChange: jest.fn(),
-    isPeriodDisabled: jest.fn(),
+    getIsPeriodDisabled: jest.fn(),
     value: 1696319493, // 2023-10-04
 };
 

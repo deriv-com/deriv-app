@@ -105,7 +105,7 @@ describe('<CompositeCalendar />', () => {
         const to_input = screen.getByTestId('dt_calendar_input_to');
         userEvent.click(to_input);
         expect(
-            (TwoMonthPicker as unknown as jest.Mock).mock.calls[0][0].isPeriodDisabled(toMoment('2023-10-02'))
+            (TwoMonthPicker as unknown as jest.Mock).mock.calls[0][0].getIsPeriodDisabled(toMoment('2023-10-02'))
         ).toBeTruthy();
     });
     it('should disable date after to date in "from input" section ', () => {
@@ -113,10 +113,10 @@ describe('<CompositeCalendar />', () => {
         const from_input = screen.getByTestId('dt_calendar_input_from');
         userEvent.click(from_input);
         expect(
-            (TwoMonthPicker as unknown as jest.Mock).mock.calls[0][0].isPeriodDisabled(toMoment('2023-10-02'))
+            (TwoMonthPicker as unknown as jest.Mock).mock.calls[0][0].getIsPeriodDisabled(toMoment('2023-10-02'))
         ).toBeFalsy();
         expect(
-            (TwoMonthPicker as unknown as jest.Mock).mock.calls[0][0].isPeriodDisabled(toMoment('2023-10-12'))
+            (TwoMonthPicker as unknown as jest.Mock).mock.calls[0][0].getIsPeriodDisabled(toMoment('2023-10-12'))
         ).toBeTruthy();
     });
 });

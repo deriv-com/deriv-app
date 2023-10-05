@@ -102,14 +102,17 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
 
     const validateClickOutside = (event: MouseEvent) => !wrapper_ref.current?.contains(event.target as Node);
 
+    const calculateFrom = (new_from?: number) =>
+        new_from
+            ? new_from === 1
+                ? toMoment().startOf('day')
+                : toMoment().startOf('day').subtract(new_from, 'day').add(1, 's')
+            : undefined;
+
     const selectDateRange = (new_from?: number) => {
         hideCalendar();
         onChange({
-            from: new_from
-                ? new_from === 1
-                    ? toMoment().startOf('day')
-                    : toMoment().startOf('day').subtract(new_from, 'day').add(1, 's')
-                : undefined,
+            from: calculateFrom(new_from),
             to: toMoment().endOf('day'),
             is_batch: true,
         });

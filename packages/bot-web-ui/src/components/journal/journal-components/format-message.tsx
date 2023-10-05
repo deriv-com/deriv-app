@@ -65,7 +65,7 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                 if (current_currency)
                     return (
                         <Localize
-                            i18n_default_text='Welcome back! Your messages have been restored. You are using your <0>{{current_currency}}</0> account.'
+                            i18n_default_text='Welcome back! Your messages have been restored. You are using your {{current_currency}} account.'
                             values={{
                                 current_currency,
                             }}
@@ -79,7 +79,7 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                 if (current_currency)
                     return (
                         <Localize
-                            i18n_default_text='You are using your <0>{{current_currency}}</0> account.'
+                            i18n_default_text='You are using your {{current_currency}} account.'
                             values={{
                                 current_currency,
                             }}

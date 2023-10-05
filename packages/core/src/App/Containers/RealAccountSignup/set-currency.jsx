@@ -5,7 +5,7 @@ import { currencySelectorConfig } from '@deriv/account';
 import { website_name, generateValidationFunction } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import CurrencySelector from './currency-selector';
+import CurrencySelector from '@deriv/account/src/Components/currency-selector';
 import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/set-currency.scss';
 import 'Sass/change-account.scss';

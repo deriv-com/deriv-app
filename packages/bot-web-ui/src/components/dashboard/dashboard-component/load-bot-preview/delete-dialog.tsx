@@ -59,6 +59,7 @@ const DeleteDialog = observer(() => {
         onToggleDeleteDialog(false);
     };
 
+    //this is to check after click of yes ir no on delete dailog send event to rudderstck
     const sentToRudderStack = (param: string) => {
         const payload = {
             delete_popup_respond: param,

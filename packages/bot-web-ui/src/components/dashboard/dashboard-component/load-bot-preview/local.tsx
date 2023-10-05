@@ -36,7 +36,7 @@ const LocalComponent = observer(() => {
         });
     };
 
-    const sendToRudderStackForUseGuide = () => {
+    const sendToRudderStackForUserGuide = () => {
         const payload = {
             action: 'push_user_guide',
             form_source: 'ce_bot_dashboard_form',
@@ -81,7 +81,7 @@ const LocalComponent = observer(() => {
                             <div className='tab__dashboard__preview__retrigger'>
                                 <button
                                     onClick={() => {
-                                        sendToRudderStackForUseGuide();
+                                        sendToRudderStackForUserGuide();
                                         setActiveTab(DBOT_TABS.TUTORIAL);
                                         setActiveTabTutorial(0);
                                     }}
@@ -96,7 +96,7 @@ const LocalComponent = observer(() => {
                                             line_height='s'
                                             className={'tab__dashboard__preview__retrigger__text'}
                                         >
-                                            {localize('User Guide dhsa')}
+                                            {localize('User Guide')}
                                         </Text>
                                     )}
                                 </button>

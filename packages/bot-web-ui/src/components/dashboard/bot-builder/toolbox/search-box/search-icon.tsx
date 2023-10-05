@@ -15,6 +15,7 @@ const SearchIcon = observer(({ search, is_search_loading, onClick }: TSearchIcon
     const { trackActionsWithUserInfo } = rudder_stack;
 
     React.useEffect(() => {
+        //this is to check after keup on bot-builder page form sent even to rudderstack
         const payload = {
             search_string: search,
         };

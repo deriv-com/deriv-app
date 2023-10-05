@@ -91,29 +91,25 @@ export default class NotificationStore extends BaseStore {
             }
         );
         reaction(
+            () => [root_store.client.is_p2p_enabled],
+            async () => {
+                if (root_store.client.is_p2p_enabled) {
+                    await this.getP2pCompletedOrders();
+                }
+            }
+        );
+        reaction(
             () => [
                 root_store.client.account_settings,
                 root_store.client.account_status,
                 root_store.client.landing_companies,
-                root_store.client.is_p2p_enabled,
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
                 root_store.client.has_changed_two_fa,
-                this.p2p_order_props.order_id,
                 root_store.client.p2p_advertiser_info,
             ],
-            async () => {
-                if (
-                    root_store.client.is_logged_in &&
-                    !root_store.client.is_virtual &&
-                    Object.keys(root_store.client.account_status || {}).length > 0 &&
-                    Object.keys(root_store.client.landing_companies || {}).length > 0 &&
-                    root_store.client.is_p2p_enabled
-                ) {
-                    await this.getP2pCompletedOrders();
-                }
-
+            () => {
                 if (
                     !root_store.client.is_logged_in ||
                     (Object.keys(root_store.client.account_status || {}).length > 0 &&

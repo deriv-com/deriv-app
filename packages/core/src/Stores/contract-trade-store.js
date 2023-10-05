@@ -11,6 +11,7 @@ import {
     isMobile,
     isMultiplierContract,
     isTurbosContract,
+    isVanillaContract,
     LocalStore,
     switch_to_tick_chart,
 } from '@deriv/shared';
@@ -222,6 +223,9 @@ export default class ContractTradeStore extends BaseStore {
         } else if (isTurbosContract(trade_type)) {
             //to show both Long and Short recent contracts on DTrader chart
             trade_types = ['TURBOSLONG', 'TURBOSSHORT'];
+        } else if (isVanillaContract(trade_type)) {
+            //to show both Call and Put recent contracts on DTrader chart
+            trade_types = ['VANILLALONGCALL', 'VANILLALONGPUT'];
         }
 
         return this.contracts
@@ -328,8 +332,11 @@ export default class ContractTradeStore extends BaseStore {
         is_tick_contract,
         limit_order = {},
     }) {
-        const contract_exists = this.contracts_map[contract_id];
-        if (contract_exists) {
+        const existing_contract = this.contracts_map[contract_id];
+        if (existing_contract) {
+            if (this.contracts.every(c => c.contract_id !== contract_id)) {
+                this.contracts.push(existing_contract);
+            }
             return;
         }
 
@@ -390,7 +397,7 @@ export default class ContractTradeStore extends BaseStore {
 
     get last_contract() {
         const applicable_contracts = this.applicable_contracts();
-        const length = applicable_contracts.length;
+        const length = this.contracts[0]?.contract_info.current_spot_time ? applicable_contracts.length : -1;
         return length > 0 ? applicable_contracts[length - 1] : {};
     }
 

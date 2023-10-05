@@ -105,14 +105,14 @@ type TradeTypesFormAction =
           action: 'choose_trade_type';
           subform_name: 'info_old' | 'info_new';
           form_name: string;
-          trade_type_name: string;
+          trade_type_name?: string;
       }
     | {
           action: 'choose_trade_type';
           subform_name: 'trade_type';
           tab_name: string;
           form_name: string;
-          trade_type_name: string;
+          trade_type_name?: string;
       }
     | {
           action: 'search';
@@ -121,19 +121,19 @@ type TradeTypesFormAction =
     | {
           action: 'info_open';
           tab_name: string;
-          trade_type_name: string;
+          trade_type_name?: string;
       }
     | {
-          action: 'info-switcher';
+          action: 'info_switcher';
           info_switcher_mode: string;
-          trade_type_name: string;
+          trade_type_name?: string;
       };
 
 type IdentifyAction = {
     language: string;
 };
 
-type TEvents = {
+export type TEvents = {
     ce_chart_types_form: ChartTypesFormAction;
     ce_indicators_types_form: IndicatorsTypesFormAction;
     ce_market_types_form: MarketTypesFormAction;

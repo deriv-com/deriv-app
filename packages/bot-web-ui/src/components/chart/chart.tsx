@@ -56,7 +56,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     chartStatusListener={v => setChartStatus(!v)}
                     toolbarWidget={() => (
                         <ToolbarWidgets
-                            is_alpha_chart={client.is_alpha_chart}
+                            is_alpha_chart={true}
                             updateChartType={updateChartType}
                             updateGranularity={updateGranularity}
                         />
@@ -87,7 +87,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     chartStatusListener={v => setChartStatus(!v)}
                     toolbarWidget={() => (
                         <ToolbarWidgets
-                            is_alpha_chart={client.is_alpha_chart}
+                            is_alpha_chart={false}
                             updateChartType={updateChartType}
                             updateGranularity={updateGranularity}
                         />

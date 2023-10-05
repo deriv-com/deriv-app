@@ -1213,7 +1213,12 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                     has_side_note={is_appstore}
                                     side_note={localize('Check this box to receive updates via email.')}
                                 >
-                                    <fieldset className='account-form__fieldset'>
+                                    <fieldset
+                                        className={classNames(
+                                            'account-form__fieldset',
+                                            'account-form__fieldset--email-consent'
+                                        )}
+                                    >
                                         <Checkbox
                                             name='email_consent'
                                             value={values.email_consent}

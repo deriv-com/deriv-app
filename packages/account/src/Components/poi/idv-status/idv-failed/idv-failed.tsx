@@ -387,7 +387,6 @@ const IdvFailed = ({
                     {(is_from_external || isMobile()) && (
                         <FormFooter>
                             <Button
-                                className='proof-of-identity__submit-button'
                                 type='submit'
                                 has_effect
                                 is_disabled={!dirty || isSubmitting || !isValid}

@@ -13,7 +13,7 @@ type TArrowButton = {
     is_open?: boolean;
     onClick: () => void;
     title?: string;
-    position: 'top' | 'bottom';
+    position?: 'top' | 'bottom';
 };
 
 const IconArrow = ({ className }: { className?: string }) => (

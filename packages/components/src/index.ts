@@ -123,3 +123,4 @@ export * from './components/wallet-card';
 export * from './components/wallet-icon';
 export { default as Wizard } from './components/wizard';
 export * from './hooks';
+export * from './components/types';

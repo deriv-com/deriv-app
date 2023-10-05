@@ -40,6 +40,7 @@ jest.mock('@deriv/api', () => ({
                                 currency: 'BTC',
                             },
                         ],
+                        loginid: 'CRW000000',
                     },
                 },
             };

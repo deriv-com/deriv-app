@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Icon, DataTable, Loading, Text } from '@deriv/components';
-import { WS } from '@deriv/shared';
+import { useOAuthConnectedApps, useOAuthRevokeConnectedApps } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
@@ -11,55 +11,28 @@ import DataListTemplate from './data-list-template';
 import DataTableTemplate from './data-table-template';
 import './connected-apps.scss';
 
-type TConnectedAppsEntry = React.ComponentProps<typeof DataListTemplate>['data_source'];
-
 const ConnectedApps = observer(() => {
     const { ui } = useStore();
     const { is_mobile } = ui;
 
-    const [is_loading, setLoading] = React.useState(true);
-    const [is_modal_open, setModalVisibility] = React.useState(false);
-    const [selected_app_id, setAppId] = React.useState<number | null>(null);
-    const [is_error, setError] = React.useState(false);
-    const [connected_apps, setConnectedApps] = React.useState<TConnectedAppsEntry[]>([]);
+    const [selected_app_id, setSelectedAppId] = React.useState<number | null>(null);
+    const [is_modal_open, setIsModalOpen] = React.useState(false);
 
-    React.useEffect(() => {
-        /* eslint-disable no-console */
-        fetchConnectedApps().catch(error => console.error('error: ', error));
-    }, []);
-
-    const fetchConnectedApps = async () => {
-        const response_connected_apps = await WS.authorized.send({ oauth_apps: 1 });
-
-        if (!response_connected_apps.error) {
-            setLoading(false);
-            setConnectedApps(response_connected_apps.oauth_apps);
-        }
-    };
+    const { data: connected_apps = [], isLoading: is_loading, isError: is_error } = useOAuthConnectedApps();
+    const { revokeOAuthApp } = useOAuthRevokeConnectedApps();
 
     const handleToggleModal = React.useCallback(
         (app_id: number | null = null) => {
-            setAppId(app_id);
-            setModalVisibility(!is_modal_open);
+            setSelectedAppId(app_id);
+            setIsModalOpen(!is_modal_open);
         },
         [is_modal_open]
     );
 
-    const revokeConnectedApp = React.useCallback(async (app_id: number | null) => {
-        setLoading(true);
-        const response = await WS.authorized.send({ revoke_oauth_app: app_id });
-        if (!response.error) {
-            /* eslint-disable no-console */
-            fetchConnectedApps().catch(error => console.error('error: ', error));
-        } else {
-            setError(true);
-        }
-    }, []);
-
     const handleRevokeAccess = React.useCallback(() => {
-        setModalVisibility(false);
-        revokeConnectedApp(selected_app_id);
-    }, [revokeConnectedApp, selected_app_id]);
+        if (selected_app_id) revokeOAuthApp(selected_app_id);
+        setIsModalOpen(false);
+    }, [revokeOAuthApp, selected_app_id]);
 
     return is_loading ? (
         <Loading is_fullscreen={false} />

@@ -25,16 +25,19 @@
         &--wrapper {
             display: flex;
             flex-direction: column;
-            background: var(--general-section-1);
-            padding: 1.6rem;
-            border-radius: $BORDER_RADIUS * 2;
-            gap: 0.4rem;
+            gap: 0.8rem;
         }
 
         &--row {
             display: flex;
             justify-content: space-between;
             gap: 1.6rem;
+        }
+
+        &--template {
+            background: var(--general-section-1);
+            border-radius: $BORDER_RADIUS * 2;
+            padding: 1.6rem;
         }
 
         &--name,

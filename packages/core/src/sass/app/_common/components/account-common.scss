@@ -79,6 +79,11 @@
             .dc-select-native {
                 margin-bottom: 3.2rem;
             }
+            @include mobile{
+                &--email-consent{
+                    margin-bottom: 1.6rem;
+                }
+            }
         }
 
         &__poi-confirm-example {

@@ -69,6 +69,7 @@ const ProofOfIdentityContainerForMt5 = observer(({ onStateChange, citizen_data }
             residence_list={residence_list}
             citizen_data={citizen_data}
             has_idv_error={has_idv_error}
+            is_from_external
         />
     );
 });

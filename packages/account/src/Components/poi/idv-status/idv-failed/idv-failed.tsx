@@ -337,7 +337,7 @@ const IdvFailed = ({
                         'upload-layout': is_document_upload_required,
                     })}
                 >
-                    <FormBody className='form-body' scroll_offset={isMobile() ? '200px' : '80px'}>
+                    <FormBody className='form-body' scroll_offset={isMobile() ? '140px' : '80px'}>
                         <Text size={isMobile() ? 'xs' : 's'} weight='bold' align='center'>
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>

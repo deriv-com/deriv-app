@@ -207,6 +207,17 @@
         &--expanded {
             width: calc(100vw - 39.8rem);
         }
+
+        &--modal {
+            // position: fixed !important;
+            z-index: 99999999 !important;
+            width: 400px !important;
+            height: 500px !important;
+            // top: 0;
+            // left: calc(100% - 80rem);
+            // position: absolute;
+            // dashboard_chart-wrapper
+        }
     }
 
     &__toolbox {

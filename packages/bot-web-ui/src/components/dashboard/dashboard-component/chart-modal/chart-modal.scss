@@ -1,0 +1,137 @@
+$value-cubic-bezier: cubic-bezier(0.25, 0.1, 0.1, 0.25);
+
+@mixin align-items-center {
+    display: flex;
+    align-items: center;
+}
+
+.bot-dashboard:has(.chart-modal-dialog) {
+    #id-charts {
+        color: var(--fill-normal-1);
+        stroke-opacity: 30%;
+        pointer-events: none;
+    }
+
+    .chart-modal-dialog {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+
+        @include align-items-center;
+        justify-content: center;
+        z-index: 999;
+        transition: opacity 0.25s $value-cubic-bezier;
+
+        .sc-navigation-widget {
+            display: none;
+        }
+
+        .cq-symbols-display {
+            .cq-menu-btn {
+                padding: 0.2rem;
+            }
+
+            .cq-symbol-select-btn {
+                margin: 0.2rem;
+
+                .cq-symbol-dropdown {
+                    transform: scale(1);
+                    margin-left: auto;
+                }
+
+                .cq-symbol {
+                    font-size: 1.4rem;
+                }
+
+                .cq-chart-price {
+                    display: none;
+                }
+
+                .cq-symbol-info {
+                    min-height: unset;
+                }
+            }
+        }
+
+        .sc-toolbar-widget {
+            bottom: 4vh;
+            top: unset;
+            border-width: 0;
+            border-radius: 2rem;
+            cursor: pointer;
+            background: var(--general-section-1);
+
+            .sc-tooltip:not(:first-child) {
+                display: none;
+            }
+
+            .cq-menu-btn {
+                .sc-chart-mode__menu__timeperiod {
+                    top: 0.6rem;
+                    left: 1rem;
+                }
+            }
+
+            .cq-menu-btn:hover {
+                background: none;
+            }
+        }
+
+        &__dialog {
+            max-width: 56rem;
+            max-height: 48.1rem;
+            min-width: 42.6rem;
+            min-height: 17.6rem;
+
+            margin-top: -4.8rem;
+            padding: 0 0.45rem;
+            border-radius: 0.8rem;
+            box-sizing: border-box;
+
+            @include align-items-center;
+            justify-content: space-around;
+            flex-direction: column;
+            box-shadow: 0 2px 8px 0 var(--shadow-menu);
+            background-color: var(--general-main-2);
+            transition: transform 0.25s $value-cubic-bezier, opacity 0.25s $value-cubic-bezier;
+        }
+
+        &__header-wrapper {
+            width: 100%;
+            @include align-items-center;
+            justify-content: space-between;
+
+            margin-top: 1.4rem;
+            margin-bottom: 1rem;
+            padding-left: 2.4rem;
+            padding-right: 2.4rem;
+
+            .chart-modal-dialog__header--close {
+                cursor: pointer;
+            }
+        }
+
+        .cq-chart-title {
+            .cq-menu-dropdown {
+                position: fixed;
+                height: 46rem;
+                left: unset;
+
+                .sc-dialog {
+                    height: 100% !important;
+
+                    &__body {
+                        height: inherit !important;
+
+                        .sc-mcd {
+                            height: inherit !important;
+                            min-width: auto !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

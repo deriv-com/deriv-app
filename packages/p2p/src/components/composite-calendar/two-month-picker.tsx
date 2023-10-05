@@ -5,11 +5,11 @@ import { addMonths, diffInMonths, subMonths, toMoment } from '@deriv/shared';
 
 type TTwoMonthPickerProps = {
     onChange: (date: moment.MomentInput) => void;
-    isPeriodDisabled: (date: moment.Moment) => boolean;
+    getIsPeriodDisabled: (date: moment.Moment) => boolean;
     value: moment.Moment | number;
 };
 
-const TwoMonthPicker = ({ onChange, isPeriodDisabled, value }: TTwoMonthPickerProps) => {
+const TwoMonthPicker = ({ onChange, getIsPeriodDisabled, value }: TTwoMonthPickerProps) => {
     const [left_pane_date, setLeftPaneDate] = React.useState(toMoment(value).clone().subtract(1, 'month'));
     const [right_pane_date, setRightPaneDate] = React.useState(value);
 
@@ -60,7 +60,7 @@ const TwoMonthPicker = ({ onChange, isPeriodDisabled, value }: TTwoMonthPickerPr
      * @param {moment.Moment} date
      */
     const shouldDisableDate = (date: moment.Moment) => {
-        return isPeriodDisabled(date);
+        return getIsPeriodDisabled(date);
     };
 
     const updateSelectedDate = (e: React.MouseEvent<HTMLElement>) => {

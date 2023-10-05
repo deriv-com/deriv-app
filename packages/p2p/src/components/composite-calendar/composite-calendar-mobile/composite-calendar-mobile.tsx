@@ -77,10 +77,10 @@ const CompositeCalendarMobile = ({
     };
 
     const applyDateRange = () => {
-        if (selected_date_range?.onClick) {
-            selectDateRange(selected_date_range);
-        } else if (selected_date_range?.value === CUSTOM_KEY) {
+        if (selected_date_range?.value === CUSTOM_KEY) {
             selectCustomDateRange();
+        } else {
+            selectDateRange(selected_date_range);
         }
         setAppliedDateRange(selected_date_range);
         setIsOpen(false);

@@ -12,27 +12,22 @@ type TCalendarRadioButtonProps = {
 };
 
 const CalendarRadioButton = ({ id, className, selected_value, value, label, onChange }: TCalendarRadioButtonProps) => {
+    const is_selected = selected_value === value;
     return (
         <label
             htmlFor={id}
             className={classNames('calendar-radio-button', className, {
-                'calendar-radio-button--selected': selected_value === value,
+                'calendar-radio-button--selected': is_selected,
             })}
             onClick={() => onChange({ label, value })}
         >
             <input className='calendar-radio-button__input' id={id} type='radio' value={value} />
             <span
                 className={classNames('calendar-radio-button__circle', {
-                    'calendar-radio-button__circle--selected': selected_value === value,
+                    'calendar-radio-button__circle--selected': is_selected,
                 })}
             />
-            <Text
-                as='p'
-                color='prominent'
-                size='xs'
-                line_height='unset'
-                weight={selected_value === value ? 'bold' : 'normal'}
-            >
+            <Text as='p' color='prominent' size='xs' line_height='unset' weight={is_selected ? 'bold' : 'normal'}>
                 {label}
             </Text>
         </label>

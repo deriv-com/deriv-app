@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { getUrlBase, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import TourSteps from '../desktop-tours/common/tour-steps';
+import TourSteps from '../common/tour-steps';
 
 const is_mobile = isMobile();
 
@@ -482,7 +482,7 @@ export const DBOT_ONBOARDING_MOBILE: TMobileTourConfig[] = [
         header: localize('Learn more with our tutorials'),
         content: [
             <Localize
-                key='import-or-choose-your-bot'
+                key='learn-more-with-our-tutorials'
                 i18n_default_text='Explore the video guides and FAQs to build your bot in the tutorials tab.'
             />,
         ],
@@ -503,7 +503,9 @@ export const DBOT_ONBOARDING_MOBILE: TMobileTourConfig[] = [
     {
         header: localize('Check your bot’s performance'),
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-5.mp4'),
-        content: [<Localize key='use-these-shortcuts' i18n_default_text='See how your bot is doing in real-time.' />],
+        content: [
+            <Localize key='check-your-bots-performance' i18n_default_text='See how your bot is doing in real-time.' />,
+        ],
         tour_step_key: 6,
     },
     {
@@ -511,7 +513,7 @@ export const DBOT_ONBOARDING_MOBILE: TMobileTourConfig[] = [
         media: getUrlBase('/public/videos/dbot-mobile-onboarding-step-6.mp4'),
         content: [
             <Localize
-                key='use-these-shortcuts'
+                key='run-your-bot'
                 i18n_default_text='Click <0>Run</0> when you want to start trading, and click <0>Stop</0> when you want to stop.'
                 components={[<strong key={0} />]}
             />,
@@ -551,7 +553,7 @@ export const tourDialogAction = is_mobile ? (
 );
 
 export const onboarding_tour_header = (
-    <Localize key='tour-dialog-action-desktop' i18n_default_text='Get started on Deriv Bot' />
+    <Localize key='onboarding-tour-header' i18n_default_text='Get started on Deriv Bot' />
 );
 
 export const bot_builder_tour_header = is_mobile ? (

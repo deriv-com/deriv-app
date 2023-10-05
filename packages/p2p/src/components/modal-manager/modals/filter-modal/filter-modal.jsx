@@ -127,7 +127,7 @@ const FilterModal = () => {
     };
 
     const onClickReset = () => {
-        buy_sell_store.setShouldUseClientLimits(false);
+        buy_sell_store.setShouldUseClientLimits(true);
 
         setSelectedMethods([]);
         setSelectedMethodsText([]);

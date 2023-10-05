@@ -19,7 +19,7 @@ type TRecentWorkspace = {
 };
 
 const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
-    const { dashboard, load_modal, save_modal } = useDBotStore();
+    const { dashboard, load_modal, save_modal, rudder_stack } = useDBotStore();
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
@@ -35,6 +35,14 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         setSelectedStrategyId,
         setPreviewedStrategyId,
     } = load_modal;
+    const { trackActionsWithUserInfo } = rudder_stack;
+    const sendToRudderStack = (param: string) => {
+        const payload = {
+            action: param,
+            form_source: 'ce_bot_dashboard_form',
+        };
+        trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+    };
 
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
     const toggle_ref = React.useRef<HTMLInputElement>(null);
@@ -68,7 +76,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
     const handleInit = () => {
         setPreviewedStrategyId(workspace?.id);
-        // Fires for desktop
         if (active_tab === 0) {
             previewRecentStrategy(workspace.id);
         }
@@ -89,11 +96,16 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const handleEdit = async () => {
         await loadFileFromRecent();
         setActiveTab(DBOT_TABS.BOT_BUILDER);
+        sendToRudderStack('edit_your_bot');
+        trackActionsWithUserInfo('ce_bot_builder_form', {
+            form_source: 'bot_dashboard_form-edit',
+        });
     };
 
     const handleSave = () => {
         updateBotName(workspace?.name);
         toggleSaveModal();
+        sendToRudderStack('save_your_bot');
     };
 
     const viewRecentStrategy = async (type: string) => {
@@ -101,11 +113,15 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
         switch (type) {
             case STRATEGY.INIT:
+                // Fires for desktop preview
                 handleInit();
+                sendToRudderStack('choose_your_bot');
                 break;
 
             case STRATEGY.PREVIEW_LIST:
+                // Fires for mobile preview
                 handlePreviewList();
+                sendToRudderStack('choose_your_bot');
                 break;
 
             case STRATEGY.EDIT:
@@ -118,6 +134,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
             case STRATEGY.DELETE:
                 onToggleDeleteDialog(true);
+                sendToRudderStack('delete_your_bot');
                 break;
 
             default:

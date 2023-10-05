@@ -11,16 +11,38 @@ import BotPreview from './bot-preview';
 import './index.scss';
 
 const LocalComponent = observer(() => {
-    const { load_modal, save_modal, dashboard } = useDBotStore();
+    const { load_modal, save_modal, dashboard, rudder_stack } = useDBotStore();
     const { handleFileChange, loadFileFromRecent, dashboard_strategies } = load_modal;
     const { onConfirmSave } = save_modal;
     const { setActiveTab, setPreviewOnDialog, has_mobile_preview_loaded, setActiveTabTutorial } = dashboard;
+    const { trackActionsWithUserInfo } = rudder_stack;
 
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const el_ref = React.useRef<HTMLInputElement | null>(null);
     const is_mobile = isMobile();
     const has_dashboard_strategies = !!dashboard_strategies?.length;
+
+    const sendToRudderStackForOpenButton = () => {
+        const payload = {
+            action: 'push_open_button',
+            form_source: 'ce_bot_dashboard_form',
+        };
+        trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+
+        //this is to track from which open button user has come to bot builder tab
+        trackActionsWithUserInfo('bot_dashboard_form-open', {
+            form_source: 'bot_dashboard_form-open',
+        });
+    };
+
+    const sendToRudderStackForUseGuide = () => {
+        const payload = {
+            action: 'push_user_guide',
+            form_source: 'ce_bot_dashboard_form',
+        };
+        trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+    };
 
     React.useEffect(() => {
         if (el_ref.current?.children.length === 3) {
@@ -32,12 +54,13 @@ const LocalComponent = observer(() => {
         <button
             className='load-strategy__button-group--open'
             onClick={() => {
+                sendToRudderStackForOpenButton();
                 setPreviewOnDialog(false);
                 loadFileFromRecent();
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
             }}
         >
-            {localize('Open')}
+            {localize('Open on preview')}
         </button>
     );
     return (
@@ -58,6 +81,7 @@ const LocalComponent = observer(() => {
                             <div className='tab__dashboard__preview__retrigger'>
                                 <button
                                     onClick={() => {
+                                        sendToRudderStackForUseGuide();
                                         setActiveTab(DBOT_TABS.TUTORIAL);
                                         setActiveTabTutorial(0);
                                     }}
@@ -72,7 +96,7 @@ const LocalComponent = observer(() => {
                                             line_height='s'
                                             className={'tab__dashboard__preview__retrigger__text'}
                                         >
-                                            {localize('User Guide')}
+                                            {localize('User Guide dhsa')}
                                         </Text>
                                     )}
                                 </button>

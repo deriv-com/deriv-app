@@ -9,11 +9,30 @@ import QuickStrategy from '../quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
-    const { dashboard, app } = useDBotStore();
+    const { dashboard, app, rudder_stack } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
 
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
+
+    const trackRudderStackForBotBuilder = (param: string) => {
+        const { trackActionsWithUserInfo } = rudder_stack;
+        const payload = {
+            action: param,
+            form_source: 'ce_bot_builder_form',
+        };
+        trackActionsWithUserInfo('ce_bot_builder_form', payload);
+    };
+
+    React.useEffect(() => {
+        //when the bot builder mounts and unmounts
+        if (active_tab === 1) {
+            trackRudderStackForBotBuilder('open');
+            return () => {
+                trackRudderStackForBotBuilder('close');
+            };
+        }
+    }, [active_tab]);
 
     React.useEffect(() => {
         onMount();

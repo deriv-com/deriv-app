@@ -160,6 +160,14 @@ export default class SaveModalStore implements ISaveModalStore {
             this.setButtonStatus(button_status.COMPLETED);
         }
 
+        /* Send the event on rudderstack on strategy save */
+        const { trackActionsWithUserInfo } = this.root_store.rudder_stack;
+        const payload = {
+            bot_name,
+            form_source: 'ce_bot_dashboard_form',
+        };
+        trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+
         this.updateBotName(bot_name);
 
         if (active_tab === 0) {

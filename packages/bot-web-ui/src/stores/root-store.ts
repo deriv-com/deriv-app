@@ -13,6 +13,7 @@ import JournalStore from './journal-store';
 import LoadModalStore from './load-modal-store';
 import QuickStrategyStore from './quick-strategy-store';
 import RoutePromptDialogStore from './route-prompt-dialog-store';
+import RudderStackStore from './rudderstack-store';
 import RunPanelStore from './run-panel-store';
 import SaveModalStore from './save-modal-store';
 import SelfExclusionStore from './self-exclusion-store';
@@ -43,6 +44,7 @@ export default class RootStore {
     public quick_strategy: QuickStrategyStore;
     public route_prompt_dialog: RoutePromptDialogStore;
     public self_exclusion: SelfExclusionStore;
+    public rudder_stack: RudderStackStore;
     public dashboard: DashboardStore;
 
     public chart_store: ChartStore;
@@ -69,6 +71,7 @@ export default class RootStore {
         this.quick_strategy = new QuickStrategyStore(this);
         this.route_prompt_dialog = new RoutePromptDialogStore(this, core);
         this.self_exclusion = new SelfExclusionStore(this, core);
+        this.rudder_stack = new RudderStackStore(core);
         this.dashboard = new DashboardStore(this);
 
         // need to be at last for dependency

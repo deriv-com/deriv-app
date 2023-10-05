@@ -15,13 +15,14 @@ type TCardProps = {
 };
 
 type TCardArray = {
+    type: string;
     icon: string;
     content: string;
     method: () => void;
 };
 
 const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
-    const { dashboard, load_modal, quick_strategy } = useDBotStore();
+    const { dashboard, load_modal, quick_strategy, rudder_stack } = useDBotStore();
     const {
         onCloseDialog,
         dialog_options,
@@ -34,6 +35,24 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
     } = dashboard;
     const { handleFileChange, loadFileFromLocal } = load_modal;
     const { loadDataStrategy } = quick_strategy;
+    const { trackActionsWithUserInfo } = rudder_stack;
+    //this is to check on click of which icon the user has come to bot builder
+    const sentToRudderStackTabChange = (type: string) => {
+        const payload = {
+            shortcut_name: type,
+            form_source: 'bot_dashboard_form-shortcut',
+        };
+        trackActionsWithUserInfo('ce_bot_builder_form', payload);
+    };
+    //this is to check which icon is clicked on dashboard
+    const sentToRudderStack = (type: string) => {
+        const payload = {
+            shortcut_name: type,
+            action: 'choose_shortcut',
+            form_source: 'ce_bot_dashboard_form',
+        };
+        trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+    };
 
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
@@ -50,26 +69,34 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
 
     const actions: TCardArray[] = [
         {
+            type: 'my-computer',
             icon: is_mobile ? 'IcLocal' : 'IcMyComputer',
             content: is_mobile ? localize('Local') : localize('My computer'),
             method: openFileLoader,
         },
         {
+            type: 'google-drive',
             icon: 'IcGoogleDriveDbot',
             content: localize('Google Drive'),
             method: openGoogleDriveDialog,
         },
         {
+            type: 'bot-builder',
             icon: 'IcBotBuilder',
             content: localize('Bot Builder'),
-            method: () => setActiveTab(DBOT_TABS.BOT_BUILDER),
+            method: () => {
+                setActiveTab(DBOT_TABS.BOT_BUILDER);
+                sentToRudderStackTabChange('bot-builder');
+            },
         },
         {
+            type: 'quick-strategy',
             icon: 'IcQuickStrategy',
             content: localize('Quick strategy'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 loadDataStrategy();
+                sentToRudderStackTabChange('quick-strategy');
             },
         },
     ];
@@ -88,7 +115,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                     id='tab__dashboard__table__tiles'
                 >
                     {actions.map(icons => {
-                        const { icon, content, method } = icons;
+                        const { icon, content, method, type } = icons;
                         return (
                             <div
                                 key={content}
@@ -104,7 +131,10 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                     height='8rem'
                                     icon={icon}
                                     id={icon}
-                                    onClick={method}
+                                    onClick={() => {
+                                        method();
+                                        sentToRudderStack(type);
+                                    }}
                                 />
                                 <Text color='prominent' size={is_mobile ? 'xxs' : 'xs'}>
                                     {content}

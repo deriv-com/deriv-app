@@ -11,12 +11,13 @@ import GuideContent from './guide-content';
 import { faq_content, guide_content, user_guide_content } from './tutorial-content';
 
 const Sidebar = observer(() => {
-    const { dashboard } = useDBotStore();
+    const { dashboard, rudder_stack } = useDBotStore();
     const { active_tab_tutorials, active_tab, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
     const guide_tab_content = [...user_guide_content, ...guide_content];
     const [search_filtered_list, setsearchFilteredList] = React.useState(guide_tab_content);
     const [search_faq_list, setsearchFAQList] = React.useState(faq_content);
     const search_input = React.useRef<HTMLInputElement | null>(null);
+    const { trackActionsWithUserInfo } = rudder_stack;
     const menu_items = [
         {
             label: localize('Guide'),
@@ -51,10 +52,32 @@ const Sidebar = observer(() => {
 
     const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
-        debounce(() => {
-            setFAQSearchValue(value);
-        }, 700)();
+        setFAQSearchValue(value);
     };
+
+    const sendToRudderStack = () => {
+        const payload = {
+            search_string: search_input?.current?.value,
+        };
+        if (search_input?.current?.value) trackActionsWithUserInfo('ce_bot_builder_form', payload);
+    };
+    React.useEffect(() => {
+        /* 
+           This is done because debounce was not working added a settimeout on 
+           the ref bu using a listener on every key it will clear the prev timeout id
+           and will add a new on the last stroke
+        */
+        let timeout_id: ReturnType<typeof setTimeout>;
+        const getValueForRudderStack = () => {
+            if (timeout_id) clearTimeout(timeout_id);
+            timeout_id = setTimeout(() => sendToRudderStack(), 1000);
+        };
+        search_input?.current?.addEventListener('input', getValueForRudderStack);
+        return () => {
+            search_input?.current?.removeEventListener('input', getValueForRudderStack);
+            if (timeout_id) clearTimeout(timeout_id);
+        };
+    }, []);
 
     const onChangeHandle = React.useCallback(
         ({ target }: React.ChangeEvent<HTMLInputElement>) => {

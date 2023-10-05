@@ -9,7 +9,7 @@ import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const DeleteDialog = observer(() => {
-    const { load_modal, dashboard } = useDBotStore();
+    const { load_modal, dashboard, rudder_stack } = useDBotStore();
     const {
         is_delete_modal_open,
         onToggleDeleteDialog,
@@ -23,6 +23,7 @@ const DeleteDialog = observer(() => {
         resetBotBuilderStrategy,
     } = load_modal;
     const { setOpenSettings } = dashboard;
+    const { trackActionsWithUserInfo } = rudder_stack;
 
     const resetStrategiesAfterDelete = async (deleted_strategy_id: string, updated_workspaces: Array<TStrategy>) => {
         if (updated_workspaces.length) {
@@ -58,10 +59,21 @@ const DeleteDialog = observer(() => {
         onToggleDeleteDialog(false);
     };
 
+    const sentToRudderStack = (param: string) => {
+        const payload = {
+            delete_popup_respond: param,
+            form_source: 'ce_bot_dashboard_form',
+        };
+        trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+    };
+
     const onHandleChange = (type: string, param: boolean) => {
         if (type === 'confirm') {
             removeBotStrategy(selected_strategy_id);
             setOpenSettings('delete', true);
+            sentToRudderStack('yes');
+        } else {
+            sentToRudderStack('no');
         }
         onToggleDeleteDialog(param);
     };

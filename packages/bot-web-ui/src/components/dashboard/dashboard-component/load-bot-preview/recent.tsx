@@ -14,9 +14,11 @@ import './index.scss';
 const HEADERS = [localize('Bot name'), localize('Last modified'), localize('Status')];
 
 const RecentComponent = observer(() => {
-    const { load_modal, dashboard } = useDBotStore();
+    const { load_modal, dashboard, rudder_stack } = useDBotStore();
     const { setDashboardStrategies, dashboard_strategies } = load_modal;
     const { setStrategySaveType, strategy_save_type } = dashboard;
+    const { trackActionsWithUserInfo } = rudder_stack;
+    const check_rudder_stack_instance = React.useRef(false);
 
     React.useEffect(() => {
         setStrategySaveType('');
@@ -28,9 +30,33 @@ const RecentComponent = observer(() => {
         //this dependency is used when we use the save modal popup
     }, [strategy_save_type]);
 
+    React.useEffect(() => {
+        /* 
+            RudderStack
+            This useeffect is used to send the event when we have a strategy
+            on the recent list.
+            It will also send time of the first recent strategy.
+            It also checks if the list is visible on the view.
+        */
+        if (!dashboard_strategies?.length && !check_rudder_stack_instance.current) {
+            const getStratagiesForRudderStack = async () => {
+                const recent_strategies = await getSavedWorkspaces();
+                const payload = {
+                    bot_last_modified_time: recent_strategies?.[0]?.timestamp,
+                    form_source: 'bot_header_form',
+                    action: 'open',
+                };
+                trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+            };
+            getStratagiesForRudderStack();
+            check_rudder_stack_instance.current = true;
+        }
+    }, []);
+
     const is_mobile = isMobile();
 
     if (!dashboard_strategies?.length) return null;
+
     return (
         <div className='load-strategy__container load-strategy__container--has-footer'>
             <div className='load-strategy__recent'>

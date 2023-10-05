@@ -2,6 +2,8 @@ const getSettingsFromLocal = () => {
     return JSON.parse(localStorage.getItem('dbot_settings'));
 };
 
+export const ACCOUNT_TYPES = ['CRW', 'MX', 'VRW', 'CH', 'MFW', 'VRTC', 'VRCH', 'MLT', 'MF', 'CRA', 'CR'];
+
 export const getSetting = key => {
     const settings = getSettingsFromLocal();
 

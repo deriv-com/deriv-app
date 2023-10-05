@@ -1,12 +1,11 @@
-import classNames from 'classnames';
-import { Field, Formik, Form, FormikValues, FormikHelpers } from 'formik';
 import React from 'react';
+import classNames from 'classnames';
+import { Formik, Form, FormikHelpers } from 'formik';
+import { BrowserHistory } from 'history';
 import { withRouter } from 'react-router';
 import {
-    Autocomplete,
     Button,
     Checkbox,
-    DateOfBirthPicker,
     DesktopWrapper,
     Dropdown,
     FormSubmitErrorMessage,
@@ -16,43 +15,26 @@ import {
     MobileWrapper,
     SelectNative,
     Text,
-    useStateCallback,
 } from '@deriv/components';
-import {
-    PlatformContext,
-    WS,
-    filterObjProperties,
-    getBrandWebsiteName,
-    getLocation,
-    regex_checks,
-    removeObjProperties,
-    routes,
-    toMoment,
-    useIsMounted,
-    validAddress,
-    validLength,
-    validLetterSymbol,
-    validPhone,
-    validPostCode,
-    removeEmptyPropertiesFromObject,
-} from '@deriv/shared';
+import { useGetAccountStatus, useResidenceList, useSettings } from '@deriv/api';
+import { GetSettings } from '@deriv/api-types';
+import { getBrandWebsiteName, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
+import { DateOfBirthField } from 'Components/forms/form-fields';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
-import { validateName, validate } from 'Helpers/utils';
+import { isServerError } from 'Helpers/utils';
 import { salutation_list } from './constants';
-import TaxResidenceSelect from './tax-residence-select';
 import InputGroup from './input-group';
-import { TAutoComplete, TInputFieldValues } from 'Types';
-import { BrowserHistory } from 'history';
-import { getPersonalDetailsValidationSchema } from './validation';
+import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
+import FormSelectField from './form-select-field';
 
 type TRestState = {
     show_form: boolean;
@@ -63,403 +45,97 @@ type TRestState = {
 };
 
 export const PersonalDetailsForm = observer(({ history }: { history: BrowserHistory }) => {
-    const [is_loading, setIsLoading] = React.useState(true);
-
-    const [is_state_loading, setIsStateLoading] = useStateCallback(false);
-
-    const [is_btn_loading, setIsBtnLoading] = React.useState(false);
-
-    const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
-    const { client, notifications, common, ui } = useStore();
+    const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
+    const timeout_ref = React.useRef<NodeJS.Timeout>();
+    const is_success_timeout_ref = React.useRef<NodeJS.Timeout>();
+    const { client, notifications, ui } = useStore();
+    const {
+        data: account_settings,
+        update,
+        mutation: { isLoading: isSetAccountSettingsLoading, status, error, isError },
+        isLoading: isGetAccountSettingsLoading,
+    } = useSettings();
+    const { data: account_status } = useGetAccountStatus();
+    const { data: residence_list } = useResidenceList();
 
     const {
         authentication_status,
         is_eu,
-        landing_company_shortcode,
-        is_uk,
-        is_svg,
         is_virtual,
-        residence_list,
         states_list,
         current_landing_company,
-        fetchResidenceList,
-        fetchStatesList,
-        has_residence,
-        account_settings,
-        getChangeableFields,
         updateAccountStatus,
         is_social_signup,
-        account_status,
     } = client;
 
-    const {
-        refreshNotifications,
-        showPOAAddressMismatchSuccessNotification,
-        showPOAAddressMismatchFailureNotification,
-    } = notifications;
+    const { refreshNotifications, showPOAAddressMismatchFailureNotification } = notifications;
 
-    const { is_language_changing, current_language } = common;
     const { is_mobile } = ui;
-    const is_mf = landing_company_shortcode === 'maltainvest';
-    const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');
+    const has_poa_address_mismatch = account_status?.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = React.useState<TRestState>({
         show_form: true,
-        errors: false,
-        api_error: '',
         form_initial_values: {},
     });
 
-    const [start_on_submit_timeout, setStartOnSubmitTimeout] = React.useState({
-        is_timeout_started: false,
-        timeout_callback: () => null,
-    });
-
-    const { is_appstore } = React.useContext(PlatformContext);
-    const isMounted = useIsMounted();
-
     React.useEffect(() => {
-        if (isMounted()) {
-            const getSettings = async () => {
-                // waits for residence to be populated
-                await WS.wait('get_settings');
+        if (status === 'success') {
+            setIsSubmitSuccess(true);
+            updateAccountStatus();
+            refreshNotifications();
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
 
-                fetchResidenceList?.();
-
-                if (has_residence) {
-                    if (!is_language_changing) {
-                        setIsStateLoading(true, () => {
-                            fetchStatesList().then(() => {
-                                setIsStateLoading(false);
-                            });
-                        });
-                    }
-                }
-            };
-            getSettings();
-        }
-        initializeFormValues();
-    }, [account_settings, is_eu, is_mf, is_social_signup]);
-
-    React.useEffect(() => {
-        let timeout_id: NodeJS.Timeout;
-        if (start_on_submit_timeout.is_timeout_started) {
-            timeout_id = setTimeout(() => {
-                setIsSubmitSuccess(false, start_on_submit_timeout.timeout_callback);
-            }, 10000);
-        }
-
-        return () => {
-            clearTimeout(timeout_id);
-        };
-    }, [setIsSubmitSuccess, start_on_submit_timeout.is_timeout_started, start_on_submit_timeout.timeout_callback]);
-
-    const makeSettingsRequest = (settings: { [key: string]: string }) => {
-        if (is_virtual) return { email_consent: +settings.email_consent };
-        const request = filterObjProperties(settings, [...rest_state.changeable_fields!]);
-
-        request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
-        if (
-            !!request.request_professional_status &&
-            !!rest_state?.form_initial_values?.request_professional_status === false
-        ) {
-            // We can just send the value of request_professional_status once. Also backend just accepts true value for this field!
-            request.request_professional_status = +request.request_professional_status; // checkbox is boolean but api expects number (1 or 0)
-        } else {
-            // if it is already active we have to exclude it from request. otherwise backend returns error!
-            delete request.request_professional_status;
-        }
-
-        if (request.first_name) {
-            request.first_name = request.first_name.trim();
-        }
-
-        if (request.last_name) {
-            request.last_name = request.last_name.trim();
-        }
-        if (request.date_of_birth) {
-            request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
-        }
-
-        if (is_mf) {
-            if (request.tax_residence) {
-                request.tax_residence = getLocation(residence_list, request.tax_residence, 'value');
+            // from will always be keyof typeof routes
+            const from = url_params.get('from') as keyof typeof routes;
+            if (from) {
+                history.push(routes[from]);
             }
 
-            if (request.tax_identification_number) {
-                request.tax_identification_number = request.tax_identification_number.trim();
-            }
-        }
-
-        if (request.citizen) {
-            request.citizen = getLocation(residence_list, request.citizen, 'value');
-        }
-
-        if (request.place_of_birth) {
-            request.place_of_birth = getLocation(residence_list, request.place_of_birth, 'value');
-        } else {
-            delete request.place_of_birth;
-        }
-
-        if (request.address_state) {
-            request.address_state = states_list.length
-                ? getLocation(states_list, request.address_state, 'value')
-                : request.address_state;
-        }
-
-        return request;
-    };
-
-    const onSubmit = async (
-        values: TInputFieldValues,
-        { setStatus, setSubmitting }: FormikHelpers<TInputFieldValues>
-    ) => {
-        setStatus({ msg: '' });
-        const request = makeSettingsRequest(values);
-        setIsBtnLoading(true);
-        const data = await WS.setSettings(request);
-
-        if (data.error) {
-            setStatus({ msg: data.error.message });
-            setIsBtnLoading(false);
-            setSubmitting(false);
-        } else {
-            // Adding a delay to show the notification after the page reload
-            setTimeout(() => {
-                if (data.set_settings.notification) {
-                    showPOAAddressMismatchSuccessNotification();
-                } else if (has_poa_address_mismatch) {
+            timeout_ref.current = setTimeout(() => {
+                if (has_poa_address_mismatch) {
                     showPOAAddressMismatchFailureNotification();
                 }
             }, 2000);
-
-            // force request to update settings cache since settings have been updated
-            const response = await WS.authorized.storage.getSettings();
-            if (response.error) {
-                setRestState({ ...rest_state, api_error: response.error.message });
-                return;
-            }
-            // Fetches the status of the account after update
-            updateAccountStatus();
-            setRestState({ ...rest_state, ...response.get_settings });
-            setIsLoading(false);
-            refreshNotifications();
-            setIsBtnLoading(false);
-            setIsSubmitSuccess(true);
-            setStartOnSubmitTimeout({
-                is_timeout_started: true,
-                timeout_callback: () => setSubmitting(false),
-            });
-            // redirection back based on 'from' param in query string
-            const url_query_string = window.location.search;
-            const url_params = new URLSearchParams(url_query_string);
-            if (url_params.get('from')) {
-                history.push(routes[url_params.get('from')]);
-            }
-        }
-    };
-
-    // TODO: standardize validations and refactor this
-    const validateFields = (values: TInputFieldValues) => {
-        const errors: Record<string, string | undefined> = {};
-        const validateValues = validate(errors, values);
-
-        if (is_virtual) return errors;
-
-        const required_fields = ['first_name', 'last_name', 'phone', 'address_line_1', 'address_city'];
-
-        if (is_mf) {
-            const required_tax_fields = ['tax_residence', 'tax_identification_number', 'employment_status'];
-            required_fields.push(...required_tax_fields);
         }
 
-        validateValues(val => val, required_fields, localize('This field is required'));
+        return () => clearTimeout(timeout_ref.current);
+    }, [
+        history,
+        refreshNotifications,
+        status,
+        updateAccountStatus,
+        has_poa_address_mismatch,
+        showPOAAddressMismatchFailureNotification,
+    ]);
 
-        if (is_eu) {
-            const residence_fields = ['citizen'];
-            const validateResidence = (val: string) => getLocation(residence_list, val, 'value')!;
-            validateValues(validateResidence, residence_fields, '');
-        }
+    React.useEffect(() => {
+        is_success_timeout_ref.current = setTimeout(() => {
+            setIsSubmitSuccess(false);
+        }, 3000);
 
-        const min_tax_identification_number = 0;
-        const max_tax_identification_number = 25;
-        if (values.tax_identification_number) {
-            if (
-                values.tax_identification_number &&
-                !/^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/.test(values.tax_identification_number)
-            ) {
-                errors.tax_identification_number = localize(
-                    'Only letters, numbers, space, hyphen, period, and forward slash are allowed.'
-                );
-            }
-            if (!/^[a-zA-Z0-9].*$/.test(values.tax_identification_number.charAt(0))) {
-                errors.tax_identification_number = localize(
-                    'Should start with letter or number and may contain a hyphen, period and slash.'
-                );
-            }
-            if (
-                !validLength(values.tax_identification_number.trim(), {
-                    min: min_tax_identification_number,
-                    max: max_tax_identification_number,
-                })
-            ) {
-                errors.tax_identification_number = localize(
-                    "Tax Identification Number can't be longer than 25 characters."
-                );
-            }
-        }
+        return () => clearTimeout(is_success_timeout_ref.current);
+    }, [is_submit_success]);
 
-        if (values.address_city && !validLetterSymbol(values.address_city)) {
-            errors.address_city = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
-        }
-
-        const state_is_input_element = values.address_state && !states_list.length;
-        if (state_is_input_element) {
-            if (!validLength(values.address_state, { min: 0, max: 35 })) {
-                errors.address_state = localize('You should enter 0-35 characters.');
-            } else if (!regex_checks.address_details.address_state.test(values.address_state)) {
-                errors.address_state = localize('State is not in a proper format');
-            }
-        }
-
-        // Not allowing Jersey postcodes with a UK residence.
-        if (
-            !regex_checks.address_details.non_jersey_postcode.test(values.address_postcode) &&
-            (is_uk || values.citizen === 'United Kingdom')
-        ) {
-            errors.address_postcode = localize('Our accounts and services are unavailable for the Jersey postal code');
-        }
-
-        if (values.address_postcode) {
-            if (!validLength(values.address_postcode, { min: 0, max: 20 })) {
-                errors.address_postcode = localize('Please enter a {{field_name}} under {{max_number}} characters.', {
-                    field_name: localize('postal/ZIP code'),
-                    max_number: 20,
-                    interpolation: { escapeValue: false },
-                });
-            } else if (!validPostCode(values.address_postcode)) {
-                errors.address_postcode = localize('Only letters, numbers, space, and hyphen are allowed.');
-            }
-        }
-
-        setRestState({ ...rest_state, errors: Object.keys(errors).length > 0 });
-
-        return removeEmptyPropertiesFromObject(errors);
-    };
-
-    const getWarningMessages = (values: TInputFieldValues) => {
-        const warnings: TInputFieldValues = {};
-        const active_errors = rest_state.errors;
-
-        const filter_tin_regex = residence_list.filter(residence => {
-            return residence.text === values.tax_residence && residence.tin_format;
-        });
-
-        const tin_regex: string | undefined = filter_tin_regex[0]?.tin_format?.[0];
-        let test_tin;
-        if (tin_regex) {
-            test_tin = new RegExp(tin_regex).test(values.tax_identification_number);
-        }
-        const valid_country_tin = tin_regex ? test_tin : true;
-
-        if (!active_errors) {
-            if (values.tax_identification_number) {
-                if (!valid_country_tin) {
-                    warnings.tax_identification_number = localize(
-                        'This Tax Identification Number (TIN) is invalid. You may continue using it, but to facilitate future payment processes, valid tax information will be required.'
-                    );
-                }
-            }
-        }
-        return warnings;
+    const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
+        setStatus({ msg: '' });
+        const request = makeSettingsRequest(values, residence_list, states_list, is_virtual);
+        // @ts-expect-error have to fix on the types for account_opening_reason because the types in GetSettings and SetAccountSettings are different
+        update(request);
+        setSubmitting(false);
     };
 
     const showForm = (show_form: boolean) => setRestState({ show_form });
 
-    const isChangeableField = (name: string) => {
-        return rest_state.changeable_fields?.some((field: string) => field === name);
+    const isFieldDisabled = (name: string): boolean => {
+        return !!account_settings?.immutable_fields?.includes(name);
     };
 
-    const initializeFormValues = () => {
-        WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
-            // Convert to boolean
-            const hidden_settings = [
-                'account_opening_reason',
-                'allow_copiers',
-                !is_mf ? 'tax_residence' : '',
-                !is_mf ? 'tax_identification_number' : '',
-                !is_mf ? 'employment_status' : '',
-                'client_tnc_status',
-                'country_code',
-                'has_secret_answer',
-                'is_authenticated_payment_agent',
-                'user_hash',
-                'country',
-                !is_appstore || !is_eu ? 'salutation' : '',
-                'immutable_fields',
-            ];
-            const form_initial_values = removeObjProperties(hidden_settings, account_settings);
-            setRestState({
-                ...rest_state,
-                changeable_fields: is_virtual ? [] : getChangeableFields(),
-                form_initial_values,
-            });
-            setIsLoading(false);
-        });
-    };
-
-    const {
-        form_initial_values: { ...form_initial_values },
-        api_error,
-        show_form,
-    } = rest_state;
+    const { api_error, show_form } = rest_state;
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-    if (is_loading || is_state_loading || !residence_list.length) {
+    if (isGetAccountSettingsLoading || isSetAccountSettingsLoading) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    }
-
-    form_initial_values.citizen = form_initial_values.citizen
-        ? getLocation(residence_list, form_initial_values.citizen, 'text')
-        : '';
-    form_initial_values.place_of_birth = form_initial_values.place_of_birth
-        ? getLocation(residence_list, form_initial_values.place_of_birth, 'text')
-        : '';
-    if (form_initial_values.address_state) {
-        form_initial_values.address_state = states_list.length
-            ? getLocation(states_list, form_initial_values.address_state, 'text')
-            : form_initial_values.address_state;
-    } else {
-        form_initial_values.address_state = '';
-    }
-    if (is_mf) {
-        if (form_initial_values.tax_residence) {
-            const is_single_tax_value = form_initial_values.tax_residence.indexOf(',') < 0;
-            // if there's only one tax residence set, show it in drop-down
-            if (is_single_tax_value) {
-                form_initial_values.tax_residence = getLocation(
-                    residence_list,
-                    form_initial_values.tax_residence,
-                    'text'
-                );
-            } else if (isChangeableField('tax_residence')) {
-                // if there are multiple tax residences and user is allowed to update it
-                // select the first tax residence in drop-down
-                const first_tax_residence = form_initial_values.tax_residence.split(',')[0];
-                form_initial_values.tax_residence = getLocation(residence_list, first_tax_residence, 'text');
-            } else {
-                // otherwise show all tax residences in a disabled input field
-                const tax_residences: (string | undefined)[] = [];
-                form_initial_values.tax_residence.split(',').forEach((residence: string) => {
-                    tax_residences.push(getLocation(residence_list, residence, 'text'));
-                });
-                form_initial_values.tax_residence = tax_residences;
-            }
-        } else {
-            form_initial_values.tax_residence = '';
-        }
-        if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
-        if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
     }
 
     const is_poa_verified = authentication_status?.document_status === 'verified';
@@ -477,14 +153,13 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         return undefined;
     };
 
-    const PersonalDetailSchema = React.useMemo(
-        () => getPersonalDetailsValidationSchema(is_eu),
-        [current_language, is_eu]
-    );
+    const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_eu);
+
+    const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list);
 
     return (
         <Formik
-            initialValues={form_initial_values}
+            initialValues={initialValues}
             enableReinitialize
             onSubmit={onSubmit}
             validationSchema={PersonalDetailSchema}
@@ -492,25 +167,23 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
             {({
                 values,
                 errors,
-                status,
                 touched,
                 handleChange,
                 handleBlur,
                 handleSubmit,
                 isSubmitting,
+                isValid,
                 setFieldValue,
                 setFieldTouched,
                 setTouched,
                 dirty,
             }) => (
                 <React.Fragment>
-                    <LeaveConfirm onDirty={is_mobile ? showForm : null} />
+                    <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
                     {show_form && (
                         <Form
                             noValidate
-                            className={classNames('account-form account-form__personal-details', {
-                                'account-form account-form__personal-details--dashboard': is_appstore,
-                            })}
+                            className={classNames('account-form account-form__personal-details', {})}
                             onSubmit={handleSubmit}
                             data-testid='dt_account_personal_details_section'
                         >
@@ -519,52 +192,19 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                 {!is_virtual && (
                                     <React.Fragment>
                                         <FormBodySection
-                                            has_side_note={is_appstore}
                                             side_note={localize(
                                                 'We use the information you give us only for verification purposes. All information is kept confidential.'
                                             )}
                                         >
-                                            {is_appstore && is_eu && (
+                                            {'salutation' in values && (
                                                 <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Field name='salutation'>
-                                                            {({ field }: FormikValues) => (
-                                                                <Autocomplete
-                                                                    {...field}
-                                                                    data-lpignore='true'
-                                                                    autoComplete='new-password' // prevent chrome autocomplete
-                                                                    type='text'
-                                                                    label={localize('Title*')}
-                                                                    error={errors.salutation}
-                                                                    list_items={salutation_list}
-                                                                    onItemSelection={({ value, text }: TAutoComplete) =>
-                                                                        setFieldValue(
-                                                                            'salutation',
-                                                                            value ? text : '',
-                                                                            true
-                                                                        )
-                                                                    }
-                                                                    id={'salutation'}
-                                                                    disabled={!isChangeableField('salutation')}
-                                                                />
-                                                            )}
-                                                        </Field>
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            label={localize('Title')}
-                                                            value={values.salutation}
-                                                            list_items={salutation_list}
-                                                            use_text={true}
-                                                            error={errors.salutation}
-                                                            onChange={e =>
-                                                                setFieldValue('salutation', e.target.value, true)
-                                                            }
-                                                            disabled={!isChangeableField('salutation')}
-                                                            id={'salutation_mobile'}
-                                                        />
-                                                    </MobileWrapper>
+                                                    <FormSelectField
+                                                        label={localize('Title')}
+                                                        name='salutation'
+                                                        list_items={salutation_list}
+                                                        required
+                                                        disabled={isFieldDisabled('salutation')}
+                                                    />
                                                 </fieldset>
                                             )}
                                             <DesktopWrapper>
@@ -578,7 +218,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         required
-                                                        disabled={!isChangeableField('first_name')}
+                                                        disabled={isFieldDisabled('first_name')}
                                                         error={errors.first_name}
                                                         id='first_name'
                                                         data-testid='dt_first_name'
@@ -593,7 +233,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         required
-                                                        disabled={!isChangeableField('last_name')}
+                                                        disabled={isFieldDisabled('last_name')}
                                                         error={errors.last_name}
                                                         data-testid='dt_last_name'
                                                     />
@@ -611,7 +251,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         required
-                                                        disabled={!isChangeableField('first_name')}
+                                                        disabled={isFieldDisabled('first_name')}
                                                         error={errors.first_name}
                                                         data-testid='dt_first_name'
                                                     />
@@ -627,138 +267,46 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         required
-                                                        disabled={!isChangeableField('last_name')}
+                                                        disabled={isFieldDisabled('last_name')}
                                                         error={errors.last_name}
                                                         data-testid='dt_last_name'
                                                     />
                                                 </fieldset>
                                             </MobileWrapper>
-                                            <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
-                                                    <Field name='place_of_birth'>
-                                                        {({ field }: FormikValues) => (
-                                                            <Autocomplete
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='new-password' // prevent chrome autocomplete
-                                                                type='text'
-                                                                label={
-                                                                    is_svg
-                                                                        ? localize('Place of birth')
-                                                                        : localize('Place of birth*')
-                                                                }
-                                                                error={errors.place_of_birth}
-                                                                id='birth_place'
-                                                                required={!is_svg}
-                                                                disabled={!isChangeableField('place_of_birth')}
-                                                                list_items={residence_list}
-                                                                onItemSelection={({ value, text }: TAutoComplete) =>
-                                                                    setFieldValue(
-                                                                        'place_of_birth',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    )
-                                                                }
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
-                                                    <SelectNative
-                                                        placeholder={localize('Please select')}
-                                                        label={
-                                                            is_svg
-                                                                ? localize('Place of birth')
-                                                                : localize('Place of birth*')
-                                                        }
-                                                        required={!is_svg}
-                                                        disabled={!isChangeableField('place_of_birth')}
-                                                        value={values.place_of_birth}
+                                            {'place_of_birth' in values && (
+                                                <fieldset className='account-form__fieldset'>
+                                                    <FormSelectField
+                                                        label={localize('Place of birth')}
+                                                        name='place_of_birth'
                                                         list_items={residence_list}
-                                                        use_text={true}
-                                                        error={errors.place_of_birth}
-                                                        onChange={e =>
-                                                            setFieldValue('place_of_birth', e.target.value, true)
-                                                        }
-                                                        id='birth_place_mobile'
-                                                        should_hide_disabled_options={false}
+                                                        disabled={isFieldDisabled('place_of_birth')}
                                                     />
-                                                </MobileWrapper>
-                                            </fieldset>
+                                                </fieldset>
+                                            )}
                                             <fieldset className='account-form__fieldset'>
-                                                <DateOfBirthPicker
+                                                <DateOfBirthField
                                                     name='date_of_birth'
                                                     label={localize('Date of birth*')}
-                                                    error={errors.date_of_birth}
-                                                    onBlur={() => setTouched({ date_of_birth: true })}
-                                                    onChange={({ target }: React.ChangeEvent<HTMLInputElement>) =>
-                                                        setFieldValue(
-                                                            'date_of_birth',
-                                                            target?.value
-                                                                ? toMoment(target.value).format('YYYY-MM-DD')
-                                                                : '',
-                                                            true
-                                                        )
-                                                    }
-                                                    id={'birth_day'}
-                                                    disabled={!isChangeableField('date_of_birth')}
+                                                    id='birth_day'
+                                                    disabled={isFieldDisabled('date_of_birth')}
+                                                    portal_id=''
                                                     value={values.date_of_birth}
                                                 />
                                             </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
-                                                    <Field name='citizen'>
-                                                        {({ field }: FormikValues) => (
-                                                            <Autocomplete
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='new-password' // prevent chrome autocomplete
-                                                                type='text'
-                                                                label={
-                                                                    is_eu
-                                                                        ? localize('Citizenship*')
-                                                                        : localize('Citizenship')
-                                                                }
-                                                                error={errors.citizen}
-                                                                disabled={!isChangeableField('citizen')}
-                                                                list_items={residence_list}
-                                                                onItemSelection={({ value, text }: TAutoComplete) =>
-                                                                    setFieldValue('citizen', value ? text : '', true)
-                                                                }
-                                                                id={'password'}
-                                                                required={is_eu}
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            label={
-                                                                is_eu
-                                                                    ? localize('Citizenship*')
-                                                                    : localize('Citizenship')
-                                                            }
-                                                            id={'citizen_ship'}
-                                                            required={is_eu}
-                                                            disabled={!isChangeableField('citizen')}
-                                                            value={values.citizen}
-                                                            list_items={residence_list}
-                                                            error={errors.citizen}
-                                                            use_text={true}
-                                                            onChange={e =>
-                                                                setFieldValue('citizen', e.target.value, true)
-                                                            }
-                                                            should_hide_disabled_options={false}
-                                                        />
-                                                    </MobileWrapper>
-                                                </MobileWrapper>
-                                            </fieldset>
+                                            {'citizen' in values && (
+                                                <fieldset className='account-form__fieldset'>
+                                                    <FormSelectField
+                                                        label={localize('Citizenship')}
+                                                        name='citizen'
+                                                        list_items={residence_list}
+                                                        disabled={isFieldDisabled('citizen')}
+                                                    />
+                                                </fieldset>
+                                            )}
                                         </FormBodySection>
                                     </React.Fragment>
                                 )}
-                                <FormBodySection has_side_note={is_appstore}>
+                                <FormBodySection>
                                     <fieldset className='account-form__fieldset'>
                                         <Input
                                             data-lpignore='true'
@@ -766,9 +314,10 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             name='residence'
                                             id={'residence'}
                                             label={localize('Country of residence*')}
+                                            //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.residence}
                                             required
-                                            disabled={!isChangeableField('residence')}
+                                            disabled={isFieldDisabled('residence')}
                                             error={errors.residence}
                                             onChange={handleChange}
                                         />
@@ -783,7 +332,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                 label={localize('Email address*')}
                                                 value={values.email}
                                                 required
-                                                disabled={!isChangeableField('email')}
+                                                disabled={isFieldDisabled('email')}
                                                 error={errors.email}
                                                 onChange={handleChange}
                                             />
@@ -792,7 +341,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                 </FormBodySection>
                                 {!is_virtual && (
                                     <React.Fragment>
-                                        <FormBodySection has_side_note={is_appstore}>
+                                        <FormBodySection>
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
                                                     data-lpignore='true'
@@ -800,12 +349,13 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                     name='phone'
                                                     id={'phone'}
                                                     label={localize('Phone number*')}
+                                                    //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                                     value={values.phone}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                     required
                                                     error={errors.phone}
-                                                    disabled={!isChangeableField('phone')}
+                                                    disabled={isFieldDisabled('phone')}
                                                     data-testid='dt_phone'
                                                 />
                                             </fieldset>
@@ -813,47 +363,22 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                     </React.Fragment>
                                 )}
                                 <React.Fragment>
-                                    {is_mf && (
+                                    {'tax_residence' in values && (
                                         <React.Fragment>
                                             <FormSubHeader title={localize('Tax information')} />
                                             <FormBodySection
-                                                has_side_note={is_appstore}
                                                 side_note={localize(
                                                     'We’re legally obliged to ask for your tax information.'
                                                 )}
                                             >
                                                 {'tax_residence' in values && (
                                                     <fieldset className='account-form__fieldset'>
-                                                        <Field name='tax_residence'>
-                                                            {({ field }: FormikValues) => (
-                                                                <React.Fragment>
-                                                                    {Array.isArray(values.tax_residence) &&
-                                                                    !isChangeableField('tax_residence') ? (
-                                                                        <fieldset className='account-form__fieldset'>
-                                                                            <Input
-                                                                                type='text'
-                                                                                id={'tax_residence_disabled'}
-                                                                                name='tax_residence'
-                                                                                label={localize('Tax residence*')}
-                                                                                value={values.tax_residence.join(', ')}
-                                                                                disabled
-                                                                            />
-                                                                        </fieldset>
-                                                                    ) : (
-                                                                        <TaxResidenceSelect
-                                                                            is_changeable={isChangeableField(
-                                                                                'tax_residence'
-                                                                            )}
-                                                                            field={field}
-                                                                            errors={errors}
-                                                                            setFieldValue={setFieldValue}
-                                                                            values={values}
-                                                                            residence_list={residence_list}
-                                                                        />
-                                                                    )}
-                                                                </React.Fragment>
-                                                            )}
-                                                        </Field>
+                                                        <FormSelectField
+                                                            label={localize('Tax residence*')}
+                                                            name='tax_residence'
+                                                            list_items={residence_list}
+                                                            disabled={isFieldDisabled('tax_residence')}
+                                                        />
                                                     </fieldset>
                                                 )}
                                                 {'tax_identification_number' in values && (
@@ -864,11 +389,12 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                             id={'tax_identification_number'}
                                                             name='tax_identification_number'
                                                             label={localize('Tax identification number*')}
+                                                            //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                                             value={values.tax_identification_number}
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
                                                             error={errors.tax_identification_number}
-                                                            disabled={!isChangeableField('tax_identification_number')}
+                                                            disabled={isFieldDisabled('tax_identification_number')}
                                                             required
                                                         />
                                                     </fieldset>
@@ -898,7 +424,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                                 name='employment_status'
                                                                 label={localize('Employment status')}
                                                                 list_items={getEmploymentStatusList()}
-                                                                value={values.employment_status}
+                                                                value={values.employment_status ?? ''}
                                                                 error={
                                                                     touched.employment_status
                                                                         ? errors.employment_status
@@ -915,11 +441,11 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             </FormBodySection>
                                         </React.Fragment>
                                     )}
-                                    {!is_appstore && !is_virtual && (
+                                    {!is_virtual && (
                                         <React.Fragment>
                                             {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                             <FormSubHeader title={localize('Address')} />
-                                            <FormBodySection has_side_note={is_appstore}>
+                                            <FormBodySection>
                                                 <div className='account-address__details-section'>
                                                     <fieldset className='account-form__fieldset'>
                                                         <Input
@@ -935,7 +461,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                             onBlur={handleBlur}
                                                             error={errors.address_line_1}
                                                             required
-                                                            disabled={!isChangeableField('address_line_1')}
+                                                            disabled={isFieldDisabled('address_line_1')}
                                                             data-testid='dt_address_line_1'
                                                         />
                                                     </fieldset>
@@ -953,7 +479,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
                                                             required
-                                                            disabled={!isChangeableField('address_line_2')}
+                                                            disabled={isFieldDisabled('address_line_2')}
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
@@ -969,64 +495,20 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
                                                             required
-                                                            disabled={!isChangeableField('address_city')}
+                                                            disabled={isFieldDisabled('address_city')}
                                                             data-testid='dt_address_city'
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
                                                         {states_list.length ? (
-                                                            <>
-                                                                <DesktopWrapper>
-                                                                    <Field name='address_state'>
-                                                                        {({ field }: FormikValues) => (
-                                                                            <Autocomplete
-                                                                                {...field}
-                                                                                data-lpignore='true'
-                                                                                autoComplete='new-password' // prevent chrome autocomplete
-                                                                                type='text'
-                                                                                label={localize(
-                                                                                    'State/Province (optional)'
-                                                                                )}
-                                                                                id={'state_province'}
-                                                                                error={errors.address_state}
-                                                                                list_items={states_list}
-                                                                                onItemSelection={({
-                                                                                    value,
-                                                                                    text,
-                                                                                }: TAutoComplete) =>
-                                                                                    setFieldValue(
-                                                                                        'address_state',
-                                                                                        value ? text : '',
-                                                                                        true
-                                                                                    )
-                                                                                }
-                                                                                disabled={
-                                                                                    !isChangeableField('address_state')
-                                                                                }
-                                                                            />
-                                                                        )}
-                                                                    </Field>
-                                                                </DesktopWrapper>
-                                                                <MobileWrapper>
-                                                                    <SelectNative
-                                                                        placeholder={localize('Please select')}
-                                                                        label={localize('State/Province (optional)')}
-                                                                        value={values.address_state}
-                                                                        list_items={states_list}
-                                                                        id={'state_province_mobile'}
-                                                                        error={errors.address_state}
-                                                                        use_text={true}
-                                                                        onChange={e =>
-                                                                            setFieldValue(
-                                                                                'address_state',
-                                                                                e.target.value,
-                                                                                true
-                                                                            )
-                                                                        }
-                                                                        disabled={!isChangeableField('address_state')}
-                                                                    />
-                                                                </MobileWrapper>
-                                                            </>
+                                                            <React.Fragment>
+                                                                <FormSelectField
+                                                                    label={localize('State/Province (optional)')}
+                                                                    name='address_state'
+                                                                    list_items={states_list}
+                                                                    disabled={isFieldDisabled('address_state')}
+                                                                />
+                                                            </React.Fragment>
                                                         ) : (
                                                             <Input
                                                                 data-lpignore='true'
@@ -1039,7 +521,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                                 error={errors.address_state}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
-                                                                disabled={!isChangeableField('address_state')}
+                                                                disabled={isFieldDisabled('address_state')}
                                                             />
                                                         )}
                                                     </fieldset>
@@ -1055,7 +537,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                             error={errors.address_postcode}
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
-                                                            disabled={!isChangeableField('address_postcode')}
+                                                            disabled={isFieldDisabled('address_postcode')}
                                                         />
                                                     </fieldset>
                                                 </div>
@@ -1096,7 +578,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                             onChange={() => {
                                                                 setFieldValue(
                                                                     'request_professional_status',
-                                                                    !values.request_professional_status
+                                                                    values.request_professional_status ? 0 : 1
                                                                 );
                                                                 setFieldTouched(
                                                                     'request_professional_status',
@@ -1111,12 +593,9 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                             defaultChecked={!!values.request_professional_status}
                                                             disabled={
                                                                 is_virtual ||
-                                                                !!form_initial_values.request_professional_status
+                                                                !!account_settings.request_professional_status
                                                             }
                                                             greyDisabled
-                                                            className={classNames({
-                                                                'dc-checkbox-blue': is_appstore,
-                                                            })}
                                                         />
                                                     ) : (
                                                         <HintBox
@@ -1150,30 +629,26 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                     </>
                                 )}
                                 <FormSubHeader title={localize('Email preference')} />
-                                <FormBodySection
-                                    has_side_note={is_appstore}
-                                    side_note={localize('Check this box to receive updates via email.')}
-                                >
+                                <FormBodySection side_note={localize('Check this box to receive updates via email.')}>
                                     <fieldset className='account-form__fieldset'>
                                         <Checkbox
                                             name='email_consent'
                                             value={!!values.email_consent}
                                             onChange={() => {
-                                                setFieldValue('email_consent', !values.email_consent);
+                                                setFieldValue('email_consent', values.email_consent ? 0 : 1);
                                                 setFieldTouched('email_consent', true, true);
                                             }}
                                             label={localize('Get updates about Deriv products, services and events.')}
                                             id='email_consent'
                                             defaultChecked={!!values.email_consent}
-                                            disabled={!isChangeableField('email_consent') && !is_virtual}
-                                            className={classNames({ 'dc-checkbox-blue': is_appstore })}
+                                            disabled={isFieldDisabled('email_consent') && !is_virtual}
                                         />
                                     </fieldset>
                                 </FormBodySection>
                             </FormBody>
                             <FormFooter>
-                                {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                {!is_virtual && !(isSubmitting || is_submit_success || (status && status.msg)) && (
+                                {isServerError(error) && <FormSubmitErrorMessage message={error.message} />}
+                                {!is_virtual && isError && (
                                     <Text className='account-form__footer-note' size='xxxs'>
                                         {localize(
                                             'Please make sure your information is correct or it may affect your trading experience.'
@@ -1185,37 +660,11 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                         'dc-btn--green': is_submit_success,
                                     })}
                                     type='submit'
-                                    is_disabled={
-                                        isSubmitting ||
-                                        !dirty ||
-                                        (is_virtual
-                                            ? false
-                                            : !!(
-                                                  errors.first_name ||
-                                                  !values.first_name ||
-                                                  errors.last_name ||
-                                                  !values.last_name ||
-                                                  errors.phone ||
-                                                  !values.phone ||
-                                                  (is_mf && errors.tax_residence) ||
-                                                  (is_mf && !values.tax_residence) ||
-                                                  (is_mf && errors.tax_identification_number) ||
-                                                  (is_mf && !values.tax_identification_number) ||
-                                                  (!is_svg && errors.place_of_birth) ||
-                                                  (!is_svg && !values.place_of_birth) ||
-                                                  errors.address_line_1 ||
-                                                  !values.address_line_1 ||
-                                                  errors.address_line_2 ||
-                                                  errors.address_city ||
-                                                  !values.address_city ||
-                                                  errors.address_state ||
-                                                  errors.address_postcode
-                                              ))
-                                    }
+                                    is_disabled={isSubmitting || !dirty || !isValid || isSetAccountSettingsLoading}
                                     has_effect
-                                    is_loading={is_btn_loading}
+                                    is_loading={isSetAccountSettingsLoading}
                                     is_submit_success={is_submit_success}
-                                    text={is_appstore ? localize('Save') : localize('Submit')}
+                                    text={localize('Submit')}
                                     large
                                     primary
                                 />

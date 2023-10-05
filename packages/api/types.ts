@@ -226,9 +226,263 @@ import type {
     VerifyEmailRequest,
     VerifyEmailResponse,
 } from '@deriv/api-types';
-import type { useMutation, useQuery } from '@tanstack/react-query';
+import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    cashier_payments: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            cashier_payments: 1;
+            /**
+             * [Optional] Cashier provider. `crypto` will be default option for crypto currency accounts.
+             */
+            provider?: 'crypto';
+            /**
+             * [Optional] If set to 1, will send updates whenever there is update to crypto payments.
+             */
+            subscribe?: 0 | 1;
+            /**
+             * [Optional] Type of transactions to receive.
+             */
+            transaction_type?: 'all' | 'deposit' | 'withdrawal';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            cashier_payments?: {
+                /**
+                 * Response for provider `crypto'.
+                 */
+                crypto: {
+                    /**
+                     * The destination crypto address.
+                     */
+                    address_hash: string;
+                    /**
+                     * The URL of the address on blockchain.
+                     */
+                    address_url: string;
+                    /**
+                     * [Optional] The transaction amount. Not present when deposit transaction still unconfirmed.
+                     */
+                    amount?: number;
+                    /**
+                     * [Optional] The number of confirmations for pending deposits or withdrawals.
+                     */
+                    confirmations?: number;
+                    /**
+                     * The unique identifier for the transaction.
+                     */
+                    id: string;
+                    /**
+                     * [Optional] Boolean value: 1 or 0, indicating whether the transaction can be cancelled. Only applicable for `withdrawal` transactions.
+                     */
+                    is_valid_to_cancel?: 1 | 0;
+                    /**
+                     * The status code of the transaction.
+                     * Possible values for **deposit:** `PENDING|CONFIRMED|ERROR`,
+                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED|REVERTING|REVERTED`.
+                     */
+                    status_code:
+                        | 'CANCELLED'
+                        | 'CONFIRMED'
+                        | 'ERROR'
+                        | 'LOCKED'
+                        | 'PENDING'
+                        | 'PERFORMING_BLOCKCHAIN_TXN'
+                        | 'PROCESSING'
+                        | 'REJECTED'
+                        | 'REVERTED'
+                        | 'REVERTING'
+                        | 'SENT'
+                        | 'VERIFIED';
+                    /**
+                     * The status message of the transaction
+                     */
+                    status_message: string;
+                    /**
+                     * The epoch of the transaction date
+                     */
+                    submit_date: number;
+                    /**
+                     * [Optional] The transaction hash when available.
+                     */
+                    transaction_hash?: string;
+                    /**
+                     * The type of the transaction.
+                     */
+                    transaction_type: 'deposit' | 'withdrawal';
+                    /**
+                     * [Optional] The URL of the transaction on blockchain if `transaction_hash` is available.
+                     */
+                    transaction_url?: string;
+                }[];
+            };
+            subscription?: {
+                /**
+                 * A per-connection unique identifier. Can be passed to the `forget` API call to unsubscribe.
+                 */
+                id: string;
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'cashier_payments';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+    cashier_withdrawal_cancel: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            cashier_withdrawal_cancel: 1;
+            /**
+             * The unique identifier for the transaction.
+             */
+            id: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            cashier_withdrawal_cancel?: {
+                /**
+                 * The unique identifier for the transaction.
+                 */
+                id: string;
+                /**
+                 * The status code of the cancellation.
+                 */
+                status_code: 'CANCELLED';
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'cashier_withdrawal_cancel';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+    get_account_types: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            get_account_types: 1;
+            /**
+             * [Optional] Set to landing company to get relevant account types. If not set, this defaults to current account landing company
+             */
+            company?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            get_account_types?: {
+                /**
+                 * Trading account types that are available to create or link to
+                 */
+                trading: {
+                    /**
+                     * Details for trading account types
+                     *
+                     * This interface was referenced by `undefined`'s JSON-Schema definition
+                     * via the `patternProperty` "^(binary|dxtrade|mt5|standard|derivez)$".
+                     */
+                    [k: string]: {
+                        /**
+                         * Wallet currencies allowed for this trading account
+                         */
+                        allowed_wallet_currencies: string[];
+                        /**
+                         * Can this trading account linked to another currency after opening
+                         */
+                        linkable_to_different_currency: 0 | 1;
+                        /**
+                         * Wallet types that this trading account can be linked to.
+                         */
+                        linkable_wallet_types: string[];
+                    };
+                };
+                /**
+                 * Wallet accounts types that are available to create or link to
+                 */
+                wallet: {
+                    /**
+                     * Details for wallets account types
+                     *
+                     * This interface was referenced by `undefined`'s JSON-Schema definition
+                     * via the `patternProperty` "^(affiliate|crypto|doughflow|p2p|paymentagent|paymentagent_client|virtual)$".
+                     */
+                    [k: string]: {
+                        /**
+                         * Allowed currencies for creating accounts of this type; used or disallowed currencies are not listed.
+                         */
+                        currencies: string[];
+                    };
+                };
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'get_account_types';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
     service_token: {
         request: {
             /**
@@ -896,209 +1150,6 @@ type TPrivateSocketEndpoints = {
             [k: string]: unknown;
         };
     };
-    cashier_payments: {
-        request: {
-            /**
-             * Must be `1`
-             */
-            cashier_payments: 1;
-            /**
-             * [Optional] Cashier provider. `crypto` will be default option for crypto currency accounts.
-             */
-            provider?: 'crypto';
-            /**
-             * [Optional] If set to 1, will send updates whenever there is update to crypto payments.
-             */
-            subscribe?: 0 | 1;
-            /**
-             * [Optional] Type of transactions to receive.
-             */
-            transaction_type?: 'all' | 'deposit' | 'withdrawal';
-            /**
-             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
-             */
-            passthrough?: {
-                [k: string]: unknown;
-            };
-            /**
-             * [Optional] Used to map request to response.
-             */
-            req_id?: number;
-        };
-        response: {
-            cashier_payments?: {
-                /**
-                 * Response for provider `crypto'.
-                 */
-                crypto: {
-                    /**
-                     * The destination crypto address.
-                     */
-                    address_hash: string;
-                    /**
-                     * The URL of the address on blockchain.
-                     */
-                    address_url: string;
-                    /**
-                     * [Optional] The transaction amount. Not present when deposit transaction still unconfirmed.
-                     */
-                    amount?: number;
-                    /**
-                     * [Optional] The number of confirmations for pending deposits or withdrawals.
-                     */
-                    confirmations?: number;
-                    /**
-                     * The unique identifier for the transaction.
-                     */
-                    id: string;
-                    /**
-                     * [Optional] Boolean value: 1 or 0, indicating whether the transaction can be cancelled. Only applicable for `withdrawal` transactions.
-                     */
-                    is_valid_to_cancel?: 1 | 0;
-                    /**
-                     * The status code of the transaction.
-                     * Possible values for **deposit:** `PENDING|CONFIRMED|ERROR`,
-                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED`.
-                     */
-                    status_code:
-                        | 'CANCELLED'
-                        | 'CONFIRMED'
-                        | 'ERROR'
-                        | 'LOCKED'
-                        | 'PENDING'
-                        | 'PERFORMING_BLOCKCHAIN_TXN'
-                        | 'PROCESSING'
-                        | 'REJECTED'
-                        | 'SENT'
-                        | 'VERIFIED';
-                    /**
-                     * The status message of the transaction
-                     */
-                    status_message: string;
-                    /**
-                     * The epoch of the transaction date
-                     */
-                    submit_date: number;
-                    /**
-                     * [Optional] The transaction hash when available.
-                     */
-                    transaction_hash?: string;
-                    /**
-                     * The type of the transaction.
-                     */
-                    transaction_type: 'deposit' | 'withdrawal';
-                    /**
-                     * [Optional] The URL of the transaction on blockchain if `transaction_hash` is available.
-                     */
-                    transaction_url?: string;
-                }[];
-            };
-            subscription?: {
-                /**
-                 * A per-connection unique identifier. Can be passed to the `forget` API call to unsubscribe.
-                 */
-                id: string;
-            };
-            /**
-             * Echo of the request made.
-             */
-            echo_req: {
-                [k: string]: unknown;
-            };
-            /**
-             * Action name of the request made.
-             */
-            msg_type: 'cashier_payments';
-            /**
-             * Optional field sent in request to map to response, present only when request contains `req_id`.
-             */
-            req_id?: number;
-            [k: string]: unknown;
-        };
-    };
-    get_account_types: {
-        request: {
-            /**
-             * Must be `1`
-             */
-            get_account_types: 1;
-            /**
-             * [Optional] Set to landing company to get relevant account types. If not set, this defaults to current account landing company
-             */
-            company?: string;
-            /**
-             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
-             */
-            passthrough?: {
-                [k: string]: unknown;
-            };
-            /**
-             * [Optional] Used to map request to response.
-             */
-            req_id?: number;
-        };
-        response: {
-            get_account_types?: {
-                /**
-                 * Trading account types that are available to create or link to
-                 */
-                trading: {
-                    /**
-                     * Details for trading account types
-                     *
-                     * This interface was referenced by `undefined`'s JSON-Schema definition
-                     * via the `patternProperty` "^(binary|dxtrade|mt5|standard|derivez)$".
-                     */
-                    [k: string]: {
-                        /**
-                         * Wallet currencies allowed for this trading account
-                         */
-                        allowed_wallet_currencies: string[];
-                        /**
-                         * Can this trading account linked to another currency after opening
-                         */
-                        linkable_to_different_currency: 0 | 1;
-                        /**
-                         * Wallet types that this trading account can be linked to.
-                         */
-                        linkable_wallet_types: string[];
-                    };
-                };
-                /**
-                 * Wallet accounts types that are available to create or link to
-                 */
-                wallet: {
-                    /**
-                     * Details for wallets account types
-                     *
-                     * This interface was referenced by `undefined`'s JSON-Schema definition
-                     * via the `patternProperty` "^(affiliate|crypto|doughflow|p2p|paymentagent|paymentagent_client|virtual)$".
-                     */
-                    [k: string]: {
-                        /**
-                         * Allowed currencies for creating accounts of this type; used or disallowed currencies are not listed.
-                         */
-                        currencies: string[];
-                    };
-                };
-            };
-            /**
-             * Echo of the request made.
-             */
-            echo_req: {
-                [k: string]: unknown;
-            };
-            /**
-             * Action name of the request made.
-             */
-            msg_type: 'get_account_types';
-            /**
-             * Optional field sent in request to map to response, present only when request contains `req_id`.
-             */
-            req_id?: number;
-            [k: string]: unknown;
-        };
-    };
     trading_platform_investor_password_change: {
         request: {
             /**
@@ -1634,22 +1685,50 @@ type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
     TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'
 >;
 
-export type TSocketRequestPayload<T extends TSocketEndpointNames> = Partial<
-    TSocketRequestCleaned<T>
-> extends TSocketRequestCleaned<T>
-    ? { payload?: TSocketRequestCleaned<T> }
-    : { payload: TSocketRequestCleaned<T> };
+export type TSocketPaginatateableRequestCleaned<T extends TSocketPaginateableEndpointNames> = Omit<
+    TSocketRequest<T>,
+    TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'
+> & {
+    /** Number of records to skip */
+    offset?: number;
+    /** Number of records to return */
+    limit?: number;
+};
+
+export type TSocketRequestPayload<
+    T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames
+> = Partial<TSocketRequestCleaned<T>> extends TSocketRequestCleaned<T>
+    ? {
+          payload?: T extends TSocketPaginateableEndpointNames
+              ? TSocketPaginatateableRequestCleaned<T>
+              : TSocketRequestCleaned<T>;
+      }
+    : {
+          payload: T extends TSocketPaginateableEndpointNames
+              ? TSocketPaginatateableRequestCleaned<T>
+              : TSocketRequestCleaned<T>;
+      };
 
 export type TSocketRequestQueryOptions<T extends TSocketEndpointNames> = Parameters<
     typeof useQuery<TSocketResponseData<T>, unknown>
+>[2];
+
+export type TSocketRequestInfiniteQueryOptions<T extends TSocketEndpointNames> = Parameters<
+    typeof useInfiniteQuery<TSocketResponseData<T>, unknown>
 >[2];
 
 export type TSocketRequestMutationOptions<T extends TSocketEndpointNames> = Parameters<
     typeof useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>
 >[2];
 
-type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
-    TSocketRequestPayload<T> & { options?: TSocketRequestQueryOptions<T> },
+type TSocketRequestWithOptions<
+    T extends TSocketEndpointNames,
+    O extends boolean = false,
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+> = Omit<
+    TSocketRequestPayload<T> & {
+        options?: OT extends 'useQuery' ? TSocketRequestQueryOptions<T> : TSocketRequestInfiniteQueryOptions<T>;
+    },
     | (TSocketRequestPayload<T>['payload'] extends Record<string, never> ? 'payload' : never)
     | (TNever<TSocketRequestPayload<T>['payload']> extends undefined ? 'payload' : never)
     | (O extends true ? never : 'options')
@@ -1657,18 +1736,21 @@ type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean
 
 type TNever<T> = T extends Record<string, never> ? never : T;
 
-type TSocketRequestProps<T extends TSocketEndpointNames, O extends boolean = false> = TNever<
-    TSocketRequestWithOptions<T, O>
->;
+type TSocketRequestProps<
+    T extends TSocketEndpointNames,
+    O extends boolean = false,
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+> = TNever<TSocketRequestWithOptions<T, O, OT>>;
 
-export type TSocketAcceptableProps<T extends TSocketEndpointNames, O extends boolean = false> = TSocketRequestProps<
-    T,
-    O
-> extends never
+export type TSocketAcceptableProps<
+    T extends TSocketEndpointNames,
+    O extends boolean = false,
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+> = TSocketRequestProps<T, O, OT> extends never
     ? [undefined?]
-    : Partial<TSocketRequestProps<T, O>> extends TSocketRequestProps<T, O>
-    ? [TSocketRequestProps<T, O>?]
-    : [TSocketRequestProps<T, O>];
+    : Partial<TSocketRequestProps<T, O, OT>> extends TSocketRequestProps<T, O, OT>
+    ? [TSocketRequestProps<T, O, OT>?]
+    : [TSocketRequestProps<T, O, OT>];
 
 export type TSocketPaginateableEndpointNames = KeysMatching<
     TSocketEndpoints,

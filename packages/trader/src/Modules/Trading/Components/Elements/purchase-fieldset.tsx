@@ -1,15 +1,15 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
-import { TProposalTypeInfo } from 'Types';
+import { TProposalTypeInfo, TTradeStore } from 'Types';
 
 type TPurchaseFieldset = {
     basis: string;
-    buy_info: { error?: string };
+    buy_info: TTradeStore['purchase_info'];
     currency: string;
     growth_rate: number;
     has_cancellation: boolean;
@@ -19,7 +19,7 @@ type TPurchaseFieldset = {
     is_disabled: boolean;
     is_high_low: boolean;
     is_loading: boolean;
-    is_market_closed: boolean;
+    is_market_closed?: boolean;
     is_multiplier: boolean;
     is_proposal_empty: boolean;
     is_proposal_error: boolean;
@@ -119,6 +119,8 @@ const PurchaseFieldset = ({
                             is_vanilla={is_vanilla}
                             should_fade={should_fade}
                             type={type}
+                            is_accumulator={is_accumulator}
+                            growth_rate={growth_rate}
                         />
                     )}
                     <div

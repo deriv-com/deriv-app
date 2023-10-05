@@ -11,7 +11,7 @@ type TTableRow<T> = {
     id?: string;
     is_footer: boolean;
     is_header?: boolean;
-    passthrough?: (item: TSource) => boolean;
+    passthrough?: { isTopUp: (item: TSource) => boolean };
     replace?: TTableRowItem;
     to?: string;
     show_preloader?: boolean;

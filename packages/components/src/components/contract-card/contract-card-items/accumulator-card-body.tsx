@@ -24,7 +24,7 @@ type TAccumulatorCardBody = {
     getContractById: React.ComponentProps<typeof ToggleCardDialog>['getContractById'];
     indicative?: number;
     is_sold: boolean;
-    onMouseLeave: () => void;
+    onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (value: string) => void;
     status?: string;

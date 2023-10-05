@@ -66,7 +66,7 @@ const OrderDetailsConfirmModal = () => {
                         as='div'
                         className='order-details-confirm-modal__file_format'
                     >
-                        <Localize i18n_default_text='We accept JPG, PDF, or PNG (up to 2MB).' />
+                        <Localize i18n_default_text='We accept JPG, PDF, or PNG (up to 5MB).' />
                     </Text>
                     <FileUploaderComponent
                         accept={accepted_file_types}

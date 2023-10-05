@@ -21,6 +21,7 @@ type TIDVFormValues = {
 
 /**
  * Formats the IDV form values to be sent to the API
+ * @name formatIDVFormValues
  * @param idv_form_value - Formik values of the IDV form
  * @param country_code - Country code of the user
  * @returns IDV form values

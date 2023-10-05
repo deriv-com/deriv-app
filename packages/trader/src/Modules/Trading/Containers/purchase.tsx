@@ -12,7 +12,7 @@ import AccumulatorsSellButton from '../Components/Form/TradeParams/Accumulator/a
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import { TProposalTypeInfo } from 'Types';
+import { TTradeStore } from 'Types';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
 
@@ -27,7 +27,7 @@ const getSortedIndex = (type: string, index: number) => {
     }
 };
 
-const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) => {
+const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean }) => {
     const {
         portfolio: { all_positions, onClickSell },
         ui: { purchase_states: purchased_states_arr, is_mobile, setPurchaseState },
@@ -49,15 +49,14 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
         proposal_info,
         purchase_info,
         symbol,
-        validation_errors,
-        vanilla_trade_type,
+        validation_errors = {},
         trade_types,
         is_trade_enabled,
         has_open_accu_contract,
     } = useTraderStore();
 
     const is_high_low = /^high_low$/.test(contract_type.toLowerCase());
-    const isLoading = (info: TProposalTypeInfo | Record<string, never>) => {
+    const isLoading = (info: TTradeStore['proposal_info'][string] | Record<string, never>) => {
         const has_validation_error = Object.values(validation_errors).some(e => e.length);
         return !has_validation_error && !info?.has_error && !info.id;
     };
@@ -130,7 +129,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
                     components.push(purchase_fieldset);
                     break;
             }
-        } else if (vanilla_trade_type === type) {
+        } else if (contract_type.toUpperCase() === type) {
             components.push(purchase_fieldset);
         } else if (is_accumulator && has_open_accu_contract) {
             components.push(

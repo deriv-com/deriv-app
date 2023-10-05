@@ -1,20 +1,20 @@
 import React from 'react';
 import { InfiniteLoader as _InfiniteLoader, InfiniteLoaderProps, Index, IndexRange } from 'react-virtualized';
-import DataList, { TRow, TRowRenderer } from '../data-list/data-list';
+import DataList from '../data-list/data-list';
 
 const InfiniteLoader = _InfiniteLoader as unknown as React.FC<InfiniteLoaderProps>;
-type TInfiniteDatalist = {
+
+type TInfiniteDatalist = Pick<
+    React.ComponentProps<typeof DataList>,
+    'getRowSize' | 'onRowsRendered' | 'onScroll' | 'overscanRowCount' | 'rowRenderer'
+> & {
     className: string;
     data_list_className: string;
     has_more_items_to_load: boolean;
-    items: TRow[];
-    keyMapperFn?: (row: TRow) => number | string;
-    loadMoreRowsFn: <T>(params: IndexRange) => Promise<T>;
-    onScroll: () => void;
-    rowRenderer: TRowRenderer;
     has_filler: boolean;
-    overscanRowCount: number;
-    getRowSize?: (params: { index: number }) => number;
+    items: React.ComponentProps<typeof DataList>['data_source'];
+    keyMapperFn: React.ComponentProps<typeof DataList>['keyMapper'];
+    loadMoreRowsFn: <T>(params: IndexRange) => Promise<T>;
 };
 
 const InfiniteDataList = ({

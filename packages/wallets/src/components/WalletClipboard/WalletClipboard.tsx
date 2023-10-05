@@ -5,31 +5,31 @@ import Clipboard from '../../public/images/clipboard.svg';
 import './WalletClipboard.scss';
 
 type TProps = {
-    info_message?: string;
+    infoMessage?: string;
     popoverAlignment: 'bottom' | 'left' | 'right' | 'top';
-    success_message: string;
-    text_copy: string;
+    successMessage: string;
+    textCopy: string;
 };
 
 const WalletClipboard = ({
     //  info_message, popoverAlignment, success_message,
-    text_copy,
+    textCopy,
 }: TProps) => {
     const [, copy] = useCopyToClipboard();
     const [isCopied, setIsCopied] = useState(false);
-    let timeout_clipboard: ReturnType<typeof setTimeout>;
+    let timeoutClipboard: ReturnType<typeof setTimeout>;
 
     const onClick = (event: { stopPropagation: () => void }) => {
         setIsCopied(true);
-        copy(text_copy);
-        timeout_clipboard = setTimeout(() => {
+        copy(textCopy);
+        timeoutClipboard = setTimeout(() => {
             setIsCopied(false);
         }, 2000);
         event.stopPropagation();
     };
 
     useEffect(() => {
-        return () => clearTimeout(timeout_clipboard);
+        return () => clearTimeout(timeoutClipboard);
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (

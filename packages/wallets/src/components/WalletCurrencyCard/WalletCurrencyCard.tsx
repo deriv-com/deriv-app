@@ -11,7 +11,7 @@ type TProps = {
 
 const WalletCurrencyCard: React.FC<TProps> = ({ currency, isDemo, size = 'lg' }: TProps) => {
     return (
-        <WalletGradientBackground currency={currency} is_demo={isDemo} type='card'>
+        <WalletGradientBackground currency={currency} isDemo={isDemo} type='card'>
             <div className={`wallets-currency-card wallets-currency-card-${size}`}>
                 <WalletCardIcon size={size} type={currency} />
             </div>

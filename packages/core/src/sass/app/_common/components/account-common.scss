@@ -301,7 +301,6 @@
 
             &-btn {
                 height: 4rem;
-                margin: 0 0 0 1.6rem;
 
                 &-wrapper {
                     align-items: normal;
@@ -333,7 +332,6 @@
                 }
 
                 @include mobile {
-                    margin: 0 2.4rem;
 
                     &--has-bottom-margin {
                         margin-bottom: 1.6rem;
@@ -766,11 +764,6 @@
         margin-right: auto;
     }
 
-    &__submit-button {
-        @include mobile {
-            margin-right: 1.2rem;
-        }
-    }
 
     &__fieldset {
         width: 39.5rem;

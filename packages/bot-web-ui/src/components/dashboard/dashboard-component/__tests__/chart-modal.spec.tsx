@@ -17,6 +17,7 @@ describe('ChartModal', () => {
     it('should call setEnabledModalChart when close button is clicked', () => {
         const { container } = render(<ChartModal setEnabledModalChart={mockSetEnabledModalChart} />);
 
+        //<ToolbarIcon> is a wrapper around other components and the data-testid is not passed to the final DOM element
         // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
         const button = container.querySelector('#db-toolbar__close-button');
 

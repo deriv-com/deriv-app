@@ -53,7 +53,6 @@ export default class NotificationStore extends BaseStore {
             addVerificationNotifications: action.bound,
             client_notifications: observable,
             filterNotificationMessages: action.bound,
-            getP2pCompletedOrders: action.bound,
             handleClientNotifications: action.bound,
             is_notifications_empty: computed,
             is_notifications_visible: observable,
@@ -91,23 +90,18 @@ export default class NotificationStore extends BaseStore {
             }
         );
         reaction(
-            () => [root_store.client.is_p2p_enabled],
-            async () => {
-                if (root_store.client.is_p2p_enabled) {
-                    await this.getP2pCompletedOrders();
-                }
-            }
-        );
-        reaction(
             () => [
                 root_store.client.account_settings,
                 root_store.client.account_status,
                 root_store.client.landing_companies,
+                root_store.client.is_p2p_enabled,
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
                 root_store.client.has_changed_two_fa,
+                this.p2p_order_props.order_id,
                 root_store.client.p2p_advertiser_info,
+                this.p2p_completed_orders,
             ],
             () => {
                 if (
@@ -1497,13 +1491,4 @@ export default class NotificationStore extends BaseStore {
             should_show_again: true,
         });
     };
-
-    async getP2pCompletedOrders() {
-        await WS.wait('authorize');
-        const response = await WS.send?.({ p2p_order_list: 1, active: 0 });
-
-        if (!response?.error) {
-            this.p2p_completed_orders = response?.p2p_order_list?.list || [];
-        }
-    }
 }

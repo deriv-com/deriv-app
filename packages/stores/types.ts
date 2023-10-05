@@ -18,6 +18,7 @@ import type {
     ContractUpdateHistory,
     Transaction,
     ActiveSymbols,
+    P2POrderListResponse,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
@@ -761,6 +762,7 @@ type TNotificationStore = {
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
     notifications: TNotificationMessage[];
+    p2p_completed_orders: NonNullable<P2POrderListResponse['p2p_order_list']>['list'];
     refreshNotifications: () => void;
     removeNotifications: (should_close_persistent: boolean) => void;
     removeNotificationByKey: ({ key }: { key: string }) => void;

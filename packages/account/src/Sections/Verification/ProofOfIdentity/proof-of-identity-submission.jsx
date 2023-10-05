@@ -1,10 +1,9 @@
 import React from 'react';
-import { formatIDVError, WS, idv_error_statuses } from '@deriv/shared';
+import { WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import CountrySelector from 'Components/poi/poi-country-selector';
+import PoiCountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
-import IdvFailed from 'Components/poi/idv-status/idv-failed';
-import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
+import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
 
@@ -26,15 +25,15 @@ const POISubmission = observer(
         redirect_button,
         residence_list,
         setIsCfdPoiCompleted,
-        should_show_mismatch_form,
     }) => {
         const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
         const [submission_service, setSubmissionService] = React.useState();
         const [selected_country, setSelectedCountry] = React.useState({});
 
-        const { client, notifications } = useStore();
+        const { client, common, notifications } = useStore();
 
         const { account_settings, getChangeableFields } = client;
+        const { current_language } = common;
         const { refreshNotifications } = notifications;
 
         const handleSelectionNext = () => {
@@ -74,8 +73,6 @@ const POISubmission = observer(
             [residence_list]
         );
 
-        const mismatch_status = formatIDVError(idv.last_rejected, idv.status);
-
         React.useEffect(() => {
             if (submission_status !== submission_status_code.complete) {
                 if ((has_require_submission || allow_poi_resubmission) && identity_last_attempt) {
@@ -107,13 +104,6 @@ const POISubmission = observer(
                         default:
                             break;
                     }
-                } else if (
-                    mismatch_status &&
-                    ![idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].includes(mismatch_status) &&
-                    idv.submissions_left > 0
-                ) {
-                    setSubmissionService(service_code.idv);
-                    setSubmissionStatus(submission_status_code.submitting);
                 } else {
                     setSubmissionStatus(submission_status_code.selecting);
                 }
@@ -130,31 +120,20 @@ const POISubmission = observer(
         switch (submission_status) {
             case submission_status_code.selecting: {
                 return (
-                    <CountrySelector
+                    <PoiCountrySelector
+                        key={current_language}
                         handleSelectionNext={handleSelectionNext}
                         is_from_external={is_from_external}
-                        mismatch_status={mismatch_status}
                         residence_list={residence_list}
                         selected_country={selected_country}
                         setSelectedCountry={setSelectedCountry}
                     />
                 );
             }
-
             case submission_status_code.submitting: {
                 switch (submission_service) {
                     case service_code.idv:
-                        return should_show_mismatch_form ? (
-                            <IdvFailed
-                                account_settings={account_settings}
-                                getChangeableFields={getChangeableFields}
-                                mismatch_status={mismatch_status}
-                                residence_list={residence_list}
-                                handleSubmit={handleViewComplete}
-                                latest_status={identity_last_attempt}
-                                selected_country={selected_country}
-                            />
-                        ) : (
+                        return (
                             <IdvDocumentSubmit
                                 handleViewComplete={handleViewComplete}
                                 handleBack={handleBack}
@@ -196,9 +175,8 @@ const POISubmission = observer(
                 switch (submission_service) {
                     case service_code.idv:
                         return (
-                            <IdvSubmitComplete
+                            <IdvUploadComplete
                                 is_from_external={is_from_external}
-                                mismatch_status={mismatch_status}
                                 needs_poa={needs_poa}
                                 redirect_button={redirect_button}
                             />

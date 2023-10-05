@@ -1690,7 +1690,7 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    setIsDigitsWidgetActive(is_active) {
+    setIsDigitsWidgetActive(is_active: boolean) {
         this.is_digits_widget_active = is_active;
     }
 }

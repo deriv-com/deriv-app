@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import AccumulatorsProfitLossTooltip from '../accumulators-profit-loss-tooltip.jsx';
+import AccumulatorsProfitLossTooltipAlpha from '../accumulators-profit-loss-tooltip.jsx';
 
-jest.mock('Modules/SmartChart', () => ({
-    ...jest.requireActual('Modules/SmartChart'),
-    FastMarker: jest.fn(({ children, className }) => <div className={className}>{children}</div>),
+jest.mock('Modules/SmartChartAlpha', () => ({
+    ...jest.requireActual('Modules/SmartChartAlpha'),
+    FastMarkerAlpha: jest.fn(({ children, className }) => <div className={className}>{children}</div>),
 }));
-jest.mock('../accumulators-profit-loss-text', () => () => 'AccumulatorsProfitLossText');
+jest.mock('../accumulators-profit-loss-text', () => () => 'AccumulatorsProfitLossTextAlpha');
 
-describe('AccumulatorsProfitLossTooltip', () => {
+describe('AccumulatorsProfitLossTooltipAlpha', () => {
     const props = {
         className: 'profit-loss-tooltip',
         currency: 'USD',
@@ -23,20 +23,20 @@ describe('AccumulatorsProfitLossTooltip', () => {
     const profit_text = 'Total profit/loss:';
 
     it('should render AccumulatorsProfitLossText if contract is not sold', () => {
-        render(<AccumulatorsProfitLossTooltip {...props} />);
+        render(<AccumulatorsProfitLossTooltipAlpha {...props} />);
 
-        expect(screen.getByText('AccumulatorsProfitLossText')).toBeInTheDocument();
+        expect(screen.getByText('AccumulatorsProfitLossTextAlpha')).toBeInTheDocument();
     });
     it('should not render AccumulatorsProfitLossText if should_show_profit_text is false', () => {
-        render(<AccumulatorsProfitLossTooltip {...props} should_show_profit_text={false} />);
+        render(<AccumulatorsProfitLossTooltipAlpha {...props} should_show_profit_text={false} />);
 
-        expect(screen.queryByText('AccumulatorsProfitLossText')).not.toBeInTheDocument();
+        expect(screen.queryByText('AccumulatorsProfitLossTextAlpha')).not.toBeInTheDocument();
     });
     it('should render AccumulatorsProfitLossTooltip when contract is sold', () => {
         jest.useFakeTimers();
 
         render(
-            <AccumulatorsProfitLossTooltip
+            <AccumulatorsProfitLossTooltipAlpha
                 {...props}
                 is_sold={1}
                 exit_tick={props.current_spot}

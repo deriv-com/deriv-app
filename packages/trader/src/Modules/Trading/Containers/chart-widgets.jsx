@@ -79,6 +79,9 @@ export const ChartTopWidgets = observer(({ charts_ref, open_market, open }) => {
 });
 
 export const ChartBottomWidgets = observer(({ digits, tick, show_accumulators_stats }) => {
+    const { client } = useStore();
+    const { is_alpha_chart } = client;
+
     return (
         <>
             {is_alpha_chart && (

@@ -8,7 +8,7 @@ jest.mock('App/Components/Elements/ContentLoader', () => ({
 }));
 jest.mock('../../../Containers/contract-type', () => jest.fn(() => 'MockedContractType'));
 jest.mock('../../../Containers/purchase', () => jest.fn(() => 'MockedPurchase'));
-jest.mock('../../../Containers/trade-params.jsx', () => jest.fn(() => 'MockedTradeParams'));
+jest.mock('../../../Containers/trade-params', () => jest.fn(() => 'MockedTradeParams'));
 
 const mock_props = {
     is_market_closed: false,

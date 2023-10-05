@@ -1,15 +1,26 @@
-import { ContractUpdate, Portfolio1, ProposalOpenContract } from '@deriv/api-types';
+import {
+    ContractUpdate,
+    ContractUpdateHistory,
+    Portfolio1,
+    ProposalOpenContract,
+    TickSpotData,
+} from '@deriv/api-types';
 
 export type TContractStore = {
+    clearContractUpdateConfigValues: () => void;
     contract_info: TContractInfo;
+    contract_update_history: ContractUpdateHistory;
     contract_update_take_profit: number | string;
     contract_update_stop_loss: number | string;
-    clearContractUpdateConfigValues: () => void;
+    digits_info: TDigitsInfo;
+    display_status: string;
     has_contract_update_take_profit: boolean;
     has_contract_update_stop_loss: boolean;
+    is_digit_contract: boolean;
+    is_ended: boolean;
+    onChange: (param: { name: string; value: string | number | boolean }) => void;
     updateLimitOrder: () => void;
     validation_errors: { contract_update_stop_loss: string[]; contract_update_take_profit: string[] };
-    onChange: (param: { name: string; value: string | number | boolean }) => void;
 };
 
 export type TContractInfo = ProposalOpenContract &
@@ -33,3 +44,5 @@ type TLimitProperty = {
 };
 
 export type TLimitOrder = Partial<Record<'stop_loss' | 'stop_out' | 'take_profit', TLimitProperty>>;
+
+export type TTickSpotData = TickSpotData;

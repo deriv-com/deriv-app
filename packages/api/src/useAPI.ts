@@ -12,10 +12,10 @@ import APIContext from './APIContext';
 
 const useAPI = () => {
     const api = useContext(APIContext);
-    const [isReady, setIsReady] = useState<boolean>(api?.get()?.connection?.readyState === 1);
+    const [isReady, setIsReady] = useState<boolean>(api?.get()?.connection?.readyState === WebSocket.OPEN);
 
     useEffect(() => {
-        if ((api?.get()?.connection?.readyState === 1) !== isReady) {
+        if ((api?.get()?.connection?.readyState === WebSocket.OPEN) !== isReady) {
             setIsReady(api?.get()?.connection?.readyState === 1);
         }
     }, [api, isReady]);

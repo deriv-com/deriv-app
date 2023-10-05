@@ -98,7 +98,7 @@ export const IdvDocSubmitOnSignup = ({
                 is_confirmed: false,
             }}
         >
-            {({ isSubmitting, isValid, dirty, values }) => (
+            {({ isSubmitting, isValid, dirty, values, status }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
                     <section className='mt5-layout__container'>
                         <FormSubHeader title={localize('Identity verification')} />

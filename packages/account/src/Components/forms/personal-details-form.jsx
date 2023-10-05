@@ -16,6 +16,8 @@ import {
 } from '@deriv/components';
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+
+import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
 import { isFieldImmutable } from '../../Helpers/utils';
 import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
 import FormBodySection from '../form-body-section';
@@ -27,11 +29,10 @@ import { DateOfBirthField, FormInputField } from './form-fields';
 
 const PersonalDetailsForm = props => {
     const {
-        inline_note_text,
         is_virtual,
         is_mf,
         is_svg,
-        is_rendered_for_idv,
+        is_qualified_for_idv,
         should_hide_helper_image,
         editable_fields = [],
         has_real_account,
@@ -46,10 +47,10 @@ const PersonalDetailsForm = props => {
         setShouldCloseTooltip,
         class_name,
         states_list,
-        side_note,
         no_confirmation_needed,
     } = props;
     const autocomplete_value = 'none';
+    const PoiNameDobExampleIcon = PoiNameDobExample;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
@@ -71,7 +72,7 @@ const PersonalDetailsForm = props => {
     }, [no_confirmation_needed, setStatus, status]);
 
     const getNameAndDobLabels = () => {
-        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_rendered_for_idv;
+        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
         const first_name_label = is_asterisk_needed ? localize('First name*') : localize('First name');
         const last_name_label = is_asterisk_needed ? localize('Last name*') : localize('Last name');
         const dob_label = is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
@@ -83,10 +84,8 @@ const PersonalDetailsForm = props => {
         };
     };
 
-    const is_rendered_for_idv_or_onfido = is_rendered_for_idv || is_rendered_for_onfido;
-
     const getFieldHint = field_name =>
-        is_rendered_for_idv_or_onfido ? (
+        is_qualified_for_idv || is_rendered_for_onfido ? (
             <Localize
                 i18n_default_text={'Your {{ field_name }} as in your identity document'}
                 values={{ field_name }}
@@ -113,6 +112,13 @@ const PersonalDetailsForm = props => {
         }
     };
 
+    const name_dob_clarification_message = (
+        <Localize
+            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+            components={[<strong key={0} />]}
+        />
+    );
+
     const poa_clarification_message = (
         <Localize i18n_default_text='For faster verification, input the same address here as in your proof of address document (see section below)' />
     );
@@ -129,11 +135,14 @@ const PersonalDetailsForm = props => {
         <React.Fragment>
             <div
                 className={classNames(class_name, {
-                    'account-form__poi-confirm-example': is_rendered_for_idv,
+                    'account-form__poi-confirm-example': is_qualified_for_idv,
                 })}
             >
-                {is_rendered_for_idv_or_onfido && !should_hide_helper_image && (
-                    <InlineNoteWithIcon message={inline_note_text} font_size={isMobile() ? 'xxxs' : 'xs'} />
+                {(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image && (
+                    <InlineNoteWithIcon
+                        message={name_dob_clarification_message}
+                        font_size={isMobile() ? 'xxxs' : 'xs'}
+                    />
                 )}
                 {is_qualified_for_poa && (
                     <InlineNoteWithIcon
@@ -143,8 +152,8 @@ const PersonalDetailsForm = props => {
                     />
                 )}
                 <FormBodySection
-                    has_side_note={is_rendered_for_idv_or_onfido && !should_hide_helper_image}
-                    side_note={side_note}
+                    has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
+                    side_note={<PoiNameDobExampleIcon />}
                     side_note_position='right'
                     type='image'
                 >
@@ -172,7 +181,7 @@ const PersonalDetailsForm = props => {
                                 </Text>
                             </div>
                         )}
-                        {!is_rendered_for_idv_or_onfido && !is_qualified_for_poa && (
+                        {!is_qualified_for_idv && !is_rendered_for_onfido && !is_qualified_for_poa && (
                             <FormSubHeader
                                 title={'salutation' in values ? localize('Title and name') : localize('Name')}
                             />
@@ -230,7 +239,7 @@ const PersonalDetailsForm = props => {
                                 data-testid='last_name'
                             />
                         )}
-                        {!is_rendered_for_idv_or_onfido && !is_qualified_for_poa && (
+                        {!is_qualified_for_idv && !is_rendered_for_onfido && !is_qualified_for_poa && (
                             <FormSubHeader title={localize('Other details')} />
                         )}
                         {'date_of_birth' in values && (
@@ -537,7 +546,7 @@ const PersonalDetailsForm = props => {
                         )}
                     </fieldset>
                 </FormBodySection>
-                {!no_confirmation_needed && is_rendered_for_idv && (
+                {!no_confirmation_needed && is_qualified_for_idv && (
                     <ConfirmationCheckbox
                         disabled={is_confirmation_checkbox_disabled}
                         label={

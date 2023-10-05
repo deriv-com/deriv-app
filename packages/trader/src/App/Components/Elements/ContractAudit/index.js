@@ -1,3 +1,3 @@
-import ContractAudit from './contract-audit.jsx';
+import ContractAudit from './contract-audit';
 
 export default ContractAudit;

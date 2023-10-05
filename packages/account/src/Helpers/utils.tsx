@@ -6,7 +6,10 @@ import { FormikValues } from 'formik';
 import { getIDVDocuments } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
 
-export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
+export const documentAdditionalError = (
+    document_additional: string | undefined,
+    document_additional_format: string
+) => {
     let error_message = null;
     if (!document_additional) {
         error_message = localize('Please enter your document number. ');
@@ -95,15 +98,6 @@ export const generatePlaceholderText = (selected_doc: string): string => {
     }
 };
 
-export const validate =
-    (errors: Record<string, string>, values: Record<string, string>) =>
-    (fn: (value: string) => string, arr: string[], err_msg: string) => {
-        arr.forEach(field => {
-            const value = values[field];
-            if (!fn(value) && !errors[field]) errors[field] = err_msg;
-        });
-    };
-
 export const isFieldImmutable = (field: string, mutable_fields: string[] = []) => !mutable_fields.includes(field);
 
 export const makeSettingsRequest = (values: FormikValues, changeable_fields: string[]) => {
@@ -143,7 +137,7 @@ export const isDocumentTypeValid = (document_type: FormikValues) => {
     return undefined;
 };
 
-export const isAdditionalDocumentValid = (document_type: FormikValues, document_additional: string) => {
+export const isAdditionalDocumentValid = (document_type: FormikValues, document_additional?: string) => {
     const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
     if (error_message) {
         return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
@@ -190,3 +184,29 @@ export const flatten = <T extends Array<unknown>>(arr: T) => [].concat(...arr);
 
 export const isServerError = (error: unknown): error is TServerError =>
     typeof error === 'object' && error !== null && 'code' in error;
+
+export const getIDVDocumentType = (
+    idv_latest_attempt: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'],
+    residence: DeepRequired<ResidenceList[0]>
+) => {
+    if (!idv_latest_attempt || !Object.keys(residence).length) return localize('identity document');
+    const { document_type } = idv_latest_attempt;
+    if (!document_type) return localize('identity document');
+    const {
+        identity: {
+            services: {
+                idv: { documents_supported },
+            },
+        },
+    } = residence;
+    return documents_supported[document_type as string].display_name;
+};
+
+export const validate = <T,>(errors: Record<string, string>, values: T) => {
+    return (fn: (value: string) => string, arr: string[], err_msg: string) => {
+        arr.forEach(field => {
+            const value = values[field as keyof typeof values] as string;
+            if (!fn(value) && !errors[field]) errors[field] = err_msg;
+        });
+    };
+};

@@ -7,7 +7,7 @@ import { getValidationRules } from './Modules/Trading/Constants/validation-rules
 type TValidationRules = ReturnType<typeof getValidationRules> | Record<string, never>;
 
 type TBaseStoreOptions = {
-    root_store?: TCoreStores;
+    root_store: TCoreStores;
     local_storage_properties?: string[];
     session_storage_properties?: string[];
     validation_rules?: TValidationRules;
@@ -33,21 +33,21 @@ export default class BaseStore {
     logout_listener: null | (() => Promise<void>) = null;
     local_storage_properties: string[];
     networkStatusChangeDisposer: null | (() => void) = null;
-    network_status_change_listener: null | ((is_online?: boolean) => void) = null;
+    network_status_change_listener: null | ((is_online: boolean) => void) = null;
     partial_fetch_time = 0;
     preSwitchAccountDisposer: null | (() => void) = null;
     pre_switch_account_listener: null | (() => Promise<void>) = null;
     realAccountSignupEndedDisposer: null | (() => void) = null;
     real_account_signup_ended_listener: null | (() => Promise<void>) = null;
-    root_store?: TCoreStores;
+    root_store: TCoreStores;
     session_storage_properties: string[];
     store_name = '';
     switchAccountDisposer: null | (() => void) = null;
     switch_account_listener: null | (() => Promise<void>) = null;
     themeChangeDisposer: null | (() => void) = null;
-    theme_change_listener: null | ((is_dark_mode_on?: boolean) => void) = null;
+    theme_change_listener: null | ((is_dark_mode_on: boolean) => void) = null;
     validation_errors: { [key: string]: string[] } = {};
-    validation_rules: TValidationRules = {};
+    validation_rules: TValidationRules | Record<string, never> = {};
     /**
      * Constructor of the base class that gets properties' name of child which should be saved in storages
      *
@@ -58,7 +58,7 @@ export default class BaseStore {
      *     @property {Object}   validation_rules - An object that contains the validation rules for each property of the store.
      *     @property {String}   store_name - Explicit store name for browser application storage (to bypass minification)
      */
-    constructor(options: TBaseStoreOptions = {}) {
+    constructor(options = {} as TBaseStoreOptions) {
         makeObservable(this, {
             validation_errors: observable,
             validation_rules: observable,
@@ -268,7 +268,7 @@ export default class BaseStore {
      *
      */
     validateProperty<T extends BaseStore>(property: string, value: T[keyof T]) {
-        const validation_rules_for_property = this.validation_rules[property as keyof TValidationRules];
+        const validation_rules_for_property = this.validation_rules[property] ?? {};
         const trigger = 'trigger' in validation_rules_for_property ? validation_rules_for_property.trigger : undefined;
         const inputs = { [property]: value ?? this[property as keyof this] };
         const validation_rules = {
@@ -315,13 +315,13 @@ export default class BaseStore {
             this.switch_account_listener = listener;
 
             this.switchAccountDisposer = when(
-                () => !!this.root_store?.client.switch_broadcast,
+                () => !!this.root_store.client.switch_broadcast,
                 () => {
                     try {
                         const result = this.switch_account_listener?.();
                         if (result?.then && typeof result.then === 'function') {
                             result.then(() => {
-                                this.root_store?.client.switchEndSignal();
+                                this.root_store.client.switchEndSignal();
                                 this.onSwitchAccount(this.switch_account_listener);
                             });
                         } else {
@@ -343,13 +343,13 @@ export default class BaseStore {
         if (listener) {
             this.pre_switch_account_listener = listener;
             this.preSwitchAccountDisposer = when(
-                () => !!this.root_store?.client.pre_switch_broadcast,
+                () => !!this.root_store.client.pre_switch_broadcast,
                 () => {
                     try {
                         const result = this.pre_switch_account_listener?.();
                         if (result?.then && typeof result.then === 'function') {
                             result.then(() => {
-                                this.root_store?.client.setPreSwitchAccount(false);
+                                this.root_store.client.setPreSwitchAccount(false);
                                 this.onPreSwitchAccount(this.pre_switch_account_listener);
                             });
                         } else {
@@ -369,13 +369,13 @@ export default class BaseStore {
 
     onLogout(listener: null | (() => Promise<void>)): void {
         this.logoutDisposer = when(
-            () => !!this.root_store?.client.has_logged_out,
+            () => !!this.root_store.client.has_logged_out,
             async () => {
                 try {
                     const result = this.logout_listener?.();
                     if (result?.then && typeof result.then === 'function') {
                         result.then(() => {
-                            this.root_store?.client.setLogout(false);
+                            this.root_store.client.setLogout(false);
                             this.onLogout(this.logout_listener);
                         });
                     } else {
@@ -395,13 +395,13 @@ export default class BaseStore {
 
     onClientInit(listener: null | (() => Promise<void>)): void {
         this.clientInitDisposer = when(
-            () => !!this.root_store?.client.initialized_broadcast,
+            () => !!this.root_store.client.initialized_broadcast,
             async () => {
                 try {
                     const result = this.client_init_listener?.();
                     if (result?.then && typeof result.then === 'function') {
                         result.then(() => {
-                            this.root_store?.client.setInitialized(false);
+                            this.root_store.client.setInitialized(false);
                             this.onClientInit(this.client_init_listener);
                         });
                     } else {
@@ -419,9 +419,9 @@ export default class BaseStore {
         this.client_init_listener = listener;
     }
 
-    onNetworkStatusChange(listener: null | ((is_online?: boolean) => void)): void {
+    onNetworkStatusChange(listener: null | ((is_online: boolean) => void)): void {
         this.networkStatusChangeDisposer = reaction(
-            () => this.root_store?.common.is_network_online,
+            () => this.root_store.common.is_network_online,
             is_online => {
                 try {
                     this.network_status_change_listener?.(is_online);
@@ -438,9 +438,9 @@ export default class BaseStore {
         this.network_status_change_listener = listener;
     }
 
-    onThemeChange(listener: null | ((is_dark_mode_on?: boolean) => void)): void {
+    onThemeChange(listener: null | ((is_dark_mode_on: boolean) => void)): void {
         this.themeChangeDisposer = reaction(
-            () => this.root_store?.ui.is_dark_mode_on,
+            () => this.root_store.ui.is_dark_mode_on,
             is_dark_mode_on => {
                 try {
                     this.theme_change_listener?.(is_dark_mode_on);
@@ -459,13 +459,13 @@ export default class BaseStore {
 
     onRealAccountSignupEnd(listener: null | (() => Promise<void>)): void {
         this.realAccountSignupEndedDisposer = when(
-            () => !!this.root_store?.ui.has_real_account_signup_ended,
+            () => !!this.root_store.ui.has_real_account_signup_ended,
             () => {
                 try {
                     const result = this.real_account_signup_ended_listener?.();
                     if (result?.then && typeof result.then === 'function') {
                         result.then(() => {
-                            this.root_store?.ui.setRealAccountSignupEnd(false);
+                            this.root_store.ui.setRealAccountSignupEnd(false);
                             this.onRealAccountSignupEnd(this.real_account_signup_ended_listener);
                         });
                     } else {
@@ -545,7 +545,7 @@ export default class BaseStore {
 
     assertHasValidCache(loginid: string, ...reactions: VoidFunction[]): void {
         // account was changed when this was unmounted.
-        if (this.root_store?.client.loginid !== loginid) {
+        if (this.root_store.client.loginid !== loginid) {
             reactions.forEach(act => act());
             this.partial_fetch_time = 0;
         }

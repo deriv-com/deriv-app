@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { useFeatureFlags } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
-import Wallets from '@deriv/wallets';
 import getRoutesConfig from 'Constants/routes-config';
 import { useStores } from 'Stores';
 import { TRoute } from 'Types';
@@ -11,7 +9,6 @@ import RouteWithSubroutes from './route-with-sub-routes.jsx';
 
 const Routes: React.FC = observer(() => {
     const { config } = useStores();
-    const { is_next_wallet_enabled } = useFeatureFlags();
 
     return (
         <React.Suspense
@@ -25,16 +22,7 @@ const Routes: React.FC = observer(() => {
                 {getRoutesConfig({
                     consumer_routes: config.routes,
                 }).map((route: TRoute, idx: number) => {
-                    // Temporary way to intercept the route to show the Wallets component.
-                    let updated_route = route;
-                    if (updated_route.path === '/appstore/traders-hub') {
-                        updated_route = {
-                            ...updated_route,
-                            component: is_next_wallet_enabled ? Wallets : updated_route.component,
-                        };
-                    }
-
-                    return <RouteWithSubroutes key={idx} {...updated_route} />;
+                    return <RouteWithSubroutes key={idx} {...route} />;
                 })}
             </Switch>
         </React.Suspense>

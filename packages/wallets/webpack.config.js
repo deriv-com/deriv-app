@@ -35,11 +35,11 @@ module.exports = function (env) {
 
     return {
         entry: {
-            index: path.resolve(__dirname, '../src', 'index.tsx'),
+            index: path.resolve(__dirname, './src', 'index.tsx'),
         },
         mode: is_release ? 'production' : 'development',
         output: {
-            path: path.resolve(__dirname, '../dist'),
+            path: path.resolve(__dirname, './dist'),
             publicPath: base,
             filename: 'wallets/js/[name].js',
             libraryExport: 'default',
@@ -66,18 +66,6 @@ module.exports = function (env) {
                     exclude: /node_modules/,
                     use: [
                         {
-                            loader: path.resolve(__dirname, './loaders/deriv-trader-loader.js'),
-                        },
-                        {
-                            loader: path.resolve(__dirname, './loaders/deriv-account-loader.js'),
-                        },
-                        {
-                            loader: path.resolve(__dirname, './loaders/deriv-cashier-loader.js'),
-                        },
-                        {
-                            loader: path.resolve(__dirname, './loaders/deriv-cfd-loader.js'),
-                        },
-                        {
                             loader: 'babel-loader',
                             options: {
                                 cacheDirectory: true,
@@ -99,7 +87,7 @@ module.exports = function (env) {
                         {
                             loader: 'css-loader',
                             options: {
-                                url: false,
+                                url: true,
                             },
                         },
                         {
@@ -124,9 +112,9 @@ module.exports = function (env) {
                                 // Provide path to the file with resources
                                 resources: [
                                     // eslint-disable-next-line global-require, import/no-dynamic-require
-                                    ...require('../../shared/src/styles/index.js'),
+                                    ...require('../shared/src/styles/index.js'),
                                     // eslint-disable-next-line global-require, import/no-dynamic-require
-                                    ...require('../src/styles/index.js'),
+                                    ...require('./src/styles/index.js'),
                                 ],
                             },
                         },

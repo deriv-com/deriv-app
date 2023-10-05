@@ -134,8 +134,6 @@ module.exports = function (env) {
                                 resources: [
                                     // eslint-disable-next-line global-require, import/no-dynamic-require
                                     ...require('@deriv/shared/src/styles/index.js'),
-                                    // eslint-disable-next-line global-require, import/no-dynamic-require
-                                    ...require('@deriv/wallets/src/styles/index.js'),
                                 ],
                             },
                         },

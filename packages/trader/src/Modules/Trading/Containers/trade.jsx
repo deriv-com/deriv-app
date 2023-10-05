@@ -4,7 +4,7 @@ import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } fr
 import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
-import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
+import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets';
 import FormLayout from '../Components/Form/form-layout';
@@ -300,7 +300,6 @@ const ChartTrade = observer(props => {
         wsSubscribe,
         active_symbols,
         has_alternative_source,
-        refToAddTick,
     } = useTraderStore();
 
     const settings = {
@@ -391,7 +390,6 @@ const ChartTrade = observer(props => {
             onExportLayout={exportLayout}
             shouldFetchTradingTimes={!end_epoch}
             hasAlternativeSource={has_alternative_source}
-            refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
             should_zoom_out_on_yaxis={is_accumulator}
             yAxisMargin={{

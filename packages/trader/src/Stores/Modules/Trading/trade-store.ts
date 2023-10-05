@@ -44,7 +44,7 @@ import { action, computed, makeObservable, observable, override, reaction, runIn
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
-import { TTextValueStrings, TTextValueNumber } from 'Types';
+import { TTextValueNumber, TTextValueStrings } from 'Types';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';

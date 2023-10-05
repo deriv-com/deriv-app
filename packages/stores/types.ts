@@ -2,7 +2,6 @@ import type {
     AccountLimitsResponse,
     Authorize,
     ContractUpdate,
-    ContractUpdateHistory,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
@@ -15,6 +14,8 @@ import type {
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
+    WebsiteStatus,
+    ContractUpdateHistory,
     Transaction,
     ActiveSymbols,
 } from '@deriv/api-types';
@@ -242,6 +243,15 @@ type TDXTraderStatusServerType = Record<'all' | 'demo' | 'real', number>;
 
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
+type RealAccountSignupSettings = {
+    active_modal_index: number;
+    current_currency: string;
+    error_code?: string;
+    error_details?: string | Record<string, string>;
+    error_message: string;
+    previous_currency: string;
+    success_message: string;
+};
 type TCountryStandpoint = {
     is_belgium: boolean;
     is_france: boolean;
@@ -264,7 +274,7 @@ type TClientStore = {
     };
     account_list: TAccountsList;
     account_status: GetAccountStatus;
-    available_crypto_currencies: string[];
+    available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
     clients_country: string;
@@ -293,6 +303,7 @@ type TClientStore = {
     is_social_signup: boolean;
     has_residence: boolean;
     is_authorize: boolean;
+    is_dxtrade_password_not_set: boolean;
     is_financial_account: boolean;
     is_financial_assessment_needed: boolean;
     is_financial_information_incomplete: boolean;
@@ -301,7 +312,9 @@ type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_low_risk: boolean;
+    is_mt5_password_not_set: boolean;
     is_pending_proof_of_ownership: boolean;
+    is_populating_dxtrade_account_list: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
@@ -336,9 +349,11 @@ type TClientStore = {
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => Promise<void>;
+    social_identity_provider: string;
     switched: boolean;
     switch_broadcast: boolean;
     switchEndSignal: () => void;
+    upgradeable_currencies: Array<WebsiteStatus['currencies_config']>;
     verification_code: {
         payment_agent_withdraw: string;
         payment_withdraw: string;
@@ -392,6 +407,7 @@ type TClientStore = {
     has_account_error_in_mt5_demo_list: boolean;
     has_account_error_in_dxtrade_real_list: boolean;
     has_account_error_in_dxtrade_demo_list: boolean;
+    has_fiat: boolean;
     is_fully_authenticated: boolean;
     states_list: StatesList;
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
@@ -480,8 +496,11 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_route_modal_on: boolean;
     is_language_settings_modal_on: boolean;
+    is_desktop: boolean;
+    is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;
     is_mobile: boolean;
+    is_tablet: boolean;
     is_mobile_language_menu_open: boolean;
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
@@ -531,7 +550,6 @@ type TUiStore = {
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
-    is_tablet: boolean;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
@@ -548,6 +566,7 @@ type TUiStore = {
     is_top_up_virtual_open: boolean;
     is_top_up_virtual_in_progress: boolean;
     is_top_up_virtual_success: boolean;
+    real_account_signup_target: string;
     closeSuccessTopUpModal: () => void;
     closeTopUpModal: () => void;
     is_cfd_reset_password_modal_enabled: boolean;
@@ -556,6 +575,8 @@ type TUiStore = {
     is_accounts_switcher_on: boolean;
     openTopUpModal: () => void;
     is_reset_trading_password_modal_visible: boolean;
+    real_account_signup: RealAccountSignupSettings;
+    resetRealAccountSignupParams: () => void;
     setResetTradingPasswordModalOpen: () => void;
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
@@ -602,7 +623,7 @@ type TPortfolioStore = {
     onUnmount: () => void;
     open_accu_contract: TPortfolioPosition | null;
     positions: TPortfolioPosition[];
-    removePositionById: (id: number) => void;
+    removePositionById: (contract_id?: number) => void;
     setContractType: (contract_type: string) => void;
 };
 

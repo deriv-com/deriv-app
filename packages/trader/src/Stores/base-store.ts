@@ -321,7 +321,7 @@ export default class BaseStore {
                         const result = this.switch_account_listener?.();
                         if (result?.then && typeof result.then === 'function') {
                             result.then(() => {
-                                this.root_store?.client.switchEndSignal();
+                                this.root_store.client.switchEndSignal();
                                 this.onSwitchAccount(this.switch_account_listener);
                             });
                         } else {
@@ -349,7 +349,7 @@ export default class BaseStore {
                         const result = this.pre_switch_account_listener?.();
                         if (result?.then && typeof result.then === 'function') {
                             result.then(() => {
-                                this.root_store?.client.setPreSwitchAccount(false);
+                                this.root_store.client.setPreSwitchAccount(false);
                                 this.onPreSwitchAccount(this.pre_switch_account_listener);
                             });
                         } else {
@@ -375,7 +375,7 @@ export default class BaseStore {
                     const result = this.logout_listener?.();
                     if (result?.then && typeof result.then === 'function') {
                         result.then(() => {
-                            this.root_store?.client.setLogout(false);
+                            this.root_store.client.setLogout(false);
                             this.onLogout(this.logout_listener);
                         });
                     } else {
@@ -401,7 +401,7 @@ export default class BaseStore {
                     const result = this.client_init_listener?.();
                     if (result?.then && typeof result.then === 'function') {
                         result.then(() => {
-                            this.root_store?.client.setInitialized(false);
+                            this.root_store.client.setInitialized(false);
                             this.onClientInit(this.client_init_listener);
                         });
                     } else {
@@ -421,7 +421,7 @@ export default class BaseStore {
 
     onNetworkStatusChange(listener: null | ((is_online: boolean) => void)): void {
         this.networkStatusChangeDisposer = reaction(
-            () => this.root_store?.common.is_network_online,
+            () => this.root_store.common.is_network_online,
             is_online => {
                 try {
                     this.network_status_change_listener?.(is_online);
@@ -440,7 +440,7 @@ export default class BaseStore {
 
     onThemeChange(listener: null | ((is_dark_mode_on: boolean) => void)): void {
         this.themeChangeDisposer = reaction(
-            () => this.root_store?.ui.is_dark_mode_on,
+            () => this.root_store.ui.is_dark_mode_on,
             is_dark_mode_on => {
                 try {
                     this.theme_change_listener?.(is_dark_mode_on);
@@ -465,7 +465,7 @@ export default class BaseStore {
                     const result = this.real_account_signup_ended_listener?.();
                     if (result?.then && typeof result.then === 'function') {
                         result.then(() => {
-                            this.root_store?.ui.setRealAccountSignupEnd(false);
+                            this.root_store.ui.setRealAccountSignupEnd(false);
                             this.onRealAccountSignupEnd(this.real_account_signup_ended_listener);
                         });
                     } else {
@@ -545,7 +545,7 @@ export default class BaseStore {
 
     assertHasValidCache(loginid: string, ...reactions: VoidFunction[]): void {
         // account was changed when this was unmounted.
-        if (this.root_store?.client.loginid !== loginid) {
+        if (this.root_store.client.loginid !== loginid) {
             reactions.forEach(act => act());
             this.partial_fetch_time = 0;
         }

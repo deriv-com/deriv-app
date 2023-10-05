@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Loading } from '@deriv/components';
 import { useWithdrawalFiatAddress } from '@deriv/hooks';
 import { ErrorState } from '../../../../components/error-state';
+import './withdrawal-fiat-iframe.scss';
 
 const WithdrawalFiatIframe = () => {
-    const { data: iframe_url, error } = useWithdrawalFiatAddress();
+    const { data: iframe_url, error, resetVerificationCode } = useWithdrawalFiatAddress();
     const [is_loading, setIsLoading] = useState(true);
+
+    // Go back to the email verification page when the user changes tab in cashier
+    useEffect(() => {
+        return resetVerificationCode();
+    }, []);
 
     // To show loading state when switching theme
     useEffect(() => {

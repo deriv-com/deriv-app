@@ -10,7 +10,7 @@ import {
     ToolbarWidgetAlpha,
 } from 'Modules/SmartChartAlpha';
 
-const ToolbarWidgets = ({ position, updateChartType, updateGranularity }) => {
+const ToolbarWidgetsAlpha = ({ position, updateChartType, updateGranularity }) => {
     return (
         <ToolbarWidgetAlpha position={position || isMobile() ? 'bottom' : null}>
             <ChartModeAlpha portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
@@ -22,10 +22,10 @@ const ToolbarWidgets = ({ position, updateChartType, updateGranularity }) => {
     );
 };
 
-ToolbarWidgets.propTypes = {
+ToolbarWidgetsAlpha.propTypes = {
     position: PropTypes.string,
     updateChartType: PropTypes.func,
     updateGranularity: PropTypes.func,
 };
 
-export default React.memo(ToolbarWidgets);
+export default React.memo(ToolbarWidgetsAlpha);

@@ -11,6 +11,8 @@ import FormLayout from '../Components/Form/form-layout';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements.jsx';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
+import AccumulatorsChartElementsAlpha from '../../SmartChartAlpha/Components/Markers/accumulators-chart-elements.jsx';
+import ToolbarWidgetsAlpha from '../../SmartChartAlpha/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
@@ -385,13 +387,13 @@ const ChartTrade = observer(props => {
             topWidgets={is_trade_enabled ? topWidgets : null}
             isConnectionOpened={is_socket_opened}
             clearChart={false}
-            toolbarWidget={() => (
-                <ToolbarWidgets
-                    is_alpha_chart={is_alpha_chart}
-                    updateChartType={updateChartType}
-                    updateGranularity={updateGranularity}
-                />
-            )}
+            toolbarWidget={() => {
+                if (is_alpha_chart) {
+                    return (
+                        <ToolbarWidgetsAlpha updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                    );
+                } else <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />;
+            }}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
             shouldFetchTradingTimes={!end_epoch}
@@ -407,7 +409,20 @@ const ChartTrade = observer(props => {
             is_alpha={is_alpha_chart}
         >
             {!is_alpha_chart && <ChartMarkers />}
-            {is_accumulator && (
+            {is_accumulator && is_alpha_chart && (
+                <AccumulatorsChartElementsAlpha
+                    all_positions={all_positions}
+                    current_spot={current_spot}
+                    current_spot_time={current_spot_time}
+                    has_crossed_accu_barriers={has_crossed_accu_barriers}
+                    should_show_profit_text={
+                        !!accumulator_contract_barriers_data.accumulators_high_barrier &&
+                        getDecimalPlaces(currency) <= 2
+                    }
+                    symbol={symbol}
+                />
+            )}
+            {is_accumulator && !is_alpha_chart && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}
                     current_spot={current_spot}

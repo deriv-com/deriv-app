@@ -3,6 +3,8 @@ import Digits from 'Modules/Contract/Components/Digits';
 import InfoBox from 'Modules/Contract/Components/InfoBox';
 import BottomWidgets from '../../SmartChart/Components/bottom-widgets.jsx';
 import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
+import BottomWidgetsAlpha from '../../SmartChartAlpha/Components/bottom-widgets.jsx';
+import TopWidgetsAlpha from '../../SmartChartAlpha/Components/top-widgets.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -39,5 +41,24 @@ export const InfoBoxWidget = observer(() => {
 });
 
 // Chart widgets passed into SmartCharts
-export const ChartTopWidgets = () => <TopWidgets InfoBox={<InfoBoxWidget />} is_title_enabled={false} />;
-export const ChartBottomWidgets = () => <BottomWidgets Widget={<DigitsWidget />} />;
+export const ChartTopWidgets = observer(() => {
+    const { client } = useStore();
+    const { is_alpha_chart } = client;
+    return (
+        <>
+            {is_alpha_chart && <TopWidgetsAlpha InfoBox={<InfoBoxWidget />} is_title_enabled={false} />}
+            {!is_alpha_chart && <TopWidgets InfoBox={<InfoBoxWidget />} is_title_enabled={false} />}
+        </>
+    );
+});
+
+export const ChartBottomWidgets = observer(() => {
+    const { client } = useStore();
+    const { is_alpha_chart } = client;
+    return (
+        <>
+            {is_alpha_chart && <BottomWidgetsAlpha Digits={<DigitsWidget />} />}
+            {!is_alpha_chart && <BottomWidgets Digits={<DigitsWidget />} />}
+        </>
+    );
+});

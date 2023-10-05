@@ -5,7 +5,7 @@ import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isAccumulatorContract, isDigitContract } from '@deriv/shared';
 import { ChartTitleAlpha } from 'Modules/SmartChartAlpha';
-import BuyToastNotification from './buy-toast-notification';
+import BuyToastNotificationAlpha from './buy-toast-notification';
 import { observer, useStore } from '@deriv/stores';
 
 const RecentTradeInfo = observer(() => {
@@ -32,7 +32,7 @@ const RecentTradeInfo = observer(() => {
     );
 });
 
-const TopWidgets = ({
+const TopWidgetsAlpha = ({
     InfoBox,
     is_mobile,
     is_title_enabled = true,
@@ -63,7 +63,7 @@ const TopWidgets = ({
                     width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
                 }}
             >
-                {is_mobile && <BuyToastNotification />}
+                {is_mobile && <BuyToastNotificationAlpha />}
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}
             </div>
@@ -80,7 +80,7 @@ const TopWidgets = ({
     );
 };
 
-TopWidgets.propTypes = {
+TopWidgetsAlpha.propTypes = {
     InfoBox: PropTypes.node,
     is_digits_widget_active: PropTypes.bool,
     is_mobile: PropTypes.bool,
@@ -92,4 +92,4 @@ TopWidgets.propTypes = {
     y_axis_width: PropTypes.number,
 };
 
-export default TopWidgets;
+export default TopWidgetsAlpha;

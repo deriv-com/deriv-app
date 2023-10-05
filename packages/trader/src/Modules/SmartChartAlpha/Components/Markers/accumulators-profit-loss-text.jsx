@@ -11,7 +11,7 @@ const ACTIONS = {
     ADD10: 'add10',
 };
 
-const AccumulatorsProfitLossText = ({
+const AccumulatorsProfitLossTextAlpha = ({
     current_spot,
     current_spot_time,
     currency,
@@ -125,7 +125,7 @@ const AccumulatorsProfitLossText = ({
     );
 };
 
-AccumulatorsProfitLossText.propTypes = {
+AccumulatorsProfitLossTextAlpha.propTypes = {
     className: PropTypes.string,
     currency: PropTypes.string,
     current_spot: PropTypes.number,
@@ -133,4 +133,4 @@ AccumulatorsProfitLossText.propTypes = {
     profit: PropTypes.number,
 };
 
-export default React.memo(AccumulatorsProfitLossText);
+export default React.memo(AccumulatorsProfitLossTextAlpha);

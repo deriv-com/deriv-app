@@ -5,10 +5,10 @@ import { CSSTransition } from 'react-transition-group';
 import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { FastMarkerAlpha } from 'Modules/SmartChartAlpha';
-import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
+import AccumulatorsProfitLossTextAlpha from './accumulators-profit-loss-text';
 import { isMobile } from '@deriv/shared';
 
-const AccumulatorsProfitLossTooltip = ({
+const AccumulatorsProfitLossTooltipAlpha = ({
     alignment = 'right',
     current_spot,
     current_spot_time,
@@ -71,7 +71,7 @@ const AccumulatorsProfitLossTooltip = ({
     if (typeof profit !== 'number') return null;
     if (!is_sold && current_spot_time && high_barrier && should_show_profit_text)
         return (
-            <AccumulatorsProfitLossText
+            <AccumulatorsProfitLossTextAlpha
                 currency={currency}
                 current_spot={current_spot}
                 current_spot_time={current_spot_time}
@@ -109,7 +109,7 @@ const AccumulatorsProfitLossTooltip = ({
     ) : null;
 };
 
-AccumulatorsProfitLossTooltip.propTypes = {
+AccumulatorsProfitLossTooltipAlpha.propTypes = {
     alignment: PropTypes.string,
     current_spot: PropTypes.number,
     current_spot_time: PropTypes.number,
@@ -123,4 +123,4 @@ AccumulatorsProfitLossTooltip.propTypes = {
     should_show_profit_text: PropTypes.bool,
 };
 
-export default React.memo(AccumulatorsProfitLossTooltip);
+export default React.memo(AccumulatorsProfitLossTooltipAlpha);

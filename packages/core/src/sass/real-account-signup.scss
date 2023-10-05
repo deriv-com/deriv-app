@@ -198,6 +198,7 @@
     }
 
     .proof-of-identity {
+
         &__footer {
             padding: 1.6rem 2.4rem;
             justify-content: end;
@@ -205,7 +206,7 @@
             border-top: 1px solid var(--general-section-1);
             @include mobile {
                 width: 100%;
-                position: relative;
+                position:relative;
             }
         }
 
@@ -217,7 +218,8 @@
         }
     }
     .account-form__footer {
-        position: relative;
+            position: relative;
+
     }
 }
 

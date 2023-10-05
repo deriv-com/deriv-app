@@ -92,9 +92,9 @@ const ProofOfIdentityContainer = observer(
         if (api_error) {
             return <ErrorMessage error_message={api_error?.message || api_error} />;
         } else if (is_status_loading || is_switching || isEmptyObject(account_status) || residence_list.length === 0) {
-            /**
-             * Display loader while waiting for the account status and residence list to be populated
-             */
+        /**
+         * Display loader while waiting for the account status and residence list to be populated
+         */
             return <Loading is_fullscreen={false} />;
         } else if (is_virtual) {
             return <DemoMessage />;

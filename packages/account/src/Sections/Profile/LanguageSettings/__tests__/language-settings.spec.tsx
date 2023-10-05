@@ -52,7 +52,7 @@ describe('LanguageSettings', () => {
         const lang_1 = screen.getByText('Test Lang 1');
         const lang_2 = screen.getByText('Test Lang 2');
 
-        expect(flags_icons).toHaveLength(2);
+        expect(flags_icons.length).toBe(2);
         expect(lang_1).toBeInTheDocument();
         expect(/(active)/i.test(lang_1.className)).toBeTruthy();
         expect(lang_2).toBeInTheDocument();

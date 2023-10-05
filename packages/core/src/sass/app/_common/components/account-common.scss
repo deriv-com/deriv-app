@@ -199,15 +199,15 @@
                     width: 100%;
                     margin-bottom: 0.8rem;
                 }
-                &__example {
-                    @include mobile {
-                        flex-direction: column;
-                    }
-
-                    &-image {
-                        align-self: center;
-                    }
-                }
+                                 &__example {
+                                     @include mobile {
+                                         flex-direction: column;
+                                     }
+                
+                                     &-image {
+                                         align-self: center;
+                                     }
+                                 }
             }
 
             &-content {
@@ -217,16 +217,16 @@
                     width: 100%;
                 }
             }
-            @include desktop {
-                &--reversed {
-                    grid-template-areas: 'section-content section-side-note';
-                    grid-template-columns: 1fr auto;
-                }
-            }
+                        @include desktop {
+                            &--reversed {
+                                grid-template-areas: 'section-content section-side-note';
+                                grid-template-columns: 1fr auto;
+                            }
+                        }
         }
 
         &__footer {
-            height: 8rem;
+            height: 8.0rem;
             position: absolute;
             bottom: 0;
             left: 0;
@@ -241,10 +241,10 @@
             background-color: var(--general-main-1);
 
             &--reset {
-                padding: 2.4rem 0;
-                position: relative;
-                margin-top: 2rem;
-            }
+                    padding: 2.4rem 0;
+                    position: relative;
+                    margin-top: 2rem;
+                }
 
             .back-btn {
                 margin-right: 8px;

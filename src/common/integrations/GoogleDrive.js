@@ -9,28 +9,15 @@ import { TrackJSError } from '../../botPage/view/logger';
 import { observer as globalObserver } from '../utils/observer';
 import { trackJSTrack } from './trackJSTrack';
 
-export const loadExternalScript = (src, async = true, defer = true) =>
+export const loadExternalScript = (src, async = true) =>
     new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = src;
         script.async = async;
-        script.defer = defer;
-        script.crossorigin = 'anonymous';
+        script.onload = () => resolve(window.external_global_component);
         script.onerror = reject;
 
-        function handleLoad() {
-            const load_state = this.readyState;
-            if (load_state && !/loaded|complete/.test(load_state)) return;
-
-            script.onload = null;
-            script.onreadystatechange = null;
-            resolve();
-        }
-
-        script.onload = handleLoad;
-        script.onreadystatechange = handleLoad;
-
-        document.head.appendChild(script);
+        document.body.appendChild(script);
     });
 
 const errLogger = (err, msg) => {
@@ -83,14 +70,7 @@ class GoogleDriveUtil {
         this.auth = null;
         this.is_authorized = false;
         // Fetch Google API script and initialize class fields
-        loadExternalScript(this.api_url_identity)
-            .then(() => this.initUrlIdentity())
-            .catch(err =>
-                errLogger(
-                    JSON.stringify(err, ['message', 'arguments', 'type', 'name']),
-                    translate('There was an error loading Google Identity API script.')
-                )
-            );
+        loadExternalScript(this.api_url_identity).then(() => this.initUrlIdentity());
         loadExternalScript(this.api_url_gdrive)
             .then(() =>
                 gapi.load(this.auth_scope, async () => {
@@ -99,13 +79,7 @@ class GoogleDriveUtil {
             )
             .then(() => {
                 store.dispatch(setGdReady(true));
-            })
-            .catch(err =>
-                errLogger(
-                    JSON.stringify(err, ['message', 'arguments', 'type', 'name']),
-                    translate('There was an error loading Google Drive API script.')
-                )
-            );
+            });
     }
 
     initUrlIdentity = () => {

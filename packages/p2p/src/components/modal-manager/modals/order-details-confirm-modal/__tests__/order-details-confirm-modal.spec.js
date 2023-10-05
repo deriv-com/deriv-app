@@ -73,7 +73,7 @@ describe('<OrderDetailsConfirmModal/>', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('Confirm')).toBeInTheDocument();
         expect(screen.getByText('Go Back')).toBeInTheDocument();
-        expect(screen.getByText('We accept JPG, PDF, or PNG (up to 2MB).')).toBeInTheDocument();
+        expect(screen.getByText('We accept JPG, PDF, or PNG (up to 5MB).')).toBeInTheDocument();
     });
     it('should handle GoBack Click', () => {
         const { hideModal } = useModalManagerContext();

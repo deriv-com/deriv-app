@@ -22,7 +22,7 @@ const DesktopWalletsList: React.FC = () => {
                             <WalletListCard
                                 badge={wallet.landing_company_name}
                                 balance={wallet.display_balance}
-                                currency={wallet.currency_config?.display_code || 'USD'}
+                                currency={wallet.wallet_currency_type || 'USD'}
                                 isActive={wallet.is_active}
                                 isDemo={wallet.is_virtual}
                                 loginid={wallet.loginid}

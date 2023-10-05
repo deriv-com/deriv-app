@@ -80,7 +80,7 @@ export const readFiles = (files: TFile[], getFileReadErrorMessage: (t: string) =
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
                     ...settings,
-                    documentType: settings?.documentType || 'utility_bill',
+                    documentType: settings?.documentType ?? 'utility_bill',
                 };
                 resolve(file_obj);
             };

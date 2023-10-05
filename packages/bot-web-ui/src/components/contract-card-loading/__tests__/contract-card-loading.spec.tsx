@@ -13,10 +13,6 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
 }));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
-jest.mock('@deriv/deriv-charts', () => ({
-    setSmartChartsPublicPath: jest.fn(),
-}));
-
 describe('ContractCardLoader', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
     beforeAll(() => {

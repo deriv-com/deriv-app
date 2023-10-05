@@ -31,7 +31,7 @@ const default_mocked_props = {
     should_fade: false,
     setPurchaseState: jest.fn(),
     type: 'VANILLALONGCALL',
-};
+} as unknown as React.ComponentProps<typeof PurchaseButton>;
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -79,11 +79,10 @@ describe('<PurchaseButton />', () => {
         expect(screen.getByText(/MoneyComponent/i)).toBeInTheDocument();
     });
 
-    it('should render the button with growth rate info inside for accumulators', () => {
+    it('should render the button for accumulators', () => {
         render(<PurchaseButton {...default_mocked_props} is_accumulator type='ACCU' />);
 
         expect(screen.getByText(/Buy/i)).toBeInTheDocument();
-        expect(screen.getByText(/3%/i)).toBeInTheDocument();
     });
 
     it('should render icon with specific type if is_high_low === true', () => {
@@ -93,10 +92,10 @@ describe('<PurchaseButton />', () => {
         expect(screen.getByTestId(/call_barrier/i)).toBeInTheDocument();
     });
 
-    it('should render ContractInfo for mobile if contract type is not turbos or vanillas', () => {
+    it('should render ContractInfo for mobile if contract type is not accumulators, turbos or vanillas', () => {
         (isMobile as jest.Mock).mockReturnValueOnce(true);
         (isDesktop as jest.Mock).mockReturnValueOnce(false);
-        render(<PurchaseButton {...default_mocked_props} is_accumulator type='ACCU' />);
+        render(<PurchaseButton {...default_mocked_props} is_multiplier type='MULTUP' />);
 
         expect(screen.getByText(/ContractInfo/i)).toBeInTheDocument();
     });

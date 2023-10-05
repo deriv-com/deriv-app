@@ -1,6 +1,6 @@
+import React from 'react';
+import { generateValidationFunction, getDefaultFields, TSchema } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
-import { TSchema } from 'Types';
 
 const currency_selector_config: TSchema = {
     currency: {
@@ -12,13 +12,12 @@ const currency_selector_config: TSchema = {
 
 const currencySelectorConfig = (
     { real_account_signup_target }: { real_account_signup_target: string },
-    CurrencySelector: React.Component,
-    is_appstore: boolean
+    CurrencySelector: React.Component
 ) => {
     return {
         header: {
-            active_title: is_appstore ? localize('Select wallet currency') : localize('Please choose your currency'),
-            title: is_appstore ? localize('CURRENCY') : localize('Account currency'),
+            active_title: localize('Please choose your currency'),
+            title: localize('Account currency'),
         },
         body: CurrencySelector,
         form_value: getDefaultFields(real_account_signup_target, currency_selector_config),

@@ -14,7 +14,7 @@ export const loadExternalScript = (src, async = true) =>
         const script = document.createElement('script');
         script.src = src;
         script.async = async;
-        script.crossOrigin = 'anonymous';
+        script.crossorigin = 'anonymous';
         script.onload = () => resolve(window.external_global_component);
         script.onerror = reject;
 

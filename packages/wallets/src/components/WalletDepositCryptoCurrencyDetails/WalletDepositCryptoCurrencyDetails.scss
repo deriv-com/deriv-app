@@ -2,4 +2,8 @@
     font-weight: 700;
     font-size: 20px;
     align-self: center;
+
+    @include mobile {
+        font-size: 14px;
+    }
 }

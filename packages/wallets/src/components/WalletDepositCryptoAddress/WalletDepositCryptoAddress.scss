@@ -14,6 +14,11 @@
         border-radius: 4px 0px 0px 4px;
         border: 1px solid #e6e9e9;
 
+        @include mobile {
+            font-size: 12px;
+            text-overflow: ellipsis;
+        }
+
         &-container {
             display: flex;
             align-items: center;
@@ -21,6 +26,7 @@
     }
 
     &__loader {
+        position: relative;
         height: 60px;
     }
 }

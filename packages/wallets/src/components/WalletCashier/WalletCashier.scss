@@ -5,4 +5,8 @@
     justify-content: center;
     flex: 1;
     background-color: #ffffff;
+
+    @include mobile {
+        padding: 24px 16px;
+    }
 }

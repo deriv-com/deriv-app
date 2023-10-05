@@ -4,4 +4,9 @@
     justify-content: center;
     gap: 24px;
     position: relative;
+
+    @include mobile {
+        width: 100%;
+        justify-content: start;
+    }
 }

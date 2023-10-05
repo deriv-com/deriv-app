@@ -29,7 +29,7 @@ const typeToWidthMapper = {
         lg: { desktop: 90, mobile: 45 },
         md: { desktop: 72, mobile: 36 },
         sm: { desktop: 60, mobile: 60 },
-        xl: { desktop: 120, mobile: 100 },
+        xl: { desktop: 120, mobile: 80 },
     },
     roundedIcon: {
         lg: { desktop: 48, mobile: 32 },

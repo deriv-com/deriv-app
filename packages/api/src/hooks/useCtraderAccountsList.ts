@@ -1,11 +1,14 @@
 import { useMemo } from 'react';
 import useQuery from '../useQuery';
+import useAuthorize from './useAuthorize';
 import useCtraderServiceToken from './useCtraderServiceToken';
 
 /** A custom hook that gets the list of created cTrader accounts. */
 const useCtraderAccountsList = () => {
+    const { isSuccess } = useAuthorize();
     const { data: ctrader_accounts } = useQuery('trading_platform_accounts', {
         payload: { platform: 'ctrader' },
+        options: { enabled: isSuccess },
     });
     const { data: token } = useCtraderServiceToken();
 

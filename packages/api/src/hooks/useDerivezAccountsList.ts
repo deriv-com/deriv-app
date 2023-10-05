@@ -1,11 +1,14 @@
 import { useMemo } from 'react';
-import useDerivezServiceToken from './useDerivezServiceToken';
 import useQuery from '../useQuery';
+import useAuthorize from './useAuthorize';
+import useDerivezServiceToken from './useDerivezServiceToken';
 
 /** A custom hook that gets the list of created DerivEz accounts. */
 const useDerivezAccountsList = () => {
+    const { isSuccess } = useAuthorize();
     const { data: derivez_accounts } = useQuery('trading_platform_accounts', {
         payload: { platform: 'derivez' },
+        options: { enabled: isSuccess },
     });
     const { data: token } = useDerivezServiceToken();
 

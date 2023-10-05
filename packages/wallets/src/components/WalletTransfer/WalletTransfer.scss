@@ -19,6 +19,10 @@
                 grid-template-columns: 1fr 1fr;
                 padding: 8px;
                 width: 650px;
+
+                @include mobile {
+                    width: 100%;
+                }
             }
         }
 

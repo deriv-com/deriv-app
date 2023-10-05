@@ -1,8 +1,14 @@
 .wallets-cashier-header {
     height: 160px;
-    padding: 24px 24px 0;
+    padding-top: 24px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     @include mobile {
+        padding-top: 16px;
         height: 122px;
     }
 
@@ -15,6 +21,11 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding-inline: 24px;
+
+        @include mobile {
+            padding-inline: 16px;
+        }
 
         &__top-left {
             display: flex;
@@ -26,14 +37,26 @@
                 gap: 24px;
                 align-items: center;
 
+                @include mobile {
+                    gap: 8px;
+                }
+
                 &__title {
                     font-size: 16px;
+
+                    @include mobile {
+                        font-size: 14px;
+                    }
                 }
             }
 
             &__balance {
                 font-size: 32px;
                 font-weight: 700;
+
+                @include mobile {
+                    font-size: 18px;
+                }
             }
         }
 
@@ -41,13 +64,27 @@
             display: flex;
             gap: 16px;
             align-items: start;
+
+            @include mobile {
+                gap: 8px;
+            }
         }
     }
 
     &__tabs {
-        position: absolute;
-        bottom: 0;
         display: flex;
+        overflow-x: scroll;
+        padding-inline: 24px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        @include mobile {
+            padding-inline: 16px;
+        }
 
         &__tab {
             all: unset;
@@ -62,6 +99,12 @@
             font-size: 18px;
             text-transform: capitalize;
             cursor: pointer;
+
+            @include mobile {
+                height: 40px;
+                font-size: 12px;
+                width: 80px;
+            }
 
             &--active {
                 border-radius: 16px 16px 0px 0px;

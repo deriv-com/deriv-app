@@ -21,33 +21,22 @@ const PaymentAgentDepositDetails = ({ payment_agent }: TPaymentAgentDepositDetai
         );
     };
 
-    const PaymentAgentEmailDetails = () => {
+    const PaymentAgentTransferLimitDetails = () => {
         return (
-            <PaymentAgentDetail
-                action='mailto'
-                icon='IcEmailOutlineNew'
-                rel='noopener noreferrer'
-                target='_blank'
-                has_red_color
-                title={localize('Email')}
-            >
-                {payment_agent.email}
-            </PaymentAgentDetail>
-        );
-    };
-
-    const PaymentAgentMinimumWithdrawalDetails = () => {
-        return (
-            <PaymentAgentDetail icon='IcCashierMinimumWithdrawal' title={localize('Minimum withdrawal')}>
-                <Money amount={payment_agent.min_withdrawal || ''} currency={payment_agent.currency} show_currency />
-            </PaymentAgentDetail>
-        );
-    };
-
-    const PaymentAgentMaximumWithdrawalDetails = () => {
-        return (
-            <PaymentAgentDetail icon='IcCashierMaximumWithdrawal' title={localize('Maximum withdrawal')}>
-                <Money amount={payment_agent.max_withdrawal || ''} currency={payment_agent.currency} show_currency />
+            <PaymentAgentDetail icon='IcAccountTransfer' title={localize('Transfer limit')}>
+                <>
+                    <Money
+                        amount={payment_agent.min_withdrawal || ''}
+                        currency={payment_agent.currency}
+                        show_currency
+                    />{' '}
+                    -{' '}
+                    <Money
+                        amount={payment_agent.max_withdrawal || ''}
+                        currency={payment_agent.currency}
+                        show_currency
+                    />
+                </>
             </PaymentAgentDetail>
         );
     };
@@ -79,10 +68,8 @@ const PaymentAgentDepositDetails = ({ payment_agent }: TPaymentAgentDepositDetai
     return (
         <div className='payment-agent-deposit-details'>
             {payment_agent_phones && <PaymentAgentPhonesDetails />}
-            {payment_agent.email && <PaymentAgentEmailDetails />}
-            {payment_agent.min_withdrawal && <PaymentAgentMinimumWithdrawalDetails />}
+            {payment_agent.min_withdrawal && payment_agent.max_withdrawal && <PaymentAgentTransferLimitDetails />}
             {payment_agent.deposit_commission && <PaymentAgentDepositComissionDetails />}
-            {payment_agent.max_withdrawal && <PaymentAgentMaximumWithdrawalDetails />}
             {payment_agent.withdrawal_commission && <PaymentAgentWithdrawalComissionDetails />}
         </div>
     );

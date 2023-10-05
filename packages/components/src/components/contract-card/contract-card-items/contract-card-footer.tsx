@@ -11,13 +11,13 @@ export type TCardFooterPropTypes = {
     contract_info: TContractInfo;
     getCardLabels: TGetCardLables;
     is_multiplier?: boolean;
-    is_positions: boolean;
+    is_positions?: boolean;
     is_sell_requested: boolean;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onFooterEntered?: () => void;
     server_time: moment.Moment;
-    should_show_transition: boolean;
+    should_show_transition?: boolean;
 };
 
 const CardFooter = ({
@@ -32,7 +32,7 @@ const CardFooter = ({
     server_time,
     should_show_transition,
 }: TCardFooterPropTypes) => {
-    const { in_prop } = useNewRowTransition(should_show_transition);
+    const { in_prop } = useNewRowTransition(!!should_show_transition);
 
     const is_valid_to_cancel = isValidToCancel(contract_info);
 

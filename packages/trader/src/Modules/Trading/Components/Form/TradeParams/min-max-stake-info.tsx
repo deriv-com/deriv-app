@@ -6,16 +6,16 @@ import { isMobile } from '@deriv/shared';
 
 type TMinMaxStakeInfo = {
     className?: string;
-    min_stake: number;
-    max_stake: number;
-    currency: string;
+    min_stake?: number;
+    max_stake?: number;
+    currency?: string;
 };
 
 const MinMaxStakeInfo = ({ className, currency, max_stake, min_stake }: TMinMaxStakeInfo) => {
     return (
         <section className={classNames('trade-container__stake-field', className)}>
-            {!isNaN(min_stake) &&
-                !isNaN(max_stake) &&
+            {!isNaN(Number(min_stake)) &&
+                !isNaN(Number(max_stake)) &&
                 ['Min', 'Max'].map(text => (
                     <Text
                         key={text}

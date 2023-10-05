@@ -67,7 +67,7 @@ const WorkspaceGroup = observer(
                     <ToolbarIcon
                         popover_message={localize('Charts')}
                         icon='IcChartsTabDbot'
-                        icon_id='db-toolbar__sort-button'
+                        icon_id='db-toolbar__charts-button'
                         action={() => setEnabledModalChart()}
                     />
                 )}

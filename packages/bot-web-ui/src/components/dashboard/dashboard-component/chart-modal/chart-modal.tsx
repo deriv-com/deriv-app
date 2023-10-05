@@ -15,7 +15,7 @@ const ChartModal = ({ setEnabledModalChart }: { setEnabledModalChart: () => void
                     <ToolbarIcon
                         popover_message={localize('Close')}
                         icon='IcCross'
-                        icon_id='db-toolbar__sort-button'
+                        icon_id='db-toolbar__close-button'
                         action={() => setEnabledModalChart()}
                     />
                 </div>

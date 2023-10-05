@@ -499,8 +499,7 @@ const AccountTransferForm = observer(
                                             />
                                         </div>
                                         {selected_from.currency === selected_to.currency ||
-                                        (selected_to.is_mt && !selected_from.is_crypto) ||
-                                        (selected_from.is_mt && !selected_to.is_crypto) ? (
+                                        (!selected_from.is_crypto && !selected_to.is_crypto) ? (
                                             <Field name='amount' validate={validateAmount}>
                                                 {({ field }: FieldProps<string>) => (
                                                     <Input

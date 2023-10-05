@@ -42,7 +42,7 @@ const crypto_currencies_display_order = [
     'USDK',
 ];
 
-export const reorderCurrencies = (list: Array<{ value: string; type: string }>, type = 'fiat') => {
+export const reorderCurrencies = <T extends { value: string; type: string }>(list: Array<T>, type = 'fiat') => {
     const new_order = type === 'fiat' ? fiat_currencies_display_order : crypto_currencies_display_order;
 
     return list.sort((a, b) => {

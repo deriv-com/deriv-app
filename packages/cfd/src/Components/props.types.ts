@@ -1,7 +1,9 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TCFDPasswordReset } from '../Containers/props.types';
 
-export type TCFDPlatform = 'dxtrade' | 'mt5';
+export type TMobilePlatforms = 'ios' | 'android' | 'huawei';
+
+export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader' | 'derivez';
 
 export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
 
@@ -38,6 +40,10 @@ export type TCFDDashboardContainer = {
     active_index: number;
     is_dark_mode_on: boolean;
     dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
+    ctrader_tokens: {
         demo: string;
         real: string;
     };
@@ -88,7 +94,7 @@ export type TTradingPlatformAvailableAccount = {
 };
 
 export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
-    platform?: 'mt5' | 'dxtrade';
+    platform?: 'mt5' | 'dxtrade' | 'ctrader';
     market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic';
 };
 

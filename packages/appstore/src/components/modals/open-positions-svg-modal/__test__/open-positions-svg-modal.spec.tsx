@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import OpenPositionsSVGModal from '../open-positions-svg-modal';
+import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import userEvent from '@testing-library/user-event';
+import OpenPositionsSVGModal from '../open-positions-svg-modal';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),

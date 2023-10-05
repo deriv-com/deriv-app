@@ -13,7 +13,7 @@ import {
 import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { useStores } from 'Stores/index';
+import { useStore } from '@deriv/stores';
 import { observer } from 'mobx-react-lite';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
@@ -42,7 +42,7 @@ const TradingAppCard = ({
         common,
         traders_hub,
         modules: { cfd },
-    } = useStores();
+    } = useStore();
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;

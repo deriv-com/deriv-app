@@ -74,7 +74,7 @@
             }
             /* postcss-bem-linter: ignore */
             h6,
-            span {
+            span:not(.contract-type-info__content-definition) {
                 @include typeface(--small-left-bold-black, none);
             }
             p,

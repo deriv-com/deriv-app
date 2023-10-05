@@ -18,6 +18,14 @@ const Notification = ({ data, removeNotificationMessage }) => {
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
 
+        if (data.should_show_again) {
+            const closed_toast_notifications = JSON.parse(localStorage.getItem('closed_toast_notifications')) || [];
+            localStorage.setItem(
+                'closed_toast_notifications',
+                JSON.stringify([...closed_toast_notifications, data.key])
+            );
+        }
+
         if (data.closeOnClick) {
             data.closeOnClick(data, is_closed_by_user);
         }
@@ -28,6 +36,9 @@ const Notification = ({ data, removeNotificationMessage }) => {
     if (data.is_auto_close) {
         setTimeout(destroy, data.delay || default_delay);
     }
+
+    const closed_toast_notifications = JSON.parse(localStorage.getItem('closed_toast_notifications')) || [];
+    if (closed_toast_notifications.includes(data.key)) return null;
 
     switch (data.type) {
         case 'news':
@@ -172,6 +183,7 @@ Notification.propTypes = {
         primary_btn: PropTypes.object,
         secondary_btn: PropTypes.object,
         should_hide_close_btn: PropTypes.bool,
+        should_show_again: PropTypes.bool,
         size: PropTypes.oneOf(['small']),
         timeout: PropTypes.number,
         timeoutMessage: PropTypes.func,

@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     getAppstorePlatforms,
@@ -14,8 +15,8 @@ import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
-import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
+import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 
 const TradingAppCard = ({
     availability,
@@ -33,6 +34,9 @@ const TradingAppCard = ({
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
+    is_open_order_position_status_present,
+    open_order_position_status,
+    market_type,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const {
         common,
@@ -98,6 +102,9 @@ const TradingAppCard = ({
         else;
     };
 
+    const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
+    const status_text = open_order_position_status ? 'No new positions' : 'Account closed';
+
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
             <div
@@ -142,6 +149,31 @@ const TradingAppCard = ({
                             account_status={mt5_acc_auth_status}
                             icon={badge_icon}
                             text={badge_text}
+                        />
+                    )}
+                    {is_open_order_position_status_present && (
+                        <StatusBadge
+                            className='trading-app-card__acc_status_badge'
+                            onClick={() => {
+                                setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
+                            }}
+                            account_status='open-order-position'
+                            icon='IcAlertWarning'
+                            text={
+                                <Localize
+                                    i18n_default_text='<0>{{status_text}}</0>'
+                                    values={{ status_text }}
+                                    components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
+                                />
+                            }
+                        />
+                    )}
+                    {is_open_position_svg_modal_open && (
+                        <OpenPositionsSVGModal
+                            market_type={market_type}
+                            open_order_position_status={open_order_position_status}
+                            is_modal_open={is_open_position_svg_modal_open}
+                            setModalOpen={setIsOpenPositionSvgModalOpen}
                         />
                     )}
                 </div>

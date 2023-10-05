@@ -11,6 +11,7 @@
         border: 1.5px solid var(--status-info);
         align-items: center;
 
+        &--open-order-position,
         &--pending {
             border-color: var(--status-warning);
             color: var(--status-warning);

@@ -281,8 +281,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__fieldset {
             position: relative;
             max-width: 400px;
-            margin-top: 9px;
-            margin-bottom: 2rem;
 
             .cfd-personal-details-modal__form & {
                 margin: unset;
@@ -1094,10 +1092,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__details {
             &-section {
                 margin-top: 0.5em;
-
-                .account-form__fieldset {
-                    margin-bottom: 3em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
-                }
             }
         }
     }

@@ -74,6 +74,13 @@
 
 .account {
     &-form {
+        &__fieldset {
+            .dc-autocomplete,
+            .dc-select-native {
+                margin-bottom: 3.2rem;
+            }
+        }
+
         &__poi-confirm-example {
             display: flex;
             flex-direction: column;
@@ -132,9 +139,14 @@
             }
 
             .account {
-                &__scrollbars_container--grid-layout {
-                    grid-gap: 0;
+                &__scrollbars_container {
+                    padding: 0;
+
+                    &--grid-layout {
+                        grid-gap: 0;
+                    }
                 }
+
                 &-form {
                     &__section-side-note {
                         @include mobile {
@@ -143,17 +155,24 @@
                             display: flex;
                         }
                     }
-                    &__section-content {
-                        .account-form__fieldset {
-                            margin-bottom: 0;
 
-                            .dc-input {
-                                margin-bottom: 1rem;
-                            }
+                    &__section {
+                        @include desktop {
+                            margin-top: 1.6rem;
+                        }
 
-                            .dc-input--error,
-                            .dc-input.dc-input--hint {
-                                margin-bottom: 3.8rem;
+                        &-content {
+                            .account-form__fieldset {
+                                margin-bottom: 0;
+
+                                .dc-input {
+                                    margin-bottom: 1rem;
+                                }
+
+                                .dc-input--error,
+                                .dc-input.dc-input--hint {
+                                    margin-bottom: 3.8rem;
+                                }
                             }
                         }
                     }
@@ -199,15 +218,15 @@
                     width: 100%;
                     margin-bottom: 0.8rem;
                 }
-                                 &__example {
-                                     @include mobile {
-                                         flex-direction: column;
-                                     }
-                
-                                     &-image {
-                                         align-self: center;
-                                     }
-                                 }
+                &__example {
+                    @include mobile {
+                        flex-direction: column;
+                    }
+
+                    &-image {
+                        align-self: center;
+                    }
+                }
             }
 
             &-content {
@@ -217,16 +236,16 @@
                     width: 100%;
                 }
             }
-                        @include desktop {
-                            &--reversed {
-                                grid-template-areas: 'section-content section-side-note';
-                                grid-template-columns: 1fr auto;
-                            }
-                        }
+            @include desktop {
+                &--reversed {
+                    grid-template-areas: 'section-content section-side-note';
+                    grid-template-columns: 1fr auto;
+                }
+            }
         }
 
         &__footer {
-            height: 8.0rem;
+            height: 8rem;
             position: absolute;
             bottom: 0;
             left: 0;
@@ -241,10 +260,10 @@
             background-color: var(--general-main-1);
 
             &--reset {
-                    padding: 2.4rem 0;
-                    position: relative;
-                    margin-top: 2rem;
-                }
+                padding: 2.4rem 0;
+                position: relative;
+                margin-top: 2rem;
+            }
 
             .back-btn {
                 margin-right: 8px;
@@ -475,7 +494,6 @@
                 margin-top: 1.6rem;
                 display: flex;
                 flex-direction: column;
-                gap: 3.2rem;
             }
         }
 
@@ -636,6 +654,7 @@
                 @include mobile {
                     margin: unset;
                     width: 100%;
+                    margin-inline: 1.6rem;
                 }
             }
 

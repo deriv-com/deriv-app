@@ -5,7 +5,7 @@ import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useFeatureFlags } from '@deriv/hooks';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import './menu-links.scss';
 import { useHistory } from 'react-router';
 
@@ -92,14 +92,13 @@ const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
     const { client, ui } = useStore();
     const { is_logged_in } = client;
     const { is_mobile } = ui;
-    const { is_next_wallet_enabled } = useFeatureFlags();
 
     if (!is_logged_in) return <></>;
 
     return (
         <div key={`menu-links__${i18n.language}`} className='header__menu-links'>
             {!is_traders_hub_routes && <ReportTab />}
-            {!is_mobile && !is_next_wallet_enabled && <CashierTab />}
+            {!is_mobile && <CashierTab />}
         </div>
     );
 });

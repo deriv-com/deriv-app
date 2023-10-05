@@ -1,0 +1,39 @@
+name: Run Integration Tests
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  pull-requests: write
+  statuses: write
+
+on:
+  issue_comment:
+    types: [edited]
+
+jobs:
+  integration-tests:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          ref: master
+
+      - name: Capture Vercel preview URL
+        id: vercel_preview_url
+        uses: binary-com/vercel-preview-url-action@v1.0.5
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
+
+      - name: Install dependencies
+        run: |
+          npm run bootstrap
+
+      - name: Run tests
+        run: |
+          npm run test:e2e

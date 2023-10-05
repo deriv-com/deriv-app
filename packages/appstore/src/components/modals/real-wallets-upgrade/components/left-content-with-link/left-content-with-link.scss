@@ -36,15 +36,15 @@
             width: 1.5rem;
             height: calc(100% - 4.8rem);
             order: -1;
-            border: 1px solid var(--brand-red-coral);
-            border-left: none;
+            border-width: 1px 1px 1px 0px;
+            border-style: solid;
+            border-color: var(--brand-red-coral);
             opacity: 0.5;
 
             @include mobile {
                 width: 24.4rem;
                 height: 0.8rem;
-                border: 1px solid var(--brand-red-coral);
-                border-top: none;
+                border-width: 0px 1px 1px;
             }
         }
 

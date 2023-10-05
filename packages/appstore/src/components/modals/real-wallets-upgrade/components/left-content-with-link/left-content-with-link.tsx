@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import './left-content-with-link.scss';
 
-const LeftContentWithLink = ({ children, show_fork }: React.PropsWithChildren<{ show_fork: boolean }>) => {
+const LeftContentWithLink = observer(({ children, show_fork }: React.PropsWithChildren<{ show_fork: boolean }>) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     return (
@@ -19,6 +19,6 @@ const LeftContentWithLink = ({ children, show_fork }: React.PropsWithChildren<{ 
             </div>
         </div>
     );
-};
+});
 
 export default LeftContentWithLink;

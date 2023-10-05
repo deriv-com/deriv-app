@@ -18,21 +18,21 @@ export type TWalletLinkWrapper = {
     }[];
 };
 
-const WalletLinkWrapper = ({ wallet }: { wallet: TWalletLinkWrapper }) => {
+const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     return (
         <div className='wallet-link-wrapper'>
             <div className='wallet-link-wrapper__left'>
                 <div className='wallet-link-wrapper__accounts'>
-                    <LeftContentWithLink show_fork={wallet.account_list.length > 1}>
+                    <LeftContentWithLink show_fork={account_list.length > 1}>
                         <React.Fragment>
                             {is_mobile && (
                                 <TitleText className='wallet-link-wrapper__heading wallet-link-wrapper__heading--top'>
                                     <Localize i18n_default_text='Your current trading account(s)' />
                                 </TitleText>
                             )}
-                            {wallet.account_list.map(account => {
+                            {account_list.map(account => {
                                 return (
                                     <WalletAccount
                                         key={`${account.account_name}-${account.currency}}`}
@@ -54,7 +54,7 @@ const WalletLinkWrapper = ({ wallet }: { wallet: TWalletLinkWrapper }) => {
             <div className='wallet-link-wrapper__right'>
                 <RightContentWithLink>
                     <div className='wallet-link-wrapper__right-content'>
-                        <WalletCard wallet={wallet.wallet_details} size='large' state='default' />
+                        <WalletCard wallet={wallet_details} size='large' state='default' />
                         {is_mobile && (
                             <TitleText className='wallet-link-wrapper__heading wallet-link-wrapper__heading--bottom'>
                                 <Localize i18n_default_text='Your new Wallet' />

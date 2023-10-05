@@ -5,7 +5,7 @@ import './title-text.scss';
 
 const TitleText = ({ children, className }: React.PropsWithChildren<{ className?: string }>) => {
     return (
-        <Text as='span' className={classNames('title-text', className)} color='prominent' align='center'>
+        <Text className={classNames('title-text', className)} color='prominent' align='center'>
             {children}
         </Text>
     );

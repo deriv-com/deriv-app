@@ -45,12 +45,11 @@ const WithdrawalPageContent = observer(() => {
     const {
         verification_code: { payment_withdraw: verification_code },
     } = client;
-    const { iframe, withdraw } = useCashierStore();
-    const { iframe_url } = iframe;
+    const { withdraw } = useCashierStore();
     const { is_withdraw_confirmed } = withdraw;
     const currency_config = useCurrentCurrencyConfig();
 
-    if (!currency_config.is_crypto && (verification_code || iframe_url))
+    if (!currency_config.is_crypto && verification_code)
         return (
             <PageContainer hide_breadcrumb>
                 <Withdraw />

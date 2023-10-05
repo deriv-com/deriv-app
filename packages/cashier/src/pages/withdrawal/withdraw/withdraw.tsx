@@ -13,7 +13,7 @@ const Withdraw = observer(() => {
     const { onMountWithdraw: onMount } = withdraw;
 
     React.useEffect(() => {
-        onMount(verification_code);
+        onMount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

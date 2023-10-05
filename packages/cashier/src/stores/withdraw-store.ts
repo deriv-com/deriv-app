@@ -152,74 +152,18 @@ export default class WithdrawStore {
         }
     }
 
-    async onMountWithdraw(verification_code?: string) {
-        const { client, modules } = this.root_store;
-        const active_container = modules.cashier?.general_store.active_container;
+    async onMountWithdraw() {
+        const { modules } = this.root_store;
         const is_crypto = modules.cashier?.general_store.is_crypto;
         const onMountCommon = modules.cashier?.general_store.onMountCommon;
         const setLoading = modules.cashier?.general_store.setLoading;
         const setOnRemount = modules.cashier?.general_store.setOnRemount;
-        const {
-            checkIframeLoaded,
-            clearTimeoutCashierUrl,
-            clearIframe,
-            is_session_timeout,
-            setContainerHeight,
-            setIframeUrl,
-            setSessionTimeout,
-            setTimeoutCashierUrl,
-        } = modules.cashier.iframe;
-        const { is_virtual } = client;
-        const current_container = active_container;
 
         setOnRemount(this.onMountWithdraw);
         await onMountCommon();
 
-        this.error.setErrorMessage({ code: '', message: '' });
-        setContainerHeight(0);
-        clearIframe();
-        setLoading(true);
-
-        if (!is_session_timeout) {
-            checkIframeLoaded();
-            return;
-        }
-
-        // if session has timed out reset everything
-        setIframeUrl('');
-        if (!verification_code || is_virtual) {
+        if (is_crypto) {
             setLoading(false);
-            // if virtual, clear everything and don't proceed further
-            // if no verification code, we should request again
-            return;
-        }
-
-        const response_cashier = undefined; // await this.WS.authorized.cashier('withdraw', { verification_code });
-
-        // if tab changed while waiting for response, ignore it
-        if (current_container !== active_container) {
-            setLoading(false);
-            return;
-        }
-        if (response_cashier.error) {
-            this.error.handleCashierError(response_cashier.error);
-            setLoading(false);
-            setSessionTimeout(true);
-            clearTimeoutCashierUrl();
-            if (verification_code) {
-                // TODO: remove this unused container
-                const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
-
-                client.setVerificationCode('', container);
-            }
-        } else if (is_crypto) {
-            setLoading(false);
-        } else {
-            await checkIframeLoaded();
-            setLoading(false);
-            setIframeUrl(response_cashier.cashier as string);
-            setSessionTimeout(false);
-            setTimeoutCashierUrl(true);
         }
     }
 

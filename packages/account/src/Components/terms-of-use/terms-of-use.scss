@@ -4,6 +4,7 @@
     flex-grow: 1;
     margin: 0 8rem !important;
     width: 84% !important;
+    padding-bottom: unset;
 
     @include mobile {
         margin: unset !important;

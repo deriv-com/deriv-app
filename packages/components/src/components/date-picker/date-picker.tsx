@@ -7,12 +7,8 @@ import MobileWrapper from '../mobile-wrapper';
 import DesktopWrapper from '../desktop-wrapper';
 import { useOnClickOutside } from '../../hooks/use-onclickoutside';
 import { MomentInput } from 'moment';
+import { TDatePickerOnChangeEvent } from '../types';
 
-type TDatePickerOnChangeEvent = {
-    date?: string;
-    duration?: number | null | string;
-    target?: { name: string; value: number | string | moment.Moment | null };
-};
 type TDatePicker = Omit<
     React.ComponentProps<typeof Native> & React.ComponentProps<typeof Input> & React.ComponentProps<typeof Calendar>,
     'value' | 'onSelect' | 'is_datepicker_visible' | 'placement' | 'style' | 'calendar_el_ref' | 'parent_ref'

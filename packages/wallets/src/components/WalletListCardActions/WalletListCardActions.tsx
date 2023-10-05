@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useAuthorize } from '@deriv/api';
+import { useAuthorize } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
@@ -48,23 +48,22 @@ type TProps = {
 };
 
 const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {
-    const { data: activeWallet } = useActiveWalletAccount();
     const { switchAccount } = useAuthorize();
     const { isMobile } = useDevice();
     const history = useHistory();
-
-    const is_demo = !!activeWallet?.is_virtual;
 
     if (isMobile)
         return (
             <div className='wallets-mobile-actions__container'>
                 <div className='wallets-mobile-actions'>
-                    {getWalletHeaderButtons(is_demo).map(button => (
+                    {getWalletHeaderButtons(isDemo).map(button => (
                         <div className='wallets-mobile-actions-content' key={button.name}>
                             <button
                                 className='wallets-mobile-actions-content-icon'
                                 key={button.name}
-                                onClick={button.action}
+                                onClick={() => {
+                                    history.push(`/appstore/traders-hub/cashier/${button.name}`);
+                                }}
                             >
                                 {button.icon}
                             </button>

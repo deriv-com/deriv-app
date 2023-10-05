@@ -66,7 +66,7 @@ describe('AccumulatorsStats', () => {
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
-        expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.DESKTOP_COLLAPSED);
+        expect(screen.getAllByTestId('dt_accu_stats_history_counter')).toHaveLength(ROW_SIZES.DESKTOP_COLLAPSED);
     });
     it('should render partial history values (tick counters) when initially collapsed in mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
@@ -76,7 +76,7 @@ describe('AccumulatorsStats', () => {
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
-        expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_COLLAPSED);
+        expect(screen.getAllByTestId('dt_accu_stats_history_counter')).toHaveLength(ROW_SIZES.MOBILE_COLLAPSED);
     });
 
     it('should expand in desktop when accordion_toggle_arrow is clicked', () => {
@@ -85,12 +85,12 @@ describe('AccumulatorsStats', () => {
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
-        expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.DESKTOP_COLLAPSED);
+        expect(screen.getAllByTestId('dt_accu_stats_history_counter')).toHaveLength(ROW_SIZES.DESKTOP_COLLAPSED);
 
         userEvent.click(screen.getByTestId('dt_accordion-toggle-arrow'));
         const row = screen.getAllByTestId('dt_accu_stats_history_row')[0];
-        expect(within(row).getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.DESKTOP_EXPANDED);
-        expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(20);
+        expect(within(row).getAllByTestId('dt_accu_stats_history_counter')).toHaveLength(ROW_SIZES.DESKTOP_EXPANDED);
+        expect(screen.getAllByTestId('dt_accu_stats_history_counter')).toHaveLength(20);
     });
     it('should show MobileDialog with full "Stay in history" in mobile when accordion_toggle_arrow is clicked', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
@@ -101,12 +101,12 @@ describe('AccumulatorsStats', () => {
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
-        expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_COLLAPSED);
+        expect(screen.getAllByTestId('dt_accu_stats_history_counter')).toHaveLength(ROW_SIZES.MOBILE_COLLAPSED);
 
         userEvent.click(screen.getByTestId('dt_accordion-toggle-arrow'));
         const mobile_dialog = screen.getByTestId('dt_mobile_dialog');
         const row = within(mobile_dialog).getAllByTestId('dt_accu_stats_history_row')[0];
-        expect(within(row).getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_EXPANDED);
-        expect(within(mobile_dialog).getAllByTestId('dt_accu_stats_history_counter').length).toEqual(20);
+        expect(within(row).getAllByTestId('dt_accu_stats_history_counter')).toHaveLength(ROW_SIZES.MOBILE_EXPANDED);
+        expect(within(mobile_dialog).getAllByTestId('dt_accu_stats_history_counter')).toHaveLength(20);
     });
 });

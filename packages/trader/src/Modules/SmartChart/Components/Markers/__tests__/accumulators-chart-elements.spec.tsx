@@ -42,7 +42,7 @@ describe('AccumulatorsChartElements', () => {
     it('should render AccumulatorsChartElements without Spot-emphasizing ChartMarker', () => {
         render(<AccumulatorsChartElements {...mock_props} />);
         const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltip');
-        expect(tooltip_arr.length).toBe(2);
+        expect(tooltip_arr).toHaveLength(2);
         expect(screen.queryByText('Spot-emphasizing ChartMarker')).not.toBeInTheDocument();
     });
 
@@ -51,7 +51,7 @@ describe('AccumulatorsChartElements', () => {
         render(<AccumulatorsChartElements {...mock_props} />);
 
         const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltip');
-        expect(tooltip_arr.length).toBe(2);
+        expect(tooltip_arr).toHaveLength(2);
         expect(screen.getByText('Spot-emphasizing ChartMarker')).toBeInTheDocument();
     });
 });

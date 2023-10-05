@@ -2,40 +2,6 @@ import { getTotalProfit } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getBuyPrice } from 'Utils/multiplier';
 
-export const getCardLabels = () => ({
-    APPLY: localize('Apply'),
-    STAKE: localize('Stake:'),
-    CLOSE: localize('Close'),
-    CANCEL: localize('Cancel'),
-    CURRENT_STAKE: localize('Current stake:'),
-    DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
-    TAKE_PROFIT: localize('Take profit:'),
-    BUY_PRICE: localize('Buy price:'),
-    STOP_LOSS: localize('Stop loss:'),
-    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
-    PROFIT_LOSS: localize('Profit/Loss:'),
-    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
-    INDICATIVE_PRICE: localize('Indicative price:'),
-    INITIAL_STAKE: localize('Initial stake:'),
-    PAYOUT: localize('Sell Price:'),
-    PURCHASE_PRICE: localize('Buy price:'),
-    POTENTIAL_PAYOUT: localize('Payout limit:'),
-    TICK: localize('Tick '),
-    WON: localize('Won'),
-    LOST: localize('Lost'),
-    DAYS: localize('Days'),
-    DAY: localize('Day'),
-    SELL: localize('Sell'),
-    INCREMENT_VALUE: localize('Increment value'),
-    DECREMENT_VALUE: localize('Decrement value'),
-    TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
-        'Take profit and/or stop loss are not available while deal cancellation is active.'
-    ),
-    DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
-    RESALE_NOT_OFFERED: localize('Resale not offered'),
-    NOT_AVAILABLE: localize('N/A'),
-});
-
 export const getSupportedContracts = is_high_low => ({
     ASIANU: {
         name: localize('Asian Up'),

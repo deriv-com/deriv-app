@@ -7,14 +7,14 @@ type TTabListProps = {
 };
 
 export const TabList = ({ list }: TTabListProps) => {
-    const { active_tab_index, setActiveTabIndex } = useTabs();
+    const { activeTabIndex, setActiveTabIndex } = useTabs();
 
     return (
         <div className='wallets-tabs-list' data-list-count={list.length}>
             {list.map((tab, i) => (
                 <div
                     className={`wallets-tabs-list-item wallets-tabs-list-item--${
-                        i === active_tab_index ? 'active' : 'disabled'
+                        i === activeTabIndex ? 'active' : 'disabled'
                     }`}
                     key={i}
                     onClick={() => setActiveTabIndex(i)}

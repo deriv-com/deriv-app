@@ -112,6 +112,57 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                     },
                 ];
                 break;
+            case 'multiplier':
+                content = [
+                    { type: 'heading', text: localize('Stop out') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'Your trade will be closed automatically at the nearest available asset price when your loss reaches a certain percentage of your stake, but your loss never exceeds your stake. This percentage depends on the chosen underlying asset and the Multiplier.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Take profit') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'If you select this feature, your trade will be closed automatically at the nearest available asset price when your profit reaches or exceeds the take profit amount. Your profit may be more than the amount you entered depending on the market price at closing.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Stop loss') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'If you select this feature, your trade will be closed automatically at the nearest available asset price when your loss reaches or exceeds the stop loss amount. Your loss may be more than the amount you entered depending on the market price at closing.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Deal cancellation') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'If you select this feature, you can cancel your trade within a chosen time frame if the asset price moves against your favour. You will get your stake back without profit/loss. We charge a small fee for this. Take profit and stop loss are disabled when deal cancellation is active.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Slippage risk') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'Slippage happens when the asset price changes by the time it reaches our servers.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Entry spot') },
+                    {
+                        type: 'paragraph',
+                        text: localize(
+                            'We use current-tick-execution mechanism, which is the latest asset price when the trade opening is processed by our servers for Volatility Index, Basket Indices, Jump Indices and Crash/Boom Indices.'
+                        ),
+                    },
+                    { type: 'heading', text: localize('Exit spot') },
+                    {
+                        type: 'paragraph',
+                        text: localize('The latest asset price when the trade closure is processed by our servers.'),
+                    },
+                ];
+                break;
             default:
                 content = [];
                 break;

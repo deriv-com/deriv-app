@@ -30,7 +30,7 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
         (i: { value: TContractType['value'] }) =>
             i.value !== 'rise_fall_equal' && i.value !== TURBOS.SHORT && i.value !== VANILLALONG.PUT
     );
-    const has_toggle_buttons = /accumulator|vanilla/i.test(item.value);
+    const has_toggle_buttons = /accumulator|vanilla|multiplier/i.test(item.value);
     const should_show_video = /accumulator|vanilla/i.test(item.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;

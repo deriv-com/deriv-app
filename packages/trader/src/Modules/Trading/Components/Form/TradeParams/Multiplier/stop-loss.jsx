@@ -53,7 +53,9 @@ const StopLoss = observer(props => {
                 name='stop_loss'
                 onChange={changeValue}
                 setCurrentFocus={setCurrentFocus}
-                tooltip_label={localize('Your contract will be closed automatically if your loss reaches this amount.')}
+                tooltip_label={localize(
+                    'When your loss reaches or exceeds this amount, your trade will be closed automatically.'
+                )}
                 tooltip_alignment='left'
                 error_message_alignment='left'
                 value={stop_loss}

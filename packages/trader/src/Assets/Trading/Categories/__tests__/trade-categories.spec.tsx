@@ -141,11 +141,7 @@ describe('<TradeCategores />', () => {
     });
     it('Ensure trade category "multiplier" description is rendered properly', () => {
         render(<TradeCategories category='multiplier' onClick={jest.fn()} />);
-        expect(
-            screen.getByText(
-                /Predict the market direction and select either “Up” or “Down” to open a position. We will charge a commission when you open a position./i
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Use multipliers to leverage your potential returns/i)).toBeInTheDocument();
     });
     it('Ensure trade category "vanillalongcall" description is rendered properly', () => {
         render(<TradeCategories category='vanillalongcall' onClick={jest.fn()} />);

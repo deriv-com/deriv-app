@@ -1,6 +1,13 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
-import { filterObjProperties, toMoment, validLength, validName, getIDVNotApplicableOption } from '@deriv/shared';
+import {
+    filterObjProperties,
+    toMoment,
+    validLength,
+    validName,
+    getIDVNotApplicableOption,
+    idv_error_statuses,
+} from '@deriv/shared';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocuments } from '../Constants/idv-document-config';
@@ -209,4 +216,16 @@ export const validate = <T,>(errors: Record<string, string>, values: T) => {
             if (!fn(value) && !errors[field]) errors[field] = err_msg;
         });
     };
+};
+
+type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
+export const verifyFields = (status: TIDVErrorStatus) => {
+    switch (status) {
+        case idv_error_statuses.poi_dob_mismatch:
+            return ['date_of_birth'];
+        case idv_error_statuses.poi_name_mismatch:
+            return ['first_name', 'last_name'];
+        default:
+            return ['first_name', 'last_name', 'date_of_birth'];
+    }
 };

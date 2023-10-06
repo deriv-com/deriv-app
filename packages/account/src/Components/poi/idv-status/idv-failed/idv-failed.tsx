@@ -326,6 +326,9 @@ const IdvFailed = ({
     return (
         <Formik
             initialValues={rest_state?.form_initial_values ?? {}}
+            initialStatus={{
+                is_confirmed: false,
+            }}
             enableReinitialize
             onSubmit={onSubmit}
             validate={validateFields}
@@ -365,10 +368,11 @@ const IdvFailed = ({
                         )}
                         <PersonalDetailsForm
                             class_name='account-form__poi-confirm-example_container'
-                            editable_fields={rest_state?.changeable_fields}
+                            editable_fields={status?.is_confirmed ? [] : rest_state?.changeable_fields}
                             is_rendered_for_idv
                             side_note={idv_failure?.side_note_image}
                             inline_note_text={idv_failure?.inline_note_text}
+                            mismatch_status={mismatch_status}
                         />
                         <DesktopWrapper>
                             {!is_from_external && (
@@ -376,7 +380,7 @@ const IdvFailed = ({
                                     className='proof-of-identity__submit-button'
                                     type='submit'
                                     has_effect
-                                    is_disabled={!dirty || isSubmitting || !isValid}
+                                    is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
                                     text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
                                     large
                                     primary
@@ -389,7 +393,7 @@ const IdvFailed = ({
                             <Button
                                 type='submit'
                                 has_effect
-                                is_disabled={!dirty || isSubmitting || !isValid}
+                                is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
                                 text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
                                 large
                                 primary

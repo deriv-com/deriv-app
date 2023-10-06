@@ -197,6 +197,10 @@
                 line-height: 1.4;
                 border-bottom-width: 1px;
 
+                &:has(.dc-modal-header__title--trade-params) {
+                    height: 4.8rem;
+                }
+
                 /* postcss-bem-linter: ignore */
                 .dc-modal-header__close {
                     padding: 0.8rem 0.8rem 0;
@@ -471,7 +475,7 @@
                 display: flex;
                 justify-content: flex-start;
                 position: absolute;
-                top: 0.6rem;
+                top: 1.2rem;
                 left: 0.2rem;
                 z-index: 2;
 

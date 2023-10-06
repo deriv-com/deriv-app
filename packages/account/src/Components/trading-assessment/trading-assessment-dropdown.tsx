@@ -65,7 +65,7 @@ const TradingAssessmentDropdown = ({
                                         name={question?.question_text}
                                         placeholder={question?.question_text}
                                         list={question?.answer_options}
-                                        onChange={e => onChange(e, question.form_control, setFieldValue)}
+                                        onChange={e => onChange(e as any, question.form_control, setFieldValue)}
                                         value={values[question.form_control]}
                                         disabled={disabled_items.includes(question.form_control)}
                                     />

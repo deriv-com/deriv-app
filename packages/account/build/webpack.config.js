@@ -60,7 +60,7 @@ module.exports = function (env) {
             'terms-of-use-config': 'Configs/terms-of-use-config',
             'trading-assessment': 'Sections/Assessment/TradingAssessment',
             'trading-assessment-config': 'Configs/trading-assessment-config',
-            'trading-assessment-new-user': 'Components/trading-assessment/trading-assessment-new-user.jsx',
+            'trading-assessment-new-user': 'Components/trading-assessment/trading-assessment-new-user',
             'test-warning-modal': 'Components/trading-assessment/test-warning-modal',
             'trading-assessment-form': 'Components/trading-assessment/trading-assessment-form',
         },

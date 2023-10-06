@@ -154,9 +154,9 @@ const TradingAssessmentForm = ({
                             answer_options,
                             questions,
                         }: {
-                            question_text: React.ReactNode;
+                            question_text: string;
                             form_control: keyof TFormData;
-                            answer_options: { text: React.ReactNode; value: string }[];
+                            answer_options: { text: string; value: string }[];
                             questions: TQuestion[];
                         } = current_question_details.current_question;
 

@@ -19,11 +19,10 @@ jest.mock('@deriv/api', () => ({
     }),
     useQuery: jest.fn(),
 }));
-const mockedUseQuery = useQuery as jest.MockedFunction<typeof useQuery<'oauth_apps'>>;
 
 describe('useOAuthConnectedApps', () => {
     it('should fetch the oauth connected apps details using useQuery and return the response', async () => {
-        mockedUseQuery.mockReturnValue({ data: { oauth_apps: mock_oauth_apps } });
+        (useQuery as jest.Mock).mockReturnValue({ data: { oauth_apps: mock_oauth_apps } });
         const { data, isSuccess, isError } = renderHook(() => useOAuthConnectedApps()).result.current;
 
         expect(data).toEqual(mock_oauth_apps);
@@ -32,8 +31,7 @@ describe('useOAuthConnectedApps', () => {
     });
 
     it('should set isError to true if there were error in the response', async () => {
-        mockedUseQuery.mockReturnValue({ data: { error: {} } });
-        // (useQuery as jest.Mock).mockReturnValue(() => ({ error: {} }));
+        (useQuery as jest.Mock).mockReturnValue({ data: { error: {} } });
         const { isSuccess, isError } = renderHook(() => useOAuthConnectedApps()).result.current;
 
         expect(isError).toEqual(true);

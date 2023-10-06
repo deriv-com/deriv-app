@@ -22,10 +22,8 @@ jest.mock('@deriv/hooks', () => {
         useOAuthRevokeConnectedApps: jest.fn(),
     };
 });
-const mockUseOAuthConnectedApps = useOAuthConnectedApps as jest.MockedFunction<typeof useOAuthConnectedApps>;
-const mockUseOAuthRevokeConnectedApps = useOAuthRevokeConnectedApps as jest.MockedFunction<
-    typeof useOAuthRevokeConnectedApps
->;
+const mockUseOAuthConnectedApps = useOAuthConnectedApps as jest.Mock;
+const mockUseOAuthRevokeConnectedApps = useOAuthRevokeConnectedApps as jest.Mock;
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     return {
@@ -49,12 +47,16 @@ describe('ConnectedApps', () => {
         document.body.appendChild(modal_root_el);
     });
     beforeEach(() => {
-        mockUseOAuthConnectedApps.mockReturnValue({ data: mock_connected_apps, isLoading: false, isError: false });
+        mockUseOAuthConnectedApps.mockReturnValue({
+            data: mock_connected_apps,
+            isLoading: false,
+            isError: false,
+        });
         mockUseOAuthRevokeConnectedApps.mockReturnValue({ revokeOAuthApp: jest.fn() });
     });
     afterAll(() => {
-        Object.defineProperty(HTMLElement.prototype, 'offsetHeight', originalOffsetHeight);
-        Object.defineProperty(HTMLElement.prototype, 'offsetWidth', originalOffsetWidth);
+        Object.defineProperty(HTMLElement.prototype, 'offsetHeight', originalOffsetHeight as PropertyDescriptor);
+        Object.defineProperty(HTMLElement.prototype, 'offsetWidth', originalOffsetWidth as PropertyDescriptor);
         document.body.removeChild(modal_root_el);
     });
 

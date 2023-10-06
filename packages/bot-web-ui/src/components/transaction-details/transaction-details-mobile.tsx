@@ -12,8 +12,11 @@ import './transaction-details-mobile.scss';
 const TransactionDetailsMobile = observer(() => {
     const { client } = useStore();
     const { transactions, run_panel } = useDBotStore();
-    const { toggleTransactionDetailsModal, is_transaction_details_modal_open, elements }: Partial<TTransactionStore> =
-        transactions;
+    const {
+        toggleTransactionDetailsModal,
+        is_transaction_details_modal_open,
+        transactions: transaction_list,
+    }: Partial<TTransactionStore> = transactions;
     const { statistics, toggleStatisticsInfoModal }: Partial<TRunPanelStore> = run_panel;
 
     return (
@@ -27,7 +30,7 @@ const TransactionDetailsMobile = observer(() => {
             height_offset='80px'
         >
             <div className='transaction-details-modal-mobile__wrapper' data-testid='transaction_details_cards'>
-                {elements?.map(({ data, type }) => {
+                {transaction_list?.map(({ data, type }) => {
                     if (type === transaction_elements.CONTRACT)
                         return <MobileTransactionCards transaction={data} key={data?.transaction_ids?.buy} />;
                     return (
@@ -42,16 +45,15 @@ const TransactionDetailsMobile = observer(() => {
             </div>
             <div className='transaction-details-modal-mobile__card__footer'>
                 <StatisticsSummary
-                    has_started_onboarding_tour={false}
                     currency={client?.currency}
                     is_mobile={true}
-                    lost_contracts={statistics?.lost_contracts}
-                    number_of_runs={statistics?.number_of_runs}
+                    lost_contracts={statistics?.lost_contracts ?? 0}
+                    number_of_runs={statistics?.number_of_runs ?? 0}
                     toggleStatisticsInfoModal={toggleStatisticsInfoModal}
-                    total_payout={statistics?.total_payout}
-                    total_profit={statistics?.total_profit}
-                    total_stake={statistics?.total_stake}
-                    won_contracts={statistics?.won_contracts}
+                    total_payout={statistics?.total_payout ?? 0}
+                    total_profit={statistics?.total_profit ?? 0}
+                    total_stake={statistics?.total_stake ?? 0}
+                    won_contracts={statistics?.won_contracts ?? 0}
                 />
             </div>
         </MobileFullPageModal>

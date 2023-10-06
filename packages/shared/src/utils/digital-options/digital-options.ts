@@ -10,7 +10,7 @@ type TShowError = {
     message: string;
     header: string;
     redirect_label: string;
-    redirectOnClick: (() => void) | null;
+    redirectOnClick?: (() => void) | null;
     should_show_refresh: boolean;
     redirect_to: string;
     should_clear_error_on_click: boolean;
@@ -25,8 +25,8 @@ type TAccounts = {
 export const showDigitalOptionsUnavailableError = (
     showError: (t: TShowError) => void,
     message: TMessage,
-    redirectOnClick: (() => void) | null,
-    should_redirect: boolean,
+    redirectOnClick?: (() => void) | null,
+    should_redirect = false,
     should_clear_error_on_click = true
 ) => {
     const { title, text, link } = message;
@@ -36,7 +36,7 @@ export const showDigitalOptionsUnavailableError = (
         redirect_label: link,
         redirectOnClick,
         should_show_refresh: false,
-        redirect_to: '/mt5',
+        redirect_to: '/appstore/traders-hub',
         should_clear_error_on_click,
         should_redirect,
     });

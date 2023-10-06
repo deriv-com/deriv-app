@@ -17,7 +17,7 @@
 @import 'app/_common/layout/dashboard-header';
 @import 'app/_common/layout/footer';
 @import 'app/_common/layout/modal-root';
-@import 'app/_common/layout/trading-hub-header';
+@import 'app/_common/layout/traders-hub-header';
 
 // Components
 @import 'app/_common/components/account-settings-toggle';
@@ -46,9 +46,9 @@
 //@import 'app/_common/components/switch-button';
 @import 'app/_common/components/cookie-banner';
 @import 'app/_common/components/notification-banner';
-@import 'app/_common/components/notification-close-mx-mlt';
 @import 'app/_common/components/notification-promo';
-@import 'app/_common/components/onfido-container';
+@import 'app/_common/components/account-common';
+@import 'app/_common/components/cfd-poa';
 // Modules
 @import 'app/modules/page-404';
 @import 'app/modules/account-closed';

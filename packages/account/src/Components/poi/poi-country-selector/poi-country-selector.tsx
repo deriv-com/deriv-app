@@ -1,8 +1,9 @@
 import React from 'react';
-import { Autocomplete, Button, DesktopWrapper, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
-import { localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
+import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
+import { idv_error_statuses, isMobile, TIDVErrorStatus } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import FormFooter from 'Components/form-footer';
 
 type TCountry = Record<string, string>;
@@ -10,6 +11,7 @@ type TCountry = Record<string, string>;
 type TCountrySelector = {
     handleSelectionNext: () => void;
     is_from_external: boolean;
+    mismatch_status?: TIDVErrorStatus;
     residence_list: TCountry[];
     selected_country: string;
     setSelectedCountry: (value: TCountry) => void;
@@ -18,6 +20,7 @@ type TCountrySelector = {
 const CountrySelector = ({
     handleSelectionNext,
     is_from_external,
+    mismatch_status,
     residence_list,
     selected_country,
     setSelectedCountry,
@@ -58,6 +61,16 @@ const CountrySelector = ({
         setCountryList(residence_list);
     }, [residence_list]);
 
+    let failed_message: JSX.Element | null = null;
+    if (mismatch_status === idv_error_statuses.poi_expired) {
+        failed_message = <Localize i18n_default_text='Your identity document has expired.' />;
+    }
+    if (mismatch_status === idv_error_statuses.poi_failed) {
+        failed_message = (
+            <Localize i18n_default_text='We were unable to verify the identity document with the details provided.' />
+        );
+    }
+
     return (
         <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={submitHandler}>
             {({
@@ -78,11 +91,30 @@ const CountrySelector = ({
                             'min-height': !is_from_external,
                         })}
                     >
-                        <Text className='proof-of-identity__header' align='center' weight='bold'>
-                            {localize('Proof of identity')}
-                        </Text>
+                        {failed_message ? (
+                            <React.Fragment>
+                                <Text className='' align='center' weight='bold' size={isMobile() ? 'xs' : 's'}>
+                                    <Localize i18n_default_text='Your identity verification failed because:' />
+                                </Text>
+                                <HintBox
+                                    className={classNames('proof-of-identity__failed-message', 'hint-box-layout')}
+                                    icon='IcAlertDanger'
+                                    message={
+                                        <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>
+                                            {failed_message}
+                                        </Text>
+                                    }
+                                    is_danger
+                                />
+                            </React.Fragment>
+                        ) : (
+                            <Text className='proof-of-identity__header' align='center' weight='bold'>
+                                <Localize i18n_default_text='Proof of identity' />
+                            </Text>
+                        )}
+
                         <Text className='proof-of-identity__country-text ' size='xs'>
-                            {localize('In which country was your document issued?')}
+                            <Localize i18n_default_text='In which country was your document issued?' />
                         </Text>
                         <fieldset className='proof-of-identity__fieldset'>
                             <Field name='country_input'>

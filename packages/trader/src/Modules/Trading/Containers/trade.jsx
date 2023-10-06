@@ -2,14 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
-import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
+import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
-import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
+import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
-import FormLayout from '../Components/Form/form-layout.jsx';
+import FormLayout from '../Components/Form/form-layout';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
-import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements.jsx';
+import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
@@ -315,7 +315,6 @@ const ChartTrade = observer(props => {
         wsSubscribe,
         active_symbols,
         has_alternative_source,
-        refToAddTick,
     } = useTraderStore();
 
     const settings = {
@@ -325,6 +324,7 @@ const ChartTrade = observer(props => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
+        ...(is_accumulator ? { whitespace: 190, minimumLeftBars: isMobile() ? 3 : undefined } : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
@@ -405,8 +405,8 @@ const ChartTrade = observer(props => {
             onExportLayout={exportLayout}
             shouldFetchTradingTimes={!end_epoch}
             hasAlternativeSource={has_alternative_source}
-            refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
+            should_zoom_out_on_yaxis={is_accumulator}
             yAxisMargin={{
                 top: isMobile() ? 76 : 106,
             }}

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Div100vhContainer, Modal, Money, Popover, usePreventIOSZoom } from '@deriv/components';
+import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
 import { useIsMounted, WS } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
@@ -42,7 +42,7 @@ export default MultiplierAmountModal;
 
 const TradeParamsMobile = observer(({ toggleModal }) => {
     const trade_store = useTraderStore();
-    const { amount, currency, trade_stop_out } = trade_store;
+    const { amount } = trade_store;
 
     const [stake_value, setStakeValue] = React.useState(amount);
     const [commission, setCommission] = React.useState(null);
@@ -83,24 +83,6 @@ const TradeParamsMobile = observer(({ toggleModal }) => {
 
     return (
         <React.Fragment>
-            <div className='trade-params__multiplier-ic-info-wrapper'>
-                <Popover
-                    alignment='right'
-                    classNameBubble='dc-popover__trade-params'
-                    icon='info'
-                    id='dt_multiplier-stake__tooltip'
-                    zIndex={9999}
-                    is_bubble_hover_enabled
-                    message={
-                        <Localize
-                            i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
-                            components={[
-                                <Money key={0} amount={stop_out || trade_stop_out} currency={currency} show_currency />,
-                            ]}
-                        />
-                    }
-                />
-            </div>
             <AmountMobile
                 toggleModal={toggleModal}
                 amount_tab_idx={0}

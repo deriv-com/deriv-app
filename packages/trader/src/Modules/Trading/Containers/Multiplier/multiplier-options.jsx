@@ -2,7 +2,6 @@ import React from 'react';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
-import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useIsMounted, WS } from '@deriv/shared';
@@ -37,15 +36,12 @@ const MultiplierOptions = observer(({ toggleModal }) => {
     return (
         <React.Fragment>
             <RadioGroupWithInfoMobile
-                popover_alignment='bottom'
                 contract_name='multiplier'
                 current_value_object={{ name: 'multiplier', value: multiplier }}
-                info={localize(
-                    'Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.'
-                )}
                 items_list={multiplier_range_list}
                 onChange={onChange}
                 toggleModal={toggleModal}
+                should_show_tooltip={false}
             />
             <MultipliersInfo
                 className='trade-params__multiplier-trade-info'

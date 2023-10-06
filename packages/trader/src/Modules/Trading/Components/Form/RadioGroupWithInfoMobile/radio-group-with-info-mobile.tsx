@@ -23,6 +23,7 @@ type TRadioGroupWithInfoMobile = {
     is_tooltip_disabled?: boolean;
     popover_alignment?: React.ComponentProps<typeof Popover>['alignment'];
     toggleModal: () => void;
+    should_show_tooltip?: boolean;
 };
 
 const RadioGroupWithInfoMobile = ({
@@ -34,6 +35,7 @@ const RadioGroupWithInfoMobile = ({
     is_tooltip_disabled = false,
     popover_alignment = 'right',
     toggleModal,
+    should_show_tooltip = true,
 }: TRadioGroupWithInfoMobile) => {
     const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange({
@@ -47,18 +49,20 @@ const RadioGroupWithInfoMobile = ({
 
     return (
         <>
-            <div className={`trade-params__${contract_name}-ic-info-wrapper`}>
-                <Popover
-                    alignment={popover_alignment}
-                    classNameBubble='dc-popover__trade-params'
-                    disable_target_icon={is_tooltip_disabled}
-                    icon='info'
-                    id={`dt_${contract_name}-stake__tooltip`}
-                    is_bubble_hover_enabled
-                    zIndex='9999'
-                    message={info}
-                />
-            </div>
+            {should_show_tooltip && (
+                <div className={`trade-params__${contract_name}-ic-info-wrapper`}>
+                    <Popover
+                        alignment={popover_alignment}
+                        classNameBubble='dc-popover__trade-params'
+                        disable_target_icon={is_tooltip_disabled}
+                        icon='info'
+                        id={`dt_${contract_name}-stake__tooltip`}
+                        is_bubble_hover_enabled
+                        zIndex='9999'
+                        message={info}
+                    />
+                </div>
+            )}
             <RadioGroup
                 className={`trade-params__${contract_name}-radio-group`}
                 name={`trade-params__${contract_name}-radio`}

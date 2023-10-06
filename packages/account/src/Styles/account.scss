@@ -431,6 +431,12 @@ $MIN_HEIGHT_FLOATING: calc(
             border-top: 1px solid var(--general-section-1);
             background-color: var(--general-main-1);
 
+            &--reset {
+                padding: 2.4rem 0;
+                position: relative;
+                margin-top: 2rem;
+            }
+
             .back-btn {
                 margin-right: 8px;
 

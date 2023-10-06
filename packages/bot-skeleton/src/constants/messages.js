@@ -39,4 +39,5 @@ export const log_types = Object.freeze({
     PROFIT: 'profit',
     LOST: 'lost',
     WELCOME_BACK: 'welcome_back',
+    WELCOME: 'welcome',
 });

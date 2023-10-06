@@ -1,18 +1,15 @@
 import { useTraderStore } from 'Stores/useTraderStores';
 
-export type TProposalTypeInfo = {
-    has_error?: boolean;
-    id: string;
-    has_increased?: boolean;
-    message?: string;
-    cancellation?: {
-        ask_price: number;
-        date_expiry: number;
-    };
-    growth_rate?: number;
-    returns?: string;
-    stake: string;
+export type TTextValueStrings = {
+    text: string;
+    value: string;
 };
+export type TTextValueNumber = {
+    text: string;
+    value: number;
+};
+
+export type TProposalTypeInfo = TTradeStore['proposal_info'][string];
 
 export type TError = {
     error?: {

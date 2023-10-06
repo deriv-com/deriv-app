@@ -87,6 +87,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradePa
     const { client } = useStore();
     const { currency } = client;
     const { amount, form_components, duration, duration_unit, duration_units_list, is_vanilla } = useTraderStore();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
 

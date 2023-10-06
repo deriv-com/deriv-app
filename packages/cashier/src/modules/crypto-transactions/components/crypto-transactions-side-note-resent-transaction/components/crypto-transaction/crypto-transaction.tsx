@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { cryptoTransactionMapper } from '../../../../helpers';
@@ -28,7 +28,18 @@ const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCr
                             `crypto-transaction__status-dot-${transaction.status_color}`
                         )}
                     />
-                    <Text size='xxxs'>{transaction.status_name}</Text>
+                    <Text size='xxxs' line_height='s'>
+                        {transaction.status_name}
+                    </Text>
+                    {transaction.status_code === 'LOCKED' && (
+                        <Icon
+                            icon='IcCrossLight'
+                            size={10}
+                            className='crypto-transaction__cancel-button'
+                            onClick={() => {}}
+                            data_testid='dt_close_icon'
+                        />
+                    )}
                 </div>
             </div>
             <div className='crypto-transaction__amount-and-date'>

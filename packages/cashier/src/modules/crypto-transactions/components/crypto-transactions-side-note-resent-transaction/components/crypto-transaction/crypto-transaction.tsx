@@ -3,6 +3,7 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { cryptoTransactionMapper } from '../../../../helpers';
+import './crypto-transaction.scss';
 
 type TCryptoTransaction = {
     transaction: ReturnType<typeof cryptoTransactionMapper>;
@@ -11,24 +12,44 @@ type TCryptoTransaction = {
 
 const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCryptoTransaction) => {
     return (
-        <div className='crypto-transactions-side-note-recent-transaction__content'>
-            <Text size='xxs'>
-                {transaction.is_deposit ? (
-                    <Localize i18n_default_text='Deposit {{currency}}' values={{ currency }} />
-                ) : (
-                    <Localize i18n_default_text='Withdrawal {{currency}}' values={{ currency }} />
-                )}
-            </Text>
-            <Text size='xxxs' color='less-prominent' className='crypto-transactions-side-note-recent-transaction__date'>
-                <Localize
-                    i18n_default_text='{{amount}} {{currency}} on {{date}}'
-                    values={{
-                        amount: transaction.amount,
-                        currency,
-                        date: transaction.submit_date_display,
-                    }}
-                />
-            </Text>
+        <div className='crypto-transaction'>
+            <div className='crypto-transaction__type-and-status'>
+                <Text size='xxs'>
+                    {transaction.is_deposit ? (
+                        <Localize i18n_default_text='Deposit {{currency}}' values={{ currency }} />
+                    ) : (
+                        <Localize i18n_default_text='Withdrawal {{currency}}' values={{ currency }} />
+                    )}
+                </Text>
+                <div className='crypto-transaction__status'>
+                    <div
+                        className={classNames(
+                            'crypto-transaction__status-dot',
+                            `crypto-transaction__status-dot-${transaction.status_color}`
+                        )}
+                    />
+                    <Text size='xxxs'>{transaction.status_name}</Text>
+                </div>
+            </div>
+            <div className='crypto-transaction__amount-and-date'>
+                <Text size='xxxs' color='less-prominent'>
+                    <Localize
+                        i18n_default_text='{{amount}} {{currency}}'
+                        values={{
+                            amount: transaction.amount,
+                            currency,
+                        }}
+                    />
+                </Text>
+                <Text size='xxxs' color='less-prominent'>
+                    <Localize
+                        i18n_default_text='{{date}}'
+                        values={{
+                            date: transaction.submit_date_display,
+                        }}
+                    />
+                </Text>
+            </div>
             <Text size='xxxs'>
                 <Localize
                     i18n_default_text='Address: <0>{{value}}</0>'
@@ -36,7 +57,7 @@ const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCr
                     components={[<Text key={0} size='xxxs' color='red' />]}
                 />
             </Text>
-            <Text size={'xxxs'}>
+            <Text size='xxxs'>
                 <Localize
                     i18n_default_text='Transaction hash: <0>{{value}}</0>'
                     values={{ value: transaction.transaction_hash_display }}
@@ -52,15 +73,6 @@ const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCr
                     />
                 </Text>
             )}
-            <div className='crypto-transactions-side-note-recent-transaction__status'>
-                <div
-                    className={classNames(
-                        'crypto-transactions-side-note-recent-transaction__status-dot',
-                        `crypto-transactions-side-note-recent-transaction__status-dot-${transaction.status_color}`
-                    )}
-                />
-                <Text size='xxxs'>{transaction.status_name}</Text>
-            </div>
         </div>
     );
 };

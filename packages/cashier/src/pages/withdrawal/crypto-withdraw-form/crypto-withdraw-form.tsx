@@ -206,7 +206,9 @@ const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => 
                 </div>
             )}
 
-            {isCryptocurrency(currency) && <CryptoTransactionsSideNoteRecentTransaction />}
+            {isCryptocurrency(currency) && (
+                <CryptoTransactionsSideNoteRecentTransaction transaction_type='withdrawal' />
+            )}
         </div>
     );
 });

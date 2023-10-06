@@ -64,6 +64,11 @@ const PurchaseFieldset = ({
 
     const purchase_button = (
         <React.Fragment>
+            {is_multiplier && has_cancellation && (
+                <MobileWrapper>
+                    <CancelDealInfo proposal_info={info} />
+                </MobileWrapper>
+            )}
             <PurchaseButton
                 buy_info={buy_info}
                 currency={currency}
@@ -86,11 +91,6 @@ const PurchaseFieldset = ({
                 type={type}
                 basis={basis} // mobile-only
             />
-            {is_multiplier && has_cancellation && (
-                <MobileWrapper>
-                    <CancelDealInfo proposal_info={info} />
-                </MobileWrapper>
-            )}
         </React.Fragment>
     );
 

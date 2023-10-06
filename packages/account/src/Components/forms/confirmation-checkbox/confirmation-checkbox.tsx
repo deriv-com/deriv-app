@@ -1,7 +1,7 @@
 import React from 'react';
+import { FormikValues, useFormikContext } from 'formik';
 import { Checkbox, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { FormikValues, useFormikContext } from 'formik';
 
 /**
  * Props for the confirmation checkbox component.
@@ -40,16 +40,15 @@ export const ConfirmationCheckbox = ({
      *
      * This context provides information about the form's state and helps in managing form behavior.
      */
-    const { setFieldValue, setStatus, status, values } = useFormikContext<FormikValues>();
+    const { setStatus, status } = useFormikContext();
+
     const handleChange = () => {
         // check if status is an object to avoid overwriting the status if it is a string
         if (typeof status === 'object') setStatus({ ...status, is_confirmed: !status?.is_confirmed });
-        if ('confirmation_checkbox' in values) setFieldValue('confirmation_checkbox', !values.confirmation_checkbox);
     };
 
     return (
         <Checkbox
-            name='confirmation_checkbox'
             className='formik__confirmation-checkbox'
             value={status?.is_confirmed ?? false}
             label={<Text size={label_size ?? (isMobile() ? 'xxs' : 'xs')}>{label}</Text>}

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { render, screen } from '@testing-library/react';
+
 import ScreenLarge from '../screen-large';
 
 jest.mock('App/Components/Elements/ContentLoader', () => ({

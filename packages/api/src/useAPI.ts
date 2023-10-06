@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react';
-import APIContext from './APIContext';
+
 import type {
     TSocketEndpointNames,
     TSocketPaginateableEndpointNames,
@@ -7,6 +7,8 @@ import type {
     TSocketResponseData,
     TSocketSubscribableEndpointNames,
 } from '../types';
+
+import APIContext from './APIContext';
 
 const useAPI = () => {
     const api = useContext(APIContext);

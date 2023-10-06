@@ -300,6 +300,8 @@ const ProofOfAddressForm = observer(
                                             <HintBox
                                                 className='account-form_poa-submit-error'
                                                 icon='IcAlertDanger'
+                                                icon_height={16}
+                                                icon_width={16}
                                                 message={
                                                     <Text as='p' size={isMobile() ? 'xxxs' : 'xs'}>
                                                         {status.msg}

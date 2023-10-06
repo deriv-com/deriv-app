@@ -7,7 +7,7 @@ import { useInvalidateQuery, useMutation } from '@deriv/api';
 const useOAuthRevokeConnectedApps = () => {
     const invalidate = useInvalidateQuery();
     const WS = useMutation('revoke_oauth_app', {
-        onSuccess: () => {
+        onSettled: () => {
             invalidate('oauth_apps');
         },
     });

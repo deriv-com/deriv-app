@@ -14,6 +14,9 @@ const useAuthorize = () => {
             enabled: Boolean(current_token),
             /** infinite cache. Invalidate it when the user creates new wallet or new DTrader account */
             staleTime: Infinity,
+            /** need this to prevent loading when the user switches between wallets */
+            /** TODO: move this property to hook which will use account_list endpoint */
+            keepPreviousData: true,
         },
     });
 

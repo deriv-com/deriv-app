@@ -9,7 +9,8 @@ permissions:
   statuses: write
 
 on:
-  pull_request:
+  issue_comment:
+    types: [edited]
 
 jobs:
   integration-tests:

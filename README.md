@@ -12,8 +12,8 @@ Binary Bot on Deriv uses [Google Blockly](https://developers.google.com/blockly)
 Ensure that your environment contains the following packages.
 
 ```
- - node >= 12.18.0
- - npm >= 6.14.4
+ - node >= 18.16.0
+ - npm >= 9.5.0
  - git (for contribution)
 ```
 
@@ -36,11 +36,11 @@ You can simply search for these extensions on VS Code and install them to start 
 
 You will need to perform the following on your development machine:
 
-1. In order to work with Deriv-Bot application, you must create your own version of this project. Please `fork the project` - https://github.com/deriv-com/binary-bot to your git account.
+1. In order to work with Binary-Bot application, you must create your own version of this project. Please `fork the project` - https://github.com/deriv-com/binary-bot to your git account.
 2. Change the current working directory to the location where you want the cloned directory.
 3. Clone using `SSH`. Clone the forked repo using `git clone [URL for the forked repo]`
 4. Enter project directory `cd binary-bot`
-5. Run `npm install`
+5. Run `npm run bootstrap`
 
     > **Note:** - [issue with installing packages](#q1)
 
@@ -91,7 +91,7 @@ Make sure to set the endpoint for running the application on the localhost
 
     > **Note:** - [Getting Permission Denied Error](#q2)
 
-2.  Navigate to `http://localbot.binary.sx` (Note that the protocol is `http` and not `https`)
+2.  Navigate to `localhost:8000`
 
     > **Note:** - [Getting error "This site can’t be reached" on localhost](#q3)
 
@@ -178,12 +178,9 @@ If you couldnt install binary bot with a different node version, try cleaning np
 -   To clear a cache in npm, we need to run the `npm cache clean --force` command in our terminal.
 -   Delete cache directory. The default cache directory is ~/.npm on Posix (mac or linux), or %AppData%/npm-cache on Windows.
 -   Run `rm -rf ~/.npm`
--   Run `npm install`
+-   Run `npm run clean`
+-   Run `npm run bootstrap`
 
-### <a name='q2'> 2. Getting Permission Denied Error on localhost</a>
+### <a name='q2'>2. Cannot access the site</a>
 
-Try `sudo npm start`instead of `npm start`
-
-### <a name='q3'>3. Cannot access the site</a>
-
-Make sure to use HTTP instead of HTTPS: https://localbot.binary.sx -> http://localbot.binary.sx
+Make sure to use: localhost:8000

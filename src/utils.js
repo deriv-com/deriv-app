@@ -1,4 +1,6 @@
+import filesaver from 'file-saver';
 import { APP_ID_MAP, MAX_MOBILE_WIDTH } from '@constants';
+import { translate as i18nTranslate } from '@i18n';
 
 export const parseQueryString = () => {
     if (typeof window === 'undefined') {
@@ -84,3 +86,114 @@ export const queryToObjectArray = queryStr => {
 export const isMobile = () => window.innerWidth <= MAX_MOBILE_WIDTH;
 
 export const isDesktop = () => window.innerWidth > MAX_MOBILE_WIDTH;
+
+export const isNumber = num => num !== '' && Number.isFinite(Number(num));
+
+export const restrictInputCharacter = ({ whitelistRegEx, input }) => input.match(new RegExp(whitelistRegEx));
+
+export const saveAs = ({ data, filename, type }) => {
+    const blob = new Blob([data], { type });
+    filesaver.saveAs(blob, filename);
+};
+export const appendRow = (trade, state, isDesc = false) => ({
+    id: state.id + 1,
+    rows: isDesc
+        ? [
+            {
+                ...trade,
+                id: state.id + 1,
+            },
+            ...state.rows,
+        ]
+        : [
+            ...state.rows,
+            {
+                ...trade,
+                id: state.id + 1,
+            },
+        ],
+});
+
+export const updateRow = (prevRowIndex, trade, state) => ({
+    id: state.id,
+    rows: [
+        ...state.rows.slice(0, prevRowIndex),
+        {
+            ...trade,
+            id: state.id,
+        },
+    ],
+});
+
+const hasOwnProperty = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
+
+export const isVirtual = tokenInfo => hasOwnProperty(tokenInfo, 'loginInfo') && tokenInfo.loginInfo.is_virtual;
+
+export const getQueryParams = (qs = '') => {
+    if (!qs) return {};
+    const data = {};
+    qs.replace(/([^?=&]+)(=([^&]*))?/g, (a0, a1, a2, a3) => {
+        data[a1] = a3;
+    });
+    return data;
+};
+
+export const getObjectValue = obj => obj[Object.keys(obj)[0]];
+
+export const durationToSecond = duration => {
+    const parsedDuration = duration.match(/^([0-9]+)([stmhd])$/);
+    if (!parsedDuration) {
+        return 0;
+    }
+    const durationValue = parseFloat(parsedDuration[1]);
+    const durationType = parsedDuration[2];
+    if (durationType === 's') {
+        return durationValue;
+    }
+    if (durationType === 't') {
+        return durationValue * 2;
+    }
+    if (durationType === 'm') {
+        return durationValue * 60;
+    }
+    if (durationType === 'h') {
+        return durationValue * 60 * 60;
+    }
+    if (durationType === 'd') {
+        return durationValue * 60 * 60 * 24;
+    }
+    return 0;
+};
+
+export const translate = (input, params = []) => {
+    if (!params.length) return i18nTranslate(input);
+
+    const stringToBeTranslated = input.replace(/\{\$({0-9])\}/gi, '%$1');
+    let translatedString = i18nTranslate(stringToBeTranslated);
+
+    params.forEach((replacement, index) => {
+        if (translatedString && typeof translatedString === 'string') {
+            // eslint-disable-next-line no-useless-escape
+            translatedString = translatedString.replaceAll(`\{\$${index}\}`, replacement);
+        }
+    });
+
+    return translatedString;
+};
+
+export const showSpinnerInButton = $buttonElement => {
+    $buttonElement
+        .html(() => {
+            const barspinner = $('<div class="barspinner white" />');
+            Array.from(new Array(5)).forEach((x, i) => {
+                const rect = $(`<div class="rect${i + 1}" />`);
+                barspinner.append(rect);
+            });
+            return barspinner;
+        })
+        .prop('disabled', true);
+};
+
+export const removeSpinnerInButton = ($buttonElement, initialText) => {
+    $buttonElement.html(() => initialText).prop('disabled', false);
+};

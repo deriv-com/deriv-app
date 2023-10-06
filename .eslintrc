@@ -34,7 +34,7 @@
         "import/no-named-as-default": 0,
         "no-restricted-exports": 0,
         "default-param-last": 0,
-        "react-hooks/exhaustive-deps": 0
+        "react-hooks/exhaustive-deps": "off"
     },
     "extends": [
         "prettier",

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { translate } from '@i18n';
-import { observer as globalObserver } from '../../../common/utils/observer';
-import { showDialog } from '../../bot/tools';
+import { observer as globalObserver } from '@utilities/observer';
+import { showDialog } from '../../../blockly/bot/tools';
 
 const ClearButton = () => {
     const { is_bot_running } = useSelector(state => state.ui);

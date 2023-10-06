@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 const useActiveSymbols = () => {
     const { data, ...rest } = useFetch('active_symbols', {
         payload: { active_symbols: 'brief' },
-        options: { refetchOnWindowFocus: false },
+        options: { refetchOnWindowFocus: true },
     });
     const active_symbols = useMemo(
         () =>

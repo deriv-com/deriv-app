@@ -18,14 +18,15 @@ const Download = observer(({ tab }: TDownloadProps) => {
     if (tab === 'transactions') {
         clickFunction = onClickDownloadTransaction;
         disabled = !transaction_list.length || is_running;
-        if (is_running) popover_message = localize('Download is unavailable while your bot is running.');
-        else if (!transaction_list.length) popover_message = localize('No transaction or activity yet.');
-        else popover_message = localize('Download your transaction history.');
+        popover_message = localize('Download your transaction history.');
     } else if (tab === 'journal') {
         clickFunction = onClickDownloadJournal;
         popover_message = localize('Download your journal.');
         disabled = is_clear_stat_disabled;
     }
+    if (is_running) popover_message = localize('Download is unavailable while your bot is running.');
+    else if (!transaction_list.length) popover_message = localize('No transaction or activity yet.');
+
     return (
         <Popover
             className='run-panel__info'

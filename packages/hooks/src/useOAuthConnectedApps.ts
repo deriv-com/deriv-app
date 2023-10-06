@@ -13,6 +13,8 @@ const useOAuthConnectedApps = () => {
     return {
         data: data?.oauth_apps,
         ...rest,
+        isError: Object.hasOwn(data ?? {}, 'error'),
+        isSuccess: !Object.hasOwn(data ?? {}, 'error'),
     };
 };
 

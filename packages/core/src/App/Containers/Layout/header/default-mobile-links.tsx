@@ -10,7 +10,7 @@ type TDefaultMobileLinks = {
     handleClickCashier: () => void;
 };
 
-const DefaultMobileLinks = ({ handleClickCashier }: TDefaultMobileLinks) => (
+const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLinks) => (
     <React.Fragment>
         <div className='traders-hub-header__menu-right--items--onboarding'>
             <TradersHubOnboarding />
@@ -35,6 +35,8 @@ const DefaultMobileLinks = ({ handleClickCashier }: TDefaultMobileLinks) => (
             </Button>
         </div>
     </React.Fragment>
-);
+));
+
+DefaultMobileLinks.displayName = 'DefaultMobileLinks';
 
 export default DefaultMobileLinks;

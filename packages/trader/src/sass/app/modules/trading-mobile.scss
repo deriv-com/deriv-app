@@ -387,8 +387,9 @@
                 flex: 1;
             }
         }
+        &__accumulator,
         &__multiplier,
-        &__accumulator {
+        &__vanilla {
             &-radio-group {
                 flex-direction: column;
                 align-items: flex-start;
@@ -539,8 +540,13 @@
 }
 
 .dc-modal__container_trade-params {
-    .trade-params__multiplier-ic-info-wrapper {
-        margin-left: 1.4rem;
+    .trade-params {
+        &__multiplier,
+        &__vanilla {
+            &-ic-info-wrapper {
+                margin-left: 1.4rem;
+            }
+        }
     }
     .dc-modal-header__close {
         margin-right: 1rem;

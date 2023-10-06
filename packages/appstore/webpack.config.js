@@ -1,7 +1,7 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 //TODO: Uncomment this line when type script migrations on all packages done
 //const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -40,6 +40,7 @@ module.exports = function (env) {
             index: path.resolve(__dirname, 'src', 'index.tsx'),
         },
         mode: is_release ? 'production' : 'development',
+        plugins: [new BundleAnalyzerPlugin()],
         output: {
             path: path.resolve(__dirname, 'dist'),
             publicPath: base,
@@ -108,7 +109,7 @@ module.exports = function (env) {
                         {
                             loader: 'css-loader',
                             options: {
-                                url: (_, resourcePath) => resourcePath.includes('packages/wallets'),
+                                url: false,
                             },
                         },
                         {
@@ -134,8 +135,6 @@ module.exports = function (env) {
                                 resources: [
                                     // eslint-disable-next-line global-require, import/no-dynamic-require
                                     ...require('@deriv/shared/src/styles/index.js'),
-                                    // eslint-disable-next-line global-require, import/no-dynamic-require
-                                    ...require('@deriv/wallets/src/styles/index.js'),
                                 ],
                             },
                         },
@@ -143,24 +142,7 @@ module.exports = function (env) {
                 },
                 {
                     test: /\.svg$/,
-                    issuer: /\/packages\/wallets\/.*(\/)?.*.scss/,
-                    exclude: /node_modules/,
-                    include: /public\//,
-                    type: 'asset/resource',
-                    generator: {
-                        filename: 'appstore/wallets/public/[name].[contenthash][ext]',
-                    },
-                },
-                {
-                    test: /\.svg$/,
-                    issuer: /\/packages\/wallets\/.*(\/)?.*.tsx/,
-                    exclude: /node_modules/,
-                    include: /public\//,
-                    use: svg_loaders,
-                },
-                {
-                    test: /\.svg$/,
-                    exclude: [/node_modules|public\//],
+                    exclude: /node_modules|public\//,
                     use: svg_loaders,
                 },
             ],
@@ -176,6 +158,34 @@ module.exports = function (env) {
                       new CssMinimizerPlugin(),
                   ]
                 : [],
+            splitChunks: {
+                chunks: 'all',
+                minChunks: 1,
+                maxSize: 10000000,
+                cacheGroups: {
+                    default: {
+                        minChunks: 2,
+                        minSize: 102400,
+                        priority: -20,
+                        reuseExistingChunk: true,
+                    },
+                    account: {
+                        idHint: 'account',
+                        test: /[\\/]account\//,
+                        priority: -20,
+                    },
+                    onfido: {
+                        idHint: 'onfido',
+                        test: /[\\/]onfido\//,
+                        priority: -20,
+                    },
+                    defaultVendors: {
+                        idHint: 'vendors',
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10,
+                    },
+                },
+            },
         },
         devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [

@@ -27,6 +27,11 @@
             }
         }
     }
+    .transfer-limit {
+        &__span {
+            margin: 0 0.25rem;
+        }
+    }
     @include mobile {
         grid-template-columns: 1fr;
         margin-top: 2.4rem;

@@ -3,7 +3,6 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 
-
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import { mock_ws } from 'Utils/mock';

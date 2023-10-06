@@ -120,7 +120,7 @@ export default class ContractStore extends BaseStore {
         // TODO: don't update the barriers & markers if they are not changed
         this.updateBarriersArray(contract_info, this.root_store.ui.is_dark_mode_on);
         this.markers_array = createChartMarkers(this.contract_info);
-        this.marker = this.root_store.client.is_alpha_chart
+        this.marker = this.root_store.client.is_beta_chart
             ? calculateMarker(this.contract_info, this.root_store.ui.is_dark_mode_on, is_last_contract, {
                   accu_high_barrier,
                   accu_low_barrier,
@@ -212,7 +212,7 @@ export default class ContractStore extends BaseStore {
                     },
                     is_dark_mode
                 );
-                this.marker = this.root_store.client.is_alpha_chart
+                this.marker = this.root_store.client.is_beta_chart
                     ? calculateMarker(this.contract_info, this.root_store.ui.is_dark_mode_on, false, {
                           accu_high_barrier: this.accu_high_barrier,
                           accu_low_barrier: this.accu_low_barrier,

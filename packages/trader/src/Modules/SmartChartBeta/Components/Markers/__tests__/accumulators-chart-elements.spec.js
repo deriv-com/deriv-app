@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import AccumulatorsChartElementsAlpha from '../accumulators-chart-elements';
+import AccumulatorsChartElementsBeta from '../accumulators-chart-elements';
 
 jest.mock('App/Components/Elements/PositionsDrawer/helpers/positions-helper.js', () => ({
     filterByContractType: jest.fn(() => true),
 }));
-jest.mock('../accumulators-profit-loss-tooltip.jsx', () => () => <div>AccumulatorsProfitLossTooltipAlpha</div>);
+jest.mock('../accumulators-profit-loss-tooltip.jsx', () => () => <div>AccumulatorsProfitLossTooltipBeta</div>);
 jest.mock('../marker.jsx', () => () => <div>Spot-emphasizing ChartMarker</div>);
 
-describe('AccumulatorsChartElementsAlpha', () => {
+describe('AccumulatorsChartElementsBeta', () => {
     const mock_props = {
         all_positions: [
             { contract_info: { underlying: 'test symbol', contract_type: 'ACCU', entry_spot: 9454.1, contract_id: 1 } },
@@ -29,18 +29,18 @@ describe('AccumulatorsChartElementsAlpha', () => {
     };
 
     it('should render AccumulatorsChartElements without Spot-emphasizing ChartMarker', () => {
-        render(<AccumulatorsChartElementsAlpha {...mock_props} />);
+        render(<AccumulatorsChartElementsBeta {...mock_props} />);
 
-        const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltipAlpha');
+        const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltipBeta');
         expect(tooltip_arr.length).toBe(2);
         expect(screen.queryByText('Spot-emphasizing ChartMarker')).not.toBeInTheDocument();
     });
 
     it('should render AccumulatorsChartElements with Spot-emphasizing ChartMarker when has_crossed_accu_barriers = true', () => {
         mock_props.has_crossed_accu_barriers = true;
-        render(<AccumulatorsChartElementsAlpha {...mock_props} />);
+        render(<AccumulatorsChartElementsBeta {...mock_props} />);
 
-        const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltipAlpha');
+        const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltipBeta');
         expect(tooltip_arr.length).toBe(2);
         expect(screen.getByText('Spot-emphasizing ChartMarker')).toBeInTheDocument();
     });

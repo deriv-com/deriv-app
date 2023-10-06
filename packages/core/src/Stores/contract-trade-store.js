@@ -28,7 +28,7 @@ export default class ContractTradeStore extends BaseStore {
 
     // Chart specific observables
     granularity = +LocalStore.get('contract_trade.granularity') || 0;
-    chart_type = this.root_store.client.is_alpha_chart
+    chart_type = this.root_store.client.is_beta_chart
         ? LocalStore.get('contract_trade.chart_style') || 'line'
         : LocalStore.get('contract_trade.chart_type') || 'mountain';
     prev_chart_type = '';
@@ -191,7 +191,7 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     updateChartType(type) {
-        if (this.root_store.client.is_alpha_chart) {
+        if (this.root_store.client.is_beta_chart) {
             LocalStore.set('contract_trade.chart_style', type);
         } else {
             LocalStore.set('contract_trade.chart_type', type);
@@ -200,12 +200,12 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     updateGranularity(granularity) {
-        const tick_chart_types = this.root_store.client.is_alpha_chart
+        const tick_chart_types = this.root_store.client.is_beta_chart
             ? ['line', 'candles', 'hollow', 'ohlc']
             : ['mountain', 'line', 'colored_line', 'spline', 'baseline'];
 
         if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
-            this.chart_type = this.root_store.client.is_alpha_chart ? 'line' : 'mountain';
+            this.chart_type = this.root_store.client.is_beta_chart ? 'line' : 'mountain';
         }
 
         LocalStore.set('contract_trade.granularity', granularity);
@@ -301,7 +301,7 @@ export default class ContractTradeStore extends BaseStore {
             .filter(m => m)
             .map(m => toJS(m));
 
-        if (!this.root_store.client.is_alpha_chart) {
+        if (!this.root_store.client.is_beta_chart) {
             if (markers.length) {
                 markers[markers.length - 1].is_last_contract = true;
             }
@@ -324,7 +324,7 @@ export default class ContractTradeStore extends BaseStore {
             this.accumulator_barriers_data ||
             {};
         if (trade_type === 'accumulator' && previous_spot_time && accumulators_high_barrier) {
-            if (this.root_store.client.is_alpha_chart) {
+            if (this.root_store.client.is_beta_chart) {
                 markers.push(
                     getAccumulatorMarkers({
                         high_barrier: accumulators_high_barrier,
@@ -338,7 +338,7 @@ export default class ContractTradeStore extends BaseStore {
                     })
                 );
             }
-            if (!this.root_store.client.is_alpha_chart) {
+            if (!this.root_store.client.is_beta_chart) {
                 markers.push({
                     type: 'TickContract',
                     contract_info: {
@@ -382,7 +382,7 @@ export default class ContractTradeStore extends BaseStore {
 
         const contract = new ContractStore(this.root_store, { contract_id });
 
-        if (this.root_store.client.is_alpha_chart) {
+        if (this.root_store.client.is_beta_chart) {
             contract.populateConfig(
                 {
                     date_start: start_time,
@@ -442,11 +442,11 @@ export default class ContractTradeStore extends BaseStore {
         if (response.proposal_open_contract) {
             const contract_id = +response.proposal_open_contract.contract_id;
             const contract = this.contracts_map[contract_id];
-            if (this.root_store.client.is_alpha_chart) {
+            if (this.root_store.client.is_beta_chart) {
                 const is_last_contract = contract_id === this.last_contract.contract_id;
                 contract.populateConfig(response.proposal_open_contract, is_last_contract);
             }
-            if (!this.root_store.client.is_alpha_chart) {
+            if (!this.root_store.client.is_beta_chart) {
                 contract.populateConfig(response.proposal_open_contract);
             }
             if (response.proposal_open_contract.is_sold) {

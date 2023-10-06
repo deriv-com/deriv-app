@@ -4,11 +4,11 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { FastMarkerAlpha } from 'Modules/SmartChartAlpha';
-import AccumulatorsProfitLossTextAlpha from './accumulators-profit-loss-text';
+import { FastMarkerBeta } from 'Modules/SmartChartBeta';
+import AccumulatorsProfitLossTextBeta from './accumulators-profit-loss-text';
 import { isMobile } from '@deriv/shared';
 
-const AccumulatorsProfitLossTooltipAlpha = ({
+const AccumulatorsProfitLossTooltipBeta = ({
     alignment = 'right',
     current_spot,
     current_spot_time,
@@ -71,7 +71,7 @@ const AccumulatorsProfitLossTooltipAlpha = ({
     if (typeof profit !== 'number') return null;
     if (!is_sold && current_spot_time && high_barrier && should_show_profit_text)
         return (
-            <AccumulatorsProfitLossTextAlpha
+            <AccumulatorsProfitLossTextBeta
                 currency={currency}
                 current_spot={current_spot}
                 current_spot_time={current_spot_time}
@@ -79,7 +79,7 @@ const AccumulatorsProfitLossTooltipAlpha = ({
             />
         );
     return is_sold && exit_tick_time ? (
-        <FastMarkerAlpha markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
+        <FastMarkerBeta markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
             <span
                 className={`${className}__spot-circle`}
                 onMouseEnter={() => setIsTooltipOpen(true)}
@@ -105,11 +105,11 @@ const AccumulatorsProfitLossTooltipAlpha = ({
                     </Text>
                 </div>
             </CSSTransition>
-        </FastMarkerAlpha>
+        </FastMarkerBeta>
     ) : null;
 };
 
-AccumulatorsProfitLossTooltipAlpha.propTypes = {
+AccumulatorsProfitLossTooltipBeta.propTypes = {
     alignment: PropTypes.string,
     current_spot: PropTypes.number,
     current_spot_time: PropTypes.number,
@@ -123,4 +123,4 @@ AccumulatorsProfitLossTooltipAlpha.propTypes = {
     should_show_profit_text: PropTypes.bool,
 };
 
-export default React.memo(AccumulatorsProfitLossTooltipAlpha);
+export default React.memo(AccumulatorsProfitLossTooltipBeta);

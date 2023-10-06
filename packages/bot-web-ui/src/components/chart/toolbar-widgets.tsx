@@ -1,42 +1,42 @@
 import React from 'react';
 import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from '@deriv/deriv-charts';
 import {
-    ChartMode as ChartModeAlpha,
-    DrawTools as DrawToolsAlpha,
-    Share as ShareAlpha,
-    StudyLegend as StudyLegendAlpha,
-    ToolbarWidget as ToolbarWidgetAlpha,
-    Views as ViewsAlpha,
-} from '@deriv/deriv-charts-alpha';
+    ChartMode as ChartModeBeta,
+    DrawTools as DrawToolsBeta,
+    Share as ShareBeta,
+    StudyLegend as StudyLegendBeta,
+    ToolbarWidget as ToolbarWidgetBeta,
+    Views as ViewsBeta,
+} from '@deriv/deriv-charts-beta';
 import { isDesktop, isMobile } from '@deriv/shared';
 
 type TToolbarWidgetsProps = {
-    is_alpha_chart: boolean;
+    is_beta_chart: boolean;
     updateChartType: (chart_type: string) => void;
     updateGranularity: (updateGranularity: number) => void;
 };
 
-const ToolbarWidgets = ({ is_alpha_chart, updateChartType, updateGranularity }: TToolbarWidgetsProps) => {
+const ToolbarWidgets = ({ is_beta_chart, updateChartType, updateGranularity }: TToolbarWidgetsProps) => {
     return (
         <>
-            {is_alpha_chart && (
-                <ToolbarWidgetAlpha position={isMobile() ? 'bottom' : null}>
-                    <ChartModeAlpha
+            {is_beta_chart && (
+                <ToolbarWidgetBeta position={isMobile() ? 'bottom' : null}>
+                    <ChartModeBeta
                         portalNodeId='modal_root'
                         onChartType={updateChartType}
                         onGranularity={updateGranularity}
                     />
                     {isDesktop() && (
                         <>
-                            <StudyLegendAlpha portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
-                            <ViewsAlpha portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
-                            <DrawToolsAlpha portalNodeId='modal_root' />
-                            <ShareAlpha portalNodeId='modal_root' />
+                            <StudyLegendBeta portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+                            <ViewsBeta portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+                            <DrawToolsBeta portalNodeId='modal_root' />
+                            <ShareBeta portalNodeId='modal_root' />
                         </>
                     )}
-                </ToolbarWidgetAlpha>
+                </ToolbarWidgetBeta>
             )}
-            {!is_alpha_chart && (
+            {!is_beta_chart && (
                 <ToolbarWidget position={isMobile() ? 'bottom' : null}>
                     <ChartMode
                         portalNodeId='modal_root'

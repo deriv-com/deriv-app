@@ -273,7 +273,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             setPrevAccountType: jest.fn(),
             prev_account_type: 'demo',
-            is_alpha_chart: true,
+            is_beta_chart: true,
         },
         common: {
             error: common_store_error,

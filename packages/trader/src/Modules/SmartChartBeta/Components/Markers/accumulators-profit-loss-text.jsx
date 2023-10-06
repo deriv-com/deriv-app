@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv/shared';
-import { FastMarkerAlpha } from 'Modules/SmartChartAlpha';
+import { FastMarkerBeta } from 'Modules/SmartChartBeta';
 import classNames from 'classnames';
 
 const ACTIONS = {
@@ -11,7 +11,7 @@ const ACTIONS = {
     ADD10: 'add10',
 };
 
-const AccumulatorsProfitLossTextAlpha = ({
+const AccumulatorsProfitLossTextBeta = ({
     current_spot,
     current_spot_time,
     currency,
@@ -100,7 +100,7 @@ const AccumulatorsProfitLossTextAlpha = ({
     };
 
     return (
-        <FastMarkerAlpha
+        <FastMarkerBeta
             markerRef={onRef}
             className={classNames(className, won ? 'won' : 'lost')}
             overlap_y_axis={false}
@@ -121,11 +121,11 @@ const AccumulatorsProfitLossTextAlpha = ({
             <Text size={isMobile() ? 'xxxs' : 'xxs'} as='div' className={`${className}__currency`}>
                 {getCurrencyDisplayCode(currency)}
             </Text>
-        </FastMarkerAlpha>
+        </FastMarkerBeta>
     );
 };
 
-AccumulatorsProfitLossTextAlpha.propTypes = {
+AccumulatorsProfitLossTextBeta.propTypes = {
     className: PropTypes.string,
     currency: PropTypes.string,
     current_spot: PropTypes.number,
@@ -133,4 +133,4 @@ AccumulatorsProfitLossTextAlpha.propTypes = {
     profit: PropTypes.number,
 };
 
-export default React.memo(AccumulatorsProfitLossTextAlpha);
+export default React.memo(AccumulatorsProfitLossTextBeta);

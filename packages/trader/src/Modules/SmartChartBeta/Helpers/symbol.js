@@ -1,4 +1,4 @@
-export const symbolChangeAlpha = onSymbolChange =>
+export const symbolChangeBeta = onSymbolChange =>
     onSymbolChange &&
     (symbol => {
         onSymbolChange({

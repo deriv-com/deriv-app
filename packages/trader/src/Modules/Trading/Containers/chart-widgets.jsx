@@ -5,9 +5,9 @@ import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
 import BottomWidgets from '../../SmartChart/Components/bottom-widgets.jsx';
 import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
 import { symbolChange } from '../../SmartChart/Helpers/symbol';
-import BottomWidgetsAlpha from '../../SmartChartAlpha/Components/bottom-widgets.jsx';
-import TopWidgetsAlpha from '../../SmartChartAlpha/Components/top-widgets.jsx';
-import { symbolChangeAlpha } from '../../SmartChartAlpha/Helpers/symbol';
+import BottomWidgetsBeta from '../../SmartChartBeta/Components/bottom-widgets.jsx';
+import TopWidgetsBeta from '../../SmartChartBeta/Components/top-widgets.jsx';
+import { symbolChangeBeta } from '../../SmartChartBeta/Helpers/symbol.js';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
@@ -43,7 +43,7 @@ export const DigitsWidget = observer(({ digits, tick }) => {
 export const ChartTopWidgets = observer(({ charts_ref, open_market, open }) => {
     const { client, ui } = useStore();
     const { is_digits_widget_active, onChange: onSymbolChange } = useTraderStore();
-    const { is_alpha_chart } = client;
+    const { is_beta_chart } = client;
     const { is_dark_mode_on } = ui;
     const theme = is_dark_mode_on ? 'dark' : 'light';
     let yAxiswidth;
@@ -52,18 +52,18 @@ export const ChartTopWidgets = observer(({ charts_ref, open_market, open }) => {
     }
     return (
         <>
-            {is_alpha_chart && (
-                <TopWidgetsAlpha
+            {is_beta_chart && (
+                <TopWidgetsBeta
                     open_market={open_market}
                     open={open}
                     is_mobile={isMobile()}
                     is_digits_widget_active={is_digits_widget_active}
-                    onSymbolChange={symbolChangeAlpha(onSymbolChange)}
+                    onSymbolChange={symbolChangeBeta(onSymbolChange)}
                     theme={theme}
                     y_axis_width={yAxiswidth}
                 />
             )}
-            {!is_alpha_chart && (
+            {!is_beta_chart && (
                 <TopWidgets
                     open_market={open_market}
                     open={open}
@@ -80,18 +80,18 @@ export const ChartTopWidgets = observer(({ charts_ref, open_market, open }) => {
 
 export const ChartBottomWidgets = observer(({ digits, tick, show_accumulators_stats }) => {
     const { client } = useStore();
-    const { is_alpha_chart } = client;
+    const { is_beta_chart } = client;
 
     return (
         <>
-            {is_alpha_chart && (
-                <BottomWidgetsAlpha
+            {is_beta_chart && (
+                <BottomWidgetsBeta
                     Widget={
                         show_accumulators_stats ? <AccumulatorsStats /> : <DigitsWidget digits={digits} tick={tick} />
                     }
                 />
             )}
-            {!is_alpha_chart && (
+            {!is_beta_chart && (
                 <BottomWidgets
                     Widget={
                         show_accumulators_stats ? <AccumulatorsStats /> : <DigitsWidget digits={digits} tick={tick} />

@@ -10,7 +10,7 @@ type TContractType = {
     value: string;
 };
 
-const BuyToastNotificationAlpha = observer(() => {
+const BuyToastNotificationBeta = observer(() => {
     const portal = document.getElementById('popup_root');
     const { modules } = useStore();
     const { trade } = modules;
@@ -57,4 +57,4 @@ const BuyToastNotificationAlpha = observer(() => {
     );
 });
 
-export default BuyToastNotificationAlpha;
+export default BuyToastNotificationBeta;

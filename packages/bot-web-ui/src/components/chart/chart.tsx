@@ -4,7 +4,7 @@ import classNames from 'classnames';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
-import { ChartTitle as ChartTitleAlpha, SmartChart as SmartChartAlpha } from '@deriv/deriv-charts-alpha';
+import { ChartTitle as ChartTitleBeta, SmartChart as SmartChartBeta } from '@deriv/deriv-charts-beta';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -46,8 +46,8 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 'dashboard__chart-wrapper--expanded': is_drawer_open && !isMobile(),
             })}
         >
-            {client.is_alpha_chart && (
-                <SmartChartAlpha
+            {client.is_beta_chart && (
+                <SmartChartBeta
                     id='dbot'
                     barriers={barriers}
                     showLastDigitStats={show_digits_stats}
@@ -56,7 +56,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     chartStatusListener={v => setChartStatus(!v)}
                     toolbarWidget={() => (
                         <ToolbarWidgets
-                            is_alpha_chart={true}
+                            is_beta_chart={true}
                             updateChartType={updateChartType}
                             updateGranularity={updateGranularity}
                         />
@@ -71,13 +71,13 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     requestSubscribe={wsSubscribe}
                     settings={settings}
                     symbol={symbol}
-                    topWidgets={() => <ChartTitleAlpha onChange={onSymbolChange} />}
+                    topWidgets={() => <ChartTitleBeta onChange={onSymbolChange} />}
                     isConnectionOpened={is_socket_opened}
                     getMarketsOrder={getMarketsOrder}
                     isLive={true}
                 />
             )}
-            {!client.is_alpha_chart && (
+            {!client.is_beta_chart && (
                 <SmartChart
                     id='dbot'
                     barriers={barriers}
@@ -87,7 +87,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     chartStatusListener={v => setChartStatus(!v)}
                     toolbarWidget={() => (
                         <ToolbarWidgets
-                            is_alpha_chart={false}
+                            is_beta_chart={false}
                             updateChartType={updateChartType}
                             updateGranularity={updateGranularity}
                         />

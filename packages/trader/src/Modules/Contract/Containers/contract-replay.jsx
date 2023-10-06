@@ -35,7 +35,7 @@ import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
 import DelayedAccuBarriersMarker from 'Modules/SmartChart/Components/Markers/delayed-accu-barriers-marker';
 import allMarkers from 'Modules/SmartChart/Components/all-markers.jsx';
-import ChartMarkerAlpha from 'Modules/SmartChartAlpha/Components/Markers/marker.jsx';
+import ChartMarkerBeta from 'Modules/SmartChartBeta/Components/Markers/marker.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -232,9 +232,9 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const scroll_to_epoch = allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined;
     const all_ticks = audit_details ? audit_details.all_ticks : [];
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
-    const { is_alpha_chart } = client;
+    const { is_beta_chart } = client;
 
-    const accu_barriers_marker_component = !is_alpha_chart ? allMarkers[accumulators_barriers_marker?.type] : undefined;
+    const accu_barriers_marker_component = !is_beta_chart ? allMarkers[accumulators_barriers_marker?.type] : undefined;
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && is_digit_contract;
@@ -259,7 +259,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     return (
         <SmartChartSwitcher
             id={'replay'}
-            is_alpha={is_alpha_chart}
+            is_beta={is_beta_chart}
             barriers={barriers_array}
             bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : null}
             chartControlsWidgets={null}
@@ -301,16 +301,16 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             isLive={!has_ended}
             startWithDataFitMode={true}
         >
-            {is_alpha_chart &&
+            {is_beta_chart &&
                 markers_array.map(({ content_config, marker_config, react_key }) => (
-                    <ChartMarkerAlpha
+                    <ChartMarkerBeta
                         key={react_key}
                         marker_config={marker_config}
                         marker_content_props={content_config}
                         is_bottom_widget_visible={isBottomWidgetVisible()}
                     />
                 ))}
-            {!is_alpha_chart &&
+            {!is_beta_chart &&
                 markers_array.map(({ content_config, marker_config, react_key }) => (
                     <ChartMarker
                         key={react_key}
@@ -319,7 +319,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                         is_bottom_widget_visible={isBottomWidgetVisible()}
                     />
                 ))}
-            {!is_alpha_chart ||
+            {!is_beta_chart ||
                 (is_accumulator_contract && !!markers_array && (
                     <DelayedAccuBarriersMarker
                         marker_component={accu_barriers_marker_component}

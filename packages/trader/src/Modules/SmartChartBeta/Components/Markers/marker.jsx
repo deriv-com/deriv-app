@@ -1,9 +1,9 @@
 import { toJS } from 'mobx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FastMarkerAlpha } from 'Modules/SmartChartAlpha';
+import { FastMarkerBeta } from 'Modules/SmartChartBeta';
 
-const ChartMarkerAlpha = ({ marker_config, marker_content_props }) => {
+const ChartMarkerBeta = ({ marker_config, marker_content_props }) => {
     const { ContentComponent, ...marker_props } = marker_config;
 
     // TODO:
@@ -27,16 +27,16 @@ const ChartMarkerAlpha = ({ marker_config, marker_content_props }) => {
     };
 
     return (
-        <FastMarkerAlpha markerRef={onRef}>
+        <FastMarkerBeta markerRef={onRef}>
             <ContentComponent {...toJS(marker_content_props)} />
-        </FastMarkerAlpha>
+        </FastMarkerBeta>
     );
 };
 
-ChartMarkerAlpha.propTypes = {
+ChartMarkerBeta.propTypes = {
     is_bottom_widget_visible: PropTypes.bool,
     marker_config: PropTypes.object,
     marker_content_props: PropTypes.object,
 };
 
-export default ChartMarkerAlpha;
+export default ChartMarkerBeta;

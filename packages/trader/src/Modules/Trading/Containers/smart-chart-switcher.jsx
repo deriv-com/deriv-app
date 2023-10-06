@@ -1,9 +1,9 @@
 import React from 'react';
 import { SmartChart } from 'Modules/SmartChart';
-import { SmartChartAlpha } from 'Modules/SmartChartAlpha';
+import { SmartChartBeta } from 'Modules/SmartChartBeta';
 
-const SmartChartSwitcher = ({ is_alpha, ...props }) => {
-    const Chart = is_alpha ? SmartChartAlpha : SmartChart;
+const SmartChartSwitcher = ({ is_beta, ...props }) => {
+    const Chart = is_beta ? SmartChartBeta : SmartChart;
     return <Chart data-testid='SmartChart' {...props} />;
 };
 

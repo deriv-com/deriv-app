@@ -71,7 +71,7 @@
         "@deriv/bot-skeleton": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-charts": "1.4.0",
-        "@deriv/deriv-charts-alpha": "npm:@deriv/deriv-charts@^2.0.0-alpha.1",
+        "@deriv/deriv-charts-beta": "npm:@deriv/deriv-charts@^2.0.0-alpha.1",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",

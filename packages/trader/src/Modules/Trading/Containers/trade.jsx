@@ -11,8 +11,8 @@ import FormLayout from '../Components/Form/form-layout';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
-import AccumulatorsChartElementsAlpha from '../../SmartChartAlpha/Components/Markers/accumulators-chart-elements.jsx';
-import ToolbarWidgetsAlpha from '../../SmartChartAlpha/Components/toolbar-widgets.jsx';
+import AccumulatorsChartElementsBeta from '../../SmartChartBeta/Components/Markers/accumulators-chart-elements.jsx';
+import ToolbarWidgetsBeta from '../../SmartChartBeta/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
@@ -285,7 +285,7 @@ const ChartTrade = observer(props => {
     const { all_positions } = portfolio;
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on, is_positions_drawer_on } = ui;
     const { is_socket_opened, current_language } = common;
-    const { currency, is_alpha_chart, should_show_eu_content } = client;
+    const { currency, is_beta_chart, should_show_eu_content } = client;
     const {
         chartStateChange,
         is_trade_enabled,
@@ -387,9 +387,9 @@ const ChartTrade = observer(props => {
             isConnectionOpened={is_socket_opened}
             clearChart={false}
             toolbarWidget={() => {
-                if (is_alpha_chart) {
+                if (is_beta_chart) {
                     return (
-                        <ToolbarWidgetsAlpha updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                        <ToolbarWidgetsBeta updateChartType={updateChartType} updateGranularity={updateGranularity} />
                     );
                 } else
                     return <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />;
@@ -405,11 +405,11 @@ const ChartTrade = observer(props => {
             }}
             isLive={true}
             leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
-            is_alpha={is_alpha_chart}
+            is_beta={is_beta_chart}
         >
-            {!is_alpha_chart && <ChartMarkers />}
-            {is_accumulator && is_alpha_chart && (
-                <AccumulatorsChartElementsAlpha
+            {!is_beta_chart && <ChartMarkers />}
+            {is_accumulator && is_beta_chart && (
+                <AccumulatorsChartElementsBeta
                     all_positions={all_positions}
                     current_spot={current_spot}
                     current_spot_time={current_spot_time}
@@ -421,7 +421,7 @@ const ChartTrade = observer(props => {
                     symbol={symbol}
                 />
             )}
-            {is_accumulator && !is_alpha_chart && (
+            {is_accumulator && !is_beta_chart && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}
                     current_spot={current_spot}

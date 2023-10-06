@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
 
-const MarkerLine = ({ is_alpha_chart, label, line_style, marker_config, status }) => {
+const MarkerLine = ({ is_beta_chart, label, line_style, marker_config, status }) => {
     // TODO: Find a more elegant solution
     if (!marker_config) return <div />;
     return (
@@ -12,7 +12,7 @@ const MarkerLine = ({ is_alpha_chart, label, line_style, marker_config, status }
             {label === marker_config.LINE_END.content_config.label && (
                 <Icon
                     icon='IcContractExitTimeCircle'
-                    className={is_alpha_chart ? 'chart-marker-line__icon-alph' : 'chart-marker-line__icon'}
+                    className={is_beta_chart ? 'chart-marker-line__icon-alph' : 'chart-marker-line__icon'}
                     color={status === 'lost' ? 'red' : 'green'}
                     size={24}
                 />
@@ -21,8 +21,8 @@ const MarkerLine = ({ is_alpha_chart, label, line_style, marker_config, status }
                 <Icon
                     icon='IcContractStartTimeCircle'
                     className={
-                        is_alpha_chart
-                            ? 'chart-marker-line__icon-alpha chart-marker-line__icon--time'
+                        is_beta_chart
+                            ? 'chart-marker-line__icon-beta chart-marker-line__icon--time'
                             : 'chart-marker-line__icon chart-marker-line__icon--time'
                     }
                     color='secondary'
@@ -34,7 +34,7 @@ const MarkerLine = ({ is_alpha_chart, label, line_style, marker_config, status }
 };
 
 MarkerLine.propTypes = {
-    is_alpha_chart: PropTypes.bool,
+    is_beta_chart: PropTypes.bool,
     label: PropTypes.string,
     line_style: PropTypes.string,
     marker_config: PropTypes.object,

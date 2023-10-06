@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import AccumulatorsProfitLossTextAlpha from '../accumulators-profit-loss-text';
+import AccumulatorsProfitLossTextBeta from '../accumulators-profit-loss-text';
 
-jest.mock('Modules/SmartChartAlpha', () => ({
-    ...jest.requireActual('Modules/SmartChartAlpha'),
-    FastMarkerAlpha: jest.fn(({ children, className }) => <div className={className}>{children}</div>),
+jest.mock('Modules/SmartChartBeta', () => ({
+    ...jest.requireActual('Modules/SmartChartBeta'),
+    FastMarkerBeta: jest.fn(({ children, className }) => <div className={className}>{children}</div>),
 }));
 
 describe('AccumulatorsProfitLossText', () => {
@@ -15,7 +15,7 @@ describe('AccumulatorsProfitLossText', () => {
     };
 
     it('should render AccumulatorsProfitLossText', () => {
-        render(<AccumulatorsProfitLossTextAlpha {...props} />);
+        render(<AccumulatorsProfitLossTextBeta {...props} />);
         const text_el = screen.getByTestId('dt_accumulator_profit_text');
         expect(text_el).toHaveClass('profit-loss-text__profit');
         expect(screen.getByText('3')).toHaveClass('profit-loss-text__sliding-tenth');

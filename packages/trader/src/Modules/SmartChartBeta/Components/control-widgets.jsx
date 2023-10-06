@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { DesktopWrapper } from '@deriv/components';
-import { ChartModeAlpha, DrawToolsAlpha, ShareAlpha, StudyLegendAlpha, ViewsAlpha } from 'Modules/SmartChartAlpha';
+import { ChartModeBeta, DrawToolsBeta, ShareBeta, StudyLegendBeta, ViewsBeta } from 'Modules/SmartChartBeta';
 
 const ControlWidgets = observer(() => {
     const {
@@ -11,15 +11,15 @@ const ControlWidgets = observer(() => {
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <ChartModeAlpha
+                <ChartModeBeta
                     portalNodeId='modal_root'
                     onChartType={type => updateChartType(type)}
                     onGranularity={granularity => updateGranularity(granularity)}
                 />
-                <StudyLegendAlpha portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
-                <DrawToolsAlpha portalNodeId='modal_root' />
-                <ViewsAlpha portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
-                <ShareAlpha portalNodeId='modal_root' />
+                <StudyLegendBeta portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+                <DrawToolsBeta portalNodeId='modal_root' />
+                <ViewsBeta portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+                <ShareBeta portalNodeId='modal_root' />
             </DesktopWrapper>
         </React.Fragment>
     );

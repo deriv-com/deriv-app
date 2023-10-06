@@ -1,10 +1,10 @@
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper.js';
 import PropTypes from 'prop-types';
 import React from 'react';
-import AccumulatorsProfitLossTooltipAlpha from './accumulators-profit-loss-tooltip.jsx';
-import ChartMarkerAlpha from './marker.jsx';
+import AccumulatorsProfitLossTooltipBeta from './accumulators-profit-loss-tooltip.jsx';
+import ChartMarkerBeta from './marker.jsx';
 
-const AccumulatorsChartElementsAlpha = ({
+const AccumulatorsChartElementsBeta = ({
     all_positions,
     current_spot,
     current_spot_time,
@@ -21,14 +21,14 @@ const AccumulatorsChartElementsAlpha = ({
         <React.Fragment>
             {!!accumulators_positions.length &&
                 accumulators_positions.map(({ contract_info }) => (
-                    <AccumulatorsProfitLossTooltipAlpha
+                    <AccumulatorsProfitLossTooltipBeta
                         key={contract_info.contract_id}
                         {...contract_info}
                         should_show_profit_text={should_show_profit_text}
                     />
                 ))}
             {has_crossed_accu_barriers && !!current_spot_time && (
-                <ChartMarkerAlpha
+                <ChartMarkerBeta
                     marker_config={{
                         ContentComponent: 'div',
                         x: current_spot_time,
@@ -41,7 +41,7 @@ const AccumulatorsChartElementsAlpha = ({
     );
 };
 
-AccumulatorsChartElementsAlpha.propTypes = {
+AccumulatorsChartElementsBeta.propTypes = {
     all_positions: PropTypes.array,
     current_spot: PropTypes.number,
     current_spot_time: PropTypes.number,
@@ -50,4 +50,4 @@ AccumulatorsChartElementsAlpha.propTypes = {
     symbol: PropTypes.string,
 };
 
-export default React.memo(AccumulatorsChartElementsAlpha);
+export default React.memo(AccumulatorsChartElementsBeta);

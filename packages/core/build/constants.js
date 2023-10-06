@@ -47,7 +47,7 @@ const HOISTED_PACKAGES = {
     '@deriv/components': path.resolve(__dirname, '../node_modules/@deriv/components'),
     '@deriv/translations': path.resolve(__dirname, '../node_modules/@deriv/translations'),
     '@deriv/deriv-charts': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts'),
-    '@deriv/deriv-charts-alpha': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-alpha'),
+    '@deriv/deriv-charts-beta': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta'),
 };
 
 const ALIASES = {
@@ -123,7 +123,7 @@ const MINIMIZERS = !IS_RELEASE
           }),
           new TerserPlugin({
               test: /\.js$/,
-              exclude: /(smartchartsalpha)/,
+              exclude: /(smartchartsbeta)/,
               parallel: 2,
           }),
           new CssMinimizerPlugin(),

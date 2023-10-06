@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isAccumulatorContract, isDigitContract } from '@deriv/shared';
-import { ChartTitleAlpha } from 'Modules/SmartChartAlpha';
-import BuyToastNotificationAlpha from './buy-toast-notification';
+import { ChartTitleBeta } from 'Modules/SmartChartBeta';
+import BuyToastNotificationBeta from './buy-toast-notification';
 import { observer, useStore } from '@deriv/stores';
 
 const RecentTradeInfo = observer(() => {
@@ -32,7 +32,7 @@ const RecentTradeInfo = observer(() => {
     );
 });
 
-const TopWidgetsAlpha = ({
+const TopWidgetsBeta = ({
     InfoBox,
     is_mobile,
     is_title_enabled = true,
@@ -44,7 +44,7 @@ const TopWidgetsAlpha = ({
     is_digits_widget_active,
 }) => {
     const ChartTitleLocal = (
-        <ChartTitleAlpha
+        <ChartTitleBeta
             open_market={open_market}
             open={open}
             enabled={is_title_enabled}
@@ -63,7 +63,7 @@ const TopWidgetsAlpha = ({
                     width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
                 }}
             >
-                {is_mobile && <BuyToastNotificationAlpha />}
+                {is_mobile && <BuyToastNotificationBeta />}
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}
             </div>
@@ -80,7 +80,7 @@ const TopWidgetsAlpha = ({
     );
 };
 
-TopWidgetsAlpha.propTypes = {
+TopWidgetsBeta.propTypes = {
     InfoBox: PropTypes.node,
     is_digits_widget_active: PropTypes.bool,
     is_mobile: PropTypes.bool,
@@ -92,4 +92,4 @@ TopWidgetsAlpha.propTypes = {
     y_axis_width: PropTypes.number,
 };
 
-export default TopWidgetsAlpha;
+export default TopWidgetsBeta;

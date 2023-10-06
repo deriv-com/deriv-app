@@ -7,7 +7,6 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { getSetting } from 'Utils/settings';
 
-import { useDBotStore } from 'Stores/useDBotStore';
 import Accordion from '../common/accordion';
 import TourButton from '../common/tour-button';
 import TourStartDialog from '../common/tour-start-dialog';

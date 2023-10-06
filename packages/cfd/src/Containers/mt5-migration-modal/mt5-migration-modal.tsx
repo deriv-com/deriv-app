@@ -49,9 +49,9 @@ const MT5MigrationModal = observer(() => {
 
     const getModalHeight = () => {
         if (show_modal_front_side) {
-            return no_of_svg_accounts_to_migrate < 1 ? '54.2rem' : '44rem';
+            return no_of_svg_accounts_to_migrate > 1 ? '54.2rem' : '44rem';
         } else if (mt5_migration_error) {
-            return '66rem';
+            return 'auto';
         }
         return '61.6rem';
     };

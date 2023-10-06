@@ -89,6 +89,7 @@ export default class CFDStore extends BaseStore {
             disableCFDPasswordModal: action.bound,
             enableCFDPasswordModal: action.bound,
             getName: action.bound,
+            MigrateAccounts: action.bound,
             openMT5Account: action.bound,
             openCFDAccount: action.bound,
             beginRealSignupForMt5: action.bound,
@@ -374,10 +375,54 @@ export default class CFDStore extends BaseStore {
         return first_name ? [first_name, title].join(' ') : title;
     }
 
-    openMT5Account(values) {
+    async MigrateMT5Account(values, actions) {
+        const account_to_migrate = this.root_store.client.mt5_login_list.filter(
+            acc => acc.landing_company_short === Jurisdiction.SVG && !!acc.eligible_to_migrate
+        );
+        const promises = account_to_migrate.map(account => {
+            const { eligible_to_migrate } = account;
+            const [type, shortcode] = Object.entries(eligible_to_migrate)[0];
+            const account_type = {
+                category: 'real',
+                type,
+            };
+            return this.MigrateAccounts(values, shortcode, account_type);
+        });
+
+        try {
+            const results = await Promise.all(promises);
+            const has_error = results.find(result => result.error);
+            console.log(results);
+
+            if (!has_error) {
+                actions.setStatus({ success: true });
+                actions.setSubmitting(false);
+                this.setError(false);
+                this.setCFDSuccessDialog(true);
+                await this.getAccountStatus(CFD_PLATFORMS.MT5);
+
+                const mt5_login_list_response = await WS.authorized.mt5LoginList();
+                this.root_store.client.responseMt5LoginList(mt5_login_list_response);
+
+                WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier1000001
+                this.root_store.client.responseMT5TradingServers(await WS.tradingServers(CFD_PLATFORMS.MT5));
+                // this.setCFDNewAccount(results.mt5_new_account);   // need to check this
+            } else {
+                await this.getAccountStatus(CFD_PLATFORMS.MT5);
+                this.clearCFDError();
+                this.setMT5MigrationError(has_error?.error?.message);
+                this.root_store.ui.toggleMT5MigrationModal();
+            }
+        } catch (error) {
+            // At least one request has failed
+            console.error('One or more requests failed:', error);
+        }
+    }
+
+    MigrateAccounts(values, shortcode, account_type) {
         const name = this.getName();
-        const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
-        const type_request = getAccountTypeFields(this.account_type);
+        const leverage = this.mt5_companies[account_type.category][account_type.type].leverage;
+        const type_request = getAccountTypeFields(account_type);
         const { address_line_1, address_line_2, address_postcode, address_city, address_state, country_code, phone } =
             this.root_store.client.account_settings;
 
@@ -392,10 +437,9 @@ export default class CFDStore extends BaseStore {
             phone,
             state: address_state,
             zipCode: address_postcode,
-            ...(this.account_type.type === 'all' ? { sub_account_category: 'swap_free' } : {}),
             ...(values.server ? { server: values.server } : {}),
-            ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
-            ...(this.jurisdiction_selected_shortcode !== Jurisdiction.LABUAN
+            ...(shortcode ? { company: shortcode } : {}),
+            ...(shortcode !== Jurisdiction.LABUAN
                 ? type_request
                 : {
                       account_type: 'financial',
@@ -508,6 +552,36 @@ export default class CFDStore extends BaseStore {
         return false;
     }
 
+    openMT5Account(values) {
+        const name = this.getName();
+        const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
+        const type_request = getAccountTypeFields(this.account_type);
+        const { address_line_1, address_line_2, address_postcode, address_city, address_state, country_code, phone } =
+            this.root_store.client.account_settings;
+
+        return WS.mt5NewAccount({
+            mainPassword: values.password,
+            email: this.root_store.client.email_address,
+            leverage,
+            name,
+            address: address_line_1 || address_line_2,
+            city: address_city,
+            country: country_code,
+            phone,
+            state: address_state,
+            zipCode: address_postcode,
+            ...(this.account_type.type === 'all' ? { sub_account_category: 'swap_free' } : {}),
+            ...(values.server ? { server: values.server } : {}),
+            ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
+            ...(this.jurisdiction_selected_shortcode !== Jurisdiction.LABUAN
+                ? type_request
+                : {
+                      account_type: 'financial',
+                      mt5_account_type: 'financial_stp',
+                  }),
+        });
+    }
+
     async submitMt5Password(values, actions) {
         if (this.root_store.client.is_mt5_password_not_set) {
             const has_error = await this.creatMT5Password(values, actions);
@@ -515,28 +589,25 @@ export default class CFDStore extends BaseStore {
         }
 
         this.resetFormErrors();
-        const response = await this.openMT5Account(values);
-        if (!response.error) {
-            actions.setStatus({ success: true });
-            actions.setSubmitting(false);
-            this.setError(false);
-            this.setCFDSuccessDialog(true);
-            await this.getAccountStatus(CFD_PLATFORMS.MT5);
-
-            const mt5_login_list_response = await WS.authorized.mt5LoginList();
-            this.root_store.client.responseMt5LoginList(mt5_login_list_response);
-
-            WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
-            this.root_store.client.responseMT5TradingServers(await WS.tradingServers(CFD_PLATFORMS.MT5));
-            this.setCFDNewAccount(response.mt5_new_account);
+        if (this.root_store.ui.is_mt5_migration_modal_enabled) {
+            await this.MigrateMT5Account(values, actions);
         } else {
-            await this.getAccountStatus(CFD_PLATFORMS.MT5);
+            const response = await this.openMT5Account(values);
+            if (!response.error) {
+                actions.setStatus({ success: true });
+                actions.setSubmitting(false);
+                this.setError(false);
+                this.setCFDSuccessDialog(true);
+                await this.getAccountStatus(CFD_PLATFORMS.MT5);
 
-            if (this.root_store.ui.is_mt5_migration_modal_enabled) {
-                this.clearCFDError();
-                this.setMT5MigrationError(response?.error?.message);
-                this.root_store.ui.toggleMT5MigrationModal();
+                const mt5_login_list_response = await WS.authorized.mt5LoginList();
+                this.root_store.client.responseMt5LoginList(mt5_login_list_response);
+
+                WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
+                this.root_store.client.responseMT5TradingServers(await WS.tradingServers(CFD_PLATFORMS.MT5));
+                this.setCFDNewAccount(response.mt5_new_account);
             } else {
+                await this.getAccountStatus(CFD_PLATFORMS.MT5);
                 this.setError(true, response.error);
                 actions.resetForm({});
                 actions.setSubmitting(false);

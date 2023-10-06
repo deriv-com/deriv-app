@@ -796,7 +796,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         (!has_cfd_error || is_password_error || is_password_reset);
 
     const should_show_success =
-        !has_cfd_error && is_cfd_success_dialog_enabled && is_cfd_password_modal_enabled && is_password_modal_exited;
+        !has_cfd_error &&
+        is_cfd_success_dialog_enabled &&
+        is_cfd_password_modal_enabled &&
+        is_password_modal_exited &&
+        !is_mt5_migration_modal_enabled;
+
+    const should_show_migration_success =
+        !has_cfd_error && is_mt5_migration_modal_enabled && is_cfd_success_dialog_enabled && is_password_modal_exited;
 
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
@@ -923,6 +930,22 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         );
     };
 
+    const getMigrationSubmitText = () => {
+        return (
+            <Localize
+                i18n_default_text="We've upgraded your MT5 account(s) by moving them to the {{eligible_account_migrate}} jurisdiction. Use your <0>{{migrated_accounts}}</0> new login ID and MT5 password to start trading."
+                values={{
+                    eligible_account_migrate: 'svg',
+                    // platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
+                    // market_type: getFormattedJurisdictionMarketTypes,
+
+                    migrated_accounts: 'accounts migrated',
+                }}
+                components={[<strong key={0} />]}
+            />
+        );
+    };
+
     const cfd_password_form = (
         <CFDPasswordForm
             is_bvi={is_bvi}
@@ -1018,6 +1041,23 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 width={isMobile() ? '32.8rem' : 'auto'}
                 is_medium_button={isMobile()}
             />
+            {should_show_migration_success && (
+                <SuccessDialog
+                    is_open={should_show_migration_success}
+                    toggleModal={closeModal}
+                    onCancel={closeModal}
+                    onSubmit={closeModal}
+                    classNameMessage='cfd-password-modal__message'
+                    message={getMigrationSubmitText()}
+                    icon={<Icon icon='IcMt5MigrationSuccess' size={128} />}
+                    icon_size='xlarge'
+                    text_submit={localize('OK')}
+                    has_cancel={false}
+                    has_close_icon={false}
+                    width={isMobile() ? '32.8rem' : 'auto'}
+                    is_medium_button={isMobile()}
+                />
+            )}
             <SentEmailModal
                 is_open={should_show_sent_email_modal}
                 identifier_title='trading_password'

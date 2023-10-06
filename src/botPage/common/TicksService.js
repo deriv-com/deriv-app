@@ -274,8 +274,8 @@ export default class TicksService {
             style,
         };
 
-        return new Promise((resolve, reject) => {
-            doUntilDone(() => api_base.api.send(request_object))
+        return new Promise((resolve) => {
+            doUntilDone(() => this.api.send(request_object))
                 .then(r => {
                     if (style === 'ticks') {
                         const ticks = historyToTicks(r.history);
@@ -290,7 +290,6 @@ export default class TicksService {
                     }
                 })
                 .catch(e => {
-                    reject(e);
                     globalObserver.emit('Error', e);
                 });
         });

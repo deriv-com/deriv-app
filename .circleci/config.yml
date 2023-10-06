@@ -74,48 +74,6 @@ commands:
       - run:
           name: Tag build
           command: echo "<< parameters.target_branch >> $(date -u +'%Y-%m-%dT%H:%M:%SZ')" > www/version
-  docker_build_push:
-    description: "Build and Push image to docker hub"
-    parameters:
-      docker_latest_image_tag:
-        type: string
-        default: "latest-staging"
-      docker_image_tag:
-        type: string
-        default: ${CIRCLE_SHA1}
-    steps:
-      - setup_remote_docker
-      - run:
-          name: Building docker image for << parameters.docker_latest_image_tag >>
-          command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/deriv-static-bot:<< parameters.docker_image_tag >> -t ${DOCKHUB_ORGANISATION}/deriv-static-bot:<< parameters.docker_latest_image_tag >> .
-      - run:
-          name: Pushing Image to docker hub
-          command: |
-            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push -a ${DOCKHUB_ORGANISATION}/deriv-static-bot
-  k8s_deploy:
-    description: "Deploy to k8s cluster"
-    parameters:
-      target:
-        type: string
-        default: "beta"
-      k8s_version:
-        type: string
-        default: ${CIRCLE_SHA1}
-      k8s_namespace:
-        type: string
-        default: "bot-deriv-com-staging"
-    steps:
-      - k8s/install-kubectl
-      - run:
-          name: Deploying to k8s cluster for service << parameters.k8s_namespace >>
-          command: |
-            export NAMESPACE=<< parameters.k8s_namespace >>
-            git clone https://github.com/binary-com/devops-ci-scripts
-            cd devops-ci-scripts/k8s-build_tools
-            echo $CA_CRT | base64 --decode > ca.crt
-            ./release.sh deriv-static-bot << parameters.k8s_version >>
   test:
     description: "Run test"
     steps:
@@ -173,10 +131,8 @@ jobs:
           root: www
           paths:
             - .
-      - docker_build_push
       - deploy:
           target_branch: "staging"
-      - k8s_deploy
       - notify_slack
   release_production:
     docker:
@@ -190,15 +146,8 @@ jobs:
           root: www
           paths:
             - .
-      - docker_build_push:
-          docker_latest_image_tag: latest
-          docker_image_tag: ${CIRCLE_TAG}
       - deploy:
           target_branch: "production"
-      - k8s_deploy:
-          target: "production"
-          k8s_namespace: "bot-deriv-com-production"
-          k8s_version: ${CIRCLE_TAG}
       - notify_slack
  
   publish_cloudflare_staging:

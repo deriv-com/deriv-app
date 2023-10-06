@@ -46,7 +46,14 @@ export const loading = {
     fontSize: '1.5em',
 };
 
-export const iframe = { width: '100%', height: '100%' };
+export const exportButton = {
+    position: 'absolute',
+    left: '41em',
+    zIndex: 2,
+    padding: 0,
+    width: '2em',
+    height: '2em',
+};
 
 export const tradeTableExport = { marginTop: '-2.5em' };
 

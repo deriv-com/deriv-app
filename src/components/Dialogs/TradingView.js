@@ -1,14 +1,27 @@
 import React from 'react';
 import config from '@config';
 import { translate } from '@i18n';
-import { iframe as iframeStyle } from '../style';
 import Dialog from './Dialog';
+import { observer as globalObserver } from '../../../common/utils/observer';
 
-const chartWidth = 700;
+const chartWidth = 800;
 const chartHeight = 700;
 
 function TradingViewComponent() {
-    return <iframe style={iframeStyle} src={config.trading_view_chart.url} />;
+    React.useEffect(() => {
+        // eslint-disable-next-line no-console
+        const onLoad = () => console.info('TradingView chart loaded successfully!');
+        const onError = (error) => globalObserver.emit('Error', error);
+        const iframe = document.querySelector('iframe');
+        iframe.addEventListener('load', onLoad);
+        iframe.addEventListener('error', onError);
+        
+        return () => {
+            iframe.removeEventListener('load', onLoad);
+            iframe.removeEventListener('error', onError);
+        };
+    }, [])
+    return <iframe id='iframe' style={{ width: '100%', height: '100%' }} src={config.trading_view_chart.url} />;
 }
 
 export default class TradingView extends Dialog {

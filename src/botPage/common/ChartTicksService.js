@@ -44,7 +44,7 @@ export default class ChartTicksService extends TicksService {
             style,
         };
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             doUntilDone(() => api_base.api.send(request_object))
                 .then(r => {
                     if (style === 'ticks') {
@@ -52,9 +52,9 @@ export default class ChartTicksService extends TicksService {
                     } else {
                         this.updateCandlesAndCallListeners([symbol, Number(granularity)], r);
                     }
+                    resolve(r);
                 })
                 .catch(e => {
-                    reject(e);
                     globalObserver.emit('Error', e);
                 });
         });

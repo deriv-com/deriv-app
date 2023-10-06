@@ -9,6 +9,50 @@ type TTwoMonthPickerProps = {
     value: moment.Moment | number;
 };
 
+type TCalendarPaneProps = {
+    getIsPeriodDisabled: (date: moment.Moment) => boolean;
+    navigateFn: (date: moment.Moment) => void;
+    onChange: (date: moment.MomentInput) => void;
+    paneDate: moment.Moment | number;
+    validateArrows: (date: moment.Moment) => boolean;
+    value: moment.Moment | number;
+};
+
+const CalendarPane = ({
+    getIsPeriodDisabled,
+    navigateFn,
+    onChange,
+    paneDate,
+    validateArrows,
+    value,
+}: TCalendarPaneProps) => {
+    const updateSelectedDate = (e: React.MouseEvent<HTMLElement>) => {
+        onChange(moment.utc(e.currentTarget.dataset.date, 'YYYY-MM-DD'));
+    };
+
+    return (
+        <React.Fragment>
+            <Calendar.Header
+                calendar_date={paneDate}
+                calendar_view='date'
+                hide_disabled_periods
+                isPeriodDisabled={validateArrows}
+                navigateTo={navigateFn}
+                switchView={() => ({})}
+            />
+            <Calendar.Body
+                calendar_view='date'
+                calendar_date={paneDate}
+                date_format='YYYY-MM-DD'
+                isPeriodDisabled={getIsPeriodDisabled}
+                hide_others
+                selected_date={value}
+                updateSelected={updateSelectedDate}
+            />
+        </React.Fragment>
+    );
+};
+
 const TwoMonthPicker = ({ onChange, getIsPeriodDisabled, value }: TTwoMonthPickerProps) => {
     const [left_pane_date, setLeftPaneDate] = React.useState(toMoment(value).clone().subtract(1, 'month'));
     const [right_pane_date, setRightPaneDate] = React.useState(value);
@@ -54,57 +98,26 @@ const TwoMonthPicker = ({ onChange, getIsPeriodDisabled, value }: TTwoMonthPicke
         return diffInMonths(r_date, date) !== 1;
     };
 
-    /**
-     * Validate values to be date_from < date_to
-     *
-     * @param {moment.Moment} date
-     */
-    const shouldDisableDate = (date: moment.Moment) => {
-        return getIsPeriodDisabled(date);
-    };
-
-    const updateSelectedDate = (e: React.MouseEvent<HTMLElement>) => {
-        onChange(moment.utc(e.currentTarget.dataset.date, 'YYYY-MM-DD'));
-    };
-
     return (
         <React.Fragment>
             <div className='first-month'>
-                <Calendar.Header
-                    calendar_date={left_pane_date}
-                    calendar_view='date'
-                    hide_disabled_periods
-                    isPeriodDisabled={validateFromArrows}
-                    navigateTo={navigateFrom}
-                    switchView={() => ({})}
-                />
-                <Calendar.Body
-                    calendar_view='date'
-                    calendar_date={left_pane_date}
-                    date_format='YYYY-MM-DD'
-                    isPeriodDisabled={shouldDisableDate}
-                    hide_others
-                    selected_date={value}
-                    updateSelected={updateSelectedDate}
+                <CalendarPane
+                    getIsPeriodDisabled={getIsPeriodDisabled}
+                    navigateFn={navigateTo}
+                    onChange={onChange}
+                    paneDate={left_pane_date}
+                    validateArrows={validateFromArrows}
+                    value={value}
                 />
             </div>
             <div className='second-month'>
-                <Calendar.Header
-                    calendar_date={right_pane_date}
-                    calendar_view='date'
-                    hide_disabled_periods
-                    isPeriodDisabled={validateToArrows}
-                    navigateTo={navigateTo}
-                    switchView={() => ({})}
-                />
-                <Calendar.Body
-                    calendar_view='date'
-                    calendar_date={right_pane_date}
-                    date_format='YYYY-MM-DD'
-                    hide_others
-                    isPeriodDisabled={shouldDisableDate}
-                    selected_date={value}
-                    updateSelected={updateSelectedDate}
+                <CalendarPane
+                    getIsPeriodDisabled={getIsPeriodDisabled}
+                    navigateFn={navigateFrom}
+                    onChange={onChange}
+                    paneDate={right_pane_date}
+                    validateArrows={validateToArrows}
+                    value={value}
                 />
             </div>
         </React.Fragment>

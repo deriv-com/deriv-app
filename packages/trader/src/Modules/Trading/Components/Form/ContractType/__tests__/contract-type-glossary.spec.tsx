@@ -27,6 +27,16 @@ describe('<ContractTypeGlossary />', () => {
         render(<ContractTypeGlossary category='multiplier' is_multiplier_fx />);
 
         expect(screen.queryByText('Deal cancellation')).not.toBeInTheDocument();
+        expect(screen.getByText(/current-tick-execution/i)).toBeInTheDocument();
+        expect(screen.queryByText(/next-tick-execution/i)).not.toBeInTheDocument();
+        expect(screen.getByText(/Stop out/i)).toBeInTheDocument();
+    });
+    it('Ensure multiplier glossary is rendered properly if it is major pairs', () => {
+        render(<ContractTypeGlossary category='multiplier' is_multiplier_fx is_major_pairs />);
+
+        expect(screen.queryByText('Deal cancellation')).not.toBeInTheDocument();
+        expect(screen.queryByText(/current-tick-execution/i)).not.toBeInTheDocument();
+        expect(screen.getByText(/next-tick-execution/i)).toBeInTheDocument();
         expect(screen.getByText(/Stop out/i)).toBeInTheDocument();
     });
     it('Ensure placeholder text is rendered if category does not exist', () => {

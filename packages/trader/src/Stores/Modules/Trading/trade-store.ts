@@ -278,6 +278,7 @@ export default class TradeStore extends BaseStore {
     hovered_contract_type?: string | null;
     cancellation_duration = '60m';
     cancellation_range_list: Array<TTextValueStrings> = [];
+    cached_mult_cancellation_list: Array<TTextValueStrings> = [];
 
     // Turbos trade params
     long_barriers: TBarriersData = {};

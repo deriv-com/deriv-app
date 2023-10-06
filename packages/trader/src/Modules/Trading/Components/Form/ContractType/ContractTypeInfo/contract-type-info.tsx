@@ -5,9 +5,11 @@ import { localize } from '@deriv/translations';
 import { RudderStack } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
-import { getContractTypes } from '../../../../Helpers/contract-type';
+import { getContractTypes, isMajorPairsSymbol } from '../../../../Helpers/contract-type';
 import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { observer, useStore } from '@deriv/stores';
 import { TContractType, TList } from '../types';
 
 type TInfo = {
@@ -16,7 +18,6 @@ type TInfo = {
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
     ) => void;
     item: TContractType;
-    is_multiplier_fx?: boolean;
     list: TList[];
 };
 
@@ -25,7 +26,11 @@ const TABS = {
     GLOSSARY: 'glossary',
 };
 
-const Info = ({ handleSelect, item, is_multiplier_fx, list }: TInfo) => {
+const Info = observer(({ handleSelect, item, list }: TInfo) => {
+    const { cached_mult_cancellation_list, symbol } = useTraderStore();
+    const {
+        active_symbols: { active_symbols },
+    } = useStore();
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
@@ -87,11 +92,15 @@ const Info = ({ handleSelect, item, is_multiplier_fx, list }: TInfo) => {
                                 <TradeCategories
                                     category={type.value}
                                     onClick={onClickGlossary}
-                                    is_multiplier_fx={is_multiplier_fx}
+                                    is_multiplier_fx={cached_mult_cancellation_list?.length === 0}
                                 />
                             </React.Fragment>
                         ) : (
-                            <ContractTypeGlossary category={type.value} is_multiplier_fx={is_multiplier_fx} />
+                            <ContractTypeGlossary
+                                category={type.value}
+                                is_multiplier_fx={cached_mult_cancellation_list?.length === 0}
+                                is_major_pairs={isMajorPairsSymbol(symbol, active_symbols)}
+                            />
                         )}
                     </div>
                 </ThemedScrollbars>
@@ -142,6 +151,6 @@ const Info = ({ handleSelect, item, is_multiplier_fx, list }: TInfo) => {
             </div>
         </React.Fragment>
     );
-};
+});
 
 export default Info;

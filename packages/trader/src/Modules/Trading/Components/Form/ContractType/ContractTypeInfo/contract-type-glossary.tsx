@@ -6,9 +6,11 @@ import { localize } from '@deriv/translations';
 const ContractTypeGlossary = ({
     category,
     is_multiplier_fx = false,
+    is_major_pairs = false,
 }: {
     category: string;
     is_multiplier_fx?: boolean;
+    is_major_pairs?: boolean;
 }) => {
     let content;
     if (category) {
@@ -158,7 +160,7 @@ const ContractTypeGlossary = ({
                     { type: 'heading', text: localize('Entry spot') },
                     {
                         type: 'paragraph',
-                        text: is_multiplier_fx
+                        text: is_major_pairs
                             ? localize(
                                   'We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers for Major Pairs.'
                               )

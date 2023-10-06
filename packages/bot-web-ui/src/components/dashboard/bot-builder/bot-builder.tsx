@@ -1,11 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { observer } from '@deriv/stores';
+
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
 import QuickStrategy from '../quick-strategy';
+
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {

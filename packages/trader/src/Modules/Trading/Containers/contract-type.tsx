@@ -40,7 +40,7 @@ const Contract = observer(() => {
                 )}
             </MobileWrapper>
             <ContractTypeWidget
-                is_multiplier_fx={!cancellation_range_list?.length}
+                is_multiplier_fx={cancellation_range_list?.length === 0}
                 list={list}
                 name='contract_type'
                 onChange={onChange}

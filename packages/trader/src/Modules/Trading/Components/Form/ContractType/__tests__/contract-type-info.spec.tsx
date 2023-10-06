@@ -280,4 +280,13 @@ describe('<Info />', () => {
         expect(screen.getByText(/glossary/i)).toBeInTheDocument();
         expect(trade_type_button).toBeInTheDocument();
     });
+    it('Should render toggle buttons if multiplier info page is open', () => {
+        mocked_props.item.text = 'Multipliers';
+        mocked_props.item.value = 'multiplier';
+        render(<Info {...mocked_props} />);
+        const trade_type_button = screen.getByText('Choose Multipliers');
+        expect(screen.getByText('Description')).toBeInTheDocument();
+        expect(screen.getByText(/glossary/i)).toBeInTheDocument();
+        expect(trade_type_button).toBeInTheDocument();
+    });
 });

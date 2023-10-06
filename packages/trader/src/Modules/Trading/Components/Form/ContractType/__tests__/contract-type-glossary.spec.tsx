@@ -17,9 +17,16 @@ describe('<ContractTypeGlossary />', () => {
             screen.getByText(/Contracts will expire at exactly 23:59:59 GMT on your selected expiry date./i)
         ).toBeInTheDocument();
     });
-    it('Ensure multiplier glossary is rendered properly', () => {
+    it('Ensure multiplier glossary is rendered properly if it is synthetic', () => {
         render(<ContractTypeGlossary category='multiplier' />);
 
+        expect(screen.getByText('Deal cancellation')).toBeInTheDocument();
+        expect(screen.getByText(/Stop out/i)).toBeInTheDocument();
+    });
+    it('Ensure multiplier glossary is rendered properly if it is fx', () => {
+        render(<ContractTypeGlossary category='multiplier' is_multiplier_fx />);
+
+        expect(screen.queryByText('Deal cancellation')).not.toBeInTheDocument();
         expect(screen.getByText(/Stop out/i)).toBeInTheDocument();
     });
     it('Ensure placeholder text is rendered if category does not exist', () => {

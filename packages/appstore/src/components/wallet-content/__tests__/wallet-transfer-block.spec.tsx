@@ -24,8 +24,6 @@ const wallet_account: TWalletAccount = {
     is_fiat_currency: true,
 };
 
-jest.mock('./../../containers/currency-switcher-container', () => jest.fn(({ children }) => <div>{children}</div>));
-
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useTradingAccountsList: jest.fn(() => ({

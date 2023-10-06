@@ -1,9 +1,6 @@
 import React from 'react';
-
 import { useAvailableMT5Accounts, useCreateOtherCFDAccount } from '@deriv/api';
-
 import PasswordShowIcon from '../../public/images/ic-password-show.svg';
-
 import './CreatePassword.scss';
 
 type TPlatformMT5 = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number]['platform'];

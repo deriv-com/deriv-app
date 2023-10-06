@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import {
     useActiveWalletAccount,
     useAvailableMT5Accounts,
@@ -8,7 +7,6 @@ import {
     useSettings,
     useSortedMT5Accounts,
 } from '@deriv/api';
-
 import MT5PasswordIcon from '../../public/images/ic-mt5-password.svg';
 import { CreatePassword } from '../CreatePassword';
 import { EnterPassword } from '../EnterPassword';

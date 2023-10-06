@@ -1,8 +1,9 @@
+import React from 'react';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { useFeatureFlags } from '@deriv/hooks';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import TradeButton from 'Components/trade-button';
-import React from 'react';
 
 /**
  * Handles Transfer, Trade and top up. It uses the name attribute of the <button /> element to distinguish between transfer and top up
@@ -20,6 +21,8 @@ const MultiActionButtonGroup = ({
 }: Pick<Actions, 'link_to' | 'onAction' | 'is_buttons_disabled' | 'is_real'> & {
     as_disabled_deposit_button?: boolean;
 }) => {
+    const { is_wallet_enabled } = useFeatureFlags();
+
     return (
         <div className='multi-action-button-group'>
             <Button
@@ -29,7 +32,7 @@ const MultiActionButtonGroup = ({
                 is_disabled={is_buttons_disabled}
                 as_disabled={as_disabled_deposit_button}
             >
-                {is_real ? localize('Transfer') : localize('Top up')}
+                {is_real || is_wallet_enabled ? localize('Transfer') : localize('Top up')}
             </Button>
             <TradeButton link_to={link_to} onAction={onAction} is_buttons_disabled={is_buttons_disabled} />
         </div>

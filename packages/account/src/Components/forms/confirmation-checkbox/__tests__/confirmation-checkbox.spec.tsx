@@ -1,7 +1,9 @@
 import React from 'react';
+import { Form, Formik } from 'formik';
+
 import { render, screen } from '@testing-library/react';
+
 import { ConfirmationCheckbox } from '../confirmation-checkbox';
-import { Formik, Form } from 'formik';
 
 describe('ConfirmationCheckbox', () => {
     const props: React.ComponentProps<typeof ConfirmationCheckbox> = {

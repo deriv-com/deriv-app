@@ -1,7 +1,9 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { render, screen } from '@testing-library/react';
+
 import FormBodySection, { TFormBodySection } from '../form-body-section';
-import { StoreProvider, mockStore } from '@deriv/stores';
 
 const MockFormBodySection = (props: TFormBodySection) => {
     const mock_store = mockStore({});

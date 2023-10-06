@@ -1,7 +1,10 @@
 import React from 'react';
+
 import { Icon, Text } from '@deriv/components';
+
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+
 import Dp2pBlockedChecklist from './dp2p-blocked-checklist';
 import Dp2pBlockedDescription from './dp2p-blocked-description';
 

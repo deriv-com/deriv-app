@@ -3,11 +3,11 @@ import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IdvDocumentRejected from 'Assets/ic-idv-document-rejected.svg';
 
-type TIdvNoSubmission = {
+type TIdvRejected = {
     handleRequireSubmission: () => void;
 };
 
-const IdvNoSubmissions = ({ handleRequireSubmission }: TIdvNoSubmission) => {
+const IdvRejected = ({ handleRequireSubmission }: TIdvRejected) => {
     return (
         <div className='proof-of-identity__container'>
             <IdvDocumentRejected className='icon' size={128} />
@@ -15,19 +15,18 @@ const IdvNoSubmissions = ({ handleRequireSubmission }: TIdvNoSubmission) => {
                 {localize('ID verification failed')}
             </Text>
             <Text className='proof-of-identity__text btm-spacer' align='center' size='xs'>
-                {localize('We were unable to verify your ID with the details you provided. ')}
-                {localize('Please upload your identity document.')}
+                {localize('We were unable to verify your ID with the details you provided.')}
             </Text>
             <Button
                 type='button'
                 className='account-management__continue'
                 onClick={handleRequireSubmission}
                 large
-                text={localize('Upload identity document')}
+                text={localize('Try again')}
                 primary
             />
         </div>
     );
 };
 
-export default IdvNoSubmissions;
+export default IdvRejected;

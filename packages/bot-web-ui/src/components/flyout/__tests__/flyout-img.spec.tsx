@@ -1,5 +1,5 @@
 import React from 'react';
-import { Matcher, MatcherOptions, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import FlyoutImage from '../help-contents/flyout-img';
 import '@testing-library/jest-dom/extend-expect';
 

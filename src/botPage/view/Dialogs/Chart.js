@@ -1,24 +1,16 @@
 import React from 'react';
-import {
-    ChartMode,
-    DrawTools,
-    setSmartChartsPublicPath,
-    Share,
-    SmartChart,
-    StudyLegend,
-    ToolbarWidget,
-    Views,
-} from '@deriv/deriv-charts';
+import { setSmartChartsPublicPath, SmartChart } from '@deriv/deriv-charts';
 import { getLanguage } from '@storage';
 import { translate } from '@i18n';
 import Dialog from './Dialog';
 import ChartTicksService from '../../common/ChartTicksService';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import api from '../deriv/api';
+import ToolbarWidgets from './ToolbarWidgets';
 
 setSmartChartsPublicPath('./js/');
 
-export const BarrierTypes = {
+const BarrierTypes = {
     CALL: 'ABOVE',
     PUT: 'BELOW',
     EXPIRYRANGE: 'BETWEEN',
@@ -101,11 +93,13 @@ const ChartContent = () => {
                 symbol,
                 granularity,
                 callback,
+                is_chart_candles: true,
             });
         } else {
             listeners[getKey(request)] = ticksService.monitor({
                 symbol,
                 callback,
+                is_chart_ticks: true,
             });
         }
     };
@@ -131,30 +125,9 @@ const ChartContent = () => {
 
     const renderTopWidgets = () => <span />;
 
-    const renderToolbarWidgets = () => (
-        <ToolbarWidget>
-            <ChartMode
-                onChartType={chart_type =>
-                    setState({
-                        ...state,
-                        chart_type,
-                    })
-                }
-                onGranularity={granularity =>
-                    setState({
-                        ...state,
-                        granularity,
-                    })
-                }
-            />
-            <StudyLegend searchInputClassName='data-hj-whitelist' />
-            <DrawTools />
-            <Views searchInputClassName='data-hj-whitelist' />
-            <Share />
-        </ToolbarWidget>
-    );
-
     if (!show) return null;
+
+    const handleStateChange = state_property => setState(state_property);
 
     return (
         <SmartChart
@@ -170,7 +143,7 @@ const ChartContent = () => {
             requestSubscribe={requestSubscribe}
             settings={{ language: getLanguage() }}
             symbol={state.symbol}
-            toolbarWidget={renderToolbarWidgets}
+            toolbarWidget={() => <ToolbarWidgets handleStateChange={handleStateChange} />}
             topWidgets={renderTopWidgets}
         />
     );

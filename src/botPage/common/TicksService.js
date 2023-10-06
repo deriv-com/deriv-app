@@ -274,8 +274,8 @@ export default class TicksService {
             style,
         };
 
-        return new Promise((resolve) => {
-            doUntilDone(() => this.api.send(request_object))
+        return new Promise(resolve => {
+            doUntilDone(() => api_base.api.send(request_object))
                 .then(r => {
                     if (style === 'ticks') {
                         const ticks = historyToTicks(r.history);

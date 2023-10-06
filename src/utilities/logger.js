@@ -6,6 +6,7 @@ import { trackJSTrack } from '@utilities/integrations/trackJSTrack';
 import { isIOS } from './osDetect';
 
 const log = (type, ...args) => {
+    console.trace();
     if (type === 'warn') {
         console.warn(...args); // eslint-disable-line no-console
     } else {

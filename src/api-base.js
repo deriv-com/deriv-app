@@ -46,7 +46,9 @@ class APIBase {
         this.getLandingCompanyDetails();
         this.getLandingCompany();
         this.getAccountStatus();
-        this.getAllBalances();
+        if (!this.balance_subscription_id) {
+            this.getAllBalances();
+        }
         if (error) {
             throw new Error(error);
         }
@@ -92,7 +94,11 @@ class APIBase {
     }
 
     async getAllBalances() {
-        const { balance = {} } = await this.api.send({ balance: 1, account: 'all', subscribe: 1 });
+        const {
+            balance = {},
+            subscription: { id },
+        } = await this.api.send({ balance: 1, account: 'all', subscribe: 1 });
+        this.balance_subscription_id = id;
         if (balance?.accounts) {
             const { accounts = {} } = balance;
 

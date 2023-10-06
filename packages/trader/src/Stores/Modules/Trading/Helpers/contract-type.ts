@@ -642,6 +642,7 @@ export const ContractType = (() => {
         const cached_arr_cancellation: string[] =
             getPropertyValue(available_contract_types, ['multiplier', 'config', 'cancellation_range']) || [];
         const regex = /(^(?:\d){1,})|((?:[a-zA-Z]){1,}$)/g;
+        const mapCancellationRangeList = (d: string) => ({ text: `${getText(d)}`, value: d });
         const getText = (str: string) => {
             const [duration, unit] = str.match(regex) ?? [];
             const unit_map = getUnitMap();
@@ -654,8 +655,8 @@ export const ContractType = (() => {
 
         return {
             cancellation_duration: getArrayDefaultValue(arr_cancellation_range, cancellation_duration),
-            cancellation_range_list: arr_cancellation_range.map(d => ({ text: `${getText(d)}`, value: d })),
-            cached_mult_cancellation_list: cached_arr_cancellation.map(d => ({ text: `${getText(d)}`, value: d })),
+            cancellation_range_list: arr_cancellation_range.map(mapCancellationRangeList),
+            cached_mult_cancellation_list: cached_arr_cancellation.map(mapCancellationRangeList),
             ...(should_show_cancellation ? {} : { has_cancellation: false }),
         };
     };

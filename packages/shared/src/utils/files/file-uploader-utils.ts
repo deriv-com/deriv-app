@@ -1,4 +1,4 @@
-import { type useMutation } from '@deriv/api';
+import { useMutation } from '@deriv/api';
 import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage } from './image/image_utility';
 
 export type TFile = File & { file: Blob };
@@ -44,20 +44,29 @@ export const compressImageFiles = (files?: FileList | null) => {
     return Promise.all(promises);
 };
 
-export const readFiles = (files: Blob[], getFileReadErrorMessage: (t: string) => string, settings?: TSettings) => {
-    const promises: Array<Promise<TFileObject | { message: string }>> = [];
+export const readFiles = (
+    files: Blob[],
+    getFileReadErrorMessage: (t: string) => string,
+    settings?: Partial<TSettings>
+) => {
+    const promises: Array<Promise<Partial<TFileObject> | { message: string }>> = [];
 
     files.forEach(f => {
         const fr = new FileReader();
-        const promise = new Promise<TFileObject | { message: string }>(resolve => {
+        const promise = new Promise<Partial<TFileObject> | { message: string }>(resolve => {
             fr.onload = () => {
                 const file_metadata = {
                     filename: f.name,
                     buffer: fr.result,
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
-                    ...settings,
                     documentType: settings?.document_type ?? DOCUMENT_TYPES.utility_bill,
+                    documentId: settings?.document_id,
+                    expirationDate: settings?.expiration_date,
+                    lifetimeValid: settings?.lifetime_valid ?? !settings?.expiration_date,
+                    pageType: settings?.page_type,
+                    proof_of_ownership: settings?.proof_of_ownership,
+                    document_issuing_country: settings?.document_issuing_country,
                 };
                 resolve(file_metadata);
             };
@@ -101,4 +110,4 @@ export const DOCUMENT_TYPES = {
     proofaddress: 'proofaddress',
     proof_of_ownership: 'proof_of_ownership',
     other: 'other',
-};
+} as const;

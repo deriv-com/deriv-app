@@ -73,9 +73,9 @@
 
 // export default useFileUploader;
 
-const { DocumentUploader } = require('@binary-com/binary-document-uploader'); // Using require because this package has no types defined
+import { DocumentUploader } from '@binary-com/binary-document-uploader'; // Using require because this package has no types defined
 import { useMutation } from '@deriv/api';
-import { WS, compressImageFiles, readFiles, TFileObject } from '@deriv/shared';
+import { WS, compressImageFiles, readFiles } from '@deriv/shared';
 import { useCallback, useRef, useState } from 'react';
 
 type TSettingsPayload = NonNullable<
@@ -111,11 +111,7 @@ const useFileUploader = () => {
         let file_error: string | null = null;
         try {
             const files_to_process = await compressImageFiles(files);
-            const processed_files: Array<TFileObject | { message: string }> = await readFiles(
-                files_to_process,
-                fileReadErrorMessage,
-                settings
-            );
+            const processed_files = await readFiles(files_to_process, fileReadErrorMessage, settings);
             processed_files.forEach(file => {
                 if (file && 'message' in file) {
                     is_any_file_error = true;
@@ -129,11 +125,11 @@ const useFileUploader = () => {
                 throw new Error(file_error ?? 'Something went wrong!'); // don't start submitting files until all front-end validation checks pass
             }
             // send files
+            // @ts-expect-error TS is not able to infer the type of the response
             const uploader_data = await uploader_instance.upload(processed_files[0]);
             return uploader_data;
         } catch (error) {
             setError(error as string);
-            // return error;
         }
     }, []);
 

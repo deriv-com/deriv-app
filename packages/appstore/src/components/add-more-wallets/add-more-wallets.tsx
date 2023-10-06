@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Loading } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useAvailableWallets } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import CarouselContainer from './carousel-container';
@@ -10,14 +10,14 @@ import './add-more-wallets.scss';
 
 const AddMoreWallets = observer(() => {
     const { data, isLoading } = useAvailableWallets();
-    const { ui: is_mobile } = useStore();
-
-    if (!data) return <Loading is_fullscreen={false} />;
+    const {
+        ui: { is_mobile },
+    } = useStore();
 
     return (
         <div className='add-wallets'>
             <Text as='h2' size={is_mobile ? 'm' : 'l'} color='prominent' weight='bolder' className='add-wallets__title'>
-                {localize('Add more Wallets')}
+                <Localize i18n_default_text='Add more Wallets' />
             </Text>
             <CarouselContainer>
                 {isLoading ? (

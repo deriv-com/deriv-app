@@ -23,9 +23,9 @@ type TPositionsDrawerCardProps = {
     contract_info: TContractInfo;
     contract_update?: TContractInfo['contract_update'];
     currency: string;
-    current_focus: string;
+    current_focus: string | null;
     display_name?: string;
-    getContractById: (contract_id?: number) => TContractStore;
+    getContractById: (contract_id: number) => TContractStore;
     is_mobile?: boolean;
     is_sell_requested?: boolean;
     is_unsupported?: boolean;

@@ -27,6 +27,7 @@ jest.mock('./../../wallet-content', () => jest.fn(() => <span>wallet test conten
 describe('<Wallets />', () => {
     let mocked_props: TWalletAccount;
     beforeEach(() => {
+        // @ts-expect-error need to give a value to all props
         mocked_props = {
             currency: 'USD',
             landing_company_name: 'svg',
@@ -40,11 +41,9 @@ describe('<Wallets />', () => {
         };
     });
     it('Check class for NOT demo', () => {
-        mocked_props.is_demo = false;
-
         const { container } = render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={mocked_props} />
+                <Wallet wallet_account={{ ...mocked_props, is_demo: false }} />
             </StoreProvider>
         );
         expect(container.childNodes[0]).toHaveClass('wallet');
@@ -52,11 +51,9 @@ describe('<Wallets />', () => {
     });
 
     it('Check class for demo', () => {
-        mocked_props.is_demo = true;
-
         const { container } = render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={mocked_props} />
+                <Wallet wallet_account={{ ...mocked_props, is_demo: true }} />
             </StoreProvider>
         );
 
@@ -65,15 +62,13 @@ describe('<Wallets />', () => {
     });
 
     it('Check for demo wallet header', () => {
-        mocked_props.is_demo = true;
-
         render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={mocked_props} />
+                <Wallet wallet_account={{ ...mocked_props, is_demo: true }} />
             </StoreProvider>
         );
 
-        const currency_card = screen.queryByTestId(`dt_demo`);
+        const currency_card = screen.queryByTestId('dt_demo');
         expect(currency_card).toBeInTheDocument();
     });
 });

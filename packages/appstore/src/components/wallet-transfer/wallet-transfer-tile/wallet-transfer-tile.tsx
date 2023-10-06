@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text, AppLinkedWithWalletIcon, WalletIcon } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { getAccountName } from 'Constants/utils';
 import { WalletJurisdictionBadge } from 'Components/wallet-jurisdiction-badge';
 import type { TTransferAccount } from 'Types';
@@ -54,8 +54,13 @@ const Balance = ({ account, is_list_item, is_mobile }: TWalletTileProps) => {
 
         return (
             <Text as='div' size={size}>
-                {localize('Balance')}: {formatMoney(account?.currency ?? '', account.balance, true)}{' '}
-                {account.display_currency_code}
+                <Localize
+                    i18n_default_text='Balance: {{balance}} {{currency}}'
+                    values={{
+                        balance: formatMoney(account?.currency ?? '', account.balance, true),
+                        currency: account.display_currency_code,
+                    }}
+                />
             </Text>
         );
     }
@@ -101,7 +106,7 @@ const WalletTransferTile = ({
                 </div>
 
                 {!is_list_item && is_mobile && (
-                    <WalletJurisdictionBadge is_demo={Boolean(account?.is_demo)} shortcode={account?.shortcode} />
+                    <WalletJurisdictionBadge is_demo={!!account?.is_demo} shortcode={account?.shortcode} />
                 )}
             </div>
 
@@ -110,9 +115,7 @@ const WalletTransferTile = ({
                 <Balance account={account} is_list_item={is_list_item} is_mobile={is_mobile} />
             </div>
 
-            {is_list_item && (
-                <WalletJurisdictionBadge is_demo={Boolean(account?.is_demo)} shortcode={account?.shortcode} />
-            )}
+            {is_list_item && <WalletJurisdictionBadge is_demo={!!account?.is_demo} shortcode={account?.shortcode} />}
         </div>
     );
 };

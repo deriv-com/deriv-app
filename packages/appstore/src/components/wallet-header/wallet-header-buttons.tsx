@@ -30,7 +30,7 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, buttons, wallet_ac
                         button={button}
                         is_open={is_open}
                         is_disabled={is_disabled}
-                        is_desktop_wallet={true}
+                        is_desktop_wallet
                     />
                 );
             })}

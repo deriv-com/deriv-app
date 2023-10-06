@@ -1,22 +1,16 @@
 import { useMemo } from 'react';
-import { useStore } from '@deriv/stores';
 import { useFetch } from '@deriv/api';
-import useActiveWallet from './useActiveWallet';
+import useActiveWalletAccount from './useActiveWalletAccount';
 import useCurrencyConfig from './useCurrencyConfig';
 import useExistingCFDAccounts from './useExistingCFDAccounts';
-import useWalletsList from './useWalletsList';
+import useWalletAccountsList from './useWalletAccountsList';
 
 const useTransferBetweenAccounts = () => {
-    const { ui } = useStore();
-    const { is_dark_mode_on } = ui;
-
-    const active_wallet = useActiveWallet();
-
-    const { data: wallets } = useWalletsList();
-
+    const { data: wallets } = useWalletAccountsList();
+    const active_wallet = useActiveWalletAccount();
     const { getConfig } = useCurrencyConfig();
 
-    const trading_apps_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
+    const trading_apps_icon = 'IcWalletOptionsLight';
 
     const {
         data: { derivez_accounts, dxtrade_accounts, mt5_accounts },

@@ -1,9 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Icon, Text, WalletIcon } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import { getAccountName } from 'Constants/utils';
+
 import { WalletJurisdictionBadge } from 'Components/wallet-jurisdiction-badge';
+import { getAccountName } from 'Constants/utils';
 import type { TWalletAccount } from 'Types';
 
 type TWalletModalHeaderProps = {
@@ -25,7 +27,7 @@ const WalletModalHeader = ({
     const is_crypto = currency_config?.is_crypto;
     const display_currency_code = currency_config?.display_code;
 
-    const header_class_name = 'modal-header';
+    const header_class_name = 'wallet-modal--header';
 
     const getCloseIcon = React.useCallback(() => {
         if (is_demo && is_dark) return 'IcAppstoreCloseLight';
@@ -58,7 +60,7 @@ const WalletModalHeader = ({
     };
 
     return (
-        <div className={`header-background ${gradient_header_class}`}>
+        <div className={`wallet-modal--header-background ${gradient_header_class}`}>
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hidden-title`]: is_mobile && !is_wallet_name_visible,
@@ -83,6 +85,7 @@ const WalletModalHeader = ({
                         size={is_mobile ? 'xsm' : 'm'}
                         weight='bold'
                         className={getStylesByClassName(`${header_class_name}__title-balance`)}
+                        data-testid='dt_wallet_balance'
                     >
                         {formatMoney(currency || '', balance, true)} {display_currency_code}
                     </Text>

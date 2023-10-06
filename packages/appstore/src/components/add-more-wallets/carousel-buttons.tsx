@@ -3,25 +3,18 @@ import { Icon } from '@deriv/components';
 
 type PrevNextButtonProps = {
     enabled: boolean;
+    nav_action: 'prev' | 'next';
     onClick: () => void;
 };
 
-export const PrevButton: React.FC<PrevNextButtonProps> = props => {
-    const { enabled, onClick } = props;
+export const CarouselButton: React.FC<PrevNextButtonProps> = props => {
+    const { enabled, onClick, nav_action } = props;
+    const icon = nav_action === 'prev' ? 'IcChevronLeftBold' : 'IcChevronRightBold';
+    const className = nav_action === 'prev' ? 'carousel__btn carousel__btn-prev' : 'carousel__btn carousel__btn-next';
 
     return (
-        <button className='carousel__btn carousel__btn-prev' onClick={onClick} disabled={!enabled}>
-            <Icon icon='IcChevronLeftBold' className='carousel-btn__icon' />
-        </button>
-    );
-};
-
-export const NextButton: React.FC<PrevNextButtonProps> = props => {
-    const { enabled, onClick } = props;
-
-    return (
-        <button className='carousel__btn carousel__btn-next' onClick={onClick} disabled={!enabled}>
-            <Icon icon='IcChevronRightBold' className='carousel__btn-icon' />
+        <button className={className} onClick={onClick} disabled={!enabled}>
+            <Icon icon={icon} className='carousel-btn__icon' />
         </button>
     );
 };

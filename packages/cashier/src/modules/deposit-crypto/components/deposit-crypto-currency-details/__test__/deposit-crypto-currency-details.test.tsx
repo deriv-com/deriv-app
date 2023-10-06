@@ -26,7 +26,7 @@ describe('DepositCryptoCurrencyDetails', () => {
         );
         render(<DepositCryptoCurrencyDetails />, { wrapper });
 
-        expect(screen.getByText('Send only Bitcoin (BTC) to this address.')).toBeInTheDocument();
+        expect(screen.getByText('Send only Bitcoin (BTC) to this address')).toBeInTheDocument();
     });
 
     test('should show correct message for ETH', () => {
@@ -37,6 +37,6 @@ describe('DepositCryptoCurrencyDetails', () => {
         );
         render(<DepositCryptoCurrencyDetails />, { wrapper });
 
-        expect(screen.getByText('Send only Ethereum (ETH) to this address.')).toBeInTheDocument();
+        expect(screen.getByText('Send only Ethereum (ETH) to this address')).toBeInTheDocument();
     });
 });

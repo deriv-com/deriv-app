@@ -21,6 +21,7 @@ jest.mock('@deriv/api', () => ({
     })),
 }));
 
+jest.mock('../crypto-withdrawal', () => jest.fn(() => 'CryptoWithdrawal'));
 jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
 jest.mock('Components/no-balance', () => jest.fn(() => 'NoBalance'));
 jest.mock('Components/error', () => jest.fn(() => 'Error'));

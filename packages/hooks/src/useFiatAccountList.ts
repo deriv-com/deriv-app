@@ -1,10 +1,13 @@
-import { useStore } from '@deriv/stores';
+import { useMemo } from 'react';
+import useAccountsList from './useAccountsList';
 
 const useFiatAccountList = () => {
-    const { client } = useStore();
-    const { account_list, is_crypto } = client;
+    const { data } = useAccountsList();
 
-    const fiat_account_list = account_list.filter(account => !account.is_virtual && !is_crypto(account.title || ''));
+    const fiat_account_list = useMemo(
+        () => data?.filter(account => !account.is_virtual && !account.currency_config?.is_crypto),
+        [data]
+    );
 
     return fiat_account_list;
 };

@@ -146,7 +146,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     get selected_strategy(): TStrategy {
         return (
-            this.dashboard_strategies.find((ws: { id: string }) => ws.id === this.selected_strategy_id) ||
+            this.dashboard_strategies.find((ws: { id: string }) => ws.id === this.selected_strategy_id) ??
             this.dashboard_strategies[0]
         );
     }
@@ -290,16 +290,13 @@ export default class LoadModalStore implements ILoadModalStore {
     onActiveIndexChange = (): void => {
         if (this.tab_name === tabs_title.TAB_RECENT) {
             this.previewRecentStrategy(this.selected_strategy_id);
-        } else {
-            // eslint-disable-next-line no-lonely-if
-            if (this.recent_workspace) {
-                setTimeout(() => {
-                    // Dispose of recent workspace when switching away from Recent tab.
-                    // Process in next cycle so user doesn't have to wait.
-                    this.recent_workspace?.dispose();
-                    this.recent_workspace = null;
-                });
-            }
+        } else if (this.recent_workspace) {
+            setTimeout(() => {
+                // Dispose of recent workspace when switching away from Recent tab.
+                // Process in next cycle so user doesn't have to wait.
+                this.recent_workspace?.dispose();
+                this.recent_workspace = null;
+            });
         }
 
         if (this.tab_name === tabs_title.TAB_LOCAL) {
@@ -310,16 +307,15 @@ export default class LoadModalStore implements ILoadModalStore {
                     this.drop_zone.addEventListener('drop', event => this.handleFileChange(event, false));
                 }
             }
-        } else {
-            // Dispose of local workspace when switching away from Local tab.
-            // eslint-disable-next-line no-lonely-if
-            if (this.local_workspace) {
-                setTimeout(() => {
-                    this.local_workspace?.dispose();
-                    this.local_workspace = null;
-                    this.setLoadedLocalFile(null);
-                }, 0);
-            }
+        }
+
+        // Dispose of local workspace when switching away from Local tab.
+        else if (this.local_workspace) {
+            setTimeout(() => {
+                this.local_workspace?.dispose();
+                this.local_workspace = null;
+                this.setLoadedLocalFile(null);
+            }, 0);
         }
 
         // Forget about drop zone when not on Local tab.
@@ -410,7 +406,7 @@ export default class LoadModalStore implements ILoadModalStore {
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
-        if (!this.recent_workspace || !this.recent_workspace?.rendered) {
+        if (!this.recent_workspace?.rendered) {
             this.recent_workspace = Blockly.inject(ref, {
                 media: `${__webpack_public_path__}media/`,
                 zoom: {
@@ -494,7 +490,7 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
-        const file_name = file && file.name.replace(/\.[^/.]+$/, '');
+        const file_name = file?.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(e => {
             const load_options = {

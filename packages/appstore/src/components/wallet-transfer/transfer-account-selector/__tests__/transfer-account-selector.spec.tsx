@@ -49,7 +49,7 @@ describe('TransferAccountSelector', () => {
             account_type: 'wallet',
             balance: 100,
             currency: 'USD',
-            gradient_class: `wallet-card__usd-bg`,
+            gradient_class: 'wallet-card__usd-bg',
             is_demo: false,
             loginid: '12345678',
             shortcode: 'svg',

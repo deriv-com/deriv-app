@@ -9,20 +9,18 @@ type TWalletAccount = {
     icon: string;
 };
 
-const WalletAccount = ({ balance, name, currency, icon }: TWalletAccount) => {
-    return (
-        <div className='wallet-account'>
-            <Icon className='wallet-account__icon' icon={icon} size={24} />
-            <div className='wallet-account__details'>
-                <Text as='div' color='prominent' size='xxs'>
-                    {name}
-                </Text>
-                <Text as='div' color='prominent' size='xxxs' weight='bold'>
-                    {balance} {currency}
-                </Text>
-            </div>
+const WalletAccount = ({ balance, name, currency, icon }: TWalletAccount) => (
+    <div className='wallet-account'>
+        <Icon className='wallet-account__icon' icon={icon} size={24} />
+        <div className='wallet-account__details'>
+            <Text as='div' color='prominent' size='xxs'>
+                {name}
+            </Text>
+            <Text as='div' color='prominent' size='xxxs' weight='bold'>
+                {balance} {currency}
+            </Text>
         </div>
-    );
-};
+    </div>
+);
 
 export default WalletAccount;

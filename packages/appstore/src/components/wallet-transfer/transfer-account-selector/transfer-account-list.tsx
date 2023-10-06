@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import WalletTransferTile from '../wallet-transfer-tile';
 import type { TTransferAccount } from 'Types';
 
@@ -62,7 +62,7 @@ const TransferAccountList = ({
                                             }}
                                         />
                                     ) : (
-                                        <React.Fragment>{localize('Wallets')}</React.Fragment>
+                                        <Localize i18n_default_text='Wallets' />
                                     )}
                                 </Text>
                                 <TitleLine />

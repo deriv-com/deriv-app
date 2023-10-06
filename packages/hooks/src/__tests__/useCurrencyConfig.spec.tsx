@@ -1,33 +1,42 @@
 import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
+import { APIProvider } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useCurrencyConfig from '../useCurrencyConfig';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
-}));
+    useFetch: jest.fn((name: string) => {
+        if (name === 'website_status') {
+            return {
+                data: {
+                    website_status: {
+                        currencies_config: {
+                            AUD: { type: 'fiat', is_crypto: false },
+                            BTC: { type: 'crypto', is_crypto: true },
+                            ETH: { type: 'crypto', is_crypto: true },
+                            UST: { type: 'crypto', is_crypto: true },
+                            USD: { type: 'fiat', is_crypto: false, name: 'US Dollar' },
+                            LTC: { type: 'crypto', is_crypto: true },
+                        },
+                    },
+                },
+            };
+        }
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'website_status'>>;
+        return { data: undefined };
+    }),
+}));
 
 describe('useCurrencyConfig', () => {
     test("should return undefined if the currency doesn't exist in currencies_config", () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({});
-
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useCurrencyConfig(), { wrapper });
 
-        expect(result.current.getConfig('USD')).toBe(undefined);
+        expect(result.current.getConfig('EUR')).toBe(undefined);
     });
 
     test('should return currency config object for the given currency', () => {
-        mockUseFetch.mockReturnValue({
-            // @ts-expect-error need to come up with a way to mock the return type of useFetch
-            data: { website_status: { currencies_config: { USD: { type: 'fiat', name: 'US Dollar' } } } },
-        });
-
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useCurrencyConfig(), { wrapper });

@@ -48,6 +48,12 @@ const AccountStatusList = [
 
 type TAccountStatus = typeof AccountStatusList[number];
 
+/**
+ * Custom hook to check if a particular account status is present.
+ * @name useIsAccountStatusPresent
+ * @param status of the account to check
+ * @returns boolean
+ */
 const useIsAccountStatusPresent = (status: TAccountStatus) => {
     const {
         client: { account_status },

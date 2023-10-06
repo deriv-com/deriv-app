@@ -22,7 +22,7 @@ const Wallets = observer(() => {
         }
     }, [active_wallet, data, switchAccount]);
 
-    if (!is_authorize) return <Loading is_fullscreen={true} />;
+    if (!is_authorize) return <Loading is_fullscreen />;
 
     return (
         <ThemedScrollbars className='wallets-module' is_scrollbar_hidden>

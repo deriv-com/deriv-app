@@ -13,7 +13,7 @@ jest.mock('@deriv/api', () => ({
 const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'topup_virtual'>>;
 
 describe('<DemoResetBalance />', () => {
-    it('should render', () => {
+    it('should render demo reset balance component correctly', () => {
         const mock = mockStore({});
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
         mockUseRequest.mockReturnValue({});

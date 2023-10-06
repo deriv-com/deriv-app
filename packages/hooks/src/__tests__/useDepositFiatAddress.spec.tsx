@@ -22,7 +22,6 @@ describe('useDepositFiatAddress', () => {
         const { result } = renderHook(() => useDepositFiatAddress(), { wrapper });
 
         result.current.resend();
-
         expect(result.current.data).toMatch('https://example.com');
     });
 
@@ -54,7 +53,6 @@ describe('useDepositFiatAddress', () => {
         const { result } = renderHook(() => useDepositFiatAddress(), { wrapper });
 
         result.current.resend();
-
         expect(result.current.data).toBe('https://example.com&DarkMode=off');
     });
 });

@@ -4,11 +4,11 @@ import { useSwipeable } from 'react-swipeable';
 import ArrowButton from './arrow-button';
 
 type TCollapsible = {
-    as: React.ElementType;
+    as?: React.ElementType;
     is_collapsed?: boolean;
     position?: 'top' | 'bottom';
     onClick: (state: boolean) => void;
-    title: string;
+    title?: string;
 };
 
 const swipe_config = {

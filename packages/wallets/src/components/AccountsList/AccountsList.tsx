@@ -1,21 +1,21 @@
 import React from 'react';
 import useDevice from '../../hooks/useDevice';
-import { CFDList } from '../CFDList';
+import { CFDPlatformsList } from '../ExternalTradingPlatforms';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
 import { TabList, TabPanel, TabPanels, Tabs } from '../Tabs';
 import './AccountsList.scss';
 
 const AccountsList = () => {
-    const { is_mobile } = useDevice();
+    const { isMobile } = useDevice();
 
-    if (is_mobile) {
+    if (isMobile) {
         return (
             <Tabs className='wallets-accounts-list'>
                 {/* TODO: Localization needed on tab headers */}
                 <TabList list={['CFDs', 'Options & multipliers']} />
                 <TabPanels>
                     <TabPanel>
-                        <h1>CFDs</h1>
+                        <CFDPlatformsList />
                     </TabPanel>
                     <TabPanel>
                         <OptionsAndMultipliersListing />
@@ -28,7 +28,7 @@ const AccountsList = () => {
     return (
         <div className='wallets-accounts-list'>
             <div className='wallets-accounts-list__content'>
-                <CFDList />
+                <CFDPlatformsList />
                 <OptionsAndMultipliersListing />
             </div>
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import BarriersList from '../barriers-list';
 
 const barrier_choices = ['16', '33', '40'];
@@ -10,30 +11,27 @@ const mockClickCallback = jest.fn();
 const mockHoverCallback = jest.fn();
 const mockClickCrossCallback = jest.fn();
 
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
-    observer: jest.fn(x => x),
-    useStore: jest.fn(() => ({
+describe('<BarriersList/>', () => {
+    const mock_store = mockStore({
         ui: {
             is_mobile: false,
         },
-    })),
-}));
-
-describe('<BarriersList/>', () => {
+    });
     beforeEach(() => {
         render(
-            <BarriersList
-                header='Barriers'
-                selected_item={barrier_choices[0]}
-                show_table
-                subheader='Distance to current spot'
-                className={classname}
-                barriers_list={barrier_choices}
-                onClick={mockClickCallback}
-                onClickCross={mockClickCrossCallback}
-                onHover={mockHoverCallback}
-            />
+            <StoreProvider store={mock_store}>
+                <BarriersList
+                    header='Barriers'
+                    selected_item={barrier_choices[0]}
+                    show_table
+                    subheader='Distance to current spot'
+                    className={classname}
+                    barriers_list={barrier_choices}
+                    onClick={mockClickCallback}
+                    onClickCross={mockClickCrossCallback}
+                    onHover={mockHoverCallback}
+                />
+            </StoreProvider>
         );
     });
     it('all barrier options should be rendered', () => {

@@ -12,7 +12,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
     const { is_mobile } = ui;
     const { data: deposit_crypto_address, isLoading, error, resend } = useDepositCryptoAddress();
 
-    if (isLoading) return <Loading is_fullscreen={false} />;
+    if (isLoading || !deposit_crypto_address) return <Loading is_fullscreen={false} />;
 
     if (error) {
         return (
@@ -31,7 +31,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
     return (
         <>
             <QRCode
-                value={deposit_crypto_address || ''}
+                value={deposit_crypto_address}
                 size={is_mobile ? 128 : 160}
                 className='deposit-crypto-wallet-address__qrcode-container'
             />

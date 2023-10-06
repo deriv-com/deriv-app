@@ -8,7 +8,7 @@ import TitleCardLoader from 'Components/pre-loader/title-card-loader';
 import WalletTransferBlock from 'Components/wallet-content/wallet-transfer-block';
 import './listing-container.scss';
 
-type ListingContainerProps = {
+type TListingContainerProps = {
     title: ReactNode;
     description: ReactNode;
     is_deriv_platform?: boolean;
@@ -16,10 +16,10 @@ type ListingContainerProps = {
     className?: string;
     is_outside_grid_container?: boolean;
 };
-type OptionsProps = Pick<ListingContainerProps, 'title' | 'description' | 'is_deriv_platform'>;
-type SwitcherProps = Pick<ListingContainerProps, 'wallet_account' | 'is_deriv_platform'>;
+type TOptionsProps = Pick<TListingContainerProps, 'title' | 'description' | 'is_deriv_platform'>;
+type TSwitcherProps = Pick<TListingContainerProps, 'wallet_account' | 'is_deriv_platform'>;
 
-const Options = observer(({ title, description, is_deriv_platform }: OptionsProps) => {
+const Options = observer(({ title, description, is_deriv_platform }: TOptionsProps) => {
     const {
         client: { is_landing_company_loaded },
     } = useStore();
@@ -36,7 +36,7 @@ const Options = observer(({ title, description, is_deriv_platform }: OptionsProp
     return <TitleCardLoader />;
 });
 
-const Switcher = ({ wallet_account, is_deriv_platform }: SwitcherProps) => {
+const Switcher = ({ wallet_account, is_deriv_platform }: TSwitcherProps) => {
     if (!is_deriv_platform) return null;
     if (wallet_account) return <WalletTransferBlock wallet_account={wallet_account} />;
     return <CurrencySwitcherCard />;
@@ -50,7 +50,7 @@ const ListingContainer = ({
     wallet_account,
     children,
     className,
-}: ListingContainerProps & Omit<HTMLAttributes<HTMLDivElement>, 'title'>) => {
+}: TListingContainerProps & Omit<HTMLAttributes<HTMLDivElement>, 'title'>) => {
     return (
         <div className={classNames('listing-container', className)}>
             <div className='listing-container__top-container'>

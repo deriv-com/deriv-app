@@ -193,7 +193,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                 type='submit'
                                 disabled={is_amount_to_input_disabled || values.to_amount === 0}
                             >
-                                {localize('Transfer')}
+                                <Localize i18n_default_text='Transfer' />
                             </Button>
                         </div>
                     </Form>

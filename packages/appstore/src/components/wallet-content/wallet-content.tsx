@@ -23,7 +23,7 @@ const WalletContent = ({ is_demo, is_malta_wallet }: TProps) => {
             <WalletOptionsAndMultipliersListing />
             {is_malta_wallet && !is_demo && (
                 <EUDisclaimer
-                    is_wallet={true}
+                    is_wallet
                     wrapperClassName='wallet-content__disclaimer'
                     textClassName='wallet-content__disclaimer-text'
                 />

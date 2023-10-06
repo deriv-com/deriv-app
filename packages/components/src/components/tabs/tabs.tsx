@@ -14,52 +14,54 @@ declare module 'react' {
 }
 
 type TTabsProps = RouteComponentProps & {
-    active_icon_color: string;
+    active_icon_color?: string;
     active_index?: number;
-    background_color: string;
+    background_color?: string;
     bottom?: boolean;
-    center: boolean;
-    children: React.ReactElement[];
+    center?: boolean;
+    children: (React.ReactElement | null)[];
     className?: string;
-    fit_content: boolean;
+    fit_content?: boolean;
     has_active_line?: boolean;
     has_bottom_line?: boolean;
     header_fit_content?: boolean;
     history: History;
-    icon_color: string;
-    icon_size: number;
+    icon_color?: string;
+    icon_size?: number;
     is_100vw?: boolean;
     is_full_width?: boolean;
     is_overflow_hidden?: boolean;
     is_scrollable?: boolean;
     onTabItemClick?: (active_tab_index: number) => void;
+    should_scroll_tab_into_view?: boolean;
     should_update_hash?: boolean;
     single_tab_has_no_label?: boolean;
     top: boolean;
 };
 
 const Tabs = ({
-    active_icon_color,
+    active_icon_color = '',
     active_index = 0,
-    background_color,
-    bottom,
-    center,
+    background_color = '',
+    bottom = false,
+    center = false,
     children,
-    className,
-    fit_content,
+    className = '',
+    fit_content = false,
     has_active_line = true,
     has_bottom_line = true,
-    header_fit_content,
+    header_fit_content = false,
     history,
-    icon_color,
-    icon_size,
-    is_100vw,
-    is_full_width,
-    is_overflow_hidden,
-    is_scrollable,
+    icon_color = '',
+    icon_size = 0,
+    is_100vw = false,
+    is_full_width = false,
+    is_overflow_hidden = false,
+    is_scrollable = false,
     onTabItemClick,
-    should_update_hash,
-    single_tab_has_no_label,
+    should_scroll_tab_into_view = false,
+    should_update_hash = false,
+    single_tab_has_no_label = false,
     top,
 }: TTabsProps) => {
     const [active_line_style, updateActiveLineStyle] = React.useState({});
@@ -72,17 +74,28 @@ const Tabs = ({
     const setActiveLineStyle = React.useCallback(() => {
         const tabs_wrapper_bounds = tabs_wrapper_ref?.current?.getBoundingClientRect();
         const active_tab_bounds = active_tab_ref?.current?.getBoundingClientRect();
+
         if (tabs_wrapper_bounds && active_tab_bounds) {
             updateActiveLineStyle({
                 left: active_tab_bounds.left - tabs_wrapper_bounds.left,
                 width: active_tab_bounds.width,
             });
-        } else {
-            setTimeout(() => {
-                setActiveLineStyle();
-            }, 500);
         }
     }, []);
+
+    React.useEffect(() => {
+        let timeoutId: NodeJS.Timeout;
+
+        if (!active_tab_ref.current || !tabs_wrapper_ref.current) {
+            timeoutId = setTimeout(setActiveLineStyle, 500);
+        } else {
+            setActiveLineStyle();
+        }
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [setActiveLineStyle]);
 
     let initial_index_to_show = 0;
     let tab_width: string;
@@ -99,7 +112,7 @@ const Tabs = ({
                 initial_index_to_show = hash_index;
             } else {
                 // if no hash is in url but component has passed hash prop, set hash of the tab shown
-                const child_props = children[initial_index_to_show].props;
+                const child_props = children[initial_index_to_show]?.props;
                 const current_id = child_props && child_props.hash;
                 if (current_id) {
                     pushHash(current_id);
@@ -116,8 +129,19 @@ const Tabs = ({
             onTabItemClick?.(active_tab_index);
         }
         setActiveLineStyle();
+        if (should_scroll_tab_into_view) {
+            setTimeout(
+                () =>
+                    active_tab_ref.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center',
+                        inline: 'nearest',
+                    }),
+                0
+            );
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [active_tab_index, setActiveLineStyle]);
+    }, [active_tab_index, setActiveLineStyle, should_scroll_tab_into_view]);
 
     React.useEffect(() => {
         if (active_index >= 0 && active_index !== active_tab_index) {
@@ -128,7 +152,7 @@ const Tabs = ({
 
     const onClickTabItem = (index: number) => {
         if (should_update_hash) {
-            const hash = children[index].props['data-hash'];
+            const hash = children[index]?.props['data-hash'];
             pushHash(hash);
         }
         setActiveTabIndex(index);

@@ -23,7 +23,7 @@
     &__carousel {
         overflow: hidden;
         background-color: #fff;
-        padding: 3.2rem 0 3.2rem 1.6rem;
+        padding: 3.2rem 1.6rem;
         border-radius: 0.8rem;
         position: relative;
         border: 0.1rem solid #d6dadb;
@@ -39,11 +39,6 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            gap: 2.4rem;
-
-            @include mobile {
-                gap: 1.6rem;
-            }
         }
 
         &-btn {

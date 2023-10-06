@@ -1,7 +1,131 @@
 import { useMemo } from 'react';
 import useAvailableMT5Accounts from './useAvailableMT5Accounts';
 import useExistingCFDAccounts from './useExistingCFDAccounts';
-import { useStore } from '@deriv/stores';
+import useAuthorize from './useAuthorize';
+
+type TPartialCfdAccount = {
+    landing_company_short?: string;
+    shortcode?: string;
+    market_type?: string;
+    server_info?: {
+        geolocation?: {
+            region?: string;
+            sequence?: number;
+        };
+    };
+};
+
+/** There is in shared package but not sure can I use this package or not */
+// eu countries to support
+const eu_countries = [
+    'it',
+    'de',
+    'fr',
+    'lu',
+    'gr',
+    'mf',
+    'es',
+    'sk',
+    'lt',
+    'nl',
+    'at',
+    'bg',
+    'si',
+    'cy',
+    'be',
+    'ro',
+    'hr',
+    'pt',
+    'pl',
+    'lv',
+    'ee',
+    'cz',
+    'fi',
+    'hu',
+    'dk',
+    'se',
+    'ie',
+    'im',
+    'gb',
+    'mt',
+];
+
+// check if client is from EU
+const isEuCountry = (country: string) => eu_countries.includes(country);
+
+// define region
+const default_region = (loginid: string, country: string) => {
+    const active_demo = /^VRT|VRW/.test(loginid);
+    const active_real_mf = /^MF|MFW/.test(loginid);
+
+    if (((active_demo || active_real_mf) && isEuCountry(country)) || active_real_mf) {
+        return 'EU';
+    }
+    return 'Non-EU';
+};
+
+// check for EU user
+const is_eu_user = (loginid: string, country: string) => {
+    const selected_region = default_region(loginid, country);
+
+    return selected_region === 'EU';
+};
+
+// get server name
+const getServerName = (account: TPartialCfdAccount) => {
+    if (account) {
+        const server_region = account.server_info?.geolocation?.region;
+        if (server_region) {
+            return `${server_region} ${
+                account?.server_info?.geolocation?.sequence === 1 ? '' : account?.server_info?.geolocation?.sequence
+            }`;
+        }
+    }
+    return '';
+};
+
+// check for mitliple SVG Synthetic accounts
+const hasMultipleSVGAccounts = (existed_cfd_mt5_accounts: TPartialCfdAccount[]) => {
+    const all_svg_acc = existed_cfd_mt5_accounts.filter(
+        acc => acc.landing_company_short === 'svg' && acc.market_type === 'synthetic'
+    );
+    return all_svg_acc.length > 1;
+};
+
+/**
+ * Get shortcode and region
+ * @param active_loginid - active loginid
+ * @param is_virtual - account is virtual or not
+ * @param country - residence country
+ * @param cfd_account - CFD account
+ * @param existed_cfd_mt5_accounts - existed CFD accounts
+ * @returns {string} - Shortcode and region
+ */
+export const getShortCodeAndRegion = (
+    active_loginid: string,
+    is_virtual: boolean,
+    country: string,
+    cfd_account: TPartialCfdAccount,
+    existed_cfd_mt5_accounts: TPartialCfdAccount[]
+): string => {
+    let short_code_and_region = '';
+    if (!is_virtual && !is_eu_user(active_loginid, country)) {
+        const code = cfd_account.landing_company_short ?? cfd_account.shortcode;
+
+        const short_code =
+            code && code !== 'svg' && code !== 'bvi'
+                ? code?.charAt(0).toUpperCase() + code?.slice(1)
+                : code?.toUpperCase();
+
+        let region = '';
+        if (hasMultipleSVGAccounts(existed_cfd_mt5_accounts)) {
+            region =
+                cfd_account.market_type !== 'financial' && code !== 'bvi' ? ` - ${getServerName(cfd_account)}` : '';
+        }
+        short_code_and_region = `${short_code}${region}`;
+    }
+    return short_code_and_region;
+};
 
 /**
  *
@@ -11,8 +135,7 @@ import { useStore } from '@deriv/stores';
 const useFilteredCFDAccounts = () => {
     const { data: available_mt5_accounts, ...rest_available_mt5_accounts } = useAvailableMT5Accounts();
     const { data: existing_cfd_accounts, ...rest_existing_cfd_accounts } = useExistingCFDAccounts();
-    const { traders_hub } = useStore();
-    const { getShortCodeAndRegion } = traders_hub;
+    const { data: authorize_data } = useAuthorize();
 
     const combined_mt5_accounts = useMemo(() => {
         if (!available_mt5_accounts) return undefined;
@@ -46,13 +169,25 @@ const useFilteredCFDAccounts = () => {
                             ...available,
                             ...existing_mt5_account,
                             market_type: modified_market_type,
-                            short_code_and_region: getShortCodeAndRegion(existing_mt5_account || available),
+                            short_code_and_region: getShortCodeAndRegion(
+                                authorize_data?.loginid || '',
+                                Boolean(authorize_data?.is_virtual),
+                                authorize_data?.country || '',
+                                existing_mt5_account || available,
+                                existing_cfd_accounts?.mt5_accounts
+                            ),
                             is_added,
                         };
                     });
                 })
         );
-    }, [available_mt5_accounts, existing_cfd_accounts?.mt5_accounts, getShortCodeAndRegion]);
+    }, [
+        authorize_data?.country,
+        authorize_data?.is_virtual,
+        authorize_data?.loginid,
+        available_mt5_accounts,
+        existing_cfd_accounts?.mt5_accounts,
+    ]);
 
     /** Categorizes the accounts into different market types and groups them together */
     const categorized_mt5_accounts = useMemo(() => {

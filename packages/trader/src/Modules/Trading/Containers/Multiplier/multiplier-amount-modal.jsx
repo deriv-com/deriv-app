@@ -3,7 +3,7 @@ import { Div100vhContainer, Modal, Money, Popover, usePreventIOSZoom } from '@de
 import { useIsMounted, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
-import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
+import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -86,6 +86,7 @@ const TradeParamsMobile = observer(({ toggleModal }) => {
             <div className='trade-params__multiplier-ic-info-wrapper'>
                 <Popover
                     alignment='right'
+                    classNameBubble='dc-popover__trade-params'
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
                     zIndex={9999}

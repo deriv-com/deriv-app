@@ -1,0 +1,25 @@
+.acc-switcher-wallet-item {
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.35rem 1.6rem;
+        border-radius: $BORDER_RADIUS;
+        gap: 1.6rem;
+        cursor: pointer;
+
+        &--active {
+            background-color: var(--general-active);
+        }
+
+        &:hover:not(&--active) {
+            background-color: var(--general-hover);
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+}

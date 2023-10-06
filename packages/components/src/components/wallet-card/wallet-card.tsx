@@ -105,7 +105,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
             <div className={`wallet-card__active-icon wallet-card__active-icon--${size}`}>
                 <Icon
                     color='brand'
-                    data_testid='ic-checkmark-circle'
+                    data_testid='dt_ic_checkmark_circle'
                     icon='IcCheckmarkCircle'
                     size={size === 'small' ? 16 : 32}
                 />

@@ -9,6 +9,7 @@
     align-items: center;
     margin: 0 0 0.8rem;
     flex: 1;
+    position: relative;
 
     &__amount {
         @include typeface(--paragraph-center-bold-black);
@@ -26,9 +27,23 @@
         color: var(--text-prominent);
         line-height: 1.4rem;
 
+        &-disabled {
+            color: var(--text-disabled);
+        }
+
         &-value {
             font-weight: bold;
             font-size: 1.2rem;
+        }
+        &-tooltip {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 4rem;
+            width: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
     &__multiplier {
@@ -62,6 +77,9 @@
             margin-left: 0.8rem;
             justify-content: center;
             min-width: 8.8rem;
+            &:has(.mobile-widget__item-tooltip) {
+                min-width: 9.9rem;
+            }
 
             .mobile-widget__item-label {
                 color: var(--text-general);
@@ -162,5 +180,23 @@
     &__basis {
         font-weight: bold;
         color: var(--text-prominent);
+    }
+}
+
+.duration_amount_selector {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 4.65rem;
+    padding: 0.7rem 0.8rem;
+
+    .mobile-widget {
+        &__duration {
+            display: flex;
+            justify-content: flex-start;
+        }
+        &__amount--container {
+            display: flex;
+            justify-content: space-between;
+        }
     }
 }

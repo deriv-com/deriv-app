@@ -74,7 +74,25 @@ jest.mock('@deriv/api', () => ({
                 data: {
                     crypto_config: {
                         currencies_config: {
-                            BTC: {},
+                            BTC: {
+                                minimum_withdrawal: 0.00034286,
+                            },
+                            ETH: {
+                                minimum_withdrawal: 0.02728729,
+                            },
+                            LTC: {
+                                minimum_withdrawal: 0.06032091,
+                            },
+                            USD: {},
+                            USDC: {
+                                minimum_withdrawal: 50,
+                            },
+                            UST: {
+                                minimum_withdrawal: 24.99,
+                            },
+                            eUSDT: {
+                                minimum_withdrawal: 50.05,
+                            },
                         },
                     },
                 },

@@ -26,7 +26,6 @@ const WalletTransferBlock = observer(({ wallet_account }: TProps) => {
 
     return (
         <CurrencySwitcherContainer
-            title={null}
             icon={'Options'}
             actions={
                 <Button

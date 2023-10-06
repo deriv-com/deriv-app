@@ -26,7 +26,7 @@ describe('WalletsIntroComponent', () => {
     beforeEach(() => {
         mock = mockStore({});
     });
-    it('should render', () => {
+    it('should render Wallet Intro Component', () => {
         checkContainerWalletsIntroComponent();
     });
 

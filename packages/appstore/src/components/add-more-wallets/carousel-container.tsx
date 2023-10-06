@@ -1,7 +1,7 @@
 import React from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel-react';
 import { observer, useStore } from '@deriv/stores';
-import { PrevButton, NextButton } from './carousel-buttons';
+import { CarouselButton } from './carousel-buttons';
 
 const CarouselContainer: React.FC<React.PropsWithChildren<unknown>> = observer(({ children }) => {
     const { ui } = useStore();
@@ -15,8 +15,8 @@ const CarouselContainer: React.FC<React.PropsWithChildren<unknown>> = observer((
 
     const [emblaRef, emblaApi] = useEmblaCarousel(options);
     const [is_hovered, setIsHovered] = React.useState(is_mobile);
-    const [prev_btn_disabled, setPrevBtnEnabled] = React.useState(false);
-    const [next_btn_disabled, setNextBtnEnabled] = React.useState(false);
+    const [prev_btn_enabled, setPrevBtnEnabled] = React.useState(false);
+    const [next_btn_enabled, setNextBtnEnabled] = React.useState(false);
 
     const scrollPrev = React.useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
     const scrollNext = React.useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -45,8 +45,8 @@ const CarouselContainer: React.FC<React.PropsWithChildren<unknown>> = observer((
             </div>
             {!is_mobile && is_hovered && (
                 <React.Fragment>
-                    <PrevButton enabled={prev_btn_disabled} onClick={scrollPrev} />
-                    <NextButton enabled={next_btn_disabled} onClick={scrollNext} />
+                    <CarouselButton nav_action='prev' enabled={prev_btn_enabled} onClick={scrollPrev} />
+                    <CarouselButton nav_action='next' enabled={next_btn_enabled} onClick={scrollNext} />
                 </React.Fragment>
             )}
         </div>

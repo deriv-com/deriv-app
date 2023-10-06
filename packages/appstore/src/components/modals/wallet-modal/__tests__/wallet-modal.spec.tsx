@@ -45,10 +45,10 @@ describe('WalletModal', () => {
         expect(screen.getByText('WalletModalBody')).toBeInTheDocument();
     });
 
-    it('Should not render cashier modal and show loader if authorize is true', () => {
+    it('Should not render cashier modal and show loader if authorize is false', () => {
         const mocked_store = mockStore({
             ui: { is_wallet_modal_visible: true },
-            client: { is_authorize: true },
+            client: { is_authorize: false },
             traders_hub: { active_modal_wallet_id: 'CRW000000' },
         });
 

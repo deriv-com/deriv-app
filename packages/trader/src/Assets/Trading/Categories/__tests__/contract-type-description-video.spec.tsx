@@ -6,7 +6,7 @@ import ContractTypeDescriptionVideo from '../contract-type-description-video';
 import { TCoreStores } from '@deriv/stores/types';
 
 const default_mocked_props = {
-    selected_contract_type: 'vanilla',
+    selected_contract_type: 'vanillalongcall',
     data_testid: 'dt_description_video',
 };
 

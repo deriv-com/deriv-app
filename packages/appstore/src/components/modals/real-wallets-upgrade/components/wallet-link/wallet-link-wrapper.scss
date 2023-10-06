@@ -14,7 +14,7 @@
         &-text {
             width: fit-content;
             padding: 0.4rem 0.8rem;
-            border-radius: 24px;
+            border-radius: $BORDER_RADIUS * 6;
             text-align: center;
             background-color: var(--general-section-2);
 
@@ -44,7 +44,7 @@
             &-title {
                 width: 100%;
                 display: block;
-                border-radius: 8px 8px 0 0;
+                border-radius: $BORDER_RADIUS_2 $BORDER_RADIUS_2 0 0;
             }
         }
     }
@@ -99,22 +99,22 @@
             }
 
             &:before {
-                width: 48px;
-                height: 1px;
+                width: 4.8rem;
+                height: 0.1rem;
 
                 @include mobile {
-                    width: 1px;
-                    height: 16px;
+                    width: 0.1rem;
+                    height: 1.6rem;
                 }
             }
 
             &:after {
-                width: 63px;
-                height: 1px;
+                width: 6.3rem;
+                height: 0.1rem;
 
                 @include mobile {
-                    width: 1px;
-                    height: 24px;
+                    width: 0.1rem;
+                    height: 2.4rem;
                 }
             }
         }
@@ -137,7 +137,7 @@
             position: absolute;
             bottom: 0;
             width: 100%;
-            border-radius: 0 0 8px 8px;
+            border-radius: 0 0 $BORDER_RADIUS_2 $BORDER_RADIUS_2;
         }
 
         @include mobile {

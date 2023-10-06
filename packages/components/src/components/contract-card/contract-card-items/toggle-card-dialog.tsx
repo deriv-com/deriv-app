@@ -61,7 +61,7 @@ const ToggleCardDialog = ({
 
     const toggle_ref = React.useRef<HTMLDivElement>(null);
     const dialog_ref = React.useRef<HTMLDivElement>(null);
-    const contract = getContractById(contract_id);
+    const contract = getContractById(Number(contract_id));
 
     React.useEffect(() => {
         ContractUpdateFormWrapper = connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;

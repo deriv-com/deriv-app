@@ -31,7 +31,7 @@ jest.mock('@deriv/hooks', () => ({
     useTradingAccountsList: jest.fn(() => ({
         data: [{ account_category: 'trading', currency: 'USD', balance: 1000, loginid: 'CR1001' }],
     })),
-    useWalletsList: jest.fn(() => ({
+    useWalletAccountsList: jest.fn(() => ({
         data: [
             {
                 currency: 'USD',
@@ -86,7 +86,7 @@ describe('<WalletTransferBlock />', () => {
 
         const loginid = wallet_account.linked_to?.[0].loginid || '';
 
-        const loginid_title = screen.getByText(loginid);
+        const loginid_title = screen.getByText(String(loginid));
 
         expect(loginid_title).toBeInTheDocument();
     });

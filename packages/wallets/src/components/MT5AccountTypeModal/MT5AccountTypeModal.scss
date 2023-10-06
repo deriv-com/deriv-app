@@ -1,0 +1,45 @@
+.wallets-mt5-account-type-modal {
+    &-next-button {
+        display: flex;
+        height: 32px;
+        padding: 6px 16px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        background: #ff444f;
+        border: unset;
+        cursor: pointer;
+
+        @include mobile {
+            width: 100%;
+            padding: 20px 16px;
+        }
+
+        &-disabled {
+            border: unset;
+            padding: 6px 16px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            background-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+
+            @include mobile {
+                width: 100%;
+                padding: 10px 16px;
+            }
+        }
+    }
+
+    &-text {
+        color: var(--system-dark-1-prominent-text, #fff);
+        text-align: center;
+
+        /* desktop/paragraph/P2 - bold */
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px; /* 142.857% */
+    }
+}

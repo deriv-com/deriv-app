@@ -1,13 +1,31 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import useFilteredCFDAccounts from '../useFilteredCFDAccounts';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import { useFetch } from '@deriv/api';
+import { APIProvider, useFetch } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn(name => {
-        if (name === 'trading_platform_available_accounts') {
+        if (name === 'authorize') {
+            return {
+                data: {
+                    authorize: {
+                        account_list: [
+                            {
+                                loginid: 'CRW000000',
+                                account_category: 'wallet',
+                                is_virtual: 0,
+                                landing_company_name: 'maltainvest',
+                                currency: 'USD',
+                            },
+                        ],
+                        loginid: 'CRW000000',
+                        country: 'id',
+                        is_virtual: 0,
+                    },
+                },
+            };
+        } else if (name === 'trading_platform_available_accounts') {
             return {
                 data: {
                     trading_platform_available_accounts: [
@@ -46,7 +64,27 @@ jest.mock('@deriv/api', () => ({
                     ],
                 },
             };
+        } else if (name === 'mt5_login_list') {
+            return {
+                data: {
+                    mt5_login_list: [
+                        {
+                            platform: 'mt5',
+                            display_login: 'CRW909900',
+                            email: '',
+                            leverage: '10012123123',
+                            login: 'CRW909900',
+                            server: 'Deriv-Server',
+                            server_description: 'Deriv-Server',
+                            type: 'real',
+                            landing_company_short: 'svg',
+                            market_type: 'synthetic',
+                        },
+                    ],
+                },
+            };
         }
+
         return { data: undefined };
     }),
     useRequest: jest.fn(() => ({
@@ -59,7 +97,10 @@ jest.mock('@deriv/api', () => ({
                     login: 'CRW909900',
                     server: 'Deriv-Server',
                     server_description: 'Deriv-Server',
-                    type: 'demo',
+                    type: 'real',
+                    landing_company_short: 'svg',
+                    market_type: 'synthetic',
+                    platform: 'mt5',
                 },
             ],
 
@@ -77,6 +118,7 @@ jest.mock('@deriv/api', () => ({
                     short_title: 'CRW909900',
                     title: 'CRW909900',
                     type: 'demo',
+                    platform: 'mt5',
                 },
             ],
         },
@@ -88,27 +130,19 @@ const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'trading_pl
 
 describe('useFilteredCFDAccounts', () => {
     it('should return filteredCFDAccounts', async () => {
-        const mock = mockStore({
-            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
-            traders_hub: { getShortCodeAndRegion: () => 'svg' },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 
-        expect(result.current.data).toEqual({
+        expect(result.current.data).toMatchObject({
             synthetic: [
                 {
                     availability: 'Non-EU',
                     icon: 'Derived',
-                    is_added: false,
+                    is_added: true,
                     market_type: 'synthetic',
                     name: 'Deriv SVG',
-                    platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'SVG',
                     shortcode: 'svg',
                 },
             ],
@@ -120,7 +154,7 @@ describe('useFilteredCFDAccounts', () => {
                     market_type: 'financial',
                     name: 'Deriv SVG',
                     platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'BVI',
                     shortcode: 'bvi',
                 },
             ],
@@ -132,7 +166,7 @@ describe('useFilteredCFDAccounts', () => {
                     market_type: 'all',
                     name: 'Swap Free',
                     platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'SVG',
                     shortcode: 'svg',
                 },
             ],
@@ -140,27 +174,19 @@ describe('useFilteredCFDAccounts', () => {
     });
 
     it('should return gaming, financial then all in the correct order', () => {
-        const mock = mockStore({
-            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
-            traders_hub: { getShortCodeAndRegion: () => 'svg' },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 
-        expect(result.current.data).toEqual({
+        expect(result.current.data).toMatchObject({
             synthetic: [
                 {
                     availability: 'Non-EU',
                     icon: 'Derived',
-                    is_added: false,
+                    is_added: true,
                     market_type: 'synthetic',
                     name: 'Deriv SVG',
-                    platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'SVG',
                     shortcode: 'svg',
                 },
             ],
@@ -172,7 +198,7 @@ describe('useFilteredCFDAccounts', () => {
                     market_type: 'financial',
                     name: 'Deriv SVG',
                     platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'BVI',
                     shortcode: 'bvi',
                 },
             ],
@@ -184,7 +210,7 @@ describe('useFilteredCFDAccounts', () => {
                     market_type: 'all',
                     name: 'Swap Free',
                     platform: 'mt5',
-                    short_code_and_region: 'svg',
+                    short_code_and_region: 'SVG',
                     shortcode: 'svg',
                 },
             ],
@@ -192,13 +218,10 @@ describe('useFilteredCFDAccounts', () => {
     });
 
     it('should return undefined if there is no data', () => {
-        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 

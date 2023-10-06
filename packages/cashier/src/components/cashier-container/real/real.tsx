@@ -40,7 +40,7 @@ const Real = observer(({ is_appstore = false }: { is_appstore?: boolean }) => {
             )}
         </React.Fragment>
     ) : (
-        <div className='cashier__wrapper real'>
+        <React.Fragment>
             {should_show_loader && <Loading className='real__loader' />}
             {iframe_url && (
                 <iframe
@@ -52,7 +52,7 @@ const Real = observer(({ is_appstore = false }: { is_appstore?: boolean }) => {
                     data-testid='dt_doughflow_section'
                 />
             )}
-        </div>
+        </React.Fragment>
     );
 });
 

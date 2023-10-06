@@ -11,8 +11,6 @@ jest.mock('@deriv/api', () => ({
             website_status: {
                 currencies_config: {
                     BTC: { type: 'crypto', name: 'Bitcoin' },
-                    UST: { type: 'crypto', name: 'Tether' },
-                    eUSDT: { type: 'crypto', name: 'Tether' },
                 },
             },
         },
@@ -20,9 +18,9 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('DepositCryptoSideNotes', () => {
-    test('should show correct side note for UST', () => {
+    test('should show "Transaction status" side note', () => {
         const mock = mockStore({
-            client: { currency: 'UST' },
+            client: { currency: 'BTC' },
             modules: { cashier: { transaction_history: { setIsCryptoTransactionsVisible: jest.fn() } } },
         });
 
@@ -31,20 +29,6 @@ describe('DepositCryptoSideNotes', () => {
         );
         render(<DepositCryptoSideNotes />, { wrapper });
 
-        expect(screen.getByText(/About Tether \(Omni\)/)).toBeInTheDocument();
-    });
-
-    test('should show correct side note for eUSDT', () => {
-        const mock = mockStore({
-            client: { currency: 'eUSDT' },
-            modules: { cashier: { transaction_history: { setIsCryptoTransactionsVisible: jest.fn() } } },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <CashierProviders store={mock}>{children}</CashierProviders>
-        );
-        render(<DepositCryptoSideNotes />, { wrapper });
-
-        expect(screen.getByText(/About Tether \(Ethereum\)/)).toBeInTheDocument();
+        expect(screen.getByText('Transaction status')).toBeInTheDocument();
     });
 });

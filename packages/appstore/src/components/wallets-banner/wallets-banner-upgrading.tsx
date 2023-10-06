@@ -24,7 +24,7 @@ const WalletsBannerUpgrading = observer(({ is_eu }: TWalletsBannerUpgrading) => 
     return (
         <div className='wallets-banner__container wallets-banner__upgrading-banner'>
             <div className='wallets-banner__upgrading-banner-description'>
-                <div className='wallets-banner__upgrading-banner-loading' data-testid='dt_wallets-loading-dots'>
+                <div className='wallets-banner__upgrading-banner-loading' data-testid='dt_wallets_loading_dots'>
                     <span className='wallets-banner__upgrading-banner-dot' />
                     <span className='wallets-banner__upgrading-banner-dot' />
                     <span className='wallets-banner__upgrading-banner-dot' />

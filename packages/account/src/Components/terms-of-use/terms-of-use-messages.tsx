@@ -1,0 +1,73 @@
+import React from 'react';
+import { Text } from '@deriv/components';
+import { getLegalEntityName, Jurisdiction, TBrokerCodes } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
+
+/**
+ * Renders a horizontal line
+ * @name Hr
+ * @returns JSX.Element
+ */
+export const Hr = () => <div className='terms-of-use__hr' />;
+
+/**
+ * Renders the broker specific message based on the broker code
+ * @name BrokerSpecificMessage
+ * @param target - Broker code
+ * @returns JSX.Element
+ */
+export const BrokerSpecificMessage = ({ target }: { target: Extract<TBrokerCodes, 'svg' | 'maltainvest'> }) => (
+    <React.Fragment>
+        <Text as='h4' size='xs' weight='bold'>
+            <Localize i18n_default_text={'Jurisdiction and choice of law'} />
+        </Text>
+        <p>
+            {target === Jurisdiction.SVG ? (
+                <Localize
+                    i18n_default_text={
+                        'Your account will be opened with {{legal_entity_name}}, and will be subject to the laws of Saint Vincent and the Grenadines.'
+                    }
+                    values={{
+                        legal_entity_name: getLegalEntityName(Jurisdiction.SVG),
+                    }}
+                />
+            ) : (
+                <Localize
+                    i18n_default_text={
+                        'Your account will be opened with {{legal_entity_name}}, regulated by the Malta Financial Services Authority (MFSA), and will be subject to the laws of Malta.'
+                    }
+                    values={{
+                        legal_entity_name: getLegalEntityName(Jurisdiction.MALTA_INVEST),
+                    }}
+                />
+            )}
+        </p>
+        <Hr />
+        <Text as='h4' size='xs' weight='bold'>
+            <Localize i18n_default_text={'Risk warning'} />
+        </Text>
+        <p>
+            <Localize
+                i18n_default_text={
+                    'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.'
+                }
+            />
+        </p>
+    </React.Fragment>
+);
+
+/**
+ * Returns the generic terms of use message
+ * @name SVGDescription
+ * @returns JSX.Element
+ */
+export const SharedMessage = () => (
+    <React.Fragment>
+        <Text as='h4' size='xs' weight='bold'>
+            <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
+        </Text>
+        <p>
+            <Localize i18n_default_text='A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.' />
+        </p>
+    </React.Fragment>
+);

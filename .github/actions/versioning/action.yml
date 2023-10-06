@@ -6,9 +6,16 @@ inputs:
     required: false
 runs:
   using: composite
-  env: 
-    RELEASE_TYPE: ${{ inputs.release_type }}
+
   steps:
-  - name: Tag version
-      run: echo "$(echo "($RELEASE_TYPE)-$(date -u +"%Y-%m-%dT%H:%M:%SZ")")" > packages/core/dist/version
-    shell: bash
+    - name: Set Version
+      id: set_version
+      run: |
+        current_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        version="(${{ inputs.RELEASE_TYPE }})-${{ github.run_number }}-$current_date"
+        echo "Setting version to: $version"
+        echo "::set-output name=version::$version"
+      shell: bash
+
+    - name: Save Version to File
+      run: echo "${{ steps.set_version.outputs.version }}" > packages/core/dist/version

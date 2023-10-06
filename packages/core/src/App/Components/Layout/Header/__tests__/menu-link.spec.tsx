@@ -62,12 +62,13 @@ describe('MenuLink', () => {
         });
     };
 
-    it('should render no links with icon and text without passing link_to', () => {
+    it('should render proper class if as_disabled', () => {
+        mock_props.as_disabled = true;
         renderComponent();
 
         renderCheck();
         const link = screen.getByTestId('dt_menu_link');
-        expect(link.onclick).toBeFalsy();
+        expect(link).toHaveClass('dc-mobile-drawer__submenu-toggle--disabled');
     });
 
     it('should render menu link if deriv_static_url', () => {

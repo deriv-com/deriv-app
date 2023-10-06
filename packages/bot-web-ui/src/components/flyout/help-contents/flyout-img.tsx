@@ -1,7 +1,11 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 
-const FlyoutImage = props => {
+type TFlyoutImageProps = {
+    width: string;
+    url: string;
+};
+
+const FlyoutImage = (props: TFlyoutImageProps) => {
     const { width, url } = props;
     const style = { width };
 
@@ -10,10 +14,6 @@ const FlyoutImage = props => {
             <img src={url} className='flyout__image' style={style} />
         </div>
     );
-};
-
-FlyoutImage.propTypes = {
-    url: PropTypes.string,
 };
 
 export default FlyoutImage;

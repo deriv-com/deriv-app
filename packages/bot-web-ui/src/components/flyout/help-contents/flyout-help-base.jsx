@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { help_content_config, help_content_types } from 'Utils/help-content/help-content.config';
 import { useDBotStore } from 'Stores/useDBotStore';
 import FlyoutBlock from '../flyout-block.jsx';
-import FlyoutImage from './flyout-img.jsx';
+import FlyoutImage from './flyout-img';
 import FlyoutText from './flyout-text.jsx';
 import FlyoutVideo from './flyout-video.jsx';
 

@@ -124,7 +124,7 @@ const PersonalDetails = ({
     return (
         <Formik
             innerRef={selected_step_ref}
-            initialValues={{ ...props.value }}
+            initialValues={{ ...props.value, confirmation_checkbox: false }}
             validate={handleValidate}
             validateOnMount
             enableReinitialize
@@ -133,7 +133,17 @@ const PersonalDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, isSubmitting, setFieldValue, touched, values, handleChange, handleBlur, status }) => (
+            {({
+                handleSubmit,
+                errors,
+                isSubmitting,
+                setFieldValue,
+                touched,
+                values,
+                handleChange,
+                handleBlur,
+                status,
+            }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form

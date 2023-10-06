@@ -66,10 +66,14 @@ const PersonalDetailsForm = props => {
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     React.useEffect(() => {
+        if (!no_confirmation_needed && typeof status === 'object' && !values.confirmation_checkbox) {
+            setStatus({ ...status, is_confirmed: false });
+        }
         if (no_confirmation_needed && typeof status === 'object' && !status.is_confirmed) {
             setStatus({ ...status, is_confirmed: true });
         }
-    }, [no_confirmation_needed, setStatus, status]);
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [no_confirmation_needed]);
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;

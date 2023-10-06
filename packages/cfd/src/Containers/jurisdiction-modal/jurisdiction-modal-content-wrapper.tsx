@@ -146,17 +146,12 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
             category: account_type.category,
             type: account_type.type,
         };
-        const ctrader_account = {
-            category: account_type.category,
-            type: account_type.type,
-            platform,
-        };
 
         if (is_svg_selected) {
             if (platform !== CFD_PLATFORMS.CTRADER) {
                 openPasswordModal(type_of_account);
             } else if (platform === CFD_PLATFORMS.CTRADER) {
-                createCFDAccount(ctrader_account);
+                createCFDAccount({ ...type_of_account, platform });
             }
         } else if (is_vanuatu_selected) {
             if (

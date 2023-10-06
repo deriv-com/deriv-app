@@ -500,7 +500,9 @@ export default class TradeStore extends BaseStore {
                 if (date) {
                     this.expiry_date = date;
                 }
-                this.has_cancellation = false;
+                if (this.cancellation_range_list.length < 1) {
+                    this.has_cancellation = false;
+                }
                 this.setDefaultGrowthRate();
                 this.resetAccumulatorData();
             }

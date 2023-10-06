@@ -1,10 +1,10 @@
-import { api_base } from '@api-base';
 import { getActiveLoginId, getClientAccounts, syncWithDerivApp, removeAllTokens } from '@storage';
 import { translate } from '@i18n';
-import config, { updateConfigCurrencies } from '../../common/const';
-import { observer as globalObserver } from '../../../common/utils/observer';
-import { logoutAllTokens } from '../../../common/appId';
-import Limits from '../Dialogs/Limits';
+import config, { updateConfigCurrencies } from '@currency-config';
+import { observer as globalObserver } from '@utilities/observer';
+import google_drive_util from '@utilities/integrations/GoogleDrive';
+import GTM from '@utilities/integrations/gtm';
+import { logoutAllTokens } from '../common/appId';
 import {
     saveBeforeUnload,
     getMissingBlocksTypes,
@@ -12,6 +12,7 @@ import {
     getUnattachedMandatoryPairs,
 } from './utils';
 import { load } from '.';
+import Limits from '../components/Dialogs/Limits';
 
 const checkForRequiredBlocks = () => {
     const displayError = errorMessage => {

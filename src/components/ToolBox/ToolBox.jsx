@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -6,17 +7,17 @@ import { showSummary, logButton } from '@blockly/blockly-worksace';
 import config from '@config';
 import { isMobile } from '@utils';
 import { translate } from '@i18n';
-import Load from './components/load';
-import Save from './components/save';
-import Reset from './components/reset';
-import Modal from '../../components/modal';
-import { setIsBotRunning } from '../../store/ui-slice';
-import { observer as globalObserver } from '../../../../../common/utils/observer';
-import Popover from '../../components/popover/index';
-import { showSummary, logButton } from '../../blockly-worksace';
-import Chart from '../../../Dialogs/Chart';
-import TradingView from '../../../Dialogs/TradingView';
-import IntegrationsDialog from '../../../Dialogs/IntegrationsDialog';
+import { observer as globalObserver } from '@utilities/observer';
+import Load from './load';
+import Reset from './reset';
+import Modal from '@components/common/modal';
+import { setIsBotRunning } from '@redux-store/ui-slice';
+import Popover from '@components/common/popover';
+import Chart from '@components/Dialogs/Chart';
+import Save from './save';
+import TradingView from '@components/Dialogs/TradingView';
+import IntegrationsDialog from '@components/Dialogs/IntegrationsDialog';
+import { getActiveToken } from '@storage';
 
 const ShowModal = ({ modal, onClose, class_name }) => {
     if (!modal) return null;
@@ -170,7 +171,7 @@ const ToolBox = ({ blockly, is_workspace_rendered }) => {
                     position='bottom'
                     classes='toolbox-button icon-integrations'
                     onClick={() => {
-                        if(!integrations) {
+                        if (!integrations) {
                             integrations = new IntegrationsDialog();
                         }
                         integrations.open();
@@ -261,7 +262,7 @@ const ToolBox = ({ blockly, is_workspace_rendered }) => {
                 position='bottom'
                 classes='toolbox-button icon-chart-line'
                 onClick={() => {
-                    if(!chart) {
+                    if (!chart) {
                         chart = new Chart();
                     }
                     chart?.open?.();

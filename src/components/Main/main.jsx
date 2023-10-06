@@ -12,6 +12,7 @@ import useQuery from '@components/hooks/useQuery';
 import { updateActiveAccount, updateIsLogged, setLoginId } from '@redux-store/client-slice';
 import { setAccountSwitcherLoader, setShouldReloadWorkspace, updateShowTour } from '@redux-store/ui-slice';
 import { observer as globalObserver } from '@utilities/observer';
+import logHandler from '@utilities/logger';
 import { loginAndSetTokens } from '../../common/appId';
 import Blockly from '../../blockly';
 import LogTable from '../../botPage/view/LogTable';
@@ -26,6 +27,10 @@ const Main = () => {
     const navigate = useNavigate();
     const { should_reload_workspace } = useSelector(state => state.ui);
     const query_object = useQuery();
+
+    React.useEffect(() => {
+        logHandler();
+    }, [logHandler]);
 
     React.useEffect(() => {
         window.addEventListener('storage', event => {

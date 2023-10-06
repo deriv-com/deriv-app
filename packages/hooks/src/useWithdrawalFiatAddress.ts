@@ -10,15 +10,17 @@ const useWithdrawalFiatAddress = () => {
     const withdrawal_iframe_url =
         typeof data?.cashier === 'string' ? `${data?.cashier}&DarkMode=${is_dark_mode_on ? 'on' : 'off'}` : undefined;
 
-    const send = useCallback(() => {
-        return mutate({
-            payload: {
-                cashier: 'withdraw',
-                provider: 'doughflow',
-                verification_code: verification_code.payment_withdraw,
-            },
-        });
-    }, [mutate]);
+    const send = useCallback(
+        () =>
+            mutate({
+                payload: {
+                    cashier: 'withdraw',
+                    provider: 'doughflow',
+                    verification_code: verification_code.payment_withdraw,
+                },
+            }),
+        [mutate]
+    );
 
     useEffect(() => {
         send();

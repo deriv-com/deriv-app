@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Loading } from '@deriv/components';
 import { useWithdrawalFiatAddress } from '@deriv/hooks';
+import { observer } from '@deriv/stores';
 import { ErrorState } from '../../../../components/error-state';
 import './withdrawal-fiat-iframe.scss';
-import { observer } from '@deriv/stores';
 
 const WithdrawalFiatIframe = observer(() => {
     const { data: iframe_url, error, resetVerificationCode } = useWithdrawalFiatAddress();
@@ -35,7 +35,7 @@ const WithdrawalFiatIframe = observer(() => {
                     onLoad={() => setIsLoading(false)}
                     src={iframe_url}
                     style={{ display: is_loading ? 'none' : 'block' }}
-                    data-testid='dt_deposit_fiat_iframe_iframe'
+                    data-testid='dt_withdrawal_fiat_iframe_iframe'
                 />
             )}
         </React.Fragment>

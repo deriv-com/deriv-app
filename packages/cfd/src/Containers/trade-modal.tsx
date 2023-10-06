@@ -288,7 +288,7 @@ const TradeModal = ({
                         </a>
                     )}
                 </div>
-                {!isMobile() && platform !== CFD_PLATFORMS.CTRADER && (
+                {!isMobile() && (
                     <div className='cfd-trade-modal__download-center-options--qrcode'>
                         {getPlatformQRCode(platform)}
                     </div>

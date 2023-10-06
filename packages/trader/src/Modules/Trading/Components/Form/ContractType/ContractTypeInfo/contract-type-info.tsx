@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
-import { isMobile, TURBOS, VANILLALONG } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { TURBOS, VANILLALONG } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { RudderStack } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
@@ -9,7 +10,6 @@ import { getContractTypes, isMajorPairsSymbol } from '../../../../Helpers/contra
 import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { observer, useStore } from '@deriv/stores';
 import { TContractType, TList } from '../types';
 
 type TInfo = {
@@ -30,6 +30,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const { cached_mult_cancellation_list, symbol } = useTraderStore();
     const {
         active_symbols: { active_symbols },
+        ui: { is_mobile },
     } = useStore();
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
@@ -40,7 +41,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const should_show_video = /accumulator|vanilla/i.test(item.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
-    const width = isMobile() ? '328' : '528';
+    const width = is_mobile ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
 
@@ -76,7 +77,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                         left: `${is_description_tab_selected ? '-' : ''}${width}px`,
                         transform: `translate3d(${is_description_tab_selected ? '' : '-'}${width}px, 0, 0)`,
                     }}
-                    height={isMobile() ? '' : scroll_bar_height}
+                    height={is_mobile ? '' : scroll_bar_height}
                     autohide={false}
                 >
                     <div
@@ -132,7 +133,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                     'contract-type-info--has-toggle-buttons': has_toggle_buttons,
                 })}
                 style={{
-                    width: isMobile() ? '328px' : '528px',
+                    width: is_mobile ? '328px' : '528px',
                 }}
             >
                 {cards}

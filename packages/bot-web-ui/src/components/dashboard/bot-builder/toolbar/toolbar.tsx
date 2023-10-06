@@ -1,7 +1,6 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarButton from './toolbar-button';
@@ -9,6 +8,9 @@ import WorkspaceGroup from './workspace-group';
 
 const Toolbar = observer(() => {
     const { run_panel, save_modal, load_modal, toolbar, quick_strategy } = useDBotStore();
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const {
         has_redo_stack,
         has_undo_stack,
@@ -32,7 +34,7 @@ const Toolbar = observer(() => {
         <React.Fragment>
             <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
                 <div className='toolbar__section'>
-                    {isMobile() && (
+                    {is_mobile && (
                         <ToolbarButton
                             popover_message={localize('Click here to start building your Deriv Bot.')}
                             button_id='db-toolbar__get-started-button'
@@ -77,7 +79,7 @@ const Toolbar = observer(() => {
                         ]}
                     />
                 ) : (
-                    localize('Any unsaved changes will be lost.')
+                    <Localize i18n_default_text='Any unsaved changes will be lost.' />
                 )}
             </Dialog>
         </React.Fragment>

@@ -402,7 +402,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                             </MobileDrawer.Body>
-                            <MobileDrawer.Footer className={is_logged_in && 'dc-mobile-drawer__footer--servertime'}>
+                            <MobileDrawer.Footer className={is_logged_in ? 'dc-mobile-drawer__footer--servertime' : ''}>
                                 <ServerTime is_mobile />
                                 <NetworkStatus is_mobile />
                             </MobileDrawer.Footer>

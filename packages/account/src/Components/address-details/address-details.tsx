@@ -12,7 +12,6 @@ import {
 } from 'formik';
 import { StatesList } from '@deriv/api-types';
 import {
-    Modal,
     Autocomplete,
     AutoHeightWrapper,
     DesktopWrapper,
@@ -20,9 +19,10 @@ import {
     FormSubmitButton,
     Loading,
     MobileWrapper,
-    ThemedScrollbars,
+    Modal,
     SelectNative,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
 import { useStatesList } from '@deriv/hooks';
 import { getLocation } from '@deriv/shared';

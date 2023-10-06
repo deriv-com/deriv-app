@@ -53,7 +53,7 @@ const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCr
             <Text size='xxxs'>
                 <Localize
                     i18n_default_text='Address: <0>{{value}}</0>'
-                    values={{ value: transaction.address_url_display }}
+                    values={{ value: transaction.address_hash_display }}
                     components={[<Text key={0} size='xxxs' color='red' />]}
                 />
             </Text>

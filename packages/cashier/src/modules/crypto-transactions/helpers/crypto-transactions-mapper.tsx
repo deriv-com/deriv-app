@@ -10,11 +10,11 @@ const cryptoTransactionMapper = (
     const is_deposit = transaction.transaction_type === 'deposit';
     const submit_date = transaction.submit_date;
     const confirmations = transaction.confirmations;
-    const transaction_hash = transaction.transaction_hash;
-    const address_url = transaction.address_url;
-    const address_url_obscure = address_url
-        ? `${address_url.substring(0, 4)}....${address_url.substring(address_url.length - 4)}`
+    const address_hash = transaction.address_hash;
+    const address_hash_obscure = address_hash
+        ? `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`
         : localize('Pending');
+    const transaction_hash = transaction.transaction_hash;
     const transaction_hash_obscure = transaction_hash
         ? `${transaction_hash.substring(0, 4)}....${transaction_hash.substring(transaction_hash.length - 4)}`
         : localize('Pending');
@@ -158,8 +158,8 @@ const cryptoTransactionMapper = (
         status_color,
         status_name,
         status_description,
+        address_hash_display: address_hash_obscure,
         transaction_hash_display,
-        address_url_display: address_url_obscure,
         confirmation_display,
         submit_date_display,
     } as const;

@@ -112,7 +112,7 @@ export const IdvDocSubmitOnSignup = ({
                             })}
                             is_rendered_for_idv
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={changeable_fields}
+                            editable_fields={status?.is_confirmed ? [] : changeable_fields}
                             side_note={side_note_image}
                             inline_note_text={
                                 <Localize

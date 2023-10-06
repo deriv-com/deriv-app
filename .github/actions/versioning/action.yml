@@ -14,7 +14,7 @@ runs:
         current_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
         version="(${{ inputs.RELEASE_TYPE }})-${{ github.run_number }}-$current_date"
         echo "Setting version to: $version"
-        echo "{version}={version}"" >> $GITHUB_OUTPUT
+        echo "{version}={version}" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Save Version to File

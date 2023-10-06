@@ -1,9 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { DesktopWrapper, Icon, MobileWrapper, Modal, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+
 import { SIDEBAR_INTRO } from './constants';
 
 const InfoPanel = observer(() => {

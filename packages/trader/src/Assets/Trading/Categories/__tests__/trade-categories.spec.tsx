@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import TradeCategories from '../trade-categories';
 
-jest.mock('../accumulator-trade-description', () => jest.fn(() => 'mockedAccumulatorTradeDescription'));
+jest.mock('../Description/accumulator-trade-description', () => jest.fn(() => 'mockedAccumulatorTradeDescription'));
 
 describe('<TradeCategores />', () => {
     it('Ensure mockedAccumulatorTradeDescription is rendered correctly when trade category is "accumulator"', () => {

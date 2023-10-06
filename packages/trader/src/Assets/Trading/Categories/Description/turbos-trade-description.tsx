@@ -2,7 +2,7 @@ import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
-export const TurbosTradeDescription = () => {
+const TurbosTradeDescription = () => {
     const content = [
         {
             type: 'paragraph',
@@ -52,3 +52,5 @@ export const TurbosTradeDescription = () => {
         </React.Fragment>
     );
 };
+
+export default TurbosTradeDescription;

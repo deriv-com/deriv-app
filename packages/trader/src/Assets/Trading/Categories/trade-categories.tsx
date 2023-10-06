@@ -2,8 +2,8 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { VANILLALONG, TURBOS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import AccumulatorTradeDescription from './accumulator-trade-description';
-import { TurbosTradeDescription } from './turbos-trade-description';
+import AccumulatorTradeDescription from './Description/accumulator-trade-description';
+import TurbosTradeDescription from './Description/turbos-trade-description';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 // TODO: refactor the rest of descriptions to use them as components like AccumulatorTradeDescription

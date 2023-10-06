@@ -19,3 +19,4 @@ runs:
 
     - name: Save Version to File
       run: echo "${{ steps.set_version.outputs.version }}" > packages/core/dist/version
+      shell: bash

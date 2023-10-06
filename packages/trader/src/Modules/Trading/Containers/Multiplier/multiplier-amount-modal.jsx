@@ -19,7 +19,7 @@ const MultiplierAmountModal = observer(({ is_open, toggleModal }) => {
         <React.Fragment>
             <Modal
                 id='dt_trade_parameters_mobile'
-                className='trade-params'
+                className='trade-params dc-modal-header--title-bar'
                 enableApp={enableApp}
                 is_open={is_open}
                 is_title_centered

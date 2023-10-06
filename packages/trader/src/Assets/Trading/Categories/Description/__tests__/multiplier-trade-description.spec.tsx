@@ -6,17 +6,20 @@ const default_mock_props = {
     is_multiplier_fx: false,
     onClick: jest.fn(),
 };
+const stop_loss = 'Stop loss';
+const deal_cancellation = 'Deal cancellation';
+
 describe('<MultiplierTradeDescription />', () => {
     it('should render a proper text if is_multiplier_fx is falsy', () => {
         render(<MultiplierTradeDescription {...default_mock_props} />);
 
-        expect(screen.getByText(/Stop loss/i)).toBeInTheDocument();
-        expect(screen.getByText(/Deal cancellation/i)).toBeInTheDocument();
+        expect(screen.getByText(stop_loss)).toBeInTheDocument();
+        expect(screen.getByText(deal_cancellation)).toBeInTheDocument();
     });
     it('should render a proper text if is_multiplier_fx is true', () => {
         render(<MultiplierTradeDescription {...default_mock_props} is_multiplier_fx />);
 
-        expect(screen.getByText(/Stop loss/i)).toBeInTheDocument();
-        expect(screen.queryByText(/Deal cancellation/i)).not.toBeInTheDocument();
+        expect(screen.getByText(stop_loss)).toBeInTheDocument();
+        expect(screen.queryByText(deal_cancellation)).not.toBeInTheDocument();
     });
 });

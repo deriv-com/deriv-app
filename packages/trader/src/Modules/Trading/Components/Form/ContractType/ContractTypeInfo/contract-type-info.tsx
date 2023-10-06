@@ -93,13 +93,13 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                                 <TradeCategories
                                     category={type.value}
                                     onClick={onClickGlossary}
-                                    is_multiplier_fx={cached_mult_cancellation_list?.length === 0}
+                                    is_multiplier_fx={!cached_mult_cancellation_list?.length}
                                 />
                             </React.Fragment>
                         ) : (
                             <ContractTypeGlossary
                                 category={type.value}
-                                is_multiplier_fx={cached_mult_cancellation_list?.length === 0}
+                                is_multiplier_fx={!cached_mult_cancellation_list?.length}
                                 is_major_pairs={isMajorPairsSymbol(symbol, active_symbols)}
                             />
                         )}

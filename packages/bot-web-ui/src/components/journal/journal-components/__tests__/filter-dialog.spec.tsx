@@ -9,11 +9,6 @@ import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import FilterDialog from '../filter-dialog';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: () => false,
-}));
-
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     saveRecentWorkspace: jest.fn(),
@@ -36,11 +31,11 @@ const mockProps = {
     filterMessage: jest.fn(),
     toggleFilterDialog: jest.fn(),
 };
+
 describe('Draggable', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
-    beforeEach(() => {
-        jest.resetModules();
+    beforeAll(() => {
         const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 

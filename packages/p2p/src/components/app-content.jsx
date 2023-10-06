@@ -9,6 +9,7 @@ import { isMobile } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import { localize } from './i18next';
 
@@ -22,6 +23,7 @@ const AppContent = ({ order_id }) => {
     const history = useHistory();
 
     React.useEffect(() => {
+        buy_sell_store.setTableType(buy_sell.BUY);
         return reaction(
             () => setP2POrderProps,
             () => {
@@ -78,7 +80,7 @@ const AppContent = ({ order_id }) => {
             <div label={localize('My ads')}>
                 <TemporarilyBarredHint />
             </div>
-            {general_store.is_advertiser && <div label={localize('My profile')} data-testid='my_profile' />}
+            <div label={localize('My profile')} />
         </Tabs>
     );
 };

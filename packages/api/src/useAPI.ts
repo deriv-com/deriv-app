@@ -12,13 +12,14 @@ import APIContext from './APIContext';
 
 const useAPI = () => {
     const api = useContext(APIContext);
-    const [isReady, setIsReady] = useState<boolean>(api?.get()?.connection?.readyState === WebSocket.OPEN);
+    const readyState = api?.get()?.connection?.readyState;
+    const [isReady, setIsReady] = useState<boolean>(readyState === WebSocket.OPEN);
 
     useEffect(() => {
-        if ((api?.get()?.connection?.readyState === WebSocket.OPEN) !== isReady) {
-            setIsReady(api?.get()?.connection?.readyState === 1);
+        if ((readyState === WebSocket.OPEN) !== isReady) {
+            setIsReady(readyState === WebSocket.OPEN);
         }
-    }, [api, isReady]);
+    }, [isReady, readyState]);
 
     const send = useCallback(
         async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(

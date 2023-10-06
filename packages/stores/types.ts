@@ -775,7 +775,7 @@ type TNotificationStore = {
 
 type TActiveSymbolsStore = {
     active_symbols: ActiveSymbols;
-    setActiveSymbols: () => Promise<void>;
+    setActiveSymbols: ({ active_symbols, error }: { active_symbols: ActiveSymbols; error: any }) => Promise<void>;
 };
 
 type TBalance = {

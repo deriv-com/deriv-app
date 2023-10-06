@@ -188,7 +188,7 @@ export default class TradeStore extends BaseStore {
     is_market_closed = false;
     previous_symbol = '';
     active_symbols: ActiveSymbols = [];
-    active_symbols_request_error = null;
+    active_symbols_request_error: unknown = null;
 
     form_components: string[] = [];
 
@@ -639,7 +639,7 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    setActiveSymbolsFromServer(active_symbols, error) {
+    setActiveSymbolsFromServer(active_symbols: ActiveSymbols, error: unknown) {
         this.active_symbols = active_symbols;
         this.active_symbols_request_error = error;
     }
@@ -660,7 +660,7 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        if (!active_symbols?.length) {
+        if (!this.active_symbols?.length) {
             await WS.wait('get_settings');
             /*
              * This logic is related to EU country checks

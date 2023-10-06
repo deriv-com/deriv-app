@@ -167,7 +167,7 @@ export const ContractType = (() => {
         return trade_types;
     };
 
-    const getArrayDefaultValue = (arr_new_values: Array<string | number>, value: string | number) =>
+    const getArrayDefaultValue = <T>(arr_new_values: Array<T>, value: T): T =>
         arr_new_values.indexOf(value) !== -1 ? value : arr_new_values[0];
 
     const getContractValues = (store: TTradeStore): TContractValues | Record<string, never> => {
@@ -300,7 +300,7 @@ export const ContractType = (() => {
     };
 
     const getDurationMinMax = (contract_type: string, contract_start_type: string, contract_expiry_type?: string) => {
-        let duration_min_max: TTradeStore['duration_min_max'] | TTradeStore['duration_min_max'][string] =
+        let duration_min_max: TTradeStore['duration_min_max'] =
             getPropertyValue(available_contract_types, [
                 contract_type,
                 'config',
@@ -310,7 +310,12 @@ export const ContractType = (() => {
             ]) || {};
 
         if (contract_expiry_type) {
-            duration_min_max = 'contract_expiry_type' in duration_min_max ? duration_min_max[contract_expiry_type] : {};
+            duration_min_max =
+                'contract_expiry_type' in duration_min_max
+                    ? (duration_min_max as unknown as { [key: string]: TTradeStore['duration_min_max'] })[
+                          contract_expiry_type
+                      ]
+                    : {};
         }
 
         return { duration_min_max };
@@ -587,7 +592,7 @@ export const ContractType = (() => {
         moment_obj.minute(Math.ceil(moment_obj.minute() / 5) * 5);
 
     const getTradeTypes = (contract_type: string) => ({
-        trade_types: getPropertyValue(available_contract_types, [contract_type, 'config', 'trade_types']) as string[],
+        trade_types: getPropertyValue(available_contract_types, [contract_type, 'config', 'trade_types']),
     });
 
     const getBarriers = (contract_type: string, expiry_type: string, stored_barrier_value?: string) => {

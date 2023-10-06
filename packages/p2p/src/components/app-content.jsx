@@ -80,7 +80,7 @@ const AppContent = ({ order_id }) => {
             <div label={localize('My ads')}>
                 <TemporarilyBarredHint />
             </div>
-            {general_store.is_advertiser && <div label={localize('My profile')} data-testid='my_profile' />}
+            <div label={localize('My profile')} />
         </Tabs>
     );
 };

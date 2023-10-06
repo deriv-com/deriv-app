@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, DatePicker, InputField, MobileDialog } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
+import { Localize, localize } from 'Components/i18next';
 import CompositeCalendarMobileFooter from './composite-calendar-mobile-footer';
 import CalendarRadioButton from '../calendar-radio-buton';
 import { TInputDateRange } from '../composite-calendar';

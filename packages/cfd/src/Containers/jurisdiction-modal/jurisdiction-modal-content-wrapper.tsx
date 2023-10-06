@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile, Jurisdiction, CFD_PLATFORMS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
@@ -11,7 +11,9 @@ import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
-    const { client, traders_hub } = useStore();
+    const { client, traders_hub, common } = useStore();
+
+    const { platform } = common;
 
     const { show_eu_related_content } = traders_hub;
 
@@ -38,6 +40,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
         real_swapfree_accounts_existing_data,
         real_synthetic_accounts_existing_data,
         setJurisdictionSelectedShortcode,
+        createCFDAccount,
     } = useCfdStore();
 
     const [checked, setChecked] = React.useState(false);
@@ -143,9 +146,18 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
             category: account_type.category,
             type: account_type.type,
         };
+        const ctrader_account = {
+            category: account_type.category,
+            type: account_type.type,
+            platform,
+        };
 
         if (is_svg_selected) {
-            openPasswordModal(type_of_account);
+            if (platform !== CFD_PLATFORMS.CTRADER) {
+                openPasswordModal(type_of_account);
+            } else if (platform === CFD_PLATFORMS.CTRADER) {
+                createCFDAccount(ctrader_account);
+            }
         } else if (is_vanuatu_selected) {
             if (
                 poi_acknowledged_for_bvi_labuan_vanuatu &&

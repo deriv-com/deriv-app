@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ContractTypeWidget from '../contract-type-widget';
 import { useStore } from '@deriv/stores';
+import { TContractCategory } from '../types';
 
 jest.mock('@deriv/stores', () => ({
     ...jest.requireActual('@deriv/stores'),
@@ -77,6 +78,29 @@ describe('<ContractTypeWidget />', () => {
         },
     ];
 
+    const unavailable_trade_types_list = [
+        {
+            contract_types: [
+                {
+                    text: 'Vanillas',
+                    value: 'vanilla',
+                },
+            ],
+            icon: 'IcVanillas',
+            label: 'Vanillas',
+        },
+        {
+            contract_types: [
+                {
+                    text: 'Accumulators',
+                    value: 'accumulator',
+                },
+            ],
+            icon: 'IcAccumulators',
+            label: 'Accumulators',
+        },
+    ] as TContractCategory[];
+
     const item = {
         text: 'Multipliers',
         value: 'multiplier',
@@ -88,7 +112,15 @@ describe('<ContractTypeWidget />', () => {
                 is_mobile: false,
             },
         });
-        render(<ContractTypeWidget name='test_name' onChange={jest.fn()} list={list} value={item.value} />);
+        render(
+            <ContractTypeWidget
+                name='test_name'
+                onChange={jest.fn()}
+                list={list}
+                unavailable_trade_types_list={unavailable_trade_types_list}
+                value={item.value}
+            />
+        );
         expect(screen.getByTestId('dt_contract_widget')).toBeInTheDocument();
     });
 });

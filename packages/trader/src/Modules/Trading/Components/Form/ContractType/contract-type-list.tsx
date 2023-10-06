@@ -31,7 +31,13 @@ const List = ({ handleInfoClick, handleSelect, list, value }: TListProps) => (
             const is_new = /(Accumulators|Turbos|Vanillas)/i.test(contract_category.key);
 
             return (
-                <div key={contract_category.key} className='contract-type-list' data-testid='contract_list'>
+                <div
+                    key={contract_category.key}
+                    className={classNames('contract-type-list', {
+                        'contract-type-list--unavailable-category': contract_category.is_unavailable,
+                    })}
+                    data-testid='dt_contract_list'
+                >
                     <div className='contract-type-item__container'>
                         <Text size='xs' className='contract-type-list__label'>
                             {contract_category.label}
@@ -45,8 +51,8 @@ const List = ({ handleInfoClick, handleSelect, list, value }: TListProps) => (
                     <div className='contract-type-list__wrapper'>
                         <Item
                             contract_types={contract_types}
-                            handleSelect={handleSelect}
-                            handleInfoClick={handleInfoClick}
+                            handleSelect={!contract_category.is_unavailable && handleSelect}
+                            handleInfoClick={!contract_category.is_unavailable && handleInfoClick}
                             value={value}
                         />
                     </div>

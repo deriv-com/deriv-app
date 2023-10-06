@@ -50,6 +50,7 @@ type TConfig = ReturnType<typeof getContractTypesConfig>[string]['config'] & {
     cancellation_range?: string[];
     barrier_choices?: string[];
 };
+type TNonAvailableContractsList = Required<ContractsForSymbolResponse>['contracts_for']['available'];
 type TTextValueStrings = {
     text: string;
     value: string;
@@ -84,6 +85,7 @@ export const ContractType = (() => {
     let available_contract_types: ReturnType<typeof getContractTypesConfig> = {};
     let available_categories: TAvailableCategories = {};
     let contract_types: ReturnType<typeof getContractTypesConfig>;
+    const non_available_categories: TAvailableCategories = {};
     const trading_events: { [key: string]: Record<string, TEvents | undefined> } = {};
     const trading_times: { [key: string]: Record<string, TTimes> } = {};
     let has_only_forward_starting_contracts = false;
@@ -147,6 +149,31 @@ export const ContractType = (() => {
                 );
                 if (available_categories[key].categories?.length === 0) {
                     delete available_categories[key];
+                }
+            });
+
+            (r.contracts_for.non_available as TNonAvailableContractsList)?.forEach(contract => {
+                const type =
+                    Object.keys(contract_types).find(
+                        key => contract_types[key].trade_types.indexOf(contract.contract_type) !== -1
+                    ) ?? '';
+                const key =
+                    Object.keys(contract_categories).find(
+                        key =>
+                            contract_categories[key as keyof typeof contract_categories]?.categories.indexOf(type) !==
+                            -1
+                    ) ?? '';
+                const cat = contract_categories[key as keyof typeof contract_categories]?.categories ?? [];
+                (cat as unknown as any)[cat.indexOf(type as never)] = {
+                    value: type,
+                    text: contract_types[type as keyof typeof contract_types]?.title,
+                };
+                if (key) {
+                    non_available_categories[key] = {
+                        // @ts-expect-error TODO : check this
+                        categories: [...cat],
+                        ...contract_categories[key as keyof typeof contract_categories],
+                    };
                 }
             });
         });
@@ -690,6 +717,7 @@ export const ContractType = (() => {
         getContractCategories: () => ({
             contract_types_list: available_categories,
             has_only_forward_starting_contracts,
+            non_available_contract_types_list: non_available_categories,
         }),
     };
 })();

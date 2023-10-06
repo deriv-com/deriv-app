@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import ContractTypeMenu from '../ContractTypeMenu';
 import ContractTypeWidget from '../contract-type-widget';
+import { TContractCategory } from '../types';
 
 jest.mock('@deriv/stores', () => ({
     ...jest.requireActual('@deriv/stores'),
@@ -291,6 +292,29 @@ describe('ContractTypeMenu', () => {
         },
     ];
 
+    const unavailable_trade_types_list = [
+        {
+            contract_types: [
+                {
+                    text: 'Vanillas',
+                    value: 'vanilla',
+                },
+            ],
+            icon: 'IcVanillas',
+            label: 'Vanillas',
+        },
+        {
+            contract_types: [
+                {
+                    text: 'Accumulators',
+                    value: 'accumulator',
+                },
+            ],
+            icon: 'IcAccumulators',
+            label: 'Accumulators',
+        },
+    ] as TContractCategory[];
+
     const item = {
         text: 'Multipliers',
         value: 'multiplier',
@@ -302,7 +326,15 @@ describe('ContractTypeMenu', () => {
     });
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
-        render(<ContractTypeWidget name='test_name' list={list} value={item.value} onChange={jest.fn()} />);
+        render(
+            <ContractTypeWidget
+                name='test_name'
+                list={list}
+                value={item.value}
+                onChange={jest.fn()}
+                unavailable_trade_types_list={unavailable_trade_types_list}
+            />
+        );
         const dt_contract_dropdown = screen.getByTestId('dt_contract_dropdown');
         fireEvent.click(dt_contract_dropdown);
 

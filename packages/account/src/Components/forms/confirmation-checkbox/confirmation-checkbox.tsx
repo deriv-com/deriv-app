@@ -40,15 +40,17 @@ export const ConfirmationCheckbox = ({
      *
      * This context provides information about the form's state and helps in managing form behavior.
      */
-    const { setStatus, status } = useFormikContext();
+    const { setFieldValue, setStatus, status, values } = useFormikContext<FormikValues>();
 
     const handleChange = () => {
         // check if status is an object to avoid overwriting the status if it is a string
         if (typeof status === 'object') setStatus({ ...status, is_confirmed: !status?.is_confirmed });
+        setFieldValue('confirmation-checkbox', !values.confirmation_checkbox);
     };
 
     return (
         <Checkbox
+            name='confirmation-checkbox'
             className='formik__confirmation-checkbox'
             value={status?.is_confirmed ?? false}
             label={<Text size={label_size ?? (isMobile() ? 'xxs' : 'xs')}>{label}</Text>}

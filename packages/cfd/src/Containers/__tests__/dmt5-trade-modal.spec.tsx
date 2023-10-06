@@ -1,0 +1,112 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { APIProvider } from '@deriv/api';
+import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
+import DMT5TradeModal from '../dmt5-trade-modal';
+
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Icon: jest.fn(({ icon }) => <div>{icon}</div>),
+}));
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    getCFDAccountDisplay: jest.fn(),
+}));
+
+jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockTradingPlatformIcon'));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useIsMt5LoginListStatusPresent: jest.fn(() => ({
+        is_flag_present: true,
+        flag_value: true,
+    })),
+}));
+
+const mockUseIsMt5LoginListStatusPresent = useIsMt5LoginListStatusPresent as jest.MockedFunction<
+    typeof useIsMt5LoginListStatusPresent
+>;
+
+describe('<DMT5TradeModal/>', () => {
+    const mock_props: React.ComponentProps<typeof DMT5TradeModal> = {
+        mt5_trade_account: {
+            account_type: 'real',
+            balance: 0,
+            country: 'id',
+            currency: 'USD',
+            display_balance: '0.00',
+            email: 'uks123@deriv.com',
+            group: 'real\\p01_ts03\\synthetic\\svg_std_usd\\01',
+            landing_company_short: 'svg',
+            leverage: 500,
+            login: 'MTR40021028',
+            market_type: 'synthetic',
+            name: '0.00 USD',
+            server: 'p01_ts03',
+            server_info: {
+                environment: 'Deriv-Server',
+                geolocation: {
+                    group: 'asia_synthetic',
+                    location: 'Singapore',
+                    region: 'Asia',
+                    sequence: 1,
+                },
+                id: 'p01_ts03',
+            },
+            status: null,
+            sub_account_category: '',
+            sub_account_type: 'financial',
+            webtrader_url: 'https://mt5-dev-real-web.regentmarkets.com/terminal',
+            display_login: 40021028,
+            icon: 'Derived',
+            sub_title: 'Derived',
+            short_code_and_region: 'SVG',
+            platform: 'mt5',
+            description: 40021028,
+            key: 'trading_app_card_40021028',
+            action_type: 'multi-action',
+            availability: 'Non-EU',
+        },
+        show_eu_related_content: false,
+        onPasswordManager: jest.fn(),
+        toggleModal: jest.fn(),
+    };
+
+    const renderComponent = ({ props = mock_props }) => {
+        return render(
+            <APIProvider>
+                <DMT5TradeModal {...props} />
+            </APIProvider>
+        );
+    };
+
+    it('should render correct status badge if open_order_position_status is present in BE response and the key value is true', () => {
+        renderComponent({ props: mock_props });
+
+        const status_badge = screen.getByText(/No new positions/);
+        expect(status_badge).toBeInTheDocument();
+    });
+
+    it('should render correct status badge if open_order_position_status is present in BE response and the key value is false', () => {
+        mockUseIsMt5LoginListStatusPresent.mockReturnValue({
+            is_flag_present: true,
+            flag_value: false,
+        });
+        renderComponent({ props: mock_props });
+
+        const status_badge = screen.getByText(/Account closed/);
+        expect(status_badge).toBeInTheDocument();
+    });
+
+    it('should not render status badge if open_order_position_status is not present in BE response', () => {
+        mockUseIsMt5LoginListStatusPresent.mockReturnValue({
+            is_flag_present: false,
+            flag_value: undefined,
+        });
+        renderComponent({ props: mock_props });
+
+        const status_badge = screen.queryByText(/No new positions/);
+        expect(status_badge).not.toBeInTheDocument();
+    });
+});

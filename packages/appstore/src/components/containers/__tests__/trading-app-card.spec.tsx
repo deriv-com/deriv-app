@@ -77,14 +77,14 @@ describe('<TradingAppCard/>', () => {
             </StoreProvider>
         );
     };
-    it('should render correct status badge if open_order_position_status is present in BE response and open_order_position_status is true', () => {
+    it('should render correct status badge if open_order_position_status key is present in BE response and the value is true', () => {
         renderComponent({ props: mock_props });
 
         const status_badge = screen.getByText(/No new positions/);
         expect(status_badge).toBeInTheDocument();
     });
 
-    it('should render correct status badge if open_order_position_status is present in BE response and open_order_position_status is true', () => {
+    it('should render correct status badge if open_order_position_status key is present in BE response and the value is false', () => {
         const new_mock_props = {
             ...mock_props,
             open_order_position_status: false,
@@ -95,11 +95,11 @@ describe('<TradingAppCard/>', () => {
         expect(status_badge).toBeInTheDocument();
     });
 
-    it('should open OpenPositionsSVGModal when user clicks on the badge', async () => {
+    it('should open OpenPositionsSVGModal when user clicks on the badge', () => {
         renderComponent({ props: mock_props });
 
         const status_badge = screen.getByText(/No new positions/);
-        await userEvent.click(status_badge);
+        userEvent.click(status_badge);
 
         const modal_content_bvi = screen.getByText(
             /You can no longer open new positions with your MT5 Derived SVG account. Please use your MT5 Derived BVI account to open new positions./
@@ -107,11 +107,11 @@ describe('<TradingAppCard/>', () => {
         expect(modal_content_bvi).toBeInTheDocument();
     });
 
-    it('should close OpenPositionsSVGModal when user clicks on the OK', async () => {
+    it('should close OpenPositionsSVGModal when user clicks on the OK', () => {
         renderComponent({ props: mock_props });
 
         const status_badge = screen.getByText('No new positions');
-        await userEvent.click(status_badge);
+        userEvent.click(status_badge);
 
         const modal_content_bvi = screen.getByText(
             /You can no longer open new positions with your MT5 Derived SVG account. Please use your MT5 Derived BVI account to open new positions./
@@ -119,5 +119,16 @@ describe('<TradingAppCard/>', () => {
         const okButton = screen.getByRole('button', { name: /OK/i });
         userEvent.click(okButton);
         expect(modal_content_bvi).not.toBeInTheDocument();
+    });
+
+    it('should not render status badge if open_order_position_status key is not present in BE response', () => {
+        const new_mock_props = {
+            ...mock_props,
+            is_open_order_position_status_present: false,
+        };
+        renderComponent({ props: new_mock_props });
+
+        const status_badge = screen.queryByText(/Account closed/);
+        expect(status_badge).not.toBeInTheDocument();
     });
 });

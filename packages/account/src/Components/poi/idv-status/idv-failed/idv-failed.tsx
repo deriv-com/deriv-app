@@ -323,8 +323,6 @@ const IdvFailed = ({
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
-    console.log('chosen_country: ', chosen_country);
-
     return (
         <Formik
             initialValues={rest_state?.form_initial_values ?? {}}

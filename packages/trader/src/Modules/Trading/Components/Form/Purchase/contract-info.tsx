@@ -14,6 +14,7 @@ type TContractInfo = Pick<
 > & {
     has_increased?: boolean | null;
     is_loading: boolean;
+    is_vanilla_fx?: boolean;
     proposal_info: TProposalTypeInfo;
     should_fade: boolean;
     type: string;

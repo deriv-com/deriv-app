@@ -1639,7 +1639,7 @@ export default class TradeStore extends BaseStore {
     get is_vanilla() {
         return isVanillaContract(this.contract_type);
     }
-    
+
     get is_vanilla_fx() {
         return isVanillaFxContract(this.contract_type, this.symbol);
     }

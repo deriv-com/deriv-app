@@ -1,7 +1,7 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 //TODO: Uncomment this line when type script migrations on all packages done
 //const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -40,7 +40,6 @@ module.exports = function (env) {
             index: path.resolve(__dirname, 'src', 'index.tsx'),
         },
         mode: is_release ? 'production' : 'development',
-        plugins: [new BundleAnalyzerPlugin()],
         output: {
             path: path.resolve(__dirname, 'dist'),
             publicPath: base,
@@ -161,7 +160,6 @@ module.exports = function (env) {
             splitChunks: {
                 chunks: 'all',
                 minChunks: 1,
-                maxSize: 10000000,
                 cacheGroups: {
                     default: {
                         minChunks: 2,

@@ -1,47 +1,40 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
-import { ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
-import { Button, HintBox, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Button } from '@deriv/components';
+import { Formik } from 'formik';
+import { localize } from '@deriv/translations';
 import {
     WS,
+    getIDVNotApplicableOption,
     toMoment,
     filterObjProperties,
     isDesktop,
     removeEmptyPropertiesFromObject,
     formatIDVFormValues,
-    isMobile,
 } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
-import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
-import FormBody from 'Components/form-body';
-import FormFooter from 'Components/form-footer';
-import IDVForm from 'Components/forms/idv-form';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import FormSubHeader from 'Components/form-sub-header';
 import {
+    documentAdditionalError,
+    isDocumentNumberValid,
     validate,
     makeSettingsRequest,
     validateName,
-    shouldHideHelperImage,
-    isDocumentTypeValid,
-    isAdditionalDocumentValid,
-    isDocumentNumberValid,
+    getExampleFormat,
 } from 'Helpers/utils';
-import { DUPLICATE_ACCOUNT_ERROR_MESSAGE, GENERIC_ERROR_MESSAGE } from 'Configs/poi-error-config';
-import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
+import FormFooter from 'Components/form-footer';
+import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
+import IDVForm from 'Components/forms/idv-form';
+import PersonalDetailsForm from 'Components/forms/personal-details-form';
+import FormSubHeader from 'Components/form-sub-header';
+import { observer, useStore } from '@deriv/stores';
+import { ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { TDocument, TInputFieldValues, TIDVFormValues } from 'Types';
 
 type TIDVDocumentSubmitProps = {
     handleBack: React.MouseEventHandler;
     handleViewComplete: () => void;
     is_from_external: boolean;
     selected_country: ResidenceList[0];
-    getChangeableFields: () => Array<string>;
 };
-
-type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm;
 
 const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_country }: TIDVDocumentSubmitProps) => {
     const {
@@ -49,11 +42,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
     } = useStore();
 
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
-    const side_note_image = <PoiNameDobExample />;
-
-    const form_initial_values = filterObjProperties(account_settings, visible_settings) as {
-        [Property in keyof TPersonalDetailsForm]: string;
-    };
+    const form_initial_values = filterObjProperties(account_settings, visible_settings) || {};
 
     if (form_initial_values.date_of_birth) {
         form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
@@ -61,7 +50,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
 
     const changeable_fields = getChangeableFields();
 
-    const initial_values: TIdvDocumentSubmitForm = {
+    const initial_values = {
         document_type: {
             id: '',
             text: '',
@@ -73,8 +62,27 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
         ...form_initial_values,
     };
 
-    const validateFields = (values: TIdvDocumentSubmitForm) => {
-        const errors: FormikErrors<Record<keyof TIdvDocumentSubmitForm, string>> = {};
+    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+
+    const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
+
+    const isDocumentTypeValid = (document_type: TDocument) => {
+        if (!document_type?.text) {
+            return localize('Please select a document type.');
+        }
+        return undefined;
+    };
+
+    const isAdditionalDocumentValid = (document_type: TDocument, document_additional: string) => {
+        const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+        if (error_message) {
+            return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
+        }
+        return undefined;
+    };
+
+    const validateFields = (values: TIDVFormValues) => {
+        const errors: Partial<TInputFieldValues> = {};
         const { document_type, document_number, document_additional } = values;
         const needs_additional_document = !!document_type.additional;
 
@@ -99,26 +107,21 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
         return removeEmptyPropertiesFromObject(errors);
     };
 
-    const submitHandler = async (
-        values: TIdvDocumentSubmitForm,
-        { setSubmitting, setStatus }: FormikHelpers<TIdvDocumentSubmitForm>
-    ) => {
+    const submitHandler = async (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);
 
         const request = makeSettingsRequest(values, changeable_fields);
 
         const data = await WS.setSettings(request);
 
-        if (data?.error) {
-            const response_error =
-                data.error?.code === 'DuplicateAccount' ? DUPLICATE_ACCOUNT_ERROR_MESSAGE : GENERIC_ERROR_MESSAGE;
-            setStatus({ error_message: response_error });
+        if (data.error) {
+            setErrors({ error_message: data.error.message });
             setSubmitting(false);
             return;
         }
-        const get_settings = await WS.authorized.storage.getSettings();
-        if (get_settings?.error) {
-            setStatus({ error_message: get_settings?.error?.message ?? GENERIC_ERROR_MESSAGE });
+        const get_settings = WS.authorized.storage.getSettings();
+        if (get_settings.error) {
+            setErrors({ error_message: data.error.message });
             setSubmitting(false);
             return;
         }
@@ -132,7 +135,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
             (response: IdentityVerificationAddDocumentResponse & { error: { message: string } }) => {
                 setSubmitting(false);
                 if (response.error) {
-                    setStatus({ error_message: response?.error?.message ?? GENERIC_ERROR_MESSAGE });
+                    setErrors({ error_message: response.error.message });
                     return;
                 }
                 handleViewComplete();
@@ -149,25 +152,33 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
             }}
             onSubmit={submitHandler}
         >
-            {({ dirty, isSubmitting, isValid, values, status }) => (
-                <Form className='proof-of-identity__container proof-of-identity__container--reset'>
-                    {status?.error_message && (
-                        <div className='account-form__poi-confirm-example--generic-error-msg'>
-                            <HintBox
-                                icon='IcAlertDanger'
-                                message={
-                                    <Text as='p' size='xxxs'>
-                                        {status.error_message}
-                                    </Text>
-                                }
-                                is_danger
-                                className='hint-box-layout'
-                            />
-                        </div>
-                    )}
-                    <FormBody className='form-body' scroll_offset={isMobile() ? '180px' : '80px'}>
+            {({
+                dirty,
+                errors,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+                isValid,
+                setFieldValue,
+                touched,
+                values,
+                status,
+            }) => (
+                <div className='proof-of-identity__container proof-of-identity__container--reset'>
+                    <section className='form-body'>
                         <FormSubHeader title={localize('Identity verification')} />
-                        <IDVForm selected_country={selected_country} class_name='idv-layout' />
+                        <IDVForm
+                            errors={errors}
+                            touched={touched}
+                            values={values}
+                            handleChange={handleChange}
+                            handleBlur={handleBlur}
+                            setFieldValue={setFieldValue}
+                            hide_hint={false}
+                            selected_country={selected_country}
+                            class_name='idv-layout'
+                        />
 
                         <FormSubHeader title={localize('Details')} />
                         <PersonalDetailsForm
@@ -176,18 +187,11 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
                                     values?.document_type?.id
                                 ),
                             })}
-                            is_rendered_for_idv
+                            is_qualified_for_idv
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                             editable_fields={status?.is_confirmed ? [] : changeable_fields}
-                            side_note={side_note_image}
-                            inline_note_text={
-                                <Localize
-                                    i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-                                    components={[<strong key={0} />]}
-                                />
-                            }
                         />
-                    </FormBody>
+                    </section>
                     <FormFooter className='proof-of-identity__footer account-form__footer--reset'>
                         {isDesktop() && (
                             <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
@@ -197,6 +201,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
                         <Button
                             className='proof-of-identity__submit-button'
                             type='submit'
+                            onClick={handleSubmit}
                             has_effect
                             is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
                             text={localize('Verify')}
@@ -204,7 +209,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
                             primary
                         />
                     </FormFooter>
-                </Form>
+                </div>
             )}
         </Formik>
     );

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext } from 'react';
 
 import type {
     TSocketEndpointNames,
@@ -12,14 +12,6 @@ import APIContext from './APIContext';
 
 const useAPI = () => {
     const api = useContext(APIContext);
-    const readyState = api?.get()?.connection?.readyState;
-    const [isReady, setIsReady] = useState<boolean>(readyState === WebSocket.OPEN);
-
-    useEffect(() => {
-        if ((readyState === WebSocket.OPEN) !== isReady) {
-            setIsReady(readyState === WebSocket.OPEN);
-        }
-    }, [isReady, readyState]);
 
     const send = useCallback(
         async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(
@@ -57,7 +49,7 @@ const useAPI = () => {
     return {
         send,
         subscribe,
-        isReady,
+        isReady: api?.get()?.connection?.readyState === WebSocket.OPEN,
     };
 };
 

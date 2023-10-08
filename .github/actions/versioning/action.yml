@@ -1,7 +1,7 @@
 name: versioning
 description: Versioning
 inputs:
-  release_type:
+  RELEASE_TYPE:
     description: Release Type
     required: false
 outputs:

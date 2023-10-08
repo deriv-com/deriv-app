@@ -66,7 +66,12 @@ const PersonalDetailsForm = props => {
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     React.useEffect(() => {
-        if (!no_confirmation_needed && typeof status === 'object' && !values.confirmation_checkbox) {
+        if (
+            !no_confirmation_needed &&
+            typeof status === 'object' &&
+            !values.confirmation_checkbox &&
+            is_qualified_for_idv
+        ) {
             setStatus({ ...status, is_confirmed: false });
         }
         if (no_confirmation_needed && typeof status === 'object' && !status.is_confirmed) {

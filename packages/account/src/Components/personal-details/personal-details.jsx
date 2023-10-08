@@ -85,7 +85,7 @@ const PersonalDetails = ({
         errors.document_number = isDocumentNumberValid(document_number, document_type);
 
         if (document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && !values.confirmation_checkbox) {
-            errors.confirmation_checkbox = 'Hit the checkbox';
+            errors.confirmation_checkbox = 'error';
         }
         return removeEmptyPropertiesFromObject(errors);
     };
@@ -126,7 +126,7 @@ const PersonalDetails = ({
     return (
         <Formik
             innerRef={selected_step_ref}
-            initialValues={{ ...props.value, confirmation_checkbox: false }}
+            initialValues={{ ...props.value }}
             validate={handleValidate}
             validateOnMount
             enableReinitialize

@@ -17,4 +17,8 @@
         border-radius: 50%;
         background-color: var(--fill-normal-1);
     }
+
+    &-transition {
+        transition: all 0.24s linear;
+    }
 }

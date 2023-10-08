@@ -1,4 +1,5 @@
 import React, { RefObject } from 'react';
+
 import { isMobileOs } from '@deriv/shared';
 
 export const useHover = <T extends HTMLElement | SVGSVGElement>(

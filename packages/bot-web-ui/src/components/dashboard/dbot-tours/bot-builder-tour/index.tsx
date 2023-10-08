@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+
 import { isMobile } from '@deriv/shared';
+
 import BotBuilderTourDesktop from './bot-builder-tour-desktop';
 import BotBuilderTourMobile from './bot-builder-tour-mobile';
 

@@ -20,13 +20,13 @@ describe('<ContractTypeGlossary />', () => {
             screen.getByText(/Contracts will expire at exactly 23:59:59 GMT on your selected expiry date./i)
         ).toBeInTheDocument();
     });
-    it('Ensure multiplier glossary is rendered properly if it is synthetic', () => {
+    it('Ensure multiplier glossary is rendered properly if it is multiplier synthetic', () => {
         render(<ContractTypeGlossary category='multiplier' />);
 
         expect(screen.getByText(deal_cancellation)).toBeInTheDocument();
         expect(screen.getByText(stop_out)).toBeInTheDocument();
     });
-    it('Ensure multiplier glossary is rendered properly if it is fx', () => {
+    it('Ensure multiplier glossary is rendered properly if it is multiplier_fx', () => {
         render(<ContractTypeGlossary category='multiplier' is_multiplier_fx />);
 
         expect(screen.queryByText(deal_cancellation)).not.toBeInTheDocument();
@@ -34,7 +34,7 @@ describe('<ContractTypeGlossary />', () => {
         expect(screen.queryByText(/next-tick-execution/i)).not.toBeInTheDocument();
         expect(screen.getByText(stop_out)).toBeInTheDocument();
     });
-    it('Ensure multiplier glossary is rendered properly if it is major pairs', () => {
+    it('Ensure multiplier glossary is rendered properly if it is major pairs  symbol and multiplier_fx', () => {
         render(<ContractTypeGlossary category='multiplier' is_multiplier_fx is_major_pairs />);
 
         expect(screen.queryByText(deal_cancellation)).not.toBeInTheDocument();

@@ -8,6 +8,8 @@ jobs:
     name: Build, Test and Publish to Cloudflare Pages Production
     environment: Production
     runs-on: Runner_16cores_Deriv-app
+    outputs:
+      RELEASE_VERSION: ${{ steps.extract_version.outputs.RELEASE_VERSION }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -37,6 +39,7 @@ jobs:
       with:
         release_type: production
     - name: Extract version
+      id: extract_version
       run: echo "RELEASE_VERSION=${version}" >> $GITHUB_OUTPUT
     - name: Publish to Cloudflare Pages Production
       uses: "./.github/actions/publish_to_pages_production"

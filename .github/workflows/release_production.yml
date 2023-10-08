@@ -36,10 +36,11 @@ jobs:
       uses: "./.github/actions/versioning"
       with:
         release_type: production
+    - name: Extract version
+      run: echo "RELEASE_VERSION=${version}" >> $GITHUB_OUTPUT
     - name: Publish to Cloudflare Pages Production
       uses: "./.github/actions/publish_to_pages_production"
       with:
-        version: $(echo cat packages/core/dist/version | bash)
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
@@ -60,4 +61,4 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           status: ${{ env.WORKFLOW_CONCLUSION }}
           release_type: Production 
-          version: ${{ $(echo cat packages/core/dist/version) }}
+          version: ${{ needs.build_test_and_publish.outputs.RELEASE_VERSION}}

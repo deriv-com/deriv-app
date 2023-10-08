@@ -35,17 +35,8 @@ jobs:
         RUDDERSTACK_URL: ${{ vars.RUDDERSTACK_URL }}
     - name: Run tests
       run: npm test
-    - name: Versioning
-      id: versioning
-      uses: "./.github/actions/versioning"
-      with:
-        release_type: staging    
-    - name: Extract version
-      id: extract_version
-      run: echo "RELEASE_VERSION=${version}" >> $GITHUB_OUTPUT
     - name: Publish to Cloudflare Pages Staging 
       uses: "./.github/actions/publish_to_pages_staging"
       with:       
-        version: $version
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

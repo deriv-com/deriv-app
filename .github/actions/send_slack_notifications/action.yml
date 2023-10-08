@@ -35,5 +35,5 @@ runs:
           --data '{
             "text": "${{ inputs.RELEASE_TYPE }} Release failed for app.deriv.com with version ${{ inputs.VERSION }}"
           }' \
-          ${{ env.SLACK_WEBHOOK_URL }}
+          ${{ inputs.SLACK_WEBHOOK_URL }}
     shell: bash

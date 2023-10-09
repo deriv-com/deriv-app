@@ -4,8 +4,8 @@ import Draggable from 'react-draggable';
 import PropTypes from 'prop-types';
 import { Table, Column, CellMeasurerCache } from 'react-virtualized';
 import { translate } from '@i18n';
-import { saveAs, appendRow } from '@utils';
-import { observer as globalObserver } from '@utilities/observer';
+import { observer as globalObserver } from '../../common/utils/observer';
+import { appendRow, saveAs } from './shared';
 
 const Logtable = () => {
     const [id, setId] = React.useState(0);

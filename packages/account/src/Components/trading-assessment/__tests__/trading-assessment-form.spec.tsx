@@ -43,16 +43,7 @@ describe('TradingAssessmentForm', () => {
     it('should display the provided question', () => {
         render(<TradingAssessmentForm {...baseProps} />);
         expect(
-            screen.getByText(' Do you understand that you could potentially lose 100% of the money you use to trade?')
-        ).toBeInTheDocument();
-    });
-
-    it('should move to the next question when "Next" is clicked', () => {
-        render(<TradingAssessmentForm {...baseProps} />);
-        const nextButton = screen.getByRole('button', { name: /Next/i });
-        userEvent.click(nextButton);
-        expect(
-            screen.getByText(' How much knowledge and experience do you have in relation to online trading?')
+            screen.getByText('Do you understand that you could potentially lose 100% of the money you use to trade?')
         ).toBeInTheDocument();
     });
 

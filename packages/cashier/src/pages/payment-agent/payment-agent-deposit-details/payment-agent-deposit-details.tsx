@@ -1,10 +1,10 @@
-import { toJS } from 'mobx';
 import React from 'react';
-import { Money } from '@deriv/components';
+import { toJS } from 'mobx';
+import { Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import PaymentAgentDetail from '../payment-agent-detail';
-import './payment-agent-deposit-details.scss';
 import { TPaymentAgent } from '../../../types';
+import './payment-agent-deposit-details.scss';
 
 type TPaymentAgentDepositDetails = {
     payment_agent: TPaymentAgent;
@@ -30,7 +30,7 @@ const PaymentAgentDepositDetails = ({ payment_agent }: TPaymentAgentDepositDetai
                         currency={payment_agent.currency}
                         show_currency
                     />
-                    <span className='transfer-limit__span'>-</span>
+                    <Text size='xs'> - </Text>
                     <Money
                         amount={payment_agent.max_withdrawal || ''}
                         currency={payment_agent.currency}

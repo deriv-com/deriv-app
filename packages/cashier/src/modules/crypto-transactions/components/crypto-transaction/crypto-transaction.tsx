@@ -3,7 +3,7 @@ import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { useModal } from '@deriv/wallets/src/components/ModalProvider';
 import classNames from 'classnames';
-import { cryptoTransactionMapper } from '../../../../helpers';
+import { cryptoTransactionMapper } from '../../helpers';
 import { CancelTransactionModal } from '../cancel-transaction-modal';
 import './crypto-transaction.scss';
 

@@ -3,7 +3,7 @@ import { Button, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { useModal } from '@deriv/wallets/src/components/ModalProvider';
 import { WalletModal } from '@deriv/wallets/src/components/WalletModal';
-import { useCashierStore } from '../../../../../../stores/useCashierStores';
+import { useCashierStore } from '../../../../stores/useCashierStores';
 import './cancel-transaction-modal.scss';
 
 type TCancelTransactionModal = {

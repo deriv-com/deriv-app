@@ -5,7 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 import { cryptoTransactionMapper } from '../../helpers';
-import { CryptoTransaction } from './components';
+import { CryptoTransaction } from '../crypto-transaction';
 import './crypto-transactions-side-note-recent-transaction.scss';
 
 type TCryptoTransactionsSideNoteRecentTransaction = {
@@ -18,14 +18,7 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
         const { is_mobile } = ui;
         const { transaction_history } = useCashierStore();
         const { setIsCryptoTransactionsVisible } = transaction_history;
-        const {
-            data: transactions,
-            last_transaction,
-            has_transactions,
-            isLoading,
-            error,
-            subscribe,
-        } = useCryptoTransactions();
+        const { data: transactions, has_transactions, isLoading, error, subscribe } = useCryptoTransactions();
         const currency_config = useCurrentCurrencyConfig();
 
         const TransactionDetail = React.useCallback(() => {
@@ -55,7 +48,7 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
                     )}
                 </React.Fragment>
             );
-        }, [currency_config?.display_code, last_transaction, setIsCryptoTransactionsVisible]);
+        }, [currency_config.display_code, setIsCryptoTransactionsVisible, transaction_type, transactions]);
 
         const LoadingState = React.useCallback(() => <Loading is_fullscreen={false} />, []);
 

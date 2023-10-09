@@ -217,6 +217,7 @@ export const getCardLabels = () =>
         BUY_PRICE: localize('Buy price:'),
         CANCEL: localize('Cancel'),
         CLOSE: localize('Close'),
+        CLOSED: localize('Closed'),
         CONTRACT_VALUE: localize('Contract value:'),
         CURRENT_STAKE: localize('Current stake:'),
         DAY: localize('day'),

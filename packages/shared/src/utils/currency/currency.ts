@@ -71,7 +71,8 @@ export const formatMoney = (
     amount: number | string,
     exclude_currency?: boolean,
     decimals = 0,
-    minimumFractionDigits = 0
+    minimumFractionDigits = 0,
+    exclude_sign?: boolean
 ) => {
     let money: number | string = amount;
     if (money) money = String(money).replace(/,/g, '');
@@ -90,7 +91,7 @@ export const formatMoney = (
         money = addComma(money, decimal_places);
     }
 
-    return sign + (exclude_currency ? '' : formatCurrency(currency_value)) + money;
+    return (exclude_sign ? '' : sign) + (exclude_currency ? '' : formatCurrency(currency_value)) + money;
 };
 
 export const formatCurrency = (currency: string) => {

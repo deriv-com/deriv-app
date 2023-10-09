@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { getCardLabels } from '@deriv/shared';
 
 const ResultMobile = ({ is_visible, result }) => {
     const is_contract_won = result === 'won';
@@ -26,17 +26,12 @@ const ResultMobile = ({ is_visible, result }) => {
                             'positions-modal-card__caption--lost': !is_contract_won,
                         })}
                     >
-                        {is_contract_won ? (
-                            <React.Fragment>
-                                {localize('Won')}
-                                <Icon icon='IcCheckmarkCircle' className='positions-modal-card__icon' color='green' />
-                            </React.Fragment>
-                        ) : (
-                            <React.Fragment>
-                                {localize('Lost')}
-                                <Icon icon='IcCrossCircle' className='positions-modal-card__icon' color='red' />
-                            </React.Fragment>
-                        )}
+                        <Icon
+                            icon='IcPositionClosed'
+                            className='positions-modal-card__icon'
+                            color={is_contract_won ? 'green' : 'red'}
+                        />
+                        <span>{getCardLabels().CLOSED}</span>
                     </span>
                 </div>
             </CSSTransition>

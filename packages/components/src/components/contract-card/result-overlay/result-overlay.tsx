@@ -15,6 +15,7 @@ type TResultOverlayProps = {
     is_visible: boolean;
     onClick: () => void;
     onClickRemove?: (contract_id?: number) => void;
+    payout_info: string;
     result: string;
 };
 
@@ -30,17 +31,10 @@ export const ResultStatusIcon = ({ getCardLabels, is_contract_won }: TResultStat
             'dc-result__caption--lost': !is_contract_won,
         })}
     >
-        {is_contract_won ? (
-            <React.Fragment>
-                {getCardLabels().WON}
-                <Icon icon='IcCheckmarkCircle' className='dc-result__icon' color='green' />
-            </React.Fragment>
-        ) : (
-            <React.Fragment>
-                {getCardLabels().LOST}
-                <Icon icon='IcCrossCircle' className='dc-result__icon' color='red' />
-            </React.Fragment>
-        )}
+        <React.Fragment>
+            <Icon icon='IcPositionClosed' className='dc-result__icon' color={is_contract_won ? 'green' : 'red'} />
+            <span>{getCardLabels().CLOSED}</span>
+        </React.Fragment>
     </span>
 );
 
@@ -53,6 +47,7 @@ const ResultOverlay = ({
     is_visible,
     onClick,
     onClickRemove,
+    payout_info,
     result,
 }: TResultOverlayProps) => {
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -98,7 +93,17 @@ const ResultOverlay = ({
                             onClick={handleClick}
                         />
                     )}
-                    <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_contract_won} />
+                    <div className='dc-result__content'>
+                        <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_contract_won} />
+                        <span
+                            className={classNames('dc-result__payout', {
+                                'dc-result__payout--won': is_contract_won,
+                                'dc-result__payout--lost': !is_contract_won,
+                            })}
+                        >
+                            {payout_info}
+                        </span>
+                    </div>
                 </div>
             </CSSTransition>
         </React.Fragment>

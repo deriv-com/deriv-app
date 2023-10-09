@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { Button, Icon, Popover } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+
 import { BinaryLink } from 'App/Components/Routes';
+
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
 

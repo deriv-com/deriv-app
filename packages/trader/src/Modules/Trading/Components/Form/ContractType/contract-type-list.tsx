@@ -51,8 +51,8 @@ const List = ({ handleInfoClick, handleSelect, list, value }: TListProps) => (
                     <div className='contract-type-list__wrapper'>
                         <Item
                             contract_types={contract_types}
-                            handleSelect={!contract_category.is_unavailable && handleSelect}
-                            handleInfoClick={!contract_category.is_unavailable && handleInfoClick}
+                            handleSelect={contract_category.is_unavailable ? undefined : handleSelect}
+                            handleInfoClick={contract_category.is_unavailable ? undefined : handleInfoClick}
                             value={value}
                         />
                     </div>

@@ -160,6 +160,7 @@ export const ContractType = (() => {
                 const key =
                     Object.keys(contract_categories).find(
                         key =>
+                            // @ts-expect-error TODO : check this
                             contract_categories[key as keyof typeof contract_categories]?.categories.indexOf(type) !==
                             -1
                     ) ?? '';

@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { RudderStack } from '@deriv/analytics';
 import { DesktopWrapper, Icon, MobileWrapper, SelectNative, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
@@ -36,6 +37,7 @@ const Sidebar = observer(() => {
     const [search_filtered_list, setsearchFilteredList] = React.useState<TFilteredList[]>([...guide_tab_content]);
     const [search_faq_list, setsearchFAQList] = React.useState([...faq_content]);
     const [selected_tab, setSelectedTab] = React.useState<TSelectedTab>(initialSelectedTab);
+    const search_input = React.useRef(null);
     const menu_items = [
         {
             label: localize('Guide'),
@@ -82,6 +84,32 @@ const Sidebar = observer(() => {
         setFAQSearchValue(event.target.value);
     };
 
+    const sendToRudderStack = () => {
+        if (search_input?.current?.value) {
+            RudderStack.track('ce_bot_dashboard_form', {
+                search_string: search_input?.current?.value,
+                action: 'push_user_guide',
+            });
+        }
+    };
+    React.useEffect(() => {
+        /* 
+           This is done because debounce was not working added a settimeout on 
+           the ref bu using a listener on every key it will clear the prev timeout id
+           and will add a new on the last stroke
+        */
+        let timeout_id: ReturnType<typeof setTimeout>;
+        const getValueForRudderStack = () => {
+            if (timeout_id) clearTimeout(timeout_id);
+            timeout_id = setTimeout(() => sendToRudderStack(), 1000);
+        };
+        search_input?.current?.addEventListener('input', getValueForRudderStack);
+        return () => {
+            search_input?.current?.removeEventListener('input', getValueForRudderStack);
+            if (timeout_id) clearTimeout(timeout_id);
+        };
+    }, []);
+
     const onChangeHandle = React.useCallback(
         ({ target }: React.ChangeEvent<HTMLInputElement>) => {
             setActiveTabTutorial(menu_items.findIndex(i => i.label === target.value));
@@ -96,6 +124,7 @@ const Sidebar = observer(() => {
                     <div className='dc-tabs__wrapper__group'>
                         <Icon data-testid='id-test-search' width='1.6rem' height='1.6rem' icon={'IcSearch'} />
                         <input
+                            ref={search_input}
                             data-testid='id-test-search'
                             type='text'
                             placeholder={localize('Search')}

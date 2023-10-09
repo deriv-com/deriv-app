@@ -133,6 +133,33 @@ type IdentifyAction = {
     language: string;
 };
 
+export type TActions =
+    | 'open'
+    | 'close'
+    | 'search'
+    | 'delete'
+    | 'yes'
+    | 'no'
+    | 'search_string'
+    | 'choose_shortcut'
+    | 'bot_last_modified_time'
+    | 'delete_popup_respond'
+    | 'push_open_button'
+    | 'push_user_guide'
+    | 'save_your_bot'
+    | 'choose_your_bot'
+    | 'delete_your_bot';
+
+export type DbotTypesForAction = {
+    action?: TActions;
+    shortcut_name?: string;
+    form_source?: string;
+    search_string?: string;
+    delete_popup_respond?: string;
+    bot_last_modified_time?: number;
+    bot_name?: string;
+};
+
 export type TEvents = {
     ce_chart_types_form: ChartTypesFormAction;
     ce_indicators_types_form: IndicatorsTypesFormAction;
@@ -141,6 +168,9 @@ export type TEvents = {
     ce_real_account_signup_form: RealAccountSignupFormAction;
     ce_virtual_signup_email_confirmation: VirtualSignupEmailConfirmationAction;
     ce_trade_types_form: TradeTypesFormAction;
+    ce_bot_builder_form: DbotTypesForAction;
+    ce_bot_dashboard_form: DbotTypesForAction;
+    bot_dashboard_form_open: DbotTypesForAction;
     identify: IdentifyAction;
 };
 

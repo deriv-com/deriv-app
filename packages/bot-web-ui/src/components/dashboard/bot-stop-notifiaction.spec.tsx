@@ -86,6 +86,8 @@ describe('BotStopNotification', () => {
     });
 
     it('should render toast', () => {
+        jest.resetModules();
+        jest.restoreAllMocks();
         act(() => {
             mock_DBot_store?.run_panel.setShowBotStopMessage(true);
         });

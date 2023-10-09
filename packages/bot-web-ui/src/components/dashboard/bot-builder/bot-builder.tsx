@@ -1,14 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-
+import { RudderStack, TActions } from '@deriv/analytics';
 import { observer } from '@deriv/stores';
-
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
 import QuickStrategy from '../quick-strategy';
-
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
@@ -17,6 +15,23 @@ const BotBuilder = observer(() => {
 
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
+
+    const trackRudderStackForBotBuilder = (action: TActions) => {
+        RudderStack.track('ce_bot_builder_form', {
+            action,
+            form_source: 'ce_bot_builder_form',
+        });
+    };
+
+    React.useEffect(() => {
+        //when the bot builder mounts and unmounts
+        if (active_tab === 1) {
+            trackRudderStackForBotBuilder('open');
+            return () => {
+                trackRudderStackForBotBuilder('close');
+            };
+        }
+    }, [active_tab]);
 
     React.useEffect(() => {
         onMount();

@@ -1,4 +1,6 @@
 import React from 'react';
+import { observer } from 'mobx-react';
+import { RudderStack } from '@deriv/analytics';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
@@ -8,12 +10,19 @@ type TUserGuide = {
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
 };
 
-const UserGuide = ({ setActiveTab, setActiveTabTutorial }: TUserGuide) => {
+const UserGuide = observer(({ setActiveTab, setActiveTabTutorial }: TUserGuide) => {
+    const sendToRudderStack = () => {
+        RudderStack.track('ce_bot_builder_form', {
+            action: 'push_user_guide',
+            form_source: 'ce_bot_dashboard_form',
+        });
+    };
     return (
         <div className='tab__dashboard__home__retrigger'>
             <button
                 data-testid='btn-user-guide'
                 onClick={() => {
+                    sendToRudderStack();
                     setActiveTab(DBOT_TABS.TUTORIAL);
                     setActiveTabTutorial(0);
                 }}
@@ -25,6 +34,6 @@ const UserGuide = ({ setActiveTab, setActiveTabTutorial }: TUserGuide) => {
             </button>
         </div>
     );
-};
+});
 
 export default UserGuide;

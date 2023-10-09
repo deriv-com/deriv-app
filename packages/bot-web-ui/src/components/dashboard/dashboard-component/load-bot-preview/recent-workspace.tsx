@@ -1,20 +1,16 @@
 import React from 'react';
 import classnames from 'classnames';
-
+import { RudderStack, TActions } from '@deriv/analytics';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
-
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { useDBotStore } from 'Stores/useDBotStore';
 import { waitForDomElement } from 'Utils/dom-observer';
-
+import { useDBotStore } from 'Stores/useDBotStore';
 import { useComponentVisibility } from '../../hooks/useComponentVisibility';
-
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
-
 import './index.scss';
 
 type TRecentWorkspace = {
@@ -40,6 +36,13 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         setSelectedStrategyId,
         setPreviewedStrategyId,
     } = load_modal;
+
+    const sendToRudderStack = (action: TActions) => {
+        RudderStack.track('ce_bot_builder_form', {
+            action,
+            form_source: 'ce_bot_dashboard_form',
+        });
+    };
 
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
     const toggle_ref = React.useRef<HTMLInputElement>(null);
@@ -73,7 +76,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
     const handleInit = () => {
         setPreviewedStrategyId(workspace?.id);
-        // Fires for desktop
         if (active_tab === 0) {
             previewRecentStrategy(workspace.id);
         }
@@ -94,11 +96,16 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const handleEdit = async () => {
         await loadFileFromRecent();
         setActiveTab(DBOT_TABS.BOT_BUILDER);
+        RudderStack.track('ce_bot_builder_form', {
+            action: 'close',
+            form_source: 'bot_dashboard_form-edit',
+        });
     };
 
     const handleSave = () => {
         updateBotName(workspace?.name);
         toggleSaveModal();
+        sendToRudderStack('save_your_bot');
     };
 
     const viewRecentStrategy = async (type: string) => {
@@ -106,11 +113,15 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
         switch (type) {
             case STRATEGY.INIT:
+                // Fires for desktop preview
                 handleInit();
+                sendToRudderStack('choose_your_bot');
                 break;
 
             case STRATEGY.PREVIEW_LIST:
+                // Fires for mobile preview
                 handlePreviewList();
+                sendToRudderStack('choose_your_bot');
                 break;
 
             case STRATEGY.EDIT:
@@ -123,6 +134,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
             case STRATEGY.DELETE:
                 onToggleDeleteDialog(true);
+                sendToRudderStack('delete_your_bot');
                 break;
 
             default:

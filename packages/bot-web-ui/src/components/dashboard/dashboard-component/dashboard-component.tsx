@@ -1,15 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-
+import { RudderStack } from '@deriv/analytics';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import OnboardTourHandler from '../dbot-tours/onboarding-tour';
-
 import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';
@@ -67,6 +64,16 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { setActiveTab, setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const is_mobile = isMobile();
+
+    React.useEffect(() => {
+        //on dashbord umount fire close event for rudderstack
+        return () => {
+            RudderStack.track('ce_bot_builder_form', {
+                action: 'close',
+                form_source: 'ce_bot_dashboard_form',
+            });
+        };
+    }, [active_tab]);
 
     return (
         <React.Fragment>

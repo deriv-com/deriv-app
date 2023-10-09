@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-
+import { RudderStack } from '@deriv/analytics';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
@@ -9,13 +9,10 @@ import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import RunPanel from '../run-panel';
-
 import RunStrategy from './dashboard-component/run-strategy';
 import { tour_list } from './dbot-tours/utils';
 import DashboardComponent from './dashboard-component';
@@ -24,7 +21,7 @@ import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
-    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour } = dashboard;
+    const { active_tour, setActiveTour, active_tab, setActiveTab, setWebSocketState } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
@@ -110,6 +107,13 @@ const Dashboard = observer(() => {
                     behavior: 'smooth',
                     block: 'center',
                     inline: 'center',
+                });
+            }
+            //if the user comes from navigation click to bot builder tab send event to rudderstack
+            if (tab_index === BOT_BUILDER) {
+                RudderStack.track('ce_bot_builder_form', {
+                    action: 'open',
+                    form_source: 'bot_header_form',
                 });
             }
         },

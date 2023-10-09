@@ -1,6 +1,7 @@
 import localForage from 'localforage';
 import LZString from 'lz-string';
 import { action, makeObservable, observable } from 'mobx';
+import { RudderStack } from '@deriv/analytics';
 import {
     getSavedWorkspaces,
     observer as globalObserver,
@@ -159,6 +160,12 @@ export default class SaveModalStore implements ISaveModalStore {
             });
             this.setButtonStatus(button_status.COMPLETED);
         }
+
+        /* Send the event on rudderstack on strategy save */
+        RudderStack.track('ce_bot_dashboard_form', {
+            bot_name,
+            form_source: 'ce_bot_dashboard_form',
+        });
 
         this.updateBotName(bot_name);
 

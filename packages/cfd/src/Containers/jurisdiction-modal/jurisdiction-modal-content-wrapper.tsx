@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { getAuthenticationStatusInfo, isMobile, Jurisdiction, CFD_PLATFORMS } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
@@ -11,9 +11,7 @@ import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
-    const { client, traders_hub, common } = useStore();
-
-    const { platform } = common;
+    const { client, traders_hub } = useStore();
 
     const { show_eu_related_content } = traders_hub;
 
@@ -40,7 +38,6 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
         real_swapfree_accounts_existing_data,
         real_synthetic_accounts_existing_data,
         setJurisdictionSelectedShortcode,
-        createCFDAccount,
     } = useCfdStore();
 
     const [checked, setChecked] = React.useState(false);
@@ -148,11 +145,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
         };
 
         if (is_svg_selected) {
-            if (platform !== CFD_PLATFORMS.CTRADER) {
-                openPasswordModal(type_of_account);
-            } else if (platform === CFD_PLATFORMS.CTRADER) {
-                createCFDAccount({ ...type_of_account, platform });
-            }
+            openPasswordModal(type_of_account);
         } else if (is_vanuatu_selected) {
             if (
                 poi_acknowledged_for_bvi_labuan_vanuatu &&

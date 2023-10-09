@@ -16,7 +16,7 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
-import { useActiveWallet, useFeatureFlags } from '@deriv/hooks';
+import { useActiveWalletAccount, useFeatureFlags } from '@deriv/hooks';
 import CFDPasswordForm from './cfd-password-form/cfd-password-form';
 import PasswordModalHeader from './modal-elements/password-modal-header';
 import PasswordModalMessage from './modal-elements/password-modal-message';
@@ -35,7 +35,7 @@ type TCFDPasswordModalProps = {
 };
 
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
-    const { client, traders_hub, ui } = useStore();
+    const { client, traders_hub, ui, common } = useStore();
 
     const {
         account_status,
@@ -47,7 +47,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateAccountStatus,
     } = client;
     const { show_eu_related_content } = traders_hub;
-    const { is_mobile } = ui;
+    const { is_mobile, is_dark_mode_on } = ui;
 
     const {
         account_title,
@@ -65,11 +65,15 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         setError,
         submitCFDPassword,
         submitMt5Password,
+        setAccountType,
+        setJurisdictionSelectedShortcode,
     } = useCfdStore();
+
+    const { setAppstorePlatform } = common;
 
     const history = useHistory();
     const { is_wallet_enabled } = useFeatureFlags();
-    const active_wallet = useActiveWallet();
+    const active_wallet = useActiveWalletAccount();
     const invalidate = useInvalidateQuery();
 
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
@@ -83,6 +87,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const is_password_error = error_type === PASSWORD_ERRORS.ERROR;
     const is_password_reset = error_type === PASSWORD_ERRORS.RESET;
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
+    const theme = is_dark_mode_on ? 'dark' : 'light';
 
     const getBalance = (platform: string) => {
         if (has_mt5_account) {
@@ -214,7 +219,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         />
     );
 
-    const card_label = active_wallet?.is_demo ? (
+    const card_label = active_wallet?.is_virtual ? (
         <Localize i18n_default_text='Demo' />
     ) : (
         <Localize i18n_default_text='Real' />
@@ -329,10 +334,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const wallet_details = {
         balance,
-        account_title: getWalletCFDInfo(account_type.type).title,
-        gradient_card_class: active_wallet?.gradient_header_class,
-        icon: active_wallet?.icon,
-        is_demo: active_wallet?.is_demo,
+        account_title: getWalletCFDInfo(account_type.type, platform, jurisdiction_selected_shortcode).title,
+        gradient_card_class: active_wallet?.gradients.card[theme],
+        icon: active_wallet?.icons[theme],
+        is_demo: active_wallet?.is_virtual,
         currency_title: (
             <Localize
                 i18n_default_text='{{currency}} Wallet'
@@ -341,13 +346,46 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 }}
             />
         ),
-        app_icon: getWalletCFDInfo(account_type.type).icon,
+        app_icon: getWalletCFDInfo(account_type.type, platform, jurisdiction_selected_shortcode).icon,
         label: card_label,
     };
 
-    const wallet_success_text = active_wallet?.is_demo
-        ? getWalletSuccessText(active_wallet?.is_demo, getWalletCFDInfo(account_type.type).title)
-        : undefined;
+    const wallet_success_text = getWalletSuccessText(
+        Boolean(active_wallet?.is_virtual),
+        getWalletCFDInfo(account_type.type, platform, jurisdiction_selected_shortcode).title,
+        '',
+        platform,
+        active_wallet?.currency
+    );
+
+    // console.log(
+    //     'We are here, platform = ',
+    //     platform,
+    //     ', account_type?.type = ',
+    //     account_type?.type,
+    //     ', account_type?.category = ',
+    //     account_type?.category
+    // );
+
+    const updateData = () => {
+        setAppstorePlatform(CFD_PLATFORMS.MT5);
+        setAccountType({ category: 'real', type: 'all' });
+        setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
+    };
+
+    return (
+        <WalletSuccessDialog
+            description={wallet_success_text?.description}
+            // has_cancel={true}
+            is_open={true}
+            onSubmit={closeModal}
+            text_submit={wallet_success_text?.text_submit}
+            text_cancel={wallet_success_text?.text_cancel}
+            title={wallet_success_text?.title}
+            toggleModal={updateData}
+            wallet_card={<WalletAppCard wallet={wallet_details} />}
+        />
+    );
 
     return (
         <React.Fragment>
@@ -385,7 +423,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             show_eu_related_content={show_eu_related_content}
                             type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
-                            wallet_account_title={getWalletCFDInfo(account_type.type).title}
+                            wallet_account_title={
+                                getWalletCFDInfo(account_type.type, platform, jurisdiction_selected_shortcode).title
+                            }
                         />
                     }
                     icon={

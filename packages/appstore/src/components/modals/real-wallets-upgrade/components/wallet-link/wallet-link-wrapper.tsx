@@ -25,26 +25,19 @@ const WalletLinkWrapper = observer(({ wallet_details, account_list }: TWalletLin
         <div className='wallet-link-wrapper'>
             <div className='wallet-link-wrapper__left'>
                 <div className='wallet-link-wrapper__accounts'>
-                    <LeftContentWithLink show_fork={account_list.length > 1}>
-                        <React.Fragment>
-                            {is_mobile && (
-                                <TitleText className='wallet-link-wrapper__heading wallet-link-wrapper__heading--top'>
-                                    <Localize i18n_default_text='Your current trading account(s)' />
-                                </TitleText>
-                            )}
-                            {account_list.map(account => {
-                                return (
-                                    <WalletAccount
-                                        key={`${account.account_name}-${account.currency}}`}
-                                        balance={account.balance}
-                                        currency={account.currency}
-                                        icon={account.icon}
-                                        name={account.account_name}
-                                        is_mobile={is_mobile}
-                                    />
-                                );
-                            })}
-                        </React.Fragment>
+                    <LeftContentWithLink>
+                        {account_list.map(account => {
+                            return (
+                                <WalletAccount
+                                    key={`${account.account_name}-${account.currency}}`}
+                                    balance={account.balance}
+                                    currency={account.currency}
+                                    icon={account.icon}
+                                    name={account.account_name}
+                                    is_mobile={is_mobile}
+                                />
+                            );
+                        })}
                     </LeftContentWithLink>
                 </div>
             </div>

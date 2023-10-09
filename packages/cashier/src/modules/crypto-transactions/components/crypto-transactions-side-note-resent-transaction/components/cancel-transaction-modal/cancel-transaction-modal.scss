@@ -19,13 +19,3 @@
         gap: 0.8rem;
     }
 }
-
-.cancel-transaction-modal {
-    height: 18rem;
-    width: 44rem;
-
-    @include mobile {
-        height: 14.2rem;
-        width: 100%;
-    }
-}

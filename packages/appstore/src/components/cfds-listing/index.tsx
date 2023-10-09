@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, StaticUrl } from '@deriv/components';
-import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { Text, StaticUrl } from '@deriv/components';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
@@ -14,6 +13,7 @@ import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
+import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -153,7 +153,7 @@ const CFDsListing = observer(() => {
             title={
                 !isMobile() && (
                     <div className='cfd-accounts__title'>
-                        <Text size='sm' weight='bold' color='prominent'>
+                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
                         <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop={!isMobile()} />
@@ -182,7 +182,7 @@ const CFDsListing = observer(() => {
             </div>
             {is_landing_company_loaded ? (
                 <React.Fragment>
-                    {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
+                    {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
                         const has_mt5_account_status =
                             existing_account.status || is_idv_revoked
@@ -269,11 +269,11 @@ const CFDsListing = observer(() => {
             )}
 
             {is_landing_company_loaded
-                ? available_ctrader_accounts.map((account: AvailableAccount) => {
+                ? available_ctrader_accounts.map(account => {
                       const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                       const has_existing_accounts = existing_accounts.length > 0;
                       return has_existing_accounts ? (
-                          existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                          existing_accounts.map(existing_account => (
                               <TradingAppCard
                                   action_type='multi-action'
                                   availability={selected_region}
@@ -344,11 +344,11 @@ const CFDsListing = observer(() => {
                 </React.Fragment>
             )}
             {is_landing_company_loaded ? (
-                available_dxtrade_accounts?.map((account: AvailableAccount) => {
+                available_dxtrade_accounts?.map(account => {
                     const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                     const has_existing_accounts = existing_accounts.length > 0;
                     return has_existing_accounts ? (
-                        existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                        existing_accounts.map(existing_account => (
                             <TradingAppCard
                                 action_type='multi-action'
                                 availability={selected_region}

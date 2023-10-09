@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetTradingPasswordModal } from '@deriv/account';
-import { useFeatureFlags } from '@deriv/hooks';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
@@ -22,7 +21,7 @@ import AccountTransferModal from 'Components/account-transfer-modal';
 import RealWalletsUpgrade from './real-wallets-upgrade/real-wallets-upgrade';
 import WalletsMigrationFailed from './wallets-migration-failed';
 import WalletModal from './wallet-modal';
-import WalletSuccessDialog from './wallet-success-dialog/wallet-success-dialog';
+import AddNewWalletModal from './add-new-wallet-modal/add-new-wallet-modal';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -30,7 +29,6 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
 
 const ModalManager = () => {
     const store = useStores();
-    const { is_wallet_enabled } = useFeatureFlags();
     const { common, client, modules, traders_hub, ui } = store;
     const {
         is_logged_in,
@@ -176,7 +174,7 @@ const ModalManager = () => {
             {is_real_wallets_upgrade_on && <RealWalletsUpgrade />}
             <WalletsMigrationFailed />
             <WalletModal />
-            <WalletSuccessDialog />
+            <AddNewWalletModal />
         </React.Fragment>
     );
 };

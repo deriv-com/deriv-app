@@ -1,4 +1,4 @@
-.wallet-cfd-card {
+.wallet-app-card {
     width: 24rem;
     height: 14.4rem;
     position: relative;
@@ -34,13 +34,10 @@
         top: 0;
         right: 0;
 
-        padding: 0 0.8rem 0.4rem;
+        padding: 0.8rem 0.4rem;
         border-radius: 0 0 0 $BORDER_RADIUS;
-        &--real {
-            background-color: var(--brand-red-coral);
-        }
-        &--demo {
-            background-color: var(--status-info);
+        @include mobile {
+            padding: 0.4rem 0.8rem;
         }
     }
 

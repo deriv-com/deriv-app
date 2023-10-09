@@ -1,4 +1,5 @@
-import { TOptions, getPreBuildDVRs, TInitPreBuildDVRs } from '../validation/declarative-validation-rules';
+import { getPreBuildDVRs, TInitPreBuildDVRs, TOptions } from '../validation/declarative-validation-rules';
+
 import Error from './errors';
 
 type TRuleOptions = {

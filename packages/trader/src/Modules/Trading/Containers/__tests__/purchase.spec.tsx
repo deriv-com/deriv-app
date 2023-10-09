@@ -1,8 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+
 import { mockStore } from '@deriv/stores';
-import TraderProviders from '../../../../trader-providers';
 import { TCoreStores } from '@deriv/stores/types';
+import { render, screen } from '@testing-library/react';
+
+import TraderProviders from '../../../../trader-providers';
 import Purchase from '../purchase';
 
 const default_mock_store = {

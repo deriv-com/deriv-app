@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
 
-const TradersHub = () => {
+const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { notification_messages_ui: Notifications, is_mobile } = ui;
     const { is_landing_company_loaded, is_logged_in, is_switching, is_logging_in, is_account_setting_loaded } = client;
@@ -123,6 +123,6 @@ const TradersHub = () => {
             )}
         </>
     );
-};
+});
 
-export default observer(TradersHub);
+export default TradersHub;

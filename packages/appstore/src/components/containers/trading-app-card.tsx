@@ -13,6 +13,7 @@ import {
 import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { observer } from 'mobx-react-lite';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
@@ -34,8 +35,7 @@ const TradingAppCard = ({
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
-    is_open_order_position_status_present,
-    open_order_position_status,
+    login,
     market_type,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const {
@@ -46,6 +46,9 @@ const TradingAppCard = ({
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
+
+    const { is_flag_present: is_open_order_position_status_present, flag_value: open_order_position_status } =
+        useIsMt5LoginListStatusPresent('landing_company_short', login ?? '');
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -171,7 +174,7 @@ const TradingAppCard = ({
                     {is_open_position_svg_modal_open && (
                         <OpenPositionsSVGModal
                             market_type={market_type}
-                            open_order_position_status={open_order_position_status}
+                            open_order_position_status={open_order_position_status} //TODO: check type :
                             is_modal_open={is_open_position_svg_modal_open}
                             setModalOpen={setIsOpenPositionSvgModalOpen}
                         />

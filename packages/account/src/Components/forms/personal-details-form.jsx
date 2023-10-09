@@ -133,7 +133,11 @@ const PersonalDetailsForm = props => {
                 })}
             >
                 {is_rendered_for_idv_or_onfido && !should_hide_helper_image && (
-                    <InlineNoteWithIcon message={inline_note_text} font_size={isMobile() ? 'xxxs' : 'xs'} />
+                    <InlineNoteWithIcon
+                        message={inline_note_text}
+                        font_size={isMobile() ? 'xxxs' : 'xs'}
+                        icon='IcAlertWarning'
+                    />
                 )}
                 {is_qualified_for_poa && (
                     <InlineNoteWithIcon

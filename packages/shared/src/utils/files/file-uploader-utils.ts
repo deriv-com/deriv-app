@@ -20,8 +20,8 @@ export const truncateFileName = (file: File | Blob, limit: number) => {
 };
 
 export const getFileExtension = (file: Blob) => {
-    const f = RegExp(/[^/]+$/).exec(file?.type);
-    return f?.[0];
+    const f = file?.type?.match(/[^/]+$/);
+    return f && f[0];
 };
 
 export const compressImageFiles = (files?: File[]) => {

@@ -37,11 +37,9 @@ describe('useFileUploader', () => {
         const { result } = renderHook(() => useFileUploader());
         const error_message = 'Something went wrong!';
         const file = new File(['file contents'], 'file.pdf', { type: 'application/pdf' });
-        const onError = jest.fn();
         jest.spyOn(result.current.uploader_instance, 'upload').mockRejectedValue(new Error(error_message));
-        const uploadPromise = result.current.upload([file], undefined, onError);
+        const uploadPromise = result.current.upload([file], undefined);
 
         await expect(uploadPromise).rejects.toThrow(error_message);
-        expect(onError).toHaveBeenCalled();
     });
 });

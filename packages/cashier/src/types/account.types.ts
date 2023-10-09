@@ -32,7 +32,7 @@ export type TAccountsList = {
     icon?: string;
     idx: string | number;
     is_dark_mode_on?: boolean;
-    is_pending?: boolean;
+    is_poa_poi_pending_for_mf?: boolean;
     is_selected_from?: boolean;
     loginid?: string;
     mt5_login_list?: DetailsOfEachMT5Loginid[];

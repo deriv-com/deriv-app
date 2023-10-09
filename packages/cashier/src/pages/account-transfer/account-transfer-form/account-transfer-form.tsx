@@ -32,7 +32,7 @@ type TAccountTransferFormProps = {
     setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
-const AccountOption = ({ account, idx, is_pending, is_selected_from }: TAccountsList) => {
+const AccountOption = ({ account, idx, is_poa_poi_pending_for_mf, is_selected_from }: TAccountsList) => {
     const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt || account.is_derivez;
 
     return (
@@ -55,7 +55,7 @@ const AccountOption = ({ account, idx, is_pending, is_selected_from }: TAccounts
             </div>
 
             <span className='account-transfer-form__balance'>
-                {is_pending && is_selected_from ? (
+                {is_poa_poi_pending_for_mf && is_selected_from ? (
                     <Text color='warning' size='xs'>
                         <Localize i18n_default_text='Pending verification' />
                     </Text>
@@ -94,7 +94,13 @@ const AccountTransferForm = observer(
         } = useStore();
 
         const { is_mobile } = ui;
-        const { account_limits, authentication_status, is_eu, is_dxtrade_allowed, getLimits: onMount } = client;
+        const {
+            account_limits,
+            authentication_status,
+            is_dxtrade_allowed,
+            getLimits: onMount,
+            mf_account_status,
+        } = client;
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
 
         const {
@@ -144,11 +150,7 @@ const AccountTransferForm = observer(
         const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
         const is_derivez_transfer = selected_to.is_derivez || selected_from.is_derivez;
 
-        const is_poa_or_poi_pending_for_mf =
-            (authentication_status?.document_status === 'pending' ||
-                authentication_status?.identity_status === 'pending') &&
-            is_eu;
-
+        const is_poa_poi_pending_for_mf = mf_account_status === 'pending';
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
         const history = useHistory();
@@ -156,8 +158,7 @@ const AccountTransferForm = observer(
         const validateAmount = (amount: string) => {
             if (!amount) return localize('This field is required.');
 
-            if (is_poa_or_poi_pending_for_mf) return localize('Unavailable as your documents are still under review');
-
+            if (is_poa_poi_pending_for_mf) return localize('Unavailable as your documents are still under review');
             const { is_ok, message } = validNumber(amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(selected_from.currency || ''),
@@ -217,7 +218,7 @@ const AccountTransferForm = observer(
                     <AccountOption
                         idx={idx}
                         account={account}
-                        is_pending={is_poa_or_poi_pending_for_mf}
+                        is_poa_poi_pending_for_mf={is_poa_poi_pending_for_mf}
                         is_selected_from={is_selected_from}
                     />
                 );
@@ -472,13 +473,13 @@ const AccountTransferForm = observer(
                                                 id='transfer_from'
                                                 className={classNames('account-transfer-form__drop-down', {
                                                     'account-transfer-form__drop-down--disabled':
-                                                        is_poa_or_poi_pending_for_mf,
+                                                        is_poa_poi_pending_for_mf,
                                                 })}
                                                 classNameDisplay='cashier__drop-down-display'
                                                 classNameDisplaySpan='cashier__drop-down-display-span'
                                                 classNameItems='cashier__drop-down-items'
                                                 classNameLabel='cashier__drop-down-label'
-                                                disabled={is_poa_or_poi_pending_for_mf}
+                                                disabled={is_poa_poi_pending_for_mf}
                                                 test_id='dt_account_transfer_form_drop_down'
                                                 is_large
                                                 label={localize('From')}

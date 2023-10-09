@@ -28,11 +28,7 @@ describe('<AccountTransferForm />', () => {
                         mt5: {},
                     },
                 },
-                authentication_status: {
-                    document_status: 'verified',
-                    identity_status: 'verified',
-                },
-                is_eu: false,
+                mf_account_status: 'verified',
                 mt5_login_list: [
                     {
                         login: 'value',
@@ -184,12 +180,8 @@ describe('<AccountTransferForm />', () => {
         expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
     });
 
-    it('should show an error if poa or poi is pending and is an eu user and transfer button should be disabled', async () => {
-        mockRootStore.client.is_eu = true;
-        mockRootStore.client.authentication_status = {
-            document_status: 'pending',
-            identity_status: 'verified',
-        };
+    it('should show an error and transfer button should be disabled if mf_account_status is pending', async () => {
+        mockRootStore.client.mf_account_status = 'pending';
 
         renderAccountTransferForm();
 

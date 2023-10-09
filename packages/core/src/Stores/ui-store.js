@@ -1,6 +1,9 @@
+import { action, autorun, computed, makeObservable, observable } from 'mobx';
+
 import { isMobile, isTouchDevice, LocalStore, routes } from '@deriv/shared';
+
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
-import { action, autorun, computed, observable, makeObservable } from 'mobx';
+
 import BaseStore from './base-store';
 
 const store_name = 'ui_store';
@@ -159,6 +162,7 @@ export default class UIStore extends BaseStore {
     should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
+    is_wallet_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
     is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
@@ -250,6 +254,7 @@ export default class UIStore extends BaseStore {
             is_closing_create_real_account_modal: observable,
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
+            is_wallet_modal_visible: observable,
 
             is_history_tab_active: observable,
             is_landscape: observable,
@@ -348,6 +353,7 @@ export default class UIStore extends BaseStore {
             toggleShouldShowMultipliersOnboarding: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
             setShouldShowRiskWarningModal: action.bound,
+            setIsWalletModalVisible: action.bound,
             setIsNewAccount: action.bound,
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
@@ -860,6 +866,10 @@ export default class UIStore extends BaseStore {
 
     openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
+    }
+
+    setIsWalletModalVisible(value) {
+        this.is_wallet_modal_visible = value;
     }
 
     setShouldShowRiskWarningModal(value) {

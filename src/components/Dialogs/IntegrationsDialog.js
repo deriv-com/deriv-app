@@ -1,6 +1,6 @@
 import React from 'react';
 import { translate } from '@i18n';
-import GoogleDriveIntegration from '@utilities/integrations/GoogleDrive';
+import GoogleDriveIntegration from '@components/GoogleDriveIntegration';
 import Dialog from './Dialog';
 import * as style from '../style';
 

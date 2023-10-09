@@ -51,6 +51,7 @@ const PersonalDetails = ({
 }) => {
     const { account_status, account_settings, residence, real_account_signup_target } = props;
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
+    const [no_confirmation_needed, setNoConfirmationNeeded] = React.useState(false);
 
     const isSubmitDisabled = errors => {
         return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
@@ -93,6 +94,11 @@ const PersonalDetails = ({
     };
 
     const handleValidate = values => {
+        if (values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id) {
+            setNoConfirmationNeeded(true);
+        } else {
+            setNoConfirmationNeeded(false);
+        }
         let idv_error = {};
         if (is_qualified_for_idv) {
             idv_error = validateIDV(values);
@@ -128,11 +134,11 @@ const PersonalDetails = ({
     return (
         <Formik
             innerRef={selected_step_ref}
-            initialValues={{ ...props.value, confirmation_checkbox: false }}
+            initialValues={{ ...props.value }}
             validate={handleValidate}
             validateOnMount
             enableReinitialize
-            initialStatus={{ is_confirmed: !is_qualified_for_idv }}
+            initialStatus={{ is_confirmed: no_confirmation_needed || !is_qualified_for_idv }}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
@@ -226,9 +232,7 @@ const PersonalDetails = ({
                                             should_close_tooltip={should_close_tooltip}
                                             setShouldCloseTooltip={setShouldCloseTooltip}
                                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                                            no_confirmation_needed={
-                                                values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
-                                            }
+                                            no_confirmation_needed={no_confirmation_needed}
                                         />
                                     </div>
                                 </ThemedScrollbars>

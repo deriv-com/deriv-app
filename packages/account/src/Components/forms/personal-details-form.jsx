@@ -16,16 +16,14 @@ import {
 } from '@deriv/components';
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
 import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
+import ConfirmationCheckbox from './confirmation-checkbox';
 import { isFieldImmutable } from '../../Helpers/utils';
-import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
 import FormBodySection from '../form-body-section';
+import { DateOfBirthField, FormInputField } from './form-fields';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
-
-import ConfirmationCheckbox from './confirmation-checkbox';
-import { DateOfBirthField, FormInputField } from './form-fields';
+import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
 
 const PersonalDetailsForm = props => {
     const {
@@ -66,7 +64,12 @@ const PersonalDetailsForm = props => {
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     React.useEffect(() => {
-        if (!no_confirmation_needed && typeof status === 'object' && !values.confirmation_checkbox) {
+        if (
+            !no_confirmation_needed &&
+            typeof status === 'object' &&
+            !values.confirmation_checkbox &&
+            is_qualified_for_idv
+        ) {
             setStatus({ ...status, is_confirmed: false });
         }
         if (no_confirmation_needed && typeof status === 'object' && !status.is_confirmed) {
@@ -535,7 +538,7 @@ const PersonalDetailsForm = props => {
                                         withTabIndex={0}
                                         data-testid='tax_identification_confirm'
                                         has_error={
-                                            touched.tax_identification_confirm && errors.tax_identification_confirm
+                                            !!(touched.tax_identification_confirm && errors.tax_identification_confirm)
                                         }
                                     />
                                 )}

@@ -29,8 +29,8 @@ import { getLocation } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { FormInputField } from '../forms/form-fields';
+import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import ScrollToFieldWithError from 'Components/forms/scroll-to-field-with-error';
 
 export type TAddressDetailFormProps = {
     address_line_1: string;

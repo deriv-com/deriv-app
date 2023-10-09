@@ -85,6 +85,10 @@ const PersonalDetails = ({
         }
 
         errors.document_number = isDocumentNumberValid(document_number, document_type);
+
+        if (document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && !values.confirmation_checkbox) {
+            errors.confirmation_checkbox = 'error';
+        }
         return removeEmptyPropertiesFromObject(errors);
     };
 
@@ -155,7 +159,12 @@ const PersonalDetails = ({
                             data-testid='personal_details_form'
                         >
                             {should_scroll_to_error_field && (
-                                <ScrollToFieldWithError fields_to_scroll_end={['account_opening_reason']} />
+                                <ScrollToFieldWithError
+                                    fields_to_scroll_end={['account_opening_reason']}
+                                    should_recollect_inputs_names={
+                                        values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
+                                    }
+                                />
                             )}
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {!is_qualified_for_idv && (

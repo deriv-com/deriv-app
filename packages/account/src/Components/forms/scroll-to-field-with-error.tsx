@@ -4,13 +4,17 @@ import { useFormikContext } from 'formik';
 type TScrollToFieldWithError = {
     fields_to_scroll_top?: string[];
     fields_to_scroll_end?: string[];
+    should_recollect_inputs_names?: boolean;
 };
 
-const ScrollToFieldWithError = ({ fields_to_scroll_top, fields_to_scroll_end }: TScrollToFieldWithError) => {
+const ScrollToFieldWithError = ({
+    fields_to_scroll_top,
+    fields_to_scroll_end,
+    should_recollect_inputs_names = false,
+}: TScrollToFieldWithError) => {
     const [all_page_inputs_names, setAllPageInputsNames] = React.useState<string[]>([]);
     const formik = useFormikContext();
     const is_submitting = formik.isSubmitting;
-
     const scrollToElement = (element_name: string, block: ScrollLogicalPosition = 'center') => {
         const el = document.querySelector(`[name="${element_name}"]`) as HTMLInputElement;
         (el?.parentElement ?? el)?.scrollIntoView({ behavior: 'smooth', block });
@@ -20,8 +24,7 @@ const ScrollToFieldWithError = ({ fields_to_scroll_top, fields_to_scroll_end }: 
     React.useEffect(() => {
         const inputs = [...document.querySelectorAll('input')];
         setAllPageInputsNames(inputs.map(input => input.name));
-    }, []);
-
+    }, [should_recollect_inputs_names]);
     React.useEffect(() => {
         let current_error_field_name = '';
 

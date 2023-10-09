@@ -11,6 +11,7 @@ type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'label'>
     greyDisabled?: boolean;
     id?: string;
     label: string | React.ReactElement;
+    label_font_size?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value?: boolean;
     withTabIndex?: number;
@@ -25,6 +26,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
             disabled = false,
             id,
             label,
+            label_font_size = 'xs',
             defaultChecked,
             onChange, // This needs to be here so it's not included in `otherProps`
             value = false,
@@ -87,7 +89,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
                     </span>
                 </span>
                 <Text
-                    size='xs'
+                    size={label_font_size}
                     line_height='unset'
                     className={classNames('dc-checkbox__label', classNameLabel, {
                         'dc-checkbox__label--error': has_error,

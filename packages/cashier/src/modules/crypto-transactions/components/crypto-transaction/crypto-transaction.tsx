@@ -35,7 +35,7 @@ const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCr
                     <Text size='xxxs' line_height='s'>
                         {transaction.status_name}
                     </Text>
-                    {transaction.is_valid_to_cancel && (
+                    {!!transaction.is_valid_to_cancel && (
                         <Icon
                             icon='IcCrossLight'
                             size={10}

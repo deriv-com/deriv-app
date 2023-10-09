@@ -1,11 +1,9 @@
 import React from 'react';
-
 import { WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-
+import PoiCountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
 import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
-import PoiCountrySelector from 'Components/poi/poi-country-selector';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
 

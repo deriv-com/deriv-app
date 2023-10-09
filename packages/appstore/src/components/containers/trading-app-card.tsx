@@ -1,13 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { getStatusBadgeConfig } from '@deriv/account';
 import { StatusBadge, Text } from '@deriv/components';
 import { useActiveWallet } from '@deriv/hooks';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     BrandConfig,
@@ -16,9 +14,7 @@ import {
     getMFAppstorePlatforms,
 } from 'Constants/platform-config';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
-
 import './trading-app-card.scss';
 
 type TWalletsProps = {

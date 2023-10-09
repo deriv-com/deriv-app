@@ -1,11 +1,8 @@
 import React from 'react';
-
 import { isMobile } from '@deriv/shared';
-
 import Button from '../button';
 import Icon from '../icon';
 import Text from '../text';
-
 import './empty-state.scss';
 
 type TAction = {

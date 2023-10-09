@@ -3,6 +3,16 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ContractTypeMenu from '../ContractTypeMenu';
 import ContractTypeWidget from '../contract-type-widget';
 
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    observer: jest.fn(x => x),
+    useStore: jest.fn(() => ({
+        ui: {
+            is_mobile: false,
+        },
+    })),
+}));
+
 describe('ContractTypeMenu', () => {
     const categories: React.ComponentProps<typeof ContractTypeMenu>['categories'] = [
         {

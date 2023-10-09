@@ -27,38 +27,50 @@ const useWalletTransferValidation = ({ from_account, to_account }: TUseWalletTra
     const validateAmount = (amount: number) => {
         const errors = [];
 
-        if (!amount || !to_account || !active_wallet?.is_demo) return;
+        if (!amount || !to_account) return;
 
-        const { is_ok, message } = validNumber(amount.toString(), {
-            type: 'float',
-            decimals: getConfig(from_account?.currency ?? '')?.fractional_digits,
-            min: 1,
-            max: from_account?.balance,
-        });
-
-        const should_reset_balance =
-            active_wallet?.balance !== undefined &&
-            amount > active_wallet?.balance &&
-            active_wallet?.balance < INITIAL_DEMO_BALANCE;
-
-        if (from_account?.loginid === active_wallet.loginid && should_reset_balance) {
-            errors.push({
-                variant: 'with-action-button',
-                key: ERROR_CODES.is_demo.insufficient_fund,
-                button_label: localize('Reset balance'),
-                onClickHandler: () => setWalletModalActiveTab('Deposit'),
-                message: localize(
-                    'You have insufficient fund in the selected wallet, please reset your virtual balance'
-                ),
-                type: 'error',
+        if (!active_wallet?.is_demo && from_account) {
+            //TODO: remove real wallet validation after QA testing
+            if (amount > from_account?.balance) {
+                errors.push({
+                    variant: 'base',
+                    key: 'Insufficient balance',
+                    message: "Oops, seems like you don't have enough funds",
+                    type: 'error',
+                });
+            }
+        } else {
+            const { is_ok, message } = validNumber(amount.toString(), {
+                type: 'float',
+                decimals: getConfig(from_account?.currency ?? '')?.fractional_digits,
+                min: 1,
+                max: from_account?.balance,
             });
-        } else if (!is_ok) {
-            errors.push({
-                variant: 'base',
-                key: ERROR_CODES.is_demo.between_min_max,
-                message: `${message} ${from_account?.display_currency_code}`,
-                type: 'error',
-            });
+
+            const should_reset_balance =
+                active_wallet?.balance !== undefined &&
+                amount > active_wallet?.balance &&
+                active_wallet?.balance < INITIAL_DEMO_BALANCE;
+
+            if (from_account?.loginid === active_wallet?.loginid && should_reset_balance) {
+                errors.push({
+                    variant: 'with-action-button',
+                    key: ERROR_CODES.is_demo.insufficient_fund,
+                    button_label: localize('Reset balance'),
+                    onClickHandler: () => setWalletModalActiveTab('Deposit'),
+                    message: localize(
+                        'You have insufficient fund in the selected wallet, please reset your virtual balance'
+                    ),
+                    type: 'error',
+                });
+            } else if (!is_ok) {
+                errors.push({
+                    variant: 'base',
+                    key: ERROR_CODES.is_demo.between_min_max,
+                    message: `${message} ${from_account?.display_currency_code}`,
+                    type: 'error',
+                });
+            }
         }
 
         return errors;

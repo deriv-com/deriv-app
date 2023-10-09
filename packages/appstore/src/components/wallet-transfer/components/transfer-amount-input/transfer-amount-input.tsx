@@ -116,7 +116,7 @@ const TransferAmountInput = observer(({ field_name, setTimerKey }: TTransferAmou
                     {...amount_input_props}
                     initial_value={field.value}
                     onChange={onChangeAmountInput}
-                    has_error={Array.isArray(errors.from_account) && errors.from_account?.length > 0}
+                    has_error={Array.isArray(errors.from_amount) && errors.from_amount?.length > 0}
                 />
             )}
         </Field>

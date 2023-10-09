@@ -43,7 +43,13 @@ const TransferAmountTimer = () => {
 
     if (is_timer_visible)
         return (
-            <Text as='p' size='xs' color='less-prominent' className='wallet-transfer__timer' data-testid='dt_timer'>
+            <Text
+                as='p'
+                size='xs'
+                color='less-prominent'
+                className='wallet-transfer__transfer-amount-timer'
+                data-testid='dt_timer'
+            >
                 <Localize i18n_default_text='{{remaining_time}}s' values={{ remaining_time: count }} />
             </Text>
         );

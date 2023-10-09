@@ -2,11 +2,29 @@ import React from 'react';
 import { useFormikContext } from 'formik';
 
 type TScrollToFieldWithError = {
+    /**
+     * The fields_to_scroll_top is to scroll to top for exact fields.
+     */
     fields_to_scroll_top?: string[];
+    /**
+     * The fields_to_scroll_end is to scroll to end for exact fields.
+     */
     fields_to_scroll_end?: string[];
+    /**
+     * The should_recollect_inputs_names is to recollect all inputs on the page .
+     */
     should_recollect_inputs_names?: boolean;
 };
 
+/**
+ * A ScrollToFieldWithError for scrolling to field with error.
+ *
+ * **Note**: This component is supposed to be used with Formik.
+ * To use scrolling to field with error, you have to use this component within Formik.
+ *
+ * @name ScrollToFieldWithError
+ * @returns {null} React component that renders nothing
+ */
 const ScrollToFieldWithError = ({
     fields_to_scroll_top,
     fields_to_scroll_end,

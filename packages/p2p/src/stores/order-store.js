@@ -212,6 +212,7 @@ export default class OrderStore {
         }
 
         if (to) this.date_to = toMoment(to).unix();
+        this.setIsLoading(true);
         this.loadMoreOrders({}, true);
     }
 

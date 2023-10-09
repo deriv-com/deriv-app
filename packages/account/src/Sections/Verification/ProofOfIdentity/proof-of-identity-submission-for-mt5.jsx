@@ -1,28 +1,17 @@
 import React from 'react';
 import { AutoHeightWrapper } from '@deriv/components';
-import { WS, isVerificationServiceSupported, formatIDVFormValues, formatIDVError } from '@deriv/shared';
+import { WS, isVerificationServiceSupported, formatIDVFormValues } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import Unsupported from '../../../Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
-import IdvFailed from '../../../Components/poi/idv-status/idv-failed';
 import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
 import { makeSettingsRequest } from '../../../Helpers/utils';
 
 const POISubmissionForMT5 = observer(
-    ({
-        idv,
-        is_idv_disallowed,
-        onfido,
-        onStateChange,
-        citizen_data,
-        is_from_external,
-        residence_list,
-        identity_last_attempt,
-    }) => {
+    ({ idv, is_idv_disallowed, onfido, onStateChange, citizen_data, has_idv_error, residence_list }) => {
         const [submission_status, setSubmissionStatus] = React.useState(); // submitting
         const [submission_service, setSubmissionService] = React.useState();
-        const [idv_mismatch_status, setIdvMismatchStatus] = React.useState(null);
 
         const { client, notifications, traders_hub } = useStore();
         const { account_settings, getChangeableFields } = client;
@@ -31,21 +20,12 @@ const POISubmissionForMT5 = observer(
 
         React.useEffect(() => {
             if (citizen_data) {
-                const { submissions_left: idv_submissions_left, last_rejected, status } = idv;
+                const { submissions_left: idv_submissions_left } = idv;
                 const { submissions_left: onfido_submissions_left } = onfido;
                 const is_idv_supported = isVerificationServiceSupported(residence_list, account_settings, 'idv');
                 const is_onfido_supported = isVerificationServiceSupported(residence_list, account_settings, 'onfido');
                 if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                     setSubmissionService(service_code.idv);
-                    if (
-                        [
-                            identity_status_codes.rejected,
-                            identity_status_codes.suspected,
-                            identity_status_codes.expired,
-                        ].includes(status)
-                    ) {
-                        setIdvMismatchStatus(formatIDVError(last_rejected, status));
-                    }
                 } else if (onfido_submissions_left && is_onfido_supported) {
                     setSubmissionService(service_code.onfido);
                 } else {
@@ -98,23 +78,15 @@ const POISubmissionForMT5 = observer(
                 handlePOIComplete();
             });
         };
+
         if (submission_status === submission_status_code.submitting) {
             switch (submission_service) {
                 case service_code.idv:
-                    return idv_mismatch_status ? (
-                        <IdvFailed
-                            mismatch_status={idv_mismatch_status}
-                            getChangeableFields={getChangeableFields}
-                            account_settings={account_settings}
-                            residence_list={residence_list}
-                            is_from_external={is_from_external}
-                            handleSubmit={handlePOIComplete}
-                            latest_status={identity_last_attempt}
-                        />
-                    ) : (
+                    return (
                         <IdvDocSubmitOnSignup
                             citizen_data={citizen_data}
                             onNext={handleIdvSubmit}
+                            has_idv_error={has_idv_error}
                             getChangeableFields={getChangeableFields}
                             account_settings={account_settings}
                         />

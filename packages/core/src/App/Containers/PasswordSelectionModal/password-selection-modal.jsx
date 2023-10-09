@@ -1,11 +1,14 @@
+import React from 'react';
 import classNames from 'classnames';
 import { Field } from 'formik';
-import React from 'react';
+
 import { Button, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { getErrorMessages, redirectToSignUp } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
+import { Localize,localize } from '@deriv/translations';
+
 import SignupSeparatorContainer from '../AccountSignupModal/signup-separator-container.jsx';
+
 import 'Sass/app/modules/account-signup.scss';
 
 const PasswordSelectionModal = observer(

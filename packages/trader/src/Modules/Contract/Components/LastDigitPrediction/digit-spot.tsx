@@ -3,7 +3,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 
 type TDigitSpot = {
-    current_spot: string | null;
+    current_spot?: string | null;
     is_selected_winning?: boolean;
     is_lost?: boolean;
     is_won?: boolean;

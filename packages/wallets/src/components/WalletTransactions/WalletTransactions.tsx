@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, useState } from 'react';
 import { WalletTransactionsCrypto } from '../WalletTransactionsCrypto';
 import { WalletTransactionsFilter } from '../WalletTransactionsFilter';
 import './WalletTransactions.scss';

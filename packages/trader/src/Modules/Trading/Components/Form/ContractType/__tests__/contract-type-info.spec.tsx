@@ -267,7 +267,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
 const default_mock_store = {
     modules: {
         trade: {
-            cached_mult_cancellation_list: [],
+            cached_multiplier_cancellation_list: [],
             symbol: 'test_symbol',
         },
     },

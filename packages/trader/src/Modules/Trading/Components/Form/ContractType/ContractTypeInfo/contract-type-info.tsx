@@ -27,7 +27,7 @@ const TABS = {
 };
 
 const Info = observer(({ handleSelect, item, list }: TInfo) => {
-    const { cached_mult_cancellation_list, symbol } = useTraderStore();
+    const { cached_multiplier_cancellation_list, symbol } = useTraderStore();
     const {
         active_symbols: { active_symbols },
         ui: { is_mobile },
@@ -93,13 +93,13 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                                 <TradeCategories
                                     category={type.value}
                                     onClick={onClickGlossary}
-                                    is_multiplier_fx={!cached_mult_cancellation_list?.length}
+                                    is_multiplier_fx={!cached_multiplier_cancellation_list?.length}
                                 />
                             </React.Fragment>
                         ) : (
                             <ContractTypeGlossary
                                 category={type.value}
-                                is_multiplier_fx={!cached_mult_cancellation_list?.length}
+                                is_multiplier_fx={!cached_multiplier_cancellation_list?.length}
                                 is_major_pairs={isMajorPairsSymbol(symbol, active_symbols)}
                             />
                         )}

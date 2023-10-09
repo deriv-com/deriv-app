@@ -656,7 +656,7 @@ export const ContractType = (() => {
         return {
             cancellation_duration: getArrayDefaultValue(arr_cancellation_range, cancellation_duration),
             cancellation_range_list: arr_cancellation_range.map(mapCancellationRangeList),
-            cached_mult_cancellation_list: cached_multipliers_cancellation.map(mapCancellationRangeList),
+            cached_multiplier_cancellation_list: cached_multipliers_cancellation.map(mapCancellationRangeList),
             ...(should_show_cancellation ? {} : { has_cancellation: false }),
         };
     };

@@ -24,7 +24,7 @@
         justify-content: center;
         padding: 0;
         margin-top: 0;
-        padding-bottom: 1rem;
+        padding-bottom: 2.4rem;
 
         @include mobile {
             display: flex;
@@ -43,6 +43,16 @@
                 &:last-child {
                     width: 100%;
                     margin: 0.4rem 1.4rem 0.4rem 0;
+                }
+            }
+        }
+
+        &--no_cancel {
+            margin: 0 2.4rem;
+            & .dc-btn {
+                width: 100%;
+                &__group {
+                    width: 100%;
                 }
             }
         }

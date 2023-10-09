@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import Button from '../button';
@@ -11,6 +12,7 @@ import './wallet-success-dialog.scss';
 
 type TWalletSuccessDialog = {
     description: string;
+    has_cancel?: boolean;
     is_open: boolean;
     onCancel: () => void;
     onSubmit: () => void;
@@ -23,13 +25,14 @@ type TWalletSuccessDialog = {
 };
 
 const WalletSuccessDialog = ({
-    title,
     description,
+    has_cancel = true,
     is_open,
     onCancel,
     onSubmit,
-    text_cancel,
+    text_cancel = 'Maybe later',
     text_submit,
+    title,
     toggleModal,
     wallet_card,
 }: TWalletSuccessDialog) => {
@@ -53,9 +56,11 @@ const WalletSuccessDialog = ({
 
     const ModalFooter = () => (
         <Button.Group>
-            <Button secondary onClick={onCancel}>
-                <Localize i18n_default_text={text_cancel} />
-            </Button>
+            {has_cancel && (
+                <Button secondary onClick={onCancel}>
+                    <Localize i18n_default_text={text_cancel} />
+                </Button>
+            )}
             <Button primary onClick={onSubmit}>
                 <Localize i18n_default_text={text_submit} />
             </Button>
@@ -75,7 +80,11 @@ const WalletSuccessDialog = ({
                     <Modal.Body>
                         <ModalContent />
                     </Modal.Body>
-                    <Modal.Footer className='wallet-success-dialog__footer'>
+                    <Modal.Footer
+                        className={classNames('wallet-success-dialog__footer', {
+                            'wallet-success-dialog__footer--no_cancel': !has_cancel,
+                        })}
+                    >
                         <ModalFooter />
                     </Modal.Footer>
                 </Modal>

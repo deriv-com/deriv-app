@@ -16,7 +16,6 @@ const WalletSuccessContentMapper: TWalletSuccessContentMapperType = {
         title: <Localize i18n_default_text='Your {{currency}} Wallet is ready' values={{ currency }} />,
         description: <Localize i18n_default_text='Make a deposit into your new Wallet.' />,
         text_submit: <Localize i18n_default_text='Deposit' />,
-        text_cancel: <Localize i18n_default_text='Maybe later' />,
     }),
     'add-trading': (account_title, currency_title) => ({
         title: <Localize i18n_default_text='Your {{account_title}} account is ready' values={{ account_title }} />,
@@ -27,13 +26,9 @@ const WalletSuccessContentMapper: TWalletSuccessContentMapperType = {
             />
         ),
         text_submit: <Localize i18n_default_text='Transfer funds' />,
-        text_cancel: <Localize i18n_default_text='Maybe later' />,
     }),
     'add-mt5': (is_demo, account_title, mt5_jurisdiction) => {
-        let title: JSX.Element,
-            description: JSX.Element,
-            text_submit: JSX.Element,
-            text_cancel: JSX.Element | undefined;
+        let title: JSX.Element, description: JSX.Element, text_submit: JSX.Element;
 
         if (is_demo) {
             title = <Localize i18n_default_text='Your {{account_title}} account is ready' values={{ account_title }} />;
@@ -53,10 +48,9 @@ const WalletSuccessContentMapper: TWalletSuccessContentMapperType = {
                 />
             );
             text_submit = <Localize i18n_default_text='Transfer funds' />;
-            text_cancel = <Localize i18n_default_text='Maybe later' />;
         }
 
-        return { title, description, text_submit, text_cancel };
+        return { title, description, text_submit };
     },
 };
 

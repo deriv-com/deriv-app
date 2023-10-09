@@ -50,7 +50,6 @@ const AddWalletTradingAccountModal = observer(() => {
             title={wallet_success_text?.title}
             description={wallet_success_text?.description}
             text_submit={wallet_success_text?.text_submit}
-            text_cancel={wallet_success_text?.text_cancel}
             onSubmit={() => {
                 setWalletCreateNewAccountModal(false);
                 setWalletModalActiveTab('Transfer');

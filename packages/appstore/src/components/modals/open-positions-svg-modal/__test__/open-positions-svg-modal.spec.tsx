@@ -134,7 +134,7 @@ describe('<OpenPositionsSVGModal/>', () => {
         expect(modal_content).toBeInTheDocument();
     });
 
-    it('should render poper buttons', () => {
+    it('should render proper buttons', () => {
         renderComponent({ props: mock_props });
         const okButton = screen.getByRole('button', { name: /OK/i });
         expect(okButton).toBeInTheDocument();

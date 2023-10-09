@@ -2,13 +2,13 @@ import React from 'react';
 import { api_base, ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import BotStopped from 'Components/dashboard/bot-stopped';
 import TransactionDetailsModal from 'Components/transaction-details';
 import GTM from 'Utils/gtm';
 import hotjar from 'Utils/hotjar';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from '../components';
 import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
 

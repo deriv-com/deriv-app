@@ -4,10 +4,10 @@ import './WalletDepositCryptoCurrencyDetails.scss';
 
 const WalletDepositCryptoCurrencyDetails = () => {
     const { data } = useActiveWalletAccount();
-    const { currency_config } = data || {};
+
     return (
         <p className='wallets-deposit-crypto-currency-details'>
-            Send only {currency_config?.name} ({currency_config?.display_code}) to this address.
+            Send only {data?.currency_config?.name} ({data?.currency_config?.display_code}) to this address.
         </p>
     );
 };

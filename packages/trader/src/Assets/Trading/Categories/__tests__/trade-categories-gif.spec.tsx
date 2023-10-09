@@ -311,7 +311,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageVanilla to be rendered when trade category is vanilla', async () => {
+    it('expect VideoVanilla to be rendered when trade category is vanilla', async () => {
         jest.isolateModules(() => {
             jest.doMock('../contract-type-description-video', () => ({
                 __esModule: true,
@@ -320,7 +320,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='vanilla' selected_contract_type='vanilla' />);
+                    render(<moduleName.default category='vanillalongcall' selected_contract_type='vanillalongcall' />);
                     expect(screen.getByText(/videovanilla/i)).toBeInTheDocument();
                 })
                 .catch(error => {

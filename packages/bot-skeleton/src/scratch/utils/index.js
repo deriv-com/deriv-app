@@ -28,7 +28,7 @@ export const matchTranslateAttribute = translateString => {
 };
 
 export const extractTranslateValues = () => {
-    const transform_value = Blockly?.derivWorkspace?.trashcan.svgGroup_.getAttribute('transform');
+    const transform_value = Blockly?.derivWorkspace?.trashcan?.svgGroup_.getAttribute('transform');
     const translate_xy = matchTranslateAttribute(transform_value);
 
     if (!translate_xy) {

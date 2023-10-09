@@ -1,12 +1,13 @@
 import React from 'react';
 import { translate } from '@i18n';
-import { observer as globalObserver } from '@utilities/observer';
 import AnimateTrade from './AnimateTrade';
+import { observer as globalObserver } from '../../../common/utils/observer';
 import Summary from './Summary';
 import TradeTable from './TradeTable';
 import RunButton from './RunButton';
 import ClearButton from './ClearButton';
 import useIsMounted from '../../../common/hooks/isMounted';
+import api from '../deriv/api';
 import './summary-panel.scss';
 
 const TradeInfoPanel = () => {
@@ -45,7 +46,7 @@ const TradeInfoPanel = () => {
                     <div className='content-row'>
                         <div>
                             <div className='content-row-table'>
-                                <TradeTable account_id={account_id} />
+                                <TradeTable account_id={account_id} api={api} />
                             </div>
                         </div>
                     </div>

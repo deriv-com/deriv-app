@@ -1,4 +1,4 @@
-import config, { updateConfigCurrencies } from '@currency-config';
+import config, { updateConfigCurrencies } from '../const';
 
 describe('Configured currencies', () => {
     let configuration;

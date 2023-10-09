@@ -1,9 +1,9 @@
-import { api_base } from '@api-base';
-import { removeAllTokens, getClientAccounts, getActiveLoginId } from '@storage';
-import { observer as globalObserver } from '@utilities/observer';
-import config from '@currency-config';
-import { getObjectValue } from '@utils';
+import { getTokenList, removeAllTokens } from '@storage';
 import ActiveSymbols from './activeSymbols';
+import config from '../const';
+import { getObjectValue } from '../../../common/utils/tools';
+
+import { observer as globalObserver } from '../../../common/utils/observer';
 
 let parsed_asset_index;
 
@@ -41,14 +41,15 @@ const getCategoryForCondition = condition =>
     );
 
 export default class _Symbol {
-    constructor() {
+    constructor(api) {
+        this.api = api;
         this.initPromise = new Promise(resolve => {
             const getActiveSymbolsLogic = () => {
-                api_base.api
+                this.api
                     .send({ active_symbols: 'brief' })
                     .then(r => {
                         this.activeSymbols = new ActiveSymbols(r.active_symbols);
-                        api_base.api
+                        this.api
                             .send({ asset_index: 1 })
                             .then(({ asset_index }) => {
                                 parsed_asset_index = parseAssetIndex(asset_index);
@@ -62,14 +63,11 @@ export default class _Symbol {
                         globalObserver.emit('Error', error);
                     });
             };
-
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
-            const accounts = getClientAccounts();
-            const loginid = getActiveLoginId();
-
-            if (loginid && accounts && accounts?.[loginid]?.token) {
-                api_base
-                    .authorize(accounts?.[loginid]?.token)
+            const token_list = getTokenList();
+            if (token_list.length) {
+                this.api
+                    .authorize(token_list[0].token)
                     .then(() => getActiveSymbolsLogic())
                     .catch(e => {
                         globalObserver.emit('Error', e);

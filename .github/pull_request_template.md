@@ -1,7 +1,19 @@
-## Changes:
+## Changes
 
-Please provide a summary of the change.
+-   ...
 
-### Screenshots:
+## Type of change
 
-Please provide some screenshots of the change.
+-   [ ] Bug fix
+-   [ ] New feature
+-   [ ] Update feature
+-   [ ] Refactor code
+-   [ ] Translation to code
+-   [ ] Translation to crowdin
+-   [ ] Script configuration
+-   [ ] Improve performance
+-   [ ] Style only
+-   [ ] Dependency update
+-   [ ] Documentation update
+-   [ ] Release
+

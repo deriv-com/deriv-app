@@ -1,11 +1,10 @@
-import { api_base } from '@api-base';
-import { observer as globalObserver } from '@utilities/observer';
-import { doUntilDone } from '../../blockly/bot/tools';
+import { observer as globalObserver } from '../../common/utils/observer';
+import { doUntilDone } from '../bot/tools';
 import TicksService from './TicksService';
 
 export default class ChartTicksService extends TicksService {
     observe() {
-        api_base.api.onMessage().subscribe(({ data }) => {
+        this.api.onMessage().subscribe(({ data }) => {
             if (data?.error?.code) {
                 return;
             }
@@ -45,7 +44,7 @@ export default class ChartTicksService extends TicksService {
         };
 
         return new Promise((resolve) => {
-            doUntilDone(() => api_base.api.send(request_object))
+            doUntilDone(() => this.api.send(request_object))
                 .then(r => {
                     if (style === 'ticks') {
                         this.updateTicksAndCallListeners(symbol, r);

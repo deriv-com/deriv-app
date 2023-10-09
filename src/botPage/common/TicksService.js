@@ -1,9 +1,8 @@
 import { Map } from 'immutable';
-import { api_base } from '@api-base';
 import { isLoggedIn } from '@storage';
-import { observer as globalObserver } from '@utilities/observer';
 import { historyToTicks, getLast } from '../../common/utils/binary';
-import { doUntilDone, getUUID } from '../../blockly/bot/tools';
+import { observer as globalObserver } from '../../common/utils/observer';
+import { doUntilDone, getUUID } from '../bot/tools';
 
 const parseTick = tick => ({
     epoch: +tick.epoch,
@@ -41,7 +40,8 @@ const updateCandles = (candles, ohlc) => {
 const getType = isCandle => (isCandle ? 'candles' : 'ticks');
 
 export default class TicksService {
-    constructor() {
+    constructor(api) {
+        this.api = api;
         this.ticks = new Map();
         this.candles = new Map();
         this.tickListeners = new Map();
@@ -74,12 +74,10 @@ export default class TicksService {
         return this.active_symbols_promise;
     }
 
-    // TODO: need to fix this eslint issue
-    // eslint-disable-next-line class-methods-use-this
     getActiveSymbols = () =>
         new Promise(resolve => {
             const getSymbols = () => {
-                api_base.api
+                this.api
                     .send({ active_symbols: 'brief' })
                     .then(({ active_symbols }) =>
                         // eslint-disable-next-line camelcase
@@ -91,7 +89,7 @@ export default class TicksService {
             };
 
             if (isLoggedIn()) {
-                api_base.api.expectResponse('authorize').then(() => {
+                this.api.expectResponse('authorize').then(() => {
                     getSymbols();
                 });
             } else {
@@ -178,7 +176,7 @@ export default class TicksService {
         if (tickSubscription) {
             subscription.push(tickSubscription);
         }
-        Promise.all(subscription.map(id => doUntilDone(() => api_base.api.forget(id))));
+        Promise.all(subscription.map(id => doUntilDone(() => this.api.forget(id))));
         this.subscriptions = new Map();
     }
     updateTicksAndCallListeners(symbol, ticks) {
@@ -204,7 +202,7 @@ export default class TicksService {
         }
     }
     observe() {
-        api_base.api.onMessage().subscribe(({ data }) => {
+        this.api.onMessage().subscribe(({ data }) => {
             if (data?.error?.code) {
                 return;
             }
@@ -283,7 +281,7 @@ export default class TicksService {
         };
 
         return new Promise(resolve => {
-            doUntilDone(() => api_base.api.send(request_object))
+            doUntilDone(() => this.api.send(request_object))
                 .then(r => {
                     if (style === 'ticks') {
                         const ticks = historyToTicks(r.history);
@@ -303,10 +301,9 @@ export default class TicksService {
         });
     }
 
-    // eslint-disable-next-line class-methods-use-this
     forget = subscription_id => {
         if (subscription_id) {
-            api_base.api.forget(subscription_id);
+            this.api.forget(subscription_id);
         }
     };
 

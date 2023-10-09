@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import CFDPOA from '../cfd-poa';
 import CFDProviders from '../../cfd-providers';
-import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv/account/src/Components/forms/personal-details-form.jsx', () =>
     jest.fn(() => <div>PersonalDetailsForm</div>)

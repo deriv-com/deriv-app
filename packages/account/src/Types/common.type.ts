@@ -162,3 +162,7 @@ export type TServerError = {
     details?: { [key: string]: string };
     fields?: string[];
 };
+
+export type TMessage_list = {
+    message_list: string[];
+};

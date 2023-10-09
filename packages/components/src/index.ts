@@ -120,6 +120,7 @@ export { default as UILoader } from './components/u-i-loader';
 export { default as UnhandledErrorModal } from './components/unhandled-error-modal';
 export { default as VerticalTab } from './components/vertical-tab';
 export { default as WalletSuccessDialog } from './components/wallet-success-dialog';
+export { default as WalletAppCard } from './components/wallet-app-card';
 export * from './components/wallet-card';
 export * from './components/wallet-icon';
 export { default as Wizard } from './components/wizard';

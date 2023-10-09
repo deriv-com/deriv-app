@@ -1,10 +1,10 @@
 import React from 'react';
-import { WalletSuccessDialog } from '@deriv/components';
+import { WalletSuccessDialog, WalletAppCard } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import WalletAppCard from 'Components/wallet-app-card';
-import { getAccountName } from 'Constants/utils';
 import { useActiveWallet } from '@deriv/hooks';
 import { useActiveWalletAccount } from '@deriv/api';
+import { Localize } from '@deriv/translations';
+import { getAccountName } from 'Constants/utils';
 import { getWalletSuccessText } from 'Constants/wallet-success-text';
 
 const AddWalletTradingAccountModal = observer(() => {
@@ -33,6 +33,12 @@ const AddWalletTradingAccountModal = observer(() => {
         setWalletCreateNewAccountModal(!is_wallet_create_new_account_modal);
     };
 
+    const card_label = active_wallet?.is_demo ? (
+        <Localize i18n_default_text='Demo' />
+    ) : (
+        <Localize i18n_default_text='Real' />
+    );
+
     const wallet_details = {
         account_title,
         balance: active_wallet_account?.display_balance,
@@ -40,6 +46,7 @@ const AddWalletTradingAccountModal = observer(() => {
         gradient_card_class: active_wallet?.gradient_card_class,
         icon: active_wallet?.icon,
         is_demo: active_wallet?.is_demo,
+        label: card_label,
     };
 
     const wallet_success_text = getWalletSuccessText('add-trading', account_title, currency_title);
@@ -50,6 +57,7 @@ const AddWalletTradingAccountModal = observer(() => {
             title={wallet_success_text?.title}
             description={wallet_success_text?.description}
             text_submit={wallet_success_text?.text_submit}
+            text_cancel={wallet_success_text?.text_cancel}
             onSubmit={() => {
                 setWalletCreateNewAccountModal(false);
                 setWalletModalActiveTab('Transfer');

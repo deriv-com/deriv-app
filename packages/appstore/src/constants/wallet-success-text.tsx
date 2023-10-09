@@ -8,14 +8,16 @@ type TWalletSuccessContent = {
 type TWalletSuccessContentMapperType = {
     'add-wallet': (currency: string) => TWalletSuccessContent;
     'add-trading': (account_title: string, currency_title: string) => TWalletSuccessContent;
-    'add-mt5': (is_demo: boolean, account_title: string, mt5_jurisdiction: string) => TWalletSuccessContent;
 };
+
+const TextCancel = <Localize i18n_default_text='Maybe Later' />;
 
 const WalletSuccessContentMapper: TWalletSuccessContentMapperType = {
     'add-wallet': currency => ({
         title: <Localize i18n_default_text='Your {{currency}} Wallet is ready' values={{ currency }} />,
         description: <Localize i18n_default_text='Make a deposit into your new Wallet.' />,
         text_submit: <Localize i18n_default_text='Deposit' />,
+        text_cancel: TextCancel,
     }),
     'add-trading': (account_title, currency_title) => ({
         title: <Localize i18n_default_text='Your {{account_title}} account is ready' values={{ account_title }} />,
@@ -26,32 +28,8 @@ const WalletSuccessContentMapper: TWalletSuccessContentMapperType = {
             />
         ),
         text_submit: <Localize i18n_default_text='Transfer funds' />,
+        text_cancel: TextCancel,
     }),
-    'add-mt5': (is_demo, account_title, mt5_jurisdiction) => {
-        let title: JSX.Element, description: JSX.Element, text_submit: JSX.Element;
-
-        if (is_demo) {
-            title = <Localize i18n_default_text='Your {{account_title}} account is ready' values={{ account_title }} />;
-            description = (
-                <Localize
-                    i18n_default_text='You can now start practicing trading with your {{account_title}}.'
-                    values={{ account_title }}
-                />
-            );
-            text_submit = <Localize i18n_default_text='Continue' />;
-        } else {
-            title = <Localize i18n_default_text='Almost there' />;
-            description = (
-                <Localize
-                    i18n_default_text='We need a few minutes to review your documents before you can start trading with your {{mt5_jurisdiction}} account. You’ll get an in-app notification as soon as this is done.'
-                    values={{ mt5_jurisdiction }}
-                />
-            );
-            text_submit = <Localize i18n_default_text='Transfer funds' />;
-        }
-
-        return { title, description, text_submit };
-    },
 };
 
 export const getWalletSuccessText = (

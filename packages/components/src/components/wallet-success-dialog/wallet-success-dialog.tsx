@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
 import Button from '../button';
 import DesktopWrapper from '../desktop-wrapper';
 import MobileDialog from '../mobile-dialog';
@@ -14,9 +13,9 @@ type TWalletSuccessDialog = {
     description: string;
     has_cancel?: boolean;
     is_open: boolean;
-    onCancel: () => void;
+    onCancel?: () => void;
     onSubmit: () => void;
-    text_cancel: string;
+    text_cancel?: string;
     text_submit: string;
     title: string;
     toggleModal: () => void;
@@ -30,7 +29,7 @@ const WalletSuccessDialog = ({
     is_open,
     onCancel,
     onSubmit,
-    text_cancel = 'Maybe later',
+    text_cancel,
     text_submit,
     title,
     toggleModal,
@@ -58,11 +57,11 @@ const WalletSuccessDialog = ({
         <Button.Group>
             {has_cancel && (
                 <Button secondary onClick={onCancel}>
-                    <Localize i18n_default_text={text_cancel} />
+                    {text_cancel}
                 </Button>
             )}
             <Button primary onClick={onSubmit}>
-                <Localize i18n_default_text={text_submit} />
+                {text_submit}
             </Button>
         </Button.Group>
     );

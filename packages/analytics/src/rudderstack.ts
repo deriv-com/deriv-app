@@ -113,7 +113,7 @@ export type DbotTypesForAction = {
     search_string?: string;
     delete_popup_respond?: string;
     bot_last_modified_time?: number;
-    bot_name: string;
+    bot_name?: string;
 };
 
 type TradeTypesFormAction =

@@ -72,7 +72,6 @@ const useExistingCFDAccounts = () => {
             })),
         [derivez?.trading_platform_accounts]
     );
-
     const modified_dxtrade_accounts = useMemo(
         () =>
             dxtrade?.trading_platform_accounts?.map(account => ({
@@ -83,7 +82,6 @@ const useExistingCFDAccounts = () => {
             })),
         [dxtrade?.trading_platform_accounts]
     );
-
     const data = useMemo(
         () => ({
             mt5_accounts: modified_mt5_accounts || [],

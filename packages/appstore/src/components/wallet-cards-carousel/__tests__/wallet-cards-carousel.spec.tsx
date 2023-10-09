@@ -114,7 +114,6 @@ jest.mock('@deriv/api', () => ({
 }));
 
 jest.mock('./../cards-slider-swiper', () => jest.fn(() => <div>slider</div>));
-
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
 describe('<WalletCardsCarousel />', () => {
@@ -126,7 +125,6 @@ describe('<WalletCardsCarousel />', () => {
         );
         return Component;
     };
-
     it('Should render slider', () => {
         const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
 

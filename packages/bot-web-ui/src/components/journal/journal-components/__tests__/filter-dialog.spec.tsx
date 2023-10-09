@@ -63,11 +63,9 @@ describe('Draggable', () => {
         expect(filterMessageElement).toBeInTheDocument();
     });
 
-    test('should call toggleFilterDialog when clicking outside the dialog', async () => {
+    test('should call toggleFilterDialog when clicking outside the dialog', () => {
         const { container } = render(<FilterDialog {...mockProps} />, { wrapper });
-        act(() => {
-            userEvent.click(container);
-        });
-        await waitFor(() => expect(mockProps.toggleFilterDialog).toHaveBeenCalled());
+        userEvent.click(container);
+        expect(mockProps.toggleFilterDialog).toHaveBeenCalled();
     });
 });

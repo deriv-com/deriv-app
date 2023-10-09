@@ -1,0 +1,166 @@
+@import '../../assets/css/variables';
+@import '../../assets/css/mixins';
+@import '../../assets/css/common';
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: $FOOTER_HEIGHT;
+    box-sizing: border-box;
+    z-index: 999;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    transition: opacity 0.3s;
+    backface-visibility: hidden;
+    background: var(--general-main-1);
+    color: var(--text-prominent);
+    border-top: 1px solid var(--general-section-1);
+    font-size: var(--font-size-xs);
+    font-family: var(--font-stack);
+
+    &--is-disabled {
+        border-top: none;
+
+        &:after {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+
+    &__icon-separator {
+        width: 1px;
+        height: 1.6em !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--general-section-1);
+        margin: 0 0.1em;
+    }
+
+    &__links {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: row;
+        height: 100%;
+
+        &--left {
+            margin-right: auto;
+        }
+
+        /* fix issue with rogue tiny-popover div generated in footer links */
+        div {
+            height: inherit;
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+        }
+    }
+
+    &__link {
+        padding: 0 1.28em;
+        text-decoration: none;
+        height: 100%;
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+
+        &:hover {
+            background: var(--general-hover);
+
+            .footer__icon {
+                @extend %inline-icon;
+            }
+        }
+    }
+
+    &__icon {
+        width: 1.6em;
+        height: 1.6em;
+        @extend %inline-icon;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+@keyframes blinking-network-status {
+    40% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/** @define network-status  */
+.network-status {
+    &__wrapper {
+        height: 1.4em;
+        position: relative;
+
+        &--is-mobile {
+            .network-status__circle {
+                margin: 0.2em 0 0.2em -0.2em;
+            }
+        }
+    }
+
+    &__tooltip {
+        left: unset;
+        text-decoration-line: none;
+    }
+
+    &__circle {
+        background: var(--general-section-1);
+        width: 1em;
+        height: 1em;
+        margin: 0.2em 1.6em;
+        border-radius: 50%;
+
+        &--online {
+            background: var(--text-profit-success);
+        }
+
+        &--offline {
+            background: var(--text-loss-danger);
+        }
+
+        &--blinker {
+            animation: blinking-network-status 0.4s alternate infinite;
+            background: var(--text-profit-success);
+        }
+    }
+}
+
+#language-select {
+    height: inherit;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+        background: var(--general-hover);
+    }
+
+    & img {
+        padding: 0 0.8rem;
+    }
+}
+
+.server-time {
+    display: inline-flex;
+    align-self: center;
+    padding: 0 1em;
+    color: var(--text-general);
+
+    &--is-mobile {
+        padding: 0 1em 0 0;
+        margin-right: 0;
+    }
+}

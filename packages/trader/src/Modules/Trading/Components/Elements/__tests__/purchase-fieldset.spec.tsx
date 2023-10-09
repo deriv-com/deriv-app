@@ -1,8 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+
 import { isDesktop, isMobile } from '@deriv/shared';
-import PurchaseFieldset from '../purchase-fieldset';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import PurchaseFieldset from '../purchase-fieldset';
 
 const default_mocked_props = {
     basis: '',

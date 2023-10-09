@@ -1,4 +1,5 @@
 import { Errors, getPreBuildDVRs, template } from '@deriv/shared';
+
 import { getValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { TTradeStore } from 'Types';
 

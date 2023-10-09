@@ -69,16 +69,12 @@ const PersonalDetailsForm = props => {
         if (
             !no_confirmation_needed &&
             typeof status === 'object' &&
-            !values.confirmation_checkbox &&
-            is_qualified_for_idv
+            !status.is_confirmed &&
+            values.confirmation_checkbox
         ) {
-            setStatus({ ...status, is_confirmed: false });
-        }
-        if (no_confirmation_needed && typeof status === 'object' && !status.is_confirmed) {
             setStatus({ ...status, is_confirmed: true });
         }
-        //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [no_confirmation_needed]);
+    }, [no_confirmation_needed, setStatus, status, values.confirmation_checkbox]);
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;

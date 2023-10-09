@@ -69,14 +69,26 @@ const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCr
                 <Localize
                     i18n_default_text='Address: <0>{{value}}</0>'
                     values={{ value: transaction.address_hash_display }}
-                    components={[<Text key={0} size='xxxs' color='red' />]}
+                    components={[
+                        <a key={0} className='crypto-transaction__link' href={transaction.address_url}>
+                            <Text size='xxxs' color='red' />
+                        </a>,
+                    ]}
                 />
             </Text>
             <Text size='xxxs'>
                 <Localize
                     i18n_default_text='Transaction hash: <0>{{value}}</0>'
                     values={{ value: transaction.transaction_hash_display }}
-                    components={[<Text key={0} size='xxxs' color='red' />]}
+                    components={[
+                        transaction.transaction_url ? (
+                            <a key={0} className='crypto-transaction__link' href={transaction.transaction_url}>
+                                <Text size='xxxs' color='red' />
+                            </a>
+                        ) : (
+                            <Text key={0} size='xxxs' color='red' />
+                        ),
+                    ]}
                 />
             </Text>
             {transaction.is_deposit && (

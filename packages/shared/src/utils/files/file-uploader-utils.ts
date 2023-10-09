@@ -3,7 +3,7 @@ import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage } 
 
 export type TFile = File & { file: Blob };
 
-type TSettings = NonNullable<
+export type TSettings = NonNullable<
     NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>>[0]>['payload']
 >;
 

@@ -59,7 +59,6 @@ export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletMigration } from './useWalletMigration';
 export { default as useCreateWallet } from './useCreateWallet';
 export { default as useWalletTransactions } from './useWalletTransactions';
-export { default as useWalletTransfer } from './useWalletTransfer';
 export { default as useWalletsList } from './useWalletsList';
 export { default as useP2PConfig } from './useP2PConfig';
 export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';

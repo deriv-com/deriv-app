@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import WalletTransferTile from '../wallet-transfer-tile';
+import { WalletTransferTile } from '../wallet-transfer-tile';
 import type { TTransferAccount } from 'Types';
 
 type TTransferAccountList = {
@@ -10,7 +10,6 @@ type TTransferAccountList = {
     onSelectAccount?: (account: TTransferAccount) => void;
     selected_account?: TTransferAccount;
     setIsListModalOpen: (value: boolean) => void;
-    setSelectedAccount: React.Dispatch<React.SetStateAction<TTransferAccount | undefined>>;
     transfer_accounts: Record<'trading_accounts' | 'wallet_accounts', Record<string, TTransferAccount>>;
     transfer_hint?: string | JSX.Element;
     wallet_name?: string;
@@ -23,7 +22,6 @@ const TransferAccountList = ({
     onSelectAccount,
     selected_account,
     setIsListModalOpen,
-    setSelectedAccount,
     transfer_accounts,
     transfer_hint,
     wallet_name,
@@ -79,7 +77,6 @@ const TransferAccountList = ({
                                             is_mobile={is_mobile}
                                             has_hover
                                             onClick={() => {
-                                                setSelectedAccount(account);
                                                 if (account) onSelectAccount?.(account);
                                                 setIsListModalOpen(false);
                                             }}

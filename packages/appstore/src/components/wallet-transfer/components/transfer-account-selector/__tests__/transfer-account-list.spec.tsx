@@ -24,7 +24,6 @@ describe('TransferAccountList', () => {
                 active_wallet_icon: 'Wallet Icon',
             },
             setIsListModalOpen: jest.fn(),
-            setSelectedAccount: jest.fn(),
             transfer_accounts: {
                 trading_accounts: {
                     CR1000: {

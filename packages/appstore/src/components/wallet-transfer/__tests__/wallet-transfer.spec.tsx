@@ -4,13 +4,12 @@ import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 
-jest.mock('../transfer-account-selector', () => jest.fn(() => <div>TransferAccountSelector</div>));
-
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    AmountInput: () => <div>AmountInput</div>,
-}));
-
+jest.mock('../components/transfer-account-selector/transfer-account-selector.tsx', () =>
+    jest.fn(() => <div>TransferAccountSelector</div>)
+);
+jest.mock('../components/transfer-amount-input/transfer-amount-input.tsx', () =>
+    jest.fn(() => <div>TransferAmountInput</div>)
+);
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn(() => ({ data: undefined })),
@@ -41,7 +40,7 @@ describe('WalletTransfer', () => {
             </APIProvider>
         );
 
-        expect(screen.getAllByText('AmountInput')).toHaveLength(2);
+        expect(screen.getAllByText('TransferAmountInput')).toHaveLength(2);
         expect(screen.getAllByText('TransferAccountSelector')).toHaveLength(2);
     });
 });

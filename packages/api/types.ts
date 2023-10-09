@@ -1,12 +1,12 @@
 import type {
-    APITokenRequest,
-    APITokenResponse,
     AccountLimitsRequest,
     AccountLimitsResponse,
     AccountStatusRequest,
     AccountStatusResponse,
     ActiveSymbolsRequest,
     ActiveSymbolsResponse,
+    APITokenRequest,
+    APITokenResponse,
     ApplicationDeleteRequest,
     ApplicationDeleteResponse,
     ApplicationGetDetailsRequest,
@@ -71,10 +71,10 @@ import type {
     LandingCompanyDetailsResponse,
     LandingCompanyRequest,
     LandingCompanyResponse,
-    LogOutRequest,
-    LogOutResponse,
     LoginHistoryRequest,
     LoginHistoryResponse,
+    LogOutRequest,
+    LogOutResponse,
     MT5AccountsListRequest,
     MT5AccountsListResponse,
     MT5DepositRequest,
@@ -103,10 +103,6 @@ import type {
     P2PAdvertCreateResponse,
     P2PAdvertInformationRequest,
     P2PAdvertInformationResponse,
-    P2PAdvertListRequest,
-    P2PAdvertListResponse,
-    P2PAdvertUpdateRequest,
-    P2PAdvertUpdateResponse,
     P2PAdvertiserAdvertsRequest,
     P2PAdvertiserAdvertsResponse,
     P2PAdvertiserCreateRequest,
@@ -121,6 +117,10 @@ import type {
     P2PAdvertiserRelationsResponse,
     P2PAdvertiserUpdateRequest,
     P2PAdvertiserUpdateResponse,
+    P2PAdvertListRequest,
+    P2PAdvertListResponse,
+    P2PAdvertUpdateRequest,
+    P2PAdvertUpdateResponse,
     P2PChatCreateRequest,
     P2PChatCreateResponse,
     P2POrderCancelRequest,
@@ -229,6 +229,32 @@ import type {
 import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    wallet_migration: {
+        request: {
+            /**
+             * Must be `state`, `start` or `reset`
+             */
+            wallet_migration: 'state' | 'start' | 'reset';
+        };
+        response: {
+            wallet_migration: {
+                /**
+                 * State of wallet migration.
+                 */
+                state: 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'wallet_migration';
+        };
+    };
     cashier_payments: {
         request: {
             /**
@@ -929,7 +955,7 @@ type TPrivateSocketEndpoints = {
             echo_req: {
                 [k: string]: unknown;
             };
-            /**z
+            /**
              * Action name of the request made.
              */
             msg_type: 'trading_platform_available_accounts';

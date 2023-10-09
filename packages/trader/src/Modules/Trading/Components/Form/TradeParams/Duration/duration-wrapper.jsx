@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { getDurationMinMaxValues } from '@deriv/shared';
 import Duration from './duration.jsx';
 import { observer, useStore } from '@deriv/stores';
@@ -194,19 +192,5 @@ const DurationWrapper = observer(() => {
         <Duration hasDurationUnit={hasDurationUnit} max_value={max_value} min_value={min_value} {...duration_props} />
     );
 });
-
-DurationWrapper.propTypes = {
-    duration_d: PropTypes.number,
-    duration_h: PropTypes.number,
-    duration_m: PropTypes.number,
-    duration_s: PropTypes.number,
-    duration_unit: PropTypes.string,
-    duration_units_list: MobxPropTypes.arrayOrObservableArray,
-    getDurationFromUnit: PropTypes.func,
-    is_minimized: PropTypes.bool,
-    sessions: MobxPropTypes.arrayOrObservableArray,
-    start_time: PropTypes.string,
-    symbol: PropTypes.string,
-};
 
 export default DurationWrapper;

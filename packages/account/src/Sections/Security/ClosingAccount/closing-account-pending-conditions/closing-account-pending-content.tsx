@@ -26,4 +26,5 @@ const ClosingAccountPendingContent = ({ currency_icon, loginid, title, value }: 
         </Text>
     </div>
 );
+
 export default ClosingAccountPendingContent;

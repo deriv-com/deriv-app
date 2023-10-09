@@ -695,7 +695,7 @@ export default class ClientStore extends BaseStore {
         if (Object.keys(this.currencies_list).length > 0) {
             const keys = Object.keys(this.currencies_list);
             // Fix for edge case when logging out from crypto accounts causes Fiat list to be empty
-            if (this.currencies_list[localize('Fiat')].length < 1) return 'USD';
+            if (this.currencies_list[localize('Fiat')]?.length < 1) return 'USD';
             return Object.values(this.currencies_list[`${keys[0]}`])[0].text;
         }
 
@@ -867,7 +867,7 @@ export default class ClientStore extends BaseStore {
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
         const is_current_mf = this.landing_company_shortcode === 'maltainvest';
         return (
-            is_current_mf || //is_currently logged in mf account via trdaershub
+            is_current_mf || //is_currently logged in mf account via tradershub
             (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
                 ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
                   eu_shortcode_regex.test(gaming_shortcode)
@@ -1949,7 +1949,7 @@ export default class ClientStore extends BaseStore {
         // if real to virtual --> switch to blue
         // if virtual to real --> switch to green
         // else keep the existing connection
-        const should_switch_socket_connection = this.is_virtual || /VRTC/.test(from_login_id);
+        const should_switch_socket_connection = this.is_virtual || /VRTC|VRW/.test(from_login_id);
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection();

@@ -139,7 +139,6 @@ const ContractTypeWidget = observer(
         const onChangeInput = (searchQueryItem: string) => setSearchQuery(searchQueryItem);
 
         const list_with_category = () => {
-            const contract_type_category_icon: { [key: string]: string } = getContractTypeCategoryIcons();
             const order_arr = [
                 'Accumulators',
                 'Vanillas',
@@ -149,30 +148,35 @@ const ContractTypeWidget = observer(
                 'Highs & Lows',
                 'Digits',
             ];
-            const ordered_list = list?.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
-            const ordered_unavailable_types_list = unavailable_trade_types_list
-                .sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key))
-                .map(item => ({ ...item, is_unavailable: true }));
-            const accumulators_category = ordered_list?.filter(({ label }) => label === localize('Accumulators'));
-            const multipliers_category = ordered_list?.filter(({ label }) => label === localize('Multipliers'));
-            const options_category = ordered_list?.filter(
-                ({ label }) => label !== localize('Multipliers') && label !== localize('Accumulators')
-            );
-            const non_av_accumulators_category = ordered_unavailable_types_list.filter(
-                ({ label }) => label === localize('Accumulators')
-            );
-            const non_av_multipliers_category = ordered_unavailable_types_list.filter(
-                ({ label }) => label === localize('Multipliers')
-            );
-            const non_av_options_category = ordered_unavailable_types_list.filter(
-                ({ label }) => label !== localize('Multipliers') && label !== localize('Accumulators')
-            );
+
+            const getListFilteredByCategory = (
+                contracts_list: TContractCategory[] = [],
+                category = '',
+                excluded_categories: string[] = []
+            ) =>
+                contracts_list?.filter(
+                    ({ label }) =>
+                        label === category || (excluded_categories.length && !excluded_categories.includes(label ?? ''))
+                );
+            const sortContractCategories = (a: TContractCategory, b: TContractCategory) =>
+                order_arr.indexOf(a.key) - order_arr.indexOf(b.key);
+
+            const ordered_list = list?.sort(sortContractCategories);
+            const ordered_unavailable_types_list = unavailable_trade_types_list.sort(sortContractCategories);
+            const all_trade_types_list = ordered_list?.concat(ordered_unavailable_types_list);
+            const accumulators_category = getListFilteredByCategory(all_trade_types_list, localize('Accumulators'));
+            const multipliers_category = getListFilteredByCategory(all_trade_types_list, localize('Multipliers'));
+            const options_category = getListFilteredByCategory(all_trade_types_list, '', [
+                localize('Multipliers'),
+                localize('Accumulators'),
+            ]);
             const categories: TList[] = [];
+            const contract_type_category_icon: { [key: string]: string } = getContractTypeCategoryIcons();
 
             if (list && list.length > 0) {
                 categories.push({
                     label: localize('All'),
-                    contract_categories: [...ordered_list, ...ordered_unavailable_types_list],
+                    contract_categories: all_trade_types_list,
                     key: 'All',
                     icon: '',
                 });
@@ -181,7 +185,7 @@ const ContractTypeWidget = observer(
             if (multipliers_category && multipliers_category.length > 0) {
                 categories.push({
                     label: localize('Multipliers'),
-                    contract_categories: [...multipliers_category, ...non_av_multipliers_category],
+                    contract_categories: multipliers_category,
                     key: 'Multipliers',
                     icon: '',
                 });
@@ -190,7 +194,7 @@ const ContractTypeWidget = observer(
             if (options_category && options_category.length > 0) {
                 categories.push({
                     label: localize('Options'),
-                    contract_categories: [...options_category, ...non_av_options_category],
+                    contract_categories: options_category,
                     component: options_category.some(category => /Vanillas|Turbos/i.test(category.key)) ? (
                         <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>
                     ) : null,
@@ -202,7 +206,7 @@ const ContractTypeWidget = observer(
             if (accumulators_category && accumulators_category.length > 0) {
                 categories.push({
                     label: localize('Accumulators'),
-                    contract_categories: [...accumulators_category, ...non_av_accumulators_category],
+                    contract_categories: accumulators_category,
                     component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
                     key: 'Accumulators',
                     icon: '',

@@ -29,7 +29,7 @@ const Contract = observer(() => {
     const unavailable_trade_types_list = getAvailableContractTypes(
         non_available_contract_types_list,
         unsupported_contract_types_list
-    );
+    ).map(item => ({ ...item, is_unavailable: true }));
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
         underlying_name: getMarketNamesMap()[symbol.toUpperCase() as keyof ReturnType<typeof getMarketNamesMap>],
     });

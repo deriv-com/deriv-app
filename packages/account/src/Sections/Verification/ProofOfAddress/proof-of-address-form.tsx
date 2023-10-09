@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
-import { DocumentUploadResponse } from '@deriv/api-types';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
 import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -15,6 +14,7 @@ import FileUploaderContainer from '../../../Components/file-uploader-container';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
+import { useFileUploader } from '@deriv/hooks';
 
 const FilesDescription = () => {
     const descriptions = [
@@ -31,8 +31,8 @@ const FilesDescription = () => {
                 <Localize i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:' />
             </Text>
             <ul>
-                {descriptions.map(item => (
-                    <li key={item.props.key}>
+                {descriptions.map((item, i) => (
+                    <li key={`file-description-${i}`}>
                         <Text size={isMobile() ? 'xxs' : 'xs'}>{item}</Text>
                     </li>
                 ))}
@@ -40,10 +40,6 @@ const FilesDescription = () => {
         </div>
     );
 };
-
-export type TFileRef = React.RefObject<null | { upload: () => Promise<DocumentUploadResponse> }> | undefined;
-
-let file_uploader_ref: TFileRef;
 
 type TProofOfAddressForm = {
     is_resubmit: boolean;
@@ -70,7 +66,7 @@ const ProofOfAddressForm = observer(
             removeNotificationMessage,
             removeNotificationByKey,
         } = notifications;
-        const [document_files, setDocumentFiles] = React.useState<File[] | undefined>([]);
+        const [document_files, setDocumentFiles] = React.useState<File[]>([]);
         const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
         const [is_loading, setIsLoading] = React.useState(true);
         const [form_values, setFormValues] = React.useState<TFormInitialValues>({
@@ -88,6 +84,8 @@ const ProofOfAddressForm = observer(
             should_show_form: true,
         });
 
+        const { upload } = useFileUploader();
+
         React.useEffect(() => {
             fetchResidenceList?.().then(() => {
                 Promise.all([fetchStatesList(), WS.wait('get_settings')]).then(() => {
@@ -103,7 +101,7 @@ const ProofOfAddressForm = observer(
             });
         }, [account_settings, fetchResidenceList, fetchStatesList]);
 
-        const changeable_fields = getChangeableFields();
+        const changeable_fields = getChangeableFields?.() ?? [];
 
         const validateFields = (values: TFormInitialValues) => {
             (Object.entries(values) as ObjectEntries<TFormInitialValues>).forEach(
@@ -200,7 +198,7 @@ const ProofOfAddressForm = observer(
 
             // upload files
             try {
-                const api_response = await file_uploader_ref?.current?.upload();
+                const api_response = await upload(document_files);
                 if (api_response?.warning) {
                     setStatus({ msg: api_response?.message });
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
@@ -310,8 +308,6 @@ const ProofOfAddressForm = observer(
                                         <FormSubHeader title={localize('Document submission')} title_text_size='s' />
                                         <FormBodySection>
                                             <FileUploaderContainer
-                                                // @ts-expect-error  FIXME: Type 'void' is not assignable to type 'Promise<DocumentUploadResponse>'
-                                                onRef={ref => (file_uploader_ref = ref)}
                                                 onFileDrop={files => {
                                                     setDocumentFiles(files);
                                                 }}

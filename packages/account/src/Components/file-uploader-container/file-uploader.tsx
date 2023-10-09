@@ -3,13 +3,16 @@ import classNames from 'classnames';
 import { FileDropzone, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile, getSupportedFiles, max_document_size, supported_filetypes } from '@deriv/shared';
-import { TFile } from 'Types';
-import { useFileUploader } from '@deriv/hooks';
+import { TFile } from '../../Types';
 
 type TFileObject = {
     file: TFile;
 };
-type TSettings = Partial<Parameters<ReturnType<typeof useFileUploader>['uploader']>[1]>;
+
+type TFileUploaderProps = {
+    onFileDrop: (files: File[]) => void;
+    onError?: (error_message: string) => void;
+};
 
 const UploadMessage = () => {
     return (
@@ -31,18 +34,9 @@ const UploadMessage = () => {
     );
 };
 
-const FileUploader = React.forwardRef<
-    HTMLElement,
-    {
-        onFileDrop: (files: File[]) => void;
-        settings?: TSettings;
-        onError?: (error_message: string) => void;
-    }
->(({ onFileDrop, settings, onError }, ref) => {
-    const [document_files, setDocumentFiles] = React.useState<File[] | null>(null);
+const FileUploader = ({ onFileDrop, onError }: TFileUploaderProps) => {
+    const [document_files, setDocumentFiles] = React.useState<File[]>([]);
     const [file_error, setFileError] = React.useState<string | null>(null);
-
-    const { uploader } = useFileUploader();
 
     React.useEffect(() => {
         if (document_files) {
@@ -65,25 +59,14 @@ const FileUploader = React.forwardRef<
                 ? localize('File size should be 8MB or less')
                 : localize('File uploaded is not supported');
 
-        setDocumentFiles(null);
+        setDocumentFiles([]);
         onError?.(error_message);
         setFileError(error_message);
     };
 
     const removeFile = () => {
-        setDocumentFiles(null);
+        setDocumentFiles([]);
     };
-
-    const upload = () => {
-        if (file_error || (document_files && document_files?.length < 1)) return 0;
-
-        // @ts-expect-error FIXME: document_files is possibly null.
-        uploader(document_files, settings, () => onFileDrop(undefined));
-    };
-    // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.
-    React.useImperativeHandle(ref, () => ({
-        upload,
-    }));
 
     return (
         <React.Fragment>
@@ -96,10 +79,8 @@ const FileUploader = React.forwardRef<
                 message={<UploadMessage />}
                 multiple={false}
                 onDropAccepted={handleAcceptedFiles}
-                // @ts-expect-error Type FIXME: (TFileObject[]) => void' is not assignable to type '(fileRejections: FileRejection[], event: DropEvent) => void'.
                 onDropRejected={handleRejectedFiles}
                 validation_error_message={file_error}
-                // @ts-expect-error FIXME: document_files is possibly null.
                 value={document_files}
             />
             {((document_files && document_files?.length > 0) || file_error) && (
@@ -117,8 +98,6 @@ const FileUploader = React.forwardRef<
             )}
         </React.Fragment>
     );
-});
-
-FileUploader.displayName = 'FileUploader';
+};
 
 export default FileUploader;

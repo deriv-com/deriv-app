@@ -26,10 +26,7 @@ describe('<FileUploaderContainer />', () => {
         mock_props = {
             examples: '',
             files_description: '',
-            getSocket: jest.fn(),
             onFileDrop: jest.fn(),
-            onRef: jest.fn(),
-            settings: {},
         };
 
         (isDesktop as jest.Mock).mockReturnValue(true);
@@ -57,7 +54,6 @@ describe('<FileUploaderContainer />', () => {
     });
 
     it('should render FileUploaderContainer component if getSocket is not passed as prop', () => {
-        delete mock_props.getSocket;
         render(<FileUploaderContainer {...mock_props} />);
         runCommonTests();
     });
@@ -84,11 +80,5 @@ describe('<FileUploaderContainer />', () => {
         render(<FileUploaderContainer {...mock_props} />);
         expect(screen.getByText(hint_msg_mobile)).toBeInTheDocument();
         expect(screen.queryByText(hint_msg_desktop)).not.toBeInTheDocument();
-    });
-
-    it('should call ref function on rendering the component', () => {
-        render(<FileUploaderContainer {...mock_props} />);
-
-        expect(mock_props.onRef).toHaveBeenCalled();
     });
 });

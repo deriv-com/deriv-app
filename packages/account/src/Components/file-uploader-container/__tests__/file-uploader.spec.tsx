@@ -12,8 +12,6 @@ jest.mock('@deriv/shared', () => ({
     readFiles: jest.fn(),
 }));
 
-jest.mock('@binary-com/binary-document-uploader');
-
 describe('<FileUploader />', () => {
     beforeEach(() => {
         (isDesktop as jest.Mock).mockReturnValue(true);
@@ -23,9 +21,6 @@ describe('<FileUploader />', () => {
 
     const props: React.ComponentProps<typeof FileUploader> = {
         onFileDrop: jest.fn(),
-        getSocket: jest.fn(),
-        ref: React.createRef<HTMLElement>(),
-        settings: {},
     };
 
     const large_file_error_msg = /file size should be 8mb or less/i;
@@ -121,15 +116,6 @@ describe('<FileUploader />', () => {
         });
     });
 
-    it('upload function should return 0 if document is not selected', () => {
-        render(<FileUploader {...props} />);
-
-        const uploadFn = (
-            props?.ref as React.RefObject<HTMLElement & { upload: () => Promise<DocumentUploadResponse> }>
-        ).current?.upload();
-        expect(uploadFn).toBe(0);
-    });
-
     it('upload methods should reject if readFile returns empty array ', async () => {
         (readFiles as jest.Mock).mockResolvedValue([]);
 
@@ -143,10 +129,7 @@ describe('<FileUploader />', () => {
             expect(screen.getByText(/hello\.pdf/i)).toBeInTheDocument();
             expect(input?.files?.[0]).toBe(file);
         });
-        (
-            props?.ref as React.RefObject<HTMLElement & { upload: () => Promise<DocumentUploadResponse> }>
-        ).current?.upload();
-        expect(compressImageFiles).toBeCalled();
+
         expect(props.onFileDrop).toBeCalled();
     });
 });

@@ -24,7 +24,7 @@ export const getFileExtension = (file: Blob) => {
     return f?.[0];
 };
 
-export const compressImageFiles = (files?: FileList | null) => {
+export const compressImageFiles = (files?: File[]) => {
     if (!files?.length) return Promise.resolve([]);
 
     const promises: Promise<Blob>[] = [];
@@ -63,7 +63,7 @@ export const readFiles = (
                     documentType: settings?.document_type ?? DOCUMENT_TYPES.utility_bill,
                     documentId: settings?.document_id,
                     expirationDate: settings?.expiration_date,
-                    lifetimeValid: settings?.lifetime_valid ?? !settings?.expiration_date,
+                    lifetimeValid: settings?.lifetime_valid,
                     pageType: settings?.page_type,
                     proof_of_ownership: settings?.proof_of_ownership,
                     document_issuing_country: settings?.document_issuing_country,

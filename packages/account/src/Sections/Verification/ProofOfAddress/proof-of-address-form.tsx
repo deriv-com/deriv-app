@@ -16,24 +16,36 @@ import PersonalDetailsForm from '../../../Components/forms/personal-details-form
 import { isServerError, validate } from '../../../Helpers/utils';
 import { useFileUploader } from '@deriv/hooks';
 
+const descriptions: {
+    key: string;
+    value: JSX.Element;
+}[] = [
+    {
+        key: 'utility_bill',
+        value: <Localize i18n_default_text='Utility bill: electricity, water, gas, or landline phone bill.' />,
+    },
+    {
+        key: 'financial_legal_government_document',
+        value: (
+            <Localize i18n_default_text='Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.' />
+        ),
+    },
+    {
+        key: 'home_rental_agreement',
+        value: <Localize i18n_default_text='Home rental agreement: valid and current agreement.' />,
+    },
+];
+
 const FilesDescription = () => {
-    const descriptions = [
-        <Localize key={1} i18n_default_text='Utility bill: electricity, water, gas, or landline phone bill.' />,
-        <Localize
-            key={2}
-            i18n_default_text='Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.'
-        />,
-        <Localize key={3} i18n_default_text='Home rental agreement: valid and current agreement.' />,
-    ];
     return (
         <div className='files-description'>
             <Text size={isMobile() ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
                 <Localize i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:' />
             </Text>
             <ul>
-                {descriptions.map((item, i) => (
-                    <li key={`file-description-${i}`}>
-                        <Text size={isMobile() ? 'xxs' : 'xs'}>{item}</Text>
+                {descriptions.map(item => (
+                    <li key={item.key}>
+                        <Text size={isMobile() ? 'xxs' : 'xs'}>{item.value}</Text>
                     </li>
                 ))}
             </ul>

@@ -36,8 +36,8 @@ const useFileUploader = () => {
             if (!files?.length) return Promise.reject(new Error('No files selected'));
 
             return new Promise<{
-                message?: string | undefined;
-                warning?: string | undefined;
+                message?: string;
+                warning?: string;
                 [key: string]: any;
             }>((resolve, reject) => {
                 let is_any_file_error = false;

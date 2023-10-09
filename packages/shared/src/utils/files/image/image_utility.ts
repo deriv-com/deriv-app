@@ -1,5 +1,4 @@
 import 'canvas-toBlob';
-import { TFile } from '../file-uploader-utils';
 
 declare global {
     interface Blob {

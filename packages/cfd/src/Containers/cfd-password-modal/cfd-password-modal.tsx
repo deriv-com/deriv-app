@@ -214,6 +214,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         />
     );
 
+    const card_label = active_wallet?.is_demo ? (
+        <Localize i18n_default_text='Demo' />
+    ) : (
+        <Localize i18n_default_text='Real' />
+    );
+
     const should_show_password =
         is_cfd_password_modal_enabled &&
         !is_cfd_success_dialog_enabled &&
@@ -336,11 +342,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             />
         ),
         app_icon: getWalletCFDInfo(account_type.type).icon,
+        label: card_label,
     };
 
-    const wallet_success_text =
-        active_wallet?.is_demo &&
-        getWalletSuccessText('add-mt5', active_wallet?.is_demo, getWalletCFDInfo(account_type.type).title);
+    const wallet_success_text = active_wallet?.is_demo
+        ? getWalletSuccessText(active_wallet?.is_demo, getWalletCFDInfo(account_type.type).title)
+        : undefined;
 
     return (
         <React.Fragment>
@@ -349,12 +356,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             {/* TODO: Remove this once development is completed */}
             {is_wallet_enabled && account_type.category === ACCOUNT_CATEGORY.DEMO && platform === CFD_PLATFORMS.MT5 ? (
                 <WalletSuccessDialog
-                    description={wallet_success_text ? wallet_success_text.description : ''}
+                    description={wallet_success_text?.description}
                     has_cancel={false}
                     is_open={should_show_success_for_wallets}
                     onSubmit={closeModal}
-                    text_submit={wallet_success_text ? wallet_success_text.text_submit : ''}
-                    title={wallet_success_text ? wallet_success_text.title : ''}
+                    text_submit={wallet_success_text?.text_submit}
+                    title={wallet_success_text?.title}
                     toggleModal={closeModal}
                     type='add-mt5'
                     wallet_card={<WalletAppCard wallet={wallet_details} />}

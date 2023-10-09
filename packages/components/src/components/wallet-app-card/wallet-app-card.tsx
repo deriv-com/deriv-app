@@ -1,10 +1,9 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { AppLinkedWithWalletIcon } from '../app-linked-with-wallet-icon';
 import Text from '../text';
-import './wallet-app-card.scss';
 import Badge from '../badge';
+import './wallet-app-card.scss';
 
 type WalletAppCardProps = {
     wallet: {
@@ -15,6 +14,7 @@ type WalletAppCardProps = {
         gradient_card_class: string;
         icon?: string;
         is_demo?: boolean;
+        label: string;
     };
 };
 
@@ -27,6 +27,7 @@ const WalletAppCard = ({ wallet }: WalletAppCardProps) => {
         gradient_card_class,
         icon,
         is_demo,
+        label,
     } = wallet;
 
     return (
@@ -44,7 +45,7 @@ const WalletAppCard = ({ wallet }: WalletAppCardProps) => {
                 </div>
                 <Badge
                     className='wallet-app-card__badge'
-                    label={is_demo ? <Localize i18n_default_text='Demo' /> : <Localize i18n_default_text='Real' />}
+                    label={label}
                     type='contained'
                     background_color={is_demo ? 'blue' : 'red'}
                     rounded_corners={2}

@@ -1,18 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { Table, Text, Button, Icon } from '@deriv/components';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+
+import { Button, Icon,Table, Text } from '@deriv/components';
+import { useExchangeRate } from '@deriv/hooks';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useExchangeRate } from '@deriv/hooks';
-import { buy_sell } from 'Constants/buy-sell';
+
 import { Localize, localize } from 'Components/i18next';
 import { OnlineStatusAvatar } from 'Components/online-status';
-import { useStores } from 'Stores';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
+import { buy_sell } from 'Constants/buy-sell';
+import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
+
 import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert }) => {

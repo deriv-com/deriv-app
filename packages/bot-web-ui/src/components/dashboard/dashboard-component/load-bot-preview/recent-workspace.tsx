@@ -1,15 +1,20 @@
 import React from 'react';
 import classnames from 'classnames';
+
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { waitForDomElement } from 'Utils/dom-observer';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { waitForDomElement } from 'Utils/dom-observer';
+
 import { useComponentVisibility } from '../../hooks/useComponentVisibility';
+
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
+
 import './index.scss';
 
 type TRecentWorkspace = {

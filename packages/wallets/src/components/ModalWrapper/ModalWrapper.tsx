@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
+
 import CloseIcon from '../../public/images/ic-close-dark.svg';
 import { useModal } from '../ModalProvider';
+
 import './ModalWrapper.scss';
 
 type TProps = {

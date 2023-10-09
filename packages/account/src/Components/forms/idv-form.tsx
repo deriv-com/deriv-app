@@ -80,6 +80,7 @@ const IDVForm = ({
                     example_format,
                 };
             });
+
             if (can_skip_document_verification) {
                 setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
             } else {

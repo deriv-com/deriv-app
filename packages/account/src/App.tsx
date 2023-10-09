@@ -1,7 +1,7 @@
 import React from 'react';
 import Routes from './Containers/routes';
 import ResetTradingPassword from './Containers/reset-trading-password';
-import { setWebsocket } from '@deriv/shared';
+import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { APIProvider } from '@deriv/api';
@@ -15,8 +15,7 @@ type TAppProps = {
 };
 
 const App = ({ passthrough }: TAppProps) => {
-    const { root_store, WS } = passthrough;
-    setWebsocket(WS);
+    const { root_store } = passthrough;
 
     const { notification_messages_ui: Notifications } = root_store.ui;
 

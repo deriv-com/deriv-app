@@ -1,11 +1,12 @@
+import React from 'react';
+import { GetFinancialAssessment, GetSettings } from '@deriv/api-types';
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { GetFinancialAssessment, GetSettings } from '@deriv/api-types';
 
 type TTradingAssessmentConfig = {
-    real_account_signup_target: string;
-    financial_assessment: GetFinancialAssessment;
     account_settings: GetSettings;
+    financial_assessment: GetFinancialAssessment;
+    real_account_signup_target: string;
     setSubSectionIndex: number;
 };
 

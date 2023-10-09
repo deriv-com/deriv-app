@@ -16,14 +16,13 @@ import {
 } from '@deriv/components';
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { isFieldImmutable } from '../../Helpers/utils';
+import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
 import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
 import FormBodySection from '../form-body-section';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
-
 import ConfirmationCheckbox from './confirmation-checkbox';
-import { DateOfBirthField, FormInputField } from './form-fields.jsx';
+import { DateOfBirthField, FormInputField } from './form-fields';
 
 const PersonalDetailsForm = props => {
     const {
@@ -48,6 +47,7 @@ const PersonalDetailsForm = props => {
         states_list,
         side_note,
         no_confirmation_needed,
+        mismatch_status,
     } = props;
     const autocomplete_value = 'none';
 
@@ -121,7 +121,7 @@ const PersonalDetailsForm = props => {
     const is_svg_only = is_svg && !is_mf;
 
     // need to disable the checkbox if the user has not filled in the name and dob fields initially
-    const is_confirmation_checkbox_disabled = ['first_name', 'last_name', 'date_of_birth'].some(
+    const is_confirmation_checkbox_disabled = verifyFields(mismatch_status).some(
         field => !values[field] || errors[field]
     );
 
@@ -133,7 +133,11 @@ const PersonalDetailsForm = props => {
                 })}
             >
                 {is_rendered_for_idv_or_onfido && !should_hide_helper_image && (
-                    <InlineNoteWithIcon message={inline_note_text} font_size={isMobile() ? 'xxxs' : 'xs'} />
+                    <InlineNoteWithIcon
+                        message={inline_note_text}
+                        font_size={isMobile() ? 'xxxs' : 'xs'}
+                        icon='IcAlertWarning'
+                    />
                 )}
                 {is_qualified_for_poa && (
                     <InlineNoteWithIcon

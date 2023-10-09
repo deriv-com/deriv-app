@@ -885,6 +885,12 @@
         }
     }
 
+    .upload-layout{
+        @include desktop{
+        height: 100%;
+        }
+    }
+
     .account-form__poi-confirm-example {
         gap: 1.6rem;
 

@@ -106,10 +106,10 @@ const IdvFailed = ({
      */
     const chosen_country = React.useMemo(
         () =>
-            is_document_upload_required
+            is_document_upload_required && !is_from_external
                 ? selected_country ?? {}
                 : residence_list.find(residence_data => residence_data.value === latest_status?.country_code) ?? {},
-        [selected_country, is_document_upload_required, latest_status?.country_code, residence_list]
+        [selected_country, is_document_upload_required, latest_status?.country_code, residence_list, is_from_external]
     );
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
@@ -326,6 +326,9 @@ const IdvFailed = ({
     return (
         <Formik
             initialValues={rest_state?.form_initial_values ?? {}}
+            initialStatus={{
+                is_confirmed: false,
+            }}
             enableReinitialize
             onSubmit={onSubmit}
             validate={validateFields}
@@ -337,7 +340,7 @@ const IdvFailed = ({
                         'upload-layout': is_document_upload_required,
                     })}
                 >
-                    <FormBody className='form-body' scroll_offset={isMobile() ? '200px' : '80px'}>
+                    <FormBody className='form-body' scroll_offset={isMobile() ? '180px' : '80px'}>
                         <Text size={isMobile() ? 'xs' : 's'} weight='bold' align='center'>
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>
@@ -365,10 +368,11 @@ const IdvFailed = ({
                         )}
                         <PersonalDetailsForm
                             class_name='account-form__poi-confirm-example_container'
-                            editable_fields={rest_state?.changeable_fields}
+                            editable_fields={status?.is_confirmed ? [] : rest_state?.changeable_fields}
                             is_rendered_for_idv
                             side_note={idv_failure?.side_note_image}
                             inline_note_text={idv_failure?.inline_note_text}
+                            mismatch_status={mismatch_status}
                         />
                         <DesktopWrapper>
                             {!is_from_external && (
@@ -376,7 +380,7 @@ const IdvFailed = ({
                                     className='proof-of-identity__submit-button'
                                     type='submit'
                                     has_effect
-                                    is_disabled={!dirty || isSubmitting || !isValid}
+                                    is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
                                     text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
                                     large
                                     primary
@@ -387,10 +391,9 @@ const IdvFailed = ({
                     {(is_from_external || isMobile()) && (
                         <FormFooter>
                             <Button
-                                className='proof-of-identity__submit-button'
                                 type='submit'
                                 has_effect
-                                is_disabled={!dirty || isSubmitting || !isValid}
+                                is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
                                 text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
                                 large
                                 primary

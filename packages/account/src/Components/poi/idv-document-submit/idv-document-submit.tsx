@@ -1,35 +1,33 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik } from 'formik';
-
-import { IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
+import { Formik } from 'formik';
+import { localize } from '@deriv/translations';
 import {
-    filterObjProperties,
-    formatIDVFormValues,
+    WS,
     getIDVNotApplicableOption,
+    toMoment,
+    filterObjProperties,
     isDesktop,
     removeEmptyPropertiesFromObject,
-    toMoment,
-    WS,
+    formatIDVFormValues,
 } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
-
-import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
-import FormFooter from 'Components/form-footer';
-import FormSubHeader from 'Components/form-sub-header';
-import IDVForm from 'Components/forms/idv-form';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import {
     documentAdditionalError,
-    getExampleFormat,
     isDocumentNumberValid,
-    makeSettingsRequest,
     validate,
+    makeSettingsRequest,
     validateName,
+    getExampleFormat,
 } from 'Helpers/utils';
-import { TDocument, TIDVFormValues, TInputFieldValues } from 'Types';
+import FormFooter from 'Components/form-footer';
+import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
+import IDVForm from 'Components/forms/idv-form';
+import PersonalDetailsForm from 'Components/forms/personal-details-form';
+import FormSubHeader from 'Components/form-sub-header';
+import { observer, useStore } from '@deriv/stores';
+import { ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { TDocument, TInputFieldValues, TIDVFormValues } from 'Types';
 
 type TIDVDocumentSubmitProps = {
     handleBack: React.MouseEventHandler;

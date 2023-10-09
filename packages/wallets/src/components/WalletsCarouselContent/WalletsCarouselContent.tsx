@@ -1,12 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-
-import { useAuthorize, useWalletAccountsList } from '@deriv/api';
-
+import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api';
 import { ProgressBar } from '../ProgressBar';
 import { WalletCard } from '../WalletCard';
-
-// import { WalletListCardActions } from '../WalletListCardActions';
+import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
 
 const WalletsCarouselContent: React.FC = () => {
@@ -16,6 +13,7 @@ const WalletsCarouselContent: React.FC = () => {
         skipSnaps: true,
     });
     const { data: walletAccountsList } = useWalletAccountsList();
+    const { data: activeWallet } = useActiveWalletAccount();
     const activeWalletIndex = useMemo(
         () =>
             walletAccountsList?.findIndex(item => item?.is_active) ||
@@ -59,7 +57,11 @@ const WalletsCarouselContent: React.FC = () => {
                     setActiveIndex={switchAccount}
                 />
             </div>
-            {/* <WalletListCardActions /> */}
+            <WalletListCardActions
+                isActive={activeWallet?.is_active || false}
+                isDemo={activeWallet?.is_virtual || false}
+                loginid={activeWallet?.loginid || ''}
+            />
         </div>
     );
 };

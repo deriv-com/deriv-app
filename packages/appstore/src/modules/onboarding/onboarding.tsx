@@ -1,15 +1,12 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-
-import { Button, Icon, ProgressBarTracker, Text } from '@deriv/components';
-import { ContentFlag, isDesktop, routes } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
+import { isDesktop, routes, ContentFlag } from '@deriv/shared';
+import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
-
+import { useHistory } from 'react-router-dom';
 import EmptyOnboarding from './empty-onboarding';
+import { useStore, observer } from '@deriv/stores';
 
 type TOnboardingProps = {
     contents: Record<

@@ -2,7 +2,7 @@ import React, { RefObject } from 'react';
 
 import { isMobileOs } from '@deriv/shared';
 
-export const useHover = <T extends HTMLElement & SVGSVGElement>(
+export const useHover = <T extends HTMLElement | SVGSVGElement>(
     refSetter?: RefObject<T> | null,
     should_prevent_bubbling?: boolean
 ) => {

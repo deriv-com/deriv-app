@@ -1,0 +1,31 @@
+.wallets-modal {
+    border-radius: 0.8rem;
+    height: 18rem;
+    width: 44rem;
+    padding: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @include mobile {
+        height: 14.2rem;
+        width: 100%;
+        padding: 1.6rem;
+    }
+
+    &__buttons-container {
+        display: flex;
+        align-self: flex-end;
+        gap: 0.8rem;
+    }
+}
+
+.cancel-transaction-modal {
+    height: 18rem;
+    width: 44rem;
+
+    @include mobile {
+        height: 14.2rem;
+        width: 100%;
+    }
+}

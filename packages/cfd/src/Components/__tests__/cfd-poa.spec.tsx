@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import CFDPOA from '../cfd-poa';
 import CFDProviders from '../../cfd-providers';
+import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv/account/src/Components/forms/personal-details-form.jsx', () =>
     jest.fn(() => <div>PersonalDetailsForm</div>)
@@ -49,7 +50,15 @@ jest.mock('@deriv/shared', () => ({
         },
         setSettings: jest.fn(() => Promise.resolve({ error: '' })),
         wait: jest.fn(() => Promise.resolve([])),
+        getSocket: jest.fn().mockReturnValue({}),
     },
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useFileUploader: jest.fn(() => ({
+        upload: jest.fn(),
+    })),
 }));
 
 describe('<CFDPOA />', () => {

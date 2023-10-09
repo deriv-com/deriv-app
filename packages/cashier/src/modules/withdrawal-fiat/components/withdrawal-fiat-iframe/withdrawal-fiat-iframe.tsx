@@ -4,6 +4,7 @@ import { useWithdrawalFiatAddress } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { ErrorState } from '../../../../components/error-state';
 import './withdrawal-fiat-iframe.scss';
+import { LocalStore, SessionStore } from '@deriv/shared';
 
 const WithdrawalFiatIframe = observer(() => {
     const { data: iframe_url, error, resetVerificationCode } = useWithdrawalFiatAddress();
@@ -21,6 +22,7 @@ const WithdrawalFiatIframe = observer(() => {
     // To show loading state when switching theme
     useEffect(() => {
         setIsLoading(true);
+        if (iframe_url) resetVerificationCode();
     }, [iframe_url]);
 
     if (error) return <ErrorState error={error} />;

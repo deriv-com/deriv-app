@@ -23,7 +23,7 @@ const useWithdrawalFiatAddress = () => {
     );
 
     useEffect(() => {
-        send();
+        if (verification_code) send();
     }, [send]);
 
     const resetVerificationCode = () => {

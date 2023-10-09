@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading, SideNote } from '@deriv/components';
-import { useCurrentCurrencyConfig } from '@deriv/hooks';
+import { useCurrentCurrencyConfig, useWithdrawalFiatAddress } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { PageContainer } from 'Components/page-container';
@@ -14,6 +14,7 @@ import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
 import { WithdrawalFiatModule } from '../../modules/withdrawal-fiat';
+import { SessionStore } from '@deriv/shared';
 
 const WithdrawalSideNotes = observer(() => {
     const currency_config = useCurrentCurrencyConfig();
@@ -48,14 +49,15 @@ const WithdrawalPageContent = observer(() => {
     const { withdraw } = useCashierStore();
     const { is_withdraw_confirmed } = withdraw;
     const currency_config = useCurrentCurrencyConfig();
+    const { data: iframe_url } = useWithdrawalFiatAddress();
 
-    if (!currency_config.is_crypto && verification_code)
+    if (!currency_config.is_crypto && (verification_code || iframe_url !== undefined)) {
         return (
             <PageContainer hide_breadcrumb>
                 <WithdrawalFiatModule />
             </PageContainer>
         );
-
+    }
     if (verification_code && currency_config.is_crypto && !is_withdraw_confirmed)
         return (
             <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>

@@ -282,8 +282,8 @@ export default class OrderStore {
                 offset: startIndex,
                 limit: general_store.list_item_limit,
             };
-            if (this.date_from) order_request.date_from = this.date_from;
-            if (this.date_to) order_request.date_to = this.date_to;
+            if (this.date_from && !active) order_request.date_from = this.date_from;
+            if (this.date_to && !active) order_request.date_to = this.date_to;
 
             requestWS(order_request).then(response => {
                 if (!response?.error) {

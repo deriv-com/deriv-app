@@ -1,5 +1,6 @@
 import { getTotalProfit } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
 import { getBuyPrice } from 'Utils/multiplier';
 
 export const getSupportedContracts = is_high_low => ({

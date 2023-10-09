@@ -39,7 +39,7 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
             case 'dxtrade':
                 return 'https://onelink.to/grmtyx';
             case 'ctrader':
-                return 'https://onelink.to/yvk2a5';
+                return 'https://onelink.to/hyqpv7';
             default:
                 return 'https://onelink.to/grmtyx';
         }

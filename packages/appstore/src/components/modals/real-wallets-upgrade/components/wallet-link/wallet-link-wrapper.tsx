@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, WalletCard } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { LeftContentWithLink } from '../left-content-with-link';
 import { RightContentWithLink } from '../right-content-with-link';
@@ -18,7 +18,7 @@ export type TWalletLinkWrapper = {
     }[];
 };
 
-const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper) => {
+const WalletLinkWrapper = observer(({ wallet_details, account_list }: TWalletLinkWrapper) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     return (
@@ -65,6 +65,6 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
             </div>
         </div>
     );
-};
+});
 
 export default WalletLinkWrapper;

@@ -53,7 +53,6 @@ describe('<Dashboard />', () => {
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
                     <UserGuide {...mocked_props} />
-                    <div>hi</div>
                 </DBotStoreProvider>
             </StoreProvider>
         );

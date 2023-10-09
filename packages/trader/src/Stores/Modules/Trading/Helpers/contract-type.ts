@@ -85,7 +85,7 @@ export const ContractType = (() => {
     let available_contract_types: ReturnType<typeof getContractTypesConfig> = {};
     let available_categories: TAvailableCategories = {};
     let contract_types: ReturnType<typeof getContractTypesConfig>;
-    const non_available_categories: TAvailableCategories = {};
+    let non_available_categories: TAvailableCategories = {};
     const trading_events: { [key: string]: Record<string, TEvents | undefined> } = {};
     const trading_times: { [key: string]: Record<string, TTimes> } = {};
     let has_only_forward_starting_contracts = false;
@@ -152,31 +152,29 @@ export const ContractType = (() => {
                 }
             });
 
-            (r.contracts_for.non_available as TNonAvailableContractsList)?.forEach(contract => {
-                const type =
-                    Object.keys(contract_types).find(
-                        key => contract_types[key].trade_types.indexOf(contract.contract_type) !== -1
-                    ) ?? '';
-                const key =
-                    Object.keys(contract_categories).find(
-                        key =>
-                            // @ts-expect-error TODO : check this
-                            contract_categories[key as keyof typeof contract_categories]?.categories.indexOf(type) !==
-                            -1
-                    ) ?? '';
-                const cat = contract_categories[key as keyof typeof contract_categories]?.categories ?? [];
-                (cat as unknown as any)[cat.indexOf(type as never)] = {
-                    value: type,
-                    text: contract_types[type as keyof typeof contract_types]?.title,
-                };
-                if (key) {
-                    non_available_categories[key] = {
-                        // @ts-expect-error TODO : check this
-                        categories: [...cat],
-                        ...contract_categories[key as keyof typeof contract_categories],
-                    };
-                }
-            });
+            non_available_categories = {};
+            const mutable_contracts_config = cloneObject(contract_categories);
+            const getCategories = (key = ''): string[] => mutable_contracts_config[key]?.categories ?? [];
+
+            if (r.contracts_for.non_available) {
+                (r.contracts_for.non_available as TNonAvailableContractsList).forEach(contract => {
+                    const type =
+                        Object.keys(contract_types).find(key =>
+                            contract_types[key].trade_types.includes(contract.contract_type)
+                        ) ?? '';
+                    const key = Object.keys(mutable_contracts_config).find(key => getCategories(key).includes(type));
+                    const categories: Array<string | TTextValueStrings> = getCategories(key);
+                    if (categories.includes(type)) {
+                        categories[categories.indexOf(type)] = {
+                            value: type,
+                            text: contract_types[type]?.title,
+                        };
+                    }
+                    if (key) {
+                        non_available_categories[key] = mutable_contracts_config[key];
+                    }
+                });
+            }
         });
 
     const buildTradeTypesConfig = (

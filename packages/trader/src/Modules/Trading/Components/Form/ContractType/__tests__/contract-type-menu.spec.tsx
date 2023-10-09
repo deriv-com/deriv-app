@@ -301,6 +301,7 @@ describe('ContractTypeMenu', () => {
                 },
             ],
             icon: 'IcVanillas',
+            is_unavailable: true,
             label: 'Vanillas',
         },
         {
@@ -311,6 +312,7 @@ describe('ContractTypeMenu', () => {
                 },
             ],
             icon: 'IcAccumulators',
+            is_unavailable: true,
             label: 'Accumulators',
         },
     ] as TContractCategory[];

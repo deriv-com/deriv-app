@@ -87,6 +87,7 @@ describe('<ContractTypeWidget />', () => {
                 },
             ],
             icon: 'IcVanillas',
+            is_unavailable: true,
             label: 'Vanillas',
         },
         {
@@ -97,6 +98,7 @@ describe('<ContractTypeWidget />', () => {
                 },
             ],
             icon: 'IcAccumulators',
+            is_unavailable: true,
             label: 'Accumulators',
         },
     ] as TContractCategory[];

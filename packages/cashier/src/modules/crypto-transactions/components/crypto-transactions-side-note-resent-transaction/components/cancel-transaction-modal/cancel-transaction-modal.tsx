@@ -3,13 +3,21 @@ import { Button, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { useModal } from '@deriv/wallets/src/components/ModalProvider';
 import { WalletModal } from '@deriv/wallets/src/components/WalletModal';
+import { useCashierStore } from 'Stores/useCashierStores';
 import './cancel-transaction-modal.scss';
 
-const CancelTransactionModal = () => {
+type TCancelTransactionModal = {
+    transaction_id: string;
+};
+
+const CancelTransactionModal = ({ transaction_id }: TCancelTransactionModal) => {
     const { hide } = useModal();
     const {
         ui: { is_mobile },
     } = useStore();
+    const {
+        transaction_history: { cancelCryptoTransaction },
+    } = useCashierStore();
 
     return (
         <WalletModal hideCloseButton>
@@ -25,8 +33,8 @@ const CancelTransactionModal = () => {
                 </Button>
                 <Button
                     primary
-                    onClick={() => {
-                        // cancel transaction
+                    onClick={async () => {
+                        await cancelCryptoTransaction(transaction_id);
                         hide();
                     }}
                 >

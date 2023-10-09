@@ -35,12 +35,12 @@ const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCr
                     <Text size='xxxs' line_height='s'>
                         {transaction.status_name}
                     </Text>
-                    {transaction.status_code === 'LOCKED' && (
+                    {transaction.is_valid_to_cancel && (
                         <Icon
                             icon='IcCrossLight'
                             size={10}
                             className='crypto-transaction__cancel-button'
-                            onClick={() => show(<CancelTransactionModal />)}
+                            onClick={() => show(<CancelTransactionModal transaction_id={transaction.id} />)}
                             data_testid='dt_close_icon'
                         />
                     )}

@@ -1,20 +1,21 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
-import { TCFDsPlatformType } from 'Components/props.types';
-import {
-    getPlatformDXTradeDownloadLink,
-    getPlatformCTraderDownloadLink,
-    getPlatformDerivEZDownloadLink,
-    getDXTradeWebTerminalLink,
-    getDerivEzWebTerminalLink,
-    getCTraderWebTerminalLink,
-    platformsText,
-    platformsIcons,
-} from './constants';
-import { isMobile, CFD_PLATFORMS } from '@deriv/shared';
-import { Text, Icon } from '@deriv/components';
+
+import { Icon, Text } from '@deriv/components';
+import { CFD_PLATFORMS, isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+
+import { TCFDsPlatformType } from 'Components/props.types';
 import { TCFDDashboardContainer } from 'Containers/props.types';
+
+import {
+    getCTraderWebTerminalLink,
+    getDXTradeWebTerminalLink,
+    getPlatformCTraderDownloadLink,
+    getPlatformDXTradeDownloadLink,
+    platformsIcons,
+    platformsText,
+} from './constants';
 
 export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android' | 'huawei') => {
     switch (platform) {
@@ -22,8 +23,6 @@ export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'a
             return getPlatformDXTradeDownloadLink(type);
         case 'ctrader':
             return getPlatformCTraderDownloadLink(type);
-        case 'derivez':
-            return getPlatformDerivEZDownloadLink(type);
         default:
             return getPlatformDXTradeDownloadLink(type);
     }
@@ -34,8 +33,6 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
 
     const QRCodeLinks = () => {
         switch (acc_type) {
-            case 'derivez':
-                return 'https://onelink.to/bkdwkd';
             case 'dxtrade':
                 return 'https://onelink.to/grmtyx';
             case 'ctrader':
@@ -66,7 +63,6 @@ type TPlatformsDesktopDownload = {
     platform: TCFDsPlatformType;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
-    derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
 };
 
@@ -74,7 +70,6 @@ export const PlatformsDesktopDownload = ({
     platform,
     dxtrade_tokens,
     ctrader_tokens,
-    derivez_tokens,
     is_demo,
 }: TPlatformsDesktopDownload) => {
     const PlatformsDesktopDownloadLinks = () => {
@@ -83,12 +78,6 @@ export const PlatformsDesktopDownload = ({
                 return getCTraderWebTerminalLink(
                     is_demo ? 'demo' : 'real',
                     ctrader_tokens && ctrader_tokens[is_demo ? 'demo' : 'real']
-                );
-
-            case 'derivez':
-                return getDerivEzWebTerminalLink(
-                    is_demo ? 'demo' : 'real',
-                    derivez_tokens && derivez_tokens[is_demo ? 'demo' : 'real']
                 );
             case 'dxtrade':
                 return getDXTradeWebTerminalLink(

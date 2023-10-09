@@ -1,13 +1,17 @@
 import React from 'react';
-import { Text, Icon, Money } from '@deriv/components';
-import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from 'Components/props.types';
+
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { Icon, Money, Text } from '@deriv/components';
 import { CFD_PLATFORMS, getCFDAccountKey, isMobile } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../Helpers/config';
-import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../Helpers/constants';
-import SpecBox from '../Components/specbox';
+import { Localize, localize } from '@deriv/translations';
+
+import { TCFDDashboardContainer, TCFDsPlatformType, TTradingPlatformAccounts } from 'Components/props.types';
+
 import PasswordBox from '../Components/passwordbox';
+import SpecBox from '../Components/specbox';
+import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from '../Helpers/config';
+import { CTRADER_DESKTOP_DOWNLOAD, getTitle, platformsText } from '../Helpers/constants';
+
 import { TCFDPasswordReset } from './props.types';
 
 type TTradeModalProps = {
@@ -23,7 +27,6 @@ type TTradeModalProps = {
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
-    derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
     platform: TCFDsPlatformType;
     is_mobile?: boolean;
@@ -71,14 +74,13 @@ const TradeModal = ({
     onPasswordManager,
     toggleModal,
     dxtrade_tokens,
-    derivez_tokens,
     ctrader_tokens,
     is_demo,
     platform,
     is_mobile,
 }: TTradeModalProps) => {
-    const CTraderAndDerivEZDescription = () => {
-        const platform_name = platform === 'derivez' ? 'Deriv EZ' : 'cTrader';
+    const CTraderDescription = () => {
+        const platform_name = 'cTrader';
         return (
             <div className='cfd-trade-modal__login-specs-item'>
                 <Text className='cfd-trade-modal--paragraph'>
@@ -104,18 +106,6 @@ const TradeModal = ({
                         {localize('Download Deriv X on your phone to trade with the Deriv X account')}
                     </Text>
                 );
-            case 'derivez':
-                return (
-                    <Text
-                        align='center'
-                        as='p'
-                        className='cfd-trade-modal__download-center-text'
-                        size={isMobile() ? 'xxxs' : 'xxs'}
-                        weight='bold'
-                    >
-                        {localize('Download Deriv GO on your phone to trade with the Deriv EZ account')}
-                    </Text>
-                );
             case 'ctrader':
                 return (
                     <Text
@@ -137,8 +127,6 @@ const TradeModal = ({
         let app_title = '';
         if (platform_type === 'dxtrade') {
             app_title = localize('Run Deriv X on your browser');
-        } else if (platform_type === 'derivez') {
-            app_title = localize('Run Deriv EZ on your browser');
         } else if (platform_type === 'ctrader' && !is_mobile) {
             app_title = localize('Run cTrader on your browser');
         } else if (platform_type === 'ctrader' && is_mobile) {
@@ -157,7 +145,6 @@ const TradeModal = ({
                         platform={platform}
                         is_demo={is_demo}
                         dxtrade_tokens={dxtrade_tokens}
-                        derivez_tokens={derivez_tokens}
                         ctrader_tokens={ctrader_tokens}
                     />
                 </div>
@@ -186,7 +173,7 @@ const TradeModal = ({
                 )}
             </div>
             <div className='cfd-trade-modal__login-specs'>
-                {platform !== 'dxtrade' && <CTraderAndDerivEZDescription />}
+                {platform !== 'dxtrade' && <CTraderDescription />}
                 {platform === 'dxtrade' && (
                     <React.Fragment>
                         <div className='cfd-trade-modal__login-specs-item'>
@@ -233,9 +220,6 @@ const TradeModal = ({
                             )}
                             {platform === CFD_PLATFORMS.MT5 && (
                                 <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
-                            )}
-                            {platform === CFD_PLATFORMS.DERIVEZ && (
-                                <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
                             )}
                             {platform === CFD_PLATFORMS.CTRADER && (
                                 <Localize i18n_default_text='Server maintenance occurs every first Saturday of the month from 7 to 10 GMT time. You may experience service disruption during this time.' />

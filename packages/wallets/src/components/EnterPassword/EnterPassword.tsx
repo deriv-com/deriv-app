@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { useAvailableMT5Accounts, useCreateOtherCFDAccount } from '@deriv/api';
+
 import PasswordShowIcon from '../../public/images/ic-password-show.svg';
+
 import './EnterPassword.scss';
 
 type TPlatformMT5 = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number]['platform'];
@@ -26,7 +29,6 @@ type TProps = {
 
 const platformToTitleMapper: Record<TPlatform, string> = {
     ctrader: 'cTrader',
-    derivez: 'Deriv EZ',
     dxtrade: 'Deriv X',
     mt5: 'Deriv MT5',
 };

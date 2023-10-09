@@ -1,42 +1,47 @@
 import React from 'react';
 import { RouteComponentProps, useLocation } from 'react-router';
 import { Redirect, useHistory } from 'react-router-dom';
-import { Icon, Tabs, PageError, Loading, Text } from '@deriv/components';
+
+import { ResetTradingPasswordModal } from '@deriv/account';
+import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
+import { Icon, Loading, PageError, Tabs, Text } from '@deriv/components';
 import {
-    isEmptyObject,
-    isMobile,
-    routes,
+    CFD_PLATFORMS,
     getCFDPlatformLabel,
     getPlatformSettings,
-    CFD_PLATFORMS,
+    isEmptyObject,
     isLandingCompanyEnabled,
+    isMobile,
+    routes,
 } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { ResetTradingPasswordModal } from '@deriv/account';
-import MissingRealAccount from './missing-real-account';
-import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
-import CompareAccountsModal from './compare-accounts-modal';
-import JurisdictionModal from './jurisdiction-modal/jurisdiction-modal';
-import MT5TradeModal from './mt5-trade-modal';
-import CFDDbviOnboarding from './cfd-dbvi-onboarding';
+
+import { TTradingPlatformAccounts } from 'Components/props.types';
+
 import CFDDownloadContainer from '../Components/cfd-download-container';
-import CFDPasswordManagerModal from './cfd-password-manager-modal';
-import CFDPasswordModal from './cfd-password-modal';
-import CFDServerErrorDialog from './cfd-server-error-dialog';
-import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
-import CFDResetPasswordModal from './cfd-reset-password-modal';
-import { general_messages } from '../Constants/cfd-shared-strings';
-import SwitchToRealAccountModal from './switch-to-real-account';
-import 'Sass/cfd-dashboard.scss';
-import { LandingCompany, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 // TODO: Change these imports after real released
 import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account-display';
 import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
-import { observer, useStore } from '@deriv/stores';
-import { TCFDPasswordReset } from './props.types';
+import { general_messages } from '../Constants/cfd-shared-strings';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { TTradingPlatformAccounts } from 'Components/props.types';
+
+import JurisdictionModal from './jurisdiction-modal/jurisdiction-modal';
+import CFDDbviOnboarding from './cfd-dbvi-onboarding';
+import CFDPasswordManagerModal from './cfd-password-manager-modal';
+import CFDPasswordModal from './cfd-password-modal';
+import CFDResetPasswordModal from './cfd-reset-password-modal';
+import CFDServerErrorDialog from './cfd-server-error-dialog';
+import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
+import CompareAccountsModal from './compare-accounts-modal';
+import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display';
+import MissingRealAccount from './missing-real-account';
+import MT5TradeModal from './mt5-trade-modal';
+import { TCFDPasswordReset } from './props.types';
+import SwitchToRealAccountModal from './switch-to-real-account';
+
+import 'Sass/cfd-dashboard.scss';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -174,7 +179,6 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
         current_list,
         dxtrade_tokens,
         ctrader_tokens,
-        derivez_tokens,
     } = useCfdStore();
 
     const [is_demo_enabled, setIsDemoEnabled] = React.useState<boolean>(false);
@@ -647,7 +651,6 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
                             is_dark_mode_on={is_dark_mode_on}
                             dxtrade_tokens={dxtrade_tokens}
                             ctrader_tokens={ctrader_tokens}
-                            derivez_tokens={derivez_tokens}
                         />
                         <CFDTopUpDemoModal platform={platform} />
                         <CFDPasswordModal platform={platform} />

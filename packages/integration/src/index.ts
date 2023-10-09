@@ -11,7 +11,6 @@ export { default as mock_mt5_login_list } from './mocks/auth/mt5_login_list';
 export { default as mock_paymentagent_list } from './mocks/auth/paymentagent_list';
 export { default as mock_platform_dxtrade } from './mocks/auth/platform_dxtrade';
 export { default as mock_platform_mt5 } from './mocks/auth/platform_mt5';
-export { default as mock_trading_platform_accounts } from './mocks/auth/trading_platform_accounts';
 export { default as mock_trading_platform_available_accounts } from './mocks/auth/trading_platform_available_accounts';
 export { default as mock_exchange_rates } from './mocks/general/exchange_rates';
 export { default as mock_payout_currencies } from './mocks/general/payout_currencies';

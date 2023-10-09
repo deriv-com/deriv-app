@@ -1,11 +1,14 @@
 import React from 'react';
-import { DesktopWrapper, Div100vhContainer, Modal, MobileWrapper, PageOverlay, UILoader } from '@deriv/components';
-import { localize } from '@deriv/translations';
+
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, Modal, PageOverlay, UILoader } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import TradeModal from './trade-modal';
+import { localize } from '@deriv/translations';
+
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+
 import DMT5TradeModal from './dmt5-trade-modal';
 import { TCFDPasswordReset } from './props.types';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import TradeModal from './trade-modal';
 
 type TMT5TradeModalProps = {
     is_eu_user: boolean;
@@ -29,7 +32,7 @@ const MT5TradeModal = observer(
         const { platform } = common;
         const { is_mobile } = ui;
 
-        const { mt5_trade_account, dxtrade_tokens, derivez_tokens, ctrader_tokens } = useCfdStore();
+        const { mt5_trade_account, dxtrade_tokens, ctrader_tokens } = useCfdStore();
 
         const CFDTradeModal = () => {
             if (platform === 'mt5') {
@@ -52,7 +55,6 @@ const MT5TradeModal = observer(
                     platform={platform}
                     ctrader_tokens={ctrader_tokens}
                     dxtrade_tokens={dxtrade_tokens}
-                    derivez_tokens={derivez_tokens}
                     is_mobile={is_mobile}
                 />
             );

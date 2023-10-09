@@ -15,7 +15,6 @@ type TPlatform = TPlatformMT5 | TPlatformOtherAccounts;
 
 const platformToTitleMapper: Record<TPlatform, string> = {
     ctrader: 'cTrader',
-    derivez: 'Deriv EZ',
     dxtrade: 'Deriv X',
     mt5: 'Deriv MT5',
 };

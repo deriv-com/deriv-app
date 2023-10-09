@@ -1,31 +1,23 @@
 import React from 'react';
-import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
+import { Formik, FormikErrors, FormikHelpers } from 'formik';
+
 import { SentEmailModal } from '@deriv/account';
-import {
-    getDxCompanies,
-    getMtCompanies,
-    getDerivezCompanies,
-    getFormattedJurisdictionCode,
-    TMtCompanies,
-    TDxCompanies,
-    TDerivezCompanies,
-} from '../Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
     Icon,
     MobileDialog,
     Modal,
+    MultiStep,
     PasswordInput,
     PasswordMeter,
     Text,
-    MultiStep,
 } from '@deriv/components';
 import {
     CFD_PLATFORMS,
-    getCFDPlatformNames,
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
+    getCFDPlatformNames,
     getErrorMessages,
     getLegalEntityName,
     isDesktop,
@@ -36,13 +28,23 @@ import {
     validPassword,
     WS,
 } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from '../Components/success-dialog.jsx';
-import '../sass/cfd.scss';
-import ChangePasswordConfirmation from './cfd-change-password-confirmation';
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import SuccessDialog from '../Components/success-dialog.jsx';
+import {
+    getDxCompanies,
+    getFormattedJurisdictionCode,
+    getMtCompanies,
+    TDxCompanies,
+    TMtCompanies,
+} from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+
+import ChangePasswordConfirmation from './cfd-change-password-confirmation';
+
+import '../sass/cfd.scss';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -116,23 +118,6 @@ type TCFDPasswordModalProps = {
     platform: string;
 };
 
-const getAccountTitle = (
-    platform: string,
-    account_type: {
-        category?: string;
-        type?: string;
-    },
-    account_title: string
-) => {
-    if (platform === CFD_PLATFORMS.DXTRADE) {
-        return getDxCompanies()[account_type.category as keyof TDxCompanies][
-            account_type.type as keyof TDxCompanies['demo' | 'real']
-        ].short_title;
-    }
-
-    return account_title;
-};
-
 const PasswordModalHeader = ({
     should_set_trading_password,
     is_password_reset_error,
@@ -185,8 +170,6 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
     const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
         return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
-    } else if (platform === CFD_PLATFORMS.DERIVEZ) {
-        return <Icon icon='IcBrandDerivEz' size={128} />;
     } else if (traders_hub) {
         if (platform === CFD_PLATFORMS.CTRADER) {
             return <TradingPlatformIcon icon='CTrader' size={128} />;
@@ -484,7 +467,6 @@ const CFDPasswordForm = ({
     const accountTitle = () => {
         switch (platform) {
             case 'ctrader':
-            case 'derivez':
             case 'derivx':
                 return 'CFD';
             default:
@@ -820,12 +802,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']]
                         .short_title;
                 break;
-            case CFD_PLATFORMS.DERIVEZ:
-                type_label =
-                    getDerivezCompanies()[category as keyof TDerivezCompanies][
-                        type as keyof TDerivezCompanies['demo' | 'real']
-                    ].short_title;
-                break;
             default:
                 type_label = '';
                 break;
@@ -838,7 +814,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const accountTypes = () => {
             if (platform === 'dxtrade' && type_label === 'Derived') {
                 return 'Synthetic';
-            } else if (platform === 'derivez' || platform === 'ctrader') {
+            } else if (platform === 'ctrader') {
                 return 'CFDs';
             }
             return type_label;
@@ -849,9 +825,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             switch (platform) {
                 case CFD_PLATFORMS.MT5:
                     platformName = mt5_platform_label;
-                    break;
-                case CFD_PLATFORMS.DERIVEZ:
-                    platformName = 'Deriv Ez';
                     break;
                 default:
                     platformName = 'Deriv X';

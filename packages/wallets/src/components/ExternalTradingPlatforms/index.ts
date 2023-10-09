@@ -1,6 +1,5 @@
 export * from './AddedDxtradeAccountsList';
 export * from './AddedMT5AccountsList';
-export * from './AvailableDerivezAccountsList';
 export * from './AvailableDxtradeAccountsList';
 export * from './AvailableMT5AccountsList';
 export * from './CFDPlatformsList';

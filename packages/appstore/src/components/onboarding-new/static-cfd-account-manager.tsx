@@ -1,12 +1,14 @@
 import React from 'react';
+import classNames from 'classnames';
+
 import { Button, Text } from '@deriv/components';
-import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS, formatMoney } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TPlatform } from 'Types';
 
 import './static-cfd-account-manager.scss';
-import classNames from 'classnames';
 
 type TStaticCFDAccountManager = {
     type: string;
@@ -116,17 +118,6 @@ const StaticCFDAccountManager = ({
                             })}
                         />
                     ))}
-
-                {platform === CFD_PLATFORMS.DERIVEZ && (
-                    <TradingPlatformIconProps
-                        icon='DerivEz'
-                        size={icon_size}
-                        className={classNames('static-cfd-account-manager--cfds', {
-                            'static-cfd-account-manager__icon--blurry':
-                                is_blurry.icon || is_last_step || is_derivx_last_step,
-                        })}
-                    />
-                )}
 
                 {platform === CFD_PLATFORMS.DXTRADE && (
                     <TradingPlatformIconProps

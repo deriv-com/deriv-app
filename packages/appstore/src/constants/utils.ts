@@ -1,5 +1,6 @@
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
 import { TTransferAccount, TWalletButton } from 'Types';
 
 /**
@@ -129,8 +130,6 @@ export const getAccountName = ({
                     return '';
             }
         }
-        case 'derivez':
-            return localize('Deriv EZ');
         case 'dxtrade':
             return localize('Deriv X');
         // @ts-expect-error Need to update @deriv/api-types to fix the TS error

@@ -1,9 +1,8 @@
-import { localize } from '@deriv/translations';
 import { Jurisdiction } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
-export type TDerivezCompanies = ReturnType<typeof getDerivezCompanies>;
 export type TCTraderCompanies = ReturnType<typeof getCTraderCompanies>;
 
 export const getDxCompanies = () => {
@@ -133,12 +132,6 @@ export const getMtCompanies = (is_eu: boolean) => {
                 title: localize('Demo Swap-Free SVG'),
                 short_title: localize('Swap-Free SVG'),
             },
-            derivez: {
-                mt5_account_type: all_config.account_type,
-                leverage: all_config.leverage,
-                title: localize('Demo'),
-                short_title: all_config.short_title,
-            },
             ctrader: {
                 mt5_account_type: all_config.account_type,
                 leverage: '500',
@@ -208,12 +201,6 @@ export const getMtCompanies = (is_eu: boolean) => {
                 title: localize('Real'),
                 short_title: all_config.short_title,
             },
-            derivez: {
-                mt5_account_type: all_config.account_type,
-                leverage: all_config.leverage,
-                title: localize('Real'),
-                short_title: all_config.short_title,
-            },
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
@@ -273,32 +260,6 @@ export const getMtCompanies = (is_eu: boolean) => {
                 leverage: financial_stp_config.leverage,
                 title: localize('Financial STP'),
                 short_title: financial_stp_config.short_title,
-            },
-        },
-    };
-};
-
-export const getDerivezCompanies = () => {
-    const all_config = {
-        account_type: '',
-        leverage: 1000,
-        short_title: localize('CFDs'),
-    };
-    return {
-        demo: {
-            all: {
-                derivez_account_type: all_config.account_type,
-                leverage: all_config.leverage,
-                title: localize('Demo'),
-                short_title: all_config.short_title,
-            },
-        },
-        real: {
-            all: {
-                derivez_account_type: all_config.account_type,
-                leverage: all_config.leverage,
-                title: localize('Real'),
-                short_title: all_config.short_title,
             },
         },
     };

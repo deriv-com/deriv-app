@@ -1,19 +1,19 @@
+import { Context } from 'Utils/mocks/mocks';
+
 import mock_authorize from './authorize';
 import mock_balance_all from './balance_all';
 import mock_balance_one from './balance_one';
 import mock_get_account_status from './get_account_status';
+import mock_get_financial_assessment from './get_financial_assessment';
+import mock_get_limits from './get_limits';
 import mock_get_self_exclusion from './get_self_exclusion';
 import mock_get_settings from './get_settings';
-import mock_get_financial_assessment from './get_financial_assessment';
-import mock_mt5_login_list from './mt5_login_list';
 import mock_landing_company from './landing_company';
-import mock_get_limits from './get_limits';
+import mock_mt5_login_list from './mt5_login_list';
 import mock_paymentagent_list from './paymentagent_list';
-import mock_trading_platform_available_accounts from './trading_platform_available_accounts';
-import mock_platform_mt5 from './platform_mt5';
 import mock_platform_dxtrade from './platform_dxtrade';
-import mock_trading_platform_accounts from './trading_platform_accounts';
-import { Context } from 'Utils/mocks/mocks';
+import mock_platform_mt5 from './platform_mt5';
+import mock_trading_platform_available_accounts from './trading_platform_available_accounts';
 
 const loggedIn = async (context: Context) => {
     mock_authorize(context);
@@ -30,7 +30,6 @@ const loggedIn = async (context: Context) => {
     mock_trading_platform_available_accounts(context);
     mock_platform_mt5(context);
     mock_platform_dxtrade(context);
-    mock_trading_platform_accounts(context);
 };
 
 export default loggedIn;

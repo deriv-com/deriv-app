@@ -1,13 +1,12 @@
 import { OSDetect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 
 const platformsText = (platform: TCFDsPlatformType) => {
     switch (platform) {
         case 'ctrader':
             return 'cTrader';
-        case 'derivez':
-            return 'EZ';
         case 'dxtrade':
             return 'X';
         default:
@@ -17,8 +16,6 @@ const platformsText = (platform: TCFDsPlatformType) => {
 
 const platformsIcons = (platform: TCFDsPlatformType) => {
     switch (platform) {
-        case 'derivez':
-            return 'DerivEz';
         case 'dxtrade':
             return 'Dxtrade';
         case 'ctrader':
@@ -41,11 +38,6 @@ const CTRADER_DESKTOP_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-set
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
 
 const CTRADER_URL = 'https://ct.deriv.com/';
-
-const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
-const DERIVEZ_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go/id1550561298';
-const DERIVEZ_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1';
-const DERIVEZ_HUAWEI_APP_URL = 'https://appgallery.huawei.com/#/app/C103801913';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
@@ -71,19 +63,6 @@ const getPlatformDXTradeDownloadLink = (platform?: TMobilePlatforms) => {
             return DXTRADE_HUAWEI_APP_URL;
         case 'android':
             return DXTRADE_ANDROID_APP_URL;
-        default:
-            return '';
-    }
-};
-
-const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
-    switch (platform) {
-        case 'ios':
-            return DERIVEZ_IOS_APP_URL;
-        case 'android':
-            return DERIVEZ_ANDROID_APP_URL;
-        case 'huawei':
-            return DERIVEZ_HUAWEI_APP_URL;
         default:
             return '';
     }
@@ -135,16 +114,6 @@ const getCTraderWebTerminalLink = (category: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 
-const getDerivEzWebTerminalLink = (category: string, token?: string) => {
-    let url = DERIVEZ_URL;
-
-    if (token) {
-        url += `?lang=en&token=${token}`;
-    }
-
-    return url;
-};
-
 const getMT5WebTerminalLink = ({
     category,
     loginid,
@@ -165,20 +134,17 @@ export {
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
     CTRADER_URL,
-    DERIVEZ_URL,
     CTRADER_DOWNLOAD_LINK,
     getBrokerName,
     platformsText,
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,
-    getPlatformDerivEZDownloadLink,
     getPlatformMt5DownloadLink,
     CTRADER_DESKTOP_DOWNLOAD,
     getDXTradeWebTerminalLink,
     getCTraderWebTerminalLink,
     platformsIcons,
     getTitle,
-    getDerivEzWebTerminalLink,
     getMT5WebTerminalLink,
     getTopUpConfig,
 };

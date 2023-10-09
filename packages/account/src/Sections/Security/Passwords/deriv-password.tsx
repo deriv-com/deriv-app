@@ -1,12 +1,15 @@
 import React from 'react';
-import { Button, Icon, Popover, Text } from '@deriv/components';
+
 import { useVerifyEmail } from '@deriv/api';
+import { Button, Icon, Popover, Text } from '@deriv/components';
 import { getBrandWebsiteName, getPlatformSettings, toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+
+import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
-import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
+
 import PlatformDescription from './platform-description';
 
 /**
@@ -38,7 +41,6 @@ const DerivPassword = observer(() => {
     const platform_name_go = getPlatformSettings('go').name;
     const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
     const platform_name_trader = getPlatformSettings('trader').name;
-    const platform_name_derivez = getPlatformSettings('derivez').name;
     const platform_name_ctrader = getPlatformSettings('ctrader').name;
     const platform_values = {
         platform_name_trader,
@@ -110,13 +112,6 @@ const DerivPassword = observer(() => {
                                         icon={`${getPlatformSettings('go').icon}-dashboard`}
                                         size={32}
                                         description='derivgo'
-                                    />
-                                </Popover>
-                                <Popover alignment='bottom' message={platform_name_derivez}>
-                                    <Icon
-                                        icon={`${getPlatformSettings('derivez').icon}`}
-                                        size={32}
-                                        description='derivez'
                                     />
                                 </Popover>
                                 <Popover alignment='bottom' message={platform_name_ctrader}>

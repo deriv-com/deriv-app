@@ -1,7 +1,9 @@
 import React from 'react';
-import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
+
 import { APIProvider } from '@deriv/api';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { renderHook } from '@testing-library/react-hooks';
+
 import useExistingCFDAccounts from '../useExistingCFDAccounts';
 
 jest.mock('@deriv/api', () => ({
@@ -61,31 +63,6 @@ jest.mock('@deriv/api', () => ({
                             market_type: 'all',
                             platform: 'dxtrade',
                         },
-                        {
-                            account_type: 'real',
-                            balance: 0,
-                            country: 'za',
-                            currency: 'USD',
-                            display_balance: '0.00',
-                            email: 'mei+za1@binary.com',
-                            group: 'real\\p02_ts01\\all\\svg_ez_usd',
-                            landing_company_short: 'svg',
-                            leverage: 1000,
-                            login: 'EZR80001086',
-                            market_type: 'all',
-                            name: 'Baily Pan',
-                            server: 'p02_ts01',
-                            server_info: {
-                                environment: 'Deriv-Server-02',
-                                geolocation: {
-                                    group: 'africa_derivez',
-                                    location: 'South Africa',
-                                    region: 'Africa',
-                                    sequence: 2,
-                                },
-                                id: 'p02_ts01',
-                            },
-                        },
                     ],
                 },
             };
@@ -134,38 +111,6 @@ describe('useExistingCFDAccounts', () => {
                     market_type: 'all',
                     platform: 'dxtrade',
                     transfer_icon: 'IcRebrandingDerivX',
-                },
-            ])
-        );
-
-        expect(result.current.data.derivez_accounts).toEqual(
-            expect.arrayContaining([
-                {
-                    account_type: 'real',
-                    balance: 0,
-                    country: 'za',
-                    currency: 'USD',
-                    display_balance: '0.00',
-                    email: 'mei+za1@binary.com',
-                    group: 'real\\p02_ts01\\all\\svg_ez_usd',
-                    landing_company_short: 'svg',
-                    leverage: 1000,
-                    login: 'EZR80001086',
-                    loginid: 'EZR80001086',
-                    market_type: 'all',
-                    name: 'Baily Pan',
-                    server: 'p02_ts01',
-                    server_info: {
-                        environment: 'Deriv-Server-02',
-                        geolocation: {
-                            group: 'africa_derivez',
-                            location: 'South Africa',
-                            region: 'Africa',
-                            sequence: 2,
-                        },
-                        id: 'p02_ts01',
-                    },
-                    transfer_icon: 'IcRebrandingDerivEz',
                 },
             ])
         );

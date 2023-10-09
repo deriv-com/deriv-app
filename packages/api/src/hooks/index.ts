@@ -19,8 +19,6 @@ export { default as useCtraderServiceToken } from './useCtraderServiceToken';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';
-export { default as useDerivezAccountsList } from './useDerivezAccountsList';
-export { default as useDerivezServiceToken } from './useDerivezServiceToken';
 export { default as useDxtradeAccountsList } from './useDxtradeAccountsList';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
 export { default as useLandingCompany } from './useLandingCompany';

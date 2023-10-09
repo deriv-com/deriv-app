@@ -4,7 +4,6 @@ import { useWithdrawalFiatAddress } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { ErrorState } from '../../../../components/error-state';
 import './withdrawal-fiat-iframe.scss';
-import { LocalStore, SessionStore } from '@deriv/shared';
 
 const WithdrawalFiatIframe = observer(() => {
     const { data: iframe_url, error, resetVerificationCode } = useWithdrawalFiatAddress();

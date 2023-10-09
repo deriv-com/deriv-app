@@ -5,6 +5,7 @@ import { createBrowserHistory } from 'history';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { useWithdrawalFiatAddress } from '@deriv/hooks';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -24,7 +25,7 @@ jest.mock('@deriv/api', () => ({
 jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
 jest.mock('Components/no-balance', () => jest.fn(() => 'NoBalance'));
 jest.mock('Components/error', () => jest.fn(() => 'Error'));
-jest.mock('../withdraw', () => jest.fn(() => 'Withdraw'));
+jest.mock('../../../modules/withdrawal-fiat/withdrawal-fiat', () => jest.fn(() => 'WithdrawalFiatModule'));
 jest.mock('../crypto-withdraw-form', () => jest.fn(() => 'CryptoWithdrawForm'));
 jest.mock('../crypto-withdraw-receipt', () => jest.fn(() => 'CryptoWithdrawReceipt'));
 jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'CryptoTransactionsHistory'));
@@ -33,6 +34,12 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: () => <div>Loading</div>,
 }));
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useWithdrawalFiatAddress: jest.fn(),
+}));
+
+const mockUseWithdrawalFiatAddress = useWithdrawalFiatAddress as jest.MockedFunction<typeof useWithdrawalFiatAddress>;
 
 const cashier_mock = {
     general_store: {
@@ -165,7 +172,7 @@ describe('<Withdrawal />', () => {
         expect(screen.getByText('Error')).toBeInTheDocument();
     });
 
-    it('should render <Withdraw /> component', () => {
+    it('should render <WithdrawalFiatModule /> component', () => {
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',
@@ -176,13 +183,22 @@ describe('<Withdrawal />', () => {
             modules: { cashier: cashier_mock },
         });
 
-        const { rerender } = render(mockWithdrawal(mock_root_store));
-        expect(screen.getByText('Withdraw')).toBeInTheDocument();
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseWithdrawalFiatAddress.mockReturnValue({
+            data: 'www.example.com',
+            resend: jest.fn(),
+            resetVerificationCode: jest.fn(),
+        });
 
-        mock_root_store.modules.cashier.iframe.iframe_url = 'coiframe_urlde';
-        rerender(mockWithdrawal(mock_root_store));
+        render(mockWithdrawal(mock_root_store));
+        expect(screen.getByText('WithdrawalFiatModule')).toBeInTheDocument();
 
-        expect(screen.getByText('Withdraw')).toBeInTheDocument();
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseWithdrawalFiatAddress.mockReturnValue({
+            data: undefined,
+            resend: jest.fn(),
+            resetVerificationCode: jest.fn(),
+        });
     });
 
     it('should render <CryptoWithdrawForm /> component', () => {

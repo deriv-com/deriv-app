@@ -168,7 +168,7 @@ export default class WithdrawStore {
     }
 
     async onMountCryptoWithdraw(verification_code: string) {
-        const { crypto_fiat_converter, general_store, iframe } = this.root_store.modules.cashier;
+        const { crypto_fiat_converter, general_store } = this.root_store.modules.cashier;
 
         general_store.setLoading(true);
         const str_reg_exp = /^\w{8,128}$/;
@@ -188,8 +188,7 @@ export default class WithdrawStore {
         if (response_cashier.error?.code === 'InvalidToken') {
             this.error.handleCashierError(response_cashier.error);
             general_store.setLoading(false);
-            iframe.setSessionTimeout(true);
-            iframe.clearTimeoutCashierUrl();
+
             if (verification_code) {
                 const { client, modules } = this.root_store;
                 // TODO: remove this unused container

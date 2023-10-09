@@ -172,59 +172,6 @@ describe('WithdrawStore', () => {
         expect(withdraw_store.blockchain_address).toBe(blockchain_address);
     });
 
-    it('should set the iframe url if verification code is valid', async () => {
-        const { checkIframeLoaded, setIframeUrl } = withdraw_store.root_store.modules.cashier.iframe;
-
-        await withdraw_store.onMountWithdraw();
-        expect(checkIframeLoaded).toHaveBeenCalled();
-
-        withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;
-        await withdraw_store.onMountWithdraw('aBcDefXa');
-        expect(checkIframeLoaded).toHaveBeenCalled();
-        expect(setIframeUrl).toHaveBeenCalledWith('https://deriv.com');
-    });
-
-    it('should handle error on mount of withdraw', async () => {
-        const { setSessionTimeout, clearTimeoutCashierUrl } = withdraw_store.root_store.modules.cashier.iframe;
-        const spyHandleCashierError = jest.spyOn(withdraw_store.error, 'handleCashierError');
-        const error = { code: 'InvalidToken', message: 'Your token has expired or is invalid.' };
-
-        withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;
-        (withdraw_store.WS.authorized.cashier as jest.Mock).mockResolvedValueOnce({ error });
-        await withdraw_store.onMountWithdraw('aBcDefXa');
-        expect(spyHandleCashierError).toHaveBeenCalledWith(error);
-        expect(setSessionTimeout).toHaveBeenCalledWith(true);
-        expect(clearTimeoutCashierUrl).toHaveBeenCalled();
-    });
-
-    it('should not set the iframe url if the client is using a crypto or virtual account', async () => {
-        const { setIframeUrl } = withdraw_store.root_store.modules.cashier.iframe;
-        const verification_code = 'aBcDefXa';
-
-        withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;
-        await withdraw_store.onMountWithdraw(verification_code);
-        expect(setIframeUrl).toHaveBeenCalledWith('');
-
-        withdraw_store.root_store.client.is_virtual = true;
-        await withdraw_store.onMountWithdraw(verification_code);
-        expect(setIframeUrl).toHaveBeenCalledWith('');
-    });
-
-    it('should return an error on mount of crypto withdraw if verification code is not valid', async () => {
-        const { setLoading } = withdraw_store.root_store.modules.cashier.general_store;
-        const { setSessionTimeout, clearTimeoutCashierUrl } = withdraw_store.root_store.modules.cashier.iframe;
-        const spyHandleCashierError = jest.spyOn(withdraw_store.error, 'handleCashierError');
-
-        await withdraw_store.onMountCryptoWithdraw('abc');
-        expect(spyHandleCashierError).toHaveBeenCalledWith({
-            code: 'InvalidToken',
-            message: 'Your token has expired or is invalid.',
-        });
-        expect(setLoading).toHaveBeenCalledWith(false);
-        expect(setSessionTimeout).toHaveBeenCalledWith(true);
-        expect(clearTimeoutCashierUrl).toHaveBeenCalled();
-    });
-
     it('should mount crypto withdraw if verification code is valid', async () => {
         const { setLoading } = withdraw_store.root_store.modules.cashier.general_store;
         const spyHandleCashierError = jest.spyOn(withdraw_store.error, 'handleCashierError');

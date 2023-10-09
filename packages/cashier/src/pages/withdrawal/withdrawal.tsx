@@ -14,7 +14,6 @@ import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
 import { WithdrawalFiatModule } from '../../modules/withdrawal-fiat';
-import { SessionStore } from '@deriv/shared';
 
 const WithdrawalSideNotes = observer(() => {
     const currency_config = useCurrentCurrencyConfig();

@@ -1,7 +1,8 @@
 import React from 'react';
 import { DesktopWrapper } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+import { getActiveLoginIDFromLocalStorage } from '@deriv/utils';
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
@@ -16,6 +17,22 @@ import Devtools from './Devtools';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
+    const { client } = useStore();
+
+    React.useEffect(() => {
+        const handleSwitching = () => {
+            const loginid = getActiveLoginIDFromLocalStorage();
+            client.switchAccount(loginid);
+        };
+
+        window.addEventListener('loginid-changed', handleSwitching);
+
+        return () => {
+            window.removeEventListener('loginid-changed', handleSwitching);
+        };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <PlatformContainer>

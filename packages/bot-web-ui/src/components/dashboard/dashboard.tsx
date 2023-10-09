@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
+
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
@@ -13,6 +14,7 @@ import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import Draggable from '../draggable';
 import RunPanel from '../run-panel';
+
 import RunStrategy from './dashboard-component/run-strategy';
 import { tour_list } from './dbot-tours/utils';
 import { ChartModal, DashboardComponent } from './dashboard-component';

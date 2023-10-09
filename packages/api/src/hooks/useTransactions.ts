@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
+
 import useInfiniteQuery from '../useInfiniteQuery';
+
 import useAuthorize from './useAuthorize';
 
 /** A custom hook to get the summary of account transactions */

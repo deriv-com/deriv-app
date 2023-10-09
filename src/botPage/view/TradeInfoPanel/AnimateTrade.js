@@ -1,11 +1,9 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { translate } from '@i18n';
-import { observer as globalObserver } from '../../../common/utils/observer';
-import { roundBalance } from '../../common/tools';
+import { observer as globalObserver } from '@utilities/observer';
+import { roundBalance } from '../../../blockly/bot/helpers';
 import useIsMounted from '../../../common/hooks/isMounted';
-import { setIsBotRunning } from '../deriv/store/ui-slice';
 import Stage from './components/Stage';
 
 const INDICATOR_MESSAGES = {
@@ -30,7 +28,6 @@ const AnimateTrade = () => {
     const [sell_id, setSellId] = React.useState(0);
     const [contract_status, setContractStatus] = React.useState(CONTRACT_STATUS.not_running);
     const isMounted = useIsMounted();
-    const dispatch = useDispatch();
 
     React.useEffect(() => {
         globalObserver.register('reset_animation', resetSummary);
@@ -116,11 +113,6 @@ const AnimateTrade = () => {
             });
         }
     }, [contract_status]);
-
-    if (is_contract_closed) {
-        dispatch(setIsBotRunning(false));
-        globalObserver.setState({ isRunning: false });
-    }
 
     return (
         <div>

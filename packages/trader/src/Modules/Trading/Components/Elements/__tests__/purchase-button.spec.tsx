@@ -1,7 +1,9 @@
 import React from 'react';
+
+import { isDesktop, isMobile } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isDesktop, isMobile } from '@deriv/shared';
+
 import PurchaseButton from '../purchase-button';
 
 const default_mocked_props = {

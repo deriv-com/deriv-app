@@ -1,21 +1,24 @@
 import React from 'react';
-import { Text, Icon, Money } from '@deriv/components';
-import { TTradingPlatformAccounts } from '../Components/props.types';
+
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { Icon, Money, Text } from '@deriv/components';
 import {
     CFD_PLATFORMS,
-    isMobile,
     getCFDAccountDisplay,
+    getCFDAccountKey,
     getCFDPlatformLabel,
     getPlatformSettings,
     getUrlBase,
-    getCFDAccountKey,
+    isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import SpecBox from '../Components/specbox';
-import PasswordBox from '../Components/passwordbox';
-import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
+
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import PasswordBox from '../Components/passwordbox';
+import { TTradingPlatformAccounts } from '../Components/props.types';
+import SpecBox from '../Components/specbox';
+import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
+
 import { TCFDPasswordReset } from './props.types';
 
 type TMT5TradeModalProps = {

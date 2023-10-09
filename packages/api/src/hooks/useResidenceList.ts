@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+
 import useQuery from '../useQuery';
 
 /** A custom hook that gets the residence list. */

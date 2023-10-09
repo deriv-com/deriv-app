@@ -11,12 +11,12 @@ import IDVForm from '../../../forms/idv-form';
 import PersonalDetailsForm from '../../../forms/personal-details-form.jsx';
 import FormFooter from '../../../form-footer';
 import {
-    validate,
-    validateName,
-    isDocumentTypeValid,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
+    isDocumentTypeValid,
     shouldHideHelperImage,
+    validate,
+    validateName,
 } from '../../../../Helpers/utils';
 
 type TIdvDocSubmitOnSignup = {

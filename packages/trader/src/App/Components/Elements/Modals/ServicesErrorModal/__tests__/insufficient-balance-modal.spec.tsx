@@ -19,6 +19,16 @@ type TModal = React.FC<{
     }>;
 };
 
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    observer: jest.fn(x => x),
+    useStore: jest.fn(() => ({
+        ui: {
+            is_mobile: false,
+        },
+    })),
+}));
+
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     const Modal: TModal = jest.fn(({ children, is_open, title }) => {

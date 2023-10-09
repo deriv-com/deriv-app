@@ -1506,21 +1506,4 @@ export default class NotificationStore extends BaseStore {
             platform: 'Account',
         });
     };
-
-    showAccountSwitchToRealNotification = (loginid, currency) => {
-        const regulation = loginid?.startsWith('CR') ? localize('non-EU') : localize('EU');
-
-        this.addNotificationMessage({
-            key: 'switched_to_real',
-            header: localize('Switched to real account'),
-            message: (
-                <Localize
-                    i18n_default_text='To access the cashier, you are now in your {{regulation}} {{currency}} ({{loginid}}) account.'
-                    values={{ loginid, currency, regulation }}
-                />
-            ),
-            type: 'info',
-            should_show_again: true,
-        });
-    };
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
+import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import TradingAppCard from '../trading-app-card';
 
@@ -16,7 +17,15 @@ jest.mock('@deriv/account', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useMT5SVGEligibleToMigrate: jest.fn(() => ({ eligible_account_to_migrate_label: 'BVI' })),
+    useIsMt5LoginListStatusPresent: jest.fn(() => ({
+        is_flag_present: true,
+        flag_value: 1,
+    })),
 }));
+
+const mockUseIsMt5LoginListStatusPresent = useIsMt5LoginListStatusPresent as jest.MockedFunction<
+    typeof useIsMt5LoginListStatusPresent
+>;
 
 describe('<TradingAppCard/>', () => {
     let modal_root_el: HTMLDivElement;
@@ -51,8 +60,7 @@ describe('<TradingAppCard/>', () => {
             jurisdiction: 'svg',
         },
         openFailedVerificationModal: jest.fn(),
-        is_open_order_position_status_present: true,
-        open_order_position_status: true,
+        login: 'login_details',
         market_type: 'synthetic',
     };
 
@@ -85,11 +93,11 @@ describe('<TradingAppCard/>', () => {
     });
 
     it('should render correct status badge if open_order_position_status key is present in BE response and the value is false', () => {
-        const new_mock_props = {
-            ...mock_props,
-            open_order_position_status: false,
-        };
-        renderComponent({ props: new_mock_props });
+        mockUseIsMt5LoginListStatusPresent.mockReturnValueOnce({
+            is_flag_present: true,
+            flag_value: 0,
+        });
+        renderComponent({ props: mock_props });
 
         const status_badge = screen.getByText(/Account closed/);
         expect(status_badge).toBeInTheDocument();
@@ -122,11 +130,11 @@ describe('<TradingAppCard/>', () => {
     });
 
     it('should not render status badge if open_order_position_status key is not present in BE response', () => {
-        const new_mock_props = {
-            ...mock_props,
-            is_open_order_position_status_present: false,
-        };
-        renderComponent({ props: new_mock_props });
+        mockUseIsMt5LoginListStatusPresent.mockReturnValueOnce({
+            is_flag_present: false,
+            flag_value: undefined,
+        });
+        renderComponent({ props: mock_props });
 
         const status_badge = screen.queryByText(/Account closed/);
         expect(status_badge).not.toBeInTheDocument();

@@ -154,6 +154,7 @@ module.exports = function (env) {
                 'mobx-react': 'mobx-react',
                 'react-dom': 'react-dom',
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
+                '@deriv/analytics': '@deriv/analytics',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

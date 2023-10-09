@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { RudderStack } from '@deriv/analytics';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
@@ -58,21 +59,19 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
 );
 
 const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
-    const { load_modal, dashboard, rudder_stack } = useDBotStore();
+    const { load_modal, dashboard } = useDBotStore();
     const { dashboard_strategies } = load_modal;
     const { setActiveTab, setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const is_mobile = isMobile();
-    const { trackActionsWithUserInfo } = rudder_stack;
 
     React.useEffect(() => {
         //on dashbord umount fire close event for rudderstack
         return () => {
-            const payload_dashboard = {
+            RudderStack.track('ce_bot_builder_form', {
                 action: 'close',
                 form_source: 'ce_bot_dashboard_form',
-            };
-            trackActionsWithUserInfo('ce_bot_dashboard_form', payload_dashboard);
+            });
         };
     }, [active_tab]);
 

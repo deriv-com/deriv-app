@@ -1,6 +1,7 @@
 import React from 'react';
 import localForage from 'localforage';
 import LZString from 'lz-string';
+import { RudderStack } from '@deriv/analytics';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
@@ -9,7 +10,7 @@ import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const DeleteDialog = observer(() => {
-    const { load_modal, dashboard, rudder_stack } = useDBotStore();
+    const { load_modal, dashboard } = useDBotStore();
     const {
         is_delete_modal_open,
         onToggleDeleteDialog,
@@ -23,7 +24,6 @@ const DeleteDialog = observer(() => {
         resetBotBuilderStrategy,
     } = load_modal;
     const { setOpenSettings } = dashboard;
-    const { trackActionsWithUserInfo } = rudder_stack;
 
     const resetStrategiesAfterDelete = async (deleted_strategy_id: string, updated_workspaces: Array<TStrategy>) => {
         if (updated_workspaces.length) {
@@ -61,11 +61,10 @@ const DeleteDialog = observer(() => {
 
     //this is to check after click of yes ir no on delete dailog send event to rudderstck
     const sentToRudderStack = (param: string) => {
-        const payload = {
+        RudderStack.track('ce_bot_builder_form', {
             delete_popup_respond: param,
             form_source: 'ce_bot_dashboard_form',
-        };
-        trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+        });
     };
 
     const onHandleChange = (type: string, param: boolean) => {

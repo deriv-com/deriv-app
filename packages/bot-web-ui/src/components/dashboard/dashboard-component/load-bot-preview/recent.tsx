@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { RudderStack } from '@deriv/analytics';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -14,10 +15,9 @@ import './index.scss';
 const HEADERS = [localize('Bot name'), localize('Last modified'), localize('Status')];
 
 const RecentComponent = observer(() => {
-    const { load_modal, dashboard, rudder_stack } = useDBotStore();
+    const { load_modal, dashboard } = useDBotStore();
     const { setDashboardStrategies, dashboard_strategies } = load_modal;
     const { setStrategySaveType, strategy_save_type } = dashboard;
-    const { trackActionsWithUserInfo } = rudder_stack;
     const check_rudder_stack_instance = React.useRef(false);
 
     React.useEffect(() => {
@@ -41,12 +41,11 @@ const RecentComponent = observer(() => {
         if (!dashboard_strategies?.length && !check_rudder_stack_instance.current) {
             const getStratagiesForRudderStack = async () => {
                 const recent_strategies = await getSavedWorkspaces();
-                const payload = {
+                RudderStack.track('ce_bot_dashboard_form', {
                     bot_last_modified_time: recent_strategies?.[0]?.timestamp,
                     form_source: 'bot_header_form',
                     action: 'open',
-                };
-                trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+                });
             };
             getStratagiesForRudderStack();
             check_rudder_stack_instance.current = true;

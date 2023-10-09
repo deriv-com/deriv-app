@@ -1,6 +1,7 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
 import React from 'react';
 import classNames from 'classnames';
+import { RudderStack } from '@deriv/analytics';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -22,7 +23,7 @@ type TCardArray = {
 };
 
 const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
-    const { dashboard, load_modal, quick_strategy, rudder_stack } = useDBotStore();
+    const { dashboard, load_modal, quick_strategy } = useDBotStore();
     const {
         onCloseDialog,
         dialog_options,
@@ -35,23 +36,21 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
     } = dashboard;
     const { handleFileChange, loadFileFromLocal } = load_modal;
     const { loadDataStrategy } = quick_strategy;
-    const { trackActionsWithUserInfo } = rudder_stack;
     //this is to check on click of which icon the user has come to bot builder
     const sentToRudderStackTabChange = (type: string) => {
-        const payload = {
+        RudderStack.track('ce_bot_builder_form', {
             shortcut_name: type,
             form_source: 'bot_dashboard_form-shortcut',
-        };
-        trackActionsWithUserInfo('ce_bot_builder_form', payload);
+            action: 'choose_shortcut',
+        });
     };
     //this is to check which icon is clicked on dashboard
     const sentToRudderStack = (type: string) => {
-        const payload = {
+        RudderStack.track('ce_bot_builder_form', {
             shortcut_name: type,
             action: 'choose_shortcut',
             form_source: 'ce_bot_dashboard_form',
-        };
-        trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+        });
     };
 
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);

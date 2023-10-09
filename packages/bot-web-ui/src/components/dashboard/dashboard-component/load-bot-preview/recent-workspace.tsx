@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { RudderStack, TActions } from '@deriv/analytics';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
@@ -19,7 +20,7 @@ type TRecentWorkspace = {
 };
 
 const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
-    const { dashboard, load_modal, save_modal, rudder_stack } = useDBotStore();
+    const { dashboard, load_modal, save_modal } = useDBotStore();
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
@@ -35,13 +36,12 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         setSelectedStrategyId,
         setPreviewedStrategyId,
     } = load_modal;
-    const { trackActionsWithUserInfo } = rudder_stack;
-    const sendToRudderStack = (param: string) => {
-        const payload = {
-            action: param,
+
+    const sendToRudderStack = (action: TActions) => {
+        RudderStack.track('ce_bot_builder_form', {
+            action,
             form_source: 'ce_bot_dashboard_form',
-        };
-        trackActionsWithUserInfo('ce_bot_dashboard_form', payload);
+        });
     };
 
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
@@ -96,8 +96,8 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const handleEdit = async () => {
         await loadFileFromRecent();
         setActiveTab(DBOT_TABS.BOT_BUILDER);
-        sendToRudderStack('edit_your_bot');
-        trackActionsWithUserInfo('ce_bot_builder_form', {
+        RudderStack.track('ce_bot_builder_form', {
+            action: 'close',
             form_source: 'bot_dashboard_form-edit',
         });
     };

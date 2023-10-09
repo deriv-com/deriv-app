@@ -92,6 +92,30 @@ type ChartTypesFormAction = {
     device_type: string;
 };
 
+export type TActions =
+    | 'open'
+    | 'close'
+    | 'search'
+    | 'delete'
+    | 'yes'
+    | 'no'
+    | 'search_string'
+    | 'choose_shortcut'
+    | 'bot_last_modified_time'
+    | 'delete_popup_respond'
+    | 'push_open_button'
+    | 'push_user_guide';
+
+export type DbotTypesForAction = {
+    action?: TActions;
+    shortcut_name?: string;
+    form_source?: string;
+    search_string?: string;
+    delete_popup_respond?: string;
+    bot_last_modified_time?: number;
+    bot_name: string;
+};
+
 type TradeTypesFormAction =
     | {
           action: 'open' | 'close' | 'info_close';
@@ -141,6 +165,9 @@ export type TEvents = {
     ce_real_account_signup_form: RealAccountSignupFormAction;
     ce_virtual_signup_email_confirmation: VirtualSignupEmailConfirmationAction;
     ce_trade_types_form: TradeTypesFormAction;
+    ce_bot_builder_form: DbotTypesForAction;
+    ce_bot_dashboard_form: DbotTypesForAction;
+    bot_dashboard_form_open: DbotTypesForAction;
     identify: IdentifyAction;
 };
 

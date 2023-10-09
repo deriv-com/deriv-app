@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
+import { RudderStack } from '@deriv/analytics';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
@@ -19,9 +20,8 @@ import StrategyNotification from './strategy-notification';
 import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
-    const { dashboard, load_modal, run_panel, quick_strategy, summary_card, rudder_stack } = useDBotStore();
+    const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
     const { active_tour, setActiveTour, active_tab, setActiveTab, setWebSocketState } = dashboard;
-    const { trackActionsWithUserInfo } = rudder_stack;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
@@ -111,10 +111,10 @@ const Dashboard = observer(() => {
             }
             //if the user comes from navigation click to bot builder tab send event to rudderstack
             if (tab_index === BOT_BUILDER) {
-                const payload = {
+                RudderStack.track('ce_bot_builder_form', {
+                    action: 'open',
                     form_source: 'bot_header_form',
-                };
-                trackActionsWithUserInfo('ce_bot_builder_form', payload);
+                });
             }
         },
         [active_tab]

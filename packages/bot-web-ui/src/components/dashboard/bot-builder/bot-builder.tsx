@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { RudderStack, TActions } from '@deriv/analytics';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
@@ -9,19 +10,17 @@ import QuickStrategy from '../quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
-    const { dashboard, app, rudder_stack } = useDBotStore();
+    const { dashboard, app } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
 
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
 
-    const trackRudderStackForBotBuilder = (param: string) => {
-        const { trackActionsWithUserInfo } = rudder_stack;
-        const payload = {
-            action: param,
+    const trackRudderStackForBotBuilder = (action: TActions) => {
+        RudderStack.track('ce_bot_builder_form', {
+            action,
             form_source: 'ce_bot_builder_form',
-        };
-        trackActionsWithUserInfo('ce_bot_builder_form', payload);
+        });
     };
 
     React.useEffect(() => {

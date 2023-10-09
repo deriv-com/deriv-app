@@ -1,5 +1,6 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
+import { RudderStack } from '@deriv/analytics';
 import { Icon } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -11,16 +12,15 @@ type TSearchIcon = {
 };
 
 const SearchIcon = observer(({ search, is_search_loading, onClick }: TSearchIcon) => {
-    const { rudder_stack } = useDBotStore();
-    const { trackActionsWithUserInfo } = rudder_stack;
-
     React.useEffect(() => {
         //this is to check after keup on bot-builder page form sent even to rudderstack
-        const payload = {
-            search_string: search,
-        };
         debounce(() => {
-            if (search && !is_search_loading) trackActionsWithUserInfo('ce_bot_builder_form', payload);
+            if (search && !is_search_loading) {
+                RudderStack.track('ce_bot_builder_form', {
+                    search_string: search,
+                    action: 'search',
+                });
+            }
         }, 2000)();
     }, [is_search_loading]);
 

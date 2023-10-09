@@ -45,6 +45,9 @@ describe('<PersonalDetailsForm />', () => {
             fetchResidenceList: fetchResidenceList,
             fetchStatesList: fetchStatesList,
         },
+        ui: {
+            notification_messages_ui: jest.fn(() => <div>Notification</div>),
+        },
     });
 
     const renderComponent = (modified_store = store) => {

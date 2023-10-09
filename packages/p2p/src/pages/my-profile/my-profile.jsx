@@ -1,13 +1,14 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { AutoSizer, DesktopWrapper, Loading, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import DailyLimitModal from 'Components/daily-limit-modal';
+import Verification from 'Components/verification';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores';
+import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container';
 import MyProfileContent from './my-profile-content.jsx';
 import MyProfileHeader from './my-profile-header';
-import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container/my-profile-details-container.jsx';
-import DailyLimitModal from 'Components/daily-limit-modal';
 
 const MyProfile = () => {
     const { general_store, my_profile_store } = useStores();
@@ -24,7 +25,11 @@ const MyProfile = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (isEmptyObject(general_store.advertiser_info) && !general_store.should_show_dp2p_blocked) {
+    if (
+        isEmptyObject(general_store.advertiser_info) &&
+        !general_store.poi_status &&
+        !general_store.should_show_dp2p_blocked
+    ) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -36,6 +41,10 @@ const MyProfile = () => {
                 </Text>
             </div>
         );
+    }
+
+    if (!general_store.is_advertiser) {
+        return <Verification />;
     }
 
     return (

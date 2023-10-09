@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Text } from '@deriv/components';
+
 import { CFDAccountCopy } from './cfd-account-copy';
 
 export type TSpecBoxProps = {

@@ -1,7 +1,8 @@
 import React from 'react';
+import { useFormikContext } from 'formik';
+
 import { Checkbox, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { useFormikContext } from 'formik';
 
 /**
  * Props for the confirmation checkbox component.

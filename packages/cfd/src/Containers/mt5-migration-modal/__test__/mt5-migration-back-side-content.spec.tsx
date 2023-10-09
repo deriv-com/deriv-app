@@ -1,6 +1,6 @@
 import React from 'react';
 import MT5MigrationBackSideContent from '../mt5-migration-back-side-content';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';

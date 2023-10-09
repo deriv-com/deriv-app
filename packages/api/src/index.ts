@@ -1,6 +1,6 @@
-import useQuery from './useQuery';
-import useMutation from './useMutation';
 import useInfiniteQuery from './useInfiniteQuery';
+import useMutation from './useMutation';
+import useQuery from './useQuery';
 
 export { default as APIProvider } from './APIProvider';
 export { default as useInvalidateQuery } from './useInvalidateQuery';

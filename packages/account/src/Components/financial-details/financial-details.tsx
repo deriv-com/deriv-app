@@ -79,10 +79,10 @@ const FinancialDetails = (props: TFinancialDetails) => {
                             setRef: (instance: HTMLFormElement) => void;
                             height?: number | string;
                         }) => (
-                            <form ref={setRef} onSubmit={handleSubmit}>
+                            <form ref={setRef} onSubmit={handleSubmit} noValidate>
                                 <ScrollToFieldWithError
-                                    fields_to_scroll_top={['income_source']}
-                                    fields_to_scroll_end={['account_turnover']}
+                                    fields_to_scroll_top={['income_source', isMobile() ? 'account_turnover' : '']}
+                                    fields_to_scroll_end={isMobile() ? undefined : ['account_turnover']}
                                 />
                                 <Div100vhContainer
                                     className={classNames('details-form', 'financial-assessment')}

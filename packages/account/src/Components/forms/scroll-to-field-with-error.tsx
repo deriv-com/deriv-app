@@ -40,7 +40,7 @@ const ScrollToFieldWithError = ({
     };
 
     React.useEffect(() => {
-        const inputs = [...document.querySelectorAll('input')];
+        const inputs = [...document.querySelectorAll('input, select')] as HTMLInputElement[];
         setAllPageInputsNames(inputs.map(input => input.name));
     }, [should_recollect_inputs_names]);
     React.useEffect(() => {

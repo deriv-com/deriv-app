@@ -4,6 +4,7 @@ import { Formik, Form } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
+import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
 import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
 
@@ -115,19 +116,39 @@ const TradingAssessmentForm = ({
         }
     };
 
+    const handleValidate = values => {
+        const errors = {};
+
+        if ('cfd_experience' in values && !values.cfd_experience) {
+            errors.cfd_experience = 'error';
+        }
+        if ('cfd_frequency' in values && !values.cfd_frequency) {
+            errors.cfd_frequency = 'error';
+        }
+        if ('trading_experience_financial_instruments' in values && !values.trading_experience_financial_instruments) {
+            errors.trading_experience_financial_instruments = 'error';
+        }
+        if ('trading_frequency_financial_instruments' in values && !values.trading_frequency_financial_instruments) {
+            errors.trading_frequency_financial_instruments = 'error';
+        }
+
+        return errors;
+    };
+
     return (
         <div className={classNames('trading-assessment', class_name)}>
             <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                 <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
             </Text>
             <section className={'trading-assessment__form'}>
-                <Formik initialValues={{ ...form_value }}>
+                <Formik initialValues={{ ...form_value }} validate={handleValidate}>
                     {({ setFieldValue, values }) => {
                         const { question_text, form_control, answer_options, questions } =
                             current_question_details.current_question;
 
                         return (
                             <Form className='trading-assessment__form--layout'>
+                                <ScrollToFieldWithError should_recollect_inputs_names={is_section_filled} />
                                 <div
                                     className={classNames('trading-assessment__form--fields', {
                                         'field-layout': ['ID', 'FR'].includes(getLanguage()),
@@ -179,7 +200,6 @@ const TradingAssessmentForm = ({
                                         <Button
                                             has_effect
                                             onClick={() => nextButtonHandler(values)}
-                                            type='button'
                                             text={localize('Next')}
                                             large
                                             primary

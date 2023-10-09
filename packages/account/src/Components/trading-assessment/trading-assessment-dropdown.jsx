@@ -44,7 +44,7 @@ const TradingAssessmentDropdown = ({
                                                 ['ID', 'FR'].includes(getLanguage()),
                                         })}
                                         is_align_text_left
-                                        name={question?.question_text}
+                                        name={question?.form_control}
                                         placeholder={question?.question_text}
                                         list={question?.answer_options}
                                         onChange={e => onChange(e, question.form_control, setFieldValue)}
@@ -60,7 +60,7 @@ const TradingAssessmentDropdown = ({
                                     <SelectNative
                                         placeholder={localize('Please select')}
                                         label={localize('Please select')}
-                                        name={question?.question_text}
+                                        name={question?.form_control}
                                         list_items={question?.answer_options}
                                         onChange={e => {
                                             onChange(e, question.form_control, setFieldValue);
@@ -68,6 +68,7 @@ const TradingAssessmentDropdown = ({
                                         value={values[question.form_control]}
                                         hide_top_placeholder
                                         disabled={disabled_items.includes(question.form_control)}
+                                        error={has_error && has_input_error && localize('Please select an option')}
                                     />
                                 </MobileWrapper>
                             </React.Fragment>

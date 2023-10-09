@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-expressions */
-import api from '../../view/deriv/api';
+import { api_base } from '@api-base';
 import TicksService from '../TicksService';
 import { logoutAllTokens, addTokenIfValid } from '../../../common/appId';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
-const ticksService = new TicksService(api);
+const ticksService = new TicksService(api_base.api);
 
 const isTick = t => Number.isInteger(t.epoch) && Number.isFinite(t.quote);
 

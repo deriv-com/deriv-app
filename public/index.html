@@ -108,25 +108,6 @@
         ></iframe>
         <div class="notifyjs-corner" style="bottom: 0px; right: 0px"></div>
         <div class="notifyjs-corner" style="bottom: 0px; left: 0px"></div>
-        <script>
-            document.getElementById('localstorage-sync').src = window.location.hostname.includes('staging')
-                ? 'https://staging-app.deriv.com/localstorage-sync.html'
-                : 'https://app.deriv.com/localstorage-sync.html';
-
-            // Auto login from deriv app
-            const login_url = localStorage.getItem('login_url');
-            const token_list = JSON.parse(localStorage.getItem('tokenList'));
-            const is_logged_in = token_list && token_list.length > 0;
-
-            if (login_url && !is_logged_in) {
-                const { origin } = window.location;
-                localStorage.setItem('is_logging_in', true);
-                window.location.href = `${origin}?${login_url}`;
-            }
-
-            localStorage.removeItem('login_url');
-        </script>
-
         <!-- Start of Survicate (www.survicate.com) code -->
         <script type="text/javascript">
             const initServicate = w => {

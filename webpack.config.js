@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'development',
-    entry: path.join(__dirname, 'src', 'botPage', 'view', 'index.js'),
+    entry: path.join(__dirname, 'src/index.js'),
     output: {
         path: path.resolve(__dirname, 'www'),
         filename: 'index.js',
@@ -98,6 +98,12 @@ module.exports = {
             '@storage': path.resolve(__dirname, 'src/storage'),
             '@constants': path.resolve(__dirname, 'src/constants'),
             '@i18n': path.resolve(__dirname, 'src/i18n'),
+            '@api-base': path.resolve(__dirname, 'src/api-base'),
+            '@components': path.resolve(__dirname, 'src/components'),
+            '@redux-store': path.resolve(__dirname, 'src/redux-store'),
+            '@blockly': path.resolve(__dirname, 'src/blockly'),
+            '@utilities': path.resolve(__dirname, 'src/utilities'),
+            '@currency-config': path.resolve(__dirname, 'src/currency-config'),
         },
     },
 };

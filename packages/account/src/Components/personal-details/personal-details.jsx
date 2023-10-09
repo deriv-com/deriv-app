@@ -42,7 +42,6 @@ const PersonalDetails = ({
     is_virtual,
     is_fully_authenticated,
     account_opening_reason_list,
-    onSubmitEnabledChange,
     selected_step_ref,
     closeRealAccountSignup,
     has_real_account,
@@ -50,19 +49,9 @@ const PersonalDetails = ({
 }) => {
     const { account_status, account_settings, residence, real_account_signup_target } = props;
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
-    const is_submit_disabled_ref = React.useRef(true);
 
     const isSubmitDisabled = errors => {
         return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
-    };
-
-    const checkSubmitStatus = errors => {
-        const is_submit_disabled = isSubmitDisabled(errors);
-
-        if (is_submit_disabled_ref.current !== is_submit_disabled) {
-            is_submit_disabled_ref.current = is_submit_disabled;
-            onSubmitEnabledChange?.(!is_submit_disabled);
-        }
     };
 
     const handleCancel = values => {
@@ -104,7 +93,6 @@ const PersonalDetails = ({
         }
         const { errors } = splitValidationResultTypes(validate(values));
         const error_data = { ...idv_error, ...errors };
-        checkSubmitStatus(error_data);
         return error_data;
     };
 
@@ -119,8 +107,10 @@ const PersonalDetails = ({
     const citizen = account_settings?.citizen || residence;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
-    const getEditableFields = is_confirmed => {
+    const getEditableFields = (is_confirmed, selected_document_type_id) => {
         const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
+
+        if (IDV_NOT_APPLICABLE_OPTION.id === selected_document_type_id) return editable_fields;
 
         if (is_confirmed && is_qualified_for_idv) {
             return editable_fields.filter(field => !['first_name', 'last_name', 'date_of_birth'].includes(field));
@@ -197,7 +187,10 @@ const PersonalDetails = ({
                                             is_svg={is_svg}
                                             is_mf={is_mf}
                                             is_qualified_for_idv={is_qualified_for_idv}
-                                            editable_fields={getEditableFields(status?.is_confirmed)}
+                                            editable_fields={getEditableFields(
+                                                status?.is_confirmed,
+                                                values?.document_type?.id
+                                            )}
                                             residence_list={residence_list}
                                             has_real_account={has_real_account}
                                             is_fully_authenticated={is_fully_authenticated}
@@ -207,6 +200,9 @@ const PersonalDetails = ({
                                             should_close_tooltip={should_close_tooltip}
                                             setShouldCloseTooltip={setShouldCloseTooltip}
                                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                                            no_confirmation_needed={
+                                                values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
+                                            }
                                         />
                                     </div>
                                 </ThemedScrollbars>

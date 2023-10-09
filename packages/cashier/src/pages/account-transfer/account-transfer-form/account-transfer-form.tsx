@@ -498,7 +498,8 @@ const AccountTransferForm = observer(
                                                 error={getMt5Error() ?? selected_to.error}
                                             />
                                         </div>
-                                        {selected_from.currency === selected_to.currency ? (
+                                        {selected_from.currency === selected_to.currency ||
+                                        (!selected_from.is_crypto && !selected_to.is_crypto) ? (
                                             <Field name='amount' validate={validateAmount}>
                                                 {({ field }: FieldProps<string>) => (
                                                     <Input

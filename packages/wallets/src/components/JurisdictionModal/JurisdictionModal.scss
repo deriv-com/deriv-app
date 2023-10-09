@@ -9,7 +9,7 @@
     height: 75vh;
 
     @include mobile {
-        height: 100vh;
+        height: auto;
     }
 
     &__button {
@@ -23,7 +23,6 @@
         font-weight: 700;
         height: 40px;
         justify-content: center;
-        margin-left: 1rem;
         padding: 10px 16px;
 
         &--disabled {
@@ -40,6 +39,11 @@
         display: flex;
         gap: 16px;
         justify-content: center;
+
+        @include mobile {
+            flex-direction: column;
+            padding: 2rem 0;
+        }
     }
 
     &__tnc {

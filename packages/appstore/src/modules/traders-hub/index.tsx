@@ -1,19 +1,15 @@
 import React from 'react';
-import classNames from 'classnames';
-
-import { ButtonToggle, DesktopWrapper, Div100vhContainer, MobileWrapper, Text } from '@deriv/components';
-import { ContentFlag, isDesktop, routes } from '@deriv/shared';
+import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
+import { isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
 import CFDsListing from 'Components/cfds-listing';
-import MainTitleBar from 'Components/main-title-bar';
 import ModalManager from 'Components/modals/modal-manager';
+import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
-
+import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
-
 import './traders-hub.scss';
 
 const TradersHub = observer(() => {

@@ -125,7 +125,6 @@ describe('MainTitleBar', () => {
                 },
             },
         });
-
         render_container(mock_store);
         expect(screen.getByText('WalletsBanner')).toBeInTheDocument();
     });

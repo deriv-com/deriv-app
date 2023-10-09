@@ -1,10 +1,8 @@
 import React from 'react';
-
-import { isDesktop, isMobile } from '@deriv/shared';
-import { mockStore, StoreProvider } from '@deriv/stores';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-
+import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 const mock_store = mockStore({
     client: {

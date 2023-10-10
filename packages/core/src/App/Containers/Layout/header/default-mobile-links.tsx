@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { Button, Icon, Popover } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+
 import { BinaryLink } from 'App/Components/Routes';
+
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
 
@@ -10,7 +13,7 @@ type TDefaultMobileLinks = {
     handleClickCashier: () => void;
 };
 
-const DefaultMobileLinks = ({ handleClickCashier }: TDefaultMobileLinks) => (
+const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLinks) => (
     <React.Fragment>
         <div className='traders-hub-header__menu-right--items--onboarding'>
             <TradersHubOnboarding />
@@ -35,6 +38,8 @@ const DefaultMobileLinks = ({ handleClickCashier }: TDefaultMobileLinks) => (
             </Button>
         </div>
     </React.Fragment>
-);
+));
+
+DefaultMobileLinks.displayName = 'DefaultMobileLinks';
 
 export default DefaultMobileLinks;

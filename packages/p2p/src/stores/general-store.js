@@ -1,15 +1,18 @@
 import React from 'react';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { get, init, timePromise } from '../utils/server_time';
+import { action, computed, makeObservable,observable, reaction } from 'mobx';
+
 import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
+
+import { Localize,localize } from 'Components/i18next';
+import { api_error_codes } from 'Constants/api-error-codes';
+import { buy_sell } from 'Constants/buy-sell';
+import { order_list } from 'Constants/order-list';
 import BaseStore from 'Stores/base_store';
-import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-import { order_list } from 'Constants/order-list';
-import { buy_sell } from 'Constants/buy-sell';
-import { api_error_codes } from 'Constants/api-error-codes';
+
+import { get, init, timePromise } from '../utils/server_time';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;
@@ -51,6 +54,7 @@ export default class GeneralStore extends BaseStore {
     review_period;
     saved_form_state = null;
     should_show_real_name = false;
+    should_show_poa = false;
     should_show_popup = false;
     user_blocked_count = 0;
     user_blocked_until = null;
@@ -112,6 +116,7 @@ export default class GeneralStore extends BaseStore {
             review_period: observable,
             saved_form_state: observable,
             should_show_real_name: observable,
+            should_show_poa: observable,
             should_show_popup: observable,
             user_blocked_count: observable,
             user_blocked_until: observable,
@@ -169,6 +174,7 @@ export default class GeneralStore extends BaseStore {
             setIsAdvertiserBlocked: action.bound,
             setIsBlockUnblockUserLoading: action.bound,
             setShouldShowRealName: action.bound,
+            setShouldShowPoa: action.bound,
             setShouldShowPopup: action.bound,
             setUserBlockedCount: action.bound,
             setUserBlockedUntil: action.bound,
@@ -210,7 +216,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     get should_show_dp2p_blocked() {
-        return this.is_blocked || this.is_high_risk || this.is_p2p_blocked_for_pa;
+        return this.is_blocked || this.is_high_risk || this.is_p2p_blocked_for_pa || this.should_show_poa;
     }
 
     blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
@@ -475,7 +481,7 @@ export default class GeneralStore extends BaseStore {
                     this.setIsBlocked(true);
                 }
 
-                if (!is_authenticated && !is_fa_not_complete) this.setIsBlocked(true);
+                if (!is_authenticated && !is_fa_not_complete) this.setShouldShowPoa(true);
 
                 if (is_fa_not_complete) this.setIsHighRisk(true);
             }
@@ -754,6 +760,10 @@ export default class GeneralStore extends BaseStore {
 
     setShouldShowRealName(should_show_real_name) {
         this.should_show_real_name = should_show_real_name;
+    }
+
+    setShouldShowPoa(should_show_poa) {
+        this.should_show_poa = should_show_poa;
     }
 
     setShouldShowPopup(should_show_popup) {

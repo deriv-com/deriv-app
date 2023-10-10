@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
 /** A custom hook to get the country config information from `residence_list` endpoint. */
 const useCountryConfig = () => {
-    const { data: residence_list_data, ...rest } = useFetch('residence_list');
+    const { data: residence_list_data, ...rest } = useQuery('residence_list');
 
     // Add additional information to the country config.
     const modified_residence_list = useMemo(

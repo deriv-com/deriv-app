@@ -231,7 +231,7 @@
             color: inherit;
         }
         & ~ .trade-container__input {
-            padding: 0 30px;
+            padding: 0 3.7rem 0.2rem !important;
         }
     }
 
@@ -613,13 +613,16 @@
             margin-top: 0.8rem;
             /* postcss-bem-linter: ignore */
             .dc-dropdown__display-text {
+                padding-left: 0 !important;
                 padding-right: unset;
-                padding-left: 1em;
             }
             /* postcss-bem-linter: ignore */
             .dc-dropdown__display-text,
             .dc-list__item-text {
                 text-transform: unset;
+            }
+            .dc-dropdown__select-arrow {
+                left: 1rem !important;
             }
         }
         /* postcss-bem-linter: ignore */

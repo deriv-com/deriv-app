@@ -24,7 +24,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const { client, common, ui } = useStore();
     const { is_mobile } = ui;
     const { logout } = client;
-    const { is_from_derivgo, routeBackInApp } = common;
+    const { is_from_derivgo } = common;
 
     const list_groups = routes.map(route_group => ({
         icon: route_group.icon,
@@ -32,7 +32,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
         subitems: route_group?.subroutes?.length ? route_group.subroutes.map(sub => subroutes.indexOf(sub)) : [],
     }));
 
-    const onClickClose = React.useCallback(() => routeBackInApp(history), [routeBackInApp, history]);
+    const onClickClose = React.useCallback(() => history.push(shared_routes.traders_hub), [history]);
 
     const selected_route = getSelectedRoute({ routes: subroutes as Array<TRoute>, pathname: location.pathname });
 

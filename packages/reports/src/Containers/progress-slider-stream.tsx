@@ -1,21 +1,23 @@
 import React from 'react';
 import { ProgressSlider } from '@deriv/components';
 import { getCurrentTick, TContractInfo, getCardLabels } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import moment from 'moment';
-import { TRootStore } from 'Stores/index';
+import { observer, useStore } from '@deriv/stores';
 
 type TProgressSliderStream = {
     contract_info: Required<TContractInfo>;
-    is_loading: boolean;
-    server_time: moment.Moment;
 };
 
-const ProgressSliderStream = ({ contract_info, is_loading, server_time }: TProgressSliderStream) => {
+const ProgressSliderStream = observer(({ contract_info }: TProgressSliderStream) => {
+    const { common, portfolio } = useStore();
+    const { server_time } = common;
+    const { is_loading } = portfolio;
+
     if (!contract_info) {
         return <div />;
     }
     const current_tick = contract_info.tick_count && getCurrentTick(contract_info);
+
+    if (!server_time) return null;
 
     return (
         <ProgressSlider
@@ -28,9 +30,6 @@ const ProgressSliderStream = ({ contract_info, is_loading, server_time }: TProgr
             ticks_count={contract_info.tick_count}
         />
     );
-};
+});
 
-export default connect(({ common, portfolio }: TRootStore) => ({
-    is_loading: portfolio.is_loading,
-    server_time: common.server_time,
-}))(ProgressSliderStream);
+export default ProgressSliderStream;

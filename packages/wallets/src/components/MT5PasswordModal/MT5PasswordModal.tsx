@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     useActiveWalletAccount,
     useAvailableMT5Accounts,
@@ -7,18 +7,19 @@ import {
     useSettings,
     useSortedMT5Accounts,
 } from '@deriv/api';
+
 import MT5PasswordIcon from '../../public/images/ic-mt5-password.svg';
 import { AccountReady } from '../AccountReady';
 import { CreatePassword } from '../CreatePassword';
 import { EnterPassword } from '../EnterPassword';
-import { WalletModal } from '../WalletModal';
+import { ModalWrapper } from '../ModalWrapper';
 
 type TProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
 };
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
-    const [password, setPassword] = React.useState('');
+    const [password, setPassword] = useState('');
     const { isSuccess, mutate } = useCreateMT5Account();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
@@ -46,7 +47,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
     };
 
     return (
-        <WalletModal>
+        <ModalWrapper hideCloseButton={isSuccess}>
             {isSuccess && <AccountReady marketType={marketType} />}
             {!isSuccess &&
                 (hasMT5Account ? (
@@ -64,7 +65,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
                         platform='mt5'
                     />
                 ))}
-        </WalletModal>
+        </ModalWrapper>
     );
 };
 

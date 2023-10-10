@@ -27,14 +27,6 @@ const mock_store = mockStore({
     common: {
         setAppstorePlatform: jest.fn(),
     },
-    modules: {
-        cfd: {
-            mt5_migration_error: '',
-            enableCFDPasswordModal: jest.fn(),
-            setJurisdictionSelectedShortcode: jest.fn(),
-            setAccountType: jest.fn(),
-        },
-    },
 });
 
 const mockUseMT5MigrationModalContext = useMT5MigrationModalContext as jest.MockedFunction<

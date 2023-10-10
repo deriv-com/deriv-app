@@ -84,7 +84,7 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
-    is_beta_chart = true;
+    is_beta_chart = false;
 
     // All possible landing companies of user between all
     standpoint = {
@@ -1247,8 +1247,7 @@ export default class ClientStore extends BaseStore {
             Cookies.set('client_information', client_information, { domain });
             // need to find other way to get the boolean value and set this cookie since `this.is_p2p_enabled` is deprecated and we can't use hooks here
             Cookies.set('is_p2p_disabled', !this.is_p2p_enabled, { domain });
-            if (!Cookies.get('website_status', { domain }))
-                Cookies.set('website_status', this.website_status, { domain });
+            Cookies.set('website_status', this.website_status, { domain });
 
             this.has_cookie_account = true;
         } else {
@@ -2773,11 +2772,9 @@ export default class ClientStore extends BaseStore {
 
     setIsBetaChart = () => {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
-        if (Cookies.get('website_status', { domain })) {
-            const cookie_value = JSON.parse(Cookies.get('website_status', { domain }));
-            const client_country = JSON.parse(cookie_value.website_status).clients_country;
-            this.is_beta_chart = ['tz', 'in', 'us'].includes(client_country);
-        }
+        const cookie_value = JSON.parse(Cookies.get('website_status', { domain }));
+        const client_country = JSON.parse(cookie_value.website_status).clients_country;
+        this.is_beta_chart = ['tz', 'in', 'us'].includes(client_country);
     };
 }
 /* eslint-enable */

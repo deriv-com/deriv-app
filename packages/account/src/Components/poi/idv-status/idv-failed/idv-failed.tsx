@@ -336,6 +336,16 @@ const IdvFailed = ({
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
+    const setScrollOffset = () => {
+        if (isMobile()) {
+            if (is_from_external) {
+                return '140px';
+            }
+            return '180px';
+        }
+        return '80px';
+    };
+
     return (
         <Formik
             initialValues={rest_state?.form_initial_values ?? {}}
@@ -347,13 +357,13 @@ const IdvFailed = ({
             validate={validateFields}
             className='proof-of-identity__container'
         >
-            {({ isSubmitting, isValid, dirty, status, values }) => (
+            {({ isSubmitting, isValid, dirty, status }) => (
                 <Form
                     className={classNames('proof-of-identity__mismatch-container', {
                         'upload-layout': is_document_upload_required,
                     })}
                 >
-                    <FormBody className='form-body' scroll_offset={isMobile() ? '180px' : '80px'}>
+                    <FormBody className='form-body' scroll_offset={setScrollOffset()}>
                         <Text size={isMobile() ? 'xs' : 's'} weight='bold' align='center'>
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>

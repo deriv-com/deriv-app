@@ -19,7 +19,6 @@ type TWalletSuccessDialog = {
     text_submit: string;
     title: string;
     toggleModal: () => void;
-    type: 'add-wallet' | 'add-trading' | 'add-mt5';
     wallet_card: JSX.Element;
 };
 

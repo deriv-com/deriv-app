@@ -363,7 +363,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     text_submit={wallet_success_text?.text_submit}
                     title={wallet_success_text?.title}
                     toggleModal={closeModal}
-                    type='add-mt5'
                     wallet_card={<WalletAppCard wallet={wallet_details} />}
                 />
             ) : (

@@ -14,13 +14,14 @@ type TProps = {
 };
 
 const WalletTransactionsCrypto: React.FC<TProps> = ({ filter }) => {
-    const { data, isLoading, subscribe, unsubscribe } = useCryptoTransactions();
+    const { data, isLoading, resetData, subscribe, unsubscribe } = useCryptoTransactions();
 
     useEffect(() => {
+        resetData();
         subscribe({ payload: { transaction_type: filter } });
 
         return () => unsubscribe();
-    }, [filter, subscribe, unsubscribe]);
+    }, [filter, resetData, subscribe, unsubscribe]);
 
     if (isLoading) return <Loader />;
 
@@ -31,7 +32,7 @@ const WalletTransactionsCrypto: React.FC<TProps> = ({ filter }) => {
             <WalletTransactionsTable
                 columns={[
                     {
-                        accessorFn: row => moment(row.submit_date).format('DD MMM YYYY'),
+                        accessorFn: row => moment.unix(row.submit_date).format('DD MMM YYYY'),
                         accessorKey: 'date',
                         header: 'Date',
                     },
@@ -40,7 +41,7 @@ const WalletTransactionsCrypto: React.FC<TProps> = ({ filter }) => {
                 groupBy={['date']}
                 rowGroupRender={transaction => (
                     <p className='wallets-transactions-crypto__group-title'>
-                        {moment(transaction.submit_date).format('DD MMM YYYY')}
+                        {moment.unix(transaction.submit_date).format('DD MMM YYYY')}
                     </p>
                 )}
                 rowRender={transaction => <WalletTransactionsCryptoRow transaction={transaction} />}

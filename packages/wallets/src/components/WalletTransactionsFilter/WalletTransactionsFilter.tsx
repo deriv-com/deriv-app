@@ -1,8 +1,11 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, useMemo } from 'react';
 import { WalletTransactionsCrypto } from '../WalletTransactionsCrypto';
+import { WalletTransactionsGeneral } from '../WalletTransactionsGeneral';
 import './WalletTransactionsFilter.scss';
 
-type TValue = ComponentProps<typeof WalletTransactionsCrypto>['filter'];
+type TValue =
+    | ComponentProps<typeof WalletTransactionsCrypto>['filter']
+    | ComponentProps<typeof WalletTransactionsGeneral>['filter'];
 
 type TProps = {
     isPendingActive: boolean;
@@ -10,9 +13,21 @@ type TProps = {
 };
 
 const WalletTransactionsFilter: React.FC<TProps> = ({ isPendingActive, onSelect }) => {
+    const optionsSelectionMapper: Record<string, Partial<TValue>> = useMemo(
+        () => ({
+            all: isPendingActive ? 'all' : undefined,
+            deposit: 'deposit',
+            transfer: 'transfer',
+            withdrawal: 'withdrawal',
+        }),
+        [isPendingActive]
+    );
+
     return (
         <div className='wallets-transactions-filter'>
-            <select onChange={e => onSelect(e.target.value as TValue)}>
+            <select
+                onChange={e => onSelect(optionsSelectionMapper[e.target.value as keyof typeof optionsSelectionMapper])}
+            >
                 <option value='all'>All</option>
                 <option value='deposit'>Deposit</option>
                 <option value='withdrawal'>Withdrawal</option>

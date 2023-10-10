@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import moment from 'moment';
 import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import './WalletTransactionsCryptoRow.scss';
@@ -109,7 +110,7 @@ const WalletTransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
             </div>
             <div>
                 <p className='wallets-transactions-crypto-row__title'>Time</p>
-                <p>{new Date(transaction.submit_date).toLocaleString()}</p>
+                <p>{moment.unix(transaction.submit_date).toLocaleString()}</p>
             </div>
             <div
                 className={`wallets-transactions-crypto-row__transaction-amount ${

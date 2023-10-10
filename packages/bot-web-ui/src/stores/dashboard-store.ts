@@ -91,7 +91,7 @@ export default class DashboardStore implements IDashboardStore {
         const refreshBotBuilderTheme = () => {
             Blockly.derivWorkspace.asyncClear();
             Blockly.Xml.domToWorkspace(
-                Blockly.Xml.textToDom(Blockly?.derivWorkspace.strategy_to_load),
+                Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
                 Blockly.derivWorkspace
             );
         };

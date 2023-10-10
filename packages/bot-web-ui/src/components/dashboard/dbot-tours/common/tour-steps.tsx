@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { getUUID } from '@deriv/bot-skeleton/src/services/tradeEngine/utils/helpers';
 import { Text } from '@deriv/components';
 import { observer } from '@deriv/stores';

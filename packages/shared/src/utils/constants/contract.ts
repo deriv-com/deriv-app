@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { localize } from '@deriv/translations';
+
 import { shouldShowCancellation, shouldShowExpiration, TURBOS, VANILLALONG } from '../contract';
 
 export const getLocalizedBasis = () =>
@@ -386,6 +388,12 @@ export const getUnsupportedContracts = () =>
         },
     } as const);
 
+/**
+ * // Config to display details such as trade buttons, their positions, and names of trade types
+ *
+ * @param {Boolean} is_high_low
+ * @returns { object }
+ */
 export const getSupportedContracts = (is_high_low?: boolean) =>
     ({
         ACCU: {

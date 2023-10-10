@@ -41,7 +41,7 @@ const ContractCard = ({
     toggleUnsupportedContractModal,
 }: React.PropsWithChildren<TContractCardProps>) => {
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
-    const payout = formatMoney(contract_info.currency ?? '', profit_loss, true, 0, 0, true);
+    const payout = formatMoney(contract_info.currency ?? '', profit_loss > 0 ? profit_loss : 0, true, 0, 0);
     const payout_info = `${payout} ${contract_info.currency}`;
     return (
         <React.Fragment>

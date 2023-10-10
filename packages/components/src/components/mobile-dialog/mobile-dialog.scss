@@ -44,10 +44,8 @@
         }
     }
     &__content {
-        margin-top: 0.4rem;
         box-sizing: border-box;
         position: relative;
-        padding-top: 3.6rem;
         z-index: 1;
         background: var(--fill-normal);
         transition: all 0.2s ease-out;
@@ -57,9 +55,6 @@
         }
         > div {
             height: 100%;
-        }
-        &--has-info-banner {
-            padding-top: 8.6rem;
         }
     }
     &__header {
@@ -76,11 +71,12 @@
         border-bottom: 1px solid var(--border-disabled);
 
         &-container {
-            position: fixed;
+            position: sticky;
             top: 0;
             z-index: 4;
             background: var(--fill-normal);
             width: 100%;
+            border-bottom: 0.1rem solid transparent;
 
             .inline-message__information {
                 margin: 1.6rem 0.8rem;

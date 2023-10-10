@@ -165,8 +165,8 @@ const ContractTypeWidget = observer(
             const sortContractCategories = (a: TContractCategory, b: TContractCategory) =>
                 order_arr.indexOf(a.key) - order_arr.indexOf(b.key);
 
-            const ordered_list = list?.sort(sortContractCategories);
-            const ordered_unavailable_types_list = unavailable_trade_types_list.sort(sortContractCategories);
+            const ordered_list = list && [...list].sort(sortContractCategories);
+            const ordered_unavailable_types_list = [...unavailable_trade_types_list].sort(sortContractCategories);
             const all_trade_types_list = ordered_list?.concat(ordered_unavailable_types_list);
             const accumulators_category = getListFilteredByCategory(all_trade_types_list, localize('Accumulators'));
             const multipliers_category = getListFilteredByCategory(all_trade_types_list, localize('Multipliers'));

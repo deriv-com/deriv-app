@@ -125,7 +125,6 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                     <div
                         className={classNames('dc-mobile-dialog__content', {
                             'dc-mobile-dialog__content--is-full-height': has_full_height,
-                            'dc-mobile-dialog__content--has-info-banner': info_banner,
                         })}
                         style={footer_height ? { height: `calc(100% - ${footer_height}px)` } : undefined}
                     >

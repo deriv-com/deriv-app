@@ -2,6 +2,9 @@
 .contract-type-list {
     padding: 1.6rem 0.8rem;
 
+    @include mobile {
+        padding: 1.6rem;
+    }
     &__label {
         @include typeface(--paragraph-left-bold-black);
         color: var(--text-prominent);

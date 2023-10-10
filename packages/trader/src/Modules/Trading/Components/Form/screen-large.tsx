@@ -4,7 +4,7 @@ import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import Fieldset from 'App/Components/Form/fieldset';
 import ContractType from '../../Containers/contract-type';
 import Purchase from '../../Containers/purchase';
-import TradeParams from '../../Containers/trade-params.jsx';
+import TradeParams from '../../Containers/trade-params';
 
 type TScreenLarge = {
     is_market_closed?: boolean;

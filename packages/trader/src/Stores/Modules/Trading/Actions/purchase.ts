@@ -1,11 +1,20 @@
-import { Buy, BuyContractRequest } from '@deriv/api-types';
+import { Buy, BuyContractResponse, BuyContractRequest } from '@deriv/api-types';
 import { WS } from '@deriv/shared';
+
+type TResponse = BuyContractResponse & {
+    echo_req: Buy;
+    error?: {
+        code: string;
+        message: string;
+        details?: BuyContractResponse['buy'] & { field: string };
+    };
+};
 
 export const processPurchase = async (
     proposal_id: string,
-    price: BuyContractRequest['price'],
-    passthrough: BuyContractRequest['passthrough']
-): Promise<Buy> =>
+    price: string | number,
+    passthrough?: BuyContractRequest['passthrough']
+): Promise<TResponse> =>
     WS.buy({
         proposal_id,
         price,

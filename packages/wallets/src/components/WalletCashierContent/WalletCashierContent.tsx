@@ -1,35 +1,35 @@
-import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api';
-import WalletDepositCrypto from '../WalletDepositCrypto/WalletDepositCrypto';
-import WalletDepositFiat from '../WalletDepositFiat/WalletDepositFiat';
+import React, { useEffect } from 'react';
+import { useHistory, useRouteMatch } from 'react-router-dom';
+import { WalletDeposit } from '../WalletDeposit';
+import { WalletTransactions } from '../WalletTransactions';
 import { WalletTransfer } from '../WalletTransfer';
 import WalletWithdrawal from '../WalletWithdrawal/WalletWithdrawal';
 
 const WalletCashierContent = () => {
-    const { data } = useActiveWalletAccount();
-    const isCrypto = data?.currency_config?.is_crypto;
-    const isDeposit = useRouteMatch('/appstore/traders-hub/cashier/deposit');
+    const history = useHistory();
     const isTransfer = useRouteMatch('/appstore/traders-hub/cashier/transfer');
-    const isWithdrawal = useRouteMatch('/appstore/traders-hub/cashier/withdraw');
+    const isDeposit = useRouteMatch('/appstore/traders-hub/cashier/deposit');
+    const isTransactions = useRouteMatch('/appstore/traders-hub/cashier/transactions');
+    const isWithdraw = useRouteMatch('/appstore/traders-hub/cashier/withdraw');
 
-    if (isDeposit) {
-        if (isCrypto) {
-            return <WalletDepositCrypto />;
+    useEffect(() => {
+        // redirect to deposit page if no other page is matched
+        if (!isTransfer && !isDeposit && !isTransactions && !isWithdraw) {
+            history.push('/appstore/traders-hub/cashier/deposit');
         }
+    }, [isTransfer, isDeposit, isTransactions, isWithdraw, history]);
 
-        return <WalletDepositFiat />;
-    }
+    if (isDeposit) return <WalletDeposit />;
 
-    if (isTransfer) {
-        return <WalletTransfer />;
-    }
+    if (isTransfer) return <WalletTransfer />;
 
-    if (isWithdrawal) {
+    if (isTransactions) return <WalletTransactions />;
+
+    if (isWithdraw) {
         return <WalletWithdrawal />;
     }
 
-    return <p>In development</p>;
+    return <></>;
 };
 
 export default WalletCashierContent;

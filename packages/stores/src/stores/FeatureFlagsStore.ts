@@ -1,6 +1,7 @@
 import BaseStore from './BaseStore';
 
 const FLAGS = {
+    wallet: false,
     next_wallet: false,
 } satisfies Record<string, boolean>;
 

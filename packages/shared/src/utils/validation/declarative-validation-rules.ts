@@ -47,7 +47,7 @@ export const validPhone = (value: string) => /^\+?([0-9-]+\s)*[0-9-]+$/.test(val
 export const validLetterSymbol = (value: string) => /^[A-Za-z]+([a-zA-Z.' -])*[a-zA-Z.' -]+$/.test(value);
 export const validName = (value: string) => /^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u.test(value);
 export const validLength = (value = '', options: TOptions) =>
-    (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
+    (options.min ? value.length >= options.min : true) && (options.max ? value.length <= Number(options.max) : true);
 export const validPassword = (value: string) => /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])[!-~]{8,25}$/.test(value);
 export const validEmail = (value: string) => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
 const validBarrier = (value: string) => /^[+-]?\d+\.?\d*$/.test(value);
@@ -60,7 +60,7 @@ const validEmailToken = (value: string) => value.trim().length === 8;
 let pre_build_dvrs: TInitPreBuildDVRs, form_error_messages: TFormErrorMessagesTypes;
 
 const isMoreThanMax = (value: number, options: TOptions) =>
-    options.type === 'float' ? +value > +options.max! : compareBigUnsignedInt(value, options.max!) === 1;
+    options.type === 'float' ? +value > Number(options.max) : compareBigUnsignedInt(value, options.max) === 1;
 
 export const validNumber = (value: string, opts: TOptions) => {
     const options = cloneObject(opts);

@@ -1,13 +1,14 @@
-import { action, computed, observable, toJS, makeObservable, override, reaction, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS } from 'mobx';
+
 import {
     getAccuBarriersDTraderTimeout,
     getContractTypesConfig,
     isAccumulatorContract,
     isAccumulatorContractOpen,
     isCallPut,
-    isHighLow,
     isDesktop,
     isEnded,
+    isHighLow,
     isMobile,
     isMultiplierContract,
     isTurbosContract,
@@ -15,8 +16,9 @@ import {
     LocalStore,
     switch_to_tick_chart,
 } from '@deriv/shared';
-import ContractStore from './contract-store';
+
 import BaseStore from './base-store';
+import ContractStore from './contract-store';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -397,7 +399,7 @@ export default class ContractTradeStore extends BaseStore {
 
     get last_contract() {
         const applicable_contracts = this.applicable_contracts();
-        const length = applicable_contracts.length;
+        const length = this.contracts[0]?.contract_info.current_spot_time ? applicable_contracts.length : -1;
         return length > 0 ? applicable_contracts[length - 1] : {};
     }
 

@@ -1,9 +1,12 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import { Localize } from '@deriv/translations';
+
 import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+
 import getRoutesConfig from '../../Constants/routes-config';
 import { TBinaryRoutes, TRoute } from '../../Types';
+
 import RouteWithSubRoutes from './route-with-sub-routes';
 
 const BinaryRoutes = observer((props: TBinaryRoutes) => {

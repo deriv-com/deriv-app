@@ -1,21 +1,25 @@
 /* eslint-disable react/display-name */
-import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import classNames from 'classnames';
+
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
-import { localize, Localize } from '@deriv/translations';
+import { Button, DesktopWrapper, MobileDialog, MobileWrapper,Modal, Text } from '@deriv/components';
+import { routes } from '@deriv/shared';
+import { Localize,localize } from '@deriv/translations';
+
 import { connect } from 'Stores/connect';
+
 import AccountWizard from './account-wizard.jsx';
 import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import ChooseCurrency from './choose-currency.jsx';
-import SetCurrency from './set-currency.jsx';
 import FinishedAddCurrency from './finished-add-currency.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
+import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
+
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 

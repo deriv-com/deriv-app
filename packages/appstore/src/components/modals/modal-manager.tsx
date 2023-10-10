@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetTradingPasswordModal } from '@deriv/account';
+import { useFeatureFlags } from '@deriv/hooks';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
@@ -17,6 +18,9 @@ import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
 import AccountTransferModal from 'Components/account-transfer-modal';
+import RealWalletsUpgrade from './real-wallets-upgrade/real-wallets-upgrade';
+import WalletsMigrationFailed from './wallets-migration-failed';
+import WalletModal from './wallet-modal';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -24,6 +28,7 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
 
 const ModalManager = () => {
     const store = useStores();
+    const { is_wallet_enabled } = useFeatureFlags();
     const { common, client, modules, traders_hub, ui } = store;
     const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, verification_code } = client;
     const { platform } = common;
@@ -37,8 +42,15 @@ const ModalManager = () => {
         getRealFinancialAccountsExistingData,
         getRealSwapfreeAccountsExistingData,
     } = modules.cfd;
-    const { enableApp, disableApp, is_reset_trading_password_modal_visible, setResetTradingPasswordModalOpen } = ui;
-    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
+    const {
+        enableApp,
+        disableApp,
+        setShouldShowCooldownModal,
+        is_reset_trading_password_modal_visible,
+        setResetTradingPasswordModalOpen,
+    } = ui;
+    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal, is_real_wallets_upgrade_on } =
+        traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -142,6 +154,9 @@ const ModalManager = () => {
                 toggleModal={toggleAccountTransferModal}
             />
             <FailedVerificationModal />
+            {is_real_wallets_upgrade_on && <RealWalletsUpgrade />}
+            <WalletsMigrationFailed />
+            {is_wallet_enabled && <WalletModal />}
         </React.Fragment>
     );
 };

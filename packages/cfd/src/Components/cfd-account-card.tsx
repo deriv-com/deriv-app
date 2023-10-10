@@ -1,26 +1,29 @@
-import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import classNames from 'classnames';
+import { FormikValues } from 'formik';
+
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Text } from '@deriv/components';
+import { CFD_PLATFORMS, getCFDPlatformLabel, isMobile, mobileOSDetect } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+
 import {
-    getDXTradeWebTerminalLink,
-    getPlatformDXTradeDownloadLink,
     getCTraderWebTerminalLink,
     getDerivEzWebTerminalLink,
+    getDXTradeWebTerminalLink,
+    getPlatformDXTradeDownloadLink,
 } from '../Helpers/constants';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+
 import {
     TAccountIconValues,
-    TCFDAccountCardActionProps,
     TCFDAccountCard,
+    TCFDAccountCardActionProps,
     TTradingPlatformAccounts,
     TTradingPlatformAvailableAccount,
 } from './props.types';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useStore, observer } from '@deriv/stores';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { FormikValues } from 'formik';
 import SpecBox from './specbox';
 import PasswordBox from './passwordbox';
 

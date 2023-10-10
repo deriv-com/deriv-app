@@ -19,6 +19,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
+import { WebsiteStatusProvider } from './website-status-context.tsx';
 // TODO: Lazy load smartchart styles
 import '@deriv/deriv-charts/dist/smartcharts.css';
 import '@deriv/deriv-charts-beta/dist/smartcharts.css';
@@ -50,6 +51,8 @@ const AppWithoutTranslation = ({ root_store }) => {
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
         root_store.common.setPlatform();
+
+        root_store.client.setIsBetaChart();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -64,13 +67,15 @@ const AppWithoutTranslation = ({ root_store }) => {
         <>
             {is_translation_loaded ? (
                 <Router basename={has_base ? `/${base}` : null}>
-                    <MobxContentProvider store={root_store}>
-                        <APIProvider>
-                            <StoreProvider store={root_store}>
-                                <AppContent passthrough={platform_passthrough} />
-                            </StoreProvider>
-                        </APIProvider>
-                    </MobxContentProvider>
+                    <WebsiteStatusProvider>
+                        <MobxContentProvider store={root_store}>
+                            <APIProvider>
+                                <StoreProvider store={root_store}>
+                                    <AppContent passthrough={platform_passthrough} />
+                                </StoreProvider>
+                            </APIProvider>
+                        </MobxContentProvider>
+                    </WebsiteStatusProvider>
                 </Router>
             ) : (
                 <></>

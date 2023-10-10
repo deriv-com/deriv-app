@@ -408,6 +408,7 @@ export default class ClientStore extends BaseStore {
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
             is_beta_chart: observable,
+            setIsBetaChart: action.bound,
         });
 
         reaction(
@@ -2767,5 +2768,12 @@ export default class ClientStore extends BaseStore {
 
         return is_p2p_visible;
     }
+
+    setIsBetaChart = () => {
+        const cookie_value = JSON.parse(Cookies.get('website_status'));
+        const client_country = JSON.parse(cookie_value.website_status).clients_country;
+
+        this.is_beta_chart = ['tz', 'in', 'us'].includes(client_country);
+    };
 }
 /* eslint-enable */

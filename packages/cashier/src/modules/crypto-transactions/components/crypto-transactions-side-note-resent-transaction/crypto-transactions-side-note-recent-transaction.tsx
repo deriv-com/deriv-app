@@ -35,7 +35,9 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
 
         const TransactionDetail = React.useCallback(() => {
             const filtered_transactions =
-                transactions?.filter(el => (transaction_type === 'deposit' ? el.is_deposit : el.is_withdrawal)) || [];
+                transactions?.filter(el =>
+                    el.status_code !== 'CANCELLED' && transaction_type === 'deposit' ? el.is_deposit : el.is_withdrawal
+                ) || [];
 
             return (
                 <React.Fragment>

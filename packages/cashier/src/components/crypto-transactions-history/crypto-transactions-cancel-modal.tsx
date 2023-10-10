@@ -1,14 +1,11 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv/components';
+import { Button, Modal } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './crypto-transactions-cancel-modal.scss';
 
 const CryptoTransactionsCancelModal = observer(() => {
-    const {
-        ui: { is_mobile },
-    } = useStore();
     const { transaction_history } = useCashierStore();
     const {
         cancelCryptoTransaction,

@@ -1,6 +1,6 @@
 /** @define contract-type-list; */
 .contract-type-list {
-    padding: 1.6rem;
+    padding: 1.6rem 0.8rem;
 
     &__label {
         @include typeface(--paragraph-left-bold-black);
@@ -17,6 +17,9 @@
     &--unavailable-category {
         opacity: 0.32;
         pointer-events: none;
+    }
+    &--has-info-banner {
+        padding-top: 0;
     }
 }
 

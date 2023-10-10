@@ -18,7 +18,7 @@ type TListProps = {
 
 const List = ({ handleInfoClick, handleSelect, list, value }: TListProps) => (
     <React.Fragment>
-        {list.map(contract_category => {
+        {list.map((contract_category, index) => {
             const contract_types = contract_category.contract_types?.filter(contract_type => {
                 const base_contract_type = /^(.*)_equal$/.exec(contract_type.value)?.[1];
                 if (contract_type.value === TURBOS.SHORT || contract_type.value === VANILLALONG.PUT) return false;
@@ -35,6 +35,7 @@ const List = ({ handleInfoClick, handleSelect, list, value }: TListProps) => (
                     key={contract_category.key}
                     className={classNames('contract-type-list', {
                         'contract-type-list--unavailable-category': contract_category.is_unavailable,
+                        'contract-type-list--has-info-banner': list.some(i => i.is_unavailable) && index === 0,
                     })}
                     data-testid='dt_contract_list'
                 >

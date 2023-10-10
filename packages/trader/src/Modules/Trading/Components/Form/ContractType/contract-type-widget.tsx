@@ -1,10 +1,12 @@
 import React from 'react';
+import { InlineMessage } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { RudderStack } from '@deriv/analytics';
 import ContractType from './contract-type';
 import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type';
 import { TContractCategory, TContractType, TList } from './types';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 type TContractTypeWidget = {
     name: string;
@@ -23,8 +25,10 @@ type TContractTypeWidget = {
 const ContractTypeWidget = observer(
     ({ name, value, list, onChange, languageChanged, unavailable_trade_types_list = [] }: TContractTypeWidget) => {
         const {
+            active_symbols: { active_symbols },
             ui: { is_mobile },
         } = useStore();
+        const { symbol } = useTraderStore();
         const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
         const [is_dialog_open, setDialogVisibility] = React.useState<boolean | null>();
         const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
@@ -283,6 +287,21 @@ const ContractTypeWidget = observer(
                     onChangeInput={onChangeInput}
                     onCategoryClick={handleCategoryClick}
                     show_loading={languageChanged}
+                    info_banner={
+                        !!unavailable_trade_types_list.length && (
+                            <InlineMessage
+                                size={is_mobile ? 'sm' : 'xs'}
+                                type='information'
+                                message={
+                                    <Localize
+                                        i18n_default_text='Some trade types are unavailable for {{symbol}}.'
+                                        values={{ symbol: active_symbols.find(s => s.symbol === symbol)?.display_name }}
+                                        shouldUnescape
+                                    />
+                                }
+                            />
+                        )
+                    }
                 >
                     {is_info_dialog_open ? (
                         <ContractType.Info

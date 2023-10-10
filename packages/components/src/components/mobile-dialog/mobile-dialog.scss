@@ -58,6 +58,9 @@
         > div {
             height: 100%;
         }
+        &--has-info-banner {
+            padding-top: 8.6rem;
+        }
     }
     &__header {
         box-sizing: border-box;
@@ -66,15 +69,23 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        position: fixed;
-        top: 0;
         padding: 1rem;
         height: $MOBILE_HEADER_HEIGHT;
-        z-index: 4;
-        background: var(--fill-normal);
         transition: all 0.2s ease-out;
         transition-delay: 0.2s;
         border-bottom: 1px solid var(--border-disabled);
+
+        &-container {
+            position: fixed;
+            top: 0;
+            z-index: 4;
+            background: var(--fill-normal);
+            width: 100%;
+
+            .inline-message__information {
+                margin: 1.6rem 0.8rem;
+            }
+        }
     }
     &__footer {
         position: fixed;

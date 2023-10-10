@@ -1,17 +1,25 @@
-.dc-modal__container_crypto-transactions-cancel-modal {
-    padding: 2.4rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2.4rem;
+.dc-modal-header__title--crypto-transactions-cancel-modal {
+    padding: 2.4rem 2.4rem 0;
 
     @include mobile {
-        padding: 1.6rem;
-        gap: 1.6rem;
+        padding: 1.6rem 1.6rem 0;
     }
 }
 
-.crypto-transactions-cancel-modal-buttons-container {
-    display: flex;
-    align-self: flex-end;
-    gap: 0.8rem;
+.crypto-transactions-cancel-modal {
+    &__body {
+        padding: 2.4rem;
+
+        @include mobile {
+            padding: 1.6rem;
+        }
+    }
+
+    &__footer {
+        padding: 0 2.4rem 2.4rem;
+
+        @include mobile {
+            padding: 0 1.6rem 1.6rem;
+        }
+    }
 }

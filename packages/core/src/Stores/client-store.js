@@ -1953,7 +1953,8 @@ export default class ClientStore extends BaseStore {
         // if real to virtual --> switch to blue
         // if virtual to real --> switch to green
         // else keep the existing connection
-        const should_switch_socket_connection = this.is_virtual || /VRTC|VRW/.test(from_login_id);
+        const from_virtual_account = /VRTC|VRW/.test(from_login_id);
+        const should_switch_socket_connection = this.is_virtual !== from_virtual_account;
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection();

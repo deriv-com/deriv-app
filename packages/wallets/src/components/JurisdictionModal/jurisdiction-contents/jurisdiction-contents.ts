@@ -3,7 +3,7 @@ import { getJurisdictionBviContents } from './jurisdiction-bvi-contents';
 import { getJurisdictionLabuanContents } from './jurisdiction-labuan-contents';
 import { getJurisdictionSvgContents } from './jurisdiction-svg-contents';
 import { getJurisdictionVanuatuContents } from './jurisdiction-vanuatu-contents';
-import { TJurisdictionCardItems, TJurisdictionCardParams } from './props.types';
+import { TJurisdictionCardItems } from './props.types';
 
 type TJurisdictionContent = {
     bvi: TJurisdictionCardItems;

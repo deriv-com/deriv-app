@@ -1,8 +1,8 @@
 import { TJurisdictionCardItems } from './props.types';
 
 export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
-    over_header: 'Straight-through processing',
-    is_over_header_available: true,
+    overHeader: 'Straight-through processing',
+    isOverHeaderAvailable: true,
     header: 'Labuan',
     contents: {
         synthetic: [
@@ -22,10 +22,10 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             {
                 key: 'verifications',
                 title: 'Verifications',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayIcons',
                 },
-                clickable_description: [
+                clickableDescription: [
                     {
                         type: 'link',
                         text: 'Learn more',
@@ -47,37 +47,37 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
                 key: 'assets',
                 title: 'Assets',
                 description: 'Forex and Cryptocurrencies',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '80+',
-                    display_text_skin_color: 'red-dark',
+                    displayText: '80+',
+                    displayTextSkinColor: 'red-dark',
                 },
             },
             {
                 key: 'leverage',
                 title: 'Leverage',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '1:100',
-                    display_text_skin_color: 'yellow-dark',
+                    displayText: '1:100',
+                    displayTextSkinColor: 'yellow-dark',
                 },
             },
             {
                 key: 'spreadsFrom',
                 title: 'Spreads from',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '0.6 pips',
-                    display_text_skin_color: 'violet-dark',
+                    displayText: '0.6 pips',
+                    displayTextSkinColor: 'violet-dark',
                 },
             },
             {
                 key: 'verifications',
                 title: 'Verifications',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayIcons',
                 },
-                clickable_description: [
+                clickableDescription: [
                     {
                         type: 'link',
                         text: 'Learn more',
@@ -95,9 +95,8 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             },
         ],
     },
-
-    verification_docs: {
-        synthetic: ['document_number', 'name_and_address'],
-        financial: ['document_number', 'name_and_address'],
+    verificationDocs: {
+        synthetic: ['documentNumber', 'nameAndAddress'],
+        financial: ['documentNumber', 'nameAndAddress'],
     },
 });

@@ -1,7 +1,7 @@
-import { TJurisdictionCardItems, TJurisdictionCardParams } from './props.types';
+import { TJurisdictionCardItems } from './props.types';
 
 export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
-    is_over_header_available: false,
+    isOverHeaderAvailable: false,
     header: 'Vanuatu',
     contents: {
         synthetic: [
@@ -9,28 +9,28 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
                 key: 'assets',
                 title: 'Assets',
                 description: 'Synthetics, Baskets and Derived FX',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '40+',
-                    display_text_skin_color: 'red-darker',
+                    displayText: '40+',
+                    displayTextSkinColor: 'red-darker',
                 },
             },
             {
                 key: 'leverage',
                 title: 'Leverage',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '1:1000',
-                    display_text_skin_color: 'yellow-light',
+                    displayText: '1:1000',
+                    displayTextSkinColor: 'yellow-light',
                 },
             },
             {
                 key: 'verifications',
                 title: 'Verifications',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayIcons',
                 },
-                clickable_description: [
+                clickableDescription: [
                     {
                         type: 'link',
                         text: 'Learn more',
@@ -52,44 +52,43 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
                 key: 'assets',
                 title: 'Assets',
                 description: 'Forex, Stock indices, Commodities and Cryptocurrencies',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '90+',
-                    display_text_skin_color: 'red-dark',
+                    displayText: '90+',
+                    displayTextSkinColor: 'red-dark',
                 },
             },
             {
                 key: 'leverage',
                 title: 'Leverage',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '1:1000',
-                    display_text_skin_color: 'yellow-light',
+                    displayText: '1:1000',
+                    displayTextSkinColor: 'yellow-light',
                 },
-                clickable_description: [
+                clickableDescription: [
                     {
                         type: 'link',
-                        text: 'Dynamic Leverage',
-                        // onClick: toggleDynamicLeverage,
+                        text: 'Dynamic Leverage', // onClick: toggleDynamicLeverage,
                     },
                 ],
             },
             {
                 key: 'spreadsFrom',
                 title: 'Spreads from',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '0.5 pips',
-                    display_text_skin_color: 'violet-dark',
+                    displayText: '0.5 pips',
+                    displayTextSkinColor: 'violet-dark',
                 },
             },
             {
                 key: 'verifications',
                 title: 'Verifications',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayIcons',
                 },
-                clickable_description: [
+                clickableDescription: [
                     {
                         type: 'link',
                         text: 'Learn more',
@@ -107,8 +106,8 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
             },
         ],
     },
-    verification_docs: {
-        synthetic: ['document_number', 'name_and_address'],
-        financial: ['document_number', 'name_and_address'],
+    verificationDocs: {
+        synthetic: ['documentNumber', 'nameAndAddress'],
+        financial: ['documentNumber', 'nameAndAddress'],
     },
 });

@@ -1,7 +1,7 @@
-import { TJurisdictionCardItems, TJurisdictionCardParams } from './props.types';
+import { TJurisdictionCardItems } from './props.types';
 
 export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
-    is_over_header_available: false,
+    isOverHeaderAvailable: false,
     header: 'St. Vincent & Grenadines',
     contents: {
         synthetic: [
@@ -9,25 +9,25 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
                 key: 'assets',
                 title: 'Assets',
                 description: 'Synthetics, Baskets and Derived FX',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '40+',
-                    display_text_skin_color: 'red-darker',
+                    displayText: '40+',
+                    displayTextSkinColor: 'red-darker',
                 },
             },
             {
                 key: 'leverage',
                 title: 'Leverage',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '1:1000',
-                    display_text_skin_color: 'yellow-light',
+                    displayText: '1:1000',
+                    displayTextSkinColor: 'yellow-light',
                 },
             },
             {
                 key: 'verifications',
                 title: 'Verifications',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayIcons',
                 },
                 description: 'You will need to submit proof of identity and address once you reach certain thresholds.',
@@ -43,41 +43,40 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
                 key: 'assets',
                 title: 'Assets',
                 description: 'Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '170+',
-                    display_text_skin_color: 'red-light',
+                    displayText: '170+',
+                    displayTextSkinColor: 'red-light',
                 },
             },
             {
                 key: 'leverage',
                 title: 'Leverage',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '1:1000',
-                    display_text_skin_color: 'yellow-light',
+                    displayText: '1:1000',
+                    displayTextSkinColor: 'yellow-light',
                 },
-                clickable_description: [
+                clickableDescription: [
                     {
                         type: 'link',
-                        text: 'Dynamic Leverage',
-                        // onClick: toggleDynamicLeverage,
+                        text: 'Dynamic Leverage', // onClick: toggleDynamicLeverage,
                     },
                 ],
             },
             {
                 key: 'spreadsFrom',
                 title: 'Spreads from',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '0.6 pips',
-                    display_text_skin_color: 'violet-dark',
+                    displayText: '0.6 pips',
+                    displayTextSkinColor: 'violet-dark',
                 },
             },
             {
                 key: 'verifications',
                 title: 'Verifications',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayIcons',
                 },
                 description: 'You will need to submit proof of identity and address once you reach certain thresholds.',
@@ -93,25 +92,25 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
                 key: 'assets',
                 title: 'Assets',
                 description: 'Synthetics, Forex, Stocks, Stock Indices, Cryptocurrencies, and ETFs',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '40+',
-                    display_text_skin_color: 'red-darker',
+                    displayText: '40+',
+                    displayTextSkinColor: 'red-darker',
                 },
             },
             {
                 key: 'leverage',
                 title: 'Leverage',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayText',
-                    display_text: '1:1000',
-                    display_text_skin_color: 'yellow-light',
+                    displayText: '1:1000',
+                    displayTextSkinColor: 'yellow-light',
                 },
             },
             {
                 key: 'verifications',
                 title: 'Verifications',
-                title_indicators: {
+                titleIndicators: {
                     type: 'displayIcons',
                 },
                 description: 'You will need to submit proof of identity and address once you reach certain thresholds.',
@@ -123,8 +122,8 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
             },
         ],
     },
-    verification_docs: {
-        synthetic: ['not_applicable'],
-        financial: ['not_applicable'],
+    verificationDocs: {
+        synthetic: ['notApplicable'],
+        financial: ['notApplicable'],
     },
 });

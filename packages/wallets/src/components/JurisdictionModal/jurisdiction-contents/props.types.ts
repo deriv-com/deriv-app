@@ -3,32 +3,26 @@ export type TClickableDescription = {
     text: string;
     type: 'link' | 'text';
 };
-
 export type TJurisdictionCardSectionTitleIndicators = {
-    display_text?: string;
-    display_text_skin_color?: string;
+    displayText?: string;
+    displayTextSkinColor?: string;
     type: 'displayIcons' | 'displayText';
 };
-
 export type TJurisdictionCardSection = {
-    clickable_description?: TClickableDescription[];
+    clickableDescription?: TClickableDescription[];
     description?: string;
     key: string;
     title: string;
-    title_indicators?: TJurisdictionCardSectionTitleIndicators;
+    titleIndicators?: TJurisdictionCardSectionTitleIndicators;
 };
-
 export type TJurisdictionCardVerificationStatus = 'Default' | 'Failed' | 'Pending' | 'Verified';
-
 export type TJurisdictionCardItemVerificationItem =
-    | 'document_number'
-    | 'identity_document'
-    | 'name_and_address'
-    | 'not_applicable'
+    | 'documentNumber'
+    | 'identityDocument'
+    | 'nameAndAddress'
+    | 'notApplicable'
     | 'selfie';
-
 export type TJurisdictionCardItemVerification = TJurisdictionCardItemVerificationItem[];
-
 export type TJurisdictionCardItems = {
     contents: {
         financial: TJurisdictionCardSection[];
@@ -36,39 +30,33 @@ export type TJurisdictionCardItems = {
         synthetic: TJurisdictionCardSection[];
     };
     header: string;
-    is_over_header_available: boolean;
-    over_header?: string;
-    verification_docs?: {
+    isOverHeaderAvailable: boolean;
+    overHeader?: string;
+    verificationDocs?: {
         financial?: TJurisdictionCardItemVerification;
         synthetic?: TJurisdictionCardItemVerification;
     };
 };
-
 export type TJurisdictionCardParams = {
     toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
 };
-
 export type TJurisdictionVerificationSection = {
     icon: string;
     text: string;
 };
-
 export type TJurisdictionVerificationItems = {
-    document_number?: TJurisdictionVerificationSection;
-    identity_document?: TJurisdictionVerificationSection;
-    name_and_address?: TJurisdictionVerificationSection;
-    not_applicable?: TJurisdictionVerificationSection;
+    documentNumber?: TJurisdictionVerificationSection;
+    identityNumber?: TJurisdictionVerificationSection;
+    nameAndAddress?: TJurisdictionVerificationSection;
+    notApplicable?: TJurisdictionVerificationSection;
     selfie?: TJurisdictionVerificationSection;
 };
-
 type TJurisdictionVerificationColors = 'green' | 'red' | 'yellow';
-
 export type TJurisdictionVerificationStatus = {
     color: TJurisdictionVerificationColors;
     icon: string;
     text: string;
 };
-
 export type TInstrumentsIcon = {
     className?: string;
     highlighted: boolean;
@@ -82,10 +70,9 @@ export type TInstrumentsIcon = {
         | 'StockIndices'
         | 'Stocks'
         | 'Synthetics';
-    is_asterisk?: boolean;
+    isAsterisk?: boolean;
     text: string;
 };
-
 export type TJurisdictionData = {
     jurisdiction?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu';
 };

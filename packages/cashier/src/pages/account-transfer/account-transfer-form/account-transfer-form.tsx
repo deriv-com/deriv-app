@@ -32,7 +32,7 @@ type TAccountTransferFormProps = {
     setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
-const AccountOption = ({ account, idx, is_poa_poi_pending_for_mf, is_selected_from }: TAccountsList) => {
+const AccountOption = ({ account, idx, is_pending_verification, is_selected_from }: TAccountsList) => {
     const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt || account.is_derivez;
 
     return (
@@ -55,7 +55,7 @@ const AccountOption = ({ account, idx, is_poa_poi_pending_for_mf, is_selected_fr
             </div>
 
             <span className='account-transfer-form__balance'>
-                {is_poa_poi_pending_for_mf && is_selected_from ? (
+                {is_pending_verification && is_selected_from ? (
                     <Text color='warning' size='xs'>
                         <Localize i18n_default_text='Pending verification' />
                     </Text>
@@ -218,7 +218,7 @@ const AccountTransferForm = observer(
                     <AccountOption
                         idx={idx}
                         account={account}
-                        is_poa_poi_pending_for_mf={is_poa_poi_pending_for_mf}
+                        is_pending_verification={is_poa_poi_pending_for_mf}
                         is_selected_from={is_selected_from}
                     />
                 );

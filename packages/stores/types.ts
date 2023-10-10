@@ -506,6 +506,8 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    setIsAlreadyAttempted: (value: boolean) => void;
+    is_already_attempted: boolean;
 };
 
 type TCommonStoreError = {

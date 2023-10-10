@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './crypto-transactions-cancel-modal.scss';
@@ -33,20 +33,18 @@ const CryptoTransactionsCancelModal = observer(() => {
                     <Localize i18n_default_text='Are you sure you want to cancel this transaction?' />
                 </Text>
                 <div className='crypto-transactions-cancel-modal-buttons-container'>
+                    <Button onClick={hideCryptoTransactionsCancelModal} large secondary>
+                        <Localize i18n_default_text="No, don't cancel" />
+                    </Button>
                     <Button
-                        text={localize("No, don't cancel")}
-                        onClick={hideCryptoTransactionsCancelModal}
-                        large
-                        secondary
-                    />
-                    <Button
-                        text={localize('Yes, cancel')}
                         onClick={() => {
                             cancelCryptoTransaction(selected_crypto_transaction_id);
                         }}
                         large
                         primary
-                    />
+                    >
+                        <Localize i18n_default_text='Yes, cancel' />
+                    </Button>
                 </div>
             </Modal>
         </React.Fragment>

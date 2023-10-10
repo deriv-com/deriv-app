@@ -185,7 +185,6 @@ module.exports = function (env) {
             splitChunks: {
                 chunks: 'all',
                 minChunks: 1,
-                maxSize: 10000000,
                 cacheGroups: {
                     default: {
                         minChunks: 2,

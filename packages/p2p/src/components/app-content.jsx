@@ -1,16 +1,19 @@
-import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
+
 import { Loading, Tabs } from '@deriv/components';
 import { useP2PNotificationCount } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
+
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
+
 import { localize } from './i18next';
 
 const AppContent = ({ order_id }) => {

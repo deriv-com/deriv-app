@@ -107,9 +107,6 @@ module.exports = function (env) {
                         'style-loader',
                         {
                             loader: 'css-loader',
-                            options: {
-                                url: false,
-                            },
                         },
                         {
                             loader: 'postcss-loader',
@@ -138,6 +135,15 @@ module.exports = function (env) {
                             },
                         },
                     ],
+                },
+                {
+                    test: /\.svg$/,
+                    exclude: [/node_modules/, path.resolve('../', 'wallets')],
+                    include: /public\//,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'appstore/public/[name].[contenthash][ext]',
+                    },
                 },
                 {
                     test: /\.svg$/,

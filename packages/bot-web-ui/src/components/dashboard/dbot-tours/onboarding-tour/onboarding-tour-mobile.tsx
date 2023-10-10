@@ -1,10 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Icon, ProgressBarTracker, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { getSetting } from 'Utils/settings';
+
 import { useDBotStore } from 'Stores/useDBotStore';
+import { getSetting } from 'Utils/settings';
+
 import TourButton from '../common/tour-button';
 import { DBOT_ONBOARDING_MOBILE, TMobileTourConfig } from '../config';
 

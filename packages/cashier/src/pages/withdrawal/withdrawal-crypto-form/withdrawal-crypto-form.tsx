@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
 import { useCurrentAccountDetails } from '@deriv/hooks';
-import { CryptoConfig, getCurrencyName, isMobile } from '@deriv/shared';
+import { CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
@@ -48,7 +48,8 @@ const Header = ({ currency }: THeaderProps) => {
 };
 
 const WithdrawalCryptoForm = observer(() => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
+    const { is_mobile } = ui;
     const {
         balance,
         currency,
@@ -100,12 +101,12 @@ const WithdrawalCryptoForm = observer(() => {
     if (is_loading) return <Loading />;
 
     return (
-        <div className='cashier__wrapper' data-testid='dt_withdraw_crypto_form'>
-            {!isMobile() && <Header currency={currency} />}
-            <div className={classNames({ 'withdrawal-crypto-form__icon': isMobile() })}>
-                <Icon icon={`IcCurrency-${account_details?.icon?.toLowerCase()}`} size={isMobile() ? 64 : 128} />
+        <div className='cashier__wrapper' data-testid='dt_withdrawal_crypto_form'>
+            {!is_mobile && <Header currency={currency} />}
+            <div className={classNames({ 'withdrawal-crypto-form__icon': is_mobile })}>
+                <Icon icon={`IcCurrency-${account_details?.icon?.toLowerCase()}`} size={is_mobile ? 64 : 128} />
             </div>
-            {isMobile() && <Header currency={currency} />}
+            {is_mobile && <Header currency={currency} />}
             <Formik
                 initialValues={{
                     address: '',

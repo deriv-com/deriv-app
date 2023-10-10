@@ -1,17 +1,15 @@
 import React from 'react';
 import { MobileWrapper, Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { useReportsStore } from 'Stores/useReportsStores';
 
-type TAccountStatistics = {
-    account_statistics: {
-        total_withdrawals: number;
-        total_deposits: number;
-    };
-    currency: string;
-};
+const AccountStatistics = observer(() => {
+    const { client } = useStore();
+    const { statement } = useReportsStore();
+    const { currency } = client;
+    const { account_statistics } = statement;
 
-const AccountStatistics = ({ account_statistics, currency }: TAccountStatistics) => {
     return (
         <div className='statement__account-statistics'>
             <div className='statement__account-statistics-item'>
@@ -64,10 +62,6 @@ const AccountStatistics = ({ account_statistics, currency }: TAccountStatistics)
             </div>
         </div>
     );
-};
+});
 
-// TODO: implement reports store TRootStore in types.ts
-export default connect(({ modules, client }: any) => ({
-    account_statistics: modules.statement.account_statistics,
-    currency: client.currency,
-}))(AccountStatistics);
+export default AccountStatistics;

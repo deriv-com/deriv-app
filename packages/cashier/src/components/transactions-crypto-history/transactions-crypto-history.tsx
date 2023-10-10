@@ -24,7 +24,7 @@ const TransactionsCryptoHistory = observer(() => {
     const { client } = useStore();
     const { transaction_history, general_store } = useCashierStore();
     const { setIsTransactionsCryptoVisible } = transaction_history;
-    const { data, is_loading } = useCryptoTransactions();
+    const { data, isLoading } = useCryptoTransactions();
     const { setIsDeposit } = general_store;
     const { currency } = client;
     const [is_modal_visible, setIsModalVisible] = React.useState(false);
@@ -71,7 +71,7 @@ const TransactionsCryptoHistory = observer(() => {
                             </Table.Header>
                         )}
                         <Table.Body className='transactions-crypto-history__table-body'>
-                            {is_loading ? (
+                            {isLoading ? (
                                 <Loading is_fullscreen={false} />
                             ) : (
                                 <DataList

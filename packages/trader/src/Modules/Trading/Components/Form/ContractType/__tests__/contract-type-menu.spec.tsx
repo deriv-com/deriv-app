@@ -3,6 +3,16 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ContractTypeMenu from '../ContractTypeMenu';
 import ContractTypeWidget from '../contract-type-widget';
 
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    observer: jest.fn(x => x),
+    useStore: jest.fn(() => ({
+        ui: {
+            is_mobile: false,
+        },
+    })),
+}));
+
 describe('ContractTypeMenu', () => {
     const categories: React.ComponentProps<typeof ContractTypeMenu>['categories'] = [
         {
@@ -292,7 +302,7 @@ describe('ContractTypeMenu', () => {
     });
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
-        render(<ContractTypeWidget list={list} value={item.value} onChange={jest.fn()} />);
+        render(<ContractTypeWidget name='test_name' list={list} value={item.value} onChange={jest.fn()} />);
         const dt_contract_dropdown = screen.getByTestId('dt_contract_dropdown');
         fireEvent.click(dt_contract_dropdown);
 

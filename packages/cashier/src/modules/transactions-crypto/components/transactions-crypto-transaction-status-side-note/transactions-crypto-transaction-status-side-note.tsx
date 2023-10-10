@@ -13,7 +13,7 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
     const { is_mobile } = ui;
     const { transaction_history } = useCashierStore();
     const { setIsTransactionsCryptoVisible } = transaction_history;
-    const { last_transaction, has_transactions, is_loading, error, subscribe } = useCryptoTransactions();
+    const { last_transaction, has_transactions, isLoading, error, subscribe } = useCryptoTransactions();
     const currency_config = useCurrentCurrencyConfig();
 
     const TransactionDetail = useCallback(() => {
@@ -129,9 +129,9 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
         <SideNote type={error ? 'warning' : undefined} title={localize('Transaction status')}>
             <div className='transactions-crypto-transaction-status-side-note'>
                 <div className='transactions-crypto-transaction-status-side-note__divider' />
-                {is_loading && <LoadingState />}
-                {!is_loading && !error && has_transactions && <TransactionDetail />}
-                {!is_loading && !error && !has_transactions && <NoTransactionState />}
+                {isLoading && <LoadingState />}
+                {!isLoading && !error && has_transactions && <TransactionDetail />}
+                {!isLoading && !error && !has_transactions && <NoTransactionState />}
                 {error ? <ErrorState /> : <></>}
             </div>
         </SideNote>

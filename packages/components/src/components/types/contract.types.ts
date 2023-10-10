@@ -1,11 +1,11 @@
 export type TGetContractPath = (contract_id?: number) => string;
 
 export type TToastConfig = {
-    key?: string;
-    content: string;
-    timeout?: number;
+    key: string;
+    content: string | React.ReactNode;
     is_bottom?: boolean;
-    type?: string;
+    timeout?: number;
+    type: string;
 };
 
 export type TErrorMessages = Readonly<{

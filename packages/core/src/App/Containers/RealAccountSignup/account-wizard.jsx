@@ -219,6 +219,14 @@ const AccountWizard = props => {
         delete clone?.tax_identification_confirm;
         delete clone?.agreed_tnc;
         delete clone?.agreed_tos;
+
+        // BE does not accept empty strings for TIN
+        // so we remove it from the payload if it is empty in case of optional TIN field
+        // as the value will be available from the form_values
+        if (clone?.tax_identification_number?.length === 0) {
+            delete clone.tax_identification_number;
+        }
+
         clone = processInputData(clone);
         props.setRealAccountFormData(clone);
         if (payload) {

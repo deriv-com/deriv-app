@@ -57,7 +57,7 @@ describe('<WithdrawalCryptoForm />', () => {
         renderWithdrawalCryptoForm();
 
         expect(screen.getByText('Your BTC wallet address')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_withdraw_crypto_form')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_withdrawal_crypto_form')).toBeInTheDocument();
     });
 
     it('should show a proper error if address is not provided', async () => {

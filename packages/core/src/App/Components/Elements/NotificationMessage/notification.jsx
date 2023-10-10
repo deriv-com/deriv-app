@@ -9,7 +9,6 @@ import NotificationBanner from './notification-banner.jsx';
 import { default_delay, types } from './constants';
 import NotificationPromo from './notification-promo.jsx';
 import { BinaryLink } from '../../Routes';
-import NotificationCloseMxMlt from './notification-close-mx-mlt.jsx';
 import NotificationOrder from './notification-order.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
@@ -52,17 +51,6 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     header={data.header_popup}
                     message={data.message_popup}
                     secondary_btn={data.action}
-                    img_src={data.img_src}
-                    img_alt={data.img_alt}
-                    onClose={destroy}
-                />
-            );
-        case 'close_mx_mlt':
-            return (
-                <NotificationCloseMxMlt
-                    header={data.header}
-                    message={data.message}
-                    secondary_btn={data.secondary_btn}
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     onClose={destroy}
@@ -197,7 +185,6 @@ Notification.propTypes = {
             'trustpilot',
             'announce',
             'promotions',
-            'close_mx_mlt',
             'p2p_completed_order',
         ]).isRequired,
     }),

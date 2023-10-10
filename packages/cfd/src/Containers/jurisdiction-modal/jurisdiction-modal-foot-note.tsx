@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { getAuthenticationStatusInfo, isMobile, Jurisdiction, getMT5Title } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { getAuthenticationStatusInfo, isMobile, Jurisdiction, getMT5Title, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
 
@@ -12,10 +13,19 @@ const FooterNote = ({
     should_restrict_bvi_account_creation,
     should_restrict_vanuatu_account_creation,
 }: TJurisdictionModalFootNoteProps) => {
+    const { common } = useStore();
+
+    const { platform } = common;
+
     const account_type_name = getMT5Title(account_type);
 
     const { poa_pending } = getAuthenticationStatusInfo(account_status);
 
+    if (platform === CFD_PLATFORMS.CTRADER && jurisdiction_selected_shortcode === 'svg') {
+        return (
+            <Localize i18n_default_text='Add your Deriv cTrader account under Deriv (SVG) LLC (company no. 273 LLC 2020).' />
+        );
+    }
     if (jurisdiction_selected_shortcode === Jurisdiction.SVG) {
         return (
             <Localize
@@ -86,4 +96,4 @@ const JurisdictionModalFootNote = (props: TJurisdictionModalFootNoteProps) => {
     );
 };
 
-export default JurisdictionModalFootNote;
+export default observer(JurisdictionModalFootNote);

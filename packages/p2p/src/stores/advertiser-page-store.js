@@ -5,7 +5,6 @@ import BaseStore from 'Stores/base_store';
 
 export default class AdvertiserPageStore extends BaseStore {
     active_index = 0;
-    ad = null;
     adverts = [];
     counterparty_advertiser_info = {};
     counterparty_type = buy_sell.BUY;
@@ -16,15 +15,12 @@ export default class AdvertiserPageStore extends BaseStore {
     is_dropdown_menu_visible = false;
     is_loading = true;
     is_loading_adverts = true;
-    is_submit_disabled = true;
-    submitForm = () => {};
 
     constructor(root_store) {
         super(root_store);
 
         makeObservable(this, {
             active_index: observable,
-            ad: observable,
             adverts: observable,
             counterparty_type: observable,
             api_error_message: observable,
@@ -34,8 +30,6 @@ export default class AdvertiserPageStore extends BaseStore {
             is_dropdown_menu_visible: observable,
             is_loading: observable,
             is_loading_adverts: observable,
-            is_submit_disabled: observable,
-            submitForm: observable,
             account_currency: computed,
             advert: computed,
             advertiser_details: computed,
@@ -45,12 +39,9 @@ export default class AdvertiserPageStore extends BaseStore {
             handleTabItemClick: action.bound,
             onAdvertiserIdUpdate: action.bound,
             onCancel: action.bound,
-            onCancelClick: action.bound,
-            onConfirmClick: action.bound,
             onMount: action.bound,
             onSubmit: action.bound,
             setActiveIndex: action.bound,
-            setAd: action.bound,
             setAdvertiserInfo: action.bound,
             setAdverts: action.bound,
             setIsCounterpartyAdvertiserBlocked: action.bound,
@@ -61,8 +52,6 @@ export default class AdvertiserPageStore extends BaseStore {
             setIsDropdownMenuVisible: action.bound,
             setIsLoading: action.bound,
             setIsLoadingAdverts: action.bound,
-            setIsSubmitDisabled: action.bound,
-            setSubmitForm: action.bound,
             showAdPopup: action.bound,
             showBlockUserModal: action.bound,
         });
@@ -181,15 +170,6 @@ export default class AdvertiserPageStore extends BaseStore {
         this.setIsDropdownMenuVisible(false);
     }
 
-    onCancelClick() {
-        this.root_store.general_store.hideModal();
-    }
-
-    onConfirmClick(order_info) {
-        const nav = { location: 'buy_sell' };
-        this.root_store.general_store.redirectTo('orders', { order_info, nav });
-    }
-
     onMount() {
         if (this.advertiser_details_id) {
             this.advertiser_info_subscription = subscribeWS(
@@ -224,17 +204,19 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     onSubmit() {
-        this.root_store.general_store.blockUnblockUser(
-            !this.is_counterparty_advertiser_blocked,
-            this.advertiser_details_id
-        );
+        const current_advertiser_id = this.advertiser_details_id ?? this.counterparty_advertiser_info?.id;
+        this.root_store.general_store.blockUnblockUser(!this.is_counterparty_advertiser_blocked, current_advertiser_id);
         if (this.is_counterparty_advertiser_blocked) this.getCounterpartyAdvertiserList(this.advertiser_details_id);
         this.setIsDropdownMenuVisible(false);
     }
 
     onTabChange() {
-        this.setAdverts([]);
-        this.loadMoreAdvertiserAdverts({ startIndex: 0 });
+        const { general_store } = this.root_store;
+        const advertiser_id = general_store.counterparty_advertiser_id || this.advertiser_details_id;
+        if (advertiser_id) {
+            this.setAdverts([]);
+            this.loadMoreAdvertiserAdverts({ startIndex: 0 });
+        }
     }
 
     onUnmount() {
@@ -245,10 +227,6 @@ export default class AdvertiserPageStore extends BaseStore {
 
     setActiveIndex(active_index) {
         this.active_index = active_index;
-    }
-
-    setAd(ad) {
-        this.ad = ad;
     }
 
     setAdverts(adverts) {
@@ -289,14 +267,6 @@ export default class AdvertiserPageStore extends BaseStore {
 
     setIsLoadingAdverts(is_loading_adverts) {
         this.is_loading_adverts = is_loading_adverts;
-    }
-
-    setIsSubmitDisabled(is_submit_disabled) {
-        this.is_submit_disabled = is_submit_disabled;
-    }
-
-    setSubmitForm(submitFormFn) {
-        this.submitForm = submitFormFn;
     }
 
     showAdPopup() {

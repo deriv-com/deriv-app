@@ -1,11 +1,13 @@
 import { useCallback, useState } from 'react';
-import useQuery from './useQuery';
+
 import type {
     TSocketAcceptableProps,
+    TSocketPaginateableEndpointNames,
     TSocketRequestPayload,
     TSocketRequestQueryOptions,
-    TSocketPaginateableEndpointNames,
 } from '../types';
+
+import useQuery from './useQuery';
 
 const usePaginatedFetch = <T extends TSocketPaginateableEndpointNames>(
     name: T,
@@ -15,11 +17,7 @@ const usePaginatedFetch = <T extends TSocketPaginateableEndpointNames>(
     const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
     const options = prop && 'options' in prop ? (prop.options as TSocketRequestQueryOptions<T>) : undefined;
 
-    // @ts-expect-error The `limit` parameter is always present in
-    // the `payload` for the paginateable endpoints.
     const limit: number = payload?.payload?.limit || 10;
-    // @ts-expect-error The `offset` parameter is always present in
-    // the `payload` for the paginateable endpoints.
     const [offset, setOffset] = useState<number>(payload?.payload?.offset || 0);
 
     // @ts-expect-error It's safe to ignore the TS error here since the

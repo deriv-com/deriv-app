@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+
 import { isMobile } from '@deriv/shared';
+
 import OnboardingTourDesktop from './onboarding-tour-desktop';
 import OnboardingTourMobile from './onboarding-tour-mobile';
 

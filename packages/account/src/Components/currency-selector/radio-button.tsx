@@ -1,60 +1,32 @@
-import React, { InputHTMLAttributes, AllHTMLAttributes, ReactElement } from 'react';
+import React, { AllHTMLAttributes } from 'react';
 import classNames from 'classnames';
-import { Localize } from '@deriv/translations';
-import { Popover, Icon } from '@deriv/components';
+import { Icon } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-
-export type TUSTPopover = {
-    id: string;
-};
+import USTPopover from './ust-popover';
 
 type TRadioButtonExtend = {
-    field: InputHTMLAttributes<HTMLInputElement>;
+    field: React.InputHTMLAttributes<HTMLInputElement>;
     icon?: string;
     second_line_label?: string;
+    id: string;
+    label: string;
+    onClick?: (e: React.MouseEvent<HTMLLabelElement, MouseEvent>) => void;
 };
 
 export type TRadioButton = AllHTMLAttributes<HTMLInputElement | HTMLLabelElement> & TRadioButtonExtend;
 
-const USTPopover = ({ id }: TUSTPopover) => {
-    let popover_message: ReactElement | undefined;
-    if (/^UST$/i.test(id)) {
-        popover_message = (
-            <Localize
-                i18n_default_text={
-                    'Tether as an Omni token (USDT) is a version of Tether that is hosted on the Omni layer on the Bitcoin blockchain.'
-                }
-                components={[<br key={0} />]}
-            />
-        );
-    } else if (/^tUSDT$/i.test(id)) {
-        popover_message = (
-            <Localize
-                i18n_default_text={'Tether as a TRC20 token (tUSDT) is a version of Tether that is hosted on Tron.'}
-            />
-        );
-    } else {
-        popover_message = (
-            <Localize
-                i18n_default_text={
-                    'Tether as an ERC20 token (eUSDT) is a version of Tether that is hosted on Ethereum.'
-                }
-            />
-        );
-    }
-
-    return (
-        <Popover
-            alignment='top'
-            className='currency-list__popover'
-            disable_message_icon
-            icon='info'
-            is_bubble_hover_enabled
-            message={popover_message}
-            zIndex='9999'
-        />
-    );
-};
+/**
+ *  RadioButton component to select currency
+ * @name RadioButton
+ * @param {React.InputHTMLAttributes<HTMLInputElement>} field - field props given by Formik
+ * @param {string} icon - icon name
+ * @param {string} id - currency id
+ * @param {string} label - currency name
+ * @param {string} second_line_label - currency code
+ * @param {Function} onClick - function to be called on click
+ * @param {AllHTMLAttributes<HTMLInputElement | HTMLLabelElement>} props - other props to be passed
+ * @returns {React.ReactNode} - returns a React node
+ */
 
 const RadioButton = ({
     field: { name, value, onChange, onBlur },

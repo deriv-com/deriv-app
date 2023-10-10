@@ -9,7 +9,7 @@ export type TContractTypeCellProps = {
     is_high_low: boolean;
     multiplier?: number;
     type?: string;
-    displayed_trade_param?: string;
+    displayed_trade_param?: React.ReactNode;
 };
 
 const ContractTypeCell = ({

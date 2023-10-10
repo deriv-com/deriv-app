@@ -8,31 +8,31 @@ import Div100vhContainer from '../div100vh-container';
 
 type TMobileDialog = {
     content_height_offset?: string;
-    onClose: React.MouseEventHandler;
+    footer?: React.ReactNode;
     has_content_scroll?: boolean;
+    has_close_icon?: boolean;
+    has_full_height?: boolean;
+    header_classname?: string;
+    onClose: React.MouseEventHandler;
     portal_element_id: string;
     renderTitle?: () => string;
     title?: React.ReactNode;
     visible?: boolean;
     wrapper_classname?: string;
-    header_classname?: string;
-    has_full_height?: boolean;
-    footer?: React.ReactNode;
-    has_close_icon?: boolean;
 };
 
 const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
     const {
-        title,
-        visible,
         children,
-        has_full_height,
-        portal_element_id,
-        renderTitle,
-        wrapper_classname,
         footer,
         has_close_icon = true,
+        has_full_height,
         header_classname,
+        portal_element_id,
+        renderTitle,
+        title,
+        visible,
+        wrapper_classname,
     } = props;
 
     const footer_ref = React.useRef<HTMLDivElement>(null);

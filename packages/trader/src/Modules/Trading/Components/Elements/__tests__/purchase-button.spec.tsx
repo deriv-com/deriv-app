@@ -1,7 +1,8 @@
 import React from 'react';
+
+import { isDesktop, isMobile } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import PurchaseButton from '../purchase-button';
 
@@ -32,7 +33,7 @@ const default_mocked_props = {
     should_fade: false,
     setPurchaseState: jest.fn(),
     type: 'VANILLALONGCALL',
-};
+} as unknown as React.ComponentProps<typeof PurchaseButton>;
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

@@ -1,4 +1,5 @@
-import { localize } from '@deriv/translations';
+import React from 'react';
+import { GetSettings } from '@deriv/api-types';
 import {
     generateValidationFunction,
     getDefaultFields,
@@ -7,15 +8,14 @@ import {
     address_permitted_special_characters_message,
     TSchema,
 } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { TUpgradeInfo } from 'Types';
-import { GetSettings } from '@deriv/api-types';
 
 type TAddressDetailsConfigProps = {
     upgrade_info: TUpgradeInfo;
     real_account_signup_target: string;
     residence: string;
     account_settings: GetSettings;
-    is_eu_user: boolean;
 };
 
 const address_details_config: ({
@@ -160,18 +160,18 @@ const address_details_config: ({
 };
 
 const addressDetailsConfig = (
-    { upgrade_info, real_account_signup_target, residence, account_settings, is_eu_user }: TAddressDetailsConfigProps,
-    AddressDetails: React.Component,
-    is_appstore: boolean
+    { upgrade_info, real_account_signup_target, residence, account_settings }: TAddressDetailsConfigProps,
+    AddressDetails: React.Component
 ) => {
     const is_svg = upgrade_info?.can_upgrade_to === 'svg';
     const config = address_details_config({ account_settings, is_svg });
     const disabled_items = account_settings.immutable_fields;
+    const is_gb_residence = residence === 'gb';
 
     return {
         header: {
-            active_title: is_appstore ? localize('Where do you live?') : localize('Complete your address details'),
-            title: is_appstore ? localize('ADDRESS') : localize('Address'),
+            active_title: localize('Complete your address details'),
+            title: localize('Address'),
         },
         body: AddressDetails,
         form_value: getDefaultFields(real_account_signup_target, config),
@@ -180,9 +180,8 @@ const addressDetailsConfig = (
                 real_account_signup_target,
                 transformConfig(transformForResidence(config, residence), real_account_signup_target)
             ),
-            is_svg,
             disabled_items,
-            is_eu_user,
+            is_gb_residence,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardAddress',
@@ -191,10 +190,10 @@ const addressDetailsConfig = (
 
 /**
  * Transform general rules based on residence
- *
- * @param {object} rules - Original rules
- * @param {string} residence - Client's residence
- * @return {object} rules - Transformed rules
+ * @name transformForResidence
+ * @param  rules - Original rules
+ * @param residence - Client's residence
+ * @return rules - Transformed rules
  */
 const transformForResidence = (rules: TSchema, residence: string) => {
     // Isle of Man Clients do not need to fill out state since API states_list is empty.

@@ -22,6 +22,14 @@ jest.mock('@deriv/api', () => ({
     })),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useCryptoTransactions: jest.fn(() => ({
+        data: [],
+        isLoading: false,
+    })),
+}));
+
 describe('CryptoTransactionsSideNoteRecentTransaction', () => {
     test("should show no recent transactions when user doesn't have any transactions", () => {
         const mock = mockStore({

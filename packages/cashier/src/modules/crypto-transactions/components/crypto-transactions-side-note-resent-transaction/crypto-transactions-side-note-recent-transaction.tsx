@@ -18,7 +18,7 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
         const { is_mobile } = ui;
         const { transaction_history } = useCashierStore();
         const { setIsCryptoTransactionsVisible } = transaction_history;
-        const { data: transactions, has_transactions, isLoading, error, subscribe } = useCryptoTransactions();
+        const { data: transactions, isLoading, error, subscribe } = useCryptoTransactions();
         const currency_config = useCurrentCurrencyConfig();
 
         const NoTransactionState = React.useCallback(
@@ -66,13 +66,7 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
                     {filtered_transactions.length === 0 && <NoTransactionState />}
                 </React.Fragment>
             );
-        }, [
-            NoTransactionState,
-            currency_config.display_code,
-            setIsCryptoTransactionsVisible,
-            transaction_type,
-            transactions,
-        ]);
+        }, [NoTransactionState, currency_config, setIsCryptoTransactionsVisible, transaction_type, transactions]);
 
         const ErrorState = React.useCallback(
             () => (
@@ -98,7 +92,7 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
                 <div className='crypto-transactions-side-note-recent-transaction'>
                     <div className='crypto-transactions-side-note-recent-transaction__divider' />
                     {isLoading && <Loading is_fullscreen={false} />}
-                    {!isLoading && !error && has_transactions && <TransactionDetail />}
+                    {!isLoading && !error && <TransactionDetail />}
                     {!!error && <ErrorState />}
                 </div>
             </SideNote>

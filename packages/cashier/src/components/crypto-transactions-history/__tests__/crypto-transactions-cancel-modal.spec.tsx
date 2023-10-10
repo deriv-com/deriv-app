@@ -42,8 +42,8 @@ describe('<CryptoTransactionsCancelModal />', () => {
 
         expect(screen.getByText('Are you sure you want to cancel this transaction?')).toBeInTheDocument();
         expect(screen.getByText('Cancel transaction')).toBeInTheDocument();
-        expect(screen.getByText('Yes')).toBeInTheDocument();
-        expect(screen.getByText('No')).toBeInTheDocument();
+        expect(screen.getByText('Yes, cancel')).toBeInTheDocument();
+        expect(screen.getByText("No, don't cancel")).toBeInTheDocument();
     });
 
     it('should trigger onClick callback when the user clicks "Yes" button', () => {
@@ -51,7 +51,7 @@ describe('<CryptoTransactionsCancelModal />', () => {
 
         renderCryptoTransactionsCancelModal();
 
-        const yes_btn = screen.getByText('Yes');
+        const yes_btn = screen.getByText('Yes, cancel');
         fireEvent.click(yes_btn);
 
         expect(mockRootStore.modules.cashier.transaction_history.cancelCryptoTransaction).toHaveBeenCalledTimes(1);
@@ -62,7 +62,7 @@ describe('<CryptoTransactionsCancelModal />', () => {
 
         renderCryptoTransactionsCancelModal();
 
-        const no_btn = screen.getByText('No');
+        const no_btn = screen.getByText("No, don't cancel");
         fireEvent.click(no_btn);
 
         expect(

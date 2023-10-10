@@ -3,6 +3,7 @@ import React from 'react';
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
+import { Platforms } from '@deriv/shared';
 
 export type TToken = {
     display_name: string;
@@ -66,8 +67,9 @@ export type TRoute = {
     icon?: string;
     default?: boolean;
     to?: string;
-    component?: ((cashier_routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    component?: ((routes?: TRoute[]) => JSX.Element) | typeof Redirect;
     getTitle?: () => string;
+    is_disabled?: boolean;
     subroutes?: TRoute[];
 };
 
@@ -101,15 +103,6 @@ type TIdentity = {
             is_country_supported: 0 | 1;
         };
     };
-};
-
-export type TResidenseList = {
-    identity: TIdentity;
-    phone_idd: string;
-    tin_format: string[];
-    disabled: string;
-    text: string;
-    value: string;
 };
 
 export type TFile = {
@@ -183,6 +176,8 @@ export type TIDVForm = {
     can_skip_document_verification: boolean;
 } & Partial<FormikHandlers> &
     FormikProps<TIDVFormValues>;
+
+export type TPlatforms = typeof Platforms[keyof typeof Platforms];
 
 export type TServerError = {
     code: string;

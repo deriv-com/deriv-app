@@ -4,15 +4,15 @@ import Counter from '../counter';
 import Icon from '../icon';
 
 type TTabProps = {
-    active_icon_color: string;
+    active_icon_color?: string;
     active_tab_ref?: React.RefObject<HTMLLIElement> | null;
     bottom?: boolean;
     className?: string;
     count: number;
     header_content: React.ReactElement;
     header_fit_content?: boolean;
-    icon_color: string;
-    icon_size: number;
+    icon_color?: string;
+    icon_size?: number;
     icon: string;
     id?: string;
     is_active: boolean;
@@ -25,17 +25,17 @@ type TTabProps = {
 };
 
 const Tab = ({
-    active_icon_color,
+    active_icon_color = '',
     active_tab_ref,
-    bottom,
-    className,
+    bottom = false,
+    className = '',
     count,
     header_content,
-    header_fit_content,
-    icon_color,
-    icon_size,
+    header_fit_content = false,
+    icon_color = '',
+    icon_size = 0,
     icon,
-    id,
+    id = '',
     is_active,
     is_label_hidden,
     is_scrollable,

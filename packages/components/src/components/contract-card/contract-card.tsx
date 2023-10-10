@@ -14,15 +14,15 @@ import { TGetCardLables, TGetContractPath } from '../types';
 type TContractCardProps = {
     contract_info: TContractInfo;
     getCardLabels: TGetCardLables;
-    getContractPath: TGetContractPath;
+    getContractPath?: TGetContractPath;
     is_multiplier: boolean;
-    is_positions: boolean;
-    is_unsupported: boolean;
-    onClickRemove: (contract_id?: number) => void;
+    is_positions?: boolean;
+    is_unsupported?: boolean;
+    onClickRemove?: (contract_id?: number) => void;
     profit_loss: number;
-    result: string;
+    result?: string;
     should_show_result_overlay: boolean;
-    toggleUnsupportedContractModal: (is_unsupported_contract_modal_visible: boolean) => void;
+    toggleUnsupportedContractModal?: (is_unsupported_contract_modal_visible: boolean) => void;
 };
 
 const ContractCard = ({
@@ -53,7 +53,7 @@ const ContractCard = ({
                         is_multiplier={is_multiplier}
                         is_visible={!!contract_info.is_sold}
                         onClickRemove={onClickRemove}
-                        onClick={() => toggleUnsupportedContractModal(true)}
+                        onClick={() => toggleUnsupportedContractModal?.(true)}
                         result={result || fallback_result}
                         is_positions={is_positions}
                     />

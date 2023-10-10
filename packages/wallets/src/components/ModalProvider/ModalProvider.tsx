@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { createContext, useContext, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useOnClickOutside } from 'usehooks-ts';
+import type { MT5AccountType } from '../ExternalTradingPlatforms';
 
 type TModalContext = {
     hide: () => void;
     isOpen: boolean;
+    modalState?: TModalState;
+    setModalState: (newModalState: Partial<TModalState>) => void;
     show: (ModalContent: React.ReactNode) => void;
 };
 
-const ModalContext = React.createContext<TModalContext | null>(null);
+type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];
+
+type TModalState = {
+    marketType?: TMarketTypes;
+};
+
+const ModalContext = createContext<TModalContext | null>(null);
 
 export const useModal = () => {
-    const context = React.useContext(ModalContext);
+    const context = useContext(ModalContext);
 
     if (!context) throw new Error('useModal() must be called within a component wrapped in ModalProvider.');
 
@@ -18,9 +28,18 @@ export const useModal = () => {
 };
 
 const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
-    const [content, setContent] = React.useState<React.ReactNode | null>();
+    const modalRef = useRef<HTMLDivElement>(null);
+    const [content, setContent] = useState<React.ReactNode | null>();
+    const modalState = useRef<TModalState>();
 
-    const rootRef = React.useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
+    const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
+
+    const setModalState = (newModalState: Partial<TModalState>) => {
+        modalState.current = {
+            ...modalState.current,
+            ...newModalState,
+        };
+    };
 
     const show = (ModalContent: React.ReactNode) => {
         setContent(ModalContent);
@@ -30,10 +49,14 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         setContent(null);
     };
 
+    useOnClickOutside(modalRef, hide);
+
     return (
-        <ModalContext.Provider value={{ isOpen: content !== null, show, hide }}>
+        <ModalContext.Provider
+            value={{ hide, isOpen: content !== null, show, modalState: modalState.current, setModalState }}
+        >
             {children}
-            {rootRef.current && createPortal(content, rootRef.current)}
+            {rootRef.current && content && createPortal(<div ref={modalRef}>{content}</div>, rootRef.current)}
         </ModalContext.Provider>
     );
 };

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { getActiveAuthTokenIDFromLocalStorage, getActiveLoginIDFromLocalStorage } from '@deriv/utils';
-import useFetch from '../useFetch';
 import useInvalidateQuery from '../useInvalidateQuery';
+import useQuery from '../useQuery';
 
 /** A custom hook that authorize the user with the given token. If no token is given,
  * it will use the current token from localStorage.
@@ -10,7 +10,7 @@ const useAuthorize = () => {
     const current_token = getActiveAuthTokenIDFromLocalStorage();
     const invalidate = useInvalidateQuery();
 
-    const { data, ...rest } = useFetch('authorize', {
+    const { data, ...rest } = useQuery('authorize', {
         payload: { authorize: current_token || '' },
         options: { enabled: Boolean(current_token) },
     });

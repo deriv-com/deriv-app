@@ -85,14 +85,7 @@ describe('<IdvSubmitComplete/>', () => {
     it('should render IdvSubmitComplete component with mismatch_status ', () => {
         const new_store = mockStore({
             client: {
-                account_status: {
-                    authentication: {
-                        attempts: {
-                            count: 2,
-                            history: [{ status: 'pending' }],
-                        },
-                    },
-                },
+                is_already_attempted: true,
             },
         });
 
@@ -120,14 +113,7 @@ describe('<IdvSubmitComplete/>', () => {
     it('should render IdvSubmitComplete component with mismatch_status', () => {
         const new_store = mockStore({
             client: {
-                account_status: {
-                    authentication: {
-                        attempts: {
-                            count: 2,
-                            history: [{ status: 'pending' }],
-                        },
-                    },
-                },
+                is_already_attempted: true,
             },
         });
 

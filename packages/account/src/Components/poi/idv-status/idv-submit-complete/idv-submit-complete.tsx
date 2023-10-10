@@ -16,12 +16,7 @@ type TIdvSubmitComplete = {
 const IdvSubmitComplete = observer(
     ({ is_from_external, mismatch_status, needs_poa, redirect_button }: Partial<TIdvSubmitComplete>) => {
         const { client } = useStore();
-        const { account_status } = client;
-
-        const attempt_count = account_status?.authentication?.attempts?.count ?? 0;
-        const attempt_history = account_status?.authentication?.attempts?.history ?? [];
-
-        const is_already_attempted = attempt_count > 1 || attempt_history.length > 1;
+        const { is_already_attempted } = client;
 
         const is_mismatch_error =
             mismatch_status === idv_error_statuses.poi_name_dob_mismatch ||

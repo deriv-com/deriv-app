@@ -3,7 +3,6 @@ import { WalletCard, WalletSuccessDialog } from '@deriv/components';
 import { useActiveWallet } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { getAccountName } from 'Constants/utils';
-import { formatMoney } from '@deriv/shared';
 import { getWalletSuccessText } from 'Constants/wallet-success-text';
 
 const AddNewWalletModal = observer(() => {
@@ -19,14 +18,13 @@ const AddNewWalletModal = observer(() => {
     const currency = active_wallet?.currency_config?.display_code;
 
     const wallet_details = {
-        currency,
         icon: active_wallet?.icon,
         icon_type: active_wallet?.currency_config?.type,
         name: getAccountName({
             account_type: 'wallet',
             display_currency_code: currency,
         }),
-        balance: formatMoney(active_wallet?.currency, active_wallet?.balance, true),
+        balance: active_wallet?.display_balance,
         jurisdiction_title: active_wallet?.landing_company_name,
         gradient_class: active_wallet?.gradient_card_class,
     };

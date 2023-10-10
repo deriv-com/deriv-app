@@ -74,7 +74,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
     const { mutate: createNewRealAccount, isSuccess } = useCreateNewRealAccount();
     const wallet_account = useActiveWallet();
     const { data: user_settings } = useSettings();
-    const { date_of_birth, country_code, first_name, last_name } = user_settings;
+    const { country_code, first_name, last_name, formatted_date_of_birth } = user_settings;
 
     React.useEffect(() => {
         if (isSuccess) setNewWalletModalOpen(true);
@@ -95,7 +95,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         createNewRealAccount({
             payload: {
                 currency: wallet_account?.currency_config?.display_code,
-                date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
+                date_of_birth: formatted_date_of_birth,
                 first_name,
                 last_name,
                 residence: country_code || undefined,

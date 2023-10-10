@@ -83,12 +83,22 @@ const useWalletsList = () => {
     // Add balance to each wallet.
     const wallets_with_balance = useMemo(
         () =>
-            wallets?.map(wallet => ({
-                ...wallet,
-                /** Wallet balance */
-                balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
-            })),
-        [balance_data?.balance?.accounts, wallets]
+            wallets?.map(wallet => {
+                const balance = balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0;
+                const currency_config = wallet.currency ? getConfig(wallet.currency) : undefined;
+                return {
+                    ...wallet,
+                    /** Wallet balance */
+                    balance,
+                    /** The balance of the account in currency format. */
+                    display_balance: `${Intl.NumberFormat(authorize_data?.preferred_language || 'en-US', {
+                        minimumFractionDigits: currency_config?.fractional_digits || 2,
+                        maximumFractionDigits: currency_config?.fractional_digits || 2,
+                        minimumIntegerDigits: 1,
+                    }).format(balance)} ${currency_config?.display_code || 'USD'}`,
+                };
+            }),
+        [authorize_data?.preferred_language, balance_data?.balance?.accounts, getConfig, wallets]
     );
 
     // Add additional information to each wallet.

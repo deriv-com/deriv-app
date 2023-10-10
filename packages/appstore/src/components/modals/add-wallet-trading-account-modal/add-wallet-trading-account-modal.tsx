@@ -2,7 +2,6 @@ import React from 'react';
 import { WalletSuccessDialog, WalletAppCard } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useActiveWallet } from '@deriv/hooks';
-import { useActiveWalletAccount } from '@deriv/api';
 import { Localize } from '@deriv/translations';
 import { getAccountName } from 'Constants/utils';
 import { getWalletSuccessText } from 'Constants/wallet-success-text';
@@ -14,7 +13,6 @@ const AddWalletTradingAccountModal = observer(() => {
         traders_hub;
 
     const active_wallet = useActiveWallet();
-    const { data: active_wallet_account } = useActiveWalletAccount();
 
     const account_title = `${getAccountName({
         account_type: 'trading',
@@ -37,7 +35,7 @@ const AddWalletTradingAccountModal = observer(() => {
 
     const wallet_details = {
         account_title,
-        balance: active_wallet_account?.display_balance,
+        balance: active_wallet?.display_balance,
         currency_title,
         gradient_card_class: active_wallet?.gradient_card_class,
         icon: active_wallet?.icon,

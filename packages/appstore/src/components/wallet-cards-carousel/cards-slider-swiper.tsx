@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { WalletCard, ProgressBarTracker } from '@deriv/components';
 import { useWalletsList } from '@deriv/hooks';
-import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getAccountName } from 'Constants/utils';
 import { TWalletAccount } from 'Types';
@@ -43,20 +42,19 @@ const CardsSliderSwiper = observer(() => {
     const slider = React.useMemo(
         () =>
             data?.map((item: TWalletAccount) => {
-                const { loginid, icon, currency_config, balance, currency, landing_company_name, gradient_card_class } =
+                const { loginid, icon, currency_config, landing_company_name, gradient_card_class, display_balance } =
                     item;
                 return (
                     <div key={`${loginid}`}>
                         <WalletCard
                             wallet={{
-                                currency: currency_config?.display_code,
                                 icon,
                                 icon_type: currency_config?.type,
                                 name: getAccountName({
                                     account_type: 'wallet',
                                     display_currency_code: currency_config?.display_code,
                                 }),
-                                balance: formatMoney(currency, balance, true),
+                                balance: display_balance,
                                 jurisdiction_title: landing_company_name,
                                 gradient_class: gradient_card_class,
                             }}

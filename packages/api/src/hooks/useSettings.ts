@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import useQuery from '../useQuery';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useMutation from '../useMutation';
+import { toMoment } from '@deriv/shared';
 
 type TSetSettingsPayload = NonNullable<
     NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'set_settings'>>['mutate']>>[0]>['payload']
@@ -16,7 +17,14 @@ const useSettings = () => {
     const update = useCallback((payload: TSetSettingsPayload) => mutate({ payload }), [mutate]);
 
     // Add additional information to the settings response.
-    const modified_settings = useMemo(() => ({ ...data?.get_settings }), [data?.get_settings]);
+    const modified_settings = useMemo(
+        () => ({
+            ...data?.get_settings,
+            /** Format user's date of birth to YYYY-MM-DD. */
+            formatted_date_of_birth: toMoment(data?.get_settings?.date_of_birth).format('YYYY-MM-DD'),
+        }),
+        [data?.get_settings]
+    );
 
     return {
         /** The settings response. */

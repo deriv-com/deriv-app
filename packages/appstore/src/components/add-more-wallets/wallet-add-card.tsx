@@ -23,7 +23,6 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
     const { mutate: createWallet } = useCreateWallet();
 
     const wallet_details = {
-        currency,
         icon: getWalletCurrencyIcon(currency, is_dark_mode_on),
         icon_type: currency_config?.type,
         jurisdiction_title: landing_company_name?.toUpperCase(),

@@ -13,7 +13,6 @@ type TWalletCardProps = {
     // TODO: This type should be updated when the response is ready
     wallet: {
         balance: string;
-        currency: string;
         icon: string;
         icon_type: 'fiat' | 'crypto' | 'app' | 'demo';
         jurisdiction_title: string;
@@ -77,7 +76,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                                     {wallet.name}
                                 </Text>
                                 <Text color='prominent' weight='bold' size={isMobile() ? 'xxs' : 'xs'}>
-                                    {wallet.balance} {wallet.currency}
+                                    {wallet.balance}
                                 </Text>
                             </React.Fragment>
                         ) : (

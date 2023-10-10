@@ -11,7 +11,7 @@ const TradingAssessmentDropdown = ({
     values,
     setFieldValue,
     setEnableNextSection,
-    has_error,
+    error,
 }) => {
     React.useEffect(() => {
         checkIfAllFieldsFilled();
@@ -34,14 +34,16 @@ const TradingAssessmentDropdown = ({
                 <Field name={question.form_control} key={question.form_control}>
                     {() => {
                         const has_input_error = !values[question.form_control];
+                        const should_extend_trading_frequency_field =
+                            question.form_control === 'trading_frequency_financial_instruments' &&
+                            question?.question_text.length > 90;
+
                         return (
                             <React.Fragment>
                                 <DesktopWrapper>
                                     <Dropdown
                                         classNameDisplay={classNames({
-                                            'trading-frequency--field':
-                                                question.form_control === 'trading_frequency_financial_instruments' &&
-                                                ['ID', 'FR'].includes(getLanguage()),
+                                            'trading-frequency--field': should_extend_trading_frequency_field,
                                         })}
                                         is_align_text_left
                                         name={question?.form_control}
@@ -50,7 +52,7 @@ const TradingAssessmentDropdown = ({
                                         onChange={e => onChange(e, question.form_control, setFieldValue)}
                                         value={values[question.form_control]}
                                         disabled={disabled_items.includes(question.form_control)}
-                                        error={has_error && has_input_error && localize('Please select an option')}
+                                        error={has_input_error && error}
                                     />
                                 </DesktopWrapper>
                                 <MobileWrapper>
@@ -68,7 +70,7 @@ const TradingAssessmentDropdown = ({
                                         value={values[question.form_control]}
                                         hide_top_placeholder
                                         disabled={disabled_items.includes(question.form_control)}
-                                        error={has_error && has_input_error && localize('Please select an option')}
+                                        error={has_input_error && error}
                                     />
                                 </MobileWrapper>
                             </React.Fragment>

@@ -119,18 +119,18 @@ const TradingAssessmentForm = ({
     const handleValidate = values => {
         const errors = {};
 
-        if ('cfd_experience' in values && !values.cfd_experience) {
-            errors.cfd_experience = 'error';
-        }
-        if ('cfd_frequency' in values && !values.cfd_frequency) {
-            errors.cfd_frequency = 'error';
-        }
-        if ('trading_experience_financial_instruments' in values && !values.trading_experience_financial_instruments) {
-            errors.trading_experience_financial_instruments = 'error';
-        }
-        if ('trading_frequency_financial_instruments' in values && !values.trading_frequency_financial_instruments) {
-            errors.trading_frequency_financial_instruments = 'error';
-        }
+        const trading_experience_required_fields = [
+            'cfd_experience',
+            'cfd_frequency',
+            'trading_experience_financial_instruments',
+            'trading_frequency_financial_instruments',
+        ];
+
+        trading_experience_required_fields.forEach(field => {
+            if (field in values && !values[field]) {
+                errors[field] = 'error';
+            }
+        });
 
         return errors;
     };
@@ -145,13 +145,14 @@ const TradingAssessmentForm = ({
                     {({ setFieldValue, values }) => {
                         const { question_text, form_control, answer_options, questions } =
                             current_question_details.current_question;
+                        const has_long_question = questions?.some(question => question.question_text.length > 90);
 
                         return (
                             <Form className='trading-assessment__form--layout'>
                                 <ScrollToFieldWithError should_recollect_inputs_names={is_section_filled} />
                                 <div
                                     className={classNames('trading-assessment__form--fields', {
-                                        'field-layout': ['ID', 'FR'].includes(getLanguage()),
+                                        'field-layout': has_long_question,
                                     })}
                                 >
                                     {questions?.length ? (
@@ -162,7 +163,7 @@ const TradingAssessmentForm = ({
                                             setFieldValue={setFieldValue}
                                             setEnableNextSection={setIsSectionFilled}
                                             disabled_items={disabled_items ?? []}
-                                            has_error={should_inform_user}
+                                            error={should_inform_user && localize('Please select an option')}
                                         />
                                     ) : (
                                         <TradingAssessmentRadioButton
@@ -173,7 +174,9 @@ const TradingAssessmentForm = ({
                                                 shouldInformUser(false);
                                             }}
                                             values={values}
-                                            has_error={should_inform_user}
+                                            error={
+                                                should_inform_user && <Localize i18n_default_text='This is required' />
+                                            }
                                             form_control={form_control}
                                             setEnableNextSection={setIsSectionFilled}
                                             disabled_items={disabled_items ?? []}
@@ -200,6 +203,7 @@ const TradingAssessmentForm = ({
                                         <Button
                                             has_effect
                                             onClick={() => nextButtonHandler(values)}
+                                            type='button'
                                             text={localize('Next')}
                                             large
                                             primary

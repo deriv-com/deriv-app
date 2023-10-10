@@ -35,7 +35,6 @@ const AddNewWalletModal = observer(() => {
 
     return (
         <WalletSuccessDialog
-            type='add-wallet'
             title={wallet_success_text?.title}
             description={wallet_success_text?.description}
             text_submit={wallet_success_text?.text_submit}

@@ -197,14 +197,23 @@
             }
             @include mobile() {
                 width: 100%;
-            }
-            &.no-top-spacing {
-                padding-top: 0;
+                &.no-top-spacing {
+                    padding-top: 0;
+
+                    .dc-input__container {
+                        border-top-left-radius: 0;
+                        border-top-right-radius: 0;
+                    }
+                }
+
+                &.no-top-border-radius {
+                    .dc-input__container {
+                        border-bottom-left-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+                }
             }
         }
-    }
-    &__warning-bubble {
-        background-color: var(--status-danger);
     }
     &__autocomplete {
         .dc-input {
@@ -327,11 +336,6 @@
             &__field {
                 margin: 0 4rem;
                 text-align: center;
-            }
-
-            &.error {
-                border: 1px solid var(--status-danger);
-                border-radius: 0.4rem;
             }
         }
     }

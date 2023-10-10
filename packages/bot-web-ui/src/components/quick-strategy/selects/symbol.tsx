@@ -1,9 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
+
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
+
+import { useDBotStore } from 'Stores/useDBotStore';
 
 type TSymbol = {
     component?: React.ReactNode;
@@ -26,14 +29,14 @@ const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
 );
 
 type TSymbolSelect = {
-    value?: string;
-    onChange?: ({ symbol }: { symbol: string }) => void;
-    fullwidth?: boolean;
+    fullWidth?: boolean;
 };
 
-const SymbolSelect: React.FC<TSymbolSelect> = ({ value, onChange, fullwidth = false }) => {
+const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
+    const { quick_strategy_store_1 } = useDBotStore();
+    const { setValue } = quick_strategy_store_1;
     const [active_symbols, setActiveSymbols] = React.useState([]);
-    const [selected, setSelected] = React.useState(value);
+    const { setFieldValue } = useFormikContext();
 
     React.useEffect(() => {
         const { active_symbols } = ApiHelpers.instance;
@@ -49,33 +52,30 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ value, onChange, fullwidth = fa
         [active_symbols]
     );
 
-    const handleChange = (value: string) => {
-        if (value && value !== selected) {
-            setSelected(value);
-            onChange?.({ symbol: value });
-        }
-    };
-
-    const selected_symbol = symbols.find(symbol => symbol.value === selected);
-
     return (
-        <div className={classNames('qs__form__field', { 'full-width': fullwidth })}>
-            <Field name='asset' key='asset' id='asset'>
-                {({ field }: FieldProps<string, TFormValues>) => (
-                    <>
-                        <Autocomplete
-                            {...field}
-                            autoComplete='off'
-                            className='qs__autocomplete'
-                            value={selected_symbol?.text || ''}
-                            list_items={symbols}
-                            onItemSelection={(item: TItem) => {
-                                handleChange((item as TSymbol)?.value as string);
-                            }}
-                            leading_icon={<Icon icon={`IcUnderlying${selected_symbol?.value}`} size={24} />}
-                        />
-                    </>
-                )}
+        <div className={classNames('qs__form__field', { 'full-width': fullWidth })}>
+            <Field name='symbol' key='asset' id='asset'>
+                {({ field: { value, ...rest_field } }: FieldProps) => {
+                    const selected_symbol = symbols.find(symbol => symbol.value === value);
+                    return (
+                        <>
+                            <Autocomplete
+                                {...rest_field}
+                                autoComplete='off'
+                                className='qs__autocomplete'
+                                value={selected_symbol?.text || ''}
+                                list_items={symbols}
+                                onItemSelection={(item: TItem) => {
+                                    if (item?.value) {
+                                        setFieldValue?.('symbol', (item as TSymbol)?.value as string);
+                                        setValue('symbol', (item as TSymbol)?.value as string);
+                                    }
+                                }}
+                                leading_icon={<Icon icon={`IcUnderlying${selected_symbol?.value}`} size={24} />}
+                            />
+                        </>
+                    );
+                }}
             </Field>
         </div>
     );

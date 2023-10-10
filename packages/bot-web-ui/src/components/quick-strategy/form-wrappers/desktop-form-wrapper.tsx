@@ -1,11 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useFormikContext } from 'formik';
+
 import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import Icon from '@deriv/components/src/components/icon/icon';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+
 import { useDBotStore } from 'Stores/useDBotStore';
-import { FORM_TABS, STRATEGIES } from '../constants';
+
+import { FORM_TABS, STRATEGIES } from '../config';
+
 import '../quick-strategy.scss';
 
 type TDesktopFormWrapper = {
@@ -14,6 +19,7 @@ type TDesktopFormWrapper = {
 
 const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
+    const { submitForm, isValid } = useFormikContext();
     const { quick_strategy_store_1 } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, setFormVisibility } = quick_strategy_store_1;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
@@ -45,16 +51,16 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                     <div className='qs__body__sidebar__items'>
                         <ul>
                             {(Object.keys(STRATEGIES) as (keyof typeof STRATEGIES)[]).map(key => {
-                                const st = STRATEGIES[key];
+                                const str = STRATEGIES[key];
                                 const active = key === selected_strategy;
                                 return (
                                     <li
                                         className={classNames({ active })}
                                         key={key}
-                                        onClick={() => onChangeStrategy(key)}
+                                        onClick={() => onChangeStrategy(String(key))}
                                     >
                                         <Text size='xs' weight={active ? 'bold' : 'normal'}>
-                                            {st.label}
+                                            {str.label}
                                         </Text>
                                     </li>
                                 );
@@ -91,8 +97,12 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                         <div className='qs__body__content__form'>{children}</div>
                     </ThemedScrollbars>
                     <div className='qs__body__content__footer'>
-                        <Button secondary>{localize('Edit')}</Button>
-                        <Button primary>{localize('Run')}</Button>
+                        <Button secondary disabled={!isValid}>
+                            {localize('Edit')}
+                        </Button>
+                        <Button primary type='submit' onClick={submitForm} disabled={!isValid}>
+                            {localize('Run')}
+                        </Button>
                     </div>
                 </div>
             </div>

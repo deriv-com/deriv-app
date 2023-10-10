@@ -1,90 +1,103 @@
 /* eslint-disable simple-import-sort/imports */
 import React from 'react';
-import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { observer } from '@deriv/stores';
 import './quick-strategy.scss';
 import SymbolSelect from './selects/symbol';
-import { Form, Formik } from 'formik';
-import TradeTypeSelect from './selects/tradetype';
+import { useFormikContext } from 'formik';
+import TradeTypeSelect from './selects/trade-type';
 import DurationTypeSelect from './selects/duration-unit';
-import { TFormData } from 'Stores/quick-strategy-store-1';
 import QSInput from './inputs/qs-input';
 import QSInputLabel from './inputs/qs-input-label';
+import { STRATEGIES } from './config';
+import { isMobile } from '@deriv/shared';
+import { TConfigItem, TFormData } from './types';
 
 const QuickStrategyForm = observer(() => {
     const { quick_strategy_store_1 } = useDBotStore();
-    const { form_data, setFormData } = quick_strategy_store_1;
+    const { selected_strategy } = quick_strategy_store_1;
+    const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
+    const is_mobile = isMobile();
+    const { values, setFieldValue } = useFormikContext<TFormData>();
 
-    const handleSubmit = (form_fields: { [key: string]: string }) => {
-        // eslint-disable-next-line no-console
-        console.log(form_fields);
+    React.useEffect(() => {
+        window.addEventListener('keydown', handleEnter);
+        return () => {
+            window.removeEventListener('keydown', handleEnter);
+        };
+    }, []);
+
+    const handleEnter = (event: KeyboardEvent) => {
+        if ((event?.key && event.key === 'Enter') || (event?.keyCode && event.keyCode === 13)) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
     };
 
-    const handleChange = (data: TFormData) => {
-        setFormData(data);
+    const renderForm = () => {
+        return config.map((group, group_index) => {
+            if (!group?.length) return null;
+            return (
+                <div className='qs__body__content__form__group' key={group_index}>
+                    {group.map((field, field_index) => {
+                        const key = `${field.name || field.type} + ${field_index}`;
+
+                        if (
+                            (is_mobile && field.hide?.includes('mobile')) ||
+                            (!is_mobile && field.hide?.includes('desktop'))
+                        ) {
+                            return null;
+                        }
+                        switch (field.type) {
+                            case 'number':
+                                if (!field.name) return null;
+                                return (
+                                    <QSInput
+                                        {...field}
+                                        key={key}
+                                        type='number'
+                                        attached={field.attached}
+                                        name={field.name}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                );
+                            case 'label':
+                                if (!field.label) return null;
+                                return (
+                                    <QSInputLabel key={key} label={field.label} description={field.description || ''} />
+                                );
+                            case 'symbol':
+                                return <SymbolSelect key={key} fullWidth />;
+                            case 'trade_type':
+                                return (
+                                    <TradeTypeSelect
+                                        key={key}
+                                        symbol={values?.symbol || ''}
+                                        selected={values?.trade_type || ''}
+                                        fullWidth
+                                    />
+                                );
+                            case 'duration_unit':
+                                return (
+                                    <DurationTypeSelect
+                                        key={key}
+                                        data={{
+                                            symbol: values?.symbol || '',
+                                            trade_type: values?.trade_type || '',
+                                        }}
+                                        attached={field.attached}
+                                    />
+                                );
+                            default:
+                                return null;
+                        }
+                    })}
+                </div>
+            );
+        });
     };
 
-    // eslint-disable-next-line no-console
-    console.log(form_data, 'form_data');
-
-    const Symbol = () => <SymbolSelect value={form_data.symbol} onChange={handleChange} fullwidth />;
-
-    const TradeType = () => (
-        <TradeTypeSelect value={form_data.trade_type} symbol={form_data.symbol} onChange={handleChange} fullwidth />
-    );
-
-    return (
-        <Formik initialValues={{}} onSubmit={handleSubmit}>
-            {() => {
-                return (
-                    <Form>
-                        <div className='qs__body__content__form__group'>
-                            <Symbol />
-                            <TradeType />
-                            <QSInputLabel
-                                label={localize('Initial Stake')}
-                                description={localize('The amount that you pay to enter a trade.')}
-                            />
-                            <QSInput type='number' value={form_data.stake} onChange={handleChange} />
-                            <DurationTypeSelect
-                                value={form_data.duration_unit}
-                                data={{
-                                    symbol: form_data?.symbol,
-                                    trade_type: form_data?.trade_type,
-                                }}
-                                onChange={handleChange}
-                            />
-                            <QSInput type='number' value={form_data.duration_value} onChange={handleChange} />
-                        </div>
-                        <div className='qs__body__content__form__group'>
-                            <QSInputLabel
-                                label={localize('Profit Threshold')}
-                                description={localize(
-                                    `The bot will stop trading if your total ${'Profit'} exceeds this amount.`
-                                )}
-                            />
-                            <QSInput type='number' value={form_data.profit_threshold} onChange={handleChange} />
-                            <QSInputLabel
-                                label={localize('Loss Threshold')}
-                                description={localize(
-                                    `The bot will stop trading if your total ${'Profit'} exceeds this amount.`
-                                )}
-                            />
-                            <QSInput type='number' value={form_data.loss_threshold} onChange={handleChange} />
-                            <QSInputLabel
-                                label={localize('Size')}
-                                description={localize(
-                                    'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 2.'
-                                )}
-                            />
-                            <QSInput type='number' value={form_data.size} onChange={handleChange} />
-                        </div>
-                    </Form>
-                );
-            }}
-        </Formik>
-    );
+    return <div>{renderForm()}</div>;
 });
 
 export default QuickStrategyForm;

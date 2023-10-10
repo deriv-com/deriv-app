@@ -1,17 +1,14 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
+
+import { ApiHelpers, load } from '@deriv/bot-skeleton';
+import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
+
+import { STRATEGIES } from 'Components/quick-strategy/config';
+import { TFormData } from 'Components/quick-strategy/types';
+
 import RootStore from './root-store';
 
-export type TFormData = {
-    symbol?: string;
-    trade_type?: string;
-    duration_unit?: string;
-    duration_value?: number;
-    stake?: number;
-    size?: number;
-    profit_threshold?: number;
-    loss_threshold?: number;
-    units?: number;
-};
+const Blockly = window.Blockly;
 
 export type TActiveSymbol = {
     group: string;
@@ -23,27 +20,20 @@ export default class QuickStrategyStore {
     root_store: RootStore;
     is_open = false;
     selected_strategy = 'MARTINGALE';
-    active_symbols: TActiveSymbol[] = [];
-    form_data: TFormData = {
+    form_data: { [key: string]: string | number } = {
         symbol: '1HZ100V',
-        trade_type: '',
+        trade_type: 'callput',
         duration_unit: 't',
-        duration_value: 1,
-        stake: 0,
-        size: 0,
-        profit_threshold: 0,
-        loss_threshold: 0,
-        units: 0,
     };
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
             is_open: observable,
             selected_strategy: observable,
-            active_symbols: observable,
             form_data: observable,
             setFormVisibility: action,
             setSelectedStrategy: action,
+            onSubmit: action,
         });
         this.root_store = root_store;
     }
@@ -56,12 +46,94 @@ export default class QuickStrategyStore {
         this.selected_strategy = strategy;
     };
 
-    setFormData = (data: TFormData) => {
-        const form_data = {
-            ...this.form_data,
-            ...data,
+    setValue = (name: string, value: string | number) => {
+        this.form_data[name] = value;
+    };
+
+    onSubmit = async (data: TFormData) => {
+        // eslint-disable-next-line no-console
+        console.log(data, 'test');
+
+        const { contracts_for } = ApiHelpers.instance;
+        const market = await contracts_for.getMarketBySymbol(data.symbol);
+        const submarket = await contracts_for.getSubmarketBySymbol(data.symbol);
+        const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(data.trade_type);
+        const selected_strategy = STRATEGIES[this.selected_strategy];
+        const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
+        const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
+
+        const modifyValueInputs = (key: string, value: number) => {
+            const el_value_inputs = strategy_dom.querySelectorAll(`value[strategy_value="${key}"]`);
+
+            el_value_inputs.forEach((el_value_input: HTMLElement) => {
+                el_value_input.innerHTML = `<shadow type="math_number"><field name="NUM">${value}</field></shadow>`;
+            });
         };
 
-        this.form_data = form_data;
+        const modifyFieldDropdownValues = (name: string, value: string) => {
+            const name_list = `${name.toUpperCase()}_LIST`;
+            const el_blocks = strategy_dom.querySelectorAll(`field[name="${name_list}"]`);
+
+            el_blocks.forEach((el_block: HTMLElement) => {
+                el_block.innerHTML = value;
+            });
+        };
+
+        const fields_to_update: TFieldsToUpdate = {
+            market,
+            submarket,
+            symbol: data.symbol,
+            tradetype: data.trade_type,
+            tradetypecat: trade_type_cat,
+            durationtype: data.duration_unit,
+            duration: data.duration_value,
+            stake: data.stake,
+            size: data.size,
+            alembert_unit: data.unit,
+            oscar_unit: data.unit,
+            loss: data.loss_threshold,
+            profit: data.profit_threshold,
+        };
+
+        Object.keys(fields_to_update).forEach(key => {
+            const value = fields_to_update[key as keyof typeof fields_to_update];
+
+            if (!isNaN(value as number)) {
+                modifyValueInputs(key, value as number);
+            } else if (typeof value === 'string') {
+                modifyFieldDropdownValues(key, value);
+            }
+        });
+
+        const { derivWorkspace: workspace } = Blockly;
+
+        // if (button === 'run') {
+        if (true) {
+            workspace
+                .waitForBlockEvent({
+                    block_type: 'trade_definition',
+                    event_type: Blockly.Events.BLOCK_CREATE,
+                    timeout: 5000,
+                })
+                .then(() => {
+                    this.root_store.run_panel.onRunButtonClick();
+                });
+        }
+
+        // if (this.is_open) {
+        //     this.loadDataStrategy();
+        // }
+
+        this.is_open = false;
+
+        await load({
+            block_string: Blockly.Xml.domToText(strategy_dom),
+            file_name: selected_strategy.name,
+            workspace,
+            from: save_types.UNSAVED,
+            drop_event: null,
+            strategy_id: null,
+            showIncompatibleStrategyDialog: null,
+        });
     };
 }

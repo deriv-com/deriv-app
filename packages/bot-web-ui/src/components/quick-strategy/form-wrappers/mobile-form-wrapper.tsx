@@ -1,10 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useFormikContext } from 'formik';
+
 import { Button, SelectNative, Text, ThemedScrollbars } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+
 import { useDBotStore } from 'Stores/useDBotStore';
-import { FORM_TABS, STRATEGIES } from '../constants';
+
+import { FORM_TABS, STRATEGIES } from '../config';
+
 import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {
@@ -13,15 +18,10 @@ type TMobileFormWrapper = {
 
 const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) => {
     const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
+    const { submitForm, isValid } = useFormikContext();
     const { quick_strategy_store_1 } = useDBotStore();
-    const { selected_strategy, setSelectedStrategy, setFormVisibility } = quick_strategy_store_1;
+    const { selected_strategy, setSelectedStrategy } = quick_strategy_store_1;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
-
-    // eslint-disable-next-line no-console
-    console.log(setFormVisibility);
-    // const handleClose = () => {
-    //     setFormVisibility(false);
-    // };
 
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
@@ -50,7 +50,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                     value={selected_strategy}
                                     // label={localize(label)}
                                     should_show_empty_option={false}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                         onChangeStrategy(e.target.value);
                                     }}
                                 />
@@ -83,7 +83,9 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                         <div className='qs__body__content__form'>{children}</div>
                     </ThemedScrollbars>
                     <div className='qs__body__content__footer'>
-                        <Button primary>{localize('Run')}</Button>
+                        <Button primary type='submit' onClick={submitForm} disabled={!isValid}>
+                            {localize('Run')}
+                        </Button>
                     </div>
                 </div>
             </div>

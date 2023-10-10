@@ -144,7 +144,7 @@ const PageError = ({
                                 </Text>
                             </ButtonLink>
                         ))}
-                    {!should_redirect && (
+                    {!should_redirect && redirect_labels[0] && (
                         <Button
                             type='button'
                             className='dc-page-error__btn--no-redirect'

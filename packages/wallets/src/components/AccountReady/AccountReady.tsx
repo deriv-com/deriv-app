@@ -9,7 +9,7 @@ type TAccountReadyProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
 };
 
-const market_type_to_title_mapper: Record<TAccountReadyProps['marketType'], string> = {
+const marketTypeToTitleMapper: Record<TAccountReadyProps['marketType'], string> = {
     financial: 'MT5 Financial',
     all: 'Swap-Free',
     synthetic: 'MT5 Derived',
@@ -42,17 +42,17 @@ const AccountReady: React.FC<TAccountReadyProps> = ({ marketType }) => {
                     marketType={marketType}
                 />
                 <div className='wallets-account-ready__info__text--type'>
-                    {market_type_to_title_mapper[marketType]} ({landingCompanyName})
+                    {marketTypeToTitleMapper[marketType]} ({landingCompanyName})
                 </div>
                 <div className='wallets-account-ready__info__text--wallet'>{data?.currency} Wallet</div>
                 <div className='wallets-account-ready__info__text--amount'>{data?.display_balance} USD</div>
             </WalletGradientBackground>
             <div className='wallets-account-ready__title'>
-                Your {market_type_to_title_mapper[marketType]}
+                Your {marketTypeToTitleMapper[marketType]}
                 {isDemo && ' demo'} account is ready
             </div>
             <div className='wallets-account-ready__subtitle'>
-                You can now start practicing trading with your {market_type_to_title_mapper[marketType]}
+                You can now start practicing trading with your {marketTypeToTitleMapper[marketType]}
                 {isDemo && ' demo'} account.
             </div>
             <button className='wallets-account-ready__button' onClick={hide}>

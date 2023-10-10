@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { getLoginHistoryFormattedData } from '@deriv/utils';
 import useAuthorize from './useAuthorize';
-import { useMutation, useQuery } from '..';
+import useMutation from '../useMutation';
+import useQuery from '../useQuery';
 
 type TUseLoginHistoryPayload = NonNullable<
     NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'login_history'>>['mutate']>>[0]>['payload']

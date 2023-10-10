@@ -1,6 +1,6 @@
 import React from 'react';
 import useInvalidateQuery from '../useInvalidateQuery';
-import { useMutation } from '..';
+import useMutation from '../useMutation';
 
 type TAPITokenPayload = NonNullable<
     NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'api_token'>>['mutate']>>[0]>['payload']

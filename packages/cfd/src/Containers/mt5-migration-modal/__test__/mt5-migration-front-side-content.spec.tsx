@@ -105,7 +105,7 @@ describe('MT5MigrationFrontSideContent', () => {
         expect(screen.getByTestId('dt_migrate_to_bvi_financial')).toBeInTheDocument;
     });
 
-    it('should render both derived svg to bvi and financial svg to bvi Icons', () => {
+    it('should render both derived svg to vanuatu and financial svg to vanuatu Icons', () => {
         response.eligible_svg_to_vanuatu_derived_accounts = true;
         response.eligible_svg_to_vanuatu_financial_accounts = true;
         renderComponent();

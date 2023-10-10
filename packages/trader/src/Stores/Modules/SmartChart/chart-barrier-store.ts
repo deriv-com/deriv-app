@@ -29,7 +29,7 @@ export class ChartBarrierStore {
     onChartBarrierChange: TOnChartBarrierChange | null;
 
     constructor(
-        high_barrier: string | number,
+        high_barrier?: string | number,
         low_barrier?: string | number,
         onChartBarrierChange: TOnChartBarrierChange = null,
         { color, line_style, not_draggable }: TChartBarrierStoreOptions = {}

@@ -6,7 +6,7 @@ import './styles/fonts.scss';
 import './index.scss';
 
 const App: React.FC = () => (
-    <APIProvider>
+    <APIProvider standalone>
         <ModalProvider>
             <AppContent />
         </ModalProvider>

@@ -65,20 +65,13 @@ const HelpBase = observer(() => {
                             case help_content_types.IMAGE:
                                 return <FlyoutImage key={`${block_type}_${index}`} width={width} url={url} />;
                             case help_content_types.BLOCK: {
-                                return (
-                                    <FlyoutBlock
-                                        key={`${block_type}_${index}`}
-                                        should_center_block={true}
-                                        block_node={block_node}
-                                    />
-                                );
+                                return <FlyoutBlock key={`${block_type}_${index}`} block_node={block_node} />;
                             }
                             case help_content_types.EXAMPLE:
                                 if (example_node) {
                                     return (
                                         <FlyoutBlock
                                             key={`${block_type}_${index}`}
-                                            should_center_block={true}
                                             block_node={example_node.childNodes[0]}
                                         />
                                     );

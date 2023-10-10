@@ -1,27 +1,21 @@
 import React from 'react';
 import { Icon, Money, DesktopWrapper, ContractCard } from '@deriv/components';
 import { getCardLabels, TContractInfo } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import { TRootStore } from 'Stores/index';
+import { observer, useStore } from '@deriv/stores';
 
 type TIndicativeCell = {
     amount: number;
     contract_info: TContractInfo;
     currency: string;
-    status: string;
+    status?: string;
     is_footer: boolean;
     is_sell_requested: boolean;
-    onClickSell: () => void;
 };
 
-const IndicativeCell = ({
-    amount,
-    currency,
-    contract_info,
-    is_footer,
-    onClickSell,
-    is_sell_requested,
-}: TIndicativeCell) => {
+const IndicativeCell = observer((props: TIndicativeCell) => {
+    const { amount, contract_info, currency, is_footer, is_sell_requested, status } = props;
+    const { portfolio } = useStore();
+    const { onClickSell } = portfolio;
     const [movement, setMovement] = React.useState<string | null>(null);
     const [amount_state, setAmountState] = React.useState(0);
 
@@ -49,14 +43,14 @@ const IndicativeCell = ({
                         contract_info={contract_info}
                         is_sell_requested={is_sell_requested}
                         getCardLabels={getCardLabels}
-                        onClickSell={onClickSell}
+                        onClickSell={contract_id => {
+                            if (contract_id) onClickSell(contract_id);
+                        }}
                     />
                 )}
             </DesktopWrapper>
         </div>
     );
-};
+});
 
-export default connect(({ portfolio }: TRootStore) => ({
-    onClickSell: portfolio.onClickSell,
-}))(IndicativeCell);
+export default IndicativeCell;

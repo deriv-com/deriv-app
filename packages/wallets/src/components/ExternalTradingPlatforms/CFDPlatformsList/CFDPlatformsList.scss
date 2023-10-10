@@ -9,6 +9,12 @@
     &__header {
         padding: 24px 0;
 
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
         &-title {
             font-weight: bold;
             font-size: 24px;

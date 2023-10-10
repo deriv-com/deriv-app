@@ -16,7 +16,7 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
-import { useActiveWalletAccount, useFeatureFlags } from '@deriv/hooks';
+import { useActiveWalletAccount, useFeatureFlags, useWalletMigration } from '@deriv/hooks';
 import CFDPasswordForm from './cfd-password-form/cfd-password-form';
 import PasswordModalHeader from './modal-elements/password-modal-header';
 import PasswordModalMessage from './modal-elements/password-modal-message';
@@ -73,6 +73,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const history = useHistory();
     const { is_wallet_enabled } = useFeatureFlags();
+    const { is_migrated } = useWalletMigration();
     const active_wallet = useActiveWalletAccount();
     const invalidate = useInvalidateQuery();
 
@@ -334,7 +335,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const wallet_details = {
         balance,
-        account_title: getWalletCFDInfo(account_type.type, platform, jurisdiction_selected_shortcode).title,
+        account_title: getWalletCFDInfo(
+            account_type.type,
+            account_type.category === ACCOUNT_CATEGORY.DEMO,
+            platform,
+            jurisdiction_selected_shortcode
+        ).description_title,
         gradient_card_class: active_wallet?.gradients.card[theme],
         icon: active_wallet?.icons[theme],
         is_demo: active_wallet?.is_virtual,
@@ -346,14 +352,31 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 }}
             />
         ),
-        app_icon: getWalletCFDInfo(account_type.type, platform, jurisdiction_selected_shortcode).icon,
+        app_icon: getWalletCFDInfo(
+            account_type.type,
+            account_type.category === ACCOUNT_CATEGORY.DEMO,
+            platform,
+            jurisdiction_selected_shortcode
+        ).icon,
         label: card_label,
     };
 
     const wallet_success_text = getWalletSuccessText(
         Boolean(active_wallet?.is_virtual),
-        getWalletCFDInfo(account_type.type, platform, jurisdiction_selected_shortcode).title,
-        '',
+        getWalletCFDInfo(
+            account_type.type,
+            account_type.category === ACCOUNT_CATEGORY.DEMO,
+            platform,
+            jurisdiction_selected_shortcode
+        ).title,
+        getWalletCFDInfo(
+            account_type.type,
+            account_type.category === ACCOUNT_CATEGORY.DEMO,
+            platform,
+            jurisdiction_selected_shortcode
+        ).description_title,
+        account_type.type as 'all' | 'synthetic' | 'financial',
+        jurisdiction_selected_shortcode,
         platform,
         active_wallet?.currency
     );
@@ -364,35 +387,43 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     //     ', account_type?.type = ',
     //     account_type?.type,
     //     ', account_type?.category = ',
-    //     account_type?.category
+    //     account_type?.category,
+    //     ', jurisdiction_selected_shortcode = ',
+    //     jurisdiction_selected_shortcode,
+    //     ', show_eu_related_content = ',
+    //     show_eu_related_content,
+    //     'wallet_success_text.text_cancel = ',
+    //     wallet_success_text.text_cancel,
+    //     'Boolean(wallet_success_text.text_cancel) = ',
+    //     Boolean(wallet_success_text.text_cancel)
     // );
 
-    const updateData = () => {
-        setAppstorePlatform(CFD_PLATFORMS.MT5);
-        setAccountType({ category: 'real', type: 'all' });
-        setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
-    };
+    // const updateData = () => {
+    //     setAppstorePlatform(CFD_PLATFORMS.MT5);
+    //     setAccountType({ category: 'real', type: 'all' });
+    //     setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
+    // };
 
-    return (
-        <WalletSuccessDialog
-            description={wallet_success_text?.description}
-            // has_cancel={true}
-            is_open={true}
-            onSubmit={closeModal}
-            text_submit={wallet_success_text?.text_submit}
-            text_cancel={wallet_success_text?.text_cancel}
-            title={wallet_success_text?.title}
-            toggleModal={updateData}
-            wallet_card={<WalletAppCard wallet={wallet_details} />}
-        />
-    );
+    // return (
+    //     <WalletSuccessDialog
+    //         description={wallet_success_text?.description}
+    //         has_cancel={wallet_success_text.text_cancel}
+    //         is_open={true}
+    //         onSubmit={closeModal}
+    //         text_submit={wallet_success_text?.text_submit}
+    //         text_cancel={wallet_success_text?.text_cancel}
+    //         title={wallet_success_text?.title}
+    //         toggleModal={updateData}
+    //         wallet_card={<WalletAppCard wallet={wallet_details} />}
+    //     />
+    // );
 
     return (
         <React.Fragment>
             {password_modal}
             {password_dialog}
             {/* TODO: Remove this once development is completed */}
-            {is_wallet_enabled && account_type.category === ACCOUNT_CATEGORY.DEMO && platform === CFD_PLATFORMS.MT5 ? (
+            {is_wallet_enabled && is_migrated ? (
                 <WalletSuccessDialog
                     description={wallet_success_text?.description}
                     has_cancel={false}
@@ -423,7 +454,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
                             wallet_account_title={
-                                getWalletCFDInfo(account_type.type, platform, jurisdiction_selected_shortcode).title
+                                getWalletCFDInfo(account_type.type, platform, jurisdiction_selected_shortcode)
+                                    .description_title
                             }
                         />
                     }

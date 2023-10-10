@@ -402,7 +402,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleShouldShowRealAccountsList: jest.fn(),
             is_reset_trading_password_modal_visible: false,
             setResetTradingPasswordModalOpen: jest.fn(),
-            is_desktop: false,
             vanilla_trade_type: 'VANILLALONGCALL',
         },
         traders_hub: {

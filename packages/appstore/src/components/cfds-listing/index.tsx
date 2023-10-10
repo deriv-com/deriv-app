@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StaticUrl } from '@deriv/components';
-import { useCFDCanGetMoreMT5Accounts, useIsMt5LoginListStatusPresent } from '@deriv/hooks';
+import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -153,7 +153,7 @@ const CFDsListing = observer(() => {
             title={
                 !isMobile() && (
                     <div className='cfd-accounts__title'>
-                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                        <Text size='sm' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
                         <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop={!isMobile()} />
@@ -192,11 +192,6 @@ const CFDsListing = observer(() => {
                                       existing_account?.landing_company_short
                                   )
                                 : null;
-                        //TODO replace status with open_order_position_status once key is available in BE response and in type TSocketResponseData<"mt5_login_list">
-                        const {
-                            is_flag_present: is_open_order_position_status_present,
-                            flag_value: open_order_position_status,
-                        } = useIsMt5LoginListStatusPresent('landing_company_short', existing_account?.login ?? '');
 
                         return (
                             <TradingAppCard
@@ -246,8 +241,7 @@ const CFDsListing = observer(() => {
                                     jurisdiction: existing_account.landing_company_short,
                                 }}
                                 openFailedVerificationModal={openFailedVerificationModal}
-                                is_open_order_position_status_present={is_open_order_position_status_present}
-                                open_order_position_status={!!open_order_position_status}
+                                login={existing_account.login}
                                 market_type={existing_account?.market_type}
                             />
                         );

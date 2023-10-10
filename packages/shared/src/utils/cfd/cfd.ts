@@ -184,7 +184,7 @@ export const getCFDAccountDisplay = ({
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
     if (!cfd_account_key) return undefined;
 
-    if (cfd_account_key === 'financial' && is_eu) {
+    if (cfd_account_key === 'financial_demo' && is_eu) {
         if (is_mt5_trade_modal) cfd_account_key = 'mt5_cfds';
         else cfd_account_key = 'cfd';
     }
@@ -206,6 +206,11 @@ type TGetCFDAccount = TGetAccount & {
     is_transfer_form?: boolean;
 };
 
+type TGetMT5Icon = {
+    market_type: TMarketType;
+    is_eu?: boolean;
+};
+
 export const getCFDAccount = ({
     market_type,
     sub_account_type,
@@ -216,13 +221,19 @@ export const getCFDAccount = ({
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
     if (!cfd_account_key) return undefined;
 
-    if (cfd_account_key === 'financial' && is_eu) {
+    if (cfd_account_key === 'financial_demo' && is_eu) {
         cfd_account_key = 'cfd';
     }
 
     if (cfd_account_key === 'ctrader' && is_transfer_form) return 'Ctrader';
 
     return CFD_text[cfd_account_key as keyof typeof CFD_text];
+};
+
+export const getMT5Icon = ({ market_type, is_eu }: TGetMT5Icon) => {
+    if (market_type === 'all' && !is_eu) return 'SwapFree';
+    if (market_type === 'financial' && is_eu) return 'CFDs';
+    return market_type;
 };
 
 export const setSharedCFDText = (all_shared_CFD_text: { [key: string]: () => void }) => {

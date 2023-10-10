@@ -3,7 +3,7 @@ import { Button, Modal, Text } from '@deriv/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import {
     CFD_PLATFORMS,
-    getCFDPlatformLabel,
+    getCFDPlatformNames,
     getFormattedJurisdictionCode,
     getFormattedJurisdictionMarketTypes,
     Jurisdiction,
@@ -31,7 +31,7 @@ const OpenPositionsSVGModal = ({
             ? getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL)
             : getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.DERIVED);
     const from_account = getFormattedJurisdictionCode(Jurisdiction.SVG);
-    const cfd_platform = getCFDPlatformLabel(CFD_PLATFORMS.MT5);
+    const cfd_platform = getCFDPlatformNames(CFD_PLATFORMS.MT5);
 
     const onClick = () => {
         setModalOpen(false);

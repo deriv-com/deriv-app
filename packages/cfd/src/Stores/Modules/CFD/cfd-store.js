@@ -1,6 +1,6 @@
 import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS, Jurisdiction } from '@deriv/shared';
-import BaseStore from 'Stores/base-store';
+import BaseStore from '../../base-store';
 import { getDxCompanies, getMtCompanies, getDerivezCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
@@ -392,8 +392,6 @@ export default class CFDStore extends BaseStore {
         try {
             const results = await Promise.all(promises);
             const has_error = results.find(result => result.error);
-            console.log(results);
-
             if (!has_error) {
                 actions.setStatus({ success: true });
                 actions.setSubmitting(false);
@@ -415,7 +413,8 @@ export default class CFDStore extends BaseStore {
             }
         } catch (error) {
             // At least one request has failed
-            console.error('One or more requests failed:', error);
+            // eslint-disable-next-line no-console
+            console.warn('One or more MT5 migration requests failed:', error);
         }
     }
 

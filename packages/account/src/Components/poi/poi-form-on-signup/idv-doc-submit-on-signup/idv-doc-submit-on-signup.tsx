@@ -6,12 +6,12 @@ import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
 import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import {
-    validate,
-    validateName,
-    isDocumentTypeValid,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
+    isDocumentTypeValid,
     shouldHideHelperImage,
+    validate,
+    validateName,
 } from '../../../../Helpers/utils';
 import FormSubHeader from '../../../form-sub-header';
 import IDVForm from '../../../forms/idv-form';

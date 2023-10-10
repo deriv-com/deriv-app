@@ -32,10 +32,8 @@ export const ResultStatusIcon = ({ getCardLabels, is_contract_won }: TResultStat
             'dc-result__caption--lost': !is_contract_won,
         })}
     >
-        <React.Fragment>
-            <Icon icon='IcPositionClosed' className='dc-result__icon' color={is_contract_won ? 'green' : 'red'} />
-            <span>{getCardLabels().CLOSED}</span>
-        </React.Fragment>
+        <Icon icon='IcPositionClosed' className='dc-result__icon' color={is_contract_won ? 'green' : 'red'} />
+        {getCardLabels().CLOSED}
     </span>
 );
 

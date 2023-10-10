@@ -91,14 +91,21 @@ export default class DashboardStore implements IDashboardStore {
         const refreshBotBuilderTheme = () => {
             Blockly.derivWorkspace.asyncClear();
             Blockly.Xml.domToWorkspace(
-                Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                Blockly.Xml.textToDom(Blockly?.derivWorkspace.strategy_to_load),
                 Blockly.derivWorkspace
             );
+        };
+
+        const setCurrentXML = () => {
+            const xml = Blockly?.Xml.workspaceToDom(Blockly?.derivWorkspace);
+            const current_xml = Blockly?.Xml.domToText(xml);
+            if (Blockly) Blockly.derivWorkspace.strategy_to_load = current_xml;
         };
 
         reaction(
             () => this.is_dark_mode,
             () => {
+                if (Blockly) setCurrentXML();
                 setColors(this.is_dark_mode);
                 if (this.active_tab === 1) {
                     refreshBotBuilderTheme();

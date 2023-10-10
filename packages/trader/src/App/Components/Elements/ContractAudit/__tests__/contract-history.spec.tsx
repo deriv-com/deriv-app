@@ -35,6 +35,7 @@ describe('<ContractHistory />', () => {
 
         expect(screen.getByText(/ContractAuditItem/i)).toBeInTheDocument();
     });
+
     it('should render Cancelled if order_amount is 0', () => {
         mock_history[0].order_amount = '0';
         render(<ContractHistory {...mocked_default_props} history={mock_history} />);

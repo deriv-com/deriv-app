@@ -26,18 +26,21 @@ describe('<ContractAudit />', () => {
 
         expect(container).toBeEmptyDOMElement();
     });
+
     it('should render only ContractDetails component if is_multiplier, is_accumulator and is_turbos are falsy', () => {
         render(<ContractAudit {...mocked_default_props} is_multiplier={false} />);
 
         expect(screen.getByText(/ContractDetails/i)).toBeInTheDocument();
         expect(screen.queryByText(/ContractHistory/i)).not.toBeInTheDocument();
     });
+
     it('should render ContractDetails and ContractHistory components if is_multiplier, is_accumulator or is_turbos are truthy', () => {
         render(<ContractAudit {...mocked_default_props} />);
 
         expect(screen.getByText(/ContractDetails/i)).toBeInTheDocument();
         expect(screen.getByText(/ContractHistory/i)).toBeInTheDocument();
     });
+
     it('should call toggleHistoryTab function if the user clicks on tab with falsy index', () => {
         render(<ContractAudit {...mocked_default_props} />);
 

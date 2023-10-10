@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useMT5AccountsList } from '@deriv/api';
+import { useMT5AccountsList } from '@deriv/api';
 import DerivedMT5 from '../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../public/images/mt5-swap-free.svg';
@@ -24,7 +24,6 @@ type TProps = {
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
-    const { data: activeWallet } = useActiveWalletAccount();
     return (
         <TradingAccountCard
             leading={() => (
@@ -46,13 +45,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <p className='wallets-added-mt5__details-title-text'>
                         {marketTypeToNameMapper[account.market_type || 'all']}
                     </p>
-                    {!activeWallet?.is_virtual && (
-                        <div className='wallets-added-mt5__details-title-landing-company'>
-                            <p className='wallets-added-mt5__details-title-landing-company-text'>
-                                {account.landing_company_short}
-                            </p>
-                        </div>
-                    )}
+                    <div className='wallets-added-mt5__details-title-landing-company'>
+                        <p className='wallets-added-mt5__details-title-landing-company-text'>
+                            {account.landing_company_short}
+                        </p>
+                    </div>
                 </div>
                 <p className='wallets-added-mt5__details-balance'>
                     {account.display_balance} {account.currency}

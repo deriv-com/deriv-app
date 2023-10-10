@@ -1,9 +1,11 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { render, screen } from '@testing-library/react';
+
 import { PlatformContext } from '@deriv/shared';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { render, screen } from '@testing-library/react';
+
 import BinaryRoutes from '../binary-routes';
 
 jest.mock('../route-with-sub-routes', () => jest.fn(() => <div>RouteWithSubRoutes</div>));

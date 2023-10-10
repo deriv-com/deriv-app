@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { useWalletAccountsList } from '@deriv/api';
+
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
+
 import './WalletCard.scss';
 
 type TProps = {

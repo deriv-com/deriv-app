@@ -4,10 +4,10 @@ import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 type TIconRadio = {
-    google_drive_connected: boolean;
-    icon: string;
+    google_drive_connected?: boolean;
+    icon: React.ReactElement<{ className: string }, string>;
     text: string;
-    onDriveConnect: () => void;
+    onDriveConnect?: () => void;
 };
 const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }: TIconRadio) => {
     const is_drive_radio = text === 'Google Drive';

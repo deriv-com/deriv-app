@@ -9,19 +9,17 @@ type TIsHighLow = {
     };
 };
 
-type TInfoFromShortcode = Partial<
-    Record<
-        | 'category'
-        | 'underlying'
-        | 'barrier_1'
-        | 'multiplier'
-        | 'start_time'
-        | 'payout_tick'
-        | 'growth_rate'
-        | 'growth_frequency'
-        | 'tick_size_barrier',
-        string
-    >
+type TInfoFromShortcode = Record<
+    | 'category'
+    | 'underlying'
+    | 'barrier_1'
+    | 'multiplier'
+    | 'start_time'
+    | 'payout_tick'
+    | 'growth_rate'
+    | 'growth_frequency'
+    | 'tick_size_barrier',
+    string
 >;
 
 // category_underlying_amount

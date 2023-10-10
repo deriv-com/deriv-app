@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { useAuthorize, useWalletAccountsList } from '@deriv/api';
+
 import { AccountsList } from '../AccountsList';
 import { WalletListCard } from '../WalletListCard';
 import { WalletsAccordion } from '../WalletsAccordion';
+
 import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {

@@ -1,5 +1,5 @@
 import { useInfiniteQuery as _useInfiniteQuery } from '@tanstack/react-query';
-import useAPI from './useAPI';
+
 import type {
     TSocketAcceptableProps,
     TSocketPaginatateableRequestCleaned,
@@ -7,6 +7,8 @@ import type {
     TSocketRequestInfiniteQueryOptions,
     TSocketRequestPayload,
 } from '../types';
+
+import useAPI from './useAPI';
 import { getQueryKeys } from './utils';
 
 const useInfiniteQuery = <T extends TSocketPaginateableEndpointNames>(

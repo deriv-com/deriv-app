@@ -1,8 +1,9 @@
+import React from 'react';
 import { useCurrencyConfig } from '@deriv/api';
 import { useTransferBetweenAccounts } from '@deriv/hooks';
 import { validNumber } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 
 type TUseWalletTransferValidationParams = {
     from_account: ReturnType<typeof useTransferBetweenAccounts>['active_wallet'];
@@ -56,10 +57,10 @@ const useWalletTransferValidation = ({ from_account, to_account }: TUseWalletTra
                 errors.push({
                     variant: 'with-action-button',
                     key: ERROR_CODES.is_demo.insufficient_fund,
-                    button_label: localize('Reset balance'),
+                    button_label: <Localize i18n_default_text='Reset balance' />,
                     onClickHandler: () => setWalletModalActiveTab('Deposit'),
-                    message: localize(
-                        'You have insufficient fund in the selected wallet, please reset your virtual balance'
+                    message: (
+                        <Localize i18n_default_text='You have insufficient fund in the selected wallet, please reset your virtual balance' />
                     ),
                     type: 'error',
                 });

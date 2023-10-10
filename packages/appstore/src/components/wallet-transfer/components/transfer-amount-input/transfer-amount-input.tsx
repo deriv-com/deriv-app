@@ -5,7 +5,7 @@ import { useCurrencyConfig } from '@deriv/api';
 import { AmountInput } from '@deriv/components';
 import { useExchangeRate } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useWalletTransferValidation } from '../../hooks';
 import type { TInitialValues } from '../../types';
 
@@ -78,7 +78,11 @@ const TransferAmountInput = observer(({ field_name, setTimerKey }: TTransferAmou
 
     const amount_input_props = useMemo(() => {
         const to_amount_input_label =
-            to_account?.currency && !is_same_currency ? localize('Estimated amount') : localize('Amount you receive');
+            to_account?.currency && !is_same_currency ? (
+                <Localize i18n_default_text='Estimated amount' />
+            ) : (
+                <Localize i18n_default_text='Amount you receive' />
+            );
 
         return {
             currency: is_from_amount_input_field ? from_account?.currency || '' : to_account?.currency || '',
@@ -86,7 +90,11 @@ const TransferAmountInput = observer(({ field_name, setTimerKey }: TTransferAmou
                 ? getDecimalPlaces({ getConfig, currency: from_account?.currency })
                 : getDecimalPlaces({ getConfig, currency: to_account?.currency }),
             disabled: !is_from_amount_input_field && is_amount_to_input_disabled,
-            label: is_from_amount_input_field ? localize('Amount you send') : to_amount_input_label,
+            label: is_from_amount_input_field ? (
+                <Localize i18n_default_text='Amount you send' />
+            ) : (
+                to_amount_input_label
+            ),
         };
     }, [
         getConfig,

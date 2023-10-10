@@ -3,7 +3,7 @@ import { useFormikContext } from 'formik';
 import { Div100vhContainer, Icon, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { useTransferBetweenAccounts } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import TransferAccountList from './transfer-account-list';
 import { WalletTransferTile } from '../wallet-transfer-tile';
 import { WalletJurisdictionBadge } from 'Components/wallet-jurisdiction-badge';
@@ -86,9 +86,18 @@ const TransferAccountSelector = observer(
         const { active_wallet, trading_accounts, wallet_accounts } = useTransferBetweenAccounts();
         const [is_list_modal_open, setIsListModalOpen] = useState(false);
         const active_wallet_name = getAccountName({ ...active_wallet });
-        const label = name === 'from_account' ? localize('Transfer from') : localize('Transfer to');
+        const label =
+            name === 'from_account' ? (
+                <Localize i18n_default_text='Transfer from' />
+            ) : (
+                <Localize i18n_default_text='Transfer to' />
+            );
         const placeholder =
-            name === 'from_account' || !to_account ? localize('Select a trading account or a Wallet') : '';
+            name === 'from_account' || !to_account ? (
+                <Localize i18n_default_text='Select a trading account or a Wallet' />
+            ) : (
+                ''
+            );
         const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
 
         const to_account_list = useMemo(() => {

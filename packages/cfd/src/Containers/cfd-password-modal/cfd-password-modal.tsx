@@ -45,6 +45,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         landing_companies,
         mt5_login_list,
         updateAccountStatus,
+        dxtrade_accounts_list,
     } = client;
     const { show_eu_related_content } = traders_hub;
     const { is_mobile, is_dark_mode_on } = ui;
@@ -80,6 +81,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     const has_mt5_account = Boolean(mt5_login_list?.length);
+    const has_dxtrade_account = Boolean(dxtrade_accounts_list?.length);
     const should_set_trading_password =
         Array.isArray(account_status?.status) &&
         account_status.status.includes(
@@ -90,11 +92,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
     const theme = is_dark_mode_on ? 'dark' : 'light';
 
-    const getBalance = (platform: string) => {
-        if (has_mt5_account) {
-            return mt5_login_list.find(item => item.market_type === platform)?.display_balance;
+    const getBalance = (market_type: string) => {
+        if (platform === CFD_PLATFORMS.MT5 && has_mt5_account) {
+            return mt5_login_list.find(item => item.market_type === market_type)?.display_balance;
         }
-        return false;
+        if (platform === CFD_PLATFORMS.DXTRADE && has_dxtrade_account) {
+            return dxtrade_accounts_list.find(item => item.account_type === account_type.category)?.display_balance;
+        }
     };
 
     const { poi_verified_for_bvi_labuan_vanuatu, poi_verified_for_maltainvest, poa_verified, manual_status } =
@@ -333,14 +337,16 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
+    const walletCFDInfo = getWalletCFDInfo(
+        account_type.type,
+        account_type.category === ACCOUNT_CATEGORY.DEMO,
+        platform,
+        jurisdiction_selected_shortcode
+    );
+
     const wallet_details = {
         balance,
-        account_title: getWalletCFDInfo(
-            account_type.type,
-            account_type.category === ACCOUNT_CATEGORY.DEMO,
-            platform,
-            jurisdiction_selected_shortcode
-        ).description_title,
+        account_title: walletCFDInfo.description_title,
         gradient_card_class: active_wallet?.gradients.card[theme],
         icon: active_wallet?.icons[theme],
         is_demo: active_wallet?.is_virtual,
@@ -352,30 +358,17 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 }}
             />
         ),
-        app_icon: getWalletCFDInfo(
-            account_type.type,
-            account_type.category === ACCOUNT_CATEGORY.DEMO,
-            platform,
-            jurisdiction_selected_shortcode
-        ).icon,
+        app_icon: walletCFDInfo.icon,
         label: card_label,
     };
 
     const wallet_success_text = getWalletSuccessText(
         Boolean(active_wallet?.is_virtual),
-        getWalletCFDInfo(
-            account_type.type,
-            account_type.category === ACCOUNT_CATEGORY.DEMO,
-            platform,
-            jurisdiction_selected_shortcode
-        ).title,
-        getWalletCFDInfo(
-            account_type.type,
-            account_type.category === ACCOUNT_CATEGORY.DEMO,
-            platform,
-            jurisdiction_selected_shortcode
-        ).description_title,
+        walletCFDInfo.title,
+        walletCFDInfo.description_title,
         account_type.type as 'all' | 'synthetic' | 'financial',
+        is_selected_mt5_verified,
+        manual_status,
         jurisdiction_selected_shortcode,
         platform,
         active_wallet?.currency
@@ -390,12 +383,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     //     account_type?.category,
     //     ', jurisdiction_selected_shortcode = ',
     //     jurisdiction_selected_shortcode,
-    //     ', show_eu_related_content = ',
-    //     show_eu_related_content,
-    //     'wallet_success_text.text_cancel = ',
-    //     wallet_success_text.text_cancel,
-    //     'Boolean(wallet_success_text.text_cancel) = ',
-    //     Boolean(wallet_success_text.text_cancel)
+    //     ', is_selected_mt5_verified = ',
+    //     is_selected_mt5_verified,
+    //     // ', account_status = ',
+    //     // account_status
+    //     ', dxtrade_accounts_list = ',
+    //     dxtrade_accounts_list,
+    //     ', mt5_login_list = ',
+    //     mt5_login_list
     // );
 
     // const updateData = () => {
@@ -406,13 +401,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     // return (
     //     <WalletSuccessDialog
-    //         description={wallet_success_text?.description}
-    //         has_cancel={wallet_success_text.text_cancel}
-    //         is_open={true}
+    //         description={wallet_success_text.description}
+    //         has_cancel={Boolean(wallet_success_text.text_cancel)}
+    //         is_open={should_show_success_for_wallets}
     //         onSubmit={closeModal}
-    //         text_submit={wallet_success_text?.text_submit}
+    //         text_submit={wallet_success_text.text_submit}
     //         text_cancel={wallet_success_text?.text_cancel}
-    //         title={wallet_success_text?.title}
+    //         onCancel={closeModal}
+    //         title={wallet_success_text.title}
     //         toggleModal={updateData}
     //         wallet_card={<WalletAppCard wallet={wallet_details} />}
     //     />
@@ -425,12 +421,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             {/* TODO: Remove this once development is completed */}
             {is_wallet_enabled && is_migrated ? (
                 <WalletSuccessDialog
-                    description={wallet_success_text?.description}
-                    has_cancel={false}
+                    description={wallet_success_text.description}
+                    has_cancel={Boolean(wallet_success_text.text_cancel)}
                     is_open={should_show_success_for_wallets}
                     onSubmit={closeModal}
-                    text_submit={wallet_success_text?.text_submit}
-                    title={wallet_success_text?.title}
+                    text_submit={wallet_success_text.text_submit}
+                    text_cancel={wallet_success_text?.text_cancel}
+                    onCancel={closeModal}
+                    title={wallet_success_text.title}
                     toggleModal={closeModal}
                     wallet_card={<WalletAppCard wallet={wallet_details} />}
                 />
@@ -453,10 +451,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             show_eu_related_content={show_eu_related_content}
                             type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
-                            wallet_account_title={
-                                getWalletCFDInfo(account_type.type, platform, jurisdiction_selected_shortcode)
-                                    .description_title
-                            }
+                            wallet_account_title={walletCFDInfo.description_title}
                         />
                     }
                     icon={

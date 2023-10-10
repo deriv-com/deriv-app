@@ -9,17 +9,9 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
 import GetMoreAccounts from 'Components/get-more-accounts';
-import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
-import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
 import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
-
-type TDetailedExistingAccount = AvailableAccount &
-    TDetailsOfEachMT5Loginid &
-    Actions & {
-        key: string;
-    };
 
 const CFDsListing = observer(() => {
     const {

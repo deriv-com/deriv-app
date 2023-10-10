@@ -222,6 +222,18 @@
             }
         }
     }
+
+    &__link {
+        color: var(--text-loss-danger);
+        cursor: pointer;
+        font-size: var(--text-size-xxs);
+        font-weight: bold;
+
+        @include mobile {
+            font-size: var(--text-size-xxxs);
+        }
+    }
+
     @include desktop {
         &__form-submit {
             min-width: 36rem;

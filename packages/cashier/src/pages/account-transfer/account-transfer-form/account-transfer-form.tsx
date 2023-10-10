@@ -32,8 +32,30 @@ type TAccountTransferFormProps = {
     setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
-const AccountOption = ({ account, idx, is_pending_verification, is_selected_from }: TAccountsList) => {
+const AccountOption = ({
+    account,
+    idx,
+    is_pending_verification,
+    is_selected_from,
+    is_verification_needed,
+}: TAccountsList) => {
     const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt || account.is_derivez;
+
+    const getAccountStatusText = () => {
+        if (is_pending_verification) {
+            return (
+                <Text color='warning' size='xs'>
+                    <Localize i18n_default_text='Pending verification' />
+                </Text>
+            );
+        } else if (is_verification_needed) {
+            return (
+                <Text color='info-blue' size='xs'>
+                    <Localize i18n_default_text='Needs verification' />
+                </Text>
+            );
+        }
+    };
 
     return (
         <React.Fragment key={idx}>
@@ -55,10 +77,8 @@ const AccountOption = ({ account, idx, is_pending_verification, is_selected_from
             </div>
 
             <span className='account-transfer-form__balance'>
-                {is_pending_verification && is_selected_from ? (
-                    <Text color='warning' size='xs'>
-                        <Localize i18n_default_text='Pending verification' />
-                    </Text>
+                {(is_pending_verification || is_verification_needed) && is_selected_from ? (
+                    getAccountStatusText()
                 ) : (
                     <Money
                         amount={account.balance}
@@ -91,6 +111,7 @@ const AccountTransferForm = observer(
             ui,
             client,
             common: { is_from_derivgo },
+            traders_hub: { closeAccountTransferModal },
         } = useStore();
 
         const { is_mobile } = ui;
@@ -150,7 +171,10 @@ const AccountTransferForm = observer(
         const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
         const is_derivez_transfer = selected_to.is_derivez || selected_from.is_derivez;
 
-        const is_poa_poi_pending_for_mf = mf_account_status === 'pending';
+        const is_mf_status_pending = mf_account_status === 'pending';
+        const is_mf_status_need_verification = mf_account_status === 'need_verification';
+        const is_mf_status_pending_or_needs_verification = is_mf_status_pending || is_mf_status_need_verification;
+
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
         const history = useHistory();
@@ -158,7 +182,29 @@ const AccountTransferForm = observer(
         const validateAmount = (amount: string) => {
             if (!amount) return localize('This field is required.');
 
-            if (is_poa_poi_pending_for_mf) return localize('Unavailable as your documents are still under review');
+            if (is_mf_status_need_verification)
+                return (
+                    <Localize
+                        i18n_default_text='<0>Verify your account to transfer funds.</0> <1>Verify now</1>'
+                        components={[
+                            <Text color='var(--status-info)' key={0} size={is_mobile ? 'xxxs' : 'xxs'} />,
+                            <Link
+                                className='account-transfer-form__link'
+                                key={1}
+                                onClick={closeAccountTransferModal}
+                                to='/account/proof-of-identity'
+                            />,
+                        ]}
+                    />
+                );
+
+            if (is_mf_status_pending)
+                return (
+                    <Text color='var(--status-info)' size={is_mobile ? 'xxxs' : 'xxs'}>
+                        <Localize i18n_default_text='Unavailable as your documents are still under review' />
+                    </Text>
+                );
+
             const { is_ok, message } = validNumber(amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(selected_from.currency || ''),
@@ -218,8 +264,9 @@ const AccountTransferForm = observer(
                     <AccountOption
                         idx={idx}
                         account={account}
-                        is_pending_verification={is_poa_poi_pending_for_mf}
+                        is_pending_verification={is_mf_status_pending}
                         is_selected_from={is_selected_from}
+                        is_verification_needed={is_mf_status_need_verification}
                     />
                 );
                 const value = account.value;
@@ -473,13 +520,13 @@ const AccountTransferForm = observer(
                                                 id='transfer_from'
                                                 className={classNames('account-transfer-form__drop-down', {
                                                     'account-transfer-form__drop-down--disabled':
-                                                        is_poa_poi_pending_for_mf,
+                                                        is_mf_status_pending_or_needs_verification,
                                                 })}
                                                 classNameDisplay='cashier__drop-down-display'
                                                 classNameDisplaySpan='cashier__drop-down-display-span'
                                                 classNameItems='cashier__drop-down-items'
                                                 classNameLabel='cashier__drop-down-label'
-                                                disabled={is_poa_poi_pending_for_mf}
+                                                disabled={is_mf_status_pending_or_needs_verification}
                                                 test_id='dt_account_transfer_form_drop_down'
                                                 is_large
                                                 label={localize('From')}

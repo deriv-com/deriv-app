@@ -110,6 +110,8 @@ export { default as Table } from './components/table';
 export { default as Tabs } from './components/tabs';
 export { default as Text } from './components/text';
 export { default as ThemedScrollbars } from './components/themed-scrollbars';
+export * from './components/animated-list';
+export * from './components/alert-message';
 export { default as TickPicker } from './components/tick-picker';
 export { default as TickProgress } from './components/tick-progress';
 export { default as Timeline } from './components/timeline';

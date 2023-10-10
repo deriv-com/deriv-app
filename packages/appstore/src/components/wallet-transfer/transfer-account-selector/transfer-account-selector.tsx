@@ -28,6 +28,10 @@ type TAccountSelectorTransferTileProps = {
     placeholder?: string;
 };
 
+const header_height = '16.2rem';
+
+const collapsed_header_height = '12.2rem';
+
 const ChevronIcon = () => {
     return (
         <div className='transfer-account-selector__chevron-icon'>
@@ -96,19 +100,11 @@ const TransferAccountSelector = ({
     const [is_list_modal_open, setIsListModalOpen] = React.useState(false);
     const [selected_account, setSelectedAccount] = React.useState<TTransferAccount | undefined>(value);
 
-    React.useEffect(() => {
-        setSelectedAccount(value);
-    }, [value]);
+    const height_offset = is_wallet_name_visible ? header_height : collapsed_header_height;
 
     const openAccountsList = () => {
         setIsListModalOpen(true);
     };
-
-    const getHeightOffset = React.useCallback(() => {
-        const header_height = '16.2rem';
-        const collapsed_header_height = '12.2rem';
-        return is_wallet_name_visible ? header_height : collapsed_header_height;
-    }, [is_wallet_name_visible]);
 
     return (
         <div
@@ -139,7 +135,7 @@ const TransferAccountSelector = ({
                     is_scrollbar_hidden={is_mobile}
                     onScroll={is_mobile ? contentScrollHandler : undefined}
                 >
-                    <Div100vhContainer height_offset={getHeightOffset()} is_bypassed={!is_mobile}>
+                    <Div100vhContainer height_offset={height_offset} is_bypassed={!is_mobile}>
                         <TransferAccountList
                             is_mobile={is_mobile}
                             onSelectAccount={onSelectAccount}

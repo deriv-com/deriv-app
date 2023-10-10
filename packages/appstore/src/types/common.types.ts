@@ -1,5 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useWalletsList, useAvailableWallets, useFilteredCFDAccounts } from '@deriv/hooks';
+import { useWalletsList, useAvailableWallets } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
@@ -188,7 +188,6 @@ export type TLinkedTo = {
 
 export type TWalletAccount = NonNullable<ReturnType<typeof useWalletsList>['data']>[number];
 export type TWalletInfo = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[number];
-export type TFilteredWalletMT5Account = NonNullable<ReturnType<typeof useFilteredCFDAccounts>['data']>[string][number];
 
 export type TTransferAccount = {
     active_wallet_icon: string | undefined;
@@ -208,7 +207,7 @@ export type TTransferAccount = {
 export type TMessageItem =
     | {
           variant: 'base';
-          key: string;
+          id: string;
           type: 'info' | 'error' | 'success';
           message: string | JSX.Element;
       }
@@ -216,7 +215,7 @@ export type TMessageItem =
           variant: 'with-action-button';
           onClickHandler: VoidFunction;
           button_label: string;
-          key: string;
+          id: string;
           type: 'info' | 'error' | 'success';
           message: string | JSX.Element;
       };

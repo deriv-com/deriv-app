@@ -115,9 +115,7 @@ const IdvFailed = ({
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
     const generateIDVError = React.useCallback(() => {
-        const document_name = is_document_upload_required
-            ? getPropertyValue(chosen_country, ['identity', 'services', 'idv', 'documents_supported'])
-            : getIDVDocumentType(latest_status, chosen_country);
+        const document_name = getIDVDocumentType(latest_status, chosen_country);
         switch (mismatch_status) {
             case idv_error_statuses.poi_name_dob_mismatch:
                 return {

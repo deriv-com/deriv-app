@@ -39,21 +39,25 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
 
             return (
                 <React.Fragment>
-                    {filtered_transactions?.slice(0, 3).map((transaction, index) => (
-                        <React.Fragment key={transaction.id}>
-                            <CryptoTransaction
-                                transaction={cryptoTransactionMapper(transaction)}
-                                currency_display_code={currency_config.display_code}
-                            />
-                            <div
-                                className={
-                                    index < filtered_transactions.length - 1 && index < 2
-                                        ? 'crypto-transactions-side-note-recent-transaction__divider__light'
-                                        : 'crypto-transactions-side-note-recent-transaction__divider'
-                                }
-                            />
-                        </React.Fragment>
-                    ))}
+                    {filtered_transactions?.length === 0 ? (
+                        <NoTransactionState />
+                    ) : (
+                        filtered_transactions?.slice(0, 3).map((transaction, index) => (
+                            <React.Fragment key={transaction.id}>
+                                <CryptoTransaction
+                                    transaction={cryptoTransactionMapper(transaction)}
+                                    currency_display_code={currency_config.display_code}
+                                />
+                                <div
+                                    className={
+                                        index < filtered_transactions.length - 1 && index < 2
+                                            ? 'crypto-transactions-side-note-recent-transaction__divider__light'
+                                            : 'crypto-transactions-side-note-recent-transaction__divider'
+                                    }
+                                />
+                            </React.Fragment>
+                        ))
+                    )}
                     {filtered_transactions.length > 3 && (
                         <Button
                             text={localize('View more')}
@@ -63,7 +67,6 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
                             className='crypto-transactions-side-note-recent-transaction__button'
                         />
                     )}
-                    {filtered_transactions.length === 0 && <NoTransactionState />}
                 </React.Fragment>
             );
         }, [NoTransactionState, currency_config, setIsCryptoTransactionsVisible, transaction_type, transactions]);

@@ -130,6 +130,7 @@
 
                 @include mobile {
                     padding: 1.6rem 1.6rem 0;
+                    margin-bottom: 2.4rem;
                 }
             }
 
@@ -867,6 +868,7 @@
         &-message {
             margin: 1.6rem auto 3.2rem;
             border-radius: $BORDER_RADIUS * 2;
+            width: 100%;
         }
     }
 
@@ -896,6 +898,10 @@
             @include mobile {
                 margin-top: 2.4rem;
             }
+        }
+
+        .account-form__header.details{
+            margin-top: unset;
         }
     }
 }

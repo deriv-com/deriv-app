@@ -20,7 +20,7 @@ type TDigitDisplay = Pick<React.ComponentProps<typeof DigitSpot>, 'is_lost' | 'i
             digit: number | null;
             spot: string | null;
         };
-        selected_digit: number | boolean;
+        selected_digit?: number;
         status: ProposalOpenContract['status'];
         stats?: number | null;
         value: number;

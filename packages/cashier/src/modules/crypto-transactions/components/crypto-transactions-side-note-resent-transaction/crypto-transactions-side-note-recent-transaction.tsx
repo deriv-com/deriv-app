@@ -74,8 +74,6 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
             transactions,
         ]);
 
-        const LoadingState = React.useCallback(() => <Loading is_fullscreen={false} />, []);
-
         const ErrorState = React.useCallback(
             () => (
                 <>
@@ -99,7 +97,7 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
             <SideNote type={error ? 'warning' : undefined} title={localize('Transaction status')}>
                 <div className='crypto-transactions-side-note-recent-transaction'>
                     <div className='crypto-transactions-side-note-recent-transaction__divider' />
-                    {isLoading && <LoadingState />}
+                    {isLoading && <Loading is_fullscreen={false} />}
                     {!isLoading && !error && has_transactions && <TransactionDetail />}
                     {!!error && <ErrorState />}
                 </div>

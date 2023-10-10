@@ -1,12 +1,12 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, useState } from 'react';
 import { WalletTransactionsCrypto } from '../WalletTransactionsCrypto';
 import { WalletTransactionsFilter } from '../WalletTransactionsFilter';
 import './WalletTransactions.scss';
 
 const WalletTransactions = () => {
     const [filterValue, setFilterValue] =
-        React.useState<ComponentProps<typeof WalletTransactionsCrypto>['filter']>(undefined);
-    const [isPendingActive, setIsPendingActive] = React.useState(true);
+        useState<ComponentProps<typeof WalletTransactionsCrypto>['filter']>(undefined);
+    const [isPendingActive, setIsPendingActive] = useState(true);
 
     return (
         <div className='wallets-transactions'>

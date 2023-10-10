@@ -3,14 +3,14 @@ import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IdvDocumentRejected from 'Assets/ic-idv-document-rejected.svg';
 
-type TIdvLimited = {
+type TIdvNoSubmission = {
     handleRequireSubmission: () => void;
 };
 
-const IdvLimited = ({ handleRequireSubmission }: TIdvLimited) => {
+const IdvNoSubmissions = ({ handleRequireSubmission }: TIdvNoSubmission) => {
     return (
         <div className='proof-of-identity__container'>
-            <IdvDocumentRejected className='icon' />
+            <IdvDocumentRejected className='icon' size={128} />
             <Text className='proof-of-identity__text btm-spacer' align='center' weight='bold'>
                 {localize('ID verification failed')}
             </Text>
@@ -30,4 +30,4 @@ const IdvLimited = ({ handleRequireSubmission }: TIdvLimited) => {
     );
 };
 
-export default IdvLimited;
+export default IdvNoSubmissions;

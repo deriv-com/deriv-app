@@ -19,7 +19,6 @@ jest.mock('@deriv/components', () => ({
 }));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    WS: { contractUpdateHistory: jest.fn() },
 }));
 jest.mock('../contract-details', () => jest.fn(() => <div>ContractDetails</div>));
 jest.mock('../contract-history', () => jest.fn(() => <div>ContractHistory</div>));

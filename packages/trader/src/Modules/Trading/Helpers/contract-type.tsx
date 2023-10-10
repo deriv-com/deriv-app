@@ -1,5 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { ActiveSymbols } from '@deriv/api-types';
 import { TContractType, TContractCategory, TList } from '../Components/Form/ContractType/types';
 
 type TContractTypesList = {
@@ -42,6 +43,14 @@ export const getContractTypeCategoryIcons = () =>
  * @param {object} contract_types_list  - list of all contracts
  * @param {array}  unsupported_list - list of unsupported contract types
  */
+
+export const showLabelForMultipliers = (checked_symbol: string, active_symbols: ActiveSymbols) =>
+    active_symbols.some(
+        ({ submarket_display_name, symbol }) =>
+            /Continuous Indices/i.test(submarket_display_name) &&
+            checked_symbol === symbol &&
+            !/1HZ150V|1HZ250V/i.test(checked_symbol)
+    );
 
 export const getAvailableContractTypes = (contract_types_list: TContractTypesList, unsupported_list: string[]) => {
     return Object.keys(contract_types_list)

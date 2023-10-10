@@ -118,6 +118,21 @@
     &__container {
         position: relative;
     }
+    &__label--new {
+        position: absolute;
+        right: 1rem;
+        top: calc(50% - 7px);
+        padding: 0.3rem 0.4rem;
+        border-radius: 16px;
+        font-size: 1rem;
+        font-weight: bold;
+        background-color: var(--text-loss-danger);
+        color: var(--status-colored-background);
+        @include mobile {
+            position: initial;
+            margin-bottom: 0;
+        }
+    }
     &__hint {
         margin-left: 1.2rem;
     }

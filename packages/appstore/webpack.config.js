@@ -182,33 +182,6 @@ module.exports = function (env) {
                       new CssMinimizerPlugin(),
                   ]
                 : [],
-            splitChunks: {
-                chunks: 'all',
-                minChunks: 1,
-                cacheGroups: {
-                    default: {
-                        minChunks: 2,
-                        minSize: 102400,
-                        priority: -20,
-                        reuseExistingChunk: true,
-                    },
-                    account: {
-                        idHint: 'account',
-                        test: /[\\/]account\//,
-                        priority: -20,
-                    },
-                    onfido: {
-                        idHint: 'onfido',
-                        test: /[\\/]onfido\//,
-                        priority: -10,
-                    },
-                    defaultVendors: {
-                        idHint: 'vendors',
-                        test: /[\\/]node_modules[\\/]/,
-                        priority: -10,
-                    },
-                },
-            },
         },
         devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [

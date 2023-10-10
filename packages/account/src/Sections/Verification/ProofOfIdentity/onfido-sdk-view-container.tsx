@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import countries from 'i18n-iso-countries';
-import type { SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
+import { init, SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
 import { CSSTransition } from 'react-transition-group';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Loading, ThemedScrollbars } from '@deriv/components';
@@ -99,9 +99,7 @@ const OnfidoSdkViewContainer = ({
         async (service_token: string) => {
             if (!service_token) return;
             try {
-                const onfido = await import('onfido-sdk-ui');
-
-                onfido_init.current = await onfido.init({
+                onfido_init.current = await init({
                     containerId: 'onfido',
                     language: {
                         locale: (getLanguage().toLowerCase() as SupportedLanguages) || 'en',

@@ -186,12 +186,6 @@ module.exports = function (env) {
                 chunks: 'all',
                 minChunks: 1,
                 cacheGroups: {
-                    default: {
-                        minChunks: 2,
-                        minSize: 102400,
-                        priority: -20,
-                        reuseExistingChunk: true,
-                    },
                     account: {
                         idHint: 'account',
                         test: /[\\/]account\//,
@@ -200,11 +194,6 @@ module.exports = function (env) {
                     onfido: {
                         idHint: 'onfido',
                         test: /[\\/]onfido\//,
-                        priority: -10,
-                    },
-                    defaultVendors: {
-                        idHint: 'vendors',
-                        test: /[\\/]node_modules[\\/]/,
                         priority: -10,
                     },
                 },

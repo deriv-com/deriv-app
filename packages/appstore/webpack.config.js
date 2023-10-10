@@ -1,7 +1,7 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 //TODO: Uncomment this line when type script migrations on all packages done
 //const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -49,6 +49,7 @@ module.exports = function (env) {
             libraryTarget: 'umd',
             chunkFilename: 'appstore/js/appstore.[name].[contenthash].js',
         },
+        plugins: [new BundleAnalyzerPlugin()],
         resolve: {
             alias: {
                 Assets: path.resolve(__dirname, 'src/assets'),
@@ -183,17 +184,10 @@ module.exports = function (env) {
                   ]
                 : [],
             splitChunks: {
-                chunks: 'all',
-                minChunks: 1,
                 cacheGroups: {
-                    account: {
-                        idHint: 'account',
-                        test: /[\\/]account\//,
-                        priority: -20,
-                    },
                     onfido: {
                         idHint: 'onfido',
-                        test: /[\\/]onfido\//,
+                        test: /[\\/]onfido|onfido\-sdk\-ui\//,
                         priority: -10,
                     },
                 },

@@ -15,7 +15,7 @@ const default_mock_store = {
     },
 };
 
-jest.mock('Modules/Trading/Containers/radio-group-options-modal.jsx', () =>
+jest.mock('Modules/Trading/Containers/radio-group-options-modal', () =>
     jest.fn(prop => (
         <div data-open={prop.is_open} onClick={prop.toggleModal}>
             RadioGroupOptionsModal component

@@ -2,7 +2,7 @@ import React from 'react';
 import { getCardLabels, isValidToSell } from '@deriv/shared';
 import { Button, Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { observer, useStore } from '@deriv/stores';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 

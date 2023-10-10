@@ -1,15 +1,14 @@
 import React from 'react';
-import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
+import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile';
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import { TURBOS } from '@deriv/shared';
+import { TURBOS, VANILLALONG, isTurbosContract, isVanillaContract } from '@deriv/shared';
 
 const PopulateHeader = observer(() => {
-    const { portfolio, ui, client } = useStore();
+    const { portfolio, client } = useStore();
     const { symbol, contract_type: trade_contract_type } = useTraderStore();
     const { currency: positions_currency } = client;
-    const { disableApp, enableApp } = ui;
     const {
         active_positions_count,
         all_positions: positions,
@@ -22,21 +21,25 @@ const PopulateHeader = observer(() => {
         p =>
             p.contract_info &&
             symbol === p.contract_info.underlying &&
-            (trade_contract_type.includes('turbos')
-                ? filterByContractType(p.contract_info, TURBOS.SHORT) ||
-                  filterByContractType(p.contract_info, TURBOS.LONG)
+            (isTurbosContract(trade_contract_type) || isVanillaContract(trade_contract_type)
+                ? filterByContractType(
+                      p.contract_info,
+                      isTurbosContract(trade_contract_type) ? TURBOS.SHORT : VANILLALONG.CALL
+                  ) ||
+                  filterByContractType(
+                      p.contract_info,
+                      isTurbosContract(trade_contract_type) ? TURBOS.LONG : VANILLALONG.PUT
+                  )
                 : filterByContractType(p.contract_info, trade_contract_type))
     );
 
     return (
         <TogglePositionsMobile
             active_positions_count={active_positions_count}
-            filtered_positions={filtered_positions}
             currency={positions_currency}
-            disableApp={disableApp}
-            is_empty={!filtered_positions.length}
-            enableApp={enableApp}
             error={positions_error}
+            filtered_positions={filtered_positions}
+            is_empty={!filtered_positions.length}
             onClickSell={onPositionsSell}
             onClickCancel={onPositionsCancel}
         />

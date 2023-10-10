@@ -192,7 +192,6 @@ const CFDsListing = observer(() => {
                                       existing_account?.landing_company_short
                                   )
                                 : null;
-                        //TODO replace status with open_order_position_status once key is available in BE response and in type TSocketResponseData<"mt5_login_list">
 
                         return (
                             <TradingAppCard

@@ -14,7 +14,7 @@ import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
-import { useStores } from 'Stores/index';
+import { useStore } from '@deriv/stores';
 import { observer } from 'mobx-react-lite';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
@@ -42,11 +42,12 @@ const TradingAppCard = ({
         common,
         traders_hub,
         modules: { cfd },
-    } = useStores();
+    } = useStore();
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
 
+    //TODO replace landing_company_short status with open_order_position_status once key is available in BE response and in type TSocketResponseData<"mt5_login_list">
     const { is_flag_present: is_open_order_position_status_present, flag_value: open_order_position_status } =
         useIsMt5LoginListStatusPresent('landing_company_short', login ?? '');
 
@@ -174,7 +175,7 @@ const TradingAppCard = ({
                     {is_open_position_svg_modal_open && (
                         <OpenPositionsSVGModal
                             market_type={market_type}
-                            open_order_position_status={open_order_position_status} //TODO: check type :
+                            open_order_position_status={!!open_order_position_status}
                             is_modal_open={is_open_position_svg_modal_open}
                             setModalOpen={setIsOpenPositionSvgModalOpen}
                         />

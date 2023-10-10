@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api';
+import React from 'react';
+import { useActiveWalletAccount } from '@deriv/api';
 import useDevice from '../../../hooks/useDevice';
 import { CTraderList } from '../CTraderList';
 import { MT5PlatformsList } from '../MT5PlatformsList';
@@ -9,13 +9,7 @@ import './CFDPlatformsList.scss';
 
 const CFDPlatformsList = () => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: walletAccountsList } = useWalletAccountsList();
     const { isMobile } = useDevice();
-
-    const fiatAccount = useMemo(
-        () => walletAccountsList?.find(account => account.account_type === 'doughflow'),
-        [walletAccountsList]
-    );
 
     return (
         <div className='wallets-cfd-list'>
@@ -41,12 +35,7 @@ const CFDPlatformsList = () => {
                     <OtherCFDPlatformsList />
                 </div>
             )}
-            {activeWallet?.currency_config?.is_crypto && (
-                <CFDPlatformsListEmptyState
-                    cryptoCurrency={activeWallet.currency}
-                    fiatCurrency={fiatAccount?.wallet_currency_type}
-                />
-            )}
+            {activeWallet?.currency_config?.is_crypto && <CFDPlatformsListEmptyState />}
         </div>
     );
 };

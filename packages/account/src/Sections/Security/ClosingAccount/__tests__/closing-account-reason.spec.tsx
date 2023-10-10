@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider, useRequest } from '@deriv/api';
+import { APIProvider, useMutation } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import ClosingAccountReason from '../closing-account-reason';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useRequest: jest.fn(),
+    useMutation: jest.fn(),
 }));
 
 jest.mock('../closing-account-warning-modal', () => ({
@@ -16,7 +16,7 @@ jest.mock('../closing-account-warning-modal', () => ({
 }));
 
 // @ts-expect-error ignore this until find a way to make arguments as partial
-const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'account_closure'>>;
+const mockUseMutation = useMutation as jest.MockedFunction<typeof useMutation<'account_closure'>>;
 
 describe('<ClosingAccountReason />', () => {
     const mockRootStore = mockStore({});
@@ -43,7 +43,7 @@ describe('<ClosingAccountReason />', () => {
 
     const renderComponent = () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
-        mockUseRequest.mockReturnValue({ isLoading: false });
+        mockUseMutation.mockReturnValue({ isLoading: false });
         render(
             <APIProvider>
                 <StoreProvider store={mockRootStore}>

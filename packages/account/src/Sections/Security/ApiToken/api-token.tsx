@@ -28,7 +28,7 @@ type TApiTokenForm = {
     admin: boolean;
 };
 
-const ApiToken = () => {
+const ApiToken = observer(() => {
     const { client, ui } = useStore();
     const { is_switching } = client;
     const { is_desktop, is_mobile } = ui;
@@ -257,6 +257,6 @@ const ApiToken = () => {
             </section>
         </ApiTokenContext.Provider>
     );
-};
+});
 
-export default observer(ApiToken);
+export default ApiToken;

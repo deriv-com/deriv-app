@@ -1,17 +1,16 @@
 import { useMemo } from 'react';
 import { getLoginHistoryFormattedData } from '@deriv/utils';
 import useAuthorize from './useAuthorize';
-import useFetch from '../useFetch';
-import useRequest from '../useRequest';
+import { useMutation, useQuery } from '..';
 
 type TUseLoginHistoryPayload = NonNullable<
-    NonNullable<NonNullable<Parameters<ReturnType<typeof useRequest<'login_history'>>['mutate']>>[0]>['payload']
+    NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'login_history'>>['mutate']>>[0]>['payload']
 >;
 
 /** A custom hook to retrieve a summary of login history for user.*/
 const useLoginHistory = (payload?: TUseLoginHistoryPayload) => {
     const { isSuccess } = useAuthorize();
-    const { data, ...rest } = useFetch('login_history', {
+    const { data, ...rest } = useQuery('login_history', {
         payload,
         options: { enabled: isSuccess },
     });

@@ -1,13 +1,15 @@
-import SendbirdChat, { BaseChannel } from '@sendbird/chat';
+import { action, computed, IReactionDisposer, makeObservable, observable, reaction } from 'mobx';
+
+import { P2PAdvertiserCreate, P2PAdvertiserInfo } from '@deriv/api-types';
 import { epochToMoment, toMoment } from '@deriv/shared';
-import { action, computed, observable, reaction, makeObservable, IReactionDisposer } from 'mobx';
+import { TCoreStores } from '@deriv/stores/types';
+import SendbirdChat, { BaseChannel } from '@sendbird/chat';
+import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
+import { BaseMessage, FileMessage, MessageType, MessageTypeFilter, UserMessage } from '@sendbird/chat/message';
+
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
 import { requestWS } from 'Utils/websocket';
-import { TCoreStores } from '@deriv/stores/types';
-import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
-import { BaseMessage, FileMessage, MessageType, MessageTypeFilter, UserMessage } from '@sendbird/chat/message';
-import { P2PAdvertiserCreate, P2PAdvertiserInfo } from '@deriv/api-types';
 
 type TChatInfo = { app_id: string; user_id: string; token?: string };
 

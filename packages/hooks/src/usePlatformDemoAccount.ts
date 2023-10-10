@@ -8,7 +8,10 @@ import { useStore } from '@deriv/stores';
 const usePlatformDemoAccount = () => {
     const { client } = useStore();
     const { accounts } = client;
-    const account_list = Object.keys(accounts).map(loginid => accounts[loginid]);
+    const account_list = Object.keys(accounts).map(loginid => ({
+        ...accounts[loginid],
+        loginid,
+    }));
 
     const platform_demo_account = account_list.find(account => account.is_virtual);
 

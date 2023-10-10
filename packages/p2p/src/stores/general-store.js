@@ -1,15 +1,18 @@
 import React from 'react';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { get, init, timePromise } from '../utils/server_time';
+import { action, computed, makeObservable,observable, reaction } from 'mobx';
+
 import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
+
+import { Localize,localize } from 'Components/i18next';
+import { api_error_codes } from 'Constants/api-error-codes';
+import { buy_sell } from 'Constants/buy-sell';
+import { order_list } from 'Constants/order-list';
 import BaseStore from 'Stores/base_store';
-import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-import { order_list } from 'Constants/order-list';
-import { buy_sell } from 'Constants/buy-sell';
-import { api_error_codes } from 'Constants/api-error-codes';
+
+import { get, init, timePromise } from '../utils/server_time';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;

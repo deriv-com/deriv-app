@@ -22,7 +22,7 @@ const useAccountsList = () => {
                 is_active: account.loginid === authorize_data.loginid,
                 /** Indicating whether any linked account is active */
                 is_linked_account_active: account.linked_to?.some(
-                    account => account.loginid === authorize_data?.loginid
+                    account => account.loginid === authorize_data.loginid
                 ),
                 /** indicating whether the account is a virtual-money account. */
                 is_virtual: Boolean(account.is_virtual),

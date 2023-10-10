@@ -13,19 +13,19 @@ const Wallets = observer(() => {
     const { client, ui } = useStore();
     const { switchAccount, is_authorize } = client;
     const { is_mobile } = ui;
-    const { data } = useWalletAccountsList();
+    const { data: wallets_list } = useWalletAccountsList();
     const active_wallet = useActiveWalletAccount();
 
     useEffect(() => {
-        if (!active_wallet && data && data?.length) {
-            const active_linked_account_wallet = data.find(wallet => wallet.is_linked_account_active);
+        if (!active_wallet && wallets_list.length) {
+            const active_linked_account_wallet = wallets_list.find(wallet => wallet.is_linked_account_active);
             if (active_linked_account_wallet) {
                 switchAccount(active_linked_account_wallet.loginid);
             } else {
-                switchAccount(data[0].loginid);
+                switchAccount(wallets_list[0].loginid);
             }
         }
-    }, [active_wallet, data, switchAccount]);
+    }, [active_wallet, wallets_list, switchAccount]);
 
     if (!is_authorize) return <Loading is_fullscreen />;
 

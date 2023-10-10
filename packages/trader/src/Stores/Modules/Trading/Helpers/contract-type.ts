@@ -155,12 +155,13 @@ export const ContractType = (() => {
             non_available_categories = {};
             const mutable_contracts_config = cloneObject(contract_categories);
             const getCategories = (key = ''): string[] => mutable_contracts_config[key]?.categories ?? [];
+            const non_available_contracts = r.contracts_for.non_available as TNonAvailableContractsList;
 
-            if (r.contracts_for.non_available) {
-                (r.contracts_for.non_available as TNonAvailableContractsList).forEach(contract => {
+            if (non_available_contracts) {
+                non_available_contracts.forEach(({ contract_type }) => {
                     const type =
                         Object.keys(contract_types).find(key =>
-                            contract_types[key].trade_types.includes(contract.contract_type)
+                            contract_types[key].trade_types.includes(contract_type)
                         ) ?? '';
                     const key = Object.keys(mutable_contracts_config).find(key => getCategories(key).includes(type));
                     const categories: Array<string | TTextValueStrings> = getCategories(key);

@@ -13,10 +13,11 @@ type TListProps = {
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
     ) => void;
     list: TContractCategory[];
+    should_show_info_banner?: boolean;
     value?: string;
 };
 
-const List = ({ handleInfoClick, handleSelect, list, value }: TListProps) => (
+const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, value }: TListProps) => (
     <React.Fragment>
         {list.map((contract_category, index) => {
             const contract_types = contract_category.contract_types?.filter(contract_type => {
@@ -35,7 +36,7 @@ const List = ({ handleInfoClick, handleSelect, list, value }: TListProps) => (
                     key={contract_category.key}
                     className={classNames('contract-type-list', {
                         'contract-type-list--unavailable-category': contract_category.is_unavailable,
-                        'contract-type-list--has-info-banner': list.some(i => i.is_unavailable) && index === 0,
+                        'contract-type-list--no-top-padding': should_show_info_banner && index === 0,
                     })}
                     data-testid='dt_contract_list'
                 >

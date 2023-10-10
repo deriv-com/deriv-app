@@ -4,7 +4,11 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { RudderStack } from '@deriv/analytics';
 import ContractType from './contract-type';
-import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type';
+import {
+    findContractCategory,
+    getContractTypeCategoryIcons,
+    getCategoriesSortedByKey,
+} from '../../../Helpers/contract-type';
 import { TContractCategory, TContractType, TList } from './types';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -143,37 +147,16 @@ const ContractTypeWidget = observer(
         const onChangeInput = (searchQueryItem: string) => setSearchQuery(searchQueryItem);
 
         const list_with_category = () => {
-            const order_arr = [
-                'Accumulators',
-                'Vanillas',
-                'Turbos',
-                'Multipliers',
-                'Ups & Downs',
-                'Highs & Lows',
-                'Digits',
-            ];
-
-            const getListFilteredByCategory = (
-                contracts_list: TContractCategory[] = [],
-                category = '',
-                excluded_categories: string[] = []
-            ) =>
-                contracts_list?.filter(
-                    ({ label }) =>
-                        label === category || (excluded_categories.length && !excluded_categories.includes(label ?? ''))
-                );
-            const sortContractCategories = (a: TContractCategory, b: TContractCategory) =>
-                order_arr.indexOf(a.key) - order_arr.indexOf(b.key);
-
-            const ordered_list = list && [...list].sort(sortContractCategories);
-            const ordered_unavailable_types_list = [...unavailable_trade_types_list].sort(sortContractCategories);
+            const ordered_list = list && getCategoriesSortedByKey(list);
+            const ordered_unavailable_types_list = getCategoriesSortedByKey(unavailable_trade_types_list);
             const all_trade_types_list = ordered_list?.concat(ordered_unavailable_types_list);
-            const accumulators_category = getListFilteredByCategory(all_trade_types_list, localize('Accumulators'));
-            const multipliers_category = getListFilteredByCategory(all_trade_types_list, localize('Multipliers'));
-            const options_category = getListFilteredByCategory(all_trade_types_list, '', [
-                localize('Multipliers'),
-                localize('Accumulators'),
-            ]);
+            const accumulators_category = all_trade_types_list?.filter(
+                ({ label }) => label === localize('Accumulators')
+            );
+            const multipliers_category = all_trade_types_list?.filter(({ label }) => label === localize('Multipliers'));
+            const options_category = all_trade_types_list?.filter(
+                ({ label }) => label !== localize('Multipliers') && label !== localize('Accumulators')
+            );
             const categories: TList[] = [];
             const contract_type_category_icon: { [key: string]: string } = getContractTypeCategoryIcons();
 
@@ -259,6 +242,7 @@ const ContractTypeWidget = observer(
             );
             return (selected_list_category || list_with_category()[0]).contract_categories;
         };
+        const should_show_info_banner = !!selected_category_contracts()?.some(i => i.is_unavailable);
 
         return (
             <div
@@ -288,7 +272,7 @@ const ContractTypeWidget = observer(
                     onCategoryClick={handleCategoryClick}
                     show_loading={languageChanged}
                     info_banner={
-                        !!unavailable_trade_types_list.length && (
+                        should_show_info_banner && (
                             <InlineMessage
                                 size={is_mobile ? 'sm' : 'xs'}
                                 type='information'
@@ -314,6 +298,7 @@ const ContractTypeWidget = observer(
                             handleInfoClick={handleInfoClick}
                             handleSelect={handleSelect}
                             list={selected_category_contracts() as TContractCategory[]}
+                            should_show_info_banner={should_show_info_banner}
                             value={value}
                         />
                     )}

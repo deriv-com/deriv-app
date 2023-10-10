@@ -217,7 +217,9 @@
         }
     }
     .account-form__footer {
-        position: relative;
+        @include desktop {
+            position: relative;
+        }
     }
 }
 
@@ -226,8 +228,7 @@
     height: 100%;
     @include mobile {
         width: 100%;
-        display: grid;
-        grid-template-rows: 1fr auto;
-        padding: unset;
+        display: flex;
+        flex-direction: column;
     }
 }

@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { fireEvent, render, screen } from '@testing-library/react';
+
 import ProofOfOwnershipForm from '../proof-of-ownership-form.jsx';
+
 import { grouped_payment_method_data } from './test-data';
 
 describe('proof-of-ownership-form.jsx', () => {

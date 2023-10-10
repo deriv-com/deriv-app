@@ -11,7 +11,6 @@ import { Button, DesktopWrapper, HintBox, Loading, Text } from '@deriv/component
 import {
     filterObjProperties,
     getIDVNotApplicableOption,
-    getPropertyValue,
     idv_error_statuses,
     isEmptyObject,
     isMobile,
@@ -43,6 +42,7 @@ import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from '../../..
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
 import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
 import LoadErrorMessage from '../../../load-error-message';
+import { useStore } from '@deriv/stores';
 
 type TRestState = {
     api_error: string;
@@ -81,6 +81,10 @@ const IdvFailed = ({
     latest_status,
     selected_country,
 }: TIdvFailed) => {
+    const {
+        client: { setIsAlreadyAttempted },
+    } = useStore();
+
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
         side_note_image: <PoiNameDobExample />,
@@ -116,7 +120,7 @@ const IdvFailed = ({
 
     const generateIDVError = React.useCallback(() => {
         const document_name = is_document_upload_required
-            ? getPropertyValue(chosen_country, ['identity', 'services', 'idv', 'documents_supported'])
+            ? 'identity document'
             : getIDVDocumentType(latest_status, chosen_country);
         switch (mismatch_status) {
             case idv_error_statuses.poi_name_dob_mismatch:
@@ -228,6 +232,8 @@ const IdvFailed = ({
             setIsLoading(false);
         };
 
+        setIsAlreadyAttempted(true);
+
         const error_config = generateIDVError();
         setIdvFailure(error_config);
         initializeFormValues(error_config?.required_fields ?? []).catch(e => {
@@ -237,7 +243,14 @@ const IdvFailed = ({
                 api_error: e?.error?.message,
             });
         });
-    }, [mismatch_status, account_settings, is_document_upload_required, getChangeableFields, generateIDVError]);
+    }, [
+        mismatch_status,
+        account_settings,
+        is_document_upload_required,
+        getChangeableFields,
+        generateIDVError,
+        setIsAlreadyAttempted,
+    ]);
 
     const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {
         setSubmitting(true);
@@ -334,7 +347,7 @@ const IdvFailed = ({
             validate={validateFields}
             className='proof-of-identity__container'
         >
-            {({ isSubmitting, isValid, dirty, status }) => (
+            {({ isSubmitting, isValid, dirty, status, values }) => (
                 <Form
                     className={classNames('proof-of-identity__mismatch-container', {
                         'upload-layout': is_document_upload_required,

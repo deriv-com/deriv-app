@@ -6,8 +6,8 @@ import { help_content_config, help_content_types } from 'Utils/help-content/help
 import { useDBotStore } from 'Stores/useDBotStore';
 import FlyoutBlock from '../flyout-block.jsx';
 import FlyoutImage from './flyout-img';
-import FlyoutText from './flyout-text.jsx';
-import FlyoutVideo from './flyout-video.jsx';
+import FlyoutText from './flyout-text';
+import FlyoutVideo from './flyout-video';
 
 const HelpBase = observer(() => {
     const { flyout, flyout_help } = useDBotStore();

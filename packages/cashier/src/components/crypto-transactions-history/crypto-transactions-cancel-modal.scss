@@ -1,0 +1,17 @@
+.dc-modal__container_crypto-transactions-cancel-modal {
+    padding: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+
+    @include mobile {
+        padding: 1.6rem;
+        gap: 1.6rem;
+    }
+}
+
+.crypto-transactions-cancel-modal-buttons-container {
+    display: flex;
+    align-self: flex-end;
+    gap: 0.8rem;
+}

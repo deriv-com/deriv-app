@@ -22,6 +22,7 @@ import RealWalletsUpgrade from './real-wallets-upgrade/real-wallets-upgrade';
 import WalletsMigrationFailed from './wallets-migration-failed';
 import WalletModal from './wallet-modal';
 import WalletSuccessDialog from './wallet-success-dialog/wallet-success-dialog';
+import CryptoTransactionsCancelModal from '@deriv/cashier/src/components/crypto-transactions-history/crypto-transactions-cancel-modal';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -175,6 +176,7 @@ const ModalManager = () => {
             <WalletsMigrationFailed />
             <WalletModal />
             <WalletSuccessDialog />
+            <CryptoTransactionsCancelModal />
         </React.Fragment>
     );
 };

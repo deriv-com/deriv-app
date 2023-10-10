@@ -1,10 +1,9 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { useModal } from '@deriv/wallets/src/components/ModalProvider';
 import classNames from 'classnames';
+import { useCashierStore } from '../../../../stores/useCashierStores';
 import { cryptoTransactionMapper } from '../../helpers';
-import { CancelTransactionModal } from '../cancel-transaction-modal';
 import './crypto-transaction.scss';
 
 type TCryptoTransaction = {
@@ -13,7 +12,9 @@ type TCryptoTransaction = {
 };
 
 const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCryptoTransaction) => {
-    const { show } = useModal();
+    const {
+        transaction_history: { showCryptoTransactionsCancelModal },
+    } = useCashierStore();
 
     return (
         <div className='crypto-transaction'>
@@ -40,7 +41,9 @@ const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCr
                             icon='IcCrossLight'
                             size={10}
                             className='crypto-transaction__cancel-button'
-                            onClick={() => show(<CancelTransactionModal transaction_id={transaction.id} />)}
+                            onClick={() => {
+                                showCryptoTransactionsCancelModal(transaction.id);
+                            }}
                             data_testid='dt_close_icon'
                         />
                     )}

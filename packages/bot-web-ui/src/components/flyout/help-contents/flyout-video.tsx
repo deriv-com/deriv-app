@@ -9,7 +9,7 @@ const FlyoutVideo = (props: { url: string }) => (
             frameBorder='0'
             allow='accelerometer; encrypted-media; gyroscope; picture-in-picture'
             allowFullScreen
-            width={'100%'}
+            width='100%'
         />
     </div>
 );

@@ -11,6 +11,17 @@
     flex: 1;
     position: relative;
 
+    &__digit {
+        border-radius: 4px;
+        padding: 1rem 0.8rem;
+        margin-left: 0.8rem;
+        height: 4rem;
+        background-color: var(--general-main-1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 8.8rem;
+    }
     &__amount {
         @include typeface(--paragraph-center-bold-black);
         color: var(--text-prominent);

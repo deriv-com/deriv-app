@@ -192,19 +192,9 @@ module.exports = function (env) {
                         priority: -20,
                         reuseExistingChunk: true,
                     },
-                    account: {
-                        idHint: 'account',
-                        test: /[\\/]account\//,
-                        priority: -20,
-                    },
                     onfido: {
                         idHint: 'onfido',
-                        test: /[\\/]onfido\//,
-                        priority: -10,
-                    },
-                    defaultVendors: {
-                        idHint: 'vendors',
-                        test: /[\\/]node_modules[\\/]/,
+                        test: /onfido-sdk-ui/,
                         priority: -10,
                     },
                 },

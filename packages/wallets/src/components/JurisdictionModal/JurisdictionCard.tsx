@@ -17,39 +17,23 @@ type TJurisdictionCardProps = {
     tag?: string;
 };
 
-const verification_icons_mapper = {
+const verificationIconsMapper = {
     selfie: <SelfieIcon />,
-    document_number: <IdCardIcon />,
-    name_and_address: <DocumentsIcon />,
-    not_applicable: <SelfieIcon />,
+    documentNumber: <IdCardIcon />,
+    nameAndAddress: <DocumentsIcon />,
+    notApplicable: <SelfieIcon />,
 };
 
 const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisdiction, onSelect }) => {
     const [shouldFlip, setShouldFlip] = useState(false);
-    const [verificationContents, setVerificationContents] = useState({
-        financial: [],
-        synthetic: [],
-    });
+    const [verificationContents, setVerificationContents] = useState([]);
     const { modalState } = useModal();
 
-    const {
-        is_over_header_available,
-        header,
-        over_header,
-        financial_contents,
-        swapfree_contents,
-        synthetic_contents,
-        verification_docs,
-    } = getJurisdictionContents()[jurisdiction];
+    const { isOverHeaderAvailable, header, overHeader, contents, verificationDocs } =
+        getJurisdictionContents()[jurisdiction];
 
-    const contents = React.useMemo(
-        () => ({
-            financial: financial_contents,
-            all: swapfree_contents,
-            synthetic: synthetic_contents,
-        }),
-        [jurisdiction]
-    );
+    console.log(modalState, getJurisdictionContents()[jurisdiction]);
+    const rows = contents[modalState?.marketType || 'all'];
 
     const parseClickableDescription = (clickableDescription: { type: 'text' | 'link'; text: string }[]) => {
         return clickableDescription.map(description => {
@@ -72,36 +56,34 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                 'wallets-jurisdiction-card--selected': isSelected,
             })}
             onClick={() => {
-                if (contents[modalState?.marketType || 'all'].verification_docs) {
-                    setVerificationContents(contents[modalState?.marketType || 'all'].verification_docs);
+                if (verificationDocs[modalState?.marketType || 'all']) {
+                    console.log(verificationDocs);
+                    setVerificationContents(verificationDocs[modalState?.marketType || 'all']);
                 }
                 onSelect(jurisdiction);
             }}
         >
-            {!shouldFlip && is_over_header_available && <JurisdictionCardTag tag={over_header || ''} />}
+            {!shouldFlip && isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
             <React.Fragment>
                 <div className='wallets-jurisdiction-card-front'>
                     <div className='wallets-jurisdiction-card-front__label'>{header}</div>
-                    {contents[modalState?.marketType || 'all'].map(content => {
+                    {rows.map(row => {
                         return (
                             <JurisdictionCardRow
                                 description={
-                                    content.clickable_description
-                                        ? parseClickableDescription(content.clickable_description)
-                                        : content.description
+                                    row.clickable_description
+                                        ? parseClickableDescription(row.clickableDescription)
+                                        : row.description
                                 }
                                 renderTag={() => {
-                                    if (!content?.title_indicators) return;
+                                    if (!row?.titleIndicators) return;
 
-                                    if (content.title_indicators?.type === 'displayIcons') {
+                                    if (row.titleIndicators?.type === 'displayIcons') {
                                         return (
                                             <div className='wallets-jurisdiction-card-front__tag-icons'>
-                                                {verification_docs &&
-                                                    verification_docs[modalState?.marketType || 'financial'].map(
-                                                        doc => {
-                                                            return verification_icons_mapper[doc];
-                                                        }
-                                                    )}
+                                                {verificationDocs?.[modalState?.marketType || 'financial'].map(doc => {
+                                                    return verificationIconsMapper[doc];
+                                                })}
                                             </div>
                                         );
                                     }
@@ -109,25 +91,21 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                                     return (
                                         <div
                                             className={`wallets-jurisdiction-card-front__tag wallets-jurisdiction-card-front__tag--${
-                                                content.title_indicators?.display_text_skin_color || ''
+                                                row.titleIndicators?.displayTextSkinColor || ''
                                             }`}
                                         >
-                                            {content.title_indicators?.display_text}
+                                            {row.titleIndicators?.displayText}
                                         </div>
                                     );
                                 }}
-                                title={content.title}
+                                title={row.title}
                             />
                         );
                     })}
                 </div>
-                {/* verification_docs: {
-        synthetic: ['document_number', 'name_and_address'],
-        financial: ['document_number', 'name_and_address'],
-    }, */}
                 <div className='wallets-jurisdiction-card-back'>
-                    {jurisdictionVerificationContents.short_description}
-                    {verificationContents[modalState?.marketType || 'all'].map(verificationDocument => {
+                    {jurisdictionVerificationContents().shortDescription}
+                    {verificationContents.map(verificationDocument => {
                         return <div>{verificationDocument}</div>;
                     })}
                 </div>

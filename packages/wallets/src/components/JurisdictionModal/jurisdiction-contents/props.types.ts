@@ -1,91 +1,78 @@
 export type TClickableDescription = {
-    type: 'text' | 'link';
-    text: string;
     onClick?: React.MouseEventHandler<HTMLSpanElement>;
+    text: string;
+    type: 'link' | 'text';
 };
-
 export type TJurisdictionCardSectionTitleIndicators = {
-    type: 'displayText' | 'displayIcons';
-    display_text?: string;
-    display_text_skin_color?: string;
+    displayText?: string;
+    displayTextSkinColor?: string;
+    type: 'displayIcons' | 'displayText';
 };
-
 export type TJurisdictionCardSection = {
+    clickableDescription?: TClickableDescription[];
+    description?: string;
     key: string;
     title: string;
-    title_indicators?: TJurisdictionCardSectionTitleIndicators;
-    description?: string;
-    clickable_description?: Array<TClickableDescription>;
+    titleIndicators?: TJurisdictionCardSectionTitleIndicators;
 };
-
-export type TJurisdictionCardVerificationStatus = 'Pending' | 'Verified' | 'Failed' | 'Default';
-
+export type TJurisdictionCardVerificationStatus = 'Default' | 'Failed' | 'Pending' | 'Verified';
 export type TJurisdictionCardItemVerificationItem =
-    | 'document_number'
-    | 'selfie'
-    | 'identity_document'
-    | 'name_and_address'
-    | 'not_applicable';
-
-export type TJurisdictionCardItemVerification = Array<TJurisdictionCardItemVerificationItem>;
-
+    | 'documentNumber'
+    | 'identityDocument'
+    | 'nameAndAddress'
+    | 'notApplicable'
+    | 'selfie';
+export type TJurisdictionCardItemVerification = TJurisdictionCardItemVerificationItem[];
 export type TJurisdictionCardItems = {
-    header: string;
-    over_header?: string;
     contents: {
-        synthetic: TJurisdictionCardSection[];
         financial: TJurisdictionCardSection[];
-        swapfree?: TJurisdictionCardSection[];
+        all?: TJurisdictionCardSection[];
+        synthetic: TJurisdictionCardSection[];
     };
-    is_over_header_available: boolean;
-    verification_docs?: {
-        synthetic?: TJurisdictionCardItemVerification;
+    header: string;
+    isOverHeaderAvailable: boolean;
+    overHeader?: string;
+    verificationDocs?: {
         financial?: TJurisdictionCardItemVerification;
+        synthetic?: TJurisdictionCardItemVerification;
     };
 };
-
 export type TJurisdictionCardParams = {
     toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
 };
-
 export type TJurisdictionVerificationSection = {
     icon: string;
     text: string;
 };
-
 export type TJurisdictionVerificationItems = {
-    document_number?: TJurisdictionVerificationSection;
+    documentNumber?: TJurisdictionVerificationSection;
+    identityNumber?: TJurisdictionVerificationSection;
+    nameAndAddress?: TJurisdictionVerificationSection;
+    notApplicable?: TJurisdictionVerificationSection;
     selfie?: TJurisdictionVerificationSection;
-    identity_document?: TJurisdictionVerificationSection;
-    name_and_address?: TJurisdictionVerificationSection;
-    not_applicable?: TJurisdictionVerificationSection;
 };
-
-type TJurisdictionVerificationColors = 'yellow' | 'red' | 'green';
-
+type TJurisdictionVerificationColors = 'green' | 'red' | 'yellow';
 export type TJurisdictionVerificationStatus = {
+    color: TJurisdictionVerificationColors;
     icon: string;
     text: string;
-    color: TJurisdictionVerificationColors;
 };
-
 export type TInstrumentsIcon = {
-    icon:
-        | 'DerivedFX'
-        | 'Synthetics'
-        | 'Baskets'
-        | 'Stocks'
-        | 'StockIndices'
-        | 'Commodities'
-        | 'Forex'
-        | 'Cryptocurrencies'
-        | 'ETF';
-    text: string;
-    highlighted: boolean;
     className?: string;
-    is_asterisk?: boolean;
+    highlighted: boolean;
+    icon:
+        | 'Baskets'
+        | 'Commodities'
+        | 'Cryptocurrencies'
+        | 'DerivedFX'
+        | 'ETF'
+        | 'Forex'
+        | 'StockIndices'
+        | 'Stocks'
+        | 'Synthetics';
+    isAsterisk?: boolean;
+    text: string;
 };
-
 export type TJurisdictionData = {
-    jurisdiction?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta';
+    jurisdiction?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu';
 };

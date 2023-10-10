@@ -83,7 +83,6 @@ const FileUploader = ({ onFileDrop, onError }: TFileUploaderProps) => {
                 onDropAccepted={handleAcceptedFiles}
                 onDropRejected={handleRejectedFiles}
                 validation_error_message={file_error}
-                // @ts-expect-error TODO: Fix types for FileDropzone
                 value={document_files}
             />
             {((document_files && document_files?.length > 0) || file_error) && (

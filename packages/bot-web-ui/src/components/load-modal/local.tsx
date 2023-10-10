@@ -1,10 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Button, Icon } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+
 import { useDBotStore } from 'Stores/useDBotStore';
+
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
 

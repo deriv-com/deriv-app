@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { useCountdown } from 'usehooks-ts';
 import { useSettings, useVerifyEmail } from '@deriv/api';
-import useCountdown from '../../hooks/useCountdown';
 import { WalletWithdrawalVerification } from '../WalletWithdrawalVerification';
 import { WalletWithdrawalVerificationSent } from '../WalletWithdrawalVerificationSent';
 
@@ -8,7 +8,10 @@ const WalletWithdrawal = () => {
     const [emailSent, setEmailSent] = useState(false);
     const { data } = useSettings();
     const { mutate } = useVerifyEmail();
-    const counter = useCountdown({ from: 60 });
+    const [count, { resetCountdown, startCountdown }] = useCountdown({
+        countStart: 60,
+        intervalMs: 1000,
+    });
 
     const handleSendEmail = async () => {
         if (data.email) {
@@ -17,12 +20,12 @@ const WalletWithdrawal = () => {
                 verify_email: data.email,
             });
             setEmailSent(true);
-            counter.reset();
-            counter.start();
+            resetCountdown();
+            startCountdown();
         }
     };
 
-    if (emailSent) return <WalletWithdrawalVerificationSent counter={counter} sendEmail={handleSendEmail} />;
+    if (emailSent) return <WalletWithdrawalVerificationSent counter={count} sendEmail={handleSendEmail} />;
 
     return <WalletWithdrawalVerification sendEmail={handleSendEmail} />;
 };

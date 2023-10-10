@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import useCountdown from '../../hooks/useCountdown';
 import EmailSent from '../../public/images/email-sent.svg';
 import './WalletWithdrawalVerificationSent.scss';
 
 type TProps = {
-    counter: ReturnType<typeof useCountdown>;
+    counter: number;
     sendEmail: () => void;
 };
 
@@ -36,10 +35,10 @@ const WalletWithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail
                     </div>
                     <button
                         className='wallets-withdrawal-verification-sent__resend-button'
-                        disabled={!!counter.count}
+                        disabled={!!counter}
                         onClick={sendEmail}
                     >
-                        Resend email{counter.count ? ` in ${counter.count}s` : ''}
+                        Resend email{counter ? ` in ${counter}s` : ''}
                     </button>
                 </div>
             )}

@@ -3,8 +3,12 @@ import { Divider } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { DepositCryptoCurrencyDetails, DepositCryptoSideNotes, DepositCryptoWalletAddress } from './components';
-import DepositCryptoSideNoteTryFiatOnRamp from './components/deposit-crypto-side-notes/deposit-crypto-side-note-try-fiat-onramp';
+import {
+    DepositCryptoCurrencyDetails,
+    DepositCryptoWalletAddress,
+    DepositCryptoSideNoteTryFiatOnRamp,
+} from './components';
+import { CryptoTransactionsSideNoteRecentTransaction } from '../crypto-transactions/components';
 
 const DepositCrypto: React.FC = observer(() => {
     const { ui } = useStore();
@@ -25,12 +29,12 @@ const DepositCrypto: React.FC = observer(() => {
             // Hide the side note and render it in the page content on mobile to match the design,
             // Need to talk with the design team to put `DepositCryptoSideNoteTryFiatOnRamp` in the
             // side notes for consistency and then we can remove unnecessary components from the children.
-            right={is_mobile ? undefined : <DepositCryptoSideNotes />}
+            right={is_mobile ? undefined : <CryptoTransactionsSideNoteRecentTransaction transaction_type='deposit' />}
         >
             <DepositCryptoCurrencyDetails />
             <DepositCryptoWalletAddress />
             <Divider />
-            {is_mobile && <DepositCryptoSideNotes />}
+            {is_mobile && <CryptoTransactionsSideNoteRecentTransaction transaction_type='deposit' />}
             {is_mobile && <Divider />}
             {/* This should be in the side notes, Need to talk to the design team to change it */}
             <div style={{ alignSelf: is_mobile ? 'unset' : 'center' }}>

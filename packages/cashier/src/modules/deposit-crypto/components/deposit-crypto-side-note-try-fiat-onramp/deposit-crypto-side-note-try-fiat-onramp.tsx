@@ -3,7 +3,7 @@ import { SideNote } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { Link } from 'react-router-dom';
 
-const DepositCryptoSideNoteTryFiatOnRamp: React.FC = () => (
+const DepositCryptoSideNoteTryFiatOnRamp = () => (
     <SideNote
         description={
             <Localize

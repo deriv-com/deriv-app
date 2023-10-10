@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { PageContainer } from 'Components/page-container';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
-import { DepositCryptoSideNotes } from '../../modules/deposit-crypto/components';
+import { CryptoTransactionsSideNoteRecentTransaction } from '../../modules/crypto-transactions/components';
 import { useCashierStore } from '../../stores/useCashierStores';
 import CryptoWithdrawal from './crypto-withdrawal';
 import Withdraw from './withdraw';
@@ -18,7 +18,7 @@ const WithdrawalSideNotes = observer(() => {
 
     return (
         <>
-            {currency_config.is_crypto && <DepositCryptoSideNotes />}
+            {currency_config.is_crypto && <CryptoTransactionsSideNoteRecentTransaction transaction_type='withdrawal' />}
             <SideNote title={localize('Note')}>
                 <li>
                     {localize(

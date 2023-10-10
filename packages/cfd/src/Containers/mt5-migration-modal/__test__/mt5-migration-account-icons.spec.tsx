@@ -8,11 +8,7 @@ jest.mock('@deriv/hooks', () => ({
     useMT5SVGEligibleToMigrate: jest.fn(),
 }));
 
-const mock_store = mockStore({
-    ui: {
-        is_mobile: false,
-    },
-});
+const mock_store = mockStore({});
 
 describe('MT5MigrationAccountIcons', () => {
     const renderComponent = (to: string, type: string) => {

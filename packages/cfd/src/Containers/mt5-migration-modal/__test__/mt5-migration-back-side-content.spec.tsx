@@ -6,10 +6,16 @@ import { APIProvider } from '@deriv/api';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import userEvent from '@testing-library/user-event';
+import { useMT5MigrationModalContext } from '../mt5-migration-modal-context';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useMT5SVGEligibleToMigrate: jest.fn(),
+}));
+
+jest.mock('../mt5-migration-modal-context', () => ({
+    ...jest.requireActual('../mt5-migration-modal-context'),
+    useMT5MigrationModalContext: jest.fn(),
 }));
 
 const mock_store = mockStore({
@@ -21,14 +27,27 @@ const mock_store = mockStore({
     common: {
         setAppstorePlatform: jest.fn(),
     },
+    modules: {
+        cfd: {
+            mt5_migration_error: '',
+            enableCFDPasswordModal: jest.fn(),
+            setJurisdictionSelectedShortcode: jest.fn(),
+            setAccountType: jest.fn(),
+        },
+    },
 });
+
+const mockUseMT5MigrationModalContext = useMT5MigrationModalContext as jest.MockedFunction<
+    typeof useMT5MigrationModalContext
+>;
 
 const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.MockedFunction<
     typeof useMT5SVGEligibleToMigrate
 >;
 
 describe('MT5MigrationBackSideContent', () => {
-    let response: Partial<ReturnType<typeof useMT5SVGEligibleToMigrate>>;
+    let response: Partial<ReturnType<typeof useMT5SVGEligibleToMigrate>>,
+        response_migration_context: ReturnType<typeof useMT5MigrationModalContext>;
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -39,13 +58,18 @@ describe('MT5MigrationBackSideContent', () => {
         );
         // @ts-expect-error response return value is not required to have all object
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);
+        mockUseMT5MigrationModalContext.mockReturnValue(response_migration_context);
         render(<MT5MigrationBackSideContent />, { wrapper });
     };
 
     beforeEach(() => {
         response = {
             eligible_account_to_migrate_label: 'bvi',
-            getEligibleAccountToMigrate: () => 'bvi',
+            getEligibleAccountToMigrate: jest.fn().mockReturnValue('bvi'),
+        };
+        response_migration_context = {
+            show_modal_front_side: true,
+            setShowModalFrontSide: jest.fn(),
         };
     });
 
@@ -85,10 +109,32 @@ describe('MT5MigrationBackSideContent', () => {
         ).toBeInTheDocument();
     });
 
-    it('should render store functions after clicking on Next button', () => {
+    it('should render MT5Context Function after clicking on Back button', () => {
         renderComponent();
+        const back_button = screen.getByRole('button', { name: 'Back' });
+        userEvent.click(back_button);
+        expect(response_migration_context.setShowModalFrontSide).toBeCalled();
+    });
+
+    it('should enable Next Button after clicking on checkbox', () => {
+        renderComponent();
+        const checkbox = screen.getByRole('checkbox');
+        userEvent.click(checkbox);
+        const next_button = screen.getByRole('button', { name: 'Next' });
+        expect(next_button).toBeEnabled();
+    });
+
+    it('should trigger functions after clicking on Next button', () => {
+        renderComponent();
+        const checkbox = screen.getByRole('checkbox');
+        userEvent.click(checkbox);
         const next_button = screen.getByRole('button', { name: 'Next' });
         userEvent.click(next_button);
+        expect(mock_store.common.setAppstorePlatform).toBeCalled();
+        expect(mock_store.modules.cfd.setJurisdictionSelectedShortcode).toBeCalled();
+        expect(mock_store.ui.setMT5MigrationModalEnabled).toBeCalled();
+        expect(mock_store.modules.cfd.setAccountType).toBeCalled();
         expect(mock_store.ui.toggleMT5MigrationModal).toBeCalled();
+        expect(mock_store.modules.cfd.enableCFDPasswordModal).toBeCalled();
     });
 });

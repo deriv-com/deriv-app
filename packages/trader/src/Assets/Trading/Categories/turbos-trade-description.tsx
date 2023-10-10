@@ -38,10 +38,7 @@ export const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => 
         },
         {
             text: (
-                <Localize
-                    i18n_default_text='If you choose your duraion in number of ticks, you won’t be able to terminate your contract early.'
-                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
-                />
+                <Localize i18n_default_text='If you choose your duraion in number of ticks, you won’t be able to terminate your contract early.' />
             ),
         },
     ];

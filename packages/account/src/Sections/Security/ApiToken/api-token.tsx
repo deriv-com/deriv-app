@@ -138,126 +138,124 @@ const ApiToken = () => {
     const api_token_card_array = getApiTokenCardDetails();
 
     return (
-        <React.Fragment>
-            <ApiTokenContext.Provider value={context_value}>
-                <section className='da-api-token'>
-                    <div className='da-api-token__wrapper'>
-                        <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={is_mobile}>
-                            {is_mobile && <ApiTokenArticle />}
-                            <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
-                                {({
-                                    values,
-                                    errors,
-                                    isValid,
-                                    dirty,
-                                    touched,
-                                    handleChange,
-                                    handleBlur,
-                                    isSubmitting,
-                                    setFieldTouched,
-                                }) => (
-                                    <Form noValidate>
-                                        <Timeline className='da-api-token__timeline' line_height='xxxl'>
-                                            <Timeline.Item
-                                                item_title={
-                                                    <Localize i18n_default_text='Select scopes based on the access you need.' />
-                                                }
-                                            >
-                                                <div className='da-api-token__checkbox-wrapper'>
-                                                    {api_token_card_array.map(card => (
-                                                        <ApiTokenCard
-                                                            key={card.name}
-                                                            name={card.name}
-                                                            display_name={card.display_name}
-                                                            description={card.description}
-                                                        >
-                                                            {card.name === 'admin' && (
-                                                                <InlineNoteWithIcon
-                                                                    icon='IcAlertWarning'
-                                                                    message={
-                                                                        <Localize i18n_default_text='To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.' />
-                                                                    }
-                                                                    title={<Localize i18n_default_text='Note' />}
-                                                                />
-                                                            )}
-                                                        </ApiTokenCard>
-                                                    ))}
-                                                </div>
-                                            </Timeline.Item>
-                                            <Timeline.Item
-                                                item_title={
-                                                    <Localize i18n_default_text="Name your token and click on 'Create' to generate your token." />
-                                                }
-                                            >
-                                                <div className='da-api-token__input-group'>
-                                                    <Field name='token_name'>
-                                                        {({ field }: FieldProps<string | boolean>) => (
-                                                            <Input
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                type='text'
-                                                                className='da-api-token__input dc-input__input-group'
-                                                                label={localize('Token name')}
-                                                                value={values.token_name}
-                                                                onChange={e => {
-                                                                    setFieldTouched('token_name', true);
-                                                                    handleChange(e);
-                                                                }}
-                                                                onBlur={handleBlur}
-                                                                hint={
-                                                                    <Localize i18n_default_text='Length of token name must be between 2 and 32 characters.' />
+        <ApiTokenContext.Provider value={context_value}>
+            <section className='da-api-token'>
+                <div className='da-api-token__wrapper'>
+                    <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={is_mobile}>
+                        {is_mobile && <ApiTokenArticle />}
+                        <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
+                            {({
+                                values,
+                                errors,
+                                isValid,
+                                dirty,
+                                touched,
+                                handleChange,
+                                handleBlur,
+                                isSubmitting,
+                                setFieldTouched,
+                            }) => (
+                                <Form noValidate>
+                                    <Timeline className='da-api-token__timeline' line_height='xxxl'>
+                                        <Timeline.Item
+                                            item_title={
+                                                <Localize i18n_default_text='Select scopes based on the access you need.' />
+                                            }
+                                        >
+                                            <div className='da-api-token__checkbox-wrapper'>
+                                                {api_token_card_array.map(card => (
+                                                    <ApiTokenCard
+                                                        key={card.name}
+                                                        name={card.name}
+                                                        display_name={card.display_name}
+                                                        description={card.description}
+                                                    >
+                                                        {card.name === 'admin' && (
+                                                            <InlineNoteWithIcon
+                                                                icon='IcAlertWarning'
+                                                                message={
+                                                                    <Localize i18n_default_text='To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.' />
                                                                 }
-                                                                required
-                                                                error={
-                                                                    touched.token_name && errors.token_name
-                                                                        ? errors.token_name
-                                                                        : undefined
-                                                                }
+                                                                title={<Localize i18n_default_text='Note' />}
                                                             />
                                                         )}
-                                                    </Field>
-                                                    <Button
-                                                        className={classNames(
-                                                            'dc-btn__button-group',
-                                                            'da-api-token__button',
-                                                            {
-                                                                'da-api-token__button--success': isSuccess,
+                                                    </ApiTokenCard>
+                                                ))}
+                                            </div>
+                                        </Timeline.Item>
+                                        <Timeline.Item
+                                            item_title={
+                                                <Localize i18n_default_text="Name your token and click on 'Create' to generate your token." />
+                                            }
+                                        >
+                                            <div className='da-api-token__input-group'>
+                                                <Field name='token_name'>
+                                                    {({ field }: FieldProps<string | boolean>) => (
+                                                        <Input
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            type='text'
+                                                            className='da-api-token__input dc-input__input-group'
+                                                            label={localize('Token name')}
+                                                            value={values.token_name}
+                                                            onChange={e => {
+                                                                setFieldTouched('token_name', true);
+                                                                handleChange(e);
+                                                            }}
+                                                            onBlur={handleBlur}
+                                                            hint={
+                                                                <Localize i18n_default_text='Length of token name must be between 2 and 32 characters.' />
                                                             }
-                                                        )}
-                                                        type='submit'
-                                                        is_disabled={
-                                                            !dirty ||
-                                                            isSubmitting ||
-                                                            !isValid ||
-                                                            !selectedTokenScope(values).length
+                                                            required
+                                                            error={
+                                                                touched.token_name && errors.token_name
+                                                                    ? errors.token_name
+                                                                    : undefined
+                                                            }
+                                                        />
+                                                    )}
+                                                </Field>
+                                                <Button
+                                                    className={classNames(
+                                                        'dc-btn__button-group',
+                                                        'da-api-token__button',
+                                                        {
+                                                            'da-api-token__button--success': isSuccess,
                                                         }
-                                                        has_effect
-                                                        is_loading={isSubmitting}
-                                                        is_submit_success={isLoading}
-                                                        primary
-                                                        large
-                                                    >
-                                                        <Localize i18n_default_text='Create' />
-                                                    </Button>
-                                                </div>
-                                            </Timeline.Item>
-                                            <Timeline.Item
-                                                item_title={
-                                                    <Localize i18n_default_text='Copy and paste the token into the app.' />
-                                                }
-                                            >
-                                                <ApiTokenTable />
-                                            </Timeline.Item>
-                                        </Timeline>
-                                    </Form>
-                                )}
-                            </Formik>
-                        </ThemedScrollbars>
-                        {is_desktop && <ApiTokenArticle />}
-                    </div>
-                </section>
-            </ApiTokenContext.Provider>
-        </React.Fragment>
+                                                    )}
+                                                    type='submit'
+                                                    is_disabled={
+                                                        !dirty ||
+                                                        isSubmitting ||
+                                                        !isValid ||
+                                                        !selectedTokenScope(values).length
+                                                    }
+                                                    has_effect
+                                                    is_loading={isSubmitting}
+                                                    is_submit_success={isLoading}
+                                                    primary
+                                                    large
+                                                >
+                                                    <Localize i18n_default_text='Create' />
+                                                </Button>
+                                            </div>
+                                        </Timeline.Item>
+                                        <Timeline.Item
+                                            item_title={
+                                                <Localize i18n_default_text='Copy and paste the token into the app.' />
+                                            }
+                                        >
+                                            <ApiTokenTable />
+                                        </Timeline.Item>
+                                    </Timeline>
+                                </Form>
+                            )}
+                        </Formik>
+                    </ThemedScrollbars>
+                    {is_desktop && <ApiTokenArticle />}
+                </div>
+            </section>
+        </ApiTokenContext.Provider>
     );
 };
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import useRequest from '../useRequest';
+import { useMutation } from '..';
 
 type TAPITokenPayload = NonNullable<
-    NonNullable<NonNullable<Parameters<ReturnType<typeof useRequest<'api_token'>>['mutate']>>[0]>['payload']
+    NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'api_token'>>['mutate']>>[0]>['payload']
 >;
 const useSetApiToken = () => {
-    const { data, mutate, ...rest } = useRequest('api_token');
+    const { data, mutate, ...rest } = useMutation('api_token');
 
     const update = React.useCallback((payload?: TAPITokenPayload) => mutate({ payload }), [mutate]);
 

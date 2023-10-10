@@ -28,7 +28,7 @@ import { useStatesList } from '@deriv/hooks';
 import { getLocation } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import InlineNoteWithIcon from 'Components/inline-note-with-icon';
+import InlineNoteWithIcon from '../inline-note-with-icon';
 import { FormInputField } from '../forms/form-fields';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 

@@ -40,6 +40,7 @@ type TFinancialDetails = {
     ) => void;
     onCancel: (current_step: number, props: () => void) => void;
     validate: (values: TFinancialDetailsFormValues) => object;
+    is_eu_user: boolean;
     value: TFinancialDetailsFormValues;
 };
 
@@ -56,10 +57,7 @@ const FinancialDetails = (props: TFinancialDetails) => {
         props.onCancel(current_step, props.goToPreviousStep);
     };
 
-    const {
-        traders_hub: { is_eu_user },
-    } = useStore();
-
+    const { is_eu_user } = props;
     const handleValidate = (values: TFinancialDetailsFormValues) => {
         const { errors } = splitValidationResultTypes(props.validate(values));
         return errors;

@@ -17,9 +17,6 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Tabs: jest.fn(({ onTabItemClick, children }) => <div onClick={() => onTabItemClick(0)}>{children}</div>),
 }));
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-}));
 jest.mock('../contract-details', () => jest.fn(() => <div>ContractDetails</div>));
 jest.mock('../contract-history', () => jest.fn(() => <div>ContractHistory</div>));
 

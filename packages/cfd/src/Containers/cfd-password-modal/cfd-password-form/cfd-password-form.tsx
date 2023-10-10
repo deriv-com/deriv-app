@@ -11,6 +11,7 @@ import {
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from '../../props.types';
 import { ACCOUNT_CATEGORY, PASSWORD_ERRORS } from '../../../Constants/cfd-password-modal-constants';
 import PasswordStep from './password-step';
+import CFDPasswordError from './cfd-password-error';
 import { observer, useStore } from '@deriv/stores';
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
@@ -112,32 +113,14 @@ const CFDPasswordForm = observer(
             });
         };
 
-        if (error_type === PASSWORD_ERRORS.RESET) {
-            return (
-                <React.Fragment>
-                    <div className='cfd-password-reset'>
-                        <div className='cfd-password-modal__content cfd-password-modal__content--password-reset'>
-                            <Text as='p' line_height='24' size='xs'>
-                                <Localize i18n_default_text='Please try again in a minute.' />
-                            </Text>
-                        </div>
-                        <Formik onSubmit={closeModal} initialValues={{}}>
-                            {({ handleSubmit }) => (
-                                <form onSubmit={handleSubmit}>
-                                    <FormSubmitButton
-                                        has_cancel={has_cancel_button}
-                                        cancel_label={cancel_button_label}
-                                        onCancel={handleCancel}
-                                        is_absolute={is_mobile}
-                                        label={button_label}
-                                    />
-                                </form>
-                            )}
-                        </Formik>
-                    </div>
-                </React.Fragment>
-            );
-        }
+        if (error_type === PASSWORD_ERRORS.RESET)
+            <CFDPasswordError
+                closeModal={closeModal}
+                has_cancel_button={has_cancel_button}
+                cancel_button_label={cancel_button_label}
+                handleCancel={handleCancel}
+                button_label={button_label}
+            />;
 
         if (should_set_trading_password) {
             return (

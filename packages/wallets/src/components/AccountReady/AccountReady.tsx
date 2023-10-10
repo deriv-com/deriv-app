@@ -19,13 +19,14 @@ const AccountReady: React.FC<TAccountReadyProps> = ({ marketType }) => {
     const { data } = useActiveWalletAccount();
     const { hide } = useModal();
     const isDemo = data?.is_virtual;
+    const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
     return (
         <div className='wallets-account-ready'>
             <WalletGradientBackground
                 bodyClassName='wallets-account-ready__info'
                 currency={data?.currency || 'USD'}
-                has_shine
+                hasShine
                 theme='grey'
             >
                 <div
@@ -37,10 +38,12 @@ const AccountReady: React.FC<TAccountReadyProps> = ({ marketType }) => {
                 </div>
                 <WalletMarketCurrencyIcon
                     currency={data?.currency || 'USD'}
-                    isDemo={isDemo || true}
+                    isDemo={isDemo || false}
                     marketType={marketType}
                 />
-                <div className='wallets-account-ready__info__text--type'>MT5 Swap-Free</div>
+                <div className='wallets-account-ready__info__text--type'>
+                    {market_type_to_title_mapper[marketType]} ({landingCompanyName})
+                </div>
                 <div className='wallets-account-ready__info__text--wallet'>{data?.currency} Wallet</div>
                 <div className='wallets-account-ready__info__text--amount'>{data?.display_balance} USD</div>
             </WalletGradientBackground>

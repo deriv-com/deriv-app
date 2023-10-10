@@ -68,7 +68,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         is_logging_in,
         is_switching,
     } = client;
-    const { available_platforms, is_eu_user, no_MF_account, no_CR_account, is_demo, setWalletCreateNewAccountModal } =
+    const { available_platforms, is_eu_user, no_MF_account, no_CR_account, is_demo, setNewWalletModalOpen } =
         traders_hub;
 
     const { mutate: createNewRealAccount, isSuccess } = useCreateNewRealAccount();
@@ -77,8 +77,8 @@ const WalletOptionsAndMultipliersListing = observer(() => {
     const { date_of_birth, country_code, first_name, last_name } = user_settings;
 
     React.useEffect(() => {
-        if (isSuccess) setWalletCreateNewAccountModal(true);
-    }, [isSuccess, setWalletCreateNewAccountModal]);
+        if (isSuccess) setNewWalletModalOpen(true);
+    }, [isSuccess, setNewWalletModalOpen]);
 
     if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded) {
         return (

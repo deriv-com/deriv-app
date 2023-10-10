@@ -963,8 +963,8 @@ type TTradersHubStore = {
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
     available_derivez_accounts: DetailsOfEachMT5Loginid[];
-    is_wallet_create_new_account_modal: boolean;
-    setWalletCreateNewAccountModal: (value: boolean) => void;
+    is_new_wallet_modal_open: boolean;
+    setNewWalletModalOpen: (value: boolean) => void;
 };
 
 type TContractReplay = {

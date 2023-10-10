@@ -35,7 +35,7 @@ export default class TradersHubStore extends BaseStore {
     is_wallet_tour_open = false;
     active_modal_tab;
     active_modal_wallet_id;
-    is_wallet_create_new_account_modal= false;
+    is_new_wallet_modal_open = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -117,8 +117,8 @@ export default class TradersHubStore extends BaseStore {
             getShortCodeAndRegion: action.bound,
             is_wallet_tour_open: observable,
             toggleIsWalletTourOpen: action.bound,
-            is_wallet_create_new_account_modal: observable,
-            setWalletCreateNewAccountModal: action.bound,
+            is_new_wallet_modal_open: observable,
+            setNewWalletModalOpen: action.bound,
         });
 
         reaction(
@@ -823,7 +823,7 @@ export default class TradersHubStore extends BaseStore {
         this.is_wallet_tour_open = value;
     }
 
-    setWalletCreateNewAccountModal(value) {
-        this.is_wallet_create_new_account_modal = value;
+    setNewWalletModalOpen(value) {
+        this.is_new_wallet_modal_open = value;
     }
 }

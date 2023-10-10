@@ -515,9 +515,13 @@
         margin-bottom: 0.8rem;
     }
 
-    img,
+    img {
+        height: 100%;
+    }
+
     video {
         height: 100%;
+        width: 65%;
     }
 
     &__progress-bar {

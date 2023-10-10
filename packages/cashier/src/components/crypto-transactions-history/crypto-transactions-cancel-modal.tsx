@@ -22,17 +22,16 @@ const CryptoTransactionsCancelModal = observer(() => {
             <Modal
                 small
                 className='crypto-transactions-cancel-modal'
+                title={<Localize i18n_default_text='Cancel transaction' />}
                 is_open={is_cancel_modal_visible}
                 toggleModal={hideCryptoTransactionsCancelModal}
+                has_close_icon={false}
                 shouldCloseOnEscape
             >
-                <Text line_height={is_mobile ? 's' : 'm'} size={is_mobile ? 'xs' : 's'} weight='bold'>
-                    <Localize i18n_default_text='Cancel transaction' />
-                </Text>
-                <Text line_height={is_mobile ? 'm' : 's'} size={is_mobile ? 'xxs' : 'xs'}>
+                <Modal.Body className='crypto-transactions-cancel-modal__body'>
                     <Localize i18n_default_text='Are you sure you want to cancel this transaction?' />
-                </Text>
-                <div className='crypto-transactions-cancel-modal-buttons-container'>
+                </Modal.Body>
+                <Modal.Footer className='crypto-transactions-cancel-modal__footer'>
                     <Button onClick={hideCryptoTransactionsCancelModal} large secondary>
                         <Localize i18n_default_text="No, don't cancel" />
                     </Button>
@@ -45,7 +44,7 @@ const CryptoTransactionsCancelModal = observer(() => {
                     >
                         <Localize i18n_default_text='Yes, cancel' />
                     </Button>
-                </div>
+                </Modal.Footer>
             </Modal>
         </React.Fragment>
     );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { isMobile } from '@deriv/shared';
 import Button from '../button';
 import Icon from '../icon';
 import Text from '../text';
@@ -20,16 +21,18 @@ export type TProps = {
 const EmptyState: React.FC<TProps> = ({ icon, title, description, action }) => (
     <div className='empty-state'>
         {icon && <Icon icon={icon} size={128} />}
-        {title && (
-            <Text weight='bold' align='center' data-testid='dt_empty_state_title'>
-                {title}
-            </Text>
-        )}
-        {description && (
-            <Text align='center' data-testid='dt_empty_state_description'>
-                {description}
-            </Text>
-        )}
+        <div className='empty-state__content'>
+            {title && (
+                <Text weight='bold' align='center' data-testid='dt_empty_state_title' size={isMobile() ? 'xs' : 's'}>
+                    {title}
+                </Text>
+            )}
+            {description && (
+                <Text align='center' data-testid='dt_empty_state_description' size={isMobile() ? 'xs' : 's'}>
+                    {description}
+                </Text>
+            )}
+        </div>
         {action && (
             <Button
                 large
@@ -39,6 +42,7 @@ const EmptyState: React.FC<TProps> = ({ icon, title, description, action }) => (
                 primary={action.primary || true}
                 tertiary={action.tertiary}
                 is_disabled={action.disabled}
+                className='empty-state__action'
                 data-testid='dt_empty_state_action'
             />
         )}

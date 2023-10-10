@@ -11,75 +11,70 @@ jest.mock('@deriv/shared', () => ({
     toMoment: jest.fn(),
     validLength: jest.fn(),
 }));
+
 describe('personal-details-config', () => {
-    const mock_props = {
+    const mock_props: Parameters<typeof personal_details_config>[0] = {
         residence_list: [
             {
-                services: {
-                    idv: {
-                        documents_supported: {},
-                        has_visual_sample: 0,
-                        is_country_supported: 0,
-                    },
-                    onfido: {
-                        documents_supported: {
-                            passport: {
-                                display_name: 'Passport',
-                            },
-                        },
-                        is_country_supported: 0,
-                    },
-                },
-                phone_idd: '93',
-                text: 'Afghanistan',
-                value: 'af',
+                phone_idd: '62',
+                text: 'Indonesia',
+                value: 'is',
                 tin_format: [],
                 disabled: '1',
-            },
-            {
-                services: {
-                    idv: {
-                        documents_supported: {},
-                        has_visual_sample: 0,
-                        is_country_supported: 0,
-                    },
-                    onfido: {
-                        documents_supported: {
-                            driving_licence: {
-                                display_name: 'Driving Licence',
-                            },
-                            national_identity_card: {
-                                display_name: 'National Identity Card',
-                            },
-                            passport: {
-                                display_name: 'Passport',
-                            },
-                            residence_permit: {
-                                display_name: 'Residence Permit',
-                            },
+                identity: {
+                    services: {
+                        idv: {
+                            documents_supported: {},
+                            has_visual_sample: 0,
+                            is_country_supported: 0,
                         },
-                        is_country_supported: 1,
+                        onfido: {
+                            documents_supported: {
+                                driving_licence: {
+                                    display_name: 'Driving Licence',
+                                },
+                                national_identity_card: {
+                                    display_name: 'National Identity Card',
+                                },
+                                passport: {
+                                    display_name: 'Passport',
+                                },
+                                residence_permit: {
+                                    display_name: 'Residence Permit',
+                                },
+                            },
+                            is_country_supported: 1,
+                        },
                     },
-                    phone_idd: '93',
-                    text: 'Indonesia',
-                    value: 'af',
-                    tin_format: [],
-                    disabled: '1',
                 },
             },
         ],
         account_settings: {
-            tax_residence: 'af',
+            tax_residence: 'id',
             residence: 'Indonesia',
+            document_type: '',
+            document_number: '',
         },
-        is_appstore: false,
         real_account_signup_target: 'maltainvest',
-        account_status: { cashier_validation: ['system_maintenance'] },
+        account_status: {
+            cashier_validation: ['system_maintenance'],
+            currency_config: {
+                USD: {
+                    is_deposit_suspended: 0,
+                    is_withdrawal_suspended: 0,
+                },
+            },
+            p2p_status: 'active',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
+            status: [''],
+        },
+        residence: 'af',
     };
 
     it('should return account tax residence as default value if it is already set', () => {
         const personal_details = personal_details_config(mock_props);
-        expect(personal_details[0].tax_residence.default_value).toEqual('Afghanistan');
+        expect(personal_details.tax_residence.default_value).toEqual('Indonesia');
     });
 
     it('should return residence as the default value for MF clients, If the account tax residence is not set', () => {
@@ -91,7 +86,7 @@ describe('personal-details-config', () => {
             },
         };
         const personal_details = personal_details_config(new_props);
-        expect(personal_details[0].tax_residence.default_value).toEqual(new_props.account_settings.residence);
+        expect(personal_details.tax_residence.default_value).toEqual(new_props.account_settings.residence);
     });
 
     it('should not set default value for CR clients, If the account tax residence is not set', () => {
@@ -104,7 +99,7 @@ describe('personal-details-config', () => {
             },
         };
         const personal_details = personal_details_config(new_props);
-        expect(personal_details[0].tax_residence.default_value).toEqual('');
+        expect(personal_details.tax_residence.default_value).toEqual('');
     });
 
     it('should include svg in additional fields if client is not high risk for mt5', () => {
@@ -121,7 +116,7 @@ describe('personal-details-config', () => {
             'account_opening_reason',
         ];
         additional_fields.forEach(field => {
-            expect(personal_details[0][field].supported_in).toContain('svg');
+            expect(personal_details[field].supported_in).toContain('svg');
         });
     });
 });

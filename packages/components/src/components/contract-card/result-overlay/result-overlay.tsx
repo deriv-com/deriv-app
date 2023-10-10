@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { NavLink } from 'react-router-dom';
 import Icon from '../../icon';
 import { TGetCardLables, TGetContractPath } from '../../types';
+import Text from '../../text';
 
 type TResultOverlayProps = {
     contract_id?: number;
@@ -95,14 +96,17 @@ const ResultOverlay = ({
                     )}
                     <div className='dc-result__content'>
                         <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_contract_won} />
-                        <span
+                        <Text
                             className={classNames('dc-result__payout', {
                                 'dc-result__payout--won': is_contract_won,
                                 'dc-result__payout--lost': !is_contract_won,
                             })}
+                            weight='bold'
+                            size='s'
+                            line_height='xxl'
                         >
                             {payout_info}
-                        </span>
+                        </Text>
                     </div>
                 </div>
             </CSSTransition>

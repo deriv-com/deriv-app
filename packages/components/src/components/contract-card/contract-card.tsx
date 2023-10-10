@@ -42,7 +42,6 @@ const ContractCard = ({
 }: React.PropsWithChildren<TContractCardProps>) => {
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
     const payout = formatMoney(contract_info.currency ?? '', profit_loss > 0 ? profit_loss : 0, true, 0, 0);
-    const payout_info = `${payout} ${contract_info.currency}`;
     return (
         <React.Fragment>
             {should_show_result_overlay && (
@@ -56,7 +55,7 @@ const ContractCard = ({
                         is_visible={!!contract_info.is_sold}
                         onClickRemove={onClickRemove}
                         onClick={() => toggleUnsupportedContractModal?.(true)}
-                        payout_info={payout_info}
+                        payout_info={`${payout} ${contract_info.currency}`}
                         result={result || fallback_result}
                         is_positions={is_positions}
                     />

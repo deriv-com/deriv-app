@@ -1,14 +1,14 @@
 import React from 'react';
 import useAuthorize from './useAuthorize';
-import useRequest from '../useRequest';
+import useMutation from '../useMutation';
 
 type TAccountSecurityPayload = NonNullable<
-    NonNullable<Parameters<ReturnType<typeof useRequest<'account_security'>>['mutate']>[0]>['payload']
+    NonNullable<Parameters<ReturnType<typeof useMutation<'account_security'>>['mutate']>[0]>['payload']
 >;
 
 const useAccountSecurity = () => {
     const { isSuccess: success_auth } = useAuthorize();
-    const { mutate, ...rest } = useRequest('account_security');
+    const { mutate, ...rest } = useMutation('account_security');
     return {
         mutate,
         success_auth,

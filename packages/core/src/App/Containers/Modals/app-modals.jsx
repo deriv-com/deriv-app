@@ -1,13 +1,10 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
-
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
-
 import WalletsMigrationInProgress from './wallets-upgrade-in-progress/wallets-migration-in-progress';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';

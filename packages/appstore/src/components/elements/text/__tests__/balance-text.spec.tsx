@@ -11,6 +11,12 @@ const createWrapper = (mock: ReturnType<typeof mockStore>) => {
     return wrapper;
 };
 
+const createWrapper = (mock: ReturnType<typeof mockStore>) => {
+    const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
+
+    return wrapper;
+};
+
 describe('BalanceText', () => {
     it('should render the component', () => {
         const mock = mockStore({});

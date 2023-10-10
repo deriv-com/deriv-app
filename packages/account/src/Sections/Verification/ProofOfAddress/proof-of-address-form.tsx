@@ -36,22 +36,25 @@ const descriptions: {
     },
 ];
 
-const FilesDescription = () => {
+const FilesDescription = observer(() => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
     return (
         <div className='files-description'>
-            <Text size={isMobile() ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
+            <Text size={is_mobile ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
                 <Localize i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:' />
             </Text>
             <ul>
                 {descriptions.map(item => (
                     <li key={item.key}>
-                        <Text size={isMobile() ? 'xxs' : 'xs'}>{item.value}</Text>
+                        <Text size={is_mobile ? 'xxs' : 'xs'}>{item.value}</Text>
                     </li>
                 ))}
             </ul>
         </div>
     );
-};
+});
 
 type TProofOfAddressForm = {
     is_resubmit: boolean;
@@ -71,13 +74,14 @@ type TFormState = Record<'is_btn_loading' | 'is_submit_success' | 'should_allow_
 
 const ProofOfAddressForm = observer(
     ({ is_resubmit, is_for_cfd_modal, onSubmit, onSubmitForCFDModal, step_index }: Partial<TProofOfAddressForm>) => {
-        const { client, notifications } = useStore();
+        const { client, notifications, ui } = useStore();
         const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list } = client;
         const {
             addNotificationMessageByKey: addNotificationByKey,
             removeNotificationMessage,
             removeNotificationByKey,
         } = notifications;
+        const { is_mobile } = ui;
         const [document_files, setDocumentFiles] = React.useState<File[]>([]);
         const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
         const [is_loading, setIsLoading] = React.useState(true);
@@ -281,16 +285,16 @@ const ProofOfAddressForm = observer(
         }
         const setOffset = (status: { msg: string }) => {
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
-            return isMobile() && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
+            return is_mobile && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
         return (
             <Formik initialValues={form_initial_values} onSubmit={onSubmitValues} validate={validateFields}>
                 {({ status, handleSubmit, isSubmitting, isValid }) => (
                     <>
-                        <LeaveConfirm onDirty={isMobile() ? showForm : undefined} />
+                        <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
                         {form_state.should_show_form && (
                             <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
-                                <ThemedScrollbars height='572px' is_bypassed={!is_for_cfd_modal || isMobile()}>
+                                <ThemedScrollbars height='572px' is_bypassed={!is_for_cfd_modal || is_mobile}>
                                     <FormBody scroll_offset={setOffset(status)}>
                                         {status?.msg && (
                                             <HintBox
@@ -299,7 +303,7 @@ const ProofOfAddressForm = observer(
                                                 icon_height={16}
                                                 icon_width={16}
                                                 message={
-                                                    <Text as='p' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                    <Text as='p' size={is_mobile ? 'xxxs' : 'xs'}>
                                                         {status.msg}
                                                     </Text>
                                                 }
@@ -307,7 +311,7 @@ const ProofOfAddressForm = observer(
                                             />
                                         )}
                                         {is_resubmit && (
-                                            <Text size={isMobile() ? 'xxs' : 'xs'} align='left' color='loss-danger'>
+                                            <Text size={is_mobile ? 'xxs' : 'xs'} align='left' color='loss-danger'>
                                                 <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
                                             </Text>
                                         )}
@@ -340,7 +344,7 @@ const ProofOfAddressForm = observer(
                                                 !!file_selection_error
                                             }
                                             label={localize('Continue')}
-                                            is_absolute={isMobile()}
+                                            is_absolute={is_mobile}
                                             is_loading={isSubmitting}
                                             form_error={status?.msg}
                                         />

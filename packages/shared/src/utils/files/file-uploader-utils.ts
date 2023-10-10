@@ -14,7 +14,7 @@ export type TFileObject = TSettings & {
     file_size: File['size'];
 };
 
-export const truncateFileName = (file: File | Blob, limit: number) => {
+export const truncateFileName = (file: File, limit: number) => {
     const string_limit_regex = new RegExp(`(.{${limit || 30}})..+`);
     return file?.name?.replace(string_limit_regex, `$1….${getFileExtension(file)}`);
 };

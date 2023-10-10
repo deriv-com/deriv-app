@@ -2,37 +2,39 @@ import React from 'react';
 import classNames from 'classnames';
 import { FileDropzone, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { isMobile, getSupportedFiles, max_document_size, supported_filetypes } from '@deriv/shared';
-import { TFile } from '../../Types';
+import { getSupportedFiles, max_document_size, supported_filetypes } from '@deriv/shared';
+import { DropzoneOptions } from 'react-dropzone';
+import { observer, useStore } from '@deriv/stores';
 
-type TFileObject = {
-    file: TFile;
-};
+type THandleRejectedFiles = DropzoneOptions['onDropRejected'];
 
 type TFileUploaderProps = {
     onFileDrop: (files: File[]) => void;
     onError?: (error_message: string) => void;
 };
 
-const UploadMessage = () => {
+const UploadMessage = observer(() => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
     return (
         <React.Fragment>
             <Icon icon='IcUpload' className='dc-file-dropzone__message-icon' size={30} />
             <div className='dc-file-dropzone__message-subtitle'>
                 <Text size='xxs' align='center' weight='bold' color='less-prominent'>
-                    {isMobile() ? (
+                    {is_mobile ? (
                         <Localize i18n_default_text='Click here to upload.' />
                     ) : (
                         <Localize i18n_default_text='Drag and drop a file or click to browse your files.' />
                     )}
                 </Text>
-                <Text size={isMobile() ? 'xxxxs' : 'xxxs'} align='center' color='less-prominent'>
+                <Text size={is_mobile ? 'xxxxs' : 'xxxs'} align='center' color='less-prominent'>
                     <Localize i18n_default_text='Remember, selfies, pictures of houses, or non-related images will be rejected.' />
                 </Text>
             </div>
         </React.Fragment>
     );
-};
+});
 
 const FileUploader = ({ onFileDrop, onError }: TFileUploaderProps) => {
     const [document_files, setDocumentFiles] = React.useState<File[]>([]);
@@ -51,7 +53,7 @@ const FileUploader = ({ onFileDrop, onError }: TFileUploaderProps) => {
         }
     };
 
-    const handleRejectedFiles = (files: TFileObject[]) => {
+    const handleRejectedFiles: THandleRejectedFiles = files => {
         const is_file_too_large = files.length > 0 && files[0].file.size > max_document_size;
         const supported_files = files.filter(each_file => getSupportedFiles(each_file.file.name));
         const error_message =
@@ -81,6 +83,7 @@ const FileUploader = ({ onFileDrop, onError }: TFileUploaderProps) => {
                 onDropAccepted={handleAcceptedFiles}
                 onDropRejected={handleRejectedFiles}
                 validation_error_message={file_error}
+                // @ts-expect-error TODO: Fix types for FileDropzone
                 value={document_files}
             />
             {((document_files && document_files?.length > 0) || file_error) && (

@@ -1,11 +1,18 @@
 import React from 'react';
-import { getContractTypePosition, getSupportedContracts, isAccumulatorContract, isEmptyObject } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
+import {
+    isAccumulatorContract,
+    isEmptyObject,
+    isOpen,
+    hasContractEntered,
+    getContractTypePosition,
+    getSupportedContracts,
+    getIndicativePrice,
+} from '@deriv/shared';
+import AccumulatorsSellButton from '../Components/Form/TradeParams/Accumulator/accumulators-sell-button';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import { TProposalTypeInfo } from 'Types';
+import { TTradeStore } from 'Types';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
 
@@ -20,9 +27,9 @@ const getSortedIndex = (type: string, index: number) => {
     }
 };
 
-const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) => {
+const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean }) => {
     const {
-        portfolio: { active_positions },
+        portfolio: { all_positions, onClickSell },
         ui: { purchase_states: purchased_states_arr, is_mobile, setPurchaseState },
     } = useStore();
     const {
@@ -41,19 +48,38 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
         proposal_info,
         purchase_info,
         symbol,
-        validation_errors,
-        vanilla_trade_type,
+        validation_errors = {},
         trade_types,
         is_trade_enabled,
+        has_open_accu_contract,
     } = useTraderStore();
 
     const is_high_low = /^high_low$/.test(contract_type.toLowerCase());
-    const isLoading = (info: TProposalTypeInfo | Record<string, never>) => {
+    const isLoading = (info: TTradeStore['proposal_info'][string] | Record<string, never>) => {
         const has_validation_error = Object.values(validation_errors).some(e => e.length);
         return !has_validation_error && !info?.has_error && !info.id;
     };
     const is_proposal_empty = isEmptyObject(proposal_info);
-    const components = [];
+    const active_accu_contract = is_accumulator
+        ? all_positions.find(
+              ({ contract_info, type }) =>
+                  isAccumulatorContract(type) && contract_info.underlying === symbol && !contract_info.is_sold
+          )
+        : undefined;
+    const is_valid_to_sell = active_accu_contract?.contract_info
+        ? hasContractEntered(active_accu_contract.contract_info) && isOpen(active_accu_contract.contract_info)
+        : false;
+    const indicative =
+        (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
+    const onClickSellButton = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        if (active_accu_contract && onClickSell) {
+            onClickSell(active_accu_contract.contract_info.contract_id);
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    };
+
+    const components: JSX.Element[] = [];
 
     Object.keys(trade_types).forEach((type, index) => {
         const info = proposal_info?.[type] || {};
@@ -89,31 +115,33 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
             />
         );
 
-        if (!is_vanilla && getContractTypePosition(type as TGetSupportedContractsKey) === 'top') {
-            components.unshift(purchase_fieldset);
-        } else if (
-            (!is_vanilla && getContractTypePosition(type as TGetSupportedContractsKey) !== 'top') ||
-            vanilla_trade_type === type
-        ) {
+        if (!is_vanilla && (!is_accumulator || !has_open_accu_contract)) {
+            switch (getContractTypePosition(type as TGetSupportedContractsKey)) {
+                case 'top':
+                    components.unshift(purchase_fieldset);
+                    break;
+                case 'bottom':
+                    components.push(purchase_fieldset);
+                    break;
+                default:
+                    components.push(purchase_fieldset);
+                    break;
+            }
+        } else if (contract_type.toUpperCase() === type) {
             components.push(purchase_fieldset);
+        } else if (is_accumulator && has_open_accu_contract) {
+            components.push(
+                <AccumulatorsSellButton
+                    is_disabled={!is_valid_to_sell}
+                    onClick={onClickSellButton}
+                    contract_info={active_accu_contract?.contract_info}
+                    is_sell_requested={active_accu_contract?.is_sell_requested}
+                    current_stake={indicative}
+                    currency={currency}
+                />
+            );
         }
     });
-
-    const should_disable_accu_purchase =
-        is_accumulator &&
-        !!active_positions.find(
-            ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === symbol
-        );
-
-    if (should_disable_accu_purchase) {
-        components.unshift(
-            <PurchaseButtonsOverlay
-                is_to_cover_one_button={components.length === 1}
-                key='overlay'
-                message={localize('You can only purchase one contract at a time')}
-            />
-        );
-    }
 
     return components as unknown as JSX.Element;
 });

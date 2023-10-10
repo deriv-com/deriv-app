@@ -149,10 +149,6 @@ const copyConfig = base => {
                 return transformContentUrlBase(content, transform_path, base);
             },
         },
-        {
-            from: path.resolve(__dirname, '../src/public/pdf'),
-            to: 'public/pdf',
-        },
     ];
 
     return {

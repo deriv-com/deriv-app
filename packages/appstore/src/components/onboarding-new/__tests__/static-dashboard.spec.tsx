@@ -79,7 +79,7 @@ describe('StaticDashboard', () => {
         const cfd_account_manager = screen.getAllByTestId('cfd_account_manager');
         expect(trading_app_card.length).not.toBeGreaterThan(1);
         expect(trading_app_card[0]).toHaveTextContent('Deriv Trader');
-        expect(cfd_account_manager.length).not.toBeGreaterThan(2);
+        expect(cfd_account_manager.length).not.toBeGreaterThan(3);
         expect(cfd_account_manager[0]).toHaveTextContent('Deriv account');
         expect(cfd_account_manager[1]).toHaveTextContent('Financial');
     });

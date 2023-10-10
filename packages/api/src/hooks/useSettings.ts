@@ -1,16 +1,16 @@
 import { useCallback, useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 import useInvalidateQuery from '../useInvalidateQuery';
-import useRequest from '../useRequest';
+import useMutation from '../useMutation';
 
 type TSetSettingsPayload = NonNullable<
-    NonNullable<NonNullable<Parameters<ReturnType<typeof useRequest<'set_settings'>>['mutate']>>[0]>['payload']
+    NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'set_settings'>>['mutate']>>[0]>['payload']
 >;
 
 /** A custom hook to get and update the user settings. */
 const useSettings = () => {
-    const { data, ...rest } = useFetch('get_settings');
-    const { mutate, ...mutate_rest } = useRequest('set_settings', { onSuccess: () => invalidate('get_settings') });
+    const { data, ...rest } = useQuery('get_settings');
+    const { mutate, ...mutate_rest } = useMutation('set_settings', { onSuccess: () => invalidate('get_settings') });
     const invalidate = useInvalidateQuery();
 
     const update = useCallback((payload: TSetSettingsPayload) => mutate({ payload }), [mutate]);

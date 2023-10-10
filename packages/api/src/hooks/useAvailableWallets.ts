@@ -1,15 +1,16 @@
-import React from 'react';
-import useWalletAccountsList from './useWalletAccountsList';
-import useCurrencyConfig from './useCurrencyConfig';
+import { useMemo } from 'react';
 import useAllAvailableAccounts from './useAllAvailableAccounts';
+import useCurrencyConfig from './useCurrencyConfig';
+import useWalletAccountsList from './useWalletAccountsList';
 
+/** A custom hook that gets the list of available wallets. */
 const useAvailableWallets = () => {
-    const { data: account_type_data } = useAllAvailableAccounts();
+    const { data: account_type_data, ...rest } = useAllAvailableAccounts();
     const { data: added_wallets } = useWalletAccountsList();
     const { getConfig } = useCurrencyConfig();
 
     /** Get the available wallets for the wallet account type */
-    const modified_available_wallets = React.useMemo(() => {
+    const modified_available_wallets = useMemo(() => {
         if (!account_type_data) return;
         const { crypto, doughflow } = account_type_data?.wallet || {};
         const crypto_currencies = crypto?.currencies;
@@ -35,16 +36,16 @@ const useAvailableWallets = () => {
                 is_added: false,
             }));
 
-        return [...available_wallets, ...modified_wallets];
+        return [...available_wallets, ...(modified_wallets || [])];
     }, [account_type_data, added_wallets]);
 
     /** Sort the available wallets by fiat, crypto, then virtual */
-    const sorted_available_wallets = React.useMemo(() => {
+    const sorted_available_wallets = useMemo(() => {
         if (!modified_available_wallets) return;
 
         const getConfigIsCrypto = (currency: string) => getConfig(currency)?.is_crypto;
 
-        // Sort the unadded wallets alphabetically by fiat, crypto, then virtual
+        // Sort the non-added wallets alphabetically by fiat, crypto, then virtual
         modified_available_wallets.sort((a, b) => {
             const a_config = getConfigIsCrypto(a.currency || 'BTC');
             const b_config = getConfigIsCrypto(b.currency || 'BTC');
@@ -71,6 +72,7 @@ const useAvailableWallets = () => {
     return {
         /** Sorted available wallets */
         data: sorted_available_wallets,
+        ...rest,
     };
 };
 

@@ -107,9 +107,6 @@ module.exports = function (env) {
                         'style-loader',
                         {
                             loader: 'css-loader',
-                            options: {
-                                url: (_, resourcePath) => resourcePath.includes('packages/wallets'),
-                            },
                         },
                         {
                             loader: 'postcss-loader',
@@ -131,8 +128,12 @@ module.exports = function (env) {
                             loader: 'sass-resources-loader',
                             options: {
                                 // Provide path to the file with resources
-                                // eslint-disable-next-line global-require, import/no-dynamic-require
-                                resources: require('@deriv/shared/src/styles/index.js'),
+                                resources: [
+                                    // eslint-disable-next-line global-require, import/no-dynamic-require
+                                    ...require('@deriv/shared/src/styles/index.js'),
+                                    // eslint-disable-next-line global-require, import/no-dynamic-require
+                                    ...require('@deriv/wallets/src/styles/index.js'),
+                                ],
                             },
                         },
                     ],
@@ -156,6 +157,15 @@ module.exports = function (env) {
                 },
                 {
                     test: /\.svg$/,
+                    exclude: [/node_modules/, path.resolve('../', 'wallets')],
+                    include: /public\//,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'appstore/public/[name].[contenthash][ext]',
+                    },
+                },
+                {
+                    test: /\.svg$/,
                     exclude: [/node_modules|public\//],
                     use: svg_loaders,
                 },
@@ -172,6 +182,33 @@ module.exports = function (env) {
                       new CssMinimizerPlugin(),
                   ]
                 : [],
+            splitChunks: {
+                chunks: 'all',
+                minChunks: 1,
+                cacheGroups: {
+                    default: {
+                        minChunks: 2,
+                        minSize: 102400,
+                        priority: -20,
+                        reuseExistingChunk: true,
+                    },
+                    account: {
+                        idHint: 'account',
+                        test: /[\\/]account\//,
+                        priority: -20,
+                    },
+                    onfido: {
+                        idHint: 'onfido',
+                        test: /[\\/]onfido\//,
+                        priority: -10,
+                    },
+                    defaultVendors: {
+                        idHint: 'vendors',
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10,
+                    },
+                },
+            },
         },
         devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [

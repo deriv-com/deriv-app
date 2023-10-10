@@ -396,6 +396,15 @@
         color: var(--text-less-prominent);
         line-height: 1.45;
     }
+    &--tag {
+        background-color: $color-blue;
+        color: var(--text-colored-background);
+        border-radius: 0.2rem;
+        padding: 0 0.4rem;
+        font-weight: bold;
+        font-size: 1.3rem;
+    }
+
     &__mobile {
         &-title {
             text-align: left;
@@ -428,7 +437,6 @@
     &__maintenance {
         display: flex;
         padding-top: 1rem;
-        align-items: center;
 
         &-icon {
             padding-right: 0.5rem;
@@ -439,12 +447,17 @@
         }
     }
 
-    &__dxtrade-button {
+    &__dxtrade-button,
+    &__platform-button {
         display: flex;
         background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
         border-radius: $BORDER_RADIUS;
+
+        &-icon {
+            margin-left: 0.6rem;
+        }
 
         &-text {
             padding: 0.5rem;
@@ -453,9 +466,6 @@
                 padding-right: 0.5rem;
                 white-space: nowrap;
             }
-        }
-        &-icon {
-            margin-left: 0.6rem;
         }
     }
     &__specs {
@@ -547,6 +557,52 @@
                         background-color: var(--button-secondary-hover);
                     }
                 }
+                &-hide {
+                    @include mobile {
+                        display: none;
+                    }
+                }
+            }
+            &-ctrader {
+                &-container {
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 4rem;
+                    margin-bottom: 6rem;
+                    @include mobile {
+                        margin-top: 5rem;
+                        margin-bottom: 0;
+                    }
+                }
+                &__banner-text {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+
+            &--windows {
+                display: flex;
+                gap: 1.6rem;
+                align-items: center;
+                padding: 1.6rem 2.4rem;
+                border-bottom: 1px solid var(--border-disabled);
+                &-item {
+                    flex-grow: 1;
+                }
+                &-link {
+                    align-items: center;
+                    display: flex;
+                    justify-content: center;
+                    text-decoration: none;
+                    @include typeface(--paragraph-center-bold-black, none);
+                    background-color: transparent;
+                    border: 1px solid var(--border-normal-2);
+                    color: var(--text-less-prominent);
+
+                    &:hover {
+                        background-color: var(--button-secondary-hover);
+                    }
+                }
             }
         }
 
@@ -593,6 +649,11 @@
                 align-items: center;
                 border: 1px solid var(--border-disabled);
                 border-radius: 5px;
+                &-hide {
+                    @include mobile {
+                        display: none;
+                    }
+                }
             }
         }
         &-text {
@@ -969,6 +1030,10 @@
         .dc-autocomplete {
             margin-bottom: 3.6rem;
         }
+
+        .details-form__description {
+            margin-inline: 1.6rem;
+        }
     }
 }
 
@@ -995,160 +1060,6 @@
             min-height: calc(100vh - 22rem);
             width: 904px;
             max-height: calc(100vh - 48px - 36px) !important;
-        }
-    }
-}
-
-.account-poa {
-    &__upload {
-        &-remove-btn {
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            top: 8px;
-            right: 8px;
-            cursor: pointer;
-            transition: transform 0.25s linear;
-
-            &:hover {
-                transform: scale(1.25, 1.25);
-            }
-            &--error {
-                circle {
-                    fill: var(--status-danger);
-                }
-            }
-            &-container {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
-        }
-    }
-}
-
-.cfd-proof-of-address {
-    height: 100%;
-    & .details-form {
-        display: grid;
-        grid-template-rows: minmax(10rem, 1fr) 7.2rem;
-        height: 100%;
-        .dc-modal-footer {
-            border-top: 1px solid var(--general-active);
-        }
-    }
-    &__file-upload {
-        padding-top: 0.8rem;
-        position: relative;
-
-        .account-poa {
-            &__upload {
-                &-section {
-                    margin-top: 0;
-                    display: flex;
-                }
-                &-file {
-                    width: 100%;
-                    flex: 1;
-                    height: 24rem;
-                    position: relative;
-                    margin: 0;
-
-                    .dc-file-dropzone {
-                        border: 1px dashed var(--border-normal);
-                        max-width: 40rem;
-
-                        &__message-subtitle {
-                            font-size: unset;
-                            font-weight: unset;
-                        }
-                    }
-                    @include mobile {
-                        flex: unset;
-                    }
-                }
-                &-list {
-                    display: unset;
-
-                    .account-poa__upload-box {
-                        display: flex;
-                        flex-direction: unset;
-                        flex: unset;
-                        align-items: center;
-                        justify-content: flex-start;
-                        margin: 0 1.6rem 0.8rem 0;
-                        border: none;
-                        border-radius: 0;
-                        padding: 0;
-                        text-align: unset;
-                    }
-                }
-                &-icon {
-                    width: 2.5rem;
-                    margin-bottom: 0;
-                }
-                &-item {
-                    min-width: 23.8rem;
-                    width: 100%;
-                    margin-left: 1rem;
-                    font-size: var(--text-size-xxs);
-                    line-height: 1.5;
-                    color: var(--text-prominent);
-                    padding: 0;
-                }
-            }
-        }
-    }
-    &__field-area {
-        max-width: 556px;
-        margin: 0 auto;
-        padding: 3rem 0;
-
-        & .dc-dropdown__display-placeholder-text,
-        & .dc-input__label,
-        & .dc-dropdown__display {
-            background: var(--general-main-2);
-        }
-        @include mobile {
-            overflow: auto;
-        }
-    }
-    &__inline-fields {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 1rem;
-
-        .dc-dropdown-container {
-            margin-top: 0;
-        }
-    }
-    @include mobile {
-        .dc-input__label {
-            background: var(--general-section-2);
-        }
-        &__field-area {
-            padding: 0 1.6rem 3.2rem;
-            max-height: calc(100% - 0.8rem);
-        }
-        &__inline-fields {
-            display: flex;
-            flex-direction: column;
-
-            .dc-select-native {
-                margin-bottom: 3.2rem;
-            }
-        }
-        &__file-upload {
-            .dc-field--error {
-                top: 50%;
-                left: 0;
-                right: unset;
-            }
-            .account-poa__upload-section {
-                flex-direction: column;
-            }
         }
     }
 }

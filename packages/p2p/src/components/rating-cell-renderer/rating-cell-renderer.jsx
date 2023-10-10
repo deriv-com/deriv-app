@@ -8,9 +8,9 @@ const RatingCellRenderer = ({ has_review_details, is_reviewable, rating, onClick
     return has_review_details ? (
         <div className='rating-cell-renderer'>
             <StarRating
-                empty_star_className='rating-cell-renderer--star'
+                empty_star_className='rating-cell-renderer__star'
                 empty_star_icon='IcEmptyStar'
-                full_star_className='rating-cell-renderer--star'
+                full_star_className='rating-cell-renderer__star'
                 full_star_icon='IcFullStar'
                 initial_value={rating}
                 is_readonly

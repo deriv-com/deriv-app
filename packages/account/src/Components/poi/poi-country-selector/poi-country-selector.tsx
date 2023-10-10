@@ -7,23 +7,21 @@ import FormFooter from 'Components/form-footer';
 
 type TCountry = Record<string, string>;
 
-type TCountrySelector = {
+type TPoiCountrySelector = {
     handleSelectionNext: () => void;
     is_from_external: boolean;
-    residence_list: TCountry[];
+    residence_list: Array<TCountry>;
     selected_country: string;
     setSelectedCountry: (value: TCountry) => void;
 };
 
-const CountrySelector = ({
+const PoiCountrySelector = ({
     handleSelectionNext,
     is_from_external,
     residence_list,
     selected_country,
     setSelectedCountry,
-}: TCountrySelector) => {
-    const [country_list, setCountryList] = React.useState<TCountry[]>([]);
-
+}: TPoiCountrySelector) => {
     const initial_form_values: FormikValues = {
         country_input: '',
     };
@@ -34,7 +32,7 @@ const CountrySelector = ({
 
         if (!country_input) {
             errors.country_input = localize('Please select the country of document issuance.');
-        } else if (!country_list.find((c: FormikValues) => c.text === country_input)) {
+        } else if (!residence_list.find((c: FormikValues) => c.text === country_input)) {
             errors.country_input = localize('Please select a valid country of document issuance.');
         }
 
@@ -42,7 +40,9 @@ const CountrySelector = ({
     };
 
     const updateSelectedCountry = (country_name: string) => {
-        const matching_country: TCountry | undefined = country_list.find((c: FormikValues) => c.text === country_name);
+        const matching_country: TCountry | undefined = residence_list.find(
+            (c: FormikValues) => c.text === country_name
+        );
         if (matching_country) {
             setSelectedCountry?.(matching_country);
         }
@@ -53,10 +53,6 @@ const CountrySelector = ({
         setSubmitting(false);
         handleSelectionNext?.();
     };
-
-    React.useEffect(() => {
-        setCountryList(residence_list);
-    }, [residence_list]);
 
     return (
         <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={submitHandler}>
@@ -99,13 +95,13 @@ const CountrySelector = ({
                                                 autoComplete='off'
                                                 type='text'
                                                 label={localize('Country')}
-                                                list_items={country_list}
+                                                list_items={residence_list}
                                                 value={values.country_input}
                                                 onBlur={(e: FormikValues) => {
                                                     handleBlur(e);
                                                     const current_input = e.target.value;
                                                     if (
-                                                        !country_list.find(
+                                                        !residence_list.find(
                                                             (c: FormikValues) => c.text === current_input
                                                         )
                                                     ) {
@@ -131,7 +127,7 @@ const CountrySelector = ({
                                                     error={touched.country_input && errors.country_input}
                                                     label={localize('Country')}
                                                     placeholder={localize('Please select')}
-                                                    list_items={country_list}
+                                                    list_items={residence_list}
                                                     value={values.country_input}
                                                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                                         handleChange(e);
@@ -168,4 +164,4 @@ const CountrySelector = ({
     );
 };
 
-export default CountrySelector;
+export default PoiCountrySelector;

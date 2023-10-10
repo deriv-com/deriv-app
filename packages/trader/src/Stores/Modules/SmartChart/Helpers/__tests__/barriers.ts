@@ -34,17 +34,17 @@ describe('Barriers', () => {
             const key_to_remove = BARRIERS_KEYS.TAKE_PROFIT;
             Barriers.removeBarrier(barriers, key_to_remove);
             expect(barriers.find(barrier => barrier.key === key_to_remove)).toBeUndefined();
-            expect(barriers.length).toEqual(2);
+            expect(barriers).toHaveLength(2);
         });
         it('should not remove any barriers if the key is not found', () => {
             Barriers.removeBarrier(barriers, BARRIERS_KEYS.STOP_LOSS);
-            expect(barriers.length).toEqual(3);
+            expect(barriers).toHaveLength(3);
         });
         it('should not modify the barriers array if it is empty', () => {
             const key_to_remove = BARRIERS_KEYS.STOP_OUT;
             const empty_barriers = [] as Barriers.TBarrier[];
             Barriers.removeBarrier(empty_barriers, key_to_remove);
-            expect(empty_barriers.length).toEqual(0);
+            expect(empty_barriers).toHaveLength(0);
         });
     });
 });

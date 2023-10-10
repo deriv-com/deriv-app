@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Icon, MobileFullPageModal, ThemedScrollbars } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
-import PageReturn from 'Components/page-return/page-return.jsx';
+import PageReturn from 'Components/page-return';
 import { useStores } from 'Stores';
 import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
 
@@ -24,7 +24,7 @@ const OrderDetailsWrapper = ({ children, page_title }) => {
         <div data-testid='order-details-wrapper-mobile'>
             <MobileFullPageModal
                 className='order-details'
-                body_className='order-details--body'
+                body_className='order-details__body'
                 height_offset='80px'
                 is_flex
                 is_modal_open

@@ -1,4 +1,5 @@
-import { action, computed, observable, toJS, makeObservable, override, reaction, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS } from 'mobx';
+
 import {
     getAccuBarriersDTraderTimeout,
     getContractTypesConfig,
@@ -7,14 +8,17 @@ import {
     isCallPut,
     isDesktop,
     isEnded,
+    isHighLow,
     isMultiplierContract,
     isTurbosContract,
+    isVanillaContract,
     LocalStore,
     switch_to_tick_chart,
 } from '@deriv/shared';
-import ContractStore from './contract-store';
+
 import BaseStore from './base-store';
 import { getAccumulatorMarkers } from './Helpers/chart-markers';
+import ContractStore from './contract-store';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -179,7 +183,6 @@ export default class ContractTradeStore extends BaseStore {
             getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp: Date.now(),
                 has_default_timeout: this.accumulator_barriers_data.current_spot_time !== current_spot_time,
-                should_update_contract_barriers,
                 tick_update_timestamp,
                 underlying,
             })
@@ -209,7 +212,8 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     applicable_contracts = () => {
-        const { symbol: underlying, contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { contract_type: trade_type, symbol: underlying } =
+            JSON.parse(sessionStorage.getItem('trade_store')) || {};
 
         if (!trade_type || !underlying) {
             return [];
@@ -222,6 +226,9 @@ export default class ContractTradeStore extends BaseStore {
         } else if (isTurbosContract(trade_type)) {
             //to show both Long and Short recent contracts on DTrader chart
             trade_types = ['TURBOSLONG', 'TURBOSSHORT'];
+        } else if (isVanillaContract(trade_type)) {
+            //to show both Call and Put recent contracts on DTrader chart
+            trade_types = ['VANILLALONGCALL', 'VANILLALONGPUT'];
         }
 
         return this.contracts
@@ -239,8 +246,8 @@ export default class ContractTradeStore extends BaseStore {
                 const trade_type_is_supported = trade_types.indexOf(info.contract_type) !== -1;
                 // both high_low & rise_fall have the same contract_types in POC response
                 // entry_spot=barrier means it is rise_fall contract (blame the api)
-                if (trade_type_is_supported && info.barrier && info.entry_tick && is_call_put) {
-                    if (`${+info.entry_tick}` === `${+info.barrier}`) {
+                if (trade_type_is_supported && is_call_put && ((info.barrier && info.entry_tick) || info.shortcode)) {
+                    if (`${+info.entry_tick}` === `${+info.barrier}` && !isHighLow(info)) {
                         return trade_type === 'rise_fall' || trade_type === 'rise_fall_equal';
                     }
                     return trade_type === 'high_low';
@@ -250,7 +257,7 @@ export default class ContractTradeStore extends BaseStore {
     };
 
     get has_crossed_accu_barriers() {
-        const { symbol } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { symbol } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
         const {
             current_spot: contract_current_spot,
             entry_spot,
@@ -279,7 +286,7 @@ export default class ContractTradeStore extends BaseStore {
 
     get markers_array() {
         let markers = [];
-        const { contract_type: trade_type, symbol } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { contract_type: trade_type, symbol } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
         markers = this.applicable_contracts()
             .map(c => c.marker)
             .filter(m => m)
@@ -330,8 +337,11 @@ export default class ContractTradeStore extends BaseStore {
         is_tick_contract,
         limit_order = {},
     }) {
-        const contract_exists = this.contracts_map[contract_id];
-        if (contract_exists) {
+        const existing_contract = this.contracts_map[contract_id];
+        if (existing_contract) {
+            if (this.contracts.every(c => c.contract_id !== contract_id)) {
+                this.contracts.push(existing_contract);
+            }
             return;
         }
         const is_last_contract = contract_id === this.last_contract.contract_id;
@@ -397,7 +407,7 @@ export default class ContractTradeStore extends BaseStore {
 
     get last_contract() {
         const applicable_contracts = this.applicable_contracts();
-        const length = applicable_contracts.length;
+        const length = this.contracts[0]?.contract_info.current_spot_time ? applicable_contracts.length : -1;
         return length > 0 ? applicable_contracts[length - 1] : {};
     }
 

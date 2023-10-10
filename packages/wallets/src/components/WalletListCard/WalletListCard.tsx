@@ -1,30 +1,35 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
-import IcDropdown from '../../public/images/ic-dropdown.svg';
+import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import WalletListCardIBalance from '../WalletListCardIBalance/WalletListCardIBalance';
-import WalletListCardIcon from '../WalletListCardIcon/WalletListCardIcon';
 import WalletListCardIDetails from '../WalletListCardIDetails/WalletListCardIDetails';
 import './WalletListCard.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    badge?: string;
+    balance: string;
+    currency: string;
+    isActive: boolean;
+    isDemo: boolean;
+    loginid: string;
 };
 
-const WalletListCard: React.FC<TProps> = ({ account }) => {
-    return (
-        <div className='wallets-list-header__card_container'>
-            <div className='wallets-list-header__content'>
-                <div className='wallets-list-header__details-container'>
-                    <WalletListCardIcon />
-                    <WalletListCardIDetails account={account} />
-                </div>
-                <WalletListCardIBalance account={account} />
-                <div className='wallets-list-header__dropdown'>
-                    <IcDropdown />
-                </div>
+const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isActive, isDemo, loginid }) => (
+    <div className='wallets-list-header__card_container'>
+        <div className='wallets-list-header__content'>
+            <div className='wallets-list-header__details-container'>
+                <WalletCurrencyCard currency={currency} isDemo={isDemo} />
+
+                <WalletListCardIDetails
+                    badge={badge}
+                    currency={currency}
+                    isActive={isActive}
+                    isDemo={isDemo}
+                    loginid={loginid}
+                />
             </div>
+            <WalletListCardIBalance balance={balance} />
         </div>
-    );
-};
+    </div>
+);
 
 export default WalletListCard;

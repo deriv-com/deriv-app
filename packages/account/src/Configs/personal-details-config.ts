@@ -1,3 +1,4 @@
+import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import {
     TSchema,
     generateValidationFunction,
@@ -8,18 +9,17 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { shouldShowIdentityInformation } from 'Helpers/utils';
-import { TResidenseList, TUpgradeInfo } from 'Types';
-import { GetAccountStatus, GetSettings } from '@deriv/api-types';
+import { TUpgradeInfo } from 'Types';
+import { PHONE_NUMBER_LENGTH } from 'Constants/personal-details';
 
 type TPersonalDetailsConfig = {
     upgrade_info?: TUpgradeInfo;
     real_account_signup_target: string;
-    residence_list: TResidenseList[];
+    residence_list: ResidenceList;
     account_settings: GetSettings & {
         document_type: string;
         document_number: string;
     };
-    is_appstore?: boolean;
     residence: string;
     account_status: GetAccountStatus;
     is_high_risk_client_for_mt5?: boolean;
@@ -28,7 +28,6 @@ type TPersonalDetailsConfig = {
 export const personal_details_config = ({
     residence_list,
     account_settings,
-    is_appstore,
     real_account_signup_target,
     is_high_risk_client_for_mt5,
 }: TPersonalDetailsConfig) => {
@@ -36,11 +35,7 @@ export const personal_details_config = ({
         return {};
     }
 
-    // minimum characters required is 9 numbers (excluding +- signs or space)
-    const min_phone_number = 9;
-    const max_phone_number = 35;
-
-    const default_residence = real_account_signup_target === 'maltainvest' ? account_settings?.residence : '';
+    const default_residence = (real_account_signup_target === 'maltainvest' && account_settings?.residence) || '';
 
     const config = {
         account_opening_reason: {
@@ -86,16 +81,18 @@ export const personal_details_config = ({
         },
         place_of_birth: {
             supported_in: ['maltainvest', 'iom', 'malta'],
-            default_value: account_settings.place_of_birth
-                ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
-                : '',
+            default_value:
+                (account_settings.place_of_birth &&
+                    residence_list.find(item => item.value === account_settings.place_of_birth)?.text) ||
+                '',
             rules: [['req', localize('Place of birth is required.')]],
         },
         citizen: {
             supported_in: ['iom', 'malta', 'maltainvest'],
-            default_value: account_settings.citizen
-                ? residence_list.find(item => item.value === account_settings.citizen)?.text
-                : '',
+            default_value:
+                (account_settings.citizen &&
+                    residence_list.find(item => item.value === account_settings.citizen)?.text) ||
+                '',
             rules: [['req', localize('Citizenship is required')]],
         },
         phone: {
@@ -108,20 +105,22 @@ export const personal_details_config = ({
                     (value: string) => {
                         // phone_trim uses regex that trims non-digits
                         const phone_trim = value.replace(/\D/g, '');
-                        return validLength(phone_trim, { min: min_phone_number, max: max_phone_number });
+                        // minimum characters required is 9 numbers (excluding +- signs or space)
+                        return validLength(phone_trim, { min: PHONE_NUMBER_LENGTH.MIN, max: PHONE_NUMBER_LENGTH.MAX });
                     },
                     localize('You should enter {{min}}-{{max}} numbers.', {
-                        min: min_phone_number,
-                        max: max_phone_number,
+                        min: PHONE_NUMBER_LENGTH.MIN,
+                        max: PHONE_NUMBER_LENGTH.MAX,
                     }),
                 ],
             ],
         },
         tax_residence: {
             //if tax_residence is already set, we will use it as default value else for mf clients we will use residence as default value
-            default_value: account_settings?.tax_residence
-                ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text ?? ''
-                : default_residence,
+            default_value:
+                (account_settings?.tax_residence &&
+                    residence_list.find(item => item.value === account_settings?.tax_residence)?.text) ||
+                default_residence,
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],
         },
@@ -136,15 +135,17 @@ export const personal_details_config = ({
                     { min: 0, max: 25 },
                 ],
                 [
-                    'regular',
+                    // check if the TIN value is available, then perform the regex test
+                    // else return true (to pass the test)
+                    // this is to allow empty string to pass the test in case of optioal TIN field
+                    (value: string) => (value ? RegExp(/^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/).test(value) : true),
                     localize('Letters, numbers, spaces, periods, hyphens and forward slashes only.'),
-                    {
-                        regex: /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
-                    },
                 ],
                 [
                     (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
-                        return !!tax_residence;
+                        // check if  TIN value is available,
+                        // only then ask client to fill in tax residence
+                        return value ? !!tax_residence : true;
                     },
                     localize('Please fill in Tax residence.'),
                 ],
@@ -153,7 +154,7 @@ export const personal_details_config = ({
                         const tin_format = residence_list.find(
                             res => res.text === tax_residence && res.tin_format
                         )?.tin_format;
-                        return tin_format ? tin_format.some(regex => new RegExp(regex).test(value)) : true;
+                        return value && tin_format ? tin_format.some(regex => new RegExp(regex).test(value)) : true;
                     },
                     localize('Tax Identification Number is not properly formatted.'),
                 ],
@@ -187,35 +188,26 @@ export const personal_details_config = ({
         },
     };
 
-    const getConfig = () => {
-        // Need to check if client is high risk (only have SVG i.e. China & Russia)
-        // No need to get additinal details when client is high risk
-        if (!is_high_risk_client_for_mt5) {
-            const properties_to_update: (keyof typeof config)[] = [
-                'place_of_birth',
-                'tax_residence',
-                'tax_identification_number',
-                'account_opening_reason',
-            ];
+    // Need to check if client is high risk (only have SVG i.e. China & Russia)
+    // No need to get additinal details when client is high risk
+    if (!is_high_risk_client_for_mt5 && real_account_signup_target !== 'maltainvest') {
+        const properties_to_update: (keyof typeof config)[] = [
+            'place_of_birth',
+            'tax_residence',
+            'tax_identification_number',
+            'account_opening_reason',
+        ];
 
-            properties_to_update.forEach(key => {
-                config[key].supported_in.push('svg');
-            });
-        }
+        properties_to_update.forEach(key => {
+            config[key].supported_in.push('svg');
+            // Remove required rule for TIN and Tax residence from the config to make the fields optional
+            if (key === 'tax_identification_number' || key === 'tax_residence') {
+                config[key].rules = config[key].rules.filter(rule => rule[0] !== 'req');
+            }
+        });
+    }
 
-        if (is_appstore) {
-            const allowed_fields = ['first_name', 'last_name', 'date_of_birth', 'phone'];
-            return Object.keys(config).reduce((new_config, key) => {
-                if (allowed_fields.includes(key)) {
-                    new_config[key] = config[key];
-                }
-                return new_config;
-            }, {});
-        }
-        return config;
-    };
-
-    return [getConfig()];
+    return config;
 };
 
 const personalDetailsConfig = <T>(
@@ -231,10 +223,9 @@ const personalDetailsConfig = <T>(
     PersonalDetails: T,
     is_appstore = false
 ) => {
-    const [config] = personal_details_config({
+    const config = personal_details_config({
         residence_list,
         account_settings,
-        is_appstore,
         real_account_signup_target,
         residence,
         account_status,

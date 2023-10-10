@@ -1,11 +1,9 @@
 import { useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 
-/**
- * A custom hook to get available account types for a specific landing company.
- */
+/** A custom hook to get available account types for a specific landing company. */
 const useAccountTypes = (landing_company?: string) => {
-    const { data, ...rest } = useFetch('get_account_types', {
+    const { data, ...rest } = useQuery('get_account_types', {
         payload: { company: landing_company },
         options: { enabled: Boolean(landing_company) },
     });

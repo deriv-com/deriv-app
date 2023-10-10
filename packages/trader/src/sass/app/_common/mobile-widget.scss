@@ -137,11 +137,12 @@
             }
         }
     }
-    &__label {
+    &__wide {
         min-width: 11.9rem;
         padding: 0 0.8rem;
+    }
+    &__label {
         align-items: flex-start;
-
         .mobile-widget__item {
             margin-left: 2.4rem;
         }

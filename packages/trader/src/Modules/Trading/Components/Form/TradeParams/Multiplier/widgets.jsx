@@ -89,6 +89,7 @@ const RadioGroupOptionsWidget = ({
             <div
                 className={classNames('mobile-widget mobile-widget__multiplier-options', {
                     'mobile-widget__label': shoud_show_new_label,
+                    'mobile-widget__wide': !tooltip_message,
                 })}
                 onClick={toggleModal}
             >

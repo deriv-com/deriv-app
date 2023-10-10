@@ -1,19 +1,12 @@
 import classNames from 'classnames';
 import React from 'react';
-<<<<<<< HEAD:packages/trader/src/Modules/Trading/Components/Form/Purchase/contract-info.jsx
-import { DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Money, Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
-import CancelDealInfo from './cancel-deal-info.jsx';
-=======
-import { DesktopWrapper, MobileWrapper, Money, Popover, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
-import { getContractSubtype, getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import CancelDealInfo from './cancel-deal-info';
 import ValueMovement from './value-movement';
 import { TProposalTypeInfo } from 'Types';
->>>>>>> d54d0127a43f016e5e3c41b55ce50df387ddc111:packages/trader/src/Modules/Trading/Components/Form/Purchase/contract-info.tsx
 
 type TContractInfo = Pick<
     ReturnType<typeof useTraderStore>,

@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { observer as globalObserver } from '../../../common/utils/observer';
+import { api_base } from '@api-base';
+import { observer as globalObserver } from '@utilities/observer';
 
-const ServerTime = ({ api }) => {
+const ServerTime = () => {
     const [hasApiResponse, setHasApiResponse] = React.useState(false);
     const [date, setDate] = React.useState();
     const [dateString, setDateString] = React.useState();
@@ -23,7 +23,8 @@ const ServerTime = ({ api }) => {
     };
 
     const getServerTime = () => {
-        api.send({ time: 1 })
+        api_base
+            .send({ time: 1 })
             .then(response => {
                 const newDate = new Date(response.time * 1000);
                 setDate(newDate);
@@ -51,10 +52,6 @@ const ServerTime = ({ api }) => {
     React.useEffect(() => updateTime(), [date]);
 
     return <b>{dateString}</b>;
-};
-
-ServerTime.propTypes = {
-    api: PropTypes.shape,
 };
 
 export default ServerTime;

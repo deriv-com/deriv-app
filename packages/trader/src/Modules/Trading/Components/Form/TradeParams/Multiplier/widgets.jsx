@@ -88,8 +88,7 @@ const RadioGroupOptionsWidget = ({
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
             <div
                 className={classNames('mobile-widget mobile-widget__multiplier-options', {
-                    'mobile-widget__wide': tooltip_message || shoud_show_new_label,
-                    'mobile-widget__row': shoud_show_new_label,
+                    'mobile-widget__label': shoud_show_new_label,
                 })}
                 onClick={toggleModal}
             >
@@ -113,9 +112,9 @@ const RadioGroupOptionsWidget = ({
                     </span>
                 )}
                 {shoud_show_new_label && (
-                    <span className='dc-dropdown__label--new'>
+                    <Text className='dc-dropdown__label--new' weight='bold' size='xxxs' line_height='s'>
                         <Localize i18n_default_text='NEW!' />
-                    </span>
+                    </Text>
                 )}
             </div>
         </React.Fragment>

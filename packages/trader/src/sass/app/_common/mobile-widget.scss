@@ -77,6 +77,9 @@
             margin-left: 0.8rem;
             justify-content: center;
             min-width: 8.8rem;
+            &:has(.mobile-widget__item-tooltip) {
+                min-width: 9.9rem;
+            }
 
             .mobile-widget__item-label {
                 color: var(--text-general);
@@ -134,12 +137,14 @@
             }
         }
     }
-    &__wide {
-        min-width: 9.9rem;
-    }
-    &__row {
-        flex-direction: row;
-        justify-content: space-between;
+    &__label {
+        min-width: 11.9rem;
+        padding: 0 0.8rem;
+        align-items: flex-start;
+
+        .mobile-widget__item {
+            margin-left: 2.4rem;
+        }
     }
     &__wrapper {
         display: flex;

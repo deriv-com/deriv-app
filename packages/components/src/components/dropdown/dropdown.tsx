@@ -508,9 +508,9 @@ const Dropdown = ({
                         value={value}
                     />
                     {should_show_new_label && (
-                        <span className='dc-dropdown__label--new'>
+                        <Text className='dc-dropdown__label--new' weight='bold' size='xxxs' line_height='s'>
                             <Localize i18n_default_text='NEW!' />
-                        </span>
+                        </Text>
                     )}
                 </div>
                 {!error && hint && (

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Divider } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { PageContainer } from '../../components/page-container';
@@ -16,7 +16,7 @@ const DepositCrypto: React.FC = observer(() => {
     const { general_store } = useCashierStore();
     const { setIsDeposit } = general_store;
 
-    useEffect(() => {
+    React.useEffect(() => {
         setIsDeposit(true);
 
         return () => {

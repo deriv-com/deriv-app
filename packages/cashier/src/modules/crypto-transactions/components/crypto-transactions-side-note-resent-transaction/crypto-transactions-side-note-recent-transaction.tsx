@@ -21,22 +21,39 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
         const { data: transactions, has_transactions, isLoading, error, subscribe } = useCryptoTransactions();
         const currency_config = useCurrentCurrencyConfig();
 
+        const NoTransactionState = React.useCallback(
+            () => (
+                <>
+                    <Text size={is_mobile ? 'xxs' : 'xs'}>
+                        <Localize i18n_default_text='No recent transactions.' />
+                    </Text>
+                    <div className='crypto-transactions-side-note-recent-transaction__divider' />
+                </>
+            ),
+            [is_mobile]
+        );
+
         const TransactionDetail = React.useCallback(() => {
-            const filtered_transactions = transactions?.filter(el =>
-                transaction_type === 'deposit' ? el.is_deposit : el.is_withdrawal
-            );
-            if (!filtered_transactions?.length) return null;
+            const filtered_transactions =
+                transactions?.filter(el => (transaction_type === 'deposit' ? el.is_deposit : el.is_withdrawal)) || [];
 
             return (
                 <React.Fragment>
-                    {filtered_transactions?.slice(0, 3).map(transaction => (
-                        <CryptoTransaction
-                            key={transaction.id}
-                            transaction={cryptoTransactionMapper(transaction)}
-                            currency_display_code={currency_config.display_code}
-                        />
+                    {filtered_transactions?.slice(0, 3).map((transaction, index) => (
+                        <React.Fragment key={transaction.id}>
+                            <CryptoTransaction
+                                transaction={cryptoTransactionMapper(transaction)}
+                                currency_display_code={currency_config.display_code}
+                            />
+                            <div
+                                className={
+                                    index < filtered_transactions.length - 1 && index < 2
+                                        ? 'crypto-transactions-side-note-recent-transaction__divider__light'
+                                        : 'crypto-transactions-side-note-recent-transaction__divider'
+                                }
+                            />
+                        </React.Fragment>
                     ))}
-                    <div className='crypto-transactions-side-note-recent-transaction__divider' />
                     {filtered_transactions.length > 3 && (
                         <Button
                             text={localize('View more')}
@@ -46,9 +63,16 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
                             className='crypto-transactions-side-note-recent-transaction__button'
                         />
                     )}
+                    {filtered_transactions.length === 0 && <NoTransactionState />}
                 </React.Fragment>
             );
-        }, [currency_config.display_code, setIsCryptoTransactionsVisible, transaction_type, transactions]);
+        }, [
+            NoTransactionState,
+            currency_config.display_code,
+            setIsCryptoTransactionsVisible,
+            transaction_type,
+            transactions,
+        ]);
 
         const LoadingState = React.useCallback(() => <Loading is_fullscreen={false} />, []);
 
@@ -71,25 +95,12 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
             [is_mobile, subscribe]
         );
 
-        const NoTransactionState = React.useCallback(
-            () => (
-                <>
-                    <Text size={is_mobile ? 'xxs' : 'xs'}>
-                        <Localize i18n_default_text='No recent transactions.' />
-                    </Text>
-                    <div className='crypto-transactions-side-note-recent-transaction__divider' />
-                </>
-            ),
-            [is_mobile]
-        );
-
         return (
             <SideNote type={error ? 'warning' : undefined} title={localize('Transaction status')}>
                 <div className='crypto-transactions-side-note-recent-transaction'>
                     <div className='crypto-transactions-side-note-recent-transaction__divider' />
                     {isLoading && <LoadingState />}
                     {!isLoading && !error && has_transactions && <TransactionDetail />}
-                    {!isLoading && !error && !has_transactions && <NoTransactionState />}
                     {!!error && <ErrorState />}
                 </div>
             </SideNote>

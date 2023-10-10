@@ -73,9 +73,14 @@ const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCr
                     i18n_default_text='Address: <0>{{value}}</0>'
                     values={{ value: transaction.address_hash_display }}
                     components={[
-                        <a key={0} className='crypto-transaction__link' href={transaction.address_url}>
-                            <Text size='xxxs' color='red' />
-                        </a>,
+                        <Text
+                            key={0}
+                            as='a'
+                            href={transaction.address_url}
+                            size='xxxs'
+                            color='red'
+                            className='crypto-transaction__link'
+                        />,
                     ]}
                 />
             </Text>
@@ -85,9 +90,14 @@ const CryptoTransaction = ({ currency_display_code: currency, transaction }: TCr
                     values={{ value: transaction.transaction_hash_display }}
                     components={[
                         transaction.transaction_url ? (
-                            <a key={0} className='crypto-transaction__link' href={transaction.transaction_url}>
-                                <Text size='xxxs' color='red' />
-                            </a>
+                            <Text
+                                key={0}
+                                as='a'
+                                href={transaction.transaction_url}
+                                size='xxxs'
+                                color='red'
+                                className='crypto-transaction__link'
+                            />
                         ) : (
                             <Text key={0} size='xxxs' color='red' />
                         ),

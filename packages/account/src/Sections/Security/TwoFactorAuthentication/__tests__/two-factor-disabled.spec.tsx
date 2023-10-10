@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { isDesktop, isMobile } from '@deriv/shared';
 import TwoFactorDisabled from '../two-factor-disabled';
 
 jest.mock('@deriv/components', () => {

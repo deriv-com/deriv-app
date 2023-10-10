@@ -1,0 +1,50 @@
+.wallets-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__details {
+        display: flex;
+        padding: 8px;
+        min-width: 44.44vw;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        aspect-ratio: 1.667;
+
+        &__top {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        &__bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.4rem;
+
+            &--virtual {
+                color: #ffffff;
+            }
+
+            &__curency {
+                font-size: 8px;
+            }
+
+            &__balance {
+                font-size: 12px;
+                font-weight: 700;
+                line-height: 18px;
+            }
+        }
+
+        &-landing_company {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            gap: 0.4rem;
+        }
+    }
+}

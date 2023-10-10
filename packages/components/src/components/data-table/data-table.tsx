@@ -44,14 +44,14 @@ type TDataTable = {
     getActionColumns?: (params: { row_obj?: TSource; is_header?: boolean; is_footer: boolean }) => TTableRowItem[];
     getRowSize?: ((params: { index: number }) => number) | number;
     measure?: () => void;
-    getRowAction?: (row: Record<string, unknown>) => { component: JSX.Element } | string;
+    getRowAction?: (item: TSource) => TTableRowItem;
     onScroll?: React.UIEventHandler<HTMLDivElement>;
     id?: number;
-    passthrough?: (item: TSource) => boolean;
+    passthrough?: React.ComponentProps<typeof TableRow>['passthrough'];
     autoHide?: boolean;
-    footer: Record<string, unknown>;
-    preloaderCheck: (param: TSource) => boolean;
-    data_source: TSource[];
+    footer?: Record<string, unknown> | React.ReactNode;
+    preloaderCheck?: (param: TSource) => boolean;
+    data_source?: TSource[];
     keyMapper?: (row: TSource) => number | string;
 };
 
@@ -82,7 +82,8 @@ const DataTable = ({
             cache_ref.current = new CellMeasurerCache({
                 fixedWidth: true,
                 keyMapper: row_index => {
-                    if (row_index < data_source.length) return keyMapper?.(data_source[row_index]) || row_index;
+                    if (data_source && row_index < data_source.length)
+                        return keyMapper?.(data_source[row_index]) || row_index;
                     return row_index;
                 },
             });
@@ -101,10 +102,13 @@ const DataTable = ({
     };
 
     const rowRenderer = ({ style, index, key, parent }: TRowRenderer) => {
-        const item = data_source[index];
-        const action = getRowAction && getRowAction(item);
-        const contract_id = item.contract_id || item.id;
-        const row_key = keyMapper?.(item) || key;
+        const item = data_source?.[index];
+        const contract_id = (item?.contract_id || item?.id) as string;
+        let action: TTableRowItem | undefined, row_key;
+        if (item) {
+            action = getRowAction && getRowAction(item);
+            row_key = keyMapper?.(item) || key;
+        }
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
         const getContent = ({ measure }: TMeasure) => (
@@ -119,7 +123,7 @@ const DataTable = ({
                 passthrough={passthrough}
                 replace={typeof action === 'object' ? action : undefined}
                 row_obj={item}
-                show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : false}
+                show_preloader={typeof preloaderCheck === 'function' && item ? preloaderCheck(item) : false}
                 to={typeof action === 'string' ? action : undefined}
                 is_dynamic_height={is_dynamic_height}
                 is_footer={false}
@@ -185,7 +189,7 @@ const DataTable = ({
                                     height={height}
                                     overscanRowCount={1}
                                     ref={(ref: Grid) => (list_ref.current = ref)}
-                                    rowCount={data_source.length}
+                                    rowCount={data_source?.length || 0}
                                     rowHeight={
                                         is_dynamic_height && cache_ref?.current?.rowHeight
                                             ? cache_ref?.current?.rowHeight

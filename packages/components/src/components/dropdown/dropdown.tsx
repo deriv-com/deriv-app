@@ -26,6 +26,7 @@ type TDropdown = {
     has_symbol?: boolean;
     hint?: string;
     initial_offset?: number;
+    initial_height_offset?: number;
     is_align_text_left?: boolean;
     is_alignment_left?: boolean;
     is_alignment_top?: boolean;
@@ -53,6 +54,7 @@ type TDropdownList = {
     handleSelect: (item: TListItem) => void;
     has_symbol?: boolean;
     initial_offset?: number;
+    initial_height_offset?: number;
     is_align_text_left?: boolean;
     is_alignment_left?: boolean;
     is_alignment_top?: boolean;
@@ -74,6 +76,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
         handleSelect,
         has_symbol,
         initial_offset,
+        initial_height_offset,
         is_align_text_left,
         is_alignment_left,
         is_alignment_top,
@@ -156,7 +159,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
     const setListDimension = () =>
         setListDimensions([
             initial_offset || (list_ref as React.MutableRefObject<HTMLElement>).current.offsetWidth,
-            (list_ref as React.MutableRefObject<HTMLElement>).current.offsetHeight,
+            initial_height_offset || (list_ref as React.MutableRefObject<HTMLElement>).current.offsetHeight,
         ]);
 
     const getDropDownAlignment = () => {
@@ -241,6 +244,7 @@ const Dropdown = ({
     has_symbol,
     hint,
     initial_offset = 0,
+    initial_height_offset = 0,
     is_align_text_left,
     is_alignment_left,
     is_alignment_top,
@@ -485,6 +489,7 @@ const Dropdown = ({
                         handleSelect={handleSelect}
                         has_symbol={has_symbol}
                         initial_offset={initial_offset}
+                        initial_height_offset={initial_height_offset}
                         is_align_text_left={is_align_text_left}
                         is_alignment_left={is_alignment_left}
                         is_alignment_top={is_alignment_top}

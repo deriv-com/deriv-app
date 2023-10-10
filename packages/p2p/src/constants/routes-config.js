@@ -1,11 +1,11 @@
 import React from 'react';
 import { routes } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import AdvertiserPage from '../components/advertiser-page';
-import BuySell from '../components/buy-sell';
-import MyAds from '../components/my-ads';
-import MyProfile from '../components/my-profile';
-import Orders from '../components/orders';
+import AdvertiserPage from '../pages/advertiser-page';
+import BuySell from '../pages/buy-sell';
+import MyAds from '../pages/my-ads';
+import MyProfile from '../pages/my-profile';
+import Orders from '../pages/orders';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../components/page-404'));

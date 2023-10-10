@@ -14,7 +14,7 @@ export type TButtonType = 'button' | 'submit' | 'reset';
 // supports more than two different types of 'value' as a prop.
 // Quick Solution - Pass two different props to input field.
 type TInputField = {
-    ariaLabel: string;
+    ariaLabel?: string;
     checked?: boolean;
     className?: string;
     classNameDynamicSuffix?: string;
@@ -22,8 +22,8 @@ type TInputField = {
     classNameInput?: string;
     classNamePrefix?: string;
     classNameWrapper?: string; // CSS class for the component wrapper
-    currency: string;
-    current_focus: string;
+    currency?: string;
+    current_focus: string | null;
     data_testid?: string;
     data_tip?: string;
     data_value?: string;
@@ -31,26 +31,26 @@ type TInputField = {
     error_message_alignment?: string;
     error_messages?: string[];
     format?: (new_value?: string) => string;
-    fractional_digits: number;
+    fractional_digits?: number;
     helper?: string;
     icon?: React.ElementType;
     id?: string;
     increment_button_type?: TButtonType;
     inline_prefix?: string;
     inputmode?: TInputMode;
-    is_autocomplete_disabled: boolean;
+    is_autocomplete_disabled?: boolean;
     is_disabled?: boolean;
-    is_error_tooltip_hidden: boolean;
+    is_error_tooltip_hidden?: boolean;
     is_float: boolean;
-    is_hj_whitelisted: boolean;
+    is_hj_whitelisted?: boolean;
     is_incrementable_on_long_press?: boolean;
-    is_incrementable: boolean;
-    is_negative_disabled: boolean;
+    is_incrementable?: boolean;
+    is_negative_disabled?: boolean;
     is_read_only?: boolean;
     is_signed?: boolean;
     is_unit_at_right?: boolean;
     label?: string;
-    max_length: number;
+    max_length?: number;
     max_value?: number;
     min_value?: number;
     name: string;
@@ -122,7 +122,7 @@ const InputField = ({
 }: TInputField) => {
     const [local_value, setLocalValue] = React.useState<string>();
     const Icon = icon as React.ElementType;
-    const has_error = error_messages && !!error_messages.length;
+    const has_error = error_messages && !!error_messages.length && !is_error_tooltip_hidden;
     const max_is_disabled = max_value && (+value >= +max_value || Number(local_value) >= +max_value);
     const min_is_disabled = min_value && (+value <= +min_value || Number(local_value) <= +min_value);
     let has_valid_length = true;
@@ -304,7 +304,7 @@ const InputField = ({
                 is_increment_input ? 'dc-input-wrapper__input' : '',
                 inline_prefix ? 'input--has-inline-prefix' : '',
                 'input',
-                { 'input--error': has_error },
+                { 'input--error': error_messages && !!error_messages.length },
                 classNameInput
             )}
             classNameDynamicSuffix={classNameDynamicSuffix}
@@ -355,7 +355,7 @@ const InputField = ({
             className={classNames('trade-container__tooltip', { 'dc-tooltip--with-label': label })}
             alignment={error_message_alignment || 'left'}
             message={has_error ? error_messages[0] : null}
-            has_error={!is_error_tooltip_hidden && has_error}
+            has_error={has_error}
         >
             {!!label && (
                 <label htmlFor={name} className='dc-input-field__label'>

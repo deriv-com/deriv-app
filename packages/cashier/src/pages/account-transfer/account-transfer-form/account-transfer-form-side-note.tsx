@@ -8,6 +8,7 @@ type TAccountTransferNoteProps = {
     allowed_transfers_count: GetLimits['daily_transfers'];
     currency: string;
     is_crypto_to_crypto_transfer?: boolean;
+    is_ctrader_transfer?: boolean;
     is_derivez_transfer?: boolean;
     is_dxtrade_allowed: boolean;
     is_dxtrade_transfer?: boolean;

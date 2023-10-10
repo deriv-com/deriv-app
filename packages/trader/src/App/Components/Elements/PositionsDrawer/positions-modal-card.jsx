@@ -6,23 +6,24 @@ import { CSSTransition } from 'react-transition-group';
 import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     getContractPath,
+    getContractTypeDisplay,
+    getCardLabels,
+    getSymbolDisplayName,
+    getEndTime,
+    getTotalProfit,
+    hasContractEntered,
     isAccumulatorContract,
     isCryptoContract,
     isMultiplierContract,
     isTurbosContract,
     isHighLow,
     isCryptocurrency,
-    hasContractEntered,
     isOpen,
-    getSymbolDisplayName,
-    getEndTime,
-    getTotalProfit,
     isVanillaContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import ResultMobile from './result-mobile.jsx';
 import { observer, useStore } from '@deriv/stores';

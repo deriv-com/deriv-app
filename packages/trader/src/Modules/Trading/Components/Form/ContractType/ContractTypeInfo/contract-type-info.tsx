@@ -1,7 +1,9 @@
 import React from 'react';
 import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { TURBOS, VANILLALONG } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { RudderStack } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
 import { getContractTypes } from '../../../../Helpers/contract-type';
@@ -23,18 +25,40 @@ const TABS = {
     GLOSSARY: 'glossary',
 };
 
-const Info = ({ handleSelect, item, list }: TInfo) => {
+const Info = observer(({ handleSelect, item, list }: TInfo) => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
-        (i: { value: TContractType['value'] }) => i.value !== 'rise_fall_equal' && i.value !== 'turbosshort'
+        (i: { value: TContractType['value'] }) =>
+            i.value !== 'rise_fall_equal' && i.value !== TURBOS.SHORT && i.value !== VANILLALONG.PUT
     );
     const has_toggle_buttons = /accumulator|turboslong|vanilla/i.test(item.value);
     const should_show_video = /accumulator|vanilla/i.test(item.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
-    const width = isMobile() ? '328' : '528';
+    const width = is_mobile ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
+
+    React.useEffect(() => {
+        return () => {
+            RudderStack.track('ce_trade_types_form', {
+                action: 'info_close',
+            });
+        };
+    }, []);
+
+    React.useEffect(() => {
+        if (has_toggle_buttons) {
+            RudderStack.track('ce_trade_types_form', {
+                action: 'info_switcher',
+                info_switcher_mode: selected_tab,
+                trade_type_name: item?.text,
+            });
+        }
+    }, [selected_tab]);
 
     const cards = contract_types?.map((type: TContractType) => {
         if (type.value !== item.value) return null;
@@ -50,7 +74,7 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
                         left: `${is_description_tab_selected ? '-' : ''}${width}px`,
                         transform: `translate3d(${is_description_tab_selected ? '' : '-'}${width}px, 0, 0)`,
                     }}
-                    height={isMobile() ? '' : scroll_bar_height}
+                    height={is_mobile ? '' : scroll_bar_height}
                     autohide={false}
                 >
                     <div
@@ -98,7 +122,7 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
                     'contract-type-info--has-toggle-buttons': has_toggle_buttons,
                 })}
                 style={{
-                    width: isMobile() ? '328px' : '528px',
+                    width: is_mobile ? '328px' : '528px',
                 }}
             >
                 {cards}
@@ -117,6 +141,6 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
             </div>
         </React.Fragment>
     );
-};
+});
 
 export default Info;

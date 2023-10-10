@@ -48,8 +48,13 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container: 'account_transfer' | 'deposit' | 'payment_agent' | 'payment_agent_transfer' | 'withdraw' =
-        'deposit';
+    active_container:
+        | 'account_transfer'
+        | 'deposit'
+        | 'payment_agent'
+        | 'payment_agent_transfer'
+        | 'withdraw'
+        | 'onramp' = 'deposit';
     cashier_route_tab_index = 0;
     deposit_target: '/cashier/deposit' | '/cashier/on-ramp' | '/cashier/p2p' | '/cashier/payment-agent' | '' = '';
     is_cashier_onboarding = true;
@@ -195,6 +200,10 @@ export default class GeneralStore extends BaseStore {
     }
 
     setActiveTab(container: typeof this.active_container): void {
+        if (this.active_container === 'payment_agent' && container !== 'payment_agent') {
+            this.root_store.modules.cashier.payment_agent.resetPaymentAgent();
+        }
+
         this.active_container = container;
     }
 

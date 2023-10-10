@@ -97,8 +97,8 @@ const MaximumList = ({ message_list }: TMessage_list) => {
 
     return show_more ? (
         <React.Fragment>
-            {message_list.map((text, idx) => (
-                <ListItem key={idx} text={text} />
+            {message_list.map(text => (
+                <ListItem key={text} text={text} />
             ))}
             <Button
                 type='button'
@@ -111,8 +111,8 @@ const MaximumList = ({ message_list }: TMessage_list) => {
         </React.Fragment>
     ) : (
         <React.Fragment>
-            {maximum_list.map((text, idx) => (
-                <ListItem key={idx} text={text} />
+            {maximum_list.map(text => (
+                <ListItem key={text} text={text} />
             ))}
             <Button
                 type='button'

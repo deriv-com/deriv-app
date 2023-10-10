@@ -1,0 +1,30 @@
+.add-payment-method {
+    &__modal {
+        @include mobile {
+            width: 100vw;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 2rem;
+        }
+    }
+    &__cross-icon {
+        cursor: pointer;
+    }
+
+    &__footer {
+        display: none;
+    }
+
+    &-select {
+        height: 30vh;
+
+        @include mobile {
+            height: 100%;
+        }
+    }
+
+    &-hint {
+        padding: 0.2rem 0 0 1.6rem;
+    }
+}

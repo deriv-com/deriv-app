@@ -1,4 +1,4 @@
-.cancel-modal {
+.order-details-cancel-modal {
     &__footer {
         @include mobile {
             .dc-btn__group {
@@ -19,7 +19,7 @@
     }
 }
 
-.dc-modal__container_cancel-modal {
+.dc-modal__container_order-details-cancel-modal {
     .dc-modal-header {
         border-bottom: none;
     }

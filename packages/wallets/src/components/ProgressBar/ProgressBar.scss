@@ -1,0 +1,24 @@
+.wallets-progress-bar {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+
+    &-active {
+        width: 2.5rem;
+        height: 0.8rem;
+        background-color: #ff444f;
+        border-radius: 1rem;
+    }
+
+    &-inactive {
+        width: 0.8rem;
+        height: 0.8rem;
+        margin: 0 0.4rem;
+        border-radius: 50%;
+        background-color: #c2c2c2;
+    }
+
+    &-transition {
+        transition: all 0.24s linear;
+    }
+}

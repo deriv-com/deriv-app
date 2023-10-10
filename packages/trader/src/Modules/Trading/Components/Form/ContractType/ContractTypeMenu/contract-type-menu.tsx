@@ -19,19 +19,21 @@ type TDialog = {
     onBackButtonClick?: () => void;
     onCategoryClick?: (e: React.ComponentProps<typeof VerticalTab.Headers>['selected']) => void;
     onChangeInput?: (e: string) => void;
+    onSearchBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | null>;
     show_loading?: boolean;
 };
 
 const Dialog = ({
     categories,
-    item,
-    selected,
     children,
     is_info_dialog_open,
     is_open,
+    item,
     onBackButtonClick,
     onCategoryClick,
     onChangeInput,
+    onSearchBlur,
+    selected,
     show_loading,
 }: React.PropsWithChildren<TDialog>) => {
     const input_ref = React.useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(null);
@@ -74,6 +76,7 @@ const Dialog = ({
             ref={input_ref}
             onChange={onChangeInputValue}
             onClickClearInput={onClickClearInput}
+            onBlur={onSearchBlur}
             value={input_value}
         />
     );

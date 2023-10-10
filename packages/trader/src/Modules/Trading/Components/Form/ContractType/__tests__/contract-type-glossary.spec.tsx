@@ -11,7 +11,7 @@ describe('<ContractTypeGlossary />', () => {
         ).toBeInTheDocument();
     });
     it('Ensure vanilla glossary is rendered properly', () => {
-        render(<ContractTypeGlossary category='vanilla' />);
+        render(<ContractTypeGlossary category='vanillalongcall' />);
 
         expect(
             screen.getByText(

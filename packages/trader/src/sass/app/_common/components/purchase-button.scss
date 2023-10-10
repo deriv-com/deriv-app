@@ -73,7 +73,7 @@
     }
 
     &__icon_wrapper {
-        @extend %inline-icon.white;
+        @extend %inline-icon-white;
         /* postcss-bem-linter: ignore */
         .color1-fill {
             fill: var(--text-colored-background);
@@ -384,6 +384,14 @@
             }
         }
         @include mobile {
+            background: var(--purchase-section-1);
+            background: linear-gradient(
+                0deg,
+                var(--purchase-section-1) 0%,
+                var(--purchase-section-1) 15%,
+                var(--purchase-main-1) 15%,
+                var(--purchase-main-1) 100%
+            );
             .btn-purchase {
                 &__bottom,
                 &__top {

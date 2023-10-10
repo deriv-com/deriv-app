@@ -1,7 +1,7 @@
-import useFetch from '../useFetch';
+import useMutation from '../useMutation';
 
 const useGetApiToken = () => {
-    const { data, ...rest } = useFetch('api_token');
+    const { data, ...rest } = useMutation('api_token');
 
     return {
         api_token_data: data,

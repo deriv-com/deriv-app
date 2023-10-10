@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
+
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api';
+
 import DxTradePasswordIcon from '../../public/images/ic-dxtrade-password.svg';
 import { CreatePassword } from '../CreatePassword';
 import { useModal } from '../ModalProvider';
-import { WalletModal } from '../WalletModal';
+import { ModalWrapper } from '../ModalWrapper';
+
 import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
@@ -28,14 +31,14 @@ const DxtradeEnterPasswordModal = () => {
     }, [hide, isSuccess]);
 
     return (
-        <WalletModal>
+        <ModalWrapper>
             <CreatePassword
                 icon={<DxTradePasswordIcon />}
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={onSubmit}
                 platform='dxtrade'
             />
-        </WalletModal>
+        </ModalWrapper>
     );
 };
 

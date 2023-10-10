@@ -1,9 +1,9 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
+
 import { StaticUrl } from '@deriv/components';
 import {
-    LocalStore,
     daysSince,
     formatDate,
     formatMoney,
@@ -15,13 +15,18 @@ import {
     isEmptyObject,
     isMobile,
     isMultiplierContract,
+    LocalStore,
     platform_name,
     routes,
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
+
+import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
+
 import {
     excluded_notifications,
     getCashierValidations,
@@ -29,7 +34,6 @@ import {
     hasMissingRequiredField,
     maintenance_notifications,
 } from './Helpers/client-notifications';
-import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
 import BaseStore from './base-store';
 
 export default class NotificationStore extends BaseStore {
@@ -286,9 +290,6 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot.key
         );
-        const has_acuity_mt5_download = LocalStore.getObject('notification_messages')[loginid]?.includes(
-            this.client_notifications.acuity_mt5_download.key
-        );
 
         let has_missing_required_field;
 
@@ -342,12 +343,6 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.notify_financial_assessment);
             } else {
                 this.removeNotificationByKey({ key: this.client_notifications.notify_financial_assessment.key });
-            }
-
-            // Acuity notification is available for both Demo and Real desktop clients
-            this.addNotificationMessage(this.client_notifications.acuity);
-            if (!has_acuity_mt5_download && getPathname() === platform_name.DMT5) {
-                this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
             }
 
             if (has_changed_two_fa) {
@@ -607,7 +602,7 @@ export default class NotificationStore extends BaseStore {
         this.handleClientNotifications();
     }
 
-    removeAllNotificationMessages(should_close_persistent) {
+    removeAllNotificationMessages(should_close_persistent = false) {
         this.notification_messages = should_close_persistent
             ? []
             : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
@@ -681,7 +676,7 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
         const { setMT5NotificationModal } = this.root_store.traders_hub;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
@@ -689,52 +684,6 @@ export default class NotificationStore extends BaseStore {
         const platform_name_go = getPlatformSettings('go').name;
 
         const notifications = {
-            acuity: {
-                key: 'acuity',
-                header: localize('New trading tools for MT5'),
-                message: localize('Power up your Financial trades with intuitive tools from Acuity.'),
-                secondary_btn: {
-                    text: localize('Learn More'),
-                    onClick: () => {
-                        ui.setIsAcuityModalOpen(true);
-                        this.removeNotificationByKey({ key: this.client_notifications.acuity.key });
-                        this.removeNotificationMessage({
-                            key: this.client_notifications.acuity.key,
-                            should_show_again: false,
-                        });
-                    },
-                },
-                platform: [platform_name.DTrader],
-                is_disposable: true,
-                img_src: getUrlBase('/public/images/common/acuity_banner.png'),
-                img_alt: 'Acuity',
-                className: 'acuity',
-                type: 'news',
-            },
-            acuity_mt5_download: {
-                key: 'acuity_mt5_download',
-                header: localize('Power up your trades with Acuity'),
-                message: localize(
-                    'Download intuitive trading tools to keep track of market events. The Acuity suite is only available for Windows, and is most recommended for financial assets.'
-                ),
-                secondary_btn: {
-                    text: localize('Learn More'),
-                    onClick: () => {
-                        ui.setIsAcuityModalOpen(true);
-                        this.removeNotificationByKey({ key: this.client_notifications.acuity_mt5_download.key });
-                        this.removeNotificationMessage({
-                            key: this.client_notifications.acuity_mt5_download.key,
-                            should_show_again: false,
-                        });
-                    },
-                },
-                platform: [platform_name.DMT5],
-                img_src: getUrlBase('/public/images/common/acuity_software.png'),
-                img_alt: 'Acuity Download',
-                className: 'acuity-mt5',
-                icon: 'IcCloseDark',
-                type: 'news',
-            },
             ask_financial_risk_approval: {
                 key: 'ask_financial_risk_approval',
                 header: localize('Complete your Appropriateness Test'),
@@ -1448,6 +1397,34 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Resubmit proof of identity'),
                 },
             },
+            wallets_migrated: {
+                key: 'wallets_migrated',
+                header: localize('Your Wallets are ready'),
+                message: localize(
+                    'To complete the upgrade, please log out and log in again to add more accounts and make transactions with your Wallets.'
+                ),
+                action: {
+                    onClick: async () => {
+                        await logout();
+                    },
+                    text: localize('Log out'),
+                },
+                type: 'announce',
+            },
+            wallets_failed: {
+                key: 'wallets_failed',
+                header: localize('Sorry for the interruption'),
+                message: localize(
+                    "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
+                ),
+                action: {
+                    onClick: async () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Go to LiveChat'),
+                },
+                type: 'danger',
+            },
             mt5_notification: {
                 key: 'mt5_notification',
                 header: localize('Trouble accessing Deriv MT5 on your mobile?'),
@@ -1539,23 +1516,6 @@ export default class NotificationStore extends BaseStore {
             type: 'danger',
             should_show_again: true,
             platform: 'Account',
-        });
-    };
-
-    showAccountSwitchToRealNotification = (loginid, currency) => {
-        const regulation = loginid?.startsWith('CR') ? localize('non-EU') : localize('EU');
-
-        this.addNotificationMessage({
-            key: 'switched_to_real',
-            header: localize('Switched to real account'),
-            message: (
-                <Localize
-                    i18n_default_text='To access the cashier, you are now in your {{regulation}} {{currency}} ({{loginid}}) account.'
-                    values={{ loginid, currency, regulation }}
-                />
-            ),
-            type: 'info',
-            should_show_again: true,
         });
     };
 

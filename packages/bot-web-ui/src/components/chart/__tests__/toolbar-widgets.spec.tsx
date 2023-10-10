@@ -22,6 +22,7 @@ jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 // // Mocking the imports from @deriv/deriv-charts
 jest.mock('@deriv/deriv-charts', () => ({
+    ...jest.requireActual('@deriv/deriv-charts'),
     __esModule: true,
     ChartMode: jest.fn(() => <div>Mocked ChartMode</div>),
     DrawTools: jest.fn(() => <div>Mocked DrawTools</div>),
@@ -29,7 +30,6 @@ jest.mock('@deriv/deriv-charts', () => ({
     StudyLegend: jest.fn(() => <div>Mocked StudyLegend</div>),
     ToolbarWidget: jest.fn(({ children }) => <div>{children}</div>),
     Views: jest.fn(() => <div>Mocked Views</div>),
-    setSmartChartsPublicPath: jest.fn(),
 }));
 
 describe('ToolbarWidgets', () => {

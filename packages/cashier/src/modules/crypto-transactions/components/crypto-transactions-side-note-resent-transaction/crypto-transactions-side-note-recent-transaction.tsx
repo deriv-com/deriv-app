@@ -39,10 +39,10 @@ const CryptoTransactionsSideNoteRecentTransaction = observer(
 
             return (
                 <React.Fragment>
-                    {filtered_transactions?.length === 0 ? (
+                    {filtered_transactions.length === 0 ? (
                         <NoTransactionState />
                     ) : (
-                        filtered_transactions?.slice(0, 3).map((transaction, index) => (
+                        filtered_transactions.slice(0, 3).map((transaction, index) => (
                             <React.Fragment key={transaction.id}>
                                 <CryptoTransaction
                                     transaction={cryptoTransactionMapper(transaction)}

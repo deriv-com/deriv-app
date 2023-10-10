@@ -3,14 +3,14 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useGetSecretKey, useGetTwoFa, useSendUserOTP } from '../hooks/useAccountSecurity';
 import APIProvider from '../APIProvider';
 import { useAuthorize } from '../hooks';
-import useRequest from '../useRequest';
+import { useMutation } from '..';
 
 jest.mock('../useRequest', () => jest.fn());
 
 jest.mock('../hooks/useAuthorize', () => jest.fn());
 
 const mockUseAuthorize = useAuthorize as jest.MockedFunction<typeof useAuthorize>;
-const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'account_security'>>;
+const mockUseMutation = useMutation as jest.MockedFunction<typeof useMutation<'account_security'>>;
 
 describe('useAccountSecurity', () => {
     afterEach(() => {
@@ -23,7 +23,7 @@ describe('useAccountSecurity', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: true });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
-        mockUseRequest.mockReturnValueOnce({
+        mockUseMutation.mockReturnValueOnce({
             data: {
                 account_security: {
                     totp: {
@@ -50,7 +50,7 @@ describe('useAccountSecurity', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: false });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
-        mockUseRequest.mockReturnValueOnce({
+        mockUseMutation.mockReturnValueOnce({
             data: {
                 account_security: {
                     totp: {
@@ -77,7 +77,7 @@ describe('useAccountSecurity', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: true });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
-        mockUseRequest.mockReturnValueOnce({
+        mockUseMutation.mockReturnValueOnce({
             data: {
                 account_security: {
                     totp: {
@@ -104,7 +104,7 @@ describe('useAccountSecurity', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: true });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
-        mockUseRequest.mockReturnValueOnce({
+        mockUseMutation.mockReturnValueOnce({
             data: {
                 account_security: {
                     totp: {
@@ -130,7 +130,7 @@ describe('useAccountSecurity', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: false });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
-        mockUseRequest.mockReturnValueOnce({
+        mockUseMutation.mockReturnValueOnce({
             data: {
                 account_security: {
                     totp: {
@@ -157,7 +157,7 @@ describe('useAccountSecurity', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: false });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
-        mockUseRequest.mockReturnValueOnce({
+        mockUseMutation.mockReturnValueOnce({
             data: {
                 account_security: {
                     totp: {
@@ -184,7 +184,7 @@ describe('useAccountSecurity', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: true });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
-        mockUseRequest.mockReturnValueOnce({
+        mockUseMutation.mockReturnValueOnce({
             data: { account_security: { totp: { is_enabled: 0 } } },
             mutate: mockMutate,
             isSuccess: true,
@@ -205,7 +205,7 @@ describe('useAccountSecurity', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: true });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
-        mockUseRequest.mockReturnValueOnce({
+        mockUseMutation.mockReturnValueOnce({
             data: { account_security: { totp: { is_enabled: 0 } } },
             mutate: mockMutate,
             isSuccess: true,
@@ -226,7 +226,7 @@ describe('useAccountSecurity', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: false });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
-        mockUseRequest.mockReturnValueOnce({
+        mockUseMutation.mockReturnValueOnce({
             data: { account_security: { totp: { is_enabled: 0 } } },
             mutate: mockMutate,
             isSuccess: true,

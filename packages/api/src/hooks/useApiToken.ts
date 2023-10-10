@@ -1,9 +1,9 @@
 import React from 'react';
-import useRequest from '../useRequest';
 import useInvalidateQuery from '../useInvalidateQuery';
+import { useMutation } from '..';
 
 type TAPITokenPayload = NonNullable<
-    NonNullable<NonNullable<Parameters<ReturnType<typeof useRequest<'api_token'>>['mutate']>>[0]>['payload']
+    NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'api_token'>>['mutate']>>[0]>['payload']
 >;
 
 type TDeleteAPITokenPayload = NonNullable<TAPITokenPayload>['delete_token'];
@@ -16,7 +16,7 @@ type TCreateAPITokenPayload = Omit<NonNullable<TAPITokenPayload>, 'delete_token'
  */
 const useApiToken = () => {
     const invalidate = useInvalidateQuery();
-    const { data, mutate, ...rest } = useRequest('api_token', {
+    const { data, mutate, ...rest } = useMutation('api_token', {
         onSuccess: () => invalidate('api_token'),
     });
 

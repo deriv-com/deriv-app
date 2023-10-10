@@ -51,6 +51,7 @@ const ClosingAccountReason = ({ redirectToSteps }: TClosingAccountReasonProps) =
                 return <Localize i18n_default_text='Action required' />;
         }
     };
+
     const getErrorModalContent = () => {
         switch (error_info) {
             case 'account_has_pending_conditions_modal':

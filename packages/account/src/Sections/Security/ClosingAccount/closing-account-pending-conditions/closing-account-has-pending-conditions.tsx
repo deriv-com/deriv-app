@@ -56,6 +56,7 @@ const ClosingAccountHasPendingConditions = observer(
                 }
             });
         }
+
         if (details?.open_positions) {
             Object.keys(details.open_positions).forEach(login_id => {
                 const info = {
@@ -77,6 +78,7 @@ const ClosingAccountHasPendingConditions = observer(
                 }
             });
         }
+
         if (details?.balance) {
             Object.keys(details.balance).forEach(login_id => {
                 const info = {
@@ -99,6 +101,7 @@ const ClosingAccountHasPendingConditions = observer(
                 }
             });
         }
+
         return (
             <React.Fragment>
                 <ThemedScrollbars autohide={false} width='43rem'>

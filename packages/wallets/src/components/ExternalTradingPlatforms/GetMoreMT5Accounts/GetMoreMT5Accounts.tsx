@@ -1,10 +1,14 @@
 import React from 'react';
 import AddIcon from '../../../public/images/add-icon.svg';
+import { useModal } from '../../ModalProvider';
+import { MT5AccountTypeModal } from '../../MT5AccountTypeModal';
 import './GetMoreMT5Accounts.scss';
 
 const GetMoreMT5Accounts: React.FC = () => {
+    const { show } = useModal();
+
     return (
-        <div className='wallets-get-more-mt5-accounts'>
+        <div className='wallets-get-more-mt5-accounts' onClick={() => show(<MT5AccountTypeModal />)}>
             <div className='wallets-get-more-mt5-accounts-container'>
                 <div className='wallets-get-more-mt5-accounts-container-icon'>
                     <AddIcon />

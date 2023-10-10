@@ -28,13 +28,13 @@ const AddedDxtradeAccountsList: React.FC = () => {
         >
             <div className='wallets-available-derivx__details'>
                 {data?.map(account => (
-                    <>
+                    <React.Fragment key={account?.account_id}>
                         <p className='wallets-available-derivx__details-title'>Deriv X</p>
                         <p className='wallets-available-derivx__details-balance'>
                             {account?.display_balance} {account?.currency}
                         </p>
                         <p className='wallets-available-derivx__details-loginid'>{account.login}</p>
-                    </>
+                    </React.Fragment>
                 ))}
             </div>
         </TradingAccountCard>

@@ -12,6 +12,7 @@ jest.mock('@deriv/components', () => {
 
 describe('<SearchInput />', () => {
     const mocked_props = {
+        onBlur: jest.fn(),
         onChange: jest.fn(),
         onClickClearInput: jest.fn(),
         value: '',

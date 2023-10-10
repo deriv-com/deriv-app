@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children } from 'react';
 import { useTabs } from './Tabs';
 
 const TabPanels = ({ children }: React.PropsWithChildren<unknown>) => {
@@ -6,7 +6,7 @@ const TabPanels = ({ children }: React.PropsWithChildren<unknown>) => {
 
     return (
         <div>
-            {React.Children.map(children, (child, index) => {
+            {Children.map(children, (child, index) => {
                 if (index !== activeTabIndex) return undefined;
 
                 return child;

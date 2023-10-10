@@ -37,6 +37,7 @@ const StopLoss = observer(props => {
             <InputWithCheckbox
                 addToast={addToast}
                 removeToast={removeToast}
+                classNameBubble='dc-popover__trade-params'
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 className={isDesktop() ? 'trade-container__amount trade-container__amount--multipliers' : null}

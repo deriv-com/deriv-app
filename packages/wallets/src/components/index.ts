@@ -6,6 +6,7 @@ export * from './EnterPassword';
 export * from './ExternalTradingPlatforms';
 export * from './InlineMessage';
 export * from './Loader';
+export * from './MT5AccountTypeModal';
 export * from './MT5PasswordModal';
 export * from './OptionsAndMultipliersListing';
 export * from './PrimaryActionButton';

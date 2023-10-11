@@ -11,10 +11,6 @@ const mock_default_props = {
 };
 const default_button_text = 'Try Synthetic Indices';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    Button: jest.fn(props => <div>{props.text}</div>),
-}));
 jest.mock('../market-countdown-timer', () => jest.fn(() => <div>MarketCountdownTimer</div>));
 
 describe('<MarketIsClosedOverlay />', () => {

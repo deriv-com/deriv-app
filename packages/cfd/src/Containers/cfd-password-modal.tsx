@@ -24,6 +24,7 @@ import {
     CFD_PLATFORMS,
     getCFDPlatformNames,
     getAuthenticationStatusInfo,
+    getFormattedJurisdictionMarketTypes,
     getCFDPlatformLabel,
     getErrorMessages,
     getFormattedJurisdictionCode,
@@ -659,6 +660,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitMt5Password,
         submitCFDPassword,
         new_account_response,
+        migrate_mt5_accounts,
     } = useCfdStore();
 
     const history = useHistory();
@@ -931,15 +933,33 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const getMigrationSubmitText = () => {
+        //     {
+        //         "financial": "vanuatu"
+        //     },
+        //     {
+        //         "synthetic": "vanuatu"
+        //     }
+        // ]
+
+        const list = migrate_mt5_accounts.map(account => {
+            const [to_account_type] = Object.keys(account);
+
+            const [to_accounts] = Object.values(account);
+            const to_account_type_label = to_account_type === 'synthetic' ? 'derived' : to_account_type;
+
+            return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
+                to_account_type_label
+            )} ${getFormattedJurisdictionCode(to_accounts)}`;
+        });
+
         return (
             <Localize
                 i18n_default_text="We've upgraded your MT5 account(s) by moving them to the {{eligible_account_migrate}} jurisdiction. Use your <0>{{migrated_accounts}}</0> new login ID and MT5 password to start trading."
                 values={{
-                    eligible_account_migrate: 'svg',
-                    // platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
-                    // market_type: getFormattedJurisdictionMarketTypes,
-
-                    migrated_accounts: 'accounts migrated',
+                    eligible_account_migrate: getFormattedJurisdictionCode(
+                        migrate_mt5_accounts.map(account => Object.values(account))[0]
+                    ),
+                    migrated_accounts: list.join(' and '), // [MT5 Derived Vanuatu and MT5 Financial Vanuatu]
                 }}
                 components={[<strong key={0} />]}
             />

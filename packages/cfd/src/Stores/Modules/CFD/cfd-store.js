@@ -49,6 +49,8 @@ export default class CFDStore extends BaseStore {
     real_financial_accounts_existing_data = [];
     real_swapfree_accounts_existing_data = [];
 
+    migrate_mt5_accounts = [];
+
     constructor({ root_store }) {
         super({ root_store });
 
@@ -75,6 +77,7 @@ export default class CFDStore extends BaseStore {
             dxtrade_tokens: observable,
             ctrader_tokens: observable,
             derivez_tokens: observable,
+            migrate_mt5_accounts: observable,
             account_title: computed,
             current_list: computed,
             has_created_account_for_selected_jurisdiction: computed,
@@ -89,7 +92,7 @@ export default class CFDStore extends BaseStore {
             disableCFDPasswordModal: action.bound,
             enableCFDPasswordModal: action.bound,
             getName: action.bound,
-            MigrateAccounts: action.bound,
+            MigrateMT5Accounts: action.bound,
             openMT5Account: action.bound,
             openCFDAccount: action.bound,
             beginRealSignupForMt5: action.bound,
@@ -375,7 +378,7 @@ export default class CFDStore extends BaseStore {
         return first_name ? [first_name, title].join(' ') : title;
     }
 
-    async MigrateMT5Account(values, actions) {
+    async MigrateMT5Accounts(values, actions) {
         const account_to_migrate = this.root_store.client.mt5_login_list.filter(
             acc => acc.landing_company_short === Jurisdiction.SVG && !!acc.eligible_to_migrate
         );
@@ -386,12 +389,14 @@ export default class CFDStore extends BaseStore {
                 category: 'real',
                 type,
             };
-            return this.MigrateAccounts(values, shortcode, account_type);
+            this.migrate_mt5_accounts = [...this.migrate_mt5_accounts, { ...eligible_to_migrate }];
+            return this.MigrateAccount(values, shortcode, account_type);
         });
 
         try {
             const results = await Promise.all(promises);
             const has_error = results.find(result => result.error);
+
             if (!has_error) {
                 actions.setStatus({ success: true });
                 actions.setSubmitting(false);
@@ -418,7 +423,7 @@ export default class CFDStore extends BaseStore {
         }
     }
 
-    MigrateAccounts(values, shortcode, account_type) {
+    MigrateAccount(values, shortcode, account_type) {
         const name = this.getName();
         const leverage = this.mt5_companies[account_type.category][account_type.type].leverage;
         const type_request = getAccountTypeFields(account_type);
@@ -589,7 +594,7 @@ export default class CFDStore extends BaseStore {
 
         this.resetFormErrors();
         if (this.root_store.ui.is_mt5_migration_modal_enabled) {
-            await this.MigrateMT5Account(values, actions);
+            await this.MigrateMT5Accounts(values, actions);
         } else {
             const response = await this.openMT5Account(values);
             if (!response.error) {

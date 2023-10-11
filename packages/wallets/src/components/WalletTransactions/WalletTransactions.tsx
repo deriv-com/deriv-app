@@ -1,17 +1,19 @@
 import React, { ComponentProps, useEffect, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletTransactionsCrypto } from '../WalletTransactionsCrypto';
+import { WalletTransactionsCompleted } from '../WalletTransactionsCompleted';
 import { WalletTransactionsFilter } from '../WalletTransactionsFilter';
-import { WalletTransactionsGeneral } from '../WalletTransactionsGeneral';
+import { WalletTransactionsPending } from '../WalletTransactionsPending';
 import './WalletTransactions.scss';
 
-type TWalletTransactionCryptoFilter = ComponentProps<typeof WalletTransactionsCrypto>['filter'];
-type TWalletTransactionGeneralFilter = ComponentProps<typeof WalletTransactionsGeneral>['filter'];
+type TWalletTransactionsPendingFilter = ComponentProps<typeof WalletTransactionsPending>['filter'];
+type TWalletTransactionCompletedFilter = ComponentProps<typeof WalletTransactionsCompleted>['filter'];
 
 const WalletTransactions = () => {
     const { data } = useActiveWalletAccount();
     const [isPendingActive, setIsPendingActive] = useState(false);
-    const [filterValue, setFilterValue] = useState<TWalletTransactionCryptoFilter | TWalletTransactionGeneralFilter>();
+    const [filterValue, setFilterValue] = useState<
+        TWalletTransactionCompletedFilter | TWalletTransactionsPendingFilter
+    >();
 
     useEffect(() => {
         if (isPendingActive && filterValue === 'transfer') {
@@ -21,6 +23,12 @@ const WalletTransactions = () => {
             setFilterValue(undefined);
         }
     }, [filterValue, isPendingActive]);
+
+    useEffect(() => {
+        if (!data?.currency_config?.is_crypto && isPendingActive) {
+            setIsPendingActive(false);
+        }
+    }, [data?.currency_config?.is_crypto, isPendingActive]);
 
     return (
         <div className='wallets-transactions'>
@@ -43,9 +51,9 @@ const WalletTransactions = () => {
                 <WalletTransactionsFilter isPendingActive={isPendingActive} onSelect={setFilterValue} />
             </div>
             {isPendingActive ? (
-                <WalletTransactionsCrypto filter={filterValue as TWalletTransactionCryptoFilter} />
+                <WalletTransactionsPending filter={filterValue as TWalletTransactionsPendingFilter} />
             ) : (
-                <WalletTransactionsGeneral filter={filterValue as TWalletTransactionGeneralFilter} />
+                <WalletTransactionsCompleted filter={filterValue as TWalletTransactionCompletedFilter} />
             )}
         </div>
     );

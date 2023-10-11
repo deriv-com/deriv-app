@@ -1,11 +1,11 @@
 import React, { ComponentProps, useMemo } from 'react';
-import { WalletTransactionsCrypto } from '../WalletTransactionsCrypto';
-import { WalletTransactionsGeneral } from '../WalletTransactionsGeneral';
+import { WalletTransactionsCompleted } from '../WalletTransactionsCompleted';
+import { WalletTransactionsPending } from '../WalletTransactionsPending';
 import './WalletTransactionsFilter.scss';
 
 type TValue =
-    | ComponentProps<typeof WalletTransactionsCrypto>['filter']
-    | ComponentProps<typeof WalletTransactionsGeneral>['filter'];
+    | ComponentProps<typeof WalletTransactionsCompleted>['filter']
+    | ComponentProps<typeof WalletTransactionsPending>['filter'];
 
 type TProps = {
     isPendingActive: boolean;

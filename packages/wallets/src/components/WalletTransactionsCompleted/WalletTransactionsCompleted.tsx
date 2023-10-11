@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
-import { useTransactions } from '@deriv/api';
+import { useAuthorize, useInvalidateQuery, useTransactions } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
-import { WalletTransactionsGeneralRow } from '../WalletTransactionsGeneralRow';
+import { WalletTransactionsCompletedRow } from '../WalletTransactionsCompletedRow';
 import { WalletTransactionsNoDataState } from '../WalletTransactionsNoDataState';
 import { WalletTransactionsTable } from '../WalletTransactionsTable';
 
@@ -10,7 +10,9 @@ type TProps = {
     filter?: NonNullable<TSocketRequestPayload<'statement'>['payload']>['action_type'];
 };
 
-const WalletTransactionsGeneral: React.FC<TProps> = ({ filter }) => {
+const WalletTransactionsCompleted: React.FC<TProps> = ({ filter }) => {
+    const { isFetching: isAuthorizeFetching } = useAuthorize();
+    const invalidate = useInvalidateQuery();
     const { data, fetchNextPage, isFetching, setFilter } = useTransactions();
 
     const fetchMoreOnBottomReached = useCallback(
@@ -29,6 +31,12 @@ const WalletTransactionsGeneral: React.FC<TProps> = ({ filter }) => {
     useEffect(() => {
         setFilter(filter);
     }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if (!isAuthorizeFetching) {
+            invalidate('statement');
+        }
+    }, [invalidate, isAuthorizeFetching]);
 
     if (!data) return <WalletTransactionsNoDataState />;
 
@@ -52,10 +60,10 @@ const WalletTransactionsGeneral: React.FC<TProps> = ({ filter }) => {
                             moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
                     </p>
                 )}
-                rowRender={transaction => <WalletTransactionsGeneralRow transaction={transaction} />}
+                rowRender={transaction => <WalletTransactionsCompletedRow transaction={transaction} />}
             />
         </div>
     );
 };
 
-export default WalletTransactionsGeneral;
+export default WalletTransactionsCompleted;

@@ -29,12 +29,14 @@ const useTransactions = () => {
         invalidate('statement');
     }, [filter, invalidate]);
 
+    // Flatten the data array.
     const flatten_data = useMemo(() => {
         if (!data?.pages?.length) return;
 
         return data?.pages?.flatMap(page => page?.statement?.transactions);
     }, [data?.pages]);
 
+    // Modify the data.
     const modified_data = useMemo(() => {
         if (!flatten_data?.length) return;
 
@@ -43,9 +45,15 @@ const useTransactions = () => {
         }));
     }, [flatten_data]);
 
+    // Sort the data by transaction time.
+    const sorted_data = useMemo(
+        () => modified_data?.sort((a, b) => (a.transaction_time || 0) - (b.transaction_time || 0)),
+        [modified_data]
+    );
+
     return {
         /** List of account transactions */
-        data: modified_data,
+        data: sorted_data,
         /** Fetch the next page of transactions */
         fetchNextPage,
         /** Filter the transactions by type */

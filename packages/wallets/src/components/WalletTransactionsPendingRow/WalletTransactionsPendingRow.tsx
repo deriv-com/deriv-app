@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import moment from 'moment';
 import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
-import './WalletTransactionsCryptoRow.scss';
+import './WalletTransactionsPendingRow.scss';
 
 const statusCodeMapper = {
     deposit: {
@@ -12,7 +12,7 @@ const statusCodeMapper = {
         },
         ERROR: {
             description:
-                'Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.',
+                'Your deposit is unsuccessful due to an error on the blockchain. Please contact your pending wallet service provider for more info.',
             name: 'Unsuccessful',
         },
         PENDING: {
@@ -82,45 +82,45 @@ const WalletTransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     }, [transaction]);
 
     return (
-        <div className='wallets-transactions-crypto-row'>
-            <div className='wallets-transactions-crypto-row-details'>
+        <div className='wallets-transactions-pending-row'>
+            <div className='wallets-transactions-pending-row-details'>
                 <WalletCurrencyCard currency={data?.currency || 'USD'} isDemo={data?.is_virtual} size='md' />
                 <div>
-                    <p className='wallets-transactions-crypto-row__title'>{transaction.transaction_type}</p>
-                    <p className='wallets-transactions-crypto-row-details__wallet-name'>{displayCode} Wallet</p>
+                    <p className='wallets-transactions-pending-row__title'>{transaction.transaction_type}</p>
+                    <p className='wallets-transactions-pending-row-details__wallet-name'>{displayCode} Wallet</p>
                 </div>
             </div>
-            <div className='wallets-transactions-crypto-row__transaction-hash'>
-                <p className='wallets-transactions-crypto-row__title'>Transaction hash</p>
-                <p className='wallets-transactions-crypto-row__transaction-value'>
+            <div className='wallets-transactions-pending-row__transaction-hash'>
+                <p className='wallets-transactions-pending-row__title'>Transaction hash</p>
+                <p className='wallets-transactions-pending-row__transaction-value'>
                     {transaction.formatted_transaction_hash}
                 </p>
             </div>
-            <div className='wallets-transactions-crypto-row__transaction-address'>
-                <p className='wallets-transactions-crypto-row__title'>Address</p>
-                <p className='wallets-transactions-crypto-row__transaction-value'>
+            <div className='wallets-transactions-pending-row__transaction-address'>
+                <p className='wallets-transactions-pending-row__title'>Address</p>
+                <p className='wallets-transactions-pending-row__transaction-value'>
                     {transaction.formatted_address_hash}
                 </p>
             </div>
             <div>
-                <p className='wallets-transactions-crypto-row__title'>Confirmations</p>
-                <p className='wallets-transactions-crypto-row__transaction-value wallets-transactions-crypto-row__transaction-value--center'>
+                <p className='wallets-transactions-pending-row__title'>Confirmations</p>
+                <p className='wallets-transactions-pending-row__transaction-value wallets-transactions-pending-row__transaction-value--center'>
                     {transaction.formatted_confirmations}
                 </p>
             </div>
             <div>
-                <p className='wallets-transactions-crypto-row__title'>Time</p>
+                <p className='wallets-transactions-pending-row__title'>Time</p>
                 <p>{moment.unix(transaction.submit_date).toLocaleString()}</p>
             </div>
             <div
-                className={`wallets-transactions-crypto-row__transaction-amount ${
-                    transaction.is_deposit ? 'wallets-transactions-crypto-row__transaction-amount__deposit' : ''
+                className={`wallets-transactions-pending-row__transaction-amount ${
+                    transaction.is_deposit ? 'wallets-transactions-pending-row__transaction-amount__deposit' : ''
                 }`}
             >
                 {transaction.is_deposit ? '+' : '-'}
                 {transaction.amount} {displayCode}
             </div>
-            <div className='wallets-transactions-crypto-row__transaction-status'>
+            <div className='wallets-transactions-pending-row__transaction-status'>
                 <span>{formattedStatus?.name}</span>
             </div>
         </div>

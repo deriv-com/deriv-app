@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { useCryptoTransactions } from '@deriv/api';
 import { Loader } from '../Loader';
-import { WalletTransactionsCryptoRow } from '../WalletTransactionsCryptoRow';
 import { WalletTransactionsNoDataState } from '../WalletTransactionsNoDataState';
+import { WalletTransactionsPendingRow } from '../WalletTransactionsPendingRow';
 import { WalletTransactionsTable } from '../WalletTransactionsTable';
-import './WalletTransactionsCrypto.scss';
+import './WalletTransactionsPending.scss';
 
 type TProps = {
     filter?: NonNullable<
@@ -13,7 +13,7 @@ type TProps = {
     >['transaction_type'];
 };
 
-const WalletTransactionsCrypto: React.FC<TProps> = ({ filter }) => {
+const WalletTransactionsPending: React.FC<TProps> = ({ filter }) => {
     const { data, isLoading, resetData, subscribe, unsubscribe } = useCryptoTransactions();
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const WalletTransactionsCrypto: React.FC<TProps> = ({ filter }) => {
     if (!data) return <WalletTransactionsNoDataState />;
 
     return (
-        <div className='wallets-transactions-crypto'>
+        <div className='wallets-transactions-pending'>
             <WalletTransactionsTable
                 columns={[
                     {
@@ -40,14 +40,14 @@ const WalletTransactionsCrypto: React.FC<TProps> = ({ filter }) => {
                 data={data}
                 groupBy={['date']}
                 rowGroupRender={transaction => (
-                    <p className='wallets-transactions-crypto__group-title'>
+                    <p className='wallets-transactions-pending__group-title'>
                         {moment.unix(transaction.submit_date).format('DD MMM YYYY')}
                     </p>
                 )}
-                rowRender={transaction => <WalletTransactionsCryptoRow transaction={transaction} />}
+                rowRender={transaction => <WalletTransactionsPendingRow transaction={transaction} />}
             />
         </div>
     );
 };
 
-export default WalletTransactionsCrypto;
+export default WalletTransactionsPending;

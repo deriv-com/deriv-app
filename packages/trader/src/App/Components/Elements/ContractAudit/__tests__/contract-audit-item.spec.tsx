@@ -42,7 +42,7 @@ describe('<ContractAuditItem />', () => {
         expect(screen.getByText(values.value2)).toBeInTheDocument();
     });
 
-    it('should render formatDate and formatTime inside component if it was passed', () => {
+    it('should render formatDate and formatTime inside component if timestamp was passed', () => {
         render(<ContractAuditItem {...mock_default_props} timestamp={123} />);
 
         expect(screen.getByText(/2023-10-11/i)).toBeInTheDocument();

@@ -107,7 +107,7 @@ describe('<ContractDetails />', () => {
         expect(screen.getByText('Low barrier')).toBeInTheDocument();
     });
 
-    it('should render paypout per point information in ContractAuditItem if is_vanilla === true', () => {
+    it('should render payout per point information in ContractAuditItem if is_vanilla === true', () => {
         const new_props = { ...mock_default_props };
         new_props.is_vanilla = true;
         new_props.contract_info.display_number_of_contracts = undefined;
@@ -117,7 +117,7 @@ describe('<ContractDetails />', () => {
         expect(screen.getByText('Payout per point')).toBeInTheDocument();
     });
 
-    it('getLabel function should return correct label if user sold the contract and it endedn before cancellation expired', () => {
+    it('getLabel function should return correct label if user sold the contract and it ended before cancellation expired', () => {
         const new_props = { ...mock_default_props };
         new_props.contract_info.contract_type = contract_types.multiplier;
         new_props.contract_info.status = 'sold';

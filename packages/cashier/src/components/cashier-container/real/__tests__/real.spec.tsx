@@ -27,9 +27,6 @@ describe('<Real />', () => {
                 checkIframeLoaded: jest.fn(),
                 setContainerHeight: jest.fn(),
             },
-            deposit: {
-                onMountDeposit: jest.fn(),
-            },
             general_store: {
                 is_loading: false,
             },
@@ -46,7 +43,7 @@ describe('<Real />', () => {
 
         const { rerender } = render(
             <StoreProvider store={mock_root_store}>
-                <Real is_deposit />
+                <Real />
             </StoreProvider>
         );
 
@@ -59,7 +56,7 @@ describe('<Real />', () => {
 
         rerender(
             <StoreProvider store={mock_root_store}>
-                <Real is_deposit />
+                <Real />
             </StoreProvider>
         );
 
@@ -69,57 +66,17 @@ describe('<Real />', () => {
     it('should render an iframe if iframe_url is not an empty string', () => {
         render(
             <StoreProvider store={mock_root_store}>
-                <Real is_deposit />
+                <Real />
             </StoreProvider>
         );
 
         expect(screen.queryByTestId('dt_doughflow_section')).toBeInTheDocument();
     });
 
-    describe('Breadcrumb visibility', () => {
-        it('should show breadcrumbs only on deposit page and only for non EU clients', () => {
-            render(
-                <StoreProvider store={mock_root_store}>
-                    <Real is_deposit />
-                </StoreProvider>
-            );
-
-            expect(screen.getByText(/cashier/i)).toBeInTheDocument();
-            expect(screen.getByText(/deposit via bank wire, credit card, and e-wallet/i)).toBeInTheDocument();
-        });
-
-        it('should not show breadcrumbs on deposit page if iframe_height is equal to 0', () => {
-            (useCashierStore as jest.Mock).mockReturnValueOnce({
-                ...mocked_cashier_store,
-                iframe: { ...mocked_cashier_store.iframe, iframe_height: 0 },
-            });
-
-            render(
-                <StoreProvider store={mock_root_store}>
-                    <Real is_deposit />
-                </StoreProvider>
-            );
-
-            expect(screen.queryByText(/cashier/i)).not.toBeInTheDocument();
-            expect(screen.queryByText(/deposit via bank wire, credit card, and e-wallet/i)).not.toBeInTheDocument();
-        });
-
-        it('should not show breadcrumbs on withdraw page', () => {
-            render(
-                <StoreProvider store={mock_root_store}>
-                    <Real is_deposit={false} />
-                </StoreProvider>
-            );
-
-            expect(screen.queryByText(/cashier/i)).not.toBeInTheDocument();
-            expect(screen.queryByText(/deposit via bank wire, credit card, and e-wallet/i)).not.toBeInTheDocument();
-        });
-    });
-
     it('should trigger setIsDeposit callback when the user clicks on Cashier breadcrumb', () => {
         render(
             <StoreProvider store={mock_root_store}>
-                <Real is_deposit={false} />
+                <Real />
             </StoreProvider>
         );
 
@@ -129,18 +86,5 @@ describe('<Real />', () => {
             userEvent.click(el_breadcrumb_cashier);
             expect(mocked_cashier_store.general_store?.setIsDeposit).toHaveBeenCalledWith(false);
         }
-    });
-
-    it('should trigger clearIframe and onMountDeposit callbacks when <Real /> component is destroyed on deposit page', () => {
-        const { unmount } = render(
-            <StoreProvider store={mock_root_store}>
-                <Real is_deposit={false} />
-            </StoreProvider>
-        );
-
-        unmount();
-
-        expect(mocked_cashier_store.iframe?.clearIframe).toHaveBeenCalled();
-        expect(mocked_cashier_store.deposit?.onMountDeposit).toHaveBeenCalled();
     });
 });

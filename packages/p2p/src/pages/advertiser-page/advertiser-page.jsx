@@ -57,6 +57,7 @@ const AdvertiserPage = () => {
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
 
     React.useEffect(() => {
+        buy_sell_store.setShowAdvertiserPage(true);
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
         advertiser_page_store.onTabChange();
@@ -73,6 +74,7 @@ const AdvertiserPage = () => {
         return () => {
             disposeCounterpartyAdvertiserIdReaction();
             advertiser_page_store.onUnmount();
+            buy_sell_store.setShowAdvertiserPage(false);
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

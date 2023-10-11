@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { Table, Text, Button, Icon } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useExchangeRate } from '@deriv/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import { OnlineStatusAvatar } from 'Components/online-status';
@@ -15,11 +16,12 @@ import { generateEffectiveRate } from 'Utils/format-value';
 import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert }) => {
-    const { buy_sell_store, floating_rate_store, general_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
     const {
         client: { currency },
     } = useStore();
     const history = useHistory();
+    const { getRate } = useExchangeRate();
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -62,7 +64,7 @@ const BuySellRow = ({ row: advert }) => {
         rate_type,
         rate,
         local_currency,
-        exchange_rate: floating_rate_store.exchange_rate,
+        exchange_rate: getRate(local_currency),
         market_rate: effective_rate,
     });
     const onClickRow = () => {

@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useExchangeRate } from '@deriv/hooks';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
@@ -11,7 +12,8 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import './advertiser-page-row.scss';
 
 const AdvertiserPageRow = ({ row: advert }) => {
-    const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, general_store } = useStores();
+    const { getRate } = useExchangeRate();
     const {
         client: { currency },
     } = useStore();
@@ -35,7 +37,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
         rate_type,
         rate,
         local_currency,
-        exchange_rate: floating_rate_store.exchange_rate,
+        exchange_rate: getRate(local_currency),
         market_rate: effective_rate,
     });
 

@@ -1,5 +1,6 @@
 import { Formik, Field, FormikProps, FormikValues } from 'formik';
 import React from 'react';
+import { StatesList } from '@deriv/api-types';
 import {
     Modal,
     Autocomplete,
@@ -15,19 +16,13 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import {
-    isDesktop,
-    isMobile,
-    getLocation,
-    makeCancellablePromise,
-    PlatformContext,
-    TLocationList,
-} from '@deriv/shared';
+import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import classNames from 'classnames';
 
 type TAddressDetails = {
-    states_list: TLocationList[];
+    disabled_items: string[];
+    states_list: StatesList;
     getCurrentStep?: () => number;
     onSave: (current_step: number, values: FormikValues) => void;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
@@ -43,15 +38,11 @@ type TAddressDetails = {
     is_svg: boolean;
     is_mf?: boolean;
     is_gb_residence: boolean | string;
+    has_real_account: boolean;
     onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
     selected_step_ref?: React.RefObject<FormikProps<FormikValues>>;
     fetchStatesList: () => Promise<unknown>;
     value: FormikValues;
-};
-
-type TFormValidation = {
-    warnings: { [key: string]: string };
-    errors: { [key: string]: string };
 };
 
 type TInputField = {
@@ -131,7 +122,7 @@ const AddressDetails = ({
         return selected_step_ref?.current?.isSubmitting || (errors && Object.keys(errors).length > 0);
     };
 
-    const checkSubmitStatus = (errors?: { [key: string]: string }) => {
+    const checkSubmitStatus = (errors?: { [key: string]: string } | FormikValues) => {
         const is_submit_disabled = isSubmitDisabled(errors);
 
         if (is_submit_disabled_ref.current !== is_submit_disabled) {
@@ -147,7 +138,7 @@ const AddressDetails = ({
     };
 
     const handleValidate = (values: FormikValues) => {
-        const { errors }: Partial<TFormValidation> = splitValidationResultTypes(validate(values));
+        const { errors } = splitValidationResultTypes(validate(values));
         checkSubmitStatus(errors);
         return errors;
     };

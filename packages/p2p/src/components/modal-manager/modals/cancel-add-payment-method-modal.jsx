@@ -36,6 +36,7 @@ const CancelAddPaymentMethodModal = ({ onCancel, should_hide_all_modals_on_cance
                         hideModal({
                             should_save_form_history: false,
                             should_hide_all_modals: should_hide_all_modals_on_cancel ?? false,
+                            should_restore_local_state: false,
                         });
                     }}
                     secondary
@@ -47,6 +48,7 @@ const CancelAddPaymentMethodModal = ({ onCancel, should_hide_all_modals_on_cance
                     onClick={() => {
                         hideModal({
                             should_save_form_history: true,
+                            should_restore_local_state: true,
                         });
                     }}
                     primary

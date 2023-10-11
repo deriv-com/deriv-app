@@ -63,11 +63,6 @@
         border-top-left-radius: 0;
         border-bottom-right-radius: $BORDER_RADIUS;
     }
-    &__info {
-        font-size: 10px;
-        margin: 8px;
-        cursor: pointer;
-    }
     // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__button {
         width: fit-content;
@@ -187,30 +182,47 @@
             }
         }
     }
-    &__modal {
-        height: 28.4rem !important;
-        width: 44rem !important;
-        font-size: 1.6rem;
-        padding: 2.4rem;
-
-        &--mobile {
-            font-size: 1.6rem !important;
-        }
-        &-body {
-            height: 438px;
-
-            &--mobile {
-                padding: 1.6rem 0 !important;
-            }
-            &--content {
-                margin-top: 2rem;
-            }
-        }
-    }
 }
 
 .dc-modal__container_animation__modal {
     @include mobile {
         width: 31.2rem !important;
+    }
+}
+
+.bot-stop-notification {
+    position: fixed;
+    z-index: 9;
+    right: 38rem;
+    top: 12rem;
+
+    .dc-toast {
+        width: 100%;
+        &__message {
+            background: var(--text-prominent);
+            color: var(--general-main-1);
+            padding: 1rem 1.6rem;
+        }
+        &__message-content {
+            display: flex;
+
+            @include mobile {
+                align-items: center;
+            }
+        }
+    }
+
+    @include mobile {
+        top: unset;
+        left: 0;
+        right: 0;
+        bottom: 10.5rem;
+    }
+
+    .notification-close {
+        cursor: pointer;
+        filter: invert(1);
+        margin-left: 1rem;
+        margin-top: 0.1rem;
     }
 }

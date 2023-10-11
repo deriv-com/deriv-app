@@ -231,8 +231,12 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     onTabChange() {
-        this.setAdverts([]);
-        this.loadMoreAdvertiserAdverts({ startIndex: 0 });
+        const { general_store } = this.root_store;
+        const advertiser_id = general_store.counterparty_advertiser_id || this.advertiser_details_id;
+        if (advertiser_id) {
+            this.setAdverts([]);
+            this.loadMoreAdvertiserAdverts({ startIndex: 0 });
+        }
     }
 
     onUnmount() {

@@ -1,24 +1,16 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { TContractType, TContractCategory, TList } from '../Components/Form/ContractType/types';
 
-type TCategory = { value: string; text: string };
-type TContractType = {
-    name: string;
-    categories: TCategory[];
+type TContractTypesList = {
+    [key: string]: {
+        name: string;
+        categories: TContractType[];
+    };
 };
-type TcontractTypesList = {
-    [key: string]: TContractType;
-};
+
 type TItem = {
     value: string;
-};
-type TList = {
-    component?: null | React.ReactNode;
-    contract_types: TCategory[];
-    contract_categories?: TList[];
-    icon?: string;
-    key: string;
-    label: string;
 };
 
 export const contract_category_icon = {
@@ -51,7 +43,7 @@ export const getContractTypeCategoryIcons = () =>
  * @param {array}  unsupported_list - list of unsupported contract types
  */
 
-export const getAvailableContractTypes = (contract_types_list: TcontractTypesList, unsupported_list: string[]) => {
+export const getAvailableContractTypes = (contract_types_list: TContractTypesList, unsupported_list: string[]) => {
     return Object.keys(contract_types_list)
         .map(key => {
             const contract_types = contract_types_list[key].categories;
@@ -131,8 +123,8 @@ export const getAvailableContractTypes = (contract_types_list: TcontractTypesLis
 //         )
 //     );
 
-export const findContractCategory = (list: TList[], item: TItem) =>
-    list?.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || ({} as TList);
+export const findContractCategory = (list: Partial<TList[]>, item: TItem) =>
+    list?.find(list_item => list_item?.contract_types?.some(i => i.value === item.value)) || ({} as TContractCategory);
 
 export const getContractCategoryKey = (list: TList[], item: TItem) => findContractCategory(list, item)?.key;
 

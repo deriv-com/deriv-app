@@ -48,7 +48,6 @@ export default class BuySellStore extends BaseStore {
         // For sell orders we require extra information.
         ...(this.is_sell_advert ? { contact_info: this.root_store.general_store.contact_info } : {}),
     };
-    filter_payment_methods = [];
     payment_method_ids = [];
 
     constructor(root_store) {
@@ -104,7 +103,6 @@ export default class BuySellStore extends BaseStore {
             loadMoreItems: action.bound,
             onChangeTableType: action.bound,
             onClickApply: action.bound,
-            onClickReset: action.bound,
             onConfirmClick: action.bound,
             onLocalCurrencySelect: action.bound,
             setApiErrorMessage: action.bound,
@@ -255,29 +253,32 @@ export default class BuySellStore extends BaseStore {
     }
 
     handleResponse = async order => {
-        const { sendbird_store, order_store, general_store, floating_rate_store } = this.root_store;
+        const { sendbird_store, order_store, general_store } = this.root_store;
         const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
-        if (order.error) {
-            setErrorMessage(order.error.message);
-            this.setFormErrorCode(order.error.code);
+        const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
+
+        if (error) {
+            setErrorMessage(error.message);
+            this.setFormErrorCode(error.code);
         } else {
-            if (order?.subscription?.id && !this.is_create_order_subscribed) {
+            if (subscription?.id && !this.is_create_order_subscribed) {
                 this.setIsCreateOrderSubscribed(true);
             }
             setErrorMessage(null);
             general_store.hideModal();
-            floating_rate_store.setIsMarketRateChanged(false);
-            sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
-            if (order?.p2p_order_create?.id) {
-                const response = await requestWS({ p2p_order_info: 1, id: order?.p2p_order_create?.id });
+
+            if (p2p_order_create?.id) {
+                const response = await requestWS({ p2p_order_info: 1, id: p2p_order_create.id });
                 handleConfirm(response?.p2p_order_info);
             }
+
+            if (p2p_order_info?.id && p2p_order_info?.chat_channel_url) {
+                sendbird_store.setChatChannelUrl(p2p_order_info.chat_channel_url);
+                order_store.setOrderDetails(order);
+            }
+
             handleClose();
             this.payment_method_ids = [];
-        }
-        if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
-            sendbird_store.setChatChannelUrl(order?.p2p_order_info?.chat_channel_url ?? '');
-            order_store.setOrderDetails(order);
         }
     };
 
@@ -406,10 +407,6 @@ export default class BuySellStore extends BaseStore {
         this.loadMoreItems({ startIndex: 0 });
     }
 
-    onClickReset() {
-        this.setShouldUseClientLimits(false);
-    }
-
     onConfirmClick(order_info) {
         const { general_store, order_store } = this.root_store;
 
@@ -418,14 +415,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     onLocalCurrencySelect(local_currency) {
-        const { floating_rate_store } = this.root_store;
         this.setSelectedLocalCurrency(local_currency);
         this.setLocalCurrency(local_currency);
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
-        floating_rate_store.previous_exchange_rate = null;
-        floating_rate_store.setIsMarketRateChanged(false);
     }
 
     registerIsListedReaction() {
@@ -699,7 +693,7 @@ export default class BuySellStore extends BaseStore {
 
     handleAdvertInfoResponse(response) {
         //TODO: error handling for response
-        if(response?.error) return;
+        if (response?.error) return;
         const { p2p_advert_info } = response ?? {};
         if (this.selected_ad_state?.id === p2p_advert_info.id) {
             this.setSelectedAdState(p2p_advert_info);
@@ -720,12 +714,13 @@ export default class BuySellStore extends BaseStore {
 
     registerAdvertIntervalReaction() {
         const disposeAdvertIntervalReaction = reaction(
-            () => (this.selected_ad_state.id),
+            () => this.selected_ad_state.id,
             () => {
                 if (this.selected_ad_state.id) {
-                        this.subscribeAdvertInfo();
-                    };
-                }, { fireImmediately: true }
+                    this.subscribeAdvertInfo();
+                }
+            },
+            { fireImmediately: true }
         );
 
         return () => disposeAdvertIntervalReaction();

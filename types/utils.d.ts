@@ -3,6 +3,10 @@ declare global {
         [K in keyof T]-?: T[K] extends V ? K : never;
     }[keyof T];
 
+    type ObjectEntries<T> = {
+        [K in keyof T]: [K, T[K]];
+    }[keyof T][];
+
     type DeepPartial<T> = T extends string | number | bigint | boolean | null | undefined | symbol | Date
         ? T | undefined
         : T extends Array<infer ArrayType>

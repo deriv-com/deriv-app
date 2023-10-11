@@ -73,7 +73,7 @@
     }
 
     &__icon_wrapper {
-        @extend %inline-icon.white;
+        @extend %inline-icon-white;
         /* postcss-bem-linter: ignore */
         .color1-fill {
             fill: var(--text-colored-background);

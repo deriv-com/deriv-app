@@ -16,8 +16,8 @@ type TFAQList = {
     description: TDescription[];
 };
 
-const FAQ = ({ type, content, src }: TDescription) => {
-    if (type === 'image') return <img src={src} />;
+const FAQ = ({ type, content, src, imageclass }: TDescription) => {
+    if (type === 'image') return <img src={src} className={imageclass} />;
     const is_mobile = isMobile();
 
     return (

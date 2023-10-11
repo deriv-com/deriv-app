@@ -1,3 +1,3 @@
-import ContractTypeWidget from './contract-type-widget.jsx';
+import ContractTypeWidget from './contract-type-widget';
 
 export default ContractTypeWidget;

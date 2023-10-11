@@ -1,0 +1,98 @@
+.transaction-details-modal-mobile {
+    color: var(--text-general);
+
+    .dc-mobile-full-page-modal {
+        background: var(--general-main-2);
+        &__body {
+            overflow-y: scroll;
+            height: calc(100vh - 30rem);
+        }
+    }
+
+    .dc-page-overlay {
+        &__header-wrapper {
+            padding: 0px 16px;
+        }
+        &__header-title {
+            text-align: left;
+        }
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        align-content: flex-start;
+        height: fit-content;
+    }
+    &__icon-wrapper {
+        display: flex;
+        align-items: center;
+        * {
+            margin-right: 2px;
+        }
+    }
+    &__card {
+        display: flex;
+        background: var(--general-section-2);
+        width: 100%;
+        flex-direction: column;
+        padding: 8px 16px;
+        margin: 8px 16px;
+        border-radius: 8px;
+        height: fit-content;
+        &__row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0px;
+        }
+        &__column {
+            width: 100%;
+        }
+        &__profit {
+            &--win {
+                color: var(--text-profit-success);
+
+                &:before {
+                    content: '+';
+                }
+            }
+            &--loss {
+                color: var(--text-loss-danger);
+
+                &:before {
+                    content: '-';
+                }
+            }
+        }
+    }
+    &__small-title {
+        font-size: 12px;
+        font-weight: 700;
+    }
+    &__large-title {
+        font-size: 14px;
+        font-weight: 700;
+    }
+    &__label {
+        font-size: 14px;
+        line-height: 24px;
+    }
+    &__right-align {
+        text-align: right;
+    }
+    &__divider {
+        padding: 8px 16px;
+        width: 100%;
+    }
+
+    &__card__footer {
+        position: fixed;
+        .run-panel__stat {
+            margin: 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    }
+}

@@ -16,14 +16,15 @@ export type THeader = {
 };
 
 export type TItem = {
-    component?: typeof React.Component;
+    component?: JSX.Element | null;
     count?: number;
     default?: boolean;
     getTitle?: () => string;
     has_side_note?: boolean;
-    icon: string;
+    icon?: string;
     is_hidden?: boolean;
     is_disabled?: boolean;
+    key?: string;
     label?: string;
     path?: string;
     subitems?: number[];
@@ -88,7 +89,7 @@ const VerticalTabHeader = ({
                 'dc-vertical-tab__header--active': is_active,
             })}
         >
-            <HeaderIcon icon={item.icon} is_active={is_active} />
+            <HeaderIcon icon={item.icon ?? ''} is_active={is_active} />
             <Header text={label} path={item.path} />
             {!!count && <Counter count={count} className='dc-vertical-tab__header__counter' />}
             {children}
@@ -102,7 +103,7 @@ const VerticalTabHeader = ({
             })}
             onClick={handleClick}
         >
-            <HeaderIcon icon={item.icon} is_active={is_active} />
+            <HeaderIcon icon={item.icon ?? ''} is_active={is_active} />
             <Header text={label} />
             {children}
             <>{item.component}</>

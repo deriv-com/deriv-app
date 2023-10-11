@@ -1,6 +1,6 @@
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
 import {
     Button,
     DesktopWrapper,
@@ -109,7 +109,7 @@ const BuySellModalTitle = () => {
 };
 
 const BuySellModal = () => {
-    const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = useStores();
+    const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
@@ -163,6 +163,7 @@ const BuySellModal = () => {
         } else {
             showModal({ key: 'MarketRateChangeErrorModal' });
         }
+        setHasRateChangedRecently(false);
     };
 
     const BuySellFormError = () => {
@@ -203,7 +204,6 @@ const BuySellModal = () => {
             buy_sell_store.fetchAdvertiserAdverts();
             buy_sell_store.unsubscribeAdvertInfo();
         }
-        floating_rate_store.setIsMarketRateChanged(false);
     };
 
     const onConfirmClick = order_info => {
@@ -278,7 +278,7 @@ const BuySellModal = () => {
                             <BuySellModalFooter
                                 is_submit_disabled={is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={submitForm.current}
+                                onSubmit={onSubmit}
                             />
                         </React.Fragment>
                     )}

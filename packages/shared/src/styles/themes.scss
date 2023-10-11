@@ -89,6 +89,7 @@
         --text-profit-success: #{$color-green-1};
         --text-warning: #{$color-yellow};
         --text-red: #{$color-red};
+        --text-green: #{$color-green-6};
         --text-blue: #{$color-blue-3};
         --text-info-blue: #{$color-blue};
         --text-info-blue-background: #{$color-blue-5};
@@ -198,6 +199,9 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // Header
+        --header-background-mt5: #{$color-blue-8};
+        --header-background-others: #{$color-green-7};
     }
     .theme--dark {
         // General
@@ -314,5 +318,8 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // Header
+        --header-background-mt5: #{$color-blue-8};
+        --header-background-others: #{$color-green-7};
     }
 }

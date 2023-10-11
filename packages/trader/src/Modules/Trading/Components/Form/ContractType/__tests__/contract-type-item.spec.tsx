@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ContractTypeItem from '../contract-type-item.jsx';
+import ContractTypeItem from '../contract-type-item';
 
 const contract_types = [
     { value: 'rise_fall', text: 'Rise/Fall' },

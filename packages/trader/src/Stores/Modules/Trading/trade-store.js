@@ -22,7 +22,6 @@ import {
     removeBarrier,
     resetEndTimeOnVolatilityIndices,
     showDigitalOptionsUnavailableError,
-    showMxMltUnavailableError,
     showUnavailableLocationError,
     formatMoney,
     getCurrencyDisplayCode,
@@ -311,7 +310,6 @@ export default class TradeStore extends BaseStore {
             loadActiveSymbols: action.bound,
             logoutListener: action.bound,
             main_barrier_flattened: computed,
-            manageMxMltRemovalNotification: action.bound,
             networkStatusChangeListener: action.bound,
             onAllowEqualsChange: action.bound,
             onChange: action.bound,
@@ -501,13 +499,9 @@ export default class TradeStore extends BaseStore {
 
     async setActiveSymbols() {
         const is_on_mf_account = this.root_store.client.landing_company_shortcode === 'maltainvest';
-        const hide_close_mx_mlt_storage_flag = !!parseInt(
-            localStorage.getItem('hide_close_mx_mlt_account_notification')
-        );
         const is_logged_in = this.root_store.client.is_logged_in;
         const clients_country = this.root_store.client.clients_country;
         const showError = this.root_store.common.showError;
-        const setError = this.root_store.common.setError;
 
         // To resolve infinite load for Belgium and Isle of man logout IPs
         if (['be', 'im'].includes(clients_country) && !is_logged_in) {
@@ -527,26 +521,7 @@ export default class TradeStore extends BaseStore {
              * This logic is related to EU country checks
              * Avoid moving this upward in the scope since mobx will lose reactivity
              */
-            const can_have_mx_account = this.root_store.client.can_have_mx_account;
-            const can_have_mlt_account = this.root_store.client.can_have_mlt_account;
-            const can_have_mlt_or_mx_account = can_have_mlt_account || can_have_mx_account;
-
-            if (can_have_mlt_or_mx_account && is_logged_in && !hide_close_mx_mlt_storage_flag) {
-                setError(true, {
-                    type: 'mx_mlt_removal',
-                });
-            } else if (is_logged_in && hide_close_mx_mlt_storage_flag) {
-                showMxMltUnavailableError(showError, can_have_mlt_account, can_have_mx_account);
-            } else if (!is_on_mf_account) {
-                if (!hide_close_mx_mlt_storage_flag) {
-                    setError(true, {
-                        type: 'mx_mlt_removal',
-                    });
-                } else {
-                    showUnavailableLocationError(showError, is_logged_in);
-                }
-                return;
-            } else if (is_on_mf_account) {
+            if (is_on_mf_account) {
                 showDigitalOptionsUnavailableError(showError, {
                     text: localize(
                         'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
@@ -559,7 +534,10 @@ export default class TradeStore extends BaseStore {
                     }),
                 });
                 return;
+            } else if (!is_on_mf_account) {
+                showUnavailableLocationError(showError, is_logged_in);
             }
+            showUnavailableLocationError(showError, is_logged_in);
         }
         await this.processNewValuesAsync({ active_symbols });
     }
@@ -1387,30 +1365,6 @@ export default class TradeStore extends BaseStore {
             await this.prepareTradeStore();
             this.root_store.notifications.setShouldShowPopups(true);
         });
-        // TODO: remove this function when the closure of MX and MLT accounts is completed.
-        this.manageMxMltRemovalNotification();
-    }
-
-    manageMxMltRemovalNotification() {
-        const { addNotificationMessage, client_notifications, notification_messages, unmarkNotificationMessage } =
-            this.root_store.notifications;
-        const get_notification_messages = JSON.parse(localStorage.getItem('notification_messages'));
-        const { has_iom_account, has_malta_account, is_logged_in } = this.root_store.client;
-        unmarkNotificationMessage({ key: 'close_mx_mlt_account' });
-        if (get_notification_messages !== null && is_logged_in && (has_iom_account || has_malta_account)) {
-            when(
-                () => is_logged_in && notification_messages.length === 0,
-                () => {
-                    const hidden_close_account_notification =
-                        parseInt(localStorage.getItem('hide_close_mx_mlt_account_notification')) === 1;
-                    const should_retain_notification =
-                        (has_iom_account || has_malta_account) && !hidden_close_account_notification;
-                    if (should_retain_notification) {
-                        addNotificationMessage(client_notifications.close_mx_mlt_account);
-                    }
-                }
-            );
-        }
     }
 
     setChartStatus(status) {

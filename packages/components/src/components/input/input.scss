@@ -240,7 +240,9 @@
         max-width: calc(100% - 1.4rem);
     }
     &:not(&--no-placeholder) {
-        &__label {
+        $parent: &;
+
+        #{$parent}__label {
             color: var(--text-general);
             transition: 0.25s ease all;
             transform: translateZ(0);

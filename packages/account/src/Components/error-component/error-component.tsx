@@ -30,7 +30,7 @@ const ErrorComponent = ({
             }
             redirect_urls={[routes.trade]}
             redirect_labels={[redirect_label || localize('Refresh')]}
-            buttonOnClick={redirectOnClick || (() => location.reload())}
+            buttonOnClick={redirectOnClick ?? (() => location.reload())}
         />
     );
 };

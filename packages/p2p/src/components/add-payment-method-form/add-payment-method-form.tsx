@@ -1,23 +1,31 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, Form, FormikValues } from 'formik';
+import { Field, Form, FormikBag, FormikValues } from 'formik';
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
+import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import ModalForm from 'Components/modal-manager/modal-form';
-import { useStores } from 'Stores';
-import { TPaymentMethodFieldMapProps } from 'Types';
+import { TPaymentMethodFieldMapProps, TPaymentMethodValues } from 'Types/my-profile.types';
 
 type TAddPaymentMethodFormProps = {
     should_show_separated_footer?: boolean;
 };
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaymentMethodFormProps) => {
-    const { general_store, my_profile_store } = useStores();
-    const { selected_payment_method_display_name, selected_payment_method_fields } = my_profile_store;
-    const { hideModal, modal, showModal } = useModalManagerContext();
+    const { hideModal, isCurrentModal, modal, showModal } = useModalManagerContext();
+    const { create, mutation } = useP2PAdvertiserPaymentMethods();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
+    const {
+        payment_method_value,
+        selected_payment_method,
+        selected_payment_method_display_name,
+        selected_payment_method_fields,
+    } = my_profile_store;
+    const { error: mutation_error, status: mutation_status } = mutation;
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -26,6 +34,36 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        if (mutation_status === 'success') {
+            my_profile_store.setShouldShowAddPaymentMethodForm(false);
+            my_profile_store.setSelectedPaymentMethod('');
+
+            if (isCurrentModal('CreateAdAddPaymentMethodModal')) {
+                hideModal();
+            }
+
+            if (my_ads_store.should_show_add_payment_method) {
+                my_ads_store.setShouldShowAddPaymentMethod(false);
+            }
+        } else if (mutation_status === 'error') {
+            my_profile_store.setAddPaymentMethodErrorMessage(mutation_error.message);
+            showModal({
+                key: 'AddPaymentMethodErrorModal',
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mutation_error, mutation_status]);
+
+    const createPaymentMethod = async (
+        values: TPaymentMethodValues,
+        { setSubmitting }: FormikBag<any, TPaymentMethodValues>
+    ) => {
+        await create({ ...values, method: payment_method_value || selected_payment_method });
+
+        setSubmitting(false);
+    };
 
     if (!selected_payment_method_display_name && selected_payment_method_fields.length === 0) {
         return <Loading is_fullscreen={false} />;
@@ -36,7 +74,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
             <ModalForm
                 enableReinitialize
                 initialValues={my_profile_store.initial_values}
-                onSubmit={my_profile_store.createPaymentMethod}
+                onSubmit={createPaymentMethod}
                 validate={my_profile_store.validatePaymentMethodFields}
             >
                 {({ dirty, handleChange, isSubmitting, errors, touched }: FormikValues) => {

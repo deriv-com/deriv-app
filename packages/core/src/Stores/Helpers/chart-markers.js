@@ -11,7 +11,7 @@ import {
     getEndTime,
     isAccumulatorContract,
     isAccumulatorContractOpen,
-    isOnlyUpsDownsContract,
+    isSmartTraderContract,
     isOpen,
     unique,
 } from '@deriv/shared';
@@ -74,7 +74,7 @@ const addLabelAlignment = (tick, idx, arr) => {
 
 export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
-    const is_only_ups_downs = isOnlyUpsDownsContract(contract_info.contract_type);
+    const is_smarttrader_contract = isSmartTraderContract(contract_info.contract_type);
     const is_accu_contract_closed = is_accumulator && !isOpen(contract_info);
     const available_ticks = (is_accumulator && contract_info.audit_details?.all_ticks) || contract_info.tick_stream;
     const tick_stream = unique(available_ticks, 'epoch').map(addLabelAlignment);
@@ -116,9 +116,9 @@ export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
             tick.align_label = 'top'; // force exit spot label to be 'top' to avoid overlapping
             marker_config = createMarkerSpotExit(contract_info, tick, idx);
         }
-        if (is_only_ups_downs && is_middle_spot) {
+        if (is_smarttrader_contract && is_middle_spot) {
             const spot_className = marker_config.content_config.spot_className;
-            marker_config.content_config.spot_className = `${spot_className} ${spot_className}--only-ups-downs-middle`;
+            marker_config.content_config.spot_className = `${spot_className} ${spot_className}--smarttrader-contract-middle`;
             if (!is_current_last_spot) {
                 marker_config.content_config.is_value_hidden = true;
             }

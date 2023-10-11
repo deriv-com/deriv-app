@@ -266,7 +266,7 @@
         min-width: 15rem;
         width: 100%;
 
-        &:not(.cfd-personal-details-modal__form *) {
+        &:not(.cfd-personal-details-modal__form *):not(.trade-container__multiplier-dropdown) {
             margin-top: unset;
         }
 

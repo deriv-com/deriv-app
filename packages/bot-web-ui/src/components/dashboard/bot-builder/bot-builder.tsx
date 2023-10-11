@@ -5,17 +5,15 @@ import { observer } from '@deriv/stores';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
-import { BOT_BUILDER_TOUR } from '../joyride-config';
+import DesktopTours from '../dbot-tours/desktop-tours/desktop-tours';
+import MobileTours from '../dbot-tours/mobile-tours/mobile-tours';
 import QuickStrategy from '../quick-strategy';
-import ReactJoyrideWrapper from '../react-joyride-wrapper';
-import TourSlider from '../tour-slider';
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
     const { dashboard, app } = useDBotStore();
     const { active_tab, has_started_onboarding_tour, has_started_bot_builder_tour, is_preview_on_popup } = dashboard;
 
-    const [is_tour_running] = React.useState<boolean>(true);
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
 
@@ -49,22 +47,10 @@ const BotBuilder = observer(() => {
             {has_started_bot_builder_tour && active_tab === 1 && !has_started_onboarding_tour && (
                 <>
                     <MobileWrapper>
-                        <TourSlider />
+                        <MobileTours />
                     </MobileWrapper>
                     <DesktopWrapper>
-                        <ReactJoyrideWrapper
-                            steps={BOT_BUILDER_TOUR}
-                            run={is_tour_running}
-                            showProgress
-                            styles={{
-                                options: {
-                                    arrowColor: 'transparent',
-                                    backgroundColor: 'var(--general-main-2)',
-                                    primaryColor: 'var(--brand-red-coral)',
-                                    textColor: 'var(--text-general)',
-                                },
-                            }}
-                        />
+                        <DesktopTours />
                     </DesktopWrapper>
                 </>
             )}

@@ -2,23 +2,21 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, FormikValues } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components';
-import { isDesktop, isEmptyObject, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import ModalForm from 'Components/modal-manager/modal-form';
 import PageReturn from 'Components/page-return';
-import { useStores } from 'Stores';
-import { TPaymentMethodFieldMapProps } from 'Types';
+import { TPaymentMethod } from 'Types/my-profile.types';
 
 const EditPaymentMethodForm = () => {
     const { general_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
     const {
         initial_values,
-        payment_method_info,
         payment_method_to_edit,
-        selected_payment_method_fields,
         setPaymentMethodToEdit,
         setSelectedPaymentMethod,
         setSelectedPaymentMethodDisplayName,
@@ -26,6 +24,15 @@ const EditPaymentMethodForm = () => {
         updatePaymentMethod,
         validatePaymentMethodFields,
     } = my_profile_store;
+
+    type FieldsInitialValues = {
+        [key: string]: TPaymentMethod;
+    };
+
+    const fields_initial_values: FieldsInitialValues = {};
+    Object.keys(payment_method_to_edit.fields).forEach((key: string) => {
+        fields_initial_values[key] = payment_method_to_edit.fields[key].value;
+    });
 
     React.useEffect(() => {
         return () => {
@@ -35,7 +42,7 @@ const EditPaymentMethodForm = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (isEmptyObject(payment_method_info)) {
+    if (!payment_method_to_edit) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -82,38 +89,42 @@ const EditPaymentMethodForm = () => {
                                             />
                                         )}
                                     </Field>
-                                    {selected_payment_method_fields?.map(
-                                        (payment_method_field: TPaymentMethodFieldMapProps, key: number) => (
+                                    {Object.keys(payment_method_to_edit.fields).map(payment_method_key => {
+                                        const current_field = payment_method_to_edit.fields[payment_method_key];
+
+                                        return (
                                             <Field
-                                                name={payment_method_field[0]}
-                                                id={payment_method_field[0]}
-                                                key={key}
+                                                name={payment_method_key}
+                                                id={payment_method_key}
+                                                key={payment_method_key}
                                             >
-                                                {({ field }: FormikValues) => (
-                                                    <Input
-                                                        {...field}
-                                                        className={classNames({
-                                                            'edit-payment-method-form__payment-method-field':
-                                                                !errors[payment_method_field[0]]?.length,
-                                                            'add-payment-method-form__payment-method-field--text-area':
-                                                                payment_method_field[0] === 'instructions',
-                                                        })}
-                                                        data-lpignore='true'
-                                                        error={errors[payment_method_field[0]]}
-                                                        label={payment_method_field[1].display_name}
-                                                        name={payment_method_field[0]}
-                                                        onChange={handleChange}
-                                                        required={!!payment_method_field[1].required}
-                                                        type={
-                                                            payment_method_field[0] === 'instructions'
-                                                                ? 'textarea'
-                                                                : payment_method_field[1].type
-                                                        }
-                                                    />
-                                                )}
+                                                {({ field }: FormikValues) => {
+                                                    return (
+                                                        <Input
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            error={errors[payment_method_key]}
+                                                            type={
+                                                                payment_method_key === 'instructions'
+                                                                    ? 'textarea'
+                                                                    : current_field.type
+                                                            }
+                                                            label={current_field.display_name}
+                                                            className={classNames({
+                                                                'edit-payment-method-form__payment-method-field':
+                                                                    !errors[payment_method_key]?.length,
+                                                                'edit-payment-method-form__payment-method-field--text-area':
+                                                                    payment_method_key === 'instructions',
+                                                            })}
+                                                            onChange={handleChange}
+                                                            name={payment_method_key}
+                                                            required={!!current_field.required}
+                                                        />
+                                                    );
+                                                }}
                                             </Field>
-                                        )
-                                    )}
+                                        );
+                                    })}
                                 </div>
                                 <div
                                     className={classNames('edit-payment-method-form__buttons', {

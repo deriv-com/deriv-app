@@ -1,0 +1,49 @@
+.wallets-add-more {
+    &__banner {
+        border-radius: 0.8rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 20rem;
+        height: 12rem;
+        padding: 1.6rem;
+        background: none;
+
+        @include mobile {
+            width: 16rem;
+            height: 9.6rem;
+            padding: 0.8rem;
+            flex-shrink: 0;
+        }
+        &-header {
+            display: flex;
+            justify-content: space-between;
+        }
+        &-button {
+            cursor: pointer;
+            width: 100%;
+            padding: 0.6rem 1.6rem;
+            font-weight: 700;
+
+            @include mobile {
+                padding: 0.3rem 0.8rem;
+            }
+            &--is-added {
+                opacity: 0.3;
+                cursor: default;
+            }
+        }
+        &-landing-company {
+            border: 0.1rem solid #000;
+            border-radius: 0.2rem;
+            padding: 0 0.4rem;
+            font-weight: 700;
+            line-height: 1.4rem;
+
+            @include mobile {
+                line-height: 1.2rem;
+                font-size: 0.8rem;
+            }
+        }
+    }
+}

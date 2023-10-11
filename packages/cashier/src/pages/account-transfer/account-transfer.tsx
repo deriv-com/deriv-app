@@ -1,14 +1,11 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { routes, WS } from '@deriv/shared';
+import { WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { TSideNotesProps } from '../../types';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import { Virtual } from '../../components/cashier-container';
 import CashierLocked from '../../components/cashier-locked';
-import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
-import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
@@ -20,44 +17,28 @@ type TAccountTransferProps = {
     onClickNotes?: VoidFunction;
     onClose: VoidFunction;
     openAccountSwitcherModal?: VoidFunction;
-    setSideNotes?: (notes: TSideNotesProps) => void;
+    setSideNotes?: (notes: React.ReactNode[]) => void;
 };
 
 const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSideNotes }: TAccountTransferProps) => {
     const { client } = useStore();
-    const { account_transfer, general_store, transaction_history } = useCashierStore();
-
+    const { account_transfer, general_store } = useCashierStore();
     const {
         accounts_list,
-        container,
         error,
         has_no_account,
         has_no_accounts_balance,
-        is_transfer_confirm,
         is_transfer_locked,
         onMountAccountTransfer: onMount,
         setAccountTransferAmount,
         setIsTransferConfirm,
     } = account_transfer;
-    const { is_loading, setActiveTab } = general_store;
+    const { is_loading } = general_store;
     const is_cashier_locked = useCashierLocked();
-
-    const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
-
     const { is_switching, is_virtual } = client;
-
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
-    const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
     React.useEffect(() => {
-        if (!is_crypto_transactions_visible) {
-            recentTransactionOnMount();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_switching]);
-
-    React.useEffect(() => {
-        setActiveTab(container);
         onMount();
 
         WS.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
@@ -72,8 +53,8 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     }, []);
 
     React.useEffect(() => {
-        if (typeof setSideNotes === 'function' && (has_no_accounts_balance || is_switching)) {
-            setSideNotes(null);
+        if (has_no_accounts_balance || is_switching) {
+            setSideNotes?.([]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setSideNotes, has_no_accounts_balance]);
@@ -101,15 +82,10 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     if (has_no_accounts_balance) {
         return <NoBalance onClickDeposit={onClickDeposit} />;
     }
-    if (is_transfer_confirm) {
-        return <AccountTransferReceipt onClose={onClose} />;
-    }
-    if (!is_from_outside_cashier && is_crypto_transactions_visible) {
-        return <CryptoTransactionsHistory />;
-    }
 
     return (
         <AccountTransferForm
+            onClose={onClose}
             error={error}
             setSideNotes={setSideNotes}
             onClickDeposit={onClickDeposit}

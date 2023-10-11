@@ -409,6 +409,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_wallet_creation_success_modal_open: false,
             toggleIsWalletCreationSuccessModalOpen: jest.fn(),
             vanilla_trade_type: 'VANILLALONGCALL',
+            is_additional_kyc_info_modal_open: false,
+            toggleAdditionalKycInfoModal: jest.fn(),
+            is_kyc_information_submitted_modal_open: false,
+            toggleKycInformationSubmittedModal: jest.fn(),
         },
         traders_hub: {
             CFDs_restricted_countries: false,
@@ -522,6 +526,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_accumulator: false,
             is_multiplier: false,
             is_turbos: false,
+            onHoverPosition: jest.fn(),
             onBuyResponse: jest.fn(),
             onClickCancel: jest.fn(),
             onClickSell: jest.fn(),

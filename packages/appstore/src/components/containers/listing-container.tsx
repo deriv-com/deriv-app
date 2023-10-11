@@ -37,7 +37,7 @@ const Options = observer(({ title, description, is_deriv_platform }: TOptionsPro
 });
 
 const Switcher = ({ wallet_account, is_deriv_platform }: TSwitcherProps) => {
-    if (!is_deriv_platform) return null;
+    if (!is_deriv_platform || !wallet_account) return null;
     if (wallet_account) return <WalletTransferBlock wallet_account={wallet_account} />;
     return <CurrencySwitcherCard />;
 };

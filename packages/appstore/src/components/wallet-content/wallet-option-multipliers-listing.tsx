@@ -79,22 +79,13 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         );
     }
 
-    const platforms_action_type =
-        is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user) ? 'trade' : 'none';
-
-    const derivAccountAction = () => {
-        if (no_MF_account) {
-            if (real_account_creation_unlock_date) {
-                setShouldShowCooldownModal(true);
-            } else {
-                openRealAccountSignup(Jurisdiction.MALTA_INVEST);
-            }
-        } else {
-            openRealAccountSignup(Jurisdiction.SVG);
-        }
-    };
-
     const is_trading_account_exists = wallet_account.linked_to?.some(acc => acc.platform === 'dtrade');
+
+    const platforms_action_type =
+        is_trading_account_exists &&
+        (is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user))
+            ? 'trade'
+            : 'none';
 
     const get_account_card_name = wallet_account.is_malta_wallet
         ? localize('Deriv Apps account')
@@ -120,7 +111,6 @@ const WalletOptionsAndMultipliersListing = observer(() => {
                         name={get_account_card_name}
                         description={get_account_card_description}
                         icon='Options'
-                        onAction={derivAccountAction}
                     />
                 </div>
             )}

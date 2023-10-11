@@ -17,7 +17,7 @@ type TInput = {
     current_focus: string | null;
     error_messages?: string[];
     is_disabled?: boolean;
-    is_single_currency: boolean;
+    is_single_currency?: boolean;
     onChange: (e: { target: { name: string; value: number | string } }) => void;
     setCurrentFocus: (name: string | null) => void;
 };

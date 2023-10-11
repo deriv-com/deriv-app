@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { localize } from '@deriv/translations';
+
 import { shouldShowCancellation, shouldShowExpiration, TURBOS, VANILLALONG } from '../contract';
 
 export const getLocalizedBasis = () =>

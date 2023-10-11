@@ -1,14 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { DesktopWrapper, Icon, MobileWrapper, Modal, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+
 import { SIDEBAR_INTRO } from './constants';
 
 const InfoPanel = observer(() => {
-    const is_mobile = isMobile();
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const { dashboard } = useDBotStore();
     const { active_tour, is_info_panel_visible, setActiveTab, setActiveTabTutorial, setInfoPanelVisibility } =
         dashboard;

@@ -3,7 +3,7 @@ import { TTradeStore } from 'Types';
 type TData = Partial<
     Pick<
         TTradeStore,
-        'cancellation_duration' | 'cancellation_price' | 'has_cancellation' | 'has_stop_loss' | 'has_take_profit'
+        'cancellation_duration' | 'has_cancellation' | 'has_stop_loss' | 'has_take_profit' | 'stop_loss' | 'take_profit'
     >
 >;
 

@@ -52,15 +52,12 @@ const WalletAppCard = ({ wallet }: WalletAppCardProps) => {
                     size='large'
                 />
                 <div className='wallet-app-card__details'>
-                    {/* account title */}
                     <Text color='prominent' weight='light' size={isMobile() ? 'xxxxs' : 'xxxs'}>
                         {account_title}
                     </Text>
-                    {/* wallet currency */}
                     <Text color='less-prominent' weight='light' size={isMobile() ? 'xxxxs' : 'xxxs'}>
                         {currency_title}
                     </Text>
-                    {/* total balance */}
                     <Text color='prominent' weight='bold' size={isMobile() ? 'xxxs' : 'xxs'}>
                         {balance}
                     </Text>

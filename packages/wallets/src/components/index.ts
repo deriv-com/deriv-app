@@ -34,6 +34,7 @@ export * from './WalletsAccordion';
 export * from './WalletsAddMoreCarousel';
 export * from './WalletsCarousel';
 export * from './WalletsCarouselContent';
+export * from './WalletText';
 export * from './WalletTransfer';
 export * from './WalletTransferFormAccountCard';
 export * from './WalletTransferFormAccountSelection';

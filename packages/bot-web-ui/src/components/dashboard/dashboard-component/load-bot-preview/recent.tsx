@@ -31,13 +31,6 @@ const RecentComponent = observer(() => {
     }, [strategy_save_type]);
 
     React.useEffect(() => {
-        /* 
-            RudderStack
-            This useeffect is used to send the event when we have a strategy
-            on the recent list.
-            It will also send time of the first recent strategy.
-            It also checks if the list is visible on the view.
-        */
         if (!dashboard_strategies?.length && !check_rudder_stack_instance.current) {
             const getStratagiesForRudderStack = async () => {
                 const recent_strategies = await getSavedWorkspaces();

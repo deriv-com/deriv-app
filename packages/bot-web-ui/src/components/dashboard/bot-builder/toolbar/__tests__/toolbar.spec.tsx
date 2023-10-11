@@ -50,21 +50,22 @@ describe('Toolbox component', () => {
             </StoreProvider>
         );
     });
-    it('should render Toolbox with content wrapper is open', () => {
+
+    beforeEach(() => {
         render(<Toolbox />, { wrapper });
+    });
+
+    it('should render Toolbox with content wrapper is open', () => {
         expect(screen.getByTestId('dashboard__toolbox')).toBeInTheDocument();
         expect(screen.getByTestId('db-toolbox__content-wrapper')).toHaveClass('db-toolbox__content-wrapper active');
     });
-    it('should render Toolbox with content wrapper is open', () => {
-        render(<Toolbox />, { wrapper });
-
+    it('should open and close toolbox on click of header', () => {
         expect(screen.getByTestId('db-toolbox__title')).toBeInTheDocument();
 
         userEvent.click(screen.getByTestId('db-toolbox__title'));
         expect(screen.getByTestId('db-toolbox__content-wrapper')).not.toHaveClass('db-toolbox__content-wrapper active');
     });
     it('should not render Toolbox if it is mobile version', () => {
-        render(<Toolbox />, { wrapper });
         expect(screen.getByTestId('dashboard__toolbox')).toBeInTheDocument();
         if (isMobile()) {
             expect(screen.getByRole('dashboard__toolbox')).toBeEmptyDOMElement();

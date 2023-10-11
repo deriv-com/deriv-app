@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { RudderStack, TActions } from '@deriv/analytics';
 import { observer } from '@deriv/stores';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
@@ -24,8 +25,7 @@ const BotBuilder = observer(() => {
     };
 
     React.useEffect(() => {
-        //when the bot builder mounts and unmounts
-        if (active_tab === 1) {
+        if (active_tab === DBOT_TABS.BOT_BUILDER) {
             trackRudderStackForBotBuilder('open');
             return () => {
                 trackRudderStackForBotBuilder('close');

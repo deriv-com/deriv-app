@@ -109,7 +109,7 @@ const Dashboard = observer(() => {
                     inline: 'center',
                 });
             }
-            //if the user comes from navigation click to bot builder tab send event to rudderstack
+
             if (tab_index === BOT_BUILDER) {
                 RudderStack.track('ce_bot_builder_form', {
                     action: 'open',

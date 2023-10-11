@@ -23,7 +23,7 @@ import { isSessionAvailable } from './start-date';
 import { ContractsFor, ContractsForSymbolResponse, TradingTimes, TradingTimesResponse } from '@deriv/api-types';
 import { TTradeStore } from '../../../../Types/common-prop.type';
 
-type TAvailableCategories = {
+type TCategories = {
     [key: string]: {
         name: string;
         categories: Array<string | TTextValueStrings>;
@@ -50,7 +50,7 @@ type TConfig = ReturnType<typeof getContractTypesConfig>[string]['config'] & {
     cancellation_range?: string[];
     barrier_choices?: string[];
 };
-type TNonAvailableContractsList = Required<ContractsForSymbolResponse>['contracts_for']['available'];
+type TNonAvailableContractsList = Record<'contract_category' | 'contract_display_name' | 'contract_type', string>[];
 type TTextValueStrings = {
     text: string;
     value: string;
@@ -83,9 +83,9 @@ export const ContractType = (() => {
         ReturnType<typeof getEqualProps>;
 
     let available_contract_types: ReturnType<typeof getContractTypesConfig> = {};
-    let available_categories: TAvailableCategories = {};
+    let available_categories: TCategories = {};
     let contract_types: ReturnType<typeof getContractTypesConfig>;
-    let non_available_categories: TAvailableCategories = {};
+    let non_available_categories: TCategories = {};
     const trading_events: { [key: string]: Record<string, TEvents | undefined> } = {};
     const trading_times: { [key: string]: Record<string, TTimes> } = {};
     let has_only_forward_starting_contracts = false;
@@ -259,7 +259,7 @@ export const ContractType = (() => {
         };
     };
 
-    const getContractType = (list: TAvailableCategories, contract_type: string) => {
+    const getContractType = (list: TCategories, contract_type: string) => {
         const arr_list: string[] = Object.keys(list || {})
             .reduce<string[]>((k, l) => [...k, ...(list[l].categories as TTextValueStrings[]).map(ct => ct.value)], [])
             .filter(type => unsupported_contract_types_list.indexOf(type) === -1)

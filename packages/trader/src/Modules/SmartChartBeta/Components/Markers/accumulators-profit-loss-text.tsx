@@ -1,33 +1,41 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv/shared';
-import { FastMarkerBeta } from 'Modules/SmartChartBeta';
+import { FastMarker } from 'Modules/SmartChart';
 import classNames from 'classnames';
+import { TRef } from './accumulators-profit-loss-tooltip';
+import { ProposalOpenContract } from '@deriv/api-types';
+
+type TProposalOpenContractProfit = Required<Pick<ProposalOpenContract, 'profit'>>;
+
+type TAccumulatorsProfitLossText = Pick<ProposalOpenContract, 'current_spot' | 'current_spot_time' | 'currency'> &
+    TProposalOpenContractProfit & {
+        className?: string;
+    };
 
 const ACTIONS = {
     INC: 'increment',
     DEC: 'decrement',
     ADD10: 'add10',
-};
+} as const;
 
-const AccumulatorsProfitLossTextBeta = ({
+const AccumulatorsProfitLossText = ({
     current_spot,
     current_spot_time,
     currency,
     className = 'sc-accumulators-profit-loss-text',
     profit,
-}) => {
+}: TAccumulatorsProfitLossText) => {
     const [is_fading_in, setIsFadingIn] = React.useState(false);
     const [is_sliding, setIsSliding] = React.useState(false);
-    const formatted_profit = formatMoney(currency, profit, true, 0, 0);
+    const formatted_profit = formatMoney(currency ?? '', profit, true, 0, 0);
     const prev_profit = React.useRef(formatted_profit);
     const prev_profit_tenth = +prev_profit.current?.split('.')[1][0];
     const [current_profit_tenth, setCurrentProfitTenth] = React.useState(prev_profit_tenth);
-    const profit_tenth_ref = React.useRef();
-    const interval_id_ref = React.useRef(null);
-    const fading_in_timeout_id = React.useRef();
-    const sliding_timeout_id = React.useRef();
+    const profit_tenth_ref = React.useRef(0);
+    const interval_id_ref = React.useRef<ReturnType<typeof setInterval>>();
+    const fading_in_timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
+    const sliding_timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
     const profit_portions_array = formatted_profit.split('.');
     const profit_whole_number = profit_portions_array[0];
     const profit_tenth = +profit_portions_array[1][0];
@@ -35,7 +43,12 @@ const AccumulatorsProfitLossTextBeta = ({
     const won = profit >= 0;
     const sign = profit > 0 ? '+' : '';
 
-    const runThroughTenthDigit = (action, interval_ms, start, end) => {
+    const runThroughTenthDigit = (
+        action: typeof ACTIONS[keyof typeof ACTIONS],
+        interval_ms: number,
+        start: number,
+        end: number
+    ) => {
         clearInterval(interval_id_ref.current);
         const interval_id = setInterval(() => {
             if (action === ACTIONS.INC && profit_tenth_ref.current < end) {
@@ -66,7 +79,7 @@ const AccumulatorsProfitLossTextBeta = ({
             }, 300);
         }
         if (profit !== 0) {
-            const updateTenth = (start, end) => {
+            const updateTenth = (start: number, end: number) => {
                 const delta = Math.abs(end - start);
                 profit_tenth_ref.current = start;
                 if (start < end) {
@@ -86,25 +99,23 @@ const AccumulatorsProfitLossTextBeta = ({
         };
     }, [profit, prev_profit_tenth, profit_tenth]);
 
-    const onRef = ref => {
+    const onRef = (ref: TRef | null): void => {
         if (ref) {
             if (!current_spot) {
                 // this call will hide the marker:
                 ref.setPosition({ epoch: null, price: null });
             }
-            ref.setPosition({
-                epoch: +current_spot_time,
-                price: +current_spot,
-            });
+            if (current_spot && current_spot_time) {
+                ref.setPosition({
+                    epoch: +current_spot_time,
+                    price: +current_spot,
+                });
+            }
         }
     };
 
     return (
-        <FastMarkerBeta
-            markerRef={onRef}
-            className={classNames(className, won ? 'won' : 'lost')}
-            overlap_y_axis={false}
-        >
+        <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
             <Text
                 weight='bold'
                 size={isMobile() ? 's' : 'sm'}
@@ -121,16 +132,8 @@ const AccumulatorsProfitLossTextBeta = ({
             <Text size={isMobile() ? 'xxxs' : 'xxs'} as='div' className={`${className}__currency`}>
                 {getCurrencyDisplayCode(currency)}
             </Text>
-        </FastMarkerBeta>
+        </FastMarker>
     );
 };
 
-AccumulatorsProfitLossTextBeta.propTypes = {
-    className: PropTypes.string,
-    currency: PropTypes.string,
-    current_spot: PropTypes.number,
-    current_spot_time: PropTypes.number,
-    profit: PropTypes.number,
-};
-
-export default React.memo(AccumulatorsProfitLossTextBeta);
+export default React.memo(AccumulatorsProfitLossText);

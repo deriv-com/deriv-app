@@ -5,6 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
 import ConnectedAppsKnowMore from './connected-apps-know-more';
+import ConnectedAppsInfo from './connected-apps-info';
 import ConnectedAppsEarnMore from './connected-apps-earn-more';
 import ConnectedAppsEmpty from './connected-apps-empty';
 import DataListTemplate from './data-list-template';
@@ -43,7 +44,7 @@ const ConnectedApps = observer(() => {
                 {is_error && <ErrorComponent />}
                 {connected_apps.length ? (
                     <div className='connected-apps__content--wrapper'>
-                        <div>TODO: Replace this div with message component</div>
+                        <ConnectedAppsInfo />
                         {is_mobile ? (
                             <div className='connected-apps__list--wrapper'>
                                 {connected_apps.map(connected_app => (

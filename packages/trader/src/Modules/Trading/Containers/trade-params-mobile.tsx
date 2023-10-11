@@ -315,8 +315,6 @@ const TradeParamsMobile = observer(
                             setAmountError={setAmountError}
                             stake_value={stake_value}
                             payout_value={payout_value}
-                            basis={''}
-                            selected_basis={''}
                         />
                     </div>
                 ) : null}

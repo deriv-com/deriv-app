@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -25,9 +24,33 @@ import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
-import ResultMobile from './result-mobile.jsx';
+import PositionsResultMobile from './positions-result-mobile';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+
+type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
+type TPortfolioPosition = Pick<
+    TPortfolioStore['active_positions'][0],
+    'contract_info' | 'id' | 'indicative' | 'is_sell_requested' | 'is_unsupported' | 'profit_loss'
+>;
+type TPickPortfolioStore = Pick<TPortfolioStore, 'onClickSell' | 'onClickCancel'>;
+type TUiStore = ReturnType<typeof useStore>['ui'];
+
+type TPositionsModalCard = TPickPortfolioStore &
+    TPortfolioPosition & {
+        className?: string;
+        contract_info: TPortfolioPosition['contract_info'];
+        contract_update: TPortfolioPosition['contract_info']['contract_update'];
+        currency: ReturnType<typeof useStore>['client']['currency'];
+        current_tick?: React.ComponentProps<typeof ProgressSliderMobile>['current_tick'];
+        is_loading?: boolean;
+        result?: React.ComponentProps<typeof PositionsResultMobile>['result'];
+        sell_price?: number;
+        status?: string;
+        togglePositions: TUiStore['togglePositionsDrawer'];
+        toggleUnsupportedContractModal: TUiStore['toggleUnsupportedContractModal'];
+        type?: string;
+    };
 
 const PositionsModalCard = observer(
     ({
@@ -50,7 +73,7 @@ const PositionsModalCard = observer(
         togglePositions,
         toggleUnsupportedContractModal,
         type,
-    }) => {
+    }: TPositionsModalCard) => {
         const { ui, common, contract_trade } = useStore();
         const { active_symbols } = useTraderStore();
         const { server_time } = common;
@@ -82,7 +105,7 @@ const PositionsModalCard = observer(
         const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
         const display_name = getSymbolDisplayName(
             active_symbols,
-            getMarketInformation(contract_info.shortcode).underlying
+            getMarketInformation(contract_info.shortcode || '').underlying
         );
 
         const contract_options_el = (
@@ -197,8 +220,7 @@ const PositionsModalCard = observer(
                     </div>
 
                     {result || !!contract_info.is_sold ? (
-                        <ResultMobile
-                            contract_id={id}
+                        <PositionsResultMobile
                             is_visible={!!contract_info.is_sold}
                             result={result || fallback_result}
                         />
@@ -210,7 +232,7 @@ const PositionsModalCard = observer(
                             is_loading={is_loading}
                             start_time={contract_info.date_start}
                             expiry_time={contract_info.date_expiry}
-                            server_time={server_time}
+                            server_time={server_time as moment.Moment}
                             ticks_count={contract_info.tick_count}
                         />
                     )}
@@ -238,7 +260,7 @@ const PositionsModalCard = observer(
                         is_mobile={is_mobile}
                         is_sell_requested={is_sell_requested}
                         onClickSell={onClickSell}
-                        server_time={server_time}
+                        server_time={server_time as moment.Moment}
                     />
                 </NavLink>
                 <CurrencyBadge currency={contract_info?.currency ?? ''} />
@@ -268,7 +290,7 @@ const PositionsModalCard = observer(
                                 {localize('Entry spot:')}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
-                                <Money amount={contract_info.entry_spot} currency={currency} />
+                                <Money amount={Number(contract_info.entry_spot)} currency={currency} />
                             </Text>
                         </div>
                         <div className='positions-modal-card__payout-price'>
@@ -276,14 +298,13 @@ const PositionsModalCard = observer(
                                 {localize('Strike:')}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
-                                <Money amount={contract_info.barrier} currency={currency} />
+                                <Money amount={Number(contract_info.barrier)} currency={currency} />
                             </Text>
                         </div>
                     </div>
 
                     {result || !!contract_info.is_sold ? (
-                        <ResultMobile
-                            contract_id={id}
+                        <PositionsResultMobile
                             is_visible={!!contract_info.is_sold}
                             result={result || fallback_result}
                         />
@@ -295,7 +316,7 @@ const PositionsModalCard = observer(
                             is_loading={is_loading}
                             start_time={contract_info.date_start}
                             expiry_time={contract_info.date_expiry}
-                            server_time={server_time}
+                            server_time={server_time as moment.Moment}
                             ticks_count={contract_info.tick_count}
                         />
                     )}
@@ -327,8 +348,7 @@ const PositionsModalCard = observer(
                     is_sell_requested={is_sell_requested}
                     onClickCancel={onClickCancel}
                     onClickSell={onClickSell}
-                    server_time={server_time}
-                    status={status}
+                    server_time={server_time as moment.Moment}
                 />
             </React.Fragment>
         );
@@ -343,7 +363,7 @@ const PositionsModalCard = observer(
                 is_mobile={is_mobile}
                 is_sell_requested={is_sell_requested}
                 onClickSell={onClickSell}
-                server_time={server_time}
+                server_time={server_time as moment.Moment}
             />
         );
 
@@ -364,7 +384,7 @@ const PositionsModalCard = observer(
                 is_turbos={is_turbos}
                 has_progress_slider={is_mobile && has_progress_slider && !has_ended}
                 removeToast={removeToast}
-                server_time={server_time}
+                server_time={server_time as moment.Moment}
                 setCurrentFocus={setCurrentFocus}
                 should_show_cancellation_warning={should_show_cancellation_warning}
                 status={status}
@@ -380,8 +400,7 @@ const PositionsModalCard = observer(
                 is_sell_requested={is_sell_requested}
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}
-                server_time={server_time}
-                status={status}
+                server_time={server_time as moment.Moment}
             />
         );
 
@@ -430,32 +449,5 @@ const PositionsModalCard = observer(
         );
     }
 );
-
-PositionsModalCard.propTypes = {
-    className: PropTypes.string,
-    contract_info: PropTypes.object,
-    contract_update: PropTypes.object,
-    currency: PropTypes.string,
-    current_tick: PropTypes.number,
-    duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    duration_unit: PropTypes.string,
-    exit_spot: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    id: PropTypes.number,
-    indicative: PropTypes.number,
-    is_loading: PropTypes.bool,
-    is_sell_requested: PropTypes.bool,
-    is_unsupported: PropTypes.bool,
-    is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
-    onClickSell: PropTypes.func,
-    onClickCancel: PropTypes.func,
-    profit_loss: PropTypes.number,
-    result: PropTypes.string,
-    sell_price: PropTypes.number,
-    sell_time: PropTypes.number,
-    status: PropTypes.string,
-    togglePositions: PropTypes.func,
-    toggleUnsupportedContractModal: PropTypes.func,
-    type: PropTypes.string,
-};
 
 export default PositionsModalCard;

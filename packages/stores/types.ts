@@ -519,6 +519,7 @@ type TCommonStoreError = {
     should_show_refresh?: boolean;
     type?: string;
 };
+
 type TCommonStoreServicesError = {
     code?: string;
     message?: string;
@@ -674,12 +675,13 @@ type TPortfolioStore = {
     is_accumulator: boolean;
     is_turbos: boolean;
     onBuyResponse: (contract_info: { contract_id: number; longcode: string; contract_type: string }) => void;
+    onHoverPosition: (is_over: boolean, position: TPortfolioPosition, underlying: string) => void;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onMount: () => void;
     open_accu_contract: TPortfolioPosition | null;
     positions: TPortfolioPosition[];
-    removePositionById: (id: number) => void;
+    removePositionById: (contract_id?: number) => void;
     setContractType: (contract_type: string) => void;
 };
 

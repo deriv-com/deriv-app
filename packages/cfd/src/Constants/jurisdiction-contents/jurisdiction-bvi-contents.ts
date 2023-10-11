@@ -45,7 +45,7 @@ export const getJurisdictionBviContents = ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies'),
+            description: localize('Forex, stocks, stock indices, commodities, cryptocurrencies, and ETFs'),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('170+'),

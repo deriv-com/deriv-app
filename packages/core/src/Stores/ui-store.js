@@ -490,11 +490,6 @@ export default class UIStore extends BaseStore {
         return MAX_MOBILE_WIDTH < this.screen_width && this.screen_width <= MAX_TABLET_WIDTH;
     }
 
-    get is_desktop() {
-        // TODO: remove tablet once there is a design for the specific size.
-        return this.is_tablet || this.screen_width > MAX_TABLET_WIDTH;
-    }
-
     get is_account_switcher_disabled() {
         return !!this.account_switcher_disabled_message;
     }

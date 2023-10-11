@@ -118,7 +118,7 @@ export default class TradersHubStore extends BaseStore {
             is_wallet_tour_open: observable,
             toggleIsWalletTourOpen: action.bound,
             is_new_wallet_modal_open: observable,
-            setNewWalletModalOpen: action.bound,
+            setIsNewWalletModalOpen: action.bound,
         });
 
         reaction(
@@ -823,7 +823,7 @@ export default class TradersHubStore extends BaseStore {
         this.is_wallet_tour_open = value;
     }
 
-    setNewWalletModalOpen(value) {
+    setIsNewWalletModalOpen(value) {
         this.is_new_wallet_modal_open = value;
     }
 }

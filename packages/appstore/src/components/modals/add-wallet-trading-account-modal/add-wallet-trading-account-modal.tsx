@@ -9,7 +9,7 @@ import { getWalletSuccessText } from 'Constants/wallet-success-text';
 const AddWalletTradingAccountModal = observer(() => {
     const { ui, traders_hub } = useStore();
     const { setIsWalletModalVisible } = ui;
-    const { is_new_wallet_modal_open, setNewWalletModalOpen, setWalletModalActiveWalletID, setWalletModalActiveTab } =
+    const { is_new_wallet_modal_open, setIsNewWalletModalOpen, setWalletModalActiveWalletID, setWalletModalActiveTab } =
         traders_hub;
 
     const active_wallet = useActiveWallet();
@@ -24,7 +24,7 @@ const AddWalletTradingAccountModal = observer(() => {
     });
 
     const toggleWalletCreateNewAccountModal = () => {
-        setNewWalletModalOpen(!is_new_wallet_modal_open);
+        setIsNewWalletModalOpen(!is_new_wallet_modal_open);
     };
 
     const card_label = active_wallet?.is_demo ? (
@@ -52,12 +52,12 @@ const AddWalletTradingAccountModal = observer(() => {
             text_submit={wallet_success_text?.text_submit}
             text_cancel={wallet_success_text?.text_cancel}
             onSubmit={() => {
-                setNewWalletModalOpen(false);
+                setIsNewWalletModalOpen(false);
                 setWalletModalActiveTab('Transfer');
                 setIsWalletModalVisible(true);
                 setWalletModalActiveWalletID(active_wallet?.loginid);
             }}
-            onCancel={() => setNewWalletModalOpen(false)}
+            onCancel={() => setIsNewWalletModalOpen(false)}
             is_open={is_new_wallet_modal_open}
             toggleModal={toggleWalletCreateNewAccountModal}
             wallet_card={<WalletAppCard wallet={wallet_details} />}

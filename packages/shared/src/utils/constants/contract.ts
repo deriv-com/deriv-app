@@ -27,7 +27,7 @@ type TContractTypesConfig = {
     config?: { hide_duration?: boolean };
 };
 
-type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
+type TGetContractTypesConfig = (symbol?: string) => Record<string, TContractTypesConfig>;
 
 type TContractConfig = {
     button_name?: React.ReactNode;

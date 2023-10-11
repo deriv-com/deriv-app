@@ -160,19 +160,21 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const closeModal = () => {
-        invalidate('mt5_login_list');
+        if (platform === CFD_PLATFORMS.MT5) invalidate('mt5_login_list');
+        if (platform === CFD_PLATFORMS.DXTRADE) invalidate('trading_platform_accounts');
         closeDialogs();
         disableCFDPasswordModal();
     };
 
     const closeOpenSuccess = () => {
+        if (platform === CFD_PLATFORMS.MT5) invalidate('mt5_login_list');
+        if (platform === CFD_PLATFORMS.DXTRADE) invalidate('trading_platform_accounts');
         disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === ACCOUNT_CATEGORY.REAL) {
             sessionStorage.setItem('cfd_transfer_to_login_id', new_account_response.login || '');
             history.push(routes.cashier_acc_transfer);
         }
-        invalidate('mt5_login_list');
     };
 
     const handleForgotPassword = () => {

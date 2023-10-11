@@ -28,6 +28,7 @@ describe('<AccountTransferForm />', () => {
                         mt5: {},
                     },
                 },
+                mf_account_status: 'verified',
                 mt5_login_list: [
                     {
                         login: 'value',
@@ -177,6 +178,17 @@ describe('<AccountTransferForm />', () => {
         fireEvent.click(submit_button);
 
         expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
+    });
+
+    it('should show an error and transfer button should be disabled if mf_account_status is pending', async () => {
+        mockRootStore.client.mf_account_status = 'pending';
+
+        renderAccountTransferForm();
+
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '1' } });
+
+        expect(await screen.findByText('Unavailable as your documents are still under review')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Transfer' })).toBeDisabled();
     });
 
     it('should not allow to do transfer if accounts from and to are same', () => {

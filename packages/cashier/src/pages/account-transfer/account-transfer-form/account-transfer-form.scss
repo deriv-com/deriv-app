@@ -75,6 +75,10 @@
             margin-bottom: 2.4rem;
         }
 
+        &--disabled {
+            opacity: 0.5;
+        }
+
         &--to-dropdown {
             @include desktop {
                 margin: 0 auto 3.3rem;
@@ -243,6 +247,17 @@
             @include mobile {
                 height: initial;
             }
+        }
+    }
+
+    &__link {
+        color: var(--text-loss-danger);
+        cursor: pointer;
+        font-size: var(--text-size-xxs);
+        font-weight: bold;
+
+        @include mobile {
+            font-size: var(--text-size-xxxs);
         }
     }
 

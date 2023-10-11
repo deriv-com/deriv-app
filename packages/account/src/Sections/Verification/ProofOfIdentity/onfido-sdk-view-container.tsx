@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import countries from 'i18n-iso-countries';
-import { init, SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
 import { CSSTransition } from 'react-transition-group';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Loading, ThemedScrollbars } from '@deriv/components';
@@ -34,6 +33,11 @@ type TOnfidoSdkViewContainer = {
     height?: number | string;
     is_default_enabled?: boolean;
 };
+
+// TODO: Update types for this later once bundle and CDN issue with Onfido is resolved
+type SdkHandle = any;
+type SupportedLanguages = any;
+type SdkResponse = any;
 
 const OnfidoSdkViewContainer = ({
     account_settings,
@@ -99,7 +103,7 @@ const OnfidoSdkViewContainer = ({
         async (service_token: string) => {
             if (!service_token) return;
             try {
-                onfido_init.current = await init({
+                onfido_init.current = await window.Onfido.init({
                     containerId: 'onfido',
                     language: {
                         locale: (getLanguage().toLowerCase() as SupportedLanguages) || 'en',

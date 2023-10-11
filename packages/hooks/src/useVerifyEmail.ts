@@ -5,9 +5,7 @@ import useCountdown from './useCountdown';
 
 const RESEND_COUNTDOWN = 60;
 
-/**
- * @deprecated Please use useVerifyEmail from @deriv/api instead
- */
+// replace this hook with useVerifyEmail from @deriv/api package.
 const useVerifyEmail = (
     type: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0]['payload']['type']
 ) => {

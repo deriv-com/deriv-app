@@ -1,7 +1,7 @@
 import { useFetch } from '@deriv/api';
 import { useCallback, useMemo } from 'react';
 
-/** @deprecated Use `useCurrencyConfig` from `@deriv/api` package instead. */
+// replace this hook with `useCurrencyConfig` from `@deriv/api` package.
 const useCurrencyConfig = () => {
     const { data: website_status_data } = useFetch('website_status');
     const { data: crypto_config_data, ...rest } = useFetch('crypto_config');

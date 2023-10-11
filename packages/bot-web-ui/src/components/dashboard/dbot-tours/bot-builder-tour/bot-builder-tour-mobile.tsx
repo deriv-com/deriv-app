@@ -1,9 +1,12 @@
 import React from 'react';
+
 import { ProgressBarTracker } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { getSetting } from 'Utils/settings';
+
 import { useDBotStore } from 'Stores/useDBotStore';
+import { getSetting } from 'Utils/settings';
+
 import Accordion from '../common/accordion';
 import TourButton from '../common/tour-button';
 import TourStartDialog from '../common/tour-start-dialog';

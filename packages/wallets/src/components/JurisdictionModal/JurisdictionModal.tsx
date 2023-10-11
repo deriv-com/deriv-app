@@ -1,14 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
-
 import { useAvailableMT5Accounts } from '@deriv/api';
-
 import { useModal } from '../ModalProvider';
 import { ModalStepWrapper } from '../ModalStepWrapper';
 import { MT5PasswordModal } from '../MT5PasswordModal';
-
 import JurisdictionCard from './JurisdictionCard';
-
 import './JurisdictionModal.scss';
 
 const JurisdictionModal = () => {

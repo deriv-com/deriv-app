@@ -60,6 +60,10 @@
                     padding-right: 0;
                 }
             }
+
+            & .dc-field--error {
+                top: 9.8rem;
+            }
         }
     }
 }

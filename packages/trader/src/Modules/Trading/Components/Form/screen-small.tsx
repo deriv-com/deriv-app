@@ -13,7 +13,7 @@ import {
 } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
 import AccumulatorsAmountMobile from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-amount-mobile';
 import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display';
-import { BarrierMobile, LastDigitMobile } from 'Modules/Trading/Containers/trade-params-mobile.jsx';
+import { BarrierMobile, LastDigitMobile } from 'Modules/Trading/Containers/trade-params-mobile';
 import ContractType from 'Modules/Trading/Containers/contract-type';
 import MobileWidget from 'Modules/Trading/Components/Elements/mobile-widget.jsx';
 import Purchase from 'Modules/Trading/Containers/purchase';

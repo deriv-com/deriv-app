@@ -9,7 +9,8 @@ import { localize } from '@deriv/translations';
 
 import { useDBotStore } from 'Stores/useDBotStore';
 
-import { FORM_TABS, STRATEGIES } from '../config';
+import { STRATEGIES } from '../config';
+import { TFormData } from '../types';
 
 import '../quick-strategy.scss';
 
@@ -18,10 +19,10 @@ type TDesktopFormWrapper = {
 };
 
 const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
-    const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
-    const { submitForm, isValid } = useFormikContext();
+    // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
+    const { submitForm, isValid, values } = useFormikContext();
     const { quick_strategy_store_1 } = useDBotStore();
-    const { selected_strategy, setSelectedStrategy, setFormVisibility } = quick_strategy_store_1;
+    const { selected_strategy, setSelectedStrategy, setFormVisibility, onSubmit } = quick_strategy_store_1;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
     const handleClose = () => {
         setFormVisibility(false);
@@ -31,6 +32,11 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
         setSelectedStrategy(strategy);
     };
 
+    const onEdit = async () => {
+        onSubmit(values as TFormData, false);
+        localStorage.setItem('qs-fields', JSON.stringify(values));
+    };
+
     return (
         <div className='qs'>
             <div className='qs__head'>
@@ -38,7 +44,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                     <Text weight='bold'>{localize('Quick Strategy')}</Text>
                 </div>
                 <div className='qs__head__action'>
-                    <span onClick={() => handleClose()}>
+                    <span data-testid='qs-desktop-close-button' onClick={() => handleClose()}>
                         <Icon icon='IcCloseIconDbot' />
                     </span>
                 </div>
@@ -70,7 +76,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                 </div>
                 <div className='qs__body__content'>
                     <ThemedScrollbars className='qs__form__container' autohide={false}>
-                        <div className='qs__body__content__head'>
+                        {/* <div className='qs__body__content__head'>
                             <div className='qs__body__content__head__tabs'>
                                 {FORM_TABS.map(tab => {
                                     const active = tab.value === active_tab;
@@ -88,7 +94,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                                     );
                                 })}
                             </div>
-                        </div>
+                        </div> */}
                         <div className='qs__body__content__description'>
                             <div>
                                 <Text size='xs'>{strategy.description}</Text>
@@ -97,10 +103,10 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                         <div className='qs__body__content__form'>{children}</div>
                     </ThemedScrollbars>
                     <div className='qs__body__content__footer'>
-                        <Button secondary disabled={!isValid}>
+                        <Button secondary disabled={!isValid} onClick={onEdit}>
                             {localize('Edit')}
                         </Button>
-                        <Button primary type='submit' onClick={submitForm} disabled={!isValid}>
+                        <Button primary onClick={submitForm} disabled={!isValid}>
                             {localize('Run')}
                         </Button>
                     </div>

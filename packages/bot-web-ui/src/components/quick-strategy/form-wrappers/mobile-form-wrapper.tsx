@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 
 import { Button, SelectNative, Text, ThemedScrollbars } from '@deriv/components';
@@ -8,7 +7,7 @@ import { localize } from '@deriv/translations';
 
 import { useDBotStore } from 'Stores/useDBotStore';
 
-import { FORM_TABS, STRATEGIES } from '../config';
+import { STRATEGIES } from '../config';
 
 import '../quick-strategy.scss';
 
@@ -17,7 +16,7 @@ type TMobileFormWrapper = {
 };
 
 const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) => {
-    const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
+    // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
     const { submitForm, isValid } = useFormikContext();
     const { quick_strategy_store_1 } = useDBotStore();
     const { selected_strategy, setSelectedStrategy } = quick_strategy_store_1;
@@ -61,7 +60,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                 <Text size='xxs'>{strategy.description}</Text>
                             </div>
                         </div>
-                        <div className='qs__body__content__head'>
+                        {/* <div className='qs__body__content__head'>
                             <div className='qs__body__content__head__tabs'>
                                 {FORM_TABS.map(tab => {
                                     const active = tab.value === active_tab;
@@ -79,7 +78,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                     );
                                 })}
                             </div>
-                        </div>
+                        </div> */}
                         <div className='qs__body__content__form'>{children}</div>
                     </ThemedScrollbars>
                     <div className='qs__body__content__footer'>

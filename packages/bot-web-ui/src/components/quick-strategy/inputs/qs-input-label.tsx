@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Popover, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 
 type TQSInputLabel = {
     children?: React.ReactNode;
@@ -11,7 +12,8 @@ type TQSInputLabel = {
 };
 
 const QSInputLabel: React.FC<TQSInputLabel> = ({ label, description, fullwidth = false }) => {
-    const is_mobile = isMobile();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
 
     return (
         <div className={classNames('qs__form__field', { 'full-width': fullwidth })}>

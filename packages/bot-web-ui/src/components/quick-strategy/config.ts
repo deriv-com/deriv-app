@@ -58,12 +58,6 @@ export const duration_unit: TConfigItem = {
     type: 'duration_unit',
     name: 'duration_unit',
     dependencies: ['symbol', 'trade_type'],
-};
-
-export const duration_unit_mobile: TConfigItem = {
-    type: 'duration_unit',
-    name: 'duration_unit',
-    dependencies: ['symbol', 'trade_type'],
     attached: true,
 };
 

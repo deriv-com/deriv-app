@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 
 import { Input, Popover } from '@deriv/components';
 
@@ -9,10 +9,10 @@ type TQSInput = {
     type?: string;
     fullwidth?: boolean;
     attached?: boolean;
-    setFieldValue: (name: string, value: string) => void;
 };
 
-const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attached = false, name, setFieldValue }) => {
+const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attached = false, name }) => {
+    const { setFieldValue, setFieldTouched } = useFormikContext();
     const is_number = type === 'number';
 
     return (
@@ -40,14 +40,26 @@ const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attache
                                 type={type}
                                 leading_icon={
                                     is_number && (
-                                        <button onClick={() => setFieldValue?.(name, String(Number(field.value) - 1))}>
+                                        <button
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                e.preventDefault();
+                                                setFieldTouched(name, true, true);
+                                                setFieldValue(name, String(Number(field.value) - 1));
+                                            }}
+                                        >
                                             -
                                         </button>
                                     )
                                 }
                                 trailing_icon={
                                     is_number && (
-                                        <button onClick={() => setFieldValue?.(name, String(Number(field.value) + 1))}>
+                                        <button
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                e.preventDefault();
+                                                setFieldTouched(name, true, true);
+                                                setFieldValue?.(name, String(Number(field.value) + 1));
+                                            }}
+                                        >
                                             +
                                         </button>
                                     )

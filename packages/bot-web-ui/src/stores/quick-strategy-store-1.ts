@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable, reaction } from 'mobx';
 
 import { ApiHelpers, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
@@ -7,8 +7,6 @@ import { STRATEGIES } from 'Components/quick-strategy/config';
 import { TFormData } from 'Components/quick-strategy/types';
 
 import RootStore from './root-store';
-
-const Blockly = window.Blockly;
 
 export type TActiveSymbol = {
     group: string;
@@ -36,6 +34,14 @@ export default class QuickStrategyStore {
             onSubmit: action,
         });
         this.root_store = root_store;
+        reaction(
+            () => this.is_open,
+            () => {
+                if (!this.is_open) {
+                    this.selected_strategy = 'MARTINGALE';
+                }
+            }
+        );
     }
 
     setFormVisibility = (is_open: boolean) => {
@@ -50,10 +56,7 @@ export default class QuickStrategyStore {
         this.form_data[name] = value;
     };
 
-    onSubmit = async (data: TFormData) => {
-        // eslint-disable-next-line no-console
-        console.log(data, 'test');
-
+    onSubmit = async (data: TFormData, run: boolean) => {
         const { contracts_for } = ApiHelpers.instance;
         const market = await contracts_for.getMarketBySymbol(data.symbol);
         const submarket = await contracts_for.getSubmarketBySymbol(data.symbol);
@@ -107,8 +110,7 @@ export default class QuickStrategyStore {
 
         const { derivWorkspace: workspace } = Blockly;
 
-        // if (button === 'run') {
-        if (true) {
+        if (run) {
             workspace
                 .waitForBlockEvent({
                     block_type: 'trade_definition',
@@ -120,11 +122,7 @@ export default class QuickStrategyStore {
                 });
         }
 
-        // if (this.is_open) {
-        //     this.loadDataStrategy();
-        // }
-
-        this.is_open = false;
+        this.setFormVisibility(false);
 
         await load({
             block_string: Blockly.Xml.domToText(strategy_dom),

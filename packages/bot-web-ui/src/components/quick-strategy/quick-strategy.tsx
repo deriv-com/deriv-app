@@ -1,19 +1,21 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable simple-import-sort/imports */
 import React from 'react';
-import { MobileFullPageModal, Modal, MobileWrapper, DesktopWrapper } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { useDBotStore } from 'Stores/useDBotStore';
+import { Form as FormikForm, Formik } from 'formik';
+import * as Yup from 'yup';
+
+import { ApiHelpers } from '@deriv/bot-skeleton';
+import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import './quick-strategy.scss';
+import { localize } from '@deriv/translations';
+
+import { useDBotStore } from 'Stores/useDBotStore';
+
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
-import Form from './form';
-import { Formik, Form as FormikForm } from 'formik';
 import { SIZE_MIN, STRATEGIES } from './config';
-import * as Yup from 'yup';
-import { ApiHelpers } from '@deriv/bot-skeleton';
-import { TDurationItemRaw, TConfigItem, TFormData } from './types';
+import Form from './form';
+import { TConfigItem, TDurationItemRaw, TFormData } from './types';
+
+import './quick-strategy.scss';
 
 type TFormikWrapper = {
     children: React.ReactNode;
@@ -42,6 +44,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         Object.keys(data).forEach(key => {
             initial_value[key] = data[key];
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -113,7 +116,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     };
 
     const handleSubmit = (form_data: TFormData) => {
-        onSubmit(form_data);
+        onSubmit(form_data, true); // true to load and run the bot
         localStorage.setItem('qs-fields', JSON.stringify(form_data));
     };
 
@@ -135,33 +138,26 @@ const QuickStrategy = observer(() => {
     return (
         <FormikWrapper>
             <FormikForm>
-                <>
-                    <MobileWrapper>
-                        <MobileFullPageModal
-                            is_modal_open={is_open}
-                            className='quick-strategy__wrapper'
-                            header={localize('Quick Strategy')}
-                            onClickClose={handleClose}
-                            height_offset='8rem'
-                        >
-                            <MobileFormWrapper>
-                                <Form />
-                            </MobileFormWrapper>
-                        </MobileFullPageModal>
-                    </MobileWrapper>
-                    <DesktopWrapper>
-                        <Modal
-                            className='modal--strategy'
-                            is_open={is_open}
-                            toggleModal={handleClose}
-                            width={'99.6rem'}
-                        >
-                            <DesktopFormWrapper>
-                                <Form />
-                            </DesktopFormWrapper>
-                        </Modal>
-                    </DesktopWrapper>
-                </>
+                <MobileWrapper>
+                    <MobileFullPageModal
+                        is_modal_open={is_open}
+                        className='quick-strategy__wrapper'
+                        header={localize('Quick Strategy')}
+                        onClickClose={handleClose}
+                        height_offset='8rem'
+                    >
+                        <MobileFormWrapper>
+                            <Form />
+                        </MobileFormWrapper>
+                    </MobileFullPageModal>
+                </MobileWrapper>
+                <DesktopWrapper>
+                    <Modal className='modal--strategy' is_open={is_open} width={'99.6rem'}>
+                        <DesktopFormWrapper>
+                            <Form />
+                        </DesktopFormWrapper>
+                    </Modal>
+                </DesktopWrapper>
             </FormikForm>
         </FormikWrapper>
     );

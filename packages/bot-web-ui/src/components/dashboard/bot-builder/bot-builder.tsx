@@ -1,17 +1,20 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { observer } from '@deriv/stores';
+
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
 import QuickStrategy1 from '../../quick-strategy';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
-import QuickStrategy from '../quick-strategy';
+
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
-    const { dashboard, app } = useDBotStore();
+    const { dashboard, app, quick_strategy_store_1 } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
+    const { is_open } = quick_strategy_store_1;
 
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
@@ -19,7 +22,7 @@ const BotBuilder = observer(() => {
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
-    }, []);
+    }, [onMount, onUnmount]);
 
     return (
         <>
@@ -47,8 +50,7 @@ const BotBuilder = observer(() => {
             {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}
             <LoadModal />
             <SaveModal />
-            <QuickStrategy />
-            <QuickStrategy1 />
+            {is_open && <QuickStrategy1 />}
         </>
     );
 });

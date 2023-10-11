@@ -195,6 +195,7 @@
             &.full-width {
                 width: 100%;
             }
+
             @include mobile() {
                 width: 100%;
                 &.no-top-spacing {
@@ -336,6 +337,13 @@
             &__field {
                 margin: 0 4rem;
                 text-align: center;
+            }
+        }
+        &.error {
+            .dc-input {
+                &__container {
+                    border: 1px solid var(--text-loss-danger);
+                }
             }
         }
     }

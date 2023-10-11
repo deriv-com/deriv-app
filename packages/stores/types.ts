@@ -520,6 +520,7 @@ type TCommonStoreError = {
     should_show_refresh?: boolean;
     type?: string;
 };
+
 type TCommonStoreServicesError = {
     code?: string;
     message?: string;
@@ -564,12 +565,14 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
     is_account_settings_visible: boolean;
+    is_additional_kyc_info_modal_open: boolean;
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;
     is_wallet_modal_visible: boolean;
     is_chart_asset_info_visible?: boolean;
     is_chart_layout_default: boolean;
     is_closing_create_real_account_modal: boolean;
+    is_kyc_information_submitted_modal_open: boolean;
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
@@ -657,6 +660,8 @@ type TUiStore = {
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
+    toggleAdditionalKycInfoModal: () => void;
+    toggleKycInformationSubmittedModal: () => void;
 };
 
 type TPortfolioStore = {
@@ -671,12 +676,13 @@ type TPortfolioStore = {
     is_accumulator: boolean;
     is_turbos: boolean;
     onBuyResponse: (contract_info: { contract_id: number; longcode: string; contract_type: string }) => void;
+    onHoverPosition: (is_over: boolean, position: TPortfolioPosition, underlying: string) => void;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onMount: () => void;
     open_accu_contract: TPortfolioPosition | null;
     positions: TPortfolioPosition[];
-    removePositionById: (id: number) => void;
+    removePositionById: (contract_id?: number) => void;
     setContractType: (contract_type: string) => void;
 };
 

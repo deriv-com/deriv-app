@@ -95,8 +95,7 @@ const Sidebar = observer(() => {
     React.useEffect(() => {
         /* 
            This is done because debounce was not working added a settimeout on 
-           the ref bu using a listener on every key it will clear the prev timeout id
-           and will add a new on the last stroke
+           on every key it will clear the prev timeout id and will add a new on the last stroke
         */
         let timeout_id: ReturnType<typeof setTimeout>;
         const getValueForRudderStack = () => {

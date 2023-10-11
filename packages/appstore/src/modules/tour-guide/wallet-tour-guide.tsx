@@ -1,12 +1,18 @@
 import React from 'react';
 import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
-import { getWalletStepConfig, getWalletStepLocale, wallet_tour_styles } from 'Constants/tour-steps-config';
+import {
+    getWalletStepConfig,
+    getWalletStepLocale,
+    wallet_tour_styles,
+    getWalletStepConfigResponsive,
+} from 'Constants/tour-steps-config';
 import { useAvailableWallets, useCFDAccounts } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 
 const WalletTourGuide = observer(() => {
-    const { traders_hub } = useStore();
+    const { traders_hub, ui } = useStore();
     const { is_wallet_tour_open, toggleIsWalletTourOpen } = traders_hub;
+    const { is_mobile } = ui;
 
     const [joyride_index, setJoyrideIndex] = React.useState(0);
 
@@ -52,6 +58,10 @@ const WalletTourGuide = observer(() => {
         }
     };
 
+    const steps = is_mobile
+        ? getWalletStepConfigResponsive()
+        : getWalletStepConfig(has_mt5_account, is_all_wallets_added);
+
     return (
         <Joyride
             callback={handleJoyrideCallback}
@@ -64,7 +74,7 @@ const WalletTourGuide = observer(() => {
             run={is_wallet_tour_open}
             scrollOffset={150}
             stepIndex={joyride_index}
-            steps={getWalletStepConfig(has_mt5_account, is_all_wallets_added)}
+            steps={steps}
             styles={wallet_tour_styles}
         />
     );

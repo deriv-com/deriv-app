@@ -856,7 +856,9 @@
 
     &__mismatch-container {
         .idv-form {
+            @include desktop{
             margin-bottom: 1.6rem;
+            }
         }
 
         .proof-of-identity__submit-button {

@@ -21,7 +21,7 @@ const WalletSuccessContentMapper: WalletSuccessContentMapperType = (is_demo, acc
         title = <Localize i18n_default_text='Your {{account_title}} account is ready' values={{ account_title }} />;
         description = (
             <Localize
-                i18n_default_text='You can now start practicing trading with your {{account_title}} demo account.'
+                i18n_default_text='You can now start practicing trading with your {{account_title}} account.'
                 values={{ account_title }}
             />
         );

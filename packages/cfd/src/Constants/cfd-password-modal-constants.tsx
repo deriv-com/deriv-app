@@ -5,22 +5,26 @@ export const getWalletCFDInfo = (type: string) => {
         case 'synthetic':
             return {
                 icon: 'IcRebrandingMt5DerivedDashboard',
-                title: localize('MT5 Derived'),
+                account_title: localize('MT5 Derived'),
+                modal_title: localize('Derived demo'),
             };
         case 'all':
             return {
                 icon: 'IcRebrandingMt5SwapFree',
-                title: localize('Swap-Free'),
+                account_title: localize('MT5 Swap-Free'),
+                modal_title: localize('Swap-Free demo'),
             };
         case 'financial':
             return {
                 icon: 'IcRebrandingMt5FinancialDashboard',
                 title: localize('MT5 Financial'),
+                modal_title: localize('Financial demo'),
             };
         default:
             return {
                 icon: '',
-                title: '',
+                account_title: '',
+                modal_title: '',
             };
     }
 };

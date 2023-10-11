@@ -329,7 +329,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const wallet_details = {
         balance,
-        account_title: getWalletCFDInfo(account_type.type).title,
+        account_title: getWalletCFDInfo(account_type.type).account_title,
         gradient_card_class: active_wallet?.gradient_header_class,
         icon: active_wallet?.icon,
         is_demo: active_wallet?.is_demo,
@@ -346,7 +346,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const wallet_success_text = active_wallet?.is_demo
-        ? getWalletSuccessText(active_wallet?.is_demo, getWalletCFDInfo(account_type.type).title)
+        ? getWalletSuccessText(active_wallet?.is_demo, getWalletCFDInfo(account_type.type).modal_title)
         : undefined;
 
     return (
@@ -384,7 +384,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             show_eu_related_content={show_eu_related_content}
                             type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
-                            wallet_account_title={getWalletCFDInfo(account_type.type).title}
+                            wallet_account_title={getWalletCFDInfo(account_type.type).account_title}
                         />
                     }
                     icon={

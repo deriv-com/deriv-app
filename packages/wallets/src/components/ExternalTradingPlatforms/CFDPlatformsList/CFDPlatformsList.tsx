@@ -5,13 +5,10 @@ import { CTraderList } from '../CTraderList';
 import { MT5PlatformsList } from '../MT5PlatformsList';
 import { OtherCFDPlatformsList } from '../OtherCFDPlatformsList';
 import './CFDPlatformsList.scss';
-import { MT5AccountTypeModal } from '../../MT5AccountTypeModal';
-import { useModal } from '../../ModalProvider';
 
 const CFDPlatformsList = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
-    const { show } = useModal();
 
     return (
         <div className='wallets-cfd-list'>
@@ -24,11 +21,7 @@ const CFDPlatformsList = () => {
                 <div className='wallets-cfd-list__header-description'>
                     <h1>
                         Trade with leverage and tight spreads for better returns on trades.{' '}
-                        <a
-                            className='wallets-cfd-list__header-description__link'
-                            href='#'
-                            onClick={() => show(<MT5AccountTypeModal />)}
-                        >
+                        <a className='wallets-cfd-list__header-description__link' href='#'>
                             Learn more
                         </a>
                     </h1>

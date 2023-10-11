@@ -1,8 +1,6 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-
 import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
-
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { buy_sell } from 'Constants/buy-sell';
@@ -11,7 +9,6 @@ import BaseStore from 'Stores/base_store';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-
 import { get, init, timePromise } from '../utils/server_time';
 
 export default class GeneralStore extends BaseStore {

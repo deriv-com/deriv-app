@@ -1,9 +1,6 @@
 import { action, autorun, computed, makeObservable, observable } from 'mobx';
-
 import { isMobile, isTouchDevice, LocalStore, routes } from '@deriv/shared';
-
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
-
 import BaseStore from './base-store';
 
 const store_name = 'ui_store';

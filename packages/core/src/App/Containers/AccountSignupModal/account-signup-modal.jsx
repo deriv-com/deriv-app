@@ -1,20 +1,15 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
 import { getLocation, SessionStore } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
-
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
-
 import validateSignupFields from './validate-signup-fields.jsx';
-
 import 'Sass/app/modules/account-signup.scss';
 
 const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, onSignup, residence_list }) => {

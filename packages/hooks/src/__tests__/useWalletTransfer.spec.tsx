@@ -240,13 +240,26 @@ describe('useWalletTransfer', () => {
         );
     });
 
-    it('from_account should be undefined by default', () => {
+    it('from_account should be an active wallet by default', () => {
         const {
             result: {
                 current: { from_account },
             },
         } = renderHook(() => useWalletTransfer(), { wrapper });
 
-        expect(from_account).toBeUndefined();
+        expect(from_account).toEqual({
+            account_type: 'wallet',
+            active_wallet_icon: 'IcWalletCurrencyUsd',
+            balance: 100,
+            currency: 'USD',
+            demo_account: 0,
+            display_currency_code: 'USD',
+            gradient_class: 'wallet-card__usd-bg',
+            icon: 'IcWalletCurrencyUsd',
+            is_demo: false,
+            loginid: 'CRW1030',
+            shortcode: 'svg',
+            type: 'fiat',
+        });
     });
 });

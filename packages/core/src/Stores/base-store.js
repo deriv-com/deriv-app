@@ -1,5 +1,4 @@
 import { action, intercept, makeObservable, observable, reaction, toJS, when } from 'mobx';
-
 import { isEmptyObject, isProduction, Validator } from '@deriv/shared';
 
 /**

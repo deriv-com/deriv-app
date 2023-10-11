@@ -1,10 +1,22 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, InputField } from '@deriv/components';
-import Dialog from './dialog.jsx';
+import Dialog from './dialog';
 import { observer, useStore } from '@deriv/stores';
+import moment from 'moment';
+
+type TTimePickerProps = {
+    end_times: moment.Moment[];
+    is_nativepicker?: boolean;
+    name: string;
+    onChange: (e: { target: { name: string; value: string } }) => Promise<void>;
+    padding?: string;
+    placeholder: string;
+    selected_time: string;
+    start_times: moment.Moment[];
+    validation_errors?: string[];
+};
 
 const class_prefix = 'time-picker';
 
@@ -19,11 +31,11 @@ const TimePicker = observer(
         selected_time,
         start_times,
         validation_errors,
-    }) => {
+    }: TTimePickerProps) => {
         const { ui } = useStore();
         const { current_focus, setCurrentFocus } = ui;
         const [is_open, setIsOpen] = React.useState(false);
-        const [wrapper_ref, setWrapperRef] = React.useState(null);
+        const [wrapper_ref, setWrapperRef] = React.useState<HTMLDivElement | null>(null);
 
         React.useEffect(() => {
             document.addEventListener('mousedown', handleClickOutside);
@@ -34,22 +46,22 @@ const TimePicker = observer(
             setIsOpen(!is_open);
         };
 
-        const handleChange = arg => {
+        const handleChange = (arg: string | React.ChangeEvent<HTMLInputElement>) => {
             // To handle nativepicker;
-            const value = typeof arg === 'object' ? arg.target.selected_time : arg;
+            const value = typeof arg === 'object' ? arg.target.value : arg;
 
             if (value !== selected_time) {
                 onChange({ target: { name, value } });
             }
         };
 
-        const saveRef = node => {
+        const saveRef: React.RefCallback<HTMLDivElement> = node => {
             if (!node) return;
             setWrapperRef(node);
         };
 
-        const handleClickOutside = event => {
-            if (!wrapper_ref?.contains(event.target) && is_open) {
+        const handleClickOutside = (event: Event) => {
+            if (!wrapper_ref?.contains(event.target as Node) && is_open) {
                 setIsOpen(false);
             }
         };
@@ -63,8 +75,8 @@ const TimePicker = observer(
                         value={selected_time}
                         onChange={handleChange}
                         name={name}
-                        min={start_times[0]}
-                        max={end_times[end_times.length - 1]}
+                        min={start_times[0]?.format('HH:mm')}
+                        max={end_times[end_times.length - 1]?.format('HH:mm')}
                     />
                 ) : (
                     <React.Fragment>
@@ -108,18 +120,5 @@ const TimePicker = observer(
         );
     }
 );
-
-TimePicker.propTypes = {
-    end_times: PropTypes.array,
-    is_clearable: PropTypes.bool,
-    is_nativepicker: PropTypes.bool,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    padding: PropTypes.string,
-    placeholder: PropTypes.string,
-    selected_time: PropTypes.string,
-    start_times: PropTypes.array,
-    validation_errors: PropTypes.array,
-};
 
 export default TimePicker;

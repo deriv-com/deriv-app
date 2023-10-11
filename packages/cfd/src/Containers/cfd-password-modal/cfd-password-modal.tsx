@@ -346,7 +346,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const wallet_details = {
         balance,
-        account_title: walletCFDInfo.description_title,
+        account_title: walletCFDInfo.card_title,
         gradient_card_class: active_wallet?.gradients.card[theme],
         icon: active_wallet?.icons[theme],
         is_demo: active_wallet?.is_virtual,

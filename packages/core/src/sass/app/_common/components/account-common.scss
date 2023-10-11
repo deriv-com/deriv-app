@@ -644,6 +644,12 @@
             overflow-y: scroll;
             justify-content: center;
             padding: 0 1.6rem;
+
+            &--status{
+                    height: 100%;
+                    width: 100%;
+                    position: absolute;
+            }
         }
 
         &--reset {
@@ -675,13 +681,15 @@
         .icon {
             width: 128px;
             height: 128px;
-            margin-top: 5.2rem;
             margin-bottom: 2.6rem;
+
+            @include desktop{
+                margin-top: 5.2rem;
+            }
 
             @include mobile {
                 width: 72px;
                 height: 72px;
-                margin-top: 2.6rem;
             }
         }
 
@@ -715,7 +723,6 @@
 
     &__text {
         @include mobile {
-            width: 94%;
             text-align: center;
         }
     }

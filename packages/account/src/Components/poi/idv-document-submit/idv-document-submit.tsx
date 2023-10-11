@@ -30,8 +30,13 @@ import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
 } from 'Helpers/utils';
-import { DUPLICATE_ACCOUNT_ERROR_MESSAGE, GENERIC_ERROR_MESSAGE } from 'Configs/poi-error-config';
+import {
+    CLAIMED_DOCUMENT_ERROR_MESSAGE,
+    DUPLICATE_ACCOUNT_ERROR_MESSAGE,
+    GENERIC_ERROR_MESSAGE,
+} from 'Configs/poi-error-config';
 import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
+import { API_ERROR_CODES } from 'Constants/api-error-codes';
 
 type TIDVDocumentSubmitProps = {
     handleBack: React.MouseEventHandler;
@@ -128,16 +133,18 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
             ...formatIDVFormValues(values, selected_country.value),
         };
 
-        WS.send(submit_data).then(
-            (response: IdentityVerificationAddDocumentResponse & { error: { message: string } }) => {
-                setSubmitting(false);
-                if (response.error) {
-                    setStatus({ error_message: response?.error?.message ?? GENERIC_ERROR_MESSAGE });
-                    return;
-                }
-                handleViewComplete();
-            }
-        );
+        const idv_update_response = await WS.send(submit_data);
+        if (idv_update_response.error) {
+            const response_error =
+                idv_update_response.error?.code === API_ERROR_CODES.CLAIMED_DOCUMENT
+                    ? CLAIMED_DOCUMENT_ERROR_MESSAGE
+                    : GENERIC_ERROR_MESSAGE;
+            setStatus({ error_msg: response_error });
+            setSubmitting(false);
+            return;
+        }
+        setSubmitting(false);
+        handleViewComplete();
     };
 
     return (

@@ -6,7 +6,6 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
 import DailyTransactions from './daily-transactions';
-import { TransactionsForOneDay } from './transaction-for-day';
 import './transaction-list.scss';
 
 type TTransactionList = {
@@ -133,15 +132,6 @@ const TransactionList = observer(({ contentScrollHandler, is_wallet_name_visible
                     suffix_icon='IcFilter'
                     value={filter}
                 />
-                {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
-                    <TransactionsForOneDay
-                        key={day}
-                        day={day}
-                        transaction_list={
-                            transaction_list as React.ComponentProps<typeof TransactionsForOneDay>['transaction_list']
-                        }
-                    />
-                ))}
             </div>
             <ThemedScrollbars
                 className={classNames('transaction-list__scroll', {

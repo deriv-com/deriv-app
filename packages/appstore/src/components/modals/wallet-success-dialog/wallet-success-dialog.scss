@@ -49,16 +49,10 @@
     }
 }
 
-// Had to resolve to this because wrapper_classname on MobileDialog doesn't work
-.dc-mobile-dialog__content {
+.dc-mobile-dialog__wallet-success {
     display: grid;
-    place-content: center;
-
-    & > div {
-        height: 100%;
-        width: 100vw;
-        padding: 1.6rem;
-    }
+    align-content: center;
+    padding: 1.6rem;
 }
 
 .dc-btn__group {

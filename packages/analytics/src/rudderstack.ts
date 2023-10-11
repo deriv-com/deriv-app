@@ -133,7 +133,7 @@ type IdentifyAction = {
     language: string;
 };
 
-type TEvents = {
+export type TEvents = {
     ce_chart_types_form: ChartTypesFormAction;
     ce_indicators_types_form: IndicatorsTypesFormAction;
     ce_market_types_form: MarketTypesFormAction;

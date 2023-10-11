@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal, Text, WalletCard, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { useActiveWallet } from '@deriv/hooks';
+import { Localize } from '@deriv/translations';
+import { useActiveWalletAccount } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { formatMoney } from '@deriv/shared';
 import { getAccountName } from 'Constants/utils';
@@ -16,7 +16,7 @@ const WalletSuccessDialog = observer(() => {
         setIsWalletModalVisible,
         is_mobile,
     } = ui;
-    const active_wallet = useActiveWallet();
+    const active_wallet = useActiveWalletAccount();
 
     const wallet_details = {
         currency: active_wallet?.currency_config?.display_code,
@@ -49,7 +49,7 @@ const WalletSuccessDialog = observer(() => {
                 align='center'
                 className='wallet-success-dialog__description'
             >
-                {localize('Make a deposit into your new Wallet.')}
+                <Localize i18n_default_text='Make a deposit into your new Wallet.' />
             </Text>
         </React.Fragment>
     );
@@ -57,7 +57,7 @@ const WalletSuccessDialog = observer(() => {
     const ModalFooter = () => (
         <Button.Group>
             <Button secondary onClick={() => toggleIsWalletCreationSuccessModalOpen(false)}>
-                {localize('Maybe later')}
+                <Localize i18n_default_text='Maybe later' />
             </Button>
             <Button
                 primary
@@ -68,7 +68,7 @@ const WalletSuccessDialog = observer(() => {
                     setWalletModalActiveWalletID(active_wallet?.loginid);
                 }}
             >
-                {localize('Deposit')}
+                <Localize i18n_default_text='Deposit' />
             </Button>
         </Button.Group>
     );
@@ -95,11 +95,12 @@ const WalletSuccessDialog = observer(() => {
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='deriv_app'
+                    wrapper_classname='wallet-success'
                     visible={is_wallet_creation_success_modal_open}
                     onClose={() => toggleIsWalletCreationSuccessModalOpen(false)}
                     has_full_height
                 >
-                    <div className='wallet-success-dialog__content'>
+                    <div className='wallet-success-dialog'>
                         <ModalContent />
                         <div className='wallet-success-dialog__footer'>
                             <ModalFooter />

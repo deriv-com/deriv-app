@@ -46,7 +46,6 @@ jest.mock('@deriv/api', () => ({
                 },
             };
         }
-
         return { data: undefined };
     }),
 }));

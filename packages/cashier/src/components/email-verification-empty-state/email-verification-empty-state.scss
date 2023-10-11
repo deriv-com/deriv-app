@@ -1,0 +1,11 @@
+.email-verification-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4.6rem;
+
+    @include mobile {
+        gap: 2.4rem;
+    }
+}

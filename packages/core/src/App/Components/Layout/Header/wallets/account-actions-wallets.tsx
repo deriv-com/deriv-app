@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
 import { routes, PlatformContext, moduleLoader } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useActiveAccount } from '@deriv/hooks';
 import { LoginButton } from '../login-button.jsx';
@@ -35,15 +35,17 @@ const AccountActionsWallets = observer(({ is_deposit_button_disabled }: TAccount
     if (is_logged_in) {
         return is_mobile ? (
             <React.Fragment>
-                <ToggleNotifications
-                    count={notifications_count}
-                    is_visible={is_notifications_visible}
-                    toggleDialog={toggleNotificationsModal}
-                    tooltip_message={undefined}
-                />
                 <React.Suspense fallback={<div />}>
                     <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
                 </React.Suspense>
+                <div className='acc-info__wallets-notification-icon'>
+                    <ToggleNotifications
+                        count={notifications_count}
+                        is_visible={is_notifications_visible}
+                        toggleDialog={toggleNotificationsModal}
+                        tooltip_message={undefined}
+                    />
+                </div>
             </React.Fragment>
         ) : (
             <React.Fragment>
@@ -70,26 +72,23 @@ const AccountActionsWallets = observer(({ is_deposit_button_disabled }: TAccount
                 </React.Suspense>
                 {!is_virtual && !currency && (
                     <div className='set-currency'>
-                        <Button
-                            onClick={() => openRealAccountSignup('set_currency')}
-                            has_effect
-                            type='button'
-                            text={localize('Set currency')}
-                            primary
-                        />
+                        <Button onClick={() => openRealAccountSignup('set_currency')} has_effect type='button' primary>
+                            <Localize i18n_default_text='Set currency' />
+                        </Button>
                     </div>
                 )}
                 {currency && (
                     <Button
                         className='acc-info__button'
                         has_effect
-                        text={localize('Manage funds')}
                         // this function will be described later
                         // eslint-disable-next-line @typescript-eslint/no-empty-function
                         onClick={() => {}}
                         primary
                         as_disabled={is_deposit_button_disabled}
-                    />
+                    >
+                        <Localize i18n_default_text='Manage funds' />
+                    </Button>
                 )}
             </React.Fragment>
         );

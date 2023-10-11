@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import {
     DesktopWrapper,
     MobileWrapper,
@@ -114,7 +114,7 @@ type TTotals = {
     payout?: number;
 };
 
-type TOpenPositions = {
+type TOpenPositions = RouteComponentProps & {
     component_icon: string;
 };
 

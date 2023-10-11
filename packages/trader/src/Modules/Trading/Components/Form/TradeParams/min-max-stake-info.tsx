@@ -6,9 +6,9 @@ import { observer, useStore } from '@deriv/stores';
 
 type TMinMaxStakeInfo = {
     className?: string;
-    min_stake: number;
-    max_stake: number;
-    currency: string;
+    min_stake?: number;
+    max_stake?: number;
+    currency?: string;
 };
 
 const MinMaxStakeInfo = observer(({ className, currency, max_stake, min_stake }: TMinMaxStakeInfo) => {
@@ -17,8 +17,8 @@ const MinMaxStakeInfo = observer(({ className, currency, max_stake, min_stake }:
     } = useStore();
     return (
         <section className={classNames('trade-container__stake-field', className)}>
-            {!isNaN(min_stake) &&
-                !isNaN(max_stake) &&
+            {!isNaN(Number(min_stake)) &&
+                !isNaN(Number(max_stake)) &&
                 ['Min', 'Max'].map(text => (
                     <Text
                         key={text}

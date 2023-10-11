@@ -12,8 +12,8 @@ export {
     useQuery,
     useMutation,
     useInfiniteQuery,
-    /** @deprecated use `useQuery` instead */
+    // replace this hook with `useQuery`.
     useQuery as useFetch,
-    /** @deprecated use `useMutation` instead */
+    // replace this hook with `useMutation`.
     useMutation as useRequest,
 };

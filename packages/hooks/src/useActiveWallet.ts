@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import useWalletsList from './useWalletsList';
 
-// replace this hook with useActiveWalletAccount.
+// replace this hook with `useActiveWalletAccount`.
 /** A custom hook that returns the wallet object for the current active wallet. */
 const useActiveWallet = () => {
     const { data } = useWalletsList();

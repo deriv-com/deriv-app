@@ -236,8 +236,9 @@ describe('JurisdictionModalContent', () => {
     it('should display content of 4 types of jurisdiction correctly for synthetics account', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
         expect(screen.getAllByText('Assets')).toHaveLength(4);
-        expect(screen.getAllByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toHaveLength(2);
-        expect(screen.getByText('Forex, Stock indices, Commodities and Cryptocurrencies')).toBeInTheDocument();
+        expect(
+            screen.getAllByText('Forex, stocks, stock indices, commodities, cryptocurrencies, and ETFs')
+        ).toHaveLength(3);
         expect(screen.getByText('Forex and Cryptocurrencies')).toBeInTheDocument();
         expect(screen.getAllByText('Leverage')).toHaveLength(4);
         expect(screen.getAllByText('1:1000')).toHaveLength(3);
@@ -317,7 +318,9 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(screen.getByText('Deriv (SVG) LLC (company no. 273 LLC 2020)')).toBeInTheDocument();
         expect(screen.getByText('170+')).toBeInTheDocument();
-        expect(screen.getByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toBeInTheDocument();
+        expect(
+            screen.getByText('Forex, stocks, stock indices, commodities, cryptocurrencies, and ETFs')
+        ).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
         expect(screen.getByText('0.6 pips')).toBeInTheDocument();
     });

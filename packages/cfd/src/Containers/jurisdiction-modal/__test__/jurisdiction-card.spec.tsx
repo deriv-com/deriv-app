@@ -89,7 +89,9 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('170+')).toBeInTheDocument();
-        expect(screen.getByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toBeInTheDocument();
+        expect(
+            screen.getByText('Forex, stocks, stock indices, commodities, cryptocurrencies, and ETFs')
+        ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
@@ -108,7 +110,9 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('Vanuatu')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('170+')).toBeInTheDocument();
-        expect(screen.getByText('Forex, Stock indices, Commodities and Cryptocurrencies')).toBeInTheDocument();
+        expect(
+            screen.getByText('Forex, stocks, stock indices, commodities, cryptocurrencies, and ETFs')
+        ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
@@ -148,7 +152,9 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('British Virgin Islands')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('170+')).toBeInTheDocument();
-        expect(screen.getByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toBeInTheDocument();
+        expect(
+            screen.getByText('Forex, stocks, stock indices, commodities, cryptocurrencies, and ETFs')
+        ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();

@@ -43,19 +43,13 @@ const PersonalDetails = ({
     is_virtual,
     is_fully_authenticated,
     account_opening_reason_list,
-    selected_step_ref,
     closeRealAccountSignup,
     has_real_account,
-    should_scroll_to_error_field = false,
     ...props
 }) => {
     const { account_status, account_settings, residence, real_account_signup_target } = props;
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const [no_confirmation_needed, setNoConfirmationNeeded] = React.useState(false);
-
-    const isSubmitDisabled = errors => {
-        return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
-    };
 
     const handleCancel = values => {
         const current_step = getCurrentStep() - 1;
@@ -94,11 +88,8 @@ const PersonalDetails = ({
     };
 
     const handleValidate = values => {
-        if (values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id) {
-            setNoConfirmationNeeded(true);
-        } else {
-            setNoConfirmationNeeded(false);
-        }
+        setNoConfirmationNeeded(values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id);
+
         let idv_error = {};
         if (is_qualified_for_idv) {
             idv_error = validateIDV(values);
@@ -133,27 +124,15 @@ const PersonalDetails = ({
 
     return (
         <Formik
-            innerRef={selected_step_ref}
             initialValues={{ ...props.value }}
             validate={handleValidate}
             validateOnMount
             enableReinitialize
-            initialStatus={{ is_confirmed: no_confirmation_needed || !is_qualified_for_idv }}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({
-                handleSubmit,
-                errors,
-                isSubmitting,
-                setFieldValue,
-                touched,
-                values,
-                handleChange,
-                handleBlur,
-                status,
-            }) => (
+            {({ handleSubmit, errors, isSubmitting, setFieldValue, touched, values, handleChange, handleBlur }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form
@@ -164,15 +143,13 @@ const PersonalDetails = ({
                             onClick={closeToolTip}
                             data-testid='personal_details_form'
                         >
-                            {should_scroll_to_error_field && (
-                                <ScrollToFieldWithError
-                                    fields_to_scroll_end={isMobile() ? '' : ['account_opening_reason']}
-                                    fields_to_scroll_top={isMobile() ? ['account_opening_reason'] : ''}
-                                    should_recollect_inputs_names={
-                                        values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
-                                    }
-                                />
-                            )}
+                            <ScrollToFieldWithError
+                                fields_to_scroll_end={isMobile() ? '' : ['account_opening_reason']}
+                                fields_to_scroll_top={isMobile() ? ['account_opening_reason'] : ''}
+                                should_recollect_inputs_names={
+                                    values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
+                                }
+                            />
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {!is_qualified_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>
@@ -220,7 +197,7 @@ const PersonalDetails = ({
                                             is_mf={is_mf}
                                             is_qualified_for_idv={is_qualified_for_idv}
                                             editable_fields={getEditableFields(
-                                                status?.is_confirmed,
+                                                values.confirmation_checkbox,
                                                 values?.document_type?.id
                                             )}
                                             residence_list={residence_list}
@@ -241,11 +218,7 @@ const PersonalDetails = ({
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     has_cancel
-                                    is_disabled={
-                                        should_scroll_to_error_field
-                                            ? isSubmitting
-                                            : !status?.is_confirmed || isSubmitDisabled(errors)
-                                    }
+                                    is_disabled={isSubmitting}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}

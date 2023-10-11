@@ -1,15 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {
-    Formik,
-    Field,
-    FormikProps,
-    FormikValues,
-    FormikErrors,
-    FormikHelpers,
-    FormikHandlers,
-    FormikState,
-} from 'formik';
+import { Formik, Field, FormikValues, FormikHelpers, FormikHandlers, FormikState } from 'formik';
 import { StatesList } from '@deriv/api-types';
 import {
     Autocomplete,
@@ -56,10 +47,8 @@ type TAddressDetails = {
         next_step: () => void
     ) => void;
     is_gb_residence: boolean | string;
-    selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
     has_real_account: boolean;
-    should_scroll_to_error_field?: boolean;
 };
 
 type TAutoComplete = {
@@ -79,7 +68,6 @@ type TAutoComplete = {
  * @param validate - function to validate form values
  * @param onSubmit - function to submit form values
  * @param is_gb_residence - is residence Great Britan
- * @param selected_step_ref - reference to selected step
  * @param value - form values
  * @param disabled_items - array of disabled fields
  * @param has_real_account - has real account
@@ -95,10 +83,8 @@ const AddressDetails = observer(
         validate,
         onSubmit,
         is_gb_residence,
-        selected_step_ref,
         disabled_items,
         has_real_account,
-        should_scroll_to_error_field = false,
         ...props
     }: TAddressDetails) => {
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
@@ -110,11 +96,6 @@ const AddressDetails = observer(
 
         const { is_desktop, is_mobile } = ui;
         const { data: states_list, isFetched } = useStatesList(residence);
-
-        const isSubmitDisabled = (errors: FormikErrors<TAddressDetailFormProps> = {}): boolean => {
-            const is_submitting = selected_step_ref?.current?.isSubmitting ?? false;
-            return is_submitting || Object.keys(errors).length > 0;
-        };
 
         const handleCancel = (values: TAddressDetailFormProps) => {
             const current_step = (getCurrentStep?.() || 1) - 1;
@@ -137,13 +118,7 @@ const AddressDetails = observer(
         };
 
         return (
-            <Formik
-                innerRef={selected_step_ref}
-                initialValues={props.value}
-                validate={handleValidate}
-                validateOnMount
-                onSubmit={handleSubmitData}
-            >
+            <Formik initialValues={props.value} validate={handleValidate} validateOnMount onSubmit={handleSubmitData}>
                 {({
                     handleSubmit,
                     errors,
@@ -167,7 +142,7 @@ const AddressDetails = observer(
                                     height_offset='90px'
                                     is_disabled={is_desktop}
                                 >
-                                    {should_scroll_to_error_field && <ScrollToFieldWithError />}
+                                    <ScrollToFieldWithError />
                                     <Text
                                         as='p'
                                         align='left'
@@ -191,7 +166,7 @@ const AddressDetails = observer(
                                                 placeholder={localize('First line of address')}
                                                 disabled={
                                                     disabled_items.includes('address_line_1') ||
-                                                    (props.value?.address_line_1 && has_real_account)
+                                                    (!!props.value?.address_line_1 && has_real_account)
                                                 }
                                             />
                                             <FormInputField
@@ -201,7 +176,7 @@ const AddressDetails = observer(
                                                 placeholder={localize('Second line of address')}
                                                 disabled={
                                                     disabled_items.includes('address_line_2') ||
-                                                    (props.value?.address_line_2 && has_real_account)
+                                                    (!!props.value?.address_line_2 && has_real_account)
                                                 }
                                             />
                                             <FormInputField
@@ -211,7 +186,7 @@ const AddressDetails = observer(
                                                 placeholder={localize('Town/City')}
                                                 disabled={
                                                     disabled_items.includes('address_city') ||
-                                                    (props.value?.address_city && has_real_account)
+                                                    (!!props.value?.address_city && has_real_account)
                                                 }
                                             />
                                             {!isFetched && (
@@ -271,7 +246,8 @@ const AddressDetails = observer(
                                                                     }}
                                                                     disabled={
                                                                         disabled_items.includes('address_state') ||
-                                                                        (props.value?.address_state && has_real_account)
+                                                                        (!!props.value?.address_state &&
+                                                                            has_real_account)
                                                                     }
                                                                 />
                                                             </MobileWrapper>
@@ -286,13 +262,13 @@ const AddressDetails = observer(
                                                     placeholder={localize('State/Province')}
                                                     disabled={
                                                         disabled_items.includes('address_state') ||
-                                                        (props.value?.address_state && has_real_account)
+                                                        (!!props.value?.address_state && has_real_account)
                                                     }
                                                 />
                                             )}
                                             <FormInputField
                                                 name='address_postcode'
-                                                required={is_gb_residence}
+                                                required={!!is_gb_residence}
                                                 label={localize('Postal/ZIP Code')}
                                                 placeholder={localize('Postal/ZIP Code')}
                                                 onChange={e => {
@@ -301,7 +277,7 @@ const AddressDetails = observer(
                                                 }}
                                                 disabled={
                                                     disabled_items.includes('address_postcode') ||
-                                                    (props.value?.address_postcode && has_real_account)
+                                                    (!!props.value?.address_postcode && has_real_account)
                                                 }
                                             />
                                         </div>
@@ -309,9 +285,7 @@ const AddressDetails = observer(
                                 </Div100vhContainer>
                                 <Modal.Footer has_separator is_bypassed={is_mobile}>
                                     <FormSubmitButton
-                                        is_disabled={
-                                            should_scroll_to_error_field ? isSubmitting : isSubmitDisabled(errors)
-                                        }
+                                        is_disabled={isSubmitting}
                                         label={localize('Next')}
                                         is_absolute={is_mobile}
                                         has_cancel

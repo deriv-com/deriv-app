@@ -15,12 +15,12 @@ const MultiplierTradeDescription = ({
             key='1'
         />,
         <Localize
-            i18n_default_text='If you select <0>"Up"</0>, your total profit/loss will be the percentage increase in the underlying asset price, times the multiplier and stake, minus commissions.'
+            i18n_default_text='If you select "<0>Up</0>", your total profit/loss will be the percentage increase in the underlying asset price, times the multiplier and stake, minus commissions.'
             components={[<strong key={0} />]}
             key='2'
         />,
         <Localize
-            i18n_default_text='If you select <0>"Down"</0>, your total profit/loss will be the percentage decrease in the underlying asset price, times the multiplier and stake, minus commissions.'
+            i18n_default_text='If you select "<0>Down</0>", your total profit/loss will be the percentage decrease in the underlying asset price, times the multiplier and stake, minus commissions.'
             components={[<strong key={0} />]}
             key='3'
         />,

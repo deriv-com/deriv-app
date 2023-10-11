@@ -15,9 +15,7 @@ type TItem = {
 };
 
 export const isMajorPairsSymbol = (checked_symbol: string, active_symbols: ActiveSymbols) =>
-    active_symbols.some(
-        ({ submarket_display_name, symbol }) => /Major Pairs/i.test(submarket_display_name) && checked_symbol === symbol
-    );
+    active_symbols.some(({ submarket, symbol }) => /major_pairs/i.test(submarket) && checked_symbol === symbol);
 
 export const contract_category_icon = {
     [localize('Ups & Downs')]: 'IcUpsDowns',

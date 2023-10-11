@@ -76,6 +76,7 @@
             z-index: 4;
             background: var(--fill-normal);
             width: 100%;
+            // transparent border ensures children's margins contribute to height:
             border-bottom: 0.1rem solid transparent;
 
             .inline-message__information {

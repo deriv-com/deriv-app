@@ -8,10 +8,10 @@ type TWeight = 'bold' | 'normal';
 type TBackgroundColor = 'blue' | 'orange' | 'red' | 'gray';
 type TRoundedCorners = 4 | 2;
 
-interface Badge extends React.HTMLAttributes<HTMLSpanElement> {
+interface Badge extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'label'> {
     className?: string;
     custom_color?: string;
-    label: string;
+    label: string | JSX.Element;
     rounded_corners?: TRoundedCorners;
     size?: TBadgeSize;
     weight?: TWeight;

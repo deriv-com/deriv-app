@@ -7,12 +7,12 @@
         border-bottom: 1px solid var(--general-hover);
     }
 
-    &__list {
-        padding: 0.4rem 0.8rem;
-        border-bottom: 1px solid var(--general-hover);
-    }
+    &__footer {
+        border-top: 1px solid var(--general-hover);
+        padding: 1.6rem;
 
-    &__button {
-        margin: 1.6rem;
+        &-button {
+            width: 100%;
+        }
     }
 }

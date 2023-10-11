@@ -1,10 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-
 import './balance-text.scss';
 
 // Todo: this definitely needs to be somewhere else

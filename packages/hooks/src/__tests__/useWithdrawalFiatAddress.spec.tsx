@@ -6,7 +6,7 @@ import useWithdrawalFiatAddress from '../useWithdrawalFiatAddress';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useRequest: jest.fn(() => ({ data: { cashier: 'https://example.com' }, mutate: jest.fn })),
+    useMutation: jest.fn(() => ({ data: { cashier: 'https://example.com' }, mutate: jest.fn })),
 }));
 
 describe('useWithdrawalFiatAddress', () => {

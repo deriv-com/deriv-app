@@ -2777,7 +2777,8 @@ export default class ClientStore extends BaseStore {
         if (Cookies.get('website_status', { domain })) {
             const cookie_value = JSON.parse(Cookies.get('website_status', { domain }));
             const client_country = JSON.parse(cookie_value.website_status).clients_country;
-            this.is_beta_chart = ['tz', 'in', 'us'].includes(client_country);
+            /// Show beta chart only for these countries
+            this.is_beta_chart = ['zw', 'in', 'pk'].includes(client_country);
         }
     };
 }

@@ -59,7 +59,7 @@ jest.mock('Stores/Modules/Trading/Helpers/logic', () => ({
 }));
 
 describe('<ContractDetails />', () => {
-    it('should render componenet with children', () => {
+    it('should render component with children', () => {
         render(<ContractDetails {...mock_default_props} />);
 
         expect(screen.getByText('Reference ID')).toBeInTheDocument();
@@ -69,7 +69,7 @@ describe('<ContractDetails />', () => {
         expect(screen.getByText('Exit time')).toBeInTheDocument();
     });
 
-    it('should render specific componenet for multiplier contract_type', () => {
+    it('should render specific component for multiplier contract_type', () => {
         const new_props = { ...mock_default_props };
         new_props.contract_info.contract_type = contract_types.multiplier;
         new_props.contract_info.transaction_ids = { buy: 420381262708, sell: 420381262710 };
@@ -79,25 +79,18 @@ describe('<ContractDetails />', () => {
         expect(screen.getByText('122,223.00')).toBeInTheDocument();
     });
 
-    it('should render duration ContractAuditItem if show_duration === true', () => {
+    it('should render duration and strike barrier information ContractAuditItem if it is vanillas contract type', () => {
         const new_props = { ...mock_default_props };
+        new_props.is_vanilla = true;
         new_props.contract_info.contract_type = contract_types.vanilla;
         new_props.contract_info.tick_count = 5;
         render(<ContractDetails {...new_props} />);
 
         expect(screen.getByText('Duration')).toBeInTheDocument();
-    });
-
-    it('should render stike barrier information in ContractAuditItem if show_strike_barrier === true', () => {
-        const new_props = { ...mock_default_props };
-        new_props.is_vanilla = true;
-        new_props.contract_info.contract_type = contract_types.vanilla;
-        render(<ContractDetails {...new_props} />);
-
         expect(screen.getByText('Strike')).toBeInTheDocument();
     });
 
-    it('should render barrier information in ContractAuditItem if show_barrier === true', () => {
+    it('should render barrier information in ContractAuditItem if it is digit contract type', () => {
         const new_props = { ...mock_default_props };
         new_props.contract_info.contract_type = contract_types.digit;
         render(<ContractDetails {...new_props} />);
@@ -105,7 +98,7 @@ describe('<ContractDetails />', () => {
         expect(screen.getByText('Target')).toBeInTheDocument();
     });
 
-    it('should render hight and low barriers information in ContractAuditItem if hasTwoBarriers === true', () => {
+    it('should render hight and low barriers information in ContractAuditItem if it is expiry contract type', () => {
         const new_props = { ...mock_default_props };
         new_props.contract_info.contract_type = contract_types.expiry;
         render(<ContractDetails {...new_props} />);
@@ -114,7 +107,7 @@ describe('<ContractDetails />', () => {
         expect(screen.getByText('Low barrier')).toBeInTheDocument();
     });
 
-    it('should render paypout per point information in ContractAuditItem if show_payout_per_point === true', () => {
+    it('should render paypout per point information in ContractAuditItem if is_vanilla === true', () => {
         const new_props = { ...mock_default_props };
         new_props.is_vanilla = true;
         new_props.contract_info.display_number_of_contracts = undefined;

@@ -43,7 +43,7 @@ describe('<ContractAudit />', () => {
         expect(screen.getByText(ContractHistory)).toBeInTheDocument();
     });
 
-    it('should call toggleHistoryTab function if the user clicks on tab with falsy index', () => {
+    it('should call toggleHistoryTab function if onTabItemClick function was called with 0 index', () => {
         render(<ContractAudit {...mocked_default_props} />);
 
         userEvent.click(screen.getByText(ContractDetails));

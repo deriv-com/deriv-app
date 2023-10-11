@@ -16,12 +16,12 @@ const mock_default_props = {
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    formatDate: jest.fn(() => <div>formatDate</div>),
-    formatTime: jest.fn(() => <div>formatTime</div>),
+    formatDate: jest.fn(() => <div>2023-10-11</div>),
+    formatTime: jest.fn(() => <div>12:40:45 GMT</div>),
 }));
 
 describe('<ContractAuditItem />', () => {
-    it('should render component if necessary props were pased', () => {
+    it('should render component if necessary props were passed', () => {
         render(<ContractAuditItem {...mock_default_props} />);
 
         expect(screen.getByTestId(test_id)).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe('<ContractAuditItem />', () => {
     it('should render formatDate and formatTime inside component if it was passed', () => {
         render(<ContractAuditItem {...mock_default_props} timestamp={123} />);
 
-        expect(screen.getByText(/formatDate/i)).toBeInTheDocument();
-        expect(screen.getByText(/formatTime/i)).toBeInTheDocument();
+        expect(screen.getByText(/2023-10-11/i)).toBeInTheDocument();
+        expect(screen.getByText(/12:40:45 GMT/i)).toBeInTheDocument();
     });
 });

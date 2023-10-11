@@ -343,6 +343,8 @@ const AccountWizard = props => {
     if (!mounted) return null;
 
     if (!finished) {
+        const employment_status = state_items.find(item => item.form_value.employment_status)?.form_value
+            .employment_status;
         const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);
             const BodyComponent = step.body;
@@ -359,6 +361,7 @@ const AccountWizard = props => {
                     form_error={form_error}
                     {...passthrough}
                     key={step_index}
+                    employment_status={employment_status}
                 />
             );
         });

@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { Dialog, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+
 import { useDBotStore } from '../../../../stores/useDBotStore';
 
 const TourEndDialog = observer(() => {

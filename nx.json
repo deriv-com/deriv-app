@@ -4,6 +4,7 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
+        "accessToken": "ZTMzMDk4MmEtNjMyOC00ZjFiLWI5MTktYTc1ODhiOTI0OTJifHJlYWQ=",
         "cacheableOperations": [
           "build",
           "test",

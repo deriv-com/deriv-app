@@ -1,5 +1,5 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { RudderStack } from '@deriv/analytics';
 import ContractType from './contract-type';
@@ -7,14 +7,22 @@ import { getContractTypeCategoryIcons, findContractCategory } from '../../../Hel
 import { TContractCategory, TContractType, TList } from './types';
 
 type TContractTypeWidget = {
-    name?: string;
+    name: string;
     value: TContractType['value'];
     list: TContractCategory[];
-    onChange: (event: DeepPartial<React.ChangeEvent<HTMLInputElement>>) => void;
+    onChange: (e: {
+        target: {
+            name: string;
+            value: unknown;
+        };
+    }) => Promise<void>;
     languageChanged?: boolean;
 };
 
-const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TContractTypeWidget) => {
+const ContractTypeWidget = observer(({ name, value, list, onChange, languageChanged }: TContractTypeWidget) => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
     const [is_dialog_open, setDialogVisibility] = React.useState<boolean | null>();
     const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
@@ -24,14 +32,14 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
 
     const handleClickOutside = React.useCallback(
         (event: MouseEvent) => {
-            if (isMobile()) return;
+            if (is_mobile) return;
             if (wrapper_ref && !wrapper_ref.current?.contains(event.target as Node) && is_dialog_open) {
                 setDialogVisibility(false);
                 setInfoDialogVisibility(false);
                 setItem({ ...item, value });
             }
         },
-        [item, value]
+        [item, value, is_mobile]
     );
 
     React.useEffect(() => {
@@ -276,6 +284,6 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             </ContractType.Dialog>
         </div>
     );
-};
+});
 
 export default ContractTypeWidget;

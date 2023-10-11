@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
 
-const TradersHub = () => {
+const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const {
         notification_messages_ui: Notifications,
@@ -148,6 +148,6 @@ const TradersHub = () => {
             )}
         </>
     );
-};
+});
 
-export default observer(TradersHub);
+export default TradersHub;

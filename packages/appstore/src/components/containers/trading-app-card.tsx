@@ -9,13 +9,18 @@ import {
     BrandConfig,
     DERIV_PLATFORM_NAMES,
 } from 'Constants/platform-config';
-import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
+import { useActiveWallet } from '@deriv/hooks';
+import './trading-app-card.scss';
+
+type TWalletsProps = {
+    wallet_account?: ReturnType<typeof useActiveWallet>;
+};
 
 const TradingAppCard = ({
     availability,
@@ -33,7 +38,8 @@ const TradingAppCard = ({
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
-}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
+    wallet_account,
+}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
     const {
         common,
         traders_hub,
@@ -42,6 +48,9 @@ const TradingAppCard = ({
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
+
+    const demo_label = localize('Demo');
+    const is_real_account = wallet_account ? !wallet_account.is_virtual : is_real;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -111,9 +120,9 @@ const TradingAppCard = ({
                 <div className='trading-app-card__details'>
                     <div>
                         <Text className='title' size='xs' line_height='s' color='prominent'>
-                            {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                            {!is_real_account && sub_title ? `${sub_title} ${demo_label}` : sub_title}
                         </Text>
-                        {short_code_and_region && (
+                        {!wallet_account && short_code_and_region && (
                             <Text
                                 weight='bolder'
                                 size='xxxs'
@@ -131,7 +140,7 @@ const TradingAppCard = ({
                         weight='bold'
                         color={action_type === 'trade' ? 'prominent' : 'general'}
                     >
-                        {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
+                        {!is_real_account && !sub_title && !is_deriv_platform ? `${name} ${demo_label}` : name}
                     </Text>
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {appDescription()}

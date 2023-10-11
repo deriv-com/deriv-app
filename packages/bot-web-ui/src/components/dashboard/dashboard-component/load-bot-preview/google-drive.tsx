@@ -7,10 +7,9 @@ import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const GoogleDrive = observer(() => {
-    const { google_drive, load_modal, dashboard } = useDBotStore();
+    const { google_drive, load_modal } = useDBotStore();
     const { is_authorised } = google_drive;
     const { is_open_button_loading, onDriveConnect, onDriveOpen } = load_modal;
-    const { setOpenSettings } = dashboard;
 
     return (
         <div className='load-strategy__container'>
@@ -36,7 +35,6 @@ const GoogleDrive = observer(() => {
                             text={localize('Open')}
                             onClick={() => {
                                 onDriveOpen();
-                                setOpenSettings('import');
                             }}
                             is_loading={is_open_button_loading}
                             has_effect

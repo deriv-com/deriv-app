@@ -48,7 +48,7 @@ describe('getStatusBadgeConfig', () => {
 
         renderCheck(account_status, openFailedVerificationModal, selected_account_type);
 
-        expect(screen.getByText('Need verification.'));
+        expect(screen.getByText(/Needs verification./));
         expect(screen.getByText('IcAlertInfo'));
 
         const btn = screen.getByRole('link', { name: 'Verify now' });

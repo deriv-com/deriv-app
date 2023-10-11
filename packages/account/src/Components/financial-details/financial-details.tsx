@@ -11,7 +11,6 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
 import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import InlineNoteWithIcon from 'Components/inline-note-with-icon';

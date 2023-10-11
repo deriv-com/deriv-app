@@ -10,7 +10,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 const TradeModals = observer(() => {
     const { ui, client, common } = useStore();
     const { resetPreviousSymbol, clearPurchaseInfo, requestProposal: resetPurchase } = useTraderStore();
-    const { is_virtual, is_logged_in, mf_account_status } = client;
+    const { is_virtual, is_logged_in } = client;
 
     const { services_error } = common;
     const {

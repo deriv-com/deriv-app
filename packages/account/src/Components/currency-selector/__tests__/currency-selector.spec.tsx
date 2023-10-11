@@ -32,8 +32,8 @@ describe('<CurrencySelector/>', () => {
 
     const fiat_msg =
         'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.';
-    const dxtrade_eu_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs or Deriv X account.';
+    const mt5_cfd_msg =
+        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs account.';
     const dxtrade_non_eu_msg =
         'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 or Deriv X account.';
     const mt5_eu =
@@ -323,7 +323,7 @@ describe('<CurrencySelector/>', () => {
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(dxtrade_eu_msg);
+        runCommonTests(mt5_eu);
     });
 
     it('should render Fiat currencies when is_mt5_allowed and is_eu are true', () => {
@@ -336,7 +336,7 @@ describe('<CurrencySelector/>', () => {
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(mt5_eu);
+        runCommonTests(mt5_cfd_msg);
     });
 
     it('should render Fiat currencies when is_mt5_allowed is true', () => {

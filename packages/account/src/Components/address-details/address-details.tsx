@@ -4,11 +4,11 @@ import {
     Formik,
     Field,
     FormikProps,
-    FormikValues,
     FormikErrors,
     FormikHelpers,
     FormikHandlers,
     FormikState,
+    FieldProps,
 } from 'formik';
 import { StatesList } from '@deriv/api-types';
 import {
@@ -231,7 +231,7 @@ const AddressDetails = observer(
                                             )}
                                             {states_list?.length > 0 ? (
                                                 <Field name='address_state'>
-                                                    {({ field }: FormikValues) => (
+                                                    {({ field }: FieldProps) => (
                                                         <React.Fragment>
                                                             <DesktopWrapper>
                                                                 <Autocomplete
@@ -267,7 +267,7 @@ const AddressDetails = observer(
                                                                     placeholder={localize('Please select')}
                                                                     label={localize('State/Province')}
                                                                     value={
-                                                                        address_state_to_display ?? values.address_state
+                                                                        address_state_to_display || values.address_state
                                                                     }
                                                                     list_items={states_list}
                                                                     use_text={true}

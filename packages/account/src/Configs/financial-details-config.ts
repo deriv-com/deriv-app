@@ -210,7 +210,6 @@ export const getOccupationList = () => [
         text: localize('Students'),
         value: 'Students',
     },
-
     {
         text: localize('Unemployed'),
         value: 'Unemployed',

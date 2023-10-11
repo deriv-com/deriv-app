@@ -26,23 +26,6 @@ describe('<FinancialDetails />', () => {
         goToPreviousStep: jest.fn(() => ({ errors: {} })),
         value: {},
         employment_status: '',
-        income_source_enum: [{}],
-        employment_status_enum: [{}],
-        employment_industry_enum: [{}],
-        occupation_enum: [{}],
-        source_of_wealth_enum: [{}],
-        education_level_enum: [{}],
-        net_income_enum: [{}],
-        estimated_worth_enum: [{}],
-        account_turnover_enum: [{}],
-        forex_trading_experience_enum: [{}],
-        forex_trading_frequency_enum: [{}],
-        binary_options_trading_experience_enum: [{}],
-        binary_options_trading_frequency_enum: [{}],
-        cfd_trading_experience_enum: [{}],
-        cfd_trading_frequency_enum: [{}],
-        other_instruments_trading_experience_enum: [{}],
-        other_instruments_trading_frequency_enum: [{}],
     };
 
     const fieldsRenderCheck = () => {
@@ -54,33 +37,6 @@ describe('<FinancialDetails />', () => {
         expect(screen.getByText('Occupation')).toBeInTheDocument();
         expect(screen.getByText('Source of income')).toBeInTheDocument();
         expect(screen.getByText('Source of wealth')).toBeInTheDocument();
-    };
-
-    const setFormValues = () => {
-        const select_inputs = screen.getAllByRole('combobox');
-        const account_turnover_select = select_inputs.find(
-            (option: FormikValues) => option.name === 'account_turnover'
-        );
-        const education_level_select = select_inputs.find((option: FormikValues) => option.name === 'education_level');
-        const employment_indystry_select = select_inputs.find(
-            (option: FormikValues) => option.name === 'employment_industry'
-        );
-        const estimated_worth_select = select_inputs.find((option: FormikValues) => option.name === 'estimated_worth');
-        const income_source_select = select_inputs.find((option: FormikValues) => option.name === 'income_source');
-        const net_income_select = select_inputs.find((option: FormikValues) => option.name === 'net_income');
-
-        const source_of_wealth_select = select_inputs.find(
-            (option: FormikValues) => option.name === 'source_of_wealth'
-        );
-
-        userEvent.type(account_turnover_select as HTMLElement, 'account turnover 1');
-
-        userEvent.type(education_level_select as HTMLElement, 'education level 2');
-        userEvent.type(employment_indystry_select as HTMLElement, 'employment industry 1');
-        userEvent.type(estimated_worth_select as HTMLElement, 'estimated worth 2');
-        userEvent.type(income_source_select as HTMLElement, 'income source 1');
-        userEvent.type(net_income_select as HTMLElement, 'net income 1');
-        userEvent.type(source_of_wealth_select as HTMLElement, 'source of wealth 1');
     };
 
     it('should render "FinancialDetails" for desktop', () => {
@@ -196,8 +152,30 @@ describe('<FinancialDetails />', () => {
 
         const select_inputs = screen.getAllByRole('combobox');
 
-        setFormValues();
+        const account_turnover_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'account_turnover'
+        );
+        const education_level_select = select_inputs.find((option: FormikValues) => option.name === 'education_level');
+        const employment_indystry_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'employment_industry'
+        );
+        const estimated_worth_select = select_inputs.find((option: FormikValues) => option.name === 'estimated_worth');
+        const income_source_select = select_inputs.find((option: FormikValues) => option.name === 'income_source');
+        const net_income_select = select_inputs.find((option: FormikValues) => option.name === 'net_income');
+
+        const source_of_wealth_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'source_of_wealth'
+        );
         const occuppation_select = select_inputs.find((option: FormikValues) => option.name === 'occupation');
+
+        userEvent.type(account_turnover_select as HTMLElement, 'account turnover 1');
+
+        userEvent.type(education_level_select as HTMLElement, 'education level 2');
+        userEvent.type(employment_indystry_select as HTMLElement, 'employment industry 1');
+        userEvent.type(estimated_worth_select as HTMLElement, 'estimated worth 2');
+        userEvent.type(income_source_select as HTMLElement, 'income source 1');
+        userEvent.type(net_income_select as HTMLElement, 'net income 1');
+        userEvent.type(source_of_wealth_select as HTMLElement, 'source of wealth 1');
 
         const occupation_text = screen.getAllByText('Unemployed')[0];
         expect(occupation_text).toBeInTheDocument();

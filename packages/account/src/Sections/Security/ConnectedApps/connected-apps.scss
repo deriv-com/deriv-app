@@ -28,6 +28,17 @@
             gap: 0.8rem;
         }
 
+        &--ordered_list {
+            list-style: auto;
+            font-size: 1rem;
+            padding: 1.5rem;
+            gap: 0.5rem;
+
+            & li {
+                margin-bottom: 0.5rem;
+            }
+        }
+
         &--row {
             display: flex;
             justify-content: space-between;

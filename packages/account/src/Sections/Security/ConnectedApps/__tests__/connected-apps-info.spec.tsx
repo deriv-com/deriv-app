@@ -8,7 +8,7 @@ describe('<ConnectedAppsInfo />', () => {
     });
 
     it('should have h4 element with text "What are connected apps"', () => {
-        const heading = screen.getByRole('heading', { name: 'What are connected apps' });
+        const heading = screen.getByRole('heading', { name: 'What are connected apps?' });
         expect(heading).toBeInTheDocument();
     });
     it('should have an ordered list', () => {

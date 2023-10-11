@@ -44,9 +44,7 @@ const ConnectedApps = observer(() => {
                 {is_error && <ErrorComponent />}
                 {connected_apps.length ? (
                     <div className='connected-apps__content--wrapper'>
-                        <div>
-                            <ConnectedAppsInfo />
-                        </div>
+                        <ConnectedAppsInfo />
                         {is_mobile ? (
                             <div className='connected-apps__list--wrapper'>
                                 {connected_apps.map(connected_app => (

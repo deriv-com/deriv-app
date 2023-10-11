@@ -445,6 +445,9 @@
 
             &__fieldset {
                 margin-bottom: 2rem;
+                @include mobile{
+                    margin-bottom: 1.6rem;
+                }
                 &-input {
                     @include desktop {
                         margin-bottom: unset;
@@ -467,10 +470,6 @@
     .additional-field {
         margin-top: 0.8rem;
         margin-bottom: 2rem;
-
-        @include mobile {
-            margin-top: 1rem;
-        }
     }
 }
 

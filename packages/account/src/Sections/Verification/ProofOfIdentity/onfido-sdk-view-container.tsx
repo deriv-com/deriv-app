@@ -34,6 +34,7 @@ type TOnfidoSdkViewContainer = {
     is_default_enabled?: boolean;
 };
 
+// TODO: Update types for this later once bundle and CDN issue with Onfido is resolved
 type SdkHandle = any;
 type SupportedLanguages = any;
 type SdkResponse = any;

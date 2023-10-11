@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
-
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
-
 import useAuthorize from './useAuthorize';
 import useCurrencyConfig from './useCurrencyConfig';
 

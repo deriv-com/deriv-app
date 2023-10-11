@@ -3,8 +3,8 @@ import { useHistory } from 'react-router';
 import { Button, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
 import { useWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
-import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
+import { Localize } from '@deriv/translations';
+import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet.scss';
 
 type TAccountSwitcherWalletProps = {
@@ -42,29 +42,19 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
                 </Text>
             </div>
             <ThemedScrollbars height={450}>
-                <div className='account-switcher-wallet__list'>
-                    {dtrade_account_wallets?.map(account => {
-                        const show_badge = account?.is_malta_wallet || account?.is_virtual;
-
-                        return (
-                            <AccountSwitcherWalletItem
-                                key={account.dtrade_loginid}
-                                account={account}
-                                closeAccountsDialog={closeAccountsDialog}
-                                show_badge={show_badge}
-                            />
-                        );
-                    })}
-                </div>
+                <AccountSwitcherWalletList wallets={dtrade_account_wallets} closeAccountsDialog={closeAccountsDialog} />
             </ThemedScrollbars>
-            <Button
-                className='account-switcher-wallet__button'
-                has_effect
-                text={localize('Looking for CFDs? Go to Trader’s hub')}
-                onClick={handleTradersHubRedirect}
-                secondary
-                small
-            />
+            <div className='account-switcher-wallet__footer'>
+                <Button
+                    className='account-switcher-wallet__footer-button'
+                    has_effect
+                    onClick={handleTradersHubRedirect}
+                    secondary
+                    small
+                >
+                    <Localize i18n_default_text='Looking for CFDs? Go to Trader’s hub' />
+                </Button>
+            </div>
         </div>
     );
 };

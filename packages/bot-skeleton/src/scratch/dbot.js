@@ -5,11 +5,9 @@ import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { compareXml, observer as globalObserver } from '../utils';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
-
 import main_xml from './xml/main.xml';
 import DBotStore from './dbot-store';
 import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
-
 import './blockly';
 
 class DBot {

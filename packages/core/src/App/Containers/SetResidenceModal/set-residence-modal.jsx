@@ -2,15 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-
 import { Button, Dialog, Text } from '@deriv/components';
 import { website_name } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
 import { connect } from 'Stores/connect';
-
 import SetResidenceForm from './set-residence-form.jsx';
-
 import 'Sass/app/modules/set-residence.scss';
 
 // TODO: Move some of these functions to helpers since some of them are shared with AccountSignUpModal

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { idv_error_statuses, TIDVErrorStatus } from '@deriv/shared';
+import { TIDVErrorStatus, IDV_ERROR_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import IdvDocumentPending from 'Assets/ic-idv-document-pending.svg';
@@ -19,12 +19,12 @@ const IdvSubmitComplete = observer(
         const { is_already_attempted } = client;
 
         const is_mismatch_error =
-            mismatch_status === idv_error_statuses.poi_name_dob_mismatch ||
-            mismatch_status === idv_error_statuses.poi_dob_mismatch ||
-            mismatch_status === idv_error_statuses.poi_name_mismatch;
+            mismatch_status === IDV_ERROR_STATUS.NameDOBMismatch.code ||
+            mismatch_status === IDV_ERROR_STATUS.DobMismatch.code ||
+            mismatch_status === IDV_ERROR_STATUS.NameMismatch.code;
 
         const is_expired_or_failed_error =
-            mismatch_status === idv_error_statuses.poi_expired || mismatch_status === idv_error_statuses.poi_failed;
+            mismatch_status === IDV_ERROR_STATUS.Expired.code || mismatch_status === IDV_ERROR_STATUS.Failed.code;
 
         const getHeaderText = () => {
             if (is_already_attempted) {

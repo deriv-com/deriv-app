@@ -3,7 +3,7 @@ import { STATUS_CODES, getUnsupportedContracts } from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 import { TContractInfo } from '../contract';
-import { idv_error_statuses } from '../constants/idv-failure-codes';
+import { IDV_ERROR_STATUS } from '../constants/idv-failure-codes';
 
 type TIsUnSupportedContract = {
     contract_type?: string;
@@ -43,7 +43,7 @@ export const formatPortfolioPosition = (
     };
 };
 
-export type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
+export type TIDVErrorStatus = keyof typeof IDV_ERROR_STATUS;
 
 //formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
 export const formatIDVError = (errors: string[], status_code: string) => {
@@ -52,26 +52,22 @@ export const formatIDVError = (errors: string[], status_code: string) => {
      */
     if (errors.length === 0 && (status_code === STATUS_CODES.NONE || status_code === STATUS_CODES.VERIFIED))
         return null;
-    const error_keys: Record<string, TIDVErrorStatus> = {
-        name: 'POI_NAME_MISMATCH',
-        birth: 'POI_DOB_MISMATCH',
-        rejected: 'POI_FAILED',
-    };
     if (status_code === STATUS_CODES.EXPIRED) {
-        return 'POI_EXPIRED';
+        return IDV_ERROR_STATUS.Expired.code;
     }
-    const status: TIDVErrorStatus[] = [];
+    const status: Array<TIDVErrorStatus> = [];
     errors.forEach(error => {
-        const error_regex = RegExp(/(name|birth|rejected)/i).exec(error);
-        if (error_regex) {
-            status.push(error_keys[error_regex[0].toLowerCase()]);
+        const error_key: TIDVErrorStatus = IDV_ERROR_STATUS[error as keyof typeof IDV_ERROR_STATUS]
+            .code as TIDVErrorStatus;
+        if (error_key) {
+            status.push(error_key);
         }
     });
-    return status.includes(error_keys.name) &&
-        status.includes(error_keys.birth) &&
-        !status.includes(error_keys.rejected)
-        ? 'POI_NAME_DOB_MISMATCH'
-        : status[0] ?? 'POI_FAILED';
+    return status.includes(IDV_ERROR_STATUS.NameMismatch.code as TIDVErrorStatus) &&
+        status.includes(IDV_ERROR_STATUS.DobMismatch.code as TIDVErrorStatus) &&
+        !status.includes(IDV_ERROR_STATUS.Failed.code as TIDVErrorStatus)
+        ? IDV_ERROR_STATUS.NameDOBMismatch.code
+        : status[0] ?? IDV_ERROR_STATUS.Failed.code;
 };
 
 export const isVerificationServiceSupported = (

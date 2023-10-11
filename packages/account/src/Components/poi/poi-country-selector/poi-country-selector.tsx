@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
 import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { idv_error_statuses, isMobile, TIDVErrorStatus } from '@deriv/shared';
+import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from 'Components/form-footer';
 
@@ -62,10 +62,10 @@ const CountrySelector = ({
     }, [residence_list]);
 
     let failed_message: JSX.Element | null = null;
-    if (mismatch_status === idv_error_statuses.poi_expired) {
+    if (mismatch_status === IDV_ERROR_STATUS.Expired.code) {
         failed_message = <Localize i18n_default_text='Your identity document has expired.' />;
     }
-    if (mismatch_status === idv_error_statuses.poi_failed) {
+    if (mismatch_status === IDV_ERROR_STATUS.Failed.code) {
         failed_message = (
             <Localize i18n_default_text='We were unable to verify the identity document with the details provided.' />
         );

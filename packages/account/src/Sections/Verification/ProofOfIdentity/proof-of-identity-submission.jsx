@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatIDVError, WS, idv_error_statuses } from '@deriv/shared';
+import { formatIDVError, WS, IDV_ERROR_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
@@ -120,7 +120,7 @@ const POISubmission = observer(
                 setIdentityService(identity_last_attempt);
             } else if (
                 mismatch_status &&
-                ![idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].includes(mismatch_status) &&
+                ![IDV_ERROR_STATUS.Expired.code, IDV_ERROR_STATUS.Failed.code].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {
                 setSubmissionService(service_code.idv);

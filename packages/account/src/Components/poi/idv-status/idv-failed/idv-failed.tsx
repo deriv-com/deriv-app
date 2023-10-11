@@ -11,7 +11,7 @@ import { Button, DesktopWrapper, HintBox, Loading, Text } from '@deriv/component
 import {
     filterObjProperties,
     getIDVNotApplicableOption,
-    idv_error_statuses,
+    IDV_ERROR_STATUS,
     isEmptyObject,
     isMobile,
     removeEmptyPropertiesFromObject,
@@ -77,7 +77,7 @@ const IdvFailed = ({
     residence_list,
     account_settings,
     handleSubmit,
-    mismatch_status = idv_error_statuses.poi_failed,
+    mismatch_status = IDV_ERROR_STATUS.Failed.code as TIDVErrorStatus,
     latest_status,
     selected_country,
 }: TIdvFailed) => {
@@ -100,7 +100,7 @@ const IdvFailed = ({
     });
 
     const is_document_upload_required = React.useMemo(
-        () => [idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].includes(mismatch_status),
+        () => [IDV_ERROR_STATUS.Expired.code, IDV_ERROR_STATUS.Failed.code].includes(mismatch_status),
         [mismatch_status]
     );
 
@@ -118,12 +118,23 @@ const IdvFailed = ({
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
+    const renderErrorMessage = (mismatch_status: TIDVErrorStatus) => {
+        switch (mismatch_status) {
+            case IDV_ERROR_STATUS.Expired.code:
+                return 'Your identity document has expired.';
+            case IDV_ERROR_STATUS.Failed.code:
+                return 'We were unable to verify the identity document with the details provided.';
+            default:
+                return IDV_ERROR_STATUS[mismatch_status].message;
+        }
+    };
+
     const generateIDVError = React.useCallback(() => {
         const document_name = is_document_upload_required
             ? 'identity document'
             : getIDVDocumentType(latest_status, chosen_country);
         switch (mismatch_status) {
-            case idv_error_statuses.poi_name_dob_mismatch:
+            case IDV_ERROR_STATUS.NameDOBMismatch.code:
                 return {
                     required_fields: ['first_name', 'last_name', 'date_of_birth'],
                     side_note_image: <PoiNameDobExample />,
@@ -141,7 +152,7 @@ const IdvFailed = ({
                         />
                     ),
                 };
-            case idv_error_statuses.poi_name_mismatch:
+            case IDV_ERROR_STATUS.NameMismatch.code:
                 return {
                     required_fields: ['first_name', 'last_name'],
                     side_note_image: <PoiNameExample />,
@@ -159,7 +170,7 @@ const IdvFailed = ({
                         />
                     ),
                 };
-            case idv_error_statuses.poi_dob_mismatch:
+            case IDV_ERROR_STATUS.DobMismatch.code:
                 return {
                     required_fields: ['date_of_birth'],
                     side_note_image: <PoiDobExample />,
@@ -192,16 +203,13 @@ const IdvFailed = ({
                         <Localize
                             i18n_default_text='{{ banner_message }}'
                             values={{
-                                banner_message:
-                                    mismatch_status === 'POI_EXPIRED'
-                                        ? 'Your identity document has expired.'
-                                        : 'We were unable to verify the identity document with the details provided.',
+                                banner_message: renderErrorMessage(mismatch_status),
                             }}
                         />
                     ),
                 };
         }
-    }, [latest_status, mismatch_status, chosen_country]);
+    }, [is_document_upload_required, latest_status, chosen_country, mismatch_status]);
 
     React.useEffect(() => {
         const initializeFormValues = async (required_fields: string[]) => {

@@ -5,8 +5,7 @@ import APIProvider from '../APIProvider';
 import { useAuthorize } from '../hooks';
 import { useMutation } from '..';
 
-jest.mock('../useRequest', () => jest.fn());
-
+jest.mock('../useMutation', () => jest.fn());
 jest.mock('../hooks/useAuthorize', () => jest.fn());
 
 const mockUseAuthorize = useAuthorize as jest.MockedFunction<typeof useAuthorize>;
@@ -19,7 +18,7 @@ describe('useAccountSecurity', () => {
 
     const mockMutate = jest.fn();
 
-    test('should call useGetTwoFa and get is_TwoFA_enabled in response', async () => {
+    it('should call useGetTwoFa and get is_TwoFA_enabled in response', async () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: true });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
@@ -46,7 +45,7 @@ describe('useAccountSecurity', () => {
         expect(result.current.is_TwoFA_enabled).toEqual(true);
     });
 
-    test('should call useGetTwoFa and if authorization fails then mutate function should not be called', async () => {
+    it('should call useGetTwoFa and if authorization fails then mutate function should not be called', async () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: false });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
@@ -73,7 +72,7 @@ describe('useAccountSecurity', () => {
         expect(mockMutate).not.toHaveBeenCalled();
     });
 
-    test('should call useGetTwoFa and if authorization succeeds then mutate function should be called', async () => {
+    it('should call useGetTwoFa and if authorization succeeds then mutate function should be called', async () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: true });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
@@ -100,7 +99,7 @@ describe('useAccountSecurity', () => {
         expect(mockMutate).toHaveBeenCalled();
     });
 
-    test('should call useGetSecretKey and get secret_key in response', async () => {
+    it('should call useGetSecretKey and get secret_key in response', async () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: true });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
@@ -126,7 +125,7 @@ describe('useAccountSecurity', () => {
         expect(result.current.data?.account_security?.totp?.secret_key).toEqual('secret_key_123');
     });
 
-    test('should call useGetSecretKey and if authorization fails then mutate function should not be called', async () => {
+    it('should call useGetSecretKey and if authorization fails then mutate function should not be called', async () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: false });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
@@ -153,7 +152,7 @@ describe('useAccountSecurity', () => {
         expect(mockMutate).not.toHaveBeenCalled();
     });
 
-    test('should call useGetSecretKey and if authorization succeeds then mutate function should be called', async () => {
+    it('should call useGetSecretKey and if authorization succeeds then mutate function should be called', async () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: false });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
@@ -180,7 +179,7 @@ describe('useAccountSecurity', () => {
         expect(mockMutate).not.toHaveBeenCalled();
     });
 
-    test('should call useSendUserOTP and get is_TwoFA_enabled in response', async () => {
+    it('should call useSendUserOTP and get is_TwoFA_enabled in response', async () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: true });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
@@ -201,7 +200,7 @@ describe('useAccountSecurity', () => {
         expect(result.current.is_TwoFA_enabled).toEqual(false);
     });
 
-    test('should call useSendUserOTP and if authorization succeeds then mutate function should be called', async () => {
+    it('should call useSendUserOTP and if authorization succeeds then mutate function should be called', async () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: true });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
@@ -222,7 +221,7 @@ describe('useAccountSecurity', () => {
         expect(mockMutate).toHaveBeenCalled();
     });
 
-    test('should call useSendUserOTP and if authorization fails then mutate function should not be called', async () => {
+    it('should call useSendUserOTP and if authorization fails then mutate function should not be called', async () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseAuthorize.mockReturnValue({ isSuccess: false });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest

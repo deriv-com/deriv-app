@@ -35,7 +35,7 @@ type TCFDPasswordModalProps = {
 };
 
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
-    const { client, traders_hub, ui, common } = useStore();
+    const { client, traders_hub, ui } = useStore();
 
     const {
         account_status,
@@ -66,11 +66,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         setError,
         submitCFDPassword,
         submitMt5Password,
-        setAccountType,
-        setJurisdictionSelectedShortcode,
     } = useCfdStore();
-
-    const { setAppstorePlatform } = common;
 
     const history = useHistory();
     const { is_wallet_enabled } = useFeatureFlags();
@@ -374,51 +370,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         active_wallet?.currency
     );
 
-    // console.log(
-    //     'We are here, platform = ',
-    //     platform,
-    //     ', account_type?.type = ',
-    //     account_type?.type,
-    //     ', account_type?.category = ',
-    //     account_type?.category,
-    //     ', jurisdiction_selected_shortcode = ',
-    //     jurisdiction_selected_shortcode,
-    //     ', is_selected_mt5_verified = ',
-    //     is_selected_mt5_verified,
-    //     // ', account_status = ',
-    //     // account_status
-    //     ', dxtrade_accounts_list = ',
-    //     dxtrade_accounts_list,
-    //     ', mt5_login_list = ',
-    //     mt5_login_list
-    // );
-
-    // const updateData = () => {
-    //     setAppstorePlatform(CFD_PLATFORMS.MT5);
-    //     setAccountType({ category: 'real', type: 'all' });
-    //     setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
-    // };
-
-    // return (
-    //     <WalletSuccessDialog
-    //         description={wallet_success_text.description}
-    //         has_cancel={Boolean(wallet_success_text.text_cancel)}
-    //         is_open={should_show_success_for_wallets}
-    //         onSubmit={closeModal}
-    //         text_submit={wallet_success_text.text_submit}
-    //         text_cancel={wallet_success_text?.text_cancel}
-    //         onCancel={closeModal}
-    //         title={wallet_success_text.title}
-    //         toggleModal={updateData}
-    //         wallet_card={<WalletAppCard wallet={wallet_details} />}
-    //     />
-    // );
-
     return (
         <React.Fragment>
             {password_modal}
             {password_dialog}
-            {/* TODO: Remove this once development is completed */}
             {is_wallet_enabled && is_migrated ? (
                 <WalletSuccessDialog
                     description={wallet_success_text.description}

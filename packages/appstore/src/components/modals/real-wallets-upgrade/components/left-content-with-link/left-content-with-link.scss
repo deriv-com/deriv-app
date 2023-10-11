@@ -1,7 +1,6 @@
 .left-content-with-link {
     height: auto;
     display: flex;
-    flex-direction: row;
     justify-content: center;
 
     @include mobile {
@@ -24,7 +23,6 @@
 
     &__link {
         display: flex;
-        flex-direction: row;
         align-items: center;
 
         @include mobile {

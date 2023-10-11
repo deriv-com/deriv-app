@@ -4,7 +4,7 @@ import { getCurrencyDisplayCode } from '@deriv/shared';
 import { TInputMode } from './input-field';
 
 type TInputProps = {
-    ariaLabel: string;
+    ariaLabel?: string;
     changeValue: (
         e: React.ChangeEvent<HTMLInputElement>,
         callback?: (evt: React.ChangeEvent<HTMLInputElement>) => void
@@ -13,22 +13,22 @@ type TInputProps = {
     className?: string;
     classNameDynamicSuffix?: string;
     classNameInlinePrefix?: string;
-    current_focus?: string | null;
+    current_focus: string | null;
     data_testid?: string;
     data_tip?: string;
     data_value?: number | string;
     display_value: number | string;
-    fractional_digits: number;
+    fractional_digits?: number;
     has_error?: boolean;
     id?: string;
     inline_prefix?: string;
     inputmode?: TInputMode;
-    is_autocomplete_disabled: boolean;
+    is_autocomplete_disabled?: boolean;
     is_disabled?: boolean;
     is_hj_whitelisted: boolean;
-    is_incrementable: boolean;
+    is_incrementable?: boolean;
     is_read_only: boolean;
-    max_length: number;
+    max_length?: number;
     name: string;
     onBlur?: React.FocusEventHandler<HTMLInputElement>;
     onClick?: React.MouseEventHandler<HTMLInputElement>;
@@ -128,7 +128,7 @@ const Input = ({
                 data-value={data_value}
                 disabled={!!is_disabled}
                 id={id}
-                maxLength={fractional_digits ? max_length + fractional_digits + 1 : max_length}
+                maxLength={fractional_digits && max_length ? max_length + fractional_digits + 1 : max_length}
                 name={name}
                 onBlur={onBlurHandler}
                 onChange={onChange}

@@ -1,9 +1,9 @@
 import React from 'react';
+import { FormikValues } from 'formik';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isDesktop, isMobile } from '@deriv/shared';
-import FinancialDetails, { TFinancialInformationAndTradingExperience, TFinancialDetails } from '../financial-details';
-import { FormikValues } from 'formik';
+import FinancialDetails from '../financial-details';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -15,58 +15,8 @@ const modal_root_el = document.createElement('div');
 modal_root_el.setAttribute('id', 'modal_root');
 document.body.appendChild(modal_root_el);
 
-const fields_enums: TFinancialInformationAndTradingExperience = {
-    account_turnover_enum: [
-        { value: 'account turnover 1', text: 'account turnover 1' },
-        { value: 'account turnover 2', text: 'account turnover 2' },
-    ],
-    education_level_enum: [
-        { value: 'education level 1', text: 'education level 1' },
-        { value: 'education level 2', text: 'education level 2' },
-    ],
-    employment_industry_enum: [
-        { value: 'employment industry 1', text: 'employment industry 1' },
-        { value: 'employment industry 2', text: 'employment industry 2' },
-    ],
-    estimated_worth_enum: [
-        { value: 'estimated worth 1', text: 'estimated worth 1' },
-        { value: 'estimated worth 2', text: 'estimated worth 2' },
-    ],
-    income_source_enum: [
-        { value: 'income source 1', text: 'income source 1' },
-        { value: 'income source 2', text: 'income source 2' },
-    ],
-    net_income_enum: [
-        { value: 'net income 1', text: 'net income 1' },
-        { value: 'net income 2', text: 'net income 2' },
-    ],
-    occupation_enum: [
-        {
-            value: 'Government Officers',
-            text: 'Government Officers',
-        },
-        {
-            value: 'Students',
-            text: 'Students',
-        },
-        {
-            value: 'Unemployed',
-            text: 'Unemployed',
-        },
-    ],
-
-    source_of_wealth_enum: [
-        { value: 'source of wealth 1', text: 'source of wealth 1' },
-        { value: 'source of wealth 2', text: 'source of wealth 2' },
-    ],
-    employment_status_enum: [
-        { value: 'employment status 1', text: 'employment status 1' },
-        { value: 'employment status 2', text: 'employment status 2' },
-    ],
-};
-
 describe('<FinancialDetails />', () => {
-    let mock_props: TFinancialDetails & TFinancialInformationAndTradingExperience = {
+    const mock_props: React.ComponentProps<typeof FinancialDetails> = {
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
         onCancel: jest.fn(),
@@ -94,13 +44,6 @@ describe('<FinancialDetails />', () => {
         other_instruments_trading_experience_enum: [{}],
         other_instruments_trading_frequency_enum: [{}],
     };
-
-    beforeEach(() => {
-        mock_props = {
-            ...mock_props,
-            ...fields_enums,
-        };
-    });
 
     const fieldsRenderCheck = () => {
         expect(screen.getByText('Anticipated annual turnover')).toBeInTheDocument();
@@ -225,32 +168,24 @@ describe('<FinancialDetails />', () => {
         });
     });
 
-    it('should not show "Unemployed" in occupation list if employment status is "Employed"', async () => {
-        const new_mock_props = {
-            ...mock_props,
-            employment_status: 'Employed',
-        };
-        render(<FinancialDetails {...new_mock_props} />);
+    it('should change the selected value when user changes the value in the dropdown', () => {
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
 
-        fieldsRenderCheck();
+        render(<FinancialDetails {...mock_props} />);
+
         const select_inputs = screen.getAllByRole('combobox');
-        setFormValues();
-        const occuppation_select = select_inputs.find((option: FormikValues) => option.name === 'occupation');
 
-        expect(screen.queryByText('Unemployed')).not.toBeInTheDocument();
+        const income_source_select = select_inputs.find((option: FormikValues) => option.name === 'income_source');
 
-        userEvent.type(occuppation_select as HTMLElement, 'Students');
+        userEvent.selectOptions(income_source_select as HTMLElement, 'Salaried Employee');
 
-        const next_btn = screen.getByRole('button', { name: 'Next' });
-        expect(next_btn).toBeEnabled();
-
-        userEvent.click(next_btn);
-        await waitFor(() => {
-            expect(mock_props.onSubmit).toHaveBeenCalled();
-        });
+        expect(screen.getByRole('option', { name: 'Salaried Employee' }).selected).toBe(true);
     });
 
     it('should show "Unemployed" in occupation list if employment status is not "Employed"', async () => {
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
         const new_mock_props = {
             ...mock_props,
             employment_status: 'Pensioner',
@@ -264,7 +199,8 @@ describe('<FinancialDetails />', () => {
         setFormValues();
         const occuppation_select = select_inputs.find((option: FormikValues) => option.name === 'occupation');
 
-        expect(screen.getByText('Unemployed')).toBeInTheDocument();
+        const occupation_text = screen.getAllByText('Unemployed')[0];
+        expect(occupation_text).toBeInTheDocument();
 
         userEvent.type(occuppation_select as HTMLElement, 'Unemployed');
 

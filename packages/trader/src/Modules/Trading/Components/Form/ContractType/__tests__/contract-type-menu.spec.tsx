@@ -4,6 +4,7 @@ import ContractTypeMenu from '../ContractTypeMenu';
 import ContractTypeWidget from '../contract-type-widget';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../../../trader-providers';
+import { ActiveSymbols } from '@deriv/api-types';
 
 const mock_connect_props = {
     modules: {
@@ -11,7 +12,26 @@ const mock_connect_props = {
             symbol: 'R_100',
         },
     },
-    active_symbols: { active_symbols: [] },
+    active_symbols: {
+        active_symbols: [
+            {
+                allow_forward_starting: 1,
+                display_name: 'Volatility 100 Index',
+                display_order: 2,
+                exchange_is_open: 1,
+                is_trading_suspended: 0,
+                market: 'synthetic_index',
+                market_display_name: 'Derived',
+                pip: 0.01,
+                subgroup: 'synthetics',
+                subgroup_display_name: 'Synthetics',
+                submarket: 'random_index',
+                submarket_display_name: 'Continuous Indices',
+                symbol: 'R_100',
+                symbol_type: 'stockindex',
+            } as ActiveSymbols[0],
+        ],
+    },
     ui: { is_mobile: false },
 };
 
@@ -320,7 +340,7 @@ describe('ContractTypeMenu', () => {
         expect(screen.queryByTestId('contract_wrapper')).not.toBeInTheDocument();
     });
 
-    it('should render <ContractTypeMenu /> component when click on ', () => {
+    it('should render <ContractTypeMenu /> component when clicked on', () => {
         render(
             <ContractTypeWidget
                 name='test_name'
@@ -339,6 +359,7 @@ describe('ContractTypeMenu', () => {
         fireEvent.click(dt_contract_dropdown);
 
         expect(screen.getByTestId('dt_contract_wrapper')).toBeInTheDocument();
+        expect(screen.getByText(/Some trade types are unavailable for Volatility 100 Index./i)).toBeInTheDocument();
     });
 
     it('should search in the input', () => {

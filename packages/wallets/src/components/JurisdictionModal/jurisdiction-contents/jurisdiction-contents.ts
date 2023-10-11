@@ -5,7 +5,7 @@ import { getJurisdictionSvgContents } from './jurisdiction-svg-contents';
 import { getJurisdictionVanuatuContents } from './jurisdiction-vanuatu-contents';
 import { TJurisdictionCardItems } from './props.types';
 
-type TJurisdictionContent = {
+export type TJurisdictionContent = {
     bvi: TJurisdictionCardItems;
     labuan: TJurisdictionCardItems;
     maltainvest: TJurisdictionCardItems;
@@ -13,7 +13,7 @@ type TJurisdictionContent = {
     vanuatu: TJurisdictionCardItems;
 };
 
-export const getJurisdictionContents = (): TJurisdictionContent => ({
+export const getJurisdictionContents = (): Record<string, TJurisdictionCardItems> => ({
     svg: getJurisdictionSvgContents(),
     bvi: getJurisdictionBviContents(),
     vanuatu: getJurisdictionVanuatuContents(),

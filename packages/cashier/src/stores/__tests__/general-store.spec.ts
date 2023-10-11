@@ -43,9 +43,6 @@ beforeEach(() => {
                 crypto_fiat_converter: {
                     converter_from_amount: null,
                 },
-                iframe: {
-                    clearIframe: jest.fn(),
-                },
                 onramp: {
                     is_onramp_tab_visible: false,
                 },
@@ -246,9 +243,8 @@ describe('GeneralStore', () => {
     //     const spyOnRemount = jest.spyOn(general_store, 'onRemount');
     //     general_store.accountSwitcherListener();
 
-    //     const { iframe, payment_agent } = general_store.root_store.modules.cashier;
+    //     const { payment_agent } = general_store.root_store.modules.cashier;
 
-    //     expect(iframe.clearIframe).toHaveBeenCalledTimes(1);
     //     expect(general_store.payment_agent).toEqual(payment_agent);
     //     expect(general_store.is_populating_values).toBeFalsy();
     //     expect(spyOnRemount).toHaveBeenCalledTimes(1);

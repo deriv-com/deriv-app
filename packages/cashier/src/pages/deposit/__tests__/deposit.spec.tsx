@@ -46,7 +46,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                     },
@@ -86,7 +85,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },

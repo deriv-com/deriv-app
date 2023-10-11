@@ -46,9 +46,6 @@ const cashier_mock = {
         is_crypto: false,
         setActiveTab: jest.fn(),
     },
-    iframe: {
-        iframe_url: '',
-    },
     transaction_history: {
         is_crypto_transactions_visible: false,
     },

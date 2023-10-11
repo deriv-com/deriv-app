@@ -209,11 +209,10 @@ export default class GeneralStore extends BaseStore {
 
     accountSwitcherListener() {
         const { client, modules } = this.root_store;
-        const { iframe, payment_agent } = modules.cashier;
+        const { payment_agent } = modules.cashier;
         const container = Constants.map_action[this.active_container as keyof typeof Constants.map_action];
 
         client.setVerificationCode('', container);
-        iframe.clearIframe();
 
         this.payment_agent = payment_agent;
         if (payment_agent.active_tab_index === 1 && window.location.pathname.endsWith(routes.cashier_pa)) {

@@ -71,16 +71,6 @@ describe('WithdrawStore', () => {
                         openReadMoreDialog: jest.fn(),
                         setErrorMessage: jest.fn(),
                     },
-                    iframe: {
-                        checkIframeLoaded: jest.fn(),
-                        clearTimeoutCashierUrl: jest.fn(),
-                        setSessionTimeout: jest.fn(),
-                        clearIframe: jest.fn(),
-                        is_session_timeout: false,
-                        setContainerHeight: jest.fn(),
-                        setIframeUrl: jest.fn(),
-                        setTimeoutCashierUrl: jest.fn(),
-                    },
                 },
             },
         }) as TRootStore;

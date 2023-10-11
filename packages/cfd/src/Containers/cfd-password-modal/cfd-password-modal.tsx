@@ -335,7 +335,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
-    const walletCFDInfo = getWalletCFDInfo(
+    const wallet_CFD_info = getWalletCFDInfo(
         account_type.type,
         account_type.category === ACCOUNT_CATEGORY.DEMO,
         platform,
@@ -344,7 +344,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const wallet_details = {
         balance,
-        account_title: walletCFDInfo.card_title,
+        account_title: wallet_CFD_info.card_title,
         gradient_card_class: active_wallet?.gradients.card[theme],
         icon: active_wallet?.icons[theme],
         is_demo: active_wallet?.is_virtual,
@@ -356,14 +356,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 }}
             />
         ),
-        app_icon: walletCFDInfo.icon,
+        app_icon: wallet_CFD_info.icon,
         label: card_label,
     };
 
     const wallet_success_text = getWalletSuccessText(
         Boolean(active_wallet?.is_virtual),
-        walletCFDInfo.title,
-        walletCFDInfo.description_title,
+        wallet_CFD_info.title,
+        wallet_CFD_info.description_title,
         account_type.type as 'all' | 'synthetic' | 'financial',
         is_selected_mt5_verified,
         manual_status,
@@ -408,7 +408,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             show_eu_related_content={show_eu_related_content}
                             type={account_type.type}
                             is_wallet_enabled={is_wallet_enabled}
-                            wallet_account_title={walletCFDInfo.description_title}
+                            wallet_account_title={wallet_CFD_info.description_title}
                         />
                     }
                     icon={

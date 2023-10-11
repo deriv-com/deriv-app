@@ -11,7 +11,7 @@ const mock_history = [
         order_amount: '-123',
         order_date: 123,
         order_type: 'test_order_type',
-        value: 'ttest_value',
+        value: 'test_value',
     },
 ];
 

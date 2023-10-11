@@ -3,11 +3,15 @@ import { render, screen } from '@testing-library/react';
 import ContractAuditItem from '../contract-audit-item';
 
 const test_id = 'test_id';
-
+const test_icon = 'test_icon';
+const values = {
+    value: 'test_value_1',
+    value2: 'test_value_2',
+};
 const mock_default_props = {
     id: test_id,
     label: 'test_label',
-    value: <div>test_value_1</div>,
+    value: values.value,
 };
 
 jest.mock('@deriv/shared', () => ({
@@ -17,25 +21,25 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<ContractAuditItem />', () => {
-    it('should render component if nessesary props were pased', () => {
+    it('should render component if necessary props were pased', () => {
         render(<ContractAuditItem {...mock_default_props} />);
 
         expect(screen.getByTestId(test_id)).toBeInTheDocument();
-        expect(screen.getByText(/test_value_1/i)).toBeInTheDocument();
-        expect(screen.queryByText(/test_icon/i)).not.toBeInTheDocument();
-        expect(screen.queryByText(/test_value_2/i)).not.toBeInTheDocument();
+        expect(screen.getByText(values.value)).toBeInTheDocument();
+        expect(screen.queryByText(test_icon)).not.toBeInTheDocument();
+        expect(screen.queryByText(values.value2)).not.toBeInTheDocument();
     });
 
     it('should render icon inside component if it was passed', () => {
-        render(<ContractAuditItem {...mock_default_props} icon={<div>test_icon</div>} />);
+        render(<ContractAuditItem {...mock_default_props} icon={test_icon} />);
 
-        expect(screen.getByText(/test_icon/i)).toBeInTheDocument();
+        expect(screen.getByText(test_icon)).toBeInTheDocument();
     });
 
     it('should render value2 inside component if it was passed', () => {
-        render(<ContractAuditItem {...mock_default_props} value2={<div>test_value_2</div>} />);
+        render(<ContractAuditItem {...mock_default_props} value2={values.value2} />);
 
-        expect(screen.getByText(/test_value_2/i)).toBeInTheDocument();
+        expect(screen.getByText(values.value2)).toBeInTheDocument();
     });
 
     it('should render formatDate and formatTime inside component if it was passed', () => {

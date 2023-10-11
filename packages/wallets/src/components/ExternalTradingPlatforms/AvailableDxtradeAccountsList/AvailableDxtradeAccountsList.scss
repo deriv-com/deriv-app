@@ -12,10 +12,9 @@
 
     &__details {
         flex-grow: 1;
+
         &-title {
-            font-weight: bold;
-            font-size: 1.4rem;
-            line-height: 20px;
+            padding-bottom: 5px;
         }
 
         &-description {

@@ -21,7 +21,6 @@ const default_mock_store_multipliers = {
             symbol: '1HZ150V',
         },
     },
-    active_symbols: { active_symbols: [{ submarket_display_name: 'Continuous Indices', symbol: '1HZ150V' }] },
 };
 const new_label = 'NEW!';
 
@@ -95,9 +94,7 @@ describe('MultiplierOptionsWidget', () => {
     it('should render new! label if chosen symbol is syntetic and is not equal to Vol 150 (1 sec) or 250 (1 sec)', () => {
         const new_mock_store = { ...default_mock_store_multipliers };
         new_mock_store.modules.trade.symbol = '1HZ100V';
-        new_mock_store.active_symbols = {
-            active_symbols: [{ submarket_display_name: 'Continuous Indices', symbol: '1HZ100V' }],
-        };
+
         render(mockMultiplierOptionsWidget(mockStore(new_mock_store)));
 
         expect(screen.getByText(new_label)).toBeInTheDocument();

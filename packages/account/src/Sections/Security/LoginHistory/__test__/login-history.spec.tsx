@@ -64,7 +64,7 @@ describe('<LoginHistory />', () => {
                         browser: 'Chrome  v116.0.0.0',
                         action: 'login',
                         status: 'successful',
-                        ip: '175.143.37.57',
+                        ip: 'MOCK.IP.ADDRESS',
                         id: 0,
                     },
                 ],
@@ -100,7 +100,7 @@ describe('<LoginHistory />', () => {
             /2023-08-28 03:11:45 GMT/i,
             /login/i,
             /chrome v116.0.0.0/i,
-            /175.143.37.57/i,
+            /MOCK.IP.ADDRESS/i,
             /successful/i,
         ];
         table_items.forEach(item => {

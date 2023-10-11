@@ -8,12 +8,12 @@ describe('LoginHistoryListRow', () => {
         date: '2023-08-29 07:05:35 GMT',
         action: 'Login',
         browser: 'Chrome  v116.0.0.0',
-        ip: '175.143.37.57',
+        ip: 'MOCK.IP.ADDRESS',
         status: 'Successful',
     };
 
     it('should render LoginHistoryTableRow Table Content', () => {
-        const texts = [/2023-08-29 07:05:35 GMT/i, /chrome v116.0.0.0/i, /login/i, /175.143.37.57/i, /successful/i];
+        const texts = [/2023-08-29 07:05:35 GMT/i, /chrome v116.0.0.0/i, /login/i, /MOCK.IP.ADDRESS/i, /successful/i];
         render(<LoginHistoryTableRow {...mock_props} />);
         texts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();

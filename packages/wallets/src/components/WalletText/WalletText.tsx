@@ -6,7 +6,7 @@ interface WalletTextProps {
     align?: 'center' | 'left' | 'right';
     children: React.ReactNode;
     color?: 'black' | 'error' | 'general' | 'primary' | 'success' | 'warning' | 'white';
-    size?: 'l' | 'm' | 's' | 'sm' | 'xs' | 'xxs' | 'xxxs' | 'xxxxs';
+    size?: '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '4xs' | 'l' | 'm' | 's' | 'xl' | 'xs';
     weight?: 'bold' | 'bolder' | 'normal';
 }
 
@@ -14,7 +14,7 @@ const WalletText: React.FC<WalletTextProps> = ({
     align = 'left',
     children,
     color = 'general',
-    size = 's',
+    size = 'm',
     weight = 'normal',
 }) => {
     const textClassNames = classNames(

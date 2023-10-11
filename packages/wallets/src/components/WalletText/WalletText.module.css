@@ -1,33 +1,41 @@
 .wallets-text {
-    &-size-xxxxs {
+    &-size-3xs {
         font-size: 0.8rem;
     }
 
-    &-size-xxxs {
+    &-size-2xs {
         font-size: 1rem;
     }
 
-    &-size-xxs {
+    &-size-xs {
         font-size: 1.2rem;
     }
 
-    &-size-xs {
+    &-size-s {
         font-size: 1.4rem;
     }
 
-    &-size-s {
+    &-size-m {
         font-size: 1.6rem;
     }
 
-    &-size-sm {
+    &-size-l {
+        font-size: 1.8rem;
+    }
+
+    &-size-xl {
         font-size: 2rem;
     }
 
-    &-size-m {
+    &-size-2xl {
+        font-size: 2.2rem;
+    }
+
+    &-size-3xl {
         font-size: 2.4rem;
     }
 
-    &-size-l {
+    &-size-4xl {
         font-size: 3.2rem;
     }
 

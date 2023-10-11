@@ -19,7 +19,7 @@ const AvailableDxtradeAccountsList: React.FC = () => {
             )}
             trailing={() => (
                 <SecondaryActionButton onClick={() => show(<DxtradeEnterPasswordModal />)}>
-                    <WalletText color='error' size='xs' weight='bold'>
+                    <WalletText color='error' size='s' weight='bold'>
                         Get
                     </WalletText>
                 </SecondaryActionButton>
@@ -27,11 +27,11 @@ const AvailableDxtradeAccountsList: React.FC = () => {
         >
             <div className='wallets-available-dxtrade__details'>
                 <p className='wallets-available-dxtrade__details-title'>
-                    <WalletText size='xs' weight='bold'>
+                    <WalletText size='s' weight='bold'>
                         Deriv X
                     </WalletText>
                 </p>
-                <WalletText size='xxs'>
+                <WalletText size='xs'>
                     This account offers CFDs on a highly customisable CFD trading platform.
                 </WalletText>
             </div>

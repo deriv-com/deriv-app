@@ -74,14 +74,14 @@ describe('<MarketCountdownTimer />', () => {
         );
     };
 
-    it('should not render component with children if hen_market_opens && timer_components are equal to false', () => {
+    it('should not render component with children if is_main_page is true', () => {
         const new_props = { ...mock_default_props };
         new_props.is_main_page = true;
         const { container } = render(mockMarketCountdownTimer(mockStore(default_mock_store), new_props));
 
         expect(container).toBeEmptyDOMElement();
     });
-    it('should not render component with children if hen_market_opens && timer_components are equal to false', async () => {
+    it('should render component with children if is_main_page is false', async () => {
         jest.useFakeTimers();
         await act(async () => {
             const { rerender } = render(mockMarketCountdownTimer(mockStore(default_mock_store), mock_default_props));

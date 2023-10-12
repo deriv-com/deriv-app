@@ -4,7 +4,7 @@ import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from '
 import { ChartModeBeta, DrawToolsBeta, ShareBeta, StudyLegendBeta, ToolbarWidgetBeta, ViewsBeta } from './v2';
 
 type TToolbarWidgetsProps = {
-    is_beta_chart: boolean;
+    is_beta_chart?: boolean;
     updateChartType: (chart_type: string) => void;
     updateGranularity: (updateGranularity: number) => void;
 };

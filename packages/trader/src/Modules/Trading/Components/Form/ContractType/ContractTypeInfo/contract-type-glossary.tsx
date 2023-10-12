@@ -87,7 +87,7 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                     {
                         type: 'paragraph',
                         text: (
-                            <Localize i18n_default_text='Contracts will expire at exactly 23:59:59 GMT +0 on your selected expiry date.' />
+                            <Localize i18n_default_text='Your contract will expire at exactly 23:59:59 GMT +0 on your selected expiry date.' />
                         ),
                     },
                     { type: 'heading', text: <Localize i18n_default_text='Expiry date' /> },

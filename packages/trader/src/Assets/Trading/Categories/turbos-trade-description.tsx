@@ -6,7 +6,7 @@ export const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => 
     const content = [
         {
             text: (
-                <Localize i18n_default_text='Turbo options allow you to predict the direct of the underlying asset’s movements.' />
+                <Localize i18n_default_text='Turbo options allow you to predict the direction of the underlying asset’s movements.' />
             ),
         },
         {
@@ -43,7 +43,7 @@ export const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => 
         },
         {
             text: (
-                <Localize i18n_default_text='If you choose your duraion in number of ticks, you won’t be able to terminate your contract early.' />
+                <Localize i18n_default_text='If you choose your duration in number of ticks, you won’t be able to terminate your contract early.' />
             ),
         },
     ];

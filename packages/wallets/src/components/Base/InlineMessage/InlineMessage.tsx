@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import useDevice from '../../hooks/useDevice';
-import AlertAnnounce from '../../public/images/alert-annouce.svg';
-import AlertDanger from '../../public/images/alert-danger.svg';
-import AlertInfo from '../../public/images/alert-info.svg';
-import Warning from '../../public/images/warning.svg';
+import useDevice from '../../../hooks/useDevice';
+import AlertAnnounce from '../../../public/images/alert-annouce.svg';
+import AlertDanger from '../../../public/images/alert-danger.svg';
+import AlertInfo from '../../../public/images/alert-info.svg';
+import Warning from '../../../public/images/warning.svg';
 import './InlineMessage.scss';
 
 const typeIconMapper = {

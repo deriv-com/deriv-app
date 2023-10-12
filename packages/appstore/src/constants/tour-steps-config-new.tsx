@@ -139,7 +139,7 @@ export const tour_styles_dark_mode: Styles = {
     },
 };
 export const getTourStepLocale = (): Locale => ({
-    back: <Button has_effect text={localize('Back')} secondary medium as='span' />,
+    back: <Button has_effect text={localize('Back')} secondary medium as_span />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),
@@ -147,7 +147,7 @@ export const getTourStepLocale = (): Locale => ({
 });
 
 export const getHighRiskTourStepLocale = (): Locale => ({
-    back: <Button has_effect text={localize('Back')} secondary medium as='span' />,
+    back: <Button has_effect text={localize('Back')} secondary medium as_span />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),

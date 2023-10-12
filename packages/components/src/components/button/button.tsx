@@ -34,6 +34,7 @@ export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HT
         renderText: (param: React.ReactNode) => React.ReactNode;
         type: 'button' | 'submit' | 'reset';
         wrapperClassName: string;
+        as_span?: boolean;
     };
 
 export type TButtonGroupProps = {
@@ -76,9 +77,9 @@ const Button = ({
     small,
     tertiary,
     renderText,
-    as,
+    as_span = false,
     ...props
-}: Partial<TButtonProps> & { as?: string }) => {
+}: Partial<TButtonProps>) => {
     const classes = classNames(
         'dc-btn',
         {
@@ -105,8 +106,7 @@ const Button = ({
         className
     );
 
-    // TODO: add correct type
-    const Component: any = as ?? 'button';
+    const Component = as_span ? 'span' : 'button';
 
     const button = (
         <Component

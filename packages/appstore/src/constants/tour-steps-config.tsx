@@ -125,7 +125,7 @@ export const tour_styles_dark_mode: Styles = {
 };
 
 export const tour_step_locale: Locale = {
-    back: <Button has_effect text={localize('Repeat tour')} secondary medium as='span' />,
+    back: <Button has_effect text={localize('Repeat tour')} secondary medium as_span />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),

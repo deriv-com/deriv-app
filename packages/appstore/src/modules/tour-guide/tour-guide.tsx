@@ -77,7 +77,7 @@ const TourGuide = () => {
                 text={localize('Repeat tour')}
                 secondary
                 medium
-                as='span'
+                as_span
                 onClick={() => {
                     history.push(routes.onboarding);
                     toggleIsTourOpen(true);
@@ -92,7 +92,7 @@ const TourGuide = () => {
             text={localize('Repeat tour')}
             secondary
             medium
-            as='span'
+            as_span
             onClick={() => {
                 history.push(routes.onboarding);
                 toggleIsTourOpen(true);

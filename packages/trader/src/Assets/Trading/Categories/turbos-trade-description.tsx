@@ -6,8 +6,13 @@ export const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => 
     const content = [
         {
             text: (
+                <Localize i18n_default_text='Turbo options allow you to predict the direct of the underlying asset’s movements.' />
+            ),
+        },
+        {
+            text: (
                 <Localize
-                    i18n_default_text='Turbo options allow you to predict the direct of the underlying asset’s movements. You receive a <0>payout</0> at <0>expiry</0> if the spot price never touches or breaches the <0>barrier</0> during the contract period. If it does, your contract will be terminated early.'
+                    i18n_default_text='You receive a <0>payout</0> at <0>expiry</0> if the spot price never touches or breaches the <0>barrier</0> during the contract period. If it does, your contract will be terminated early.'
                     components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
                 />
             ),

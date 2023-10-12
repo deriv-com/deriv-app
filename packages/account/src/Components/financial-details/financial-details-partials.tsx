@@ -21,6 +21,10 @@ type TFinancialDetailsDropdownFieldProps = {
     employment_status?: string;
 };
 
+type TFinancialInformationProps = {
+    employment_status: string;
+};
+
 /**
  * Dropdown field for financial details form.
  * @name FinancialDetailsDropdownField
@@ -91,7 +95,7 @@ const FinancialDetailsDropdownField = ({
  * @name FinancialInformation
  * @returns {JSX.Element}
  */
-const FinancialInformation = ({ employment_status }: { employment_status: string }) => {
+const FinancialInformation = ({ employment_status }: TFinancialInformationProps) => {
     const getFormattedOccupation = () =>
         employment_status === 'Employed'
             ? getOccupationList().filter(item => item.value !== 'Unemployed')

@@ -11,13 +11,29 @@ export type TPaymentMethodFieldMapProps = {
 };
 
 export type TPaymentMethod = {
-    ID: string;
-    display_name: string;
-    fields: {
+    display_name?: string;
+    fields?: {
         account?: TPaymentMethodFieldProps;
+        bank_code?: TPaymentMethodFieldProps;
         bank_name?: TPaymentMethodFieldProps;
+        branch?: TPaymentMethodFieldProps;
+        instructions?: TPaymentMethodFieldProps;
         name?: TPaymentMethodFieldProps;
     };
-    is_enabled: number;
-    method: string;
+    icon?: string;
+    id?: string;
+    is_enabled?: number;
+    method?: string;
+    type?: string;
+    used_by_adverts?: string[] | null;
+    used_by_orders?: string[] | null;
+};
+
+export type TPaymentMethodValues = {
+    account?: string;
+    bank_code?: string;
+    bank_name?: string;
+    branch?: string;
+    instructions?: string;
+    name?: string;
 };

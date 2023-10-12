@@ -1,9 +1,9 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
-import { payment_method_info_alipay } from '../../../__mocks__/mock-payment-method-data';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { payment_method_info_alipay } from 'Pages/my-profile/__mocks__/mock-payment-method-data';
 import EditPaymentMethodForm from '../edit-payment-method-form';
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
@@ -31,7 +31,6 @@ describe('<EditPaymentMethodForm />', () => {
             },
             my_profile_store: {
                 initial_values: { account: 'test_account', instructions: 'test' },
-                payment_method_info: payment_method_info_alipay,
                 payment_method_to_edit: payment_method_info_alipay,
                 selected_payment_method_fields: [
                     { 0: 'account', 1: { display_name: 'Alipay ID', required: 1, type: 'text' } },
@@ -60,7 +59,7 @@ describe('<EditPaymentMethodForm />', () => {
     });
 
     it('should render the Loading component if payment_method_info is empty', () => {
-        mock_store.my_profile_store.payment_method_info = {};
+        mock_store.my_profile_store.payment_method_to_edit = {};
 
         render(<EditPaymentMethodForm />);
 

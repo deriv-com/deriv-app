@@ -1,8 +1,10 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { APIProvider } from '@deriv/api';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { useStores } from 'Stores/index';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethod from '../add-payment-method';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
@@ -32,6 +34,12 @@ const mock_modal_manager: DeepPartial<ReturnType<typeof useModalManagerContext>>
     showModal: jest.fn(),
 };
 
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+    </APIProvider>
+);
+
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
@@ -44,7 +52,7 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
 
 describe('<AddPaymentMethod />', () => {
     it('should render the AddPaymentMethod component', () => {
-        render(<AddPaymentMethod />);
+        render(<AddPaymentMethod />, { wrapper });
 
         expect(screen.getByTestId('dt_page_return_icon')).toBeInTheDocument();
         expect(screen.getByText('Add payment method')).toBeInTheDocument();
@@ -57,7 +65,7 @@ describe('<AddPaymentMethod />', () => {
     it('should call showModal when clicking page return icon if selected_payment_method or dirty is true', () => {
         mock_store.general_store.formik_ref.dirty = true;
 
-        render(<AddPaymentMethod />);
+        render(<AddPaymentMethod />, { wrapper });
 
         const pageReturnIcon = screen.getByTestId('dt_page_return_icon');
 
@@ -70,7 +78,7 @@ describe('<AddPaymentMethod />', () => {
         mock_store.general_store.formik_ref.dirty = false;
         mock_store.my_profile_store.selected_payment_method = '';
 
-        render(<AddPaymentMethod />);
+        render(<AddPaymentMethod />, { wrapper });
 
         const pageReturnIcon = screen.getByTestId('dt_page_return_icon');
 

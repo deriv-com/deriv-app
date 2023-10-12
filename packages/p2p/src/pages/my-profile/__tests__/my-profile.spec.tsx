@@ -13,6 +13,7 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
             partner_count: 1,
         },
         should_show_dp2p_blocked: false,
+        setActiveIndex: jest.fn(),
     },
     my_profile_store: {
         error_message: '',

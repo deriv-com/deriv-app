@@ -58,7 +58,7 @@ const default_mock_store = {
     },
 };
 
-jest.mock('App/Components/Elements/PositionsDrawer/positions-modal-card.jsx', () =>
+jest.mock('App/Components/Elements/PositionsDrawer/positions-modal-card', () =>
     jest.fn(props => <div key={props.key}>PositionsModalCard</div>)
 );
 

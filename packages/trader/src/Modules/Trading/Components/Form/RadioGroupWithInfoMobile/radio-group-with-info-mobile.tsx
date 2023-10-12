@@ -19,7 +19,7 @@ type TRadioGroupWithInfoMobile = {
             value: number;
         };
     }) => void;
-    info: React.ComponentProps<typeof Popover>['message'];
+    info?: React.ComponentProps<typeof Popover>['message'];
     is_tooltip_disabled?: boolean;
     popover_alignment?: React.ComponentProps<typeof Popover>['alignment'];
     toggleModal: () => void;

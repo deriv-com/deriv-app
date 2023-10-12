@@ -230,7 +230,7 @@ jobs:
       #     command: npx tsc --project packages/cashier/tsconfig.json -noEmit
       - run:
           name: "Check ESLint for @deriv/wallets"
-          command: npx eslint --fix --config packages/wallets/.eslintrc.js packages/wallets
+          command: npx eslint --fix --ignore-path packages/wallets/.eslintignore --config packages/wallets/.eslintrc.js packages/wallets
       - run:
           name: "Check Stylelint for @deriv/wallets"
           command: npx stylelint packages/wallets/**/*.scss

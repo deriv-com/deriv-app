@@ -7,7 +7,7 @@ const ConnectedAppsInfo = () => (
         type='information'
         size='md'
         message={
-            <div>
+            <React.Fragment>
                 <Text as='h4' weight='bold' size='xs'>
                     <Localize i18n_default_text='What are connected apps?' />
                 </Text>
@@ -28,7 +28,7 @@ const ConnectedAppsInfo = () => (
                         </Text>
                     </li>
                 </ol>
-            </div>
+            </React.Fragment>
         }
     />
 );

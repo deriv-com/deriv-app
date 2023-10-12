@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useAuthorize, useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api';
 import { ProgressBar } from '../ProgressBar';
 import { WalletCard } from '../WalletCard';
-// import { WalletListCardActions } from '../WalletListCardActions';
+import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
 
 const WalletsCarouselContent: React.FC = () => {
@@ -13,6 +13,7 @@ const WalletsCarouselContent: React.FC = () => {
         skipSnaps: true,
     });
     const { data: walletAccountsList } = useWalletAccountsList();
+    const { data: activeWallet } = useActiveWalletAccount();
     const activeWalletIndex = useMemo(
         () =>
             walletAccountsList?.findIndex(item => item?.is_active) ||
@@ -20,7 +21,7 @@ const WalletsCarouselContent: React.FC = () => {
             0,
         [walletAccountsList, walletsCarouselEmblaApi]
     );
-    const [progressBarActiveIndex, setProgressBarActiveIndex] = React.useState(activeWalletIndex + 1);
+    const [progressBarActiveIndex, setProgressBarActiveIndex] = useState(activeWalletIndex + 1);
 
     useEffect(() => {
         walletsCarouselEmblaApi?.scrollTo(activeWalletIndex);
@@ -28,9 +29,9 @@ const WalletsCarouselContent: React.FC = () => {
 
     useEffect(() => {
         walletsCarouselEmblaApi?.on('settle', () => {
-            // const scroll_snap_index = walletsCarouselEmblaApi?.selectedScrollSnap();
-            // const loginid = wallet_accounts_list[scroll_snap_index]?.loginid;
-            // switchAccount(loginid);
+            const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
+            const loginid = walletAccountsList?.[scrollSnapIndex]?.loginid;
+            switchAccount(loginid || '');
         });
 
         walletsCarouselEmblaApi?.on('select', () => {
@@ -56,7 +57,11 @@ const WalletsCarouselContent: React.FC = () => {
                     setActiveIndex={switchAccount}
                 />
             </div>
-            {/* <WalletListCardActions /> */}
+            <WalletListCardActions
+                isActive={activeWallet?.is_active || false}
+                isDemo={activeWallet?.is_virtual || false}
+                loginid={activeWallet?.loginid || ''}
+            />
         </div>
     );
 };

@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 type TTabContext = {
     activeTabIndex: number;
     setActiveTabIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const TabsContext = React.createContext<TTabContext | null>(null);
+const TabsContext = createContext<TTabContext | null>(null);
 
 export const useTabs = () => {
-    const context = React.useContext(TabsContext);
+    const context = useContext(TabsContext);
 
     if (!context) {
         throw new Error('Seems you forgot to wrap the components in "<Tabs />"');
@@ -22,7 +22,7 @@ type TTabsProps = {
 };
 
 export const Tabs = ({ children, className }: React.PropsWithChildren<TTabsProps>) => {
-    const [activeTabIndex, setActiveTabIndex] = React.useState(0);
+    const [activeTabIndex, setActiveTabIndex] = useState(0);
 
     return (
         <TabsContext.Provider value={{ activeTabIndex, setActiveTabIndex }}>

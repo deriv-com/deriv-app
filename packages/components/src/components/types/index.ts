@@ -2,7 +2,7 @@ import { TIconsManifest, TIconProps } from './icons.types';
 import { TAccordionProps, TAccordionItem } from './accordion.types';
 import { TMultiStepProps, TMultiStepRefProps } from './multi-step.types';
 import { TPopoverProps } from './popover.types';
-import { TGetCardLables, TGetContractTypeDisplay } from './common.types';
+import { TGetCardLables, TGetContractTypeDisplay, TDatePickerOnChangeEvent } from './common.types';
 import { TErrorMessages, TGetContractPath, TToastConfig } from './contract.types';
 
 export type {
@@ -18,4 +18,5 @@ export type {
     TGetContractPath,
     TToastConfig,
     TGetContractTypeDisplay,
+    TDatePickerOnChangeEvent,
 };

@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, makeObservable, override } from 'mobx';
-import { toMoment, WS } from '@deriv/shared';
+import { filterDisabledPositions, toMoment, WS } from '@deriv/shared';
 
 import getDateBoundaries from './Helpers/format-request';
 import { formatProfitTableTransactions } from './Helpers/format-response';
@@ -93,13 +93,15 @@ export default class ProfitTableStore extends BaseStore {
             return;
         }
 
-        const formatted_transactions = response.profit_table.transactions.map(transaction =>
-            formatProfitTableTransactions(
-                transaction,
-                this.root_store.client.currency,
-                this.root_store.active_symbols.active_symbols
+        const formatted_transactions = response.profit_table.transactions
+            .map(transaction =>
+                formatProfitTableTransactions(
+                    transaction,
+                    this.root_store.client.currency,
+                    this.root_store.active_symbols.active_symbols
+                )
             )
-        );
+            .filter(filterDisabledPositions);
 
         this.data = [...this.data, ...formatted_transactions];
         this.has_loaded_all = formatted_transactions.length < batch_size;

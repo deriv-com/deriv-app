@@ -51,7 +51,7 @@ export const toLocalFormat = (time: moment.MomentInput) => moment.utc(time).loca
  * @param  {String} time        24 hours format, may or may not include seconds
  * @return {moment} a new moment object of result
  */
-export const setTime = (moment_obj: moment.Moment, time: string) => {
+export const setTime = (moment_obj: moment.Moment, time: string | null) => {
     const [hour, minute, second] = time ? time.split(':') : [0, 0, 0];
     moment_obj
         .hour(+hour)

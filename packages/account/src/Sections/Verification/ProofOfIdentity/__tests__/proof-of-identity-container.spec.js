@@ -19,10 +19,6 @@ jest.mock('@deriv/components', () => ({
     Loading: jest.fn(() => 'mockedLoading'),
 }));
 
-jest.mock('onfido-sdk-ui', () => ({
-    init: jest.fn().mockResolvedValue({}),
-}));
-
 jest.mock('../../Helpers/verification.js', () => ({
     populateVerificationStatus: jest.fn().mockReturnValue({
         is_age_verified: false,

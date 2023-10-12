@@ -1,5 +1,8 @@
 module.exports = {
     extends: ['@deriv/eslint-config-deriv'],
+    rules: {
+        'global-require': 'off',
+    },
     overrides: [
         {
             files: ['*.ts', '*.tsx'],

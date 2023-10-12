@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import WalletCashierContent from '../WalletCashierContent/WalletCashierContent';
-import WalletCashierHeader from '../WalletCashierHeader/WalletCashierHeader';
+import { WalletCashierContent, WalletCashierHeader } from './components';
 import './WalletCashier.scss';
 
 const WalletCashier = () => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
+import CloseIcon from '../../../../public/images/close-icon.svg';
 import useDevice from '../../hooks/useDevice';
-import CloseIcon from '../../public/images/close-icon.svg';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';

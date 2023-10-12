@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { WalletDeposit } from '../WalletDeposit';
-import { WalletTransactions } from '../WalletTransactions';
-import { WalletTransfer } from '../WalletTransfer';
+import { WalletDeposit } from '../../flows/WalletDeposit';
+import { WalletTransactions } from '../../flows/WalletTransactions';
+import { WalletTransfer } from '../../flows/WalletTransfer';
 
 const WalletCashierContent = () => {
     const history = useHistory();

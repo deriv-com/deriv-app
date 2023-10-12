@@ -1,2 +1,2 @@
-export * from './flows';
-export * from './screens';
+export * from './WalletCashierContent';
+export * from './WalletCashierHeader';

@@ -1,6 +1,5 @@
 import React, { ComponentProps, useState } from 'react';
-import { WalletTransactionsCrypto } from '../WalletTransactionsCrypto';
-import { WalletTransactionsFilter } from '../WalletTransactionsFilter';
+import { WalletTransactionsCrypto, WalletTransactionsFilter } from '../../screens/WalletTransactionsScreens';
 import './WalletTransactions.scss';
 
 const WalletTransactions = () => {

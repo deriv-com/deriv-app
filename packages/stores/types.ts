@@ -81,8 +81,7 @@ type TRoutes =
     | '/complaints-policy'
     | '/appstore'
     | '/appstore/traders-hub'
-    | '/appstore/onboarding'
-    | '/wallets';
+    | '/appstore/onboarding';
 
 type TPopulateSettingsExtensionsMenuItem = {
     icon: string;

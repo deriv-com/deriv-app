@@ -12,15 +12,7 @@ jest.mock('react-router', () => ({
 describe('TradersHubHomeButton', () => {
     it("should display the text Trader's Hub in the header", () => {
         render(
-            <StoreProvider
-                store={mockStore({
-                    feature_flags: {
-                        data: {
-                            next_wallet: true,
-                        },
-                    },
-                })}
-            >
+            <StoreProvider store={mockStore({})}>
                 <TradersHubHomeButton />
             </StoreProvider>
         );
@@ -29,15 +21,7 @@ describe('TradersHubHomeButton', () => {
 
     it('should have the --active class if in traders hub route', () => {
         render(
-            <StoreProvider
-                store={mockStore({
-                    feature_flags: {
-                        data: {
-                            next_wallet: true,
-                        },
-                    },
-                })}
-            >
+            <StoreProvider store={mockStore({})}>
                 <TradersHubHomeButton />
             </StoreProvider>
         );

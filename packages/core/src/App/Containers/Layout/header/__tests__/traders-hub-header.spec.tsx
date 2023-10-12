@@ -35,15 +35,7 @@ jest.mock('../show-notifications', () => jest.fn(() => <div>MockedShowNotificati
 describe('TradersHubHeader', () => {
     const renderComponent = () =>
         render(
-            <StoreProvider
-                store={mockStore({
-                    feature_flags: {
-                        data: {
-                            next_wallet: true,
-                        },
-                    },
-                })}
-            >
+            <StoreProvider store={mockStore({})}>
                 <TradersHubHeader />
             </StoreProvider>
         );

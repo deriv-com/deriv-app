@@ -1,36 +1,31 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
 import { useCryptoTransactions } from '@deriv/api';
-import { Loader } from '../Loader';
 import { WalletTransactionsNoDataState } from '../WalletTransactionsNoDataState';
 import { WalletTransactionsPendingRow } from '../WalletTransactionsPendingRow';
 import { WalletTransactionsTable } from '../WalletTransactionsTable';
 import './WalletTransactionsPending.scss';
 
-type TFilter = NonNullable<
-    NonNullable<NonNullable<Parameters<ReturnType<typeof useCryptoTransactions>['subscribe']>>[0]>['payload']
->['transaction_type'];
-
 type TProps = {
-    filter?: TFilter;
-    setFilter: (value?: TFilter) => void;
+    filter?: NonNullable<
+        NonNullable<NonNullable<Parameters<ReturnType<typeof useCryptoTransactions>['subscribe']>>[0]>['payload']
+    >['transaction_type'];
 };
 
-const acceptableFilters = ['all', 'deposit', 'withdrawal'];
-
-const WalletTransactionsPending: React.FC<TProps> = ({ filter, setFilter }) => {
-    const { data, isLoading, resetData, subscribe, unsubscribe } = useCryptoTransactions();
+const WalletTransactionsPending: React.FC<TProps> = ({ filter }) => {
+    const { data, resetData, subscribe, unsubscribe } = useCryptoTransactions();
 
     useEffect(() => {
+        unsubscribe();
         resetData();
-        if (filter && !acceptableFilters.includes(filter)) {
-            setFilter('all');
-        }
-        subscribe({ payload: { transaction_type: filter && acceptableFilters.includes(filter) ? filter : 'all' } });
-        return () => unsubscribe();
-    }, [filter, resetData, setFilter, subscribe, unsubscribe]);
+        subscribe({ payload: { transaction_type: filter } });
+    }, [filter, resetData, subscribe, unsubscribe]);
 
-    if (isLoading) return <Loader />;
+    useEffect(() => {
+        return () => {
+            unsubscribe();
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!data) return <WalletTransactionsNoDataState />;
 

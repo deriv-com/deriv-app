@@ -8,12 +8,12 @@ type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['actio
 
 /** A custom hook to get the summary of account transactions */
 const useTransactions = () => {
-    const { isSuccess } = useAuthorize();
+    const { isFetching, isSuccess } = useAuthorize();
     const [filter, setFilter] = useState<TFilter>();
     const invalidate = useInvalidateQuery();
     const { data, fetchNextPage, ...rest } = useInfiniteQuery('statement', {
         options: {
-            enabled: isSuccess,
+            enabled: !isFetching && isSuccess,
             getNextPageParam: (lastPage, pages) => {
                 if (!lastPage?.statement?.count) return;
 

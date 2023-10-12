@@ -1,29 +1,20 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
-import { useAuthorize, useInvalidateQuery, useTransactions } from '@deriv/api';
+import { useTransactions } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
 import { WalletTransactionsCompletedRow } from '../WalletTransactionsCompletedRow';
 import { WalletTransactionsNoDataState } from '../WalletTransactionsNoDataState';
 import { WalletTransactionsTable } from '../WalletTransactionsTable';
+import './WalletTransactionsCompleted.scss';
 
 type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['action_type'];
 
 type TProps = {
     filter?: TFilter;
-    setFilter: (value?: TFilter) => void;
 };
 
-const filtersMapper: Record<string, Partial<TProps['filter']>> = {
-    all: undefined,
-    deposit: 'deposit',
-    transfer: 'transfer',
-    withdrawal: 'withdrawal',
-};
-
-const WalletTransactionsCompleted: React.FC<TProps> = ({ filter, setFilter }) => {
-    const { isFetching: isAuthorizeFetching } = useAuthorize();
-    const invalidate = useInvalidateQuery();
-    const { data, fetchNextPage, isFetching, setFilter: setTransactionsFilter } = useTransactions();
+const WalletTransactionsCompleted: React.FC<TProps> = ({ filter }) => {
+    const { data, fetchNextPage, isFetching, setFilter } = useTransactions();
 
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
@@ -39,15 +30,8 @@ const WalletTransactionsCompleted: React.FC<TProps> = ({ filter, setFilter }) =>
     );
 
     useEffect(() => {
-        setFilter(filtersMapper[filter || 'all']);
-        setTransactionsFilter(filtersMapper[filter || 'all']);
+        setFilter(filter);
     }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(() => {
-        if (!isAuthorizeFetching) {
-            invalidate('statement');
-        }
-    }, [invalidate, isAuthorizeFetching]);
 
     if (!data) return <WalletTransactionsNoDataState />;
 
@@ -66,7 +50,7 @@ const WalletTransactionsCompleted: React.FC<TProps> = ({ filter, setFilter }) =>
                 fetchMore={fetchMoreOnBottomReached}
                 groupBy={['date']}
                 rowGroupRender={transaction => (
-                    <p className='wallets-transactions-crypto__group-title'>
+                    <p className='wallets-transactions-completed__group-title'>
                         {transaction.transaction_time &&
                             moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
                     </p>

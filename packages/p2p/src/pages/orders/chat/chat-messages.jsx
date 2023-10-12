@@ -24,13 +24,13 @@ const ChatMessages = observer(() => {
     };
 
     React.useEffect(() => {
+        sendbird_store.setMessagesRef(scroll_ref);
         if (sendbird_store.chat_messages.length > 0 && scroll_ref.current) {
             // Scroll all the way to the bottom of the container.
             scroll_ref.current.scrollTop = scroll_ref.current.scrollHeight;
         }
-    }, [sendbird_store.chat_messages.length]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    sendbird_store.setMessagesRef(scroll_ref);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (sendbird_store.chat_messages.length) {
         let current_date = null;

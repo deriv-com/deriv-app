@@ -119,14 +119,14 @@ export default class ContractStore extends BaseStore {
         this.accu_low_barrier = accu_low_barrier;
         // TODO: don't update the barriers & markers if they are not changed
         this.updateBarriersArray(contract_info, this.root_store.ui.is_dark_mode_on);
-        this.markers_array = createChartMarkers(this.contract_info);
+        this.markers_array = createChartMarkers(this.contract_info, this.root_store.client.is_beta_chart);
         this.marker = this.root_store.client.is_beta_chart
             ? calculateMarker(this.contract_info, this.root_store.ui.is_dark_mode_on, is_last_contract, {
                   accu_high_barrier,
                   accu_low_barrier,
               })
             : calculate_marker(this.contract_info, { accu_high_barrier, accu_low_barrier });
-        this.contract_config = getChartConfig(this.contract_info);
+        this.contract_config = getChartConfig(this.contract_info, this.root_store.client.is_beta_chart);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
         this.is_digit_contract = isDigitContract(this.contract_info.contract_type);
@@ -232,7 +232,11 @@ export default class ContractStore extends BaseStore {
                                 main_barrier?.updateBarriers(this.accu_high_barrier, this.accu_low_barrier);
                             }
                             // this.markers_array contains tick markers & start/end vertical lines in C.Details page
-                            this.markers_array = createChartMarkers(contract_info, true);
+                            this.markers_array = createChartMarkers(
+                                contract_info,
+                                true,
+                                this.root_store.client.is_beta_chart
+                            );
                             // this observable controls the update of DelayedAccuBarriersMarker in C.Details page
                             this.accumulator_previous_spot_time = current_spot_time;
                         }

@@ -18,7 +18,7 @@ const init = () => {
 
 // React.Lazy expects a default export for the component
 // SmartChart library exports many components
-const load = (component_name: string) => async () => {
+const load = (component_name: string) => () => {
     if (!module) {
         init();
     }

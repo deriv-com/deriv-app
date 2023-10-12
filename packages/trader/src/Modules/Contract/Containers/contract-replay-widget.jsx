@@ -3,8 +3,6 @@ import Digits from 'Modules/Contract/Components/Digits';
 import InfoBox from 'Modules/Contract/Components/InfoBox';
 import BottomWidgets from '../../SmartChart/Components/bottom-widgets.jsx';
 import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
-import BottomWidgetsBeta from '../../SmartChartBeta/Components/bottom-widgets.jsx';
-import TopWidgetsBeta from '../../SmartChartBeta/Components/top-widgets.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -41,24 +39,8 @@ export const InfoBoxWidget = observer(() => {
 });
 
 // Chart widgets passed into SmartCharts
-export const ChartTopWidgets = observer(() => {
+export const ChartTopWidgets = () => {
     const { client } = useStore();
-    const { is_beta_chart } = client;
-    return (
-        <>
-            {is_beta_chart && <TopWidgetsBeta InfoBox={<InfoBoxWidget />} is_title_enabled={false} />}
-            {!is_beta_chart && <TopWidgets InfoBox={<InfoBoxWidget />} is_title_enabled={false} />}
-        </>
-    );
-});
-
-export const ChartBottomWidgets = observer(() => {
-    const { client } = useStore();
-    const { is_beta_chart } = client;
-    return (
-        <>
-            {is_beta_chart && <BottomWidgetsBeta Digits={<DigitsWidget />} />}
-            {!is_beta_chart && <BottomWidgets Digits={<DigitsWidget />} />}
-        </>
-    );
-});
+    return <TopWidgets InfoBox={<InfoBoxWidget />} is_title_enabled={false} is_beta_chart={client.is_beta_chart} />;
+};
+export const ChartBottomWidgets = () => <BottomWidgets Widget={<DigitsWidget />} />;

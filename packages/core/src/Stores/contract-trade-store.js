@@ -384,28 +384,17 @@ export default class ContractTradeStore extends BaseStore {
 
         const contract = new ContractStore(this.root_store, { contract_id });
 
-        if (this.root_store.client.is_beta_chart) {
-            contract.populateConfig(
-                {
-                    date_start: start_time,
-                    barrier,
-                    contract_type,
-                    longcode,
-                    underlying,
-                    limit_order,
-                },
-                is_last_contract
-            );
-        } else {
-            contract.populateConfig({
+        contract.populateConfig(
+            {
                 date_start: start_time,
                 barrier,
                 contract_type,
                 longcode,
                 underlying,
                 limit_order,
-            });
-        }
+            },
+            is_last_contract
+        );
 
         this.contracts.push(contract);
         this.contracts_map[contract_id] = contract;
@@ -444,13 +433,9 @@ export default class ContractTradeStore extends BaseStore {
         if (response.proposal_open_contract) {
             const contract_id = +response.proposal_open_contract.contract_id;
             const contract = this.contracts_map[contract_id];
-            if (this.root_store.client.is_beta_chart) {
-                const is_last_contract = contract_id === this.last_contract.contract_id;
-                contract.populateConfig(response.proposal_open_contract, is_last_contract);
-            }
-            if (!this.root_store.client.is_beta_chart) {
-                contract.populateConfig(response.proposal_open_contract);
-            }
+            const is_last_contract = contract_id === this.last_contract.contract_id;
+            contract.populateConfig(response.proposal_open_contract, is_last_contract);
+
             if (response.proposal_open_contract.is_sold) {
                 this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
                 contract.cacheProposalOpenContractResponse(response);

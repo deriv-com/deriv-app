@@ -41,6 +41,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 
 const ContractReplay = observer(({ contract_id }) => {
     const { common, contract_replay, ui } = useStore();
+    const [swipe_index, setSwipeIndex] = React.useState(0);
     const { contract_store } = contract_replay;
     const {
         is_market_closed,
@@ -77,6 +78,10 @@ const ContractReplay = observer(({ contract_id }) => {
         setIsVisible(false);
         const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
         return is_from_table_row ? history.goBack() : routeBackInApp(history);
+    };
+
+    const onChangeSwipeableIndex = index => {
+        setSwipeIndex(index);
     };
 
     if (!contract_info.underlying) return null;
@@ -166,7 +171,11 @@ const ContractReplay = observer(({ contract_id }) => {
                                 {is_digit_contract ? (
                                     <React.Fragment>
                                         <InfoBoxWidget />
-                                        <SwipeableWrapper className='replay-chart__container-swipeable-wrapper'>
+                                        <SwipeableWrapper
+                                            className='replay-chart__container-swipeable-wrapper'
+                                            is_swipe_disabled={swipe_index === 1}
+                                            onChange={onChangeSwipeableIndex}
+                                        >
                                             <DigitsWidget />
                                             <ReplayChart />
                                         </SwipeableWrapper>
@@ -319,18 +328,17 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                         is_bottom_widget_visible={isBottomWidgetVisible()}
                     />
                 ))}
-            {!is_beta_chart ||
-                (is_accumulator_contract && !!markers_array && (
-                    <DelayedAccuBarriersMarker
-                        marker_component={accu_barriers_marker_component}
-                        key={accumulators_barriers_marker.key}
-                        is_dark_theme={is_dark_theme}
-                        granularity={granularity}
-                        is_in_contract_details
-                        previous_spot_time={accumulator_previous_spot_time}
-                        {...accumulators_barriers_marker}
-                    />
-                ))}
+            {!is_beta_chart && is_accumulator_contract && !!markers_array && (
+                <DelayedAccuBarriersMarker
+                    marker_component={accu_barriers_marker_component}
+                    key={accumulators_barriers_marker.key}
+                    is_dark_theme={is_dark_theme}
+                    granularity={granularity}
+                    is_in_contract_details
+                    previous_spot_time={accumulator_previous_spot_time}
+                    {...accumulators_barriers_marker}
+                />
+            )}
         </SmartChartSwitcher>
     );
 });

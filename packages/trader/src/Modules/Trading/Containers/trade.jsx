@@ -11,7 +11,6 @@ import FormLayout from '../Components/Form/form-layout';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
-import AccumulatorsChartElementsBeta from '../../SmartChartBeta/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgetsBeta from '../../SmartChartBeta/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
@@ -70,6 +69,7 @@ const Trade = observer(() => {
     const [try_open_markets, setTryOpenMarkets] = React.useState(false);
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
+    const [swipe_index, setSwipeIndex] = React.useState(0);
     const charts_ref = React.useRef();
 
     const open_market = React.useMemo(() => {
@@ -126,6 +126,7 @@ const Trade = observer(() => {
     const onChangeSwipeableIndex = index => {
         setMobileDigitView(index === 0);
         setIsDigitsWidgetActive(index === 0);
+        setSwipeIndex(index);
     };
 
     const onTryOtherMarkets = async () => {
@@ -201,6 +202,7 @@ const Trade = observer(() => {
                                 is_chart_loading ||
                                 should_show_active_symbols_loading
                             }
+                            is_swipe_disabled={swipe_index === 1}
                             className={classNames({ 'vanilla-trade-chart': is_vanilla })}
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
@@ -408,20 +410,7 @@ const ChartTrade = observer(props => {
             is_beta={is_beta_chart}
         >
             {!is_beta_chart && <ChartMarkers />}
-            {is_accumulator && is_beta_chart && (
-                <AccumulatorsChartElementsBeta
-                    all_positions={all_positions}
-                    current_spot={current_spot}
-                    current_spot_time={current_spot_time}
-                    has_crossed_accu_barriers={has_crossed_accu_barriers}
-                    should_show_profit_text={
-                        !!accumulator_contract_barriers_data.accumulators_high_barrier &&
-                        getDecimalPlaces(currency) <= 2
-                    }
-                    symbol={symbol}
-                />
-            )}
-            {is_accumulator && !is_beta_chart && (
+            {is_accumulator && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}
                     current_spot={current_spot}
@@ -432,6 +421,7 @@ const ChartTrade = observer(props => {
                         getDecimalPlaces(currency) <= 2
                     }
                     symbol={symbol}
+                    is_beta_chart={is_beta_chart}
                 />
             )}
         </SmartChartWithRef>

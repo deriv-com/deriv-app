@@ -5,6 +5,7 @@ import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isAccumulatorContract, isDigitContract } from '@deriv/shared';
 import { ChartTitle } from 'Modules/SmartChart';
+import { ChartTitleBeta } from 'Modules/SmartChartBeta';
 import BuyToastNotification from './buy-toast-notification';
 import { observer, useStore } from '@deriv/stores';
 
@@ -42,9 +43,11 @@ const TopWidgets = ({
     open_market,
     open,
     is_digits_widget_active,
+    is_beta_chart,
 }) => {
+    const ChartTitleComponent = is_beta_chart ? ChartTitleBeta : ChartTitle;
     const ChartTitleLocal = (
-        <ChartTitle
+        <ChartTitleComponent
             open_market={open_market}
             open={open}
             enabled={is_title_enabled}
@@ -90,6 +93,7 @@ TopWidgets.propTypes = {
     open_market: PropTypes.object,
     theme: PropTypes.string,
     y_axis_width: PropTypes.number,
+    is_beta_chart: PropTypes.bool,
 };
 
 export default TopWidgets;

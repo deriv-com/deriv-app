@@ -27,10 +27,9 @@ const IDVForm = ({
     can_skip_document_verification = false,
 }: TIDVFormProps) => {
     const [document_list, setDocumentList] = React.useState<Array<TDocument>>([]);
-    const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
-    const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv ?? {};
+    const { documents_supported: document_data } = selected_country?.identity?.services?.idv ?? {};
 
     const { errors, touched, values, handleBlur, handleChange, setFieldValue }: FormikProps<TIDVFormValues> =
         useFormikContext();
@@ -39,7 +38,6 @@ const IDVForm = ({
         text: '',
         value: '',
         example_format: '',
-        sample_image: '',
     };
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
@@ -54,8 +52,10 @@ const IDVForm = ({
 
             const new_document_list = filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
-                const { new_display_name, example_format, sample_image, additional_document_example_format } =
-                    getDocumentData(selected_country.value ?? '', key);
+                const { new_display_name, example_format, additional_document_example_format } = getDocumentData(
+                    selected_country.value ?? '',
+                    key
+                );
                 const needs_additional_document = !!document_data[key].additional;
 
                 if (needs_additional_document) {
@@ -68,7 +68,6 @@ const IDVForm = ({
                             example_format: additional_document_example_format,
                         },
                         value: format,
-                        sample_image,
                         example_format,
                     };
                 }
@@ -76,7 +75,6 @@ const IDVForm = ({
                     id: key,
                     text: display_name ?? new_display_name, // Display document name from API if available, else use the one from the helper function
                     value: format,
-                    sample_image,
                     example_format,
                 };
             });
@@ -116,9 +114,6 @@ const IDVForm = ({
             setFieldValue('document_number', '', true);
             setFieldValue('document_additional', '', true);
         }
-        if (has_visual_sample) {
-            setDocumentImage(item.sample_image ?? '');
-        }
     };
 
     return (
@@ -131,11 +126,7 @@ const IDVForm = ({
                                 'proof-of-identity__container--idv': hide_hint,
                             })}
                         >
-                            <div
-                                className={classNames('proof-of-identity__inner-container', {
-                                    'proof-of-identity__inner-container--incl-image': document_image,
-                                })}
-                            >
+                            <div className={classNames('proof-of-identity__inner-container')}>
                                 <div className='proof-of-identity__fieldset-container'>
                                     <fieldset className={classNames({ 'proof-of-identity__fieldset': !hide_hint })}>
                                         <Field name='document_type'>
@@ -264,20 +255,6 @@ const IDVForm = ({
                                         </fieldset>
                                     )}
                                 </div>
-                                {document_image && (
-                                    <div className='proof-of-identity__sample-container'>
-                                        <Text size='xxs' weight='bold'>
-                                            {localize('Sample:')}
-                                        </Text>
-                                        <div className='proof-of-identity__image-container'>
-                                            <img
-                                                className='proof-of-identity__image'
-                                                src={document_image}
-                                                alt='document sample image'
-                                            />
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>

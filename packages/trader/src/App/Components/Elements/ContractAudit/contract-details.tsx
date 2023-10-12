@@ -171,7 +171,7 @@ const ContractDetails = ({
                                     id='dt_bt_label'
                                     icon={<Icon icon='IcContractStrike' size={24} />}
                                     label={getBarrierLabel(contract_info)}
-                                    value={addCommaToNumber(entry_spot_display_value) || ' - '}
+                                    value={addCommaToNumber(Number(entry_spot_display_value)) || ' - '}
                                 />
                                 {reset_time && (
                                     <React.Fragment>
@@ -179,7 +179,7 @@ const ContractDetails = ({
                                             id='dt_bt_label'
                                             icon={<Icon icon='IcContractResetBarrier' size={24} />}
                                             label={localize('Reset barrier')}
-                                            value={addCommaToNumber(reset_barrier) || ' - '}
+                                            value={addCommaToNumber(Number(reset_barrier)) || ' - '}
                                         />
                                         <ContractAuditItem
                                             id='dt_start_time_label'

@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { Checkbox, Dropdown, Popover, PopoverMessageCheckbox } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset';
-import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+
+import Fieldset from 'App/Components/Form/fieldset';
+import { onChangeCancellationDuration,onToggleCancellation } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const CancelDeal = observer(() => {

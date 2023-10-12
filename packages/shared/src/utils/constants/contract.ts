@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { localize } from '@deriv/translations';
+
 import { shouldShowCancellation, shouldShowExpiration, TURBOS, VANILLALONG } from '../contract';
 
 export const getLocalizedBasis = () =>
@@ -26,10 +28,11 @@ type TContractTypesConfig = {
     config?: { hide_duration?: boolean };
 };
 
-type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
+type TGetContractTypesConfig = (symbol?: string) => Record<string, TContractTypesConfig>;
 
 type TContractConfig = {
     button_name?: React.ReactNode;
+    feature_flag?: string;
     name: React.ReactNode;
     position: string;
 };
@@ -506,7 +509,16 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
             name: localize('Asian Down'),
             position: 'bottom',
         },
+        // To add a feature flag for a new trade_type, please add 'feature_flag' to its config here:
+        // SHARKFIN: {
+        //     feature_flag: 'sharkfin',
+        //     name: localize('Sharkfin'),
+        //     position: 'top',
+        // }
+        // and also to DTRADER_FLAGS in FeatureFlagsStore, e.g.: sharkfin: false,
     } as const);
+
+export const TRADE_FEATURE_FLAGS = ['sharkfin'];
 
 export const getContractConfig = (is_high_low?: boolean) => ({
     ...getSupportedContracts(is_high_low),
@@ -520,6 +532,11 @@ the difference between these two functions is just the property they return. (na
 export const getContractTypeDisplay = (type: string, is_high_low = false, show_button_name = false) => {
     const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts] as TContractConfig;
     return (show_button_name && contract_config?.button_name) || contract_config?.name || '';
+};
+
+export const getContractTypeFeatureFlag = (type: string, is_high_low = false) => {
+    const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts] as TContractConfig;
+    return contract_config?.feature_flag ?? '';
 };
 
 export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>

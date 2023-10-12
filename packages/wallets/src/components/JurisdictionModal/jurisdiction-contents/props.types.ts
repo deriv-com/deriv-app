@@ -1,3 +1,5 @@
+import type { useMT5AccountsList } from '@deriv/api';
+
 export type TClickableDescription = {
     onClick?: React.MouseEventHandler<HTMLSpanElement>;
     text: string;
@@ -51,9 +53,9 @@ export type TJurisdictionVerificationItems = {
     notApplicable?: TJurisdictionVerificationSection;
     selfie?: TJurisdictionVerificationSection;
 };
-type TJurisdictionVerificationColors = 'green' | 'red' | 'yellow';
+
 export type TJurisdictionVerificationStatus = {
-    color: TJurisdictionVerificationColors;
+    color: React.CSSProperties['color'];
     icon: string;
     text: string;
 };
@@ -73,6 +75,7 @@ export type TInstrumentsIcon = {
     isAsterisk?: boolean;
     text: string;
 };
+
 export type TJurisdictionData = {
-    jurisdiction?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu';
+    jurisdiction?: NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[0]['landing_company_short'];
 };

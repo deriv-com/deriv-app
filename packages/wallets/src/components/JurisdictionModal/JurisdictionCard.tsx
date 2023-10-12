@@ -69,7 +69,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                                         ? parseClickableDescription(row.clickableDescription)
                                         : row.description
                                 }
-                                key={row?.title}
+                                key={`wallets-jurisdiction-card--${row?.title}`}
                                 renderTag={() => {
                                     if (!row?.titleIndicators) return;
 

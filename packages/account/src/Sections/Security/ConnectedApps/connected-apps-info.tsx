@@ -1,9 +1,8 @@
 import React from 'react';
 import { InlineMessage, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
 
-const ConnectedAppsInfo = observer(() => (
+const ConnectedAppsInfo = () => (
     <InlineMessage
         type='information'
         size='md'
@@ -32,6 +31,6 @@ const ConnectedAppsInfo = observer(() => (
             </div>
         }
     />
-));
+);
 
 export default ConnectedAppsInfo;

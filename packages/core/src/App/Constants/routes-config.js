@@ -46,7 +46,7 @@ const Cashier = React.lazy(() =>
 const Bot = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
+        return import(/* webpackChunkName: "bot-web-ui-app" */ '@deriv/bot-web-ui');
     })
 );
 
@@ -54,6 +54,13 @@ const AppStore = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
+    })
+);
+
+const Wallets = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "wallets" */ '@deriv/wallets');
     })
 );
 
@@ -235,6 +242,12 @@ const getModules = () => {
             component: AppStore,
             is_authenticated: true,
             getTitle: () => localize("Trader's Hub"),
+        },
+        {
+            path: routes.wallets,
+            component: Wallets,
+            is_authenticated: true,
+            getTitle: () => localize('Wallets'),
         },
         {
             path: routes.onboarding,

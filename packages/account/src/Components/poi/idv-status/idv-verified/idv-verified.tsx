@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -20,7 +21,10 @@ const IdvVerified = ({ needs_poa, is_from_external, redirect_button }: Partial<T
     );
 
     return (
-        <div className='proof-of-identity__container' data-testid='poi_idv_verified_container'>
+        <div
+            className={classNames('proof-of-identity__container', 'proof-of-identity__container--status')}
+            data-testid='poi_idv_verified_container'
+        >
             <IdvDocumentVerified className='icon' />
             <Text className='proof-of-identity__text btm-spacer' align='center' weight='bold'>
                 {header_Text}

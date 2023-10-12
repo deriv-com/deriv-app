@@ -11,3 +11,10 @@ export const DUPLICATE_ACCOUNT_ERROR_MESSAGE = (
         components={[<span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />]}
     />
 );
+
+export const CLAIMED_DOCUMENT_ERROR_MESSAGE = (
+    <Localize
+        i18n_default_text="This document number was already submitted for a different account. It seems you have an account with us that doesn't need further verification. Please contact us via <0>live chat</0> if you need help."
+        components={[<span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />]}
+    />
+);

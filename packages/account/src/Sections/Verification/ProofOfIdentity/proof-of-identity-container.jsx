@@ -83,8 +83,8 @@ const ProofOfIdentityContainer = observer(
                         setStatusLoading(false);
                         return;
                     }
-
                     loadResidenceList();
+                    setStatusLoading(false);
                 });
             }
         }, [loadResidenceList, is_switching]);

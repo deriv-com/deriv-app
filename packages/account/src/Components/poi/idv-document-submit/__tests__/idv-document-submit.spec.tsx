@@ -21,12 +21,10 @@ jest.mock('Helpers/utils', () => ({
                 document_1: {
                     new_display_name: '',
                     example_format: '5436454364243',
-                    sample_image: '',
                 },
                 document_2: {
                     new_display_name: '',
                     example_format: 'A-52431',
-                    sample_image: '',
                 },
             },
         };

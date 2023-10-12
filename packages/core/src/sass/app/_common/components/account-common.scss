@@ -462,6 +462,9 @@
 
             &__fieldset {
                 margin-bottom: 2rem;
+                @include mobile{
+                    margin-bottom: 1.6rem;
+                }
                 &-input {
                     @include desktop {
                         margin-bottom: unset;
@@ -470,24 +473,10 @@
             }
         }
     }
-    .proof-of-identity__inner-container {
-        @include desktop {
-            &--incl-image {
-                display: grid;
-                align-items: center;
-                column-gap: 1.5rem;
-                grid-template-columns: auto 0.5fr;
-            }
-        }
-    }
 
     .additional-field {
-        margin-top: 1.6rem;
+        margin-top: 0.8rem;
         margin-bottom: 2rem;
-
-        @include mobile {
-            margin-top: 1rem;
-        }
     }
 }
 
@@ -662,6 +651,12 @@
             overflow-y: scroll;
             justify-content: center;
             padding: 0 1.6rem;
+
+            &--status{
+                    height: 100%;
+                    width: 100%;
+                    position: absolute;
+            }
         }
 
         &--reset {
@@ -693,13 +688,15 @@
         .icon {
             width: 128px;
             height: 128px;
-            margin-top: 5.2rem;
             margin-bottom: 2.6rem;
+
+            @include desktop{
+                margin-top: 5.2rem;
+            }
 
             @include mobile {
                 width: 72px;
                 height: 72px;
-                margin-top: 2.6rem;
             }
         }
 
@@ -733,7 +730,6 @@
 
     &__text {
         @include mobile {
-            width: 94%;
             text-align: center;
         }
     }
@@ -874,7 +870,9 @@
 
     &__mismatch-container {
         .idv-form {
+            @include desktop{
             margin-bottom: 1.6rem;
+            }
         }
 
         .proof-of-identity__submit-button {

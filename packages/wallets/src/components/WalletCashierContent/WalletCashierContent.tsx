@@ -6,15 +6,15 @@ import { WalletTransfer } from '../WalletTransfer';
 
 const WalletCashierContent = () => {
     const history = useHistory();
-    const isTransfer = useRouteMatch('/appstore/traders-hub/cashier/transfer');
-    const isDeposit = useRouteMatch('/appstore/traders-hub/cashier/deposit');
-    const isTransactions = useRouteMatch('/appstore/traders-hub/cashier/transactions');
-    const isWithdraw = useRouteMatch('/appstore/traders-hub/cashier/withdraw');
+    const isTransfer = useRouteMatch('/wallets/cashier/transfer');
+    const isDeposit = useRouteMatch('/wallets/cashier/deposit');
+    const isTransactions = useRouteMatch('/wallets/cashier/transactions');
+    const isWithdraw = useRouteMatch('/wallets/cashier/withdraw');
 
     useEffect(() => {
         // redirect to deposit page if no other page is matched
         if (!isTransfer && !isDeposit && !isTransactions && !isWithdraw) {
-            history.push('/appstore/traders-hub/cashier/deposit');
+            history.push('/wallets/cashier/deposit');
         }
     }, [isTransfer, isDeposit, isTransactions, isWithdraw, history]);
 

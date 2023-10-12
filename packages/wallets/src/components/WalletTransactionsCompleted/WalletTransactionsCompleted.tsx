@@ -6,14 +6,24 @@ import { WalletTransactionsCompletedRow } from '../WalletTransactionsCompletedRo
 import { WalletTransactionsNoDataState } from '../WalletTransactionsNoDataState';
 import { WalletTransactionsTable } from '../WalletTransactionsTable';
 
+type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['action_type'];
+
 type TProps = {
-    filter?: NonNullable<TSocketRequestPayload<'statement'>['payload']>['action_type'];
+    filter?: TFilter;
+    setFilter: (value?: TFilter) => void;
 };
 
-const WalletTransactionsCompleted: React.FC<TProps> = ({ filter }) => {
+const filtersMapper: Record<string, Partial<TProps['filter']>> = {
+    all: undefined,
+    deposit: 'deposit',
+    transfer: 'transfer',
+    withdrawal: 'withdrawal',
+};
+
+const WalletTransactionsCompleted: React.FC<TProps> = ({ filter, setFilter }) => {
     const { isFetching: isAuthorizeFetching } = useAuthorize();
     const invalidate = useInvalidateQuery();
-    const { data, fetchNextPage, isFetching, setFilter } = useTransactions();
+    const { data, fetchNextPage, isFetching, setFilter: setTransactionsFilter } = useTransactions();
 
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
@@ -29,7 +39,8 @@ const WalletTransactionsCompleted: React.FC<TProps> = ({ filter }) => {
     );
 
     useEffect(() => {
-        setFilter(filter);
+        setFilter(filtersMapper[filter || 'all']);
+        setTransactionsFilter(filtersMapper[filter || 'all']);
     }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {

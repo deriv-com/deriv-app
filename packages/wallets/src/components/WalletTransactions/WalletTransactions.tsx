@@ -16,15 +16,6 @@ const WalletTransactions = () => {
     >();
 
     useEffect(() => {
-        if (isPendingActive && filterValue === 'transfer') {
-            setFilterValue('all');
-        }
-        if (!isPendingActive && filterValue === 'all') {
-            setFilterValue(undefined);
-        }
-    }, [filterValue, isPendingActive]);
-
-    useEffect(() => {
         if (!data?.currency_config?.is_crypto && isPendingActive) {
             setIsPendingActive(false);
         }
@@ -51,9 +42,15 @@ const WalletTransactions = () => {
                 <WalletTransactionsFilter isPendingActive={isPendingActive} onSelect={setFilterValue} />
             </div>
             {isPendingActive ? (
-                <WalletTransactionsPending filter={filterValue as TWalletTransactionsPendingFilter} />
+                <WalletTransactionsPending
+                    filter={filterValue as TWalletTransactionsPendingFilter}
+                    setFilter={setFilterValue}
+                />
             ) : (
-                <WalletTransactionsCompleted filter={filterValue as TWalletTransactionCompletedFilter} />
+                <WalletTransactionsCompleted
+                    filter={filterValue as TWalletTransactionCompletedFilter}
+                    setFilter={setFilterValue}
+                />
             )}
         </div>
     );

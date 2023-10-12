@@ -7,21 +7,28 @@ import { WalletTransactionsPendingRow } from '../WalletTransactionsPendingRow';
 import { WalletTransactionsTable } from '../WalletTransactionsTable';
 import './WalletTransactionsPending.scss';
 
+type TFilter = NonNullable<
+    NonNullable<NonNullable<Parameters<ReturnType<typeof useCryptoTransactions>['subscribe']>>[0]>['payload']
+>['transaction_type'];
+
 type TProps = {
-    filter?: NonNullable<
-        NonNullable<NonNullable<Parameters<ReturnType<typeof useCryptoTransactions>['subscribe']>>[0]>['payload']
-    >['transaction_type'];
+    filter?: TFilter;
+    setFilter: (value?: TFilter) => void;
 };
 
-const WalletTransactionsPending: React.FC<TProps> = ({ filter }) => {
+const acceptableFilters = ['all', 'deposit', 'withdrawal'];
+
+const WalletTransactionsPending: React.FC<TProps> = ({ filter, setFilter }) => {
     const { data, isLoading, resetData, subscribe, unsubscribe } = useCryptoTransactions();
 
     useEffect(() => {
         resetData();
-        subscribe({ payload: { transaction_type: filter } });
-
+        if (filter && !acceptableFilters.includes(filter)) {
+            setFilter('all');
+        }
+        subscribe({ payload: { transaction_type: filter && acceptableFilters.includes(filter) ? filter : 'all' } });
         return () => unsubscribe();
-    }, [filter, resetData, subscribe, unsubscribe]);
+    }, [filter, resetData, setFilter, subscribe, unsubscribe]);
 
     if (isLoading) return <Loader />;
 

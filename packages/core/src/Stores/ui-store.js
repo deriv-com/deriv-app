@@ -169,6 +169,9 @@ export default class UIStore extends BaseStore {
     is_cfd_reset_password_modal_enabled = false;
     sub_section_index = 0;
 
+    is_additional_kyc_info_modal_open = false;
+    is_kyc_information_submitted_modal_open = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -198,6 +201,8 @@ export default class UIStore extends BaseStore {
         super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
+            is_additional_kyc_info_modal_open: observable,
+            is_kyc_information_submitted_modal_open: observable,
             account_needed_modal_props: observable,
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,
@@ -392,6 +397,8 @@ export default class UIStore extends BaseStore {
             toggleLanguageSettingsModal: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
+            toggleAdditionalKycInfoModal: action.bound,
+            toggleKycInformationSubmittedModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -919,5 +926,13 @@ export default class UIStore extends BaseStore {
 
     setSubSectionIndex(index) {
         this.sub_section_index = index;
+    }
+
+    toggleAdditionalKycInfoModal() {
+        this.is_additional_kyc_info_modal_open = !this.is_additional_kyc_info_modal_open;
+    }
+
+    toggleKycInformationSubmittedModal() {
+        this.is_kyc_information_submitted_modal_open = !this.is_kyc_information_submitted_modal_open;
     }
 }

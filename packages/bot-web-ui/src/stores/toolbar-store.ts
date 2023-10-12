@@ -64,7 +64,6 @@ export default class ToolbarStore implements IToolbarStore {
     };
 
     onResetOkButtonClick = (): void => {
-        this.is_reset_button_clicked = true;
         runGroupedEvents(
             false,
             () => {
@@ -73,6 +72,7 @@ export default class ToolbarStore implements IToolbarStore {
             'reset'
         );
         this.is_dialog_open = false;
+        this.is_reset_button_clicked = true;
     };
 
     resetDefaultStrategy = async () => {

@@ -1,19 +1,16 @@
 import React, { useRef, useState } from 'react';
 import classNames from 'classnames';
-
 import { observer } from '@deriv/stores';
-
 import { useDBotStore } from '../../../stores/useDBotStore';
 import BotSnackbar from '../../bot-snackbar';
 import LoadModal from '../../load-modal';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
 import QuickStrategy from '../quick-strategy';
-
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
-    const { dashboard, app, run_panel } = useDBotStore();
+    const { dashboard, app, run_panel, toolbar } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_running } = run_panel;
     const is_blockly_listener_registered = useRef(false);
@@ -28,8 +25,12 @@ const BotBuilder = observer(() => {
     }, []);
 
     const handleBlockChangeOnBotRun = (e: Event) => {
-        if (e.type !== 'ui') {
+        const { is_reset_button_clicked, setResetButtonState } = toolbar;
+        if (e.type !== 'ui' && !is_reset_button_clicked) {
             setShowSnackbar(true);
+            removeBlockChangeListener();
+        } else if (is_reset_button_clicked) {
+            setResetButtonState(false);
             removeBlockChangeListener();
         }
     };

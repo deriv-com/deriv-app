@@ -7,6 +7,7 @@ import {
     useAccountTransferVisible,
     useIsP2PEnabled,
     usePaymentAgentTransferVisible,
+    useFeatureFlags,
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -62,6 +63,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
     const history = useHistory();
+    const { is_next_wallet_enabled } = useFeatureFlags();
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -293,7 +295,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {is_logged_in && (
                                     <MobileDrawer.Item>
                                         <MenuLink
-                                            link_to={routes.traders_hub}
+                                            link_to={is_next_wallet_enabled ? routes.wallets : routes.traders_hub}
                                             icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
                                             text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}

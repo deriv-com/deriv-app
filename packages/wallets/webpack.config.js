@@ -1,10 +1,6 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-// const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
-//TODO: Uncomment this line when type script migrations on all packages done
-//const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -37,30 +33,20 @@ module.exports = function (env) {
 
     return {
         entry: {
-            index: path.resolve(__dirname, 'src', 'index.tsx'),
+            index: path.resolve(__dirname, './src', 'index.tsx'),
         },
         mode: is_release ? 'production' : 'development',
         output: {
-            path: path.resolve(__dirname, 'dist'),
+            path: path.resolve(__dirname, './dist'),
             publicPath: base,
-            filename: 'appstore/js/[name].js',
+            filename: 'wallets/js/[name].js',
             libraryExport: 'default',
-            library: '@deriv/appstore',
+            library: '@deriv/wallets',
             libraryTarget: 'umd',
-            chunkFilename: 'appstore/js/appstore.[name].[contenthash].js',
+            chunkFilename: 'wallets/js/wallets.[name].[contenthash].js',
         },
         resolve: {
-            alias: {
-                Assets: path.resolve(__dirname, 'src/assets'),
-                Components: path.resolve(__dirname, 'src/components'),
-                Constants: path.resolve(__dirname, 'src/constants'),
-                Modules: path.resolve(__dirname, 'src/modules'),
-                Services: path.resolve(__dirname, 'src/services'),
-                Stores: path.resolve(__dirname, 'src/stores'),
-                Types: path.resolve(__dirname, 'src/types'),
-                Utils: path.resolve(__dirname, 'src/utils'),
-            },
-            extensions: ['.ts', '.tsx', '.js'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         module: {
             rules: [
@@ -77,18 +63,6 @@ module.exports = function (env) {
                     exclude: /node_modules/,
                     use: [
                         {
-                            loader: '@deriv/shared/src/loaders/deriv-trader-loader.js',
-                        },
-                        {
-                            loader: '@deriv/shared/src/loaders/deriv-account-loader.js',
-                        },
-                        {
-                            loader: '@deriv/shared/src/loaders/deriv-cashier-loader.js',
-                        },
-                        {
-                            loader: '@deriv/shared/src/loaders/deriv-cfd-loader.js',
-                        },
-                        {
                             loader: 'babel-loader',
                             options: {
                                 cacheDirectory: true,
@@ -97,6 +71,8 @@ module.exports = function (env) {
                         },
                     ],
                 },
+                //TODO: Uncomment this line when type script migrations on all packages done
+                // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
                 {
                     test: input => is_release && /\.js$/.test(input),
                     loader: 'source-map-loader',
@@ -107,6 +83,9 @@ module.exports = function (env) {
                         'style-loader',
                         {
                             loader: 'css-loader',
+                            options: {
+                                url: true,
+                            },
                         },
                         {
                             loader: 'postcss-loader',
@@ -130,7 +109,9 @@ module.exports = function (env) {
                                 // Provide path to the file with resources
                                 resources: [
                                     // eslint-disable-next-line global-require, import/no-dynamic-require
-                                    ...require('@deriv/shared/src/styles/index.js'),
+                                    ...require('../shared/src/styles/index.js'),
+                                    // eslint-disable-next-line global-require, import/no-dynamic-require
+                                    ...require('./src/styles/index.js'),
                                 ],
                             },
                         },
@@ -138,16 +119,19 @@ module.exports = function (env) {
                 },
                 {
                     test: /\.svg$/,
-                    exclude: [/node_modules/, path.resolve('../', 'wallets')],
+                    issuer: /\/packages\/wallets\/.*(\/)?.*.scss/,
+                    exclude: /node_modules/,
                     include: /public\//,
                     type: 'asset/resource',
                     generator: {
-                        filename: 'appstore/public/[name].[contenthash][ext]',
+                        filename: 'wallets/public/[name].[contenthash][ext]',
                     },
                 },
                 {
                     test: /\.svg$/,
-                    exclude: /node_modules|public\//,
+                    issuer: /\/packages\/wallets\/.*(\/)?.*.tsx/,
+                    exclude: /node_modules/,
+                    include: /public\//,
                     use: svg_loaders,
                 },
             ],
@@ -163,6 +147,34 @@ module.exports = function (env) {
                       new CssMinimizerPlugin(),
                   ]
                 : [],
+            splitChunks: {
+                chunks: 'all',
+                minSize: 102400,
+                minSizeReduction: 102400,
+                minChunks: 1,
+                maxAsyncRequests: 5,
+                maxInitialRequests: 3,
+                automaticNameDelimiter: '~',
+                enforceSizeThreshold: 500000,
+                cacheGroups: {
+                    default: {
+                        minChunks: 2,
+                        minSize: 102400,
+                        priority: -20,
+                        reuseExistingChunk: true,
+                    },
+                    defaultVendors: {
+                        idHint: 'vendors',
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10,
+                    },
+                    shared: {
+                        test: /[\\/]shared[\\/]/,
+                        name: 'shared',
+                        chunks: 'all',
+                    },
+                },
+            },
         },
         devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [
@@ -170,18 +182,8 @@ module.exports = function (env) {
                 react: true,
                 'react-dom': true,
                 classnames: true,
-                mobx: true,
-                'react-router': true,
                 'react-router-dom': true,
-                '@deriv/shared': true,
-                '@deriv/components': true,
-                '@deriv/translations': true,
-                '@deriv/account': true,
-                '@deriv/cashier': true,
-                '@deriv/cfd': true,
             },
         ],
-        //TODO: Uncomment this line when type script migrations on all packages done
-        // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
     };
 };

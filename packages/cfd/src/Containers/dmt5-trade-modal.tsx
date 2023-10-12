@@ -12,17 +12,18 @@ import {
     isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
-import PasswordBox from '../Components/passwordbox';
-import { TTradingPlatformAccounts } from '../Components/props.types';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
-import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import PasswordBox from '../Components/passwordbox';
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid;
+    mt5_trade_account: DetailsOfEachMT5Loginid & {
+        webtrader_url?: string;
+    };
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,
@@ -154,11 +155,7 @@ const DMT5TradeModal = ({
                     <a
                         className='dc-btn cfd-trade-modal__download-center-app--option-link'
                         type='button'
-                        href={getMT5WebTerminalLink({
-                            category: mt5_trade_account.account_type,
-                            loginid: (mt5_trade_account as TTradingPlatformAccounts).display_login,
-                            server_name: (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment,
-                        })}
+                        href={mt5_trade_account.webtrader_url}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const ExpiryText = ({ expiry_epoch, has_error }) => {
+const ExpiryText = ({ expiry_epoch, has_error, fixed_date }) => {
     const formatted_date =
         expiry_epoch && !has_error
             ? new Date(expiry_epoch * 1000)
@@ -14,7 +14,7 @@ const ExpiryText = ({ expiry_epoch, has_error }) => {
 
     return (
         <Text as='div' size='xxxs' line_height='s' className='expiry-text-container'>
-            <Localize i18n_default_text='Expiry: {{date}}' values={{ date: formatted_date }} />
+            <Localize i18n_default_text='Expiry: {{date}}' values={{ date: fixed_date || formatted_date }} />
         </Text>
     );
 };

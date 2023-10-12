@@ -49,8 +49,8 @@ jest.mock('Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx', 
     MultiplierOptionsWidget: jest.fn(() => <div>MultiplierOptionsWidget</div>),
 }));
 jest.mock('Modules/Trading/Components/Form/TradeParams/trade-type-tabs', () => jest.fn(() => <div>TradeTypeTabs</div>));
-jest.mock('Modules/Trading/Containers/trade-params-mobile.jsx', () => ({
-    ...jest.requireActual('Modules/Trading/Containers/trade-params-mobile.jsx'),
+jest.mock('Modules/Trading/Containers/trade-params-mobile', () => ({
+    ...jest.requireActual('Modules/Trading/Containers/trade-params-mobile'),
     BarrierMobile: jest.fn(() => <div>BarrierMobile</div>),
     LastDigitMobile: jest.fn(() => <div>LastDigitMobile</div>),
 }));
@@ -62,7 +62,7 @@ jest.mock('Modules/Trading/Components/Elements/mobile-widget.jsx', () =>
     jest.fn(props => <div onClick={props.toggleDigitsWidget}>MobileWidget</div>)
 );
 jest.mock('Modules/Trading/Containers/allow-equals', () => jest.fn(() => <div>AllowEqualsMobile</div>));
-jest.mock('Modules/Trading/Components/Elements/Multiplier/risk-management-info.jsx', () =>
+jest.mock('Modules/Trading/Components/Elements/Multiplier/risk-management-info', () =>
     jest.fn(() => <div>RiskManagementInfo</div>)
 );
 jest.mock('Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-amount-mobile', () =>

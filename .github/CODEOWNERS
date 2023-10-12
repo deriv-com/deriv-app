@@ -155,3 +155,15 @@
 /packages/trader/**/*                                           @matin-deriv @maryia-deriv
 
 
+# ==============================================================
+#  deriv-app/wallets
+# ==============================================================
+
+/packages/wallets/**/*                                          @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv
+
+
+# ==============================================================
+#  deriv-app/api
+# ==============================================================
+
+/packages/api/**/*                                              @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv

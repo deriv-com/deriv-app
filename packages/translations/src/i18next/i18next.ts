@@ -10,6 +10,7 @@ const ALL_LANGUAGES = Object.freeze({
     ACH: 'Translations',
     EN: 'English',
     ES: 'Español',
+    DE: 'Deutsch',
     FR: 'Français',
     ID: 'Indonesian',
     IT: 'Italiano',
@@ -26,6 +27,7 @@ export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
         ES: 'Español',
+        DE: 'Deutsch',
         KO: '한국어',
         RU: 'Русский',
         FR: 'Français',
@@ -62,6 +64,12 @@ const isLanguageAvailable = (lang: string) => {
     if (is_ach) return isStaging() || isLocal();
 
     return Object.keys(getAllowedLanguages()).includes(selected_language);
+};
+
+export const getRedirectionLanguage = (preferred_language: string) => {
+    const language_query = new URLSearchParams(window.location.search).get('lang');
+    const is_language_query_valid = language_query && isLanguageAvailable(language_query);
+    return is_language_query_valid ? language_query : preferred_language ?? DEFAULT_LANGUAGE;
 };
 
 export const getAllLanguages = () => ALL_LANGUAGES;

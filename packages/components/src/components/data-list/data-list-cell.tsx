@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { isTurbosContract, isVanillaContract } from '@deriv/shared';
-import { TPassThrough, TRow } from './data-list';
+import { TPassThrough, TRow } from '../types/common.types';
 
 export type TColIndex =
     | 'type'
@@ -36,22 +36,24 @@ export type TDataListCell = {
     className?: string;
     column?: {
         key?: string;
-        title?: React.ReactNode;
-        col_index: TColIndex;
+        title?: string;
+        col_index?: TColIndex;
         renderCellContent?: (props: TRenderCellContent) => React.ReactNode;
-        renderHeader?: (props: THeaderProps) => React.ReactNode;
+        renderHeader?: (prop: renderHeaderType) => React.ReactNode;
     };
     is_footer?: boolean;
     passthrough?: TPassThrough;
-    row: TRow;
+    row?: TRow;
 };
+
+type renderHeaderType = { title?: string; is_vanilla?: boolean };
 
 const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataListCell) => {
     if (!column) return null;
     const { col_index, title } = column;
-    const cell_value = row[col_index];
-    const is_turbos = isTurbosContract(row.contract_info?.contract_type);
-    const is_vanilla = isVanillaContract(row.contract_info?.contract_type);
+    const cell_value = row?.[col_index as TColIndex];
+    const is_turbos = isTurbosContract(row?.contract_info?.contract_type);
+    const is_vanilla = isVanillaContract(row?.contract_info?.contract_type);
 
     return (
         <div className={classNames(className, column.col_index)}>
@@ -66,7 +68,7 @@ const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataL
                           cell_value,
                           is_footer,
                           passthrough,
-                          row_obj: row,
+                          row_obj: row as TRow,
                           is_vanilla,
                           is_turbos,
                       })

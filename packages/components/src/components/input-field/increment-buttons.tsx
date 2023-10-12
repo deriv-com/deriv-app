@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import Button from '../button';
 import Icon from '../icon';
 import { TButtonType } from './input-field';
@@ -79,7 +80,9 @@ const IncrementButtons = ({
         <React.Fragment>
             <Button
                 id={`${id}_add`}
-                className={'dc-input-wrapper__button dc-input-wrapper__button--increment'}
+                className={classNames('dc-input-wrapper__button dc-input-wrapper__button--increment', {
+                    'dc-input-wrapper__button--disabled': !!max_is_disabled,
+                })}
                 is_disabled={!!max_is_disabled}
                 onClick={incrementValue}
                 tabIndex={-1}
@@ -95,7 +98,9 @@ const IncrementButtons = ({
             </Button>
             <Button
                 id={`${id}_sub`}
-                className={'dc-input-wrapper__button dc-input-wrapper__button--decrement'}
+                className={classNames('dc-input-wrapper__button dc-input-wrapper__button--decrement', {
+                    'dc-input-wrapper__button--disabled': !!min_is_disabled,
+                })}
                 is_disabled={!!min_is_disabled}
                 onClick={decrementValue}
                 tabIndex={-1}

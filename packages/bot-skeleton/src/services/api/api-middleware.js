@@ -98,12 +98,14 @@ class APIMiddleware {
     sendIsCalled = ({ response_promise, args: [request] }) => {
         const req_type = this.getRequestType(request);
         if (req_type) performance.mark(`${req_type}_start`);
-        response_promise.then(res => {
-            const res_type = this.getRequestType(res);
-            if (res_type) {
-                this.defineMeasure(res_type);
-            }
-        });
+        response_promise
+            .then(res => {
+                const res_type = this.getRequestType(res);
+                if (res_type) {
+                    this.defineMeasure(res_type);
+                }
+            })
+            .catch(() => {});
         return response_promise;
     };
 

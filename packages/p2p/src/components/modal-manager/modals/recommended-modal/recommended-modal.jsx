@@ -10,7 +10,7 @@ const RecommendedModal = ({ message }) => {
     return (
         <Modal height='12.6rem' is_open={is_modal_open} width='32.8rem'>
             <Modal.Body>
-                <Text color='prominent' line_height='m' size='xxs'>
+                <Text color='prominent' size='xxs'>
                     {message}
                 </Text>
             </Modal.Body>

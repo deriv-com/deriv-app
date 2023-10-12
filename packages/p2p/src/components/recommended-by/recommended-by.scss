@@ -1,12 +1,12 @@
 .recommended-by {
-    &--container {
+    &__container {
         .dc-popover__target {
             align-items: center;
             display: flex;
         }
     }
 
-    &--icon {
+    &__icon {
         margin-right: 0.5rem;
     }
 }

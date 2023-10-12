@@ -11,8 +11,8 @@ type TPageReturnProps = {
 const PageReturn = ({ className = '', onClick, page_title }: TPageReturnProps) => {
     return (
         <div className={classNames('page-return', className)} data-testid='dt_page_return'>
-            <div onClick={onClick} className='page-return__button'>
-                <Icon icon='IcArrowLeftBold' size={16} />
+            <div onClick={onClick} className='page-return__button' data-testid='dt_page_return_icon'>
+                <Icon icon='IcArrowLeftBold' />
             </div>
             <Text line_height='l' weight='bold'>
                 {page_title}

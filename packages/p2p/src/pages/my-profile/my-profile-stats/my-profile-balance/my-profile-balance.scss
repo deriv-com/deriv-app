@@ -3,16 +3,6 @@
         margin-right: 0.8rem;
     }
 
-    &__modal {
-        &-body {
-            padding: 1rem 2.4rem;
-
-            @include mobile {
-                padding: 0 1.6rem;
-            }
-        }
-    }
-
     &__column {
         flex-direction: column;
     }

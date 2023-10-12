@@ -3,6 +3,7 @@ import { Icon, Popover, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { getTextSize } from 'Utils/responsive';
 
 type TRecommendedByProps = {
     recommended_average?: number;
@@ -52,7 +53,7 @@ const RecommendedBy = ({ recommended_average, recommended_count }: TRecommendedB
                     icon='IcThumbsUp'
                     size={14}
                 />
-                <Text color='less-prominent' line_height='s' size={isMobile() ? 'xxxs' : 'xs'}>
+                <Text color='less-prominent' line_height='s' size={getTextSize('xxxs', 'xs')}>
                     {`${recommended_average ?? 0}%`}
                 </Text>
             </Popover>

@@ -4,7 +4,7 @@ import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';
+import PaymentMethodCard from 'Components/payment-method-card';
 import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list.jsx';
 import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list.jsx';
 

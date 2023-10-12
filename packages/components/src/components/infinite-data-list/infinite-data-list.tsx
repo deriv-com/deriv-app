@@ -8,7 +8,7 @@ type TInfiniteDatalist = Pick<
     React.ComponentProps<typeof DataList>,
     'getRowSize' | 'onRowsRendered' | 'onScroll' | 'overscanRowCount' | 'rowRenderer'
 > & {
-    className: string;
+    className?: string;
     data_list_className: string;
     has_more_items_to_load: boolean;
     has_filler: boolean;

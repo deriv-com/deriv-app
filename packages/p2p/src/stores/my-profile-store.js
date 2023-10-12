@@ -1,4 +1,4 @@
-import { observable, action, computed, when, makeObservable } from 'mobx';
+import { observable, action, computed, makeObservable, reaction } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
@@ -19,14 +19,11 @@ export default class MyProfileStore extends BaseStore {
     has_more_items_to_load = false;
     is_block_user_table_loading = false;
     is_button_loading = false;
-    is_confirm_delete_modal_open = false;
-    is_daily_limit_modal_open = false;
-    is_daily_limit_success_modal_open = false;
-    is_error_modal_open = false;
-    is_filter_modal_open = false;
+    is_daily_limit_upgrade_success = false;
+    is_daily_limit_upgrading = false;
     is_loading = false;
-    is_loading_modal_open = false;
     is_submit_success = false;
+    is_there_daily_limit_error = false;
     is_trade_partners_list_empty = true;
     payment_method_value = undefined;
     payment_methods_list = [];
@@ -65,14 +62,11 @@ export default class MyProfileStore extends BaseStore {
             has_more_items_to_load: observable,
             is_block_user_table_loading: observable,
             is_button_loading: observable,
-            is_confirm_delete_modal_open: observable,
-            is_daily_limit_modal_open: observable,
-            is_daily_limit_success_modal_open: observable,
-            is_error_modal_open: observable,
-            is_filter_modal_open: observable,
+            is_daily_limit_upgrade_success: observable,
+            is_daily_limit_upgrading: observable,
             is_loading: observable,
-            is_loading_modal_open: observable,
             is_submit_success: observable,
+            is_there_daily_limit_error: observable,
             is_trade_partners_list_empty: observable,
             payment_method_value: observable,
             payment_methods_list: observable,
@@ -132,15 +126,12 @@ export default class MyProfileStore extends BaseStore {
             setFullName: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsBlockUserTableLoading: action.bound,
-            setIsConfirmDeleteModalOpen: action.bound,
-            setIsDailyLimitModalOpen: action.bound,
-            setIsDailyLimitSuccessModalOpen: action.bound,
-            setIsErrorModalOpen: action.bound,
-            setIsFilterModalOpen: action.bound,
+            setIsDailyLimitUpgradeSuccess: action.bound,
             setIsLoading: action.bound,
-            setIsLoadingModalOpen: action.bound,
             setIsSubmitSuccess: action.bound,
+            setIsThereDailyLimitError: action.bound,
             setIsTradePartnersListEmpty: action.bound,
+            setIsDailyLimitUpgrading: action.bound,
             setPaymentMethodValue: action.bound,
             setPaymentMethodsList: action.bound,
             setPaymentMethodToDelete: action.bound,
@@ -159,6 +150,14 @@ export default class MyProfileStore extends BaseStore {
             setTradePartnersList: action.bound,
             upgradeDailyLimit: action.bound,
         });
+
+        reaction(
+            () => this.trade_partners_list,
+            () => {
+                if (this.trade_partners_list.length > 0 && this.is_trade_partners_list_empty)
+                    this.setIsTradePartnersListEmpty(false);
+            }
+        );
     }
 
     get advertiser_has_payment_methods() {
@@ -510,7 +509,7 @@ export default class MyProfileStore extends BaseStore {
         this.getTradePartnersList({ startIndex: 0 }, true);
 
         if (isMobile()) {
-            this.setIsFilterModalOpen(false);
+            this.root_store.general_store.hideModal();
         }
     }
 
@@ -562,22 +561,22 @@ export default class MyProfileStore extends BaseStore {
     }
 
     onClickDelete() {
+        const { general_store } = this.root_store;
+
         requestWS({
             p2p_advertiser_payment_methods: 1,
             delete: [this.payment_method_to_delete.ID],
-        }).then(async response => {
-            this.setIsConfirmDeleteModalOpen(false);
-            if (!response.error) {
-                this.getAdvertiserPaymentMethods();
-            } else {
-                this.setDeleteErrorMessage(response.error.message);
-                await when(
-                    () => !this.root_store.general_store.is_modal_open,
-                    () =>
-                        this.root_store.general_store.showModal({
-                            key: 'DeletePaymentMethodErrorModal',
-                        })
-                );
+        }).then(response => {
+            general_store.hideModal();
+            if (response) {
+                if (!response.error) {
+                    this.getAdvertiserPaymentMethods();
+                } else {
+                    this.setDeleteErrorMessage(response.error.message);
+                    general_store.showModal({
+                        key: 'DeletePaymentMethodErrorModal',
+                    });
+                }
             }
         });
     }
@@ -609,7 +608,7 @@ export default class MyProfileStore extends BaseStore {
             this.setShouldShowEditPaymentMethodForm(true);
         } else {
             this.setPaymentMethodToDelete(payment_method);
-            this.setIsConfirmDeleteModalOpen(true);
+            this.root_store.general_store.showModal({ key: 'ConfirmDeletePaymentMethodModal' });
         }
     }
 
@@ -769,36 +768,24 @@ export default class MyProfileStore extends BaseStore {
         this.is_block_user_table_loading = is_block_user_table_loading;
     }
 
-    setIsConfirmDeleteModalOpen(is_confirm_delete_modal_open) {
-        this.is_confirm_delete_modal_open = is_confirm_delete_modal_open;
+    setIsDailyLimitUpgradeSuccess(is_daily_limit_upgrade_success) {
+        this.is_daily_limit_upgrade_success = is_daily_limit_upgrade_success;
     }
 
-    setIsDailyLimitModalOpen(is_daily_limit_modal_open) {
-        this.is_daily_limit_modal_open = is_daily_limit_modal_open;
-    }
-
-    setIsDailyLimitSuccessModalOpen(is_daily_limit_success_modal_open) {
-        this.is_daily_limit_success_modal_open = is_daily_limit_success_modal_open;
-    }
-
-    setIsErrorModalOpen(is_error_modal_open) {
-        this.is_error_modal_open = is_error_modal_open;
-    }
-
-    setIsFilterModalOpen(is_filter_modal_open) {
-        this.is_filter_modal_open = is_filter_modal_open;
+    setIsDailyLimitUpgrading(is_daily_limit_upgrading) {
+        this.is_daily_limit_upgrading = is_daily_limit_upgrading;
     }
 
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
 
-    setIsLoadingModalOpen(is_loading_modal_open) {
-        this.is_loading_modal_open = is_loading_modal_open;
-    }
-
     setIsSubmitSuccess(is_submit_success) {
         this.is_submit_success = is_submit_success;
+    }
+
+    setIsThereDailyLimitError(is_there_daily_limit_error) {
+        this.is_there_daily_limit_error = is_there_daily_limit_error;
     }
 
     setIsTradePartnersListEmpty(is_trade_partners_list_empty) {
@@ -874,10 +861,10 @@ export default class MyProfileStore extends BaseStore {
 
         requestWS({ p2p_advertiser_update: 1, upgrade_limits: 1 }).then(response => {
             if (response) {
-                this.setIsLoadingModalOpen(false);
+                this.setIsDailyLimitUpgrading(false);
 
-                if (response.error) this.setIsErrorModalOpen(true);
-                else this.setIsDailyLimitSuccessModalOpen(true);
+                if (response.error) this.setIsThereDailyLimitError(true);
+                else this.setIsDailyLimitUpgradeSuccess(true);
 
                 general_store.external_stores.notifications.removeNotificationByKey({
                     key: 'p2p_daily_limit_increase',

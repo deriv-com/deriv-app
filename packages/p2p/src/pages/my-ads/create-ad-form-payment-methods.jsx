@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { useStores } from 'Stores';
-import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';
+import PaymentMethodCard from 'Components/payment-method-card';
 import { localize } from 'Components/i18next';
 import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list.jsx';
 import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list.jsx';

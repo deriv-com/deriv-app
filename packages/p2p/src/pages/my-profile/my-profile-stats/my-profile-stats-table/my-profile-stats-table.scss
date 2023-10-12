@@ -1,7 +1,17 @@
 .my-profile-stats-table {
+    display: grid;
     border-bottom: none;
     grid-template-columns: repeat(4, 1fr);
     margin: 1.4rem 0;
+
+    @include mobile {
+        border-bottom: none;
+        grid-template-columns: repeat(2, 1fr);
+        height: 6.8rem;
+        margin: 0.5rem 0;
+        padding: 1.6rem;
+        width: 100vw;
+    }
 
     &.dc-table__row {
         height: unset;
@@ -13,40 +23,36 @@
         display: flex;
         flex-direction: column;
         white-space: nowrap;
+        padding-left: 2.4rem;
+        margin-bottom: 2.4rem;
 
-        &:last-child {
-            border-right: none;
-        }
+        @include desktop {
+            &:first-child,
+            &:nth-child(5) {
+                padding-left: 0;
+            }
 
-        & + & {
-            padding: 0 2.4rem;
-
-            @include mobile {
-                padding: 0.4rem 1.6rem;
+            &:nth-child(4),
+            &:last-child {
+                border-right: none;
             }
         }
 
-        &:first-child {
-            padding-right: 4rem;
+        @include mobile {
+            padding-left: 1.6rem;
 
-            @include mobile {
-                padding-right: 1.6rem;
-                padding-top: 0.4rem;
-                padding-bottom: 0.4rem;
+            &:nth-child(odd) {
+                padding-left: 0;
+            }
+
+            &:nth-child(even) {
+                border-right: none;
             }
         }
     }
 
     &--italic {
         font-style: italic;
-    }
-
-    &--mobile {
-        border-bottom: none;
-        grid-template-columns: repeat(2, 1fr);
-        height: 6.8rem;
-        padding: 1.6rem;
-        width: 100vw;
     }
 
     &--pointer {

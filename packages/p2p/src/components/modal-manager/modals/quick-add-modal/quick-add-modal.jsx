@@ -6,7 +6,7 @@ import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import AddPaymentMethod from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
+import AddPaymentMethod from 'Components/add-payment-method';
 import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list.jsx';
 import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list.jsx';
 import { buy_sell } from 'Constants/buy-sell';
@@ -158,7 +158,7 @@ const QuickAddModal = ({ advert }) => {
                 }
             >
                 {my_ads_store.should_show_add_payment_method ? (
-                    <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                    <AddPaymentMethod should_show_page_return={false} />
                 ) : (
                     <>
                         <Text color='prominent' size='xxs'>
@@ -257,7 +257,7 @@ const QuickAddModal = ({ advert }) => {
                 })}
             >
                 {my_ads_store.should_show_add_payment_method ? (
-                    <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                    <AddPaymentMethod should_show_page_return={false} />
                 ) : (
                     <>
                         <Text color='prominent' size='xs'>

@@ -7,11 +7,6 @@ type TScrollToFieldWithError = {
     should_recollect_inputs_names?: boolean;
 };
 
-/**
- * A ScrollToFieldWithError is a helper component for scrolling to field with error.
- *  This component is supposed to be used with Formik and working validation as it uses formik errors object.
- */
-
 const ScrollToFieldWithError = ({
     fields_to_scroll_top,
     fields_to_scroll_end,
@@ -21,9 +16,10 @@ const ScrollToFieldWithError = ({
     const formik = useFormikContext();
     const is_submitting = formik.isSubmitting;
     const scrollToElement = (element_name: string, block: ScrollLogicalPosition = 'center') => {
+        if (!element_name) return;
         const el = document.querySelector(`[name="${element_name}"]`) as HTMLInputElement;
         (el?.parentElement ?? el)?.scrollIntoView({ behavior: 'smooth', block });
-        el?.focus();
+        if (el?.type !== 'radio') el?.focus();
     };
 
     React.useEffect(() => {

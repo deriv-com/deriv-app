@@ -60,6 +60,11 @@ const FinancialDetails = (props: TFinancialDetails) => {
         return errors;
     };
 
+    const fields_to_scroll_to_top = isMobile()
+        ? ['income_source', 'account_turnover', 'estimated_worth']
+        : ['income_source'];
+    const fields_to_scroll_to_end = isMobile() ? [] : ['account_turnover', 'estimated_worth'];
+
     return (
         <Formik
             initialValues={{ ...props.value }}
@@ -69,7 +74,7 @@ const FinancialDetails = (props: TFinancialDetails) => {
             }}
             validateOnMount
         >
-            {({ handleSubmit, isSubmitting, errors, values }) => {
+            {({ handleSubmit, isSubmitting, values }) => {
                 return (
                     <AutoHeightWrapper default_height={200}>
                         {({
@@ -81,8 +86,8 @@ const FinancialDetails = (props: TFinancialDetails) => {
                         }) => (
                             <form ref={setRef} onSubmit={handleSubmit} noValidate>
                                 <ScrollToFieldWithError
-                                    fields_to_scroll_top={['income_source', isMobile() ? 'account_turnover' : '']}
-                                    fields_to_scroll_end={isMobile() ? undefined : ['account_turnover']}
+                                    fields_to_scroll_top={fields_to_scroll_to_top}
+                                    fields_to_scroll_end={fields_to_scroll_to_end}
                                 />
                                 <Div100vhContainer
                                     className={classNames('details-form', 'financial-assessment')}

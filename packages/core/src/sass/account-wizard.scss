@@ -568,8 +568,17 @@
         }
     }
 
+    &__question-counter {
+        margin: 2.4rem 0 0;
+        padding-left: 12rem;
+
+        @include mobile {
+            padding-left: 1.6rem;
+        }
+    }
+
     &__form {
-        margin-top: 2.2rem;
+        margin-top: 1.6rem;
         display: grid;
         grid-template-rows: 4.7fr 1fr;
 

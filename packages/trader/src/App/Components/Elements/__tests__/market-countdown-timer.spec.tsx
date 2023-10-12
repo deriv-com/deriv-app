@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { ActiveSymbols } from '@deriv/api-types';
+import { ActiveSymbols, TradingTimesResponse } from '@deriv/api-types';
 import MarketCountdownTimer from '../market-countdown-timer';
 import TraderProviders from '../../../../trader-providers';
 
@@ -38,7 +38,31 @@ const default_mock_store = {
     },
 };
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    WS: {
+        tradingTimes: () => ({
+            api_initial_load_error: false,
+            trading_times: {
+                markets: [
+                    {
+                        submarkets: [
+                            {
+                                symbols: [
+                                    { symbol: 'WLDAUD', times: { open: ['08:00:00.153'], close: ['22:00:00.123'] } },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            } as unknown as NonNullable<DeepRequired<TradingTimesResponse['trading_times']>>,
+        }),
+    },
+}));
+
 describe('<MarketCountdownTimer />', () => {
+    Date.now = jest.fn(() => new Date(Date.UTC(2017, 1, 14)).valueOf());
+
     const mockMarketCountdownTimer = (
         mocked_store: TCoreStores,
         mock_props: React.ComponentProps<typeof MarketCountdownTimer>
@@ -57,11 +81,15 @@ describe('<MarketCountdownTimer />', () => {
 
         expect(container).toBeEmptyDOMElement();
     });
-    // it('should not render component with children if hen_market_opens && timer_components are equal to false', () => {
-    //     const { container } = render(mockMarketCountdownTimer(mockStore(default_mock_store), mock_default_props));
-    //     screen.debug();
+    it('should not render component with children if hen_market_opens && timer_components are equal to false', async () => {
+        jest.useFakeTimers();
+        await act(async () => {
+            const { rerender } = render(mockMarketCountdownTimer(mockStore(default_mock_store), mock_default_props));
+            rerender(mockMarketCountdownTimer(mockStore(default_mock_store), mock_default_props));
+        });
+        jest.runOnlyPendingTimers();
 
-    //     // expect(screen.getByText('It will reopen at')).toBeInTheDocument();
-    //     // expect(screen.getByText('Please come back in')).toBeInTheDocument();
-    // });
+        expect(screen.getByText('It will reopen at')).toBeInTheDocument();
+        expect(screen.getByText('Please come back in')).toBeInTheDocument();
+    });
 });

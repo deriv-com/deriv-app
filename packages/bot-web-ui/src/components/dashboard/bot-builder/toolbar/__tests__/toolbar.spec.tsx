@@ -1,5 +1,4 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -38,10 +37,13 @@ window.Blockly = {
 };
 describe('Toolbox component', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
+    const mock_store = mockStore({
+        ui: {
+            is_mobile: false,
+        },
+    });
+    const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
     beforeAll(() => {
-        const mock_store = mockStore({});
-        const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
@@ -67,7 +69,7 @@ describe('Toolbox component', () => {
     });
     it('should not render Toolbox if it is mobile version', () => {
         expect(screen.getByTestId('dashboard__toolbox')).toBeInTheDocument();
-        if (isMobile()) {
+        if (mock_store.ui.is_mobile) {
             expect(screen.getByRole('dashboard__toolbox')).toBeEmptyDOMElement();
         }
     });

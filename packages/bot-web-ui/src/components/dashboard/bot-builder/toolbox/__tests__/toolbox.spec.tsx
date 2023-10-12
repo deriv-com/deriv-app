@@ -1,9 +1,9 @@
 import React from 'react';
-import { mockStore, StoreProvider, useStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws, mockBlockly } from 'Utils/mock';
-import { DBotStoreProvider, mockDBotStore, useDBotStore } from 'Stores/useDBotStore';
+import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Toolbox from '../toolbox';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());

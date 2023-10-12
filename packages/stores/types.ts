@@ -448,7 +448,10 @@ type TClientStore = {
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
-    mt5_login_list: DetailsOfEachMT5Loginid[];
+    mt5_login_list: (DetailsOfEachMT5Loginid & {
+        eligible_to_migrate?: Record<string, string>;
+        open_order_position_status?: number;
+    })[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial' | 'gaming' | 'all') => boolean;

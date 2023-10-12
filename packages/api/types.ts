@@ -49,6 +49,7 @@ import type {
     CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
+    DetailsOfEachMT5Loginid,
     DocumentUploadRequest,
     DocumentUploadResponse,
     EconomicCalendarRequest,
@@ -1782,3 +1783,8 @@ export type TSocketPaginateableEndpointNames = KeysMatching<
     TSocketEndpoints,
     { request: { limit?: number; offset?: number } }
 >;
+
+type TMT5Migration = {
+    eligible_to_migrate?: Record<string, string>;
+    open_order_position_status?: number;
+};

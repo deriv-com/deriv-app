@@ -1,6 +1,12 @@
 import React from 'react';
-import { useMT5AccountsList } from '@deriv/api';
+import { useMT5AccountsList, useQuery } from '@deriv/api';
 import { Jurisdiction, getFormattedJurisdictionCode } from '@deriv/shared';
+
+// type TMT5Migration = {
+//     eligible_to_migrate?: Record<string, string>;
+//     open_order_position_status?: number;
+// };
+// type demo = DeepRequired<NonNullable<ReturnType<typeof useQuery<'mt5_login_list'>>['data']>>['mt5_login_list'][0] & TMT5Migration;
 
 const useMT5SVGEligibleToMigrate = () => {
     const { data: mt5_login_list = [] } = useMT5AccountsList();

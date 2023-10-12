@@ -62,7 +62,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                                 className='wallets-mobile-actions-content-icon'
                                 key={button.name}
                                 onClick={() => {
-                                    history.push(`/appstore/traders-hub/cashier/${button.name}`);
+                                    history.push(`/wallets/cashier/${button.name}`);
                                 }}
                             >
                                 {button.icon}
@@ -80,9 +80,9 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                 <button
                     className='wallets-header__button'
                     key={button.name}
-                    onClick={() => {
-                        switchAccount(loginid);
-                        history.push(`/appstore/traders-hub/cashier/${button.name}`);
+                    onClick={async () => {
+                        await switchAccount(loginid);
+                        history.push(`/wallets/cashier/${button.name}`);
                     }}
                 >
                     {button.icon}

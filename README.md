@@ -265,7 +265,7 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
 
     **A.** Just as installing, except the `npm` command you'd run would be `npm uninstall` (shortened to `npm un`). e.g.: `lerna exec --scope=@deriv/translations -- npm un i18next`.
 
-3. How do I run `npm ci` or equivalent (to add dependencies based on `package-lock.json`?
+3. How do I run `npm ci` or equivalent to add dependencies based on `package-lock.json`?
 
     **A.** You have two options:
 

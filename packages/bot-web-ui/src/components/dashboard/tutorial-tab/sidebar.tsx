@@ -1,71 +1,85 @@
 import React from 'react';
 import classNames from 'classnames';
-import debounce from 'lodash.debounce';
 import { DesktopWrapper, Icon, MobileWrapper, SelectNative, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import FAQContent from './faq-content';
 import GuideContent from './guide-content';
 import { faq_content, guide_content, user_guide_content } from './tutorial-content';
 
-type TSidebarProps = {
-    active_tab_tutorials: number;
-    active_tab: number;
-    faq_search_value: string;
-    setActiveTabTutorial: (active_tab_tutorials: number) => void;
-    setFAQSearchValue: (setFAQSearchValue: string) => void;
+type TFilteredList = {
+    content?: string;
+    id: number;
+    src?: string;
+    subtype?: string;
+    type: string;
+    url?: string;
+    imageclass?: string;
 };
 
-const Sidebar = ({
-    active_tab_tutorials,
-    active_tab,
-    faq_search_value,
-    setActiveTabTutorial,
-    setFAQSearchValue,
-}: TSidebarProps) => {
+type TSelectedTab = {
+    label: string;
+    content: string | React.ReactNode;
+};
+
+const initialSelectedTab: TSelectedTab = {
+    label: '',
+    content: '',
+};
+
+const Sidebar = observer(() => {
+    const { dashboard } = useDBotStore();
+    const { active_tab_tutorials, active_tab, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
     const guide_tab_content = [...user_guide_content, ...guide_content];
-    const [search_filtered_list, setsearchFilteredList] = React.useState(guide_tab_content);
-    const [search_faq_list, setsearchFAQList] = React.useState(faq_content);
-    const search_input = React.useRef<HTMLInputElement | null>(null);
+    const [search_filtered_list, setsearchFilteredList] = React.useState<TFilteredList[]>([...guide_tab_content]);
+    const [search_faq_list, setsearchFAQList] = React.useState([...faq_content]);
+    const [selected_tab, setSelectedTab] = React.useState<TSelectedTab>(initialSelectedTab);
     const menu_items = [
         {
             label: localize('Guide'),
-            content: <GuideContent guide_list={search_filtered_list} />,
+            content: <GuideContent guide_list={[...search_filtered_list]} />,
         },
         {
             label: localize('FAQ'),
-            content: <FAQContent faq_list={search_faq_list} hide_header={isMobile()} />,
+            content: <FAQContent faq_list={[...search_faq_list]} hide_header={isMobile()} />,
         },
     ];
-    const selected_tab = menu_items?.[active_tab_tutorials] || {};
 
     React.useEffect(() => {
-        if (search_input?.current?.value) {
-            search_input.current.value = '';
-            setsearchFAQList([]);
-        }
-
-        setsearchFilteredList(guide_tab_content);
-        setsearchFAQList(faq_content);
+        setFAQSearchValue('');
+        setSelectedTab(menu_items?.[active_tab_tutorials] || {});
+        setsearchFilteredList([...guide_tab_content]);
+        setsearchFAQList([...faq_content]);
     }, [active_tab_tutorials, active_tab]);
 
+    const removeHTMLTagsFromString = (param = '') => {
+        return param.replace(/<.*?>/g, '');
+    };
+
     React.useEffect(() => {
-        const content_list = active_tab_tutorials === 0 ? guide_tab_content : faq_content;
-        const filtered_list = content_list.filter(data => {
-            return content_list === guide_tab_content
-                ? data.content.toLowerCase().includes(faq_search_value)
-                : data.title.toLowerCase().includes(faq_search_value);
-        });
-        return active_tab_tutorials === 0 ? setsearchFilteredList(filtered_list) : setsearchFAQList(filtered_list);
-    }, [faq_search_value]);
+        const is_faq = active_tab_tutorials === 1;
+        const search = faq_search_value?.toLowerCase();
+
+        if (is_faq) {
+            const filtered_list = faq_content?.filter(({ title, description = [] }) => {
+                const match = description?.map(item => (item.type === 'text' ? item.content : '')).join(' ');
+                const title_has_match = removeHTMLTagsFromString(title)?.toLowerCase()?.includes(search);
+                const description_has_match = removeHTMLTagsFromString(match)?.toLowerCase()?.includes(search);
+                return title_has_match || description_has_match;
+            });
+            setsearchFAQList(filtered_list);
+        } else {
+            const filtered_list = guide_tab_content?.filter(({ content = '' }) =>
+                content?.toLowerCase()?.includes(search)
+            );
+            setsearchFilteredList(filtered_list);
+        }
+    }, [faq_search_value, active_tab_tutorials]);
 
     const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        debounce(() => {
-            setFAQSearchValue(value);
-        }, 700)();
+        setFAQSearchValue(event.target.value);
     };
 
     const onChangeHandle = React.useCallback(
@@ -83,11 +97,11 @@ const Sidebar = ({
                         <Icon data-testid='id-test-search' width='1.6rem' height='1.6rem' icon={'IcSearch'} />
                         <input
                             data-testid='id-test-search'
-                            ref={search_input}
                             type='text'
                             placeholder={localize('Search')}
                             className='dc-tabs__wrapper__group__search-input'
                             onChange={onSearch}
+                            value={faq_search_value}
                         />
                     </div>
                     <Tabs
@@ -123,12 +137,6 @@ const Sidebar = ({
             </MobileWrapper>
         </>
     );
-};
+});
 
-export default connect(({ dashboard }: RootStore) => ({
-    active_tab_tutorials: dashboard.active_tab_tutorials,
-    active_tab: dashboard.active_tab,
-    faq_search_value: dashboard.faq_search_value,
-    setActiveTabTutorial: dashboard.setActiveTabTutorial,
-    setFAQSearchValue: dashboard.setFAQSearchValue,
-}))(Sidebar);
+export default Sidebar;

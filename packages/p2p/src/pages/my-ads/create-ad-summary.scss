@@ -1,0 +1,7 @@
+.create-ad-summary {
+    margin-bottom: 0.6rem;
+
+    @include mobile {
+        margin: 0.6rem 0;
+    }
+}

@@ -2,6 +2,7 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import {
+    isAccumulatorContract,
     isEmptyObject,
     isEnded,
     isUserSold,
@@ -10,6 +11,7 @@ import {
     getCurrentTick,
     getDisplayStatus,
     WS,
+    filterDisabledPositions,
     formatPortfolioPosition,
     contractCancelled,
     contractSold,
@@ -18,6 +20,7 @@ import {
     getDurationUnitText,
     getEndTime,
     removeBarrier,
+    TURBOS,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
 import { ChartBarrierStore } from './chart-barrier-store';
@@ -31,6 +34,9 @@ export default class PortfolioStore extends BaseStore {
     positions_map = {};
     is_loading = false;
     error = '';
+
+    //accumulators
+    open_accu_contract = null;
 
     // barriers
     barriers = [];
@@ -62,6 +68,7 @@ export default class PortfolioStore extends BaseStore {
             onBuyResponse: action.bound,
             transactionHandler: action.bound,
             proposalOpenContractHandler: action.bound,
+            open_accu_contract: observable,
             onClickCancel: action.bound,
             onClickSell: action.bound,
             handleSell: action.bound,
@@ -86,6 +93,7 @@ export default class PortfolioStore extends BaseStore {
             setContractType: action,
             is_accumulator: computed,
             is_multiplier: computed,
+            is_turbos: computed,
         });
 
         this.root_store = root_store;
@@ -124,6 +132,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         if (response.portfolio.contracts) {
             this.positions = response.portfolio.contracts
+                .filter(filterDisabledPositions)
                 .map(pos => formatPortfolioPosition(pos, this.root_store.active_symbols.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
 
@@ -509,6 +518,7 @@ export default class PortfolioStore extends BaseStore {
     setActivePositions() {
         this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
         this.all_positions = [...this.positions];
+        this.open_accu_contract = this.active_positions.find(({ type }) => isAccumulatorContract(type));
     }
 
     updatePositions = () => {
@@ -586,5 +596,9 @@ export default class PortfolioStore extends BaseStore {
 
     get is_multiplier() {
         return this.contract_type === 'multiplier';
+    }
+
+    get is_turbos() {
+        return this.contract_type === TURBOS.LONG || this.contract_type === TURBOS.SHORT;
     }
 }

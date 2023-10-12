@@ -1,21 +1,7 @@
 /* @define account-signup; weak */
 .account-signup {
-    padding: 1.2rem 1.2rem 0;
-    form {
-        @include mobile {
-            max-height: 36.5rem;
-        }
-    }
-    & .dc-select-native {
-        &__placeholder {
-            background-color: var(--general-main-2);
-        }
-    }
     & .signup-separator-container {
-        width: calc(100% + 40px);
         border-bottom: 1px solid var(--general-section-1);
-        margin: 2.4rem 0 1.4rem;
-
         @include mobile {
             display: none;
         }
@@ -24,27 +10,30 @@
         .dc-dialog__content {
             margin-bottom: 0;
         }
+        .dc-dialog__dialog {
+            max-height: unset;
+            @include mobile {
+                padding: 1.6rem;
+            }
+        }
     }
     &__error-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 0.8rem;
-        margin: 0;
-
+    }
+    &__location-selection,
+    &__password-selection {
+        display: flex;
+        flex-direction: column;
+        gap: 2.4rem;
         @include mobile {
-            margin-left: unset;
+            gap: 1.6rem;
         }
     }
-    &__main {
-        @include mobile {
-            padding: 9rem 1.6rem;
-        }
-        .dc-select-native {
-            margin-bottom: 0.2rem;
-        }
+    &__location-selection {
         .account-signup__residence-selection {
             height: 8.6rem;
-            margin-bottom: 1rem;
             .dc-field--error,
             .account-signup__subtext {
                 margin-left: 1.6rem;
@@ -52,38 +41,18 @@
                 padding-left: unset;
             }
         }
-        .account-signup__heading {
-            margin-bottom: 2.4rem;
-        }
-
-        .account-signup__footer {
-            display: flex;
-            justify-content: flex-end;
-        }
     }
     &__password-selection {
-        .account-signup__heading {
-            padding-top: 1.5rem;
-            margin-bottom: 2.4rem;
-
-            @include mobile {
-                padding-top: 0;
-                text-align: center;
-                margin-top: -3rem;
-            }
-        }
         & .dc-password-meter__container {
             max-height: 6rem;
-            margin-bottom: 2.4rem;
             width: 100%;
+        }
+        & .dc-password-meter,
+        .dc-password-meter__bg {
+            bottom: 2.1rem;
         }
         & .dc-field--error {
             top: 4.4rem;
-        }
-        .initial-loader__barspinner {
-            @include mobile {
-                margin: 0;
-            }
         }
     }
     .dc-password-input {
@@ -92,79 +61,36 @@
         }
     }
     &__heading {
-        margin-bottom: 2.4rem;
-        &-citizen {
-            margin-bottom: 1.6rem;
-        }
         @include mobile {
-            margin-top: -7rem;
+            margin-bottom: 0.8rem;
         }
     }
-    &__text {
-        text-align: center;
-        margin-bottom: 2.4rem;
+    &__checkbox {
+        align-items: flex-start;
     }
-    &__subtext {
-        margin: 0;
+    &__label {
+        line-height: var(--text-lh-m);
         @include mobile {
-            margin-bottom: 3.4rem;
-        }
-
-        &--error {
-            margin-bottom: 1rem;
-            @include mobile {
-                margin-top: -1.4rem;
-                margin-bottom: 0.8rem;
-            }
+            line-height: var(--text-lh-l);
+            font-size: var(--text-size-xxs);
         }
     }
     &__footer {
-        display: flex;
+        display: grid;
         justify-content: flex-end;
+        @include mobile {
+            justify-content: stretch;
+        }
     }
     &__btn {
-        margin: 0;
         background-color: var(--button-primary-default);
         font-weight: bold;
         color: var(--text-colored-background);
-
         &:hover {
             background-color: var(--button-primary-hover);
-        }
-        &--disabled {
-            opacity: 0.32;
-            cursor: not-allowed;
-        }
-        @include mobile {
-            height: 4rem;
-            bottom: 3rem;
-            left: 0;
-            right: 0;
-            position: absolute;
-            width: calc(100% - 8rem);
-            margin: 0 auto;
         }
     }
     &__password-field {
         width: 100%;
-    }
-    @include mobile {
-        &__password-selection {
-            height: 32.8rem;
-            padding: 6rem 1.6rem;
-        }
-        width: calc(90vw - 10px);
-        border-radius: 1rem;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%);
-        margin: 0;
-        text-align: center;
-    }
-}
-
-@media screen and (min-width: 320px) and (max-width: 450px) {
-    .account-signup__password-selection {
-        height: calc(100% + 8rem);
     }
 }

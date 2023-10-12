@@ -1,36 +1,28 @@
 import React from 'react';
-import { useHistory, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { FormikConsumer } from 'formik';
 import { Button, Icon, Modal } from '@deriv/components';
-import { isMobile, PlatformContext } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import IconMessageContent from 'Components/icon-message-content';
+import IconMessageContent from '../icon-message-content';
 
 type TLeaveConfirmMessage = {
     back: () => void;
     leave: () => void;
 };
 
-type TTransitionBlocker = {
+type TTransitionBlocker = RouteComponentProps & {
     dirty: boolean;
-    onDirty: (prop: boolean) => void;
+    onDirty?: (prop: boolean) => void;
 };
 
 const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
-    const { is_appstore } = React.useContext(PlatformContext);
-
     return (
         <IconMessageContent
             className='leave-confirm'
             message={localize('Unsaved changes')}
             text={localize('You have unsaved changes. Are you sure you want to discard changes and leave this page?')}
-            icon={
-                <Icon
-                    icon={is_appstore ? 'IcUnsavedChangesDashboard' : 'IcUnsavedChanges'}
-                    size={isMobile() ? 93 : 128}
-                    data_testid='unsaved_changes_icon'
-                />
-            }
+            icon={<Icon icon='IcUnsavedChanges' size={isMobile() ? 93 : 128} data_testid='dt_unsaved_changes_icon' />}
         >
             <div className='account-management-flex-wrapper account-management-leave-confirm'>
                 <Button
@@ -109,7 +101,7 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
 };
 export const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
 
-const LeaveConfirm = ({ onDirty }: { onDirty: (prop: boolean) => void }) => (
+const LeaveConfirm = ({ onDirty }: { onDirty?: (prop: boolean) => void }) => (
     <FormikConsumer>
         {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
     </FormikConsumer>

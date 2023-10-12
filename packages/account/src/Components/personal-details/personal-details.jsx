@@ -1,33 +1,30 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
+
 import {
-    Modal,
     AutoHeightWrapper,
     Div100vhContainer,
     FormSubmitButton,
-    ThemedScrollbars,
+    Modal,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
+import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
+
 import {
-    isDesktop,
-    isMobile,
-    PlatformContext,
-    IDV_NOT_APPLICABLE_OPTION,
-    removeEmptyPropertiesFromObject,
-} from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import {
-    shouldShowIdentityInformation,
-    isDocumentTypeValid,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
+    isDocumentTypeValid,
     shouldHideHelperImage,
+    shouldShowIdentityInformation,
 } from 'Helpers/utils';
-import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+
+import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
-import FormSubHeader from '../form-sub-header';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -45,29 +42,16 @@ const PersonalDetails = ({
     is_virtual,
     is_fully_authenticated,
     account_opening_reason_list,
-    onSubmitEnabledChange,
     selected_step_ref,
     closeRealAccountSignup,
     has_real_account,
     ...props
 }) => {
     const { account_status, account_settings, residence, real_account_signup_target } = props;
-    const { is_appstore } = React.useContext(PlatformContext);
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
-    const [warning_items, setWarningItems] = React.useState({});
-    const is_submit_disabled_ref = React.useRef(true);
 
     const isSubmitDisabled = errors => {
         return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
-    };
-
-    const checkSubmitStatus = errors => {
-        const is_submit_disabled = isSubmitDisabled(errors);
-
-        if (is_submit_disabled_ref.current !== is_submit_disabled) {
-            is_submit_disabled_ref.current = is_submit_disabled;
-            onSubmitEnabledChange?.(!is_submit_disabled);
-        }
     };
 
     const handleCancel = values => {
@@ -83,6 +67,7 @@ const PersonalDetails = ({
         residence_list,
         real_account_signup_target,
     });
+    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
     const validateIDV = values => {
         const errors = {};
@@ -106,10 +91,8 @@ const PersonalDetails = ({
         if (is_qualified_for_idv) {
             idv_error = validateIDV(values);
         }
-        const { errors, warnings } = splitValidationResultTypes(validate(values));
+        const { errors } = splitValidationResultTypes(validate(values));
         const error_data = { ...idv_error, ...errors };
-        setWarningItems(warnings);
-        checkSubmitStatus(error_data);
         return error_data;
     };
 
@@ -124,7 +107,17 @@ const PersonalDetails = ({
     const citizen = account_settings?.citizen || residence;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
-    const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
+    const getEditableFields = (is_confirmed, selected_document_type_id) => {
+        const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
+
+        if (IDV_NOT_APPLICABLE_OPTION.id === selected_document_type_id) return editable_fields;
+
+        if (is_confirmed && is_qualified_for_idv) {
+            return editable_fields.filter(field => !['first_name', 'last_name', 'date_of_birth'].includes(field));
+        }
+
+        return editable_fields;
+    };
 
     return (
         <Formik
@@ -132,11 +125,13 @@ const PersonalDetails = ({
             initialValues={{ ...props.value }}
             validate={handleValidate}
             validateOnMount
+            enableReinitialize
+            initialStatus={{ is_confirmed: !is_qualified_for_idv }}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, setFieldValue, setFieldTouched, touched, values, handleChange, handleBlur }) => (
+            {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur, status }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form
@@ -161,16 +156,6 @@ const PersonalDetails = ({
                                     onScroll={closeToolTip}
                                     testId='dt_personal_details_container'
                                 >
-                                    {!is_qualified_for_idv && is_appstore && (
-                                        <div className='details-form__sub-header'>
-                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                                {localize(
-                                                    'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
-                                                )}
-                                            </Text>
-                                        </div>
-                                    )}
-
                                     <div
                                         className={classNames('details-form__elements', 'personal-details-form')}
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
@@ -192,43 +177,33 @@ const PersonalDetails = ({
                                                 <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>
                                         )}
-                                        <React.Fragment>
-                                            <div
-                                                className={classNames({
-                                                    'account-form__poi-confirm-example_container':
-                                                        is_qualified_for_idv &&
-                                                        !shouldHideHelperImage(values?.document_type?.id),
-                                                })}
-                                            >
-                                                <PersonalDetailsForm
-                                                    errors={errors}
-                                                    touched={touched}
-                                                    values={values}
-                                                    handleChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    setFieldValue={setFieldValue}
-                                                    setFieldTouched={setFieldTouched}
-                                                    is_virtual={is_virtual}
-                                                    is_svg={is_svg}
-                                                    is_mf={is_mf}
-                                                    is_qualified_for_idv={is_qualified_for_idv}
-                                                    is_appstore={is_appstore}
-                                                    editable_fields={editable_fields}
-                                                    residence_list={residence_list}
-                                                    has_real_account={has_real_account}
-                                                    is_fully_authenticated={is_fully_authenticated}
-                                                    closeRealAccountSignup={closeRealAccountSignup}
-                                                    salutation_list={salutation_list}
-                                                    warning_items={warning_items}
-                                                    account_opening_reason_list={account_opening_reason_list}
-                                                    should_close_tooltip={should_close_tooltip}
-                                                    setShouldCloseTooltip={setShouldCloseTooltip}
-                                                    should_hide_helper_image={shouldHideHelperImage(
-                                                        values?.document_type?.id
-                                                    )}
-                                                />
-                                            </div>
-                                        </React.Fragment>
+                                        <PersonalDetailsForm
+                                            class_name={classNames({
+                                                'account-form__poi-confirm-example_container':
+                                                    is_qualified_for_idv &&
+                                                    !shouldHideHelperImage(values?.document_type?.id),
+                                            })}
+                                            is_virtual={is_virtual}
+                                            is_svg={is_svg}
+                                            is_mf={is_mf}
+                                            is_qualified_for_idv={is_qualified_for_idv}
+                                            editable_fields={getEditableFields(
+                                                status?.is_confirmed,
+                                                values?.document_type?.id
+                                            )}
+                                            residence_list={residence_list}
+                                            has_real_account={has_real_account}
+                                            is_fully_authenticated={is_fully_authenticated}
+                                            closeRealAccountSignup={closeRealAccountSignup}
+                                            salutation_list={salutation_list}
+                                            account_opening_reason_list={account_opening_reason_list}
+                                            should_close_tooltip={should_close_tooltip}
+                                            setShouldCloseTooltip={setShouldCloseTooltip}
+                                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                                            no_confirmation_needed={
+                                                values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
+                                            }
+                                        />
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
@@ -236,7 +211,7 @@ const PersonalDetails = ({
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     has_cancel
-                                    is_disabled={isSubmitDisabled(errors)}
+                                    is_disabled={!status?.is_confirmed || isSubmitDisabled(errors)}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}

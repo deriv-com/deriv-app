@@ -3,15 +3,15 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { identity_status_codes } from 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
+import { identity_status_codes } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
 import UploadComplete from '../upload-complete';
 import { FormikValues } from 'formik';
-import Verified from 'Components/poi/status/verified';
-import Limited from 'Components/poi/status/limited';
-import Expired from 'Components/poi/status/expired';
+import Verified from '../verified';
+import Limited from '../limited';
+import Expired from '../expired';
 
 const checkNimcStep = (documents: FormikValues) => {
     let has_nimc = false;
@@ -32,7 +32,11 @@ type TUnsupported = {
     redirect_button: React.ReactElement;
     needs_poa: boolean;
     handleRequireSubmission: () => void;
+    handleViewComplete: () => void;
     allow_poi_resubmission: boolean;
+    onfido: {
+        submissions_left: number;
+    };
 };
 
 const Unsupported = ({
@@ -43,6 +47,8 @@ const Unsupported = ({
     needs_poa,
     handleRequireSubmission,
     allow_poi_resubmission,
+    handleViewComplete,
+    onfido,
     ...props
 }: Partial<TUnsupported>) => {
     const [detail, setDetail] = React.useState<number | null>(null);
@@ -65,14 +71,20 @@ const Unsupported = ({
     }
 
     if (detail !== null) {
+        const is_onfido_supported =
+            country_code === 'ng' &&
+            !checkNimcStep(documents[detail ?? 0].details.documents) &&
+            onfido &&
+            onfido.submissions_left > 0;
         return (
             <DetailComponent
-                is_onfido_supported={country_code === 'ng' && !checkNimcStep(documents[detail].details.documents)}
+                is_onfido_supported={is_onfido_supported}
                 country_code_key={country_code}
                 document={documents[detail]}
                 root_class='manual-poi'
                 onClickBack={() => setDetail(null)}
                 handlePOIforMT5Complete={handlePOIforMT5Complete}
+                handleComplete={handleViewComplete}
                 {...props}
             />
         );

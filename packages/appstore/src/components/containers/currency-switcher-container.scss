@@ -61,6 +61,13 @@
         &--right {
             display: inline-flex;
             align-items: center;
+
+            @include mobile {
+                .currency-switcher__button {
+                    white-space: unset;
+                    height: 4rem;
+                }
+            }
         }
     }
 }

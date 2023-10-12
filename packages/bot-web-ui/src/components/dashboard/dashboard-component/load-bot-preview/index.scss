@@ -1,5 +1,6 @@
 @import './google-drive.scss';
 @import './delete-dialog.scss';
+@import './save-modal.scss';
 
 .load-strategy {
     &__wrapper {
@@ -64,6 +65,7 @@
         @include mobile {
             height: 100%;
             overflow: hidden;
+            padding-left: 0.5rem;
         }
     }
 
@@ -129,7 +131,7 @@
             border-radius: 3rem;
             background-color: $color-grey-2;
             box-shadow: 0.2rem 0.2rem 0.5rem var(--shadow-menu);
-            z-index: 99;
+            z-index: 4;
         }
 
         &-icon {
@@ -151,24 +153,15 @@
 
         &__files {
             flex-basis: 100%;
-            height: calc(100% - 3.8rem);
-
-            @include mobile {
-                overflow: auto;
-                height: calc(100vh - 35rem);
-            }
 
             &__list {
                 overflow: auto;
-
-                @include mobile {
-                    overflow: unset;
-                    height: calc(100vh - 18rem);
-                    padding-right: 1rem;
-                }
-
-                height: calc(100% - 15rem); // 100% - Title height
                 width: 100%;
+                height: calc(100vh - 56rem);
+                @include mobile {
+                    height: calc(100vh - 46rem);
+                    padding-bottom: 15rem;
+                }
             }
         }
 
@@ -282,7 +275,6 @@
                 @include mobile {
                     width: unset;
                     font-size: var(--text-size-xxs);
-                    white-space: nowrap;
                 }
             }
 
@@ -333,14 +325,14 @@
 
             &__loaded {
                 text-align: left;
-                padding: 1rem 3rem;
+                padding: 1rem 2.4rem;
 
                 @include tablet {
                     padding: 1rem 0.6rem;
                 }
 
                 @include mobile {
-                    padding: 1rem 0.6rem;
+                    padding: 1rem 0.4rem;
                 }
 
                 .load-strategy__recent-item-text {
@@ -434,6 +426,11 @@
                         cursor: pointer;
                     }
                 }
+            }
+
+            span {
+                padding-right: 1.6rem;
+                word-break: break-word;
             }
         }
     }

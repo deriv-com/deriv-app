@@ -1,13 +1,7 @@
 import { epochToMoment, formatMilliseconds, getDiffDuration } from '../date';
 import { localize } from '@deriv/translations';
 import moment from 'moment';
-
-type TGetDurationPeriod = {
-    date_start: number;
-    purchase_time: number;
-    date_expiry: number;
-    tick_count?: number;
-};
+import { TContractInfo } from '../contract';
 
 export const getDurationUnitValue = (obj_duration: moment.Duration) => {
     const duration_ms = obj_duration.asMilliseconds() / 1000;
@@ -48,33 +42,41 @@ export const getUnitMap = () => {
     };
 };
 
-export const getDurationUnitText = (obj_duration: moment.Duration) => {
+const TIME = {
+    SECOND: 1000,
+    MINUTE: 60000,
+    HOUR: 3600000,
+    DAY: 86400000,
+} as const;
+
+export const getDurationUnitText = (obj_duration: moment.Duration, should_ignore_end_time?: boolean) => {
     const unit_map = getUnitMap();
-    const duration_ms = obj_duration.asMilliseconds() / 1000;
+    const duration_ms = obj_duration.asMilliseconds() / TIME.SECOND;
     // return empty suffix string if duration is End Time set except for days and seconds, refer to L18 and L19
 
-    if (duration_ms) {
-        if (duration_ms >= 86400000) {
-            const days_value = duration_ms / 86400000;
-            return days_value <= 2 ? unit_map.d.name_singular : unit_map.d.name_plural;
-        } else if (duration_ms >= 3600000 && duration_ms < 86400000) {
-            if (isEndTime(duration_ms / (1000 * 60 * 60))) return '';
-            return duration_ms === 3600000 ? unit_map.h.name_singular : unit_map.h.name_plural;
-        } else if (duration_ms >= 60000 && duration_ms < 3600000) {
-            if (isEndTime(duration_ms / (1000 * 60))) return '';
-            return duration_ms === 60000 ? unit_map.m.name_singular : unit_map.m.name_plural;
-        } else if (duration_ms >= 1000 && duration_ms < 60000) {
-            return unit_map.s.name;
-        }
+    if (duration_ms >= TIME.DAY) {
+        const days_value = duration_ms / TIME.DAY;
+        return days_value <= 2 ? unit_map.d.name_singular : unit_map.d.name_plural;
+    }
+    if (duration_ms >= TIME.HOUR && duration_ms < TIME.DAY) {
+        if (!should_ignore_end_time && isEndTime(duration_ms / TIME.HOUR)) return '';
+        return duration_ms === TIME.HOUR ? unit_map.h.name_singular : unit_map.h.name_plural;
+    }
+    if (duration_ms >= TIME.MINUTE && duration_ms < TIME.HOUR) {
+        if (!should_ignore_end_time && isEndTime(duration_ms / TIME.MINUTE)) return '';
+        return duration_ms === TIME.MINUTE ? unit_map.m.name_singular : unit_map.m.name_plural;
+    }
+    if (duration_ms >= TIME.SECOND && duration_ms < TIME.MINUTE) {
+        return unit_map.s.name;
     }
     return unit_map.s.name;
 };
 
-export const getDurationPeriod = (contract_info: TGetDurationPeriod) =>
+export const getDurationPeriod = (contract_info: TContractInfo) =>
     getDiffDuration(
-        +epochToMoment(contract_info.date_start || contract_info.purchase_time),
-        +epochToMoment(contract_info.date_expiry)
+        +epochToMoment(contract_info.date_start || contract_info.purchase_time || 0),
+        +epochToMoment(contract_info.date_expiry || 0)
     );
 
-export const getDurationTime = (contract_info: TGetDurationPeriod) =>
+export const getDurationTime = (contract_info: TContractInfo) =>
     contract_info.tick_count ? contract_info.tick_count : getDurationUnitValue(getDurationPeriod(contract_info));

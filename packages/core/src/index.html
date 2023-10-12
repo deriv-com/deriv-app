@@ -156,6 +156,10 @@
         </script>
         <!-- End URL Handler -->
 
+        <!--         TODO: Find alternative solution for Onfido dependency -->
+        <script src="https://assets.onfido.com/web-sdk-releases/latest/onfido.min.js"></script>
+        <link href="https://assets.onfido.com/web-sdk-releases/latest/style.css" rel="stylesheet" />
+
         <!-- Start Cookies script -->
         <script src="https://static.deriv.com/scripts/cookie.js" async></script>
         <!-- End Cookies script -->
@@ -171,7 +175,7 @@
         <meta name="author" content="Deriv" />
         <!-- TODO: iOS zoom bug for input elements means we'll get a lower user accessibility score since we're not allowing app.deriv.com to be scalable on mobile -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-        <meta name="theme-color" content="#2a3052" />
+        <meta name="theme-color" content="#414652" />
         <meta name="dcterms.rightsHolder" content="Deriv" />
         <meta name="dcterms.rights" content="Deriv" />
         <meta name="google-site-verification" content="g5u3TyEdmYJ_HKZ6EmpW1nlKwD4XPVeLMhN9leeMfuw" />
@@ -257,6 +261,7 @@
                 "
             ></footer>
         </div>
+        <div id="wallets_modal_root" class="modal-root"></div>
         <div id="modal_root" class="modal-root"></div>
         <div id="modal_root_absolute" class="modal-root modal-root--absolute"></div>
         <!-- modal_root has background color. So, it cannot be used for toast messages. For those cases popup_root is used -->
@@ -296,6 +301,7 @@
         <script type="text/javascript">
             window.__lc = window.__lc || {};
             window.__lc.license = 12049137;
+            window.__lc.asyncInit = true;
             (function (n, t, c) {
                 function i(n) {
                     return e._h ? e._h.apply(null, n) : e._q.push(n);

@@ -15,6 +15,13 @@
         align-self: stretch;
     }
 
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
     &__action {
         display: flex;
         flex-direction: row;

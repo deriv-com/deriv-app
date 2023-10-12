@@ -55,8 +55,6 @@ const ProofOfIdentityContainer = observer(
             });
         };
         const loadResidenceList = React.useCallback(() => {
-            setAPIError(null);
-            setStatusLoading(true);
             fetchResidenceList().then(response_residence_list => {
                 if (response_residence_list.error) {
                     setAPIError(response_residence_list.error);
@@ -64,7 +62,6 @@ const ProofOfIdentityContainer = observer(
                     setResidenceList(response_residence_list.residence_list);
                 }
             });
-            setStatusLoading(false);
         }, [fetchResidenceList]);
 
         React.useEffect(() => {

@@ -132,10 +132,9 @@
     }
 
     &__row {
-        grid-template-columns: 169px 198px 80px 104px;
+        grid-template-columns: 16rem 20rem 8rem 10rem;
         padding: 0;
-        column-gap: 42px;
-        text-align: left;
+        column-gap: 4.2rem;
 
         .table__cell {
             min-height: 5.6rem;

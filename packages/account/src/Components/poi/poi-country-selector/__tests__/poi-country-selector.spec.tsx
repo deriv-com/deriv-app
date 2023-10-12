@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
-import CountrySelector from '../poi-country-selector';
+import PoiCountrySelector from '../poi-country-selector';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -9,7 +9,7 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-describe('<CountrySelector/>', () => {
+describe('<PoiCountrySelector/>', () => {
     let mock_props = {
         handleSelectionNext: jest.fn(),
         is_from_external: false,
@@ -32,10 +32,10 @@ describe('<CountrySelector/>', () => {
         };
     });
 
-    it('should render CountrySelector component external', () => {
+    it('should render PoiCountrySelector component external', () => {
         mock_props.is_from_external = true;
 
-        render(<CountrySelector {...mock_props} />);
+        render(<PoiCountrySelector {...mock_props} />);
 
         expect(screen.getByText('Proof of identity')).toBeInTheDocument();
         expect(screen.getByText('In which country was your document issued?')).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe('<CountrySelector/>', () => {
     });
 
     it('should show error message after clicking the input without choosing the country', async () => {
-        render(<CountrySelector {...mock_props} />);
+        render(<PoiCountrySelector {...mock_props} />);
 
         const field = screen.getByLabelText('Country');
         const next_btn = screen.getByRole('button');
@@ -68,7 +68,7 @@ describe('<CountrySelector/>', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         mock_props.selected_country = 'Country 2';
 
-        render(<CountrySelector {...mock_props} />);
+        render(<PoiCountrySelector {...mock_props} />);
 
         const field = screen.getByRole('combobox');
 

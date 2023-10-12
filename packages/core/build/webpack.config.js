@@ -39,8 +39,8 @@ module.exports = function (env) {
                 minSize: 102400,
                 minSizeReduction: 102400,
                 minChunks: 1,
-                maxAsyncRequests: 5,
-                maxInitialRequests: 3,
+                maxAsyncRequests: 30,
+                maxInitialRequests: 30,
                 automaticNameDelimiter: '~',
                 enforceSizeThreshold: 500000,
                 cacheGroups: {

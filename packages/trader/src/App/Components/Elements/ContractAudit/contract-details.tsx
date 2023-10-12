@@ -86,7 +86,7 @@ const ContractDetails = ({
         RudderStack.track(event_names.reports, {
             action: action_names.open_contract_details,
             form_name: form_names.default,
-            form_source : form_sources.deriv_trader,
+            form_source: form_sources.deriv_trader,
         });
     }, []);
 

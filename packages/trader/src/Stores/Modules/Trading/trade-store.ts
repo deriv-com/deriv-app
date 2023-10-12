@@ -1457,6 +1457,7 @@ export default class TradeStore extends BaseStore {
         this.root_store.notifications.setShouldShowPopups(false);
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
+        this.resetAccumulatorData();
         this.onLogout(this.logoutListener);
         this.onClientInit(this.clientInitListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
@@ -1502,6 +1503,7 @@ export default class TradeStore extends BaseStore {
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;
         }
+        this.clearContracts();
         this.resetAccumulatorData();
         if (this.is_vanilla) {
             this.setBarrierChoices([]);
@@ -1553,6 +1555,7 @@ export default class TradeStore extends BaseStore {
                     current_spot_data = {
                         current_spot: prices?.[prices?.length - 1],
                         current_spot_time: times?.[times?.length - 1],
+                        prev_spot_time: times?.[times?.length - 2],
                     };
                 } else {
                     return;

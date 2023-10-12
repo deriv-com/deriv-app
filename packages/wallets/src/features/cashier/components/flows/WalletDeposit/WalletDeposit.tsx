@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletDepositCrypto } from '../WalletDepositCrypto';
-import { WalletDepositFiat } from '../WalletDepositFiat';
+import { WalletDepositCrypto, WalletDepositFiat } from '../../screens';
 
 const WalletDeposit = () => {
     const { data } = useActiveWalletAccount();

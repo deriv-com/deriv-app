@@ -1,8 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { useActiveWalletAccount, useTransferBetweenAccounts } from '@deriv/api';
-import WalletTransferFormDropdown from '../WalletTransferFormDropdown/WalletTransferFormDropdown';
-import WalletTransferFormInputField from '../WalletTransferFormInputField/WalletTransferFormInputField';
+import { WalletTransferFormDropdown, WalletTransferFormInputField } from '../../screens';
 import './WalletTransfer.scss';
 
 type TInitialValues = {

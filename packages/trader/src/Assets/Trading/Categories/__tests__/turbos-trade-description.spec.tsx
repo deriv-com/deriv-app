@@ -6,7 +6,7 @@ describe('<TurbosTradeDescription />', () => {
     it('a proper text of description should be rendered', () => {
         render(<TurbosTradeDescription onClick={jest.fn()} />);
         expect(
-            screen.getByText(/Turbo options allow you to predict the direct of the underlying asset’s movements/i)
+            screen.getByText(/Turbo options allow you to predict the direction of the underlying asset’s movements./i)
         ).toBeInTheDocument();
     });
 });

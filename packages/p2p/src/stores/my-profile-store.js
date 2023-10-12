@@ -22,7 +22,6 @@ export default class MyProfileStore extends BaseStore {
     is_daily_limit_upgrade_success = false;
     is_daily_limit_upgrading = false;
     is_delete_payment_method_error_modal_open = false;
-    is_filter_modal_open = false;
     is_loading = false;
     is_submit_success = false;
     is_there_daily_limit_error = false;
@@ -68,7 +67,6 @@ export default class MyProfileStore extends BaseStore {
             is_daily_limit_upgrade_success: observable,
             is_daily_limit_upgrading: observable,
             is_delete_payment_method_error_modal_open: observable,
-            is_filter_modal_open: observable,
             is_loading: observable,
             is_submit_success: observable,
             is_there_daily_limit_error: observable,
@@ -135,7 +133,6 @@ export default class MyProfileStore extends BaseStore {
             setIsBlockUserTableLoading: action.bound,
             setIsDailyLimitUpgradeSuccess: action.bound,
             setIsDeletePaymentMethodErrorModalOpen: action.bound,
-            setIsFilterModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsSubmitSuccess: action.bound,
             setIsThereDailyLimitError: action.bound,
@@ -519,7 +516,7 @@ export default class MyProfileStore extends BaseStore {
         this.getTradePartnersList({ startIndex: 0 }, true);
 
         if (isMobile()) {
-            this.setIsFilterModalOpen(false);
+            this.root_store.general_store.hideModal();
         }
     }
 
@@ -792,10 +789,6 @@ export default class MyProfileStore extends BaseStore {
 
     setIsDeletePaymentMethodErrorModalOpen(is_delete_payment_method_error_modal_open) {
         this.is_delete_payment_method_error_modal_open = is_delete_payment_method_error_modal_open;
-    }
-
-    setIsFilterModalOpen(is_filter_modal_open) {
-        this.is_filter_modal_open = is_filter_modal_open;
     }
 
     setIsLoading(is_loading) {

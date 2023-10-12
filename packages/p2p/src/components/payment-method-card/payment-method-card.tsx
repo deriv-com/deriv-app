@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
-import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodIcon from 'Components/payment-method-icon';
 import { TPaymentMethod } from 'Types/my-profile.types';
@@ -112,7 +112,6 @@ const PaymentMethodCard = ({
                         size={medium || small ? 16 : 24}
                     />
                 )}
-
                 {is_vertical_ellipsis_visible && (
                     <Dropdown
                         is_align_text_left

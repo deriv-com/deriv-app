@@ -442,6 +442,8 @@ export default class ClientStore extends BaseStore {
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
             () => this.root_store.ui.closeRealAccountSignup()
         );
+
+        this.setIsBetaChart();
     }
 
     get balance() {
@@ -2775,11 +2777,17 @@ export default class ClientStore extends BaseStore {
     setIsBetaChart = () => {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
         if (Cookies.get('website_status', { domain })) {
-            const cookie_value = JSON.parse(Cookies.get('website_status', { domain }));
-            const client_country = JSON.parse(cookie_value.website_status).clients_country;
-            /// Show beta chart only for these countries
-            this.is_beta_chart = ['zw', 'in', 'pk'].includes(client_country);
+            try {
+                const cookie_value = JSON.parse(Cookies.get('website_status', { domain }));
+                const client_country = JSON.parse(cookie_value.website_status).clients_country;
+                /// Show beta chart only for these countries
+                this.is_beta_chart = ['zw', 'in', 'pk'].includes(client_country);
+            } catch (e) {
+                this.is_beta_chart = false;
+            }
         }
+
+        this.is_beta_chart = true;
     };
 }
 /* eslint-enable */

@@ -42,9 +42,9 @@ const AppWithoutTranslation = ({ root_store }) => {
     React.useEffect(() => {
         const loadSmartchartsStyles = () => {
             if (root_store.client.is_beta_chart) {
-                import('@deriv/deriv-charts/dist/smartcharts.css');
-            } else {
                 import('@deriv/deriv-charts-beta/dist/smartcharts.css');
+            } else {
+                import('@deriv/deriv-charts/dist/smartcharts.css');
             }
         };
 
@@ -55,8 +55,6 @@ const AppWithoutTranslation = ({ root_store }) => {
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
         root_store.common.setPlatform();
-
-        root_store.client.setIsBetaChart();
         loadSmartchartsStyles();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

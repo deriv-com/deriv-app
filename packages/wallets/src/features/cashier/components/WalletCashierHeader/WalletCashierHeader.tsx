@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
+import { WalletCardIcon } from '../../../../components/WalletCardIcon';
+import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
+import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
+import useDevice from '../../../../hooks/useDevice';
 import CloseIcon from '../../../../public/images/close-icon.svg';
-import useDevice from '../../hooks/useDevice';
-import { WalletCardIcon } from '../WalletCardIcon';
-import { WalletGradientBackground } from '../WalletGradientBackground';
-import { WalletListCardBadge } from '../WalletListCardBadge';
 import './WalletCashierHeader.scss';
 
 const tabs = ['deposit', 'withdraw', 'transfer', 'transactions'] as const;

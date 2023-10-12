@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useFormikContext } from 'formik';
 import { useAccountsList } from '@deriv/api';
-import IcDropdown from '../../public/images/ic-dropdown.svg';
-import { useModal } from '../ModalProvider';
-import { WalletListCardBadge } from '../WalletListCardBadge';
+import { useModal } from '../../../../../components/ModalProvider';
+import { WalletListCardBadge } from '../../../../../components/WalletListCardBadge';
+import IcDropdown from '../../../../../public/images/ic-dropdown.svg';
 import WalletTransferFromAccountCard from '../WalletTransferFormAccountCard/WalletTransferFormAccountCard';
 import WalletTransferFormAccountSelection from '../WalletTransferFormAccountSelection/WalletTransferFormAccountSelection';
 import './WalletTransferFormDropdown.scss';

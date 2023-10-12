@@ -1,8 +1,8 @@
 import React from 'react';
 import { useAccountsList } from '@deriv/api';
-import CloseIcon from '../../public/images/close-icon.svg';
-import { Loader } from '../Loader';
-import { useModal } from '../ModalProvider';
+import { Loader } from '../../../../../components/Loader';
+import { useModal } from '../../../../../components/ModalProvider';
+import CloseIcon from '../../../../../public/images/close-icon.svg';
 import WalletTransferFromAccountCard from '../WalletTransferFormAccountCard/WalletTransferFormAccountCard';
 import './WalletTransferFormAccountSelection.scss';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAccountsList } from '@deriv/api';
-import { WalletCurrencyCard } from '../WalletCurrencyCard';
-import { WalletListCardBadge } from '../WalletListCardBadge';
+import { WalletCurrencyCard } from '../../../../../components/WalletCurrencyCard';
+import { WalletListCardBadge } from '../../../../../components/WalletListCardBadge';
 import './WalletTransferFormAccountCard.scss';
 
 type TProps = {

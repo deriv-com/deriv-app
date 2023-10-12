@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api';
-import { WalletCurrencyCard } from '../WalletCurrencyCard';
+import { WalletCurrencyCard } from '../../../../../components/WalletCurrencyCard';
 import './WalletTransactionsCryptoRow.scss';
 
 const statusCodeMapper = {

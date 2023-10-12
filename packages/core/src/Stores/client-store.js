@@ -28,12 +28,12 @@ import {
     toMoment,
     urlForLanguage,
 } from '@deriv/shared';
-import { getLanguage, getRedirectionLanguage,localize } from '@deriv/translations';
+import { getLanguage, getRedirectionLanguage, localize } from '@deriv/translations';
 
-import { requestLogout,WS } from 'Services';
+import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 
-import { getAccountTitle, getAvailableAccount,getClientAccountType } from './Helpers/client';
+import { getAccountTitle, getAvailableAccount, getClientAccountType } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import BaseStore from './base-store';
@@ -2527,6 +2527,7 @@ export default class ClientStore extends BaseStore {
     responseCTraderAvailableAccounts(response) {
         if (!response.error) {
             this.ctrader_available_accounts = response.trading_platform_available_accounts;
+        }
     }
 
     responseTradingPlatformAccountsList(response) {

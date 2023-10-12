@@ -1,5 +1,5 @@
-import IdvDocumentVerified from 'Assets/ic-idv-verified.svg';
-import PoaButton from 'Components/poa/poa-button';
+import IdvDocumentVerified from '../../../../Assets/ic-idv-verified.svg';
+import PoaButton from '../../../poa/poa-button/poa-button';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';

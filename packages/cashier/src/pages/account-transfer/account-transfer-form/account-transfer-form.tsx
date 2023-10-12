@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { Button, Dropdown, Input, Loading, Money, Text } from '@deriv/components';
+import { Button, Dropdown, InlineMessage, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
@@ -33,6 +33,8 @@ type TAccountTransferFormProps = {
 };
 
 const AccountOption = ({ account, idx }: TAccountsList) => {
+    const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt || account.is_derivez;
+
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
@@ -43,9 +45,7 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
 
             <div className='account-transfer-form__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'prominent', fontWeight: 'inherit' }}>
-                    {account.is_dxtrade || account.is_mt || account.is_derivez
-                        ? account.text
-                        : getCurrencyName(account.currency)}
+                    {!is_cfd_account ? getCurrencyName(account.currency) : account.text}
                 </Text>
                 {!account.is_derivez && (
                     <Text size='xxxs' align='left' color='less-prominent'>
@@ -68,6 +68,8 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
 
 let accounts_from: TAccount[] = [];
 let accounts_to: TAccount[] = [];
+let ctrader_accounts_from: TAccount[] = [];
+let ctrader_accounts_to: TAccount[] = [];
 let derivez_accounts_from: TAccount[] = [];
 let derivez_accounts_to: TAccount[] = [];
 let dxtrade_accounts_from: TAccount[] = [];
@@ -75,14 +77,17 @@ let dxtrade_accounts_to: TAccount[] = [];
 let mt_accounts_from: TAccount[] = [];
 let mt_accounts_to: TAccount[] = [];
 let remaining_transfers: number | undefined;
+let has_reached_maximum_daily_transfers = false;
 
 const AccountTransferForm = observer(
     ({ error, onClickDeposit, onClickNotes, setSideNotes, onClose }: TAccountTransferFormProps) => {
         const {
+            ui,
             client,
             common: { is_from_derivgo },
         } = useStore();
 
+        const { is_mobile } = ui;
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
 
@@ -123,11 +128,13 @@ const AccountTransferForm = observer(
 
         const { daily_transfers } = account_limits;
         const mt5_remaining_transfers = daily_transfers?.mt5;
+        const ctrader_remaining_transfers = daily_transfers?.ctrader;
         const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
         const derivez_remaining_transfers = daily_transfers?.derivez;
         const internal_remaining_transfers = daily_transfers?.internal;
 
         const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
+        const is_ctrader_transfer = selected_to.is_ctrader || selected_from.is_ctrader;
         const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
         const is_derivez_transfer = selected_to.is_derivez || selected_from.is_derivez;
 
@@ -146,7 +153,7 @@ const AccountTransferForm = observer(
             });
             if (!is_ok) return message;
 
-            if (selected_from.balance && Number(selected_from.balance) < Number(amount))
+            if (typeof selected_from.balance !== 'undefined' && Number(selected_from.balance) < Number(amount))
                 return localize('Insufficient balance');
 
             return undefined;
@@ -156,15 +163,17 @@ const AccountTransferForm = observer(
             return selected_from.currency === selected_to.currency ? !amount : !converter_from_amount;
         };
 
-        const getAccounts = (type: string, { is_mt, is_dxtrade, is_derivez }: TAccount) => {
+        const getAccounts = (type: string, { is_mt, is_ctrader, is_dxtrade, is_derivez }: TAccount) => {
             if (type === 'from') {
                 if (is_mt) return mt_accounts_from;
+                if (is_ctrader) return ctrader_accounts_from;
                 if (is_dxtrade) return dxtrade_accounts_from;
                 if (is_derivez) return derivez_accounts_from;
 
                 return accounts_from;
             } else if (type === 'to') {
                 if (is_mt) return mt_accounts_to;
+                if (is_ctrader) return ctrader_accounts_to;
                 if (is_dxtrade) return dxtrade_accounts_to;
                 if (is_derivez) return derivez_accounts_to;
 
@@ -180,10 +189,12 @@ const AccountTransferForm = observer(
         React.useEffect(() => {
             accounts_from = [];
             mt_accounts_from = [];
+            ctrader_accounts_from = [];
             dxtrade_accounts_from = [];
             derivez_accounts_from = [];
             accounts_to = [];
             mt_accounts_to = [];
+            ctrader_accounts_to = [];
             dxtrade_accounts_to = [];
             derivez_accounts_to = [];
 
@@ -191,12 +202,12 @@ const AccountTransferForm = observer(
                 const text = <AccountOption idx={idx} account={account} />;
                 const value = account.value;
 
-                const is_cfd_account = account.is_mt || account.is_dxtrade || account.is_derivez;
-
+                const is_cfd_account = account.is_mt || account.is_ctrader || account.is_dxtrade || account.is_derivez;
                 getAccounts('from', account).push({
                     text,
                     value,
                     is_mt: account.is_mt,
+                    is_ctrader: account.is_ctrader,
                     is_dxtrade: account.is_dxtrade,
                     nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
                         account.balance
@@ -204,22 +215,30 @@ const AccountTransferForm = observer(
                 });
                 const is_selected_from = account.value === selected_from.value;
 
-                if ((selected_from.is_mt && account.is_dxtrade) || (selected_from.is_dxtrade && account.is_mt)) return;
+                if (
+                    (selected_from.is_mt && (account.is_dxtrade || account.is_ctrader)) ||
+                    (selected_from.is_dxtrade && (account.is_mt || account.is_ctrader)) ||
+                    (selected_from.is_ctrader && (account.is_mt || account.is_dxtrade))
+                )
+                    return;
 
                 // account from and to cannot be the same
                 if (!is_selected_from) {
                     const is_selected_from_mt = selected_from.is_mt && account.is_mt;
+                    const is_selected_from_ctrader = selected_from.is_ctrader && account.is_ctrader;
                     const is_selected_from_dxtrade = selected_from.is_dxtrade && account.is_dxtrade;
 
                     // cannot transfer to MT account from MT
+                    // cannot transfer to cTrader account from cTrader
                     // cannot transfer to Dxtrade account from Dxtrade
 
-                    const is_disabled = is_selected_from_mt || is_selected_from_dxtrade;
+                    const is_disabled = is_selected_from_mt || is_selected_from_ctrader || is_selected_from_dxtrade;
 
                     getAccounts('to', account).push({
                         text,
                         value,
                         is_mt: account.is_mt,
+                        is_ctrader: account.is_ctrader,
                         is_dxtrade: account.is_dxtrade,
                         is_derivez: account.is_derivez,
                         disabled: is_disabled,
@@ -232,6 +251,7 @@ const AccountTransferForm = observer(
 
             setFromAccounts({
                 ...(mt_accounts_from.length && { [localize('Deriv MT5 accounts')]: mt_accounts_from }),
+                ...(ctrader_accounts_from.length && { [localize('Deriv cTrader accounts')]: ctrader_accounts_from }),
                 ...(dxtrade_accounts_from.length && {
                     [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_from,
                 }),
@@ -241,6 +261,7 @@ const AccountTransferForm = observer(
 
             setToAccounts({
                 ...(mt_accounts_to.length && { [localize('Deriv MT5 accounts')]: mt_accounts_to }),
+                ...(ctrader_accounts_to.length && { [localize('Deriv cTrader accounts')]: ctrader_accounts_to }),
                 ...(dxtrade_accounts_to.length && {
                     [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_to,
                 }),
@@ -257,6 +278,7 @@ const AccountTransferForm = observer(
                         allowed_transfers_count={{
                             internal: internal_remaining_transfers?.allowed,
                             mt5: mt5_remaining_transfers?.allowed,
+                            ctrader: ctrader_remaining_transfers?.allowed,
                             dxtrade: dxtrade_remaining_transfers?.allowed,
                             derivez: derivez_remaining_transfers?.allowed,
                         }}
@@ -268,6 +290,7 @@ const AccountTransferForm = observer(
                         is_dxtrade_allowed={is_dxtrade_allowed}
                         is_dxtrade_transfer={is_dxtrade_transfer}
                         is_mt_transfer={is_mt_transfer}
+                        is_ctrader_transfer={is_ctrader_transfer}
                         is_from_derivgo={is_from_derivgo}
                         is_derivez_transfer={is_derivez_transfer}
                     />
@@ -299,12 +322,16 @@ const AccountTransferForm = observer(
             is_mt_transfer,
             is_from_derivgo,
             is_derivez_transfer,
+            ctrader_remaining_transfers?.allowed,
+            is_ctrader_transfer,
         ]);
 
         React.useEffect(() => {
             const getRemainingTransfers = () => {
                 if (is_mt_transfer) {
                     return mt5_remaining_transfers?.available;
+                } else if (is_ctrader_transfer) {
+                    return ctrader_remaining_transfers?.available;
                 } else if (is_dxtrade_transfer) {
                     return dxtrade_remaining_transfers?.available;
                 } else if (is_derivez_transfer) {
@@ -314,6 +341,7 @@ const AccountTransferForm = observer(
             };
 
             remaining_transfers = getRemainingTransfers();
+            has_reached_maximum_daily_transfers = !Number(remaining_transfers);
 
             const hint =
                 remaining_transfers && Number(remaining_transfers) === 1
@@ -404,95 +432,164 @@ const AccountTransferForm = observer(
                                     <Loading className='cashier__loader' is_fullscreen={false} />
                                 </div>
                             ) : (
-                                <Form noValidate>
-                                    <div
-                                        className='cashier__drop-down-wrapper account-transfer-form__drop-down-wrapper'
-                                        data-testid='dt_account_transfer_form_drop_down_wrapper'
-                                    >
-                                        <Dropdown
-                                            id='transfer_from'
-                                            className='account-transfer-form__drop-down'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
-                                            classNameItems='cashier__drop-down-items'
-                                            classNameLabel='cashier__drop-down-label'
-                                            test_id='dt_account_transfer_form_drop_down'
-                                            is_large
-                                            label={localize('From')}
-                                            list={from_accounts}
-                                            list_height='404'
-                                            name='transfer_from'
-                                            value={selected_from.value}
-                                            onChange={(e: TReactChangeEvent) => {
-                                                onChangeTransferFrom(e);
-                                                handleChange(e);
-                                                setFieldValue('amount', '');
-                                                setTimeout(() => setFieldError('amount', ''));
-                                            }}
-                                            error={selected_from.error}
-                                        />
-                                        <Dropdown
-                                            id='transfer_to'
-                                            className='account-transfer-form__drop-down account-transfer-form__drop-down--to-dropdown'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
-                                            classNameItems='cashier__drop-down-items'
-                                            classNameLabel='cashier__drop-down-label'
-                                            classNameHint='account-transfer-form__hint'
-                                            test_id='dt_account_transfer_form_to_dropdown'
-                                            is_large
-                                            label={localize('To')}
-                                            list={to_accounts}
-                                            list_height='404'
-                                            name='transfer_to'
-                                            value={selected_to.value}
-                                            onChange={(e: TReactChangeEvent) => {
-                                                onChangeTransferTo(e);
-                                                setFieldValue('amount', '');
-                                                setTimeout(() => setFieldError('amount', ''));
-                                            }}
-                                            hint={transfer_to_hint}
-                                            error={getMt5Error() ?? selected_to.error}
-                                        />
-                                    </div>
-                                    {selected_from.currency === selected_to.currency ? (
-                                        <Field name='amount' validate={validateAmount}>
-                                            {({ field }: FieldProps<string>) => (
-                                                <Input
-                                                    {...field}
-                                                    onChange={(e: TReactChangeEvent) => {
-                                                        setErrorMessage({ code: '', message: '' });
-                                                        handleChange(e);
-                                                        setAccountTransferAmount(e.target.value);
-                                                    }}
-                                                    className={classNames(
-                                                        'cashier__input dc-input--no-placeholder account-transfer-form__input',
-                                                        !is_from_outside_cashier &&
-                                                            'account-transfer-form__input-fit-content'
-                                                    )}
-                                                    classNameHint={classNames('account-transfer-form__hint', {
-                                                        'account-transfer-form__hint__disabled': is_mt5_restricted,
-                                                    })}
-                                                    data-testid='dt_account_transfer_form_input'
-                                                    name='amount'
-                                                    type='text'
-                                                    label={localize('Amount')}
-                                                    error={errors.amount ? errors.amount : ''}
-                                                    required
-                                                    trailing_icon={
-                                                        selected_from.currency ? (
-                                                            <span
-                                                                className={classNames(
-                                                                    'symbols',
-                                                                    `symbols--${selected_from.currency.toLowerCase()}`
-                                                                )}
-                                                            >
-                                                                {getCurrencyDisplayCode(selected_from.currency)}
-                                                            </span>
-                                                        ) : undefined
-                                                    }
-                                                    autoComplete='off'
-                                                    maxLength={30}
+                                <>
+                                    {has_reached_maximum_daily_transfers && (
+                                        <div className='account-transfer-form__inline-warning-message'>
+                                            <InlineMessage
+                                                message={localize(
+                                                    'You have reached the maximum daily transfers. Please try again tomorrow.'
+                                                )}
+                                                size='sm'
+                                            />
+                                        </div>
+                                    )}
+                                    <Form className='account-transfer-form' noValidate>
+                                        <div
+                                            className='cashier__drop-down-wrapper account-transfer-form__drop-down-wrapper'
+                                            data-testid='dt_account_transfer_form_drop_down_wrapper'
+                                        >
+                                            <Dropdown
+                                                id='transfer_from'
+                                                className='account-transfer-form__drop-down'
+                                                classNameDisplay='cashier__drop-down-display'
+                                                classNameDisplaySpan='cashier__drop-down-display-span'
+                                                classNameItems='cashier__drop-down-items'
+                                                classNameLabel='cashier__drop-down-label'
+                                                test_id='dt_account_transfer_form_drop_down'
+                                                is_large
+                                                label={localize('From')}
+                                                list={from_accounts}
+                                                list_height='404'
+                                                name='transfer_from'
+                                                value={selected_from.value}
+                                                onChange={(e: TReactChangeEvent) => {
+                                                    onChangeTransferFrom(e);
+                                                    handleChange(e);
+                                                    setFieldValue('amount', '');
+                                                    setTimeout(() => setFieldError('amount', ''));
+                                                }}
+                                                error={selected_from.error}
+                                            />
+                                            <Dropdown
+                                                id='transfer_to'
+                                                className='account-transfer-form__drop-down account-transfer-form__drop-down--to-dropdown'
+                                                classNameDisplay='cashier__drop-down-display'
+                                                classNameDisplaySpan='cashier__drop-down-display-span'
+                                                classNameItems='cashier__drop-down-items'
+                                                classNameLabel='cashier__drop-down-label'
+                                                cclassNameHint={classNames('account-transfer-form__hint', {
+                                                    'account-transfer-form__hint__disabled':
+                                                        has_reached_maximum_daily_transfers,
+                                                })}
+                                                test_id='dt_account_transfer_form_to_dropdown'
+                                                is_large
+                                                label={localize('To')}
+                                                list={to_accounts}
+                                                list_height='404'
+                                                initial_height_offset={is_mobile ? 160 : 180}
+                                                name='transfer_to'
+                                                value={selected_to.value}
+                                                onChange={(e: TReactChangeEvent) => {
+                                                    onChangeTransferTo(e);
+                                                    setFieldValue('amount', '');
+                                                    setTimeout(() => setFieldError('amount', ''));
+                                                }}
+                                                hint={transfer_to_hint}
+                                                error={getMt5Error() ?? selected_to.error}
+                                            />
+                                        </div>
+                                        {selected_from.currency === selected_to.currency ? (
+                                            <Field name='amount' validate={validateAmount}>
+                                                {({ field }: FieldProps<string>) => (
+                                                    <Input
+                                                        {...field}
+                                                        onChange={(e: TReactChangeEvent) => {
+                                                            setErrorMessage({ code: '', message: '' });
+                                                            handleChange(e);
+                                                            setAccountTransferAmount(e.target.value);
+                                                        }}
+                                                        className={classNames(
+                                                            'cashier__input dc-input--no-placeholder account-transfer-form__input',
+                                                            {
+                                                                'account-transfer-form__input-fit-content':
+                                                                    !is_from_outside_cashier,
+                                                            }
+                                                        )}
+                                                        classNameHint={classNames('account-transfer-form__hint', {
+                                                            'account-transfer-form__hint__disabled':
+                                                                is_mt5_restricted ||
+                                                                has_reached_maximum_daily_transfers,
+                                                        })}
+                                                        data-testid='dt_account_transfer_form_input'
+                                                        name='amount'
+                                                        type='text'
+                                                        label={localize('Amount')}
+                                                        error={errors.amount ? errors.amount : ''}
+                                                        required
+                                                        trailing_icon={
+                                                            selected_from.currency ? (
+                                                                <span
+                                                                    className={classNames(
+                                                                        'symbols',
+                                                                        `symbols--${selected_from.currency.toLowerCase()}`
+                                                                    )}
+                                                                >
+                                                                    {getCurrencyDisplayCode(selected_from.currency)}
+                                                                </span>
+                                                            ) : undefined
+                                                        }
+                                                        autoComplete='off'
+                                                        maxLength={30}
+                                                        hint={
+                                                            transfer_limit.max ? (
+                                                                <Localize
+                                                                    i18n_default_text='Transfer limits: <0 /> - <1 />'
+                                                                    components={[
+                                                                        <Money
+                                                                            key={0}
+                                                                            amount={transfer_limit.min}
+                                                                            currency={selected_from.currency}
+                                                                            show_currency
+                                                                        />,
+                                                                        <Money
+                                                                            key={1}
+                                                                            amount={transfer_limit.max}
+                                                                            currency={selected_from.currency}
+                                                                            show_currency
+                                                                        />,
+                                                                    ]}
+                                                                />
+                                                            ) : (
+                                                                ''
+                                                            )
+                                                        }
+                                                        disabled={is_mt5_restricted}
+                                                    />
+                                                )}
+                                            </Field>
+                                        ) : (
+                                            <div
+                                                className={
+                                                    is_mt5_restricted ? 'account-transfer-form__crypto--disabled' : ''
+                                                }
+                                            >
+                                                <div className='account-transfer-form__crypto--percentage-selector'>
+                                                    <PercentageSelector
+                                                        amount={
+                                                            selected_from.balance ? Number(selected_from.balance) : 0
+                                                        }
+                                                        from_account={selected_from.value}
+                                                        getCalculatedAmount={setTransferPercentageSelectorResult}
+                                                        percentage={percentage}
+                                                        should_percentage_reset={should_percentage_reset}
+                                                        to_account={selected_to.value}
+                                                        from_currency={selected_from.currency || ''}
+                                                        to_currency={selected_to.currency || ''}
+                                                    />
+                                                </div>
+                                                <CryptoFiatConverter
+                                                    from_currency={selected_from.currency || ''}
+                                                    to_currency={selected_to.currency || ''}
                                                     hint={
                                                         transfer_limit.max ? (
                                                             <Localize
@@ -516,125 +613,81 @@ const AccountTransferForm = observer(
                                                             ''
                                                         )
                                                     }
-                                                    disabled={is_mt5_restricted}
-                                                />
-                                            )}
-                                        </Field>
-                                    ) : (
-                                        <div
-                                            className={
-                                                is_mt5_restricted ? 'account-transfer-form__crypto--disabled' : ''
-                                            }
-                                        >
-                                            <div className='account-transfer-form__crypto--percentage-selector'>
-                                                <PercentageSelector
-                                                    amount={selected_from.balance ? Number(selected_from.balance) : 0}
-                                                    from_account={selected_from.value}
-                                                    getCalculatedAmount={setTransferPercentageSelectorResult}
-                                                    percentage={percentage}
-                                                    should_percentage_reset={should_percentage_reset}
-                                                    to_account={selected_to.value}
-                                                    from_currency={selected_from.currency || ''}
-                                                    to_currency={selected_to.currency || ''}
+                                                    onChangeConverterFromAmount={onChangeConverterFromAmount}
+                                                    onChangeConverterToAmount={onChangeConverterToAmount}
+                                                    resetConverter={resetConverter}
+                                                    validateFromAmount={validateTransferFromAmount}
+                                                    validateToAmount={validateTransferToAmount}
                                                 />
                                             </div>
-                                            <CryptoFiatConverter
-                                                from_currency={selected_from.currency || ''}
-                                                to_currency={selected_to.currency || ''}
-                                                hint={
-                                                    transfer_limit.max ? (
-                                                        <Localize
-                                                            i18n_default_text='Transfer limits: <0 /> - <1 />'
-                                                            components={[
-                                                                <Money
-                                                                    key={0}
-                                                                    amount={transfer_limit.min}
-                                                                    currency={selected_from.currency}
-                                                                    show_currency
-                                                                />,
-                                                                <Money
-                                                                    key={1}
-                                                                    amount={transfer_limit.max}
-                                                                    currency={selected_from.currency}
-                                                                    show_currency
-                                                                />,
-                                                            ]}
-                                                        />
-                                                    ) : (
-                                                        ''
-                                                    )
-                                                }
-                                                onChangeConverterFromAmount={onChangeConverterFromAmount}
-                                                onChangeConverterToAmount={onChangeConverterToAmount}
-                                                resetConverter={resetConverter}
-                                                validateFromAmount={validateTransferFromAmount}
-                                                validateToAmount={validateTransferToAmount}
-                                            />
-                                        </div>
-                                    )}
-                                    <div
-                                        className={classNames(
-                                            'cashier__form-submit',
-                                            'account-transfer-form__form-buttons'
                                         )}
-                                        data-testid='dt_account_transfer_form_submit'
-                                    >
-                                        {is_from_outside_cashier && <NotesLink />}
-                                        <Button
-                                            className='account-transfer-form__deposit-button'
-                                            secondary
-                                            large
-                                            onClick={depositClick}
-                                        >
-                                            <Localize i18n_default_text='Deposit' />
-                                        </Button>
-
-                                        <Button
-                                            className='account-transfer-form__submit-button'
-                                            type='submit'
-                                            is_disabled={
-                                                isSubmitting ||
-                                                (remaining_transfers && !Number(remaining_transfers)) ||
-                                                !!selected_from.error ||
-                                                !!selected_to.error ||
-                                                (selected_from.balance && !Number(selected_from.balance)) ||
-                                                !!converter_from_error ||
-                                                !!converter_to_error ||
-                                                !!errors.amount ||
-                                                shouldShowTransferButton(values.amount) ||
-                                                is_mt5_restricted
-                                            }
-                                            primary
-                                            large
-                                        >
-                                            <Localize i18n_default_text='Transfer' />
-                                        </Button>
-                                    </div>
-                                    {!is_from_outside_cashier && (
-                                        <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
-                                            <AccountTransferNote
-                                                allowed_transfers_count={{
-                                                    internal: internal_remaining_transfers?.allowed,
-                                                    mt5: mt5_remaining_transfers?.allowed,
-                                                    dxtrade: dxtrade_remaining_transfers?.allowed,
-                                                    derivez: derivez_remaining_transfers?.allowed,
-                                                }}
-                                                transfer_fee={transfer_fee}
-                                                currency={selected_from.currency || ''}
-                                                minimum_fee={minimum_fee}
-                                                is_crypto_to_crypto_transfer={
-                                                    selected_from.is_crypto && selected_to.is_crypto
+                                        <div
+                                            className={classNames(
+                                                'cashier__form-submit',
+                                                'account-transfer-form__form-buttons',
+                                                {
+                                                    'account-transfer-form__form-buttons--with-notes':
+                                                        is_from_outside_cashier,
                                                 }
-                                                is_dxtrade_allowed={is_dxtrade_allowed}
-                                                is_dxtrade_transfer={is_dxtrade_transfer}
-                                                is_mt_transfer={is_mt_transfer}
-                                                is_from_derivgo={is_from_derivgo}
-                                                is_derivez_transfer={is_derivez_transfer}
-                                            />
-                                        </SideNote>
-                                    )}
-                                    <ErrorDialog error={error} />
-                                </Form>
+                                            )}
+                                            data-testid='dt_account_transfer_form_submit'
+                                        >
+                                            {is_from_outside_cashier && <NotesLink />}
+                                            <div className='account-transfer-form__form-buttons__default'>
+                                                <Button secondary large onClick={depositClick}>
+                                                    <Localize i18n_default_text='Deposit' />
+                                                </Button>
+
+                                                <Button
+                                                    className='account-transfer-form__submit-button'
+                                                    type='submit'
+                                                    is_disabled={
+                                                        isSubmitting ||
+                                                        has_reached_maximum_daily_transfers ||
+                                                        !!selected_from.error ||
+                                                        !!selected_to.error ||
+                                                        (selected_from.balance && !Number(selected_from.balance)) ||
+                                                        !!converter_from_error ||
+                                                        !!converter_to_error ||
+                                                        !!errors.amount ||
+                                                        shouldShowTransferButton(values.amount) ||
+                                                        is_mt5_restricted
+                                                    }
+                                                    primary
+                                                    large
+                                                >
+                                                    <Localize i18n_default_text='Transfer' />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        {!is_from_outside_cashier && (
+                                            <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
+                                                <AccountTransferNote
+                                                    allowed_transfers_count={{
+                                                        internal: internal_remaining_transfers?.allowed,
+                                                        mt5: mt5_remaining_transfers?.allowed,
+                                                        ctrader: ctrader_remaining_transfers?.allowed,
+                                                        dxtrade: dxtrade_remaining_transfers?.allowed,
+                                                        derivez: derivez_remaining_transfers?.allowed,
+                                                    }}
+                                                    transfer_fee={transfer_fee}
+                                                    currency={selected_from.currency || ''}
+                                                    minimum_fee={minimum_fee}
+                                                    is_crypto_to_crypto_transfer={
+                                                        selected_from.is_crypto && selected_to.is_crypto
+                                                    }
+                                                    is_dxtrade_allowed={is_dxtrade_allowed}
+                                                    is_dxtrade_transfer={is_dxtrade_transfer}
+                                                    is_ctrader_transfer={is_ctrader_transfer}
+                                                    is_mt_transfer={is_mt_transfer}
+                                                    is_from_derivgo={is_from_derivgo}
+                                                    is_derivez_transfer={is_derivez_transfer}
+                                                />
+                                            </SideNote>
+                                        )}
+                                        <ErrorDialog error={error} />
+                                    </Form>
+                                </>
                             )}
                         </React.Fragment>
                     )}

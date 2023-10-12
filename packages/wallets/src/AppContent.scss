@@ -1,0 +1,15 @@
+.wallets-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    min-height: 100%;
+    align-self: stretch;
+    background: var(--system-light-7-secondary-background, #f2f3f4);
+
+    @include mobile {
+        overflow-y: auto;
+        height: 100%;
+    }
+}

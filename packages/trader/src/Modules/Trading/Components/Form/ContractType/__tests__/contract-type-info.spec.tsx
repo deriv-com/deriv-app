@@ -6,6 +6,15 @@ import userEvent from '@testing-library/user-event';
 jest.mock('Assets/Trading/Categories/trade-categories-gif', () => jest.fn(() => 'TradeCategoriesGif'));
 jest.mock('Assets/Trading/Categories/trade-categories', () => jest.fn(() => 'TradeDescription'));
 jest.mock('../ContractTypeInfo/contract-type-glossary', () => jest.fn(() => 'TradeTypeGlossary'));
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    observer: jest.fn(x => x),
+    useStore: jest.fn(() => ({
+        ui: {
+            is_mobile: false,
+        },
+    })),
+}));
 
 const mocked_props: React.ComponentProps<typeof Info> = {
     handleSelect: jest.fn(),
@@ -80,7 +89,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Call/Put',
-                            value: 'vanilla',
+                            value: 'vanillalongcall',
                         },
                     ],
                     icon: 'IcVanilla',
@@ -123,7 +132,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Call/Put',
-                    value: 'vanilla',
+                    value: 'vanillalongcall',
                 },
             ],
             icon: 'IcCatAll',
@@ -209,7 +218,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Call/Put',
-                            value: 'vanilla',
+                            value: 'vanillalongcall',
                         },
                     ],
                     icon: 'IcVanilla',
@@ -248,7 +257,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Call/Put',
-                    value: 'vanilla',
+                    value: 'vanillalongcall',
                 },
             ],
             icon: 'IcCatOptions',
@@ -273,7 +282,7 @@ describe('<Info />', () => {
     });
     it('Should render toggle buttons if vanilla info page is open', () => {
         mocked_props.item.text = 'Call/Put';
-        mocked_props.item.value = 'vanilla';
+        mocked_props.item.value = 'vanillalongcall';
         render(<Info {...mocked_props} />);
         const trade_type_button = screen.getByText('Choose Call/Put');
         expect(screen.getByText('Description')).toBeInTheDocument();

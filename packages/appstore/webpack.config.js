@@ -107,9 +107,6 @@ module.exports = function (env) {
                         'style-loader',
                         {
                             loader: 'css-loader',
-                            options: {
-                                url: (_, resourcePath) => resourcePath.includes('packages/wallets'),
-                            },
                         },
                         {
                             loader: 'postcss-loader',
@@ -131,32 +128,26 @@ module.exports = function (env) {
                             loader: 'sass-resources-loader',
                             options: {
                                 // Provide path to the file with resources
-                                // eslint-disable-next-line global-require, import/no-dynamic-require
-                                resources: require('@deriv/shared/src/styles/index.js'),
+                                resources: [
+                                    // eslint-disable-next-line global-require, import/no-dynamic-require
+                                    ...require('@deriv/shared/src/styles/index.js'),
+                                ],
                             },
                         },
                     ],
                 },
                 {
                     test: /\.svg$/,
-                    issuer: /\/packages\/wallets\/.*(\/)?.*.scss/,
-                    exclude: /node_modules/,
+                    exclude: [/node_modules/, path.resolve('../', 'wallets')],
                     include: /public\//,
                     type: 'asset/resource',
                     generator: {
-                        filename: 'appstore/wallets/public/[name].[contenthash][ext]',
+                        filename: 'appstore/public/[name].[contenthash][ext]',
                     },
                 },
                 {
                     test: /\.svg$/,
-                    issuer: /\/packages\/wallets\/.*(\/)?.*.tsx/,
-                    exclude: /node_modules/,
-                    include: /public\//,
-                    use: svg_loaders,
-                },
-                {
-                    test: /\.svg$/,
-                    exclude: [/node_modules|public\//],
+                    exclude: /node_modules|public\//,
                     use: svg_loaders,
                 },
             ],

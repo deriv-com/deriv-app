@@ -82,17 +82,17 @@ export type TInputUniqFields = 'input_martingale_size' | 'input_alembert_unit' |
 export type TInputBaseFields = 'input_duration_value' | 'input_stake' | 'input_loss' | 'input_profit';
 export type TInputCommonFields = TInputBaseFields | TInputUniqFields;
 
-export type TSetFieldValue = (
-    element: 'button' | 'quick-strategy__duration-unit' | 'quick-strategy__duration-value' | string,
-    action: 'run' | 'edit' | string | number
-) => void;
-
 export type TSelectsFieldNames =
     | 'quick-strategy__type-strategy'
     | 'quick-strategy__symbol'
     | 'quick-strategy__trade-type'
     | 'quick-strategy__duration-unit'
     | '';
+
+export type TSetFieldValue = (
+    element: 'button' | 'quick-strategy__duration-unit' | 'quick-strategy__duration-value' | TSelectsFieldNames,
+    action: string | number
+) => void;
 
 export type TInputsFieldNames =
     | 'quick-strategy__duration-value'

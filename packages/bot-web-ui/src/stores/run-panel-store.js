@@ -27,6 +27,7 @@ export default class RunPanelStore {
             is_stop_button_disabled: computed,
             is_clear_stat_disabled: computed,
             onStopButtonClick: action.bound,
+            onStopBotClick: action.bound,
             stopBot: action.bound,
             onClearStatClick: action.bound,
             clearStat: action.bound,
@@ -43,6 +44,7 @@ export default class RunPanelStore {
             showContractUpdateErrorDialog: action.bound,
             onBotSellEvent: action.bound,
             onBotStopEvent: action.bound,
+            onBotReadyEvent: action.bound,
             onBotTradeAgain: action.bound,
             onContractStatusEvent: action.bound,
             onClickSell: action.bound,
@@ -140,7 +142,7 @@ export default class RunPanelStore {
         return (
             this.is_running ||
             this.has_open_contract ||
-            (journal.unfiltered_messages.length === 0 && transactions.elements.length === 0)
+            (journal.unfiltered_messages.length === 0 && transactions?.transactions?.length === 0)
         );
     }
 
@@ -219,13 +221,22 @@ export default class RunPanelStore {
 
     onStopButtonClick() {
         const { is_multiplier } = this.root_store.summary_card;
+
+        if (is_multiplier) {
+            this.showStopMultiplierContractDialog();
+        } else {
+            this.stopBot();
+        }
+    }
+
+    onStopBotClick() {
+        const { is_multiplier } = this.root_store.summary_card;
         const { summary_card } = this.root_store;
 
         if (is_multiplier) {
             this.showStopMultiplierContractDialog();
         } else {
             this.stopBot();
-            this.dbot.terminateBot();
             summary_card.clear();
             this.setShowBotStopMessage(true);
         }
@@ -437,6 +448,7 @@ export default class RunPanelStore {
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.sell', this.onBotSellEvent);
         observer.register('bot.stop', this.onBotStopEvent);
+        observer.register('bot.bot_ready', this.onBotReadyEvent);
         observer.register('bot.click_stop', this.onStopButtonClick);
         observer.register('bot.trade_again', this.onBotTradeAgain);
         observer.register('contract.status', this.onContractStatusEvent);
@@ -520,7 +532,6 @@ export default class RunPanelStore {
         const { ui } = this.core;
         const indicateBotStopped = () => {
             this.error_type = undefined;
-            this.setIsRunning(false);
             this.setContractStage(contract_stages.NOT_RUNNING);
             ui.setAccountSwitcherDisabledMessage(false);
             this.unregisterBotListeners();
@@ -536,17 +547,18 @@ export default class RunPanelStore {
                 this.error_type = undefined;
                 this.setContractStage(contract_stages.PURCHASE_SENT);
             } else {
+                this.setIsRunning(false);
                 indicateBotStopped();
             }
         } else if (this.error_type === error_types.UNRECOVERABLE_ERRORS) {
             // Bot should indicate it stopped in below cases:
             // - When error happens and it's an unrecoverable error
+            this.setIsRunning(false);
             indicateBotStopped();
         } else if (this.has_open_contract) {
             // Bot should indicate the contract is closed in below cases:
             // - When bot was running and an error happens
             this.error_type = undefined;
-            this.setIsRunning(false);
             this.is_sell_requested = false;
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
             ui.setAccountSwitcherDisabledMessage(false);
@@ -561,6 +573,11 @@ export default class RunPanelStore {
         // listen for new version update
         const listen_new_version = new Event('ListenPWAUpdate');
         document.dispatchEvent(listen_new_version);
+    }
+
+    onBotReadyEvent() {
+        this.setIsRunning(false);
+        observer.unregisterAll('bot.bot_ready');
     }
 
     onBotTradeAgain(is_trade_again) {

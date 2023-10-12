@@ -1,11 +1,9 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
-import AppContent from './AppContent';
+import { makeLazyLoader, moduleLoader } from './utils/loader';
 
-const App: React.FC = () => (
-    <APIProvider>
-        <AppContent />;
-    </APIProvider>
-);
+const LazyApp = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "wallets-app", webpackPreload: true */ './App')),
+    () => <div />
+)();
 
-export default App;
+export default LazyApp;

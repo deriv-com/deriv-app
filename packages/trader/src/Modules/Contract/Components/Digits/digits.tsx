@@ -25,7 +25,6 @@ type TOnLastDigitSpot = {
     is_latest: boolean;
     is_won?: boolean;
 };
-
 type TDigitsWrapper = TDigits & {
     onChangeStatus?: (params: TOnChangeStatus) => void;
     onLastDigitSpot?: (params: TOnLastDigitSpot) => void;

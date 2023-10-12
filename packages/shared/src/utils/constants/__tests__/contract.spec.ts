@@ -9,23 +9,24 @@ import {
 } from '../contract';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
-
+const card_label = 'Apply';
+const markets_name = 'AUD/CAD';
 const unsupported_contract = {
     name: 'Spread Up',
     position: 'top',
 };
-const supported_high_low = {
+const supported_high_low_contract = {
     name: 'Higher',
     position: 'top',
 };
-const not_supported_high_low = {
+const supported_non_high_low_contract = {
     name: 'Rise',
     position: 'top',
 };
 
 describe('getCardLabels', () => {
     it('should return an object with card labels, e.g. such as Apply', () => {
-        expect(getCardLabels().APPLY).toEqual('Apply');
+        expect(getCardLabels().APPLY).toEqual(card_label);
     });
 });
 
@@ -33,7 +34,7 @@ describe('getMarketNamesMap', () => {
     const symbols_translation_object = getMarketNamesMap();
 
     it('should return an object with symbols, e.g. such as AUD/CAD', () => {
-        expect(symbols_translation_object.FRXAUDCAD).toEqual('AUD/CAD');
+        expect(symbols_translation_object.FRXAUDCAD).toEqual(markets_name);
     });
     it('should return an object with symbols, including Volatility 25 (1s) Index, Volatility 50 (1s) Index and Volatility 75 (1s) Index', () => {
         expect(symbols_translation_object['1HZ25V']).toEqual('Volatility 25 (1s) Index');
@@ -50,21 +51,21 @@ describe('getUnsupportedContracts', () => {
 
 describe('getSupportedContracts', () => {
     it('should return an object with specific supported contracts if is_high_low === true', () => {
-        expect(getSupportedContracts(true).CALL).toEqual(supported_high_low);
+        expect(getSupportedContracts(true).CALL).toEqual(supported_high_low_contract);
     });
 
     it('should return an object with specific supported contracts if is_high_low === false', () => {
-        expect(getSupportedContracts(false).CALL).toEqual(not_supported_high_low);
+        expect(getSupportedContracts(false).CALL).toEqual(supported_non_high_low_contract);
     });
 });
 
 describe('getContractConfig', () => {
     it('should return an object with specific contracts if is_high_low === true', () => {
-        expect(getContractConfig(true).CALL).toEqual(supported_high_low);
+        expect(getContractConfig(true).CALL).toEqual(supported_high_low_contract);
     });
 
     it('should return object with specific contracts if is_high_low === false', () => {
-        expect(getContractConfig(false).CALL).toEqual(not_supported_high_low);
+        expect(getContractConfig(false).CALL).toEqual(supported_non_high_low_contract);
     });
 });
 

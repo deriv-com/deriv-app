@@ -5,13 +5,13 @@ import { CommonPropTypes } from './views/types';
 type TBodyProps = CommonPropTypes & {
     calendar_view: string;
     date_format: string;
-    disabled_days: number[];
+    disabled_days?: number[];
     start_date: string;
-    events: Array<{
+    events?: Array<{
         dates: string[];
         descrip: string;
     }>;
-    has_range_selection: boolean;
+    has_range_selection?: boolean;
     hovered_date: string | null;
     onMouseLeave?: React.MouseEventHandler<HTMLSpanElement>;
     onMouseOver?: React.MouseEventHandler<HTMLSpanElement>;

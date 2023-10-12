@@ -84,7 +84,7 @@ const MyProfileName = () => {
                             {rating_average ? (
                                 <React.Fragment>
                                     <div className='my-profile-name__rating__row'>
-                                        <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                        <Text color='prominent' size={getTextSize('xxxs', 'xs')}>
                                             {rating_average_decimal}
                                         </Text>
                                         <StarRating

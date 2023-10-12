@@ -34,7 +34,8 @@ import { isServerError } from 'Helpers/utils';
 import { salutation_list } from './constants';
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
-import FormSelectField from './form-select-field';
+// import FormSelectField from './form-select-field';
+import FormSelectField from 'Components/forms/form-select-field';
 
 type TRestState = {
     show_form: boolean;
@@ -290,6 +291,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                     id='birth_day'
                                                     disabled={isFieldDisabled('date_of_birth')}
                                                     portal_id=''
+                                                    // @ts-expect-error this type value needs to be check again in GetSettings
                                                     value={values.date_of_birth}
                                                 />
                                             </fieldset>

@@ -31,7 +31,7 @@ const FormSelectField: React.FC<TFormSelectField> = ({
     const onSelect =
         (field: string, setFieldValue: TSetFieldValue) =>
         ({ value, text }: TListItem) => {
-            setFieldValue(field, value ? text : '', true);
+            setFieldValue(field, (value && text) ?? '', true);
         };
     // TODO: remove the following ts-expect-error comments once the issue is fixed within the components
     return (

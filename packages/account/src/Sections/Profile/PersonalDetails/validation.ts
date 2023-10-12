@@ -58,15 +58,12 @@ export const getPersonalDetailsInitialValues = (
         first_name: account_settings.first_name,
         last_name: account_settings.last_name,
         phone: account_settings.phone,
-        // place_of_birth: account_settings.place_of_birth,
         date_of_birth: account_settings.date_of_birth,
         residence: account_settings.residence,
         address_line_1: account_settings.address_line_1,
         address_city: account_settings.address_city,
         address_state: '',
-        // tax_residence: getLocation(residence_list, account_settings.tax_residence ?? '', 'text'),
         tax_identification_number: account_settings.tax_identification_number ?? '',
-        // employment_status: account_settings.employment_status ?? '',
         email_consent: account_settings.email_consent ?? 0,
     };
 

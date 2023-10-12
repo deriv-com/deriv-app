@@ -8,11 +8,11 @@ export type TListItem = {
     /**
      * The text of the item (e.g. 'United Kingdom', 'Germany', etc.)
      */
-    text: string;
+    text?: string;
     /**
      * The value of the item
      */
-    value: string;
+    value?: string;
 };
 
 export type TFields = 'place_of_birth' | 'tax_residence' | 'tax_identification_number' | 'account_opening_reason';

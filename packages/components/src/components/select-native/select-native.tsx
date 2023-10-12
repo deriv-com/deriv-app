@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import type { ResidenceList } from '@deriv/api-types';
 import Field from '../field/field';
 import Text from '../text/text';
 import Icon from '../icon/icon';
@@ -38,10 +37,7 @@ type TListItem = {
     id?: string;
 };
 
-const getDisplayText = (
-    list_items: Array<TListItem> | { [key: string]: Array<TListItem> } | ResidenceList,
-    value: string | number
-) => {
+const getDisplayText = (list_items: Array<TListItem> | { [key: string]: Array<TListItem> }, value: string | number) => {
     const dropdown_items = Array.isArray(list_items)
         ? list_items
         : ([] as Array<TListItem>).concat(...Object.values(list_items)); //typecasting since [] is inferred to be type never[]

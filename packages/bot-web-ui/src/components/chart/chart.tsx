@@ -1,14 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-// TODO Remove this after smartcharts is replaced
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
-import { ChartTitle as ChartTitleBeta, SmartChart as SmartChartBeta } from '@deriv/deriv-charts-beta';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from './toolbar-widgets';
+import { ChartTitle, SmartChart } from './v1';
+import { ChartTitleBeta, SmartChartBeta } from './v2';
 
 const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) => {
     const barriers: [] = [];

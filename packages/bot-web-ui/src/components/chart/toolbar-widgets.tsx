@@ -1,14 +1,7 @@
 import React from 'react';
-import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from '@deriv/deriv-charts';
-import {
-    ChartMode as ChartModeBeta,
-    DrawTools as DrawToolsBeta,
-    Share as ShareBeta,
-    StudyLegend as StudyLegendBeta,
-    ToolbarWidget as ToolbarWidgetBeta,
-    Views as ViewsBeta,
-} from '@deriv/deriv-charts-beta';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from './v1';
+import { ChartModeBeta, DrawToolsBeta, ShareBeta, StudyLegendBeta, ToolbarWidgetBeta, ViewsBeta } from './v2';
 
 type TToolbarWidgetsProps = {
     is_beta_chart: boolean;

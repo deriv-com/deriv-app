@@ -81,21 +81,14 @@ export default class QuickStrategyStore {
                 el_block.innerHTML = value;
             });
         };
-
-        const fields_to_update: TFieldsToUpdate = {
+        const { unit, ...rest_data } = data;
+        const fields_to_update = {
             market,
             submarket,
-            symbol: data.symbol,
-            tradetype: data.trade_type,
             tradetypecat: trade_type_cat,
-            durationtype: data.duration_unit,
-            duration: data.duration_value,
-            stake: data.stake,
-            size: data.size,
-            alembert_unit: data.unit,
-            oscar_unit: data.unit,
-            loss: data.loss_threshold,
-            profit: data.profit_threshold,
+            alembert_unit: unit,
+            oscar_unit: unit,
+            ...rest_data,
         };
 
         Object.keys(fields_to_update).forEach(key => {

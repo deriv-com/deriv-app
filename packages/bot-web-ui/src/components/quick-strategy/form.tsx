@@ -6,7 +6,7 @@ import './quick-strategy.scss';
 import SymbolSelect from './selects/symbol';
 import { useFormikContext } from 'formik';
 import TradeTypeSelect from './selects/trade-type';
-import DurationTypeSelect from './selects/duration-unit';
+import DurationTypeSelect from './selects/duration-type';
 import QSInput from './inputs/qs-input';
 import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
@@ -18,7 +18,7 @@ const QuickStrategyForm = observer(() => {
     const { selected_strategy } = quick_strategy_store_1;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const is_mobile = isMobile();
-    const { values, setFieldValue } = useFormikContext<TFormData>();
+    const { values } = useFormikContext<TFormData>();
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
@@ -58,7 +58,6 @@ const QuickStrategyForm = observer(() => {
                                         type='number'
                                         attached={field.attached}
                                         name={field.name}
-                                        setFieldValue={setFieldValue}
                                     />
                                 );
                             case 'label':
@@ -68,22 +67,22 @@ const QuickStrategyForm = observer(() => {
                                 );
                             case 'symbol':
                                 return <SymbolSelect key={key} fullWidth />;
-                            case 'trade_type':
+                            case 'tradetype':
                                 return (
                                     <TradeTypeSelect
                                         key={key}
                                         symbol={values?.symbol || ''}
-                                        selected={values?.trade_type || ''}
+                                        selected={values?.tradetype || ''}
                                         fullWidth
                                     />
                                 );
-                            case 'duration_unit':
+                            case 'durationtype':
                                 return (
                                     <DurationTypeSelect
                                         key={key}
                                         data={{
                                             symbol: values?.symbol || '',
-                                            trade_type: values?.trade_type || '',
+                                            tradetype: values?.tradetype || '',
                                         }}
                                         attached={field.attached}
                                     />

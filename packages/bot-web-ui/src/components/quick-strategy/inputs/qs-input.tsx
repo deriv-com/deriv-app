@@ -15,6 +15,12 @@ const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attache
     const { setFieldValue, setFieldTouched } = useFormikContext();
     const is_number = type === 'number';
 
+    const handleChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
+        e?.preventDefault();
+        setFieldTouched(name, true, true);
+        setFieldValue(name, value);
+    };
+
     return (
         <Field name={name} key={name} id={name}>
             {({ field, meta }: FieldProps) => {
@@ -36,15 +42,15 @@ const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attache
                             has_error
                         >
                             <Input
+                                data_testId='qs-input'
                                 className={classNames('qs__input', { error: has_error })}
                                 type={type}
                                 leading_icon={
                                     is_number && (
                                         <button
+                                            data-testid='qs-input-decrease'
                                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                e.preventDefault();
-                                                setFieldTouched(name, true, true);
-                                                setFieldValue(name, String(Number(field.value) - 1));
+                                                handleChange(e, String(Number(field.value) - 1));
                                             }}
                                         >
                                             -
@@ -54,10 +60,9 @@ const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attache
                                 trailing_icon={
                                     is_number && (
                                         <button
+                                            data-testid='qs-input-increase'
                                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                e.preventDefault();
-                                                setFieldTouched(name, true, true);
-                                                setFieldValue?.(name, String(Number(field.value) + 1));
+                                                handleChange(e, String(Number(field.value) + 1));
                                             }}
                                         >
                                             +

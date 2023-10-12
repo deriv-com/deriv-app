@@ -21,7 +21,7 @@ type TDurationUnit = {
     selected?: string;
     data: {
         symbol?: string;
-        trade_type?: string;
+        tradetype?: string;
     };
     fullWidth?: boolean;
     attached?: boolean;
@@ -29,16 +29,16 @@ type TDurationUnit = {
 
 const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = false, attached }) => {
     const [list, setList] = React.useState<TDurationUnitItem[]>([]);
-    const { symbol, trade_type } = data;
+    const { symbol, tradetype } = data;
     const { quick_strategy_store_1 } = useDBotStore();
     const { setValue } = quick_strategy_store_1;
     const { setFieldValue } = useFormikContext();
 
     React.useEffect(() => {
-        if (trade_type && symbol) {
+        if (tradetype && symbol) {
             const getDurationUnits = async () => {
                 const { contracts_for } = ApiHelpers.instance;
-                const durations = await contracts_for.getDurations(symbol, trade_type);
+                const durations = await contracts_for.getDurations(symbol, tradetype);
                 const duration_units = durations?.map((duration: TDurationItemRaw) => ({
                     text: duration.display,
                     value: duration.unit,
@@ -48,13 +48,13 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                 setList(duration_units);
                 const has_selected = duration_units?.some((duration: TDurationUnitItem) => duration.value === selected);
                 if (!has_selected) {
-                    setFieldValue?.('duration_unit', durations[0].unit);
+                    setFieldValue?.('durationtype', durations?.[0]?.unit);
                 }
             };
             getDurationUnits();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [symbol, trade_type]);
+    }, [symbol, tradetype]);
 
     return (
         <div
@@ -63,7 +63,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                 'no-top-border-radius': attached,
             })}
         >
-            <Field name='duration_unit' key='duration_unit' id='duration_unit'>
+            <Field name='durationtype' key='durationtype' id='durationtype'>
                 {({ field }: FieldProps) => {
                     const selected_item = list?.find(item => item.value === field.value);
                     return (
@@ -75,8 +75,8 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                             list_items={list}
                             onItemSelection={(item: TItem) => {
                                 if (item?.value) {
-                                    setFieldValue?.('duration_unit', (item as TDurationUnitItem)?.value as string);
-                                    setValue('duration_unit', (item as TDurationUnitItem)?.value as string);
+                                    setFieldValue?.('durationtype', (item as TDurationUnitItem)?.value as string);
+                                    setValue('durationtype', (item as TDurationUnitItem)?.value as string);
                                 }
                             }}
                         />

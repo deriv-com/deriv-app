@@ -29,13 +29,13 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
 
     const initial_value: { [key: string]: string } = {
         symbol: '1HZ100V',
-        trade_type: '',
-        duration_unit: 't',
+        tradetype: '',
+        durationtype: 't',
         stake: '1',
-        loss_threshold: '0',
-        profit_threshold: '0',
+        loss: '0',
+        profit: '0',
         size: String(SIZE_MIN),
-        duration_value: '1',
+        duration: '1',
         unit: '0',
     };
 
@@ -50,12 +50,12 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     React.useEffect(() => {
         const getDurations = async () => {
             const { contracts_for } = ApiHelpers.instance;
-            const durations = await contracts_for.getDurations(form_data.symbol, form_data.trade_type);
-            const d = durations.find((duration: TDurationItemRaw) => duration.unit === form_data.duration_unit);
+            const durations = await contracts_for.getDurations(form_data.symbol, form_data.tradetype);
+            const d = durations.find((duration: TDurationItemRaw) => duration.unit === form_data.durationtype);
             setDuration(d);
         };
         getDurations();
-    }, [form_data.symbol, form_data.trade_type, form_data.duration_unit]);
+    }, [form_data.symbol, form_data.tradetype, form_data.durationtype]);
 
     const getErrors = () => {
         const sub_schema: Record<string, any> = {};
@@ -67,7 +67,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                         let schema: Record<string, any> = Yup.number().typeError(localize('Must be a number'));
                         let min = 0;
                         let max = 10;
-                        if (field.name === 'duration_value' && duration) {
+                        if (field.name === 'duration' && duration) {
                             min = duration.min;
                             max = duration.max;
                         }

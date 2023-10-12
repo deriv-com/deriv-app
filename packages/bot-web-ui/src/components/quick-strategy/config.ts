@@ -28,10 +28,10 @@ export const symbol: TConfigItem = {
     name: 'symbol',
 };
 
-export const trade_type: TConfigItem = {
-    type: 'trade_type',
+export const tradetype: TConfigItem = {
+    type: 'tradetype',
     fullWidth: true,
-    name: 'trade_type',
+    name: 'tradetype',
     dependencies: ['symbol'],
 };
 
@@ -54,41 +54,41 @@ export const label_duration: TConfigItem = {
     hide: ['desktop'],
 };
 
-export const duration_unit: TConfigItem = {
-    type: 'duration_unit',
-    name: 'duration_unit',
-    dependencies: ['symbol', 'trade_type'],
+export const durationtype: TConfigItem = {
+    type: 'durationtype',
+    name: 'durationtype',
+    dependencies: ['symbol', 'tradetype'],
     attached: true,
 };
 
-export const duration_value: TConfigItem = {
+export const duration: TConfigItem = {
     type: 'number',
-    name: 'duration_value',
+    name: 'duration',
     attached: true,
     validation: ['number', 'required', 'min', 'max'],
 };
 
-export const label_profit_threshold: TConfigItem = {
+export const label_profit: TConfigItem = {
     type: 'label',
     label: localize('Profit Threshold'),
     description: localize(`The bot will stop trading if your total ${'Profit'} exceeds this amount.`),
 };
 
-export const profit_threshold: TConfigItem = {
+export const profit: TConfigItem = {
     type: 'number',
-    name: 'profit_threshold',
+    name: 'profit',
     validation: ['number', 'ceil', number_min_validation],
 };
 
-export const label_loss_threshold: TConfigItem = {
+export const label_loss: TConfigItem = {
     type: 'label',
     label: localize('Loss Threshold'),
     description: localize(`The bot will stop trading if your total ${'Profit'} exceeds this amount.`),
 };
 
-export const loss_threshold: TConfigItem = {
+export const loss: TConfigItem = {
     type: 'number',
-    name: 'loss_threshold',
+    name: 'loss',
     validation: ['number', 'ceil', number_min_validation],
 };
 
@@ -130,8 +130,8 @@ export const unit: TConfigItem = {
 };
 
 export const config: TConfigItem[][] = [
-    [symbol, trade_type, label_initial_stake, initial_stake, duration_unit, duration_value],
-    [label_profit_threshold, profit_threshold, label_loss_threshold, loss_threshold, label_size, size],
+    [symbol, tradetype, label_initial_stake, initial_stake, durationtype, duration],
+    [label_profit, profit, label_loss, loss, label_size, size],
 ];
 
 export const STRATEGIES: TStrategies = {
@@ -142,8 +142,8 @@ export const STRATEGIES: TStrategies = {
             'The Martingale doubles your stake after a loss and resets your stake after a win or when the pre-determined number of consecutive losses is reached. You decide your profit threshold, loss threshold, initial stake, and the number of consecutive losses before your stake resets.'
         ),
         fields: [
-            [symbol, trade_type, label_initial_stake, initial_stake, label_duration, duration_unit, duration_value],
-            [label_profit_threshold, profit_threshold, label_loss_threshold, loss_threshold, label_size, size],
+            [symbol, tradetype, label_initial_stake, initial_stake, label_duration, durationtype, duration],
+            [label_profit, profit, label_loss, loss, label_size, size],
         ],
     },
     D_ALEMBERT: {
@@ -153,8 +153,8 @@ export const STRATEGIES: TStrategies = {
             'The concept of the D’Alembert Strategy is said to be similar to the Martingale Strategy where you will increase your contract size after a loss. With the D’Alembert Strategy, you will also decrease your contract size after a successful trade.'
         ),
         fields: [
-            [symbol, trade_type, label_initial_stake, initial_stake, label_duration, duration_unit, duration_value],
-            [label_profit_threshold, profit_threshold, label_loss_threshold, loss_threshold, label_unit, unit],
+            [symbol, tradetype, label_initial_stake, initial_stake, label_duration, durationtype, duration],
+            [label_profit, profit, label_loss, loss, label_unit, unit],
         ],
     },
     OSCARS_GRIND: {
@@ -164,8 +164,8 @@ export const STRATEGIES: TStrategies = {
             'The Oscar’s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, the size of your contract will increase after successful trades, but remains unchanged after unsuccessful trades.'
         ),
         fields: [
-            [symbol, trade_type, label_initial_stake, initial_stake, label_duration, duration_unit, duration_value],
-            [label_profit_threshold, profit_threshold, label_loss_threshold, loss_threshold, label_unit, unit],
+            [symbol, tradetype, label_initial_stake, initial_stake, label_duration, durationtype, duration],
+            [label_profit, profit, label_loss, loss, label_unit, unit],
         ],
     },
 };

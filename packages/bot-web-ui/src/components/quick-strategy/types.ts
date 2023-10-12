@@ -7,13 +7,13 @@ export type TDurationItemRaw = {
 
 export type TFormData = {
     symbol?: string;
-    trade_type?: string;
-    duration_unit?: string;
-    duration_value?: number;
+    tradetype?: string;
+    durationtype?: string;
+    duration?: number;
     stake?: number;
     size?: number;
-    profit_threshold?: number;
-    loss_threshold?: number;
+    profit?: number;
+    loss?: number;
     unit?: number;
 };
 

@@ -51,7 +51,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ symbol, selected, fullWid
 
                 const has_selected = trade_types?.some((trade_type: TTradeType) => trade_type.value === selected);
                 if (!has_selected && trade_types?.[0]?.value !== selected) {
-                    setFieldValue?.('trade_type', trade_types[0].value);
+                    setFieldValue?.('tradetype', trade_types[0].value);
                 }
             };
             getTradeTypes();
@@ -70,7 +70,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ symbol, selected, fullWid
 
     return (
         <div className={classNames('qs__form__field', { 'full-width': fullWidth })}>
-            <Field name='trade_type' key='trade_type' id='trade_type'>
+            <Field name='tradetype' key='tradetype' id='tradetype'>
                 {({ field }: FieldProps) => {
                     const selected_trade_type = trade_type_dropdown_options?.find(
                         trade_type => trade_type.value === field.value
@@ -84,8 +84,8 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ symbol, selected, fullWid
                             list_items={trade_type_dropdown_options}
                             onItemSelection={(item: TItem) => {
                                 if (item?.value) {
-                                    setFieldValue?.('trade_type', (item as TTradeType)?.value as string);
-                                    setValue('trade_type', (item as TTradeType)?.value as string);
+                                    setFieldValue?.('tradetype', (item as TTradeType)?.value as string);
+                                    setValue('tradetype', (item as TTradeType)?.value as string);
                                 }
                             }}
                             leading_icon={

@@ -30,7 +30,6 @@ describe('<EditPaymentMethodForm />', () => {
                 setFormikRef: jest.fn(),
             },
             my_profile_store: {
-                initial_values: { account: 'test_account', instructions: 'test' },
                 payment_method_to_edit: payment_method_info_alipay,
                 selected_payment_method_fields: [
                     { 0: 'account', 1: { display_name: 'Alipay ID', required: 1, type: 'text' } },

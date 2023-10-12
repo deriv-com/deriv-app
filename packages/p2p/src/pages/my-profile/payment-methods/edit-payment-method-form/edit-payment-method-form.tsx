@@ -15,7 +15,6 @@ const EditPaymentMethodForm = () => {
     const { general_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
     const {
-        initial_values,
         payment_method_to_edit,
         setPaymentMethodToEdit,
         setSelectedPaymentMethod,
@@ -53,7 +52,7 @@ const EditPaymentMethodForm = () => {
         <React.Fragment>
             <ModalForm
                 enableReinitialize
-                initialValues={initial_values}
+                initialValues={fields_initial_values}
                 onSubmit={updatePaymentMethod}
                 validate={validatePaymentMethodFields}
             >
@@ -106,23 +105,23 @@ const EditPaymentMethodForm = () => {
                                                         return (
                                                             <Input
                                                                 {...field}
-                                                                data-lpignore='true'
-                                                                error={errors[payment_method_key]}
-                                                                type={
-                                                                    payment_method_key === 'instructions'
-                                                                        ? 'textarea'
-                                                                        : current_field.type
-                                                                }
-                                                                label={current_field.display_name}
                                                                 className={classNames({
                                                                     'edit-payment-method-form__payment-method-field':
                                                                         !errors[payment_method_key]?.length,
                                                                     'edit-payment-method-form__payment-method-field--text-area':
                                                                         payment_method_key === 'instructions',
                                                                 })}
-                                                                onChange={handleChange}
+                                                                data-lpignore='true'
+                                                                error={errors[payment_method_key]}
+                                                                label={current_field.display_name}
                                                                 name={payment_method_key}
+                                                                onChange={handleChange}
                                                                 required={!!current_field.required}
+                                                                type={
+                                                                    payment_method_key === 'instructions'
+                                                                        ? 'textarea'
+                                                                        : current_field.type
+                                                                }
                                                             />
                                                         );
                                                     }}

@@ -11,7 +11,6 @@ describe('TradingAssessmentForm', () => {
     const mockSetSubSectionIndex = jest.fn();
 
     const baseProps = {
-        class_name: '',
         disabled_items: [],
         form_value: {
             cfd_experience: '',

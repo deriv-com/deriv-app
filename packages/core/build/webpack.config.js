@@ -14,7 +14,7 @@ module.exports = function (env) {
             openPage: sub_path,
             host: 'localhost.binary.sx',
             https: true,
-            port: 443,
+            port: 3002,
             historyApiFallback: true,
             stats: {
                 colors: true,

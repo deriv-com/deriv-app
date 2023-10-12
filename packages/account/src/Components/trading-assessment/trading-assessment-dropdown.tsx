@@ -10,7 +10,7 @@ type TTradingAssessmentDropdown = {
     item_list: TQuestion[];
     onChange: (
         e: React.ChangeEvent<HTMLSelectElement>,
-        form_control: string,
+        form_control: keyof TFormData,
         setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void
     ) => void;
     values: TFormData;

@@ -58,7 +58,6 @@ const TradingAssessmentNewUser = ({
             onCancel={handleCancel}
             setSubSectionIndex={setSubSectionIndex}
             disabled_items={disabled_items}
-            class_name={''}
             should_move_to_next={false}
             is_independent_section={false}
         />

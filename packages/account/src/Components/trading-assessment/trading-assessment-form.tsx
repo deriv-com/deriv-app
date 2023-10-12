@@ -10,7 +10,7 @@ import { trading_assessment_questions } from 'Constants/trading-assessment-quest
 import { TFormData, TQuestion } from 'Types';
 
 type TTradingAssessmentForm = {
-    class_name: string;
+    class_name?: string;
     disabled_items: string[];
     form_value: TFormData;
     onSubmit: (values?: TFormData, action?: React.ReactNode, should_override?: boolean) => void;
@@ -120,9 +120,9 @@ const TradingAssessmentForm = ({
 
     const handleValueSelection = (
         e: React.ChangeEvent<HTMLSelectElement>,
-        form_control: string,
+        form_control: keyof TFormData,
         callBackFn: {
-            (form_control: string, value: string): void;
+            (form_control: keyof TFormData, value: string): void;
         }
     ) => {
         if (typeof e.persist === 'function') e.persist();

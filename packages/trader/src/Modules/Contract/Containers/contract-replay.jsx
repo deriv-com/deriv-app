@@ -216,7 +216,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const trade = useTraderStore();
     const { contract_replay, common, ui } = useStore();
     const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
-    const { contract_config, is_digit_contract, barriers_array, markers_array, contract_info, getMarkersArray } =
+    const { contract_config, is_digit_contract, barriers_array, markers_array, contract_info, getContractsArray } =
         contract_store;
     const { underlying: symbol, audit_details } = contract_info;
     const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
@@ -303,7 +303,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             }
             shouldDrawTicksFromContractInfo={is_accumulator_contract}
             contractInfo={contract_info}
-            markers_array={getMarkersArray()}
+            contracts_array={getContractsArray()}
             isLive={!has_ended}
             startWithDataFitMode={true}
         >

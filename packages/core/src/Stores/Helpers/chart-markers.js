@@ -151,9 +151,6 @@ export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
 };
 
 const dark_theme = {
-    accu_contract_shade: '#00a79e14',
-    accu_shade: '#377cfc14',
-    accu_shade_crossed: '#cc2e3d14',
     bg: '#0e0e0e',
     fg: '#ffffff',
     grey_border: '#6e6e6e',
@@ -164,9 +161,6 @@ const dark_theme = {
 };
 
 const light_theme = {
-    accu_contract_shade: '#4bb4b314',
-    accu_shade: '#377cfc14',
-    accu_shade_crossed: '#ec3f3f14',
     bg: '#ffffff',
     fg: '#333333',
     grey_border: '#999999',
@@ -385,6 +379,26 @@ export function calculateMarker(contract_info, is_dark_theme, is_last_contract) 
         markers.push(...getTickStreamMarkers(contract_info, barrier_price));
     }
 
+    if (is_accumulator_contract && tick_stream?.length > 0) {
+        const contract_status = getContractStatus({ contract_type, profit, exit_tick_time, status });
+        const is_accu_contract_ended = contract_status !== 'open';
+
+        if (is_accu_contract_ended) {
+            const exit = tick_stream[tick_stream.length - 1];
+            const previous_tick = tick_stream[tick_stream.length - 2] || exit;
+
+            markers.push(
+                ...getAccumulatorBarrierMarkers({
+                    high_barrier,
+                    low_barrier,
+                    prev_epoch: previous_tick.epoch,
+                    is_dark_mode_on: is_dark_theme,
+                    contract_info,
+                })
+            );
+        }
+    }
+
     return {
         type: getMarkerContractType(contract_info),
         markers,
@@ -397,16 +411,15 @@ export function calculateMarker(contract_info, is_dark_theme, is_last_contract) 
     };
 }
 
-export function getAccumulatorMarkers({
-    epoch,
+function getAccumulatorBarrierMarkers({
+    contract_info,
     high_barrier,
     low_barrier,
     is_accumulator_trade_without_contract = false,
-    has_crossed_accu_barriers = false,
     is_dark_theme,
-    contract_info,
-    in_contract_details = false,
+    has_crossed_accu_barriers,
     barrier_spot_distance,
+    prev_epoch: epoch,
 }) {
     const { contract_type, profit, exit_tick_time, status, is_sold } = contract_info || {};
 
@@ -421,16 +434,6 @@ export function getAccumulatorMarkers({
         }
 
         return 'won';
-    };
-
-    const getShadeStatus = () => {
-        if (has_crossed_accu_barriers || contract_status === 'lost') {
-            return 'accu_shade_crossed';
-        } else if (is_accumulator_trade_without_contract) {
-            return 'accu_shade';
-        }
-
-        return 'accu_contract_shade';
     };
 
     const barrier_color = getColor({
@@ -468,13 +471,34 @@ export function getAccumulatorMarkers({
         },
     ];
 
+    return markers;
+}
+
+export function getAccumulatorMarkers({
+    prev_epoch,
+    high_barrier,
+    low_barrier,
+    is_accumulator_trade_without_contract = false,
+    has_crossed_accu_barriers = false,
+    is_dark_theme,
+    contract_info,
+    in_contract_details = false,
+    barrier_spot_distance,
+}) {
+    const markers = getAccumulatorBarrierMarkers({
+        contract_info,
+        high_barrier,
+        low_barrier,
+        is_accumulator_trade_without_contract,
+        is_dark_theme,
+        has_crossed_accu_barriers,
+        barrier_spot_distance,
+        prev_epoch,
+    });
+
     return {
         type: 'AccumulatorContract',
         markers,
-        color: getColor({
-            status: getShadeStatus(),
-            is_dark_theme,
-        }),
         props: {
             hasPersistentBorders: in_contract_details,
         },

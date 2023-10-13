@@ -1,10 +1,13 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { useStores } from 'Stores';
-import OrderDetailsConfirmModal from '../order-details-confirm-modal.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import OrderDetailsConfirmModal from '../order-details-confirm-modal.jsx';
 
 const el_modal = document.createElement('div');
+
+const wrapper = ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>;
 
 jest.mock('Utils/websocket', () => ({
     ...jest.requireActual('Utils/websocket'),
@@ -63,7 +66,7 @@ describe('<OrderDetailsConfirmModal/>', () => {
     });
 
     it('should render the modal', () => {
-        render(<OrderDetailsConfirmModal />);
+        render(<OrderDetailsConfirmModal />, { wrapper });
 
         expect(screen.getByText('Payment confirmation')).toBeInTheDocument();
         expect(
@@ -78,7 +81,7 @@ describe('<OrderDetailsConfirmModal/>', () => {
     it('should handle GoBack Click', () => {
         const { hideModal } = useModalManagerContext();
 
-        render(<OrderDetailsConfirmModal />);
+        render(<OrderDetailsConfirmModal />, { wrapper });
 
         const cancel_button = screen.getByRole('button', { name: 'Go Back' });
         expect(cancel_button).toBeInTheDocument();
@@ -90,7 +93,7 @@ describe('<OrderDetailsConfirmModal/>', () => {
         const { hideModal } = useModalManagerContext();
         const { confirmOrderRequest, order_information } = order_store;
 
-        render(<OrderDetailsConfirmModal />);
+        render(<OrderDetailsConfirmModal />, { wrapper });
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const input = screen.getByTestId('dt_file_upload_input');
         fireEvent.change(input, { target: { files: [file] } });

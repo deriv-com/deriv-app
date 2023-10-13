@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
-import type { MT5AccountType } from '../ExternalTradingPlatforms';
+import { MT5AccountType } from '../../features/cfd/screens';
 
 type TModalContext = {
     hide: () => void;
@@ -53,7 +53,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     return (
         <ModalContext.Provider
-            value={{ hide, isOpen: content !== null, show, modalState: modalState.current, setModalState }}
+            value={{ hide, isOpen: content !== null, modalState: modalState.current, setModalState, show }}
         >
             {children}
             {rootRef.current && content && createPortal(<div ref={modalRef}>{content}</div>, rootRef.current)}

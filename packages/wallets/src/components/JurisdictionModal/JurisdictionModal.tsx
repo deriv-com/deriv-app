@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { MT5PasswordModal } from '../../features/cfd/modals';
+import { ModalStepWrapper } from '../Base';
 import { useModal } from '../ModalProvider';
-import { ModalStepWrapper } from '../ModalStepWrapper';
-import { MT5PasswordModal } from '../MT5PasswordModal';
 import JurisdictionCard from './JurisdictionCard';
 import './JurisdictionModal.scss';
 

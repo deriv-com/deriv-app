@@ -3,7 +3,7 @@ import { Autocomplete, Button, DesktopWrapper, MobileWrapper, Text, SelectNative
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
-import FormFooter from 'Components/form-footer';
+import FormFooter from '../../form-footer';
 
 type TCountry = Record<string, string>;
 

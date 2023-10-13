@@ -19,12 +19,12 @@ import {
     makeSettingsRequest,
     validateName,
     getExampleFormat,
-} from 'Helpers/utils';
-import FormFooter from 'Components/form-footer';
-import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
-import IDVForm from 'Components/forms/idv-form';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import FormSubHeader from 'Components/form-sub-header';
+} from '../../../Helpers/utils';
+import FormFooter from '../../form-footer';
+import BackButtonIcon from '../../../Assets/ic-poi-back-btn.svg';
+import IDVForm from '../../forms/idv-form';
+import PersonalDetailsForm from '../../forms/personal-details-form';
+import FormSubHeader from '../../form-sub-header';
 import { observer, useStore } from '@deriv/stores';
 import { ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { TDocument, TInputFieldValues, TIDVFormValues } from 'Types';

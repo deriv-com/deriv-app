@@ -13,7 +13,6 @@ import {
     getDxtradeDemoData,
     getCtraderDemoData,
     dxtrade_data,
-    // ctrader_data,
 } from '../../Helpers/compare-accounts-config';
 
 const CompareCFDs = observer(() => {
@@ -118,14 +117,6 @@ const CompareCFDs = observer(() => {
                                         is_demo={is_demo}
                                     />
                                 )}
-                                {/* Renders cTrader data */}
-                                {/* {all_cfd_available_accounts.length > 0 && has_ctrader_account_available && (
-                                    <CFDCompareAccountsCard
-                                        trading_platforms={ctrader_data}
-                                        is_eu_user={is_eu_user}
-                                        is_demo={is_demo}
-                                    />
-                                )} */}
                             </CFDCompareAccountsCarousel>
                         </div>
                     </div>
@@ -167,14 +158,6 @@ const CompareCFDs = observer(() => {
                                     is_demo={is_demo}
                                 />
                             )}
-                            {/* Renders cTrader data */}
-                            {/* {all_cfd_available_accounts.length > 0 && has_ctrader_account_available && (
-                                <CFDCompareAccountsCard
-                                    trading_platforms={ctrader_data}
-                                    is_eu_user={is_eu_user}
-                                    is_demo={is_demo}
-                                />
-                            )} */}
                         </CFDCompareAccountsCarousel>
                     </div>
                 </PageOverlay>

@@ -12,6 +12,7 @@ export * from './WalletListCardBadge';
 export * from './WalletListCardIBalance';
 export * from './WalletListCardIDetails';
 export * from './WalletListCardTitle';
+export * from './WalletNoWalletFoundState';
 export * from './WalletsAccordion';
 export * from './WalletsAddMoreCarousel';
 export * from './WalletsCarousel';

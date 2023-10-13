@@ -15,9 +15,6 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        @include desktop {
-            overflow: auto;
-        }
         width: 100%;
         position: absolute;
         backface-visibility: hidden;
@@ -25,12 +22,6 @@
         transform: rotateY(0deg);
         @include mobile {
             min-height: 100vh;
-        }
-    }
-    &__scrollable-content {
-        @include desktop {
-            overflow: auto;
-            height: 69rem;
         }
     }
     &__footer-content {

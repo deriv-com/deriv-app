@@ -1,12 +1,6 @@
 import React from 'react';
-import { useMT5AccountsList, useQuery } from '@deriv/api';
+import { useMT5AccountsList } from '@deriv/api';
 import { Jurisdiction, getFormattedJurisdictionCode } from '@deriv/shared';
-
-// type TMT5Migration = {
-//     eligible_to_migrate?: Record<string, string>;
-//     open_order_position_status?: number;
-// };
-// type demo = DeepRequired<NonNullable<ReturnType<typeof useQuery<'mt5_login_list'>>['data']>>['mt5_login_list'][0] & TMT5Migration;
 
 const useMT5SVGEligibleToMigrate = () => {
     const { data: mt5_login_list = [] } = useMT5AccountsList();
@@ -39,23 +33,19 @@ const useMT5SVGEligibleToMigrate = () => {
         const eligible_account_to_migrate_label = getFormattedJurisdictionCode(getEligibleAccountToMigrate());
 
         const eligible_svg_to_bvi_derived_accounts = !!svg_accounts_to_migrate.filter(account => {
-            const { synthetic } = account.eligible_to_migrate;
-            return synthetic === Jurisdiction.BVI;
+            return account.eligible_to_migrate?.synthetic === Jurisdiction.BVI;
         }).length;
 
         const eligible_svg_to_bvi_financial_accounts = !!svg_accounts_to_migrate.filter(account => {
-            const { financial } = account.eligible_to_migrate;
-            return financial === Jurisdiction.BVI;
+            return account.eligible_to_migrate?.financial === Jurisdiction.BVI;
         }).length;
 
         const eligible_svg_to_vanuatu_derived_accounts = !!svg_accounts_to_migrate.filter(account => {
-            const { synthetic } = account.eligible_to_migrate;
-            return synthetic === Jurisdiction.VANUATU;
+            return account.eligible_to_migrate?.synthetic === Jurisdiction.VANUATU;
         }).length;
 
         const eligible_svg_to_vanuatu_financial_accounts = !!svg_accounts_to_migrate.filter(account => {
-            const { financial } = account.eligible_to_migrate;
-            return financial === Jurisdiction.VANUATU;
+            return account.eligible_to_migrate?.financial === Jurisdiction.VANUATU;
         }).length;
 
         return {

@@ -1,27 +1,11 @@
 import { useMemo } from 'react';
 import useActiveWalletAccount from './useActiveWalletAccount';
 import useQuery from '../useQuery';
-import { TSocketResponseData } from '../../types';
-import { UseQueryResult } from '@tanstack/react-query';
-
-type TMT5Migration = {
-    eligible_to_migrate?: Record<string, string>;
-    open_order_position_status?: number;
-};
 
 /** A custom hook that gets the list created MT5 accounts of the user. */
 const useMT5AccountsList = () => {
     const { data: wallet } = useActiveWalletAccount();
-
-    type demo = DeepRequired<NonNullable<ReturnType<typeof useQuery<'mt5_login_list'>>['data']>>['mt5_login_list'][0] &
-        TMT5Migration;
-
-    // const { data: mt5_accounts, ...mt5_accounts_rest } = useQuery('mt5_login_list');
-    const result = useQuery('mt5_login_list');
-    type x = typeof result;
-
-    type OmitA = Omit<x, 'data'>; // Equivalent to: {b: number, c: boolean}
-
+    const { data: mt5_accounts, ...mt5_accounts_rest } = useQuery('mt5_login_list');
     /**
      * @description The list of created MT5 accounts
      */

@@ -4,6 +4,7 @@ import { Formik, Form } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
 import { isEmptyObject, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { max_question_text_length } from '../../Constants/trading-assessment';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
 import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
@@ -161,13 +162,15 @@ const TradingAssessmentForm = ({
                 {({ errors, setFieldValue, values }) => {
                     const { question_text, form_control, answer_options, questions } =
                         current_question_details.current_question;
-                    const has_long_question = questions?.some(question => question.question_text.length > 90);
+                    const has_long_question = questions?.some(
+                        question => question.question_text.length > max_question_text_length
+                    );
 
                     return (
                         <React.Fragment>
                             <Text weight='bold' size='xs' className='trading-assessment__question-counter'>
                                 <Localize
-                                    i18n_default_text='Quastion {{ current }} of {{ total }}'
+                                    i18n_default_text='Question {{ current }} of {{ total }}'
                                     values={{
                                         current: current_question_details.current_question_index + 1,
                                         total: last_question_index + 1,

@@ -141,7 +141,7 @@ const PersonalDetails = ({
                             data-testid='personal_details_form'
                         >
                             <ScrollToFieldWithError
-                                fields_to_scroll_end={isMobile() ? '' : ['account_opening_reason']}
+                                fields_to_scroll_bottom={isMobile() ? '' : ['account_opening_reason']}
                                 fields_to_scroll_top={isMobile() ? ['account_opening_reason'] : ''}
                                 should_recollect_inputs_names={
                                     values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id

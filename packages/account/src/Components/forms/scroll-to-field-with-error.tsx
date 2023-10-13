@@ -3,18 +3,17 @@ import { useFormikContext } from 'formik';
 
 type TScrollToFieldWithError = {
     fields_to_scroll_top?: string[];
-    fields_to_scroll_end?: string[];
+    fields_to_scroll_bottom?: string[];
     should_recollect_inputs_names?: boolean;
 };
 
 const ScrollToFieldWithError = ({
     fields_to_scroll_top,
-    fields_to_scroll_end,
+    fields_to_scroll_bottom,
     should_recollect_inputs_names = false,
 }: TScrollToFieldWithError) => {
     const [all_page_inputs_names, setAllPageInputsNames] = React.useState<string[]>([]);
-    const formik = useFormikContext();
-    const is_submitting = formik.isSubmitting;
+    const { errors, isSubmitting } = useFormikContext();
     const scrollToElement = (element_name: string, block: ScrollLogicalPosition = 'center') => {
         if (!element_name) return;
         const el = document.querySelector(`[name="${element_name}"]`) as HTMLInputElement;
@@ -27,24 +26,18 @@ const ScrollToFieldWithError = ({
         setAllPageInputsNames(inputs.map(input => input.name));
     }, [should_recollect_inputs_names]);
     React.useEffect(() => {
-        let current_error_field_name = '';
-
-        for (let i = 0; i <= all_page_inputs_names.length; i++) {
-            if (Object.hasOwn(formik.errors, all_page_inputs_names[i])) {
-                current_error_field_name = all_page_inputs_names[i];
-                break;
-            }
-        }
+        const current_error_field_name =
+            all_page_inputs_names.find(input_name => Object.hasOwn(errors, input_name)) || '';
 
         if (fields_to_scroll_top?.includes(current_error_field_name)) {
             scrollToElement(current_error_field_name, 'start');
-        } else if (fields_to_scroll_end?.includes(current_error_field_name)) {
+        } else if (fields_to_scroll_bottom?.includes(current_error_field_name)) {
             scrollToElement(current_error_field_name, 'end');
         } else {
             scrollToElement(current_error_field_name);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_submitting]);
+    }, [isSubmitting]);
 
     return null;
 };

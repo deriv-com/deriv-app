@@ -196,7 +196,7 @@ const PersonalDetailsForm = props => {
                                             disabled={
                                                 !!values.salutation && isFieldImmutable('salutation', editable_fields)
                                             }
-                                            has_error={touched.salutation && errors.salutation}
+                                            has_error={!!(touched.salutation && errors.salutation)}
                                         />
                                     ))}
                                 </RadioGroup>

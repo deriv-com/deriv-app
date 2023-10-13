@@ -53,7 +53,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     return (
         <ModalContext.Provider
-            value={{ hide, isOpen: content !== null, show, modalState: modalState.current, setModalState }}
+            value={{ hide, isOpen: content !== null, modalState: modalState.current, setModalState, show }}
         >
             {children}
             {rootRef.current && content && createPortal(<div ref={modalRef}>{content}</div>, rootRef.current)}

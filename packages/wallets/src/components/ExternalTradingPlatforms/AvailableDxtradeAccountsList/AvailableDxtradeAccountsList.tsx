@@ -1,9 +1,8 @@
 import React from 'react';
 import DerivX from '../../../public/images/derivx.svg';
-import { WalletText } from '../../Base';
+import { SecondaryActionButton, WalletText } from '../../Base';
 import { DxtradeEnterPasswordModal } from '../../DxtradeEnterPasswordModal';
 import { useModal } from '../../ModalProvider';
-import { SecondaryActionButton } from '../../SecondaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableDxtradeAccountsList.scss';
 

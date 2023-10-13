@@ -1,4 +1,4 @@
 export * from './components';
 export * from './flows';
-export * from './modal';
+export * from './modals';
 export * from './screens';

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api';
-import { ProgressBar } from '../ProgressBar';
+import { ProgressBar } from '../Base';
 import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';

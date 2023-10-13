@@ -7,11 +7,10 @@ import {
     useSettings,
     useSortedMT5Accounts,
 } from '@deriv/api';
-import MT5PasswordIcon from '../../public/images/ic-mt5-password.svg';
-import { ModalWrapper } from '../Base';
-import { CreatePassword } from '../CreatePassword';
-import { EnterPassword } from '../EnterPassword';
-import { useModal } from '../ModalProvider';
+import { ModalWrapper } from '../../../../components/Base';
+import { useModal } from '../../../../components/ModalProvider';
+import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
+import { CreatePassword, EnterPassword } from '../../screens';
 
 type TProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;

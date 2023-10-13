@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
-import CloseIcon from '../../public/images/close-icon.svg';
-import { useModal } from '../ModalProvider';
+import CloseIcon from '../../../public/images/close-icon.svg';
+import { useModal } from '../../ModalProvider';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {

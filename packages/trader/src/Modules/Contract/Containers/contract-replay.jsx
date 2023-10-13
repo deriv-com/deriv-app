@@ -318,7 +318,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             }
             shouldDrawTicksFromContractInfo={is_accumulator_contract}
             contractInfo={contract_info}
-            markers_array={getContractsArray()}
+            contracts_array={getContractsArray()}
             isLive={!has_ended}
             startWithDataFitMode={true}
         >

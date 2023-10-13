@@ -16,6 +16,10 @@
         flex-direction: row;
         padding: 1.6rem 1.2rem;
 
+        @include mobile {
+            padding: 0;
+            flex: 1;
+        }
         /* postcss-bem-linter: ignore */
         span[data-name='contract_type'] {
             @include typeface(--paragraph-left-normal-black);
@@ -110,8 +114,8 @@
         &--vanillalongput {
             margin-right: 0.4rem;
         }
-        .contract-type-widget__display {
-            padding: 0.8rem 2rem 0.8rem 0.8rem;
-        }
+        // .contract-type-widget__display {
+        //     padding: 0.8rem 2rem 0.8rem 0.8rem;
+        // }
     }
 }

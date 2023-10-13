@@ -117,7 +117,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
 
     const handleSubmit = (form_data: TFormData) => {
         onSubmit(form_data, true); // true to load and run the bot
-        localStorage.setItem('qs-fields', JSON.stringify(form_data));
+        localStorage?.setItem('qs-fields', JSON.stringify(form_data));
     };
 
     return (

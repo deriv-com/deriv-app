@@ -64,20 +64,19 @@ export default class QuickStrategyStore {
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
         const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
-
         const modifyValueInputs = (key: string, value: number) => {
-            const el_value_inputs = strategy_dom.querySelectorAll(`value[strategy_value="${key}"]`);
+            const el_value_inputs = strategy_dom?.querySelectorAll(`value[strategy_value="${key}"]`);
 
-            el_value_inputs.forEach((el_value_input: HTMLElement) => {
+            el_value_inputs?.forEach((el_value_input: HTMLElement) => {
                 el_value_input.innerHTML = `<shadow type="math_number"><field name="NUM">${value}</field></shadow>`;
             });
         };
 
         const modifyFieldDropdownValues = (name: string, value: string) => {
             const name_list = `${name.toUpperCase()}_LIST`;
-            const el_blocks = strategy_dom.querySelectorAll(`field[name="${name_list}"]`);
+            const el_blocks = strategy_dom?.querySelectorAll(`field[name="${name_list}"]`);
 
-            el_blocks.forEach((el_block: HTMLElement) => {
+            el_blocks?.forEach((el_block: HTMLElement) => {
                 el_block.innerHTML = value;
             });
         };
@@ -105,7 +104,7 @@ export default class QuickStrategyStore {
 
         if (run) {
             workspace
-                .waitForBlockEvent({
+                ?.waitForBlockEvent({
                     block_type: 'trade_definition',
                     event_type: Blockly.Events.BLOCK_CREATE,
                     timeout: 5000,

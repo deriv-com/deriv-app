@@ -82,7 +82,13 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                         <div className='qs__body__content__form'>{children}</div>
                     </ThemedScrollbars>
                     <div className='qs__body__content__footer'>
-                        <Button primary type='submit' onClick={submitForm} disabled={!isValid}>
+                        <Button
+                            primary
+                            data-testid='qs-run-button'
+                            type='submit'
+                            onClick={submitForm}
+                            disabled={!isValid}
+                        >
                             {localize('Run')}
                         </Button>
                     </div>

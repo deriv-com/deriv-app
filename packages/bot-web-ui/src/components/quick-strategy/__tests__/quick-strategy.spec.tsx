@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 
@@ -13,13 +13,14 @@ import { mock_ws } from 'Utils/mock';
 
 import QuickStrategy from '../quick-strategy';
 
-const modalRoot = document.createElement('div');
-modalRoot.setAttribute('id', 'modal_root');
-document.body.appendChild(modalRoot);
-
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
+
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Modal: ({ children, is_open }: { children: JSX.Element; is_open: boolean }) => is_open && <div>{children}</div>,
+}));
 
 jest.mock('@deriv/bot-skeleton', () => ({
     ...jest.requireActual('@deriv/bot-skeleton'),
@@ -76,6 +77,8 @@ jest.mock('@deriv/bot-skeleton', () => ({
     },
 }));
 
+jest.mock('../../../xml/martingale.xml', () => '');
+
 window.Blockly = {
     Xml: {
         textToDom: jest.fn(),
@@ -86,9 +89,9 @@ window.Blockly = {
 jest.mock('../config', () => ({
     SIZE_MIN: 2,
     STRATEGIES: {
-        RSI: {
-            name: 'RSI',
-            label: 'RSI',
+        MARTINGALE: {
+            name: 'martingale',
+            label: 'martingale',
             description: 'test',
             fields: [
                 [
@@ -111,7 +114,7 @@ jest.mock('../config', () => ({
                     },
                     {
                         type: 'number',
-                        name: 'duration_value',
+                        name: 'duration',
                         validation: ['required', 'number', 'floor', 'min', 'max'],
                     },
                     {
@@ -124,21 +127,19 @@ jest.mock('../config', () => ({
                         name: 'size',
                         validation: ['required'],
                     },
-
                     {
-                        type: 'size',
-                        name: 'size1',
-                        validation: ['number', 'min', 'ceil'],
+                        type: 'number',
+                        name: 'profit',
+                        validation: ['number', 'ceil'],
                     },
                     {
-                        type: 'size',
-                        name: 'size2',
+                        type: 'number',
+                        name: 'loss',
                         validation: [
                             'number',
-                            'min',
                             {
                                 type: 'max',
-                                value: 0,
+                                value: 10,
                                 getMessage: () => 'some message',
                             },
                         ],
@@ -167,9 +168,8 @@ describe('<QuickStrategy />', () => {
 
     beforeEach(() => {
         mock_DBot_store?.quick_strategy_store_1?.setValue('durationtype', 't');
-        mock_DBot_store?.quick_strategy_store_1?.setSelectedStrategy('RSI');
+        mock_DBot_store?.quick_strategy_store_1?.setSelectedStrategy('MARTINGALE');
         mock_DBot_store?.quick_strategy_store_1?.setFormVisibility(true);
-
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
@@ -179,7 +179,7 @@ describe('<QuickStrategy />', () => {
         );
     });
 
-    it('should render TradeType', async () => {
+    it('should render QuickStrategy', async () => {
         const { container } = render(<QuickStrategy />, {
             wrapper,
         });
@@ -188,17 +188,12 @@ describe('<QuickStrategy />', () => {
         });
     });
 
-    it('On press of enter handleEnter should run', async () => {
-        mock_DBot_store?.quick_strategy_store_1?.setSelectedStrategy('RSI');
-        mock_DBot_store?.quick_strategy_store_1?.setFormVisibility(true);
+    it('It should submit the form', async () => {
         render(<QuickStrategy />, {
             wrapper,
         });
         await waitFor(() => {
-            const button = screen.getByRole('button', { name: /Run/i });
-            userEvent.click(button);
-        });
-        await waitFor(() => {
+            userEvent.click(screen.getByTestId('qs-run-button'));
             expect(mock_DBot_store?.quick_strategy_store_1?.is_open).toBeFalsy();
         });
     });

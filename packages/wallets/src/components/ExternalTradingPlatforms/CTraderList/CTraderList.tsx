@@ -1,6 +1,6 @@
 import React from 'react';
 import CTrader from '../../../public/images/ctrader.svg';
-import { SecondaryActionButton } from '../../SecondaryActionButton';
+import { SecondaryActionButton } from '../../Base';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './CTraderList.scss';
 

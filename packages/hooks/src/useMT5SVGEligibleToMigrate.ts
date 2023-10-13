@@ -33,19 +33,19 @@ const useMT5SVGEligibleToMigrate = () => {
         const eligible_account_to_migrate_label = getFormattedJurisdictionCode(getEligibleAccountToMigrate());
 
         const eligible_svg_to_bvi_derived_accounts = !!svg_accounts_to_migrate.filter(account => {
-            return account.eligible_to_migrate?.synthetic === Jurisdiction.BVI;
+            account.eligible_to_migrate?.synthetic === Jurisdiction.BVI;
         }).length;
 
         const eligible_svg_to_bvi_financial_accounts = !!svg_accounts_to_migrate.filter(account => {
-            return account.eligible_to_migrate?.financial === Jurisdiction.BVI;
+            account.eligible_to_migrate?.financial === Jurisdiction.BVI;
         }).length;
 
         const eligible_svg_to_vanuatu_derived_accounts = !!svg_accounts_to_migrate.filter(account => {
-            return account.eligible_to_migrate?.synthetic === Jurisdiction.VANUATU;
+            account.eligible_to_migrate?.synthetic === Jurisdiction.VANUATU;
         }).length;
 
         const eligible_svg_to_vanuatu_financial_accounts = !!svg_accounts_to_migrate.filter(account => {
-            return account.eligible_to_migrate?.financial === Jurisdiction.VANUATU;
+            account.eligible_to_migrate?.financial === Jurisdiction.VANUATU;
         }).length;
 
         return {

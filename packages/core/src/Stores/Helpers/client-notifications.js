@@ -74,6 +74,7 @@ export const priority_toast_messages = [
     'wallets_migrated',
     'wallets_failed',
     'notify_financial_assessment',
+    'additional_kyc_info',
     'poa_older_than_six_months',
     'svg_needs_poi_poa',
     'svg_needs_poa',

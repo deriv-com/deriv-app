@@ -5,7 +5,6 @@ import {
     isTimeValid,
     minDate,
     toMoment,
-    shouldShowCancellation,
     getUnitMap,
     buildBarriersConfig,
     buildDurationConfig,
@@ -16,6 +15,8 @@ import {
     getContractTypesConfig,
     getContractSubtype,
     getLocalizedBasis,
+    LocalStore,
+    TRADE_FEATURE_FLAGS,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -139,12 +140,18 @@ export const ContractType = (() => {
 
                 available_contract_types[type].config = config;
             });
-
+            const hidden_trade_types = Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {})
+                .filter(([key, value]) => TRADE_FEATURE_FLAGS.includes(key) && !value)
+                .map(([key]) => key);
             // cleanup categories
             Object.keys(available_categories).forEach(key => {
-                available_categories[key].categories = available_categories[key].categories?.filter(
-                    item => typeof item === 'object'
-                );
+                available_categories[key].categories = available_categories[key].categories?.filter(item => {
+                    return (
+                        typeof item === 'object' &&
+                        // hide trade types with disabled feature flag:
+                        hidden_trade_types?.every(hidden_type => !item.value.startsWith(hidden_type))
+                    );
+                });
                 if (available_categories[key].categories?.length === 0) {
                     delete available_categories[key];
                 }
@@ -172,7 +179,6 @@ export const ContractType = (() => {
             multiplier,
             start_date,
             cancellation_duration,
-            symbol,
             short_barriers,
             long_barriers,
             strike_price_choices,
@@ -209,7 +215,7 @@ export const ContractType = (() => {
         const obj_accumulator_range_list = getAccumulatorRange(contract_type);
         const obj_barrier_choices = getBarrierChoices(contract_type, stored_barriers_data?.barrier_choices);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
-        const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
+        const obj_cancellation = getCancellation(contract_type, cancellation_duration);
         const obj_expiry_type = getExpiryType(obj_duration_units_list.duration_units_list, expiry_type);
         const obj_equal = getEqualProps(contract_type);
 
@@ -636,7 +642,7 @@ export const ContractType = (() => {
         };
     };
 
-    const getCancellation = (contract_type: string, cancellation_duration: string, symbol: string) => {
+    const getCancellation = (contract_type: string, cancellation_duration: string) => {
         const arr_cancellation_range: string[] =
             getPropertyValue(available_contract_types, [contract_type, 'config', 'cancellation_range']) || [];
 
@@ -649,7 +655,7 @@ export const ContractType = (() => {
             return `${duration} ${name}`;
         };
 
-        const should_show_cancellation = shouldShowCancellation(symbol);
+        const should_show_cancellation = !!arr_cancellation_range.length;
 
         return {
             cancellation_duration: getArrayDefaultValue(arr_cancellation_range, cancellation_duration),

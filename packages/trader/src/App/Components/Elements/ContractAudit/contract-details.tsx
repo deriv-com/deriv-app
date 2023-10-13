@@ -180,7 +180,7 @@ const ContractDetails = ({
                         id='dt_entry_spot_label'
                         icon={<Icon icon='IcContractEntrySpot' size={24} />}
                         label={localize('Entry spot')}
-                        value={addCommaToNumber(entry_spot_display_value) || ' - '}
+                        value={addCommaToNumber(Number(entry_spot_display_value)) || ' - '}
                         value2={toGMTFormat(epochToMoment(Number(entry_tick_time))) || ' - '}
                     />
                 )}
@@ -189,7 +189,7 @@ const ContractDetails = ({
                         id='dt_exit_spot_label'
                         icon={<Icon icon='IcContractExitSpot' size={24} />}
                         label={localize('Exit spot')}
-                        value={addCommaToNumber(exit_spot) || ' - '}
+                        value={addCommaToNumber(Number(exit_spot)) || ' - '}
                         value2={toGMTFormat(epochToMoment(Number(exit_tick_time))) || ' - '}
                     />
                 )}

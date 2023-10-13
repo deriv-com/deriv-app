@@ -1799,8 +1799,8 @@ interface ExtendedMT5AccountsListResponse {
 type ExtendedMt5LoginList = ExtendedDetailsOfEachMT5Loginid[];
 
 type TEligibleToMigrate = {
-    synthetic: string;
-    financial: string;
+    synthetic?: string;
+    financial?: string;
 };
 
 interface ExtendedDetailsOfEachMT5Loginid {

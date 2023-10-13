@@ -1328,15 +1328,15 @@ export default class ClientStore extends BaseStore {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
 
         if (!Cookies.get('website_status')) {
-            const { p2p_config, clients_country } = this.website_status;
+            const { clients_country } = this.website_status;
             Cookies.set(
                 'website_status',
-                JSON.stringify({
+                {
                     clients_country,
-                    p2p_config,
-                }),
+                },
                 {
                     domain,
+                    expires: 7,
                 }
             );
         }
@@ -2782,12 +2782,16 @@ export default class ClientStore extends BaseStore {
         const website_status = Cookies.get('website_status');
         if (!website_status) return;
 
-        const cookie_value = JSON.parse(website_status);
+        try {
+            const cookie_value = JSON.parse(website_status);
 
-        if (cookie_value && cookie_value.website_status) {
-            const client_country = JSON.parse(cookie_value.website_status).clients_country;
-            /// Show beta chart only for these countries
-            this.is_beta_chart = ['zw', 'in', 'pk'].includes(client_country);
+            if (cookie_value && cookie_value.clients_country) {
+                const client_country = cookie_value.clients_country;
+                /// Show beta chart only for these countries
+                this.is_beta_chart = ['zw', 'in', 'pk'].includes(client_country);
+            }
+        } catch {
+            this.is_beta_chart = false;
         }
     };
 }

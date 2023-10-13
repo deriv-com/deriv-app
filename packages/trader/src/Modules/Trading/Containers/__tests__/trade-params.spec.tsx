@@ -48,7 +48,7 @@ describe('<TradeParams />', () => {
         );
     };
 
-    it('should render Duration component inside of TradeParams if it in the form_components array and do not render the rest components', () => {
+    it('should render Duration component inside of TradeParams if it is in the form_components array and do not render the rest components', () => {
         render(mockTradeParams(mockStore(default_mock_store)));
 
         expect(screen.getByText('Duration')).toBeInTheDocument();

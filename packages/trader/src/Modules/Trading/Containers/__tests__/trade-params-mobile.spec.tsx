@@ -73,7 +73,7 @@ describe('<TradeParamsModal />', () => {
         );
     };
 
-    it('should not render children components if the form_components is empty array', () => {
+    it('should not render children components if the form_components is an empty array', () => {
         default_mock_store.modules.trade.form_components = [];
         render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
 
@@ -81,7 +81,7 @@ describe('<TradeParamsModal />', () => {
         expect(screen.queryByText('AmountMobile')).not.toBeInTheDocument();
     });
 
-    it('should render DurationMobile and AmountMobile component if it is in the form_components array', () => {
+    it('should render DurationMobile and AmountMobile component if they are in the form_components array', () => {
         default_mock_store.modules.trade.form_components = ['amount', 'duration'];
         render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
 

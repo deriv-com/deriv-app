@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import useDevice from '../../../hooks/useDevice';
-import { WalletButton } from '../../Base';
 import { CTraderList } from '../CTraderList';
 import { MT5PlatformsList } from '../MT5PlatformsList';
 import { OtherCFDPlatformsList } from '../OtherCFDPlatformsList';

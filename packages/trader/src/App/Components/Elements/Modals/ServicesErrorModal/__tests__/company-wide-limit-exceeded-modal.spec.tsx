@@ -37,6 +37,16 @@ jest.mock('@deriv/components', () => {
     };
 });
 
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    observer: jest.fn(x => x),
+    useStore: jest.fn(() => ({
+        ui: {
+            is_mobile: false,
+        },
+    })),
+}));
+
 describe('<CompanyWideLimitExceeded />', () => {
     const mocked_props = {
         is_visible: true,

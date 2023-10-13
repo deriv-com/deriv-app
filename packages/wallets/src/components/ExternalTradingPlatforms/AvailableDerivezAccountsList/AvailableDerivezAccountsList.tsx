@@ -1,6 +1,6 @@
 import React from 'react';
 import DerivEZ from '../../../public/images/derivez.svg';
-import { SecondaryActionButton } from '../../SecondaryActionButton';
+import { SecondaryActionButton } from '../../Base';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableDerivezAccountsList.scss';
 

@@ -1,5 +1,6 @@
+import { screen, render } from '@testing-library/react';
 import * as ContractUtils from '../contract';
-import { TContractInfo, TDigitsInfo, TTickItem } from '../contract-types';
+import { TContractInfo, TContractStore, TDigitsInfo, TTickItem } from '../contract-types';
 
 describe('getFinalPrice', () => {
     it("should return sell_price as final price when it's available", () => {
@@ -583,5 +584,48 @@ describe('getContractStatus', () => {
                 status: 'won',
             })
         ).toBe('won');
+    });
+});
+
+describe('getLastContractMarkerIndex', () => {
+    let markers: TContractStore[];
+    beforeEach(() => {
+        markers = [
+            {
+                contract_info: {
+                    date_start: 1001,
+                },
+            },
+            {
+                contract_info: {
+                    date_start: 1000,
+                },
+            },
+        ] as TContractStore[];
+    });
+    it('should return index of a marker that has the biggest date_start', () => {
+        expect(ContractUtils.getLastContractMarkerIndex(markers)).toEqual(0);
+    });
+    it('should return index of the last marker if a marker with the biggest date_start is not found', () => {
+        delete markers[0].contract_info.date_start;
+        delete markers[1].contract_info.date_start;
+        expect(ContractUtils.getLastContractMarkerIndex(markers)).toEqual(1);
+    });
+});
+
+describe('getLocalizedTurbosSubtype', () => {
+    it('should return an empty string for non-turbos contracts', () => {
+        render(ContractUtils.getLocalizedTurbosSubtype('CALL') as JSX.Element);
+        expect(screen.queryByText('Long')).not.toBeInTheDocument();
+        expect(screen.queryByText('Short')).not.toBeInTheDocument();
+        expect(ContractUtils.getLocalizedTurbosSubtype('CALL')).toBe('');
+    });
+    it('should render "Long" for TURBOSLONG contract', () => {
+        render(ContractUtils.getLocalizedTurbosSubtype('TURBOSLONG') as JSX.Element);
+        expect(screen.getByText('Long')).toBeInTheDocument();
+    });
+    it('should render "Short" for TURBOSSHORT contract', () => {
+        render(ContractUtils.getLocalizedTurbosSubtype('TURBOSSHORT') as JSX.Element);
+        expect(screen.getByText('Short')).toBeInTheDocument();
     });
 });

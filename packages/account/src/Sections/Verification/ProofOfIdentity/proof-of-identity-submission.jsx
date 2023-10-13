@@ -6,8 +6,9 @@ import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
 import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
+
 import OnfidoUpload from './onfido-sdk-view-container';
-import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
+import { identity_status_codes, service_code, submission_status_code } from './proof-of-identity-utils';
 
 const POISubmission = observer(
     ({

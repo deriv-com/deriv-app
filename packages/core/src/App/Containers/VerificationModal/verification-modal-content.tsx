@@ -32,7 +32,7 @@ const VerificationModalContent = observer((props: TVerificationModalContent) => 
         body: ProofOfAddressContainer,
     };
 
-    const should_show_poi = false; //!['pending', 'rejected'].includes(authentication_status.identity_status);
+    const should_show_poi = !['pending', 'rejected'].includes(authentication_status.identity_status);
     const should_show_poa = !['pending', 'verified'].includes(authentication_status.document_status);
 
     const verification_configs = [...(should_show_poi ? [poi_config] : []), ...(should_show_poa ? [poa_config] : [])];

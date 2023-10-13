@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { ActiveSymbols, TradingTimesResponse } from '@deriv/api-types';
@@ -61,7 +61,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<MarketCountdownTimer />', () => {
-    Date.now = jest.fn(() => new Date(Date.UTC(2017, 1, 14)).valueOf());
+    Date.now = jest.fn(() => 1487030400000);
 
     const mockMarketCountdownTimer = (
         mocked_store: TCoreStores,
@@ -83,7 +83,7 @@ describe('<MarketCountdownTimer />', () => {
     });
     it('should render component with children if is_main_page is false', async () => {
         jest.useFakeTimers();
-        await act(async () => {
+        await waitFor(() => {
             const { rerender } = render(mockMarketCountdownTimer(mockStore(default_mock_store), mock_default_props));
             rerender(mockMarketCountdownTimer(mockStore(default_mock_store), mock_default_props));
         });

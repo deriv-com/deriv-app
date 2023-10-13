@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
-import CheckmarkCircle from '../../public/images/checkmark-circle.svg';
-import Clipboard from '../../public/images/clipboard.svg';
+import CheckmarkCircle from '../../../public/images/checkmark-circle.svg';
+import Clipboard from '../../../public/images/clipboard.svg';
 import './WalletClipboard.scss';
 
 type TProps = {

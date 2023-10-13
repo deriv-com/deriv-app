@@ -1,11 +1,27 @@
 module.exports = {
-    root: true,
-    extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended'],
-    parserOptions: { sourceType: 'module' },
     env: { es6: true },
+    extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended'],
+    overrides: [
+        {
+            files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
+            rules: {
+                'no-undef': 'off',
+            },
+        },
+    ],
+    parserOptions: { sourceType: 'module' },
     plugins: ['eslint-plugin-local-rules', 'simple-import-sort', 'sort-destructure-keys', 'typescript-sort-keys'],
+    root: true,
     rules: {
+        '@typescript-eslint/array-type': 'error',
+        '@typescript-eslint/no-explicit-any': 'error',
+        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/sort-type-constituents': 'error',
         camelcase: 'error',
+        'import/first': 'error',
+        'import/newline-after-import': 'error',
+        'import/no-duplicates': 'error',
+        'import/no-extraneous-dependencies': ['off', { devDependencies: ['**/*.spec.*', '**/*.test.*', '**/*.d.ts*'] }],
         'simple-import-sort/imports': [
             'error',
             {
@@ -34,14 +50,6 @@ module.exports = {
                 ],
             },
         ],
-        '@typescript-eslint/array-type': 'error',
-        '@typescript-eslint/no-unused-vars': 'error',
-        '@typescript-eslint/sort-type-constituents': 'error',
-        '@typescript-eslint/no-explicit-any': 'error',
-        'import/first': 'error',
-        'import/newline-after-import': 'error',
-        'import/no-duplicates': 'error',
-        'import/no-extraneous-dependencies': ['off', { devDependencies: ['**/*.spec.*', '**/*.test.*', '**/*.d.ts*'] }],
         'lines-around-comment': ['error', { allowObjectStart: true }],
         'local-rules/no-react-namespace': 'error',
         'no-unneeded-ternary': 'error',
@@ -56,12 +64,4 @@ module.exports = {
         'typescript-sort-keys/interface': 'warn',
         'typescript-sort-keys/string-enum': 'warn',
     },
-    overrides: [
-        {
-            files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
-            rules: {
-                'no-undef': 'off',
-            },
-        },
-    ],
 };

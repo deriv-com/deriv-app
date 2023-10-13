@@ -1,8 +1,8 @@
 import React from 'react';
 import useDevice from '../../hooks/useDevice';
+import { TabList, TabPanel, TabPanels, Tabs } from '../Base';
 import { CFDPlatformsList } from '../ExternalTradingPlatforms';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
-import { TabList, TabPanel, TabPanels, Tabs } from '../Tabs';
 import './AccountsList.scss';
 
 const AccountsList = () => {

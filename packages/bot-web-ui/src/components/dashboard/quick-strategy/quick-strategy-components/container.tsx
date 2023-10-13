@@ -1,6 +1,8 @@
 import React from 'react';
 import { TQuickStrategyProps, TSymbolItem } from '../quick-strategy.types';
-import { MarketOption, QuickStrategyForm, TradeTypeOption } from '.';
+import MarketOption from './market-option';
+import TradeTypeOption from './trade-type-option';
+import QuickStrategyForm from './form';
 
 const QuickStrategyContainer = (props: TQuickStrategyProps) => {
     const {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDxtradeAccountsList } from '@deriv/api';
 import DerivX from '../../../public/images/derivx.svg';
-import { PrimaryActionButton } from '../../PrimaryActionButton';
+import { WalletButton } from '../../Base';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AddedDxtradeAccountsList.scss';
 
@@ -17,12 +17,8 @@ const AddedDxtradeAccountsList: React.FC = () => {
             )}
             trailing={() => (
                 <div className='wallets-available-derivx__actions'>
-                    <PrimaryActionButton className='wallets-available-derivx__transfer_button'>
-                        <p className='wallets-available-derivx__transfer_text'>Transfer</p>
-                    </PrimaryActionButton>
-                    <PrimaryActionButton>
-                        <p className='wallets-available-derivx__open_text'>Open</p>
-                    </PrimaryActionButton>
+                    <WalletButton variant='outlined'>Transfer</WalletButton>
+                    <WalletButton>Open</WalletButton>
                 </div>
             )}
         >

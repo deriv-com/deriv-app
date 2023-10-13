@@ -5,7 +5,7 @@ import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
 import IcAppstoreDerivGo from '../../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../../public/images/ic-appstore-smart-trader.svg';
-import { PrimaryActionButton } from '../PrimaryActionButton';
+import { WalletButton } from '../Base';
 import { TradingAccountCard } from '../TradingAccountCard';
 import './OptionsAndMultipliersListing.scss';
 
@@ -71,11 +71,7 @@ const OptionsAndMultipliersListing = () => {
                         leading={() => (
                             <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
                         )}
-                        trailing={() => (
-                            <PrimaryActionButton>
-                                <p className='wallets-options-and-multipliers-listing__content__text'>Open</p>
-                            </PrimaryActionButton>
-                        )}
+                        trailing={() => <WalletButton>Open</WalletButton>}
                     >
                         <div className='wallets-options-and-multipliers-listing__content__details'>
                             <p className='wallets-options-and-multipliers-listing__content__details-title'>

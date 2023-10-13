@@ -2,7 +2,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    border-radius: 4px;
+    gap: 8px;
     cursor: pointer;
     /* TODO: Remove this once merged with <Text /> */
     line-height: 20px;
@@ -13,27 +13,27 @@
         opacity: 0.32;
         cursor: not-allowed;
     }
-    &-size-s {
+    &-size-sm {
         padding: 3px 8px;
         font-size: 12px;
         line-height: 18px;
     }
-    &-size-m {
+    &-size-md {
         height: 32px;
         padding: 6px 16px;
         flex-shrink: 0;
         font-size: 14px;
     }
-    &-size-l {
+    &-size-lg {
         height: 40px;
         padding: 10px 16px;
         flex-shrink: 0;
         font-size: 14px;
     }
-    &-type-contained {
+    &-variant-contained {
         border: none;
     }
-    &-type-outlined {
+    &-variant-outlined {
         color: var(--system-light-1-prominent-text, #333);
         border: 1px solid var(--system-light-3-less-prominent-text, #999);
         background: none;
@@ -41,13 +41,19 @@
             background: rgba(0, 0, 0, 0.08);
         }
     }
-    &-type-text {
+    &-variant-text {
         color: var(--button-primary-default, #ff444f);
         background: none;
         border: none;
         &:hover {
             background: rgba(255, 68, 79, 0.08);
         }
+    }
+    &-rounded-default {
+        border-radius: 4px;
+    }
+    &-rounded-full {
+        border-radius: 64px;
     }
     &-color-primary {
         color: var(--system-dark-1-prominent-text, #fff);

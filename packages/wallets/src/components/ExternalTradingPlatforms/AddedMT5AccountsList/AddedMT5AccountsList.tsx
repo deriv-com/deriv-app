@@ -3,7 +3,7 @@ import { useMT5AccountsList } from '@deriv/api';
 import DerivedMT5 from '../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../public/images/mt5-swap-free.svg';
-import { PrimaryActionButton } from '../../PrimaryActionButton';
+import { WalletButton } from '../../Base';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AddedMT5AccountsList.scss';
 
@@ -31,12 +31,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             )}
             trailing={() => (
                 <div className='wallets-added-mt5__actions'>
-                    <PrimaryActionButton className='wallets-added-mt5__transfer_button'>
-                        <p className='wallets-added-mt5__transfer_text'>Transfer</p>
-                    </PrimaryActionButton>
-                    <PrimaryActionButton>
-                        <p className='wallets-added-mt5__open_text'>Open</p>
-                    </PrimaryActionButton>
+                    <WalletButton variant='outlined'>Transfer</WalletButton>
+                    <WalletButton>Open</WalletButton>
                 </div>
             )}
         >

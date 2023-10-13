@@ -55,7 +55,6 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
-    ctrader_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
     is_switching = false;
@@ -167,7 +166,6 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
-            ctrader_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
@@ -2521,12 +2519,6 @@ export default class ClientStore extends BaseStore {
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
-        }
-    }
-
-    responseCTraderAvailableAccounts(response) {
-        if (!response.error) {
-            this.ctrader_available_accounts = response.trading_platform_available_accounts;
         }
     }
 

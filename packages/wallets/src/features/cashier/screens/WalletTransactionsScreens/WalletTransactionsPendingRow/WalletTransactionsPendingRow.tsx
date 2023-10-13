@@ -12,7 +12,7 @@ const statusCodeMapper = {
         },
         ERROR: {
             description:
-                'Your deposit is unsuccessful due to an error on the blockchain. Please contact your pending wallet service provider for more info.',
+                'Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.',
             name: 'Unsuccessful',
         },
         PENDING: {

@@ -45,15 +45,9 @@ const useTransactions = () => {
         }));
     }, [flatten_data]);
 
-    // Sort the data by transaction time.
-    const sorted_data = useMemo(
-        () => modified_data?.sort((a, b) => (a.transaction_time || 0) - (b.transaction_time || 0)),
-        [modified_data]
-    );
-
     return {
         /** List of account transactions */
-        data: sorted_data,
+        data: modified_data,
         /** Fetch the next page of transactions */
         fetchNextPage,
         /** Filter the transactions by type */

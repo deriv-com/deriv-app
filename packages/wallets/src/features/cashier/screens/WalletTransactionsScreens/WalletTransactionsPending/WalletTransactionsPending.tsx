@@ -12,20 +12,15 @@ type TProps = {
     >['transaction_type'];
 };
 
-const WalletTransactionsPending: React.FC<TProps> = ({ filter }) => {
+const WalletTransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
     const { data, resetData, subscribe, unsubscribe } = useCryptoTransactions();
 
     useEffect(() => {
-        unsubscribe();
         resetData();
         subscribe({ payload: { transaction_type: filter } });
-    }, [filter, resetData, subscribe, unsubscribe]);
 
-    useEffect(() => {
-        return () => {
-            unsubscribe();
-        };
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+        return () => unsubscribe();
+    }, [filter, resetData, subscribe, unsubscribe]);
 
     if (!data) return <WalletTransactionsNoDataState />;
 

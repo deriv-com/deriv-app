@@ -28,7 +28,7 @@ const filtersMapper: Record<string, Record<string, TFilterValue>> = {
 const WalletTransactions = () => {
     const { data } = useActiveWalletAccount();
     const [isPendingActive, setIsPendingActive] = useState(false);
-    const [filterValue, setFilterValue] = useState<TFilterValue>();
+    const [filterValue, setFilterValue] = useState('all');
 
     useEffect(() => {
         if (!data?.currency_config?.is_crypto && isPendingActive) {
@@ -37,20 +37,13 @@ const WalletTransactions = () => {
     }, [data?.currency_config?.is_crypto, isPendingActive]);
 
     useEffect(() => {
-        if (isPendingActive && filterValue && !Object.values(filtersMapper.pending).includes(filterValue)) {
-            setFilterValue(filtersMapper.pending.all);
-        } else if (!isPendingActive && filterValue && !Object.values(filtersMapper.completed).includes(filterValue)) {
-            setFilterValue(filtersMapper.completed.all);
+        if (isPendingActive && !Object.keys(filtersMapper.pending).includes(filterValue)) {
+            setFilterValue('all');
         }
-    }, [isPendingActive]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    const onFilterSelect = (value: string) => {
-        if (isPendingActive) {
-            setFilterValue(filtersMapper.pending[value]);
-        } else {
-            setFilterValue(filtersMapper.completed[value]);
+        if (!isPendingActive && !Object.keys(filtersMapper.completed).includes(filterValue)) {
+            setFilterValue('all');
         }
-    };
+    }, [filterValue, isPendingActive]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className='wallets-transactions'>
@@ -70,12 +63,16 @@ const WalletTransactions = () => {
                         </label>
                     </div>
                 )}
-                <WalletTransactionsFilter isPendingActive={isPendingActive} onSelect={onFilterSelect} />
+                <WalletTransactionsFilter isPendingActive={isPendingActive} onSelect={setFilterValue} />
             </div>
             {isPendingActive ? (
-                <WalletTransactionsPending filter={filterValue as TWalletTransactionsPendingFilter} />
+                <WalletTransactionsPending
+                    filter={filtersMapper.pending[filterValue] as TWalletTransactionsPendingFilter}
+                />
             ) : (
-                <WalletTransactionsCompleted filter={filterValue as TWalletTransactionCompletedFilter} />
+                <WalletTransactionsCompleted
+                    filter={filtersMapper.completed[filterValue] as TWalletTransactionCompletedFilter}
+                />
             )}
         </div>
     );

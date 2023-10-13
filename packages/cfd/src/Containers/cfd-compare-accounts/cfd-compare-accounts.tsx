@@ -13,7 +13,7 @@ import {
     getDxtradeDemoData,
     getCtraderDemoData,
     dxtrade_data,
-    ctrader_data,
+    // ctrader_data,
 } from '../../Helpers/compare-accounts-config';
 
 const CompareCFDs = observer(() => {

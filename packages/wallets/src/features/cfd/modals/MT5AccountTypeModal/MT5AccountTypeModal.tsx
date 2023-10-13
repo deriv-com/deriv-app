@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ModalStepWrapper, PrimaryActionButton } from '../../../../components/Base';
+import { ModalStepWrapper, WalletButton, WalletText } from '../../../../components/Base';
 import { JurisdictionModal } from '../../../../components/JurisdictionModal';
 import { useModal } from '../../../../components/ModalProvider';
 import { MT5AccountType } from '../../screens';
@@ -13,7 +13,7 @@ const MT5AccountTypeModal = () => {
     return (
         <ModalStepWrapper
             renderFooter={() => (
-                <PrimaryActionButton
+                <WalletButton
                     disabled={!selectedMarketType}
                     onClick={() => {
                         setModalState({
@@ -22,8 +22,10 @@ const MT5AccountTypeModal = () => {
                         show(<JurisdictionModal />);
                     }}
                 >
-                    <p className='wallets-get-more-mt5-accounts-text'>Next</p>
-                </PrimaryActionButton>
+                    <WalletText align='center' color='white' size='sm' weight='bold'>
+                        Get
+                    </WalletText>
+                </WalletButton>
             )}
             title='Select Deriv MT5’s account type'
         >

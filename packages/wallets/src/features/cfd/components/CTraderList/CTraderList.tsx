@@ -1,6 +1,6 @@
 import React from 'react';
 import { TradingAccountCard } from '../../../../components';
-import { SecondaryActionButton } from '../../../../components/Base';
+import { WalletButton, WalletText } from '../../../../components/Base';
 import CTrader from '../../../../public/images/ctrader.svg';
 import './CTraderList.scss';
 
@@ -25,9 +25,11 @@ const CTraderList: React.FC = () => {
                         key={`ctrader--${account.title}`}
                         leading={() => <div className='wallets-ctrader__content__icon'>{account.icon}</div>}
                         trailing={() => (
-                            <SecondaryActionButton>
-                                <p className='wallets-ctrader__text'>Get</p>
-                            </SecondaryActionButton>
+                            <WalletButton color='primary-light'>
+                                <WalletText align='center' color='error' size='sm' weight='bold'>
+                                    Get
+                                </WalletText>
+                            </WalletButton>
                         )}
                     >
                         <div className='wallets-ctrader__content__details'>

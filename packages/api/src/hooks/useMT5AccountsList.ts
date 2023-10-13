@@ -1,12 +1,16 @@
 import { useMemo } from 'react';
-import useActiveWalletAccount from './useActiveWalletAccount';
 import useQuery from '../useQuery';
+import useActiveWalletAccount from './useActiveWalletAccount';
+import useAuthorize from './useAuthorize';
 
 /** A custom hook that gets the list created MT5 accounts of the user. */
 const useMT5AccountsList = () => {
+    const { isSuccess } = useAuthorize();
     const { data: wallet } = useActiveWalletAccount();
 
-    const { data: mt5_accounts, ...mt5_accounts_rest } = useQuery('mt5_login_list');
+    const { data: mt5_accounts, ...mt5_accounts_rest } = useQuery('mt5_login_list', {
+        options: { enabled: isSuccess },
+    });
 
     /**
      * @description The list of created MT5 accounts

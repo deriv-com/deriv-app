@@ -441,6 +441,7 @@ export default class CFDStore extends BaseStore {
             phone,
             state: address_state,
             zipCode: address_postcode,
+            migrate: 1,
             ...(values.server ? { server: values.server } : {}),
             ...(shortcode ? { company: shortcode } : {}),
             ...(shortcode !== Jurisdiction.LABUAN

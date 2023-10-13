@@ -1,10 +1,10 @@
 import React from 'react';
 import DerivX from '../../../public/images/derivx.svg';
+import { WalletText } from '../../Base';
 import { DxtradeEnterPasswordModal } from '../../DxtradeEnterPasswordModal';
 import { useModal } from '../../ModalProvider';
 import { SecondaryActionButton } from '../../SecondaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
-import { WalletText } from '../../WalletText';
 import './AvailableDxtradeAccountsList.scss';
 
 const AvailableDxtradeAccountsList: React.FC = () => {

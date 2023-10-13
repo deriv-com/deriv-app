@@ -62,3 +62,5 @@ export { default as useStatesList } from './useStatesList';
 export { default as useP2PConfig } from './useP2PConfig';
 export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';
 export { default as useCFDCanGetMoreMT5Accounts } from './useCFDCanGetMoreMT5Accounts';
+export { default as useOAuthConnectedApps } from './useOAuthConnectedApps';
+export { default as useOAuthRevokeConnectedApps } from './useOAuthRevokeConnectedApps';

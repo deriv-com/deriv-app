@@ -1,6 +1,6 @@
 import React from 'react';
 import DerivX from '../../../public/images/derivx.svg';
-import { SecondaryActionButton } from '../../Base';
+import { SecondaryActionButton, WalletText } from '../../Base';
 import { DxtradeEnterPasswordModal } from '../../DxtradeEnterPasswordModal';
 import { useModal } from '../../ModalProvider';
 import { TradingAccountCard } from '../../TradingAccountCard';
@@ -18,15 +18,21 @@ const AvailableDxtradeAccountsList: React.FC = () => {
             )}
             trailing={() => (
                 <SecondaryActionButton onClick={() => show(<DxtradeEnterPasswordModal />)}>
-                    <p className='wallets-available-dxtrade__text'>Get</p>
+                    <WalletText color='error' size='s' weight='bold'>
+                        Get
+                    </WalletText>
                 </SecondaryActionButton>
             )}
         >
             <div className='wallets-available-dxtrade__details'>
-                <p className='wallets-available-dxtrade__details-title'>Deriv X</p>
-                <p className='wallets-available-dxtrade__details-description'>
-                    This account offers CFDs on a highly customisable CFD trading platform.
+                <p className='wallets-available-dxtrade__details-title'>
+                    <WalletText size='s' weight='bold'>
+                        Deriv X
+                    </WalletText>
                 </p>
+                <WalletText size='xs'>
+                    This account offers CFDs on a highly customisable CFD trading platform.
+                </WalletText>
             </div>
         </TradingAccountCard>
     );

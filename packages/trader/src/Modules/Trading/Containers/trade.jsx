@@ -383,9 +383,7 @@ const ChartTrade = observer(props => {
             topWidgets={is_trade_enabled ? topWidgets : null}
             isConnectionOpened={is_socket_opened}
             clearChart={false}
-            toolbarWidget={() => (
-                <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
-            )}
+            toolbarWidget={() => <ToolbarWidgets />}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
             shouldFetchTradingTimes={!end_epoch}

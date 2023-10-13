@@ -117,7 +117,20 @@ type TChartLayout = {
     timeUnit: string;
     volumeUnderlay: boolean;
 };
-type TChartStateChangeOption = { symbol: string | undefined; isClosed: boolean };
+type TChartStateChangeOption = {
+    indicator_type_name?: string;
+    indicators_category_name?: string;
+    isClosed?: boolean;
+    is_favorite?: boolean;
+    is_info_open?: boolean;
+    is_open?: boolean;
+    chart_type_name?: string;
+    granularity?: number;
+    search_string?: string;
+    symbol?: string;
+    symbol_category?: string;
+    time_interval_name?: string;
+};
 type TContractDataForGTM = Omit<Partial<PriceProposalRequest>, 'cancellation' | 'limit_order'> &
     ReturnType<typeof getProposalInfo> & {
         buy_price: number;
@@ -1609,6 +1622,12 @@ export default class TradeStore extends BaseStore {
             option.isClosed !== this.is_market_closed
         ) {
             this.prepareTradeStore(false);
+        }
+        if (state === STATE_TYPES.SET_CHART_TYPE && option?.chart_type_name) {
+            this.root_store.contract_trade.updateChartType(option?.chart_type_name);
+        }
+        if (state === STATE_TYPES.SET_GRANULARITY) {
+            this.root_store.contract_trade.updateGranularity(option?.granularity as number);
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {

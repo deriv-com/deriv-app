@@ -4,11 +4,9 @@ import styles from './WalletButton.module.css';
 
 interface WalletButtonProps extends ComponentProps<'button'> {
     children: React.ReactNode;
-    // eslint-disable-next-line @typescript-eslint/sort-type-constituents
-    color?: CSSProperties['color'] | 'primary' | 'primary-light';
+    color?: CSSProperties['color'] | 'primary-light' | 'primary';
     isRounded?: boolean;
-    // eslint-disable-next-line @typescript-eslint/sort-type-constituents
-    size?: 'sm' | 'md' | 'lg';
+    size?: 'lg' | 'md' | 'sm';
     variant?: 'contained' | 'outlined' | 'text';
 }
 

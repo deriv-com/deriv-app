@@ -1,7 +1,7 @@
 /* eslint-disable simple-import-sort/imports */
 import React from 'react';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import './quick-strategy.scss';
 import SymbolSelect from './selects/symbol';
 import { useFormikContext } from 'formik';
@@ -10,14 +10,14 @@ import DurationTypeSelect from './selects/duration-type';
 import QSInput from './inputs/qs-input';
 import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
-import { isMobile } from '@deriv/shared';
 import { TConfigItem, TFormData } from './types';
 
 const QuickStrategyForm = observer(() => {
+    const { ui } = useStore();
     const { quick_strategy_store_1 } = useDBotStore();
     const { selected_strategy } = quick_strategy_store_1;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
-    const is_mobile = isMobile();
+    const { is_mobile } = ui;
     const { values } = useFormikContext<TFormData>();
 
     React.useEffect(() => {

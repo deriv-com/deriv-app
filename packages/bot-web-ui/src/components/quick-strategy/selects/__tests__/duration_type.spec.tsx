@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 
@@ -23,7 +23,20 @@ jest.mock('@deriv/bot-skeleton', () => ({
     ApiHelpers: {
         instance: {
             contracts_for: {
-                getDurations: jest.fn(),
+                getDurations: () => [
+                    {
+                        display: 'Ticks',
+                        unit: 't',
+                        min: 1,
+                        max: 10,
+                    },
+                    {
+                        display: 'sample',
+                        unit: 's',
+                        min: 10,
+                        max: 20,
+                    },
+                ],
                 getMarketBySymbol: jest.fn(),
                 getSubmarketBySymbol: jest.fn(),
                 getTradeTypeCategoryByTradeType: jest.fn(),
@@ -51,7 +64,7 @@ describe('<DurationUnit />', () => {
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const mock_onSubmit = jest.fn();
         const initial_value = {
-            duration_value: 1,
+            durationtype: 1,
         };
 
         wrapper = ({ children }: { children: JSX.Element }) => (
@@ -71,57 +84,26 @@ describe('<DurationUnit />', () => {
         );
     });
 
-    it('should render DurationUnit', () => {
-        const { container } = render(<DurationUnit data={{ symbol: 'R100', trade_type: 'callput' }} />, {
+    it('should render DurationUnit', async () => {
+        const { container } = render(<DurationUnit data={{ symbol: 'R100', tradetype: 'callput' }} />, {
             wrapper,
         });
-        expect(container).toBeInTheDocument();
+        await waitFor(() => {
+            expect(container).toBeInTheDocument();
+        });
     });
 
-    // it('should increase the value on click of + button', () => {
-    //     render(<DurationUnit name='duration_value' type='number' />, {
-    //         wrapper,
-    //     });
+    it('should select item from list', async () => {
+        render(<DurationUnit data={{ symbol: 'R100', tradetype: 'callput' }} />, {
+            wrapper,
+        });
 
-    //     const increase_button = screen.getByTestId('qs-input-increase');
-    //     userEvent.click(increase_button);
-    //     const input = screen.getByTestId('qs-input');
-    //     expect(input).toHaveDisplayValue('2');
-    // });
-
-    // it('should decrease the value on click of - button', () => {
-    //     render(<DurationUnit name='duration_value' type='number' />, {
-    //         wrapper,
-    //     });
-
-    //     const decrease_button = screen.getByTestId('qs-input-decrease');
-    //     userEvent.click(decrease_button);
-    //     const input = screen.getByTestId('qs-input');
-    //     expect(input).toHaveDisplayValue('0');
-    // });
-
-    // it('should update the value', () => {
-    //     render(<DurationUnit name='duration_value' type='number' />, {
-    //         wrapper,
-    //     });
-
-    //     const input = screen.getByTestId('qs-input');
-    //     userEvent.type(input, '5');
-    //     expect(input).toHaveDisplayValue('15');
-    // });
-
-    // it('should show error message', async () => {
-    //     render(<DurationUnit name='duration_value' type='number' />, {
-    //         wrapper,
-    //     });
-
-    //     const input = screen.getByTestId('qs-input');
-    //     // userEvent.clear(input);
-    //     fireEvent.change(input, { target: { value: '' } });
-    //     expect(input).toHaveDisplayValue('');
-    //     // await waitFor(() => {
-    //     //     screen.debug();
-    //     //     expect(screen.getByText('Minimum value should be more than 0')).toBeInTheDocument();
-    //     // });
-    // });
+        const autocomplete_element = screen.getByTestId('qs_autocomplete_durationtype');
+        userEvent.click(autocomplete_element);
+        await waitFor(() => {
+            const option_element = screen.getByText('sample');
+            userEvent.click(option_element);
+        });
+        expect(autocomplete_element).toHaveDisplayValue('sample');
+    });
 });

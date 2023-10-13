@@ -78,6 +78,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ symbol, selected, fullWid
                     return (
                         <Autocomplete
                             {...field}
+                            data-testid='qs_autocomplete_tradetype'
                             autoComplete='off'
                             className='qs__autocomplete'
                             value={selected_trade_type?.text || ''}

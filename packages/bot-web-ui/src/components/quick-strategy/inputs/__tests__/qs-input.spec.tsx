@@ -88,19 +88,4 @@ describe('<QSInput />', () => {
         userEvent.type(input, '5');
         expect(input).toHaveDisplayValue('15');
     });
-
-    it('should show error message', async () => {
-        render(<QSInput name='duration_value' type='number' />, {
-            wrapper,
-        });
-
-        const input = screen.getByTestId('qs-input');
-        // userEvent.clear(input);
-        fireEvent.change(input, { target: { value: '' } });
-        expect(input).toHaveDisplayValue('');
-        // await waitFor(() => {
-        //     screen.debug();
-        //     expect(screen.getByText('Minimum value should be more than 0')).toBeInTheDocument();
-        // });
-    });
 });

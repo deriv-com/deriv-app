@@ -61,6 +61,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
                         <>
                             <Autocomplete
                                 {...rest_field}
+                                data-testid='qs_autocomplete_symbol'
                                 autoComplete='off'
                                 className='qs__autocomplete'
                                 value={selected_symbol?.text || ''}

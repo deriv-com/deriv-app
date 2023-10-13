@@ -3,11 +3,9 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
-import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import FilterDialog from '../filter-dialog';
+import JournalTools from '../journal-tools';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
@@ -21,7 +19,7 @@ jest.mock('@deriv/deriv-charts', () => ({
 
 const mockProps = {
     toggle_ref: { current: null },
-    checked_filters: [],
+    checked_filters: { error: ['test error'], notify: ['test notify'], success: ['test success'] },
     filters: [
         { id: 'error', label: 'Errors' },
         { id: 'notify', label: 'Notifications' },
@@ -32,13 +30,12 @@ const mockProps = {
     toggleFilterDialog: jest.fn(),
 };
 
-describe('FilterDialog', () => {
-    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+describe('JournalTools', () => {
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
+    const mock_store = mockStore({});
+    const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
     beforeAll(() => {
-        const mock_store = mockStore({});
-        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
@@ -48,24 +45,17 @@ describe('FilterDialog', () => {
         );
     });
 
-    test('should renders FilterDialog', () => {
-        const { container } = render(<FilterDialog {...mockProps} />, {
+    test('should renders JournalTools', () => {
+        const { container } = render(<JournalTools {...mockProps} />, {
             wrapper,
         });
         expect(container).toBeInTheDocument();
     });
 
-    test('should render FilterDialog with filters', () => {
-        render(<FilterDialog {...mockProps} />, {
+    test('should renders filter options that is passed as prop', () => {
+        render(<JournalTools {...mockProps} />, {
             wrapper,
         });
-        const filterMessageElement = screen.getByText('Errors');
-        expect(filterMessageElement).toBeInTheDocument();
-    });
-
-    test('should call toggleFilterDialog when clicking outside the dialog', () => {
-        const { container } = render(<FilterDialog {...mockProps} />, { wrapper });
-        userEvent.click(container);
-        expect(mockProps.toggleFilterDialog).toHaveBeenCalled();
+        expect(screen.getByText('Notifications')).toBeInTheDocument();
     });
 });

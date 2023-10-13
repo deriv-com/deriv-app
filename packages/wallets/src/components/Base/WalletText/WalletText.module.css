@@ -11,15 +11,15 @@
         font-size: 1.2rem;
     }
 
-    &-size-s {
+    &-size-sm {
         font-size: 1.4rem;
     }
 
-    &-size-m {
+    &-size-md {
         font-size: 1.6rem;
     }
 
-    &-size-l {
+    &-size-lg {
         font-size: 1.8rem;
     }
 
@@ -40,15 +40,11 @@
     }
 
     &-weight-normal {
-        font-weight: normal;
+        font-weight: 400;
     }
 
     &-weight-bold {
-        font-weight: bold;
-    }
-
-    &-weight-bolder {
-        font-weight: bolder;
+        font-weight: 700;
     }
 
     &-align-left {

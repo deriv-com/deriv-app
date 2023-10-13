@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
-import type { MT5AccountType } from '../ExternalTradingPlatforms';
+import { MT5AccountType } from '../../features/cfd/screens';
 
 type TModalContext = {
     hide: () => void;

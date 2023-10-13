@@ -1,14 +1,28 @@
-import React, { FC, PropsWithChildren, createContext, ReactNode, useRef, useState, useContext } from 'react';
+import React, { FC, createContext, ReactNode, useState, useContext, useMemo, useEffect } from 'react';
 
-type TFlowSwitcherProps = {
+export type TFlowSwitcherProps = {
     initialFlowId?: string;
+    flowConfig: TFlowConfig;
 };
 
-type TFlowSwitcherContext = {
+export type TFlowSwitcherContext = {
     currentFlowId: string;
-    registerFlow: (flowId: string, component: ReactNode) => void;
     switchFlow: (flowId: string) => void;
+    screens: TScreenRoute[];
 };
+
+export type TScreenRoute = {
+    screenId: string;
+    component: ReactNode;
+};
+
+export type TFlowRoute = {
+    flowId: string;
+    component: ReactNode;
+    screens: TScreenRoute[];
+};
+
+export type TFlowConfig = TFlowRoute[];
 
 const FlowSwitcherContext = createContext<TFlowSwitcherContext | null>(null);
 
@@ -20,18 +34,23 @@ export const useFlowSwitcher = () => {
     return flowContext;
 };
 
-const FlowSwitcher: FC<PropsWithChildren<TFlowSwitcherProps>> = ({ children, initialFlowId }) => {
+const FlowSwitcher: FC<TFlowSwitcherProps> = ({ initialFlowId, flowConfig }) => {
     const [currentFlowId, setCurrentFlowId] = useState(initialFlowId);
-
-    const flowRegistry = useRef<Record<string, ReactNode>>({});
-
     const switchFlow = (flowId: string) => {
         setCurrentFlowId(flowId);
     };
 
-    const registerFlow = (flowId: string, component: ReactNode) => {
-        flowRegistry.current[flowId] = component;
-    };
+    const currentFlow = useMemo(() => {
+        let flowIndex = 0;
+        for (let i = 0; i < flowConfig.length; i++) {
+            if (flowConfig[i].flowId === currentFlowId) {
+                flowIndex = i;
+                break;
+            }
+        }
+
+        return flowConfig[flowIndex];
+    }, [currentFlowId]);
 
     if (!currentFlowId) return null;
 
@@ -40,10 +59,10 @@ const FlowSwitcher: FC<PropsWithChildren<TFlowSwitcherProps>> = ({ children, ini
             value={{
                 currentFlowId,
                 switchFlow,
-                registerFlow,
+                screens: currentFlow.screens,
             }}
         >
-            {children}
+            {currentFlow.component}
         </FlowSwitcherContext.Provider>
     );
 };

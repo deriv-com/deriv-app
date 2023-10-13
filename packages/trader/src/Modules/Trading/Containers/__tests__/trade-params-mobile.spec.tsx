@@ -96,7 +96,7 @@ describe('<TradeParamsModal />', () => {
         expect(screen.getByTestId('53.8rem')).toBeInTheDocument();
     });
 
-    it('call function setAmountTabIdx should change amount_tab_idx', () => {
+    it('function setAmountTabIdx call should change amount_tab_idx', () => {
         const { rerender } = render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
         expect(screen.queryByText('1')).not.toBeInTheDocument();
 
@@ -106,7 +106,7 @@ describe('<TradeParamsModal />', () => {
         expect(screen.getByText('1')).toBeInTheDocument();
     });
 
-    it('call function setSelectedAmount should change stake_value', () => {
+    it('function setSelectedAmount call should change stake_value', () => {
         const { rerender } = render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
         expect(screen.getByText('10')).toBeInTheDocument();
 
@@ -116,7 +116,7 @@ describe('<TradeParamsModal />', () => {
         expect(screen.getByText('20')).toBeInTheDocument();
     });
 
-    it('call function setAmountError should change amount_error', () => {
+    it('function setAmountError call should change amount_error', () => {
         const { rerender } = render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
         expect(screen.queryByText('Amount error')).not.toBeInTheDocument();
 
@@ -126,7 +126,7 @@ describe('<TradeParamsModal />', () => {
         expect(screen.getByText('Amount error')).toBeInTheDocument();
     });
 
-    it('call function setDurationError should change amount_error', () => {
+    it('function setDurationError call should change amount_error', () => {
         const { rerender } = render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
         expect(screen.queryByText('Duration error')).not.toBeInTheDocument();
 

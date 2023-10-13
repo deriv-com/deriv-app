@@ -3,9 +3,9 @@ import { useSortedMT5Accounts } from '@deriv/api';
 import DerivedMT5 from '../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../public/images/mt5-swap-free.svg';
+import { SecondaryActionButton } from '../../Base';
 import { useModal } from '../../ModalProvider';
 import { MT5PasswordModal } from '../../MT5PasswordModal';
-import { SecondaryActionButton } from '../../SecondaryActionButton';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableMT5AccountsList.scss';
 

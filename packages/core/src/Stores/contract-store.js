@@ -63,7 +63,7 @@ export default class ContractStore extends BaseStore {
             clearContractUpdateConfigValues: action.bound,
             onChange: action.bound,
             updateLimitOrder: action.bound,
-            getMarkersArray: action.bound,
+            getContractsArray: action.bound,
         });
 
         this.root_store = root_store;
@@ -343,24 +343,26 @@ export default class ContractStore extends BaseStore {
         });
     }
 
-    getMarkersArray() {
+    getContractsArray() {
         const { contract_type, high_barrier, low_barrier, tick_stream: ticks } = this.contract_info;
 
         if (!isAccumulatorContract(contract_type)) return [];
+
         const exit = ticks[ticks.length - 1];
         const previous_tick = ticks[ticks.length - 2] || exit;
 
         if (!previous_tick) return [];
-        const marker = getAccumulatorMarkers({
+
+        const contract_markers = getAccumulatorMarkers({
             high_barrier,
             low_barrier,
-            epoch: previous_tick.epoch,
+            prev_epoch: previous_tick.epoch,
             is_dark_mode_on: this.root_store.ui.is_dark_mode_on,
             contract_info: this.contract_info,
             in_contract_details: true,
         });
 
-        return [marker];
+        return [contract_markers];
     }
 }
 

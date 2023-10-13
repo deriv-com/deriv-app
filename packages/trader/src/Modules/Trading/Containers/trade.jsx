@@ -353,7 +353,7 @@ const ChartTrade = observer(props => {
         <SmartChartWithRef
             ref={charts_ref}
             barriers={barriers}
-            markers_array={markers_array}
+            contracts_array={markers_array}
             bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={isMobile() ? 0 : undefined}
             crosshairTooltipLeftAllow={560}

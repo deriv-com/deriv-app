@@ -342,11 +342,12 @@ export default class ContractTradeStore extends BaseStore {
                         high_barrier: accumulators_high_barrier,
                         low_barrier: accumulators_low_barrier,
                         barrier_spot_distance,
-                        epoch: proposal_prev_spot_time,
+                        prev_epoch: proposal_prev_spot_time,
                         has_crossed_accu_barriers: this.has_crossed_accu_barriers,
                         is_dark_theme: this.root_store.ui.is_dark_mode_on,
                         contract_info: this.last_contract.contract_info,
-                        is_accumulator_trade_without_contract: this.last_contract.contract_info?.status !== 'open',
+                        is_accumulator_trade_without_contract:
+                            !isAccumulatorContractOpen(this.last_contract.contract_info) || !entry_tick_time,
                     })
                 );
             }

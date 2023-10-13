@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import EmailSent from '../../public/images/email-sent.svg';
+import EmailSent from '../../../../../public/images/email-sent.svg';
 import './WalletWithdrawalVerificationSent.scss';
 
 type TProps = {

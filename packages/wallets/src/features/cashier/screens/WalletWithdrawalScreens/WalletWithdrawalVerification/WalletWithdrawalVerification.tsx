@@ -1,5 +1,5 @@
 import React from 'react';
-import EmailVerification from '../../public/images/email-verification.svg';
+import EmailVerification from '../../../../../public/images/email-verification.svg';
 import './WalletWithdrawalVerification.scss';
 
 type TProps = {

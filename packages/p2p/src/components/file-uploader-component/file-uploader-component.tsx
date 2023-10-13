@@ -1,8 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FileDropzone, Icon, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
+
+type TFileUploaderComponentProps = {
+    accept: string;
+    hover_message: string;
+    max_size: number;
+    multiple?: boolean;
+    onClickClose: () => void;
+    onDropAccepted: (files: File[]) => void;
+    onDropRejected: (files: File[]) => void;
+    upload_message: string;
+    validation_error_message: string;
+    value: (File & { file: Blob })[];
+};
 
 const FileUploaderComponent = ({
     accept,
@@ -15,12 +27,16 @@ const FileUploaderComponent = ({
     upload_message,
     validation_error_message,
     value,
-}) => {
+}: TFileUploaderComponentProps) => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
+
     const getUploadMessage = () => {
         return (
             <>
                 <Icon icon='IcCloudUpload' size={50} />
-                <Text as='div' line-height={isMobile() ? 'xl' : 'l'} size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
+                <Text as='div' line-height={is_mobile ? 'xl' : 'l'} size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
                     {upload_message}
                 </Text>
             </>
@@ -44,29 +60,15 @@ const FileUploaderComponent = ({
             />
             {(value.length > 0 || !!validation_error_message) && (
                 <Icon
-                    icon='IcCloseCircle'
                     className={'file-uploader-component__close-icon'}
-                    onClick={onClickClose}
                     color='secondary'
                     data_testid='dt_remove_file_icon'
+                    icon='IcCloseCircle'
+                    onClick={onClickClose}
                 />
             )}
         </div>
     );
-};
-
-FileUploaderComponent.propTypes = {
-    accept: PropTypes.string,
-    hover_message: PropTypes.string,
-    error_messages: PropTypes.string,
-    max_size: PropTypes.number,
-    multiple: PropTypes.bool,
-    upload_message: PropTypes.string,
-    onClickClose: PropTypes.func,
-    onDropAccepted: PropTypes.func,
-    onDropRejected: PropTypes.func,
-    validation_error_message: PropTypes.string,
-    value: PropTypes.arrayOf(PropTypes.instanceOf(File)),
 };
 
 export default FileUploaderComponent;

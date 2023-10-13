@@ -75,16 +75,14 @@ const OrderDetailsConfirmModal = () => {
                     </Text>
                     <FileUploaderComponent
                         accept='image/png, image/jpeg, image/jpg, application/pdf'
-                        filename_limit={26}
                         hover_message={localize('Upload receipt here')}
                         max_size={max_pot_file_size}
-                        multiple={false}
+                        onClickClose={removeFile}
                         onDropAccepted={handleAcceptedFiles}
                         onDropRejected={handleRejectedFiles}
+                        upload_message={localize('Upload receipt here')}
                         validation_error_message={document_file.error_message}
                         value={document_file.files}
-                        onClickClose={removeFile}
-                        upload_message={localize('Upload receipt here')}
                     />
                 </Modal.Body>
                 <Modal.Footer className='order-details-confirm-modal__footer'>

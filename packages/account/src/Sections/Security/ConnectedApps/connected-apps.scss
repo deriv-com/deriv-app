@@ -31,11 +31,10 @@
         &--ordered_list {
             list-style: auto;
             font-size: 1rem;
-            padding: 1.5rem;
-            gap: 0.5rem;
+            padding: 1rem 0 0 1.5rem;
 
-            & li {
-                margin-bottom: 0.5rem;
+            & li:nth-child(-n + 2) {
+                margin-bottom: 1.5rem;
             }
         }
 
@@ -124,6 +123,10 @@
     // Styling for DataTable displayed in Desktop view
     .table__body .table__row {
         border-bottom: 1px solid var(--general-section-1);
+    }
+
+    .table__head .table__row {
+        font-weight: bold;
     }
 
     &__table {

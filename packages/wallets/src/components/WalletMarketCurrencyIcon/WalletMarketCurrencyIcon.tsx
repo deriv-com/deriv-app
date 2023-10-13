@@ -6,7 +6,7 @@ import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import './WalletMarketCurrencyIcon.scss';
 
-const market_type_to_icon_mapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
+const marketTypeToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
     all: SwapFreeMT5Icon,
     financial: FinancialMT5Icon,
     synthetic: DerivedMT5Icon,
@@ -19,7 +19,7 @@ type TWalletMarketCurrencyIconProps = {
 };
 
 const WalletMarketCurrencyIcon = ({ currency, isDemo, marketType }: TWalletMarketCurrencyIconProps) => {
-    const MarketTypeIcon = market_type_to_icon_mapper[marketType];
+    const MarketTypeIcon = marketTypeToIconMapper[marketType];
 
     return (
         <div className='wallets-market-currency-icon'>

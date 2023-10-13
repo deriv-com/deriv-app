@@ -12,7 +12,7 @@
     position: relative;
 
     &__digit {
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
         padding: 1rem 0.8rem;
         margin-left: 0.8rem;
         height: 4rem;

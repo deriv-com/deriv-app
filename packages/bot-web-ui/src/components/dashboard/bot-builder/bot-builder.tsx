@@ -1,15 +1,13 @@
 import React, { useRef, useState } from 'react';
 import classNames from 'classnames';
-
 import { observer } from '@deriv/stores';
-
+import { localize } from '@deriv/translations';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import BotSnackbar from '../../bot-snackbar';
 import LoadModal from '../../load-modal';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
 import QuickStrategy from '../quick-strategy';
-
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
@@ -61,7 +59,7 @@ const BotBuilder = observer(() => {
         <>
             <BotSnackbar
                 is_open={show_snackbar}
-                message='Changes you make will not affect your running bot.'
+                message={localize('Changes you make will not affect your running bot.')}
                 handleClose={() => setShowSnackbar(false)}
             />
             <div

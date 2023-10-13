@@ -1,9 +1,6 @@
 name: publish_to_pages_staging
 description: Publish to cloudflare pages (staging)
 inputs:
-  version:
-    description: 'Version of the app to release'
-    required: true
   CLOUDFLARE_ACCOUNT_ID:
     description: 'Cloudflare account id'
     required: true
@@ -17,8 +14,7 @@ runs:
     env:
       CLOUDFLARE_ACCOUNT_ID: ${{ inputs.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ inputs.CLOUDFLARE_API_TOKEN }}
-      version: ${{ inputs.version }} 
-    run: |-
+    run: |
       npm i wrangler@3.1.0
       cd packages/core
       npx wrangler pages deploy dist/ --project-name=deriv-app-pages --branch=staging

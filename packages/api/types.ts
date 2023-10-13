@@ -49,7 +49,6 @@ import type {
     CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
-    DetailsOfEachMT5Loginid,
     DocumentUploadRequest,
     DocumentUploadResponse,
     EconomicCalendarRequest,

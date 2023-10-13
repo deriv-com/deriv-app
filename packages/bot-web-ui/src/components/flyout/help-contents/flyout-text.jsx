@@ -1,7 +1,8 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Text } from '@deriv/components';
 
-const FlyoutText = (props: { text: string }) => {
+const FlyoutText = props => {
     const { text } = props;
 
     return (
@@ -9,6 +10,10 @@ const FlyoutText = (props: { text: string }) => {
             {text}
         </Text>
     );
+};
+
+FlyoutText.propTypes = {
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default FlyoutText;

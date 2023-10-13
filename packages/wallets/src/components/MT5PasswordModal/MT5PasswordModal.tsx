@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import {
     useActiveWalletAccount,
     useAvailableMT5Accounts,
@@ -8,12 +7,11 @@ import {
     useSettings,
     useSortedMT5Accounts,
 } from '@deriv/api';
-
 import MT5PasswordIcon from '../../public/images/ic-mt5-password.svg';
+import { ModalWrapper } from '../Base';
 import { CreatePassword } from '../CreatePassword';
 import { EnterPassword } from '../EnterPassword';
 import { useModal } from '../ModalProvider';
-import { ModalWrapper } from '../ModalWrapper';
 
 type TProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;

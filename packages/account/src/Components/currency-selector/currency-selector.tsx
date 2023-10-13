@@ -195,7 +195,7 @@ const CurrencySelector = observer(
                 }}
                 validate={handleValidate}
             >
-                {({ handleSubmit, isSubmitting, values }: FormikState<TCurrencySelectorFormProps> & FormikHandlers) => (
+                {({ handleSubmit, values }: FormikState<TCurrencySelectorFormProps> & FormikHandlers) => (
                     <AutoHeightWrapper default_height={450}>
                         {({
                             setRef,
@@ -280,7 +280,7 @@ const CurrencySelector = observer(
                                                 ? 'currency-selector--set-currency'
                                                 : 'currency-selector--deriv-account'
                                         }
-                                        is_disabled={isSubmitting}
+                                        is_disabled={!values.currency}
                                         is_center={false}
                                         is_absolute={set_currency}
                                         label={getSubmitLabel()}

@@ -162,7 +162,9 @@ describe('<IdvDocumentSubmit/>', () => {
         });
         fireEvent.click(confirmation_checkbox);
 
-        expect(verifyBtn).toBeEnabled();
+        await waitFor(() => {
+            expect(verifyBtn).toBeEnabled();
+        });
         fireEvent.click(verifyBtn);
         await waitFor(() => {
             expect(mock_props.handleViewComplete).toHaveBeenCalledTimes(1);

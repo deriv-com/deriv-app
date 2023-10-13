@@ -319,6 +319,9 @@ export default class NotificationStore extends BaseStore {
 
             this.handlePOAAddressMismatchNotifications();
 
+            if (status?.includes('mt5_additional_kyc_required'))
+                this.addNotificationMessage(this.client_notifications.additional_kyc_info);
+
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
             } else {
@@ -1437,6 +1440,23 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
+            additional_kyc_info: {
+                key: 'additional_kyc_info',
+                header: <Localize i18n_default_text='Pending action required' />,
+                message: (
+                    <Localize i18n_default_text='We require additional information for your Deriv MT5 account(s). Please take a moment to update your information now.' />
+                ),
+                should_show_again: true,
+                action: {
+                    text: localize('Update now'),
+                    onClick: () => {
+                        if (this.is_notifications_visible) this.toggleNotificationsModal();
+                        ui.toggleAdditionalKycInfoModal();
+                        this.markNotificationMessage({ key: 'additional_kyc_info' });
+                    },
+                },
+                type: 'warning',
+            },
         };
 
         this.client_notifications = notifications;
@@ -1450,7 +1470,6 @@ export default class NotificationStore extends BaseStore {
         this.p2p_redirect_to = p2p_redirect_to;
     }
 
-    //TODO (yauheni-kryzhyk): this method is not used. leaving this for the upcoming new pop-up notifications implementation
     setShouldShowPopups(should_show_popups) {
         this.should_show_popups = should_show_popups;
     }

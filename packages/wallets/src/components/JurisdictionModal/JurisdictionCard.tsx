@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-
 import JurisdictionCardRow from './JurisdictionCardRow';
 import JurisdictionCardTag from './JurisdictionCardTag';
-
 import './JurisdictionCard.scss';
 
 type TJurisdictionCardProps = {

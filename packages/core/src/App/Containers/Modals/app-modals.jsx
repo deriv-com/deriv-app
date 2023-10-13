@@ -61,6 +61,16 @@ const OneTimeDepositModal = React.lazy(() =>
     import(/* webpackChunkName: "one-time-deposit-modal" */ '../OneTimeDepositModal')
 );
 
+const AdditionalKycInfoModal = React.lazy(() =>
+    import(
+        /* webpackChunkName: "additional-kyc-info-modal" */ '@deriv/account/src/Components/additional-kyc-info-modal'
+    )
+);
+
+const InformationSubmittedModal = React.lazy(() =>
+    import(/* webpackChunkName: "information-submitted-modal" */ './information-submitted-modal')
+);
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_closing_create_real_account_modal,
@@ -87,6 +97,8 @@ const AppModals = ({
     is_verification_submitted,
     should_show_one_time_deposit_modal,
     should_show_account_success_modal,
+    is_additional_kyc_info_modal_open,
+    is_kyc_information_submitted_modal_open,
 }) => {
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -188,6 +200,14 @@ const AppModals = ({
     if (should_show_account_success_modal) {
         ComponentToLoad = <ReadyToVerifyModal />;
     }
+    if (is_additional_kyc_info_modal_open) {
+        ComponentToLoad = <AdditionalKycInfoModal />;
+    }
+
+    if (is_kyc_information_submitted_modal_open) {
+        ComponentToLoad = <InformationSubmittedModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu_user} portal_id='popup_root' />
@@ -225,4 +245,6 @@ export default connect(({ client, ui, traders_hub }) => ({
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
     should_show_one_time_deposit_modal: ui.should_show_one_time_deposit_modal,
     should_show_account_success_modal: ui.should_show_account_success_modal,
+    is_additional_kyc_info_modal_open: ui.is_additional_kyc_info_modal_open,
+    is_kyc_information_submitted_modal_open: ui.is_kyc_information_submitted_modal_open,
 }))(AppModals);

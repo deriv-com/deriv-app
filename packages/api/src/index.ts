@@ -1,7 +1,5 @@
 import useInfiniteQuery from './useInfiniteQuery';
 import useMutation from './useMutation';
-import usePrefetchQuery from './usePrefetchQuery';
-import useRemoveQuery from './useRemoveQuery';
 import useQuery from './useQuery';
 
 export { default as APIProvider } from './APIProvider';
@@ -13,8 +11,6 @@ export { default as useSubscription } from './useSubscription';
 export {
     useInfiniteQuery,
     useMutation,
-    usePrefetchQuery,
-    useRemoveQuery,
     useQuery,
     /** @deprecated use `useQuery` instead */
     useQuery as useFetch,

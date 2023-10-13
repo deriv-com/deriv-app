@@ -384,8 +384,8 @@ const ChartTrade = observer(props => {
             clearChart={false}
             toolbarWidget={() => (
                 <ToolbarWidgets
-                    updateChartType={value => chartStateChange(STATE_TYPES.SET_CHART_TYPE, { chart_type_name: value })}
-                    updateGranularity={value => chartStateChange(STATE_TYPES.SET_GRANULARITY, { granularity: value })}
+                    updateChartType={value => chartStateChange(STATE_TYPES.SET_CHART_MODE, { chart_type_name: value })}
+                    updateGranularity={value => chartStateChange(STATE_TYPES.SET_CHART_MODE, { granularity: value })}
                 />
             )}
             importedLayout={chart_layout}

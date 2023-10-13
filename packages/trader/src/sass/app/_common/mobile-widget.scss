@@ -195,19 +195,21 @@
 }
 
 .duration_amount_selector {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-gap: 4.65rem;
-    padding: 0.7rem 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     .mobile-widget {
         &__duration {
-            display: flex;
-            justify-content: flex-start;
+            flex: 1 1 auto;
+            text-align: left;
         }
-        &__amount--container {
-            display: flex;
-            justify-content: space-between;
+        &__amount {
+            flex: 1 1 auto;
+        }
+        &__type {
+            flex: 1 1 auto;
+            text-align: right;
         }
     }
 }

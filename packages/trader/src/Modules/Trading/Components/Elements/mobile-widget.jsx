@@ -82,11 +82,11 @@ const MobileWidget = observer(() => {
                     <div className='mobile-widget__duration' onClick={() => toggleWidget(0)}>
                         {getHumanReadableDuration()}
                     </div>
-                    <div className='mobile-widget__amount--container' onClick={() => toggleWidget(1)}>
-                        <div className='mobile-widget__amount'>
-                            <Money amount={amount} currency={currency} show_currency />
-                        </div>
-                        <div className='mobile-widget__type'>{stakeOrPayout()}</div>
+                    <div className='mobile-widget__amount' onClick={() => toggleWidget(1)}>
+                        <Money amount={amount} currency={currency} show_currency />
+                    </div>
+                    <div className='mobile-widget__type' onClick={() => toggleWidget(1)}>
+                        {stakeOrPayout()}
                     </div>
                 </div>
             )}

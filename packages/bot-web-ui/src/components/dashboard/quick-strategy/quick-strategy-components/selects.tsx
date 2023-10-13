@@ -2,7 +2,7 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { TDropdownItems, TSelectsFieldNames } from '../quick-strategy.types';
 import { TSelects } from './components.types';
-import { SelectField } from '.';
+import SelectField from './select-field';
 
 const Selects = ({
     field_name,

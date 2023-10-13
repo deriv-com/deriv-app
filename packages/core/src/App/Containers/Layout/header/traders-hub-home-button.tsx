@@ -5,6 +5,7 @@ import { Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { useFeatureFlags } from '@deriv/hooks';
 
 const TradersHubHomeButton = observer(() => {
     const { ui } = useStore();
@@ -12,14 +13,16 @@ const TradersHubHomeButton = observer(() => {
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
+    const { is_next_wallet_enabled } = useFeatureFlags();
 
     return (
         <div
             data-testid='dt_traders_hub_home_button'
             className={classNames('traders-hub-header__tradershub', {
-                'traders-hub-header__tradershub--active': pathname === routes.traders_hub,
+                'traders-hub-header__tradershub--active':
+                    pathname === routes.traders_hub || pathname === routes.wallets,
             })}
-            onClick={() => history.push(routes.traders_hub)}
+            onClick={() => history.push(is_next_wallet_enabled ? routes.wallets : routes.traders_hub)}
         >
             <div className='traders-hub-header__tradershub--home-logo'>
                 <Icon

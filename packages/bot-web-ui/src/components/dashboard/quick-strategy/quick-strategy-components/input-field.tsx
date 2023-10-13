@@ -3,10 +3,9 @@ import { Field, FieldProps } from 'formik';
 import { Icon, Input, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TFormValues, TInputBaseFields, TInputCommonFields } from '../quick-strategy.types';
-import { TDataFields } from './data/data-fields';
+import data_fields, { TDataFields } from './data/data-fields';
 import { TDataUniqInput } from './data/data-uniq-input-obj';
 import { TInputFieldProps } from './components.types';
-import { data_fields } from '.';
 
 const InputField = ({
     idx,

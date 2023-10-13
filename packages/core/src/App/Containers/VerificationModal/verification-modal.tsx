@@ -1,21 +1,14 @@
 import React from 'react';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { observer, useStore } from '@deriv/stores';
 import VerificationModalContent from './verification-modal-content';
+
 import './verification-modal.scss';
 
-type TVerficationModal = {
-    is_verification_modal_visible: boolean;
-    setIsVerificationModalVisible: (is_visible: boolean) => void;
-    setIsVerificationSubmitted: (is_submitted: boolean) => void;
-};
+const VerificationModal = observer(() => {
+    const { ui } = useStore();
+    const { is_verification_modal_visible, setIsVerificationModalVisible, setIsVerificationSubmitted } = ui;
 
-const VerificationModal = ({
-    is_verification_modal_visible,
-    setIsVerificationModalVisible,
-    setIsVerificationSubmitted,
-}: TVerficationModal) => {
     return (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
@@ -54,10 +47,6 @@ const VerificationModal = ({
             </MobileWrapper>
         </React.Suspense>
     );
-};
+});
 
-export default connect(({ ui }: RootStore) => ({
-    is_verification_modal_visible: ui.is_verification_modal_visible,
-    setIsVerificationModalVisible: ui.setIsVerificationModalVisible,
-    setIsVerificationSubmitted: ui.setIsVerificationSubmitted,
-}))(VerificationModal);
+export default VerificationModal;

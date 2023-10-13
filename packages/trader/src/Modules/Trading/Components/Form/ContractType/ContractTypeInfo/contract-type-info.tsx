@@ -9,7 +9,6 @@ import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
 import { getContractTypes } from '../../../../Helpers/contract-type';
 import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { TContractType, TList } from '../types';
 
 type TInfo = {
@@ -29,6 +28,9 @@ const TABS = {
 const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const {
         ui: { is_mobile },
+        modules: {
+            trade: { is_vanilla_fx },
+        },
     } = useStore();
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
@@ -41,7 +43,6 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = is_mobile ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
-    const { is_vanilla_fx } = useTraderStore();
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
 
     React.useEffect(() => {

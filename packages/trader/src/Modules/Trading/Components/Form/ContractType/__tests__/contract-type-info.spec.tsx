@@ -15,6 +15,11 @@ jest.mock('@deriv/stores', () => ({
         ui: {
             is_mobile: false,
         },
+        modules: {
+            trade: {
+                is_vanilla_fx: false,
+            },
+        },
     })),
 }));
 
@@ -270,27 +275,13 @@ const mocked_props: React.ComponentProps<typeof Info> = {
 };
 
 describe('<Info />', () => {
-    const mock_root_store = {
-        modules: {
-            trade: {
-                is_vanilla_fx: false,
-            },
-        },
-    };
-    const mockInfo = (mocked_store: typeof mock_root_store) => {
-        return (
-            <TraderProviders store={mockStore(mocked_store)}>
-                <Info {...mocked_props} />
-            </TraderProviders>
-        );
-    };
     it('Should render only one "Choose Multipliers" button', () => {
-        render(mockInfo(mock_root_store));
+        render(<Info {...mocked_props} />);
         const trade_type_button = screen.queryByText('Choose Multipliers');
         expect(trade_type_button).toBeInTheDocument();
     });
     it('Should call handleSelect when clicking on "Choose Multipliers" button', () => {
-        render(mockInfo(mock_root_store));
+        render(<Info {...mocked_props} />);
         const trade_type_button = screen.queryByText('Choose Multipliers') as HTMLButtonElement;
         userEvent.click(trade_type_button);
         expect(trade_type_button).toBeInTheDocument();
@@ -299,7 +290,7 @@ describe('<Info />', () => {
     it('Should render toggle buttons if vanilla info page is open', () => {
         mocked_props.item.text = 'Call/Put';
         mocked_props.item.value = 'vanillalongcall';
-        render(mockInfo(mock_root_store));
+        render(<Info {...mocked_props} />);
         const trade_type_button = screen.getByText('Choose Call/Put');
         expect(screen.getByText('Description')).toBeInTheDocument();
         expect(screen.getByText(/glossary/i)).toBeInTheDocument();

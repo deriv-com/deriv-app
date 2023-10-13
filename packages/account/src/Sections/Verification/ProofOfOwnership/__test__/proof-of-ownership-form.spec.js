@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { fireEvent, render, screen } from '@testing-library/react';
+
 import ProofOfOwnershipForm from '../proof-of-ownership-form.jsx';
+
 import { grouped_payment_method_data } from './test-data';
 
 describe('proof-of-ownership-form.jsx', () => {
@@ -15,8 +18,8 @@ describe('proof-of-ownership-form.jsx', () => {
                 citizen='id'
             />
         );
-        const cardItems = screen.getAllByRole('card-item');
-        expect(cardItems.length).toEqual(1);
+        const cardItems = screen.getByRole('card-item');
+        expect(cardItems).toBeInTheDocument();
     });
     it('should render multiple card items inside the form', () => {
         render(
@@ -30,7 +33,7 @@ describe('proof-of-ownership-form.jsx', () => {
             />
         );
         const cardItems = screen.getAllByRole('card-item');
-        expect(cardItems.length).toEqual(Object.keys(grouped_payment_method_data).length);
+        expect(cardItems).toHaveLength(Object.keys(grouped_payment_method_data).length);
     });
     it('should format identifier', async () => {
         render(

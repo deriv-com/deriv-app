@@ -1,17 +1,20 @@
 import { useCallback, useContext } from 'react';
-import APIContext from './APIContext';
+
 import type {
     TSocketEndpointNames,
+    TSocketPaginateableEndpointNames,
     TSocketRequestPayload,
     TSocketResponseData,
     TSocketSubscribableEndpointNames,
 } from '../types';
 
+import APIContext from './APIContext';
+
 const useAPI = () => {
     const api = useContext(APIContext);
 
     const send = useCallback(
-        async <T extends TSocketEndpointNames>(
+        async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(
             name: T,
             payload?: TSocketRequestPayload<T>
         ): Promise<TSocketResponseData<T>> => {

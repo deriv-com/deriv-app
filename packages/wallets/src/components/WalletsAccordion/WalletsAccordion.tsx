@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+
 import IcDropdown from '../../public/images/ic-dropdown.svg';
+
 import './WalletsAccordion.scss';
 
 type TProps = {
@@ -19,10 +21,13 @@ const WalletsAccordion: React.FC<React.PropsWithChildren<TProps>> = ({
     const accordionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (isOpen && accordionRef?.current) {
-            accordionRef.current.style.scrollMarginTop = '24px';
-            accordionRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
+        const timeout = setTimeout(() => {
+            if (isOpen && accordionRef?.current) {
+                accordionRef.current.style.scrollMarginTop = '24px';
+                accordionRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 300);
+        return () => clearTimeout(timeout);
     }, [isOpen]);
 
     return (

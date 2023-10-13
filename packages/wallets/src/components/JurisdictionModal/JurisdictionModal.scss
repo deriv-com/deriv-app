@@ -3,17 +3,12 @@
     border-radius: 16px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    height: 75vh;
     justify-content: center;
     margin: auto 4rem;
-    width: 85vw;
+    height: 75vh;
 
-    &__cards {
-        align-items: center;
-        display: flex;
-        gap: 16px;
-        justify-content: center;
+    @include mobile {
+        height: auto;
     }
 
     &__button {
@@ -27,11 +22,27 @@
         font-weight: 700;
         height: 40px;
         justify-content: center;
-        margin-left: 1rem;
         padding: 10px 16px;
 
         &--disabled {
             opacity: 0.4;
+        }
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+
+    &__cards {
+        align-items: center;
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        width: 100%;
+
+        @include mobile {
+            flex-direction: column;
+            padding: 2rem 0;
         }
     }
 
@@ -43,6 +54,7 @@
         gap: 12px;
         justify-content: center;
         text-align: center;
+        margin-top: 20px;
 
         &-checkbox {
             align-items: center;

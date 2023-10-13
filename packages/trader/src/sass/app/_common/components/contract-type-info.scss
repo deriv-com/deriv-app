@@ -52,12 +52,6 @@
             margin-bottom: 1.6rem;
             color: var(--text-general);
         }
-        @supports (-moz-appearance: none) {
-            p,
-            ul li {
-                width: 98%;
-            }
-        }
         /* postcss-bem-linter: ignore */
         ul {
             margin-left: 1.6rem;

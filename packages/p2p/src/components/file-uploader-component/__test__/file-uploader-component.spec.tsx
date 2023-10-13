@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import FileUploaderComponent from '../file-uploader-component';
 
@@ -42,7 +43,7 @@ describe('<FileUploaderComponent />', () => {
         render(<FileUploaderComponent {...props} />, { wrapper });
 
         const input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;
-        fireEvent.change(input, { target: { files: [file] } });
+        userEvent.upload(input, file);
 
         await waitFor(() => {
             if (input.files) {
@@ -61,7 +62,7 @@ describe('<FileUploaderComponent />', () => {
 
         const unsupported_file = new File(['hello'], 'hello.html', { type: 'html' });
         const input = screen.getByTestId('dt_file_upload_input');
-        fireEvent.change(input, { target: { files: [unsupported_file] } });
+        userEvent.upload(input, unsupported_file);
 
         await waitFor(() => {
             expect(screen.getByText('error')).toBeInTheDocument();

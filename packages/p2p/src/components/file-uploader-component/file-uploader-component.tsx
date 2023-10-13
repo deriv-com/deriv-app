@@ -60,7 +60,7 @@ const FileUploaderComponent = ({
             />
             {(value.length > 0 || !!validation_error_message) && (
                 <Icon
-                    className={'file-uploader-component__close-icon'}
+                    className='file-uploader-component__close-icon'
                     color='secondary'
                     data_testid='dt_remove_file_icon'
                     icon='IcCloseCircle'

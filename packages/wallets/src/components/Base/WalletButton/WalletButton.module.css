@@ -4,11 +4,6 @@
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    /* TODO: Remove this once merged with <Text /> */
-    line-height: 20px;
-    text-align: center;
-    font-style: normal;
-    font-weight: 700;
     &:disabled {
         opacity: 0.32;
         cursor: not-allowed;
@@ -34,7 +29,6 @@
         border: none;
     }
     &-variant-outlined {
-        color: var(--system-light-1-prominent-text, #333);
         border: 1px solid var(--system-light-3-less-prominent-text, #999);
         background: none;
         &:hover {
@@ -42,7 +36,6 @@
         }
     }
     &-variant-text {
-        color: var(--button-primary-default, #ff444f);
         background: none;
         border: none;
         &:hover {
@@ -56,28 +49,24 @@
         border-radius: 64px;
     }
     &-color-primary {
-        color: var(--system-dark-1-prominent-text, #fff);
         background: var(--brand-coral, #ff444f);
         &:hover {
             background: var(--button-primary-hover-light, #eb3e48);
         }
     }
     &-color-primary-light {
-        color: var(--brand-coral, #ff444f);
         background: var(--button-primary-light-default, rgba(255, 68, 79, 0.16));
         &:hover {
             background: var(--button-primary-light-hover, rgba(255, 68, 79, 0.24));
         }
     }
     &-color-white {
-        color: var(--system-light-1-prominent-text, #333);
         background: var(--system-light-8-primary-background, #fff);
         &:hover {
             background: var(--system-light-5-active-background, #d6dadb);
         }
     }
     &-color-black {
-        color: var(--system-dark-1-prominent-text, #fff);
         background: var(--system-dark-8-primary-background, #0e0e0e);
         &:hover {
             background: var(--system-dark-5-active-background, #323738);

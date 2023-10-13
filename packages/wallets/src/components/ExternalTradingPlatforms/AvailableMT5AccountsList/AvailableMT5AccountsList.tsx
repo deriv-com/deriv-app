@@ -3,7 +3,7 @@ import { useSortedMT5Accounts } from '@deriv/api';
 import DerivedMT5 from '../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../public/images/mt5-swap-free.svg';
-import { WalletButton } from '../../Base';
+import { WalletButton, WalletText } from '../../Base';
 import { useModal } from '../../ModalProvider';
 import { MT5PasswordModal } from '../../MT5PasswordModal';
 import { TradingAccountCard } from '../../TradingAccountCard';
@@ -45,7 +45,9 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     color='primary-light'
                     onClick={() => show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} />)}
                 >
-                    Get
+                    <WalletText align='center' color='error' size='sm' weight='bold'>
+                        Get
+                    </WalletText>
                 </WalletButton>
             )}
         >

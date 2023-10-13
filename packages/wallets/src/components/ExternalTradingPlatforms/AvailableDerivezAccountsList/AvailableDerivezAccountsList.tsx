@@ -1,6 +1,6 @@
 import React from 'react';
 import DerivEZ from '../../../public/images/derivez.svg';
-import { WalletButton } from '../../Base';
+import { WalletButton, WalletText } from '../../Base';
 import { TradingAccountCard } from '../../TradingAccountCard';
 import './AvailableDerivezAccountsList.scss';
 
@@ -12,7 +12,13 @@ const AvailableDerivezAccountsList: React.FC = () => {
                     <DerivEZ />
                 </div>
             )}
-            trailing={() => <WalletButton color='primary-light'>Get</WalletButton>}
+            trailing={() => (
+                <WalletButton color='primary-light'>
+                    <WalletText align='center' color='error' size='sm' weight='bold'>
+                        Get
+                    </WalletText>
+                </WalletButton>
+            )}
         >
             <div className='wallets-available-derivez__details'>
                 <p className='wallets-available-derivez__details-title'>Deriv EZ</p>

@@ -14,7 +14,6 @@ const mocked_root_store = {
                 TURBOSLONG: { obj_contract_basis: { text: 'Payout per point', value: 10 }, message: 'test' },
             },
             contract_type: 'turboslong',
-            vanilla_trade_type: 'VANILLALONGCALL',
         },
     },
 };

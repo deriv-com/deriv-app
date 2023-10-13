@@ -80,7 +80,7 @@ const Toolbox = observer(() => {
                         />
                         <div className='db-toolbox__category-menu'>
                             {toolbox_dom &&
-                                (Array.from(toolbox_dom.childNodes) as HTMLElement[]).map((category, index) => {
+                                Array.from(toolbox_dom.childNodes as HTMLElement[]).map((category, index) => {
                                     if (category.tagName.toUpperCase() === 'CATEGORY') {
                                         const has_sub_category = hasSubCategory(category.children);
                                         const is_sub_category_open = sub_category_index.includes(index);

@@ -6,7 +6,7 @@ import './OtherCFDPlatformsList.scss';
 
 const OtherCFDPlatformsList: React.FC = () => {
     const { data } = useDxtradeAccountsList();
-    const has_dxtrade_account = !!data?.length;
+    const hasDxtradeAccount = !!data?.length;
 
     return (
         <div className='wallets-other-cfd'>
@@ -14,7 +14,7 @@ const OtherCFDPlatformsList: React.FC = () => {
                 <h1>Other CFD Platforms</h1>
             </div>
             <div className='wallets-other-cfd__content'>
-                {has_dxtrade_account ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
+                {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
             </div>
         </div>
     );

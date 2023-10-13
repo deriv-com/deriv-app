@@ -37,10 +37,18 @@ const AccountLimits = observer(
         should_show_article = true,
     }: TAccountLimits) => {
         const { client, common } = useStore();
-        const { account_limits, currency, getLimits, is_virtual, is_switching } = client;
+        const {
+            account_limits,
+            account_status,
+            currency,
+            getLimits,
+            is_fully_authenticated,
+            is_virtual,
+            is_switching,
+        } = client;
         const { is_from_derivgo } = common;
         const isMounted = useIsMounted();
-        const [is_loading, setLoading] = React.useState(false);
+        const [is_loading, setLoading] = React.useState(true);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
         const { is_appstore } = React.useContext(PlatformContext);
 
@@ -58,10 +66,10 @@ const AccountLimits = observer(
         }, []);
 
         React.useEffect(() => {
-            if (!is_virtual && account_limits && is_loading) {
+            if (!is_virtual && account_limits && is_loading && Object.keys(account_status).length > 0) {
                 setLoading(false);
             }
-        }, [account_limits, is_virtual, is_loading]);
+        }, [account_limits, is_virtual, is_loading, account_status]);
 
         React.useEffect(() => {
             if (typeof setIsPopupOverlayShown === 'function') {
@@ -71,7 +79,7 @@ const AccountLimits = observer(
 
         const toggleOverlay = () => setIsOverlayShown(!is_overlay_shown);
 
-        if (is_switching) {
+        if (is_switching || is_loading) {
             return <Loading is_fullscreen={false} />;
         }
 
@@ -101,10 +109,6 @@ const AccountLimits = observer(
 
         if (api_initial_load_error) {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
-        }
-
-        if (is_switching || is_loading) {
-            return <Loading is_fullscreen={false} />;
         }
 
         const { commodities, forex, indices, synthetic_index } = { ...market_specific };

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { InputWithCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -38,6 +38,7 @@ const TakeProfit = observer(props => {
             <InputWithCheckbox
                 addToast={addToast}
                 removeToast={removeToast}
+                classNameBubble='dc-popover__trade-params'
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput={classNames('trade-container__input', {
                     'trade-container__input--accumulator': is_accumulator,

@@ -567,6 +567,11 @@
                         background-color: var(--button-secondary-hover);
                     }
                 }
+                &-hide {
+                    @include mobile {
+                        display: none;
+                    }
+                }
             }
             &-ctrader {
                 &-container {
@@ -654,6 +659,11 @@
                 align-items: center;
                 border: 1px solid var(--border-disabled);
                 border-radius: 5px;
+                &-hide {
+                    @include mobile {
+                        display: none;
+                    }
+                }
             }
         }
         &-text {

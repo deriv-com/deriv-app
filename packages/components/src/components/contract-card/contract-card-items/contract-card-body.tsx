@@ -26,16 +26,16 @@ export type TGeneralContractCardBodyProps = {
     current_focus?: string | null;
     error_message_alignment?: string;
     getCardLabels: TGetCardLables;
-    getContractById: (contract_id?: number) => TContractStore;
+    getContractById: (contract_id: number) => TContractStore;
     should_show_cancellation_warning: boolean;
     has_progress_slider: boolean;
     is_mobile: boolean;
     is_sold: boolean;
-    onMouseLeave: () => void;
+    onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string) => void;
     status?: string;
-    toggleCancellationWarning: () => void;
+    toggleCancellationWarning: (state_change?: boolean) => void;
     progress_slider?: React.ReactNode;
     is_positions?: boolean;
 };
@@ -122,7 +122,7 @@ const ContractCardBody = ({
                 {...toggle_card_dialog_props}
             />
         );
-    } else if (is_accumulator) {
+    } else if (is_accumulator && indicative !== null) {
         card_body = (
             <AccumulatorCardBody
                 contract_info={contract_info}

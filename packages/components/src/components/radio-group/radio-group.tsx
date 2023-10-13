@@ -6,7 +6,7 @@ type TItem = React.HTMLAttributes<HTMLDivElement> & {
     id?: string;
     value: string;
     label: string;
-    disabled: boolean;
+    disabled?: boolean;
     hidden?: boolean;
 };
 type TItemWrapper = {

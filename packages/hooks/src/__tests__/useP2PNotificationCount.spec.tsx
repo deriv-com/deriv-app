@@ -5,12 +5,15 @@ import useP2PNotificationCount from '../useP2PNotificationCount';
 
 Object.defineProperty(window, 'localStorage', {
     value: {
-        getItem: jest.fn(() =>
-            JSON.stringify({
-                CR12345: { notifications: [{ is_seen: false }] },
-                CR12346: { notifications: [{ is_seen: false }, { is_seen: false }, { is_seen: true }] },
-            })
-        ),
+        getItem: jest.fn((key: string) => {
+            if (key === 'p2p_settings') {
+                return JSON.stringify({
+                    CR12345: { notifications: [{ is_seen: false }] },
+                    CR12346: { notifications: [{ is_seen: false }, { is_seen: false }, { is_seen: true }] },
+                });
+            }
+        }),
+        removeItem: jest.fn(),
     },
 });
 

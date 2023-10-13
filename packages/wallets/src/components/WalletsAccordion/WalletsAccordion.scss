@@ -28,7 +28,7 @@
                 width: 100%;
                 height: 100%;
                 border-radius: 16px;
-                background-image: url('../../public//images/wallet-demo-desktop-bg.svg');
+                background-image: url('../../public/images/wallet-demo-desktop-bg.svg');
                 background-repeat: repeat;
                 background-size: 60px;
                 opacity: 0.24;
@@ -56,6 +56,10 @@
         transition: all 0.3s ease;
         cursor: pointer;
         z-index: 10;
+        display: inline-block;
+        position: relative;
+        padding: 2em;
+        margin: -2em;
 
         &--open {
             transform: rotate(180deg);

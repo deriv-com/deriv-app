@@ -27,6 +27,7 @@ export default class RunPanelStore {
             is_stop_button_disabled: computed,
             is_clear_stat_disabled: computed,
             onStopButtonClick: action.bound,
+            onStopBotClick: action.bound,
             stopBot: action.bound,
             onClearStatClick: action.bound,
             clearStat: action.bound,
@@ -219,6 +220,16 @@ export default class RunPanelStore {
     }
 
     onStopButtonClick() {
+        const { is_multiplier } = this.root_store.summary_card;
+
+        if (is_multiplier) {
+            this.showStopMultiplierContractDialog();
+        } else {
+            this.stopBot();
+        }
+    }
+
+    onStopBotClick() {
         const { is_multiplier } = this.root_store.summary_card;
         const { summary_card } = this.root_store;
 

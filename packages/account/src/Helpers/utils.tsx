@@ -8,7 +8,7 @@ import {
     getIDVNotApplicableOption,
     idv_error_statuses,
 } from '@deriv/shared';
-import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
+import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocuments } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
@@ -43,20 +43,17 @@ const IDV_NOT_APPLICABLE_OPTION = getIDVNotApplicableOption();
 
 type TIDVSupportCheck = {
     residence_list: ResidenceList;
-    account_settings: GetSettings;
     account_status: GetAccountStatus;
     real_account_signup_target: string;
-    residence: string;
+    citizen: string;
 };
 
 export const shouldShowIdentityInformation = ({
     account_status,
-    account_settings,
-    residence,
+    citizen,
     residence_list,
     real_account_signup_target,
 }: TIDVSupportCheck) => {
-    const citizen = account_settings.citizen || residence;
     const country = residence_list.find(item => item.value === citizen);
     const maltainvest = real_account_signup_target === 'maltainvest';
     const should_skip_idv = account_status?.status?.some((status: string) => status === 'skip_idv'); //status added by BE when idv should be skipped for the user

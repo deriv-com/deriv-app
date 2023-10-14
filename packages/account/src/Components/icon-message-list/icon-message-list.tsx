@@ -1,23 +1,23 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
-import { Div100vhContainer, Text, Button, ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, Text, Button, ThemedScrollbars, Icon } from '@deriv/components';
 import ListItem from './list-item';
-import MaximumList from './maximum-list';
 import { TMessage_list } from '../../Types';
 import { observer, useStore } from '@deriv/stores';
+import { formatOnfidoError } from '@deriv/shared';
 
 type TIconMessageList = TMessage_list & {
     className?: string;
     icon: React.ReactElement;
     message: string;
+    message_list: Array<string>;
     onContinue: () => void;
 };
 
 const IconMessageList = observer(({ className, icon, message, message_list = [], onContinue }: TIconMessageList) => {
     const { ui } = useStore();
     const { is_mobile, is_desktop } = ui;
-    const has_maximum_list = message_list.length > 3;
     return (
         <ThemedScrollbars is_bypassed={is_mobile}>
             <Div100vhContainer
@@ -52,11 +52,24 @@ const IconMessageList = observer(({ className, icon, message, message_list = [],
 
                     {message_list && (
                         <div className='account-management__list-container'>
-                            {has_maximum_list ? (
-                                <MaximumList message_list={message_list} />
-                            ) : (
-                                message_list.map((text, idx) => <ListItem key={idx} text={text} />)
-                            )}
+                            <div className='account-management__list-message'>
+                                <div className='account-management__list-icon'>
+                                    <Icon icon='IcCloseCircle' color='red' />
+                                </div>
+                                <section>
+                                    {message_list.length < 2 ? (
+                                        <ListItem text={formatOnfidoError(message_list[0])} />
+                                    ) : (
+                                        message_list.map((text, idx) => (
+                                            <ListItem
+                                                key={text}
+                                                text={formatOnfidoError(message_list[idx])}
+                                                index={idx + 1}
+                                            />
+                                        ))
+                                    )}
+                                </section>
+                            </div>
                         </div>
                     )}
                     {onContinue && (

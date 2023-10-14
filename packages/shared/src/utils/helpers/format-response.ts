@@ -3,7 +3,7 @@ import { STATUS_CODES, getUnsupportedContracts } from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 import { TContractInfo } from '../contract';
-import { IDV_ERROR_STATUS } from '../constants/idv-failure-codes';
+import { IDV_ERROR_STATUS, ONFIDO_ERROR_STATUS } from '../constants/idv-failure-codes';
 
 type TIsUnSupportedContract = {
     contract_type?: string;
@@ -44,6 +44,7 @@ export const formatPortfolioPosition = (
 };
 
 export type TIDVErrorStatus = keyof typeof IDV_ERROR_STATUS;
+export type TOnfidoErrorStatus = keyof typeof ONFIDO_ERROR_STATUS;
 
 //formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
 export const formatIDVError = (errors: string[], status_code: string) => {
@@ -68,6 +69,10 @@ export const formatIDVError = (errors: string[], status_code: string) => {
         !status.includes(IDV_ERROR_STATUS.Failed.code as TIDVErrorStatus)
         ? IDV_ERROR_STATUS.NameDOBMismatch.code
         : status[0] ?? IDV_ERROR_STATUS.Failed.code;
+};
+
+export const formatOnfidoError = (error: string) => {
+    return ONFIDO_ERROR_STATUS[error as keyof typeof ONFIDO_ERROR_STATUS]?.message ?? '';
 };
 
 export const isVerificationServiceSupported = (

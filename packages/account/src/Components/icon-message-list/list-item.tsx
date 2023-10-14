@@ -1,20 +1,22 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 
 type TListItem = {
-    text?: string;
+    text: string;
+    index?: number;
 };
 
-const ListItem = ({ text }: TListItem) => (
-    <div className='account-management__list-message'>
-        <div className='account-management__list-icon'>
-            <Icon icon='IcCloseCircle' color='red' />
-        </div>
-        <div className='account-management__list-text-container'>
+const ListItem = ({ text, index }: TListItem) => (
+    <div className='account-management__list-text-container'>
+        {index && (
             <Text size='xs' className='account-management__list-text'>
-                {text}
+                <Localize i18n_default_text='{{index}}.' values={{ index }} />{' '}
             </Text>
-        </div>
+        )}
+        <Text size='xs' className='account-management__list-text'>
+            <Localize i18n_default_text='{{text}}' values={{ text }} />
+        </Text>
     </div>
 );
 

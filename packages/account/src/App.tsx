@@ -4,6 +4,7 @@ import ResetTradingPassword from './Containers/reset-trading-password';
 import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
+import { POIProvider } from './Helpers/poi-context';
 
 // TODO: add correct types for WS after implementing them
 type TAppProps = {
@@ -21,9 +22,11 @@ const App = ({ passthrough }: TAppProps) => {
     return (
         <StoreProvider store={root_store}>
             <APIProvider>
-                {Notifications && <Notifications />}
-                <Routes />
-                <ResetTradingPassword />
+                <POIProvider>
+                    {Notifications && <Notifications />}
+                    <Routes />
+                    <ResetTradingPassword />
+                </POIProvider>
             </APIProvider>
         </StoreProvider>
     );

@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import type { SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
 import { CSSTransition } from 'react-transition-group';
 import { useSettings } from '@deriv/api';
 import { ResidenceList } from '@deriv/api-types';
@@ -10,6 +9,7 @@ import ErrorMessage from '../../../Components/error-component';
 import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-confirm-with-example-form-container';
 import OnfidoSdkView from './onfido-sdk-view';
+import type { SdkHandle, SdkResponse, SupportedLanguages } from '../../../Types';
 import { convertAlpha2toAlpha3, convertAlpha3toAlpha2, getOnfidoSupportedLocaleCode } from '../../../Helpers/utils';
 
 type TAPIError = {
@@ -93,8 +93,7 @@ const OnfidoSdkViewContainer = observer(
             async (service_token: string) => {
                 if (!service_token) return;
                 try {
-                    const onfido = await import('onfido-sdk-ui');
-                    onfido_init.current = await onfido.init({
+                    onfido_init.current = await window.Onfido.init({
                         containerId: 'onfido',
                         language: getOnfidoSupportedLocaleCode(current_language) as SupportedLanguages,
                         token: service_token,

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { TIDVErrorStatus, IDV_ERROR_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -50,7 +51,7 @@ const IdvSubmitComplete = observer(
         );
 
         return (
-            <div className='proof-of-identity__container'>
+            <div className={classNames('proof-of-identity__container', 'proof-of-identity__container--status')}>
                 <IdvDocumentPending className='icon' />
                 <Text className='proof-of-identity__text btm-spacer' align='center' weight='bold'>
                     {getHeaderText()}

@@ -1,12 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
-import {
-    GetAccountStatus,
-    GetSettings,
-    IdentityVerificationAddDocumentResponse,
-    ResidenceList,
-} from '@deriv/api-types';
+import { Form, Formik, FormikHelpers, FormikState, FormikValues } from 'formik';
+import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button, DesktopWrapper, HintBox, Loading, Text } from '@deriv/components';
 import {
     filterObjProperties,
@@ -38,7 +33,11 @@ import {
     validate,
     validateName,
 } from '../../../../Helpers/utils';
-import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from '../../../../Configs/poi-error-config';
+import {
+    GENERIC_ERROR_MESSAGE,
+    DUPLICATE_ACCOUNT_ERROR_MESSAGE,
+    CLAIMED_DOCUMENT_ERROR_MESSAGE,
+} from '../../../../Configs/poi-error-config';
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
 import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
 import LoadErrorMessage from '../../../load-error-message';
@@ -260,9 +259,12 @@ const IdvFailed = ({
         setIsAlreadyAttempted,
     ]);
 
-    const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {
+    const onSubmit = async (
+        values: TIdvFailedForm,
+        { setStatus, setSubmitting, status }: FormikHelpers<TIdvFailedForm> & FormikState<TIdvDocumentSubmitForm>
+    ) => {
         setSubmitting(true);
-        setStatus({ error_msg: null });
+        setStatus({ ...status, error_msg: null });
         const { document_number, document_type } = values;
         const request = makeSettingsRequest(
             values,
@@ -275,7 +277,7 @@ const IdvFailed = ({
                 data.error?.code === API_ERROR_CODES.DUPLICATE_ACCOUNT
                     ? DUPLICATE_ACCOUNT_ERROR_MESSAGE
                     : GENERIC_ERROR_MESSAGE;
-            setStatus({ error_msg: response_error });
+            setStatus({ ...status, error_msg: response_error });
             setSubmitting(false);
         } else {
             const response = await WS.authorized.storage.getSettings();
@@ -296,13 +298,18 @@ const IdvFailed = ({
                 handleSubmit();
                 return;
             }
-            WS.send(submit_data).then((resp: IdentityVerificationAddDocumentResponse) => {
+            const idv_update_response = await WS.send(submit_data);
+            if (idv_update_response?.error) {
+                const response_error =
+                    idv_update_response.error?.code === API_ERROR_CODES.CLAIMED_DOCUMENT
+                        ? CLAIMED_DOCUMENT_ERROR_MESSAGE
+                        : idv_update_response?.error?.message ?? GENERIC_ERROR_MESSAGE;
+                setStatus({ ...status, error_msg: response_error });
                 setSubmitting(false);
-                if (resp.error) {
-                    return;
-                }
-                handleSubmit();
-            });
+                return;
+            }
+            setSubmitting(false);
+            handleSubmit();
         }
     };
 

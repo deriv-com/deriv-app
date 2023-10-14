@@ -9,6 +9,7 @@ import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
 import OnfidoSdkViewContainer from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
+import { POIContext } from '../../../Helpers/poi-context';
 
 const POISubmission = observer(
     ({
@@ -27,9 +28,14 @@ const POISubmission = observer(
         setIsCfdPoiCompleted,
         should_show_mismatch_form,
     }) => {
-        const [submission_status, setSubmissionStatus] = React.useState(submission_status_code.selecting); // selecting, submitting, complete
-        const [submission_service, setSubmissionService] = React.useState();
-        const [selected_country, setSelectedCountry] = React.useState({});
+        const {
+            submission_service,
+            setSubmissionService,
+            submission_status,
+            setSubmissionStatus,
+            selected_country,
+            setSelectedCountry,
+        } = React.useContext(POIContext);
 
         const { client, notifications } = useStore();
 
@@ -82,34 +88,35 @@ const POISubmission = observer(
                 const { service, country_code } = identity_last_attempt;
                 switch (service) {
                     case service_code.idv: {
-                        if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
-                            setSubmissionStatus(submission_status_code.selecting);
-                        } else {
+                        if (Number(idv.submissions_left) < 1) {
                             setSubmissionService(service_code.manual);
-                            setSubmissionStatus(submission_status_code.submitting);
                         }
                         break;
                     }
                     case service_code.onfido: {
-                        if (Number(onfido.submissions_left) > 0) {
-                            setSubmissionStatus(submission_status_code.selecting);
-                        } else {
+                        if (Number(onfido.submissions_left) < 1) {
                             setSubmissionService(service_code.manual);
-                            setSubmissionStatus(submission_status_code.submitting);
                         }
                         break;
                     }
                     case service_code.manual: {
                         setSelectedCountry(getCountryFromResidence(country_code));
                         setSubmissionService(service_code.manual);
-                        setSubmissionStatus(submission_status_code.submitting);
                         break;
                     }
                     default:
                         break;
                 }
+                setSubmissionStatus(submission_status_code.submitting);
             },
-            [getCountryFromResidence, idv.submissions_left, onfido.submissions_left]
+            [
+                getCountryFromResidence,
+                idv.submissions_left,
+                onfido.submissions_left,
+                setSelectedCountry,
+                setSubmissionService,
+                setSubmissionStatus,
+            ]
         );
 
         React.useEffect(() => {
@@ -136,6 +143,8 @@ const POISubmission = observer(
             submission_status,
             idv,
             mismatch_status,
+            setSubmissionService,
+            setSubmissionStatus,
         ]);
 
         switch (submission_status) {
@@ -145,9 +154,6 @@ const POISubmission = observer(
                         handleSelectionNext={handleSelectionNext}
                         is_from_external={is_from_external}
                         mismatch_status={mismatch_status}
-                        residence_list={residence_list}
-                        selected_country={selected_country}
-                        setSelectedCountry={setSelectedCountry}
                     />
                 );
             }

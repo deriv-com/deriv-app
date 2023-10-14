@@ -2,12 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
 import { Div100vhContainer, Text, Button, ThemedScrollbars, Icon } from '@deriv/components';
-import ListItem from './list-item';
-import { TMessage_list } from '../../Types';
-import { observer, useStore } from '@deriv/stores';
 import { formatOnfidoError } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import ListItem from './list-item';
 
-type TIconMessageList = TMessage_list & {
+type TIconMessageList = {
     className?: string;
     icon: React.ReactElement;
     message: string;

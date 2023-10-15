@@ -1,6 +1,6 @@
 name: Deriv App Staging Workflow
 on:
-  push:
+  pull_request:
     branches:
     - uat
 

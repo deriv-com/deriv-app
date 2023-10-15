@@ -1,6 +1,6 @@
 import React from 'react';
 import { TradingAccountCard } from '../../../../../../components';
-import { SecondaryActionButton, WalletText } from '../../../../../../components/Base';
+import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import DerivX from '../../../../../../public/images/derivx.svg';
 import { DxtradeEnterPasswordModal } from '../../../../modals';
@@ -17,16 +17,16 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                 </div>
             )}
             trailing={() => (
-                <SecondaryActionButton onClick={() => show(<DxtradeEnterPasswordModal />)}>
-                    <WalletText color='error' size='s' weight='bold'>
+                <WalletButton color='primary-light' onClick={() => show(<DxtradeEnterPasswordModal />)}>
+                    <WalletText align='center' color='error' size='sm' weight='bold'>
                         Get
                     </WalletText>
-                </SecondaryActionButton>
+                </WalletButton>
             )}
         >
             <div className='wallets-available-dxtrade__details'>
                 <p className='wallets-available-dxtrade__details-title'>
-                    <WalletText size='s' weight='bold'>
+                    <WalletText size='sm' weight='bold'>
                         Deriv X
                     </WalletText>
                 </p>

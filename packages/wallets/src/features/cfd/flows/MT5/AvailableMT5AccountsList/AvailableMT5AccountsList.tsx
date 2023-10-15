@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSortedMT5Accounts } from '@deriv/api';
-import { SecondaryActionButton, TradingAccountCard } from '../../../../../components';
+import { TradingAccountCard, WalletButton, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';
@@ -40,11 +40,14 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 </div>
             )}
             trailing={() => (
-                <SecondaryActionButton
+                <WalletButton
+                    color='primary-light'
                     onClick={() => show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} />)}
                 >
-                    <p className='wallets-available-mt5__text'>Get</p>
-                </SecondaryActionButton>
+                    <WalletText align='center' color='error' size='sm' weight='bold'>
+                        Get
+                    </WalletText>
+                </WalletButton>
             )}
         >
             <div className='wallets-available-mt5__details'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
     useActiveWalletAccount,
     useAvailableMT5Accounts,
@@ -8,9 +8,8 @@ import {
     useSortedMT5Accounts,
 } from '@deriv/api';
 import { ModalWrapper } from '../../../../components/Base';
-import { useModal } from '../../../../components/ModalProvider';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { CreatePassword, EnterPassword } from '../../screens';
+import { AccountReady, CreatePassword, EnterPassword } from '../../screens';
 
 type TProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
@@ -23,7 +22,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
-    const { hide } = useModal();
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
 
@@ -45,28 +43,25 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
         });
     };
 
-    useEffect(() => {
-        // Success modal here
-        if (isSuccess) hide();
-    }, [hide, isSuccess]);
-
     return (
-        <ModalWrapper>
-            {hasMT5Account ? (
-                <EnterPassword
-                    marketType={marketType}
-                    onPasswordChange={e => setPassword(e.target.value)}
-                    onPrimaryClick={onSubmit}
-                    platform='mt5'
-                />
-            ) : (
-                <CreatePassword
-                    icon={<MT5PasswordIcon />}
-                    onPasswordChange={e => setPassword(e.target.value)}
-                    onPrimaryClick={onSubmit}
-                    platform='mt5'
-                />
-            )}
+        <ModalWrapper hideCloseButton={isSuccess}>
+            {isSuccess && <AccountReady marketType={marketType} />}
+            {!isSuccess &&
+                (hasMT5Account ? (
+                    <EnterPassword
+                        marketType={marketType}
+                        onPasswordChange={e => setPassword(e.target.value)}
+                        onPrimaryClick={onSubmit}
+                        platform='mt5'
+                    />
+                ) : (
+                    <CreatePassword
+                        icon={<MT5PasswordIcon />}
+                        onPasswordChange={e => setPassword(e.target.value)}
+                        onPrimaryClick={onSubmit}
+                        platform='mt5'
+                    />
+                ))}
         </ModalWrapper>
     );
 };

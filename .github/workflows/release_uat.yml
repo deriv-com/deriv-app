@@ -1,4 +1,4 @@
-name: Deriv App Staging Workflow
+name: Deriv App Release to UAT Environment
 on:
   pull_request:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build_test_and_publish:
-    name: Build, Test and Publish to Cloudflare Staging 
+    name: Build, Test and Publish to Cloudflare UAT 
     runs-on: Runner_16cores_Deriv-app
     environment: Staging
     steps:

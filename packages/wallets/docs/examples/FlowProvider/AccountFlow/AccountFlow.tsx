@@ -58,7 +58,7 @@ const JurisdictionScreen = () => {
 };
 
 const screens = {
-    selectAccountTypeScreen: <MT5AccountType selectedMarketType='all' />,
+    selectAccountTypeScreen: <MT5AccountType onMarketTypeSelect={marketType => marketType} selectedMarketType='all' />,
     JurisdictionScreen: <JurisdictionScreen />,
     passwordScreen: <PasswordScreen />,
     aScreen: <ScreenA />,

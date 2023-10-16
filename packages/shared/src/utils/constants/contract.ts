@@ -3,6 +3,8 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 
 import { shouldShowCancellation, shouldShowExpiration, TURBOS, VANILLALONG } from '../contract';
+import { cloneObject } from '../object';
+import { LocalStore } from '../storage';
 
 export const getLocalizedBasis = () =>
     ({
@@ -37,6 +39,18 @@ type TContractConfig = {
 };
 
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
+
+type TTextValueStrings = {
+    text: string;
+    value: string;
+};
+
+export type TTradeTypesCategories = {
+    [key: string]: {
+        name: string;
+        categories: Array<string | TTextValueStrings>;
+    };
+};
 
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {
@@ -518,6 +532,27 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
     } as const);
 
 export const TRADE_FEATURE_FLAGS = ['sharkfin'];
+
+export const getCleanedUpCategories = (categories: TTradeTypesCategories) => {
+    const new_categories: TTradeTypesCategories = cloneObject(categories);
+    const hidden_trade_types = Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {})
+        .filter(([key, value]) => TRADE_FEATURE_FLAGS.includes(key) && !value)
+        .map(([key]) => key);
+
+    Object.keys(new_categories).forEach(key => {
+        new_categories[key].categories = new_categories[key].categories?.filter(item => {
+            return (
+                typeof item === 'object' &&
+                // hide trade types with disabled feature flag:
+                hidden_trade_types?.every(hidden_type => !item.value.startsWith(hidden_type))
+            );
+        });
+        if (new_categories[key].categories?.length === 0) {
+            delete new_categories[key];
+        }
+    });
+    return new_categories;
+};
 
 export const getContractConfig = (is_high_low?: boolean) => ({
     ...getSupportedContracts(is_high_low),

@@ -6,20 +6,26 @@ import Native from './date-picker-native';
 import MobileWrapper from '../mobile-wrapper';
 import DesktopWrapper from '../desktop-wrapper';
 import { useOnClickOutside } from '../../hooks/use-onclickoutside';
-import { MomentInput } from 'moment';
+import moment, { MomentInput } from 'moment';
 import { TDatePickerOnChangeEvent } from '../types';
 
 type TDatePicker = Omit<
     React.ComponentProps<typeof Native> & React.ComponentProps<typeof Input> & React.ComponentProps<typeof Calendar>,
-    'value' | 'onSelect' | 'is_datepicker_visible' | 'placement' | 'style' | 'calendar_el_ref' | 'parent_ref'
+    | 'date_format'
+    | 'onSelect'
+    | 'is_datepicker_visible'
+    | 'is_placeholder_visible'
+    | 'placement'
+    | 'style'
+    | 'calendar_el_ref'
+    | 'parent_ref'
+    | 'onChange'
+    | 'onChangeInput'
 > & {
-    mode: string;
-    start_date: moment.Moment;
+    mode?: string;
     value: moment.Moment | string;
     onChange: (e: TDatePickerOnChangeEvent) => void;
-    footer: React.ReactElement;
-    date_format: string;
-    has_range_selection: boolean;
+    date_format?: string;
 };
 
 type TCalendarRef = {
@@ -42,7 +48,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
         max_date,
         min_date,
         start_date,
-        name,
+        name = '',
         onBlur,
         onChange,
         onFocus,

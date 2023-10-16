@@ -1,0 +1,44 @@
+import React, { useMemo } from 'react';
+import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
+import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5';
+import { GetMoreMT5Accounts } from '../../screens';
+import './MT5PlatformsList.scss';
+
+const MT5PlatformsList: React.FC = () => {
+    const { data, isFetchedAfterMount } = useSortedMT5Accounts();
+    const { data: activeWallet } = useActiveWalletAccount();
+
+    const hasMT5Account = useMemo(() => {
+        return data?.some(account => account.is_added);
+    }, [data]);
+
+    if (!isFetchedAfterMount) return <span className='wallets-mt5-loader' />;
+
+    return (
+        <React.Fragment>
+            <section className='wallets-mt5-list'>
+                <div className='wallets-mt5-list__title'>
+                    <h1>Deriv MT5</h1>
+                </div>
+            </section>
+            <div className='wallets-mt5-list__content'>
+                {data?.map((account, index) => {
+                    if (account.is_added)
+                        return (
+                            <AddedMT5AccountsList account={account} key={`added-mt5-list${account.loginid}-${index}`} />
+                        );
+
+                    return (
+                        <AvailableMT5AccountsList
+                            account={account}
+                            key={`available-mt5-list${account.name}-${index}`}
+                        />
+                    );
+                })}
+                {hasMT5Account && !activeWallet?.is_virtual && <GetMoreMT5Accounts />}
+            </div>
+        </React.Fragment>
+    );
+};
+
+export default MT5PlatformsList;

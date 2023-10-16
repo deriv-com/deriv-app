@@ -3,8 +3,8 @@ import { useActiveWalletAccount } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from './components';
 import './CFDPlatformsList.scss';
-import { useModal } from '../../ModalProvider';
-import AccountVerificationFlows from '../../AccountFlow/AccountVerificationFlows';
+import { useModal } from '../../components/ModalProvider';
+import AccountVerificationFlows from '../../components/AccountFlow/AccountVerificationFlows';
 
 const CFDPlatformsList = () => {
     const { data: activeWallet } = useActiveWalletAccount();

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import DerivedMT5 from '../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../../public/images/mt5-swap-free.svg';
 import { MT5AccountTypeCard } from '../MT5AccountTypeCard';
 import './MT5AccountType.scss';
-import { useModal } from '../../ModalProvider';
+import { useModal } from '../../../../components/ModalProvider';
 
 const marketTypeDetailsMapper = {
     all: {

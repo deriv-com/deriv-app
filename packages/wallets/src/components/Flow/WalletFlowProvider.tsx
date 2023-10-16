@@ -9,33 +9,39 @@ import React, {
     ReactNode,
     ReactFragment,
     ReactPortal,
+    useEffect,
 } from 'react';
 import { Formik, FormikErrors, FormikValues } from 'formik';
-import { useFlowSwitcher } from './WalletFlowSwitcher';
 
-export type TFlowProviderContext = {
-    currentScreenId: string;
-    switchScreen: (screenId: string) => void;
+export type TFlowProviderContext<T> = {
+    currentScreenId: keyof T;
+    switchScreen: (screenId: keyof T) => void;
     switchNextScreen: () => void;
-    registerScreen: (screenId: string, component: ReactNode) => void;
+    // registerScreen: (screenId: string, component: ReactNode) => void;
     formValues: FormikValues;
     setFormValues: (
         field: string,
         value: any,
         shouldValidate?: boolean | undefined
     ) => Promise<void | FormikErrors<any>>;
-    WalletScreen: ReactNode;
+    WalletScreen?: ReactNode;
 };
 
 type FlowChildren = ReactElement | ReactFragment | ReactPortal;
 
-export type TFlowProviderProps = {
-    initialScreenId?: string;
-    initialValues: FormikValues;
-    children: (context: TFlowProviderContext) => FlowChildren;
+export type TWalletScreens = {
+    [id: string]: ReactNode;
 };
 
-const FlowProviderContext = createContext<TFlowProviderContext | null>(null);
+export type TFlowProviderProps<T> = {
+    currentScreenId: keyof T;
+    initialScreenId: keyof T;
+    initialValues: FormikValues;
+    screens: T;
+    children: (context: TFlowProviderContext<T>) => FlowChildren;
+};
+
+const FlowProviderContext = createContext<TFlowProviderContext<{}> | null>(null);
 
 export const useFlow = () => {
     const flowProviderContext = useContext(FlowProviderContext);
@@ -45,40 +51,35 @@ export const useFlow = () => {
     return flowProviderContext;
 };
 
-function WalletFlowProvider({ initialValues, initialScreenId, children }: TFlowProviderProps) {
-    const [currentScreenId, setCurrentScreenId] = useState(initialScreenId);
-    const { screens } = useFlowSwitcher();
+function WalletFlowProvider<T extends TWalletScreens>({
+    initialValues,
+    initialScreenId,
+    screens,
+    children,
+}: TFlowProviderProps<T>) {
+    const [currentScreenId, setCurrentScreenId] = useState<keyof T>(initialScreenId);
 
-    const screenRegistry = useRef<Record<string, ReactNode>>({});
-    const screenIds = useRef<string[]>([]);
+    const screenIds = useRef<(keyof T)[]>([]);
 
-    const switchScreen = (screenId: string) => {
+    const switchScreen = (screenId: keyof T) => {
         setCurrentScreenId(screenId);
     };
 
     const switchNextScreen = () => {
-        const currentScreenIndex = screenIds.current.indexOf(currentScreenId || '');
+        const currentScreenIndex = screenIds.current.indexOf(currentScreenId);
+        console.log('swithing screen', currentScreenIndex);
         if (currentScreenIndex < screenIds.current.length) {
             const nextScreenId = screenIds.current[currentScreenIndex + 1];
             switchScreen(nextScreenId);
         }
     };
 
-    const registerScreen = (screenId: string, component: ReactNode) => {
-        screenRegistry.current[screenId] = component;
-        screenIds.current.push(screenId);
-    };
+    useEffect(() => {
+        screenIds.current = Object.keys(screens);
+    }, []);
 
     const currentScreen = useMemo(() => {
-        let screenIndex = 0;
-        for (let i = 0; i < screens.length; i++) {
-            if (screens[i].screenId === currentScreenId) {
-                screenIndex = i;
-                break;
-            }
-        }
-
-        return screens[screenIndex];
+        return screens[currentScreenId];
     }, [currentScreenId]);
 
     if (!currentScreenId) return null;
@@ -87,8 +88,7 @@ function WalletFlowProvider({ initialValues, initialScreenId, children }: TFlowP
         currentScreenId,
         switchScreen,
         switchNextScreen,
-        registerScreen,
-        WalletScreen: currentScreen.component,
+        WalletScreen: currentScreen,
     };
 
     return (
@@ -97,17 +97,19 @@ function WalletFlowProvider({ initialValues, initialScreenId, children }: TFlowP
             {({ values, setFieldValue }) => {
                 return (
                     <FlowProviderContext.Provider
-                        value={{
-                            ...context,
-                            formValues: values,
-                            setFormValues: setFieldValue,
-                        }}
+                        value={
+                            {
+                                ...context,
+                                formValues: values,
+                                setFormValues: setFieldValue,
+                            } as TFlowProviderContext<T>
+                        }
                     >
                         {children({
                             ...context,
                             formValues: values,
                             setFormValues: setFieldValue,
-                        })}
+                        } as TFlowProviderContext<T>)}
                     </FlowProviderContext.Provider>
                 );
             }}

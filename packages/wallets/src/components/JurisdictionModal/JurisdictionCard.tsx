@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import DocumentsIcon from '../../public/images/ic-documents.svg';
 import IdCardIcon from '../../public/images/ic-id-card.svg';
@@ -34,6 +34,10 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
     );
     const marketType = modalState?.marketType || 'all';
     const rows = contents[marketType] || [];
+
+    useEffect(() => {
+        console.log(modalState);
+    }, []);
 
     const parseClickableDescription = (clickableDescription: { text: string; type: 'link' | 'text' }[]) => {
         return clickableDescription.map(description => {

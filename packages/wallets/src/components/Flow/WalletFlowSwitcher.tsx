@@ -1,28 +1,18 @@
 import React, { FC, createContext, ReactNode, useState, useContext, useMemo, useEffect } from 'react';
 
+export type TWalletFlows = {
+    [id: string]: ReactNode;
+};
+
 export type TFlowSwitcherProps = {
-    initialFlowId?: string;
-    flowConfig: TFlowConfig;
+    initialFlowId: string;
+    flows: TWalletFlows;
 };
 
 export type TFlowSwitcherContext = {
     currentFlowId: string;
     switchFlow: (flowId: string) => void;
-    screens: TScreenRoute[];
 };
-
-export type TScreenRoute = {
-    screenId: string;
-    component: ReactNode;
-};
-
-export type TFlowRoute = {
-    flowId: string;
-    component: ReactNode;
-    screens: TScreenRoute[];
-};
-
-export type TFlowConfig = TFlowRoute[];
 
 const FlowSwitcherContext = createContext<TFlowSwitcherContext | null>(null);
 
@@ -34,22 +24,15 @@ export const useFlowSwitcher = () => {
     return flowContext;
 };
 
-const FlowSwitcher: FC<TFlowSwitcherProps> = ({ initialFlowId, flowConfig }) => {
+function FlowSwitcher({ initialFlowId, flows }: TFlowSwitcherProps) {
     const [currentFlowId, setCurrentFlowId] = useState(initialFlowId);
+
     const switchFlow = (flowId: string) => {
         setCurrentFlowId(flowId);
     };
 
     const currentFlow = useMemo(() => {
-        let flowIndex = 0;
-        for (let i = 0; i < flowConfig.length; i++) {
-            if (flowConfig[i].flowId === currentFlowId) {
-                flowIndex = i;
-                break;
-            }
-        }
-
-        return flowConfig[flowIndex];
+        return flows[currentFlowId];
     }, [currentFlowId]);
 
     if (!currentFlowId) return null;
@@ -59,12 +42,11 @@ const FlowSwitcher: FC<TFlowSwitcherProps> = ({ initialFlowId, flowConfig }) => 
             value={{
                 currentFlowId,
                 switchFlow,
-                screens: currentFlow.screens,
             }}
         >
-            {currentFlow.component}
+            {currentFlow}
         </FlowSwitcherContext.Provider>
     );
-};
+}
 
 export default FlowSwitcher;

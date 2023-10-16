@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
-import classNames from 'classnames';
+import React, { useMemo, useState } from 'react';
+import { useAvailableMT5Accounts } from '@deriv/api';
 import { useModal } from '../ModalProvider';
-import { ModalStepWrapper } from '../ModalStepWrapper';
-import { MT5PasswordModal } from '../MT5PasswordModal';
 import JurisdictionCard from './JurisdictionCard';
 import './JurisdictionModal.scss';
 
 const JurisdictionScreen = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
+    const { modalState, show } = useModal();
+    const { data, isLoading } = useAvailableMT5Accounts();
 
-    const jurisdictions = ['St. Vincent & Grenadines', 'British Virgin Islands', 'Vanuatu'];
+    const marketType = modalState?.marketType || 'all';
+
+    const jurisdictions = useMemo(
+        () =>
+            data?.filter(account => account.market_type === modalState?.marketType).map(account => account.shortcode) ||
+            [],
+        [isLoading]
+    );
+
+    if (isLoading) return <h1>Loading...</h1>;
 
     return (
         <div className='wallets-jurisdiction-modal'>
@@ -17,10 +26,14 @@ const JurisdictionScreen = () => {
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
                         isSelected={selectedJurisdiction === jurisdiction}
-                        jurisdiction={jurisdiction}
+                        jurisdiction={jurisdiction || 'bvi'}
                         key={jurisdiction}
                         onSelect={clickedJurisdiction => {
-                            setSelectedJurisdiction(clickedJurisdiction);
+                            if (clickedJurisdiction === selectedJurisdiction) {
+                                setSelectedJurisdiction('');
+                            } else {
+                                setSelectedJurisdiction(clickedJurisdiction);
+                            }
                         }}
                         tag='Straight-through processing'
                     />

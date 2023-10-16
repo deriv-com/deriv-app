@@ -1,7 +1,8 @@
 import React from 'react';
-import { FileDropzone, Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
+import FileDropzone from 'Components/file-dropzone';
 
 type TFileUploaderComponentProps = {
     accept: string;

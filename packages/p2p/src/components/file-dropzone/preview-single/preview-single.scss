@@ -1,0 +1,11 @@
+@import '../file-dropzone.scss';
+
+.preview-single {
+    &__filename {
+        width: 100%;
+    }
+
+    &__message {
+        @include file-dropzone-message;
+    }
+}

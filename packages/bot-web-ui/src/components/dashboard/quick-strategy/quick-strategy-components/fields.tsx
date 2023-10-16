@@ -1,7 +1,12 @@
 import React from 'react';
 import { TDropdownItems, TDropdowns, TSelectedValuesSelect } from '../quick-strategy.types';
 import { TDropdownLists, TQuickStrategyFields, TSelectedValues } from './components.types';
-import { data_fields, data_uniq_input_obj, Description, DurationFields, Inputs, Selects } from '.';
+import data_uniq_input_obj from './data/data-uniq-input-obj';
+import data_fields from './data/data-fields';
+import DurationFields from './duration-fields';
+import Inputs from './inputs';
+import Selects from './selects';
+import Description from './description';
 
 const QuickStrategyFields = React.memo(
     ({

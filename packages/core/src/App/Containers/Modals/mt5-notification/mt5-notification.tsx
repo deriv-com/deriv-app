@@ -23,7 +23,7 @@ const MT5Notification = observer(() => {
                     width='510px'
                 >
                     <Modal.Body className='mt5-notification-modal-body'>
-                        <MT5NotificationDescription />
+                        <MT5NotificationDescription setMT5NotificationModal={setMT5NotificationModal} />
                     </Modal.Body>
                     <Modal.Footer has_separator>
                         <Button
@@ -60,7 +60,7 @@ const MT5Notification = observer(() => {
                         </div>
                     }
                 >
-                    <MT5NotificationDescription />
+                    <MT5NotificationDescription setMT5NotificationModal={setMT5NotificationModal} />
                 </MobileDialog>
             </MobileWrapper>
         </React.Suspense>

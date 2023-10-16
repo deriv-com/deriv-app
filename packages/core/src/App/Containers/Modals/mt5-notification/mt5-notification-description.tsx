@@ -2,7 +2,10 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const MT5NotificationDescription = () => {
+type TMT5NotificationDescription = {
+    setMT5NotificationModal: (value: boolean) => void;
+};
+const MT5NotificationDescription = ({ setMT5NotificationModal }: TMT5NotificationDescription) => {
     return (
         <div className={'mt5-notification-modal-description'}>
             <ol className='mt5-notification-list-container'>
@@ -18,6 +21,10 @@ const MT5NotificationDescription = () => {
                                         'https://community.deriv.com/t/log-in-using-mt5-pc-or-mobile-app-application-guideline/49622'
                                     }
                                     key={0}
+                                    onClick={() => {
+                                        setMT5NotificationModal(false);
+                                    }}
+                                    style={{ color: '#eb3e48', cursor: 'pointer', textDecoration: 'underline' }}
                                 />,
                             ]}
                         />
@@ -29,9 +36,12 @@ const MT5NotificationDescription = () => {
                             i18n_default_text='If you need further assistance, let us know via <0>live chat</0>.'
                             components={[
                                 <a
-                                    onClick={() => window.LC_API.open_chat_window()}
+                                    onClick={() => {
+                                        window.LC_API.open_chat_window();
+                                        setMT5NotificationModal(false);
+                                    }}
                                     key={0}
-                                    style={{ color: '#551A8B', cursor: 'pointer', textDecoration: 'underline' }}
+                                    style={{ color: '#eb3e48', cursor: 'pointer', textDecoration: 'underline' }}
                                 />,
                             ]}
                         />

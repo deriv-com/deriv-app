@@ -1,8 +1,9 @@
+import React from 'react';
+import classNames from 'classnames';
+
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import classNames from 'classnames';
-import React from 'react';
 
 export type TFormBodySection = {
     /**

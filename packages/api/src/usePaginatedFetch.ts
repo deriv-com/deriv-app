@@ -1,11 +1,13 @@
 import { useCallback, useState } from 'react';
-import useQuery from './useQuery';
+
 import type {
     TSocketAcceptableProps,
+    TSocketPaginateableEndpointNames,
     TSocketRequestPayload,
     TSocketRequestQueryOptions,
-    TSocketPaginateableEndpointNames,
 } from '../types';
+
+import useQuery from './useQuery';
 
 const usePaginatedFetch = <T extends TSocketPaginateableEndpointNames>(
     name: T,

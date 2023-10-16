@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Button, Drawer, Modal, Money, Tabs, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+
 import Journal from 'Components/journal';
 import SelfExclusion from 'Components/self-exclusion';
 import Summary from 'Components/summary';
@@ -230,7 +231,10 @@ const StatisticsInfoModal = ({
 
 const RunPanel = observer(() => {
     const { run_panel, dashboard } = useDBotStore();
-    const { client } = useStore();
+    const {
+        client,
+        ui: { is_mobile },
+    } = useStore();
     const { currency } = client;
     const {
         active_index,
@@ -249,8 +253,6 @@ const RunPanel = observer(() => {
     const { active_tour, active_tab } = dashboard;
     const { total_payout, total_profit, total_stake, won_contracts, lost_contracts, number_of_runs } = statistics;
     const { BOT_BUILDER, CHART } = DBOT_TABS;
-
-    const is_mobile = isMobile();
 
     React.useEffect(() => {
         onMount();

@@ -106,15 +106,6 @@ type TIdentity = {
     };
 };
 
-export type TResidenseList = {
-    identity: TIdentity;
-    phone_idd: string;
-    tin_format: string[];
-    disabled: string;
-    text: string;
-    value: string;
-};
-
 export type TFile = {
     path: string;
     lastModified: number;
@@ -164,7 +155,6 @@ export type TDocument = {
     id: string;
     text: string;
     value?: string;
-    sample_image?: string;
     example_format?: string;
     additional?: {
         display_name?: string;

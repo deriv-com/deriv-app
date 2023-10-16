@@ -15,7 +15,7 @@ describe('SampleCreditCardModal', () => {
     });
 
     it('should render modal props', () => {
-        const props = {
+        const props:React.ComponentProps<typeof SampleCreditCardModal> = {
             is_open: true,
             onClose: jest.fn(),
         };
@@ -25,7 +25,7 @@ describe('SampleCreditCardModal', () => {
     });
 
     it('should not render modal when is_open is false', () => {
-        const props = {
+        const props:React.ComponentProps<typeof SampleCreditCardModal> = {
             is_open: false,
             onClose: jest.fn(),
         };

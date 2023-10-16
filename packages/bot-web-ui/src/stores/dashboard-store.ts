@@ -1,9 +1,11 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
+
 import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
+
 import { clearInjectionDiv } from 'Constants/load-modal';
+
 import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
-import RootStore from './root-store';
 
 export interface IDashboardStore {
     active_tab: number;
@@ -36,9 +38,9 @@ export interface IDashboardStore {
 }
 
 export default class DashboardStore implements IDashboardStore {
-    root_store: RootStore;
+    root_store: any;
 
-    constructor(root_store: RootStore) {
+    constructor(root_store: any) {
         makeObservable(this, {
             active_tab_tutorials: observable,
             active_tab: observable,

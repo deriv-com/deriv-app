@@ -60,5 +60,5 @@ runs:
       RUDDERSTACK_STAGING_KEY: ${{ inputs.RUDDERSTACK_STAGING_KEY }}
       RUDDERSTACK_URL: ${{ inputs.RUDDERSTACK_URL }}
 
-    run: npm run build:all
+    run: npm run build:prod
     shell: bash

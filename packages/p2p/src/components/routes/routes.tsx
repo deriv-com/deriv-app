@@ -2,9 +2,9 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { useStores } from 'Stores';
+import Dp2pBlocked from 'Components/dp2p-blocked';
 import BinaryRoutes from './binary-routes';
 import ErrorComponent from './error-component';
-import Dp2pBlocked from 'Components/dp2p-blocked';
 
 const Routes = observer(() => {
     const { general_store } = useStores();

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
+import { TRoute } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import getRoutesConfig from 'Constants/routes-config';
-import RouteWithSubRoutes from './route-with-sub-routes';
+import { TBinaryRoutes } from 'Types/routes.types';
 
 const Loading = () => (
     <div>
@@ -10,12 +11,14 @@ const Loading = () => (
     </div>
 );
 
-const BinaryRoutes = props => {
+const LazyRouteWithSubRoutes = React.lazy(() => import('./route-with-sub-routes'));
+
+const BinaryRoutes = (props: TBinaryRoutes) => {
     return (
         <React.Suspense fallback={<Loading />}>
             <Switch>
-                {getRoutesConfig().map(route => (
-                    <RouteWithSubRoutes key={route.path} {...route} {...props} />
+                {getRoutesConfig().map((route: TRoute) => (
+                    <LazyRouteWithSubRoutes key={route.path} {...route} {...props} />
                 ))}
             </Switch>
         </React.Suspense>

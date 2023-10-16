@@ -6,6 +6,7 @@ import BuySell from '../pages/buy-sell';
 import MyAds from '../pages/my-ads';
 import MyProfile from '../pages/my-profile';
 import Orders from '../pages/orders';
+import { TRoute, TRouteConfig } from 'Types/routes.types';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../components/page-404'));
@@ -42,10 +43,10 @@ const initRoutesConfig = () => {
     ];
 };
 
-let routesConfig;
+let routesConfig: undefined | TRouteConfig[];
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { path: routes.error404, component: Page404, getTitle: () => localize('Error 404') };
+const route_default: TRoute = { path: routes.error404, component: Page404, getTitle: () => localize('Error 404') };
 
 const getRoutesConfig = () => {
     if (!routesConfig) {

@@ -3,6 +3,11 @@ import { useHistory } from 'react-router-dom';
 import { PageError } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { TCoreStores } from '@deriv/stores/types';
+
+type TErrorComponentProps = TCoreStores['common']['error'] & {
+    setError?: (has_error: boolean, error: React.ReactNode | null) => void;
+};
 
 const ErrorComponent = ({
     header,
@@ -13,7 +18,7 @@ const ErrorComponent = ({
     setError,
     should_clear_error_on_click,
     should_show_refresh = true,
-}) => {
+}: TErrorComponentProps) => {
     const history = useHistory();
 
     React.useEffect(() => {

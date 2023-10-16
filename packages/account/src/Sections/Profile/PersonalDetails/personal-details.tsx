@@ -34,7 +34,6 @@ import { isServerError } from 'Helpers/utils';
 import { salutation_list } from './constants';
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
-// import FormSelectField from './form-select-field';
 import FormSelectField from 'Components/forms/form-select-field';
 
 type TRestState = {
@@ -176,7 +175,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                 isValid,
                 setFieldValue,
                 setFieldTouched,
-                setTouched,
                 dirty,
             }) => (
                 <React.Fragment>

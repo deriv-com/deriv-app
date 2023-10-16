@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { address_permitted_special_characters_message, getLocation, toMoment } from '@deriv/shared';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 
-export const BaseSchema = Yup.object().shape({
+const BaseSchema = Yup.object().shape({
     first_name: Yup.string()
         .required(localize('First name is required.'))
         .min(2, localize('You should enter 2-50 characters.'))

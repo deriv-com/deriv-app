@@ -36,3 +36,4 @@ export { default as useTransactions } from './useTransactions';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
 export { default as useVerifyEmail } from './useVerifyEmail';
+export { default as useWalletMigration } from './useWalletMigration';

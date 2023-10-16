@@ -81,8 +81,8 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                 <WalletButton
                     isRounded
                     key={button.name}
-                    onClick={async () => {
-                        await switchAccount(loginid);
+                    onClick={() => {
+                        switchAccount(loginid);
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
                     variant='outlined'

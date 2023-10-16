@@ -27,8 +27,8 @@ export type TJurisdictionCardItemVerificationItem =
 export type TJurisdictionCardItemVerification = TJurisdictionCardItemVerificationItem[];
 export type TJurisdictionCardItems = {
     contents: {
-        financial: TJurisdictionCardSection[];
         all?: TJurisdictionCardSection[];
+        financial: TJurisdictionCardSection[];
         synthetic: TJurisdictionCardSection[];
     };
     header: string;

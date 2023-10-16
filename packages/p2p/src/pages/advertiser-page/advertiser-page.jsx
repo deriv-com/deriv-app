@@ -130,6 +130,11 @@ const AdvertiserPage = () => {
 
         return () => {
             disposeBlockUnblockUserErrorReaction();
+            const current_state = history.location;
+            history.replace({
+                ...current_state,
+                state: { scroll_to_index_value: history.location.state?.scroll_to_index ?? -1 },
+            });
         };
     }, [advertiser_details_name, counterparty_advertiser_info]);
 
@@ -165,7 +170,9 @@ const AdvertiserPage = () => {
                         buy_sell_store.hideAdvertiserPage();
                         if (general_store.active_index === general_store.path.my_profile)
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
-                        history.push(general_store.active_tab_route);
+                        history.push(general_store.active_tab_route, {
+                            scroll_to_index_value: history.location.state?.scroll_to_index ?? -1,
+                        });
                     }}
                     page_title={localize("Advertiser's page")}
                 />

@@ -20,7 +20,7 @@ const ContentWrapper = ({ children }) => {
     return <OrderTableHeader>{children}</OrderTableHeader>;
 };
 
-const OrderTableContent = () => {
+const OrderTableContent = ({ clearScroll, retain_scroll_position, scroll_to_index }) => {
     const { general_store, order_store } = useStores();
     const {
         client: { loginid },
@@ -34,7 +34,7 @@ const OrderTableContent = () => {
                 () => {
                     order_store.setIsLoading(true);
                     order_store.setOrders([]);
-                    order_store.loadMoreOrders({ startIndex: 0 });
+                    order_store.loadMoreOrders({ startIndex: 0 }, scroll_to_index);
                 },
                 { fireImmediately: true }
             ),
@@ -59,12 +59,15 @@ const OrderTableContent = () => {
             return (
                 <ContentWrapper>
                     <InfiniteDataList
+                        clearScroll={clearScroll}
                         data_list_className='orders__data-list'
                         has_more_items_to_load={order_store.has_more_items_to_load}
                         items={modified_list}
                         keyMapperFn={item => item.id}
                         loadMoreRowsFn={order_store.loadMoreOrders}
-                        rowRenderer={row_props => <OrderRow {...row_props} />}
+                        retain_scroll_position={retain_scroll_position}
+                        rowRenderer={row_props => <OrderRow index={scroll_to_index} {...row_props} />}
+                        scroll_to_index={scroll_to_index}
                     />
                 </ContentWrapper>
             );

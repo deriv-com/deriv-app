@@ -219,10 +219,10 @@ export default class BuySellStore extends BaseStore {
         ];
     }
 
-    fetchAdvertiserAdverts() {
+    fetchAdvertiserAdverts(limit) {
         this.setItems([]);
         this.setIsLoading(true);
-        this.loadMoreItems({ startIndex: 0 });
+        this.loadMoreItems({ startIndex: 0 }, limit);
         if (!this.is_buy) {
             this.root_store.my_profile_store.getAdvertiserPaymentMethods();
         }
@@ -317,16 +317,17 @@ export default class BuySellStore extends BaseStore {
         this.setShouldShowVerification(false);
     }
 
-    loadMoreItems({ startIndex }) {
+    loadMoreItems({ startIndex }, limit) {
         const { general_store } = this.root_store;
         const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
+        const list_limit = limit > general_store.list_item_limit ? limit : general_store.list_item_limit;
         this.setApiErrorMessage('');
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
                 counterparty_type,
                 offset: startIndex,
-                limit: general_store.list_item_limit,
+                limit: list_limit,
                 sort_by: this.sort_by,
                 use_client_limits: this.should_use_client_limits ? 1 : 0,
                 ...(this.selected_payment_method_value.length > 0
@@ -341,7 +342,7 @@ export default class BuySellStore extends BaseStore {
                         if (response.echo_req.counterparty_type === counterparty_type) {
                             const { list } = response.p2p_advert_list;
 
-                            this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
+                            this.setHasMoreItemsToLoad(list.length >= list_limit);
 
                             const old_items = [...this.items];
                             const new_items = [];

@@ -249,23 +249,24 @@ export default class OrderStore {
         this.setActiveOrder(null);
     }
 
-    loadMoreOrders({ startIndex }) {
+    loadMoreOrders({ startIndex }, limit) {
+        const { general_store } = this.root_store;
         this.setApiErrorMessage('');
+        const list_limit = limit > general_store.list_item_limit ? limit : general_store.list_item_limit;
         return new Promise(resolve => {
-            const { general_store } = this.root_store;
             const active = general_store.is_active_tab ? 1 : 0;
             requestWS({
                 p2p_order_list: 1,
                 active,
                 offset: startIndex,
-                limit: general_store.list_item_limit,
+                limit: list_limit,
             }).then(response => {
                 if (!response?.error) {
                     // Ignore any responses that don't match our request. This can happen
                     // due to quickly switching between Active/Past tabs.
                     if (response?.echo_req?.active === active) {
                         const { list } = response.p2p_order_list;
-                        this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
+                        this.setHasMoreItemsToLoad(list.length >= list_limit);
 
                         const old_list = [...this.orders];
                         const new_list = [];

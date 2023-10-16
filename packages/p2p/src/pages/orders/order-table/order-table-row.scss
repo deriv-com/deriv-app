@@ -16,6 +16,9 @@
     &--attention {
         background: var(--button-tertiary-hover);
     }
+    &--highlight {
+        background: #ffc10714;
+    }
     &:not(.order-table-row--header) {
         cursor: pointer;
 

@@ -20,6 +20,7 @@ type TDataListRow = {
     is_scrolling: boolean;
     passthrough?: TPassThrough;
     row: TSource;
+    row_index: number;
 };
 
 const DataListRow = ({

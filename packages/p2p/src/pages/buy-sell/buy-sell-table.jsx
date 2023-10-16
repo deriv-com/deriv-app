@@ -26,7 +26,7 @@ const BuySellRowRendererComponent = row_props => {
 
 const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
-const BuySellTable = ({ onScroll }) => {
+const BuySellTable = ({ clearScroll, onScroll, retain_scroll_position, scroll_to_index }) => {
     const { buy_sell_store, my_profile_store } = useStores();
     const {
         client: { currency },
@@ -37,7 +37,7 @@ const BuySellTable = ({ onScroll }) => {
             my_profile_store.getPaymentMethodsList();
             reaction(
                 () => buy_sell_store.is_buy,
-                () => buy_sell_store.fetchAdvertiserAdverts(),
+                () => buy_sell_store.fetchAdvertiserAdverts(scroll_to_index),
                 { fireImmediately: true }
             );
         },
@@ -106,14 +106,17 @@ const BuySellTable = ({ onScroll }) => {
                     )}
                     <Table.Body className='buy-sell-table__body'>
                         <InfiniteDataList
+                            clearScroll={clearScroll}
                             data_list_className='buy-sell__data-list'
                             items={buy_sell_store.rendered_items}
-                            rowRenderer={props => <BuySellRowRenderer {...props} />}
+                            rowRenderer={props => <BuySellRowRenderer index={scroll_to_index} {...props} />}
                             loadMoreRowsFn={buy_sell_store.loadMoreItems}
                             has_filler
                             has_more_items_to_load={buy_sell_store.has_more_items_to_load}
                             keyMapperFn={item => item.id}
                             onScroll={onScroll}
+                            scroll_to_index={scroll_to_index}
+                            retain_scroll_position={retain_scroll_position}
                         />
                     </Table.Body>
                 </Table>

@@ -137,6 +137,7 @@ const OrderDetails = observer(() => {
             history?.replace({
                 search: '',
                 hash: location.hash,
+                state: { scroll_to_index_value: history.location.state?.scroll_to_index_value ?? -1 },
             });
             buy_sell_store.setIsCreateOrderSubscribed(false);
             buy_sell_store.unsubscribeCreateOrder();

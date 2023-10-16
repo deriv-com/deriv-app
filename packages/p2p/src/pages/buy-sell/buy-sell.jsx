@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
+import { useHistory } from 'react-router';
+import { routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return';
 import Verification from 'Components/verification';
@@ -8,10 +11,25 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
 import BuySellTable from './buy-sell-table.jsx';
+import { checkRoutingHistory, getHistoryState } from 'Utils/helper';
 
 const BuySell = () => {
     const { buy_sell_store, general_store } = useStores();
     const previous_scroll_top = React.useRef(0);
+    const { common } = useStore();
+    const { app_routing_history } = common;
+    const history = useHistory();
+    const { scroll_to_index_value } = history.location.state ?? {};
+    const [scroll_to_index, setScrollToIndex] = React.useState(
+        scroll_to_index_value !== undefined ? scroll_to_index_value + 1 : -1
+    );
+    const is_from_advertiser_page = checkRoutingHistory(app_routing_history, routes.p2p_advertiser_page);
+
+    React.useEffect(() => {
+        if (is_from_advertiser_page && (scroll_to_index_value === undefined || scroll_to_index_value === -1)) {
+            setScrollToIndex(getHistoryState(app_routing_history, 1).scroll_to_index + 1);
+        }
+    }, [is_from_advertiser_page]);
 
     React.useEffect(() => {
         if (general_store.active_index !== 0) general_store.setActiveIndex(0);
@@ -33,6 +51,10 @@ const BuySell = () => {
         }
     };
 
+    const clearScroll = () => {
+        setScrollToIndex(-1);
+    };
+
     if (buy_sell_store.should_show_verification) {
         return (
             <React.Fragment>
@@ -50,13 +72,16 @@ const BuySell = () => {
 
     return (
         <div className='buy-sell'>
-            <BuySellHeader table_type={buy_sell_store.table_type} />
+            <BuySellHeader table_type={buy_sell_store.table_type} clearScroll={clearScroll} />
             <BuySellTable
                 key={buy_sell_store.table_type}
                 is_buy={buy_sell_store.table_type === buy_sell.BUY}
                 setSelectedAdvert={buy_sell_store.setSelectedAdvert}
                 showAdvertiserPage={buy_sell_store.showAdvertiserPage}
+                clearScroll={clearScroll}
                 onScroll={onScroll}
+                retain_scroll_position={is_from_advertiser_page}
+                scroll_to_index={scroll_to_index}
             />
         </div>
     );

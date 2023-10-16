@@ -7,6 +7,9 @@
         flex-direction: column;
     }
 
+    &--highlight {
+        background-color: #ffc10714;
+    }
     &__advertiser {
         display: flex;
         flex-direction: row;

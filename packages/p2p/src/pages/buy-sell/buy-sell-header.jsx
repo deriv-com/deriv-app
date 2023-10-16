@@ -24,7 +24,7 @@ const getBuySellFilters = () => [
     },
 ];
 
-const BuySellHeader = ({ table_type }) => {
+const BuySellHeader = ({ table_type, clearScroll }) => {
     const { buy_sell_store, general_store } = useStores();
     const is_currency_selector_visible = general_store.feature_level >= 2;
 
@@ -68,6 +68,10 @@ const BuySellHeader = ({ table_type }) => {
         []
     );
 
+    const handleTabChange = values => {
+        clearScroll();
+        buy_sell_store.onChangeTableType(values);
+    };
     return (
         <div
             className={classNames('buy-sell-header', {
@@ -81,7 +85,7 @@ const BuySellHeader = ({ table_type }) => {
                         className='buy-sell-header__filters'
                         is_animated
                         name='filter'
-                        onChange={buy_sell_store.onChangeTableType}
+                        onChange={handleTabChange}
                         value={table_type}
                         has_rounded_button
                     />

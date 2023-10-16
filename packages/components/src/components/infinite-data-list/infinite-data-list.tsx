@@ -9,16 +9,22 @@ type TInfiniteDatalist = Pick<
     'getRowSize' | 'onRowsRendered' | 'onScroll' | 'overscanRowCount' | 'rowRenderer'
 > & {
     className: string;
+    clearScroll?: () => void;
     data_list_className: string;
     has_more_items_to_load: boolean;
     has_filler: boolean;
     items: React.ComponentProps<typeof DataList>['data_source'];
     keyMapperFn: React.ComponentProps<typeof DataList>['keyMapper'];
     loadMoreRowsFn: <T>(params: IndexRange) => Promise<T>;
+    retain_scroll_position?: boolean;
+    scroll_to_index?: number;
 };
 
 const InfiniteDataList = ({
     className,
+    clearScroll = () => {
+        // Do nothing.
+    },
     data_list_className,
     has_filler, // Can be used as a top offset.
     has_more_items_to_load,
@@ -29,6 +35,8 @@ const InfiniteDataList = ({
     rowRenderer,
     overscanRowCount,
     getRowSize,
+    retain_scroll_position = false,
+    scroll_to_index = -1,
 }: TInfiniteDatalist) => {
     const item_count = has_filler ? items.length - 1 : items.length;
     const row_count = has_more_items_to_load ? item_count + 1 : item_count;
@@ -49,13 +57,16 @@ const InfiniteDataList = ({
                 {({ onRowsRendered, registerChild }) => (
                     <DataList
                         className={data_list_className}
+                        clearScroll={clearScroll}
                         data_source={items}
                         getRowSize={getRowSize}
                         keyMapper={keyMapperFn}
                         onRowsRendered={onRowsRendered}
                         onScroll={onScroll}
                         overscanRowCount={overscanRowCount}
+                        retain_scroll_position={retain_scroll_position}
                         rowRenderer={rowRenderer}
+                        scroll_to_index={scroll_to_index}
                         setListRef={registerChild}
                     />
                 )}

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { Button, Icon,Table, Text } from '@deriv/components';
+import { Button, Icon, Table, Text } from '@deriv/components';
 import { useExchangeRate } from '@deriv/hooks';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -18,13 +18,19 @@ import { generateEffectiveRate } from 'Utils/format-value';
 
 import './buy-sell-row.scss';
 
-const BuySellRow = ({ row: advert }) => {
+const BuySellRow = ({ row: advert, row_index, index }) => {
+    const [should_highlight, setShouldHighlight] = React.useState(index - 1 === row_index);
     const { buy_sell_store, general_store } = useStores();
     const {
         client: { currency },
     } = useStore();
     const history = useHistory();
     const { getRate } = useExchangeRate();
+    if (should_highlight) {
+        setTimeout(() => {
+            setShouldHighlight(false);
+        }, 3000);
+    }
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -75,13 +81,17 @@ const BuySellRow = ({ row: advert }) => {
             buy_sell_store.setShouldShowVerification(true);
         } else if (!general_store.is_barred) {
             buy_sell_store.showAdvertiserPage(advert);
-            history.push({ pathname: routes.p2p_advertiser_page, search: `?id=${advert.advertiser_details.id}` });
+            history.push({
+                pathname: routes.p2p_advertiser_page,
+                search: `?id=${advert.advertiser_details.id}`,
+                state: { scroll_to_index: row_index },
+            });
         }
     };
 
     if (isMobile()) {
         return (
-            <div className='buy-sell-row'>
+            <div className={classNames('buy-sell-row', { 'buy-sell-row--highlight': should_highlight })}>
                 <div className='buy-sell-row__advertiser' onClick={() => onClickRow()}>
                     <OnlineStatusAvatar
                         is_online={advertiser_details.is_online}
@@ -185,7 +195,7 @@ const BuySellRow = ({ row: advert }) => {
     }
 
     return (
-        <Table.Row className='buy-sell__table-row'>
+        <Table.Row className={classNames('buy-sell__table-row', { 'buy-sell-row--highlight': should_highlight })}>
             <Table.Cell>
                 <div
                     className={classNames('buy-sell__cell', { 'buy-sell__cell-hover': !general_store.is_barred })}

@@ -27,7 +27,8 @@ const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) =
     );
 };
 
-const OrderRow = ({ row: order }) => {
+const OrderRow = ({ row: order, row_index, index }) => {
+    const [should_highlight, setShouldHighlight] = React.useState(index - 1 === row_index);
     const getTimeLeft = time => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
@@ -78,6 +79,12 @@ const OrderRow = ({ row: order }) => {
     const history = useHistory();
     const location = useLocation();
 
+    if (should_highlight) {
+        setTimeout(() => {
+            setShouldHighlight(false);
+        }, 3000);
+    }
+
     const isOrderSeen = order_id => {
         const { notifications } = general_store.getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
@@ -93,6 +100,7 @@ const OrderRow = ({ row: order }) => {
                 pathname: routes.p2p_orders,
                 search: current_query_params.toString(),
                 hash: location.hash,
+                state: { scroll_to_index_value: row_index },
             });
 
             return order_store.setOrderId(order.id);
@@ -154,6 +162,7 @@ const OrderRow = ({ row: order }) => {
                         className={classNames('order-table-row order-table-grid', {
                             'order-table-grid--active': general_store.is_active_tab,
                             'order-table-row--attention': !isOrderSeen(id),
+                            'order-table-row--highlight': should_highlight,
                         })}
                     >
                         <Table.Cell>{order_type}</Table.Cell>
@@ -203,6 +212,7 @@ const OrderRow = ({ row: order }) => {
                     <Table.Row
                         className={classNames('orders__mobile', {
                             'orders__mobile--attention': !isOrderSeen(id),
+                            'orders__mobile--highlight': should_highlight,
                         })}
                     >
                         <Table.Cell

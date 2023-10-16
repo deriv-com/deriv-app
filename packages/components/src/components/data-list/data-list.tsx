@@ -37,6 +37,7 @@ type TMobileRowRenderer = {
 
 export type TDataList = {
     className?: string;
+    clearScroll?: () => void;
     data_source: TRow[];
     footer?: TRow;
     getRowAction?: (row: TRow) => TTableRowItem;
@@ -46,7 +47,9 @@ export type TDataList = {
     onScroll?: React.UIEventHandler<HTMLDivElement>;
     passthrough?: TPassThrough;
     row_gap?: number;
+    scroll_to_index?: number;
     setListRef?: (ref: MeasuredCellParent) => void;
+    retain_scroll_position?: boolean;
     rowRenderer: TRowRenderer;
     children?: React.ReactNode;
     overscanRowCount?: number;
@@ -57,14 +60,19 @@ const DataList = React.memo(
     ({
         children,
         className,
+        clearScroll = () => {
+            // do nothing
+        },
         data_source,
         footer,
         getRowSize,
         keyMapper,
         onRowsRendered,
         onScroll,
-        setListRef,
         overscanRowCount,
+        retain_scroll_position = false,
+        scroll_to_index = -1,
+        setListRef,
         ...other_props
     }: TDataList) => {
         const [is_loading, setLoading] = React.useState(true);
@@ -134,6 +142,7 @@ const DataList = React.memo(
                     row={row}
                     rowRenderer={other_props.rowRenderer}
                     is_dynamic_height={is_dynamic_height}
+                    row_index={index}
                 />
             );
 
@@ -149,6 +158,7 @@ const DataList = React.memo(
         };
 
         const handleScroll = (ev: Partial<React.UIEvent<HTMLDivElement>>) => {
+            if (scroll_top !== 0) clearScroll();
             let timeout;
 
             clearTimeout(timeout);
@@ -204,8 +214,9 @@ const DataList = React.memo(
                                             }
                                             rowRenderer={rowRenderer}
                                             scrollingResetTimeInterval={0}
+                                            scrollToIndex={scroll_to_index}
                                             width={width}
-                                            {...(isDesktop()
+                                            {...(isDesktop() && !retain_scroll_position
                                                 ? { scrollTop: scroll_top, autoHeight: true }
                                                 : {
                                                       onScroll: target =>

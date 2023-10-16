@@ -1,8 +1,7 @@
 import React from 'react';
-import { MemoryRouter, BrowserRouter, Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore, StoreProvider } from '@deriv/stores';
 import { createBrowserHistory } from 'history';
 import PageError from '../index';
 import { isMobile } from '@deriv/shared';
@@ -41,7 +40,7 @@ describe('<PageError/>', () => {
         expect(screen.getByText('Test error message')).toBeInTheDocument();
     });
 
-    it('Should call buttonOnClick() upon button click when should_redirect and should_clear_error_on_click equal to false', () => {
+    it('Should call buttonOnClick() upon button click when should_redirect and should_clear_error_on_click equals to false', () => {
         const { buttonOnClick } = pageErrorDefaultProps;
 
         render(
@@ -65,7 +64,7 @@ describe('<PageError/>', () => {
         expect(button).toBeInTheDocument();
     });
 
-    it('Should call setError() when redirect button get clicked', () => {
+    it('Should call setError() when redirect button gets clicked', () => {
         const { setError } = pageErrorDefaultProps;
         renderWithRouter(<PageError {...pageErrorDefaultProps} should_redirect={true} />);
 
@@ -75,7 +74,7 @@ describe('<PageError/>', () => {
         expect(setError).toHaveBeenCalledTimes(1);
     });
 
-    it('Should call setError() when redirect button get clicked and should_redirect didn not pass', () => {
+    it('Should call setError() when redirect button gets clicked and should_redirect did not pass', () => {
         const { setError } = pageErrorDefaultProps;
         renderWithRouter(<PageError {...pageErrorDefaultProps} should_redirect={undefined} />);
 
@@ -94,7 +93,7 @@ describe('<PageError/>', () => {
         expect(mockSetError).toHaveBeenCalledWith(false, null);
     });
 
-    it('Should not show the button when redirect equals to false and redirect_labels has not something to display', () => {
+    it('Should not show the button when redirect equals to false and redirect_labels has nothing to display', () => {
         const { buttonOnClick } = pageErrorDefaultProps;
         renderWithRouter(
             <PageError
@@ -139,7 +138,7 @@ describe('<PageError/>', () => {
         expect(image).toHaveAttribute('src', 'http://test-image-url.png');
     });
 
-    it('Should show on mobile version text size of the error heading equals to "s" when image_url passed ', () => {
+    it('Should show on mobile version text size of the error heading equals to "s" when image_url is passed ', () => {
         (isMobile as jest.Mock).mockReturnValueOnce(true);
 
         renderWithRouter(<PageError {...pageErrorDefaultProps} image_url={'http://test-image-url.png'} />);

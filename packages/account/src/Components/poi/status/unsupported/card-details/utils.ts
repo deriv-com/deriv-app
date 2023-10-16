@@ -13,7 +13,22 @@ export const checkIsEmpty = (value: unknown) => {
     return typeof value === 'string' ? !value.trim() : !value;
 };
 
-export const validateFields = (values: FormikValues, fields = [], documents = []) => {
+type TFields = {
+    name: string;
+    label: string;
+    type: string;
+    required: boolean;
+}[];
+
+type TDocument = {
+    document_type: string;
+    pageType: string;
+    name: string;
+    icon: string;
+    info: string;
+}[];
+
+export const validateFields = (values: FormikValues, fields: TFields = [], documents: TDocument = []) => {
     const errors: FormikErrors<FormikValues> = {};
 
     fields.forEach((field: { name: string; label: string; type: string; required: boolean }) => {
@@ -31,13 +46,13 @@ export const validateFields = (values: FormikValues, fields = [], documents = []
         }
     });
 
-    documents.forEach((document: { name: string; label: string }) => {
-        const { name, label } = document;
+    documents.forEach((document: { name: string }) => {
+        const { name } = document;
         const value = values[name];
 
         if (checkIsEmpty(value)) {
             errors[name] = localize('{{label}} is required.', {
-                label,
+                name,
             });
         } else if (value.errors?.length) {
             errors[name] = value.errors[0];

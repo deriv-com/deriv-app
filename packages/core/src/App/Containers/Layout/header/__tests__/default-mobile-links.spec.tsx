@@ -10,6 +10,7 @@ jest.mock('@deriv/components', () => {
         Popover: () => <div>mockedPopover</div>,
     };
 });
+
 // eslint-disable-next-line react/display-name
 jest.mock('App/Components/Routes', () => () => <div data-testid='dt_binary_link'>MockedBinaryLink</div>);
 // eslint-disable-next-line react/display-name
@@ -18,6 +19,12 @@ jest.mock('../show-notifications', () => () => <div data-testid='dt_show_notific
 jest.mock('../traders-hub-onboarding', () => () => (
     <div data-testid='dt_traders_hub_onboarding'>MockedTradersHubOnboarding</div>
 ));
+
+jest.mock('@deriv/hooks', () => ({
+    useFeatureFlags: () => ({
+        is_next_wallet_enabled: false,
+    }),
+}));
 
 describe('DefaultMobileLinks', () => {
     const mock_props: React.ComponentProps<typeof DefaultMobileLinks> = {

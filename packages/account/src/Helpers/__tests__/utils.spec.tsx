@@ -45,10 +45,7 @@ describe('shouldShowIdentityInformation', () => {
         account_status: {
             status: ['skip_idv'],
         },
-        account_settings: {
-            citizen: 'test',
-        },
-        residence: 'test',
+        citizen: 'test',
         residence_list: [
             {
                 value: 'test',

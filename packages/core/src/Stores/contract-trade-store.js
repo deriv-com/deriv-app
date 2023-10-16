@@ -15,6 +15,7 @@ import {
     isVanillaContract,
     LocalStore,
     switch_to_tick_chart,
+    getLastContractMarkerIndex,
 } from '@deriv/shared';
 
 import BaseStore from './base-store';
@@ -300,7 +301,7 @@ export default class ContractTradeStore extends BaseStore {
             .filter(m => m)
             .map(m => toJS(m));
         if (markers.length) {
-            markers[markers.length - 1].is_last_contract = true;
+            markers[getLastContractMarkerIndex(markers)].is_last_contract = true;
         }
         const { current_spot_time, entry_tick_time, exit_tick_time } = this.last_contract.contract_info || {};
         const should_show_poc_barriers =

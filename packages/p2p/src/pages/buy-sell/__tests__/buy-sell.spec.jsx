@@ -1,5 +1,8 @@
 import React from 'react';
+import { Router } from 'react-router';
+import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { useStores } from 'Stores/index';
 import BuySell from '../buy-sell';
 
@@ -27,13 +30,30 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: jest.fn(),
+        location: { state: '' },
+        replace: jest.fn(),
+    }),
+}));
+
 describe('<BuySellPage/>', () => {
+    const renderComponent = () =>
+        render(
+            <StoreProvider store={mockStore({})}>
+                <Router history={createBrowserHistory()}>
+                    <BuySell />
+                </Router>
+            </StoreProvider>
+        );
     it('should render the buy/sell page', () => {
-        render(<BuySell />);
+        renderComponent();
         expect(mock_store.general_store.setActiveIndex).toHaveBeenCalledWith(0);
     });
     it('should render Verification Section when user is not verified', () => {
-        render(<BuySell />);
+        renderComponent();
 
         expect(screen.getByText('Verification')).toBeInTheDocument();
         expect(screen.getByText('Verification Section')).toBeInTheDocument();
@@ -46,7 +66,7 @@ describe('<BuySellPage/>', () => {
                 should_show_popup: true,
             },
         });
-        render(<BuySell />);
+        renderComponent();
 
         expect(screen.queryByText('Verification')).not.toBeInTheDocument();
     });

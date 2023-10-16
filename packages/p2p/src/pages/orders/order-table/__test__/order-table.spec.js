@@ -1,6 +1,9 @@
 import React from 'react';
+import { Router } from 'react-router';
+import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import OrderTable from '../order-table.jsx';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -21,9 +24,24 @@ jest.mock('@deriv/components', () => ({
     ButtonToggle: jest.fn(() => <div>Toggle Button</div>),
 }));
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: jest.fn(),
+        location: { state: '' },
+        replace: jest.fn(),
+    }),
+}));
+
 describe('<Orders/>', () => {
     it('should pass the values into OrderTableContent', () => {
-        render(<OrderTable />);
+        render(
+            <StoreProvider store={mockStore({})}>
+                <Router history={createBrowserHistory()}>
+                    <OrderTable />
+                </Router>
+            </StoreProvider>
+        );
         expect(screen.getByText('Order Table Content')).toBeInTheDocument();
     });
 });

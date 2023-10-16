@@ -20,7 +20,7 @@ const OrderTable = ({ showDetails }) => {
     const { app_routing_history } = common;
     const { scroll_to_index_value } = history.location.state ?? {};
 
-    const { is_from_order_details_page } = checkRoutingHistory(app_routing_history, routes.p2p_orders);
+    const is_from_order_details_page = checkRoutingHistory(app_routing_history, routes.p2p_orders);
     const [scroll_to_index, setScrollToIndex] = React.useState(
         scroll_to_index_value !== undefined ? scroll_to_index_value + 1 : -1
     );

@@ -5,26 +5,36 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 16px;
+    gap: 24px;
 
     &__description {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 16px;
+
         color: #000;
         text-align: center;
-        font-size: 14px;
+        /* desktop/paragraph/P1 - regular */
+        font-size: 16px;
         font-style: normal;
         font-weight: 400;
-        line-height: 20px; /* 142.857% */
+        line-height: 24px; /* 150% */
+
+        @include mobile {
+            font-size: 14px;
+        }
+    }
+
+    &__messages {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
 
     &__send-button {
         all: unset;
         cursor: pointer;
         display: inline-flex;
-        margin-top: 42px;
         height: 40px;
         padding: 0 16px;
         justify-content: center;
@@ -49,6 +59,19 @@
         font-style: normal;
         font-weight: 700;
         line-height: 24px; /* 150% */
-        padding-top: 24px;
+
+        @include mobile {
+            font-size: 14px;
+        }
+    }
+
+    &-icon {
+        display: flex;
+        width: 128px;
+        height: 128px;
+        padding: 13.091px;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
     }
 }

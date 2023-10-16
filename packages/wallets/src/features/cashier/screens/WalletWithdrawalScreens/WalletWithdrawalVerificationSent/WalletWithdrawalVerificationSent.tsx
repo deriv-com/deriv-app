@@ -12,11 +12,16 @@ const WalletWithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail
 
     return (
         <div className='wallets-withdrawal-verification-sent'>
-            <EmailSent />
-            <p className='wallets-withdrawal-verification-sent__title'>We’ve sent you an email.</p>
-            <p className='wallets-withdrawal-verification-sent__description'>
-                Please check your email for the verification link to complete the process.
-            </p>
+            <div className='wallets-withdrawal-verification-sent-icon'>
+                <EmailSent />
+            </div>
+
+            <div className='wallets-withdrawal-verification-sent__messages'>
+                <p className='wallets-withdrawal-verification-sent__title'>We’ve sent you an email.</p>
+                <p className='wallets-withdrawal-verification-sent__description'>
+                    Please check your email for the verification link to complete the process.
+                </p>
+            </div>
             {!showResend && (
                 <button
                     className='wallets-withdrawal-verification-sent__link-button'

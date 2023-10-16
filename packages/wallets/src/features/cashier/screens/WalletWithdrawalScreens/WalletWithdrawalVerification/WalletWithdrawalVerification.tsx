@@ -9,15 +9,19 @@ type TProps = {
 const WalletWithdrawalVerification: React.FC<TProps> = ({ sendEmail }) => {
     return (
         <div className='wallets-withdrawal-verification'>
-            <EmailVerification />
-            <p className='wallets-withdrawal-verification__title'>Please help us verify your withdrawal request.</p>
-            <p className='wallets-withdrawal-verification__description'>
-                <span>
-                    Click the button below and we’ll send you an email with a link. Click that link to verify your
-                    withdrawal request.
-                </span>
-                <span>This is to protect your account from unauthorised withdrawals.</span>
-            </p>
+            <div className='wallets-withdrawal-verification-icon'>
+                <EmailVerification />
+            </div>
+            <div className='wallets-withdrawal-verification__messages'>
+                <p className='wallets-withdrawal-verification__title'>Please help us verify your withdrawal request.</p>
+                <p className='wallets-withdrawal-verification__description'>
+                    <span>
+                        Click the button below and we’ll send you an email with a link. Click that link to verify your
+                        withdrawal request.
+                    </span>
+                    <span>This is to protect your account from unauthorised withdrawals.</span>
+                </p>
+            </div>
             <button className='wallets-withdrawal-verification__send-button' onClick={sendEmail}>
                 Send email
             </button>

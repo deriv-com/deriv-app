@@ -8,18 +8,32 @@
     &__description {
         color: #000;
         text-align: center;
-        font-size: 14px;
+        font-size: 16px;
         font-style: normal;
         font-weight: 400;
         line-height: 20px; /* 142.857% */
+
+        @include mobile {
+            font-size: 14px;
+        }
+    }
+
+    &-icon {
+        display: flex;
+        width: 128px;
+        height: 128px;
+        padding: 13.091px 13.089px 13.091px 13.091px;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
     }
 
     &__link-button {
         all: unset;
         cursor: pointer;
-        display: inline-flex;
+        display: flex;
         height: 40px;
-        padding: 0 16px;
+        padding: 10px 16px;
         justify-content: center;
         align-items: center;
         flex-shrink: 0;
@@ -33,12 +47,19 @@
         line-height: 20px; /* 142.857% */
     }
 
+    &__messages {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
     &__resend {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 40px;
-        padding-top: 32px;
+        gap: 24px;
+        padding-top: 24px;
 
         &-button {
             all: unset;
@@ -92,5 +113,9 @@
         font-style: normal;
         font-weight: 700;
         line-height: 24px; /* 150% */
+
+        @include mobile {
+            font-size: 14px;
+        }
     }
 }

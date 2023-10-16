@@ -1,7 +1,6 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
 import { useHasMFAccountDeposited } from '@deriv/hooks';
-import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import './ready-to-verify-modal.scss';
@@ -15,6 +14,7 @@ const ReadyToVerifyModal = observer(() => {
         disableApp,
         enableApp,
         setIsVerificationModalVisible,
+        is_mobile,
     } = ui;
     const has_mf_account_deposited = useHasMFAccountDeposited();
 
@@ -43,7 +43,7 @@ const ReadyToVerifyModal = observer(() => {
             has_close_icon={false}
             onEscapeButtonCancel={onClose}
         >
-            <Text align='center' size={isMobile() ? 'xxs' : 'xs'}>
+            <Text align='center' size={is_mobile ? 'xxs' : 'xs'}>
                 {has_mf_account_deposited
                     ? localize(
                           'Your funds will be available for trading once the verification of your account is complete.'

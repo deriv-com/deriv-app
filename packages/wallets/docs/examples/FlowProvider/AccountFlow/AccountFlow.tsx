@@ -1,13 +1,14 @@
 import React from 'react';
-import { ModalWrapper } from '../../../../src/components/Base';
 import { ModalStepWrapper } from '../../../../src/components/Base/ModalStepWrapper';
 import { FlowProvider, TFlowProviderContext, useFlow } from '../../../../src/components/FlowProvider';
 import { useModal } from '../../../../src/components/ModalProvider';
+import { MT5AccountType } from '../../../../src/features/cfd/screens/MT5AccountType';
+import VerificationFlow from './VerificationFlow';
 
 const PasswordScreen = () => {
     return (
         <div style={{ display: 'grid', fontSize: 40, height: '100%', placeItems: 'center', width: '100%' }}>
-            Password Screen in Verification Flow
+            Password Screen in Account Flow
         </div>
     );
 };
@@ -16,16 +17,16 @@ const ScreenB = () => {
     const { formValues, setFormValues } = useFlow();
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', height: '30vh', padding: '4px' }}>
-            <h1>Screen X in Verification Flow</h1>
+            <h1>Screen B</h1>
             <input
                 onChange={e => setFormValues('testb', e.target.value)}
-                style={{ width: '100%', border: '1px solid black', padding: '4px' }}
+                style={{ border: '1px solid black', padding: '4px', width: '100%' }}
                 type='text'
                 value={formValues.testb}
             />
             <input
                 onChange={e => setFormValues('testa', e.target.value)}
-                style={{ width: '100%', border: '1px solid black', padding: '4px' }}
+                style={{ border: '1px solid black', padding: '4px', width: '100%' }}
                 type='text'
                 value={formValues.testa}
             />
@@ -48,34 +49,35 @@ const ScreenA = () => {
     );
 };
 
-const SuccessModal = () => {
+const JurisdictionScreen = () => {
     return (
-        <ModalWrapper>
-            <div
-                style={{
-                    background: 'white',
-                    width: '50vw',
-                    height: '50vh',
-                }}
-            >
-                <h1>SUCCESS MODAL!</h1>
-            </div>
-        </ModalWrapper>
+        <div>
+            <h1>Jurisdiction Screen</h1>
+        </div>
     );
 };
 
 const screens = {
     aScreen: <ScreenA />,
     bScreen: <ScreenB />,
+    JurisdictionScreen: <JurisdictionScreen />,
     passwordScreen: <PasswordScreen />,
+    selectAccountTypeScreen: <MT5AccountType onMarketTypeSelect={marketType => marketType} selectedMarketType='all' />,
 };
 
-const VerificationFlow = () => {
+const AccountFlow = () => {
     const { show } = useModal();
-    const nextFlowHandler = ({ currentScreenId, switchNextScreen }: TFlowProviderContext<typeof screens>) => {
+    const nextFlowHandler = ({
+        currentScreenId,
+        switchNextScreen,
+        switchScreen,
+    }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
             case 'bScreen':
-                show(<SuccessModal />);
+                show(<VerificationFlow />);
+                break;
+            case 'passwordScreen':
+                switchScreen('bScreen');
                 break;
             default:
                 switchNextScreen();
@@ -84,7 +86,7 @@ const VerificationFlow = () => {
 
     return (
         <FlowProvider
-            initialScreenId='passwordScreen'
+            initialScreenId='selectAccountTypeScreen'
             initialValues={{
                 testa: '',
                 testb: '',
@@ -100,10 +102,10 @@ const VerificationFlow = () => {
                                     nextFlowHandler(context);
                                 }}
                             >
-                                {context.currentScreenId !== 'bScreen' ? 'Next' : 'Submit'}
+                                {context.currentScreenId !== 'JurisdictionScreen' ? 'Next' : 'Submit'}
                             </button>
                         )}
-                        title='Verification Flow'
+                        title='Account Flow'
                     >
                         {context.WalletScreen}
                     </ModalStepWrapper>
@@ -113,4 +115,4 @@ const VerificationFlow = () => {
     );
 };
 
-export default VerificationFlow;
+export default AccountFlow;

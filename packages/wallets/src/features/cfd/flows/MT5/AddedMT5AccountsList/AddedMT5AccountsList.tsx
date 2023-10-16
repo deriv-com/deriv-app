@@ -31,16 +31,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             )}
             trailing={() => (
                 <div className='wallets-added-mt5__actions'>
-                    <WalletButton variant='outlined'>
-                        <WalletText align='center' size='sm' weight='bold'>
-                            Transfer
-                        </WalletText>
-                    </WalletButton>
-                    <WalletButton>
-                        <WalletText align='center' color='white' size='sm' weight='bold'>
-                            Open
-                        </WalletText>
-                    </WalletButton>
+                    <WalletButton text='Transfer' variant='outlined' />
+                    <WalletButton text='Open' />
                 </div>
             )}
         >

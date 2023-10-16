@@ -1,12 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
+import { TGenericSizes } from '../types';
 import styles from './WalletText.module.css';
 
 interface WalletTextProps {
     align?: 'center' | 'left' | 'right';
     children: React.ReactNode;
     color?: 'black' | 'error' | 'general' | 'primary' | 'success' | 'warning' | 'white';
-    size?: '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '4xs' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
+    size?: TGenericSizes;
     weight?: 'bold' | 'normal';
 }
 

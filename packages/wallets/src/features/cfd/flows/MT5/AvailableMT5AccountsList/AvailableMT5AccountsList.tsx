@@ -43,11 +43,8 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 <WalletButton
                     color='primary-light'
                     onClick={() => show(<MT5PasswordModal marketType={account?.market_type || 'synthetic'} />)}
-                >
-                    <WalletText align='center' color='error' size='sm' weight='bold'>
-                        Get
-                    </WalletText>
-                </WalletButton>
+                    text='Get'
+                />
             )}
         >
             <div className='wallets-available-mt5__details'>

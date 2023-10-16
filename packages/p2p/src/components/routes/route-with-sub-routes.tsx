@@ -10,13 +10,13 @@ type TRouteWithSubRoutesProps = TRouteConfig & TBinaryRoutes;
 const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
     const renderFactory = (props: RouteComponentProps) => {
         let result = null;
+        const { location } = props;
 
         if (route.component === Redirect) {
             let to = route.to;
 
             // This if clause has been added just to remove '/index' from url in localhost env.
             if (route.path === routes.index) {
-                const { location } = props;
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;

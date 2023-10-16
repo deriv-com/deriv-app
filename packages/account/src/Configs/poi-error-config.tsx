@@ -2,10 +2,10 @@ import React from 'react';
 import { GetAccountStatus, ResidenceList } from '@deriv/api-types';
 import { IDV_ERROR_STATUS, TIDVErrorStatus } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import PoiNameDobExample from '../Assets/poi-name-dob-example.svg';
-import PoiNameExample from '../Assets/poi-name-example.svg';
-import PoiDobExample from '../Assets/poi-dob-example.svg';
-import { getIDVDocumentType } from 'Helpers/utils';
+import PoiNameDobExample from '../Assets/ic-poi-name-dob-example.svg';
+import PoiNameExample from '../Assets/ic-poi-name-example.svg';
+import PoiDobExample from '../Assets/ic-poi-dob-example.svg';
+import { getIDVDocumentType } from '../Helpers/utils';
 
 export const GENERIC_ERROR_MESSAGE = (
     <Localize i18n_default_text='Sorry, an internal error occurred. Hit the above checkbox to try again.' />

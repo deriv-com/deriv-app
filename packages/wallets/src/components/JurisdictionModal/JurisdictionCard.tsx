@@ -1,12 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
-import DocumentsIcon from '../../public/images/ic-documents.svg';
-import IdCardIcon from '../../public/images/ic-id-card.svg';
-import NotApplicableIcon from '../../public/images/ic-not-applicable.svg';
-import SelfieIcon from '../../public/images/ic-selfie.svg';
-import { useModal } from '../ModalProvider';
-import { getJurisdictionContents } from './jurisdiction-contents/jurisdiction-contents';
-import { TJurisdictionCardItems } from './jurisdiction-contents/props.types';
 import JurisdictionCardRow from './JurisdictionCardRow';
 import JurisdictionCardTag from './JurisdictionCardTag';
 import './JurisdictionCard.scss';
@@ -18,99 +11,65 @@ type TJurisdictionCardProps = {
     tag?: string;
 };
 
-const verificationIconsMapper: Record<string, JSX.Element> = {
-    documentNumber: <IdCardIcon />,
-    nameAndAddress: <DocumentsIcon />,
-    notApplicable: <NotApplicableIcon />,
-    selfie: <SelfieIcon />,
-};
-
-const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisdiction, onSelect }) => {
-    const { modalState } = useModal();
-
-    const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = useMemo<TJurisdictionCardItems>(
-        () => getJurisdictionContents()[jurisdiction],
-        [jurisdiction]
-    );
-    const marketType = modalState?.marketType || 'all';
-    const rows = contents[marketType] || [];
-
-    useEffect(() => {
-        console.log(modalState);
-    }, []);
-
-    const parseClickableDescription = (clickableDescription: { text: string; type: 'link' | 'text' }[]) => {
-        return clickableDescription.map(description => {
-            if (description.type === 'link') {
-                return (
-                    <a className='wallets-jurisdiction-card__link' key={description?.text}>
-                        {description.text}{' '}
-                    </a>
-                );
-            }
-            return description.text;
-        });
-    };
+const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisdiction, onSelect, tag }) => {
+    const [shouldFlip, setShouldFlip] = useState(false);
 
     return (
         <div
             className={classNames('wallets-jurisdiction-card', {
+                'wallets-jurisdiction-card--flip': shouldFlip,
                 'wallets-jurisdiction-card--selected': isSelected,
             })}
-            onClick={() => {
-                onSelect(jurisdiction);
-            }}
+            onClick={() => onSelect(jurisdiction)}
         >
-            {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
+            {!shouldFlip && tag && <JurisdictionCardTag tag={tag} />}
             <React.Fragment>
                 <div className='wallets-jurisdiction-card-front'>
-                    <div className='wallets-jurisdiction-card-front__label'>{header}</div>
-                    {rows.map(row => {
-                        return (
-                            <JurisdictionCardRow
-                                description={
-                                    row.clickableDescription
-                                        ? parseClickableDescription(row.clickableDescription)
-                                        : row.description
-                                }
-                                key={`wallets-jurisdiction-card--${row?.title}`}
-                                renderTag={() => {
-                                    if (!row?.titleIndicators) return;
+                    <div className='wallets-jurisdiction-card-front__label'>{jurisdiction}</div>
+                    <JurisdictionCardRow
+                        description='Synthetics,baskets,and derived FX'
+                        renderTag={() => (
+                            <div className='wallets-jurisdiction-card-front__tag wallets-jurisdiction-card-front__tag--assets'>
+                                40+
+                            </div>
+                        )}
+                        title='Assets'
+                    />
+                    <JurisdictionCardRow
+                        description={<div className='wallets-jurisdiction-card__link'>Dynamic leverage</div>}
+                        renderTag={() => (
+                            <div className='wallets-jurisdiction-card-front__tag wallets-jurisdiction-card-front__tag--leverage'>
+                                1:1000
+                            </div>
+                        )}
+                        title='Leverage'
+                    />
 
-                                    if (
-                                        row.titleIndicators?.type === 'displayIcons' &&
-                                        verificationDocs &&
-                                        marketType &&
-                                        marketType !== 'all'
-                                    ) {
-                                        return (
-                                            <div className='wallets-jurisdiction-card-front__tag-icons'>
-                                                {!(marketType in verificationDocs)
-                                                    ? verificationIconsMapper.notApplicable
-                                                    : verificationDocs[marketType]?.map(doc => {
-                                                          return verificationIconsMapper[doc];
-                                                      })}
-                                            </div>
-                                        );
-                                    }
-
-                                    if (row?.titleIndicators?.displayText) {
-                                        return (
-                                            <div
-                                                className={`wallets-jurisdiction-card-front__tag wallets-jurisdiction-card-front__tag--${
-                                                    row.titleIndicators?.displayTextSkinColor || ''
-                                                }`}
-                                            >
-                                                {row.titleIndicators?.displayText}
-                                            </div>
-                                        );
-                                    }
-                                }}
-                                title={row.title}
-                            />
-                        );
-                    })}
+                    <JurisdictionCardRow
+                        renderTag={() => (
+                            <div className='wallets-jurisdiction-card-front__tag wallets-jurisdiction-card-front__tag--spreads-from'>
+                                0.6 pips
+                            </div>
+                        )}
+                        title='Spreads from'
+                    />
+                    <JurisdictionCardRow
+                        description={
+                            <div>
+                                <a className='wallets-jurisdiction-card__link' onClick={() => setShouldFlip(true)}>
+                                    Learn more
+                                </a>{' '}
+                                about required verifications.
+                            </div>
+                        }
+                        title='Verifications'
+                    />
+                    <JurisdictionCardRow
+                        description='British Virgin Islands Financial Services Commission (Licence no. SIBA/L/18/1114)'
+                        title='Regulator'
+                    />
                 </div>
+                <div className='wallets-jurisdiction-card-back'>IM BACK</div>
             </React.Fragment>
         </div>
     );

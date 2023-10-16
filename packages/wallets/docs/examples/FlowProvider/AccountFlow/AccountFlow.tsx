@@ -2,7 +2,6 @@ import React from 'react';
 import { ModalStepWrapper } from '../../../../src/components/Base/ModalStepWrapper';
 import { TFlowProviderContext, useFlow, FlowProvider } from '../../../../src/components/FlowProvider';
 import { MT5AccountType } from '../../../../src/features/cfd/screens/MT5AccountType';
-import JurisdictionScreen from '../../../../src/components/JurisdictionModal/JurisdictionScreen';
 import VerificationFlow from './VerificationFlow';
 import { useModal } from '../../../../src/components/ModalProvider';
 
@@ -46,6 +45,14 @@ const ScreenA = () => {
                 type='text'
                 value={formValues.testa}
             />
+        </div>
+    );
+};
+
+const JurisdictionScreen = () => {
+    return (
+        <div>
+            <h1>Jurisdiction Screen</h1>
         </div>
     );
 };

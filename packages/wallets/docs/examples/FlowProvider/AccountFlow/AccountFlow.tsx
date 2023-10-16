@@ -1,15 +1,15 @@
 import React from 'react';
-import { WalletFlowProvider } from '../Flow';
-import { ModalStepWrapper } from '../../components/Base/ModalStepWrapper';
-import { useFlowSwitcher } from '../Flow/WalletFlowSwitcher';
-import { TFlowProviderContext, useFlow } from '../Flow/WalletFlowProvider';
-import { MT5AccountType } from '../../features/cfd/screens/MT5AccountType';
-import JurisdictionScreen from '../JurisdictionModal/JurisdictionScreen';
+import { ModalStepWrapper } from '../../../../src/components/Base/ModalStepWrapper';
+import { TFlowProviderContext, useFlow, FlowProvider } from '../../../../src/components/FlowProvider';
+import { MT5AccountType } from '../../../../src/features/cfd/screens/MT5AccountType';
+import JurisdictionScreen from '../../../../src/components/JurisdictionModal/JurisdictionScreen';
+import VerificationFlow from './VerificationFlow';
+import { useModal } from '../../../../src/components/ModalProvider';
 
 const PasswordScreen = () => {
     return (
         <div style={{ display: 'grid', placeItems: 'center', fontSize: 40, height: '100%', width: '100%' }}>
-            Password Screen
+            Password Screen in Account Flow
         </div>
     );
 };
@@ -18,6 +18,7 @@ const ScreenB = () => {
     const { formValues, setFormValues } = useFlow();
     return (
         <div style={{ height: '30vh', padding: '4px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <h1>Screen B</h1>
             <input
                 onChange={e => setFormValues('testb', e.target.value)}
                 style={{ width: '100%', border: '1px solid black', padding: '4px' }}
@@ -58,11 +59,18 @@ const screens = {
 };
 
 const AccountFlow = ({ selectedMarketType }: { selectedMarketType: 'all' | 'financial' | 'synthetic' | undefined }) => {
-    const { switchFlow } = useFlowSwitcher();
-    const nextFlowHandler = ({ currentScreenId, switchScreen, switchNextScreen }) => {
+    const { show } = useModal();
+    const nextFlowHandler = ({
+        currentScreenId,
+        switchNextScreen,
+        switchScreen,
+    }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
             case 'bScreen':
-                switchFlow('accountFlow');
+                show(<VerificationFlow />);
+                break;
+            case 'passwordScreen':
+                switchScreen('bScreen');
                 break;
             default:
                 switchNextScreen();
@@ -70,7 +78,7 @@ const AccountFlow = ({ selectedMarketType }: { selectedMarketType: 'all' | 'fina
     };
 
     return (
-        <WalletFlowProvider
+        <FlowProvider
             initialScreenId='selectAccountTypeScreen'
             initialValues={{
                 testa: '',
@@ -81,7 +89,6 @@ const AccountFlow = ({ selectedMarketType }: { selectedMarketType: 'all' | 'fina
             {context => {
                 return (
                     <ModalStepWrapper
-                        title='Account Flow'
                         renderFooter={() => (
                             <button
                                 onClick={() => {
@@ -91,12 +98,13 @@ const AccountFlow = ({ selectedMarketType }: { selectedMarketType: 'all' | 'fina
                                 {context.currentScreenId !== 'JurisdictionScreen' ? 'Next' : 'Submit'}
                             </button>
                         )}
+                        title='Account Flow'
                     >
                         {context.WalletScreen}
                     </ModalStepWrapper>
                 );
             }}
-        </WalletFlowProvider>
+        </FlowProvider>
     );
 };
 

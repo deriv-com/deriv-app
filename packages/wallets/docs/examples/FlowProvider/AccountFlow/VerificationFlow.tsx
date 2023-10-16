@@ -1,13 +1,13 @@
 import React from 'react';
-import { WalletFlowProvider, WalletScreen } from '../Flow';
-import { ModalStepWrapper } from '../ModalStepWrapper';
-import { useFlow } from '../Flow/WalletFlowProvider';
-import { useModal } from '../ModalProvider';
+import { ModalStepWrapper } from '../../../../src/components/Base/ModalStepWrapper';
+import { TFlowProviderContext, useFlow, FlowProvider } from '../../../../src/components/FlowProvider';
+import { useModal } from '../../../../src/components/ModalProvider';
+import { ModalWrapper } from '../../../../src/components/Base';
 
 const PasswordScreen = () => {
     return (
         <div style={{ display: 'grid', placeItems: 'center', fontSize: 40, height: '100%', width: '100%' }}>
-            New Flow
+            Password Screen in Verification Flow
         </div>
     );
 };
@@ -16,6 +16,7 @@ const ScreenB = () => {
     const { formValues, setFormValues } = useFlow();
     return (
         <div style={{ height: '30vh', padding: '4px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <h1>Screen X in Verification Flow</h1>
             <input
                 onChange={e => setFormValues('testb', e.target.value)}
                 style={{ width: '100%', border: '1px solid black', padding: '4px' }}
@@ -47,12 +48,38 @@ const ScreenA = () => {
     );
 };
 
+const SuccessModal = () => {
+    return (
+        <ModalWrapper>
+            <div
+                style={{
+                    background: 'white',
+                    width: '50vw',
+                    height: '50vh',
+                }}
+            >
+                <h1>SUCCESS MODAL!</h1>
+            </div>
+        </ModalWrapper>
+    );
+};
+
+const screens = {
+    passwordScreen: <PasswordScreen />,
+    aScreen: <ScreenA />,
+    bScreen: <ScreenB />,
+};
+
 const VerificationFlow = () => {
-    const { hide } = useModal();
-    const nextFlowHandler = ({ currentScreenId, switchScreen, switchNextScreen }) => {
+    const { show } = useModal();
+    const nextFlowHandler = ({
+        currentScreenId,
+        switchNextScreen,
+        switchScreen,
+    }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
-            case 'b_screen':
-                hide();
+            case 'bScreen':
+                show(<SuccessModal />);
                 break;
             default:
                 switchNextScreen();
@@ -60,30 +87,33 @@ const VerificationFlow = () => {
     };
 
     return (
-        <WalletFlowProvider
-            initialScreenId='new_flow_screen'
+        <FlowProvider
+            initialScreenId='passwordScreen'
             initialValues={{
                 testa: '',
                 testb: '',
             }}
+            screens={screens}
         >
             {context => {
                 return (
                     <ModalStepWrapper
-                        title='Verification Flow'
                         renderFooter={() => (
-                            <button onClick={() => nextFlowHandler(context)}>
-                                {context.currentScreenId !== 'password_screen' ? 'Next' : 'Submit'}
+                            <button
+                                onClick={() => {
+                                    nextFlowHandler(context);
+                                }}
+                            >
+                                {context.currentScreenId !== 'bScreen' ? 'Next' : 'Submit'}
                             </button>
                         )}
+                        title='Verification Flow'
                     >
-                        <WalletScreen screenId='new_flow_screen' component={<PasswordScreen />} />
-                        <WalletScreen screenId='a_screen' component={<ScreenA />} />
-                        <WalletScreen screenId='b_screen' component={<ScreenB />} />
+                        {context.WalletScreen}
                     </ModalStepWrapper>
                 );
             }}
-        </WalletFlowProvider>
+        </FlowProvider>
     );
 };
 

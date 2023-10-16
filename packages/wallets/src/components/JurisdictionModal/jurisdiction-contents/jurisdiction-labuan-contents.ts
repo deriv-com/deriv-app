@@ -1,102 +1,102 @@
 import { TJurisdictionCardItems } from './props.types';
 
 export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
-    overHeader: 'Straight-through processing',
-    isOverHeaderAvailable: true,
-    header: 'Labuan',
     contents: {
-        synthetic: [
-            {
-                key: 'assets',
-                title: 'Assets',
-                description: 'Forex and Cryptocurrencies',
-            },
-            {
-                key: 'leverage',
-                title: 'Leverage',
-            },
-            {
-                key: 'spreadsFrom',
-                title: 'Spreads from',
-            },
-            {
-                key: 'verifications',
-                title: 'Verifications',
-                titleIndicators: {
-                    type: 'displayIcons',
-                },
-                clickableDescription: [
-                    {
-                        type: 'link',
-                        text: 'Learn more',
-                    },
-                    {
-                        type: 'text',
-                        text: 'about verifications needed.',
-                    },
-                ],
-            },
-            {
-                key: 'regulator',
-                title: 'Regulator/EDR',
-                description: 'Labuan Financial Services Authority (licence no. MB/18/0024)',
-            },
-        ],
         financial: [
             {
+                description: 'Forex and Cryptocurrencies',
                 key: 'assets',
                 title: 'Assets',
-                description: 'Forex and Cryptocurrencies',
                 titleIndicators: {
-                    type: 'displayText',
                     displayText: '80+',
                     displayTextSkinColor: 'red-dark',
+                    type: 'displayText',
                 },
             },
             {
                 key: 'leverage',
                 title: 'Leverage',
                 titleIndicators: {
-                    type: 'displayText',
                     displayText: '1:100',
                     displayTextSkinColor: 'yellow-dark',
+                    type: 'displayText',
                 },
             },
             {
                 key: 'spreadsFrom',
                 title: 'Spreads from',
                 titleIndicators: {
-                    type: 'displayText',
                     displayText: '0.6 pips',
                     displayTextSkinColor: 'violet-dark',
+                    type: 'displayText',
                 },
             },
             {
+                clickableDescription: [
+                    {
+                        text: 'Learn more',
+                        type: 'link',
+                    },
+                    {
+                        text: 'about verifications needed.',
+                        type: 'text',
+                    },
+                ],
                 key: 'verifications',
                 title: 'Verifications',
                 titleIndicators: {
                     type: 'displayIcons',
                 },
-                clickableDescription: [
-                    {
-                        type: 'link',
-                        text: 'Learn more',
-                    },
-                    {
-                        type: 'text',
-                        text: 'about verifications needed.',
-                    },
-                ],
             },
             {
+                description: 'Labuan Financial Services Authority (licence no. MB/18/0024)',
                 key: 'regulator',
                 title: 'Regulator/EDR',
+            },
+        ],
+        synthetic: [
+            {
+                description: 'Forex and Cryptocurrencies',
+                key: 'assets',
+                title: 'Assets',
+            },
+            {
+                key: 'leverage',
+                title: 'Leverage',
+            },
+            {
+                key: 'spreadsFrom',
+                title: 'Spreads from',
+            },
+            {
+                clickableDescription: [
+                    {
+                        text: 'Learn more',
+                        type: 'link',
+                    },
+                    {
+                        text: 'about verifications needed.',
+                        type: 'text',
+                    },
+                ],
+                key: 'verifications',
+                title: 'Verifications',
+                titleIndicators: {
+                    type: 'displayIcons',
+                },
+            },
+            {
                 description: 'Labuan Financial Services Authority (licence no. MB/18/0024)',
+                key: 'regulator',
+                title: 'Regulator/EDR',
             },
         ],
     },
+    header: 'Labuan',
+    isOverHeaderAvailable: true,
+    overHeader: 'Straight-through processing',
     verificationDocs: {
-        synthetic: ['documentNumber', 'nameAndAddress'],
         financial: ['documentNumber', 'nameAndAddress'],
+        synthetic: ['documentNumber', 'nameAndAddress'],
     },
 });

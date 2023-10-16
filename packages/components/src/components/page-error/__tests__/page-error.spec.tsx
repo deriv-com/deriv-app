@@ -123,29 +123,29 @@ describe('<PageError/>', () => {
             />
         );
 
-        const spanElement = screen.getByText('Some redirect label');
+        const redirect_label = screen.getByText('Some redirect label');
 
-        expect(spanElement).toBeInTheDocument();
-        expect(spanElement).toHaveStyle(`--text-size: var(--text-size-xs)`);
+        expect(redirect_label).toBeInTheDocument();
+        expect(redirect_label).toHaveStyle(`--text-size: var(--text-size-xs)`);
     });
 
     it('If image_url is passed we should render the image', () => {
-        renderWithRouter(<PageError {...pageErrorDefaultProps} image_url={'http://test-image-url.png'} />);
+        renderWithRouter(<PageError {...pageErrorDefaultProps} image_url={'test-image-url.png'} />);
 
         const image = screen.getByAltText('404');
 
         expect(image).toBeInTheDocument();
-        expect(image).toHaveAttribute('src', 'http://test-image-url.png');
+        expect(image).toHaveAttribute('src', 'test-image-url.png');
     });
 
     it('Should show on mobile version text size of the error heading equals to "s" when image_url is passed ', () => {
         (isMobile as jest.Mock).mockReturnValueOnce(true);
 
-        renderWithRouter(<PageError {...pageErrorDefaultProps} image_url={'http://test-image-url.png'} />);
+        renderWithRouter(<PageError {...pageErrorDefaultProps} image_url={'test-image-url.png'} />);
 
-        const h3Element = screen.getByRole('heading', { level: 3 });
+        const heading = screen.getByRole('heading', { level: 3 });
 
-        expect(h3Element).toBeInTheDocument();
-        expect(h3Element).toHaveStyle('--text-size: var(--text-size-s)');
+        expect(heading).toBeInTheDocument();
+        expect(heading).toHaveStyle('--text-size: var(--text-size-s)');
     });
 });

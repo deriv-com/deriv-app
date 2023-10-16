@@ -22,9 +22,10 @@ declare module 'react-router-dom' {
 }
 
 const Router: React.FC = () => {
-    const { data: walletAccounts } = useWalletAccountsList();
+    const { data: walletAccounts, isLoading } = useWalletAccountsList();
 
-    if (!walletAccounts || !walletAccounts.length) return <Route component={WalletNoWalletFoundState} path={prefix} />;
+    if ((!walletAccounts || !walletAccounts.length) && !isLoading)
+        return <Route component={WalletNoWalletFoundState} path={prefix} />;
 
     return (
         <Switch>

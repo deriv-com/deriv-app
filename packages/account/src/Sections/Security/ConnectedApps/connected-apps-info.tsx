@@ -8,7 +8,7 @@ const ConnectedAppsInfo = () => (
         size='md'
         message={
             <React.Fragment>
-                <Text as='h4' weight='bold' size='xs'>
+                <Text as='h4' weight='bold' size='xxxs'>
                     <Localize i18n_default_text='What are connected apps?' />
                 </Text>
                 <ol className='connected-apps__list--ordered_list'>

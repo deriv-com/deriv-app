@@ -1,5 +1,4 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared';
 import Digits from 'Modules/Contract/Components/Digits';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
 import BottomWidgets from '../../SmartChart/Components/bottom-widgets';
@@ -54,7 +53,7 @@ export const ChartTopWidgets = observer(
     ({ charts_ref, is_digits_widget_active, open_market, open }: TChartTopWidgets) => {
         const { ui } = useStore();
         const { onChange: onSymbolChange } = useTraderStore();
-        const { is_dark_mode_on } = ui;
+        const { is_dark_mode_on, is_mobile } = ui;
         const theme = is_dark_mode_on ? 'dark' : 'light';
         let yAxiswidth;
         if (charts_ref?.chart) {
@@ -64,7 +63,7 @@ export const ChartTopWidgets = observer(
             <TopWidgets
                 open_market={open_market}
                 open={open}
-                is_mobile={isMobile()}
+                is_mobile={is_mobile}
                 is_digits_widget_active={is_digits_widget_active}
                 onSymbolChange={symbolChange(onSymbolChange)}
                 theme={theme}

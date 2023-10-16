@@ -54,7 +54,7 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
             );
         }
 
-        const title = route.getTitle?.() || '';
+        const title = route.getTitle?.() ?? '';
         document.title = `${title} | ${default_title}`;
 
         alternateLinkTagChange();

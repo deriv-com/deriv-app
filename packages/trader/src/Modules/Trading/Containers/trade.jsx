@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
+import { getDecimalPlaces, isDesktop } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
@@ -57,6 +57,7 @@ const Trade = observer(() => {
         has_only_forward_starting_contracts: is_market_unavailable_visible,
         should_show_multipliers_onboarding,
         is_dark_mode_on: is_dark_theme,
+        is_mobile,
     } = ui;
     const { is_eu } = client;
     const { network_status } = common;
@@ -98,12 +99,12 @@ const Trade = observer(() => {
     }, [onMount, onUnmount, getFirstOpenMarket, is_synthetics_available]);
 
     React.useEffect(() => {
-        if (isMobile()) {
+        if (is_mobile) {
             setDigits([]);
         }
         setTrySyntheticIndices(false);
         setTryOpenMarkets(false);
-    }, [symbol, setDigits, setTrySyntheticIndices, is_synthetics_available]);
+    }, [is_mobile, symbol, setDigits, setTrySyntheticIndices, is_synthetics_available]);
 
     React.useEffect(() => {
         const selectMultipliers = async () => {
@@ -149,7 +150,7 @@ const Trade = observer(() => {
         [open_market, try_synthetic_indices, try_open_markets, charts_ref, is_digits_widget_active]
     );
 
-    const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
+    const form_wrapper_class = is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
     const chart_height_offset = React.useMemo(() => {
         if (is_accumulator) return '295px';
         if (is_turbos) return '300px';
@@ -281,7 +282,7 @@ const ChartTrade = observer(props => {
         updateChartType,
     } = contract_trade;
     const { all_positions } = portfolio;
-    const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
+    const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on, is_mobile } = ui;
     const { is_socket_opened, current_language } = common;
     const { currency, should_show_eu_content } = client;
     const {
@@ -309,7 +310,7 @@ const ChartTrade = observer(props => {
         language: current_language.toLowerCase(),
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
-        ...(is_accumulator ? { whitespace: 190, minimumLeftBars: isMobile() ? 3 : undefined } : {}),
+        ...(is_accumulator ? { whitespace: 190, minimumLeftBars: is_mobile ? 3 : undefined } : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
@@ -350,7 +351,7 @@ const ChartTrade = observer(props => {
             ref={charts_ref}
             barriers={barriers}
             bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
-            crosshair={isMobile() ? 0 : undefined}
+            crosshair={is_mobile ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
             showLastDigitStats={isDesktop() ? show_digits_stats : false}
             chartControlsWidgets={null}
@@ -368,8 +369,8 @@ const ChartTrade = observer(props => {
             enabledNavigationWidget={isDesktop()}
             enabledChartFooter={false}
             id='trade'
-            isMobile={isMobile()}
-            maxTick={isMobile() ? max_ticks : undefined}
+            isMobile={is_mobile}
+            maxTick={is_mobile ? max_ticks : undefined}
             granularity={show_digits_stats || is_accumulator ? 0 : granularity}
             requestAPI={wsSendRequest}
             requestForget={wsForget}
@@ -384,7 +385,11 @@ const ChartTrade = observer(props => {
             isConnectionOpened={is_socket_opened}
             clearChart={false}
             toolbarWidget={() => (
-                <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                <ToolbarWidgets
+                    is_mobile={is_mobile}
+                    updateChartType={updateChartType}
+                    updateGranularity={updateGranularity}
+                />
             )}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
@@ -393,7 +398,7 @@ const ChartTrade = observer(props => {
             getMarketsOrder={getMarketsOrder}
             should_zoom_out_on_yaxis={is_accumulator}
             yAxisMargin={{
-                top: isMobile() ? 76 : 106,
+                top: is_mobile ? 76 : 106,
             }}
         >
             <ChartMarkers />

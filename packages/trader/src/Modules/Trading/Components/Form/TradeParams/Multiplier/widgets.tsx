@@ -98,7 +98,6 @@ const RadioGroupOptionsWidget = ({
 
     return (
         <React.Fragment>
-            {/* @ts-expect-error TODO: check if TS error is gone after RadioGroupOptionsModal is migrated to TS */}
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
             <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal}>
                 <div

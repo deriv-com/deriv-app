@@ -2,12 +2,7 @@ import React from 'react';
 import VerificationModal from '../verification-modal';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => (Component: React.ReactElement) => Component,
-}));
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -19,6 +14,7 @@ jest.mock('../verification-modal-content', () => jest.fn(() => <div>Verification
 
 describe('<VerificationDocumentSubmited />', () => {
     let modal_root_el: HTMLDivElement;
+    const mock_store = mockStore({});
 
     beforeAll(() => {
         modal_root_el = document.createElement('div');
@@ -35,37 +31,42 @@ describe('<VerificationDocumentSubmited />', () => {
     });
 
     it('should not render the VerificationModal component', async () => {
-        const mock_props = {
-            is_verification_modal_visible: false,
-        };
+        mock_store.ui.is_verification_modal_visible = true;
         const title = 'Submit your proof of identity and address';
-        render(<VerificationModal {...mock_props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <VerificationModal />
+            </StoreProvider>
+        );
         expect(screen.queryByText(title)).not.toBeInTheDocument();
         expect(screen.queryByText('VerificationModalContent')).not.toBeInTheDocument();
     });
 
     it('should render the VerificationModal component', async () => {
         (isDesktop as jest.Mock).mockReturnValue(true);
-        const mock_props = {
-            is_verification_modal_visible: true,
-        };
+        mock_store.ui.is_verification_modal_visible = true;
         const title = 'Submit your proof of identity and address';
-        render(<VerificationModal {...mock_props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <VerificationModal />
+            </StoreProvider>
+        );
         expect(screen.getByText(title)).toBeInTheDocument();
         expect(screen.getByText('VerificationModalContent')).toBeInTheDocument();
     });
 
     it('should setIsVerificationModalVisible to false', async () => {
         (isDesktop as jest.Mock).mockReturnValue(true);
-        const mock_props = {
-            is_verification_modal_visible: true,
-            setIsVerificationModalVisible: jest.fn(),
-        };
-        render(<VerificationModal {...mock_props} />);
+        mock_store.ui.is_verification_modal_visible = true;
+        render(
+            <StoreProvider store={mock_store}>
+                <VerificationModal />
+            </StoreProvider>
+        );
         const close_button = screen.getByRole('button');
         expect(close_button).toBeInTheDocument();
         fireEvent.click(close_button);
-        expect(mock_props.setIsVerificationModalVisible).toHaveBeenCalledWith(false);
+        expect(mock_store.ui.setIsVerificationModalVisible).toHaveBeenCalledWith(false);
     });
 
     it('should setIsVerificationModalVisible to be false in isMobile', async () => {
@@ -75,14 +76,15 @@ describe('<VerificationDocumentSubmited />', () => {
 
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
-        const mock_props = {
-            is_verification_modal_visible: true,
-            setIsVerificationModalVisible: jest.fn(),
-        };
-        render(<VerificationModal {...mock_props} />);
+        mock_store.ui.is_verification_modal_visible = true;
+        render(
+            <StoreProvider store={mock_store}>
+                <VerificationModal />
+            </StoreProvider>
+        );
         const close_button = screen.getByTestId('dt-dc-mobile-dialog-close-btn');
         expect(close_button).toBeInTheDocument();
         fireEvent.click(close_button);
-        expect(mock_props.setIsVerificationModalVisible).toHaveBeenCalledWith(false);
+        expect(mock_store.ui.setIsVerificationModalVisible).toHaveBeenCalledWith(false);
     });
 });

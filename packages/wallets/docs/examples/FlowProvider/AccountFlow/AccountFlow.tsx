@@ -1,13 +1,13 @@
 import React from 'react';
 import { ModalStepWrapper } from '../../../../src/components/Base/ModalStepWrapper';
-import { TFlowProviderContext, useFlow, FlowProvider } from '../../../../src/components/FlowProvider';
+import { FlowProvider, TFlowProviderContext, useFlow } from '../../../../src/components/FlowProvider';
+import { useModal } from '../../../../src/components/ModalProvider';
 import { MT5AccountType } from '../../../../src/features/cfd/screens/MT5AccountType';
 import VerificationFlow from './VerificationFlow';
-import { useModal } from '../../../../src/components/ModalProvider';
 
 const PasswordScreen = () => {
     return (
-        <div style={{ display: 'grid', placeItems: 'center', fontSize: 40, height: '100%', width: '100%' }}>
+        <div style={{ display: 'grid', fontSize: 40, height: '100%', placeItems: 'center', width: '100%' }}>
             Password Screen in Account Flow
         </div>
     );
@@ -16,7 +16,7 @@ const PasswordScreen = () => {
 const ScreenB = () => {
     const { formValues, setFormValues } = useFlow();
     return (
-        <div style={{ height: '30vh', padding: '4px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', height: '30vh', padding: '4px' }}>
             <h1>Screen B</h1>
             <input
                 onChange={e => setFormValues('testb', e.target.value)}
@@ -65,7 +65,7 @@ const screens = {
     bScreen: <ScreenB />,
 };
 
-const AccountFlow = ({ selectedMarketType }: { selectedMarketType: 'all' | 'financial' | 'synthetic' | undefined }) => {
+const AccountFlow = () => {
     const { show } = useModal();
     const nextFlowHandler = ({
         currentScreenId,

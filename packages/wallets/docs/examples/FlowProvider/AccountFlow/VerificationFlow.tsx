@@ -1,8 +1,8 @@
 import React from 'react';
-import { ModalStepWrapper } from '../../../../src/components/Base/ModalStepWrapper';
-import { TFlowProviderContext, useFlow, FlowProvider } from '../../../../src/components/FlowProvider';
-import { useModal } from '../../../../src/components/ModalProvider';
 import { ModalWrapper } from '../../../../src/components/Base';
+import { ModalStepWrapper } from '../../../../src/components/Base/ModalStepWrapper';
+import { FlowProvider, TFlowProviderContext, useFlow } from '../../../../src/components/FlowProvider';
+import { useModal } from '../../../../src/components/ModalProvider';
 
 const PasswordScreen = () => {
     return (
@@ -72,11 +72,7 @@ const screens = {
 
 const VerificationFlow = () => {
     const { show } = useModal();
-    const nextFlowHandler = ({
-        currentScreenId,
-        switchNextScreen,
-        switchScreen,
-    }: TFlowProviderContext<typeof screens>) => {
+    const nextFlowHandler = ({ currentScreenId, switchNextScreen }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
             case 'bScreen':
                 show(<SuccessModal />);

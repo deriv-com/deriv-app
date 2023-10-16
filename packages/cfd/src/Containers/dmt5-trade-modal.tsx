@@ -74,9 +74,8 @@ const DMT5TradeModal = ({
         return 'Financial';
     };
 
-    //TODO replace status with open_order_position_status once key is available in BE response and in type TSocketResponseData<"mt5_login_list">
     const { is_flag_present: is_open_order_position_status_present, flag_value: open_order_position_status } =
-        useIsMt5LoginListStatusPresent('landing_company_short', mt5_trade_account?.login ?? '');
+        useIsMt5LoginListStatusPresent('open_order_position_status', mt5_trade_account?.login ?? '');
     const status_text = open_order_position_status ? 'No new positions' : 'Account closed';
 
     return (

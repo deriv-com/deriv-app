@@ -4,21 +4,21 @@ import { toMoment } from '@deriv/shared';
 import Icon from '../icon';
 import Text from '../text';
 
-type TDatePickerNativeProps = Omit<React.HTMLAttributes<HTMLInputElement>, 'onSelect'> & {
+type TDatePickerNativeProps = Omit<React.HTMLAttributes<HTMLInputElement>, 'onSelect' | 'onChange'> & {
     value: string | null;
-    label: string;
-    placeholder: string;
-    max_date: moment.Moment;
-    min_date: moment.Moment;
-    display_format: string;
-    data_testid: string;
-    name: string;
+    label?: string;
+    placeholder?: string;
+    max_date?: moment.Moment | string;
+    min_date?: moment.Moment | string;
+    display_format?: string;
+    data_testid?: string;
+    name?: string;
     error?: string;
-    disabled: boolean;
+    disabled?: boolean;
     hint?: string;
     onSelect: (selected_date: string) => void;
-    onBlur: React.FocusEventHandler<HTMLInputElement>;
-    onFocus: React.FocusEventHandler<HTMLInputElement>;
+    onBlur?: React.FocusEventHandler<HTMLInputElement>;
+    onFocus?: React.FocusEventHandler<HTMLInputElement>;
 };
 
 const Native = ({

@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -129,6 +129,8 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
 
 const QuickStrategy = observer(() => {
     const { quick_strategy_store_1 } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { is_open, setFormVisibility } = quick_strategy_store_1;
 
     const handleClose = () => {
@@ -138,7 +140,7 @@ const QuickStrategy = observer(() => {
     return (
         <FormikWrapper>
             <FormikForm>
-                <MobileWrapper>
+                {is_mobile ? (
                     <MobileFullPageModal
                         is_modal_open={is_open}
                         className='quick-strategy__wrapper'
@@ -150,14 +152,13 @@ const QuickStrategy = observer(() => {
                             <Form />
                         </MobileFormWrapper>
                     </MobileFullPageModal>
-                </MobileWrapper>
-                <DesktopWrapper>
+                ) : (
                     <Modal className='modal--strategy' is_open={is_open} width={'99.6rem'}>
                         <DesktopFormWrapper>
                             <Form />
                         </DesktopFormWrapper>
                     </Modal>
-                </DesktopWrapper>
+                )}
             </FormikForm>
         </FormikWrapper>
     );

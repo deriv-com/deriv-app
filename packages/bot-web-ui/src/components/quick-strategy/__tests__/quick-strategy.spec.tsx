@@ -159,9 +159,9 @@ jest.mock('../config', () => ({
 
 describe('<QuickStrategy />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
-    const mock_store = mockStore({
+    let mock_store = mockStore({
         ui: {
-            is_mobile: false,
+            is_mobile: true,
         },
     });
     const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
@@ -194,7 +194,35 @@ describe('<QuickStrategy />', () => {
         });
         await waitFor(() => {
             userEvent.click(screen.getByTestId('qs-run-button'));
+        });
+        await waitFor(() => {
             expect(mock_DBot_store?.quick_strategy_store_1?.is_open).toBeFalsy();
+        });
+    });
+
+    it('It should close the form on close button click', async () => {
+        render(<QuickStrategy />, {
+            wrapper,
+        });
+
+        const close_button = screen.getByTestId('page_overlay_header_close');
+        await waitFor(() => {
+            expect(close_button).toBeInTheDocument();
+            userEvent.click(close_button);
+        });
+        await waitFor(() => {
+            expect(mock_DBot_store.quick_strategy_store_1.is_open).toBeFalsy();
+        });
+    });
+
+    it('It should render desktop', async () => {
+        mock_store = mockStore({
+            ui: {
+                is_mobile: false,
+            },
+        });
+        render(<QuickStrategy />, {
+            wrapper,
         });
     });
 });

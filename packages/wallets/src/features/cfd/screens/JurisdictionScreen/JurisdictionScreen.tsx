@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
+import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
 import JurisdictionCard from './JurisdictionCard';
 import './JurisdictionScreen.scss';
@@ -19,7 +20,7 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction
         [data, modalState?.marketType]
     );
 
-    if (isLoading) return <h1>Loading...</h1>;
+    if (isLoading) return <WalletText>Loading...</WalletText>;
 
     return (
         <div className='wallets-jurisdiction-screen'>
@@ -47,7 +48,7 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction
                     Services Commission.
                     <div className='wallets-jurisdiction-screen__tnc-checkbox'>
                         <input type='checkbox' />
-                        <label>I confirm and accept Deriv (V) Ltd’s Terms and Conditions</label>
+                        <WalletText>I confirm and accept Deriv (V) Ltd’s Terms and Conditions</WalletText>
                     </div>
                 </div>
             )}

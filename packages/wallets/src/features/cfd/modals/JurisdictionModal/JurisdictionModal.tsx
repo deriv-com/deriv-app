@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import classNames from 'classnames';
 import { useAvailableMT5Accounts } from '@deriv/api';
-import { ModalStepWrapper } from '../../../../components/Base';
+import { ModalStepWrapper, WalletButton, WalletText } from '../../../../components/Base';
+// import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
 import { JurisdictionScreen } from '../../screens/JurisdictionScreen';
 import { MT5PasswordModal } from '..';
@@ -19,14 +19,14 @@ const JurisdictionModal = () => {
         <ModalStepWrapper
             renderFooter={() => (
                 <React.Fragment>
-                    <button
-                        className={classNames('wallets-jurisdiction-screen__button', {
-                            'wallets-jurisdiction-screen__button--disabled': !selectedJurisdiction,
-                        })}
+                    <WalletButton
+                        disabled={!selectedJurisdiction}
                         onClick={() => show(<MT5PasswordModal marketType={marketType} />)}
                     >
-                        Next
-                    </button>
+                        <WalletText color='white' size='xs' weight='bold'>
+                            Next
+                        </WalletText>
+                    </WalletButton>
                 </React.Fragment>
             )}
             title='Choose a jurisdiction for your MT5 Derived account'

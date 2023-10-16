@@ -1,4 +1,5 @@
 import React from 'react';
+import { WalletText } from '../../../../components/Base/WalletText';
 import './JurisdictionCardRow.scss';
 
 type TJurisdictionCardRowProps = {
@@ -14,7 +15,7 @@ const JurisdictionCardRow: React.FC<TJurisdictionCardRowProps> = ({ description,
                 <div className='wallets-jurisdiction-card-row__header-title'>{title}</div>
                 {renderTag && <div className='wallets-jurisdiction-card-row__header-tag'>{renderTag()}</div>}
             </div>
-            {description && <div className='wallets-jurisdiction-card-row__content'>{description}</div>}
+            {description && <WalletText size='xs'>{description}</WalletText>}
         </div>
     );
 };

@@ -46,7 +46,6 @@ describe('<ContractInfo />', () => {
         expect(screen.getAllByText(value_movement)).toHaveLength(2);
         expect(screen.getByText(test_message)).toBeInTheDocument();
     });
-
     it('should render specific components if is_multiplier === true', () => {
         render(<ContractInfo {...default_mock_props} is_multiplier />);
 
@@ -55,7 +54,6 @@ describe('<ContractInfo />', () => {
         expect(screen.queryByText(value_movement)).not.toBeInTheDocument();
         expect(screen.queryByText(test_message)).not.toBeInTheDocument();
     });
-
     it('should render specific components if is_accumulator === true', () => {
         render(<ContractInfo {...default_mock_props} is_accumulator />);
 
@@ -64,8 +62,7 @@ describe('<ContractInfo />', () => {
         expect(screen.queryByText(value_movement)).not.toBeInTheDocument();
         expect(screen.queryByText(test_message)).not.toBeInTheDocument();
     });
-
-    it('should apply a proper className if proposal_info.has_error || !proposal_info.id is true', () => {
+    it('should apply a proper className if proposal_info.has_error or !proposal_info.id is true', () => {
         default_mock_props.proposal_info.has_error = true;
         render(<ContractInfo {...default_mock_props} />);
 
@@ -73,7 +70,6 @@ describe('<ContractInfo />', () => {
             'trade-container__price-info trade-container__price-info--disabled'
         );
     });
-
     it('should apply a proper className if is_loading && !should_fade is true', () => {
         default_mock_props.proposal_info.has_error = false;
         render(<ContractInfo {...default_mock_props} is_loading should_fade={false} />);
@@ -82,7 +78,6 @@ describe('<ContractInfo />', () => {
             'trade-container__price-info trade-container__price-info--slide'
         );
     });
-
     it('should apply a proper className if is_loading && should_fade is true', () => {
         render(<ContractInfo {...default_mock_props} is_loading />);
 
@@ -90,7 +85,6 @@ describe('<ContractInfo />', () => {
             'trade-container__price-info trade-container__price-info--fade'
         );
     });
-
     it('should apply a proper className and tooltip message if is_turbos is true and type is equal to TURBOS.LONG', () => {
         render(<ContractInfo {...default_mock_props} type={TURBOS.LONG} is_turbos />);
 
@@ -99,7 +93,6 @@ describe('<ContractInfo />', () => {
         );
         expect(screen.getByText(/for long/i)).toBeInTheDocument();
     });
-
     it('should apply a proper className and tooltip message if is_turbos is true and type is equal to TURBOS.SHORT', () => {
         render(<ContractInfo {...default_mock_props} type={TURBOS.SHORT} is_turbos />);
 
@@ -108,27 +101,23 @@ describe('<ContractInfo />', () => {
         );
         expect(screen.getByText(/for short/i)).toBeInTheDocument();
     });
-
     it('should render specific tooltip message if is_vanilla is true', () => {
         render(<ContractInfo {...default_mock_props} is_vanilla />);
 
         expect(screen.getByText(/The payout at expiry is equal to the payout/i)).toBeInTheDocument();
     });
-
-    it('should render specific basis text for Turbos if proposal_info has_error and basis is equal to "stake"', () => {
+    it('should render specific basis text for Turbos if proposal_info has error and basis is equal to "stake"', () => {
         default_mock_props.proposal_info.has_error = true;
         render(<ContractInfo {...default_mock_props} is_turbos />);
 
         expect(screen.getByText(localized_basis.payout_per_point)).toBeInTheDocument();
     });
-
-    it('should render specific basis text if proposal_info has_error and basis is equal to "payout"', () => {
+    it('should render specific basis text if proposal_info has error and basis is equal to "payout"', () => {
         render(<ContractInfo {...default_mock_props} basis='payout' />);
 
         expect(screen.getByText(localized_basis.stake)).toBeInTheDocument();
     });
-
-    it('should render specific basis text if proposal_info has_error and basis is not equal to "payout" or "stake"', () => {
+    it('should render specific basis text if proposal_info has error and basis is not equal to "payout" or "stake"', () => {
         render(<ContractInfo {...default_mock_props} basis='test_basis' />);
 
         expect(screen.getByText('test_basis')).toBeInTheDocument();

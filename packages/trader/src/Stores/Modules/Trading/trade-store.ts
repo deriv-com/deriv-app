@@ -1624,11 +1624,11 @@ export default class TradeStore extends BaseStore {
             this.prepareTradeStore(false);
         }
         if (state === STATE_TYPES.SET_CHART_MODE) {
-            if (option?.chart_type_name) {
-                this.root_store.contract_trade.updateChartType(option?.chart_type_name);
-            }
             if (!isNaN(Number(option?.granularity))) {
                 this.root_store.contract_trade.updateGranularity(Number(option?.granularity));
+            }
+            if (option?.chart_type_name) {
+                this.root_store.contract_trade.updateChartType(option?.chart_type_name);
             }
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;

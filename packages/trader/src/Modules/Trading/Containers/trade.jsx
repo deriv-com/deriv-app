@@ -12,7 +12,6 @@ import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { STATE_TYPES } from 'Stores/Modules/Trading/Helpers/chart';
 import { observer, useStore } from '@deriv/stores';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
@@ -278,6 +277,8 @@ const ChartTrade = observer(props => {
         chart_type,
         granularity,
         has_crossed_accu_barriers,
+        updateChartType,
+        updateGranularity,
     } = contract_trade;
     const { all_positions } = portfolio;
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
@@ -383,10 +384,7 @@ const ChartTrade = observer(props => {
             isConnectionOpened={is_socket_opened}
             clearChart={false}
             toolbarWidget={() => (
-                <ToolbarWidgets
-                    updateChartType={value => chartStateChange(STATE_TYPES.SET_CHART_MODE, { chart_type_name: value })}
-                    updateGranularity={value => chartStateChange(STATE_TYPES.SET_CHART_MODE, { granularity: value })}
-                />
+                <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
             )}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}

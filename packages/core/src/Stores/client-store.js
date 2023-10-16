@@ -1326,19 +1326,19 @@ export default class ClientStore extends BaseStore {
 
         // TODO: remove the below lines after full smartcharts v2 launch.
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+        const { clients_country } = this.website_status;
 
-        if (!Cookies.get('website_status')) {
-            const { clients_country } = this.website_status;
-            Cookies.set(
-                'website_status',
-                {
-                    clients_country,
-                },
-                {
-                    domain,
-                    expires: 7,
-                }
-            );
+        const options = {
+            domain,
+            expires: 7,
+        };
+
+        try {
+            const cookie = Cookies.get('website_status') ? JSON.parse(Cookies.get('website_status')) : {};
+            cookie.clients_country = clients_country;
+            Cookies.set('website_status', cookie, options);
+        } catch (e) {
+            Cookies.set('website_status', { clients_country }, options);
         }
     }
 

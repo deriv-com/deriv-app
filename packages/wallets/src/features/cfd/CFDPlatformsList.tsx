@@ -26,14 +26,15 @@ const CFDPlatformsList = () => {
                     </h1>
                 </div>
             </section>
-            {!activeWallet?.currency_config?.is_crypto && (
-                <div>
+            {activeWallet?.currency_config?.is_crypto ? (
+                <CFDPlatformsListEmptyState />
+            ) : (
+                <React.Fragment>
                     <MT5PlatformsList />
                     {activeWallet?.is_virtual && <CTraderList />}
                     <OtherCFDPlatformsList />
-                </div>
+                </React.Fragment>
             )}
-            {activeWallet?.currency_config?.is_crypto && <CFDPlatformsListEmptyState />}
         </div>
     );
 };

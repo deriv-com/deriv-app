@@ -7,7 +7,7 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
-import { TGeneralContractCardBodyProps } from './contract-card-body';
+import { TGeneralContractCardBodyProps } from './contract-update-form';
 
 type TTurbosCardBody = Pick<
     TGeneralContractCardBodyProps,

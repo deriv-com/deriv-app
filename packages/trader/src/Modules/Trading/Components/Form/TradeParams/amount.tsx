@@ -4,7 +4,7 @@ import { Localize, localize } from '@deriv/translations';
 import AllowEquals from './allow-equals';
 import Fieldset from 'App/Components/Form/fieldset';
 import Multiplier from './Multiplier/multiplier.jsx';
-import MultipliersInfo from './Multiplier/info.jsx';
+import MultipliersInfo from './Multiplier/info';
 import MinMaxStakeInfo from './min-max-stake-info';
 import React from 'react';
 import classNames from 'classnames';
@@ -17,7 +17,7 @@ type TInput = {
     current_focus: string | null;
     error_messages?: string[];
     is_disabled?: boolean;
-    is_single_currency: boolean;
+    is_single_currency?: boolean;
     onChange: (e: { target: { name: string; value: number | string } }) => void;
     setCurrentFocus: (name: string | null) => void;
 };
@@ -186,7 +186,6 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                 <React.Fragment>
                     <Multiplier />
                     <MultipliersInfo
-                        /*// @ts-expect-error observer wrapped component props cant be detected until its ts-migrated */
                         className='trade-container__multipliers-trade-info'
                         should_show_tooltip
                         is_tooltip_relative

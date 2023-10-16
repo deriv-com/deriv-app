@@ -10,10 +10,6 @@ jest.mock('Components/Routes', () => ({
     BinaryRoutes: jest.fn(() => 'MockedBinaryRoutesComponent'),
 }));
 
-jest.mock('onfido-sdk-ui', () => ({
-    init: jest.fn().mockResolvedValue({}),
-}));
-
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     PageError: jest.fn(() => 'MockedPageErrorComponent'),

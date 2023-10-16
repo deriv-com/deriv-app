@@ -21,7 +21,6 @@ const BotBuilderTourDesktop = observer(() => {
     React.useEffect(() => {
         if (is_finished) {
             setTourDialogVisibility(true);
-            setActiveTour('');
         } else if (is_close_tour) {
             setActiveTour('');
             setIsCloseTour(false);

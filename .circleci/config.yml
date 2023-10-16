@@ -110,16 +110,6 @@ commands:
           name: Tag
           command: echo "<< parameters.version_name >>-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
 
-  publish_to_pages_staging:
-    description: "Publish to cloudflare pages"
-    steps:
-      - run:
-          name: "Publish to cloudflare pages (staging)"
-          command: |
-            npm i wrangler@3.1.0
-            cd packages/core
-            npx wrangler pages deploy dist/ --project-name=deriv-app-pages --branch=staging
-            echo "New staging website - http://staging.cf-pages-deriv-app.deriv.com"
 
   publish_to_pages_production:
     description: "Publish to cloudflare pages"
@@ -142,24 +132,6 @@ jobs:
       - npm_install_from_cache
       - build
 
-  release_staging:
-    docker:
-      - image: cimg/node:18.16.0
-    resource_class: xlarge
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - build
-      - versioning:
-          version_name: staging
-      - persist_to_workspace:
-          root: packages
-          paths:
-            - core
-      - notify_slack
-    environment:
-      NODE_ENV: staging
-
   release_production:
     docker:
       - image: cimg/node:18.16.0
@@ -175,18 +147,7 @@ jobs:
           paths:
             - core
 
-
       - notify_slack
-    environment:
-      NODE_ENV: staging
-
-  publish_cloudflare_staging:
-    docker:
-      - image: cimg/node:18.16.0
-    steps:
-      - attach_workspace:
-          at: packages
-      - publish_to_pages_staging
     environment:
       NODE_ENV: staging
 
@@ -200,71 +161,7 @@ jobs:
     environment:
       NODE_ENV: staging
 
-  build_and_test:
-    docker:
-      - image: cimg/node:18.16.0
-    resource_class: xlarge
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - run:
-          name: "Check TypeScript for @deriv/api"
-          command: npx tsc --project packages/api/tsconfig.json -noEmit
-      - run:
-          name: "Check TypeScript for @deriv/hooks"
-          command: npx tsc --project packages/hooks/tsconfig.json -noEmit
-      - run:
-          name: "Check TypeScript for @deriv/utils"
-          command: npx tsc --project packages/utils/tsconfig.json -noEmit
-      - run:
-          name: "Check TypeScript for @deriv/analytics"
-          command: npx tsc --project packages/analytics/tsconfig.json -noEmit
-      - run:
-          name: "Check TypeScript for @deriv/stores"
-          command: npx tsc --project packages/stores/tsconfig.json -noEmit
-      - run:
-          name: "Check TypeScript for @deriv/wallets"
-          command: npx tsc --project packages/wallets/tsconfig.json -noEmit
-      # - run:
-      #     name: "Check TypeScript for @deriv/cashier"
-      #     command: npx tsc --project packages/cashier/tsconfig.json -noEmit
-      - run:
-          name: "Check ESLint for @deriv/wallets"
-          command: npx eslint --fix --ignore-path packages/wallets/.eslintignore --config packages/wallets/.eslintrc.js packages/wallets
-      - run:
-          name: "Check Stylelint for @deriv/wallets"
-          command: npx stylelint packages/wallets/**/*.scss
-      - run:
-          name: "Check tests for @deriv/hooks"
-          command: bash ./scripts/check-tests.sh packages/hooks/src
-      - run:
-          name: "Check tests for @deriv/utils"
-          command: bash ./scripts/check-tests.sh packages/utils/src
-      - run:
-          name: "Check tests for @deriv/analytics"
-          command: bash ./scripts/check-tests.sh packages/analytics/src
-      - build
-      - run:
-          name: "Run tests"
-          no_output_timeout: 30m
-          command: npm test
-
 workflows:
-  release_staging:
-    jobs:
-      - release_staging:
-          context: binary-frontend-artifact-upload
-          filters:
-            branches:
-              only: /^master$/
-      - publish_cloudflare_staging:
-          context: binary-frontend-artifact-upload
-          requires:
-            - release_staging
-          filters:
-            branches:
-              only: /^master$/
-
   release_production:
     jobs:
       - release_production:
@@ -283,14 +180,3 @@ workflows:
               ignore: /.*/
             tags:
               only: /^production.*/
-
-  test:
-    jobs:
-      - build_and_test:
-          filters:
-            branches:
-              ignore:
-                - master
-                - gh-pages
-            tags:
-              ignore: /.*/

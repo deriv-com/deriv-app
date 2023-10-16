@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ModalStepWrapper, WalletButton, WalletText } from '../../../../components/Base';
+import { JurisdictionModal } from '../JurisdictionModal';
 import { useModal } from '../../../../components/ModalProvider';
 import { MT5AccountType } from '../../screens';
-import { JurisdictionModal } from '../JurisdictionModal';
 
 type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 

@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { useModal } from '../../../../components/ModalProvider';
 import JurisdictionCard from './JurisdictionCard';

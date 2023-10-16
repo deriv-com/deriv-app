@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { useModal } from '../../../../components/ModalProvider';
 import DocumentsIcon from '../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../public/images/ic-id-card.svg';
 import NotApplicableIcon from '../../../../public/images/ic-not-applicable.svg';
 import SelfieIcon from '../../../../public/images/ic-selfie.svg';
+import { useModal } from '../../../../components/ModalProvider';
 import { getJurisdictionContents } from './jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardItems } from './jurisdiction-contents/props.types';
 import JurisdictionCardRow from './JurisdictionCardRow';

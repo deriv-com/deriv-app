@@ -337,6 +337,7 @@ export default class ContractTradeStore extends BaseStore {
             {};
         if (trade_type === 'accumulator' && proposal_prev_spot_time && accumulators_high_barrier) {
             if (this.root_store.client.is_beta_chart) {
+                const is_open = isAccumulatorContractOpen(this.last_contract.contract_info);
                 markers.push(
                     getAccumulatorMarkers({
                         high_barrier: accumulators_high_barrier,
@@ -345,9 +346,8 @@ export default class ContractTradeStore extends BaseStore {
                         prev_epoch: proposal_prev_spot_time,
                         has_crossed_accu_barriers: this.has_crossed_accu_barriers,
                         is_dark_theme: this.root_store.ui.is_dark_mode_on,
-                        contract_info: this.last_contract.contract_info,
-                        is_accumulator_trade_without_contract:
-                            !isAccumulatorContractOpen(this.last_contract.contract_info) || !entry_tick_time,
+                        contract_info: is_open ? this.last_contract.contract_info : {},
+                        is_accumulator_trade_without_contract: !is_open || !entry_tick_time,
                     })
                 );
             }

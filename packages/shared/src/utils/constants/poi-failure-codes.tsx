@@ -1,7 +1,21 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 
-export const IDV_ERROR_STATUS = Object.freeze({
+type TIDVErrorStatus = Readonly<{
+    [key: string]: {
+        code: keyof typeof IDV_ERROR_STATUS;
+        message: React.ReactNode;
+    };
+}>;
+
+type TOnfidoErrorStatus = Readonly<{
+    [key: string]: {
+        code: keyof typeof ONFIDO_ERROR_STATUS;
+        message: React.ReactNode;
+    };
+}>;
+
+export const IDV_ERROR_STATUS: TIDVErrorStatus = Object.freeze({
     DobMismatch: {
         code: 'DobMismatch',
         message: (
@@ -57,7 +71,7 @@ export const IDV_ERROR_STATUS = Object.freeze({
     },
 });
 
-export const ONFIDO_ERROR_STATUS = Object.freeze({
+export const ONFIDO_ERROR_STATUS: TOnfidoErrorStatus = Object.freeze({
     AgeValidationMinimumAcceptedAge: {
         code: 'AgeValidationMinimumAcceptedAge',
         message: (

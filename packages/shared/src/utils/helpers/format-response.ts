@@ -63,7 +63,7 @@ export type TIDVErrorStatus = keyof typeof IDV_ERROR_STATUS;
 export type TOnfidoErrorStatus = keyof typeof ONFIDO_ERROR_STATUS;
 
 //formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
-export const formatIDVError = (errors: string[], status_code: string) => {
+export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: string) => {
     /**
      * Check required incase of DIEL client
      */
@@ -74,21 +74,20 @@ export const formatIDVError = (errors: string[], status_code: string) => {
     }
     const status: Array<TIDVErrorStatus> = [];
     errors.forEach(error => {
-        const error_key: TIDVErrorStatus = IDV_ERROR_STATUS[error as keyof typeof IDV_ERROR_STATUS]
-            .code as TIDVErrorStatus;
+        const error_key: TIDVErrorStatus = IDV_ERROR_STATUS[error].code;
         if (error_key) {
             status.push(error_key);
         }
     });
-    return status.includes(IDV_ERROR_STATUS.NameMismatch.code as TIDVErrorStatus) &&
-        status.includes(IDV_ERROR_STATUS.DobMismatch.code as TIDVErrorStatus) &&
-        !status.includes(IDV_ERROR_STATUS.Failed.code as TIDVErrorStatus)
+    return status.includes(IDV_ERROR_STATUS.NameMismatch.code) &&
+        status.includes(IDV_ERROR_STATUS.DobMismatch.code) &&
+        !status.includes(IDV_ERROR_STATUS.Failed.code)
         ? IDV_ERROR_STATUS.NameDobMismatch.code
         : status[0] ?? IDV_ERROR_STATUS.Failed.code;
 };
 
-export const formatOnfidoError = (error: string) => {
-    return ONFIDO_ERROR_STATUS[error as keyof typeof ONFIDO_ERROR_STATUS]?.message ?? '';
+export const formatOnfidoError = (error: TOnfidoErrorStatus) => {
+    return ONFIDO_ERROR_STATUS[error]?.message ?? '';
 };
 
 export const isVerificationServiceSupported = (

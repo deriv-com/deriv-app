@@ -2,11 +2,7 @@ import { useCallback } from 'react';
 import useSubscription from '../useSubscription';
 
 type TPayload = Required<
-    NonNullable<
-        NonNullable<
-            NonNullable<Parameters<ReturnType<typeof useSubscription<'exchange_rates'>>['subscribe']>>[0]
-        >['payload']
-    >
+    NonNullable<Parameters<ReturnType<typeof useSubscription<'exchange_rates'>>['subscribe']>>[0]['payload']
 >;
 
 /** A custom hook that gets exchange rates from base currency to target currency */

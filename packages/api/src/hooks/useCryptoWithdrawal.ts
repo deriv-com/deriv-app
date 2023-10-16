@@ -2,9 +2,7 @@ import { useCallback } from 'react';
 import useMutation from '../useMutation';
 
 type TPayload = Omit<
-    NonNullable<
-        NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'cashier'>>['mutate']>>[0]>['payload']
-    >,
+    NonNullable<Parameters<ReturnType<typeof useMutation<'cashier'>>['mutate']>>[0]['payload'],
     'cashier' | 'provider' | 'type'
 >;
 

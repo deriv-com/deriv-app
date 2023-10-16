@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import useMutation from '../useMutation';
 
-type TPayload = NonNullable<
-    NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'cashier'>>['mutate']>>[0]>['payload']
->;
+type TCashierParam = NonNullable<
+    Parameters<ReturnType<typeof useMutation<'cashier'>>['mutate']>
+>[0]['payload']['cashier'];
 
 /** A custom hook to get the deposit and withdrawal fiat address. */
 const useCashierFiatAddress = () => {
@@ -11,7 +11,7 @@ const useCashierFiatAddress = () => {
     const iframe_url = typeof data?.cashier === 'string' ? data?.cashier : undefined;
 
     const mutate = useCallback(
-        (cashier: TPayload['cashier']) => _mutate({ payload: { cashier, provider: 'doughflow' } }),
+        (cashier: TCashierParam) => _mutate({ payload: { cashier, provider: 'doughflow' } }),
         [_mutate]
     );
 

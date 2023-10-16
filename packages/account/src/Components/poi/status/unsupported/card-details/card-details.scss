@@ -26,16 +26,13 @@
         .manual-poi-details--mobile & {
             flex-wrap: wrap;
         }
+
+        .dc-datepicker {
+            margin-left: 2.4rem;
+        }
     }
     &__field {
-        &:first-of-type {
-            margin-right: 2.4rem;
-            margin-bottom: 1.75rem;
-
-            .manual-poi-details--mobile & {
-                margin-right: 0;
-            }
-        }
+        margin-bottom: 1.75rem;
     }
     &__divider {
         height: 2px;

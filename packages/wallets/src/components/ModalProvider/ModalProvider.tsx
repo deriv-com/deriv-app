@@ -30,15 +30,15 @@ export const useModal = () => {
 const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const [content, setContent] = useState<React.ReactNode | null>();
-    const [modalState, updateModalState] = useState<TModalState>();
+    const modalState = useRef<TModalState>();
 
     const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
 
     const setModalState = (newModalState: Partial<TModalState>) => {
-        updateModalState({
-            ...modalState,
+        modalState.current = {
+            ...modalState.current,
             ...newModalState,
-        });
+        };
     };
 
     const show = (ModalContent: React.ReactNode) => {
@@ -52,7 +52,9 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     useOnClickOutside(modalRef, hide);
 
     return (
-        <ModalContext.Provider value={{ hide, isOpen: content !== null, show, modalState, setModalState }}>
+        <ModalContext.Provider
+            value={{ hide, isOpen: content !== null, modalState: modalState.current, setModalState, show }}
+        >
             {children}
             {rootRef.current && content && createPortal(<div ref={modalRef}>{content}</div>, rootRef.current)}
         </ModalContext.Provider>

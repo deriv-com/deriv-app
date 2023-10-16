@@ -1,4 +1,3 @@
-import { RootStore } from 'Stores/index';
 import { action, makeObservable, observable, reaction } from 'mobx';
 
 import { ApiHelpers, load } from '@deriv/bot-skeleton';
@@ -16,7 +15,7 @@ export type TActiveSymbol = {
 };
 
 interface IQuickStrategyStore {
-    RootStore: RootStore;
+    root_store: RootStore;
     is_open: boolean;
     selected_strategy: string;
     form_data: { [key: string]: string | number };

@@ -1,113 +1,113 @@
 import { TJurisdictionCardItems } from './props.types';
 
 export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => ({
-    isOverHeaderAvailable: false,
-    header: 'Malta',
     contents: {
-        synthetic: [
-            {
-                key: 'assets',
-                title: 'Assets',
-                description: 'Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
-                titleIndicators: {
-                    type: 'displayText',
-                    displayText: '140+',
-                    displayTextSkinColor: 'red-light',
-                },
-            },
-            {
-                key: 'leverage',
-                title: 'Leverage',
-                titleIndicators: {
-                    type: 'displayText',
-                    displayText: '1:30',
-                    displayTextSkinColor: 'brown-dark',
-                },
-            },
-            {
-                key: 'spreadsFrom',
-                title: 'Spreads from',
-                titleIndicators: {
-                    type: 'displayText',
-                    displayText: '0.5 pips',
-                    displayTextSkinColor: 'violet-dark',
-                },
-            },
-            {
-                key: 'verifications',
-                title: 'Verifications',
-                clickableDescription: [
-                    {
-                        type: 'link',
-                        text: 'Learn more',
-                    },
-                    {
-                        type: 'text',
-                        text: 'about verifications needed.',
-                    },
-                ],
-            },
-            {
-                key: 'regulator',
-                title: 'Regulator/EDR',
-                description: 'Malta Financial Services Authority (MFSA) (licence no. IS/70156)',
-            },
-        ],
         financial: [
             {
+                description: 'Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
                 key: 'assets',
                 title: 'Assets',
-                description: 'Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
                 titleIndicators: {
-                    type: 'displayText',
                     displayText: '140+',
                     displayTextSkinColor: 'red-light',
+                    type: 'displayText',
                 },
             },
             {
                 key: 'leverage',
                 title: 'Leverage',
                 titleIndicators: {
-                    type: 'displayText',
                     displayText: '1:30',
                     displayTextSkinColor: 'brown-dark',
+                    type: 'displayText',
                 },
             },
             {
                 key: 'spreadsFrom',
                 title: 'Spreads from',
                 titleIndicators: {
-                    type: 'displayText',
                     displayText: '0.5 pips',
                     displayTextSkinColor: 'violet-dark',
+                    type: 'displayText',
                 },
             },
             {
+                clickableDescription: [
+                    {
+                        text: 'Learn more',
+                        type: 'link',
+                    },
+                    {
+                        text: 'about verifications needed.',
+                        type: 'text',
+                    },
+                ],
                 key: 'verifications',
                 title: 'Verifications',
                 titleIndicators: {
                     type: 'displayIcons',
                 },
-                clickableDescription: [
-                    {
-                        type: 'link',
-                        text: 'Learn more',
-                    },
-                    {
-                        type: 'text',
-                        text: 'about verifications needed.',
-                    },
-                ],
             },
             {
+                description: 'Malta Financial Services Authority (MFSA) (licence no. IS/70156)',
                 key: 'regulator',
                 title: 'Regulator/EDR',
+            },
+        ],
+        synthetic: [
+            {
+                description: 'Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
+                key: 'assets',
+                title: 'Assets',
+                titleIndicators: {
+                    displayText: '140+',
+                    displayTextSkinColor: 'red-light',
+                    type: 'displayText',
+                },
+            },
+            {
+                key: 'leverage',
+                title: 'Leverage',
+                titleIndicators: {
+                    displayText: '1:30',
+                    displayTextSkinColor: 'brown-dark',
+                    type: 'displayText',
+                },
+            },
+            {
+                key: 'spreadsFrom',
+                title: 'Spreads from',
+                titleIndicators: {
+                    displayText: '0.5 pips',
+                    displayTextSkinColor: 'violet-dark',
+                    type: 'displayText',
+                },
+            },
+            {
+                clickableDescription: [
+                    {
+                        text: 'Learn more',
+                        type: 'link',
+                    },
+                    {
+                        text: 'about verifications needed.',
+                        type: 'text',
+                    },
+                ],
+                key: 'verifications',
+                title: 'Verifications',
+            },
+            {
                 description: 'Malta Financial Services Authority (MFSA) (licence no. IS/70156)',
+                key: 'regulator',
+                title: 'Regulator/EDR',
             },
         ],
     },
+    header: 'Malta',
+    isOverHeaderAvailable: false,
     verificationDocs: {
-        synthetic: ['selfie', 'identityDocument', 'nameAndAddress'],
         financial: ['selfie', 'identityDocument', 'nameAndAddress'],
+        synthetic: ['selfie', 'identityDocument', 'nameAndAddress'],
     },
 });

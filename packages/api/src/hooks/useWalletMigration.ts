@@ -22,9 +22,9 @@ const useWalletMigration = () => {
         },
     });
 
-    const start_migration = useCallback(() => mutate({ payload: { wallet_migration: 'start' } }), [mutate]);
+    const startMigration = useCallback(() => mutate({ payload: { wallet_migration: 'start' } }), [mutate]);
 
-    const reset_migration = useCallback(() => mutate({ payload: { wallet_migration: 'reset' } }), [mutate]);
+    const resetMigration = useCallback(() => mutate({ payload: { wallet_migration: 'reset' } }), [mutate]);
 
     const state = data?.wallet_migration?.state;
 
@@ -42,9 +42,9 @@ const useWalletMigration = () => {
         /** A boolean to check if the status is failed */
         is_failed: state === 'failed',
         /** Sends a request to wallet_migration API to start the migration process */
-        start_migration,
+        startMigration,
         /** Sends a request to wallet_migration API to reset the migration process */
-        reset_migration,
+        resetMigration,
     };
 };
 

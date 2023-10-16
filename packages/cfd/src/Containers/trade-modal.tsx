@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Icon, Money } from '@deriv/components';
 import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from 'Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { CFD_PLATFORMS, getCFDAccountKey, isMobile } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../Helpers/config';
 import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../Helpers/constants';
@@ -266,9 +266,30 @@ const TradeModal = ({
                             </a>
                         </div>
                     )}
+                    {is_mobile && mobileOSDetect() === 'iOS' && (
+                        <div className='cfd-trade-modal__download-center-app-ctrader-container'>
+                            <Text
+                                className='cfd-trade-modal__download-center-app-ctrader__banner-text'
+                                align='center'
+                                size='xs'
+                                weight='bold'
+                            >
+                                <Localize i18n_default_text='Coming soon on IOS' />
+                            </Text>
+                            <Text
+                                className='cfd-trade-modal__download-center-app-ctrader__banner-text'
+                                align='center'
+                                size='xxs'
+                            >
+                                <Localize i18n_default_text='cTrader is only available on desktop for now.' />
+                            </Text>
+                        </div>
+                    )}
                 </React.Fragment>
             )}
-            <div className='cfd-trade-modal__download-center-description'>{downloadCenterDescription()}</div>
+            {mobileOSDetect() !== 'iOS' && (
+                <div className='cfd-trade-modal__download-center-description'>{downloadCenterDescription()}</div>
+            )}
 
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
@@ -279,13 +300,21 @@ const TradeModal = ({
                             </a>
                         </div>
                     )}
-                    <a href={mobileDownloadLink(platform, 'android')} target='_blank' rel='noopener noreferrer'>
-                        <Icon icon='IcInstallationGoogle' width={135} height={40} />
-                    </a>
-                    {platform !== CFD_PLATFORMS.CTRADER && (
-                        <a href={mobileDownloadLink(platform, 'huawei')} target='_blank' rel='noopener noreferrer'>
-                            <Icon icon='IcInstallationHuawei' width={135} height={40} />
+                    {platform === CFD_PLATFORMS.CTRADER && mobileOSDetect() !== 'iOS' && (
+                        <a href={mobileDownloadLink(platform, 'android')} target='_blank' rel='noopener noreferrer'>
+                            <Icon icon='IcInstallationGoogle' width={135} height={40} />
                         </a>
+                    )}
+                    {platform !== CFD_PLATFORMS.CTRADER && (
+                        <React.Fragment>
+                            <a href={mobileDownloadLink(platform, 'android')} target='_blank' rel='noopener noreferrer'>
+                                <Icon icon='IcInstallationGoogle' width={135} height={40} />
+                            </a>
+
+                            <a href={mobileDownloadLink(platform, 'huawei')} target='_blank' rel='noopener noreferrer'>
+                                <Icon icon='IcInstallationHuawei' width={135} height={40} />
+                            </a>
+                        </React.Fragment>
                     )}
                 </div>
                 {!isMobile() && (

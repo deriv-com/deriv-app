@@ -1,5 +1,4 @@
 import 'canvas-toBlob';
-import { TFile } from '../file-uploader-utils';
 
 declare global {
     interface Blob {
@@ -12,6 +11,8 @@ export type TImage = {
     src: string;
     filename: string;
 };
+
+export type TFile = File & { file: Blob };
 
 const compressImg = (image: TImage): Promise<Blob> =>
     new Promise(resolve => {

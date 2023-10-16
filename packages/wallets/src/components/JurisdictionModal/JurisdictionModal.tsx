@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
+import { useAvailableMT5Accounts } from '@deriv/api';
+import { MT5PasswordModal } from '../../features/cfd/modals';
+import { ModalStepWrapper } from '../Base';
 import { useModal } from '../ModalProvider';
-import { ModalStepWrapper } from '../ModalStepWrapper';
-import { MT5PasswordModal } from '../MT5PasswordModal';
 import JurisdictionCard from './JurisdictionCard';
 import './JurisdictionModal.scss';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
     const { modalState, show } = useModal();
+    const { data, isLoading } = useAvailableMT5Accounts();
 
-    const jurisdictions = ['St. Vincent & Grenadines', 'British Virgin Islands', 'Vanuatu'];
+    const marketType = modalState?.marketType || 'all';
+
+    const jurisdictions = useMemo(
+        () =>
+            data?.filter(account => account.market_type === modalState?.marketType).map(account => account.shortcode) ||
+            [],
+        [data, modalState?.marketType]
+    );
+
+    if (isLoading) return <h1>Loading...</h1>;
 
     return (
         <ModalStepWrapper
@@ -20,7 +31,7 @@ const JurisdictionModal = () => {
                         className={classNames('wallets-jurisdiction-modal__button', {
                             'wallets-jurisdiction-modal__button--disabled': !selectedJurisdiction,
                         })}
-                        onClick={() => show(<MT5PasswordModal marketType={modalState?.marketType || 'all'} />)}
+                        onClick={() => show(<MT5PasswordModal marketType={marketType} />)}
                     >
                         Next
                     </button>
@@ -33,10 +44,14 @@ const JurisdictionModal = () => {
                     {jurisdictions.map(jurisdiction => (
                         <JurisdictionCard
                             isSelected={selectedJurisdiction === jurisdiction}
-                            jurisdiction={jurisdiction}
+                            jurisdiction={jurisdiction || 'bvi'}
                             key={jurisdiction}
                             onSelect={clickedJurisdiction => {
-                                setSelectedJurisdiction(clickedJurisdiction);
+                                if (clickedJurisdiction === selectedJurisdiction) {
+                                    setSelectedJurisdiction('');
+                                } else {
+                                    setSelectedJurisdiction(clickedJurisdiction);
+                                }
                             }}
                             tag='Straight-through processing'
                         />

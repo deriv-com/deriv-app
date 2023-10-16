@@ -7,6 +7,7 @@ export const makeLazyLoader =
             loader: {
                 ComponentModule: importFn,
             },
+            loading: loaderFn,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             render(loaded: { [key: string]: any }, props: object) {
                 const ComponentLazy = componentName
@@ -14,5 +15,4 @@ export const makeLazyLoader =
                     : loaded.ComponentModule.default;
                 return <ComponentLazy {...props} />;
             },
-            loading: loaderFn,
         });

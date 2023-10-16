@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ModalStepWrapper, WalletButton, WalletText } from '../../../../components/Base';
-import { JurisdictionModal } from '../../../../components/JurisdictionModal';
+import { JurisdictionModal } from '../JurisdictionModal';
 import { useModal } from '../../../../components/ModalProvider';
 import { MT5AccountType } from '../../screens';
 

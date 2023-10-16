@@ -4,7 +4,7 @@ import { getContractTypeFeatureFlag, getUnsupportedContracts, STATUS_CODES } fro
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 import { TContractInfo } from '../contract';
-import { IDV_ERROR_STATUS, ONFIDO_ERROR_STATUS } from '../constants/idv-failure-codes';
+import { IDV_ERROR_STATUS, ONFIDO_ERROR_STATUS } from '../constants/poi-failure-codes';
 import { LocalStore } from '../storage';
 import { extractInfoFromShortcode, isHighLow } from '../shortcode';
 
@@ -83,7 +83,7 @@ export const formatIDVError = (errors: string[], status_code: string) => {
     return status.includes(IDV_ERROR_STATUS.NameMismatch.code as TIDVErrorStatus) &&
         status.includes(IDV_ERROR_STATUS.DobMismatch.code as TIDVErrorStatus) &&
         !status.includes(IDV_ERROR_STATUS.Failed.code as TIDVErrorStatus)
-        ? IDV_ERROR_STATUS.NameDOBMismatch.code
+        ? IDV_ERROR_STATUS.NameDobMismatch.code
         : status[0] ?? IDV_ERROR_STATUS.Failed.code;
 };
 

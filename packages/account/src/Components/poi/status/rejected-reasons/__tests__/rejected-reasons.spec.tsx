@@ -21,8 +21,10 @@ describe('<RejectedReasons />', () => {
         );
 
         expect(screen.getByTestId('dt_icon_message_list')).toBeInTheDocument();
-        expect(screen.getByText(ONFIDO_ERROR_STATUS.DataValidationExpiryDate.message)).toBeInTheDocument();
-        expect(screen.getByText(ONFIDO_ERROR_STATUS.DataValidationDocumentExpiration.message)).toBeInTheDocument();
+        expect(
+            screen.getByText('Some details on your document appear to be invalid, missing, or unclear.')
+        ).toBeInTheDocument();
+        expect(screen.getByText('Your document has expired.')).toBeInTheDocument();
 
         const btn = screen.getByRole('button');
         fireEvent.click(btn);

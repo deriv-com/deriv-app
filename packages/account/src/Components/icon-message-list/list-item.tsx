@@ -3,7 +3,7 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
 type TListItem = {
-    text: string;
+    text: JSX.Element;
     index?: number;
 };
 
@@ -15,7 +15,7 @@ const ListItem = ({ text, index }: TListItem) => (
             </Text>
         )}
         <Text size='xs' className='account-management__list-text'>
-            <Localize i18n_default_text='{{text}}' values={{ text }} />
+            {text}
         </Text>
     </div>
 );

@@ -91,7 +91,7 @@ describe('<IdvSubmitComplete/>', () => {
 
         const new_props: TIdvSubmitCompleteProps = {
             ...mock_props,
-            mismatch_status: IDV_ERROR_STATUS.NameDOBMismatch.code,
+            mismatch_status: IDV_ERROR_STATUS.NameDobMismatch.code,
         };
         renderComponent({ props: new_props, store_config: new_store });
 

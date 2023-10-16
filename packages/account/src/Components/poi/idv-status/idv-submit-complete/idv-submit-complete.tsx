@@ -20,7 +20,7 @@ const IdvSubmitComplete = observer(
         const { is_already_attempted } = client;
 
         const is_mismatch_error =
-            mismatch_status === IDV_ERROR_STATUS.NameDOBMismatch.code ||
+            mismatch_status === IDV_ERROR_STATUS.NameDobMismatch.code ||
             mismatch_status === IDV_ERROR_STATUS.DobMismatch.code ||
             mismatch_status === IDV_ERROR_STATUS.NameMismatch.code;
 

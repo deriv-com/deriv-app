@@ -72,11 +72,11 @@ describe('<IdvFailed/>', () => {
     });
 
     it('should render IDVfailed component with name & DOB mismatch message', async () => {
-        const new_props = { ...mock_props, mismatch_status: IDV_ERROR_STATUS.NameDOBMismatch.code };
+        const new_props = { ...mock_props, mismatch_status: IDV_ERROR_STATUS.NameDobMismatch.code };
         renderComponent({ props: new_props });
 
         await waitFor(() => {
-            expect(screen.getByTestId(IDV_ERROR_STATUS.NameDOBMismatch.code)).toBeInTheDocument();
+            expect(screen.getByTestId(IDV_ERROR_STATUS.NameDobMismatch.code)).toBeInTheDocument();
             expect(screen.getByRole('button', { name: /Update profile/i })).toBeInTheDocument();
         });
     });

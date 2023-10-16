@@ -1,6 +1,7 @@
 import React from 'react';
+import { FormikValues } from 'formik';
 import countries from 'i18n-iso-countries';
-import { Localize, localize } from '@deriv/translations';
+import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import {
     filterObjProperties,
     toMoment,
@@ -9,8 +10,7 @@ import {
     getIDVNotApplicableOption,
     IDV_ERROR_STATUS,
 } from '@deriv/shared';
-import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
-import { FormikValues } from 'formik';
+import { Localize, localize } from '@deriv/translations';
 import { getIDVDocuments } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
 import { LANGUAGE_CODES } from '../Constants/onfido';

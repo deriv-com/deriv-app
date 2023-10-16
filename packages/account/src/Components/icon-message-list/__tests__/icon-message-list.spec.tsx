@@ -54,8 +54,8 @@ describe('<IconMessageList/>', () => {
             message_list: ['DataComparisonDocumentNumbers', 'CompromisedDocument'],
         };
         renderComponent({ props: new_props });
-        expect(screen.getByText(ONFIDO_ERROR_STATUS.DataComparisonDocumentNumbers.message)).toBeInTheDocument();
-        expect(screen.getByText(ONFIDO_ERROR_STATUS.CompromisedDocument.message)).toBeInTheDocument();
+        expect(screen.getByText('Your document appears to be invalid.')).toBeInTheDocument();
+        expect(screen.getByText('Your document failed our verification checks.')).toBeInTheDocument();
     });
 
     it('should show continue_btn if OnContinue is passed', () => {

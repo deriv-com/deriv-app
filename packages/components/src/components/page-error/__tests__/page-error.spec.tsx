@@ -58,7 +58,7 @@ describe('<PageError/>', () => {
     });
 
     it('Should render the redirect button correctly', () => {
-        renderWithRouter(<PageError {...{ ...pageErrorDefaultProps, redirect_urls: ['/'] }} should_redirect={true} />);
+        renderWithRouter(<PageError {...{ ...pageErrorDefaultProps, redirect_urls: ['/'] }} />);
 
         const button = screen.getByText('Go back');
         expect(button).toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('<PageError/>', () => {
 
     it('Should call setError() when redirect button gets clicked', () => {
         const { setError } = pageErrorDefaultProps;
-        renderWithRouter(<PageError {...pageErrorDefaultProps} should_redirect={true} />);
+        renderWithRouter(<PageError {...pageErrorDefaultProps} />);
 
         const link = screen.getByRole('link');
 

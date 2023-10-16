@@ -14,7 +14,7 @@
                     'https://staging-app.deriv.be',
                     'https://staging-app.deriv.me',
                 ];
-                console.info(message.data.key, ' has been synced with bot.deriv.com');
+
                 if (allowed_origins.includes(message.origin)) {
                     switch (message.data.key) {
                         case 'active_loginid':

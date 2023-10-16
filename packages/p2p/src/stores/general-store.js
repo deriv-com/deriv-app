@@ -1,9 +1,9 @@
 import React from 'react';
-import { action, computed, makeObservable,observable, reaction } from 'mobx';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
 import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
 
-import { Localize,localize } from 'Components/i18next';
+import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { buy_sell } from 'Constants/buy-sell';
 import { order_list } from 'Constants/order-list';

@@ -16,27 +16,23 @@
         flex: 1;
     }
 
-    &__left {
+    &__sidebar {
+        $parent: &;
         display: flex;
         flex: 1;
         flex-direction: column;
-        padding: 0 2.4rem 2.4rem 0;
         gap: 1.6rem;
         max-width: 31.2rem;
 
-        @include mobile {
-            padding: 0;
-            max-width: 100%;
+        &--left {
+            @extend #{$parent};
+            padding: 0 2.4rem 2.4rem 0;
         }
-    }
 
-    &__right {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        padding: 0 0 2.4rem 2.4rem;
-        gap: 1.6rem;
-        max-width: 31.2rem;
+        &--right {
+            @extend #{$parent};
+            padding: 0 0 2.4rem 2.4rem;
+        }
 
         @include mobile {
             padding: 0;

@@ -1,8 +1,8 @@
-import IdvExpired from 'Components/poi/idv-status/idv-expired';
-import IdvNoSubmissions from 'Components/poi/idv-status/idv-limited';
-import IdvRejected from 'Components/poi/idv-status/idv-rejected';
-import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
-import IdvVerified from 'Components/poi/idv-status/idv-verified';
+import IdvExpired from '../../../Components/poi/idv-status/idv-expired';
+import IdvNoSubmissions from '../../../Components/poi/idv-status/idv-limited';
+import IdvRejected from '../../../Components/poi/idv-status/idv-rejected';
+import IdvSubmitComplete from '../../../Components/poi/idv-status/idv-submit-complete';
+import IdvVerified from '../../../Components/poi/idv-status/idv-verified';
 import React from 'react';
 import { identity_status_codes } from './proof-of-identity-utils';
 

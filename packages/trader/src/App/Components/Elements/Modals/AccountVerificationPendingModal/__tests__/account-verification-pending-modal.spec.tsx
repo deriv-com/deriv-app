@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AccountVerificationPendingModal from '../account-verification-pending-modal';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('<AccountVerificationPendingModal />', () => {
     let modal_root_el: HTMLDivElement;
@@ -21,12 +22,18 @@ describe('<AccountVerificationPendingModal />', () => {
         onConfirm: jest.fn(),
     };
 
+    const mock_store = mockStore({});
+
     const modal_heading = /Pending verification/;
     const modal_desc =
         /You cannot trade as your documents are still under review. We will notify you by email once your verification is approved./i;
 
     it('should render the component AccountVerificationPendingModal if is_visible is true', () => {
-        render(<AccountVerificationPendingModal {...mock_props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <AccountVerificationPendingModal {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(screen.getByRole('heading', { name: modal_heading })).toBeInTheDocument();
         expect(screen.getByText(modal_desc)).toBeInTheDocument();
@@ -37,7 +44,11 @@ describe('<AccountVerificationPendingModal />', () => {
     });
 
     it('should call onConfirm when clicking on OK button', () => {
-        render(<AccountVerificationPendingModal {...mock_props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <AccountVerificationPendingModal {...mock_props} />
+            </StoreProvider>
+        );
 
         const confirm_ok_btn = screen.getByRole('button', { name: /OK/i });
         userEvent.click(confirm_ok_btn);
@@ -45,7 +56,11 @@ describe('<AccountVerificationPendingModal />', () => {
     });
 
     it('should not render the component if is_visible is false ', () => {
-        render(<AccountVerificationPendingModal {...mock_props} is_visible={false} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <AccountVerificationPendingModal {...mock_props} is_visible={false} />
+            </StoreProvider>
+        );
 
         expect(screen.queryByRole('heading', { name: modal_heading })).not.toBeInTheDocument();
         expect(screen.queryByText(modal_desc)).not.toBeInTheDocument();

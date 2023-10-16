@@ -12,20 +12,24 @@ import {
     usePrevious,
 } from '@deriv/components';
 import {
+    getContractTypeFeatureFlag,
     getDurationPeriod,
     getDurationUnitText,
     getPlatformRedirect,
     isAccumulatorContract,
     isDesktop,
     isEmptyObject,
+    isHighLow,
     isMobile,
     isMultiplierContract,
+    isTurbosContract,
     isVanillaContract,
-    isOnlyUpsDownsContract,
+    isSmartTraderContract,
     urlFor,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
+import { useFeatureFlags } from '@deriv/hooks';
+import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { SmartChart } from 'Modules/SmartChart';
@@ -54,7 +58,9 @@ const ContractReplay = observer(({ contract_id }) => {
     const { contract_info, contract_update, contract_update_history, is_digit_contract } = contract_store;
     const { routeBackInApp } = common;
     const { is_dark_mode_on: is_dark_theme, notification_messages_ui: NotificationMessages, toggleHistoryTab } = ui;
-
+    const trade_type_feature_flag =
+        contract_info.shortcode && getContractTypeFeatureFlag(contract_info.contract_type, isHighLow(contract_info));
+    const is_trade_type_disabled = useFeatureFlags()[`is_${trade_type_feature_flag}_enabled`] === false;
     const [is_visible, setIsVisible] = React.useState(false);
     const history = useHistory();
 
@@ -70,18 +76,26 @@ const ContractReplay = observer(({ contract_id }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contract_id, location, onMount, onUnmount]);
 
-    const onClickClose = () => {
+    const onClickClose = React.useCallback(() => {
         setIsVisible(false);
         const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
         return is_from_table_row ? history.goBack() : routeBackInApp(history);
-    };
+    }, [history, routeBackInApp]);
+
+    React.useEffect(() => {
+        // don't open Contract details page for trade types with disabled feature flag:
+        if (is_trade_type_disabled && is_visible) {
+            onClickClose();
+        }
+    }, [is_trade_type_disabled, is_visible, onClickClose]);
 
     if (!contract_info.underlying) return null;
 
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const is_turbos = isTurbosContract(contract_info.contract_type);
     const is_vanilla = isVanillaContract(contract_info.contract_type);
-    const is_only_ups_downs = isOnlyUpsDownsContract(contract_info.contract_type);
+    const is_smarttrader_contract = isSmartTraderContract(contract_info.contract_type);
 
     const contract_drawer_el = (
         <ContractDrawer
@@ -93,10 +107,11 @@ const ContractReplay = observer(({ contract_id }) => {
             is_dark_theme={is_dark_theme}
             is_market_closed={is_market_closed}
             is_multiplier={is_multiplier}
+            is_turbos={is_turbos}
             is_sell_requested={is_sell_requested}
             is_valid_to_cancel={is_valid_to_cancel}
             is_vanilla={is_vanilla}
-            is_only_ups_downs={is_only_ups_downs}
+            is_smarttrader_contract={is_smarttrader_contract}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             status={indicative_status}
@@ -278,6 +293,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                 is_accumulator_contract && end_epoch && start_epoch < prev_start_epoch
             }
             shouldFetchTradingTimes={false}
+            should_zoom_out_on_yaxis={is_accumulator_contract}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={

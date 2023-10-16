@@ -260,28 +260,9 @@ export const getEstimatedWorthList = () => [
     },
 ];
 
-export const getAccountTurnoverList = () => [
-    {
-        text: localize('Less than $25,000'),
-        value: 'Less than $25,000',
-    },
-    {
-        text: localize('$25,000 - $50,000'),
-        value: '$25,000 - $50,000',
-    },
-    {
-        text: localize('$50,001 - $100,000'),
-        value: '$50,001 - $100,000',
-    },
-    {
-        text: localize('$100,001 - $500,000'),
-        value: '$100,001 - $500,000',
-    },
-    {
-        text: localize('Over $500,000'),
-        value: 'Over $500,000',
-    },
-];
+export const getAccountTurnoverList = () => {
+    return [...getNetIncomeList()];
+};
 
 export const getBinaryOptionsTradingExperienceList = () => [
     {
@@ -317,104 +298,26 @@ export const getBinaryOptionsTradingFrequencyList = () => [
     },
 ];
 
-export const getCfdTradingExperienceList = () => [
-    {
-        text: localize('0-1 year'),
-        value: '0-1 year',
-    },
-    {
-        text: localize('1-2 years'),
-        value: '1-2 years',
-    },
-    {
-        text: localize('Over 3 years'),
-        value: 'Over 3 years',
-    },
-];
+export const getCfdTradingExperienceList = () => {
+    return [...getBinaryOptionsTradingExperienceList()];
+};
 
-export const getCfdTradingFrequencyList = () => [
-    {
-        text: localize('0-5 transactions in the past 12 months'),
-        value: '0-5 transactions in the past 12 months',
-    },
-    {
-        text: localize('6-10 transactions in the past 12 months'),
-        value: '6-10 transactions in the past 12 months',
-    },
-    {
-        text: localize('11-39 transactions in the past 12 months'),
-        value: '11-39 transactions in the past 12 months',
-    },
-    {
-        text: localize('40 transactions or more in the past 12 months'),
-        value: '40 transactions or more in the past 12 months',
-    },
-];
+export const getCfdTradingFrequencyList = () => {
+    return [...getBinaryOptionsTradingFrequencyList()];
+};
 
-export const getForexTradingExperienceList = () => [
-    {
-        text: localize('0-1 year'),
-        value: '0-1 year',
-    },
-    {
-        text: localize('1-2 years'),
-        value: '1-2 years',
-    },
-    {
-        text: localize('Over 3 years'),
-        value: 'Over 3 years',
-    },
-];
+export const getForexTradingExperienceList = () => {
+    return [...getBinaryOptionsTradingExperienceList()];
+};
 
-export const getForexTradingFrequencyList = () => [
-    {
-        text: localize('0-5 transactions in the past 12 months'),
-        value: '0-5 transactions in the past 12 months',
-    },
-    {
-        text: localize('6-10 transactions in the past 12 months'),
-        value: '6-10 transactions in the past 12 months',
-    },
-    {
-        text: localize('11-39 transactions in the past 12 months'),
-        value: '11-39 transactions in the past 12 months',
-    },
-    {
-        text: localize('40 transactions or more in the past 12 months'),
-        value: '40 transactions or more in the past 12 months',
-    },
-];
+export const getForexTradingFrequencyList = () => {
+    return [...getBinaryOptionsTradingFrequencyList()];
+};
 
-export const getOtherInstrumentsTradingExperienceList = () => [
-    {
-        text: localize('0-1 year'),
-        value: '0-1 year',
-    },
-    {
-        text: localize('1-2 years'),
-        value: '1-2 years',
-    },
-    {
-        text: localize('Over 3 years'),
-        value: 'Over 3 years',
-    },
-];
+export const getOtherInstrumentsTradingExperienceList = () => {
+    return [...getBinaryOptionsTradingExperienceList()];
+};
 
-export const getOtherInstrumentsTradingFrequencyList = () => [
-    {
-        text: localize('0-5 transactions in the past 12 months'),
-        value: '0-5 transactions in the past 12 months',
-    },
-    {
-        text: localize('6-10 transactions in the past 12 months'),
-        value: '6-10 transactions in the past 12 months',
-    },
-    {
-        text: localize('11-39 transactions in the past 12 months'),
-        value: '11-39 transactions in the past 12 months',
-    },
-    {
-        text: localize('40 transactions or more in the past 12 months'),
-        value: '40 transactions or more in the past 12 months',
-    },
-];
+export const getOtherInstrumentsTradingFrequencyList = () => {
+    return [...getBinaryOptionsTradingFrequencyList()];
+};

@@ -9,7 +9,7 @@ export type TContractCardSellProps = {
     contract_info: TContractInfo;
     getCardLabels: TGetCardLables;
     is_sell_requested: boolean;
-    onClickSell: (contract_id?: number) => void;
+    onClickSell?: (contract_id?: number) => void;
 };
 
 const ContractCardSell = ({ contract_info, getCardLabels, is_sell_requested, onClickSell }: TContractCardSellProps) => {
@@ -17,7 +17,7 @@ const ContractCardSell = ({ contract_info, getCardLabels, is_sell_requested, onC
     const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
 
     const onClick = (ev: React.MouseEvent<HTMLButtonElement>) => {
-        onClickSell(contract_info.contract_id);
+        onClickSell?.(contract_info.contract_id);
         ev.stopPropagation();
         ev.preventDefault();
     };

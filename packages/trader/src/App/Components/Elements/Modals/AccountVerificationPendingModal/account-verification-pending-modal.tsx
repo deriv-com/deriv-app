@@ -1,22 +1,25 @@
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 
 type TAccountVerificationPendingModalProps = {
     is_visible: boolean;
     onConfirm: () => void;
 };
 
-const AccountVerificationPendingModal = ({ is_visible, onConfirm }: TAccountVerificationPendingModalProps) => {
+const AccountVerificationPendingModal = observer(({ is_visible, onConfirm }: TAccountVerificationPendingModalProps) => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
     return (
         <Modal
             small
             is_open={is_visible}
             title={localize('Pending verification')}
             toggleModal={onConfirm}
-            width={isMobile() ? '328px' : '440px'}
-            height={isMobile() ? '178px' : '200px'}
+            width={is_mobile ? '328px' : '440px'}
+            height={is_mobile ? '178px' : '200px'}
             className='account-verification-pending-modal'
         >
             <Modal.Body>
@@ -33,6 +36,6 @@ const AccountVerificationPendingModal = ({ is_visible, onConfirm }: TAccountVeri
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
 export default AccountVerificationPendingModal;

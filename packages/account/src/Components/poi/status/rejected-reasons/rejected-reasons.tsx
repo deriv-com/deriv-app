@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import IconMessageList from 'Components/icon-message-list';
+import IconMessageList from '../../../icon-message-list';
 
 type TIconMessageList = {
     handleRequireSubmission: () => void;

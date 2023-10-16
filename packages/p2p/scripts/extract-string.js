@@ -20,7 +20,7 @@ const getStringsFromInput = (input, i18n_marker = getRegexPattern()) => {
 };
 
 const getTranslatableFiles = () => {
-    const globs = ['**/*.js', '**/*.jsx'];
+    const globs = ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'];
     const file_paths = [];
 
     for (let j = 0; j < globs.length; j++) {

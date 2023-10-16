@@ -24,7 +24,7 @@ const getByTextFn = (text: string, should_be: boolean) => {
 };
 
 const testAllStepsFn = (steps: { body: string }[], step_no: number) => {
-    steps.map((step, index) => {
+    steps.forEach((step, index) => {
         if (index === step_no) {
             getByTextFn(step.body, true);
         } else {

@@ -11,6 +11,7 @@ export type TAccount = {
     disabled?: boolean;
     error?: JSX.Element | string;
     is_crypto?: boolean;
+    is_ctrader?: boolean;
     is_derivez?: boolean;
     is_dxtrade?: boolean;
     is_mt?: boolean;
@@ -31,6 +32,9 @@ export type TAccountsList = {
     icon?: string;
     idx: string | number;
     is_dark_mode_on?: boolean;
+    is_pending_verification?: boolean;
+    is_selected_from?: boolean;
+    is_verification_needed?: boolean;
     loginid?: string;
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;

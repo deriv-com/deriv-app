@@ -28,6 +28,7 @@ describe('<AccountTransferForm />', () => {
                         mt5: {},
                     },
                 },
+                mf_account_status: 'verified',
                 mt5_login_list: [
                     {
                         login: 'value',
@@ -83,9 +84,6 @@ describe('<AccountTransferForm />', () => {
                     },
                     crypto_fiat_converter: {
                         resetConverter: jest.fn(),
-                    },
-                    transaction_history: {
-                        onMount: jest.fn(),
                     },
                 },
             },
@@ -180,6 +178,17 @@ describe('<AccountTransferForm />', () => {
         fireEvent.click(submit_button);
 
         expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
+    });
+
+    it('should show an error and transfer button should be disabled if mf_account_status is pending', async () => {
+        mockRootStore.client.mf_account_status = 'pending';
+
+        renderAccountTransferForm();
+
+        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '1' } });
+
+        expect(await screen.findByText('Unavailable as your documents are still under review')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Transfer' })).toBeDisabled();
     });
 
     it('should not allow to do transfer if accounts from and to are same', () => {
@@ -304,7 +313,7 @@ describe('<AccountTransferForm />', () => {
             },
             {
                 currency: 'USD',
-                platform_icon: 'IcDerivez',
+                platform_icon: 'IcRebrandingDerivEz',
                 is_mt: false,
                 is_dxtrade: false,
                 is_derivez: true,
@@ -318,7 +327,7 @@ describe('<AccountTransferForm />', () => {
                 is_dxtrade: true,
                 is_derivez: false,
                 is_crypto: false,
-                platform_icon: 'IcDeriv X',
+                platform_icon: 'IcRebrandingDeriv X',
                 text: 'Deriv X',
                 value: 'DXR1029',
             },
@@ -417,7 +426,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt_account_platform_icon_IcDerivez')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_account_platform_icon_IcRebrandingDerivEz')).toBeInTheDocument();
             });
 
             it('should check for MT5 icon when MT5 is selected in from_dropdown', () => {
@@ -439,7 +448,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt_account_platform_icon_IcDeriv X')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_account_platform_icon_IcRebrandingDeriv X')).toBeInTheDocument();
             });
         });
     });

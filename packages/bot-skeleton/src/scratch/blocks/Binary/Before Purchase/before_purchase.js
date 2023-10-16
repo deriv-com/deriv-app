@@ -4,6 +4,7 @@ import { purchase } from '../../images';
 Blockly.Blocks.before_purchase = {
     init() {
         this.jsonInit(this.definition());
+        this.setDeletable(false);
     },
     definition() {
         return {

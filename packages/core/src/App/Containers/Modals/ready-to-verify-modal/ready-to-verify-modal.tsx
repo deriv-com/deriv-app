@@ -14,13 +14,13 @@ const ReadyToVerifyModal = observer(() => {
         toggleAccountSuccessModal,
         disableApp,
         enableApp,
-        // openPOIPOAModal,
+        setIsVerificationModalVisible,
     } = ui;
     const has_mf_account_deposited = useHasMFAccountDeposited();
 
-    const onConfirmeModal = () => {
+    const onConfirmModal = () => {
         toggleAccountSuccessModal();
-        // openPOIPOAModal(); // route to poi-poa modal
+        setIsVerificationModalVisible(true); // route to poi-poa modal
     };
 
     const onClose = () => {
@@ -33,7 +33,7 @@ const ReadyToVerifyModal = observer(() => {
             className='ready-to-verify-dialog'
             title={has_mf_account_deposited ? localize('Successfully deposited') : localize('Account added')}
             confirm_button_text={localize('Verify now')}
-            onConfirm={onConfirmeModal}
+            onConfirm={onConfirmModal}
             cancel_button_text={localize('Maybe later')}
             onCancel={onClose}
             disableApp={disableApp}

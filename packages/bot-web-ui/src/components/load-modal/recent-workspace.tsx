@@ -3,24 +3,16 @@ import classnames from 'classnames';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { Icon } from '@deriv/components';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/root-store';
+import { observer } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 type TRecentWorkspaceProps = {
-    getRecentFileIcon: (workspace_type: string) => string;
-    getSaveType: (workspace_type: string) => string;
-    previewRecentStrategy: (workspaceId: string) => void;
-    selected_strategy_id: string;
     workspace: { [key: string]: any };
 };
 
-const RecentWorkspace = ({
-    getRecentFileIcon,
-    getSaveType,
-    previewRecentStrategy,
-    selected_strategy_id,
-    workspace,
-}: TRecentWorkspaceProps) => {
+const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
+    const { load_modal } = useDBotStore();
+    const { getRecentFileIcon, getSaveType, previewRecentStrategy, selected_strategy_id } = load_modal;
     return (
         <div
             className={classnames('load-strategy__recent-item load-dialog', {
@@ -44,11 +36,6 @@ const RecentWorkspace = ({
             </div>
         </div>
     );
-};
+});
 
-export default connect(({ load_modal }: RootStore) => ({
-    getRecentFileIcon: load_modal.getRecentFileIcon,
-    getSaveType: load_modal.getSaveType,
-    previewRecentStrategy: load_modal.previewRecentStrategy,
-    selected_strategy_id: load_modal.selected_strategy_id,
-}))(RecentWorkspace);
+export default RecentWorkspace;

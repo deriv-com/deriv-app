@@ -2,11 +2,14 @@ import { localize } from '@deriv/translations';
 import { defineContract } from '../../images';
 import DBotStore from '../../../dbot-store';
 import { runIrreversibleEvents } from '../../../utils';
+import { removeErrorHandlingEventListener, initErrorHandlingListener } from '../../../../utils';
 import { config } from '../../../../constants/config';
 
 Blockly.Blocks.trade_definition = {
     init() {
         this.jsonInit(this.definition());
+        this.setDeletable(false);
+        this.isInit = false;
     },
     definition() {
         return {
@@ -99,6 +102,13 @@ Blockly.Blocks.trade_definition = {
         };
     },
     onchange(event) {
+        if (event.type === 'ui' && !this.isInit) {
+            this.isInit = true;
+            initErrorHandlingListener('keydown');
+        } else if (Blockly.selected === null && this.isInit) {
+            this.isInit = false;
+            removeErrorHandlingEventListener('keydown');
+        }
         if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
             return;
         }

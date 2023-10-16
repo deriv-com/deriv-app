@@ -1,16 +1,14 @@
 .static-dashboard {
     background-color: var(--general-main-1);
     border-radius: 1.6rem;
-    padding: 3rem;
+    padding: 1.2rem;
+    height: inherit;
     @include desktop {
         display: flex;
         gap: 2.4rem;
         flex-direction: column;
         min-width: 132rem;
-    }
-    @include mobile {
-        position: relative;
-        bottom: 2rem;
+        padding: 3rem;
     }
     &--deposit-button {
         cursor: not-allowed;
@@ -26,21 +24,31 @@
     }
     &--eu {
         @include desktop {
+            padding-bottom: 7rem;
             flex-direction: column-reverse;
         }
-        padding-bottom: 7rem;
+        @include mobile {
+            height: 100%;
+        }
+        @media screen and (max-width: 320px) {
+            height: unset;
+        }
     }
 
     @include mobile {
         width: 90%;
-        margin: 0 5%;
-        padding: 0;
+        margin-inline: 5%;
     }
 
     &-wrapper {
         border-radius: $BORDER_RADIUS;
         border: 2rem solid var(--general-section-1);
         padding: 3rem;
+        @include mobile {
+            height: 100%;
+            border: none;
+            padding: 1.2rem;
+        }
 
         &__header-and-description {
             display: flex;
@@ -66,17 +74,9 @@
         &__bordered,
         &__bordered--with-margin {
             @include mobile {
-                padding: 3rem 3rem 15rem;
-                height: 36.5rem;
+                padding: 1.2rem;
                 border: none;
-                overflow-y: scroll;
-                overflow-x: hidden;
             }
-        }
-
-        @include mobile {
-            border: none;
-            padding: 0;
         }
 
         &__description {

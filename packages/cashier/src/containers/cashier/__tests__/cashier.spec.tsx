@@ -90,6 +90,7 @@ describe('<Cashier />', () => {
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
+                        setActiveTab: jest.fn(),
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: false,
@@ -139,6 +140,7 @@ describe('<Cashier />', () => {
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
+                        setActiveTab: jest.fn(),
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
@@ -159,60 +161,6 @@ describe('<Cashier />', () => {
         expect(screen.getByRole('link', { name: 'Transfer to client' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Deriv P2P' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Fiat onramp' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Learn more about payment methods' })).toBeInTheDocument();
-    });
-
-    it('should go to payment methods page if the learn more about payment methods button is clicked', () => {
-        window.open = jest.fn();
-
-        const mock_root_store = mockStore({
-            common: {
-                routeBackInApp: jest.fn(),
-                is_from_derivgo: true,
-            },
-            ui: {
-                is_cashier_visible: true,
-                toggleCashier: jest.fn(),
-            },
-            notifications: {
-                showAccountSwitchToRealNotification: jest.fn(),
-            },
-            client: {
-                is_account_setting_loaded: true,
-                is_logged_in: true,
-                is_logging_in: true,
-                active_accounts: [],
-                is_crypto: jest.fn(),
-            },
-            modules: {
-                cashier: {
-                    withdraw: {
-                        error: {},
-                    },
-                    general_store: {
-                        is_cashier_onboarding: true,
-                        is_loading: true,
-                        onMountCommon: jest.fn(),
-                        setAccountSwitchListener: jest.fn(),
-                        setCashierTabIndex: jest.fn(),
-                        cashier_route_tab_index: 0,
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: true,
-                    },
-                    payment_agent: {
-                        is_payment_agent_visible: true,
-                    },
-                },
-            },
-        });
-
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
-
-        const learn_more_btn = screen.getByRole('button', { name: 'Learn more about payment methods' });
-        fireEvent.click(learn_more_btn);
-
-        expect(window.open).toHaveBeenCalledWith('https://deriv.com/payment-methods');
     });
 
     // TODO: Fix this test case
@@ -245,6 +193,7 @@ describe('<Cashier />', () => {
     //                     setAccountSwitchListener: jest.fn(),
     //                     setCashierTabIndex: jest.fn(),
     //                     cashier_route_tab_index: 0,
+    //                     setActiveTab: jest.fn(),
     //                 },
     //                 transaction_history: {
     //                     is_crypto_transactions_visible: false,
@@ -297,6 +246,7 @@ describe('<Cashier />', () => {
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
+                        setActiveTab: jest.fn(),
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
@@ -316,7 +266,7 @@ describe('<Cashier />', () => {
         expect(history.location.pathname).toBe('/cashier/withdrawal');
     });
 
-    it('should not render the side note if on crypto transactions page', () => {
+    it('should not render the side note if on deposit page', () => {
         const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
@@ -348,6 +298,7 @@ describe('<Cashier />', () => {
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
+                        setActiveTab: jest.fn(),
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
@@ -358,6 +309,8 @@ describe('<Cashier />', () => {
                 },
             },
         });
+
+        history.replace('/cashier/deposit');
 
         renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
 
@@ -398,6 +351,7 @@ describe('<Cashier />', () => {
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
+                        setActiveTab: jest.fn(),
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,

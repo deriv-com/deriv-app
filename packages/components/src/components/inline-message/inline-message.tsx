@@ -4,7 +4,7 @@ import Icon from '../icon/icon';
 import Text from '../text';
 import './inline-message.scss';
 
-const type_to_icon_mapper = {
+const type_icon_mapper = {
     warning: 'IcAlertWarning',
     information: 'IcAlertInfo',
     announcement: 'IcAlertAnnounce',
@@ -19,7 +19,7 @@ const size_to_font_size_mapper = {
 };
 
 type TProps = {
-    type?: 'warning' | 'information' | 'announcement' | 'error';
+    type?: keyof typeof type_icon_mapper;
     size?: 'xs' | 'sm' | 'md' | 'lg';
 } & RequireAtLeastOne<{ title: React.ReactNode; message: React.ReactNode; children: React.ReactNode }>;
 
@@ -30,7 +30,7 @@ const InlineMessage: React.FC<React.PropsWithChildren<TProps>> = ({
     message,
     children,
 }) => {
-    const icon = type_to_icon_mapper[type];
+    const icon = type_icon_mapper[type];
     const icon_size = size === 'lg' && !isMobile() ? 24 : 16;
     const font_size = size_to_font_size_mapper[size];
 

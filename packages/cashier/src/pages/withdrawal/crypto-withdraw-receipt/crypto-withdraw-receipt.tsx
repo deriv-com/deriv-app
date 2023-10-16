@@ -1,12 +1,11 @@
 import React from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
-import { isCryptocurrency, isMobile } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import { TAccount } from '../../../types';
 import { getAccountText } from '../../../utils/utility';
-import RecentTransaction from '../../../components/recent-transaction';
-import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-withdraw-receipt.scss';
 
 type TWalletInformationProps = {
@@ -103,17 +102,9 @@ const CryptoWithdrawReceipt = observer(() => {
     const { account_transfer, general_store, transaction_history, withdraw } = useCashierStore();
     const { selected_from: account } = account_transfer;
     const { cashier_route_tab_index: tab_index } = general_store;
-    const {
-        crypto_transactions,
-        onMount: recentTransactionOnMount,
-        setIsCryptoTransactionsVisible,
-    } = transaction_history;
+    const { setIsCryptoTransactionsVisible } = transaction_history;
 
     const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
-
-    React.useEffect(() => {
-        recentTransactionOnMount();
-    }, [recentTransactionOnMount]);
 
     React.useEffect(() => {
         return () => {
@@ -174,7 +165,6 @@ const CryptoWithdrawReceipt = observer(() => {
                     primary
                 />
             </div>
-            {isMobile() && isCryptocurrency(currency) ? <RecentTransaction /> : null}
         </div>
     );
 });

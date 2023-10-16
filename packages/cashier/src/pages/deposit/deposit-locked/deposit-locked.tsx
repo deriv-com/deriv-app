@@ -5,7 +5,6 @@ import { Localize, localize } from '@deriv/translations';
 import { routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import CashierLocked from '../../../components/cashier-locked';
-import { useCashierStore } from '../../../stores/useCashierStores';
 
 type TItems = {
     button_text?: string;
@@ -24,9 +23,9 @@ const DepositLocked = observer(() => {
         is_tnc_needed,
         is_trading_experience_incomplete,
         standpoint,
+        is_virtual,
+        updateAccountStatus,
     } = client;
-    const { deposit } = useCashierStore();
-    const { onMountDeposit: onMount } = deposit;
 
     // handle authentication locked
     const identity = account_status?.authentication?.identity;
@@ -47,7 +46,10 @@ const DepositLocked = observer(() => {
     const acceptTnc = async () => {
         await WS.tncApproval();
         await WS.getSettings();
-        onMount();
+
+        if (!is_virtual && !account_status?.status?.includes('deposit_attempt')) {
+            await updateAccountStatus();
+        }
     };
 
     // handle all deposits lock status

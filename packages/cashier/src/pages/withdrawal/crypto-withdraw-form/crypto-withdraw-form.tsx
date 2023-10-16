@@ -1,16 +1,15 @@
-import classNames from 'classnames';
 import React from 'react';
-import { Field, FieldProps, Formik, FormikProps } from 'formik';
-import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
-import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { Button, Icon, Input, Loading, Text } from '@deriv/components';
 import { useCurrentAccountDetails } from '@deriv/hooks';
+import { CryptoConfig, getCurrencyName } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+import classNames from 'classnames';
+import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import PercentageSelector from '../../../components/percentage-selector';
-import RecentTransaction from '../../../components/recent-transaction';
-import { TReactChangeEvent } from '../../../types';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import { TReactChangeEvent } from '../../../types';
 import './crypto-withdraw-form.scss';
 
 type THeaderProps = {
@@ -49,14 +48,15 @@ const Header = ({ currency }: THeaderProps) => {
 };
 
 const CryptoWithdrawForm = observer(() => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
+    const { is_mobile } = ui;
     const {
         balance,
         currency,
         current_fiat_currency,
         verification_code: { payment_withdraw: verification_code },
     } = client;
-    const { crypto_fiat_converter, general_store, transaction_history, withdraw } = useCashierStore();
+    const { crypto_fiat_converter, general_store, withdraw } = useCashierStore();
     const crypto_currency = currency;
     const {
         blockchain_address,
@@ -76,12 +76,7 @@ const CryptoWithdrawForm = observer(() => {
         resetConverter,
     } = crypto_fiat_converter;
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
-    const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const account_details = useCurrentAccountDetails();
-
-    React.useEffect(() => {
-        recentTransactionOnMount();
-    }, [recentTransactionOnMount]);
 
     React.useEffect(() => {
         onMountWithdraw(verification_code);
@@ -107,11 +102,11 @@ const CryptoWithdrawForm = observer(() => {
 
     return (
         <div className='cashier__wrapper' data-testid='dt_crypto_withdraw_form'>
-            {!isMobile() && <Header currency={currency} />}
-            <div className={classNames({ 'crypto-withdraw-form__icon': isMobile() })}>
-                <Icon icon={`IcCurrency-${account_details?.icon?.toLowerCase()}`} size={isMobile() ? 64 : 128} />
+            {!is_mobile && <Header currency={currency} />}
+            <div className={classNames({ 'crypto-withdraw-form__icon': is_mobile })}>
+                <Icon icon={`IcCurrency-${account_details?.icon?.toLowerCase()}`} size={is_mobile ? 64 : 128} />
             </div>
-            {isMobile() && <Header currency={currency} />}
+            {is_mobile && <Header currency={currency} />}
             <Formik
                 initialValues={{
                     address: '',
@@ -195,7 +190,6 @@ const CryptoWithdrawForm = observer(() => {
                     </form>
                 )}
             </Formik>
-            <MobileWrapper>{isCryptocurrency(currency) ? <RecentTransaction /> : null}</MobileWrapper>
         </div>
     );
 });

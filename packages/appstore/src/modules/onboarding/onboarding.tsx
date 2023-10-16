@@ -1,14 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { useHasActiveRealAccount } from '@deriv/hooks';
-import { useStore } from '@deriv/stores';
-import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
-import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import { isDesktop, routes, ContentFlag } from '@deriv/shared';
+import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
 import EmptyOnboarding from './empty-onboarding';
+import { useStore, observer } from '@deriv/stores';
 
 type TOnboardingProps = {
     contents: Record<
@@ -25,13 +24,13 @@ type TOnboardingProps = {
     >;
 };
 
-const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) => {
+const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
-    const number_of_steps = Object.keys(contents);
+    const steps_list = Object.keys(contents);
     const { traders_hub, client, ui } = useStore();
-    const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
-    const { is_eu_country, is_logged_in, is_landing_company_loaded, prev_account_type, setPrevAccountType } = client;
-    const { is_from_signup_account } = ui;
+    const { is_eu_country, is_landing_company_loaded, is_logged_in, prev_account_type, setPrevAccountType } = client;
+    const { is_mobile, is_from_signup_account } = ui;
+    const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
     const [step, setStep] = React.useState<number>(1);
     const has_active_real_account = useHasActiveRealAccount();
 
@@ -40,8 +39,8 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
     };
 
     const nextStep = () => {
-        if (step < number_of_steps.length) setStep(step + 1);
-        if (step === number_of_steps.length) {
+        if (step < steps_list.length) setStep(step + 1);
+        if (step === steps_list.length) {
             toggleIsTourOpen(true);
             history.push(routes.traders_hub);
             if (is_demo_low_risk) {
@@ -67,7 +66,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
         content_flag === ContentFlag.EU_DEMO;
 
     const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
-    const onboarding_step = number_of_steps[step - 1];
+    const onboarding_step = steps_list[step - 1];
 
     const footer_header = contents[onboarding_step]?.footer_header;
     const footer_text = contents[onboarding_step]?.footer_text;
@@ -77,7 +76,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
 
     const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
 
-    const footer_desctiption = is_eu_user ? eu_footer_text : footer_text;
+    const footer_description = is_eu_user ? eu_footer_text : footer_text;
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;
@@ -91,7 +90,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
         <div className='onboarding-wrapper'>
             <div className='onboarding-header'>
                 <div className='onboarding-header--deriv-logo'>
-                    <TradigPlatformIconProps icon={'DerivLogo'} />
+                    <TradingPlatformIconProps icon='DerivLogo' />
                 </div>
                 <Icon
                     icon='IcCross'
@@ -105,18 +104,31 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
             </div>
             <div className='onboarding-footer'>
                 <div className='onboarding-footer-wrapper'>
-                    <Text as='h2' weight='bold' size='sm' align='center' className='onboarding-footer-header'>
-                        {footer_header_text}
-                    </Text>
-                    <Text as='p' size='xs' align='center' className='onboarding-footer-text'>
-                        {footer_desctiption}
-                    </Text>
+                    <div className='onboarding-footer-description'>
+                        <Text
+                            as='h2'
+                            weight='bold'
+                            size={is_mobile ? 's' : 'sm'}
+                            align='center'
+                            className='onboarding-footer-description__header'
+                        >
+                            {footer_header_text}
+                        </Text>
+                        <Text
+                            as='p'
+                            size={is_mobile ? 'xxs' : 'xs'}
+                            align='center'
+                            className='onboarding-footer-description__text'
+                        >
+                            {footer_description}
+                        </Text>
+                    </div>
                     {isDesktop() && (
                         <div className='onboarding-footer-buttons'>
                             <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>
                                 {localize('Back')}
                             </Button>
-                            <ProgressBarOnboarding step={step} amount_of_steps={number_of_steps} setStep={setStep} />
+                            <ProgressBarTracker step={step} steps_list={steps_list} setStep={setStep} />
                             <Button primary onClick={nextStep} className='onboarding-footer-buttons--full-size'>
                                 {contents[onboarding_step]?.has_next_content
                                     ? contents[onboarding_step]?.next_content
@@ -124,14 +136,10 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
                             </Button>
                         </div>
                     )}
-                    {isMobile() && (
+                    {is_mobile && (
                         <React.Fragment>
                             <div className='onboarding-footer__progress-bar'>
-                                <ProgressBarOnboarding
-                                    step={step}
-                                    amount_of_steps={number_of_steps}
-                                    setStep={setStep}
-                                />
+                                <ProgressBarTracker step={step} steps_list={steps_list} setStep={setStep} />
                             </div>
                             <div
                                 className='onboarding-footer-buttons'
@@ -165,6 +173,6 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
             </div>
         </div>
     );
-};
+});
 
-export default observer(Onboarding);
+export default Onboarding;

@@ -1,21 +1,19 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
+import { isDesktop, routes, ContentFlag } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
-import TourGuide from 'Modules/tour-guide/tour-guide';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
-import { useStores } from 'Stores/index';
-import { isDesktop, routes, ContentFlag } from '@deriv/shared';
-import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
-
+import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
 
-const TradersHub = () => {
-    const { traders_hub, client, ui } = useStores();
+const TradersHub = observer(() => {
+    const { traders_hub, client, ui } = useStore();
     const {
         notification_messages_ui: Notifications,
         openRealAccountSignup,
@@ -58,32 +56,25 @@ const TradersHub = () => {
     }, []);
 
     React.useEffect(() => {
-        let setScrolledTimerId: NodeJS.Timeout;
-
-        const handleScrollTimerId = setTimeout(() => {
+        if (is_eu_user) setTogglePlatformType('cfd');
+        setTimeout(() => {
             handleScroll();
-            setScrolledTimerId = setTimeout(() => {
+            setTimeout(() => {
                 setScrolled(true);
             }, 200);
         }, 100);
-
-        // Clear the timers when the component unmounts or when the dependencies change
-        return () => {
-            clearTimeout(handleScrollTimerId);
-            clearTimeout(setScrolledTimerId);
-        };
     }, [is_tour_open]);
 
     const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
 
     const is_eu_low_risk = content_flag === ContentFlag.LOW_RISK_CR_EU;
 
-    const platform_toggle_options = [
-        { text: `${eu_title ? localize('Multipliers') : localize('Options & Multipliers')}`, value: 'options' },
+    const getPlatformToggleOptions = () => [
+        { text: eu_title ? localize('Multipliers') : localize('Options & Multipliers'), value: 'options' },
         { text: localize('CFDs'), value: 'cfd' },
     ];
-
-    const platform_toggle_options_eu = [...platform_toggle_options].reverse();
+    const platform_toggle_options = getPlatformToggleOptions();
+    const platform_toggle_options_eu = getPlatformToggleOptions().reverse();
 
     const platformTypeChange = (event: {
         target: {
@@ -98,6 +89,7 @@ const TradersHub = () => {
     const renderOrderedPlatformSections = (is_cfd_visible = true, is_options_and_multipliers_visible = true) => {
         return (
             <div
+                data-testid='dt_traders_hub'
                 className={classNames('traders-hub__main-container', {
                     'traders-hub__main-container-reversed': is_eu_user,
                 })}
@@ -145,8 +137,8 @@ const TradersHub = () => {
                 </div>
             </Div100vhContainer>
             {is_eu_low_risk && (
-                <div className='disclamer'>
-                    <Text align='left' className='disclamer-text' size={is_mobile ? 'xxxs' : 'xs'}>
+                <div data-testid='dt_traders_hub_disclaimer' className='disclaimer'>
+                    <Text align='left' className='disclaimer-text' size={is_mobile ? 'xxxs' : 'xs'}>
                         <Localize
                             i18n_default_text='<0>EU statutory disclaimer</0>: CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. <0>71% of retail investor accounts lose money when trading CFDs with this provider</0>. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.'
                             components={[<strong key={0} />]}
@@ -156,6 +148,6 @@ const TradersHub = () => {
             )}
         </>
     );
-};
+});
 
-export default observer(TradersHub);
+export default TradersHub;

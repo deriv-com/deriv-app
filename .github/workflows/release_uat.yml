@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
     - uat
+  workflow_dispatch:
 
 jobs:
   build_test_and_publish:

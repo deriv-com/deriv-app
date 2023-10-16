@@ -23,4 +23,9 @@
         font-size: 1.6rem;
         color: var(--text-general);
     }
+    &__link {
+        color: var(--text-red);
+        cursor: pointer;
+        text-decoration: underline;
+    }
 }

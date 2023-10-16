@@ -1,15 +1,15 @@
 import React from 'react';
-import DepositCryptoAddress from '../DepositCryptoAddress/DepositCryptoAddress';
-import WalletDepositCryptoCurrencyDetails from '../DepositCryptoCurrencyDetails/DepositCryptoCurrencyDetails';
-import WalletDepositCryptoDisclaimers from '../WalletDepositCryptoDisclaimers/DepositCryptoDisclaimers';
+import DepositCryptoAddress from './DepositCryptoAddress/DepositCryptoAddress';
+import DepositCryptoCurrencyDetails from './DepositCryptoCurrencyDetails/DepositCryptoCurrencyDetails';
+import DepositCryptoDisclaimers from './DepositCryptoDisclaimers/DepositCryptoDisclaimers';
 import './DepositCrypto.scss';
 
 const DepositCrypto = () => {
     return (
         <div className='wallets-deposit-crypto'>
-            <WalletDepositCryptoCurrencyDetails />
+            <DepositCryptoCurrencyDetails />
             <DepositCryptoAddress />
-            <WalletDepositCryptoDisclaimers />
+            <DepositCryptoDisclaimers />
         </div>
     );
 };

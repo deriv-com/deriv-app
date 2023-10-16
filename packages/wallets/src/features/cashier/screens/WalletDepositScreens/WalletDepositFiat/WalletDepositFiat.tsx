@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useAuthorize, useDepositFiatAddress } from '@deriv/api';
+import { useAuthorize, useCashierFiatAddress } from '@deriv/api';
 import './WalletDepositFiat.scss';
 
 const WalletDepositFiat = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: iframeUrl, isError, mutate } = useDepositFiatAddress();
+    const { data: iframeUrl, isError, mutate } = useCashierFiatAddress();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -13,7 +13,7 @@ const WalletDepositFiat = () => {
 
     useEffect(() => {
         if (isAuthorizeSuccess) {
-            mutate();
+            mutate('deposit');
         }
     }, [isAuthorizeSuccess, mutate]);
 

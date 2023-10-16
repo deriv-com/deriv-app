@@ -20,6 +20,11 @@ type TFile =
           message: string;
       };
 
+type TUploaderResponse = {
+    [key: string]: any;
+    message?: string;
+    warning?: string;
+};
 const fileReadErrorMessage = (filename: string) => {
     return `Unable to read file ${filename}`;
 };
@@ -62,7 +67,7 @@ const useFileUploader = () => {
                                 // send files
                                 const uploader_promise = uploader_instance
                                     .upload(processed_files[0])
-                                    .then(api_response => api_response);
+                                    .then((api_response: TUploaderResponse) => api_response);
                                 resolve(uploader_promise);
                             })
                             .catch((error: unknown) => {

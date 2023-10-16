@@ -1,5 +1,5 @@
 import React from 'react';
-import { WalletText } from '../../../../components/Base/WalletText';
+import { WalletText } from '../../../../../components/Base/WalletText';
 import './JurisdictionCardRow.scss';
 
 type TJurisdictionCardRowProps = {

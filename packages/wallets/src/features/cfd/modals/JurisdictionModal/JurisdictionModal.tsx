@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { ModalStepWrapper, WalletButton, WalletText } from '../../../../components/Base';
-// import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
-import { JurisdictionScreen } from '../../screens/JurisdictionScreen';
+import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
 
 const JurisdictionModal = () => {

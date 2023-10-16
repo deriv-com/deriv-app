@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
-import JurisdictionCard from './JurisdictionCard';
+import { JurisdictionCard } from './JurisdictionCard';
 import './JurisdictionScreen.scss';
 
 type TJurisdictionScreenProps = {

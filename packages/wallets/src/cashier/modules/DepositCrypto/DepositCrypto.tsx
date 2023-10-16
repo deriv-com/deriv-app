@@ -1,7 +1,7 @@
 import React from 'react';
 import DepositCryptoAddress from '../DepositCryptoAddress/DepositCryptoAddress';
-import WalletDepositCryptoCurrencyDetails from '../WalletDepositCryptoCurrencyDetails/WalletDepositCryptoCurrencyDetails';
-import WalletDepositCryptoDisclaimers from '../WalletDepositCryptoDisclaimers/WalletDepositCryptoDisclaimers';
+import WalletDepositCryptoCurrencyDetails from '../DepositCryptoCurrencyDetails/DepositCryptoCurrencyDetails';
+import WalletDepositCryptoDisclaimers from '../WalletDepositCryptoDisclaimers/DepositCryptoDisclaimers';
 import './DepositCrypto.scss';
 
 const DepositCrypto = () => {

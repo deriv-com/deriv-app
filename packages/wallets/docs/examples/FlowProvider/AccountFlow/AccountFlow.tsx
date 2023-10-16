@@ -20,13 +20,13 @@ const ScreenB = () => {
             <h1>Screen B</h1>
             <input
                 onChange={e => setFormValues('testb', e.target.value)}
-                style={{ width: '100%', border: '1px solid black', padding: '4px' }}
+                style={{ border: '1px solid black', padding: '4px', width: '100%' }}
                 type='text'
                 value={formValues.testb}
             />
             <input
                 onChange={e => setFormValues('testa', e.target.value)}
-                style={{ width: '100%', border: '1px solid black', padding: '4px' }}
+                style={{ border: '1px solid black', padding: '4px', width: '100%' }}
                 type='text'
                 value={formValues.testa}
             />
@@ -58,11 +58,11 @@ const JurisdictionScreen = () => {
 };
 
 const screens = {
-    selectAccountTypeScreen: <MT5AccountType onMarketTypeSelect={marketType => marketType} selectedMarketType='all' />,
-    JurisdictionScreen: <JurisdictionScreen />,
-    passwordScreen: <PasswordScreen />,
     aScreen: <ScreenA />,
     bScreen: <ScreenB />,
+    JurisdictionScreen: <JurisdictionScreen />,
+    passwordScreen: <PasswordScreen />,
+    selectAccountTypeScreen: <MT5AccountType onMarketTypeSelect={marketType => marketType} selectedMarketType='all' />,
 };
 
 const AccountFlow = () => {

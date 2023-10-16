@@ -1,15 +1,14 @@
 import React, {
-    FC,
     createContext,
-    useRef,
     ReactElement,
-    useContext,
-    useState,
-    useMemo,
-    ReactNode,
     ReactFragment,
+    ReactNode,
     ReactPortal,
+    useContext,
     useEffect,
+    useMemo,
+    useRef,
+    useState,
 } from 'react';
 import { Formik, FormikErrors, FormikValues } from 'formik';
 
@@ -20,9 +19,9 @@ export type TFlowProviderContext<T> = {
     isFinalScreen: boolean;
     setFormValues: (
         field: string,
-        value: any,
+        value: unknown,
         shouldValidate?: boolean | undefined
-    ) => Promise<FormikErrors<any> | void>;
+    ) => Promise<FormikErrors<unknown> | void>;
     switchNextScreen: () => void;
     switchScreen: (screenId: keyof T) => void;
 };

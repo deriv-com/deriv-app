@@ -52,6 +52,9 @@
             margin: 0;
             position: fixed;
         }
+        &--tour-active {
+            display: none;
+        }
         &--info {
             display: flex;
             justify-content: center;

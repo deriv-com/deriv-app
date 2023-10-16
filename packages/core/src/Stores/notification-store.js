@@ -1433,7 +1433,7 @@ export default class NotificationStore extends BaseStore {
             },
             mt5_notification: {
                 key: 'mt5_notification',
-                header: localize('Trouble accessing Deriv MT5 on your mobile?'),
+                header: localize('Deriv MT5: Your action is needed'),
                 message: localize('Follow these simple instructions to fix it.'),
                 action: {
                     text: localize('Learn more'),

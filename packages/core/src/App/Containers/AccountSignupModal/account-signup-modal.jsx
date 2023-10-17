@@ -8,6 +8,7 @@ import { localize } from '@deriv/translations';
 
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
+import { RudderStack } from '@deriv/analytics';
 
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
@@ -49,6 +50,28 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
             }
             setIsLoading(false);
         });
+
+        RudderStack.track(
+            'ce_virtual_signup_form',
+            {
+                action: 'signup_confirmed',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            },
+            {
+                is_anonymous: true,
+            }
+        );
+
+        RudderStack.track(
+            'ce_virtual_signup_form',
+            {
+                action: 'country_selection_screen_opened',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            },
+            {
+                is_anonymous: true,
+            }
+        );
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
@@ -72,10 +95,33 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
     const onSignupComplete = error => {
         if (error) {
             setApiError(error);
+
+            RudderStack.track(
+                'ce_virtual_signup_form',
+                {
+                    action: 'signup_flow_error',
+                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    error_message: error,
+                },
+                {
+                    is_anonymous: true,
+                }
+            );
         } else {
             isModalVisible(false);
             SessionStore.remove('signup_query_param');
             enableApp();
+
+            RudderStack.track(
+                'ce_virtual_signup_form',
+                {
+                    action: 'signup_done',
+                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                },
+                {
+                    is_anonymous: true,
+                }
+            );
         }
     };
 

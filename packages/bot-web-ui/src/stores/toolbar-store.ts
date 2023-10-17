@@ -72,7 +72,11 @@ export default class ToolbarStore implements IToolbarStore {
             'reset'
         );
         this.is_dialog_open = false;
-        this.is_reset_button_clicked = true;
+        const { run_panel } = this.root_store;
+        const { is_running } = run_panel;
+        if (is_running) {
+            this.is_reset_button_clicked = true;
+        }
     };
 
     resetDefaultStrategy = async () => {

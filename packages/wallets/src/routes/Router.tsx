@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { CashierModalRoute } from './CashierModalRoute';
 import { WalletsListingRoute } from './WalletsListingRoute';
 
-const prefix = '/appstore/traders-hub';
+const prefix = '/wallets';
 
 type TRoutes =
     | `${typeof prefix}/cashier/deposit`

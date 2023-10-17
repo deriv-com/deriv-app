@@ -12,17 +12,18 @@ import {
     isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
-import PasswordBox from '../Components/passwordbox';
-import { TTradingPlatformAccounts } from '../Components/props.types';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
-import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import PasswordBox from '../Components/passwordbox';
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid;
+    mt5_trade_account: DetailsOfEachMT5Loginid & {
+        webtrader_url?: string;
+    };
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,
@@ -73,9 +74,8 @@ const DMT5TradeModal = ({
         return 'Financial';
     };
 
-    //TODO replace status with open_order_position_status once key is available in BE response and in type TSocketResponseData<"mt5_login_list">
     const { is_flag_present: is_open_order_position_status_present, flag_value: open_order_position_status } =
-        useIsMt5LoginListStatusPresent('landing_company_short', mt5_trade_account?.login ?? '');
+        useIsMt5LoginListStatusPresent('open_order_position_status', mt5_trade_account?.login ?? '');
     const status_text = open_order_position_status ? 'No new positions' : 'Account closed';
 
     return (
@@ -176,11 +176,7 @@ const DMT5TradeModal = ({
                     <a
                         className='dc-btn cfd-trade-modal__download-center-app--option-link'
                         type='button'
-                        href={getMT5WebTerminalLink({
-                            category: mt5_trade_account.account_type,
-                            loginid: (mt5_trade_account as TTradingPlatformAccounts).display_login,
-                            server_name: (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment,
-                        })}
+                        href={mt5_trade_account.webtrader_url}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

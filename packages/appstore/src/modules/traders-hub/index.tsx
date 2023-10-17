@@ -115,7 +115,7 @@ const TradersHub = observer(() => {
                 <div data-testid='dt_traders_hub_disclaimer' className='disclaimer'>
                     <Text align='left' className='disclaimer-text' size={is_mobile ? 'xxxs' : 'xs'}>
                         <Localize
-                            i18n_default_text='<0>EU statutory disclaimer</0>: CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. <0>73% of retail investor accounts lose money when trading CFDs with this provider</0>. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.'
+                            i18n_default_text='<0>EU statutory disclaimer</0>: CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. <0>71% of retail investor accounts lose money when trading CFDs with this provider</0>. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.'
                             components={[<strong key={0} />]}
                         />
                     </Text>

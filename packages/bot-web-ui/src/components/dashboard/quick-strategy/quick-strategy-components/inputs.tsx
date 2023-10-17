@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
 import { TInputsFieldNames } from '../quick-strategy.types';
 import { TInputs } from './components.types';
-import { InputField } from '.';
+import InputField from './input-field';
 
 const Inputs = ({
     idx,

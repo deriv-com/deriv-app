@@ -60,6 +60,7 @@ describe('<CancelDealInfo />', () => {
         expect(screen.queryByText(price)).not.toBeInTheDocument();
     });
     it('should apply special className if clientHeight > 21', () => {
+        const originalOffsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
         Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
             configurable: true,
             value: 200,
@@ -69,5 +70,7 @@ describe('<CancelDealInfo />', () => {
         expect(screen.getByTestId('cancellation-wrapper')).toHaveClass(
             'trade-container__cancel-deal-info trade-container__cancel-deal-info--row-layout'
         );
+
+        Object.defineProperty(HTMLElement.prototype, 'offsetHeight', originalOffsetHeight as PropertyDescriptor);
     });
 });

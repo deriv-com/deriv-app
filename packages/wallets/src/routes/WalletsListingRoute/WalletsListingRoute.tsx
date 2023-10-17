@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { DesktopWalletsList, WalletTourGuide, WalletsAddMoreCarousel, WalletsCarousel } from '../../components';
+import React from 'react';
+import { DesktopWalletsList, WalletsAddMoreCarousel, WalletsCarousel, WalletTourGuide } from '../../components';
 import useDevice from '../../hooks/useDevice';
 import './WalletsListingRoute.scss';
 

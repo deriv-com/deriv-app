@@ -6,7 +6,7 @@ import { JurisdictionCard } from './JurisdictionCard';
 import './JurisdictionScreen.scss';
 
 type TJurisdictionScreenProps = {
-    selectedJurisdiction: string;
+    selectedJurisdiction: NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[0]['shortcode'];
     setSelectedJurisdiction: React.Dispatch<React.SetStateAction<string>>;
 };
 

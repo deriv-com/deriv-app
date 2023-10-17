@@ -18,6 +18,9 @@ const usePOI = () => {
         return latest_poi_attempt?.service as TVerificationService;
     }, [get_account_status_data?.authentication?.attempts?.latest]);
 
+    /**
+     * @description Get the previous POI attempts details (if any)
+     */
     const previous_poi = useMemo(() => {
         if (!previous_service) {
             return null;
@@ -41,6 +44,9 @@ const usePOI = () => {
         };
     }, [get_account_status_data?.authentication?.identity?.services, previous_service]);
 
+    /**
+     * @description Get the next step based on a few check. Returns configuration for document validation as well
+     */
     const next_poi = useMemo(() => {
         const user_country_code = get_settings_data?.citizen || get_settings_data?.country_code;
         const matching_residence_data = residence_list_data?.find(r => r.value === user_country_code);

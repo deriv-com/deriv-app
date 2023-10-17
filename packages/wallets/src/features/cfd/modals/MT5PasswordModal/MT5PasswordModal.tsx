@@ -59,14 +59,16 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
                 <Success
                     description={`You can now start practicing trading with your ${
                         marketTypeToTitleMapper[marketType]
-                    } ${isDemo && ' demo'} account.`}
+                    } ${isDemo ? ' demo' : 'real'} account.`}
                     marketType={marketType}
                     renderButton={() => (
                         <WalletButton onClick={hide}>
-                            <WalletText color='white'>Continue</WalletText>
+                            <WalletText color='white' size='sm' weight='bold'>
+                                Continue
+                            </WalletText>
                         </WalletButton>
                     )}
-                    title={`Your ${marketTypeToTitleMapper[marketType]} ${isDemo && ' demo'} account is ready`}
+                    title={`Your ${marketTypeToTitleMapper[marketType]} ${isDemo ? ' demo' : 'real'} account is ready`}
                 />
             )}
             {!isSuccess &&

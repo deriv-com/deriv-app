@@ -39,11 +39,18 @@ const Success: React.FC<TSuccessProps> = ({ description, marketType, renderButto
                     isDemo={isDemo || false}
                     marketType={marketType}
                 />
-                <div className='wallets-success__info__text--type'>
+                <WalletText size='2xs'>
                     {marketTypeToTitleMapper[marketType]} ({landingCompanyName})
-                </div>
-                <div className='wallets-success__info__text--wallet'>{data?.currency} Wallet</div>
-                <div className='wallets-success__info__text--amount'>{data?.display_balance} USD</div>
+                </WalletText>
+                {/* <div className='wallets-success__info__text--type'></div> */}
+                <WalletText color='primary' size='2xs'>
+                    {data?.currency} Wallet
+                </WalletText>
+                <WalletText size='sm' weight='bold'>
+                    {data?.display_balance} USD
+                </WalletText>
+                {/* <div className='wallets-success__info__text--wallet'>{data?.currency} Wallet</div>
+                <div className='wallets-success__info__text--amount'>{data?.display_balance} USD</div> */}
             </WalletGradientBackground>
             <WalletText align='center' size='md' weight='bold'>
                 {title}

@@ -8,7 +8,7 @@ interface WalletButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     color?: 'black' | 'primary-light' | 'primary' | 'white';
     icon?: React.ReactNode;
     isRounded?: boolean;
-    size?: Omit<TGenericSizes, 'lg' | 'md' | 'sm'>;
+    size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
     variant?: 'contained' | 'ghost' | 'outlined';
 }
@@ -57,17 +57,22 @@ const WalletButton: React.FC<WalletButtonProps> = ({
         }
     };
 
-    const buttonFontSize = {
+    const buttonFontSizeMapper: Record<Extract<TGenericSizes, 'lg' | 'md' | 'sm'>, TGenericSizes> = {
         lg: 'sm',
         md: 'sm',
-        sm: 'xs',
+        sm: 'xs' as const,
     };
 
     return (
         <button className={buttonClassNames} {...rest}>
             {hasIcon && icon}
             {hasText && (
-                <WalletText align='center' color={buttonFontColor()} size={buttonFontSize[size] || 'sm'} weight='bold'>
+                <WalletText
+                    align='center'
+                    color={buttonFontColor()}
+                    size={buttonFontSizeMapper[size] || 'sm'}
+                    weight='bold'
+                >
                     {text}
                 </WalletText>
             )}

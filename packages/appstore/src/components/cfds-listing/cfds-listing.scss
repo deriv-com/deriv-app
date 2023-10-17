@@ -37,13 +37,13 @@
         background-color: var(--general-main-1);
         @include mobile {
             position: sticky;
-            bottom: 6.2rem;
+            bottom: 0;
         }
     }
     &__footer-button {
         background-color: var(--general-main-1);
         @include mobile {
-            height: 7.2rem;
+            padding-bottom: 6.2rem;
             position: sticky;
             bottom: 0;
             width: 100%;
@@ -534,6 +534,7 @@
         &-description {
             display: flex;
             justify-content: center;
+            margin-top: 1.4rem;
         }
 
         &-app {

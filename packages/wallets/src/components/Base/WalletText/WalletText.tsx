@@ -1,5 +1,6 @@
 import React, { ComponentProps, CSSProperties, ReactNode } from 'react';
 import classNames from 'classnames';
+import { TGenericSizes } from '../types';
 import styles from './WalletText.module.css';
 
 interface WalletTextProps extends ComponentProps<'span'> {
@@ -7,7 +8,7 @@ interface WalletTextProps extends ComponentProps<'span'> {
     children: ReactNode;
     color?: CSSProperties['color'] | 'error' | 'general' | 'primary' | 'success' | 'warning';
     lineHeight?: '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '4xs' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
-    size?: '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '4xs' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
+    size?: TGenericSizes;
     weight?: CSSProperties['fontWeight'];
 }
 

@@ -72,6 +72,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                     <MobileWrapper>
                         <MobileDialog
                             portal_element_id='deriv_app'
+                            header_classname='jurisdiction-modal__mobile-header'
                             visible={is_jurisdiction_modal_visible}
                             onClose={onJurisdictionModalToggle}
                             has_close_icon={!is_dynamic_leverage_visible}

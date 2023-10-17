@@ -1,4 +1,7 @@
 .jurisdiction-modal {
+    &__mobile-header ~ .dc-mobile-dialog__content {
+        height: 100%;
+    }
     &__title {
         display: flex;
         gap: 1.6rem;
@@ -46,8 +49,7 @@
         overflow: scroll;
 
         @include mobile {
-            // height: calc(100vh - 4rem);
-            height: 90vh;
+            height: calc(100vh - 4rem);
         }
     }
 

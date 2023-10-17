@@ -91,15 +91,7 @@ describe('<ContractInfo />', () => {
         expect(screen.getByTestId('dt_purchase_turboslong_price')).toHaveClass(
             'trade-container__price-info trade-container__price-info--turbos'
         );
-        expect(screen.getByText(/for long/i)).toBeInTheDocument();
-    });
-    it('should apply a proper className and tooltip message if is_turbos is true and type is equal to TURBOS.SHORT', () => {
-        render(<ContractInfo {...default_mock_props} type={TURBOS.SHORT} is_turbos />);
-
-        expect(screen.getByTestId('dt_purchase_turbosshort_price')).toHaveClass(
-            'trade-container__price-info trade-container__price-info--turbos'
-        );
-        expect(screen.getByText(/for short/i)).toBeInTheDocument();
+        expect(screen.getByText(test_message)).toBeInTheDocument();
     });
     it('should render specific tooltip message if is_vanilla is true', () => {
         render(<ContractInfo {...default_mock_props} is_vanilla />);

@@ -86,12 +86,12 @@ const AccountFlow = () => {
 
     return (
         <FlowProvider
-            initialScreenId='selectAccountTypeScreen'
             initialValues={{
                 testa: '',
                 testb: '',
             }}
             screens={screens}
+            screensOrder={['selectAccountTypeScreen', 'JurisdictionScreen', 'passwordScreen', 'aScreen', 'bScreen']}
         >
             {context => {
                 return (

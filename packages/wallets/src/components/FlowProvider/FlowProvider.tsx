@@ -5,9 +5,7 @@ import React, {
     ReactNode,
     ReactPortal,
     useContext,
-    useEffect,
     useMemo,
-    useRef,
     useState,
 } from 'react';
 import { Formik, FormikErrors, FormikValues } from 'formik';
@@ -34,9 +32,9 @@ export type TWalletScreens = {
 
 export type TFlowProviderProps<T> = {
     children: (context: TFlowProviderContext<T>) => FlowChildren;
-    initialScreenId: keyof T;
     initialValues: FormikValues;
     screens: T;
+    screensOrder: (keyof T)[];
 };
 
 const FlowProviderContext = createContext<TFlowProviderContext<TWalletScreens> | null>(null);
@@ -63,25 +61,22 @@ export const useFlow = () => {
 
 function FlowProvider<T extends TWalletScreens>({
     children,
-    initialScreenId,
     initialValues,
     screens,
+    screensOrder,
 }: TFlowProviderProps<T>) {
-    const [currentScreenId, setCurrentScreenId] = useState<keyof T>(initialScreenId);
-
-    const screenIds = useRef<(keyof T)[]>([]);
-
+    const [currentScreenId, setCurrentScreenId] = useState<keyof T>(screensOrder[0]);
     const switchScreen = (screenId: keyof T) => {
         setCurrentScreenId(screenId);
     };
 
     const FlowProvider = FlowProviderContext.Provider as React.Provider<TFlowProviderContext<T> | null>;
-    const currentScreenIndex = useMemo(() => screenIds.current.indexOf(currentScreenId), [currentScreenId]);
-    const isFinalScreen = currentScreenIndex < screenIds.current.length;
+    const currentScreenIndex = useMemo(() => screensOrder.indexOf(currentScreenId), [currentScreenId]);
+    const isFinalScreen = currentScreenIndex >= screensOrder.length;
 
     const switchNextScreen = () => {
-        if (isFinalScreen) {
-            const nextScreenId = screenIds.current[currentScreenIndex + 1];
+        if (!isFinalScreen) {
+            const nextScreenId = screensOrder[currentScreenIndex + 1];
             switchScreen(nextScreenId);
         }
     };
@@ -89,10 +84,6 @@ function FlowProvider<T extends TWalletScreens>({
     const currentScreen = useMemo(() => {
         return screens[currentScreenId];
     }, [currentScreenId]);
-
-    useEffect(() => {
-        screenIds.current = Object.keys(screens);
-    }, []);
 
     if (!currentScreenId) return null;
 

@@ -84,12 +84,12 @@ const VerificationFlow = () => {
 
     return (
         <FlowProvider
-            initialScreenId='passwordScreen'
             initialValues={{
                 testa: '',
                 testb: '',
             }}
             screens={screens}
+            screensOrder={['passwordScreen', 'aScreen', 'bScreen']}
         >
             {context => {
                 return (

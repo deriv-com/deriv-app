@@ -5,4 +5,5 @@ export * from './ProgressBar';
 export * from './Tabs';
 export * from './WalletButton';
 export * from './WalletClipboard';
+export * from './WalletDropdown';
 export * from './WalletText';

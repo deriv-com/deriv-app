@@ -41,5 +41,6 @@ datadogRum.init({
     version: dataDogVersion,
     trackFrustrations: true,
     enableExperimentalFeatures: ['clickmap'],
+    excludedActivityUrls: [/^https:\/\/api.telegram.org.*$/],
 });
 datadogRum.startSessionReplayRecording();

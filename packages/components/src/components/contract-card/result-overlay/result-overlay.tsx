@@ -88,7 +88,9 @@ const ResultOverlay = ({
                         <span
                             id={`dc_contract_card_${contract_id}_result_close_icon`}
                             className='dc-result__close-btn'
-                            onClick={() => onClickRemove?.(contract_id)}
+                            onClick={() => {
+                                if (contract_id) onClickRemove?.(contract_id);
+                            }}
                         />
                     )}
                     {getContractPath && (

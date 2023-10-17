@@ -834,3 +834,12 @@
         height: 0;
     }
 }
+
+.wizard__main-step {
+    .account-form {
+        &__fieldset {
+            width: 100%;
+            max-width: unset !important;
+        }
+    }
+}

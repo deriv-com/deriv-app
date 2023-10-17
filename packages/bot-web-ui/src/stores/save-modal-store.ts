@@ -12,7 +12,6 @@ import { localize } from '@deriv/translations';
 import { MAX_STRATEGIES } from 'Constants/bot-contents';
 import { button_status } from 'Constants/button-status';
 import { TStrategy } from 'Types';
-import RootStore from './root-store';
 
 type IOnConfirmProps = {
     is_local: boolean;
@@ -33,9 +32,9 @@ interface ISaveModalStore {
 const Blockly = window.Blockly;
 
 export default class SaveModalStore implements ISaveModalStore {
-    root_store: RootStore;
+    root_store: any;
 
-    constructor(root_store: RootStore) {
+    constructor(root_store: any) {
         makeObservable(this, {
             is_save_modal_open: observable,
             button_status: observable,

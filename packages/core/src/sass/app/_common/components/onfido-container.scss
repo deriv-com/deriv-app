@@ -263,16 +263,6 @@
             }
         }
     }
-    .proof-of-identity__inner-container {
-        @include desktop {
-            &--incl-image {
-                display: grid;
-                align-items: center;
-                column-gap: 1.5rem;
-                grid-template-columns: auto 0.5fr;
-            }
-        }
-    }
 
     .additional-field {
         margin-top: 1.6rem;

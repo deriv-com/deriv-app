@@ -29,10 +29,16 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
+jest.mock('Components/modal-manager/modal-manager-context', () => ({
+    ...jest.requireActual('Components/modal-manager/modal-manager-context'),
+    useModalManagerContext: jest.fn(() => ({
+        isCurrentModal: jest.fn(),
+    })),
+}));
+
 jest.mock('Components/add-payment-method', () => jest.fn(() => <div>AddPaymentMethod</div>));
 jest.mock('../edit-payment-method-form', () => jest.fn(() => <div>EditPaymentMethodForm</div>));
 jest.mock('../payment-methods-empty', () => jest.fn(() => <div>PaymentMethodsEmpty</div>));
-jest.mock('../payment-methods-list', () => jest.fn(() => <div>PaymentMethodsList</div>));
 
 describe('<PaymentMethods />', () => {
     beforeEach(() => {
@@ -46,20 +52,29 @@ describe('<PaymentMethods />', () => {
                 hideAddPaymentMethodForm: jest.fn(),
                 is_loading: false,
                 getAdvertiserPaymentMethods: jest.fn(),
+                getPaymentMethodsList: jest.fn(),
                 setAddPaymentMethodErrorMessage: jest.fn(),
                 setIsLoading: jest.fn(),
+                setPaymentMethodToDelete: jest.fn(),
+                setPaymentMethodToEdit: jest.fn(),
                 setShouldShowAddPaymentMethodForm: jest.fn(),
                 setShouldShowEditPaymentMethodForm: jest.fn(),
                 should_show_add_payment_method_form: false,
             },
+            my_ads_store: {
+                payment_method_ids: [1],
+            },
         };
     });
 
-    it('should render PaymentMethodsList by default', () => {
+    it('should render PaymentMethods component', () => {
         mock_p2p_advertiser_payment_methods_hooks.data = [payment_method_info_alipay];
         render(<PaymentMethods />, { wrapper });
 
-        expect(screen.getByText('PaymentMethodsList')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Add new' })).toBeInTheDocument();
+        expect(screen.getByText('E-wallets')).toBeInTheDocument();
+        expect(screen.getByText('Alipay')).toBeInTheDocument();
+        expect(screen.getByText('test_account')).toBeInTheDocument();
     });
 
     it('should render Loading Component if is_loading is true', () => {
@@ -92,5 +107,16 @@ describe('<PaymentMethods />', () => {
         render(<PaymentMethods />, { wrapper });
 
         expect(screen.getByText('PaymentMethodsEmpty')).toBeInTheDocument();
+    });
+
+    it('should call getPaymentMethodsList when component mounted', () => {
+        render(
+            <APIProvider>
+                <StoreProvider store={mockStore({})}>
+                    <PaymentMethods />
+                </StoreProvider>
+            </APIProvider>
+        );
+        expect(mock_store.my_profile_store.getPaymentMethodsList).toHaveBeenCalled();
     });
 });

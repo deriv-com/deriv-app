@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
 import { TDropdownItems, TSelectsFieldNames } from '../quick-strategy.types';
 import { TDurationFields } from './components.types';
-import { SelectField } from '.';
+import SelectField from './select-field';
 
 const DurationFields = ({
     id,

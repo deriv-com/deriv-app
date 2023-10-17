@@ -277,8 +277,8 @@ const ChartTrade = observer(props => {
         chart_type,
         granularity,
         has_crossed_accu_barriers,
-        updateChartType,
         updateGranularity,
+        updateChartType,
     } = contract_trade;
     const { all_positions } = portfolio;
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;

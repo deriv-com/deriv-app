@@ -20,8 +20,8 @@ export type TFlowProviderContext<T> = {
         value: unknown,
         shouldValidate?: boolean | undefined
     ) => Promise<FormikErrors<unknown> | void>;
-    switchNextScreen: () => void;
     switchScreen: (screenId: keyof T) => void;
+    switchNextScreen: () => void;
 };
 
 type FlowChildren = ReactElement | ReactFragment | ReactPortal;

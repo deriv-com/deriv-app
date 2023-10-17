@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { useActiveWalletAccount, useTransferBetweenAccounts } from '@deriv/api';
-import { TransferFormDropdown, TransferFormInputField } from '../../modules';
+import { TransferFormDropdownModule, TransferFormInputFieldModule } from '../../modules';
 import './WalletTransfer.scss';
 
 type TInitialValues = {
@@ -38,13 +38,13 @@ const WalletTransfer = () => {
                     <form className='wallets-transfer__form' onSubmit={props.handleSubmit}>
                         <div className='wallets-transfer__form__fields'>
                             <div className='wallets-transfer__form__fields-section'>
-                                <TransferFormInputField
+                                <TransferFormInputFieldModule
                                     defaultValue={props.values.amountSend}
                                     fieldName='amountSend'
                                     fractionDigits={props.values.fromAccount?.currency_config?.fractional_digits}
                                     label='Amount you send'
                                 />
-                                <TransferFormDropdown
+                                <TransferFormDropdownModule
                                     fieldName='fromAccount'
                                     initialAccount={props.initialValues.fromAccount}
                                     label='Transfer from'
@@ -52,13 +52,13 @@ const WalletTransfer = () => {
                             </div>
                             <div style={{ height: '20px' }} />
                             <div className='wallets-transfer__form__fields-section'>
-                                <TransferFormInputField
+                                <TransferFormInputFieldModule
                                     defaultValue={props.values.amountReceive}
                                     fieldName='amountReceive'
                                     fractionDigits={props.values.toAccount?.currency_config?.fractional_digits}
                                     label='Estimated amount'
                                 />
-                                <TransferFormDropdown fieldName='toAccount' label='Transfer to' />
+                                <TransferFormDropdownModule fieldName='toAccount' label='Transfer to' />
                             </div>
                         </div>
                         <button className='wallets-transfer__form__submit-button' type='submit'>

@@ -1,1 +1,1 @@
-export { default as TransferFormInputField } from './TransferFormInputField';
+export { default as TransferFormInputFieldModule } from './TransferFormInputField';

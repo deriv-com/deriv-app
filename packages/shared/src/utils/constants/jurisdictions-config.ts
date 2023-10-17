@@ -60,6 +60,7 @@ export const getFormattedJurisdictionMarketTypes = (jurisdiction_market_type: st
     let formatted_market_type = '';
 
     switch (jurisdiction_market_type) {
+        case 'synthetic': // need to remove this once we have the correct market type from BE
         case JURISDICTION_MARKET_TYPES.DERIVED:
             formatted_market_type = localize('Derived');
             break;

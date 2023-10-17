@@ -1,5 +1,12 @@
 import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
-import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS, Jurisdiction } from '@deriv/shared';
+import {
+    getAccountListKey,
+    getAccountTypeFields,
+    CFD_PLATFORMS,
+    WS,
+    Jurisdiction,
+    JURISDICTION_MARKET_TYPES,
+} from '@deriv/shared';
 import BaseStore from '../../base-store';
 import { getDxCompanies, getMtCompanies, getDerivezCompanies } from './Helpers/cfd-config';
 
@@ -445,7 +452,7 @@ export default class CFDStore extends BaseStore {
             ...(shortcode !== Jurisdiction.LABUAN
                 ? type_request
                 : {
-                      account_type: 'financial',
+                      account_type: JURISDICTION_MARKET_TYPES.FINANCIAL,
                       mt5_account_type: 'financial_stp',
                   }),
         });

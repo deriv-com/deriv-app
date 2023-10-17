@@ -935,13 +935,11 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const getMigrationSubmitText = () => {
         const list = migrated_mt5_accounts.map(account => {
             const [to_account_type] = Object.keys(account);
-
-            const [to_accounts] = Object.values(account);
-            const to_account_type_label = to_account_type === 'synthetic' ? 'derived' : to_account_type;
+            const [to_jurisdiction] = Object.values(account);
 
             return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
-                to_account_type_label
-            )} ${getFormattedJurisdictionCode(to_accounts)}`;
+                to_account_type
+            )} ${getFormattedJurisdictionCode(to_jurisdiction)}`;
         });
 
         return (

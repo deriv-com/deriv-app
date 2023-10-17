@@ -10,7 +10,7 @@ describe('DataListTemplateEntry', () => {
         };
         render(<DataListTemplateEntry {...mock_props} />);
 
-        expect(screen.getByText(mock_props.title)).toBeInTheDocument();
-        expect(screen.getByText(mock_props.content)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.title.toString())).toBeInTheDocument();
+        expect(screen.getByText(mock_props.content.toString())).toBeInTheDocument();
     });
 });

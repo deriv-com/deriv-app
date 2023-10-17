@@ -8,7 +8,7 @@ describe('DataListTemplate', () => {
             data_source: {
                 app_id: 99,
                 app_markup_percentage: 1,
-                last_used: 'LAST_USED',
+                last_used: '2021-10-31 06:49:52',
                 name: 'NAME',
                 official: 0,
                 scopes: ['read', 'admin'],

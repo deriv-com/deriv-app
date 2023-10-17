@@ -59,7 +59,7 @@
         }
 
         &--last-login {
-            width: min-content;
+            width: 8rem;
         }
 
         &--revoke {
@@ -138,6 +138,7 @@
         grid-template-columns: 16rem 20rem 8rem 10rem;
         padding: 0;
         column-gap: 4.2rem;
+        text-align: left;
 
         .table__cell {
             min-height: 5.6rem;

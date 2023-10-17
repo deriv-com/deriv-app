@@ -48,6 +48,7 @@ export type TJurisdictionVerificationSection = {
 };
 export type TJurisdictionVerificationItems = {
     documentNumber?: TJurisdictionVerificationSection;
+    identityDocument?: TJurisdictionVerificationSection;
     identityNumber?: TJurisdictionVerificationSection;
     nameAndAddress?: TJurisdictionVerificationSection;
     notApplicable?: TJurisdictionVerificationSection;

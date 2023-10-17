@@ -32,17 +32,17 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
     statusReferences: [
         {
             color: 'yellow',
-            icon: 'IcVerificationStatusYellow',
+            icon: 'verificationPendingStatusIcon',
             text: 'Your document is pending for verification.',
         },
         {
             color: 'red',
-            icon: 'IcVerificationStatusRed',
+            icon: 'verificationFailedStatusIcon',
             text: 'Verification failed. Resubmit during account creation.',
         },
         {
             color: 'green',
-            icon: 'IcVerificationStatusGreen',
+            icon: 'verificationSuccessStatusIcon',
             text: 'Your document is verified.',
         },
     ],

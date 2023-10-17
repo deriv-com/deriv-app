@@ -96,6 +96,8 @@ const useAccountStatus = () => {
             is_authenticated_with_idv_photoid: status.has('authenticated_with_idv_photoid'),
             /** the client used to be fully authenticated by IDV but it was taken away due to compliance criteria. */
             is_idv_revoked: status.has('idv_revoked'),
+            /** the client is disallowed from verifying using the IDV service  */
+            is_idv_disallowed: status.has('idv_disallowed'),
         };
     }, [get_account_status_data?.status]);
 

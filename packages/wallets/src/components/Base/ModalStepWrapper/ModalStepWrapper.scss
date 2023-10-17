@@ -19,9 +19,6 @@
     &__header {
         padding: 2rem;
         border-bottom: 2px solid #f2f3f4;
-        font-size: 16px;
-        font-weight: 700;
-        line-height: 24px; /* 150% */
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -32,7 +29,6 @@
 
         @include mobile {
             background-color: #ffffff;
-            font-size: 14px;
             position: relative;
             z-index: 99;
             width: 100%;

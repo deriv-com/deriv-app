@@ -7,6 +7,7 @@ import styles from './WalletButton.module.css';
 interface WalletButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     color?: 'black' | 'primary-light' | 'primary' | 'white';
     icon?: ReactElement;
+    isFullWidth?: boolean;
     isRounded?: boolean;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
@@ -16,6 +17,7 @@ interface WalletButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const WalletButton: React.FC<WalletButtonProps> = ({
     color = 'primary',
     icon,
+    isFullWidth = false,
     isRounded = false,
     size = 'md',
     text,
@@ -33,7 +35,8 @@ const WalletButton: React.FC<WalletButtonProps> = ({
         isContained && styles[`wallets-button-color-${color}`],
         styles[`wallets-button-size-${size}`],
         styles[`wallets-button-variant-${variant}`],
-        isRounded ? styles['wallets-button-rounded-full'] : styles['wallets-button-rounded-default']
+        isRounded ? styles['wallets-button-rounded-full'] : styles['wallets-button-rounded-default'],
+        isFullWidth && styles['wallets-button-full-width']
     );
 
     const buttonFontColor = () => {

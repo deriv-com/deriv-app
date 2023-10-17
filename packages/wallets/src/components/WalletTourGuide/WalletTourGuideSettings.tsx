@@ -6,10 +6,10 @@ import './WalletTourGuide.scss';
 export const tourStepConfig: Step[] = [
     {
         content: (
-            <span>
+            <WalletText size='sm'>
                 This is your Wallet. These are the functions that you can perform within this Wallet and you can
                 conveniently view your total balance here.
-            </span>
+            </WalletText>
         ),
         disableBeacon: true,
         disableOverlayClose: true,
@@ -21,7 +21,7 @@ export const tourStepConfig: Step[] = [
         ),
     },
     {
-        content: <span>Step 2</span>,
+        content: <WalletText size='sm'>Step 2</WalletText>,
         disableBeacon: true,
         disableOverlayClose: true,
         target: '.wallets-accordion__header:has(+ .wallets-accordion__content--visible)',

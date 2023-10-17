@@ -10,7 +10,7 @@ const WalletsListingRoute: React.FC = () => {
     return (
         <div className='wallets-listing-route'>
             {/* TODO: delete this button when Header will be created in wallets package */}
-            <button onClick={() => setIsStarted(prev => !prev)}>Wallet onboarding</button>
+            {/* <button onClick={() => setIsStarted(prev => !prev)}>Wallet onboarding</button> */}
             {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}
             <WalletsAddMoreCarousel />
             <WalletTourGuide isStarted={isStarted} setIsStarted={setIsStarted} />

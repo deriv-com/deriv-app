@@ -44,13 +44,11 @@ const OptionsAndMultipliersListing = () => {
         <div className='wallets-options-and-multipliers-listing'>
             <section className='wallets-options-and-multipliers-listing__header'>
                 {!isMobile && (
-                    <div className='wallets-options-and-multipliers-listing__header-title'>
-                        {/* TODO: Localization needed*/}
-                        <h1>Options & Multipliers</h1>
-                    </div>
+                    <WalletText align='center' lineHeight='6xl' size='3xl' weight='bold'>
+                        Options & Multipliers
+                    </WalletText>
                 )}
                 <div className='wallets-options-and-multipliers-listing__header-subtitle'>
-                    {/* TODO: Localization needed*/}
                     <h1>
                         Earn a range of payouts by correctly predicting market price movements with{' '}
                         <a className='wallets-options-and-multipliers-listing__header-subtitle__link' href='#' key={0}>
@@ -80,12 +78,13 @@ const OptionsAndMultipliersListing = () => {
                         )}
                     >
                         <div className='wallets-options-and-multipliers-listing__content__details'>
-                            <p className='wallets-options-and-multipliers-listing__content__details-title'>
+                            <WalletText size='sm' weight='bold'>
                                 {account.title}
-                            </p>
-                            <p className='wallets-options-and-multipliers-listing__content__details-description'>
+                            </WalletText>
+
+                            <WalletText lineHeight={isMobile ? 'md' : '2xs'} size={isMobile ? 'sm' : 'xs'}>
                                 {account.description}
-                            </p>
+                            </WalletText>
                         </div>
                     </TradingAccountCard>
                 ))}

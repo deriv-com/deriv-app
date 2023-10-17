@@ -7,12 +7,20 @@ import {
     useSettings,
     useSortedMT5Accounts,
 } from '@deriv/api';
-import { ModalWrapper } from '../../../../components/Base';
+import { ModalWrapper, WalletButton } from '../../../../components/Base';
+import { WalletText } from '../../../../components/Base/WalletText';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { Success, CreatePassword, EnterPassword } from '../../screens';
+import { useModal } from '../../../../components/ModalProvider';
 
 type TProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
+};
+
+const marketTypeToTitleMapper: Record<TProps['marketType'], string> = {
+    all: 'Swap-Free',
+    financial: 'MT5 Financial',
+    synthetic: 'MT5 Derived',
 };
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
@@ -22,8 +30,10 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
+    const { hide } = useModal();
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
+    const isDemo = activeWallet?.is_virtual;
 
     const onSubmit = () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
@@ -45,7 +55,20 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
 
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
-            {isSuccess && <Success marketType={marketType} title='' description='' />}
+            {isSuccess && (
+                <Success
+                    description={`You can now start practicing trading with your ${
+                        marketTypeToTitleMapper[marketType]
+                    } ${isDemo && ' demo'} account.`}
+                    marketType={marketType}
+                    renderButton={() => (
+                        <WalletButton onClick={hide}>
+                            <WalletText color='white'>Continue</WalletText>
+                        </WalletButton>
+                    )}
+                    title={`Your ${marketTypeToTitleMapper[marketType]} ${isDemo && ' demo'} account is ready`}
+                />
+            )}
             {!isSuccess &&
                 (hasMT5Account ? (
                     <EnterPassword

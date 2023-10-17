@@ -41,7 +41,7 @@ const ScreenA = () => {
         <div style={{ height: '30vh', padding: '4px' }}>
             <input
                 onChange={e => setFormValues('testa', e.target.value)}
-                style={{ width: '100%', border: '1px solid black', padding: '4px' }}
+                style={{ border: '1px solid black', padding: '4px', width: '100%' }}
                 type='text'
                 value={formValues.testa}
             />

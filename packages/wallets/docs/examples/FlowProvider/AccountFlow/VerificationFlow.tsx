@@ -19,13 +19,13 @@ const ScreenB = () => {
             <h1>Screen X in Verification Flow</h1>
             <input
                 onChange={e => setFormValues('testb', e.target.value)}
-                style={{ width: '100%', border: '1px solid black', padding: '4px' }}
+                style={{ border: '1px solid black', padding: '4px', width: '100%' }}
                 type='text'
                 value={formValues.testb}
             />
             <input
                 onChange={e => setFormValues('testa', e.target.value)}
-                style={{ width: '100%', border: '1px solid black', padding: '4px' }}
+                style={{ border: '1px solid black', padding: '4px', width: '100%' }}
                 type='text'
                 value={formValues.testa}
             />
@@ -40,7 +40,7 @@ const ScreenA = () => {
         <div style={{ height: '30vh', padding: '4px' }}>
             <input
                 onChange={e => setFormValues('testa', e.target.value)}
-                style={{ width: '100%', border: '1px solid black', padding: '4px' }}
+                style={{ border: '1px solid black', padding: '4px', width: '100%' }}
                 type='text'
                 value={formValues.testa}
             />
@@ -54,8 +54,8 @@ const SuccessModal = () => {
             <div
                 style={{
                     background: 'white',
-                    width: '50vw',
                     height: '50vh',
+                    width: '50vw',
                 }}
             >
                 <h1>SUCCESS MODAL!</h1>

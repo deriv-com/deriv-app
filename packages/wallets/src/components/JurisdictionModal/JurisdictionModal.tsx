@@ -18,7 +18,7 @@ const JurisdictionModal = () => {
         () =>
             data?.filter(account => account.market_type === modalState?.marketType).map(account => account.shortcode) ||
             [],
-        [isLoading]
+        [data, modalState?.marketType]
     );
 
     if (isLoading) return <h1>Loading...</h1>;

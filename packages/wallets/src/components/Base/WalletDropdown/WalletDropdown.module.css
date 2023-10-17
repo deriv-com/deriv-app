@@ -6,7 +6,6 @@
     &__button {
         all: unset;
         margin: auto;
-        fill: var(--system-light-3-less-prominent-text, #999);
         transform: rotate(0);
         transform-origin: 50% 45%;
         transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -21,7 +20,7 @@
         width: 100%;
         border-radius: 0.4rem;
         padding: 1rem 1.6rem;
-        border: 1px solid var(--system-light-5-active-background, #d6dadb);
+        border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
         background: var(--system-light-8-primary-background, #fff);
         display: flex;
         gap: 0.8rem;
@@ -29,7 +28,7 @@
     }
 
     &__content:has(&__field:focus) {
-        border: 1px solid var(--brand-blue, #85acb0);
+        border: 0.1rem solid var(--brand-blue, #85acb0);
     }
 
     &__field {
@@ -55,13 +54,11 @@
         overflow-y: auto;
 
         & > :first-child {
-            border-top-left-radius: 0.4rem;
-            border-top-right-radius: 0.4rem;
+            border-radius: 0.4rem 0.4rem 0 0;
         }
 
         & > :last-child {
-            border-bottom-left-radius: 0.4rem;
-            border-bottom-right-radius: 0.4rem;
+            border-radius: 0 0 0.4rem 0.4rem;
         }
 
         &--sm {
@@ -122,8 +119,8 @@
         font-size: 1rem;
         color: var(--system-light-3-less-prominent-text, #999);
         background: var(--system-light-8-primary-background, #fff);
-        padding-inline: 4px;
-        left: 16px;
+        padding-inline: 0.4rem;
+        left: 1.6rem;
     }
 
     &__field:focus ~ &__label {

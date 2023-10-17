@@ -6,24 +6,6 @@ import JournalItem from '../journal-item';
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
 
-/* eslint-disable testing-library/no-node-access */
-// jest.mock('react-transition-group', () => {
-//     const FakeTransition = jest.fn(({ children }) => children);
-//     const FakeCSSTransition = jest.fn(props =>
-//         props.in ? (
-//             <FakeTransition>
-//                 <div data-testid='mock-css-transition'>{props.children}</div>
-//             </FakeTransition>
-//         ) : null
-//     );
-//     return { CSSTransition: FakeCSSTransition, Transition: FakeTransition };
-// });
-/* eslint-disable testing-library/no-node-access */
-
-// jest.mock('react-transition-group/CSSTransition', () => {
-//     return jest.fn(props => (props.in ? <div data-testid='mock-css-transition'>{props.children}</div> : null));
-// });
-
 const mockMeasure = jest.fn();
 
 const journalItemProps = {

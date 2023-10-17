@@ -2,7 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import Button from '../button';
 import Icon from '../icon';
-import { TButtonType } from './input-field';
+
+export type TButtonType = 'button' | 'submit' | 'reset';
 
 type IncrementButtonsProps = {
     decrementValue: (

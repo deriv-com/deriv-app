@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-
 import IcDropdown from '../../public/images/ic-dropdown.svg';
-
 import './WalletsAccordion.scss';
 
 type TProps = {

@@ -75,6 +75,6 @@ export const truncateFileName = (file: TFile, limit: number): string => {
  * @returns {string | null} file extension or null if not found
  */
 const getFileExtension = (file: TFile): string | null => {
-    const f = file?.type?.match(/[^/]+$/);
+    const f = file?.type?.match(/[^/]+$/u);
     return f && f[0];
 };

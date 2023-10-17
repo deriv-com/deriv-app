@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import BotSnackbar from 'Components/bot-snackbar';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
@@ -59,7 +59,7 @@ const BotBuilder = observer(() => {
         <>
             <BotSnackbar
                 is_open={show_snackbar}
-                message={localize('Changes you make will not affect your running bot.')}
+                message={<Localize i18n_default_text='Changes you make will not affect your running bot.' />}
                 handleClose={() => setShowSnackbar(false)}
             />
             <div

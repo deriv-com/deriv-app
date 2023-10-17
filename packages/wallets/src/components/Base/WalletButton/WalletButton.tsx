@@ -10,7 +10,7 @@ interface WalletButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     isFullWidth?: boolean;
     isRounded?: boolean;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
-    text?: string;
+    text?: React.ReactNode;
     variant?: 'contained' | 'ghost' | 'outlined';
 }
 

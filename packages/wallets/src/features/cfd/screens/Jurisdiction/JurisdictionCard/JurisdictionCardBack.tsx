@@ -24,8 +24,8 @@ const verificationIconsMapper: Record<string, JSX.Element> = {
 
 const verificationStatusIconsMapper: Record<string, JSX.Element> = {
     verificationPendingStatusIcon: <VerificationPendingStatusIcon />,
-    VerificationFailedStatusIcon: <VerificationFailedStatusIcon />,
-    VerificationSuccessStatusIcon: <VerificationSuccessStatusIcon />,
+    verificationFailedStatusIcon: <VerificationFailedStatusIcon />,
+    verificationSuccessStatusIcon: <VerificationSuccessStatusIcon />,
 };
 
 type TJurisdictionCardBackProps = {

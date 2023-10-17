@@ -37,12 +37,12 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
         },
         {
             color: 'red',
-            icon: 'VerificationFailedStatusIcon',
+            icon: 'verificationFailedStatusIcon',
             text: 'Verification failed. Resubmit during account creation.',
         },
         {
             color: 'green',
-            icon: 'VerificationSuccessStatusIcon',
+            icon: 'verificationSuccessStatusIcon',
             text: 'Your document is verified.',
         },
     ],

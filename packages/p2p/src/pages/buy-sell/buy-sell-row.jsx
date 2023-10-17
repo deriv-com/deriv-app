@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { Button, Icon,Table, Text } from '@deriv/components';
+import { Button, Icon, Table, Text } from '@deriv/components';
 import { useExchangeRate } from '@deriv/hooks';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';

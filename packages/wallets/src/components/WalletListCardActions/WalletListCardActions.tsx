@@ -6,6 +6,7 @@ import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
+import { WalletButton } from '../Base';
 import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
@@ -77,13 +78,14 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
     return (
         <div className='wallets-header__actions'>
             {getWalletHeaderButtons(isDemo).map(button => (
-                <button
-                    className='wallets-header__button'
+                <WalletButton
+                    isRounded
                     key={button.name}
-                    onClick={async () => {
-                        await switchAccount(loginid);
+                    onClick={() => {
+                        switchAccount(loginid);
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
+                    variant='outlined'
                 >
                     {button.icon}
                     <span
@@ -93,7 +95,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                     >
                         {button.text}
                     </span>
-                </button>
+                </WalletButton>
             ))}
         </div>
     );

@@ -202,6 +202,7 @@ export default class GoogleDriveStore {
                     const file_name = file.name;
                     const fileId = file.id;
                     const { files } = gapi.client.drive;
+                    const { setOpenSettings } = this.root_store.dashboard;
 
                     const response = await files.get({
                         alt: 'media',
@@ -210,6 +211,7 @@ export default class GoogleDriveStore {
                     });
 
                     resolve({ xml_doc: response.body, file_name });
+                    setOpenSettings('import');
                 }
             };
 

@@ -35,7 +35,7 @@
         background-color: var(--general-main-1);
         @include mobile {
             height: 10rem;
-            position: sticky;
+            position: relative;
             bottom: 0;
             width: 100%;
         }

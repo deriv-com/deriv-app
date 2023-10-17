@@ -8,10 +8,10 @@ import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.sv
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
+import JurisdictionCardBack from './JurisdictionCardBack';
 import JurisdictionCardRow from './JurisdictionCardRow';
 import JurisdictionCardTag from './JurisdictionCardTag';
 import './JurisdictionCard.scss';
-import JurisdictionCardBack from './JurisdictionCardBack';
 
 type TJurisdictionCardProps = {
     isSelected: boolean;
@@ -108,7 +108,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                                                 }`}
                                             >
                                                 <WalletText color='white' size='xs' weight='bold'>
-                                                    {row.titleIndicators?.displayText}
+                                                    {row.titleIndicators.displayText}
                                                 </WalletText>
                                             </div>
                                         );

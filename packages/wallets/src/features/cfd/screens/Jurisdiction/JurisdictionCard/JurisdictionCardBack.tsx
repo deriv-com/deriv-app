@@ -1,12 +1,12 @@
-import React, { Dispatch, SetStateAction, FC } from 'react';
+import React, { Dispatch, FC, SetStateAction } from 'react';
 import { WalletText } from '../../../../../components/Base/WalletText';
+import BackArrowIcon from '../../../../../public/images/ic-back-arrow.svg';
 import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
-import BackArrowIcon from '../../../../../public/images/ic-back-arrow.svg';
-import VerificationPendingStatusIcon from '../../../../../public/images/ic-verification-pending-status.svg';
 import VerificationFailedStatusIcon from '../../../../../public/images/ic-verification-failed-status.svg';
+import VerificationPendingStatusIcon from '../../../../../public/images/ic-verification-pending-status.svg';
 import VerificationSuccessStatusIcon from '../../../../../public/images/ic-verification-success-status.svg';
 import { jurisdictionVerificationContents } from '../jurisdiction-contents/jurisdiction-verification-contents';
 import {

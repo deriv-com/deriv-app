@@ -12,7 +12,6 @@ import {
 } from '@deriv/components';
 import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
 import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
@@ -20,7 +19,6 @@ import {
     shouldHideHelperImage,
     shouldShowIdentityInformation,
 } from 'Helpers/utils';
-
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
@@ -59,11 +57,11 @@ const PersonalDetails = ({
         onSave(current_step, values);
         onCancel(current_step, goToPreviousStep);
     };
+    const citizen = residence || account_settings?.citizen;
 
     const is_qualified_for_idv = shouldShowIdentityInformation({
         account_status,
-        account_settings,
-        residence,
+        citizen,
         residence_list,
         real_account_signup_target,
     });
@@ -104,7 +102,6 @@ const PersonalDetails = ({
     */
     // for dropdowns use 'none'
 
-    const citizen = account_settings?.citizen || residence;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
     const getEditableFields = (is_confirmed, selected_document_type_id) => {

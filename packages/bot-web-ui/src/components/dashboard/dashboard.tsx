@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
@@ -14,7 +13,6 @@ import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import Draggable from '../draggable';
 import RunPanel from '../run-panel';
-
 import RunStrategy from './dashboard-component/run-strategy';
 import { tour_list } from './dbot-tours/utils';
 import { ChartModal, DashboardComponent } from './dashboard-component';
@@ -26,8 +24,8 @@ const Dashboard = observer(() => {
     const {
         active_tab,
         active_tour,
-        is_enabled_modal_chart,
-        setEnabledModalChart,
+        is_chart_modal_visible,
+        setChartModalVisibility,
         setActiveTab,
         setWebSocketState,
         setActiveTour,
@@ -191,11 +189,11 @@ const Dashboard = observer(() => {
             <Draggable
                 xaxis={window.innerWidth / 2}
                 yaxis={window.innerHeight / 2}
-                is_visible={is_enabled_modal_chart}
+                is_visible={is_chart_modal_visible}
                 header_title=''
-                onCloseDraggable={setEnabledModalChart}
+                onCloseDraggable={setChartModalVisibility}
             >
-                <ChartModal setEnabledModalChart={setEnabledModalChart} />
+                <ChartModal setChartModalVisibility={setChartModalVisibility} />
             </Draggable>
             <StrategyNotification />
         </React.Fragment>

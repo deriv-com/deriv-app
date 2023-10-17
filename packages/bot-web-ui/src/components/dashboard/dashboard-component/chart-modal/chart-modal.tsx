@@ -4,7 +4,7 @@ import { Localize, localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import ToolbarIcon from '../../bot-builder/toolbar/toolbar-icon';
 
-const ChartModal = ({ setEnabledModalChart }: { setEnabledModalChart: () => void }) => (
+const ChartModal = ({ setChartModalVisibility }: { setChartModalVisibility: () => void }) => (
     <div className='chart-modal-dialog'>
         <div className='chart-modal-dialog__dialog'>
             <div className='chart-modal-dialog__header-wrapper'>
@@ -16,7 +16,7 @@ const ChartModal = ({ setEnabledModalChart }: { setEnabledModalChart: () => void
                         popover_message={localize('Close')}
                         icon='IcCross'
                         icon_id='db-toolbar__close-button'
-                        action={() => setEnabledModalChart()}
+                        action={() => setChartModalVisibility()}
                     />
                 </div>
             </div>

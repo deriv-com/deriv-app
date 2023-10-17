@@ -1,12 +1,8 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-
 import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
-
 import { clearInjectionDiv } from 'Constants/load-modal';
-
 import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
-
 import RootStore from './root-store';
 
 export interface IDashboardStore {
@@ -37,7 +33,7 @@ export interface IDashboardStore {
     showVideoDialog: (param: { [key: string]: string }) => void;
     strategy_save_type: string;
     toast_message: string;
-    is_enabled_modal_chart: boolean;
+    is_chart_modal_visible: boolean;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -83,7 +79,7 @@ export default class DashboardStore implements IDashboardStore {
             toast_message: observable,
             setStrategySaveType: action.bound,
             setShowMobileTourDialog: action.bound,
-            is_enabled_modal_chart: observable,
+            is_chart_modal_visible: observable,
         });
         this.root_store = root_store;
         const {
@@ -140,7 +136,7 @@ export default class DashboardStore implements IDashboardStore {
     strategy_save_type = 'unsaved';
     toast_message = '';
     is_web_socket_intialised = true;
-    is_enabled_modal_chart = false;
+    is_chart_modal_visible = false;
 
     get is_dark_mode() {
         const {
@@ -166,8 +162,8 @@ export default class DashboardStore implements IDashboardStore {
         this.show_toast = show_toast;
     };
 
-    setEnabledModalChart = () => {
-        this.is_enabled_modal_chart = !this.is_enabled_modal_chart;
+    setChartModalVisibility = () => {
+        this.is_chart_modal_visible = !this.is_chart_modal_visible;
     };
 
     setIsFileSupported = (is_file_supported: boolean) => {

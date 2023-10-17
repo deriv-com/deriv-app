@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, ReactElement } from 'react';
 import classNames from 'classnames';
 import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
@@ -6,7 +6,7 @@ import styles from './WalletButton.module.css';
 
 interface WalletButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     color?: 'black' | 'primary-light' | 'primary' | 'white';
-    icon?: React.ReactNode;
+    icon?: ReactElement;
     isRounded?: boolean;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;

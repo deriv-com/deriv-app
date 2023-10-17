@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMT5AccountsList } from '@deriv/api';
-import { WalletButton, WalletText } from '../../../../../components/Base';
+import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';

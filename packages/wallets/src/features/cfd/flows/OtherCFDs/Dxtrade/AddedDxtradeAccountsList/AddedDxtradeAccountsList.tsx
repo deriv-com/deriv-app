@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDxtradeAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../../components';
-import { WalletButton, WalletText } from '../../../../../../components/Base';
+import { WalletButton } from '../../../../../../components/Base';
 import DerivX from '../../../../../../public/images/derivx.svg';
 import './AddedDxtradeAccountsList.scss';
 

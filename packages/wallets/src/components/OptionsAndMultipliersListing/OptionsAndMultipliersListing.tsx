@@ -69,13 +69,7 @@ const OptionsAndMultipliersListing = () => {
                         leading={() => (
                             <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
                         )}
-                        trailing={() => (
-                            <WalletButton>
-                                <WalletText align='center' color='white' size='sm' weight='bold'>
-                                    Get
-                                </WalletText>
-                            </WalletButton>
-                        )}
+                        trailing={() => <WalletButton text='Get' />}
                     >
                         <div className='wallets-options-and-multipliers-listing__content__details'>
                             <WalletText size='sm' weight='bold'>

@@ -72,4 +72,7 @@
             background: var(--system-dark-5-active-background, #323738);
         }
     }
+    &-full-width {
+        width: 100%;
+    }
 }

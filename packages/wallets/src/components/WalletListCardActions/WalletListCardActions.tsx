@@ -81,23 +81,16 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
         <div className='wallets-header__actions'>
             {getWalletHeaderButtons(isDemo).map(button => (
                 <WalletButton
+                    icon={button.icon}
                     isRounded
                     key={button.name}
                     onClick={() => {
                         switchAccount(loginid);
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
+                    text={isActive ? button.text : undefined}
                     variant='outlined'
-                >
-                    {button.icon}
-                    <span
-                        className={`wallets-header__actions-label ${
-                            isActive ? 'wallets-header__actions-label--active' : ''
-                        }`}
-                    >
-                        {button.text}
-                    </span>
-                </WalletButton>
+                />
             ))}
         </div>
     );

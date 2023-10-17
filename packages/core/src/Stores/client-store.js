@@ -2550,6 +2550,11 @@ export default class ClientStore extends BaseStore {
         if (!response.error) {
             this[`${platform}_accounts_list`] = response.trading_platform_accounts.map(account => {
                 const display_login = account.error ? account.error.details.account_id : account.account_id;
+                // Temporary fix for cTrader only we are going to remove all prefixes in the future.
+                const ctrader_display_login = (account.error ? account.error.details.login : account.login).replace(
+                    /^(CT[DR]?)/i,
+                    ''
+                );
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     if (platform === CFD_PLATFORMS.DXTRADE) {
@@ -2559,14 +2564,14 @@ export default class ClientStore extends BaseStore {
                     }
                     return {
                         account_type,
-                        display_login,
+                        display_login: platform === CFD_PLATFORMS.CTRADER ? ctrader_display_login : display_login,
                         has_error: true,
                         server,
                     };
                 }
                 return {
                     ...account,
-                    display_login,
+                    display_login: platform === CFD_PLATFORMS.CTRADER ? ctrader_display_login : display_login,
                 };
             });
         } else {

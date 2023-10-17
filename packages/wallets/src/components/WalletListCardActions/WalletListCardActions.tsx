@@ -6,7 +6,7 @@ import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
-import { WalletButton } from '../Base';
+import { WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
@@ -68,7 +68,9 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                             >
                                 {button.icon}
                             </button>
-                            <div className='wallets-mobile-actions-content-text'>{button.text}</div>
+                            <WalletText lineHeight='3xs' size='2xs'>
+                                {button.text}
+                            </WalletText>
                         </div>
                     ))}
                 </div>

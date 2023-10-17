@@ -67,13 +67,11 @@ const MobileWidget = observer(
             };
 
             try {
-                if (!duration_unit) return '';
                 const formatted_duration_unit =
                     +duration === 1
                         ? lookup[duration_unit as keyof typeof lookup][0]
                         : lookup[duration_unit as keyof typeof lookup][1];
-
-                return `${duration} ${formatted_duration_unit}`;
+                return [duration, ' ', formatted_duration_unit];
             } catch (e) {
                 return '';
             }

@@ -77,6 +77,7 @@ const usePOI = () => {
 
     return {
         data: {
+            ...get_account_status_data?.authentication?.identity,
             previous: previous_poi,
             next: next_poi,
         },

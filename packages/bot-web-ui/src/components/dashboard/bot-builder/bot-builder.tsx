@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import classNames from 'classnames';
 import { RudderStack, TActions } from '@deriv/analytics';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import BotSnackbar from '../../bot-snackbar';
@@ -12,6 +12,8 @@ import QuickStrategy from '../quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { dashboard, app, run_panel } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_running } = run_panel;
@@ -25,6 +27,7 @@ const BotBuilder = observer(() => {
         RudderStack.track('ce_bot_builder_form', {
             action,
             form_source: 'ce_bot_builder_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

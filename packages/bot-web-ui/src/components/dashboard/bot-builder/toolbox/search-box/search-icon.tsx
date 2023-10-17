@@ -2,7 +2,7 @@ import React from 'react';
 import debounce from 'lodash.debounce';
 import { RudderStack } from '@deriv/analytics';
 import { Icon } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
 type TSearchIcon = {
     search: string;
@@ -11,6 +11,8 @@ type TSearchIcon = {
 };
 
 const SearchIcon = observer(({ search, is_search_loading, onClick }: TSearchIcon) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     React.useEffect(() => {
         //this is to check after keup on bot-builder page form sent even to rudderstack
         debounce(() => {
@@ -18,6 +20,7 @@ const SearchIcon = observer(({ search, is_search_loading, onClick }: TSearchIcon
                 RudderStack.track('ce_bot_builder_form', {
                     search_string: search,
                     action: 'search',
+                    device_type: is_mobile ? 'mobile' : 'desktop',
                 });
             }
         }, 2000)();

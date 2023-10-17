@@ -42,6 +42,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             shortcut_name: type,
             form_source: 'bot_dashboard_form-shortcut',
             action: 'choose_shortcut',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
     //this is to check which icon is clicked on dashboard
@@ -50,6 +51,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             shortcut_name: type,
             action: 'choose_shortcut',
             form_source: 'ce_bot_dashboard_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

@@ -4,13 +4,15 @@ import LZString from 'lz-string';
 import { RudderStack } from '@deriv/analytics';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const DeleteDialog = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const {
         is_delete_modal_open,
         onToggleDeleteDialog,
@@ -64,6 +66,7 @@ const DeleteDialog = observer(() => {
         RudderStack.track('ce_bot_builder_form', {
             delete_popup_respond: param,
             form_source: 'ce_bot_dashboard_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

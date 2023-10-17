@@ -158,6 +158,7 @@ export type DbotTypesForAction = {
     delete_popup_respond?: string;
     bot_last_modified_time?: number;
     bot_name?: string;
+    device_type: string;
 };
 
 export type TEvents = {

@@ -3,8 +3,7 @@ import classNames from 'classnames';
 import { RudderStack } from '@deriv/analytics';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DeleteDialog from './delete-dialog';
@@ -16,6 +15,8 @@ const HEADERS = [localize('Bot name'), localize('Last modified'), localize('Stat
 
 const RecentComponent = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { setDashboardStrategies, dashboard_strategies } = load_modal;
     const { setStrategySaveType, strategy_save_type } = dashboard;
     const check_rudder_stack_instance = React.useRef(false);
@@ -38,14 +39,13 @@ const RecentComponent = observer(() => {
                     bot_last_modified_time: recent_strategies?.[0]?.timestamp,
                     form_source: 'bot_header_form',
                     action: 'open',
+                    device_type: is_mobile ? 'mobile' : 'desktop',
                 });
             };
             getStratagiesForRudderStack();
             check_rudder_stack_instance.current = true;
         }
     }, []);
-
-    const is_mobile = isMobile();
 
     if (!dashboard_strategies?.length) return null;
 

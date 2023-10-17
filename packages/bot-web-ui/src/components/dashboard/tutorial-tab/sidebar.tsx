@@ -2,8 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { RudderStack } from '@deriv/analytics';
 import { DesktopWrapper, Icon, MobileWrapper, SelectNative, Tabs } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import FAQContent from './faq-content';
@@ -32,6 +31,8 @@ const initialSelectedTab: TSelectedTab = {
 
 const Sidebar = observer(() => {
     const { dashboard } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { active_tab_tutorials, active_tab, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
     const guide_tab_content = [...user_guide_content, ...guide_content];
     const [search_filtered_list, setsearchFilteredList] = React.useState<TFilteredList[]>([...guide_tab_content]);
@@ -89,6 +90,7 @@ const Sidebar = observer(() => {
             RudderStack.track('ce_bot_dashboard_form', {
                 search_string: search_input?.current?.value,
                 action: 'push_user_guide',
+                device_type: is_mobile ? 'mobile' : 'desktop',
             });
         }
     };

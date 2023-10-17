@@ -14,6 +14,7 @@ import { MAX_STRATEGIES } from 'Constants/bot-contents';
 import { button_status } from 'Constants/button-status';
 import { TStrategy } from 'Types';
 import RootStore from './root-store';
+import { useStore } from '@deriv/stores';
 
 type IOnConfirmProps = {
     is_local: boolean;
@@ -160,11 +161,13 @@ export default class SaveModalStore implements ISaveModalStore {
             });
             this.setButtonStatus(button_status.COMPLETED);
         }
+        const { is_mobile } = this.root_store.app.core;
 
         /* Send the event on rudderstack on strategy save */
         RudderStack.track('ce_bot_dashboard_form', {
             bot_name,
             form_source: 'ce_bot_dashboard_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
 
         this.updateBotName(bot_name);

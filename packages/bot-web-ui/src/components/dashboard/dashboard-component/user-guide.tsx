@@ -4,6 +4,7 @@ import { RudderStack } from '@deriv/analytics';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
+import { useStore } from '@deriv/stores';
 
 type TUserGuide = {
     setActiveTab: (param: number) => void;
@@ -11,10 +12,13 @@ type TUserGuide = {
 };
 
 const UserGuide = observer(({ setActiveTab, setActiveTabTutorial }: TUserGuide) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const sendToRudderStack = () => {
         RudderStack.track('ce_bot_builder_form', {
             action: 'push_user_guide',
             form_source: 'ce_bot_dashboard_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
     return (

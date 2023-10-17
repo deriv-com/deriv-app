@@ -2,8 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { RudderStack } from '@deriv/analytics';
 import { Dialog, Icon, MobileWrapper, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { clearInjectionDiv } from 'Constants/load-modal';
@@ -13,6 +12,8 @@ import './index.scss';
 
 const LocalComponent = observer(() => {
     const { load_modal, save_modal, dashboard } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { handleFileChange, loadFileFromRecent, dashboard_strategies } = load_modal;
     const { onConfirmSave } = save_modal;
     const { setActiveTab, setPreviewOnDialog, has_mobile_preview_loaded, setActiveTabTutorial } = dashboard;
@@ -20,18 +21,19 @@ const LocalComponent = observer(() => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const el_ref = React.useRef<HTMLInputElement | null>(null);
-    const is_mobile = isMobile();
     const has_dashboard_strategies = !!dashboard_strategies?.length;
 
     const sendToRudderStackForOpenButton = () => {
         RudderStack.track('ce_bot_dashboard_form', {
             action: 'push_open_button',
             form_source: 'ce_bot_dashboard_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
 
         //this is to track from which open button user has come to bot builder tab
         RudderStack.track('bot_dashboard_form_open', {
             form_source: 'bot_dashboard_form_open',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 
@@ -39,6 +41,7 @@ const LocalComponent = observer(() => {
         RudderStack.track('ce_bot_dashboard_form', {
             action: 'push_user_guide',
             form_source: 'ce_bot_dashboard_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

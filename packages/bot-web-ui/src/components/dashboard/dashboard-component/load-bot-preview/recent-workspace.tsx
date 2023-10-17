@@ -4,8 +4,8 @@ import { RudderStack, TActions } from '@deriv/analytics';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { isDesktop } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { waitForDomElement } from 'Utils/dom-observer';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -21,6 +21,8 @@ type TRecentWorkspace = {
 
 const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { dashboard, load_modal, save_modal } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
@@ -41,6 +43,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         RudderStack.track('ce_bot_builder_form', {
             action,
             form_source: 'ce_bot_dashboard_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 
@@ -49,7 +52,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const is_div_triggered_once = React.useRef<boolean>(false);
     const visible = useComponentVisibility(toggle_ref);
     const { setDropdownVisibility, is_dropdown_visible } = visible;
-    const is_mobile = isMobile();
     const is_desktop = isDesktop();
 
     React.useEffect(() => {
@@ -99,6 +101,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         RudderStack.track('ce_bot_builder_form', {
             action: 'close',
             form_source: 'bot_dashboard_form-edit',
+            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

@@ -1,0 +1,12 @@
+@import '../SkeletonLoader.scss';
+
+.wallets-add-more-loader {
+    border-radius: 8px;
+    margin-right: 16px;
+    width: 231px;
+    height: 281px;
+
+    &__body {
+        width: 230px;
+    }
+}

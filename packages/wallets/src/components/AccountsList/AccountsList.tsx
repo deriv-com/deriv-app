@@ -1,7 +1,7 @@
 import React from 'react';
+import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
 import { TabList, TabPanel, TabPanels, Tabs } from '../Base';
-import { CFDPlatformsList } from '../ExternalTradingPlatforms';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
 import './AccountsList.scss';
 

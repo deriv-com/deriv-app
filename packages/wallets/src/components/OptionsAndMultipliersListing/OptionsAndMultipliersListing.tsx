@@ -5,7 +5,7 @@ import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
 import IcAppstoreDerivGo from '../../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../../public/images/ic-appstore-smart-trader.svg';
-import { PrimaryActionButton } from '../Base';
+import { WalletButton, WalletText } from '../Base';
 import { TradingAccountCard } from '../TradingAccountCard';
 import './OptionsAndMultipliersListing.scss';
 
@@ -44,13 +44,11 @@ const OptionsAndMultipliersListing = () => {
         <div className='wallets-options-and-multipliers-listing'>
             <section className='wallets-options-and-multipliers-listing__header'>
                 {!isMobile && (
-                    <div className='wallets-options-and-multipliers-listing__header-title'>
-                        {/* TODO: Localization needed*/}
-                        <h1>Options & Multipliers</h1>
-                    </div>
+                    <WalletText align='center' lineHeight='6xl' size='3xl' weight='bold'>
+                        Options & Multipliers
+                    </WalletText>
                 )}
                 <div className='wallets-options-and-multipliers-listing__header-subtitle'>
-                    {/* TODO: Localization needed*/}
                     <h1>
                         Earn a range of payouts by correctly predicting market price movements with{' '}
                         <a className='wallets-options-and-multipliers-listing__header-subtitle__link' href='#' key={0}>
@@ -71,19 +69,16 @@ const OptionsAndMultipliersListing = () => {
                         leading={() => (
                             <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
                         )}
-                        trailing={() => (
-                            <PrimaryActionButton>
-                                <p className='wallets-options-and-multipliers-listing__content__text'>Open</p>
-                            </PrimaryActionButton>
-                        )}
+                        trailing={() => <WalletButton text='Get' />}
                     >
                         <div className='wallets-options-and-multipliers-listing__content__details'>
-                            <p className='wallets-options-and-multipliers-listing__content__details-title'>
+                            <WalletText size='sm' weight='bold'>
                                 {account.title}
-                            </p>
-                            <p className='wallets-options-and-multipliers-listing__content__details-description'>
+                            </WalletText>
+
+                            <WalletText lineHeight={isMobile ? 'md' : '2xs'} size={isMobile ? 'sm' : 'xs'}>
                                 {account.description}
-                            </p>
+                            </WalletText>
                         </div>
                     </TradingAccountCard>
                 ))}

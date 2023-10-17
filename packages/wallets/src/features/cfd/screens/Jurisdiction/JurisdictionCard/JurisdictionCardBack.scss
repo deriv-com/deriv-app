@@ -1,0 +1,27 @@
+.wallets-jurisdiction-card-back {
+    backface-visibility: hidden;
+    height: 100%;
+    transform: rotateY(180deg);
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 16px;
+
+    &__icon {
+        cursor: pointer;
+    }
+
+    &__row {
+        display: grid;
+        grid-auto-flow: column;
+        gap: 10px;
+        grid-template-columns: 8% auto;
+    }
+
+    &__border {
+        border-top: 2px solid #f2f3f4;
+        margin: 16px 0;
+    }
+}

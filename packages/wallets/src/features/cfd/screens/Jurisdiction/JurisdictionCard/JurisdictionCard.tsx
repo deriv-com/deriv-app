@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import DocumentsIcon from '../../public/images/ic-documents.svg';
-import IdCardIcon from '../../public/images/ic-id-card.svg';
-import NotApplicableIcon from '../../public/images/ic-not-applicable.svg';
-import SelfieIcon from '../../public/images/ic-selfie.svg';
-import { useModal } from '../ModalProvider';
-import { getJurisdictionContents } from './jurisdiction-contents/jurisdiction-contents';
-import { TJurisdictionCardItems } from './jurisdiction-contents/props.types';
+import { WalletText } from '../../../../../components/Base/WalletText';
+import { useModal } from '../../../../../components/ModalProvider';
+import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
+import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
+import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.svg';
+import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
+import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
+import { TJurisdictionCardItems } from '../jurisdiction-contents/props.types';
 import JurisdictionCardRow from './JurisdictionCardRow';
 import JurisdictionCardTag from './JurisdictionCardTag';
 import './JurisdictionCard.scss';
@@ -97,7 +98,9 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                                                     row.titleIndicators?.displayTextSkinColor || ''
                                                 }`}
                                             >
-                                                {row.titleIndicators?.displayText}
+                                                <WalletText color='white' size='xs' weight='bold'>
+                                                    {row.titleIndicators?.displayText}
+                                                </WalletText>
                                             </div>
                                         );
                                     }

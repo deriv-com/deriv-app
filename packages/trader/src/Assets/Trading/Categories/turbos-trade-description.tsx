@@ -1,54 +1,60 @@
 import React from 'react';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
-export const TurbosTradeDescription = () => {
+export const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => {
     const content = [
         {
-            type: 'paragraph',
-            text: localize(
-                'This product allows you to express a strong bullish or bearish view on an underlying asset.'
+            text: (
+                <Localize i18n_default_text='Turbo options allow you to predict the direction of the underlying asset’s movements.' />
             ),
         },
-        { type: 'heading', text: localize('For Long:') },
         {
-            type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text='If you think the market price will rise continuously for a specific period, choose <0>Long</0>. You will get a payout at the expiry time if the market price doesn’t touch or cross below the barrier. Your payout will grow proportionally to the distance between the market price and the barrier if the barrier is not breached. You will start making a profit when the payout is higher than your stake. If the market price ever crosses the barrier, there won’t be a payout.'
-                    components={[<Text key={0} as='span' weight='bold' size='xs' />]}
-                />
-            ),
-        },
-        { type: 'heading', text: localize('For Short:') },
-        {
-            type: 'paragraph',
-            text: (
-                <Localize
-                    i18n_default_text='If you think the market price will drop continuously for a specific period, choose <0>Short</0>. You will get a payout at the expiry time if the market price doesn’t touch or cross above the barrier. Your payout will grow proportionally to the distance between the market price and the barrier if the barrier is not breached. You will start making a profit when the payout is higher than your stake. If the market price ever crosses the barrier, there won’t be a payout.'
-                    components={[<Text key={0} as='span' weight='bold' size='xs' />]}
+                    i18n_default_text='You receive a <0>payout</0> at <0>expiry</0> if the spot price never touches or breaches the <0>barrier</0> during the contract period. If it does, your contract will be terminated early.'
+                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
                 />
             ),
         },
         {
-            type: 'paragraph',
-            text: localize('You can determine the expiry of your contract by setting the duration or end time.'),
+            text: (
+                <Localize
+                    i18n_default_text='If you select <0>"Long"</0>, you’ll earn a payout if the spot price never drops below the barrier.<1 />If you select <0>"Short"</0>, you’ll earn a payout if the spot price never rises above the barrier.'
+                    components={[<strong key={0} />, <br key={1} />]}
+                />
+            ),
+        },
+        {
+            text: (
+                <Localize
+                    i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the <0>final price</0> and the barrier. You will only earn a profit if your payout is higher than your initial stake.'
+                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+                />
+            ),
+        },
+        {
+            text: (
+                <Localize
+                    i18n_default_text='You may sell the contract up to 15 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
+                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+                />
+            ),
+        },
+        {
+            text: (
+                <Localize i18n_default_text='If you choose your duration in number of ticks, you won’t be able to terminate your contract early.' />
+            ),
         },
     ];
 
     return (
         <React.Fragment>
-            {content.map(({ type, text }, index) =>
-                type === 'heading' ? (
-                    <Text as='h6' key={index.toString() + text} weight='bold' size='xs'>
-                        {text}
-                    </Text>
-                ) : (
-                    <Text as='p' key={index.toString() + text}>
-                        {text}
-                    </Text>
-                )
-            )}
+            {content.map(({ text }, index) => (
+                <Text as='p' key={index.toString() + text}>
+                    {text}
+                </Text>
+            ))}
         </React.Fragment>
     );
 };

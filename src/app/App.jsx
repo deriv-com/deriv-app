@@ -2,25 +2,34 @@ import React from 'react';
 import { TrackJS } from 'trackjs';
 import { symbolPromise } from '@blockly/blocks/shared';
 import GTM from '@utilities/integrations/gtm';
+import { useSelector, useDispatch } from 'react-redux';
+import { api_base } from '@api-base';
 import trackjs_config from '../botPage/view/trackJs_config';
 import Routes from '../routes';
+import ActiveSymbols from '../botPage/common/symbolApi/activeSymbols';
+import { setActiveSymbols } from '../redux-store/client-slice';
 
-// Todo create symbol slice and update/add info from here;
 const App = () => {
-    const [has_symbols, setHasSymbols] = React.useState(false);
+    const dispatch = useDispatch();
+    const activeSymbols = useSelector(state => state.client.active_symbols);
+
+    React.useEffect(() => {
+        api_base.getActiveSymbols().then(data => {
+            symbolPromise.then(() => {
+                /* eslint-disable no-new */
+                new ActiveSymbols(data.active_symbols);
+                dispatch(setActiveSymbols(data));
+            });
+        });
+    }, []);
+
     TrackJS.install(trackjs_config);
     GTM.init();
     $.ajaxSetup({
         cache: false,
     });
 
-    React.useEffect(() => {
-        symbolPromise.then(() => {
-            setHasSymbols(true);
-        });
-    }, []);
-
-    if (!has_symbols) return null; // Todo: add fallback
+    if (activeSymbols.length === 0) return null;
 
     return <Routes />;
 };

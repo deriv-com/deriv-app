@@ -14,12 +14,16 @@ const initial_state = {
     is_gd_logged_in: !!localStorage.getItem('access_token'),
     accounts: {},
     account_type: {},
+    active_symbols: [],
 };
 
 export const clientSlice = createSlice({
     name: 'client',
     initialState: initial_state,
     reducers: {
+        setActiveSymbols: (state, action) => {
+            state.active_symbols = action.payload;
+        },
         updateAccountType: (state, action) => {
             state.account_type = {
                 ...state.account_type,
@@ -84,6 +88,7 @@ export const {
     updateAccountType,
     setGdLoggedIn,
     setLoginId,
+    setActiveSymbols,
 } = clientSlice.actions;
 
 export default clientSlice.reducer;

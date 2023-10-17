@@ -3,37 +3,35 @@ import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
 import { useModal } from '../../../../components/ModalProvider';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
-import './AccountReady.scss';
+import './Success.scss';
 
-type TAccountReadyProps = {
+type TSuccessProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
+    title: string;
+    description: string;
 };
 
-const marketTypeToTitleMapper: Record<TAccountReadyProps['marketType'], string> = {
+const marketTypeToTitleMapper: Record<TSuccessProps['marketType'], string> = {
     all: 'Swap-Free',
     financial: 'MT5 Financial',
     synthetic: 'MT5 Derived',
 };
 
-const AccountReady: React.FC<TAccountReadyProps> = ({ marketType }) => {
+const Success: React.FC<TSuccessProps> = ({ marketType }) => {
     const { data } = useActiveWalletAccount();
     const { hide } = useModal();
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
     return (
-        <div className='wallets-account-ready'>
+        <div className='wallets-success'>
             <WalletGradientBackground
-                bodyClassName='wallets-account-ready__info'
+                bodyClassName='wallets-success__info'
                 currency={data?.currency || 'USD'}
                 hasShine
                 theme='grey'
             >
-                <div
-                    className={`wallets-account-ready__info-badge wallets-account-ready__info-badge--${
-                        isDemo ? 'demo' : 'real'
-                    }`}
-                >
+                <div className={`wallets-success__info-badge wallets-success__info-badge--${isDemo ? 'demo' : 'real'}`}>
                     {isDemo ? 'Demo' : 'Real'}
                 </div>
                 <WalletMarketCurrencyIcon
@@ -41,25 +39,25 @@ const AccountReady: React.FC<TAccountReadyProps> = ({ marketType }) => {
                     isDemo={isDemo || false}
                     marketType={marketType}
                 />
-                <div className='wallets-account-ready__info__text--type'>
+                <div className='wallets-success__info__text--type'>
                     {marketTypeToTitleMapper[marketType]} ({landingCompanyName})
                 </div>
-                <div className='wallets-account-ready__info__text--wallet'>{data?.currency} Wallet</div>
-                <div className='wallets-account-ready__info__text--amount'>{data?.display_balance} USD</div>
+                <div className='wallets-success__info__text--wallet'>{data?.currency} Wallet</div>
+                <div className='wallets-success__info__text--amount'>{data?.display_balance} USD</div>
             </WalletGradientBackground>
-            <div className='wallets-account-ready__title'>
+            <div className='wallets-success__title'>
                 Your {marketTypeToTitleMapper[marketType]}
                 {isDemo && ' demo'} account is ready
             </div>
-            <div className='wallets-account-ready__subtitle'>
+            <div className='wallets-success__subtitle'>
                 You can now start practicing trading with your {marketTypeToTitleMapper[marketType]}
                 {isDemo && ' demo'} account.
             </div>
-            <button className='wallets-account-ready__button' onClick={hide}>
+            <button className='wallets-success__button' onClick={hide}>
                 Continue
             </button>
         </div>
     );
 };
 
-export default AccountReady;
+export default Success;

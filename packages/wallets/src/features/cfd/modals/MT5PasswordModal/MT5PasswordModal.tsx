@@ -9,7 +9,7 @@ import {
 } from '@deriv/api';
 import { ModalWrapper } from '../../../../components/Base';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { AccountReady, CreatePassword, EnterPassword } from '../../screens';
+import { Success, CreatePassword, EnterPassword } from '../../screens';
 
 type TProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
@@ -45,7 +45,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
 
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
-            {isSuccess && <AccountReady marketType={marketType} />}
+            {isSuccess && <Success marketType={marketType} title='' description='' />}
             {!isSuccess &&
                 (hasMT5Account ? (
                     <EnterPassword

@@ -51,7 +51,7 @@ export const validateFields = (values: FormikValues, fields: TFields = [], docum
         const value = values[name];
 
         if (checkIsEmpty(value)) {
-            errors[name] = localize('{{label}} is required.', {
+            errors[name] = localize('{{name}} is required.', {
                 name,
             });
         } else if (value.errors?.length) {

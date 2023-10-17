@@ -10,8 +10,8 @@ type TAccountReadyProps = {
 };
 
 const marketTypeToTitleMapper: Record<TAccountReadyProps['marketType'], string> = {
-    financial: 'MT5 Financial',
     all: 'Swap-Free',
+    financial: 'MT5 Financial',
     synthetic: 'MT5 Derived',
 };
 

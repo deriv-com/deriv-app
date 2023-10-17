@@ -1,6 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
+import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from './components';
 import './CFDPlatformsList.scss';
 
@@ -25,9 +26,15 @@ const CFDPlatformsList = () => {
                     </h1>
                 </div>
             </section>
-            <MT5PlatformsList />
-            {activeWallet?.is_virtual && <CTraderList />}
-            <OtherCFDPlatformsList />
+            {activeWallet?.currency_config?.is_crypto ? (
+                <CFDPlatformsListEmptyState />
+            ) : (
+                <React.Fragment>
+                    <MT5PlatformsList />
+                    {activeWallet?.is_virtual && <CTraderList />}
+                    <OtherCFDPlatformsList />
+                </React.Fragment>
+            )}
         </div>
     );
 };

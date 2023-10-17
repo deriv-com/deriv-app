@@ -4,6 +4,7 @@ import { symbolPromise } from '@blockly/blocks/shared';
 import GTM from '@utilities/integrations/gtm';
 import { useSelector, useDispatch } from 'react-redux';
 import { api_base } from '@api-base';
+import { observer as globalObserver } from '@utilities/observer';
 import trackjs_config from '../botPage/view/trackJs_config';
 import Routes from '../routes';
 import ActiveSymbols from '../botPage/common/symbolApi/activeSymbols';
@@ -16,8 +17,12 @@ const App = () => {
     React.useEffect(() => {
         api_base.getActiveSymbols().then(data => {
             symbolPromise.then(() => {
-                /* eslint-disable no-new */
-                new ActiveSymbols(data.active_symbols);
+                try {
+                    /* eslint-disable no-new */
+                    new ActiveSymbols(data.active_symbols);
+                } catch (error) {
+                    globalObserver.emit('Error', error);
+                }
                 dispatch(setActiveSymbols(data));
             });
         });

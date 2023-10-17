@@ -42,7 +42,7 @@ const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=c
 const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 
 const CTRADER_IOS_APP_URL = 'https://apps.apple.com/cy/app/ctrader/id767428811';
-const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.spotware.ct&hl=en&gl=US';
+const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.ct';
 
 const getBrokerName = () => 'Deriv Holdings (Guernsey) Limited';
 
@@ -111,7 +111,6 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
 const getCTraderWebTerminalLink = (category: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
-
 
 export {
     REAL_DXTRADE_URL,

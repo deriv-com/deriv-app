@@ -2,10 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { TTableRowItem } from '../types/common.types';
-import { TSource } from './data-table';
 import TableCell from './table-cell';
 import TableRowInfo from './table-row-info';
 
+export type TSource = {
+    [key: string]: unknown;
+};
 type TTableRow<T> = {
     className?: string;
     id?: string;

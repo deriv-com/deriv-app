@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useFormikContext } from 'formik';
 import { useAccountsList } from '@deriv/api';
-import { useModal } from '../../../../components/ModalProvider';
-import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
+import { useModal } from '../../../../../components/ModalProvider';
+import { WalletListCardBadge } from '../../../../../components/WalletListCardBadge';
 import IcDropdown from '../../../../../public/images/ic-dropdown.svg';
 import TransferFromAccountCard from '../TransferFormAccountCard/TransferFormAccountCard';
 import TransferFormAccountSelection from '../TransferFormAccountSelection/TransferFormAccountSelection';

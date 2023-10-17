@@ -47,7 +47,6 @@ module.exports = function (env) {
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
                 '@deriv/account': '@deriv/account',
                 '@deriv/reports': '@deriv/reports',
-                '@deriv/analytics': '@deriv/analytics',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

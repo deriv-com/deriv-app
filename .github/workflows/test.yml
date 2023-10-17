@@ -23,8 +23,6 @@ jobs:
       run: npx tsc --project packages/hooks/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/utils
       run: npx tsc --project packages/utils/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/analytics
-      run: npx tsc --project packages/analytics/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/stores
       run: npx tsc --project packages/stores/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/wallets
@@ -37,7 +35,5 @@ jobs:
       run: bash ./scripts/check-tests.sh packages/hooks/src
     - name: Check tests for @deriv/utils
       run: bash ./scripts/check-tests.sh packages/utils/src
-    - name: Check tests for @deriv/analytics
-      run: bash ./scripts/check-tests.sh packages/analytics/src
     - name: Run tests
       run: npm run test:ci

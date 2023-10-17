@@ -30,7 +30,6 @@ import {
     BARRIER_LINE_STYLES,
 } from '@deriv/shared';
 import { RudderStack } from '@deriv/analytics';
-import type { TEvents } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
@@ -1616,7 +1615,14 @@ export default class TradeStore extends BaseStore {
                 ...data,
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 form_name: 'default',
-            } as TEvents['ce_chart_types_form']);
+            } as {
+                action: 'open' | 'close' | 'choose_chart_type' | 'choose_time_interval';
+                form_name: string;
+                chart_type_name: string;
+                time_interval_name: string;
+                account_type: string;
+                device_type: string;
+            });
         }
     }
 

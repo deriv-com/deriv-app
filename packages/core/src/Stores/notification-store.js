@@ -1446,7 +1446,6 @@ export default class NotificationStore extends BaseStore {
                 message: (
                     <Localize i18n_default_text='We require additional information for your Deriv MT5 account(s). Please take a moment to update your information now.' />
                 ),
-                should_show_again: true,
                 action: {
                     text: localize('Update now'),
                     onClick: () => {

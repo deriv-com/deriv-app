@@ -1,6 +1,5 @@
 import { action, makeObservable, observable } from 'mobx';
 import { config, load, runGroupedEvents } from '@deriv/bot-skeleton';
-import RootStore from './root-store';
 
 interface IToolbarStore {
     is_animation_info_modal_open: boolean;
@@ -21,9 +20,9 @@ interface IToolbarStore {
 
 const Blockly = window.Blockly;
 export default class ToolbarStore implements IToolbarStore {
-    root_store: RootStore;
+    root_store: any;
 
-    constructor(root_store: RootStore) {
+    constructor(root_store: any) {
         makeObservable(this, {
             is_animation_info_modal_open: observable,
             is_dialog_open: observable,

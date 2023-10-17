@@ -335,7 +335,7 @@ export default class MyProfileStore extends BaseStore {
         requestWS({
             p2p_advertiser_payment_methods: 1,
         }).then(response => {
-            if (response.error) {
+            if (response?.error) {
                 this.setAdvertiserPaymentMethodsError(response.error.message);
             } else {
                 this.setAdvertiserPaymentMethods(response?.p2p_advertiser_payment_methods);
@@ -538,7 +538,7 @@ export default class MyProfileStore extends BaseStore {
             p2p_advertiser_update: 1,
             show_name: this.root_store?.general_store?.should_show_real_name ? 1 : 0,
         }).then(response => {
-            if (response.error) {
+            if (response?.error) {
                 this.setFormError(response.error.message);
                 this.root_store.general_store.setShouldShowRealName(
                     !this.root_store?.general_store?.should_show_real_name
@@ -638,7 +638,7 @@ export default class MyProfileStore extends BaseStore {
                 },
             },
         }).then(response => {
-            if (response.error) {
+            if (response?.error) {
                 this.setAddPaymentMethodErrorMessage(response.error.message);
                 this.root_store.general_store.showModal({
                     key: 'AddPaymentMethodErrorModal',

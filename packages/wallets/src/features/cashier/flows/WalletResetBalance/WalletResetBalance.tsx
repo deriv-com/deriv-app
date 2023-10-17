@@ -1,14 +1,15 @@
 import React from 'react';
-import { useRequest } from '@deriv/api';
-import { Icon, Text } from '@deriv/components';
+import { useActiveWalletAccount, useRequest } from '@deriv/api';
+import { Icon, Text, Button } from '@deriv/components';
 import { useHistory } from 'react-router-dom';
+import useDevice from '../../../../hooks/useDevice';
 
 const WalletResetBalance = () => {
     const history = useHistory();
     const { isSuccess: isResetBalanceSuccess, mutate } = useRequest('topup_virtual');
-
-    const is_mobile = false;
-    const can_reset_balance = Math.random() > 0.5;
+    const { data: activeWallet } = useActiveWalletAccount();
+    const canResetBalance = activeWallet?.balance !== 10000;
+    const { isMobile } = useDevice();
 
     const resetBalance = () => {
         mutate();
@@ -21,8 +22,8 @@ const WalletResetBalance = () => {
             <Text
                 as='p'
                 className='reset-balance__title'
-                line_height={is_mobile ? 'xl' : 'xxl'}
-                size={is_mobile ? 's' : 'sm'}
+                line_height={isMobile ? 'xl' : 'xxl'}
+                size={isMobile ? 's' : 'sm'}
                 weight='bold'
             >
                 {isResetBalanceSuccess ? (
@@ -33,20 +34,25 @@ const WalletResetBalance = () => {
             </Text>
 
             <div className='wallets-transactions-no-data-state__buttons'>
-                <button
-                    className='wallets-transactions-no-data-state__buttons__deposit'
-                    disabled={!can_reset_balance}
+                <Button
+                    className='reset-balance__button'
+                    disabled={!canResetBalance}
+                    large={!isMobile}
+                    medium={isMobile}
                     onClick={resetBalance}
+                    primary
                 >
                     Reset balance
-                </button>
+                </Button>
 
-                <button
-                    className='wallets-transactions-no-data-state__buttons__transfer'
-                    onClick={() => history.push('/wallets/cashier/transfer')}
+                <Button
+                    className='reset-balance__button'
+                    large
+                    onClick={() => history.push(`/wallets/cashier/transfer`)}
+                    secondary
                 >
                     Transfer funds
-                </button>
+                </Button>
             </div>
         </div>
     );

@@ -15,7 +15,7 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
     const { accounts, loginid } = client;
     const { is_mobile } = ui;
 
-    const can_reset_balance = loginid && (accounts[loginid]?.balance || 0) !== 10001;
+    const can_reset_balance = loginid && (accounts[loginid]?.balance || 0) !== 10000;
 
     const resetBalance = () => {
         mutate();

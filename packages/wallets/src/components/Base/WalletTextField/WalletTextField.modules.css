@@ -1,0 +1,87 @@
+.wallets-textfield {
+    min-width: 12rem;
+    max-width: 23rem;
+    position: relative;
+
+    &__button {
+        all: unset;
+        position: absolute;
+        padding-right: 1.6rem;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        fill: var(--system-light-3-less-prominent-text, #999);
+        transition: transform 0.2s ease;
+
+        &--active {
+            transform: rotateX(180deg);
+        }
+    }
+
+    &__content {
+        height: 4rem;
+        width: 100%;
+        border-radius: 0.4rem;
+        padding: 1rem 1.6rem;
+        border: 1px solid var(--system-light-5-active-background, #d6dadb);
+        background: var(--system-light-8-primary-background, #fff);
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+    }
+
+    &__content:has(&__field:focus) {
+        border: 1px solid var(--brand-blue, #85acb0);
+    }
+
+    &__icon {
+        width: 1.6rem;
+        height: 1.6rem;
+        padding-left: 0.4rem;
+    }
+
+    &__message {
+        margin: 0.2rem 0rem 0rem 1.6rem;
+    }
+
+    &__field {
+        font-family: inherit;
+        outline: 0;
+        font-size: 1.4rem;
+        color: var(--system-light-2-general-text, #333);
+        transition: border-color 0.2s;
+    }
+
+    &__field::placeholder {
+        color: transparent;
+    }
+
+    &__field:placeholder-shown ~ &__label {
+        font-size: 1.4rem;
+        cursor: text;
+        top: 30%;
+        padding: 0;
+    }
+
+    &__field:placeholder-shown ~ &__label--with-icon {
+        left: 4.4rem;
+    }
+
+    label,
+    &__field:focus ~ &__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: var(--system-light-3-less-prominent-text, #999);
+        background: var(--system-light-8-primary-background, #fff);
+        padding-inline: 4px;
+        left: 16px;
+    }
+
+    &__field:focus ~ &__label {
+        color: var(--brand-blue, #85acb0);
+    }
+}

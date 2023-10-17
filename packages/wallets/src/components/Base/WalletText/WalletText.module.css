@@ -86,4 +86,8 @@
     &-color-black {
         color: #000000;
     }
+
+    &-color-less-prominent {
+        color: #6e6e6e;
+    }
 }

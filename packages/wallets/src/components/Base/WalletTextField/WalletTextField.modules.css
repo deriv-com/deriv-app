@@ -1,23 +1,7 @@
 .wallets-textfield {
     min-width: 12rem;
-    max-width: 23rem;
+    max-width: 28rem;
     position: relative;
-
-    &__button {
-        all: unset;
-        position: absolute;
-        padding-right: 1.6rem;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        margin: auto;
-        fill: var(--system-light-3-less-prominent-text, #999);
-        transition: transform 0.2s ease;
-
-        &--active {
-            transform: rotateX(180deg);
-        }
-    }
 
     &__content {
         height: 4rem;
@@ -26,9 +10,14 @@
         padding: 1rem 1.6rem;
         border: 1px solid var(--system-light-5-active-background, #d6dadb);
         background: var(--system-light-8-primary-background, #fff);
-        display: flex;
-        gap: 0.8rem;
+        display: inline-flex;
+        gap: 1.6rem;
         align-items: center;
+        transition: border-color 0.2s;
+
+        &:hover {
+            border-color: var(--system-light-3-less-prominent-text, #999);
+        }
     }
 
     &__content:has(&__field:focus) {
@@ -36,13 +25,15 @@
     }
 
     &__icon {
+        margin: auto;
         width: 1.6rem;
         height: 1.6rem;
-        padding-left: 0.4rem;
     }
 
-    &__message {
-        margin: 0.2rem 0rem 0rem 1.6rem;
+    &__message-container {
+        height: 2rem;
+        padding: 0.2rem 0rem 0rem 1.6rem;
+        width: 100%;
     }
 
     &__field {
@@ -51,6 +42,7 @@
         font-size: 1.4rem;
         color: var(--system-light-2-general-text, #333);
         transition: border-color 0.2s;
+        flex: 1;
     }
 
     &__field::placeholder {
@@ -60,7 +52,7 @@
     &__field:placeholder-shown ~ &__label {
         font-size: 1.4rem;
         cursor: text;
-        top: 30%;
+        top: 20%;
         padding: 0;
     }
 
@@ -71,14 +63,14 @@
     label,
     &__field:focus ~ &__label {
         position: absolute;
-        top: 0;
+        top: -10%;
         display: block;
         transition: 0.2s;
         font-size: 1rem;
         color: var(--system-light-3-less-prominent-text, #999);
         background: var(--system-light-8-primary-background, #fff);
-        padding-inline: 4px;
-        left: 16px;
+        padding-inline: 0.4rem;
+        left: 1.6rem;
     }
 
     &__field:focus ~ &__label {

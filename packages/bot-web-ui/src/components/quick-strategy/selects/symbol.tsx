@@ -7,6 +7,7 @@ import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 
 import { useDBotStore } from 'Stores/useDBotStore';
+import { TFormData } from '../types';
 
 type TSymbol = {
     component?: React.ReactNode;
@@ -36,11 +37,20 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const { quick_strategy_store_1 } = useDBotStore();
     const { setValue } = quick_strategy_store_1;
     const [active_symbols, setActiveSymbols] = React.useState([]);
-    const { setFieldValue } = useFormikContext();
+    const { setFieldValue, values } = useFormikContext<TFormData>();
 
     React.useEffect(() => {
         const { active_symbols } = ApiHelpers.instance;
-        setActiveSymbols(active_symbols.getSymbolsForBot());
+        const symbols = active_symbols.getSymbolsForBot();
+        setActiveSymbols(symbols);
+
+        if (values?.symbol) {
+            const has_symbol = !!symbols.find((symbol: { [key: string]: string }) => symbol.value === values.symbol);
+            if (!has_symbol) {
+                setFieldValue('symbol', symbols[0].value);
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const symbols = React.useMemo(

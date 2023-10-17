@@ -13,7 +13,7 @@ const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
     const buttons = [
         {
             icon: <IcCashierAdd />,
-            name: 'deposit',
+            name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? 'Reset balance' : 'Deposit',
         },
         {

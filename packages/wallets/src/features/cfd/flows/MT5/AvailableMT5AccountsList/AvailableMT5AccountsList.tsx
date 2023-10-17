@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSortedMT5Accounts } from '@deriv/api';
-import { TradingAccountCard, WalletButton, WalletText } from '../../../../../components';
+import { TradingAccountCard, WalletButton } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';

@@ -90,8 +90,8 @@ function FlowProvider<T extends TWalletScreens>({
     const context = {
         currentScreenId,
         isFinalScreen,
-        switchScreen,
         switchNextScreen,
+        switchScreen,
         WalletScreen: currentScreen,
     };
 

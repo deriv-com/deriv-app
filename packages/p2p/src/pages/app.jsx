@@ -105,7 +105,6 @@ const App = () => {
         } else if (/\/advertiser$/.test(location.pathname)) {
             if (location.search || general_store.counterparty_advertiser_id) {
                 const url_params = new URLSearchParams(location.search);
-                general_store.setCounterpartyAdvertiserId(url_params.get('id'));
 
                 // DO NOT REMOVE. This will prevent the page from redirecting to buy sell on reload from advertiser page
                 // as it resets the URL search params

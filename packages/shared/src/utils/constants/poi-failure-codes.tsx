@@ -82,6 +82,12 @@ export const IDV_ERROR_STATUS: TIDVErrorStatus = Object.freeze({
             />
         ),
     },
+    NeedsTechnicalInvestigation: {
+        code: 'NeedsTechnicalInvestigation',
+        message: (
+            <Localize i18n_default_text='The verification status is not available, provider says: Needs Technical Investigation.' />
+        ),
+    },
 });
 
 export const ONFIDO_ERROR_STATUS: TOnfidoErrorStatus = Object.freeze({

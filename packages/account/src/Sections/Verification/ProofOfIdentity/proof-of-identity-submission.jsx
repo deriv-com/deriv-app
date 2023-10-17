@@ -86,21 +86,25 @@ const POISubmission = observer(
         const setIdentityService = React.useCallback(
             identity_last_attempt => {
                 const { service, country_code } = identity_last_attempt;
+                setSelectedCountry(getCountryFromResidence(country_code));
                 switch (service) {
                     case service_code.idv: {
                         if (Number(idv.submissions_left) < 1) {
                             setSubmissionService(service_code.manual);
+                        } else {
+                            setSubmissionService(service_code.idv);
                         }
                         break;
                     }
                     case service_code.onfido: {
                         if (Number(onfido.submissions_left) < 1) {
                             setSubmissionService(service_code.manual);
+                        } else {
+                            setSubmissionService(service_code.onfido);
                         }
                         break;
                     }
                     case service_code.manual: {
-                        setSelectedCountry(getCountryFromResidence(country_code));
                         setSubmissionService(service_code.manual);
                         break;
                     }

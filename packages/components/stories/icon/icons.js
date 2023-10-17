@@ -730,9 +730,11 @@ export const icons =
         'IcMt5Responsive',
         'IcMt5Support',
         'IcMt5SwapFreePlatform',
+        'IcMt5SwapFree',
         'IcMt5SyntheticDashboard',
         'IcMt5SyntheticIndices',
         'IcMt5SyntheticPlatform',
+        'IcMt5Synthetic',
         'IcMt5TradeTypes',
     ],
     'option': [

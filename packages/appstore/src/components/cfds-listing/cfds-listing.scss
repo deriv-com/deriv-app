@@ -43,7 +43,6 @@
     &__footer-button {
         background-color: var(--general-main-1);
         @include mobile {
-            padding-bottom: 6.2rem;
             position: sticky;
             bottom: 0;
             width: 100%;

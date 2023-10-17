@@ -38,7 +38,7 @@ const useMT5AccountsList = () => {
 
     return {
         /** The list of created MT5 accounts */
-        data: modified_mt5_accounts,
+        data: modified_mt5_accounts ?? [],
         ...mt5_accounts_rest,
     };
 };

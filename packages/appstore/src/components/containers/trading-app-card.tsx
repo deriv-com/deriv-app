@@ -51,9 +51,8 @@ const TradingAppCard = ({
     const { current_language } = common;
     const { is_account_being_created } = cfd;
 
-    //TODO replace landing_company_short status with open_order_position_status once key is available in BE response and in type TSocketResponseData<"mt5_login_list">
     const { is_flag_present: is_open_order_position_status_present, flag_value: open_order_position_status } =
-        useIsMt5LoginListStatusPresent('landing_company_short', login ?? '');
+        useIsMt5LoginListStatusPresent('open_order_position_status', login ?? '');
     const demo_label = localize('Demo');
     const is_real_account = wallet_account ? !wallet_account.is_virtual : is_real;
 

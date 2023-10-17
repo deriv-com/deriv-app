@@ -3,7 +3,7 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
 type TListItem = {
-    text: JSX.Element;
+    text: React.ReactNode;
     index?: number;
 };
 

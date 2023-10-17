@@ -19,7 +19,10 @@ export const IDV_ERROR_STATUS: TIDVErrorStatus = Object.freeze({
     DobMismatch: {
         code: 'DobMismatch',
         message: (
-            <Localize i18n_default_text='The date of birth retrieved from your document doesn’t match your profile.' />
+            <Localize
+                i18n_default_text="The <0>date of birth</0> on your identity document doesn't match your profile."
+                components={[<strong key={0} />]}
+            />
         ),
     },
     DocumentRejected: {
@@ -30,7 +33,7 @@ export const IDV_ERROR_STATUS: TIDVErrorStatus = Object.freeze({
         code: 'EmptyStatus',
         message: <Localize i18n_default_text='The verification status was empty, rejected for lack of information.' />,
     },
-    Expired: { code: 'Expired', message: <Localize i18n_default_text='The document’s validity has been expired.' /> },
+    Expired: { code: 'Expired', message: <Localize i18n_default_text='Your identity document has expired.' /> },
     InformationLack: {
         code: 'InformationLack',
         message: (
@@ -45,7 +48,12 @@ export const IDV_ERROR_STATUS: TIDVErrorStatus = Object.freeze({
     },
     NameMismatch: {
         code: 'NameMismatch',
-        message: <Localize i18n_default_text='The name retrieved from your document doesn’t match your profile.' />,
+        message: (
+            <Localize
+                i18n_default_text="The <0>name</0> on your identity document doesn't match your profile."
+                components={[<strong key={0} />]}
+            />
+        ),
     },
     RejectedByProvider: {
         code: 'RejectedByProvider',
@@ -67,7 +75,12 @@ export const IDV_ERROR_STATUS: TIDVErrorStatus = Object.freeze({
     },
     NameDobMismatch: {
         code: 'NameDobMismatch',
-        message: '',
+        message: (
+            <Localize
+                i18n_default_text="The <0>name</0> and <0>date of birth</0> on your identity document don't match your profile."
+                components={[<strong key={0} />]}
+            />
+        ),
     },
 });
 
@@ -264,9 +277,7 @@ export const ONFIDO_ERROR_STATUS: TOnfidoErrorStatus = Object.freeze({
     },
     SelfieRejected: {
         code: 'SelfieRejected',
-        message: (
-            <Localize i18n_default_text='We’re unable to verify the selfie you provided as it does not match the required criteria. Please provide a photo that closely resembles the document photo provided.' />
-        ),
+        message: <Localize i18n_default_text='Your selfie does not match your document.' />,
     },
     VisualAuthenticityDigitalTampering: {
         code: 'VisualAuthenticityDigitalTampering',

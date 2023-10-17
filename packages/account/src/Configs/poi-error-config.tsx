@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetAccountStatus, ResidenceList } from '@deriv/api-types';
-import { IDV_ERROR_STATUS, TIDVErrorStatus } from '@deriv/shared';
+import { IDV_ERROR_STATUS, TIDVErrorStatus, getIDVError } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import PoiNameDobExample from '../Assets/ic-poi-name-dob-example.svg';
 import PoiNameExample from '../Assets/ic-poi-name-example.svg';
@@ -25,19 +25,6 @@ export const CLAIMED_DOCUMENT_ERROR_MESSAGE = (
     />
 );
 
-const renderErrorMessage = (mismatch_status: TIDVErrorStatus) => {
-    switch (mismatch_status) {
-        case IDV_ERROR_STATUS.Expired.code:
-            return <Localize i18n_default_text='Your identity document has expired.' />;
-        case IDV_ERROR_STATUS.Failed.code:
-            return (
-                <Localize i18n_default_text='We were unable to verify the identity document with the details provided.' />
-            );
-        default:
-            return IDV_ERROR_STATUS[mismatch_status]?.message;
-    }
-};
-
 export const generateIDVError = (
     is_document_upload_required: boolean,
     latest_status: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'],
@@ -49,24 +36,6 @@ export const generateIDVError = (
         : getIDVDocumentType(latest_status, chosen_country);
 
     switch (mismatch_status) {
-        case IDV_ERROR_STATUS.NameDobMismatch.code:
-            return {
-                required_fields: ['first_name', 'last_name', 'date_of_birth'],
-                side_note_image: <PoiNameDobExample />,
-                inline_note_text: (
-                    <Localize
-                        i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your {{document_name}}.'
-                        components={[<strong key={0} />]}
-                        values={{ document_name }}
-                    />
-                ),
-                failure_message: (
-                    <Localize
-                        i18n_default_text="The <0>name</0> and <0>date of birth</0> on your identity document don't match your profile."
-                        components={[<strong key={0} />]}
-                    />
-                ),
-            };
         case IDV_ERROR_STATUS.NameMismatch.code:
             return {
                 required_fields: ['first_name', 'last_name'],
@@ -78,12 +47,7 @@ export const generateIDVError = (
                         values={{ document_name }}
                     />
                 ),
-                failure_message: (
-                    <Localize
-                        i18n_default_text="The <0>name</0> on your identity document doesn't match your profile."
-                        components={[<strong key={0} />]}
-                    />
-                ),
+                failure_message: IDV_ERROR_STATUS.NameMismatch.message,
             };
         case IDV_ERROR_STATUS.DobMismatch.code:
             return {
@@ -96,12 +60,7 @@ export const generateIDVError = (
                         values={{ document_name }}
                     />
                 ),
-                failure_message: (
-                    <Localize
-                        i18n_default_text="The <0>date of birth</0> on your identity document doesn't match your profile."
-                        components={[<strong key={0} />]}
-                    />
-                ),
+                failure_message: IDV_ERROR_STATUS.DobMismatch.message,
             };
         default:
             return {
@@ -114,7 +73,7 @@ export const generateIDVError = (
                         values={{ document_name }}
                     />
                 ),
-                failure_message: renderErrorMessage(mismatch_status),
+                failure_message: getIDVError(mismatch_status),
             };
     }
 };

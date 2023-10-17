@@ -90,6 +90,10 @@ export const formatOnfidoError = (error: TOnfidoErrorStatus) => {
     return ONFIDO_ERROR_STATUS[error]?.message ?? '';
 };
 
+export const getIDVError = (error: TIDVErrorStatus) => {
+    return IDV_ERROR_STATUS[error]?.message ?? '';
+};
+
 export const isVerificationServiceSupported = (
     residence_list: ResidenceList,
     account_settings: GetSettings,

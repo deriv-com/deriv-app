@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './JurisdictionCardRow.scss';
 
 type TJurisdictionCardRowProps = {

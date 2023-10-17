@@ -73,8 +73,7 @@
                 margin-bottom: 1.6rem;
             }
             /* postcss-bem-linter: ignore */
-            h6,
-            span {
+            h6 {
                 @include typeface(--small-left-bold-black, none);
             }
             p,

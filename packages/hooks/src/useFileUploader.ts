@@ -3,9 +3,7 @@ import { useMutation } from '@deriv/api';
 import { WS, compressImageFiles, readFiles } from '@deriv/shared';
 import { useCallback, useMemo, useState } from 'react';
 
-type TSettingsPayload = NonNullable<
-    NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>>[0]>['payload']
->;
+type TSettingsPayload = Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload'];
 
 type TFile =
     | Partial<
@@ -21,7 +19,7 @@ type TFile =
       };
 
 type TUploaderResponse = {
-    [key: string]: any;
+    [key: string]: unknown;
     message?: string;
     warning?: string;
 };
@@ -43,42 +41,39 @@ const useFileUploader = () => {
             return new Promise<{
                 message?: string;
                 warning?: string;
-                [key: string]: any;
+                [key: string]: unknown;
             }>((resolve, reject) => {
                 let is_any_file_error = false;
                 let file_error: string | null = null;
 
-                compressImageFiles()
-                    .then((files_to_process: Blob[]) => {
-                        readFiles(files_to_process, fileReadErrorMessage, settings ?? {})
-                            .then((processed_files: TFile[]) => {
-                                processed_files.forEach(file => {
-                                    if (file && 'message' in file) {
-                                        is_any_file_error = true;
-                                        file_error = file.message;
-                                        reject(file.message);
-                                    }
-                                });
-                                if (is_any_file_error || !processed_files.length) {
-                                    onError?.();
-                                    return reject(new Error(file_error ?? 'Something went wrong!')); // don't start submitting files until all front-end validation checks pass
-                                }
+                (async () => {
+                    try {
+                        const compressed_files: Blob[] = await compressImageFiles(files);
+                        const processed_files: TFile[] = await readFiles(
+                            compressed_files,
+                            fileReadErrorMessage,
+                            settings ?? {}
+                        );
+                        processed_files.forEach(file => {
+                            if (file && 'message' in file) {
+                                is_any_file_error = true;
+                                file_error = file.message;
+                                reject(file.message);
+                            }
+                        });
+                        if (is_any_file_error || !processed_files.length) {
+                            onError?.();
+                            return reject(new Error(file_error ?? 'Something went wrong!')); // don't start submitting files until all front-end validation checks pass
+                        }
 
-                                // send files
-                                const uploader_promise = uploader_instance
-                                    .upload(processed_files[0])
-                                    .then((api_response: TUploaderResponse) => api_response);
-                                resolve(uploader_promise);
-                            })
-                            .catch((error: unknown) => {
-                                setError(error);
-                                reject(error);
-                            });
-                    })
-                    .catch((error: unknown) => {
+                        // send files
+                        const response: TUploaderResponse = await uploader_instance.upload(processed_files[0]);
+                        resolve(response);
+                    } catch (error: unknown) {
                         setError(error);
                         reject(error);
-                    });
+                    }
+                })();
             });
         },
         [uploader_instance]

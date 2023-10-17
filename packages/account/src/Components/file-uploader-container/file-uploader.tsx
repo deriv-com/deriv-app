@@ -43,13 +43,15 @@ const FileUploader = ({ onFileDrop, onError }: TFileUploaderProps) => {
     React.useEffect(() => {
         if (document_files) {
             onFileDrop(document_files);
+            onError?.('');
         }
-    }, [document_files, onFileDrop]);
+    }, [document_files, onFileDrop, onError]);
 
     const handleAcceptedFiles = (files: File[]) => {
         if (files.length > 0) {
             setDocumentFiles(files);
             setFileError(null);
+            onError?.('');
         }
     };
 
@@ -68,6 +70,8 @@ const FileUploader = ({ onFileDrop, onError }: TFileUploaderProps) => {
 
     const removeFile = () => {
         setDocumentFiles([]);
+        setFileError(null);
+        onError?.('');
     };
 
     return (

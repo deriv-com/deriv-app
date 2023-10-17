@@ -1,9 +1,7 @@
 import { useMutation } from '@deriv/api';
 import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage } from './image/image_utility';
 
-export type TSettings = NonNullable<
-    NonNullable<NonNullable<Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>>[0]>['payload']
->;
+export type TSettings = Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload'];
 
 export type TFileObject = TSettings & {
     filename: File['name'];

@@ -117,7 +117,7 @@ const ProofOfAddressForm = observer(
             });
         }, [account_settings, fetchResidenceList, fetchStatesList]);
 
-        const changeable_fields = getChangeableFields?.() ?? [];
+        const changeable_fields = getChangeableFields();
 
         const validateFields = (values: TFormInitialValues) => {
             (Object.entries(values) as ObjectEntries<TFormInitialValues>).forEach(
@@ -288,7 +288,12 @@ const ProofOfAddressForm = observer(
             return is_mobile && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
         return (
-            <Formik initialValues={form_initial_values} onSubmit={onSubmitValues} validate={validateFields}>
+            <Formik
+                initialValues={form_initial_values}
+                onSubmit={onSubmitValues}
+                validate={validateFields}
+                enableReinitialize
+            >
                 {({ status, handleSubmit, isSubmitting, isValid }) => (
                     <>
                         <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />

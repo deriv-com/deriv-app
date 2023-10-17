@@ -1,10 +1,9 @@
 import React, { ComponentProps, useState } from 'react';
-import { WalletTransactionsCrypto, WalletTransactionsFilter } from '../../screens/WalletTransactionsScreens';
+import { TransactionsCrypto, TransactionsFilter } from '../../modules';
 import './WalletTransactions.scss';
 
 const WalletTransactions = () => {
-    const [filterValue, setFilterValue] =
-        useState<ComponentProps<typeof WalletTransactionsCrypto>['filter']>(undefined);
+    const [filterValue, setFilterValue] = useState<ComponentProps<typeof TransactionsCrypto>['filter']>(undefined);
     const [isPendingActive, setIsPendingActive] = useState(true);
 
     return (
@@ -23,9 +22,9 @@ const WalletTransactions = () => {
                         <span className='wallets-transactions__toggle-switch__button' />
                     </label>
                 </div>
-                <WalletTransactionsFilter isPendingActive={isPendingActive} onSelect={setFilterValue} />
+                <TransactionsFilter isPendingActive={isPendingActive} onSelect={setFilterValue} />
             </div>
-            {isPendingActive ? <WalletTransactionsCrypto filter={filterValue} /> : null}
+            {isPendingActive ? <TransactionsCrypto filter={filterValue} /> : null}
         </div>
     );
 };

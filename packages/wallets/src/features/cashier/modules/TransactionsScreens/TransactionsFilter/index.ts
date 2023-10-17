@@ -1,1 +1,1 @@
-export { default as WalletTransactionsFilter } from './TransactionsFilter';
+export { default as TransactionsFilter } from './TransactionsFilter';

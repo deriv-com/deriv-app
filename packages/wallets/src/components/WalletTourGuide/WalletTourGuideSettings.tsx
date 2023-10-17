@@ -3,7 +3,12 @@ import { Step, TooltipRenderProps } from 'react-joyride';
 import { WalletButton, WalletText } from '../Base';
 import './WalletTourGuide.scss';
 
-export const tourStepConfig: Step[] = [
+export const tourStepConfig = (
+    isDemoWallet: boolean,
+    hasMT5: boolean,
+    hasDerivAppsTradingAccount: boolean,
+    isAllWalletsAlreadyAdded: boolean
+): Step[] => [
     {
         content: (
             <WalletText size='sm'>
@@ -19,9 +24,47 @@ export const tourStepConfig: Step[] = [
                 Wallets
             </WalletText>
         ),
+        placement: 'bottom',
+        spotlightPadding: 0,
+        styles: { spotlight: { borderRadius: '1.6rem 1.6rem 0rem 0rem' } },
     },
     {
-        content: <WalletText size='sm'>Step 2</WalletText>,
+        content: (
+            <WalletText size='sm'>
+                Perform deposits, withdrawals, and fund transfers using your Wallet. You can also view your Wallet's
+                transaction history.
+            </WalletText>
+        ),
+        disableBeacon: true,
+        disableOverlayClose: true,
+        target: '.wallets-header__actions > button',
+        title: (
+            <WalletText color='red' size='sm' weight='bold'>
+                Wallet actions
+            </WalletText>
+        ),
+        spotlightPadding: 0,
+        // styles: {
+        //     spotlight: {
+        //         width: 504,
+        //         height: 32,
+        //         borderRadius: '4.8rem',
+        //     },
+        // },
+    },
+    {
+        content: <WalletText size='sm'>Step 3</WalletText>,
+        disableBeacon: true,
+        disableOverlayClose: true,
+        target: '.wallets-accordion__header:has(+ .wallets-accordion__content--visible)',
+        title: (
+            <WalletText color='red' size='sm' weight='bold'>
+                Wallets
+            </WalletText>
+        ),
+    },
+    {
+        content: <WalletText size='sm'>Step 4</WalletText>,
         disableBeacon: true,
         disableOverlayClose: true,
         target: '.wallets-accordion__header:has(+ .wallets-accordion__content--visible)',

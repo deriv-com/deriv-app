@@ -14,14 +14,22 @@ export const tourStepConfig: Step[] = [
         disableBeacon: true,
         disableOverlayClose: true,
         target: '.wallets-accordion__header:has(+ .wallets-accordion__content--visible)',
-        title: <span>Wallets</span>,
+        title: (
+            <WalletText color='red' size='sm' weight='bold'>
+                Wallets
+            </WalletText>
+        ),
     },
     {
         content: <span>Step 2</span>,
         disableBeacon: true,
         disableOverlayClose: true,
         target: '.wallets-accordion__header:has(+ .wallets-accordion__content--visible)',
-        title: <span>Wallets</span>,
+        title: (
+            <WalletText color='red' size='sm' weight='bold'>
+                Wallets
+            </WalletText>
+        ),
     },
 ];
 
@@ -37,9 +45,7 @@ export const TooltipComponent = ({
 }: TooltipRenderProps) => {
     return (
         <div {...tooltipProps} className='wallets-tour-guide__container'>
-            <div className='wallets-tour-guide__header'>
-                {step?.title && <span className='wallets-tour-guide__title'>{step.title as React.ReactNode}</span>}
-            </div>
+            <div className='wallets-tour-guide__header'>{step?.title as React.ReactNode}</div>
             {<div className='wallets-tour-guide__content'>{step.content as React.ReactNode}</div>}
             <div className='wallets-tour-guide__footer'>
                 {index > 0 && (

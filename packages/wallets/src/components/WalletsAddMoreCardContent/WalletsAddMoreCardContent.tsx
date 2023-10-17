@@ -1,4 +1,6 @@
 import React from 'react';
+import useDevice from '../../hooks/useDevice';
+import { WalletText } from '../Base';
 
 type TWalletDescriptionMapper = {
     [key: string]: string;
@@ -19,10 +21,18 @@ const walletDescriptionMapper: TWalletDescriptionMapper = {
 };
 
 const WalletsAddMoreCardContent = ({ currency }: { currency: string }) => {
+    const { isMobile } = useDevice();
     return (
         <div className='wallets-add-more__content'>
-            <h3 className='wallets-add-more__content-header'>{currency} Wallet</h3>
-            <div className='wallets-add-more__content-body'>{walletDescriptionMapper[currency]}</div>
+            <WalletText
+                lineHeight={isMobile ? 'md' : 'xl'}
+                size={isMobile ? 'md' : 'sm'}
+                weight={isMobile ? 'normal' : 'bold'}
+            >
+                {currency} Wallet
+            </WalletText>
+
+            <WalletText size='sm'>{walletDescriptionMapper[currency]}</WalletText>
         </div>
     );
 };

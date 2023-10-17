@@ -5,17 +5,14 @@
 
     &__button {
         all: unset;
-        position: absolute;
-        padding-right: 1.6rem;
-        top: 0;
-        bottom: 0;
-        right: 0;
         margin: auto;
         fill: var(--system-light-3-less-prominent-text, #999);
-        transition: transform 0.2s ease;
+        transform: rotate(0);
+        transform-origin: 50% 45%;
+        transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 
         &--active {
-            transform: rotateX(180deg);
+            transform: rotate(180deg);
         }
     }
 

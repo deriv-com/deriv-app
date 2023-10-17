@@ -1,12 +1,10 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { daysSince, isMobile } from '@deriv/shared';
-
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
@@ -28,12 +26,14 @@ const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
     const { advertiser_details_name, advertiser_details_id, counterparty_advertiser_info } = advertiser_page_store;
+    const { advertiser_id, advertiser_info, counterparty_advertiser_id } = general_store;
 
-    const is_my_advert = advertiser_details_id === general_store.advertiser_id;
+    const is_my_advert = advertiser_details_id === advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
-    const info = is_my_advert ? general_store.advertiser_info : counterparty_advertiser_info;
+    const info = is_my_advert ? advertiser_info : counterparty_advertiser_info;
 
     const history = useHistory();
+    const location = useLocation();
 
     const {
         basic_verification,
@@ -68,6 +68,11 @@ const AdvertiserPage = () => {
     };
 
     React.useEffect(() => {
+        if (location.search || counterparty_advertiser_id) {
+            const url_params = new URLSearchParams(location.search);
+            general_store.setCounterpartyAdvertiserId(url_params.get('id'));
+        }
+
         buy_sell_store.setShowAdvertiserPage(true);
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
@@ -130,6 +135,7 @@ const AdvertiserPage = () => {
 
         return () => {
             disposeBlockUnblockUserErrorReaction();
+            advertiser_page_store.onUnmount();
         };
     }, [advertiser_details_name, counterparty_advertiser_info]);
 

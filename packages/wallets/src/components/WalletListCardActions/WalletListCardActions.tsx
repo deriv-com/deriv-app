@@ -6,6 +6,7 @@ import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
+import { WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
@@ -62,12 +63,14 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                                 className='wallets-mobile-actions-content-icon'
                                 key={button.name}
                                 onClick={() => {
-                                    history.push(`/appstore/traders-hub/cashier/${button.name}`);
+                                    history.push(`/wallets/cashier/${button.name}`);
                                 }}
                             >
                                 {button.icon}
                             </button>
-                            <div className='wallets-mobile-actions-content-text'>{button.text}</div>
+                            <WalletText lineHeight='3xs' size='2xs'>
+                                {button.text}
+                            </WalletText>
                         </div>
                     ))}
                 </div>
@@ -77,13 +80,14 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
     return (
         <div className='wallets-header__actions'>
             {getWalletHeaderButtons(isDemo).map(button => (
-                <button
-                    className='wallets-header__button'
+                <WalletButton
+                    isRounded
                     key={button.name}
-                    onClick={async () => {
-                        await switchAccount(loginid);
-                        history.push(`/appstore/traders-hub/cashier/${button.name}`);
+                    onClick={() => {
+                        switchAccount(loginid);
+                        history.push(`/wallets/cashier/${button.name}`);
                     }}
+                    variant='outlined'
                 >
                     {button.icon}
                     <span
@@ -93,7 +97,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                     >
                         {button.text}
                     </span>
-                </button>
+                </WalletButton>
             ))}
         </div>
     );

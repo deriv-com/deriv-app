@@ -39,7 +39,7 @@ export const getMT5Title = (account_type: string) => {
 
 type TPlatform = 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
+type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
 type TGetAccount = {
     market_type: TMarketType;
     sub_account_type?: TAccount['sub_account_type'];
@@ -105,6 +105,8 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                     return 'financial_fx';
                 case 'vanuatu':
                     return 'financial_v';
+                case 'maltainvest':
+                    return 'financial';
                 default:
                     return 'financial_demo';
             }
@@ -181,12 +183,17 @@ export const getCFDAccountDisplay = ({
     is_mt5_trade_modal,
     is_transfer_form = false,
 }: TGetCFDAccountDisplay) => {
-    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
+    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
     if (!cfd_account_key) return undefined;
 
-    if (cfd_account_key === 'financial_demo' && is_eu) {
-        if (is_mt5_trade_modal) cfd_account_key = 'mt5_cfds';
-        else cfd_account_key = 'cfd';
+    if (is_mt5_trade_modal && is_eu) {
+        switch (cfd_account_key) {
+            case 'financial':
+                return localize('CFDs');
+            case 'financial_demo':
+            default:
+                return localize('CFDs Demo');
+        }
     }
 
     const cfd_account_display = CFD_text_translated[cfd_account_key]();

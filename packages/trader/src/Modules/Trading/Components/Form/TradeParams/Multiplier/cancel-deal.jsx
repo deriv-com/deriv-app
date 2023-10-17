@@ -5,7 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 
 import Fieldset from 'App/Components/Form/fieldset';
-import { onChangeCancellationDuration,onToggleCancellation } from 'Stores/Modules/Trading/Helpers/multiplier';
+import { onChangeCancellationDuration, onToggleCancellation } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const CancelDeal = observer(() => {

@@ -7,7 +7,8 @@ import { isMobile, isSafari } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TQuickStrategyFormValues } from '../quick-strategy.types';
 import { TQuickStrategyForm } from './components.types';
-import { QuickStrategyFields, QuickStrategyFooter } from '.';
+import QuickStrategyFields from './fields';
+import QuickStrategyFooter from './footer';
 
 const QuickStrategyForm = ({
     duration_unit_dropdown,

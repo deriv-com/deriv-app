@@ -6,15 +6,10 @@ type TJurisdictionVerificationContents = {
     statusReferences: TJurisdictionVerificationStatus[];
 };
 export const jurisdictionVerificationContents = (): TJurisdictionVerificationContents => ({
-    shortDescription: 'We need you to submit these in order to get this account:',
     requiredVerificationDocs: {
         documentNumber: {
             icon: 'IcDocumentNumberVerification',
             text: 'Document number (identity card, passport)',
-        },
-        selfie: {
-            icon: 'IcSelfieVerification',
-            text: 'A selfie of yourself.',
         },
         identityNumber: {
             icon: 'IcIdentityDocumentVerification',
@@ -28,22 +23,27 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
             icon: 'IcNotApplicableVerification',
             text: '',
         },
+        selfie: {
+            icon: 'IcSelfieVerification',
+            text: 'A selfie of yourself.',
+        },
     },
+    shortDescription: 'We need you to submit these in order to get this account:',
     statusReferences: [
         {
+            color: 'yellow',
             icon: 'IcVerificationStatusYellow',
             text: 'Your document is pending for verification.',
-            color: 'yellow',
         },
         {
+            color: 'red',
             icon: 'IcVerificationStatusRed',
             text: 'Verification failed. Resubmit during account creation.',
-            color: 'red',
         },
         {
+            color: 'green',
             icon: 'IcVerificationStatusGreen',
             text: 'Your document is verified.',
-            color: 'green',
         },
     ],
 });

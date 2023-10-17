@@ -14,9 +14,9 @@ export type TJurisdictionContent = {
 };
 
 export const getJurisdictionContents = (): Record<string, TJurisdictionCardItems> => ({
-    svg: getJurisdictionSvgContents(),
     bvi: getJurisdictionBviContents(),
-    vanuatu: getJurisdictionVanuatuContents(),
     labuan: getJurisdictionLabuanContents(),
     maltainvest: getJurisdictionMaltainvestContents(),
+    svg: getJurisdictionSvgContents(),
+    vanuatu: getJurisdictionVanuatuContents(),
 });

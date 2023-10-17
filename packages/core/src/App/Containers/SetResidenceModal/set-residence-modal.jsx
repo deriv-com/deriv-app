@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Form,Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 
 import { Button, Dialog, Text } from '@deriv/components';

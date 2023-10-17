@@ -4,8 +4,9 @@ import { useAccountsList } from '@deriv/api';
 import { useModal } from '../../../../../components/ModalProvider';
 import { WalletListCardBadge } from '../../../../../components/WalletListCardBadge';
 import IcDropdown from '../../../../../public/images/ic-dropdown.svg';
-import TransferFromAccountCard from '../TransferFormAccountCard/TransferFormAccountCard';
+import TransferFormAccountCard from '../TransferFormAccountCard/TransferFormAccountCard';
 import TransferFormAccountSelection from '../TransferFormAccountSelection/TransferFormAccountSelection';
+// import { TransferFormAccountCard, TransferFormAccountSelection } from './components';
 import './TransferFormDropdown.scss';
 
 type TProps = {
@@ -31,7 +32,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, initialAccount, lab
             <div className='wallets-transfer-form-dropdown__content'>
                 <span className='wallets-transfer-form-dropdown__content__label'>{label}</span>
                 <div className='wallets-transfer-form-dropdown__content__selection'>
-                    {selectedAccount && <TransferFromAccountCard account={selectedAccount} type='input' />}
+                    {selectedAccount && <TransferFormAccountCard account={selectedAccount} type='input' />}
                 </div>
             </div>
             <div className='wallets-transfer-form-dropdown__icons'>

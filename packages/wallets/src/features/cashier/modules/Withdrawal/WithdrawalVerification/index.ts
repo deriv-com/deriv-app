@@ -1,1 +1,1 @@
-export { default as WithdrawalVerification } from './WithdrawalVerification';
+export { default as WithdrawalVerificationModule } from './WithdrawalVerification';

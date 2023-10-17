@@ -1,1 +1,1 @@
-export { default as WithdrawalVerificationSent } from './WithdrawalVerificationSent';
+export { default as WithdrawalVerificationSentModule } from './WithdrawalVerificationSent';

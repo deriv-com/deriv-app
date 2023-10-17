@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
 import { useSettings, useVerifyEmail } from '@deriv/api';
-import { WalletWithdrawalVerification, WalletWithdrawalVerificationSent } from '../../screens';
-import { WithdrawalVerification, WithdrawalVerificationSent } from '../../modules';
+import { WithdrawalVerificationModule, WithdrawalVerificationSentModule } from '../../modules';
 
 const WalletWithdrawal = () => {
     const [emailSent, setEmailSent] = useState(false);
@@ -25,9 +24,9 @@ const WalletWithdrawal = () => {
         }
     };
 
-    if (emailSent) return <WalletWithdrawalVerificationSent counter={count} sendEmail={handleSendEmail} />;
+    if (emailSent) return <WithdrawalVerificationSentModule counter={count} sendEmail={handleSendEmail} />;
 
-    return <WalletWithdrawalVerification sendEmail={handleSendEmail} />;
+    return <WithdrawalVerificationModule sendEmail={handleSendEmail} />;
 };
 
 export default WalletWithdrawal;

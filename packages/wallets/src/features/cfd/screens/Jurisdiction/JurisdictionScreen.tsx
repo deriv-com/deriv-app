@@ -28,7 +28,7 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
                         isSelected={selectedJurisdiction === jurisdiction}
-                        jurisdiction={jurisdiction || ''}
+                        jurisdiction={jurisdiction || 'bvi'}
                         key={jurisdiction}
                         onSelect={clickedJurisdiction => {
                             if (clickedJurisdiction === selectedJurisdiction) {

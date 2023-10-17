@@ -554,7 +554,7 @@ const mock = (): TStores & { is_mock: boolean } => {
         modules: {
             cfd: {
                 setMT5MigrationError: jest.fn(),
-                migrate_mt5_accounts: [],
+                migrated_mt5_accounts: [],
             },
         },
         exchange_rates: {

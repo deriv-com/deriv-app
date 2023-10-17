@@ -14,14 +14,13 @@ export type TFlowProviderContext<T> = {
     WalletScreen?: ReactNode;
     currentScreenId: keyof T;
     formValues: FormikValues;
-    isFinalScreen: boolean;
     setFormValues: (
         field: string,
         value: unknown,
         shouldValidate?: boolean | undefined
     ) => Promise<FormikErrors<unknown> | void>;
-    switchScreen: (screenId: keyof T) => void;
     switchNextScreen: () => void;
+    switchScreen: (screenId: keyof T) => void;
 };
 
 type FlowChildren = ReactElement | ReactFragment | ReactPortal;
@@ -44,7 +43,6 @@ const FlowProviderContext = createContext<TFlowProviderContext<TWalletScreens> |
  *
  * @returns {TFlowProviderContext} The flow provider's context:
  * - `currentScreenId`: The current screen's ID being shown
- * - `isFinalScreen`: Indicates if the current screen is the final screen
  * - `switchScreen`: Function which switches the current screen to another screen by their ID
  * - `switchNextScreen`: Function which switches to the next screen by default. If the current screen is the final screen, it will not do anything.
  * - `formValues`: The saved form values stored in Formik. By default it will contain the initial values passed in `initialValues` prop in the provider.
@@ -59,6 +57,13 @@ export const useFlow = () => {
     return flowProviderContext;
 };
 
+/**
+ * The FlowProvider is responsible for:
+ * - Grouping screens together into a flow
+ * - Managing screen routing through its context `switchScreen` and `switchNextScreen`
+ * - Ensuring screen order is maintained through the `screensOrder` prop
+ * - Persisting form values in screens through `setFormValues` and restoring them through `formValues`
+ */
 function FlowProvider<T extends TWalletScreens>({
     children,
     initialValues,
@@ -72,7 +77,7 @@ function FlowProvider<T extends TWalletScreens>({
 
     const FlowProvider = FlowProviderContext.Provider as React.Provider<TFlowProviderContext<T> | null>;
     const currentScreenIndex = useMemo(() => screensOrder.indexOf(currentScreenId), [currentScreenId]);
-    const isFinalScreen = currentScreenIndex >= screensOrder.length;
+    const isFinalScreen = currentScreenIndex >= screensOrder.length - 1;
 
     const switchNextScreen = () => {
         if (!isFinalScreen) {
@@ -89,7 +94,6 @@ function FlowProvider<T extends TWalletScreens>({
 
     const context = {
         currentScreenId,
-        isFinalScreen,
         switchNextScreen,
         switchScreen,
         WalletScreen: currentScreen,

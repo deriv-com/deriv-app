@@ -121,11 +121,10 @@ const AccountTransferForm = observer(
             resetConverter,
         } = crypto_fiat_converter;
 
-        const { is_flag_present, flag_value } = useIsMt5LoginListStatusPresent(
+        const { is_flag_present: is_open_order_position_status_present } = useIsMt5LoginListStatusPresent(
             'open_order_position_status',
             selected_to.value ?? ''
         );
-        const is_open_order_position_status_present = is_flag_present && (flag_value === 0 || flag_value === 1);
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});

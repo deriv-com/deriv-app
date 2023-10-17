@@ -12,7 +12,7 @@ jest.mock('../Description/even-odd-trade-description', () => jest.fn(() => 'mock
 jest.mock('../Description/high-low-trade-description', () => jest.fn(() => 'mockedHighLowTradeDescription'));
 jest.mock('../Description/lb-call-trade-description', () => jest.fn(() => 'mockedLbCallTradeDescription'));
 jest.mock('../Description/lb-high-low-trade-description', () => jest.fn(() => 'mockedLbHighLowTradeDescription'));
-jest.mock('../Description/lb-put-trade-desciption', () => jest.fn(() => 'mockedLbPutTradeDescription'));
+jest.mock('../Description/lb-put-trade-description', () => jest.fn(() => 'mockedLbPutTradeDescription'));
 jest.mock('../Description/match-diff-trade-description', () => jest.fn(() => 'mockedMatchDiffTradeDescription'));
 jest.mock('../Description/multiplier-trade-description', () => jest.fn(() => 'mockedMultiplierTradeDescription'));
 jest.mock('../Description/over-under-trade-description', () => jest.fn(() => 'mockedOverUnderTradeDescription'));

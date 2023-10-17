@@ -21,16 +21,24 @@ import './buy-sell-row.scss';
 const BuySellRow = ({ row: advert, row_index, index }) => {
     const [should_highlight, setShouldHighlight] = React.useState(index - 1 === row_index);
     const { buy_sell_store, general_store } = useStores();
+    let timeout;
     const {
         client: { currency },
+        ui: { is_dark_mode_on },
     } = useStore();
     const history = useHistory();
     const { getRate } = useExchangeRate();
     if (should_highlight) {
-        setTimeout(() => {
+        timeout = setTimeout(() => {
             setShouldHighlight(false);
         }, 3000);
     }
+
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, []);
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -91,7 +99,12 @@ const BuySellRow = ({ row: advert, row_index, index }) => {
 
     if (isMobile()) {
         return (
-            <div className={classNames('buy-sell-row', { 'buy-sell-row--highlight': should_highlight })}>
+            <div
+                className={classNames('buy-sell-row', {
+                    'buy-sell-row__highlight': should_highlight,
+                    'buy-sell-row__highlight--dark': should_highlight && is_dark_mode_on,
+                })}
+            >
                 <div className='buy-sell-row__advertiser' onClick={() => onClickRow()}>
                     <OnlineStatusAvatar
                         is_online={advertiser_details.is_online}
@@ -195,7 +208,12 @@ const BuySellRow = ({ row: advert, row_index, index }) => {
     }
 
     return (
-        <Table.Row className={classNames('buy-sell__table-row', { 'buy-sell-row--highlight': should_highlight })}>
+        <Table.Row
+            className={classNames('buy-sell__table-row', {
+                'buy-sell-row__highlight': should_highlight,
+                'buy-sell-row__highlight--dark': should_highlight && is_dark_mode_on,
+            })}
+        >
             <Table.Cell>
                 <div
                     className={classNames('buy-sell__cell', { 'buy-sell__cell-hover': !general_store.is_barred })}

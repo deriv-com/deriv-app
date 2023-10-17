@@ -16,8 +16,11 @@
     &--attention {
         background: var(--button-tertiary-hover);
     }
-    &--highlight {
+    &__highlight {
         background: #ffc10714;
+        &--dark {
+            background-color: #ffc10729;
+        }
     }
     &:not(.order-table-row--header) {
         cursor: pointer;

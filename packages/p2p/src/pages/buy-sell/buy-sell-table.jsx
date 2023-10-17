@@ -129,7 +129,10 @@ const BuySellTable = ({ clearScroll, onScroll, retain_scroll_position, scroll_to
 
 BuySellTable.displayName = 'BuySellTable';
 BuySellTable.propTypes = {
+    clearScroll: PropTypes.func,
     onScroll: PropTypes.func,
+    retain_scroll_position: PropTypes.bool,
+    scroll_to_index: PropTypes.number,
 };
 
 export default observer(BuySellTable);

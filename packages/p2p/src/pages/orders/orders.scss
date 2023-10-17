@@ -48,8 +48,11 @@
             border-bottom: 2px solid var(--general-section-1);
         }
 
-        &--highlight {
+        &__highlight {
             background: #ffc10714;
+            &--dark {
+                background-color: #ffc10729;
+            }
         }
 
         &-highlight-danger {

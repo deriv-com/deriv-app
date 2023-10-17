@@ -40,6 +40,7 @@ const OrderRow = ({ row: order, row_index, index }) => {
     const {
         notifications: { removeNotificationByKey, removeNotificationMessage },
         client: { loginid },
+        ui: { is_dark_mode_on },
     } = useStore();
 
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
@@ -75,6 +76,7 @@ const OrderRow = ({ row: order, row_index, index }) => {
 
     const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
     const interval = React.useRef(null);
+    let timeout;
 
     const history = useHistory();
     const location = useLocation();
@@ -151,7 +153,10 @@ const OrderRow = ({ row: order, row_index, index }) => {
         };
 
         interval.current = setInterval(countDownTimer, 1000);
-        return () => clearInterval(interval.current);
+        return () => {
+            clearInterval(interval.current);
+            clearTimeout(timeout);
+        };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
@@ -162,7 +167,8 @@ const OrderRow = ({ row: order, row_index, index }) => {
                         className={classNames('order-table-row order-table-grid', {
                             'order-table-grid--active': general_store.is_active_tab,
                             'order-table-row--attention': !isOrderSeen(id),
-                            'order-table-row--highlight': should_highlight,
+                            'order-table-row__highlight': should_highlight,
+                            'order-table-row__highlight--dark': should_highlight && is_dark_mode_on,
                         })}
                     >
                         <Table.Cell>{order_type}</Table.Cell>
@@ -213,6 +219,7 @@ const OrderRow = ({ row: order, row_index, index }) => {
                         className={classNames('orders__mobile', {
                             'orders__mobile--attention': !isOrderSeen(id),
                             'orders__mobile--highlight': should_highlight,
+                            'order-table-row__highlight--dark': should_highlight && is_dark_mode_on,
                         })}
                     >
                         <Table.Cell

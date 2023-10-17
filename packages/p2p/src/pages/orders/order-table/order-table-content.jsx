@@ -94,9 +94,9 @@ const OrderTableContent = ({ clearScroll, retain_scroll_position, scroll_to_inde
 };
 
 OrderTableContent.propTypes = {
-    is_active: PropTypes.bool,
-    server_time: PropTypes.object,
-    showDetails: PropTypes.func,
+    clearScroll: PropTypes.func,
+    retain_scroll_position: PropTypes.bool,
+    scroll_to_index: PropTypes.number,
 };
 
 export default observer(OrderTableContent);

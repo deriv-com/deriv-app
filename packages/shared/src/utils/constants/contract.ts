@@ -537,24 +537,26 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
 export const TRADE_FEATURE_FLAGS = ['sharkfin'];
 
 export const getCleanedUpCategories = (categories: TTradeTypesCategories) => {
-    const new_categories: TTradeTypesCategories = cloneObject(categories);
+    const categories_copy: TTradeTypesCategories = cloneObject(categories);
     const hidden_trade_types = Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {})
         .filter(([key, value]) => TRADE_FEATURE_FLAGS.includes(key) && !value)
         .map(([key]) => key);
 
-    Object.keys(new_categories).forEach(key => {
-        new_categories[key].categories = new_categories[key].categories?.filter(item => {
+    return Object.keys(categories_copy).reduce((acc, key) => {
+        const category = categories_copy[key].categories?.filter(item => {
             return (
                 typeof item === 'object' &&
                 // hide trade types with disabled feature flag:
                 hidden_trade_types?.every(hidden_type => !item.value.startsWith(hidden_type))
             );
         });
-        if (new_categories[key].categories?.length === 0) {
-            delete new_categories[key];
+        if (category?.length === 0) {
+            delete acc[key];
+        } else {
+            acc[key].categories = category;
         }
-    });
-    return new_categories;
+        return acc;
+    }, categories_copy);
 };
 
 export const getContractConfig = (is_high_low?: boolean) => ({

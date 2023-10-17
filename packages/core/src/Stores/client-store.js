@@ -1325,7 +1325,9 @@ export default class ClientStore extends BaseStore {
         setCurrencies(this.website_status);
 
         // TODO: remove the below lines after full smartcharts v2 launch.
-        const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+            ? deriv_urls.DERIV_HOST_NAME
+            : window.location.hostname;
         const { clients_country } = this.website_status;
 
         const options = {

@@ -21,7 +21,7 @@ const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps
     return (
         <div className='email-verification-empty-state'>
             <EmptyState
-                icon='IcEmailSent'
+                icon='IcWithdrawRequestVerificationSent'
                 title={localize("We've sent you an email.")}
                 description={localize('Please check your email for the verification link to complete the process.')}
                 action={verify.has_been_sent ? undefined : action}

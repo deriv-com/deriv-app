@@ -1,22 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { DesktopWrapper, Icon, MobileWrapper, Modal, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+
 import { SIDEBAR_INTRO } from './constants';
 
 const InfoPanel = observer(() => {
-    const is_mobile = isMobile();
-    const { dashboard } = useDBotStore();
     const {
-        has_started_onboarding_tour,
-        is_info_panel_visible,
-        setActiveTab,
-        setActiveTabTutorial,
-        setInfoPanelVisibility,
-    } = dashboard;
+        ui: { is_mobile },
+    } = useStore();
+    const { dashboard } = useDBotStore();
+    const { active_tour, is_info_panel_visible, setActiveTab, setActiveTabTutorial, setInfoPanelVisibility } =
+        dashboard;
     const switchTab = (link: boolean, label: string) => {
         const tutorial_link = link ? setActiveTab(DBOT_TABS.TUTORIAL) : null;
         const tutorial_label = label === 'Guide' ? setActiveTabTutorial(0) : setActiveTabTutorial(1);
@@ -68,7 +67,7 @@ const InfoPanel = observer(() => {
     return (
         <>
             <DesktopWrapper>
-                {!has_started_onboarding_tour && (
+                {!active_tour && (
                     <div
                         className={classNames('tab__dashboard__info-panel', {
                             'tab__dashboard__info-panel--active': is_info_panel_visible,

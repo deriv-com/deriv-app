@@ -76,7 +76,7 @@ function FlowProvider<T extends TWalletScreens>({
     };
 
     const FlowProvider = FlowProviderContext.Provider as React.Provider<TFlowProviderContext<T> | null>;
-    const currentScreenIndex = useMemo(() => screensOrder.indexOf(currentScreenId), [currentScreenId]);
+    const currentScreenIndex = useMemo(() => screensOrder.indexOf(currentScreenId), [currentScreenId, screensOrder]);
     const isFinalScreen = currentScreenIndex >= screensOrder.length - 1;
 
     const switchNextScreen = () => {
@@ -88,7 +88,7 @@ function FlowProvider<T extends TWalletScreens>({
 
     const currentScreen = useMemo(() => {
         return screens[currentScreenId];
-    }, [currentScreenId]);
+    }, [currentScreenId, screens]);
 
     if (!currentScreenId) return null;
 

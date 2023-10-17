@@ -109,7 +109,8 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                                                         'proof-of-ownership-valid-identifier':
                                                             values?.data?.[index]?.[item_index]
                                                                 ?.payment_method_identifier &&
-                                                            !errors?.[item_index]?.payment_method_identifier,
+                                                            !errors?.data?.[index]?.[item_index]
+                                                                ?.payment_method_identifier,
                                                     }
                                                 )}
                                                 type='text'
@@ -136,7 +137,7 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                                                     );
                                                 }}
                                                 data-testid='dt_payment_method_identifier'
-                                                error={errors?.[item_index]?.payment_method_identifier}
+                                                error={errors?.data?.[index]?.[item_index]?.payment_method_identifier}
                                             />
                                         </div>
                                     )}
@@ -153,7 +154,8 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                                                                 'proof-of-ownership-valid-identifier':
                                                                     values?.data?.[index]?.[item_index]
                                                                         ?.payment_method_identifier &&
-                                                                    !errors?.[item_index]?.payment_method_identifier,
+                                                                    !errors?.data?.[index]?.[item_index]
+                                                                        ?.payment_method_identifier,
                                                             }
                                                         )}
                                                         type='text'
@@ -181,7 +183,10 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                                                             );
                                                         }}
                                                         data-testid='dt_payment_method_identifier'
-                                                        error={errors?.[item_index]?.payment_method_identifier}
+                                                        error={
+                                                            errors?.data?.[index]?.[item_index]
+                                                                ?.payment_method_identifier
+                                                        }
                                                     />
                                                 </div>
                                             )}
@@ -198,7 +203,7 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                                                     }
                                                     class_name='proof-of-ownership__card-open-inputs-photo'
                                                     name={`data[${index}].[${item_index}].files[${i}]`}
-                                                    error={errors?.[item_index]?.files?.[i]}
+                                                    error={errors?.data?.[index]?.[item_index]?.files?.[i]}
                                                     index={index}
                                                     item_index={item_index}
                                                     sub_index={i}

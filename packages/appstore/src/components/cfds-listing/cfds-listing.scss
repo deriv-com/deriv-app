@@ -21,20 +21,20 @@
         transition: transform 0.6s ease;
         transform: rotateY(0deg);
         @include mobile {
-            min-height: 100vh;
+            min-height: 100%;
         }
     }
     &__footer-content {
         background-color: var(--general-main-1);
         @include mobile {
             position: sticky;
-            bottom: 6.2rem;
+            bottom: 0;
         }
     }
     &__footer-button {
         background-color: var(--general-main-1);
         @include mobile {
-            height: 7.2rem;
+            height: 10rem;
             position: sticky;
             bottom: 0;
             width: 100%;
@@ -179,6 +179,8 @@
         flex-direction: column;
         justify-content: space-between;
         @include mobile {
+            position: sticky;
+            bottom: 0;
             min-height: auto;
             width: 100%;
         }

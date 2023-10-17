@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
-import { useModal } from '../../../../components/ModalProvider';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
+import { WalletText } from '../../../../components';
 import './Success.scss';
 
 type TSuccessProps = {
-    marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
-    title: string;
     description: string;
+    marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
+    renderButton: () => ReactNode;
+    title: string;
 };
 
 const marketTypeToTitleMapper: Record<TSuccessProps['marketType'], string> = {
@@ -17,9 +18,8 @@ const marketTypeToTitleMapper: Record<TSuccessProps['marketType'], string> = {
     synthetic: 'MT5 Derived',
 };
 
-const Success: React.FC<TSuccessProps> = ({ marketType }) => {
+const Success: React.FC<TSuccessProps> = ({ description, marketType, renderButton, title }) => {
     const { data } = useActiveWalletAccount();
-    const { hide } = useModal();
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
@@ -45,17 +45,13 @@ const Success: React.FC<TSuccessProps> = ({ marketType }) => {
                 <div className='wallets-success__info__text--wallet'>{data?.currency} Wallet</div>
                 <div className='wallets-success__info__text--amount'>{data?.display_balance} USD</div>
             </WalletGradientBackground>
-            <div className='wallets-success__title'>
-                Your {marketTypeToTitleMapper[marketType]}
-                {isDemo && ' demo'} account is ready
-            </div>
-            <div className='wallets-success__subtitle'>
-                You can now start practicing trading with your {marketTypeToTitleMapper[marketType]}
-                {isDemo && ' demo'} account.
-            </div>
-            <button className='wallets-success__button' onClick={hide}>
-                Continue
-            </button>
+            <WalletText align='center' size='md' weight='bold'>
+                {title}
+            </WalletText>
+            <WalletText align='center' size='sm'>
+                {description}
+            </WalletText>
+            {renderButton()}
         </div>
     );
 };

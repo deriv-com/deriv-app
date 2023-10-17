@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form,Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';

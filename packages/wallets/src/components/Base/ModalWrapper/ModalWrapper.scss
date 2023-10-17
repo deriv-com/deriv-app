@@ -1,0 +1,10 @@
+.wallets-modal {
+    position: relative;
+
+    &__close-icon {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        cursor: pointer;
+    }
+}

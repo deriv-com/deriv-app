@@ -15,7 +15,6 @@ type TFloatingRate = {
     fiat_currency: string;
     local_currency: string;
     name?: string;
-    offset: object;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     required?: boolean;
     value?: string;
@@ -29,7 +28,6 @@ const FloatingRate = ({
     fiat_currency,
     local_currency,
     name,
-    offset,
     onChange,
     required,
     value,

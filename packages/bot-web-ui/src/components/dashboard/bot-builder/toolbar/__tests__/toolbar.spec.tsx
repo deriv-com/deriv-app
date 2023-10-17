@@ -27,6 +27,9 @@ const mockDbotStore = {
         is_dialog_open: false,
     },
     quick_strategy: {},
+    quick_strategy_store_1: {
+        setFormVisibility: jest.fn(),
+    },
     dashboard: {},
 };
 

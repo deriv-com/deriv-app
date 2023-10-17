@@ -3,8 +3,9 @@ import useAllAvailableAccounts from './useAllAvailableAccounts';
 import useCurrencyConfig from './useCurrencyConfig';
 import useWalletAccountsList from './useWalletAccountsList';
 
+/** A custom hook that gets the list of available wallets. */
 const useAvailableWallets = () => {
-    const { data: account_type_data } = useAllAvailableAccounts();
+    const { data: account_type_data, ...rest } = useAllAvailableAccounts();
     const { data: added_wallets } = useWalletAccountsList();
     const { getConfig } = useCurrencyConfig();
 
@@ -44,7 +45,7 @@ const useAvailableWallets = () => {
 
         const getConfigIsCrypto = (currency: string) => getConfig(currency)?.is_crypto;
 
-        // Sort the unadded wallets alphabetically by fiat, crypto, then virtual
+        // Sort the non-added wallets alphabetically by fiat, crypto, then virtual
         modified_available_wallets.sort((a, b) => {
             const a_config = getConfigIsCrypto(a.currency || 'BTC');
             const b_config = getConfigIsCrypto(b.currency || 'BTC');
@@ -71,6 +72,7 @@ const useAvailableWallets = () => {
     return {
         /** Sorted available wallets */
         data: sorted_available_wallets,
+        ...rest,
     };
 };
 

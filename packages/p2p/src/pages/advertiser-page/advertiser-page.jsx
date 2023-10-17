@@ -1,30 +1,34 @@
 import React from 'react';
+import classNames from 'classnames';
+import { reaction } from 'mobx';
+import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
 import { daysSince, isMobile, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
-import { reaction } from 'mobx';
-import { useHistory } from 'react-router-dom';
-import { useStores } from 'Stores';
+
 import { Localize, localize } from 'Components/i18next';
-import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { api_error_codes } from 'Constants/api-error-codes';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 import PageReturn from 'Components/page-return';
 import RecommendedBy from 'Components/recommended-by';
-import UserAvatar from 'Components/user/user-avatar';
-import AdvertiserPageStats from './advertiser-page-stats.jsx';
-import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import StarRating from 'Components/star-rating';
-import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from 'Components/trade-badge';
+import UserAvatar from 'Components/user/user-avatar';
+import { api_error_codes } from 'Constants/api-error-codes';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores';
+
+import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
+import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
+import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import BlockUserOverlay from './block-user/block-user-overlay';
-import classNames from 'classnames';
-import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
     const {
+        advertiser_id,
+        advertiser_info,
         counterparty_advert_id,
         counterparty_advertiser_id,
         is_advertiser,
@@ -35,11 +39,12 @@ const AdvertiserPage = () => {
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
     const { advertiser_details_name, advertiser_details_id, counterparty_advertiser_info } = advertiser_page_store;
 
-    const is_my_advert = advertiser_details_id === general_store.advertiser_id;
+    const is_my_advert = advertiser_details_id === advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
-    const info = is_my_advert ? general_store.advertiser_info : counterparty_advertiser_info;
+    const info = is_my_advert ? advertiser_info : counterparty_advertiser_info;
 
     const history = useHistory();
+    const location = useLocation();
 
     const {
         basic_verification,
@@ -131,6 +136,11 @@ const AdvertiserPage = () => {
     }, [counterparty_advert_id, isFetching, setShowAdvertInfo]);
 
     React.useEffect(() => {
+        if (location.search || counterparty_advertiser_id) {
+            const url_params = new URLSearchParams(location.search);
+            general_store.setCounterpartyAdvertiserId(url_params.get('id'));
+        }
+
         buy_sell_store.setShowAdvertiserPage(true);
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
@@ -205,6 +215,7 @@ const AdvertiserPage = () => {
 
         return () => {
             disposeBlockUnblockUserErrorReaction();
+            advertiser_page_store.onUnmount();
         };
     }, [advertiser_details_name, counterparty_advertiser_info]);
 
@@ -334,6 +345,9 @@ const AdvertiserPage = () => {
                                 {rating_average ? (
                                     <React.Fragment>
                                         <div className='advertiser-page__rating--row'>
+                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                {rating_average_decimal}
+                                            </Text>
                                             <StarRating
                                                 empty_star_className='advertiser-page__rating--star'
                                                 empty_star_icon='IcEmptyStar'
@@ -346,9 +360,6 @@ const AdvertiserPage = () => {
                                                 star_size={isMobile() ? 17 : 20}
                                             />
                                             <div className='advertiser-page__rating--text'>
-                                                <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                    {rating_average_decimal}
-                                                </Text>
                                                 <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                                     {rating_count === 1 ? (
                                                         <Localize

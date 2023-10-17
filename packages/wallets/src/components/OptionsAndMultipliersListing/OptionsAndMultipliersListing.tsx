@@ -5,52 +5,50 @@ import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
 import IcAppstoreDerivGo from '../../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../../public/images/ic-appstore-smart-trader.svg';
-import { PrimaryActionButton } from '../PrimaryActionButton';
+import { WalletButton, WalletText } from '../Base';
 import { TradingAccountCard } from '../TradingAccountCard';
 import './OptionsAndMultipliersListing.scss';
 
-const options_and_multipliers = [
+const optionsAndMultipliers = [
     {
-        title: 'Deriv Trader',
         description: 'Options and multipliers trading platform.',
         icon: <IcAppstoreDerivTrader />,
+        title: 'Deriv Trader',
     },
     {
-        title: 'Deriv Bot',
         description: 'Automate your trading, no coding needed.',
         icon: <IcAppstoreDerivBot />,
+        title: 'Deriv Bot',
     },
     {
-        title: 'SmartTrader',
         description: 'Our legacy options trading platform.',
         icon: <IcAppstoreSmartTrader />,
+        title: 'SmartTrader',
     },
     {
-        title: 'Binary Bot',
         description: 'Our legacy automated trading platform.',
         icon: <IcAppstoreBinaryBot />,
+        title: 'Binary Bot',
     },
     {
-        title: 'Deriv GO',
         description: 'Trade on the go with our mobile app.',
         icon: <IcAppstoreDerivGo />,
+        title: 'Deriv GO',
     },
 ];
 
 const OptionsAndMultipliersListing = () => {
-    const { is_mobile } = useDevice();
+    const { isMobile } = useDevice();
 
     return (
         <div className='wallets-options-and-multipliers-listing'>
             <section className='wallets-options-and-multipliers-listing__header'>
-                {!is_mobile && (
-                    <div className='wallets-options-and-multipliers-listing__header-title'>
-                        {/* TODO: Localization needed*/}
-                        <h1>Options & Multipliers</h1>
-                    </div>
+                {!isMobile && (
+                    <WalletText align='center' lineHeight='6xl' size='3xl' weight='bold'>
+                        Options & Multipliers
+                    </WalletText>
                 )}
                 <div className='wallets-options-and-multipliers-listing__header-subtitle'>
-                    {/* TODO: Localization needed*/}
                     <h1>
                         Earn a range of payouts by correctly predicting market price movements with{' '}
                         <a className='wallets-options-and-multipliers-listing__header-subtitle__link' href='#' key={0}>
@@ -64,7 +62,7 @@ const OptionsAndMultipliersListing = () => {
                 </div>
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
-                {options_and_multipliers.map(account => (
+                {optionsAndMultipliers.map(account => (
                     <TradingAccountCard
                         {...account}
                         key={`trading-account-card-${account.title}`}
@@ -72,18 +70,21 @@ const OptionsAndMultipliersListing = () => {
                             <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
                         )}
                         trailing={() => (
-                            <PrimaryActionButton>
-                                <p className='wallets-options-and-multipliers-listing__content__text'>Open</p>
-                            </PrimaryActionButton>
+                            <WalletButton>
+                                <WalletText align='center' color='white' size='sm' weight='bold'>
+                                    Get
+                                </WalletText>
+                            </WalletButton>
                         )}
                     >
                         <div className='wallets-options-and-multipliers-listing__content__details'>
-                            <p className='wallets-options-and-multipliers-listing__content__details-title'>
+                            <WalletText size='sm' weight='bold'>
                                 {account.title}
-                            </p>
-                            <p className='wallets-options-and-multipliers-listing__content__details-description'>
+                            </WalletText>
+
+                            <WalletText lineHeight={isMobile ? 'md' : '2xs'} size={isMobile ? 'sm' : 'xs'}>
                                 {account.description}
-                            </p>
+                            </WalletText>
                         </div>
                     </TradingAccountCard>
                 ))}

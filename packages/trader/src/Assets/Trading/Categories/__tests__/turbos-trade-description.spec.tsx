@@ -4,11 +4,9 @@ import { TurbosTradeDescription } from '../turbos-trade-description';
 
 describe('<TurbosTradeDescription />', () => {
     it('a proper text of description should be rendered', () => {
-        render(<TurbosTradeDescription />);
+        render(<TurbosTradeDescription onClick={jest.fn()} />);
         expect(
-            screen.getByText(
-                /This product allows you to express a strong bullish or bearish view on an underlying asset/i
-            )
+            screen.getByText(/Turbo options allow you to predict the direction of the underlying asset’s movements./i)
         ).toBeInTheDocument();
     });
 });

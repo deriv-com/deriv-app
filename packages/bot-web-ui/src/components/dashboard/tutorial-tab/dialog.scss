@@ -53,17 +53,6 @@
             padding: 1.6rem;
         }
     }
-    &--end {
-        .dc-btn--secondary {
-            display: none;
-        }
-
-        @include mobile {
-            .dc-btn--primary {
-                padding: 1rem;
-            }
-        }
-    }
 
     .dc-dialog__content {
         &__header {

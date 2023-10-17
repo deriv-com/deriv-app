@@ -8,7 +8,7 @@ type TSentEmailModal = {
     is_modal_when_mobile?: boolean;
     is_open: boolean;
     has_live_chat?: boolean;
-    onClickSendEmail: () => void;
+    onClickSendEmail: (prop?: string) => void;
     onClose: () => void;
 };
 

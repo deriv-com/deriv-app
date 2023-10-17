@@ -12,7 +12,7 @@ type TMobileDrawerSubmenu = {
     submenu_icon?: string;
     submenu_title?: string | React.ReactElement;
     submenu_suffix_icon?: string;
-    route_config_path: string;
+    route_config_path?: string;
 };
 
 const SubMenu = ({
@@ -43,7 +43,9 @@ const SubMenu = ({
                     <Text
                         as='h3'
                         size='xs'
-                        weight={window.location.pathname.startsWith(route_config_path) ? 'bold' : ''}
+                        weight={
+                            route_config_path && window.location.pathname.startsWith(route_config_path) ? 'bold' : ''
+                        }
                     >
                         {submenu_title}
                     </Text>

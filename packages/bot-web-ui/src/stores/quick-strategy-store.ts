@@ -28,15 +28,14 @@ import {
     TTypeStrategiesDropdown,
     TTypeStrategy,
 } from '../components/dashboard/quick-strategy/quick-strategy.types';
-import RootStore from './root-store';
 
 const Blockly = window.Blockly;
 
 export default class QuickStrategyStore {
-    root_store: RootStore;
+    root_store: any;
     qs_cache: TQSCache = (getSetting('quick_strategy') as TQSCache) || {};
 
-    constructor(root_store: RootStore) {
+    constructor(root_store: any) {
         makeObservable(this, {
             selected_symbol: observable,
             selected_trade_type: observable,
@@ -89,7 +88,13 @@ export default class QuickStrategyStore {
 
         this.root_store = root_store;
     }
-    selected_symbol: TMarketOption = (this.qs_cache.selected_symbol as TMarketOption) || {};
+    selected_symbol: TMarketOption =
+        (this.qs_cache.selected_symbol as TMarketOption) || {
+            group: 'Continuous Indices',
+            text: 'Volatility 100 Index',
+            value: 'R_100',
+        } ||
+        {};
     selected_trade_type: TTradeType = (this.qs_cache.selected_trade_type as TTradeType) || {};
     selected_type_strategy: TTypeStrategy = (this.qs_cache.selected_type_strategy as TTypeStrategy) || {};
     selected_duration_unit: TDurationOptions = (this.qs_cache.selected_duration_unit as TDurationOptions) || {};

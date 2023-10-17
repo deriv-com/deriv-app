@@ -1,8 +1,10 @@
-import { GetSettings, ResidenceList } from '@deriv/api-types';
-import { getUnsupportedContracts } from '../constants';
+import { GetSettings, ProfitTable, ResidenceList, Statement } from '@deriv/api-types';
+import { getContractTypeFeatureFlag, getUnsupportedContracts } from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 import { TContractInfo } from '../contract';
+import { LocalStore } from '../storage';
+import { extractInfoFromShortcode, isHighLow } from '../shortcode';
 
 type TIsUnSupportedContract = {
     contract_type?: string;
@@ -12,6 +14,19 @@ type TIsUnSupportedContract = {
 const isUnSupportedContract = (portfolio_pos: TIsUnSupportedContract) =>
     !!getUnsupportedContracts()[portfolio_pos.contract_type as keyof typeof getUnsupportedContracts] || // check unsupported contract type
     !!portfolio_pos.is_forward_starting; // for forward start contracts
+
+export const filterDisabledPositions = (
+    position:
+        | TContractInfo
+        | NonNullable<Statement['transactions']>[number]
+        | NonNullable<ProfitTable['transactions']>[number]
+) => {
+    const { contract_type, shortcode } = position as TContractInfo;
+    const type = contract_type ?? extractInfoFromShortcode(shortcode ?? '').category?.toUpperCase() ?? '';
+    return Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {}).every(
+        ([key, value]) => !!value || key !== getContractTypeFeatureFlag(type, isHighLow({ shortcode }))
+    );
+};
 
 export const formatPortfolioPosition = (
     portfolio_pos: TContractInfo,

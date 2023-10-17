@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TPlatform } from 'Types';
 
@@ -177,18 +177,20 @@ const StaticCFDAccountManager = ({
                             color={
                                 is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'prominent'
                             }
-                        >{`${formatMoney(
-                            currency,
-                            type === 'financial' ? financial_amount : derived_amount,
-                            true
-                        )} ${currency}`}</Text>
+                        >
+                            {`${formatMoney(
+                                currency,
+                                type === 'financial' ? financial_amount : derived_amount,
+                                true
+                            )} ${currency}`}
+                        </Text>
                         <Text
                             size='xs'
                             color={
                                 is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'prominent'
                             }
                         >
-                            {localize(`${loginid}`)}
+                            {loginid}
                         </Text>
                     </React.Fragment>
                 ) : (
@@ -216,7 +218,7 @@ const StaticCFDAccountManager = ({
                             primary
                             className={classNames('static-cfd-account-manager__buttons-trade', {
                                 'static-cfd-account-manager__buttons-trade--blurry': is_blurry.trade,
-                                'static-cfd-account-manager__buttons-topup--animated': is_onboarding_animated.trade,
+                                'static-cfd-account-manager__buttons-trade--animated': is_onboarding_animated.trade,
                             })}
                         >
                             <Localize i18n_default_text='Open' />

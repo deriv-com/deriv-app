@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import IcDropdown from '../../public/images/ic-dropdown.svg';
 import './WalletsAccordion.scss';
 
@@ -16,13 +16,16 @@ const WalletsAccordion: React.FC<React.PropsWithChildren<TProps>> = ({
     onToggle,
     renderHeader,
 }) => {
-    const accordionRef = React.useRef<HTMLDivElement>(null);
+    const accordionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (isOpen && accordionRef?.current) {
-            accordionRef.current.style.scrollMarginTop = '24px';
-            accordionRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
+        const timeout = setTimeout(() => {
+            if (isOpen && accordionRef?.current) {
+                accordionRef.current.style.scrollMarginTop = '24px';
+                accordionRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 300);
+        return () => clearTimeout(timeout);
     }, [isOpen]);
 
     return (
@@ -38,12 +41,14 @@ const WalletsAccordion: React.FC<React.PropsWithChildren<TProps>> = ({
                 }`}
             >
                 {renderHeader()}
-                <div
-                    className={`wallets-accordion__dropdown ${isOpen ? 'wallets-accordion__dropdown--open' : ''}`}
-                    onClick={onToggle}
-                >
-                    <IcDropdown />
-                </div>
+                {!isOpen && (
+                    <div
+                        className={`wallets-accordion__dropdown ${isOpen ? 'wallets-accordion__dropdown--open' : ''}`}
+                        onClick={onToggle}
+                    >
+                        <IcDropdown />
+                    </div>
+                )}
             </div>
             <div className={`wallets-accordion__content ${isOpen ? 'wallets-accordion__content--visible' : ''}`}>
                 {isOpen && children}

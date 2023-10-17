@@ -53,7 +53,6 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
-    ctrader_available_accounts = [];
     derivez_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
@@ -167,7 +166,6 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
-            ctrader_available_accounts: observable,
             derivez_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
@@ -384,7 +382,6 @@ export default class ClientStore extends BaseStore {
             responseTradingPlatformAvailableAccounts: action.bound,
             responseDerivezAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
-            responseCTraderAvailableAccounts: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
             syncWithLegacyPlatforms: action.bound,
@@ -695,7 +692,7 @@ export default class ClientStore extends BaseStore {
         if (Object.keys(this.currencies_list).length > 0) {
             const keys = Object.keys(this.currencies_list);
             // Fix for edge case when logging out from crypto accounts causes Fiat list to be empty
-            if (this.currencies_list[localize('Fiat')].length < 1) return 'USD';
+            if (this.currencies_list[localize('Fiat')]?.length < 1) return 'USD';
             return Object.values(this.currencies_list[`${keys[0]}`])[0].text;
         }
 
@@ -867,7 +864,7 @@ export default class ClientStore extends BaseStore {
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
         const is_current_mf = this.landing_company_shortcode === 'maltainvest';
         return (
-            is_current_mf || //is_currently logged in mf account via trdaershub
+            is_current_mf || //is_currently logged in mf account via tradershub
             (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
                 ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
                   eu_shortcode_regex.test(gaming_shortcode)
@@ -1298,6 +1295,7 @@ export default class ClientStore extends BaseStore {
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
+        localStorage.setItem('active_user_id', this.user_id);
         this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
@@ -1633,6 +1631,7 @@ export default class ClientStore extends BaseStore {
 
         if (action_param === 'payment_withdraw' && loginid_param) this.setLoginId(loginid_param);
         else this.setLoginId(LocalStore.get('active_loginid'));
+        this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
         const client = this.accounts[this.loginid];
@@ -1640,10 +1639,12 @@ export default class ClientStore extends BaseStore {
         if (authorize_response) {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
+                const { user_id } = authorize_response.authorize;
+
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                RudderStack.identifyEvent(this.user_id, {
+                RudderStack.identifyEvent(user_id, {
                     language: getLanguage().toLowerCase(),
                 });
                 const current_page = window.location.hostname + window.location.pathname;
@@ -1695,7 +1696,6 @@ export default class ClientStore extends BaseStore {
                 this.switchAccount(this.virtual_account_loginid);
             }
         }
-
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
@@ -1706,7 +1706,6 @@ export default class ClientStore extends BaseStore {
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
-            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER).then(this.responseCTraderAvailableAccounts);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseDerivezAvailableAccounts);
@@ -1721,6 +1720,12 @@ export default class ClientStore extends BaseStore {
             }
 
             if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
+            this.loginid !== 'null' && RudderStack.setAccountType(this.loginid.substring(0, 2));
+            if (this.user_id) {
+                RudderStack.identifyEvent(this.user_id, {
+                    language: getLanguage().toLowerCase(),
+                });
+            }
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
             if (this.account_settings && !this.account_settings.residence) {
@@ -1940,7 +1945,7 @@ export default class ClientStore extends BaseStore {
         // if real to virtual --> switch to blue
         // if virtual to real --> switch to green
         // else keep the existing connection
-        const should_switch_socket_connection = this.is_virtual || /VRTC/.test(from_login_id);
+        const should_switch_socket_connection = this.is_virtual || /VRTC|VRW/.test(from_login_id);
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection();
@@ -2101,6 +2106,7 @@ export default class ClientStore extends BaseStore {
         localStorage.removeItem('isNewAccount');
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
+        localStorage.setItem('active_user_id', this.user_id);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
         runInAction(async () => {
@@ -2526,12 +2532,6 @@ export default class ClientStore extends BaseStore {
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
-        }
-    }
-
-    responseCTraderAvailableAccounts(response) {
-        if (!response.error) {
-            this.ctrader_available_accounts = response.trading_platform_available_accounts;
         }
     }
 

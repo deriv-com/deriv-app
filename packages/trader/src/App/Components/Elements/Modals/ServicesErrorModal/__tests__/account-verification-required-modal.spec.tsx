@@ -1,10 +1,11 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
-import AccountVerificationRequiredModal from '../account-verification-required-modal';
 import { Router } from 'react-router-dom';
+import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { routes, isMobile } from '@deriv/shared';
+import { routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+import AccountVerificationRequiredModal from '../account-verification-required-modal';
 
 type TModal = React.FC<{
     children: React.ReactNode;
@@ -19,6 +20,16 @@ type TModal = React.FC<{
         children: React.ReactNode;
     }>;
 };
+
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    observer: jest.fn(x => x),
+    useStore: jest.fn(() => ({
+        ui: {
+            is_mobile: true,
+        },
+    })),
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -65,7 +76,11 @@ describe('<AccountVerificationRequiredModal />', () => {
         expect(screen.getByText('auto')).toBeInTheDocument();
     });
     it('height should be 220px if isMobile is false', () => {
-        (isMobile as jest.Mock).mockReturnValue(false);
+        (useStore as jest.Mock).mockReturnValue({
+            ui: {
+                is_mobile: false,
+            },
+        });
         render(<AccountVerificationRequiredModal {...mocked_props} />);
         expect(screen.getByText('220px')).toBeInTheDocument();
     });

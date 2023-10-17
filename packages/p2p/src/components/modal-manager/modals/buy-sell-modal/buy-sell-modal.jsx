@@ -70,14 +70,11 @@ BuySellModalFooter.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
 
-const BuySellModalTitle = () => {
-    const { general_store, buy_sell_store, advertiser_page_store, my_profile_store } = useStores();
+const BuySellModalTitle = ({ table_type }) => {
+    const { general_store, buy_sell_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
 
     const { account_currency } = buy_sell_store.selected_ad_state;
-    const table_type = buy_sell_store.show_advertiser_page
-        ? advertiser_page_store.counterparty_type
-        : buy_sell_store.table_type;
 
     if (my_profile_store.should_show_add_payment_method_form) {
         if (isDesktop()) {
@@ -106,6 +103,10 @@ const BuySellModalTitle = () => {
         return localize('Buy {{ currency }}', { currency: account_currency });
     }
     return localize('Sell {{ currency }}', { currency: account_currency });
+};
+
+BuySellModalTitle.propTypes = {
+    table_type: PropTypes.string.isRequired,
 };
 
 const BuySellModal = () => {
@@ -259,7 +260,7 @@ const BuySellModal = () => {
                     is_flex
                     is_modal_open={is_modal_open}
                     page_header_className='buy-sell-modal__header'
-                    page_header_text={<BuySellModalTitle />}
+                    page_header_text={<BuySellModalTitle table_type={table_type} />}
                     pageHeaderReturnFn={onCancel}
                 >
                     {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
@@ -295,17 +296,15 @@ const BuySellModal = () => {
                     className={classNames('buy-sell-modal', {
                         'buy-sell-modal__form': my_profile_store.should_show_add_payment_method_form,
                     })}
-                    height={buy_sell_store.table_type === buy_sell.BUY ? 'auto' : '649px'}
+                    height={table_type === buy_sell.BUY ? 'auto' : '649px'}
                     width='456px'
                     is_open={is_modal_open}
-                    title={<BuySellModalTitle />}
+                    title={<BuySellModalTitle table_type={table_type} />}
                     portalId='modal_root'
                     toggleModal={onCancel}
                 >
                     {/* Parent height - Modal.Header height - Modal.Footer height */}
-                    <ThemedScrollbars
-                        height={buy_sell_store.table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}
-                    >
+                    <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                         <Modal.Body className='buy-sell-modal__layout'>
                             {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                             <BuySellFormError />

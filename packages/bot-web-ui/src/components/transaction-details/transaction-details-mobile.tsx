@@ -1,12 +1,16 @@
 import React from 'react';
+
 import { MobileFullPageModal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+
 import { StatisticsSummary } from 'Components/run-panel/run-panel';
 import { transaction_elements } from 'Constants/transactions';
 import { useDBotStore } from 'Stores/useDBotStore';
+
 import MobileTransactionCards from './mobile-transaction-card';
 import { TRunPanelStore, TTransactionStore } from './transaction-details.types';
+
 import './transaction-details-mobile.scss';
 
 const TransactionDetailsMobile = observer(() => {
@@ -45,7 +49,6 @@ const TransactionDetailsMobile = observer(() => {
             </div>
             <div className='transaction-details-modal-mobile__card__footer'>
                 <StatisticsSummary
-                    has_started_onboarding_tour={false}
                     currency={client?.currency}
                     is_mobile={true}
                     lost_contracts={statistics?.lost_contracts ?? 0}

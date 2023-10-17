@@ -8,7 +8,7 @@ import EndTradeDescription from './Description/end-trade-description';
 import EvenOddTradeDescription from './Description/even-odd-trade-description';
 import HighLowTradeDescription from './Description/high-low-trade-description';
 import LbHighLowTradeDescription from './Description/lb-high-low-trade-description';
-import LbPutTradeDescription from './Description/lb-put-trade-desciption';
+import LbPutTradeDescription from './Description/lb-put-trade-description';
 import LbCallTradeDescription from './Description/lb-call-trade-description';
 import MatchDiffTradeDescription from './Description/match-diff-trade-description';
 import MultiplierTradeDescription from './Description/multiplier-trade-description';
@@ -90,7 +90,7 @@ const TradeCategories = ({
                 break;
             case TURBOS.LONG:
             case TURBOS.SHORT:
-                TradeTypeTemplate = <TurbosTradeDescription />;
+                TradeTypeTemplate = <TurbosTradeDescription onClick={onClick} />;
                 break;
             case VANILLALONG.CALL:
             case VANILLALONG.PUT:

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import LbPutTradeDescription from '../lb-put-trade-desciption';
+import LbPutTradeDescription from '../lb-put-trade-description';
 
 describe('<LbPutTradeDescription />', () => {
     it('a proper text of description should be rendered', () => {

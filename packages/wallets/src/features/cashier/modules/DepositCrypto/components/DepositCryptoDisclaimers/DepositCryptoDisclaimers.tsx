@@ -1,7 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { InlineMessage } from '../../../../../components/Base';
-import useDevice from '../../../../../hooks/useDevice';
+import { InlineMessage } from '../../../../../../components/Base';
+import useDevice from '../../../../../../hooks/useDevice';
 import './DepositCryptoDisclaimers.scss';
 
 // Check with BE to see if we can get the network name from the API.

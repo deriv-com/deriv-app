@@ -26,7 +26,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         wsSubscribe,
     } = chart_store;
     const { is_drawer_open } = run_panel;
-    const { is_enabled_modal_chart } = dashboard;
+    const { is_chart_modal_visible } = dashboard;
     const is_socket_opened = common.is_socket_opened;
     const settings = {
         assetInformation: false, // ui.is_chart_asset_info_visible,
@@ -41,7 +41,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         <div
             className={classNames('dashboard__chart-wrapper', {
                 'dashboard__chart-wrapper--expanded': is_drawer_open && !isMobile(),
-                'dashboard__chart-wrapper--modal': is_enabled_modal_chart && !isMobile(),
+                'dashboard__chart-wrapper--modal': is_chart_modal_visible && !isMobile(),
             })}
         >
             <SmartChart

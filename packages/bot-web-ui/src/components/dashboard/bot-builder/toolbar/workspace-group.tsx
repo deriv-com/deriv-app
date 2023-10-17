@@ -28,7 +28,7 @@ const WorkspaceGroup = observer(
         toggleSaveModal,
     }: TWorkspaceGroup) => {
         const { dashboard } = useDBotStore();
-        const { setPreviewOnPopup, setEnabledModalChart } = dashboard;
+        const { setPreviewOnPopup, setChartModalVisibility } = dashboard;
 
         return (
             <div className='toolbar__group toolbar__group-btn' data-testid='dt_toolbar_group_btn'>
@@ -68,7 +68,7 @@ const WorkspaceGroup = observer(
                         popover_message={localize('Charts')}
                         icon='IcChartsTabDbot'
                         icon_id='db-toolbar__charts-button'
-                        action={() => setEnabledModalChart()}
+                        action={() => setChartModalVisibility()}
                     />
                 )}
                 <div className='vertical-divider' />

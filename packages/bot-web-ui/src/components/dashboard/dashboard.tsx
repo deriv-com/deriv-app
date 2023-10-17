@@ -24,8 +24,8 @@ const Dashboard = observer(() => {
     const {
         active_tab,
         active_tour,
-        is_enabled_modal_chart,
-        setEnabledModalChart,
+        is_chart_modal_visible,
+        setChartModalVisibility,
         setActiveTab,
         setWebSocketState,
         setActiveTour,
@@ -194,11 +194,11 @@ const Dashboard = observer(() => {
             <Draggable
                 xaxis={window.innerWidth / 2}
                 yaxis={window.innerHeight / 2}
-                is_visible={is_enabled_modal_chart}
+                is_visible={is_chart_modal_visible}
                 header_title=''
-                onCloseDraggable={setEnabledModalChart}
+                onCloseDraggable={setChartModalVisibility}
             >
-                <ChartModal setEnabledModalChart={setEnabledModalChart} />
+                <ChartModal setChartModalVisibility={setChartModalVisibility} />
             </Draggable>
             <StrategyNotification />
         </React.Fragment>

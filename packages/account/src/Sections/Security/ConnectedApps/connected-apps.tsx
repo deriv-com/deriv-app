@@ -11,7 +11,8 @@ import ConnectedAppsEmpty from './connected-apps-empty';
 import DataListTemplate from './data-list-template';
 import DataTableTemplate from './data-table-template';
 import './connected-apps.scss';
-import { TSource } from '../../../../../components/src/components/data-table/data-table';
+
+type TSource = React.ComponentProps<typeof DataTable>['columns'];
 
 const ConnectedApps = observer(() => {
     const { ui } = useStore();
@@ -59,7 +60,7 @@ const ConnectedApps = observer(() => {
                             <div className='connected-apps__tabular--wrapper'>
                                 <DataTable
                                     className='connected-apps'
-                                    data_source={connected_apps as unknown as TSource[]}
+                                    data_source={connected_apps as unknown as TSource}
                                     columns={DataTableTemplate(handleToggleModal)}
                                     content_loader='span'
                                 />

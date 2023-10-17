@@ -11,10 +11,12 @@ describe('<ConnectedAppsInfo />', () => {
         const heading = screen.getByRole('heading', { name: 'What are connected apps?' });
         expect(heading).toBeInTheDocument();
     });
+
     it('should have an ordered list', () => {
         const orderedlist = screen.getByRole('list');
         expect(orderedlist).toBeInTheDocument();
     });
+
     it('should have three list items', () => {
         const listitems = screen.getAllByRole('listitem');
         expect(listitems).toHaveLength(3);

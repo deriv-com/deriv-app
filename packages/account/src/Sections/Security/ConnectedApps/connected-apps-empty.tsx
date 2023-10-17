@@ -10,16 +10,25 @@ const ConnectedAppsEmpty = observer(() => {
     const text_size = is_mobile ? 'xxxs' : 'xxs';
     const bullets = [
         {
-            key: '1.',
-            text: 'Connected apps are authorised applications associated with your account through your API token or the OAuth authorisation process. They can act on your behalf within the limitations that you have set.',
+            key: 'key_1',
+            bullet_number: <Localize i18n_default_text='1.' />,
+            text: (
+                <Localize i18n_default_text='Connected apps are authorised applications associated with your account through your API token or the OAuth authorisation process. They can act on your behalf within the limitations that you have set.' />
+            ),
         },
         {
-            key: '2.',
-            text: 'As a user, you are responsible for sharing access and for actions that occur in your account (even if they were initiated by a third-party app on your behalf).',
+            key: 'key_2',
+            bullet_number: <Localize i18n_default_text='2.' />,
+            text: (
+                <Localize i18n_default_text='As a user, you are responsible for sharing access and for actions that occur in your account (even if they were initiated by a third-party app on your behalf).' />
+            ),
         },
         {
-            key: '3.',
-            text: 'Please note that only third-party apps will be displayed on this page. Official Deriv apps will not appear here.',
+            key: 'key_3',
+            bullet_number: <Localize i18n_default_text='3.' />,
+            text: (
+                <Localize i18n_default_text='Please note that only third-party apps will be displayed on this page. Official Deriv apps will not appear here.' />
+            ),
         },
     ];
 
@@ -32,10 +41,10 @@ const ConnectedAppsEmpty = observer(() => {
                 {bullets.map(bullet => (
                     <div key={bullet.key} className='connected-apps__empty--entry'>
                         <Text size={text_size} color='primary'>
-                            <Localize i18n_default_text={bullet.key} />
+                            {bullet.bullet_number}
                         </Text>
                         <Text size={text_size} color='primary'>
-                            <Localize i18n_default_text={bullet.text} />
+                            {bullet.text}
                         </Text>
                     </div>
                 ))}

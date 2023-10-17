@@ -1,11 +1,11 @@
 import React from 'react';
-import { render, screen, waitFor, act } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import ConnectedApps from '../connected-apps';
-import userEvent from '@testing-library/user-event';
 import { useOAuthConnectedApps, useOAuthRevokeConnectedApps } from '@deriv/hooks';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import { render, screen, waitFor, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import ConnectedApps from '../connected-apps';
 
-const mock_connected_apps = [
+const mock_connected_apps: ReturnType<typeof useOAuthConnectedApps>['data'] = [
     {
         name: 'Local',
         app_markup_percentage: 0,
@@ -13,24 +13,26 @@ const mock_connected_apps = [
         scopes: ['read', 'admin', 'trade', 'payments'],
         last_used: '2021-10-31 06:49:52',
         official: 0,
+        appstore: '',
+        github: '',
+        googleplay: '',
+        homepage: '',
+        redirect_uri: '',
+        verification_uri: '',
+        active: 0,
     },
 ];
-jest.mock('@deriv/hooks', () => {
-    return {
-        ...jest.requireActual('@deriv/hooks'),
-        useOAuthConnectedApps: jest.fn(),
-        useOAuthRevokeConnectedApps: jest.fn(),
-    };
-});
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useOAuthConnectedApps: jest.fn(),
+    useOAuthRevokeConnectedApps: jest.fn(),
+}));
 const mockUseOAuthConnectedApps = useOAuthConnectedApps as jest.Mock;
 const mockUseOAuthRevokeConnectedApps = useOAuthRevokeConnectedApps as jest.Mock;
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
-    return {
-        ...original_module,
-        Loading: jest.fn(() => <div>Mocked Loading</div>),
-    };
-});
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Loading: jest.fn(() => <div>Mocked Loading</div>),
+}));
 jest.mock('../connected-apps-earn-more', () => jest.fn(() => <div>Mocked Earn More</div>));
 jest.mock('../connected-apps-empty', () => jest.fn(() => <div>Mocked Empty Apps</div>));
 jest.mock('../connected-apps-know-more', () => jest.fn(() => <div>Mocked Know More</div>));
@@ -39,6 +41,7 @@ describe('ConnectedApps', () => {
     const originalOffsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
     const originalOffsetWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth');
     let modal_root_el: HTMLDivElement;
+
     beforeAll(() => {
         Object.defineProperty(HTMLElement.prototype, 'offsetHeight', { configurable: true, value: 50 });
         Object.defineProperty(HTMLElement.prototype, 'offsetWidth', { configurable: true, value: 50 });
@@ -46,6 +49,7 @@ describe('ConnectedApps', () => {
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
     });
+
     beforeEach(() => {
         mockUseOAuthConnectedApps.mockReturnValue({
             data: mock_connected_apps,
@@ -54,6 +58,7 @@ describe('ConnectedApps', () => {
         });
         mockUseOAuthRevokeConnectedApps.mockReturnValue({ revokeOAuthApp: jest.fn() });
     });
+
     afterAll(() => {
         Object.defineProperty(HTMLElement.prototype, 'offsetHeight', originalOffsetHeight as PropertyDescriptor);
         Object.defineProperty(HTMLElement.prototype, 'offsetWidth', originalOffsetWidth as PropertyDescriptor);
@@ -77,9 +82,7 @@ describe('ConnectedApps', () => {
     it("should render the 'Know more' component", async () => {
         renderComponent();
 
-        await waitFor(() => {
-            expect(screen.getByText(/Mocked Know More/i)).toBeInTheDocument();
-        });
+        expect(screen.getByText(/Mocked Know More/i)).toBeInTheDocument();
     });
 
     it("should render the 'Earn more' component", async () => {
@@ -92,34 +95,50 @@ describe('ConnectedApps', () => {
 
     it('should render the app list in Desktop view', async () => {
         renderComponent();
-        const mock_permissions = mock_connected_apps[0].scopes
-            .map(scope => scope.charAt(0).toUpperCase().concat(scope.substring(1)))
+        const mock_permissions = mock_connected_apps[0]?.scopes
+            ?.map(scope => scope.charAt(0).toUpperCase().concat(scope.substring(1)))
             .join(', ');
 
         await waitFor(() => {
             expect(screen.getByText('Name')).toBeInTheDocument();
             expect(screen.getByText(mock_connected_apps[0].name)).toBeInTheDocument();
             expect(screen.getByText('Last login')).toBeInTheDocument();
-            expect(screen.getByText(mock_connected_apps[0].last_used)).toBeInTheDocument();
+            if (mock_connected_apps[0]?.last_used) {
+                expect(screen.getByText(mock_connected_apps[0].last_used)).toBeInTheDocument();
+            } else {
+                expect(mock_connected_apps[0].last_used).not.toBeNull();
+            }
             expect(screen.getByText('Permission')).toBeInTheDocument();
-            expect(screen.getByText(mock_permissions)).toBeInTheDocument();
+            if (mock_permissions) {
+                expect(screen.getByText(mock_permissions)).toBeInTheDocument();
+            } else {
+                expect(mock_permissions).not.toBeNull();
+            }
             expect(screen.getByRole('button', { name: 'Revoke access' })).toBeInTheDocument();
         });
     });
 
     it('should render the app list in Mobile view', async () => {
         renderComponent(mockStore({ ui: { is_mobile: true } }));
-        const mock_permissions = mock_connected_apps[0].scopes
-            .map(scope => scope.charAt(0).toUpperCase().concat(scope.substring(1)))
+        const mock_permissions = mock_connected_apps[0]?.scopes
+            ?.map(scope => scope.charAt(0).toUpperCase().concat(scope.substring(1)))
             .join(', ');
 
         await waitFor(() => {
             expect(screen.getByText('Name')).toBeInTheDocument();
             expect(screen.getByText(mock_connected_apps[0].name)).toBeInTheDocument();
             expect(screen.getByText('Last login')).toBeInTheDocument();
-            expect(screen.getByText(mock_connected_apps[0].last_used)).toBeInTheDocument();
+            if (mock_connected_apps[0]?.last_used) {
+                expect(screen.getByText(mock_connected_apps[0].last_used)).toBeInTheDocument();
+            } else {
+                expect(mock_connected_apps[0].last_used).not.toBeNull();
+            }
             expect(screen.getByText('Permission')).toBeInTheDocument();
-            expect(screen.getByText(mock_permissions)).toBeInTheDocument();
+            if (mock_permissions) {
+                expect(screen.getByText(mock_permissions)).toBeInTheDocument();
+            } else {
+                expect(mock_permissions).not.toBeNull();
+            }
             expect(screen.getByRole('button', { name: 'Revoke access' })).toBeInTheDocument();
         });
     });
@@ -129,20 +148,22 @@ describe('ConnectedApps', () => {
         mockUseOAuthRevokeConnectedApps.mockReturnValue({ revokeOAuthApp: mockRevokeOAuthApp });
         renderComponent();
 
+        const revoke_button = screen.getByRole('button', { name: 'Revoke access' });
+        act(() => {
+            userEvent.click(revoke_button);
+        });
         await waitFor(() => {
-            const revoke_button = screen.getByRole('button', { name: 'Revoke access' });
-            act(() => {
-                userEvent.click(revoke_button);
-            });
             expect(screen.getByText(/Confirm revoke access\?/i)).toBeInTheDocument();
             expect(screen.getByRole('button', { name: 'Back' })).toBeInTheDocument();
+        });
 
-            const confirm_button = screen.getByRole('button', { name: 'Confirm' });
+        const confirm_button = screen.getByRole('button', { name: 'Confirm' });
+        act(() => {
+            userEvent.click(confirm_button);
+        });
+        await waitFor(() => {
             expect(confirm_button).toBeInTheDocument();
-            act(() => {
-                userEvent.click(confirm_button);
-                expect(mockRevokeOAuthApp).toHaveBeenCalledTimes(1);
-            });
+            expect(mockRevokeOAuthApp).toHaveBeenCalledTimes(1);
         });
     });
 

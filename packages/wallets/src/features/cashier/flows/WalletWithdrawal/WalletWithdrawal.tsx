@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
 import { useSettings, useVerifyEmail } from '@deriv/api';
 import { WalletWithdrawalVerification, WalletWithdrawalVerificationSent } from '../../screens';
+import { WithdrawalVerification, WithdrawalVerificationSent } from '../../modules';
 
 const WalletWithdrawal = () => {
     const [emailSent, setEmailSent] = useState(false);

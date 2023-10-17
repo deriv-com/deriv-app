@@ -20,7 +20,7 @@ const ContentWrapper = ({ children }) => {
     return <OrderTableHeader>{children}</OrderTableHeader>;
 };
 
-const OrderTableContent = ({ clearScroll, retain_scroll_position, scroll_to_index }) => {
+const OrderTableContent = ({ clearScroll, scroll_to_index }) => {
     const { general_store, order_store } = useStores();
     const {
         client: { loginid },
@@ -65,7 +65,7 @@ const OrderTableContent = ({ clearScroll, retain_scroll_position, scroll_to_inde
                         items={modified_list}
                         keyMapperFn={item => item.id}
                         loadMoreRowsFn={order_store.loadMoreOrders}
-                        retain_scroll_position={retain_scroll_position}
+                        retain_scroll_position
                         rowRenderer={row_props => <OrderRow index={scroll_to_index} {...row_props} />}
                         scroll_to_index={scroll_to_index}
                     />
@@ -95,7 +95,6 @@ const OrderTableContent = ({ clearScroll, retain_scroll_position, scroll_to_inde
 
 OrderTableContent.propTypes = {
     clearScroll: PropTypes.func,
-    retain_scroll_position: PropTypes.bool,
     scroll_to_index: PropTypes.number,
 };
 

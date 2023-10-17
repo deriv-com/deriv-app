@@ -2,25 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import { ButtonToggle } from '@deriv/components';
-import { routes } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/toggle-container';
 import { order_list } from 'Constants/order-list';
 import { useStores } from 'Stores';
-import { checkRoutingHistory } from 'Utils/helper';
 import OrderTableContent from './order-table-content.jsx';
 import './order-table.scss';
 
 const OrderTable = ({ showDetails }) => {
     const { general_store } = useStores();
     const history = useHistory();
-    const { common } = useStore();
-    const { app_routing_history } = common;
     const { scroll_to_index_value } = history.location.state ?? {};
 
-    const is_from_order_details_page = checkRoutingHistory(app_routing_history, routes.p2p_orders);
     const [scroll_to_index, setScrollToIndex] = React.useState(
         scroll_to_index_value !== undefined ? scroll_to_index_value + 1 : -1
     );
@@ -74,7 +68,6 @@ const OrderTable = ({ showDetails }) => {
                 showDetails={showDetails}
                 is_active={is_active_tab}
                 clearScroll={clearScroll}
-                retain_scroll_position={is_from_order_details_page}
                 scroll_to_index={scroll_to_index}
             />
         </React.Fragment>

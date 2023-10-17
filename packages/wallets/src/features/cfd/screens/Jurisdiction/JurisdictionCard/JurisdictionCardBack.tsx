@@ -23,8 +23,8 @@ const verificationIconsMapper: Record<string, JSX.Element> = {
 };
 
 const verificationStatusIconsMapper: Record<string, JSX.Element> = {
-    verificationPendingStatusIcon: <VerificationPendingStatusIcon />,
     verificationFailedStatusIcon: <VerificationFailedStatusIcon />,
+    verificationPendingStatusIcon: <VerificationPendingStatusIcon />,
     verificationSuccessStatusIcon: <VerificationSuccessStatusIcon />,
 };
 

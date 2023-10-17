@@ -13,7 +13,7 @@ type TPaymentMethodCardProps = {
     disabled?: boolean;
     is_add?: boolean;
     is_vertical_ellipsis_visible?: boolean;
-    label?: string | undefined;
+    label?: string;
     large?: boolean;
     medium?: boolean;
     onClick?: () => void;
@@ -21,7 +21,7 @@ type TPaymentMethodCardProps = {
     payment_method?: TPaymentMethod;
     show_payment_method_name?: boolean;
     small?: boolean;
-    style?: object;
+    style?: React.CSSProperties | undefined;
 };
 
 const PaymentMethodCard = ({

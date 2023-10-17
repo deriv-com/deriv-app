@@ -38,7 +38,7 @@ const PaymentMethodsEmpty = () => {
                     body_className='payment-methods-list__modal'
                     height_offset='80px'
                     is_flex
-                    is_modal_open={true}
+                    is_modal_open
                     onClickClose={() => {
                         // do nothing
                     }}

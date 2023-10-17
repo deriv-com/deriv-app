@@ -81,7 +81,7 @@ describe('<PaymentMethodCard />', () => {
     it('should call setPaymentMethodToEdit, setSelectedPaymentMethodDisplayName, setShouldShowEditPaymentMethodForm if Edit is pressed', async () => {
         render(<PaymentMethodCard payment_method={payment_method_card_props} />, { wrapper });
 
-        const dropdown = screen.getByTestId('dti_dropdown_display');
+        const dropdown = screen.getByTestId('dt_dropdown_display');
         userEvent.click(dropdown);
 
         await waitFor(() => {
@@ -96,7 +96,7 @@ describe('<PaymentMethodCard />', () => {
     it('should call showModal if Delete is pressed', async () => {
         render(<PaymentMethodCard payment_method={payment_method_card_props} />, { wrapper });
 
-        const dropdown = screen.getByTestId('dti_dropdown_display');
+        const dropdown = screen.getByTestId('dt_dropdown_display');
         userEvent.click(dropdown);
 
         await waitFor(() => {

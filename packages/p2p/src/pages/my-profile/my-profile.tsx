@@ -1,5 +1,5 @@
 import React from 'react';
-import { AutoSizer, DesktopWrapper, Loading, Text } from '@deriv/components';
+import { DesktopWrapper, Loading, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import Verification from 'Components/verification';
@@ -47,19 +47,15 @@ const MyProfile = () => {
     }
 
     return (
-        <AutoSizer>
-            {({ height, width }) => (
-                <div className='my-profile' style={{ height, width }}>
-                    <div className='my-profile__content'>
-                        <MyProfileDetailsContainer />
-                        <DesktopWrapper>
-                            <MyProfileHeader />
-                        </DesktopWrapper>
-                        <MyProfileContent />
-                    </div>
-                </div>
-            )}
-        </AutoSizer>
+        <div className='my-profile'>
+            <div className='my-profile__content'>
+                <MyProfileDetailsContainer />
+                <DesktopWrapper>
+                    <MyProfileHeader />
+                </DesktopWrapper>
+                <MyProfileContent />
+            </div>
+        </div>
     );
 };
 

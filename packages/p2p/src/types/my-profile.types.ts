@@ -12,14 +12,9 @@ export type TPaymentMethodFieldMapProps = {
 
 export type TPaymentMethod = {
     display_name?: string;
-    fields?: {
-        account?: TPaymentMethodFieldProps;
-        bank_code?: TPaymentMethodFieldProps;
-        bank_name?: TPaymentMethodFieldProps;
-        branch?: TPaymentMethodFieldProps;
-        instructions?: TPaymentMethodFieldProps;
-        name?: TPaymentMethodFieldProps;
-    };
+    fields?: Partial<
+        Record<'account' | 'bank_code' | 'bank_name' | 'branch' | 'instructions' | 'name', TPaymentMethodFieldProps>
+    >;
     icon?: string;
     id?: string;
     is_enabled?: number;

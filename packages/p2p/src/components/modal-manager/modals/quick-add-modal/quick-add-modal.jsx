@@ -132,8 +132,8 @@ const QuickAddModal = ({ advert }) => {
                 pageHeaderReturnFn={() => setShouldCloseAllModals(false)}
                 secondary
                 text={localize('Cancel')}
-                renderPageFooterChildren={() =>
-                    !my_ads_store.should_show_add_payment_method && (
+                {...(!my_ads_store.should_show_add_payment_method && {
+                    renderPageFooterChildren: () => (
                         <>
                             <Button
                                 has_effect
@@ -154,8 +154,8 @@ const QuickAddModal = ({ advert }) => {
                                 text={localize('Add')}
                             />
                         </>
-                    )
-                }
+                    ),
+                })}
             >
                 {my_ads_store.should_show_add_payment_method ? (
                     <AddPaymentMethod should_show_page_return={false} />

@@ -11,6 +11,7 @@ const JurisdictionModal = () => {
     const { isLoading } = useAvailableMT5Accounts();
 
     const marketType = modalState?.marketType || 'all';
+    const platform = modalState?.platform || 'mt5';
 
     if (isLoading) return <h1>Loading...</h1>;
 
@@ -20,7 +21,7 @@ const JurisdictionModal = () => {
                 <React.Fragment>
                     <WalletButton
                         disabled={!selectedJurisdiction}
-                        onClick={() => show(<MT5PasswordModal marketType={marketType} />)}
+                        onClick={() => show(<MT5PasswordModal marketType={marketType} platform={platform} />)}
                     >
                         <WalletText color='white' size='xs' weight='bold'>
                             Next

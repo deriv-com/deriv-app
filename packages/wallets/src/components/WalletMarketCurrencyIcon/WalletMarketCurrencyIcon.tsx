@@ -6,6 +6,7 @@ import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
+import type { useSortedMT5Accounts } from '@deriv/api';
 import './WalletMarketCurrencyIcon.scss';
 
 const marketTypeToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
@@ -22,7 +23,7 @@ const marketTypeToPlatformIconMapper: Record<string, ComponentType<SVGAttributes
 type TWalletMarketCurrencyIconProps = {
     currency: string;
     isDemo: boolean;
-    marketType: keyof typeof marketTypeToIconMapper;
+    marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
     platform: string;
 };
 

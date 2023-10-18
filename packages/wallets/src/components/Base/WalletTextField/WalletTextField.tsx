@@ -1,5 +1,4 @@
 import React, { ChangeEvent, ComponentProps, ReactElement, useState } from 'react';
-import classNames from 'classnames';
 import WalletText from '../WalletText/WalletText';
 import styles from './WalletTextField.modules.css';
 
@@ -54,7 +53,7 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
     );
 
     return (
-        <div className={classNames(styles['wallets-textfield'])}>
+        <div className={styles['wallets-textfield']}>
             <div className={styles['wallets-textfield__content']}>
                 <input
                     className={styles['wallets-textfield__field']}

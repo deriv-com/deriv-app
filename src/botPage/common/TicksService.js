@@ -52,6 +52,9 @@ export default class TicksService {
         this.observe();
     }
     requestPipSizes() {
+        if (this.pipSizes) {
+            return Promise.resolve(this.pipSizes);
+        }
         this.active_symbols_promise = new Promise(resolve => {
             api_base.api.expectResponse('authorize').then(() => {
                 this.pipSizes = api_base.active_symbols

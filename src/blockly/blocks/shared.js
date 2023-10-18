@@ -95,9 +95,14 @@ const getActiveMarket = markets =>
         {}
     );
 
-fieldGeneratorMapping.MARKET_LIST = () => {
-    const symbol = new ActiveSymbols(api_base.active_symbols);
+const getSymbolAndMarkets = apiBaseActiveSymbols => {
+    const symbol = new ActiveSymbols(apiBaseActiveSymbols);
     const markets = getActiveMarket(symbol.getMarkets());
+    return { markets };
+};
+
+fieldGeneratorMapping.MARKET_LIST = () => {
+    const { markets } = getSymbolAndMarkets(api_base.active_symbols);
 
     if (Object.keys(markets).length === 0) {
         return [[translate('Not available'), 'na']];
@@ -106,8 +111,7 @@ fieldGeneratorMapping.MARKET_LIST = () => {
 };
 
 fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
-    const symbol = new ActiveSymbols(api_base.active_symbols);
-    const markets = getActiveMarket(symbol.getMarkets());
+    const { markets } = getSymbolAndMarkets(api_base.active_symbols);
     const marketName = block.getFieldValue('MARKET_LIST');
     const submarketOptions = [];
 
@@ -134,8 +138,7 @@ fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
 };
 
 fieldGeneratorMapping.SYMBOL_LIST = block => () => {
-    const symbol = new ActiveSymbols(api_base.active_symbols);
-    const markets = getActiveMarket(symbol.getMarkets());
+    const { markets } = getSymbolAndMarkets(api_base.active_symbols);
     const submarketName = block.getFieldValue('SUBMARKET_LIST');
     const symbolOptions = [];
 

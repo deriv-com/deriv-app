@@ -6,6 +6,7 @@ import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
+import { WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
@@ -67,7 +68,9 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                             >
                                 {button.icon}
                             </button>
-                            <div className='wallets-mobile-actions-content-text'>{button.text}</div>
+                            <WalletText lineHeight='3xs' size='2xs'>
+                                {button.text}
+                            </WalletText>
                         </div>
                     ))}
                 </div>
@@ -77,23 +80,17 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
     return (
         <div className='wallets-header__actions'>
             {getWalletHeaderButtons(isDemo).map(button => (
-                <button
-                    className='wallets-header__button'
+                <WalletButton
+                    icon={button.icon}
+                    isRounded
                     key={button.name}
-                    onClick={async () => {
-                        await switchAccount(loginid);
+                    onClick={() => {
+                        switchAccount(loginid);
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
-                >
-                    {button.icon}
-                    <span
-                        className={`wallets-header__actions-label ${
-                            isActive ? 'wallets-header__actions-label--active' : ''
-                        }`}
-                    >
-                        {button.text}
-                    </span>
-                </button>
+                    text={isActive ? button.text : undefined}
+                    variant='outlined'
+                />
             ))}
         </div>
     );

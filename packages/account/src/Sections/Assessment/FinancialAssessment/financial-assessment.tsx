@@ -46,6 +46,7 @@ import {
 } from './financial-information-list';
 import type { TCoreStores } from '@deriv/stores/types';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
+import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
@@ -343,12 +344,14 @@ const FinancialAssessment = observer(() => {
     };
 
     const getFormattedOccupationList = values =>
-        values?.employment_status === 'Employed'
-            ? getOccupationList().filter(item => item.value !== 'Unemployed')
+        values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED
+            ? getOccupationList().filter(item => item.value !== EMPLOYMENT_VALUES.UNEMPLOYED)
             : getOccupationList();
 
     const getFormattedOccupationValues = values =>
-        values?.employment_status === 'Employed' && values?.occupation === 'Unemployed' ? '' : values?.occupation;
+        values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED && values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
+            ? ''
+            : values?.occupation;
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;

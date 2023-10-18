@@ -12,6 +12,7 @@ import {
     getOccupationList,
     getSourceOfWealthList,
 } from 'Configs/financial-details-config';
+import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
 
 type TFinancialDetailsDropdownFieldProps = {
     dropdown_list: Array<object>;
@@ -47,7 +48,9 @@ const FinancialDetailsDropdownField = ({
     }>();
 
     const getFormattedOccupationValues = () =>
-        employment_status === 'Employed' && values?.occupation === 'Unemployed' ? '' : values?.occupation;
+        employment_status === EMPLOYMENT_VALUES.EMPLOYED && values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
+            ? ''
+            : values?.occupation;
 
     return (
         <Field name={field_key}>

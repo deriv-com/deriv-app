@@ -13,6 +13,7 @@ type TMobileDialog = {
     has_close_icon?: boolean;
     has_full_height?: boolean;
     header_classname?: string;
+    info_banner?: React.ReactNode;
     onClose: React.MouseEventHandler;
     portal_element_id: string;
     renderTitle?: () => string;
@@ -28,6 +29,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         has_close_icon = true,
         has_full_height,
         header_classname,
+        info_banner,
         portal_element_id,
         renderTitle,
         title,
@@ -100,22 +102,25 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                     })}
                     height_offset={props.content_height_offset || '8px'}
                 >
-                    <div className={classNames('dc-mobile-dialog__header', header_classname)}>
-                        <Text
-                            as='h2'
-                            size='xs'
-                            color='prominent'
-                            weight='bold'
-                            line_height='unset'
-                            className='dc-mobile-dialog__title'
-                        >
-                            {renderTitle ? renderTitle() : title}
-                        </Text>
-                        {has_close_icon && (
-                            <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
-                                <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
-                            </div>
-                        )}
+                    <div className='dc-mobile-dialog__header-container'>
+                        <div className={classNames('dc-mobile-dialog__header', header_classname)}>
+                            <Text
+                                as='h2'
+                                size='xs'
+                                color='prominent'
+                                weight='bold'
+                                line_height='unset'
+                                className='dc-mobile-dialog__title'
+                            >
+                                {renderTitle ? renderTitle() : title}
+                            </Text>
+                            {has_close_icon && (
+                                <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
+                                    <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
+                                </div>
+                            )}
+                        </div>
+                        {info_banner}
                     </div>
                     <div
                         className={classNames('dc-mobile-dialog__content', {

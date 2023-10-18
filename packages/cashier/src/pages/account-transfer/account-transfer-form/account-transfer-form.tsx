@@ -3,13 +3,14 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
 import { Button, Dropdown, InlineMessage, Input, Loading, Money, Text } from '@deriv/components';
-import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
+import { useGetMt5LoginListStatus } from '@deriv/hooks';
 import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
     getCurrencyName,
     getPlatformSettings,
     validNumber,
+    MT5LoginlistStatus,
     routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -121,10 +122,10 @@ const AccountTransferForm = observer(
             resetConverter,
         } = crypto_fiat_converter;
 
-        const { is_flag_present: is_open_order_position_status_present } = useIsMt5LoginListStatusPresent(
-            'open_order_position_status',
-            selected_to.value ?? ''
-        );
+        const { status } = useGetMt5LoginListStatus(selected_to.value ?? '');
+        const is_open_order_position_status_present =
+            status === MT5LoginlistStatus.MIGRATED_WITH_POSITION ||
+            status === MT5LoginlistStatus.MIGRATED_WITHOUT_POSITION;
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});

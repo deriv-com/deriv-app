@@ -5,7 +5,7 @@ import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { TError } from '../../../../types';
-import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
+import { useGetMt5LoginListStatus } from '@deriv/hooks';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
@@ -18,9 +18,7 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useIsMt5LoginListStatusPresent: jest.fn(() => ({ is_flag_present: false, flag_value: undefined })),
 }));
-const mockedUseIsMt5LoginListStatusPresent = useIsMt5LoginListStatusPresent as jest.MockedFunction<
-    typeof useIsMt5LoginListStatusPresent
->;
+const mockedUseGetMt5LoginListStatus = useGetMt5LoginListStatus as jest.MockedFunction<typeof useGetMt5LoginListStatus>;
 
 jest.mock('Assets/svgs/trading-platform', () =>
     jest.fn(props => <div data-testid={props.icon}>TradingPlatformIcon</div>)
@@ -289,14 +287,14 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should display no new positions can be opened when transferring amount to a migrated svg account', () => {
-        mockedUseIsMt5LoginListStatusPresent.mockReturnValue({ is_flag_present: true, flag_value: 1 });
+        mockedUseGetMt5LoginListStatus.mockReturnValue({ is_flag_present: true, flag_value: 1 });
         renderAccountTransferForm();
         expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
         expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
     });
 
     it('should display the number of transfers remaining when transferring amount to a non migrated svg accounts', () => {
-        mockedUseIsMt5LoginListStatusPresent.mockReturnValue({ is_flag_present: false, flag_value: undefined });
+        mockedUseGetMt5LoginListStatus.mockReturnValue({ is_flag_present: false, flag_value: undefined });
         renderAccountTransferForm();
         expect(screen.getByText(/You have 0 transfer remaining for today./i)).toBeInTheDocument();
         expect(screen.queryByText(/You can no longer open new positions with this account./i)).not.toBeInTheDocument();

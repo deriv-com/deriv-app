@@ -1848,5 +1848,4 @@ interface ExtendedDetailsOfEachMT5Loginid {
     sub_account_type?: 'standard' | 'financial' | 'financial_stp' | 'swap_free';
     webtrader_url?: string;
     eligible_to_migrate?: TEligibleToMigrate;
-    open_order_position_status?: number;
 }

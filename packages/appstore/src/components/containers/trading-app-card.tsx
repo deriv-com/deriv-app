@@ -12,9 +12,16 @@ import {
 } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { useActiveWallet, useIsMt5LoginListStatusPresent } from '@deriv/hooks';
+import { useActiveWallet, useGetMt5LoginListStatus } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
+import {
+    CFD_PLATFORMS,
+    ContentFlag,
+    getStaticUrl,
+    getUrlSmartTrader,
+    getUrlBinaryBot,
+    MT5LoginlistStatus,
+} from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
 
@@ -51,8 +58,7 @@ const TradingAppCard = ({
     const { current_language } = common;
     const { is_account_being_created } = cfd;
 
-    const { is_flag_present: is_open_order_position_status_present, flag_value: open_order_position_status } =
-        useIsMt5LoginListStatusPresent('open_order_position_status', login ?? '');
+    const { status: banner_status } = useGetMt5LoginListStatus(login ?? '');
     const demo_label = localize('Demo');
     const is_real_account = wallet_account ? !wallet_account.is_virtual : is_real;
 
@@ -112,7 +118,8 @@ const TradingAppCard = ({
     };
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
-    const status_text = open_order_position_status ? 'No new positions' : 'Account closed';
+    const is_open_order_position = banner_status === MT5LoginlistStatus.MIGRATED_WITH_POSITION;
+    const is_account_closed = banner_status === MT5LoginlistStatus.MIGRATED_WITHOUT_POSITION;
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
@@ -160,7 +167,7 @@ const TradingAppCard = ({
                             text={badge_text}
                         />
                     )}
-                    {is_open_order_position_status_present && (
+                    {is_open_order_position && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
                             onClick={() => {
@@ -170,8 +177,23 @@ const TradingAppCard = ({
                             icon='IcAlertWarning'
                             text={
                                 <Localize
-                                    i18n_default_text='<0>{{status_text}}</0>'
-                                    values={{ status_text }}
+                                    i18n_default_text='<0>No new positions</0>'
+                                    components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
+                                />
+                            }
+                        />
+                    )}
+                    {is_account_closed && (
+                        <StatusBadge
+                            className='trading-app-card__acc_status_badge'
+                            onClick={() => {
+                                setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
+                            }}
+                            account_status='open-order-position'
+                            icon='IcAlertWarning'
+                            text={
+                                <Localize
+                                    i18n_default_text='<0>Account closed</0>'
                                     components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
                                 />
                             }
@@ -180,7 +202,8 @@ const TradingAppCard = ({
                     {is_open_position_svg_modal_open && (
                         <OpenPositionsSVGModal
                             market_type={market_type}
-                            open_order_position_status={!!open_order_position_status}
+                            is_open_order_position={is_open_order_position}
+                            is_account_closed={is_account_closed}
                             is_modal_open={is_open_position_svg_modal_open}
                             setModalOpen={setIsOpenPositionSvgModalOpen}
                         />

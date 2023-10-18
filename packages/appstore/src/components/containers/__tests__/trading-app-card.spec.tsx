@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
-import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
+import { useGetMt5LoginListStatus } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import TradingAppCard from '../trading-app-card';
 
@@ -17,15 +17,13 @@ jest.mock('@deriv/account', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useMT5SVGEligibleToMigrate: jest.fn(() => ({ eligible_account_to_migrate_label: 'BVI' })),
-    useIsMt5LoginListStatusPresent: jest.fn(() => ({
+    useGetMt5LoginListStatus: jest.fn(() => ({
         is_flag_present: true,
         flag_value: 1,
     })),
 }));
 
-const mockUseIsMt5LoginListStatusPresent = useIsMt5LoginListStatusPresent as jest.MockedFunction<
-    typeof useIsMt5LoginListStatusPresent
->;
+const mockUseGetMt5LoginListStatus = useGetMt5LoginListStatus as jest.MockedFunction<typeof useGetMt5LoginListStatus>;
 
 describe('<TradingAppCard/>', () => {
     let modal_root_el: HTMLDivElement;
@@ -93,7 +91,7 @@ describe('<TradingAppCard/>', () => {
     });
 
     it('should render correct status badge if open_order_position_status key is present in BE response and the value is false', () => {
-        mockUseIsMt5LoginListStatusPresent.mockReturnValueOnce({
+        mockUseGetMt5LoginListStatus.mockReturnValueOnce({
             is_flag_present: true,
             flag_value: 0,
         });
@@ -130,7 +128,7 @@ describe('<TradingAppCard/>', () => {
     });
 
     it('should not render status badge if open_order_position_status key is not present in BE response', () => {
-        mockUseIsMt5LoginListStatusPresent.mockReturnValueOnce({
+        mockUseGetMt5LoginListStatus.mockReturnValueOnce({
             is_flag_present: false,
             flag_value: undefined,
         });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { APIProvider } from '@deriv/api';
-import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
+import { useGetMt5LoginListStatus } from '@deriv/hooks';
 import DMT5TradeModal from '../dmt5-trade-modal';
 
 jest.mock('@deriv/components', () => ({
@@ -18,15 +18,13 @@ jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockTrading
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useIsMt5LoginListStatusPresent: jest.fn(() => ({
+    useGetMt5LoginListStatus: jest.fn(() => ({
         is_flag_present: true,
         flag_value: true,
     })),
 }));
 
-const mockUseIsMt5LoginListStatusPresent = useIsMt5LoginListStatusPresent as jest.MockedFunction<
-    typeof useIsMt5LoginListStatusPresent
->;
+const mockUseGetMt5LoginListStatus = useGetMt5LoginListStatus as jest.MockedFunction<typeof useGetMt5LoginListStatus>;
 
 describe('<DMT5TradeModal/>', () => {
     const mock_props: React.ComponentProps<typeof DMT5TradeModal> = {
@@ -89,7 +87,7 @@ describe('<DMT5TradeModal/>', () => {
     });
 
     it('should render correct status badge if open_order_position_status is present in BE response and the key value is false', () => {
-        mockUseIsMt5LoginListStatusPresent.mockReturnValue({
+        mockUseGetMt5LoginListStatus.mockReturnValue({
             is_flag_present: true,
             flag_value: false,
         });
@@ -100,7 +98,7 @@ describe('<DMT5TradeModal/>', () => {
     });
 
     it('should not render status badge if open_order_position_status is not present in BE response', () => {
-        mockUseIsMt5LoginListStatusPresent.mockReturnValue({
+        mockUseGetMt5LoginListStatus.mockReturnValue({
             is_flag_present: false,
             flag_value: undefined,
         });

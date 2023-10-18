@@ -13,19 +13,20 @@ import { Localize } from '@deriv/translations';
 
 type TOpenPositionsSVGModal = {
     market_type: string;
-    open_order_position_status: boolean | undefined;
+    is_open_order_position: boolean;
+    is_account_closed: boolean;
     is_modal_open: boolean;
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const OpenPositionsSVGModal = ({
     market_type,
-    open_order_position_status,
+    is_open_order_position,
+    is_account_closed,
     is_modal_open,
     setModalOpen,
 }: TOpenPositionsSVGModal) => {
     const { eligible_account_to_migrate_label } = useMT5SVGEligibleToMigrate();
-    const title = open_order_position_status ? 'No new positions' : 'Account closed';
     const account_type =
         market_type === JURISDICTION_MARKET_TYPES.FINANCIAL
             ? getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL)
@@ -45,15 +46,17 @@ const OpenPositionsSVGModal = ({
         >
             <Modal.Body>
                 <Text as='h1' color='prominent' weight='bold' className='open-positions-svg__modal-title'>
-                    <Localize i18n_default_text='{{title}}' values={{ title }} />
+                    {is_open_order_position && <Localize i18n_default_text='No new positions' />}
+                    {is_account_closed && <Localize i18n_default_text='Account closed' />}
                 </Text>
                 <Text as='p' color='prominent ' size='xs'>
-                    {open_order_position_status ? (
+                    {is_open_order_position && (
                         <Localize
                             i18n_default_text='You can no longer open new positions with your {{cfd_platform}} {{account_type}} {{from_account}} account. Please use your {{cfd_platform}} {{account_type}} {{eligible_account_to_migrate_label}} account to open new positions.'
                             values={{ account_type, from_account, eligible_account_to_migrate_label, cfd_platform }}
                         />
-                    ) : (
+                    )}
+                    {is_account_closed && (
                         <Localize
                             i18n_default_text='Your {{cfd_platform}} {{account_type}} {{from_account}} account will be archived after 30 days of inactivity. You can still access your trade history until the account is archived.'
                             values={{ account_type, from_account, cfd_platform }}

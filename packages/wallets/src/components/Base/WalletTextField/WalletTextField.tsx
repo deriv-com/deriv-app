@@ -25,10 +25,7 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
         setValue(newValue);
-
-        if (rest.onChange) {
-            rest.onChange(e);
-        }
+        rest?.onChange?.(e);
     };
 
     const MessageContainer: React.FC<{ helperMessage?: string; maxLength?: number }> = ({

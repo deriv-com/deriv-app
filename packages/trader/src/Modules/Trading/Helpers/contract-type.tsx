@@ -1,5 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { ActiveSymbols } from '@deriv/api-types';
 import { TContractType, TContractCategory, TList } from '../Components/Form/ContractType/types';
 
 type TContractTypesList = {
@@ -12,6 +13,9 @@ type TContractTypesList = {
 type TItem = {
     value: string;
 };
+
+export const isMajorPairsSymbol = (checked_symbol: string, active_symbols: ActiveSymbols) =>
+    active_symbols.some(({ submarket, symbol }) => /major_pairs/i.test(submarket) && checked_symbol === symbol);
 
 export const contract_category_icon = {
     [localize('Ups & Downs')]: 'IcUpsDowns',

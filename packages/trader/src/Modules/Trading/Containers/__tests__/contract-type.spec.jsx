@@ -10,6 +10,7 @@ const default_mock_store = {
             is_equal: 0,
             contract_type: 'even_odd',
             contract_types_list: {},
+            cancellation_range_list: [],
             is_mobile_digit_view_selected: false,
             non_available_contract_types_list: {},
             onChange: jest.fn(),

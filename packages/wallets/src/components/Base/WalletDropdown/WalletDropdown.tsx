@@ -34,6 +34,7 @@ const WalletDropdown: React.FC<TProps> = ({
         setItems(list);
     }, [list]);
     const { getInputProps, getItemProps, getLabelProps, getMenuProps, getToggleButtonProps, isOpen } = useCombobox({
+        defaultSelectedItem: items.find(item => item.value === value),
         items,
         itemToString(item) {
             return item ? item.text : '';

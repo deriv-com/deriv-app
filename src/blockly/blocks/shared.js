@@ -95,8 +95,8 @@ const getActiveMarket = markets =>
         {}
     );
 
-const getSymbolAndMarkets = apiBaseActiveSymbols => {
-    const symbol = new ActiveSymbols(apiBaseActiveSymbols);
+const getSymbolAndMarkets = api_base_symbols => {
+    const symbol = new ActiveSymbols(api_base_symbols);
     const markets = getActiveMarket(symbol.getMarkets());
     return { markets };
 };

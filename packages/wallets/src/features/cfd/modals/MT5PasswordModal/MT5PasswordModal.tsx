@@ -7,22 +7,42 @@ import {
     useSettings,
     useSortedMT5Accounts,
 } from '@deriv/api';
-import { ModalWrapper } from '../../../../components/Base';
+import { ModalWrapper, WalletButton } from '../../../../components/Base';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { AccountReady, CreatePassword, EnterPassword } from '../../screens';
+import { Success, CreatePassword, EnterPassword } from '../../screens';
+import { useModal } from '../../../../components/ModalProvider';
 
 type TProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
+    platform: string;
 };
 
-const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
+const marketTypeToTitleMapper: Record<TProps['marketType'], string> = {
+    all: 'Swap-Free',
+    financial: 'MT5 Financial',
+    synthetic: 'MT5 Derived',
+};
+
+const marketTypeToPlatformTitleMapper: Record<string, string> = {
+    ctrader: 'cTrader',
+    dxtrade: 'Deriv X',
+};
+
+const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const [password, setPassword] = useState('');
     const { isSuccess, mutate } = useCreateMT5Account();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
+    const { hide } = useModal();
+
     const hasMT5Account = mt5Accounts?.find(account => account.login);
+    const isDemo = activeWallet?.is_virtual;
+    const marketTypeTitle =
+        marketType === 'all' && Object.keys(marketTypeToPlatformTitleMapper).includes(platform)
+            ? marketTypeToPlatformTitleMapper[platform]
+            : marketTypeToTitleMapper[marketType];
 
     const onSubmit = () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
@@ -49,7 +69,17 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
 
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
-            {isSuccess && <AccountReady marketType={marketType} />}
+            {isSuccess && (
+                <Success
+                    description={`You can now start practicing trading with your ${marketTypeTitle} ${
+                        isDemo ? ' demo' : 'real'
+                    } account.`}
+                    marketType={marketType}
+                    platform={platform}
+                    renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
+                    title={`Your ${marketTypeTitle} ${isDemo ? ' demo' : 'real'} account is ready`}
+                />
+            )}
             {!isSuccess &&
                 (hasMT5Account ? (
                     <EnterPassword

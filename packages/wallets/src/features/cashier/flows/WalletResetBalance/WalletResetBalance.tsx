@@ -1,10 +1,11 @@
 import React from 'react';
 import { useActiveWalletAccount, useRequest } from '@deriv/api';
-import { Icon, Text } from '@deriv/components';
 import { useHistory } from 'react-router-dom';
 import useDevice from '../../../../hooks/useDevice';
 import WalletButton from '../../../../components/Base/WalletButton/WalletButton';
 import WalletText from '../../../../components/Base/WalletText/WalletText';
+import IcResetDemoBalance from '../../../../public/images/ic-demo-reset-balance.svg';
+import IcResetDemoBalanceDone from '../../../../public/images/ic-demo-reset-balance-done.svg';
 
 const WalletResetBalance = () => {
     const history = useHistory();
@@ -19,7 +20,7 @@ const WalletResetBalance = () => {
 
     return (
         <div className='wallets-reset-balance'>
-            <Icon icon={isResetBalanceSuccess ? 'IcDemoResetBalanceDone' : 'IcDemoResetBalance'} size='128' />
+            {isResetBalanceSuccess ? <IcResetDemoBalanceDone /> : <IcResetDemoBalance />}
             <div>
                 <WalletText>Reset balance to 10,000.00 USD</WalletText>
             </div>

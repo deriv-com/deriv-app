@@ -183,7 +183,7 @@ const generateSWConfig = is_release => ({
         },
         {
             urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/);
+                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts|smartchartsbeta))).*$/);
             },
             handler: 'CacheFirst',
             options: {
@@ -195,7 +195,7 @@ const generateSWConfig = is_release => ({
         },
         {
             urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/smartcharts\//);
+                return url.pathname.match(/^\/js\/(smartcharts|smartchartsbeta)\//);
             },
             handler: 'CacheFirst',
             options: {

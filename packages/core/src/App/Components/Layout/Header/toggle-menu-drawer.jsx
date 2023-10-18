@@ -40,6 +40,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         loginid,
         logout: logoutClient,
         should_allow_authentication,
+        should_allow_poinc_authentication,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
         is_pending_proof_of_ownership,
@@ -145,6 +146,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 return is_virtual || active_account_landing_company !== 'maltainvest';
             } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
                 return !should_allow_authentication;
+            } else if (/proof-of-income/.test(route_path)) {
+                return !should_allow_poinc_authentication;
             } else if (/proof-of-ownership/.test(route_path)) {
                 return is_virtual || !is_pending_proof_of_ownership;
             }

@@ -3,7 +3,6 @@
 // @ts-nocheck
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
-import { DocumentUploadResponse } from '@deriv/api-types';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
 import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -18,6 +17,7 @@ import FileUploaderContainer from '../../../Components/file-uploader-container';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
+import { TFileRef } from 'Types';
 
 const FilesDescription = () => {
     const descriptions = [
@@ -43,8 +43,6 @@ const FilesDescription = () => {
         </div>
     );
 };
-
-export type TFileRef = React.RefObject<null | { upload: () => Promise<DocumentUploadResponse> }> | undefined;
 
 let file_uploader_ref: TFileRef;
 

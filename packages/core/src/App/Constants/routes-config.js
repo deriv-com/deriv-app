@@ -187,6 +187,11 @@ const getModules = () => {
                             component: Account,
                             getTitle: () => localize('Proof of ownership'),
                         },
+                        {
+                            path: routes.proof_of_income,
+                            component: Account,
+                            getTitle: () => localize('Proof of income'),
+                        },
                     ],
                 },
                 {

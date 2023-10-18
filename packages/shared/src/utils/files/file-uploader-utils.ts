@@ -1,20 +1,8 @@
+import { DocumentUploadRequest } from '@deriv/api-types';
 import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage, TFile } from './image/image_utility';
 
 export type TSettings = {
-    documentType: {
-        passport: string;
-        national_identity_card: string;
-        driving_licence: string;
-        utility_bill: string;
-        bankstatement: string;
-        power_of_attorney: string;
-        amlglobalcheck: string;
-        docverification: string;
-        proofid: string;
-        driverslicense: string;
-        proofaddress: string;
-        other: string;
-    };
+    documentType: DocumentUploadRequest['document_type'] | '';
     pageType: {
         front: string;
         back: string;

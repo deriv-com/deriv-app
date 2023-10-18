@@ -71,6 +71,7 @@ export const priority_toast_messages = [
     'need_fa',
     'p2p_daily_limit_increase',
     'authenticate',
+    'poinc_upload_limited',
     'wallets_migrated',
     'wallets_failed',
     'notify_financial_assessment',

@@ -1,7 +1,12 @@
 /** Add types that are shared between components */
 import React from 'react';
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
-import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
+import {
+    Authorize,
+    DocumentUploadResponse,
+    IdentityVerificationAddDocumentResponse,
+    ResidenceList,
+} from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 import { Platforms } from '@deriv/shared';
 
@@ -184,3 +189,5 @@ export type TServerError = {
     details?: { [key: string]: string };
     fields?: string[];
 };
+
+export type TFileRef = React.RefObject<null | { upload: () => Promise<DocumentUploadResponse> }> | undefined;

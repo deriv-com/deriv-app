@@ -4,6 +4,7 @@ import { WalletDeposit } from '../../flows/WalletDeposit';
 import { WalletResetBalance } from '../../flows/WalletResetBalance';
 import { WalletTransactions } from '../../flows/WalletTransactions';
 import { WalletTransfer } from '../../flows/WalletTransfer';
+import { WalletWithdrawal } from '../../flows/WalletWithdrawal';
 
 const WalletCashierContent = () => {
     const history = useHistory();
@@ -28,6 +29,10 @@ const WalletCashierContent = () => {
     if (isTransfer) return <WalletTransfer />;
 
     if (isTransactions) return <WalletTransactions />;
+
+    if (isWithdraw) {
+        return <WalletWithdrawal />;
+    }
 
     return <></>;
 };

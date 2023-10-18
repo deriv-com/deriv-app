@@ -2,7 +2,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
-export const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => {
+const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => {
     const content = [
         {
             text: (
@@ -58,3 +58,5 @@ export const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => 
         </React.Fragment>
     );
 };
+
+export default TurbosTradeDescription;

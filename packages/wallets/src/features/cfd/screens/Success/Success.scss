@@ -1,9 +1,9 @@
-.wallets-account-ready {
+.wallets-success {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 16px;
+    padding: 16px 24px;
     gap: 24px;
     width: 392px;
     border-radius: 10px;
@@ -19,27 +19,6 @@
         padding: 10px;
         position: relative;
         border-radius: 10px;
-
-        &__text {
-            &--type {
-                font-weight: 400;
-                line-height: 14px;
-                font-size: 10px;
-            }
-
-            &--wallet {
-                font-size: 10px;
-                font-weight: 400;
-                line-height: 14px;
-                color: #999999;
-            }
-
-            &--amount {
-                font-size: 14px;
-                font-weight: 700;
-                line-height: 20px;
-            }
-        }
 
         &-badge {
             position: absolute;
@@ -61,17 +40,6 @@
                 background-color: #ff444f;
             }
         }
-    }
-
-    &__title {
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 24px;
-    }
-
-    &__subtitle {
-        font-size: 14px;
-        line-height: 20px;
     }
 
     &__button {

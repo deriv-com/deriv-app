@@ -50,7 +50,10 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         });
                         show(
                             activeWallet?.is_virtual ? (
-                                <MT5PasswordModal marketType={account?.market_type || 'synthetic'} />
+                                <MT5PasswordModal
+                                    marketType={account?.market_type || 'synthetic'}
+                                    platform={account.platform}
+                                />
                             ) : (
                                 <JurisdictionModal />
                             )

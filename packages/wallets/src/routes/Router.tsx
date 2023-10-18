@@ -7,6 +7,7 @@ const prefix = '/wallets';
 
 type TRoutes =
     | `${typeof prefix}/cashier/deposit`
+    | `${typeof prefix}/cashier/reset-balance`
     | `${typeof prefix}/cashier/transactions`
     | `${typeof prefix}/cashier/transfer`
     | `${typeof prefix}/cashier/withdraw`

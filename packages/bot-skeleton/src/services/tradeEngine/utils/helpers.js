@@ -283,7 +283,6 @@ export const createDetails = contract => {
 
 export const getUUID = () => `${new Date().getTime() * Math.random()}`;
 
-
 const hasBlockOfType = (targetType, workspace) => {
     const allBlocks = workspace.getAllBlocks();
     return allBlocks.some(block => block.type === targetType && !!block.parentBlock_);

@@ -9,11 +9,6 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import RecentFooter from '../recent-footer';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(),
-}));
-
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     saveRecentWorkspace: jest.fn(),
@@ -47,20 +42,21 @@ describe('RecentFooter', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should render button with Open text', () => {
+    it('should render button with Open text without loader', () => {
         render(<RecentFooter />, { wrapper });
         const openButton = screen.getByText('Open');
         expect(openButton).toBeInTheDocument();
         expect(mock_DBot_store?.load_modal?.is_open_button_loading).toBeFalsy();
     });
 
-    it('should render import message', async () => {
+    it('should render import message open load modal on open button click', async () => {
+        mock_DBot_store?.load_modal?.toggleLoadModal();
         render(<RecentFooter />, { wrapper });
         const openButton = screen.getByText('Open');
         userEvent.click(openButton);
 
         await waitFor(() => {
-            expect(mock_DBot_store?.load_modal?.is_load_modal_open).toBeTruthy();
+            expect(mock_DBot_store?.load_modal?.is_load_modal_open).toBeFalsy();
             expect(mock_DBot_store?.dashboard?.toast_message).toBe('import');
         });
     });

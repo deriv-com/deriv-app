@@ -49,6 +49,10 @@
     }
     &__crypto {
         min-width: 36rem;
+        @include mobile {
+            width: 100%;
+            min-width: auto;
+        }
         margin: 1.6rem 0;
     }
     &__account-info {

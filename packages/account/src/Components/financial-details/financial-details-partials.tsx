@@ -9,7 +9,7 @@ import {
     getEstimatedWorthList,
     getIncomeSourceList,
     getNetIncomeList,
-    getOccupationList,
+    getFormattedOccupationList,
     getSourceOfWealthList,
 } from 'Configs/financial-details-config';
 import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
@@ -99,11 +99,6 @@ const FinancialDetailsDropdownField = ({
  * @returns {JSX.Element}
  */
 const FinancialInformation = ({ employment_status }: TFinancialInformationProps) => {
-    const getFormattedOccupation = () =>
-        employment_status === 'Employed'
-            ? getOccupationList().filter(item => item.value !== 'Unemployed')
-            : getOccupationList();
-
     return (
         <React.Fragment>
             <FinancialDetailsDropdownField
@@ -117,7 +112,7 @@ const FinancialInformation = ({ employment_status }: TFinancialInformationProps)
                 label={localize('Industry of employment')}
             />
             <FinancialDetailsDropdownField
-                dropdown_list={getFormattedOccupation()}
+                dropdown_list={getFormattedOccupationList(employment_status)}
                 field_key='occupation'
                 label={localize('Occupation')}
                 employment_status={employment_status}

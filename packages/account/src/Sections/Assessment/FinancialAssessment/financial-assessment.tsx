@@ -33,7 +33,6 @@ import {
     getEstimatedWorthList,
     getIncomeSourceList,
     getNetIncomeList,
-    getOccupationList,
     getSourceOfWealthList,
     getBinaryOptionsTradingExperienceList,
     getBinaryOptionsTradingFrequencyList,
@@ -46,6 +45,7 @@ import {
 } from './financial-information-list';
 import type { TCoreStores } from '@deriv/stores/types';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
+import { getFormattedOccupationList } from 'Configs/financial-details-config';
 import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
 
 type TConfirmationPage = {
@@ -343,11 +343,6 @@ const FinancialAssessment = observer(() => {
         return '80px';
     };
 
-    const getFormattedOccupationList = values =>
-        values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED
-            ? getOccupationList().filter(item => item.value !== EMPLOYMENT_VALUES.UNEMPLOYED)
-            : getOccupationList();
-
     const getFormattedOccupationValues = values =>
         values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED && values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
             ? ''
@@ -490,7 +485,6 @@ const FinancialAssessment = observer(() => {
                                                         onChange={handleChange}
                                                         handleBlur={handleBlur}
                                                         error={touched.employment_status && errors.employment_status}
-                                                        test_id='employment_status'
                                                     />
                                                 </DesktopWrapper>
                                                 <MobileWrapper>
@@ -509,7 +503,6 @@ const FinancialAssessment = observer(() => {
                                                             setFieldTouched('employment_status', true);
                                                             handleChange(e);
                                                         }}
-                                                        data_testid='employment_status'
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -553,7 +546,7 @@ const FinancialAssessment = observer(() => {
                                                     placeholder={localize('Occupation')}
                                                     is_align_text_left
                                                     name='occupation'
-                                                    list={getFormattedOccupationList(values)}
+                                                    list={getFormattedOccupationList(values.employment_status ?? '')}
                                                     value={getFormattedOccupationValues(values)}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}

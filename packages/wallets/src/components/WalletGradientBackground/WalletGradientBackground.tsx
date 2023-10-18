@@ -8,7 +8,7 @@ type TProps = {
     device?: 'desktop' | 'mobile';
     hasShine?: boolean;
     isDemo?: boolean;
-    theme?: 'dark' | 'light';
+    theme?: 'dark' | 'grey' | 'light';
     type?: 'card' | 'header';
 };
 

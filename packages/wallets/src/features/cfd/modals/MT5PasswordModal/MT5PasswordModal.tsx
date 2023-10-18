@@ -22,7 +22,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
-
     const hasMT5Account = mt5Accounts?.find(account => account.login);
 
     const onSubmit = () => {
@@ -31,6 +30,8 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
         mutate({
             payload: {
                 account_type: activeWallet?.is_virtual ? 'demo' : accountType,
+                address: settings?.address_line_1 || '',
+                city: settings?.address_city || '',
                 company: 'svg',
                 country: settings?.country_code || '',
                 email: settings?.email || '',
@@ -39,6 +40,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
                 ...(marketType === 'financial' && { mt5_account_type: 'financial' }),
                 ...(marketType === 'all' && { sub_account_category: 'swap_free' }),
                 name: settings?.first_name || '',
+                phone: settings?.phone || '',
+                state: settings?.address_state || '',
+                zipCode: settings?.address_postcode || '',
             },
         });
     };

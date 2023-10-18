@@ -1,6 +1,7 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useMT5AccountsList } from '@deriv/api';
-import { WalletButton, WalletText } from '../../../../../components/Base';
+import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';
@@ -24,6 +25,7 @@ type TProps = {
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
+    const history = useHistory();
     return (
         <TradingAccountCard
             leading={() => (
@@ -31,16 +33,14 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             )}
             trailing={() => (
                 <div className='wallets-added-mt5__actions'>
-                    <WalletButton variant='outlined'>
-                        <WalletText align='center' size='sm' weight='bold'>
-                            Transfer
-                        </WalletText>
-                    </WalletButton>
-                    <WalletButton>
-                        <WalletText align='center' color='white' size='sm' weight='bold'>
-                            Open
-                        </WalletText>
-                    </WalletButton>
+                    <WalletButton
+                        onClick={() => {
+                            history.push('/wallets/cashier/transfer');
+                        }}
+                        text='Transfer'
+                        variant='outlined'
+                    />
+                    <WalletButton text='Open' />
                 </div>
             )}
         >

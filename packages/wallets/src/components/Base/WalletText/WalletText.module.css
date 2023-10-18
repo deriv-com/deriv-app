@@ -135,6 +135,10 @@
         color: #000000;
     }
 
+    &-color-red {
+        color: #ff444f;
+    }
+
     &-color-blue {
         color: #377cfc;
     }

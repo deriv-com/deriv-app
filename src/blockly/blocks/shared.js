@@ -98,7 +98,7 @@ const getActiveMarket = markets =>
 const getSymbolAndMarkets = api_base_symbols => {
     const symbol = new ActiveSymbols(api_base_symbols);
     const markets = getActiveMarket(symbol.getMarkets());
-    return { markets };
+    return { symbol, markets };
 };
 
 fieldGeneratorMapping.MARKET_LIST = () => {

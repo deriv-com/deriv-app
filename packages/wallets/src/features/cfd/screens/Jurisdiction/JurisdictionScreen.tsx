@@ -49,7 +49,7 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction
                     <div className='wallets-jurisdiction-screen__tnc-checkbox'>
                         <input id='tnc-checkbox' type='checkbox' />
                         <label htmlFor='tnc-checkbox' style={{ cursor: 'pointer' }}>
-                            <WalletText>I confirm and accept Deriv (V) Ltd's Terms and Conditions</WalletText>
+                            <WalletText>I confirm and accept Deriv (V) Ltd&lsquo;s Terms and Conditions</WalletText>
                         </label>
                     </div>
                 </div>

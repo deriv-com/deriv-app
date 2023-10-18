@@ -20,8 +20,8 @@ const marketTypeToTitleMapper: Record<TSuccessProps['marketType'], string> = {
 };
 
 const marketTypeToPlatformMapper: Record<string, string> = {
-    dxtrade: 'Deriv X',
     ctrader: 'cTrader',
+    dxtrade: 'Deriv X',
 };
 
 const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, renderButton, title }) => {

@@ -16,8 +16,8 @@ const marketTypeToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElem
 };
 
 const marketTypeToPlatformIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
-    dxtrade: DerivXIcon,
     ctrader: CTraderIcon,
+    dxtrade: DerivXIcon,
 };
 
 type TWalletMarketCurrencyIconProps = {

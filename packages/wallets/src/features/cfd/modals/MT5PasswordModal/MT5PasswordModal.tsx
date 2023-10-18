@@ -8,7 +8,6 @@ import {
     useSortedMT5Accounts,
 } from '@deriv/api';
 import { ModalWrapper, WalletButton } from '../../../../components/Base';
-import { WalletText } from '../../../../components/Base/WalletText';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { Success, CreatePassword, EnterPassword } from '../../screens';
 import { useModal } from '../../../../components/ModalProvider';
@@ -25,8 +24,8 @@ const marketTypeToTitleMapper: Record<TProps['marketType'], string> = {
 };
 
 const marketTypeToPlatformTitleMapper: Record<string, string> = {
-    dxtrade: 'Deriv X',
     ctrader: 'cTrader',
+    dxtrade: 'Deriv X',
 };
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {

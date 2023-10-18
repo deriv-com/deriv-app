@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api';
-import { ModalWrapper, WalletButton, WalletText } from '../../../../components/Base';
+import { ModalWrapper, WalletButton } from '../../../../components/Base';
 import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
 import { Success, CreatePassword } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';

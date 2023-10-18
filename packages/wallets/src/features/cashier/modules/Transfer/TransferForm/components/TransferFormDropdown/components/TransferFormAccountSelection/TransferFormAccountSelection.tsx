@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAccountsList } from '@deriv/api';
-import { Loader } from '../../../../../components/Loader';
-import { useModal } from '../../../../../components/ModalProvider';
+import { Loader } from '../../../../../../../../../components/Loader';
+import { useModal } from '../../../../../../../../../components/ModalProvider';
 import CloseIcon from '../../../../../public/images/close-icon.svg';
 import TransferFromAccountCard from '../TransferFormAccountCard/TransferFormAccountCard';
 import './TransferFormAccountSelection.scss';

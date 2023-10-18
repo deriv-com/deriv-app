@@ -9,7 +9,7 @@ type TProps = {
     type?: 'input' | 'modal';
 };
 
-const TransferFromAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
+const WalletTransferFromAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
     const isInput = type === 'input';
 
     return (
@@ -50,4 +50,4 @@ const TransferFromAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
     );
 };
 
-export default TransferFromAccountCard;
+export default WalletTransferFromAccountCard;

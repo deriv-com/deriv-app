@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAccountsList } from '@deriv/api';
-import { WalletCurrencyCard } from '../../../../../components/WalletCurrencyCard';
-import { WalletListCardBadge } from '../../../../../components/WalletListCardBadge';
+import { WalletCurrencyCard } from '../../../../../../../../../components/WalletCurrencyCard';
+import { WalletListCardBadge } from '../../../../../../../../../components/WalletListCardBadge';
 import './TransferFormAccountCard.scss';
 
 type TProps = {
@@ -9,7 +9,7 @@ type TProps = {
     type?: 'input' | 'modal';
 };
 
-const WalletTransferFromAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
+const TransferFromAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
     const isInput = type === 'input';
 
     return (
@@ -50,4 +50,4 @@ const WalletTransferFromAccountCard: React.FC<TProps> = ({ account, type = 'moda
     );
 };
 
-export default WalletTransferFromAccountCard;
+export default TransferFromAccountCard;

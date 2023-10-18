@@ -6,7 +6,7 @@ type TProps = {
     isMaltaWallet?: boolean;
 };
 
-export const DerivAppsGetAccount = ({ isMaltaWallet }: TProps) => {
+export const DerivAppsGetAccount: React.FC<TProps> = ({ isMaltaWallet }) => {
     return (
         <div className='wallets-deriv-apps-section'>
             <DerivApps />

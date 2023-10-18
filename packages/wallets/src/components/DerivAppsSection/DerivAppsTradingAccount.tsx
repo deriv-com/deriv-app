@@ -9,7 +9,7 @@ type TProps = {
     tradingAccountLoginId?: string;
 };
 
-export const DerivAppsTradingAccount = ({ isDemo, label, tradingAccountLoginId }: TProps) => {
+export const DerivAppsTradingAccount: React.FC<TProps> = ({ isDemo, label, tradingAccountLoginId }) => {
     return (
         <div className='wallets-deriv-apps-section'>
             <DerivApps />

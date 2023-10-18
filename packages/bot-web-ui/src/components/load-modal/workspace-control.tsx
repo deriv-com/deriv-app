@@ -3,11 +3,7 @@ import { Icon } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 
-type TWorkspaceControlProps = {
-    mockZoomInOut?: (is_zoom_in: boolean) => void;
-};
-
-const WorkspaceControl = observer(({ mockZoomInOut }: TWorkspaceControlProps) => {
+const WorkspaceControl = observer(() => {
     const { dashboard } = useDBotStore();
     const { onZoomInOutClick } = dashboard;
 
@@ -16,18 +12,12 @@ const WorkspaceControl = observer(({ mockZoomInOut }: TWorkspaceControlProps) =>
             <Icon
                 icon={'IcAddRounded'}
                 className='load-strategy__preview-workspace-icon'
-                onClick={() => {
-                    mockZoomInOut ? mockZoomInOut(true) : onZoomInOutClick(true);
-                }}
-                data_testid='zoom-in'
+                onClick={() => onZoomInOutClick(true)}
             />
             <Icon
                 icon={'IcMinusRounded'}
                 className='load-strategy__preview-workspace-icon'
-                onClick={() => {
-                    mockZoomInOut ? mockZoomInOut(false) : onZoomInOutClick(false);
-                }}
-                data_testid='zoom-out'
+                onClick={() => onZoomInOutClick(false)}
             />
         </div>
     );

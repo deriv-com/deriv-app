@@ -1,6 +1,4 @@
-import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage } from './image/image_utility';
-
-export type TFile = File & { file: Blob };
+import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage, TFile } from './image/image_utility';
 
 export type TSettings = {
     documentType: {

@@ -1,0 +1,116 @@
+.wallets-cashier-header {
+    height: 160px;
+    padding-top: 24px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @include mobile {
+        padding-top: 16px;
+        height: 122px;
+    }
+
+    &__close-button {
+        all: unset;
+        cursor: pointer;
+    }
+
+    &__info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: 24px;
+
+        @include mobile {
+            padding-inline: 16px;
+        }
+
+        &__top-left {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+
+            &__details {
+                display: flex;
+                gap: 24px;
+                align-items: center;
+
+                @include mobile {
+                    gap: 8px;
+                }
+
+                &__title {
+                    font-size: 16px;
+
+                    @include mobile {
+                        font-size: 14px;
+                    }
+                }
+            }
+
+            &__balance {
+                font-size: 32px;
+                font-weight: 700;
+
+                @include mobile {
+                    font-size: 18px;
+                }
+            }
+        }
+
+        &__top-right {
+            display: flex;
+            gap: 16px;
+            align-items: start;
+
+            @include mobile {
+                gap: 8px;
+            }
+        }
+    }
+
+    &__tabs {
+        display: flex;
+        overflow-x: scroll;
+        padding-inline: 24px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        @include mobile {
+            padding-inline: 16px;
+        }
+
+        &__tab {
+            all: unset;
+            display: flex;
+            width: 144px;
+            height: 48px;
+            padding: 0px 16px;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            font-size: 18px;
+            text-transform: capitalize;
+            cursor: pointer;
+
+            @include mobile {
+                height: 40px;
+                font-size: 12px;
+                width: 80px;
+            }
+
+            &--active {
+                border-radius: 16px 16px 0px 0px;
+                background-color: #ffffff;
+                font-weight: 700;
+            }
+        }
+    }
+}

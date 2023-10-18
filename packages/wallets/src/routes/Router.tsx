@@ -3,10 +3,11 @@ import { Route, Switch } from 'react-router-dom';
 import { CashierModalRoute } from './CashierModalRoute';
 import { WalletsListingRoute } from './WalletsListingRoute';
 
-const prefix = '/appstore/traders-hub';
+const prefix = '/wallets';
 
 type TRoutes =
     | `${typeof prefix}/cashier/deposit`
+    | `${typeof prefix}/cashier/reset-balance`
     | `${typeof prefix}/cashier/transactions`
     | `${typeof prefix}/cashier/transfer`
     | `${typeof prefix}/cashier/withdraw`
@@ -14,7 +15,7 @@ type TRoutes =
     | `${typeof prefix}`;
 
 declare module 'react-router-dom' {
-    export function useHistory(): { push: (path: TRoutes) => void };
+    export function useHistory(): { push: (path: TRoutes | string) => void };
 
     export function useRouteMatch(path: TRoutes): boolean;
 }

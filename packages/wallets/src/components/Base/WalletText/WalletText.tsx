@@ -7,8 +7,8 @@ interface WalletTextProps extends ComponentProps<'span'> {
     align?: CSSProperties['textAlign'];
     children: ReactNode;
     color?: CSSProperties['color'] | 'error' | 'general' | 'primary' | 'success' | 'warning';
-    lineHeight?: '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '4xs' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
-    size?: TGenericSizes;
+    lineHeight?: TGenericSizes;
+    size?: Exclude<TGenericSizes, '4xs' | '5xl' | '6xl'>;
     weight?: CSSProperties['fontWeight'];
 }
 

@@ -83,7 +83,7 @@ export const tourStepConfig = (
         ),
     },
     // create DTrader account
-    // TODO: uncomment this when DTrade account will be added to wallet
+    // Uncomment this when DTrade account will be added to wallet
     // {
     //     content: hasDerivAppsTradingAccount ? (
     //         <WalletText size='sm'>

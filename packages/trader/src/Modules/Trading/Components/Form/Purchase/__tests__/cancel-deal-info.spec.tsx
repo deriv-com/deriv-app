@@ -71,9 +71,6 @@ describe('<CancelDealInfo />', () => {
             'trade-container__cancel-deal-info trade-container__cancel-deal-info--row-layout'
         );
 
-        Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
-            configurable: true,
-            value: originalClientHeight,
-        });
+        Object.defineProperty(HTMLElement.prototype, 'clientHeight', { value: originalClientHeight });
     });
 });

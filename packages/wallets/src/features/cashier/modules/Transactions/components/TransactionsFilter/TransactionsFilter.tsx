@@ -1,8 +1,8 @@
 import React, { ComponentProps } from 'react';
-import { TransactionsCrypto } from '../TransactionsCrypto';
+import { TransactionsPending } from '../TransactionsPending';
 import './TransactionsFilter.scss';
 
-type TValue = ComponentProps<typeof TransactionsCrypto>['filter'];
+type TValue = ComponentProps<typeof TransactionsPending>['filter'];
 
 type TProps = {
     isPendingActive: boolean;

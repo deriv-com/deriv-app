@@ -1,9 +1,9 @@
 import React, { ComponentProps, useState } from 'react';
-import { TransactionsCrypto, TransactionsFilter } from './components';
+import { TransactionsPending, TransactionsFilter } from './components';
 import './Transactions.scss';
 
 const Transactions = () => {
-    const [filterValue, setFilterValue] = useState<ComponentProps<typeof TransactionsCrypto>['filter']>(undefined);
+    const [filterValue, setFilterValue] = useState<ComponentProps<typeof TransactionsPending>['filter']>(undefined);
     const [isPendingActive, setIsPendingActive] = useState(true);
 
     return (
@@ -24,7 +24,7 @@ const Transactions = () => {
                 </div>
                 <TransactionsFilter isPendingActive={isPendingActive} onSelect={setFilterValue} />
             </div>
-            {isPendingActive ? <TransactionsCrypto filter={filterValue} /> : null}
+            {isPendingActive ? <TransactionsPending filter={filterValue} /> : null}
         </div>
     );
 };

@@ -462,3 +462,5 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         is_idv_revoked,
     };
 };
+
+export const removeAccountIdPrefix = (login_id: string) => login_id.replace(/^(CT[DR]?)/i, '');

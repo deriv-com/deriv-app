@@ -2,106 +2,51 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
-const MultiplierTradeDescription = () => {
-    const about_section = [
+const MultiplierTradeDescription = ({
+    is_multiplier_fx,
+    onClick,
+}: {
+    is_multiplier_fx?: boolean;
+    onClick: React.MouseEventHandler<HTMLSpanElement>;
+}) => {
+    const content = [
         <Localize
-            i18n_default_text='Predict the market direction and select either “Up” or “Down” to open a position. We will charge a commission when you open a position.'
+            i18n_default_text='Use multipliers to leverage your potential returns. Predict if the asset price will move upward (bullish) or downward (bearish). We’ll charge a commission when you open a multipliers trade.'
             key='1'
         />,
         <Localize
-            i18n_default_text='If you select “Up”, you will earn a profit by closing your position when the market price is higher than the entry spot.'
+            i18n_default_text='If you select "<0>Up</0>", your total profit/loss will be the percentage increase in the underlying asset price, times the multiplier and stake, minus commissions.'
+            components={[<strong key={0} />]}
             key='2'
         />,
         <Localize
-            i18n_default_text='If you select “Down”, you will earn a profit by closing your position when the market price is lower than the entry spot.'
+            i18n_default_text='If you select "<0>Down</0>", your total profit/loss will be the percentage decrease in the underlying asset price, times the multiplier and stake, minus commissions.'
+            components={[<strong key={0} />]}
             key='3'
         />,
         <Localize
-            i18n_default_text='Your profit is the percentage change in market price times your stake and the multiplier of your choice.'
+            i18n_default_text='Your contract will be closed when the <0>stop out</0> level is reached.'
+            components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
             key='4'
         />,
         <Localize
-            i18n_default_text='The stop-out level on the chart indicates the price at which your potential loss equals your entire stake. When the market price reaches this level, your position will be closed automatically. This ensures that your loss does not exceed the amount you paid to purchase the contract.'
+            i18n_default_text={
+                is_multiplier_fx
+                    ? 'Additional features are available to manage your positions: “<0>Take profit</0>” and “<0>Stop loss</0>” allow you to adjust your level of risk aversion.'
+                    : 'Additional features are available to manage your positions: “<0>Take profit</0>”, “<0>Stop loss</0>” and “<0>Deal cancellation</0>” allow you to adjust your level of risk aversion.'
+            }
+            components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
             key='5'
         />,
-        <Localize i18n_default_text='These are optional parameters for each position that you open:' key='6' />,
-    ];
-    const multipliers_params_section = [
-        {
-            type: 'list_item',
-            text: (
-                <Localize
-                    i18n_default_text='If you select “Take profit” and specify an amount that you’d like to earn, your position will be closed automatically when your profit is more than or equals to this amount. Your profit may be more than the amount you entered depending on the market price at closing.'
-                    key='7'
-                />
-            ),
-        },
-        {
-            type: 'list_item',
-            text: (
-                <Localize
-                    i18n_default_text='If you select “Stop loss” and specify an amount to limit your loss, your position will be closed automatically when your loss is more than or equals to this amount. Your loss may be more than the amount you entered depending on the market price at closing.'
-                    key='8'
-                />
-            ),
-        },
-        {
-            type: 'list_item',
-            text: (
-                <Localize
-                    i18n_default_text='If you select “Deal cancellation”, you’ll be able to cancel your trade within a chosen time frame should the market move against your favour. We’ll charge a small fee for this, but we’ll return your stake amount without profit or loss. If the stop-out amount is reached before the deal cancellation expires, your position will be cancelled automatically and we’ll return your stake amount without profit or loss.'
-                    key='9'
-                />
-            ),
-        },
-        { type: 'paragraph', text: <Localize i18n_default_text='While “Deal cancellation” is active:' key='10' /> },
-    ];
-    const deal_cancellation_section = [
         <Localize
-            i18n_default_text='“Stop loss” is deactivated and will only be available when “Deal cancellation” expires.'
-            key='11'
-        />,
-        <Localize
-            i18n_default_text='“Take profit” cannot be updated. You may update it only when “Deal cancellation” expires.'
-            key='12'
+            i18n_default_text='You can close your trade anytime. However, be aware of <0>slippage risk</0>.'
+            components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+            key='6'
         />,
     ];
-    const closing_section = [
-        <Localize
-            i18n_default_text='The entry spot is the market price when your contract is processed by our servers.'
-            key='13'
-        />,
-        <Localize i18n_default_text='The exit spot is the market price when the contract is closed.' key='14' />,
-    ];
-
     return (
         <React.Fragment>
-            {about_section.map(paragraph => (
-                <Text as='p' key={paragraph.props.i18n_default_text}>
-                    {paragraph}
-                </Text>
-            ))}
-            <ul>
-                {multipliers_params_section.map(({ type, text }) =>
-                    type === 'list_item' ? (
-                        <Text as='li' key={text.props.i18n_default_text}>
-                            {text}
-                        </Text>
-                    ) : (
-                        <Text as='p' key={text.props.i18n_default_text}>
-                            {text}
-                        </Text>
-                    )
-                )}
-                <ul>
-                    {deal_cancellation_section.map(paragraph => (
-                        <Text as='li' key={paragraph.props.i18n_default_text}>
-                            {paragraph}
-                        </Text>
-                    ))}
-                </ul>
-            </ul>
-            {closing_section.map(paragraph => (
+            {content.map(paragraph => (
                 <Text as='p' key={paragraph.props.i18n_default_text}>
                     {paragraph}
                 </Text>

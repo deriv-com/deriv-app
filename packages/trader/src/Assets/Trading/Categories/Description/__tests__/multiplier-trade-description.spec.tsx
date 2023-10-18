@@ -2,10 +2,24 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import MultiplierTradeDescription from '../multiplier-trade-description';
 
-describe('<MultiplierTradeDescription />', () => {
-    it('a proper text of description should be rendered', () => {
-        render(<MultiplierTradeDescription />);
+const default_mock_props = {
+    is_multiplier_fx: false,
+    onClick: jest.fn(),
+};
+const stop_loss = 'Stop loss';
+const deal_cancellation = 'Deal cancellation';
 
-        expect(screen.getByText(/Predict the market direction and select either “Up” or “Down”/i)).toBeInTheDocument();
+describe('<MultiplierTradeDescription />', () => {
+    it('should render a proper text if is_multiplier_fx is falsy', () => {
+        render(<MultiplierTradeDescription {...default_mock_props} />);
+
+        expect(screen.getByText(stop_loss)).toBeInTheDocument();
+        expect(screen.getByText(deal_cancellation)).toBeInTheDocument();
+    });
+    it('should render a proper text if is_multiplier_fx is true', () => {
+        render(<MultiplierTradeDescription {...default_mock_props} is_multiplier_fx />);
+
+        expect(screen.getByText(stop_loss)).toBeInTheDocument();
+        expect(screen.queryByText(deal_cancellation)).not.toBeInTheDocument();
     });
 });

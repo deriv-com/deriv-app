@@ -25,7 +25,7 @@ jest.mock('../Description/touch-trade-description', () => jest.fn(() => 'mockedT
 jest.mock('../Description/turbos-trade-description', () => jest.fn(() => 'mockedTurbosTradeDescription'));
 jest.mock('../Description/vanilla-trade-description', () => jest.fn(() => 'mockedVanillaTradeDescription'));
 
-describe('<TradeCategores />', () => {
+describe('<TradeCategories />', () => {
     it('Ensure AccumulatorTradeDescription is rendered correctly when trade category is "accumulator"', () => {
         render(<TradeCategories category='accumulator' onClick={jest.fn()} />);
         expect(screen.getByText(/mockedaccumulatortradedescription/i)).toBeInTheDocument();

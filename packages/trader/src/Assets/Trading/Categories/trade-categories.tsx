@@ -26,9 +26,11 @@ import { VANILLALONG, TURBOS } from '@deriv/shared';
 const TradeCategories = ({
     category,
     onClick,
+    is_multiplier_fx = false,
 }: {
     category?: string;
     onClick: React.MouseEventHandler<HTMLSpanElement>;
+    is_multiplier_fx?: boolean;
 }) => {
     let TradeTypeTemplate;
     if (category) {
@@ -86,7 +88,9 @@ const TradeCategories = ({
                 TradeTypeTemplate = <LbCallTradeDescription />;
                 break;
             case 'multiplier':
-                TradeTypeTemplate = <MultiplierTradeDescription />;
+                TradeTypeTemplate = (
+                    <MultiplierTradeDescription is_multiplier_fx={is_multiplier_fx} onClick={onClick} />
+                );
                 break;
             case TURBOS.LONG:
             case TURBOS.SHORT:

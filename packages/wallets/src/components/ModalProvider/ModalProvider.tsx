@@ -15,6 +15,7 @@ type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketT
 
 type TModalState = {
     marketType?: TMarketTypes;
+    platform?: string;
 };
 
 const ModalContext = createContext<TModalContext | null>(null);

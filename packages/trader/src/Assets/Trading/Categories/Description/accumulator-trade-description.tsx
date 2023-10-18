@@ -10,7 +10,7 @@ const AccumulatorTradeDescription = ({ onClick }: { onClick: React.MouseEventHan
             key='1'
         />,
         <Localize
-            i18n_default_text='Your <0>payout</0> is the sum of your inital stake and profit.'
+            i18n_default_text='Your <0>payout</0> is the sum of your initial stake and profit.'
             components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
             key='2'
         />,

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { useCryptoTransactions } from '@deriv/api';
 import { Loader } from '../../../../../../components/Loader';
-import { TransactionsCryptoRow } from '../TransactionsCryptoRow';
+import { TransactionsPendingRow } from '../TransactionsPendingRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsTable } from '../TransactionsTable';
 import './TransactionsCrypto.scss';
@@ -43,7 +43,7 @@ const TransactionsCrypto: React.FC<TProps> = ({ filter }) => {
                         {moment(transaction.submit_date).format('DD MMM YYYY')}
                     </p>
                 )}
-                rowRender={transaction => <TransactionsCryptoRow transaction={transaction} />}
+                rowRender={transaction => <TransactionsPendingRow transaction={transaction} />}
             />
         </div>
     );

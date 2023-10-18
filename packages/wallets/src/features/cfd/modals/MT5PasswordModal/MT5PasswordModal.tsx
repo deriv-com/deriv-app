@@ -55,23 +55,23 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
 
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
-            {isSuccess && (
-                <Success
-                    description={`You can now start practicing trading with your ${
-                        marketTypeToTitleMapper[marketType]
-                    } ${isDemo ? ' demo' : 'real'} account.`}
-                    marketType={marketType}
-                    renderButton={() => (
-                        <WalletButton onClick={hide}>
-                            <WalletText color='white' size='sm' weight='bold'>
-                                Continue
-                            </WalletText>
-                        </WalletButton>
-                    )}
-                    title={`Your ${marketTypeToTitleMapper[marketType]} ${isDemo ? ' demo' : 'real'} account is ready`}
-                />
-            )}
-            {!isSuccess &&
+            {/* {isSuccess && ( */}
+            <Success
+                description={`You can now start practicing trading with your ${marketTypeToTitleMapper[marketType]} ${
+                    isDemo ? ' demo' : 'real'
+                } account.`}
+                marketType={marketType}
+                renderButton={() => (
+                    <WalletButton onClick={hide}>
+                        <WalletText color='white' size='sm' weight='bold'>
+                            Continue
+                        </WalletText>
+                    </WalletButton>
+                )}
+                title={`Your ${marketTypeToTitleMapper[marketType]} ${isDemo ? ' demo' : 'real'} account is ready`}
+            />
+            {/* )} */}
+            {/* {!isSuccess &&
                 (hasMT5Account ? (
                     <EnterPassword
                         marketType={marketType}
@@ -86,7 +86,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType }) => {
                         onPrimaryClick={onSubmit}
                         platform='mt5'
                     />
-                ))}
+                ))} */}
         </ModalWrapper>
     );
 };

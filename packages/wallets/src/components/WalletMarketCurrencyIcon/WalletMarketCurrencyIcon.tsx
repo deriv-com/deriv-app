@@ -1,5 +1,7 @@
 import React, { ComponentType, SVGAttributes } from 'react';
 import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
+import DerivXIcon from '../../public/images/derivx.svg';
+import CTraderIcon from '../../public/images/ctrader.svg';
 import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
 import { WalletCardIcon } from '../WalletCardIcon';
@@ -10,12 +12,14 @@ const marketTypeToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElem
     all: SwapFreeMT5Icon,
     financial: FinancialMT5Icon,
     synthetic: DerivedMT5Icon,
+    derivx: DerivXIcon,
+    ctrader: CTraderIcon,
 };
 
 type TWalletMarketCurrencyIconProps = {
     currency: string;
     isDemo: boolean;
-    marketType: string;
+    marketType: keyof typeof marketTypeToIconMapper;
 };
 
 const WalletMarketCurrencyIcon = ({ currency, isDemo, marketType }: TWalletMarketCurrencyIconProps) => {

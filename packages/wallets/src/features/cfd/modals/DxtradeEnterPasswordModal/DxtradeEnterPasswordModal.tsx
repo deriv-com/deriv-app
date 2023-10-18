@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api';
-import { ModalWrapper } from '../../../../components/Base';
-import { useModal } from '../../../../components/ModalProvider';
+import { ModalWrapper, WalletButton, WalletText } from '../../../../components/Base';
 import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
-import { CreatePassword } from '../../screens';
+import { Success, CreatePassword } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';
+import { useModal } from '../../../../components/ModalProvider';
 
 const DxtradeEnterPasswordModal = () => {
     const [password, setPassword] = useState('');
     const { isSuccess, mutate } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
     const { hide } = useModal();
+    const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
     const onSubmit = () => {
         mutate({
             payload: {
-                account_type: activeWallet?.is_virtual ? 'demo' : 'real',
+                account_type: accountType,
                 market_type: 'all',
                 password,
                 platform: 'dxtrade',
@@ -23,18 +24,29 @@ const DxtradeEnterPasswordModal = () => {
         });
     };
 
-    useEffect(() => {
-        if (isSuccess) hide();
-    }, [hide, isSuccess]);
-
     return (
-        <ModalWrapper>
-            <CreatePassword
-                icon={<DxTradePasswordIcon />}
-                onPasswordChange={e => setPassword(e.target.value)}
-                onPrimaryClick={onSubmit}
+        <ModalWrapper hideCloseButton={isSuccess}>
+            <Success
+                description={`You can now start practicing trading with your Deriv X ${accountType} account.`}
+                marketType='all'
                 platform='dxtrade'
+                renderButton={() => (
+                    <WalletButton onClick={hide}>
+                        <WalletText color='white' size='sm' weight='bold'>
+                            Continue
+                        </WalletText>
+                    </WalletButton>
+                )}
+                title={`Your Deriv X ${accountType} account is ready`}
             />
+            {/* {!isSuccess && (
+                <CreatePassword
+                    icon={<DxTradePasswordIcon />}
+                    onPasswordChange={e => setPassword(e.target.value)}
+                    onPrimaryClick={onSubmit}
+                    platform='dxtrade'
+                />
+            )} */}
         </ModalWrapper>
     );
 };

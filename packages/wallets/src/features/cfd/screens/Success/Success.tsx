@@ -8,6 +8,7 @@ import './Success.scss';
 type TSuccessProps = {
     description: string;
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
+    platform: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['platform'], undefined>;
     renderButton: () => ReactNode;
     title: string;
 };
@@ -18,10 +19,20 @@ const marketTypeToTitleMapper: Record<TSuccessProps['marketType'], string> = {
     synthetic: 'MT5 Derived',
 };
 
-const Success: React.FC<TSuccessProps> = ({ description, marketType, renderButton, title }) => {
+const marketTypeToPlatformMapper = {
+    derivx: 'Deriv X',
+    ctrader: 'cTrader',
+};
+
+const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, renderButton, title }) => {
     const { data } = useActiveWalletAccount();
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
+
+    const marketTypeTitle =
+        marketType === 'all' && Object.keys(marketTypeToPlatformMapper).includes(platform)
+            ? marketTypeToPlatformMapper[platform]
+            : marketTypeToTitleMapper[marketType];
 
     return (
         <div className='wallets-success'>
@@ -40,7 +51,7 @@ const Success: React.FC<TSuccessProps> = ({ description, marketType, renderButto
                     marketType={marketType}
                 />
                 <WalletText size='2xs'>
-                    {marketTypeToTitleMapper[marketType]} ({landingCompanyName})
+                    {marketTypeTitle} ({landingCompanyName})
                 </WalletText>
                 {/* <div className='wallets-success__info__text--type'></div> */}
                 <WalletText color='primary' size='2xs'>

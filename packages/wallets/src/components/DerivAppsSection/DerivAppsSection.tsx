@@ -10,9 +10,7 @@ const DerivAppsSection = () => {
 
     return (
         <div className='wallets-deriv-apps-section'>
-            <div className='wallets-deriv-apps-section__icon'>
-                <DerivApps />
-            </div>
+            <DerivApps />
             <div className='wallets-deriv-apps-section__details'>
                 <div className='wallets-deriv-apps-section__title-and-badge'>
                     <WalletText size='sm'>Deriv Apps</WalletText>
@@ -21,13 +19,11 @@ const DerivAppsSection = () => {
                 <WalletText size='sm' weight='bold'>
                     [Balance]
                 </WalletText>
-                <WalletText lineHeight='sm' size='xs' weight='bold'>
+                <WalletText color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
                     [Account ID]
                 </WalletText>
             </div>
-            <div className='wallets-deriv-apps-section__button'>
-                <WalletButton color='white' text='Transfer' variant='outlined' />
-            </div>
+            <WalletButton color='white' text='Transfer' variant='outlined' />
         </div>
     );
 };

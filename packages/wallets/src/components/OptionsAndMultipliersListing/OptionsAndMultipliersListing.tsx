@@ -51,22 +51,32 @@ const OptionsAndMultipliersListing = () => {
     return (
         <div className='wallets-options-and-multipliers-listing'>
             <section className='wallets-options-and-multipliers-listing__header'>
-                {!isMobile && (
-                    <WalletText align='center' lineHeight='6xl' size='3xl' weight='bold'>
-                        Options & Multipliers
-                    </WalletText>
-                )}
-                <div className='wallets-options-and-multipliers-listing__header-subtitle'>
-                    <h1>
-                        Earn a range of payouts by correctly predicting market price movements with{' '}
-                        <a className='wallets-options-and-multipliers-listing__header-subtitle__link' href='#' key={0}>
-                            options
-                        </a>
-                        , or get the upside of CFDs without risking more than your initial stake with{' '}
-                        <a className='wallets-options-and-multipliers-listing__header-subtitle__link' href='#' key={1}>
-                            multipliers
-                        </a>
-                    </h1>
+                <div className='wallets-options-and-multipliers-listing__header-title'>
+                    {!isMobile && (
+                        <WalletText align='center' lineHeight='6xl' size='3xl' weight='bold'>
+                            Options & Multipliers
+                        </WalletText>
+                    )}
+                    <div className='wallets-options-and-multipliers-listing__header-subtitle'>
+                        <h1>
+                            Earn a range of payouts by correctly predicting market price movements with{' '}
+                            <a
+                                className='wallets-options-and-multipliers-listing__header-subtitle__link'
+                                href='#'
+                                key={0}
+                            >
+                                options
+                            </a>
+                            , or get the upside of CFDs without risking more than your initial stake with{' '}
+                            <a
+                                className='wallets-options-and-multipliers-listing__header-subtitle__link'
+                                href='#'
+                                key={1}
+                            >
+                                multipliers
+                            </a>
+                        </h1>
+                    </div>
                 </div>
                 <DerivAppsSection />
             </section>

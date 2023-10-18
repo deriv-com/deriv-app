@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api';
-import { ModalWrapper } from '../../../../components/Base';
+import { ModalWrapper, WalletButton } from '../../../../components/Base';
 import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
-import { AccountReady, CreatePassword } from '../../screens';
+import { Success, CreatePassword } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';
+import { useModal } from '../../../../components/ModalProvider';
 
 const DxtradeEnterPasswordModal = () => {
     const [password, setPassword] = useState('');
     const { isSuccess, mutate } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { hide } = useModal();
+    const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
     const onSubmit = () => {
         mutate({
             payload: {
-                account_type: activeWallet?.is_virtual ? 'demo' : 'real',
+                account_type: accountType,
                 market_type: 'all',
                 password,
                 platform: 'dxtrade',
@@ -23,7 +26,15 @@ const DxtradeEnterPasswordModal = () => {
 
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
-            {isSuccess && <AccountReady marketType='all' />}
+            {isSuccess && (
+                <Success
+                    description={`You can now start practicing trading with your Deriv X ${accountType} account.`}
+                    marketType='all'
+                    platform='dxtrade'
+                    renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
+                    title={`Your Deriv X ${accountType} account is ready`}
+                />
+            )}
             {!isSuccess && (
                 <CreatePassword
                     icon={<DxTradePasswordIcon />}

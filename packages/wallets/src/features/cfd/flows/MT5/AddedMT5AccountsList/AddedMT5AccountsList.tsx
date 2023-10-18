@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useMT5AccountsList } from '@deriv/api';
 import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
@@ -24,6 +25,7 @@ type TProps = {
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
+    const history = useHistory();
     return (
         <TradingAccountCard
             leading={() => (
@@ -31,7 +33,13 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             )}
             trailing={() => (
                 <div className='wallets-added-mt5__actions'>
-                    <WalletButton text='Transfer' variant='outlined' />
+                    <WalletButton
+                        onClick={() => {
+                            history.push('/wallets/cashier/transfer');
+                        }}
+                        text='Transfer'
+                        variant='outlined'
+                    />
                     <WalletButton text='Open' />
                 </div>
             )}

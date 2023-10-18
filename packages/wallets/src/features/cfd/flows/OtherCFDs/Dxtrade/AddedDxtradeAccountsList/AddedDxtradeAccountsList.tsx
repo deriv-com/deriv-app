@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDxtradeAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../../components';
 import { WalletButton } from '../../../../../../components/Base';
@@ -6,6 +7,7 @@ import DerivX from '../../../../../../public/images/derivx.svg';
 import './AddedDxtradeAccountsList.scss';
 
 const AddedDxtradeAccountsList: React.FC = () => {
+    const history = useHistory();
     const { data } = useDxtradeAccountsList();
 
     return (
@@ -17,7 +19,13 @@ const AddedDxtradeAccountsList: React.FC = () => {
             )}
             trailing={() => (
                 <div className='wallets-available-derivx__actions'>
-                    <WalletButton text='Transfer' variant='outlined' />
+                    <WalletButton
+                        onClick={() => {
+                            history.push('/wallets/cashier/transfer');
+                        }}
+                        text='Transfer'
+                        variant='outlined'
+                    />
                     <WalletButton text='Open' />
                 </div>
             )}

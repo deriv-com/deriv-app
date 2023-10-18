@@ -12,7 +12,7 @@ const WalletResetBalance = () => {
     const history = useHistory();
     const { isSuccess: isResetBalanceSuccess, mutate } = useRequest('topup_virtual');
     const { data: activeWallet } = useActiveWalletAccount();
-    const canResetBalance = activeWallet?.balance !== 10000;
+    const canResetBalance = activeWallet?.balance !== 10001;
     const { isMobile } = useDevice();
 
     const resetBalance = () => {
@@ -26,13 +26,13 @@ const WalletResetBalance = () => {
             </div>
 
             <div className='wallets-reset-balance__title'>
-                <WalletText size='2xl' weight='bold'>
+                <WalletText size={isMobile ? 'lg' : '2xl'} weight='bold'>
                     Reset balance to 10,000.00 USD
                 </WalletText>
             </div>
 
             <div className='wallets-reset-balance__subtitle'>
-                <WalletText size='lg'>
+                <WalletText size={isMobile ? 'md' : 'lg'}>
                     {isResetBalanceSuccess ? (
                         <>Your balance has been reset to 10,000.00 USD.</>
                     ) : (
@@ -54,7 +54,7 @@ const WalletResetBalance = () => {
 
                 {isResetBalanceSuccess && (
                     <WalletButton
-                        color='primary-light'
+                        color='primary'
                         onClick={() => history.push(`/wallets/cashier/transfer`)}
                         size='lg'
                         text='Transfer funds'

@@ -45,6 +45,7 @@ const IconMessageList = observer(({ className, icon, message, message_list = [],
                         className={classNames('account-management__message', {
                             [`${className}__message`]: className,
                         })}
+                        size={is_desktop ? 's' : 'xs'}
                     >
                         {message}
                     </Text>

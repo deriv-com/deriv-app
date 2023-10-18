@@ -6,6 +6,7 @@ import WalletButton from '../../../../components/Base/WalletButton/WalletButton'
 import WalletText from '../../../../components/Base/WalletText/WalletText';
 import IcResetDemoBalance from '../../../../public/images/ic-demo-reset-balance.svg';
 import IcResetDemoBalanceDone from '../../../../public/images/ic-demo-reset-balance-done.svg';
+import './WalletResetBalance.scss';
 
 const WalletResetBalance = () => {
     const history = useHistory();
@@ -20,36 +21,45 @@ const WalletResetBalance = () => {
 
     return (
         <div className='wallets-reset-balance'>
-            {isResetBalanceSuccess ? <IcResetDemoBalanceDone /> : <IcResetDemoBalance />}
-            <div>
-                <WalletText>Reset balance to 10,000.00 USD</WalletText>
+            <div className='wallets-reset-balance__icon'>
+                {isResetBalanceSuccess ? <IcResetDemoBalanceDone /> : <IcResetDemoBalance />}
             </div>
 
-            <div>
-                {isResetBalanceSuccess ? (
-                    <WalletText>Your balance has been reset to 10,000.00 USD.</WalletText>
-                ) : (
-                    <WalletText>
-                        Reset your virtual balance if it falls below 10,000.00 USD or exceeds 10,000.00 USD.
-                    </WalletText>
+            <div className='wallets-reset-balance__title'>
+                <WalletText size='2xl' weight='bold'>
+                    Reset balance to 10,000.00 USD
+                </WalletText>
+            </div>
+
+            <div className='wallets-reset-balance__subtitle'>
+                <WalletText size='lg'>
+                    {isResetBalanceSuccess ? (
+                        <>Your balance has been reset to 10,000.00 USD.</>
+                    ) : (
+                        <> Reset your virtual balance if it falls below 10,000.00 USD or exceeds 10,000.00 USD.</>
+                    )}
+                </WalletText>
+            </div>
+
+            <div className='wallets-reset-balance__button'>
+                {!isResetBalanceSuccess && (
+                    <WalletButton
+                        color='primary'
+                        disabled={!canResetBalance}
+                        onClick={resetBalance}
+                        size='lg'
+                        text='Reset balance'
+                    />
                 )}
-            </div>
 
-            <div>
-                <WalletButton
-                    color='primary'
-                    disabled={!canResetBalance}
-                    onClick={resetBalance}
-                    size='lg'
-                    text='Reset balance'
-                />
-
-                <WalletButton
-                    color='primary-light'
-                    onClick={() => history.push(`/wallets/cashier/transfer`)}
-                    size='lg'
-                    text='Transfer funds'
-                />
+                {isResetBalanceSuccess && (
+                    <WalletButton
+                        color='primary-light'
+                        onClick={() => history.push(`/wallets/cashier/transfer`)}
+                        size='lg'
+                        text='Transfer funds'
+                    />
+                )}
             </div>
         </div>
     );

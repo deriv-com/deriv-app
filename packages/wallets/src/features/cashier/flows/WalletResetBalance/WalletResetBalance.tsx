@@ -12,7 +12,7 @@ const WalletResetBalance = () => {
     const history = useHistory();
     const { isSuccess: isResetBalanceSuccess, mutate } = useRequest('topup_virtual');
     const { data: activeWallet } = useActiveWalletAccount();
-    const canResetBalance = activeWallet?.balance !== 10001;
+    const canResetBalance = activeWallet?.balance !== 10000;
     const { isMobile } = useDevice();
 
     const resetBalance = () => {

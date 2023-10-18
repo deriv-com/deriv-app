@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
-import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
+import { useHasMFAccountDeposited } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import './ready-to-verify-modal.scss';
@@ -16,8 +16,7 @@ const ReadyToVerifyModal = observer(() => {
         setIsVerificationModalVisible,
         is_mobile,
     } = ui;
-    const is_deposit_locked = useDepositLocked();
-    const is_cashier_locked = useCashierLocked();
+    const has_mf_account_deposited = useHasMFAccountDeposited();
 
     const onConfirmModal = () => {
         toggleAccountSuccessModal();
@@ -28,12 +27,11 @@ const ReadyToVerifyModal = observer(() => {
         toggleAccountSuccessModal();
         setShouldTriggerTourGuide(true); // route to onboarding -switch accounts
     };
-    const has_deposited_for_first_time = is_deposit_locked || is_cashier_locked;
 
     return (
         <Dialog
             className='ready-to-verify-dialog'
-            title={has_deposited_for_first_time ? localize('Successfully deposited') : localize('Account added')}
+            title={has_mf_account_deposited ? localize('Successfully deposited') : localize('Account added')}
             confirm_button_text={localize('Verify now')}
             onConfirm={onConfirmModal}
             cancel_button_text={localize('Maybe later')}
@@ -46,7 +44,7 @@ const ReadyToVerifyModal = observer(() => {
             onEscapeButtonCancel={onClose}
         >
             <Text align='center' size={is_mobile ? 'xxs' : 'xs'}>
-                {has_deposited_for_first_time
+                {has_mf_account_deposited
                     ? localize(
                           'Your funds will be available for trading once the verification of your account is complete.'
                       )

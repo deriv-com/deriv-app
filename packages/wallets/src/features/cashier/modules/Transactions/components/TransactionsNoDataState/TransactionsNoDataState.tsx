@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import NoRecentTransactions from '../../../../../public/images/no-recent-transactions.svg';
+import NoRecentTransactions from '../../../../../../public/images/no-recent-transactions.svg';
 import './TransactionsNoDataState.scss';
 
 const TransactionsNoDataState = () => {

@@ -6,12 +6,12 @@ import OpenContract from './OpenContract';
 import Proposal from './Proposal';
 import Purchase from './Purchase';
 import Sell from './Sell';
-import { start } from './state/actions';
+import { start, proposalsReady } from './state/actions';
 import * as constants from './state/constants';
 import rootReducer from './state/reducers';
 import Ticks from './Ticks';
 import Total from './Total';
-import { doUntilDone } from '../utils/helpers';
+import { doUntilDone, checkBlocksForProposalRequest } from '../utils/helpers';
 import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
@@ -95,11 +95,11 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         const validated_trade_options = this.validateTradeOptions(tradeOptions);
 
-        this.tradeOptions = validated_trade_options;
+        this.tradeOptions = { ...validated_trade_options, symbol: this.options.symbol };
         this.store.dispatch(start());
         this.checkLimits(validated_trade_options);
-        this.makeProposals({ ...this.options, ...validated_trade_options });
-        this.checkProposalReady();
+
+        this.makeDirectPurchaseDecision();
     }
 
     loginAndGetBalance(token) {
@@ -147,5 +147,17 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             return watchBefore(this.store);
         }
         return watchDuring(this.store);
+    }
+
+    makeDirectPurchaseDecision() {
+        const { has_payout_block, is_basis_payout } = checkBlocksForProposalRequest();
+        this.is_proposal_subscription_required = has_payout_block || is_basis_payout;
+
+        if (this.is_proposal_subscription_required) {
+            this.makeProposals({ ...this.options, ...this.tradeOptions });
+            this.checkProposalReady();
+        } else {
+            this.store.dispatch(proposalsReady());
+        }
     }
 }

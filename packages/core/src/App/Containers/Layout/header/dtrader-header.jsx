@@ -35,7 +35,6 @@ const DTraderHeader = ({
     is_acc_switcher_on,
     is_app_disabled,
     is_bot_allowed,
-    is_dxtrade_allowed,
     is_eu,
     is_logged_in,
     is_logging_in,
@@ -82,9 +81,6 @@ const DTraderHeader = ({
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
                 return !is_logged_in || is_mt5_allowed;
-            }
-            if (config.link_to === routes.dxtrade) {
-                return is_dxtrade_allowed;
             }
             if (
                 config.link_to === routes.bot ||

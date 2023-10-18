@@ -47,7 +47,7 @@
         }
 
         &--animated {
-            animation: triggerAnimation 1s linear infinite alternate;
+            animation: triggerAnimation 0.5s linear infinite alternate;
             box-shadow: 0 2rem 1.5rem -0.1rem var(--general-section-1);
         }
 
@@ -78,7 +78,7 @@
             }
 
             &--animated {
-                animation: triggerAnimation 1s linear infinite alternate;
+                animation: triggerAnimation 0.5s linear infinite alternate;
                 box-shadow: 0 2rem 1.5rem -0.1rem var(--general-section-1);
             }
         }

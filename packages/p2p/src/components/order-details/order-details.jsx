@@ -6,7 +6,7 @@ import { formatMoney, isDesktop, isMobile, routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from '../../constants/api-error-codes.js';
-import Chat from 'Components/orders/chat/chat.jsx';
+import Chat from 'Pages/orders/chat/chat.jsx';
 import StarRating from 'Components/star-rating';
 import UserRatingButton from 'Components/user-rating-button';
 import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
@@ -17,10 +17,11 @@ import P2PAccordion from 'Components/p2p-accordion/p2p-accordion.jsx';
 import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
-import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
+import MyProfileSeparatorContainer from 'Pages/my-profile/my-profile-separator-container';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import { getDateAfterHours } from 'Utils/date-time';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import ChatMessage, { admin_message } from 'Utils/chat-message';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
@@ -65,6 +66,11 @@ const OrderDetails = observer(() => {
     } = order_store?.order_information;
 
     const { chat_channel_url } = sendbird_store;
+    const should_send_admin_message =
+        buy_sell_store.is_create_order_subscribed &&
+        sendbird_store.chat_messages.length === 0 &&
+        sendbird_store.chat_channel_url &&
+        !sendbird_store.is_chat_loading;
 
     const [should_expand_all, setShouldExpandAll] = React.useState(false);
     const [remaining_review_time, setRemainingReviewTime] = React.useState(null);
@@ -128,7 +134,7 @@ const OrderDetails = observer(() => {
             order_store.setOrderPaymentMethodDetails(undefined);
             order_store.setOrderId(null);
             order_store.setActiveOrder(null);
-            history.replace({
+            history?.replace({
                 search: '',
                 hash: location.hash,
             });
@@ -196,6 +202,10 @@ const OrderDetails = observer(() => {
     );
     const rate_amount = removeTrailingZeros(formatMoney(local_currency, rate, true, 6));
 
+    if (should_send_admin_message) {
+        sendbird_store.sendMessage(admin_message, ChatMessage.TYPE_ADMIN);
+    }
+
     return (
         <OrderDetailsWrapper page_title={page_title}>
             {should_show_lost_funds_banner && (
@@ -215,7 +225,7 @@ const OrderDetails = observer(() => {
                 <div className='order-details-card'>
                     <div className='order-details-card__header'>
                         <div className='order-details-card__header--left'>
-                            <div
+                            <Text
                                 className={classNames(
                                     'order-details-card__header-status',
                                     'order-details-card__header-status--info',
@@ -225,19 +235,26 @@ const OrderDetails = observer(() => {
                                         'order-details-card__header-status--success': should_highlight_success,
                                     }
                                 )}
+                                as='p'
+                                line_height='s'
+                                weight='bold'
                             >
                                 {status_string}
-                            </div>
+                            </Text>
                             {should_highlight_success && (
-                                <div className='order-details-card__message'>{labels.result_string}</div>
+                                <Text as='p' line_height='xl' size='xs'>
+                                    {labels.result_string}
+                                </Text>
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
-                                <div className='order-details-card__header-amount'>
+                                <Text size='m'>
                                     {display_payment_amount} {local_currency}
-                                </div>
+                                </Text>
                             )}
                             <div className='order-details-card__header-id'>
-                                <Localize i18n_default_text='Order ID {{ id }}' values={{ id }} />
+                                <Text color='less-prominent' size='xxs' line_height='l'>
+                                    <Localize i18n_default_text='Order ID {{ id }}' values={{ id }} />
+                                </Text>
                             </div>
                         </div>
                         <div className='order-details-card__header--right'>
@@ -288,7 +305,7 @@ const OrderDetails = observer(() => {
                                                 {labels.payment_details}
                                             </Text>
                                             <Button
-                                                className='p2p-my-ads__expand-button'
+                                                className='my-ads__expand-button'
                                                 onClick={() => setShouldExpandAll(prev_state => !prev_state)}
                                                 transparent
                                             >
@@ -374,7 +391,7 @@ const OrderDetails = observer(() => {
                             <React.Fragment>
                                 <MyProfileSeparatorContainer.Line className='order-details-card--rating__line' />
                                 <div className='order-details-card__ratings'>
-                                    <Text color='prominent' size='s' weight='bold'>
+                                    <Text color='prominent' weight='bold'>
                                         <Localize i18n_default_text='Your transaction experience' />
                                     </Text>
                                     <div className='order-details-card__ratings--row'>

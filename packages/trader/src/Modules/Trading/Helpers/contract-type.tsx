@@ -5,7 +5,7 @@ import { TContractType, TContractCategory, TList } from '../Components/Form/Cont
 type TContractTypesList = {
     [key: string]: {
         name: string;
-        categories: TContractType[];
+        categories: DeepRequired<TContractType[]>;
     };
 };
 
@@ -43,6 +43,9 @@ export const getContractTypeCategoryIcons = () =>
  * @param {array}  unsupported_list - list of unsupported contract types
  */
 
+export const showLabelForMultipliers = (checked_symbol: string) =>
+    /R_|1HZ/i.test(checked_symbol) && !/1HZ150V|1HZ250V/i.test(checked_symbol);
+
 export const getAvailableContractTypes = (contract_types_list: TContractTypesList, unsupported_list: string[]) => {
     return Object.keys(contract_types_list)
         .map(key => {
@@ -70,7 +73,20 @@ export const getAvailableContractTypes = (contract_types_list: TContractTypesLis
             }
             return undefined;
         })
-        .filter(Boolean);
+        .filter(Boolean) as {
+        key: string;
+        label: string;
+        contract_types: TContractType[];
+        icon:
+            | 'IcUpsDowns'
+            | 'IcHighsLows'
+            | 'IcInsOuts'
+            | 'IcLookbacks'
+            | 'IcDigits'
+            | 'IcMultiplier'
+            | 'IcCatAccumulator';
+        component: JSX.Element | null;
+    }[];
 };
 
 /**

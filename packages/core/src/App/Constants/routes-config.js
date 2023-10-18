@@ -57,6 +57,13 @@ const AppStore = React.lazy(() =>
     })
 );
 
+const Wallets = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "wallets" */ '@deriv/wallets');
+    })
+);
+
 const P2P = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
@@ -234,7 +241,13 @@ const getModules = () => {
             path: routes.traders_hub,
             component: AppStore,
             is_authenticated: true,
-            getTitle: () => localize('Traders Hub'),
+            getTitle: () => localize("Trader's Hub"),
+        },
+        {
+            path: routes.wallets,
+            component: Wallets,
+            is_authenticated: true,
+            getTitle: () => localize('Wallets'),
         },
         {
             path: routes.onboarding,
@@ -245,7 +258,7 @@ const getModules = () => {
                 {
                     path: routes.traders_hub,
                     component: AppStore,
-                    getTitle: () => localize('Traders Hub'),
+                    getTitle: () => localize("Trader's Hub"),
                 },
                 {
                     path: routes.onboarding,

@@ -1,15 +1,14 @@
 import { useCallback } from 'react';
-import useRequest from '../useRequest';
+import useMutation from '../useMutation';
 
 type TPayload = Parameters<
-    ReturnType<typeof useRequest<'trading_platform_investor_password_change'>>['mutate']
+    ReturnType<typeof useMutation<'trading_platform_investor_password_change'>>['mutate']
 >[0]['payload'];
 
 /** A custom hook that change the Trading Platform Investor Password. */
 const useTradingPlatformInvestorPasswordChange = () => {
-    const { mutate: _mutate, ...rest } = useRequest('trading_platform_investor_password_change');
+    const { mutate: _mutate, ...rest } = useMutation('trading_platform_investor_password_change');
 
-    /**  @param payload - The payload to be sent to the server */
     const mutate = useCallback((payload: TPayload) => _mutate({ payload }), [_mutate]);
 
     return {

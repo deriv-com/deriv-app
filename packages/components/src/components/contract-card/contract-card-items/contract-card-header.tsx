@@ -1,17 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { localize } from '@deriv/translations';
 import {
     isHighLow,
     getCurrentTick,
     getGrowthRatePercentage,
-    getContractSubtype,
     isAccumulatorContract,
     isSmartTraderContract,
     isBot,
     isMobile,
     isTurbosContract,
+    getLocalizedTurbosSubtype,
 } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell';
 import Button from '../../button';
@@ -83,8 +82,7 @@ const ContractCardHeader = ({
             },
             {
                 is_param_displayed: is_turbos,
-                displayed_param:
-                    getContractSubtype(contract_type || '') === 'Long' ? localize('Long') : localize('Short'),
+                displayed_param: getLocalizedTurbosSubtype(contract_type),
             },
         ],
         [multiplier, growth_rate, is_accumulator, is_turbos, contract_type]

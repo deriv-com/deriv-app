@@ -1,3 +1,3 @@
-import AccumulatorsStats from './accumulators-stats.jsx';
+import AccumulatorsStats from './accumulators-stats';
 
 export default AccumulatorsStats;

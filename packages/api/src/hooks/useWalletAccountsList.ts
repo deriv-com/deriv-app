@@ -30,7 +30,7 @@ const useWalletAccountsList = () => {
 
     // Sort wallet accounts alphabetically by fiat, crypto, then virtual.
     const sorted_accounts = useMemo(() => {
-        if (!modified_accounts) return [];
+        if (!modified_accounts) return;
 
         return [...modified_accounts].sort((a, b) => {
             if (a.is_virtual !== b.is_virtual) {

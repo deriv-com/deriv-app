@@ -1,16 +1,16 @@
+import React from 'react';
 import classNames from 'classnames';
-import * as React from 'react';
 import { Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import AddPaymentMethod from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
+import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list.jsx';
+import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list.jsx';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-import AddPaymentMethod from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
-import SellAdPaymentMethodsList from 'Components/my-ads/sell-ad-payment-methods-list.jsx';
-import BuyAdPaymentMethodsList from 'Components/my-ads/buy-ad-payment-methods-list.jsx';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const QuickAddModal = ({ advert }) => {
     const { is_modal_open, showModal, useSavedState } = useModalManagerContext();
@@ -74,7 +74,7 @@ const QuickAddModal = ({ advert }) => {
         if (is_buy_advert) {
             return (
                 <MobileFullPageModal
-                    body_className='quick-add-modal--body'
+                    body_className='quick-add-modal__body'
                     height_offset='80px'
                     is_flex
                     is_modal_open={is_modal_open}
@@ -124,7 +124,7 @@ const QuickAddModal = ({ advert }) => {
 
         return (
             <MobileFullPageModal
-                body_className='quick-add-modal--body'
+                body_className='quick-add-modal__body'
                 height_offset='80px'
                 is_flex
                 is_modal_open={is_modal_open}
@@ -143,7 +143,7 @@ const QuickAddModal = ({ advert }) => {
                                 text={localize('Cancel')}
                             />
                             <Button
-                                className='quick-add-modal--button'
+                                className='quick-add-modal__button'
                                 has_effect
                                 is_disabled={
                                     selected_methods.length === 0 || my_ads_store.payment_method_ids.length === 0
@@ -179,7 +179,7 @@ const QuickAddModal = ({ advert }) => {
     if (is_buy_advert) {
         return (
             <Modal
-                className='p2p-my-ads__modal-error'
+                className='quick-add-modal'
                 has_close_icon
                 height='452px'
                 is_open={is_modal_open}
@@ -187,7 +187,7 @@ const QuickAddModal = ({ advert }) => {
                 toggleModal={() => setShouldCloseAllModals(true)}
             >
                 <Modal.Body>
-                    <div className='quick-add-modal--info'>
+                    <div className='quick-add-modal__info'>
                         <Text color='prominent' size='xxs'>
                             <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                         </Text>
@@ -225,8 +225,8 @@ const QuickAddModal = ({ advert }) => {
 
     return (
         <Modal
-            className={classNames('p2p-my-ads__modal-error', {
-                'p2p-my-ads__modal-form': my_profile_store.selected_payment_method,
+            className={classNames('quick-add-modal', {
+                'quick-add-modal--form': my_profile_store.selected_payment_method,
             })}
             has_close_icon
             height={my_ads_store.should_show_add_payment_method ? '560px' : 'auto'}
@@ -235,7 +235,7 @@ const QuickAddModal = ({ advert }) => {
                 <React.Fragment>
                     {my_ads_store.should_show_add_payment_method && (
                         <Icon
-                            className='p2p-my-ads__modal-icon'
+                            className='quick-add-modal__icon'
                             icon='icArrowLeftBold'
                             onClick={() => {
                                 setShouldCloseAllModals(false);
@@ -252,8 +252,8 @@ const QuickAddModal = ({ advert }) => {
         >
             <Modal.Body
                 className={classNames({
-                    'p2p-my-ads__modal-body--horizontal': !my_ads_store.should_show_add_payment_method,
-                    'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method,
+                    'quick-add-modal__horizontal': !my_ads_store.should_show_add_payment_method,
+                    'quick-add-modal__scroll': my_profile_store.selected_payment_method,
                 })}
             >
                 {my_ads_store.should_show_add_payment_method ? (

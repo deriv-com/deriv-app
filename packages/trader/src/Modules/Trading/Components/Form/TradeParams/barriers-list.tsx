@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
 import { CSSTransition } from 'react-transition-group';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import BarriersListBody, { TBarriersListBody } from './barriers-list-body';
 
 type TBarriersList = TBarriersListBody & {

@@ -220,3 +220,10 @@ export const createDetails = contract => {
 };
 
 export const getUUID = () => `${new Date().getTime() * Math.random()}`;
+
+export const socket_state = {
+    [WebSocket.CONNECTING]: 'Connecting',
+    [WebSocket.OPEN]: 'Connected',
+    [WebSocket.CLOSING]: 'Closing',
+    [WebSocket.CLOSED]: 'Closed',
+};

@@ -2,22 +2,23 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import PaymentMethodIcon from 'Components/payment-method-icon';
 import classNames from 'classnames';
+import './payment-method-accordion-header.scss';
 
 const PaymentMethodAccordionHeader = ({ payment_method }) => {
     const { display_name, type } = payment_method;
 
     return (
-        <div className='order-details-card__accordion-row'>
+        <div className='payment-method-accordion-header__row'>
             <PaymentMethodIcon
                 className={classNames({
-                    'order-details-card__accordion-icon': type !== 'ewallet',
+                    'payment-method-accordion-header__icon': type !== 'ewallet',
                 })}
                 display_name={display_name}
             />
             <div
                 className={classNames({
-                    'order-details-card__accordion-title': type !== 'ewallet',
-                    'order-details-card__accordion-column': type === 'ewallet',
+                    'payment-method-accordion-header__title': type !== 'ewallet',
+                    'payment-method-accordion-header__column': type === 'ewallet',
                 })}
             >
                 <Text color='prominent' size='xs'>

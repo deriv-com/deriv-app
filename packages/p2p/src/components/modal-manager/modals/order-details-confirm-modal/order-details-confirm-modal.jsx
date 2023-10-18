@@ -3,7 +3,7 @@ import { useStores } from 'Stores';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
 import FileUploaderComponent from 'Components/file-uploader-component';
-import FormError from 'Components/form/error.jsx';
+import FormError from 'Components/section-error';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { getErrorMessage, max_pot_file_size } from 'Utils/file-uploader';
@@ -71,7 +71,7 @@ const OrderDetailsConfirmModal = () => {
                         as='div'
                         className='order-details-confirm-modal__file_format'
                     >
-                        <Localize i18n_default_text='We accept JPG, PDF, or PNG (up to 2MB).' />
+                        <Localize i18n_default_text='We accept JPG, PDF, or PNG (up to 5MB).' />
                     </Text>
                     <FileUploaderComponent
                         accept='image/png, image/jpeg, image/jpg, application/pdf'

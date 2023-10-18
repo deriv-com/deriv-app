@@ -6,7 +6,7 @@
     gap: 1.6rem;
 
     &__container {
-        height: 100%;
+        height: max-content;
         display: flex;
         align-items: center;
         justify-content: flex-start;

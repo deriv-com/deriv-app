@@ -55,14 +55,16 @@ export default class TicksService {
         if (this.pipSizes) {
             return Promise.resolve(this.pipSizes);
         }
-        this.active_symbols_promise = new Promise(resolve => {
-            api_base.api.expectResponse('authorize').then(() => {
-                this.pipSizes = api_base.active_symbols
-                    ?.reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
-                    .toObject();
-                resolve(this.pipSizes);
+        if (!this.active_symbols_promise) {
+            this.active_symbols_promise = new Promise(resolve => {
+                api_base.api.expectResponse('authorize').then(() => {
+                    this.pipSizes = api_base.active_symbols
+                        ?.reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
+                        .toObject();
+                    resolve(this.pipSizes);
+                });
             });
-        });
+        }
         return this.active_symbols_promise;
     }
 

@@ -135,6 +135,14 @@
         color: #000000;
     }
 
+    &-color-less-prominent {
+        color: #999999;
+    }
+
+    &-color-red {
+        color: #ff444f;
+    }
+
     &-color-blue {
         color: #377cfc;
     }

@@ -6,9 +6,10 @@ import { localize } from '@deriv/translations';
 import { RudderStack } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
-import { getContractTypes } from '../../../../Helpers/contract-type';
+import { getContractTypes, isMajorPairsSymbol } from '../../../../Helpers/contract-type';
 import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { TContractType, TList } from '../types';
 
 type TInfo = {
@@ -26,7 +27,9 @@ const TABS = {
 };
 
 const Info = observer(({ handleSelect, item, list }: TInfo) => {
+    const { cached_multiplier_cancellation_list, symbol } = useTraderStore();
     const {
+        active_symbols: { active_symbols },
         ui: { is_mobile },
     } = useStore();
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
@@ -34,7 +37,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
         (i: { value: TContractType['value'] }) =>
             i.value !== 'rise_fall_equal' && i.value !== TURBOS.SHORT && i.value !== VANILLALONG.PUT
     );
-    const has_toggle_buttons = /accumulator|turboslong|vanilla/i.test(item.value);
+    const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(item.value);
     const should_show_video = /accumulator|vanilla/i.test(item.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
@@ -87,10 +90,18 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                         {is_description_tab_selected ? (
                             <React.Fragment>
                                 <TradeCategoriesGIF category={type.value} selected_contract_type={item?.value} />
-                                <TradeCategories category={type.value} onClick={onClickGlossary} />
+                                <TradeCategories
+                                    category={type.value}
+                                    onClick={onClickGlossary}
+                                    is_multiplier_fx={!cached_multiplier_cancellation_list?.length}
+                                />
                             </React.Fragment>
                         ) : (
-                            <ContractTypeGlossary category={type.value} />
+                            <ContractTypeGlossary
+                                category={type.value}
+                                is_multiplier_fx={!cached_multiplier_cancellation_list?.length}
+                                is_major_pairs={isMajorPairsSymbol(symbol, active_symbols)}
+                            />
                         )}
                     </div>
                 </ThemedScrollbars>

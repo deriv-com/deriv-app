@@ -54,7 +54,7 @@ const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, r
                     platform={platform}
                 />
                 <WalletText lineHeight='3xs' size='2xs'>
-                    {marketTypeTitle} ({landingCompanyName})
+                    {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
                 </WalletText>
                 {/* <div className='wallets-success__info__text--type'></div> */}
                 <WalletText color='primary' lineHeight='sm' size='2xs'>

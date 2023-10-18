@@ -6,6 +6,7 @@ import {
     useMT5AccountsList,
     useSettings,
     useSortedMT5Accounts,
+    useTradingPlatformPasswordChange,
 } from '@deriv/api';
 import { ModalWrapper, WalletButton } from '../../../../components/Base';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
@@ -31,6 +32,7 @@ const marketTypeToPlatformTitleMapper: Record<string, string> = {
 const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const [password, setPassword] = useState('');
     const { isSuccess, mutate } = useCreateMT5Account();
+    const { mutate: tradingPasswordChange } = useTradingPlatformPasswordChange();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
@@ -44,8 +46,15 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             ? marketTypeToPlatformTitleMapper[platform]
             : marketTypeToTitleMapper[marketType];
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
+
+        // in order to create account, we need to set a password through trading_platform_password_change endpoint first
+        // then only mt5_create_account can be called, otherwise it will response an error for password required
+        await tradingPasswordChange({
+            new_password: password,
+            platform: 'mt5',
+        });
 
         mutate({
             payload: {

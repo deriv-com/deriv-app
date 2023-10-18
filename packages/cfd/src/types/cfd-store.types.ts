@@ -51,6 +51,7 @@ export type TCFDStore = {
     };
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
     account_title: string;
+    migrated_mt5_accounts: Record<string, string>[];
     disableCFDPasswordModal: () => void;
     error_message: string;
     error_type?: string;

@@ -28,15 +28,14 @@ import {
     TTypeStrategiesDropdown,
     TTypeStrategy,
 } from '../components/dashboard/quick-strategy/quick-strategy.types';
-import RootStore from './root-store';
 
 const Blockly = window.Blockly;
 
 export default class QuickStrategyStore {
-    root_store: RootStore;
+    root_store: any;
     qs_cache: TQSCache = (getSetting('quick_strategy') as TQSCache) || {};
 
-    constructor(root_store: RootStore) {
+    constructor(root_store: any) {
         makeObservable(this, {
             selected_symbol: observable,
             selected_trade_type: observable,

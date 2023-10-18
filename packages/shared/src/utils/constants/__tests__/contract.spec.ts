@@ -31,8 +31,15 @@ describe('getCardLabels', () => {
 });
 
 describe('getMarketNamesMap', () => {
-    it('should return an object with markets names, e.g. such as AUD/CAD', () => {
-        expect(getMarketNamesMap().FRXAUDCAD).toEqual(markets_name);
+    const symbols_translation_object = getMarketNamesMap();
+
+    it('should return an object with symbols, e.g. such as AUD/CAD', () => {
+        expect(symbols_translation_object.FRXAUDCAD).toEqual(markets_name);
+    });
+    it('should return an object with symbols, including Volatility 25 (1s) Index, Volatility 50 (1s) Index and Volatility 75 (1s) Index', () => {
+        expect(symbols_translation_object['1HZ25V']).toEqual('Volatility 25 (1s) Index');
+        expect(symbols_translation_object['1HZ50V']).toEqual('Volatility 50 (1s) Index');
+        expect(symbols_translation_object['1HZ75V']).toEqual('Volatility 75 (1s) Index');
     });
 });
 

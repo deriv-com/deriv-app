@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useRequest } from '@deriv/api';
+import { useActiveWalletAccount, useMutation } from '@deriv/api';
 import { useHistory } from 'react-router-dom';
 import useDevice from '../../../../hooks/useDevice';
 import WalletButton from '../../../../components/Base/WalletButton/WalletButton';
@@ -10,14 +10,15 @@ import './WalletResetBalance.scss';
 
 const WalletResetBalance = () => {
     const history = useHistory();
-    const { isSuccess: isResetBalanceSuccess, mutate } = useRequest('topup_virtual');
+    const { isSuccess: isResetBalanceSuccess, mutate } = useMutation('topup_virtual');
     const { data: activeWallet } = useActiveWalletAccount();
-    const canResetBalance = activeWallet?.balance !== 10000;
     const { isMobile } = useDevice();
 
     const resetBalance = () => {
         mutate();
     };
+
+    const showResetButton = activeWallet?.balance !== 10000;
 
     return (
         <div className='wallets-reset-balance'>
@@ -42,17 +43,11 @@ const WalletResetBalance = () => {
             </div>
 
             <div className='wallets-reset-balance__button'>
-                {!isResetBalanceSuccess && (
-                    <WalletButton
-                        color='primary'
-                        disabled={!canResetBalance}
-                        onClick={resetBalance}
-                        size='lg'
-                        text='Reset balance'
-                    />
+                {showResetButton && (
+                    <WalletButton color='primary' onClick={resetBalance} size='lg' text='Reset balance' />
                 )}
 
-                {isResetBalanceSuccess && (
+                {!showResetButton && (
                     <WalletButton
                         color='primary'
                         onClick={() => history.push(`/wallets/cashier/transfer`)}

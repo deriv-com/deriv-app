@@ -14,7 +14,7 @@ type TRoutes =
     | `${typeof prefix}`;
 
 declare module 'react-router-dom' {
-    export function useHistory(): { push: (path: TRoutes) => void };
+    export function useHistory(): { push: (path: TRoutes | string) => void };
 
     export function useRouteMatch(path: TRoutes): boolean;
 }

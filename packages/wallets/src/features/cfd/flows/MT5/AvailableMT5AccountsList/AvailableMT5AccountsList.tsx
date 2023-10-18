@@ -1,11 +1,11 @@
 import React from 'react';
-import { useSortedMT5Accounts } from '@deriv/api';
+import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
 import { TradingAccountCard, WalletButton } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../../../public/images/mt5-swap-free.svg';
-import { MT5PasswordModal } from '../../../modals';
+import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
 import './AvailableMT5AccountsList.scss';
 
 const marketTypeToDescriptionMapper = {
@@ -31,7 +31,9 @@ type TProps = {
 };
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
-    const { show } = useModal();
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { setModalState, show } = useModal();
+
     return (
         <TradingAccountCard
             leading={() => (
@@ -42,14 +44,21 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             trailing={() => (
                 <WalletButton
                     color='primary-light'
-                    onClick={() =>
+                    onClick={() => {
+                        setModalState({
+                            marketType: account.market_type,
+                        });
                         show(
-                            <MT5PasswordModal
-                                marketType={account?.market_type || 'synthetic'}
-                                platform={account.platform}
-                            />
-                        )
-                    }
+                            activeWallet?.is_virtual ? (
+                                <MT5PasswordModal
+                                    marketType={account?.market_type || 'synthetic'}
+                                    platform={account.platform}
+                                />
+                            ) : (
+                                <JurisdictionModal />
+                            )
+                        );
+                    }}
                     text='Get'
                 />
             )}

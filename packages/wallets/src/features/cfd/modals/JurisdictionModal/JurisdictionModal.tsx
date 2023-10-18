@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
-import { ModalStepWrapper, WalletButton, WalletText } from '../../../../components/Base';
+import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
+
+const marketTypeToTitleMapper = {
+    all: 'Swap-Free',
+    financial: 'Financial',
+    synthetic: 'Derived',
+};
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
@@ -13,23 +19,20 @@ const JurisdictionModal = () => {
     const marketType = modalState?.marketType || 'all';
     const platform = modalState?.platform || 'mt5';
 
+    const capitalizedMarketType = marketTypeToTitleMapper[marketType];
+
     if (isLoading) return <h1>Loading...</h1>;
 
     return (
         <ModalStepWrapper
             renderFooter={() => (
-                <React.Fragment>
-                    <WalletButton
-                        disabled={!selectedJurisdiction}
-                        onClick={() => show(<MT5PasswordModal marketType={marketType} platform={platform} />)}
-                    >
-                        <WalletText color='white' size='xs' weight='bold'>
-                            Next
-                        </WalletText>
-                    </WalletButton>
-                </React.Fragment>
+                <WalletButton
+                    disabled={!selectedJurisdiction}
+                    onClick={() => show(<MT5PasswordModal marketType={marketType} platform={platform} />)}
+                    text='Next'
+                />
             )}
-            title='Choose a jurisdiction for your MT5 Derived account'
+            title={`Choose a jurisdiction for your Deriv MT5 ${capitalizedMarketType} account`}
         >
             <JurisdictionScreen
                 selectedJurisdiction={selectedJurisdiction}

@@ -3,7 +3,7 @@ import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
-import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options.jsx';
+import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { observer } from '@deriv/stores';
 
@@ -36,7 +36,6 @@ const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }: 
             >
                 <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
                     {modal_title === localize('Multiplier') ? (
-                        // @ts-expect-error should be gone after MultiplierOptions is converted to typescript
                         <MultiplierOptions toggleModal={toggleModal} />
                     ) : (
                         <RadioGroupWithInfoMobile

@@ -1,7 +1,6 @@
 import { localize } from '@deriv/translations';
 import { TDropdownItems, TInputBaseFields, TInputsFieldNames, TSelectsFieldNames } from '../../quick-strategy.types';
-import { common_inputs_properties } from '..';
-import { TCommonInputsProperties } from './common-input-properties';
+import common_inputs_properties, { TCommonInputsProperties } from './common-input-properties';
 
 const getMessage = (property: string) => `The bot will stop trading if your total ${property} exceeds this amount.`;
 

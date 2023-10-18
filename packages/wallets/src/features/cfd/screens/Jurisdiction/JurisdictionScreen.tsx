@@ -42,7 +42,7 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction
                 ))}
             </div>
 
-            {selectedJurisdiction && (
+            {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
                 <div className='wallets-jurisdiction-screen__tnc'>
                     Add Your Deriv MT5 Financial account under Deriv (V) Ltd, regulated by the Vanuatu Financial
                     Services Commission.

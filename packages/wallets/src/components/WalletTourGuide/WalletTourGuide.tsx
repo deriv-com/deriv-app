@@ -1,6 +1,6 @@
 import React from 'react';
 import Joyride, { CallBackProps } from 'react-joyride';
-import { tourStepConfig, TooltipComponent } from './WalletTourGuideSettings';
+import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
 
 type TProps = {

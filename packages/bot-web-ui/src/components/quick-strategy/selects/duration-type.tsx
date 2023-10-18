@@ -49,6 +49,8 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                 const has_selected = duration_units?.some((duration: TDurationUnitItem) => duration.value === selected);
                 if (!has_selected) {
                     setFieldValue?.('durationtype', durations?.[0]?.unit);
+                    setFieldValue?.('duration', durations?.[0]?.min);
+                    setValue('durationtype', durations?.[0]?.unit);
                 }
             };
             getDurationUnits();

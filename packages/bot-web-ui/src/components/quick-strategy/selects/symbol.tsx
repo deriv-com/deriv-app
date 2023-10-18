@@ -48,6 +48,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
             const has_symbol = !!symbols.find((symbol: { [key: string]: string }) => symbol.value === values.symbol);
             if (!has_symbol) {
                 setFieldValue('symbol', symbols[0].value);
+                setValue('symbol', symbols[0].value);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -52,6 +52,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ symbol, selected, fullWid
                 const has_selected = trade_types?.some((trade_type: TTradeType) => trade_type.value === selected);
                 if (!has_selected && trade_types?.[0]?.value !== selected) {
                     setFieldValue?.('tradetype', trade_types[0].value);
+                    setValue('tradetype', trade_types[0].value);
                 }
             };
             getTradeTypes();

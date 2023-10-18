@@ -147,11 +147,11 @@ fieldGeneratorMapping.SYMBOL_LIST = block => () => {
             const { submarkets } = marketObj;
 
             if (Object.keys(submarkets).length > 0 && submarkets[submarketName]) {
-                const act_symbols = getActiveSymbols(submarkets[submarketName].symbols);
+                const submarket_symbols = getActiveSymbols(submarkets[submarketName].symbols);
 
                 symbolOptions.push(
-                    ...Object.keys(act_symbols)
-                        .map(e => [act_symbols[e].display, act_symbols[e].symbol])
+                    ...Object.keys(submarket_symbols)
+                        .map(e => [submarket_symbols[e].display, submarket_symbols[e].symbol])
                         // Filter out symbols we don't have contracts for (these symbols have only forward-starting)
                         .filter(symbols => !['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK'].includes(symbols[1]))
                 );

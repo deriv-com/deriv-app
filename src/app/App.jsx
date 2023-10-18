@@ -12,7 +12,7 @@ import { setActiveSymbols } from '../redux-store/client-slice';
 
 const App = () => {
     const dispatch = useDispatch();
-    const activeSymbols = useSelector(state => state.client.active_symbols);
+    const has_active_symbols = useSelector(state => state.client.active_symbols);
 
     React.useEffect(() => {
         api_base.getActiveSymbols().then(data => {
@@ -34,7 +34,7 @@ const App = () => {
         cache: false,
     });
 
-    if (activeSymbols.length === 0) return null;
+    if (has_active_symbols.length === 0) return null;
 
     return <Routes />;
 };

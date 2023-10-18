@@ -463,6 +463,4 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
     };
 };
 
-export const removecTraderPrefix = (login_id: string) => {
-    return login_id.replace(/^(CT[DR]?)/i, '');
-};
+export const removeAccountIdPrefix = (login_id: string) => login_id.replace(/^(CT[DR]?)/i, '');

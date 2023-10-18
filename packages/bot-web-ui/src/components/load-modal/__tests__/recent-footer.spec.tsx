@@ -49,7 +49,7 @@ describe('RecentFooter', () => {
         expect(mock_DBot_store?.load_modal?.is_open_button_loading).toBeFalsy();
     });
 
-    it('should render import message open load modal on open button click', async () => {
+    it('should render import message and close load modal on open button click', async () => {
         mock_DBot_store?.load_modal?.toggleLoadModal();
         render(<RecentFooter />, { wrapper });
         const openButton = screen.getByText('Open');

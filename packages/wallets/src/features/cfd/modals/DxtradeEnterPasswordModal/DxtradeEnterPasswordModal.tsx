@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { ModalWrapper } from '../../../../components/Base';
-import { useModal } from '../../../../components/ModalProvider';
 import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
-import { CreatePassword } from '../../screens';
+import { AccountReady, CreatePassword } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
     const [password, setPassword] = useState('');
     const { isSuccess, mutate } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { hide } = useModal();
 
     const onSubmit = () => {
         mutate({
@@ -23,18 +21,17 @@ const DxtradeEnterPasswordModal = () => {
         });
     };
 
-    useEffect(() => {
-        if (isSuccess) hide();
-    }, [hide, isSuccess]);
-
     return (
-        <ModalWrapper>
-            <CreatePassword
-                icon={<DxTradePasswordIcon />}
-                onPasswordChange={e => setPassword(e.target.value)}
-                onPrimaryClick={onSubmit}
-                platform='dxtrade'
-            />
+        <ModalWrapper hideCloseButton={isSuccess}>
+            {isSuccess && <AccountReady marketType='all' />}
+            {!isSuccess && (
+                <CreatePassword
+                    icon={<DxTradePasswordIcon />}
+                    onPasswordChange={e => setPassword(e.target.value)}
+                    onPrimaryClick={onSubmit}
+                    platform='dxtrade'
+                />
+            )}
         </ModalWrapper>
     );
 };

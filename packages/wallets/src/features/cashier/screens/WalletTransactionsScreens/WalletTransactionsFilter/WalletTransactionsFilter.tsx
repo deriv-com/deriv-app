@@ -1,18 +1,15 @@
-import React, { ComponentProps } from 'react';
-import { WalletTransactionsCrypto } from '../WalletTransactionsCrypto';
+import React from 'react';
 import './WalletTransactionsFilter.scss';
-
-type TValue = ComponentProps<typeof WalletTransactionsCrypto>['filter'];
 
 type TProps = {
     isPendingActive: boolean;
-    onSelect: (value: TValue) => void;
+    onSelect: (value: string) => void;
 };
 
 const WalletTransactionsFilter: React.FC<TProps> = ({ isPendingActive, onSelect }) => {
     return (
         <div className='wallets-transactions-filter'>
-            <select onChange={e => onSelect(e.target.value as TValue)}>
+            <select onChange={e => onSelect(e.target.value)}>
                 <option value='all'>All</option>
                 <option value='deposit'>Deposit</option>
                 <option value='withdrawal'>Withdrawal</option>

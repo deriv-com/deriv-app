@@ -12,7 +12,10 @@ const marketTypeToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElem
     all: SwapFreeMT5Icon,
     financial: FinancialMT5Icon,
     synthetic: DerivedMT5Icon,
-    derivx: DerivXIcon,
+};
+
+const marketTypeToPlatformIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
+    dxtrade: DerivXIcon,
     ctrader: CTraderIcon,
 };
 
@@ -20,10 +23,14 @@ type TWalletMarketCurrencyIconProps = {
     currency: string;
     isDemo: boolean;
     marketType: keyof typeof marketTypeToIconMapper;
+    platform: string;
 };
 
-const WalletMarketCurrencyIcon = ({ currency, isDemo, marketType }: TWalletMarketCurrencyIconProps) => {
-    const MarketTypeIcon = marketTypeToIconMapper[marketType];
+const WalletMarketCurrencyIcon = ({ currency, isDemo, marketType, platform }: TWalletMarketCurrencyIconProps) => {
+    const MarketTypeIcon =
+        marketType === 'all' && Object.keys(marketTypeToPlatformIconMapper).includes(platform)
+            ? marketTypeToPlatformIconMapper[platform]
+            : marketTypeToIconMapper[marketType];
 
     return (
         <div className='wallets-market-currency-icon'>

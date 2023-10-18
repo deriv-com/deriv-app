@@ -26,27 +26,23 @@ const DxtradeEnterPasswordModal = () => {
 
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
-            <Success
-                description={`You can now start practicing trading with your Deriv X ${accountType} account.`}
-                marketType='all'
-                platform='dxtrade'
-                renderButton={() => (
-                    <WalletButton onClick={hide}>
-                        <WalletText color='white' size='sm' weight='bold'>
-                            Continue
-                        </WalletText>
-                    </WalletButton>
-                )}
-                title={`Your Deriv X ${accountType} account is ready`}
-            />
-            {/* {!isSuccess && (
+            {isSuccess && (
+                <Success
+                    description={`You can now start practicing trading with your Deriv X ${accountType} account.`}
+                    marketType='all'
+                    platform='dxtrade'
+                    renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
+                    title={`Your Deriv X ${accountType} account is ready`}
+                />
+            )}
+            {!isSuccess && (
                 <CreatePassword
                     icon={<DxTradePasswordIcon />}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
                     platform='dxtrade'
                 />
-            )} */}
+            )}
         </ModalWrapper>
     );
 };

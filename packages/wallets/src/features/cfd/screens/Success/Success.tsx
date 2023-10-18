@@ -19,8 +19,8 @@ const marketTypeToTitleMapper: Record<TSuccessProps['marketType'], string> = {
     synthetic: 'MT5 Derived',
 };
 
-const marketTypeToPlatformMapper = {
-    derivx: 'Deriv X',
+const marketTypeToPlatformMapper: Record<string, string> = {
+    dxtrade: 'Deriv X',
     ctrader: 'cTrader',
 };
 
@@ -43,25 +43,26 @@ const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, r
                 theme='grey'
             >
                 <div className={`wallets-success__info-badge wallets-success__info-badge--${isDemo ? 'demo' : 'real'}`}>
-                    {isDemo ? 'Demo' : 'Real'}
+                    <WalletText color='white' size='2xs' weight='bold'>
+                        {isDemo ? 'Demo' : 'Real'}
+                    </WalletText>
                 </div>
                 <WalletMarketCurrencyIcon
                     currency={data?.currency || 'USD'}
                     isDemo={isDemo || false}
                     marketType={marketType}
+                    platform={platform}
                 />
-                <WalletText size='2xs'>
+                <WalletText lineHeight='4xs' size='2xs'>
                     {marketTypeTitle} ({landingCompanyName})
                 </WalletText>
                 {/* <div className='wallets-success__info__text--type'></div> */}
-                <WalletText color='primary' size='2xs'>
+                <WalletText color='primary' lineHeight='sm' size='2xs'>
                     {data?.currency} Wallet
                 </WalletText>
-                <WalletText size='sm' weight='bold'>
-                    {data?.display_balance} USD
+                <WalletText lineHeight='xs' size='sm' weight='bold'>
+                    {data?.display_balance}
                 </WalletText>
-                {/* <div className='wallets-success__info__text--wallet'>{data?.currency} Wallet</div>
-                <div className='wallets-success__info__text--amount'>{data?.display_balance} USD</div> */}
             </WalletGradientBackground>
             <WalletText align='center' size='md' weight='bold'>
                 {title}

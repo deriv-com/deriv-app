@@ -3,6 +3,7 @@ import { useActiveWalletAccount, useRequest } from '@deriv/api';
 import { Icon, Text, Button } from '@deriv/components';
 import { useHistory } from 'react-router-dom';
 import useDevice from '../../../../hooks/useDevice';
+import WalletButton from '../../../../components/Base/WalletButton/WalletButton';
 
 const WalletResetBalance = () => {
     const history = useHistory();
@@ -34,25 +35,20 @@ const WalletResetBalance = () => {
             </Text>
 
             <div className='wallets-transactions-no-data-state__buttons'>
-                <Button
-                    className='reset-balance__button'
+                <WalletButton
+                    color='primary'
                     disabled={!canResetBalance}
-                    large={!isMobile}
-                    medium={isMobile}
                     onClick={resetBalance}
-                    primary
-                >
-                    Reset balance
-                </Button>
+                    size='lg'
+                    text='Reset balance'
+                />
 
-                <Button
-                    className='reset-balance__button'
-                    large
+                <WalletButton
+                    color='primary-light'
                     onClick={() => history.push(`/wallets/cashier/transfer`)}
-                    secondary
-                >
-                    Transfer funds
-                </Button>
+                    size='lg'
+                    text='Transfer funds'
+                />
             </div>
         </div>
     );

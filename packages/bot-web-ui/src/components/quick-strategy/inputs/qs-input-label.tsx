@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { Popover, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 
 type TQSInputLabel = {
     children?: React.ReactNode;
@@ -11,7 +11,7 @@ type TQSInputLabel = {
     fullwidth?: boolean;
 };
 
-const QSInputLabel: React.FC<TQSInputLabel> = ({ label, description, fullwidth = false }) => {
+const QSInputLabel: React.FC<TQSInputLabel> = observer(({ label, description, fullwidth = false }) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
 
@@ -32,6 +32,6 @@ const QSInputLabel: React.FC<TQSInputLabel> = ({ label, description, fullwidth =
             </div>
         </div>
     );
-};
+});
 
 export default QSInputLabel;

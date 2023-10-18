@@ -29,9 +29,7 @@ const JurisdictionModal = () => {
                     disabled={!selectedJurisdiction}
                     onClick={() => show(<MT5PasswordModal marketType={marketType} />)}
                     text='Next'
-                >
-                    ]
-                </WalletButton>
+                />
             )}
             title={`Choose a jurisdiction for your Deriv MT5 ${capitalizedMarketType} account`}
         >

@@ -5,11 +5,11 @@ import Fieldset from 'App/Components/Form/fieldset';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
-import { TProposalTypeInfo } from 'Types';
+import { TProposalTypeInfo, TTradeStore } from 'Types';
 
 type TPurchaseFieldset = {
     basis: string;
-    buy_info: { error?: string };
+    buy_info: TTradeStore['purchase_info'];
     currency: string;
     growth_rate: number;
     has_cancellation: boolean;
@@ -64,6 +64,11 @@ const PurchaseFieldset = ({
 
     const purchase_button = (
         <React.Fragment>
+            {is_multiplier && has_cancellation && (
+                <MobileWrapper>
+                    <CancelDealInfo proposal_info={info} />
+                </MobileWrapper>
+            )}
             <PurchaseButton
                 buy_info={buy_info}
                 currency={currency}
@@ -86,11 +91,6 @@ const PurchaseFieldset = ({
                 type={type}
                 basis={basis} // mobile-only
             />
-            {is_multiplier && has_cancellation && (
-                <MobileWrapper>
-                    <CancelDealInfo proposal_info={info} />
-                </MobileWrapper>
-            )}
         </React.Fragment>
     );
 
@@ -119,6 +119,8 @@ const PurchaseFieldset = ({
                             is_vanilla={is_vanilla}
                             should_fade={should_fade}
                             type={type}
+                            is_accumulator={is_accumulator}
+                            growth_rate={growth_rate}
                         />
                     )}
                     <div

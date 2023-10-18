@@ -4,7 +4,7 @@ import RadioGroupOptionsModal from '../radio-group-options-modal';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../trader-providers';
 
-jest.mock('../Multiplier/multiplier-options.jsx', () => jest.fn(() => 'mockedMultiplierOptions'));
+jest.mock('../Multiplier/multiplier-options', () => jest.fn(() => 'mockedMultiplierOptions'));
 jest.mock('Modules/Trading/Components/Form/RadioGroupWithInfoMobile', () =>
     jest.fn(() => 'MockedRadioGroupWithInfoMobile')
 );

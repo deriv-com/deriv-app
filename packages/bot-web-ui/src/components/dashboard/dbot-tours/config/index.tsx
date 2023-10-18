@@ -1,8 +1,10 @@
-import { getImageLocation } from '../../../../public-path';
 import React from 'react';
+
 import { Icon, Text } from '@deriv/components';
 import { getUrlBase, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+
+import { getImageLocation } from '../../../../public-path';
 import TourSteps from '../common/tour-steps';
 
 const is_mobile = isMobile();

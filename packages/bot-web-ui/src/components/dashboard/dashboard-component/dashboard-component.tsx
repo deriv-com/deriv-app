@@ -68,7 +68,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     React.useEffect(() => {
         //on dashbord umount fire close event for rudderstack
         return () => {
-            RudderStack.track('ce_bot_builder_form', {
+            RudderStack.track('ce_bot_dashboard_form', {
                 action: 'close',
                 form_source: 'ce_bot_dashboard_form',
                 device_type: is_mobile ? 'mobile' : 'desktop',

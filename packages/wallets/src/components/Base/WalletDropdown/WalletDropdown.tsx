@@ -13,7 +13,7 @@ type TProps = {
         value: string;
     }[];
     listHeight?: 'lg' | 'md' | 'sm';
-    onSelect?: (value: string) => void;
+    onSelect: (value: string) => void;
     type?: 'comboBox' | 'prompt';
     value?: string;
 };
@@ -50,7 +50,7 @@ const WalletDropdown: React.FC<TProps> = ({
             }
         },
         onSelectedItemChange({ selectedItem }) {
-            onSelect?.(selectedItem?.value ?? '');
+            onSelect(selectedItem?.value ?? '');
         },
     });
 

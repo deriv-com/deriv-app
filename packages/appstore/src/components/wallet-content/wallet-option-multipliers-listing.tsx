@@ -43,7 +43,7 @@ const ListingContainerDescription = ({ landing_company_name }: TProps) =>
             <Localize
                 i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
                 components={[
-                    <StaticUrl key={0} className='options' href='trade-types/options/' />,
+                    <StaticUrl key={0} className='options' href='trade-types/options/digital-options/up-and-down/' />,
                     <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
                 ]}
             />

@@ -109,7 +109,11 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                                 components={[
                                     <StaticUrl key={0} className='link' href='/trade-types/cfds/' />,
                                     <StaticUrl key={1} className='link' href='/trade-types/multiplier/' />,
-                                    <StaticUrl key={2} className='link' href='/trade-types/options/' />,
+                                    <StaticUrl
+                                        key={2}
+                                        className='link'
+                                        href='trade-types/options/digital-options/up-and-down/'
+                                    />,
                                 ]}
                             />
                         }

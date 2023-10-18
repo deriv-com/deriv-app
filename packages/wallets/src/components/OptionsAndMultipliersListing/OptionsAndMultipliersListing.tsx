@@ -7,6 +7,7 @@ import IcAppstoreDerivGo from '../../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../../public/images/ic-appstore-smart-trader.svg';
 import { WalletButton, WalletText } from '../Base';
+import { DerivAppsSection } from '../DerivAppsSection';
 import { TradingAccountCard } from '../TradingAccountCard';
 import './OptionsAndMultipliersListing.scss';
 
@@ -67,6 +68,7 @@ const OptionsAndMultipliersListing = () => {
                         </a>
                     </h1>
                 </div>
+                <DerivAppsSection />
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
                 {optionsAndMultipliers.map(account => (

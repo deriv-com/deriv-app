@@ -1,6 +1,6 @@
 import React, { ComponentProps, CSSProperties, ReactNode } from 'react';
 import classNames from 'classnames';
-import { TGenericSizes } from '../type';
+import { TGenericSizes } from '../types';
 import styles from './WalletText.module.css';
 
 interface WalletTextProps extends ComponentProps<'span'> {

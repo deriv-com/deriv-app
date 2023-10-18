@@ -1,9 +1,9 @@
-import React, { ChangeEvent, InputHTMLAttributes, ReactElement, useState } from 'react';
+import React, { ChangeEvent, ComponentProps, ReactElement, useState } from 'react';
 import classNames from 'classnames';
 import WalletText from '../WalletText/WalletText';
 import styles from './WalletTextField.modules.css';
 
-interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+interface WalletTextFieldProps extends ComponentProps<'input'> {
     defaultValue?: string;
     helperMessage?: string;
     icon?: ReactElement;
@@ -11,6 +11,11 @@ interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     leftIcon?: React.ReactNode;
     showMessage?: boolean;
 }
+
+type MessageContainerProps = {
+    helperMessage?: WalletTextFieldProps['helperMessage'];
+    maxLength?: number;
+};
 
 const WalletTextField: React.FC<WalletTextFieldProps> = ({
     defaultValue = '',
@@ -28,10 +33,7 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
         rest?.onChange?.(e);
     };
 
-    const MessageContainer: React.FC<{ helperMessage?: string; maxLength?: number }> = ({
-        helperMessage,
-        maxLength,
-    }) => (
+    const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, maxLength }) => (
         <>
             {helperMessage && (
                 <WalletText color='less-prominent' lineHeight='sm' size='xs' style={{ float: 'left' }}>

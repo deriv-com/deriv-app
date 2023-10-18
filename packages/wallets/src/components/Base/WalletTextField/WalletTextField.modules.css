@@ -71,6 +71,9 @@
         background: var(--system-light-8-primary-background, #fff);
         padding-inline: 0.4rem;
         left: 1.6rem;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
 
     &__field:focus ~ &__label {

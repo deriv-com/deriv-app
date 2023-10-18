@@ -96,13 +96,13 @@ export default class AdvertiserPageStore extends BaseStore {
                     ? { local_currency: buy_sell_store.selected_local_currency }
                     : {}),
             }).then(response => {
-                if (response.error) {
+                if (response?.error) {
                     this.setErrorMessage(response.error);
                 } else {
-                    const { list } = response.p2p_advert_list;
+                    const { list } = response?.p2p_advert_list ?? {};
 
                     this.setAdverts(list);
-                    this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
+                    this.setHasMoreAdvertsToLoad(list?.length >= general_store.list_item_limit);
                 }
                 this.setIsLoadingAdverts(false);
                 resolve();
@@ -192,7 +192,7 @@ export default class AdvertiserPageStore extends BaseStore {
                 p2p_advertiser_info: 1,
                 id: general_store.counterparty_advertiser_id,
             }).then(response => {
-                if (response.error) {
+                if (response?.error) {
                     this.setErrorMessage(response.error);
                 } else {
                     this.setAdvertiserInfo(response);
@@ -206,7 +206,7 @@ export default class AdvertiserPageStore extends BaseStore {
     onSubmit() {
         const current_advertiser_id = this.advertiser_details_id ?? this.counterparty_advertiser_info?.id;
         this.root_store.general_store.blockUnblockUser(!this.is_counterparty_advertiser_blocked, current_advertiser_id);
-        if (this.is_counterparty_advertiser_blocked) this.getCounterpartyAdvertiserList(this.advertiser_details_id);
+        if (this.is_counterparty_advertiser_blocked) this.getCounterpartyAdvertiserList(current_advertiser_id);
         this.setIsDropdownMenuVisible(false);
     }
 

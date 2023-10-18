@@ -420,7 +420,7 @@ Blockly.Block.prototype.getRootInputTargetBlock = function () {
 
     while (currentBlock) {
         const rootBlock = this.getRootBlock();
-        const { name } = rootBlock.getInputWithBlock(currentBlock) || {};
+        const name = rootBlock?.getInputWithBlock(currentBlock)?.name || '';
 
         if (name) {
             inputName = name;

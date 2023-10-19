@@ -30,7 +30,7 @@ export default Engine =>
                     currency,
                 });
 
-                this.subscribeToOpenContract(buy.contract_id);
+                this.contractId = buy.contract_id;
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
 

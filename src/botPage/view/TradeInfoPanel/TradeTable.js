@@ -143,37 +143,37 @@ const TradeTable = ({ account_id }) => {
         }
     };
 
-    const refreshContract = async contract_id => {
-        const contract_info = await api_base.api.send({ proposal_open_contract: 1, contract_id }).catch(e => {
-            globalObserver.emit('Error', e);
-        });
+    const refreshContract = contract_id => {
+        this.contract_id = contract_id;
 
-        if (contract_info) {
-            const contract = contract_info.proposal_open_contract;
-            const trade_obj = getTradeObject(contract);
-            const trade = {
-                ...trade_obj,
-                profit: getProfit(trade_obj),
-            };
-            if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
-                trade.exit_tick = '-';
-            }
-
-            const actual_rows = actual_account_state_ref.current[account_id].rows;
-            const updated_rows = actual_rows.map(row => {
-                const { reference } = row;
-                if (reference === trade.reference) {
-                    return {
-                        contract_status: translate('Settled'),
-                        contract_settled: true,
-                        reference,
-                        ...trade,
-                    };
+        api_base.api.onMessage().subscribe(({ data }) => {
+            if (data.msg_type === 'proposal_open_contract') {
+                const contract = data.proposal_open_contract;
+                const trade_obj = getTradeObject(contract);
+                const trade = {
+                    ...trade_obj,
+                    profit: getProfit(trade_obj),
+                };
+                if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
+                    trade.exit_tick = '-';
                 }
-                return row;
-            });
-            setAccountState({ [account_id]: { rows: updated_rows } });
-        }
+
+                const actual_rows = actual_account_state_ref.current[account_id].rows;
+                const updated_rows = actual_rows.map(row => {
+                    const { reference } = row;
+                    if (reference === trade.reference) {
+                        return {
+                            contract_status: translate('Settled'),
+                            contract_settled: true,
+                            reference,
+                            ...trade,
+                        };
+                    }
+                    return row;
+                });
+                setAccountState({ [account_id]: { rows: updated_rows } });
+            }
+        });
     };
 
     React.useEffect(() => {

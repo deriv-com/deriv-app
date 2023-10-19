@@ -70,14 +70,14 @@
         transition-delay: 0.2s;
         border-bottom: 1px solid var(--border-disabled);
 
-        &-container {
+        &-wrapper {
             position: sticky;
             top: 0;
             z-index: 4;
             background: var(--fill-normal);
             width: 100%;
             // transparent border ensures children's margins contribute to height:
-            border-bottom: 0.1rem solid transparent;
+            border-bottom: 0.01rem solid transparent;
 
             .inline-message__information {
                 margin: 1.6rem 0.8rem;

@@ -26,7 +26,7 @@ import {
     urlForLanguage,
     getAppId,
 } from '@deriv/shared';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
@@ -1645,12 +1645,12 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                RudderStack.identifyEvent(user_id, {
+                Analytics.identifyEvent(user_id, {
                     language: getLanguage().toLowerCase(),
                     app_id: getAppId(),
                 });
                 const current_page = window.location.hostname + window.location.pathname;
-                RudderStack.pageView(current_page);
+                Analytics.pageView(current_page);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -2254,7 +2254,7 @@ export default class ClientStore extends BaseStore {
 
                 const social_identity_provider = get_account_status?.social_identity_provider;
 
-                RudderStack.track(
+                Analytics.trackEvent(
                     'ce_virtual_signup_form',
                     {
                         action: 'signup_continued',

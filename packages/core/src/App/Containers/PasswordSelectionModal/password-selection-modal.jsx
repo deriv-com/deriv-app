@@ -6,7 +6,7 @@ import { Button, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { getErrorMessages, redirectToSignUp } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 
 import SignupSeparatorContainer from '../AccountSignupModal/signup-separator-container.jsx';
 
@@ -30,7 +30,7 @@ const PasswordSelectionModal = observer(
         const { is_mobile } = ui;
 
         React.useEffect(() => {
-            RudderStack.track(
+            Analytics.trackEvent(
                 'ce_virtual_signup_form',
                 {
                     action: 'password_screen_opened',

@@ -29,7 +29,7 @@ import {
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
 } from '@deriv/shared';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
@@ -1611,7 +1611,7 @@ export default class TradeStore extends BaseStore {
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {
-            RudderStack.track(event_type, {
+            Analytics.trackEvent(event_type, {
                 ...data,
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 form_name: 'default',

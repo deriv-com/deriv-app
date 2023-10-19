@@ -3,7 +3,7 @@ import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { TURBOS, VANILLALONG } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
 import { getContractTypes } from '../../../../Helpers/contract-type';
@@ -21,15 +21,17 @@ type TInfo = {
 };
 
 const TABS = {
-    DESCRIPTION: 'description',
-    GLOSSARY: 'glossary',
+    DESCRIPTION: 'description' as const,
+    GLOSSARY: 'glossary' as const,
 };
+
+type TSelectedTab = 'description' | 'glossary';
 
 const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const {
         ui: { is_mobile },
     } = useStore();
-    const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
+    const [selected_tab, setSelectedTab] = React.useState<TSelectedTab>(TABS.DESCRIPTION);
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
             i.value !== 'rise_fall_equal' && i.value !== TURBOS.SHORT && i.value !== VANILLALONG.PUT
@@ -44,7 +46,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
 
     React.useEffect(() => {
         return () => {
-            RudderStack.track('ce_trade_types_form', {
+            Analytics.trackEvent('ce_trade_types_form', {
                 action: 'info_close',
             });
         };
@@ -52,7 +54,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
 
     React.useEffect(() => {
         if (has_toggle_buttons) {
-            RudderStack.track('ce_trade_types_form', {
+            Analytics.trackEvent('ce_trade_types_form', {
                 action: 'info_switcher',
                 info_switcher_mode: selected_tab,
                 trade_type_name: item?.text,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import ContractType from './contract-type';
 import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type';
 import { TContractCategory, TContractType, TList } from './types';
@@ -51,10 +51,9 @@ const ContractTypeWidget = observer(({ name, value, list, onChange, languageChan
 
     React.useEffect(() => {
         if (typeof is_dialog_open === 'boolean') {
-            RudderStack.track('ce_trade_types_form', {
+            Analytics.trackEvent('ce_trade_types_form', {
                 action: is_dialog_open ? 'open' : 'close',
                 form_source: 'contract_set_up_form',
-                form_name: 'default',
             });
         }
     }, [is_dialog_open]);

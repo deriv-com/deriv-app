@@ -5,7 +5,7 @@ import { loginUrl, routes, SessionStore, PlatformContext } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 
 const Redirect = ({
     history,
@@ -39,7 +39,7 @@ const Redirect = ({
     switch (action_param) {
         case 'signup': {
             if (!is_appstore) {
-                RudderStack.track(
+                Analytics.trackEvent(
                     'ce_virtual_signup_form',
                     {
                         action: 'email_confirmed',

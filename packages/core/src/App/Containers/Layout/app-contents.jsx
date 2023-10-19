@@ -4,7 +4,7 @@ import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes, WS } from '@deriv/shared';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -45,8 +45,8 @@ const AppContents = observer(({ children }) => {
 
     React.useEffect(() => {
         if (is_logged_in && user_id) {
-            RudderStack.setAccountType(loginid.substring(0, 2));
-            RudderStack.identifyEvent(user_id, {
+            Analytics.setAccountType(loginid.substring(0, 2));
+            Analytics.identifyEvent(user_id, {
                 language: getLanguage().toLowerCase() || 'en',
             });
             RudderStack.pageView(current_page);

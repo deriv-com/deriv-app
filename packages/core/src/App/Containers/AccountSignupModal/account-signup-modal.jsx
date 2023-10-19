@@ -8,7 +8,7 @@ import { localize } from '@deriv/translations';
 
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
@@ -51,7 +51,7 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
             setIsLoading(false);
         });
 
-        RudderStack.track(
+        Analytics.trackEvent(
             'ce_virtual_signup_form',
             {
                 action: 'signup_confirmed',
@@ -62,7 +62,7 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
             }
         );
 
-        RudderStack.track(
+        Analytics.trackEvent(
             'ce_virtual_signup_form',
             {
                 action: 'country_selection_screen_opened',
@@ -96,7 +96,7 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
         if (error) {
             setApiError(error);
 
-            RudderStack.track(
+            Analytics.trackEvent(
                 'ce_virtual_signup_form',
                 {
                     action: 'signup_flow_error',
@@ -112,7 +112,7 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
             SessionStore.remove('signup_query_param');
             enableApp();
 
-            RudderStack.track(
+            Analytics.trackEvent(
                 'ce_virtual_signup_form',
                 {
                     action: 'signup_done',

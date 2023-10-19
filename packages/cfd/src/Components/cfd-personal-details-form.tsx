@@ -27,6 +27,7 @@ type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];
     form_error?: string;
     index: number;
+    is_loading: boolean;
     onSubmit: TOnSubmit;
     residence_list: ResidenceList;
     initial_values: TFormValues;
@@ -216,6 +217,7 @@ const submitForm: TSubmitForm = (values, actions, idx, onSubmit, is_dirty, resid
 
 const CFDPersonalDetailsForm = ({
     changeable_fields,
+    is_loading,
     residence_list,
     onSubmit,
     initial_values,
@@ -229,7 +231,7 @@ const CFDPersonalDetailsForm = ({
     } = useStore();
 
     const residence = residence_list?.find(item => item.text === account_settings?.residence);
-    const { data, isLoading } = useLandingCompanyDetails({
+    const { data, isLoading: is_landing_company_details_loading } = useLandingCompanyDetails({
         // @ts-expect-error jurisdiction_selected_shortcode type should be updated in cfd-store types
         landing_company_details: jurisdiction_selected_shortcode,
         country: residence?.value,
@@ -243,7 +245,8 @@ const CFDPersonalDetailsForm = ({
     const isFieldDisabled = (field: string) => !!initial_values[field] && !changeable_fields?.includes(field);
 
     // using data instead of isLoading to prevent flickering of form
-    if (isLoading || residence_list.length === 0) return <Loading is_fullscreen={false} />;
+    if (is_landing_company_details_loading || is_loading || residence_list.length === 0)
+        return <Loading is_fullscreen={false} />;
     const { tax_identification_number, ...rest } = initial_values;
     const form_initial_values = { ...rest };
 

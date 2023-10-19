@@ -1,5 +1,5 @@
 import React from 'react';
-import { Div100vhContainer, Text, Loading } from '@deriv/components';
+import { Div100vhContainer, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TCFDPersonalDetailsContainerProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
@@ -94,8 +94,6 @@ const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsC
         onSubmit(index, value);
     };
 
-    if (is_loading) return <Loading is_fullscreen={false} />;
-
     return (
         <Div100vhContainer
             className='cfd-personal-details-modal'
@@ -112,6 +110,7 @@ const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsC
                 <CFDPersonalDetailsForm
                     form_error={form_error}
                     index={2}
+                    is_loading={is_loading}
                     onSubmit={updateValue}
                     residence_list={residence_list}
                     changeable_fields={getChangeableFields()}

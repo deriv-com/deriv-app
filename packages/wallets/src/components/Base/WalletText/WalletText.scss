@@ -11,46 +11,89 @@ $color-map: (
     blue: #377cfc,
 );
 
-$font-size-map: (
-    '3xs': (
-        fontsize: 0.8rem,
-        lineheight: 1.2rem,
-    ),
+$desktop-font-size-map: (
     '2xs': (
-        fontsize: 1rem,
-        lineheight: 1.4rem,
+        size: 1rem,
+        line_height: 1.4rem,
     ),
     'xs': (
-        fontsize: 1.2rem,
-        lineheight: 1.8rem,
+        size: 1.2rem,
+        line_height: 1.8rem,
     ),
     'sm': (
-        fontsize: 1.4rem,
-        lineheight: 2rem,
+        size: 1.4rem,
+        line_height: 2rem,
     ),
     'md': (
-        fontsize: 1.6rem,
-        lineheight: 2.4rem,
+        size: 1.6rem,
+        line_height: 2.4rem,
     ),
     'lg': (
-        fontsize: 1.8rem,
-        lineheight: 2.6rem,
+        size: 2rem,
+        line_height: 3rem,
     ),
     'xl': (
-        fontsize: 2rem,
-        lineheight: 3rem,
+        size: 2.4rem,
+        line_height: 3.4rem,
     ),
     '2xl': (
-        fontsize: 2.4rem,
-        lineheight: 3.4rem,
+        size: 3.2rem,
+        line_height: 4rem,
     ),
     '3xl': (
-        fontsize: 2.8rem,
-        lineheight: 3.6rem,
+        size: 4.8rem,
+        line_height: 6rem,
     ),
     '4xl': (
-        fontsize: 3.2rem,
-        lineheight: 4rem,
+        size: 6.4rem,
+        line_height: 8rem,
+    ),
+    '5xl': (
+        size: 8rem,
+        line_height: 10rem,
+    ),
+);
+
+$mobile-font-size-map: (
+    '2xs': (
+        size: 0.8rem,
+        line_height: 1.2rem,
+    ),
+    'xs': (
+        size: 1rem,
+        line_height: 1.4rem,
+    ),
+    'sm': (
+        size: 1.2rem,
+        line_height: 1.8rem,
+    ),
+    'md': (
+        size: 1.4rem,
+        line_height: 2rem,
+    ),
+    'lg': (
+        mobile_fontsize: 1.6rem,
+        line_height: 2.4rem,
+    ),
+    'xl': (
+        size: 1.8rem,
+        line_height: 2.6rem,
+    ),
+    '2xl': (
+        size: 2.4rem,
+        line_height: 3rem,
+    ),
+    '3xl': (
+        size: 2.8rem,
+        line_height: 3.4rem,
+    ),
+    '4xl': (
+        size: 3.2rem,
+        line_height: 4rem,
+    ),
+    '5xl': (
+        size: 4rem,
+        line_height: 5rem,
     ),
 );
 
@@ -88,10 +131,21 @@ $font-align-map: (
         }
     }
 
-    @each $size, $values in $font-size-map {
+    @each $size, $values in $desktop-font-size-map {
         &-size-#{$size} {
-            font-size: map-get($values, fontsize);
-            line-height: map-get($values, lineheight);
+            @include desktop {
+                font-size: map-get($values, size);
+                line-height: map-get($values, line_height);
+            }
+        }
+    }
+
+    @each $size, $values in $mobile-font-size-map {
+        &-size-#{$size} {
+            @include mobile {
+                font-size: map-get($values, size);
+                line-height: map-get($values, line_height);
+            }
         }
     }
 

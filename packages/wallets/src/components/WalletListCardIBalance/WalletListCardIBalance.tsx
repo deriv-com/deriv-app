@@ -12,7 +12,7 @@ const WalletListCardIBalance: React.FC<TProps> = ({ balance }) => (
             Wallet balance
         </WalletText>
 
-        <WalletText align='right' size='3xl' weight='bold'>
+        <WalletText align='right' size='xl' weight='bold'>
             {balance}
         </WalletText>
     </div>

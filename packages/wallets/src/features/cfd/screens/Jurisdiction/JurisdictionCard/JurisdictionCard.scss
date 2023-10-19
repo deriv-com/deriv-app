@@ -100,8 +100,7 @@
     }
 }
 
-
-.wallet__dynamic-leverage-transition {
+.wallets-dynamic-leverage-modal-transition {
     &-enter {
         transform: rotateY(-180deg);
         transition: transform 0.6s ease;
@@ -109,14 +108,5 @@
 
     &-enter-active {
         transform: rotateY(0deg);
-    }
-
-    &-exit {
-        transform: rotate(0deg);
-        transition: transform 0.6s ease;
-    }
-
-    &-exit-active {
-        transform: rotateY(-180deg);
     }
 }

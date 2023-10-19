@@ -3,6 +3,7 @@ export * from './Base';
 export * from './DerivAppsSection';
 export * from './DesktopWalletsList';
 export * from './Loader';
+export * from './ModalTransition';
 export * from './OptionsAndMultipliersListing';
 export * from './TradingAccountCard';
 export * from './WalletCard';

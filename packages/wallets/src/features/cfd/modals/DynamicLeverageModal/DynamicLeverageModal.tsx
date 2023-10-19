@@ -1,12 +1,11 @@
 import React from 'react';
 import { useDynamicLeverage } from '@deriv/api';
-import { ModalWrapper, WalletText } from '../../../../components/Base';
+import { ModalTransition, ModalWrapper, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import BackArrow from '../../../../public/images/ic-back-arrow.svg';
+import { DynamicLeverageMarketCard } from '../../screens/DynamicLeverage/DynamicLeverageMarketCard';
 import { JurisdictionModal } from '../JurisdictionModal';
-import { DynamicLeverageMarketCard } from './DynamicLeverageMarketCard';
-import { TransitionModal } from './TransitionModal';
 import './DynamicLeverageModal.scss';
 
 const DynamicLeverageModal = () => {
@@ -26,9 +25,12 @@ const DynamicLeverageModal = () => {
                                 marketType: 'financial',
                             });
                             show(
-                                <TransitionModal className='wallet__modal-transition'>
+                                <ModalTransition
+                                    className='wallets-jurisdiction-modal-transition'
+                                    key='wallets-jurisdiction-modal-transition'
+                                >
                                     <JurisdictionModal />
-                                </TransitionModal>
+                                </ModalTransition>
                             );
                         }}
                     />

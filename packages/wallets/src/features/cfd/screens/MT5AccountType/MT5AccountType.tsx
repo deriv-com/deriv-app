@@ -29,20 +29,26 @@ type TProps = {
     selectedMarketType?: keyof typeof marketTypeDetailsMapper;
 };
 
-const MT5AccountType: React.FC<TProps> = ({ onMarketTypeSelect, selectedMarketType }) => (
-    <div className='wallets-mt5-account-type-content'>
-        {Object.entries(marketTypeDetailsMapper).map(([key, value]) => (
-            <MT5AccountTypeCard
-                description={value.description}
-                icon={value.icon}
-                isSelected={selectedMarketType === key}
-                key={key}
-                // @ts-expect-error the key always is the type of keyof typeof marketTypeDetailsMapper.
-                onClick={() => onMarketTypeSelect(key === selectedMarketType ? undefined : key)}
-                title={value.title}
-            />
-        ))}
-    </div>
-);
+const MT5AccountType: React.FC<TProps> = ({ onMarketTypeSelect, selectedMarketType }) => {
+    const sortedMarketTypeEntries = Object.entries(marketTypeDetailsMapper).sort(([keyA], [keyB]) => {
+        const order = ['synthetic', 'financial', 'all'];
+        return order.indexOf(keyA) - order.indexOf(keyB);
+    });
+    return (
+        <div className='wallets-mt5-account-type-content'>
+            {sortedMarketTypeEntries.map(([key, value]) => (
+                <MT5AccountTypeCard
+                    description={value.description}
+                    icon={value.icon}
+                    isSelected={selectedMarketType === key}
+                    key={key}
+                    // @ts-expect-error the key always is the type of keyof typeof marketTypeDetailsMapper.
+                    onClick={() => onMarketTypeSelect(key === selectedMarketType ? undefined : key)}
+                    title={value.title}
+                />
+            ))}
+        </div>
+    );
+};
 
 export default MT5AccountType;

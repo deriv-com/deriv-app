@@ -1,11 +1,11 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { useGetMt5LoginListStatus } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { TError } from '../../../../types';
-import { useGetMt5LoginListStatus } from '@deriv/hooks';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
@@ -16,7 +16,7 @@ let mockRootStore: ReturnType<typeof mockStore>;
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useIsMt5LoginListStatusPresent: jest.fn(() => ({ is_flag_present: false, flag_value: undefined })),
+    useGetMt5LoginListStatus: jest.fn(() => ({})),
 }));
 const mockedUseGetMt5LoginListStatus = useGetMt5LoginListStatus as jest.MockedFunction<typeof useGetMt5LoginListStatus>;
 
@@ -286,18 +286,20 @@ describe('<AccountTransferForm />', () => {
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
 
-    it('should display no new positions can be opened when transferring amount to a migrated svg account', () => {
-        mockedUseGetMt5LoginListStatus.mockReturnValue({ is_flag_present: true, flag_value: 1 });
+    it('should display "no new positions can be opened" when transferring amount to a migrated svg account with position', () => {
+        mockedUseGetMt5LoginListStatus.mockReturnValue({ status: 'migrated_with_position' });
         renderAccountTransferForm();
+
         expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
         expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
     });
 
-    it('should display the number of transfers remaining when transferring amount to a non migrated svg accounts', () => {
-        mockedUseGetMt5LoginListStatus.mockReturnValue({ is_flag_present: false, flag_value: undefined });
+    it('should display "no new positions can be opened" when transferring amount to a migrated svg account without position', () => {
+        mockedUseGetMt5LoginListStatus.mockReturnValue({ status: 'migrated_without_position' });
         renderAccountTransferForm();
-        expect(screen.getByText(/You have 0 transfer remaining for today./i)).toBeInTheDocument();
-        expect(screen.queryByText(/You can no longer open new positions with this account./i)).not.toBeInTheDocument();
+
+        expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
+        expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
     });
 
     describe('<Dropdown />', () => {

@@ -239,7 +239,7 @@ export const getTickStreamMarkers = (contract_info, barrier_price) => {
         if (is_accumulator_contract) {
             return [];
         } else if (is_digit_contract) {
-            return tick_stream.slice(-1);
+            return [undefined, ...tick_stream.slice(-1)];
         }
         return tick_stream;
     }

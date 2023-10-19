@@ -1,7 +1,8 @@
 import React from 'react';
+import { OauthApps } from '@deriv/api-types';
 import { Button, Modal, Icon, DataTable, Loading, Text } from '@deriv/components';
-import { useOAuthConnectedApps, useOAuthRevokeConnectedApps } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { WS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
 import ConnectedAppsKnowMore from './connected-apps-know-more';
@@ -18,24 +19,49 @@ const ConnectedApps = observer(() => {
     const { ui } = useStore();
     const { is_mobile } = ui;
 
-    const [selected_app_id, setSelectedAppId] = React.useState<number | null>(null);
+    const [is_loading, setLoading] = React.useState(true);
     const [is_modal_open, setIsModalOpen] = React.useState(false);
+    const [selected_app_id, setSelectedAppId] = React.useState<number | null>(null);
+    const [is_error, setError] = React.useState(false);
+    const [connected_apps, setConnectedApps] = React.useState<OauthApps>([]);
 
-    const { data: connected_apps = [], isLoading: is_loading, isError: is_error } = useOAuthConnectedApps();
-    const { revokeOAuthApp } = useOAuthRevokeConnectedApps();
+    React.useEffect(() => {
+        /* eslint-disable no-console */
+        fetchConnectedApps().catch(error => console.error('error: ', error));
+    }, []);
+
+    const fetchConnectedApps = async () => {
+        const response_connected_apps = await WS.authorized.send({ oauth_apps: 1 });
+
+        if (!response_connected_apps.error) {
+            setLoading(false);
+            setConnectedApps(response_connected_apps.oauth_apps);
+        }
+    };
 
     const handleToggleModal = React.useCallback(
         (app_id: number | null = null) => {
-            setSelectedAppId(app_id);
             setIsModalOpen(!is_modal_open);
+            setSelectedAppId(app_id);
         },
         [is_modal_open]
     );
 
+    const revokeConnectedApp = React.useCallback(async (app_id: number | null) => {
+        setLoading(true);
+        const response = await WS.authorized.send({ revoke_oauth_app: app_id });
+        if (!response.error) {
+            /* eslint-disable no-console */
+            fetchConnectedApps().catch(error => console.error('error: ', error));
+        } else {
+            setError(true);
+        }
+    }, []);
+
     const handleRevokeAccess = React.useCallback(() => {
-        if (selected_app_id) revokeOAuthApp(selected_app_id);
         setIsModalOpen(false);
-    }, [revokeOAuthApp, selected_app_id]);
+        revokeConnectedApp(selected_app_id);
+    }, [revokeConnectedApp, selected_app_id]);
 
     return is_loading ? (
         <Loading is_fullscreen={false} />

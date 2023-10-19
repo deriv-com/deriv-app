@@ -72,7 +72,11 @@ const BuySell = () => {
 
     return (
         <div className='buy-sell'>
-            <BuySellHeader table_type={buy_sell_store.table_type} clearScroll={clearScroll} />
+            <BuySellHeader
+                table_type={buy_sell_store.table_type}
+                clearScroll={clearScroll}
+                scroll_to_index={scroll_to_index}
+            />
             <BuySellTable
                 key={buy_sell_store.table_type}
                 is_buy={buy_sell_store.table_type === buy_sell.BUY}

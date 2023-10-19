@@ -218,8 +218,8 @@ const OrderRow = ({ row: order, row_index, index }) => {
                     <Table.Row
                         className={classNames('orders__mobile', {
                             'orders__mobile--attention': !isOrderSeen(id),
-                            'orders__mobile--highlight': should_highlight,
-                            'order-table-row__highlight--dark': should_highlight && is_dark_mode_on,
+                            orders__mobile__highlight: should_highlight,
+                            'orders__mobile__highlight--dark': should_highlight && is_dark_mode_on,
                         })}
                     >
                         <Table.Cell

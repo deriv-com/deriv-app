@@ -176,9 +176,8 @@ const AdvertiserPage = () => {
                         buy_sell_store.hideAdvertiserPage();
                         if (general_store.active_index === general_store.path.my_profile)
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
-                        history.push(general_store.active_tab_route, {
-                            scroll_to_index_value: history.location.state?.scroll_to_index ?? -1,
-                        });
+                        const current_state = history.location.state;
+                        history.push({ pathname: general_store.active_tab_route, state: { ...current_state } });
                     }}
                     page_title={localize("Advertiser's page")}
                 />

@@ -24,7 +24,7 @@ const getBuySellFilters = () => [
     },
 ];
 
-const BuySellHeader = ({ table_type, clearScroll }) => {
+const BuySellHeader = ({ table_type, clearScroll, scroll_to_index }) => {
     const { buy_sell_store, general_store } = useStores();
     const is_currency_selector_visible = general_store.feature_level >= 2;
 
@@ -54,7 +54,7 @@ const BuySellHeader = ({ table_type, clearScroll }) => {
             buy_sell_store.setSearchTerm('');
             buy_sell_store.setItems([]);
             buy_sell_store.setIsLoading(true);
-            buy_sell_store.loadMoreItems({ startIndex: 0 });
+            buy_sell_store.loadMoreItems({ startIndex: 0 }, scroll_to_index);
 
             const interval = setInterval(() => {
                 buy_sell_store.getWebsiteStatus();
@@ -124,6 +124,8 @@ const BuySellHeader = ({ table_type, clearScroll }) => {
 
 BuySellHeader.propTypes = {
     table_type: PropTypes.string,
+    clearScroll: PropTypes.func,
+    scroll_to_index: PropTypes.number,
 };
 
 export default observer(BuySellHeader);

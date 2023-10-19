@@ -13,13 +13,12 @@ type TListProps = {
         e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
     ) => void;
     list: TContractCategory[];
-    should_show_info_banner?: boolean;
     value?: string;
 };
 
-const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, value }: TListProps) => (
+const List = ({ handleInfoClick, handleSelect, list, value }: TListProps) => (
     <React.Fragment>
-        {list.map((contract_category, index) => {
+        {list.map(contract_category => {
             const contract_types = contract_category.contract_types?.filter(contract_type => {
                 const base_contract_type = /^(.*)_equal$/.exec(contract_type.value)?.[1];
                 if (contract_type.value === TURBOS.SHORT || contract_type.value === VANILLALONG.PUT) return false;
@@ -32,14 +31,7 @@ const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, va
             const is_new = /(Accumulators|Turbos|Vanillas)/i.test(contract_category.key);
 
             return (
-                <div
-                    key={contract_category.key}
-                    className={classNames('contract-type-list', {
-                        'contract-type-list--unavailable-category': contract_category.is_unavailable,
-                        'contract-type-list--no-top-padding': should_show_info_banner && index === 0,
-                    })}
-                    data-testid='dt_contract_list'
-                >
+                <div key={contract_category.key} className='contract-type-list' data-testid='contract_list'>
                     <div className='contract-type-item__container'>
                         <Text size='xs' className='contract-type-list__label'>
                             {contract_category.label}
@@ -53,8 +45,8 @@ const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, va
                     <div className='contract-type-list__wrapper'>
                         <Item
                             contract_types={contract_types}
-                            handleSelect={contract_category.is_unavailable ? undefined : handleSelect}
-                            handleInfoClick={contract_category.is_unavailable ? undefined : handleInfoClick}
+                            handleSelect={handleSelect}
+                            handleInfoClick={handleInfoClick}
                             value={value}
                         />
                     </div>

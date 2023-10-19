@@ -1,9 +1,10 @@
 import React from 'react';
-import { useMT5AccountsList } from '@deriv/api';
+import { useStore } from '@deriv/stores';
 import { Jurisdiction, getFormattedJurisdictionCode } from '@deriv/shared';
 
 const useMT5SVGEligibleToMigrate = () => {
-    const { data: mt5_login_list = [] } = useMT5AccountsList();
+    const { client } = useStore();
+    const { mt5_login_list } = client;
 
     const mt5_migration_config = React.useMemo(() => {
         const svg_accounts_to_migrate = mt5_login_list.filter(

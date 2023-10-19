@@ -463,4 +463,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
     };
 };
 
+export const mt5_community_url =
+    'https://community.deriv.com/t/log-in-using-mt5-pc-or-mobile-app-application-guideline/49622';
+
 export const removeAccountIdPrefix = (login_id: string) => login_id.replace(/^(CT[DR]?)/i, '');

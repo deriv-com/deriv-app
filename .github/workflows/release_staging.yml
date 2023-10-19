@@ -2,7 +2,7 @@ name: Deriv App Staging Workflow
 on:
   push:
     branches:
-    - master
+    - rc_*
 
 jobs:
   build_test_and_publish:

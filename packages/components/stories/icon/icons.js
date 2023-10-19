@@ -702,6 +702,7 @@ export const icons =
         'IcFlagPt',
         'IcFlagRu',
         'IcFlagTh',
+        'IcFlagTr',
         'IcFlagUk',
         'IcFlagVi',
         'IcFlagZhCn',

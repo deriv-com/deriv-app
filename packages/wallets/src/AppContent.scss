@@ -7,6 +7,7 @@
     min-height: calc(100vh - 8.4rem); // 100vh - (4.8rem header + 3.6rem footer)
     align-self: stretch;
     background: var(--system-light-7-secondary-background, #f2f3f4);
+    height: calc(100vh - 8.4rem);
 
     @include mobile {
         overflow-y: auto;

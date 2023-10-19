@@ -1,11 +1,11 @@
 import React from 'react';
 import { routes } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import AdvertiserPage from '../pages/advertiser-page';
-import BuySell from '../pages/buy-sell';
-import MyAds from '../pages/my-ads';
-import MyProfile from '../pages/my-profile';
-import Orders from '../pages/orders';
+import AdvertiserPage from 'Pages/advertiser-page';
+import BuySell from 'Pages/buy-sell';
+import MyAds from 'Pages/my-ads';
+import MyProfile from 'Pages/my-profile';
+import Orders from 'Pages/orders';
 import { TRoute, TRouteConfig } from 'Types/routes.types';
 
 // Error Routes

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount, useMutation } from '@deriv/api';
 import { useHistory } from 'react-router-dom';
-import useDevice from '../../../../hooks/useDevice';
 import IcResetDemoBalance from '../../../../public/images/ic-demo-reset-balance.svg';
 import IcResetDemoBalanceDone from '../../../../public/images/ic-demo-reset-balance-done.svg';
 import WalletsActionScreen from '../../../../components/WalletsActionScreen/WalletsActionScreen';
@@ -10,7 +9,6 @@ const WalletResetBalance = () => {
     const history = useHistory();
     const { isSuccess: isResetBalanceSuccess, mutate } = useMutation('topup_virtual');
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
 
     const resetBalance = () => {
         mutate();

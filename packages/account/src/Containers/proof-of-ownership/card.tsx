@@ -5,7 +5,7 @@ import ExpandedCard from './expanded-card';
 import { TPaymentMethodInfo } from '../../Types';
 
 type TCardProps = {
-    details: TPaymentMethodInfo;
+    details?: TPaymentMethodInfo;
     index: number;
     updateErrors: (index: number, item_index: number, sub_index: number) => void;
 };
@@ -44,13 +44,18 @@ const Card = ({ details, index, updateErrors }: TCardProps) => {
     return (
         <div
             className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}
-            data-testid={details.payment_method}
+            data-testid={details?.payment_method}
             role='card-item'
         >
             <div className='proof-of-ownership__card-item' onClick={onClickHandler}>
-                <Icon icon={details?.icon} className='proof-of-ownership__card-item-logo' width={68} height={58} />
+                <Icon
+                    icon={details?.icon || ''}
+                    className='proof-of-ownership__card-item-logo'
+                    width={68}
+                    height={58}
+                />
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
-                    {details.payment_method}
+                    {details?.payment_method}
                 </Text>
                 <Button
                     id='proof-of-ownership'

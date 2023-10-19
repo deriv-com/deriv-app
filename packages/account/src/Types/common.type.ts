@@ -3,8 +3,9 @@ import React from 'react';
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Redirect } from 'react-router-dom';
 import { Authorize, GetAccountStatus, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
-import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
 import { Platforms } from '@deriv/shared';
+import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
+import getPaymentMethodsConfig from '../Configs/payment-method-config';
 
 export type TToken = {
     display_name: string;
@@ -192,9 +193,17 @@ export type TPaymentMethodInfo = {
     documents_required: number;
     icon: string;
     payment_method: string;
-    items: NonNullable<NonNullable<GetAccountStatus['authentication']>['ownership']>['requests'];
-    instructions: Array<string>;
-    input_label: string;
+    items: DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
+    instructions: string[] | JSX.Element[];
+    input_label: string | null;
     identifier_type: TPaymentMethodIdentifier;
     is_generic_pm: boolean;
 };
+
+export type TPaymentMethod = keyof ReturnType<typeof getPaymentMethodsConfig>;
+
+export type TPaymentMethodUploadData = {
+    files: Blob[];
+    id: number;
+    payment_method_identifier: string;
+} & Pick<TPaymentMethodInfo, 'documents_required' | 'identifier_type' | 'is_generic_pm'>;

@@ -1,11 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ProofOfOwnership } from '../proof-of-ownership.jsx';
-import test_data from './test-data';
+import { GetAccountStatus } from '@deriv/api-types';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { ProofOfOwnership } from '../proof-of-ownership';
+import test_data from './test-data';
+
+type TRequests = DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
+type TStatus = DeepRequired<GetAccountStatus>['authentication']['ownership']['status'];
 
 describe('proof-of-ownership.jsx', () => {
-    let ownership_temp;
+    let ownership_temp: typeof test_data;
+
     beforeAll(() => {
         ownership_temp = test_data;
     });
@@ -16,7 +21,7 @@ describe('proof-of-ownership.jsx', () => {
             </StoreProvider>
         );
     };
-    let store = mockStore();
+    let store = mockStore({});
     it('should render no poo required status page', () => {
         store = mockStore({
             client: {
@@ -94,7 +99,10 @@ describe('proof-of-ownership.jsx', () => {
             client: {
                 account_status: {
                     authentication: {
-                        ownership: { requests: ownership_temp.requests, status: ownership_temp.status },
+                        ownership: {
+                            requests: ownership_temp.requests as TRequests,
+                            status: ownership_temp.status as TStatus,
+                        },
                         needs_verification: ['ownership'],
                     },
                 },

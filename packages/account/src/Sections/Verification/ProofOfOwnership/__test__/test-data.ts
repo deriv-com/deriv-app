@@ -1,12 +1,14 @@
 export default {
     requests: [
         {
-            id: '1',
+            creation_time: '123',
+            id: 1,
             payment_method: 'beyonic',
             documents_required: 1,
         },
         {
-            id: '2',
+            creation_time: '234',
+            id: 2,
             payment_method: 'boleto (d24 voucher)',
             documents_required: 1,
         },

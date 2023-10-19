@@ -1,29 +1,19 @@
 import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage, TFile } from './image/image_utility';
 
 export type TSettings = {
-    documentType: {
-        passport: string;
-        national_identity_card: string;
-        driving_licence: string;
-        utility_bill: string;
-        bankstatement: string;
-        power_of_attorney: string;
-        amlglobalcheck: string;
-        docverification: string;
-        proofid: string;
-        driverslicense: string;
-        proofaddress: string;
-        other: string;
-    };
-    pageType: {
-        front: string;
-        back: string;
-        photo: string;
-    };
+    documentType?: typeof DOCUMENT_TYPE[keyof typeof DOCUMENT_TYPE];
+    pageType?: typeof PAGE_TYPE[keyof typeof PAGE_TYPE];
     expirationDate?: string;
     documentId?: string;
     lifetimeValid?: boolean;
     document_issuing_country?: string;
+    proof_of_ownership?: {
+        details?: {
+            email: string;
+            payment_identifier: string;
+        };
+        id?: number;
+    };
 };
 
 type TFileObject = TSettings & {
@@ -106,26 +96,26 @@ export const max_document_size = 8388608;
 export const supported_filetypes = 'image/png, image/jpeg, image/jpg, image/gif, application/pdf';
 
 export const DOCUMENT_TYPE = {
-    passport: 'passport',
-    national_identity_card: 'national_identity_card',
-    driving_licence: 'driving_licence',
-    utility_bill: 'utility_bill',
-    bankstatement: 'bankstatement',
-    power_of_attorney: 'power_of_attorney',
     amlglobalcheck: 'amlglobalcheck',
+    bankstatement: 'bankstatement',
     docverification: 'docverification',
-    proofid: 'proofid',
     driverslicense: 'driverslicense',
-    proofaddress: 'proofaddress',
-    proof_of_ownership: 'proof_of_ownership',
+    driving_licence: 'driving_licence',
+    national_identity_card: 'national_identity_card',
     other: 'other',
-};
+    passport: 'passport',
+    power_of_attorney: 'power_of_attorney',
+    proof_of_ownership: 'proof_of_ownership',
+    proofaddress: 'proofaddress',
+    proofid: 'proofid',
+    utility_bill: 'utility_bill',
+} as const;
 
 export const PAGE_TYPE = {
-    front: 'front',
     back: 'back',
+    front: 'front',
     photo: 'photo',
-};
+} as const;
 
 export const getSupportedFiles = (filename: string) =>
     /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|pdf|PDF)$/.test(filename);

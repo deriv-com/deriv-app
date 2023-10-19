@@ -4,11 +4,11 @@ import { useFormikContext } from 'formik';
 import { Input, Text } from '@deriv/components';
 import { IDENTIFIER_TYPES, VALIDATIONS } from '../../Constants/poo-identifier';
 import FileUploader from '../../Sections/Verification/ProofOfOwnership/file-uploader';
-import { TPaymentMethodInfo } from '../../Types';
+import { TPaymentMethodInfo, TPaymentMethodUploadData } from '../../Types';
 import ExampleLink from './example-link';
 
 type TExpandedCardProps = {
-    card_details: TPaymentMethodInfo;
+    card_details?: TPaymentMethodInfo;
     index: number;
     updateErrors: (index: number, item_index: number, sub_index: number) => void;
 };
@@ -21,7 +21,7 @@ type TExpandedCardProps = {
  * @returns React Component
  */
 const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps) => {
-    const { values, setFieldValue, errors } = useFormikContext();
+    const { values, setFieldValue, errors } = useFormikContext<{ data: Partial<TPaymentMethodUploadData>[] }>();
 
     const handleUploadedFile = async (name: string, file: Blob) => {
         await setFieldValue(name, file);
@@ -54,8 +54,8 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
             documents_required,
             id: item_id,
             payment_method_identifier,
-            is_generic_pm: card_details.is_generic_pm,
-            identifier_type: card_details.identifier_type,
+            is_generic_pm: card_details?.is_generic_pm,
+            identifier_type: card_details?.identifier_type,
         });
     };
 
@@ -86,7 +86,7 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                         as='p'
                         color='general'
                         size='xs'
-                        key={instruction?.key ?? instruction}
+                        key={typeof instruction !== 'string' ? instruction.key : instruction}
                     >
                         {instruction}{' '}
                         {card_details?.identifier_type === IDENTIFIER_TYPES.CARD_NUMBER && <ExampleLink />}

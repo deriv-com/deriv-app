@@ -36,5 +36,8 @@ describe('<Filters />', () => {
         );
         const el = screen.getByText('Errors');
         userEvent.click(el);
+        // eslint-disable-next-line testing-library/no-node-access
+        const element = document.querySelector('.dc-checkbox__box.dc-checkbox__box--active');
+        expect(element).toHaveClass('dc-checkbox__box--active');
     });
 });

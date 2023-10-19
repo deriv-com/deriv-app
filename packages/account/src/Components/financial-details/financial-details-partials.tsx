@@ -63,7 +63,7 @@ const FinancialDetailsDropdownField = ({
                             is_align_text_left
                             name={field.name}
                             list={dropdown_list}
-                            value={field.name === 'occupation' ? getFormattedOccupationValues() : values[field_key]}
+                            value={field.name === 'occupation' ? getFormattedOccupationValues() : values?.[field_key]}
                             onChange={handleChange}
                             handleBlur={handleBlur}
                             error={touched?.[field_key] && errors?.[field_key]}
@@ -78,7 +78,7 @@ const FinancialDetailsDropdownField = ({
                             name={field.name}
                             label={label}
                             list_items={dropdown_list}
-                            value={values?.[field_key]}
+                            value={field.name === 'occupation' ? getFormattedOccupationValues() : values?.[field_key]}
                             error={touched?.[field_key] && errors?.[field_key]}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                 handleChange(e);

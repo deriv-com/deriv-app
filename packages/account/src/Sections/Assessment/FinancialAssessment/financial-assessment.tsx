@@ -559,7 +559,9 @@ const FinancialAssessment = observer(() => {
                                                     placeholder={localize('Please select')}
                                                     name='occupation'
                                                     label={localize('Occupation')}
-                                                    list_items={getFormattedOccupationList(values)}
+                                                    list_items={getFormattedOccupationList(
+                                                        values.employment_status ?? ''
+                                                    )}
                                                     value={getFormattedOccupationValues(values)}
                                                     error={touched.occupation ? errors.occupation : undefined}
                                                     onChange={e => {

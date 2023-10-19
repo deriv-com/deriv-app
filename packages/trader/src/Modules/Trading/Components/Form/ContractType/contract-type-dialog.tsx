@@ -14,7 +14,6 @@ type TContractTypeDialogProps = Pick<
     React.ComponentProps<typeof ContractTypeMenu>,
     | 'selected'
     | 'categories'
-    | 'info_banner'
     | 'onBackButtonClick'
     | 'onChangeInput'
     | 'onCategoryClick'
@@ -27,7 +26,6 @@ type TContractTypeDialogProps = Pick<
 const ContractTypeDialog = ({
     categories,
     children,
-    info_banner,
     is_info_dialog_open,
     is_open,
     item,
@@ -49,7 +47,6 @@ const ContractTypeDialog = ({
             <MobileWrapper>
                 <span className='contract-type-widget__select-arrow' />
                 <MobileDialog
-                    info_banner={info_banner}
                     portal_element_id='modal_root'
                     title={current_mobile_title}
                     header_classname='contract-type-widget__header'
@@ -63,7 +60,6 @@ const ContractTypeDialog = ({
             </MobileWrapper>
             <DesktopWrapper>
                 <ContractTypeMenu
-                    info_banner={info_banner}
                     is_info_dialog_open={is_info_dialog_open}
                     is_open={is_open}
                     item={item}

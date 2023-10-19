@@ -27,16 +27,6 @@ export const contract_category_icon = {
     [localize('Accumulators')]: 'IcCatAccumulator',
 } as const;
 
-export const ordered_trade_categories = [
-    'Accumulators',
-    'Vanillas',
-    'Turbos',
-    'Multipliers',
-    'Ups & Downs',
-    'Highs & Lows',
-    'Digits',
-];
-
 export const getContractTypeCategoryIcons = () =>
     ({
         All: 'IcCatAll',
@@ -159,6 +149,3 @@ export const findContractCategory = (list: Partial<TList[]>, item: TItem) =>
 export const getContractCategoryKey = (list: TList[], item: TItem) => findContractCategory(list, item)?.key;
 
 export const getContractTypes = (list: TList[], item: TItem) => findContractCategory(list, item)?.contract_types;
-
-export const getCategoriesSortedByKey = (list: TContractCategory[] = []) =>
-    [...list].sort((a, b) => ordered_trade_categories.indexOf(a.key) - ordered_trade_categories.indexOf(b.key));

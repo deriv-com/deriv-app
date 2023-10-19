@@ -30,16 +30,10 @@ const PasswordSelectionModal = observer(
         const { is_mobile } = ui;
 
         React.useEffect(() => {
-            Analytics.trackEvent(
-                'ce_virtual_signup_form',
-                {
-                    action: 'password_screen_opened',
-                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                },
-                {
-                    is_anonymous: true,
-                }
-            );
+            Analytics.trackEvent('ce_virtual_signup_form', {
+                action: 'password_screen_opened',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            });
 
             //eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);

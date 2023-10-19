@@ -2254,19 +2254,13 @@ export default class ClientStore extends BaseStore {
 
                 const social_identity_provider = get_account_status?.social_identity_provider;
 
-                Analytics.trackEvent(
-                    'ce_virtual_signup_form',
-                    {
-                        action: 'signup_continued',
-                        signup_provider: social_identity_provider,
-                        form_name: this.root_store?.ui?.is_mobile
-                            ? 'virtual_signup_web_mobile_default'
-                            : 'virtual_signup_web_desktop_default',
-                    },
-                    {
-                        is_anonymous: true,
-                    }
-                );
+                Analytics.trackEvent('ce_virtual_signup_form', {
+                    action: 'signup_continued',
+                    signup_provider: social_identity_provider,
+                    form_name: this.root_store?.ui?.is_mobile
+                        ? 'virtual_signup_web_mobile_default'
+                        : 'virtual_signup_web_desktop_default',
+                });
             }
 
             if (login_new_user) {

@@ -1615,13 +1615,6 @@ export default class TradeStore extends BaseStore {
                 ...data,
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 form_name: 'default',
-            } as {
-                action: 'open' | 'close' | 'choose_chart_type' | 'choose_time_interval';
-                form_name: string;
-                chart_type_name: string;
-                time_interval_name: string;
-                account_type: string;
-                device_type: string;
             });
         }
     }

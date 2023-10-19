@@ -39,19 +39,11 @@ const Redirect = ({
     switch (action_param) {
         case 'signup': {
             if (!is_appstore) {
-                Analytics.trackEvent(
-                    'ce_virtual_signup_form',
-                    {
-                        action: 'email_confirmed',
-                        form_name: is_mobile
-                            ? 'virtual_signup_web_mobile_default'
-                            : 'virtual_signup_web_desktop_default',
-                        email: url_params.get('email'),
-                    },
-                    {
-                        is_anonymous: true,
-                    }
-                );
+                Analytics.trackEvent('ce_virtual_signup_form', {
+                    action: 'email_confirmed',
+                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    email: url_params.get('email'),
+                });
             }
             SessionStore.set('signup_query_param', url_query_string);
             history.push({

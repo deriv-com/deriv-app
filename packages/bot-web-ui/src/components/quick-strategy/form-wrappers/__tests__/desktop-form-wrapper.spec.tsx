@@ -104,7 +104,7 @@ describe('<DesktopFormWrapper />', () => {
         expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('D_ALEMBERT');
     });
 
-    it('shold open workspace', async () => {
+    it('should submit the form on edit', async () => {
         render(
             <DesktopFormWrapper>
                 <div>test</div>
@@ -116,7 +116,7 @@ describe('<DesktopFormWrapper />', () => {
         expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
         const edit_button = screen.getByText('Edit');
         userEvent.click(edit_button);
-        await waitFor(() => expect(mock_DBot_store?.quick_strategy.is_open).toBeFalsy());
+        await waitFor(() => expect(mock_onSubmit).toBeCalled());
     });
 
     it('should submit the form', async () => {

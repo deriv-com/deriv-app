@@ -58,9 +58,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         </div>
                     )}
                 </div>
-                <p className='wallets-added-mt5__details-balance'>
-                    {account.display_balance} {account.currency}
-                </p>
+                <p className='wallets-added-mt5__details-balance'>{account.display_balance}</p>
                 <p className='wallets-added-mt5__details-loginid'>{account.display_login}</p>
             </div>
         </TradingAccountCard>

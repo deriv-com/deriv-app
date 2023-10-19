@@ -2,7 +2,9 @@ import React, { ButtonHTMLAttributes, ReactElement } from 'react';
 import classNames from 'classnames';
 import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
-import styles from './WalletButton.module.css';
+import './WalletButton.scss';
+
+type TVariant = 'ghost' | 'outlined' | ('contained' & { color: WalletButtonProps['color'] });
 
 interface WalletButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     color?: 'black' | 'primary-light' | 'primary' | 'white';
@@ -11,7 +13,7 @@ interface WalletButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     isRounded?: boolean;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
-    variant?: 'contained' | 'ghost' | 'outlined';
+    variant?: TVariant;
 }
 
 const WalletButton: React.FC<WalletButtonProps> = ({
@@ -31,12 +33,12 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     const hasText = !!text;
 
     const buttonClassNames = classNames(
-        styles['wallets-button'],
-        isContained && styles[`wallets-button-color-${color}`],
-        styles[`wallets-button-size-${size}`],
-        styles[`wallets-button-variant-${variant}`],
-        isRounded ? styles['wallets-button-rounded-full'] : styles['wallets-button-rounded-default'],
-        isFullWidth && styles['wallets-button-full-width']
+        'wallets-button',
+        isContained && `wallets-button-color-${color}`,
+        `wallets-button-size-${size}`,
+        `wallets-button-variant-${variant}`,
+        isRounded ? 'wallets-button-rounded-full' : 'wallets-button-rounded-default',
+        isFullWidth && 'wallets-button-full-width'
     );
 
     const buttonFontColor = () => {

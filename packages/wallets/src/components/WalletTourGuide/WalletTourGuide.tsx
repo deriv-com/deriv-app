@@ -67,7 +67,7 @@ const WalletTourGuide = () => {
             disableScrollParentFix
             floaterProps={{ disableAnimation: true }}
             run={isStarted}
-            scrollOffset={72}
+            scrollOffset={150}
             scrollToFirstStep
             steps={tourStepConfig(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded)}
             tooltipComponent={TooltipComponent}

@@ -6,3 +6,4 @@ export * from './Tabs';
 export * from './WalletButton';
 export * from './WalletClipboard';
 export * from './WalletText';
+export * from './WalletTextField';

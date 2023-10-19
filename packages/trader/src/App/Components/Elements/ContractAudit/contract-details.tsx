@@ -18,6 +18,7 @@ import {
     toGMTFormat,
     TContractInfo,
 } from '@deriv/shared';
+import { RudderStack, getRudderstackConfig } from '@deriv/analytics';
 import {
     addCommaToNumber,
     getBarrierLabel,
@@ -71,6 +72,7 @@ const ContractDetails = ({
     const ticks_duration_text = isAccumulatorContract(contract_type)
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${ticks_label}`;
+    const { action_names, event_names, form_names, form_sources } = getRudderstackConfig();
 
     const getLabel = () => {
         if (isUserSold(contract_info) && isEndedBeforeCancellationExpired(contract_info))
@@ -79,6 +81,15 @@ const ContractDetails = ({
         if (isCancellationExpired(contract_info)) return localize('Deal cancellation (expired)');
         return localize('Deal cancellation (active)');
     };
+
+    React.useEffect(() => {
+        RudderStack.track(event_names.reports, {
+            action: action_names.open_contract_details,
+            form_name: form_names.default,
+            form_source: form_sources.deriv_trader,
+        });
+    }, []);
+
     return (
         <ThemedScrollbars is_bypassed={isMobile()}>
             <div className='contract-audit__tabs-content'>

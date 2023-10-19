@@ -6,6 +6,7 @@ import useDevice from '../../../../hooks/useDevice';
 import BackArrow from '../../../../public/images/ic-back-arrow.svg';
 import { JurisdictionModal } from '../JurisdictionModal';
 import { DynamicLeverageMarketCard } from './DynamicLeverageMarketCard';
+import { TransitionModal } from './TransitionModal';
 import './DynamicLeverageModal.scss';
 
 const DynamicLeverageModal = () => {
@@ -24,7 +25,11 @@ const DynamicLeverageModal = () => {
                             setModalState({
                                 marketType: 'financial',
                             });
-                            show(<JurisdictionModal />);
+                            show(
+                                <TransitionModal className='wallet__modal-transition'>
+                                    <JurisdictionModal />
+                                </TransitionModal>
+                            );
                         }}
                     />
                     <WalletText color='prominent' size={isMobile ? 'xs' : 'sm'} weight='bold'>

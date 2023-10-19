@@ -15,6 +15,7 @@ const useWalletAccountsList = () => {
     const modified_accounts = useMemo(() => {
         return filtered_accounts?.map(wallet => {
             const wallet_currency_type = wallet.is_virtual ? 'Demo' : wallet.currency || '';
+            const dtrade_loginid = wallet.linked_to?.find(account => account.platform === 'dtrade')?.loginid;
 
             return {
                 ...wallet,
@@ -24,6 +25,8 @@ const useWalletAccountsList = () => {
                 landing_company_name: wallet.landing_company_name?.replace('maltainvest', 'malta'),
                 /** Indicating whether the wallet is a maltainvest wallet. */
                 is_malta_wallet: wallet.landing_company_name === 'maltainvest',
+                /** The DTrade account ID of this wallet */
+                dtrade_loginid,
             } as const;
         });
     }, [filtered_accounts]);

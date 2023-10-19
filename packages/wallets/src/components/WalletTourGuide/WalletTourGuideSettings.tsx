@@ -51,7 +51,7 @@ export const tourStepConfig = (
                 borderRadius: '6.4rem',
             },
         },
-        target: '.wallets-header__actions',
+        target: '.wallets-accordion__header:has(+ .wallets-accordion__content--visible) .wallets-header__actions',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallet actions
@@ -83,30 +83,29 @@ export const tourStepConfig = (
         ),
     },
     // create DTrader account
-    // Uncomment this when DTrade account will be added to wallet
-    // {
-    //     content: hasDerivAppsTradingAccount ? (
-    //         <WalletText size='sm'>
-    //             This is your Deriv Apps trading account balance. Click Transfer to move funds between your Wallet and
-    //             Deriv Apps trading account.
-    //         </WalletText>
-    //     ) : (
-    //         <WalletText size='sm'>
-    //             This is your Deriv Apps trading account. Click Get to create the Deriv Apps trading account for trading.
-    //         </WalletText>
-    //     ),
-    //     disableBeacon: true,
-    //     disableOverlayClose: true,
-    //     placement: hasDerivAppsTradingAccount ? 'left' : 'right',
-    //     spotlightPadding: 0,
-    //     styles: { spotlight: { borderRadius: '0.8rem' } },
-    //     target: 'null', // need to create this icon
-    //     title: (
-    //         <WalletText color='red' size='sm' weight='bold'>
-    //             Deriv Apps trading account
-    //         </WalletText>
-    //     ),
-    // },
+    {
+        content: hasDerivAppsTradingAccount ? (
+            <WalletText size='sm'>
+                This is your Deriv Apps trading account balance. Click Transfer to move funds between your Wallet and
+                Deriv Apps trading account.
+            </WalletText>
+        ) : (
+            <WalletText size='sm'>
+                This is your Deriv Apps trading account. Click Get to create the Deriv Apps trading account for trading.
+            </WalletText>
+        ),
+        disableBeacon: true,
+        disableOverlayClose: true,
+        placement: 'left',
+        spotlightPadding: 0,
+        styles: { spotlight: { borderRadius: '0.8rem' } },
+        target: '.wallets-deriv-apps-section',
+        title: (
+            <WalletText color='red' size='sm' weight='bold'>
+                Deriv Apps trading account
+            </WalletText>
+        ),
+    },
     // Open DTrade
     {
         content: hasDerivAppsTradingAccount ? (

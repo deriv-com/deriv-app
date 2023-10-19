@@ -4,7 +4,7 @@ import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
-import { MARKET_TYPE_TO_TITLE_MAPPER } from '../../constants';
+import { MarketTypeToTitleMapper } from '../../constants';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
@@ -14,7 +14,7 @@ const JurisdictionModal = () => {
     const marketType = modalState?.marketType || 'all';
     const platform = modalState?.platform || 'mt5';
 
-    const capitalizedMarketType = MARKET_TYPE_TO_TITLE_MAPPER[marketType];
+    const capitalizedMarketType = MarketTypeToTitleMapper[marketType];
 
     if (isLoading) return <h1>Loading...</h1>;
 

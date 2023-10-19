@@ -4,26 +4,26 @@ import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
 import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
 
-export const MARKET_TYPE_TO_TITLE_MAPPER: Record<TMarketTypes.All, string> = {
+export const MarketTypeToTitleMapper: Record<TMarketTypes.All, string> = {
     all: 'Swap-Free',
     financial: 'Financial',
     synthetic: 'Derived',
 };
 
-export const PLATFORM_TO_TITLE_MAPPER: Record<TPlatforms.All, string> = {
+export const PlatformToTitleMapper: Record<TPlatforms.All, string> = {
     ctrader: 'cTrader',
     derivez: 'Deriv EZ',
     dxtrade: 'Deriv X',
     mt5: 'Deriv MT5',
 };
 
-export const MARKET_TYPE_TO_DESCRIPTION_MAPPER: Record<TMarketTypes.All, string> = {
+export const MarketTypeToDescriptionMapper: Record<TMarketTypes.All, string> = {
     all: 'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs',
     financial: 'This account offers CFDs on financial instruments.',
     synthetic: 'This account offers CFDs on derived instruments.',
 };
 
-export const MARKET_TYPE_TO_ICON_MAPPER: Record<TMarketTypes.All, ReactNode> = {
+export const MarketTypeToIconMapper: Record<TMarketTypes.All, ReactNode> = {
     all: <SwapFreeMT5Icon />,
     financial: <FinancialMT5Icon />,
     synthetic: <DerivedMT5Icon />,

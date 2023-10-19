@@ -5,7 +5,7 @@ import { WalletGradientBackground } from '../../../../components/WalletGradientB
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import './Success.scss';
 import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../types';
-import { MARKET_TYPE_TO_TITLE_MAPPER, PLATFORM_TO_TITLE_MAPPER } from '../../constants';
+import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
 
 type TSuccessProps = {
     description: string;
@@ -29,9 +29,9 @@ const Success: React.FC<TSuccessProps> = ({
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
     const marketTypeTitle =
-        marketType === 'all' && Object.keys(PLATFORM_TO_TITLE_MAPPER).includes(platform)
-            ? PLATFORM_TO_TITLE_MAPPER[platform]
-            : MARKET_TYPE_TO_TITLE_MAPPER[marketType];
+        marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
+            ? PlatformToTitleMapper[platform]
+            : MarketTypeToTitleMapper[marketType];
 
     return (
         <div className='wallets-success'>

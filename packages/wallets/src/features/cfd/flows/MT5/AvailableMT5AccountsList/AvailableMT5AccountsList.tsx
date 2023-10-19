@@ -2,17 +2,10 @@ import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { TradingAccountCard, WalletButton } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
-import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
-import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';
-import SwapFreeMT5 from '../../../../../public/images/mt5-swap-free.svg';
 import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
 import { THooks } from '../../../types';
 import './AvailableMT5AccountsList.scss';
-import {
-    MARKET_TYPE_TO_DESCRIPTION_MAPPER,
-    MARKET_TYPE_TO_ICON_MAPPER,
-    MARKET_TYPE_TO_TITLE_MAPPER,
-} from '../../../constants';
+import { MarketTypeToDescriptionMapper, MarketTypeToIconMapper, MarketTypeToTitleMapper } from '../../../constants';
 
 type TProps = {
     account: THooks.SortedMT5Accounts;
@@ -26,7 +19,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         <TradingAccountCard
             leading={() => (
                 <div className='wallets-available-mt5__icon'>
-                    {MARKET_TYPE_TO_ICON_MAPPER[account.market_type || 'all']}
+                    {MarketTypeToIconMapper[account.market_type || 'all']}
                 </div>
             )}
             trailing={() => (
@@ -53,10 +46,10 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         >
             <div className='wallets-available-mt5__details'>
                 <p className='wallets-available-mt5__details-title'>
-                    {MARKET_TYPE_TO_TITLE_MAPPER[account.market_type || 'all']}
+                    {MarketTypeToTitleMapper[account.market_type || 'all']}
                 </p>
                 <p className='wallets-available-mt5__details-description'>
-                    {MARKET_TYPE_TO_DESCRIPTION_MAPPER[account.market_type || 'all']}
+                    {MarketTypeToDescriptionMapper[account.market_type || 'all']}
                 </p>
             </div>
         </TradingAccountCard>

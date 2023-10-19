@@ -235,7 +235,7 @@ const CFDPersonalDetailsForm = ({
         country: residence?.value,
     });
 
-    const tin_not_mandatory = data?.tin_not_mandatory !== 1;
+    const tin_not_mandatory = data?.tin_not_mandatory === 1;
 
     const onSubmitForm = (values: TFormValues, actions: FormikActions<TFormValues>) =>
         submitForm(values, actions, index, onSubmit, !isDeepEqual(initial_values, values), residence_list);

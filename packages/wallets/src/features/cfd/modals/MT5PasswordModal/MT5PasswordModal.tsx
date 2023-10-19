@@ -51,10 +51,12 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
 
         // in order to create account, we need to set a password through trading_platform_password_change endpoint first
         // then only mt5_create_account can be called, otherwise it will response an error for password required
-        await tradingPasswordChange({
-            new_password: password,
-            platform: 'mt5',
-        });
+        if (!mt5Accounts?.length) {
+            await tradingPasswordChange({
+                new_password: password,
+                platform: 'mt5',
+            });
+        }
 
         mutate({
             payload: {

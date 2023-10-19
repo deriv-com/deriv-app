@@ -26,6 +26,18 @@ const useMT5AccountsList = () => {
             };
         };
 
+        const displayBalanceFormat = (balance: number, currency: string) => {
+            try {
+                return `${Intl.NumberFormat(authorize_data?.preferred_language || 'en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                    minimumIntegerDigits: 1,
+                }).format(balance)} ${currency || 'USD'}`;
+            } catch (error) {
+                return `${balance} ${currency || 'USD'}`;
+            }
+        };
+
         return mt5_accounts?.mt5_login_list?.map(account => ({
             ...account,
             ...getAccountInfo(account.login),
@@ -34,11 +46,7 @@ const useMT5AccountsList = () => {
             /** The platform of the account */
             platform: 'mt5',
             /** The balance of the account in currency format. */
-            display_balance: `${Intl.NumberFormat(authorize_data?.preferred_language || 'en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-                minimumIntegerDigits: 1,
-            }).format(account?.balance || 0)} ${account?.currency || 'USD'}`,
+            display_balance: displayBalanceFormat(account.balance || 0, account.currency || 'USD'),
         }));
     }, [authorize_data?.preferred_language, mt5_accounts?.mt5_login_list, wallet?.linked_to]);
 

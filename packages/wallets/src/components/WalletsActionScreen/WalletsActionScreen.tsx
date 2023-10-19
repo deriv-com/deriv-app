@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode, PropsWithChildren } from 'react';
 import useDevice from '../../hooks/useDevice';
 import WalletButton from '../Base/WalletButton/WalletButton';
 import WalletText from '../Base/WalletText/WalletText';
@@ -6,8 +6,8 @@ import './WalletsActionScreen.scss';
 
 type TProps = {
     actionText?: string;
-    description: string;
-    icon: React.ReactNode;
+    description: ReactNode;
+    icon: ReactNode;
     onAction?: () => void;
     title: string;
 };
@@ -24,7 +24,7 @@ type TProps = {
  * @param onAction
  * @constructor
  */
-const WalletsActionScreen: React.FC<React.PropsWithChildren<TProps>> = ({
+const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     actionText,
     description,
     icon,

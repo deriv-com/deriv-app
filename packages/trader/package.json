@@ -90,7 +90,7 @@
         "@deriv/api-types": "^1.0.118",
         "@deriv/hooks": "^1.0.0",
         "@deriv/deriv-charts": "1.4.0",
-        "@deriv/deriv-charts-beta": "npm:@deriv/deriv-charts@^2.0.0-beta.5",
+        "@deriv/deriv-charts-beta": "npm:@deriv/deriv-charts@^2.0.0-beta.6",
         "@deriv/reports": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",

@@ -3,11 +3,10 @@ import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
 import ReadyToVerifyModal from './ready-to-verify-modal';
-import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
+import { useHasMFAccountDeposited } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
-    useDepositLocked: jest.fn(() => false),
-    useCashierLocked: jest.fn(() => false),
+    useHasMFAccountDeposited: jest.fn(() => false),
 }));
 
 describe('<ReadyToVerifyModal />', () => {
@@ -29,8 +28,7 @@ describe('<ReadyToVerifyModal />', () => {
                 should_show_account_success_modal: true,
             },
         });
-        (useDepositLocked as jest.Mock).mockReturnValueOnce(true);
-        (useCashierLocked as jest.Mock).mockReturnValueOnce(true);
+        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce(true);
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

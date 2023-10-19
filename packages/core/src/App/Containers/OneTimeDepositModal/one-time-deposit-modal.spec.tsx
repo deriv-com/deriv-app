@@ -3,7 +3,7 @@ import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
-import { useDepositFiatAddress, useDepositLocked } from '@deriv/hooks';
+import { useDepositFiatAddress, useDepositLocked, useHasMFAccountDeposited } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import OneTimeDepositModal from './one-time-deposit-modal';
@@ -15,7 +15,7 @@ jest.mock('@deriv/hooks', () => ({
         data: 'https://www.binary.com',
         isSuccess: true,
     })),
-    useDepositLocked: jest.fn(() => false),
+    useHasMFAccountDeposited: jest.fn(() => false),
 }));
 
 describe('<OneTimeDepositModal />', () => {
@@ -35,8 +35,8 @@ describe('<OneTimeDepositModal />', () => {
                 toggleAccountSuccessModal: jest.fn(),
             },
             client: {
-                has_deposited_for_first_time: false,
                 loginid: 'MX12345',
+                updateAccountStatus: jest.fn(),
             },
         });
     });
@@ -61,7 +61,7 @@ describe('<OneTimeDepositModal />', () => {
         );
         expect(screen.getByText('Deposit')).toBeInTheDocument();
         expect(screen.getByText('Account created. Select payment method for deposit.')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_deposit_fiat_iframe')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_deposit_fiat_iframe_iframe')).toBeInTheDocument();
     });
 
     it('should render loading component if iframe has not loaded', () => {
@@ -87,7 +87,7 @@ describe('<OneTimeDepositModal />', () => {
 
     it('should close modal if user unable to deposit because they have deposited', () => {
         const history = createBrowserHistory();
-        (useDepositLocked as jest.Mock).mockReturnValueOnce(true);
+        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce(true);
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );

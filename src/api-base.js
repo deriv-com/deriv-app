@@ -110,7 +110,9 @@ class APIBase {
 
             const client_accounts = getClientAccounts();
             Object.keys(accounts).forEach(key => {
-                client_accounts[key].balance = accounts[key]?.balance || 0;
+                if (client_accounts[key]?.balance) {
+                    client_accounts[key].balance = accounts[key]?.balance || 0;
+                }
             });
             setClientAccounts(client_accounts);
         }

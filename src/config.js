@@ -92,6 +92,11 @@ const getConfig = () => ({
             name: translate('Tether ERC20'),
             fractional_digits: 2,
         },
+        tUSDT: {
+            display_code: 'tUSDT',
+            name: translate('Tether TRC20'),
+            fractional_digits: 2,
+        },
         BCH: {
             display_code: 'BCH',
             name: translate('Bitcoin Cash'),

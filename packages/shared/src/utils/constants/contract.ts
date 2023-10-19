@@ -3,6 +3,8 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 
 import { shouldShowCancellation, shouldShowExpiration, TURBOS, VANILLALONG } from '../contract';
+import { cloneObject } from '../object';
+import { LocalStore } from '../storage';
 
 export const getLocalizedBasis = () =>
     ({
@@ -37,6 +39,18 @@ type TContractConfig = {
 };
 
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
+
+type TTextValueStrings = {
+    text: string;
+    value: string;
+};
+
+export type TTradeTypesCategories = {
+    [key: string]: {
+        name: string;
+        categories: Array<string | TTextValueStrings>;
+    };
+};
 
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {
@@ -218,6 +232,7 @@ export const getCardLabels = () =>
         BUY_PRICE: localize('Buy price:'),
         CANCEL: localize('Cancel'),
         CLOSE: localize('Close'),
+        CLOSED: localize('Closed'),
         CONTRACT_VALUE: localize('Contract value:'),
         CURRENT_STAKE: localize('Current stake:'),
         DAY: localize('day'),
@@ -318,6 +333,9 @@ export const getMarketNamesMap = () =>
         WLDXAU: localize('Gold Basket'),
         WLDUSD: localize('USD Basket'),
         '1HZ10V': localize('Volatility 10 (1s) Index'),
+        '1HZ25V': localize('Volatility 25 (1s) Index'),
+        '1HZ50V': localize('Volatility 50 (1s) Index'),
+        '1HZ75V': localize('Volatility 75 (1s) Index'),
         '1HZ100V': localize('Volatility 100 (1s) Index'),
         '1HZ150V': localize('Volatility 150 (1s) Index'),
         '1HZ200V': localize('Volatility 200 (1s) Index'),
@@ -518,6 +536,29 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
     } as const);
 
 export const TRADE_FEATURE_FLAGS = ['sharkfin'];
+
+export const getCleanedUpCategories = (categories: TTradeTypesCategories) => {
+    const categories_copy: TTradeTypesCategories = cloneObject(categories);
+    const hidden_trade_types = Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {})
+        .filter(([key, value]) => TRADE_FEATURE_FLAGS.includes(key) && !value)
+        .map(([key]) => key);
+
+    return Object.keys(categories_copy).reduce((acc, key) => {
+        const category = categories_copy[key].categories?.filter(item => {
+            return (
+                typeof item === 'object' &&
+                // hide trade types with disabled feature flag:
+                hidden_trade_types?.every(hidden_type => !item.value.startsWith(hidden_type))
+            );
+        });
+        if (category?.length === 0) {
+            delete acc[key];
+        } else {
+            acc[key].categories = category;
+        }
+        return acc;
+    }, categories_copy);
+};
 
 export const getContractConfig = (is_high_low?: boolean) => ({
     ...getSupportedContracts(is_high_low),

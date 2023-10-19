@@ -83,7 +83,7 @@ describe('getValidationRules', () => {
     it('should contain rules for barrier_1', () => {
         expect(returned_validation_rules).toHaveProperty('barrier_1');
         expect(returned_validation_rules.barrier_1.rules[0][1].condition(mocked_store)).toBe(true);
-        expect(returned_validation_rules.barrier_1.rules[1][1].condition(mocked_store)).toBe(2);
+        expect(returned_validation_rules.barrier_1.rules[1][1].condition(mocked_store)).toBe(true);
         expect(returned_validation_rules.barrier_1.rules[2][1].func(...default_mocked_params)).toBe(true);
 
         mocked_store.barrier_count = 1;
@@ -107,7 +107,7 @@ describe('getValidationRules', () => {
 
         expect(returned_validation_rules).toHaveProperty('barrier_2');
         expect(returned_validation_rules.barrier_2.rules[0][1].condition(mocked_store)).toBe(true);
-        expect(returned_validation_rules.barrier_2.rules[1][1].condition(mocked_store)).toBe(2);
+        expect(returned_validation_rules.barrier_2.rules[1][1].condition(mocked_store)).toBe(true);
         expect(returned_validation_rules.barrier_2.rules[2][1].func(...default_mocked_params)).toBe(false);
         expect(returned_validation_rules.barrier_2.rules[3][1].func(...default_mocked_params)).toBe(false);
     });

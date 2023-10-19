@@ -1,11 +1,12 @@
 import React from 'react';
-import { useOAuthConnectedApps, useOAuthRevokeConnectedApps } from '@deriv/hooks';
+import { OauthApps } from '@deriv/api-types';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ConnectedApps from '../connected-apps';
+import { WS } from '@deriv/shared';
 
-const mock_connected_apps: ReturnType<typeof useOAuthConnectedApps>['data'] = [
+const mock_connected_apps: OauthApps = [
     {
         name: 'Local',
         app_markup_percentage: 0,
@@ -22,13 +23,14 @@ const mock_connected_apps: ReturnType<typeof useOAuthConnectedApps>['data'] = [
         active: 0,
     },
 ];
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useOAuthConnectedApps: jest.fn(),
-    useOAuthRevokeConnectedApps: jest.fn(),
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    WS: {
+        authorized: {
+            send: jest.fn(() => ({ oauth_apps: mock_connected_apps })),
+        },
+    },
 }));
-const mockUseOAuthConnectedApps = useOAuthConnectedApps as jest.Mock;
-const mockUseOAuthRevokeConnectedApps = useOAuthRevokeConnectedApps as jest.Mock;
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: jest.fn(() => <div>Mocked Loading</div>),
@@ -50,15 +52,6 @@ describe('ConnectedApps', () => {
         document.body.appendChild(modal_root_el);
     });
 
-    beforeEach(() => {
-        mockUseOAuthConnectedApps.mockReturnValue({
-            data: mock_connected_apps,
-            isLoading: false,
-            isError: false,
-        });
-        mockUseOAuthRevokeConnectedApps.mockReturnValue({ revokeOAuthApp: jest.fn() });
-    });
-
     afterAll(() => {
         Object.defineProperty(HTMLElement.prototype, 'offsetHeight', originalOffsetHeight as PropertyDescriptor);
         Object.defineProperty(HTMLElement.prototype, 'offsetWidth', originalOffsetWidth as PropertyDescriptor);
@@ -73,7 +66,6 @@ describe('ConnectedApps', () => {
         );
 
     it('should render the Loading component initially', async () => {
-        mockUseOAuthConnectedApps.mockReturnValue({ data: mock_connected_apps, isLoading: true, isError: false });
         renderComponent();
 
         expect(screen.getByText(/Mocked Loading/i)).toBeInTheDocument();
@@ -82,7 +74,9 @@ describe('ConnectedApps', () => {
     it("should render the 'Know more' component", async () => {
         renderComponent();
 
-        expect(screen.getByText(/Mocked Know More/i)).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText(/Mocked Know More/i)).toBeInTheDocument();
+        });
     });
 
     it("should render the 'Earn more' component", async () => {
@@ -144,31 +138,24 @@ describe('ConnectedApps', () => {
     });
 
     it('should open the modal to revoke access on clicking the button', async () => {
-        const mockRevokeOAuthApp = jest.fn();
-        mockUseOAuthRevokeConnectedApps.mockReturnValue({ revokeOAuthApp: mockRevokeOAuthApp });
         renderComponent();
 
-        const revoke_button = screen.getByRole('button', { name: 'Revoke access' });
-        act(() => {
-            userEvent.click(revoke_button);
-        });
         await waitFor(() => {
+            const revoke_button = screen.getByRole('button', { name: 'Revoke access' });
+            expect(revoke_button).toBeInTheDocument();
+            userEvent.click(revoke_button);
             expect(screen.getByText(/Confirm revoke access\?/i)).toBeInTheDocument();
             expect(screen.getByRole('button', { name: 'Back' })).toBeInTheDocument();
-        });
 
-        const confirm_button = screen.getByRole('button', { name: 'Confirm' });
-        act(() => {
-            userEvent.click(confirm_button);
-        });
-        await waitFor(() => {
+            const confirm_button = screen.getByRole('button', { name: 'Confirm' });
             expect(confirm_button).toBeInTheDocument();
-            expect(mockRevokeOAuthApp).toHaveBeenCalledTimes(1);
+            userEvent.click(confirm_button);
+            expect(WS.authorized.send).toBeCalled();
         });
     });
 
     it('should render the empty apps informative text component if there are no connected apps', async () => {
-        mockUseOAuthConnectedApps.mockReturnValue({ data: [], isLoading: false, isError: false });
+        (WS.authorized.send as jest.Mock).mockReturnValue({ oauth_apps: [] });
         renderComponent();
 
         await waitFor(() => {

@@ -4,7 +4,7 @@ import { useSettings, useVerifyEmail } from '@deriv/api';
 import { WithdrawalVerificationRequest } from './WithdrawalVerificationRequest';
 import { WithdrawalVerificationSent } from './WithdrawalVerificationSent';
 
-const Withdrawal = () => {
+const WithdrawalVerification = () => {
     const [emailSent, setEmailSent] = useState(false);
     const { data } = useSettings();
     const { mutate } = useVerifyEmail();
@@ -29,4 +29,4 @@ const Withdrawal = () => {
     return <WithdrawalVerificationRequest sendEmail={handleSendEmail} />;
 };
 
-export default Withdrawal;
+export default WithdrawalVerification;

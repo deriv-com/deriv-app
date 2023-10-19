@@ -21,7 +21,7 @@ type TPaymentMethodCardProps = {
     payment_method?: TPaymentMethod;
     show_payment_method_name?: boolean;
     small?: boolean;
-    style?: React.CSSProperties | undefined;
+    style?: React.CSSProperties;
 };
 
 const PaymentMethodCard = ({
@@ -61,7 +61,7 @@ const PaymentMethodCard = ({
                 key: 'DeletePaymentMethodConfirmationModal',
                 props: {
                     payment_method_id: id,
-                    payment_method_name: payment_bank_name || payment_name || display_name,
+                    payment_method_name: payment_bank_name ?? payment_name ?? display_name,
                 },
             });
         } else if (event.target.value === 'edit') {
@@ -90,7 +90,7 @@ const PaymentMethodCard = ({
                     size={32}
                 />
                 <Text align='center' color={disabled ? 'less-prominent' : 'prominent'} size='xs'>
-                    {label || add_payment_method}
+                    {label ?? add_payment_method}
                 </Text>
             </div>
         );
@@ -150,7 +150,7 @@ const PaymentMethodCard = ({
                         : show_payment_method_name && display_name}
                 </Text>
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>
-                    {payment_bank_name || payment_name}
+                    {payment_bank_name ?? payment_name}
                 </Text>
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>
                     {payment_account}

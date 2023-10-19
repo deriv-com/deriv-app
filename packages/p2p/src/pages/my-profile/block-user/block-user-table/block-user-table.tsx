@@ -40,21 +40,19 @@ const BlockUserTable = () => {
 
     if (my_profile_store.rendered_trade_partners_list.length) {
         return (
-            <React.Fragment>
-                <Table className='block-user-table'>
-                    <Table.Body className='block-user-table__body'>
-                        <InfiniteDataList
-                            data_list_className='block-use-table__data-list'
-                            has_filler
-                            has_more_items_to_load={my_profile_store.has_more_items_to_load}
-                            items={my_profile_store.rendered_trade_partners_list}
-                            keyMapperFn={item => item.id}
-                            loadMoreRowsFn={my_profile_store.getTradePartnersList}
-                            rowRenderer={props => <BlockUserRow {...props} />}
-                        />
-                    </Table.Body>
-                </Table>
-            </React.Fragment>
+            <Table className='block-user-table'>
+                <Table.Body className='block-user-table__body'>
+                    <InfiniteDataList
+                        data_list_className='block-use-table__data-list'
+                        has_filler
+                        has_more_items_to_load={my_profile_store.has_more_items_to_load}
+                        items={my_profile_store.rendered_trade_partners_list}
+                        keyMapperFn={item => item.id}
+                        loadMoreRowsFn={my_profile_store.getTradePartnersList}
+                        rowRenderer={props => <BlockUserRow {...props} />}
+                    />
+                </Table.Body>
+            </Table>
         );
     }
 

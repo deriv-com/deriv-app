@@ -78,12 +78,9 @@ const PaymentMethodsList = () => {
                                             </Text>
                                             <div className='payment-methods-list__list-body'>
                                                 {payment_methods.map(
-                                                    (
-                                                        each_payment_method: TPaymentMethod,
-                                                        each_payment_method_key: number
-                                                    ) => (
+                                                    (each_payment_method: TPaymentMethod, key: number) => (
                                                         <PaymentMethodCard
-                                                            key={each_payment_method_key}
+                                                            key={`${key}__${each_payment_method.id}`}
                                                             large
                                                             payment_method={each_payment_method}
                                                             show_payment_method_name={false}
@@ -133,12 +130,9 @@ const PaymentMethodsList = () => {
                                                 is_scrollbar_hidden
                                             >
                                                 {payment_methods.map(
-                                                    (
-                                                        each_payment_method: TPaymentMethod,
-                                                        each_payment_method_key: number
-                                                    ) => (
+                                                    (each_payment_method: TPaymentMethod, key: number) => (
                                                         <PaymentMethodCard
-                                                            key={each_payment_method_key}
+                                                            key={`${key}__${each_payment_method.id}`}
                                                             payment_method={each_payment_method}
                                                             small
                                                             show_payment_method_name={false}

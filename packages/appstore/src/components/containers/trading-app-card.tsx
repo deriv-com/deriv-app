@@ -20,7 +20,7 @@ import {
     getStaticUrl,
     getUrlSmartTrader,
     getUrlBinaryBot,
-    MT5LoginlistStatus,
+    MT5LoginListStatus,
 } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
@@ -80,12 +80,18 @@ const TradingAppCard = ({
             return app_desc;
         }
     };
-
+    console.log(
+        'getStatusBadgeConfig ,mt5_acc_auth_status',
+        getStatusBadgeConfig(mt5_acc_auth_status, openFailedVerificationModal, selected_mt5_jurisdiction),
+        mt5_acc_auth_status
+    );
+    console.log(getStatusBadgeConfig('migrated'));
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mt5_acc_auth_status,
         openFailedVerificationModal,
         selected_mt5_jurisdiction
     );
+    // const { text: badge_text_positions, icon: badge_icon_positions } = getStatusBadgeConfig(banner_status);
 
     const openStaticPage = () => {
         if (is_deriv_platform) {
@@ -118,8 +124,8 @@ const TradingAppCard = ({
     };
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
-    const is_open_order_position = banner_status === MT5LoginlistStatus.MIGRATED_WITH_POSITION;
-    const is_account_closed = banner_status === MT5LoginlistStatus.MIGRATED_WITHOUT_POSITION;
+    const is_open_order_position = banner_status === MT5LoginListStatus.MIGRATED_WITH_POSITION;
+    const is_account_closed = banner_status === MT5LoginListStatus.MIGRATED_WITHOUT_POSITION;
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
@@ -159,6 +165,8 @@ const TradingAppCard = ({
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {appDescription()}
                     </Text>
+                    {console.log('mt5_acc_auth_status', mt5_acc_auth_status)}
+                    {console.log('badge_icon, badge_text ', badge_icon, badge_text)}
                     {mt5_acc_auth_status && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
@@ -167,7 +175,18 @@ const TradingAppCard = ({
                             text={badge_text}
                         />
                     )}
-                    {is_open_order_position && (
+                    {/* {banner_status && (
+                        <StatusBadge
+                            className='trading-app-card__acc_status_badge'
+                            onClick={() => {
+                                setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
+                            }}
+                            account_status='open-order-position'
+                            icon={badge_icon_positions}
+                            text={badge_text_positions}
+                        />
+                    )} */}
+                    {/* {is_open_order_position && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
                             onClick={() => {
@@ -198,7 +217,7 @@ const TradingAppCard = ({
                                 />
                             }
                         />
-                    )}
+                    )} */}
                     {is_open_position_svg_modal_open && (
                         <OpenPositionsSVGModal
                             market_type={market_type}

@@ -10,7 +10,7 @@ import {
     getPlatformSettings,
     getUrlBase,
     isMobile,
-    MT5LoginlistStatus,
+    MT5LoginListStatus,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { getPlatformMt5DownloadLink } from '../Helpers/constants';
@@ -76,8 +76,8 @@ const DMT5TradeModal = ({
     };
 
     const { status: banner_status } = useGetMt5LoginListStatus(mt5_trade_account?.login ?? '');
-    const is_open_order_position = banner_status === MT5LoginlistStatus.MIGRATED_WITH_POSITION;
-    const is_account_closed = banner_status === MT5LoginlistStatus.MIGRATED_WITHOUT_POSITION;
+    const is_open_order_position = banner_status === MT5LoginListStatus.MIGRATED_WITH_POSITION;
+    const is_account_closed = banner_status === MT5LoginListStatus.MIGRATED_WITHOUT_POSITION;
 
     return (
         <div className='cfd-trade-modal-container'>

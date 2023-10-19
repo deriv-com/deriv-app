@@ -5,9 +5,10 @@ import { Localize } from '@deriv/translations';
 
 const getStatusBadgeConfig = (
     account_status: string,
-    openFailedVerificationModal: (selected_account_type: string) => void,
-    selected_account_type: string
+    openFailedVerificationModal?: (selected_account_type: string) => void,
+    selected_account_type?: string
 ) => {
+    console.log(account_status);
     switch (account_status) {
         case 'pending':
             return {
@@ -19,7 +20,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcAlertWarning',
             };
-        case 'failed':
+        case 'migrated':
             return {
                 text: (
                     <Localize
@@ -51,9 +52,29 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcAlertInfo',
             };
+        // case 'migrated':
+        //     return {
+        //         text: (
+        //             <Localize
+        //                 i18n_default_text='<0>No new positions</0>'
+        //                 components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
+        //             />
+        //         ),
+        //         icon: 'IcAlertWarning',
+        //     };
+        case 'migrated_without_position':
+            return {
+                text: (
+                    <Localize
+                        i18n_default_text='<0>Account closed</0>'
+                        components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
+                    />
+                ),
+                icon: 'IcAlertWarning',
+            };
         default:
             return {
-                text: '',
+                text: 'aaaa',
                 icon: '',
             };
     }

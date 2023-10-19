@@ -3,23 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { useAuthorize } from '@deriv/api';
 import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
-import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
-import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';
-import SwapFreeMT5 from '../../../../../public/images/mt5-swap-free.svg';
 import { THooks } from '../../../types';
 import './AddedMT5AccountsList.scss';
-
-const marketTypeToNameMapper = {
-    all: 'Swap-Free',
-    financial: 'Financial',
-    synthetic: 'Derived',
-};
-
-const marketTypeToIconMapper = {
-    all: <SwapFreeMT5 />,
-    financial: <FinancialMT5 />,
-    synthetic: <DerivedMT5 />,
-};
+import { MARKET_TYPE_TO_ICON_MAPPER, MARKET_TYPE_TO_TITLE_MAPPER } from '../../../constants';
 
 type TProps = {
     account: THooks.MT5AccountsList;
@@ -31,7 +17,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     return (
         <TradingAccountCard
             leading={() => (
-                <div className='wallets-added-mt5__icon'>{marketTypeToIconMapper[account.market_type || 'all']}</div>
+                <div className='wallets-added-mt5__icon'>
+                    {MARKET_TYPE_TO_ICON_MAPPER[account.market_type || 'all']}
+                </div>
             )}
             trailing={() => (
                 <div className='wallets-added-mt5__actions'>
@@ -49,7 +37,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             <div className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
                     <p className='wallets-added-mt5__details-title-text'>
-                        {marketTypeToNameMapper[account.market_type || 'all']}
+                        {MARKET_TYPE_TO_TITLE_MAPPER[account.market_type || 'all']}
                     </p>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCreateOtherCFDAccount, useDxtradeAccountsList } from '@deriv/api';
 import { ModalWrapper, WalletButton } from '../../../../components/Base';
-import { useModal, useModal } from '../../../../components/ModalProvider';
+import { useModal } from '../../../../components/ModalProvider';
 import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
 import { CreatePassword, Success } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';

@@ -9,9 +9,9 @@ import {
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
 import { ModalWrapper, WalletButton } from '../../../../components/Base';
-import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { Success, CreatePassword, EnterPassword } from '../../screens';
 import { useModal } from '../../../../components/ModalProvider';
+import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
+import { CreatePassword, EnterPassword, Success } from '../../screens';
 
 type TProps = {
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
@@ -83,6 +83,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     description={`You can now start practicing trading with your ${marketTypeTitle} ${
                         isDemo ? ' demo' : 'real'
                     } account.`}
+                    displayBalance={
+                        mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || ''
+                    }
                     marketType={marketType}
                     platform={platform}
                     renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}

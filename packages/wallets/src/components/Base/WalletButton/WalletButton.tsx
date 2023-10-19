@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, ReactElement } from 'react';
+import React, { ButtonHTMLAttributes, CSSProperties, ReactElement } from 'react';
 import classNames from 'classnames';
 import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
@@ -6,11 +6,13 @@ import './WalletButton.scss';
 
 type TVariant = 'ghost' | 'outlined' | ('contained' & { color: WalletButtonProps['color'] });
 
-interface WalletButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    color?: 'black' | 'primary-light' | 'primary' | 'white';
+interface WalletButtonProps {
+    color?: CSSProperties['color'] | 'primary-light' | 'primary';
+    disabled?: ButtonHTMLAttributes<HTMLButtonElement>['disabled'];
     icon?: ReactElement;
     isFullWidth?: boolean;
     isRounded?: boolean;
+    onClick: ButtonHTMLAttributes<HTMLButtonElement>['onClick'];
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
     variant?: TVariant;
@@ -18,13 +20,14 @@ interface WalletButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const WalletButton: React.FC<WalletButtonProps> = ({
     color = 'primary',
+    disabled = false,
     icon,
     isFullWidth = false,
     isRounded = false,
+    onClick,
     size = 'md',
     text,
     variant = 'contained',
-    ...rest
 }) => {
     const isContained = variant === 'contained';
     const isOutlined = variant === 'outlined';
@@ -62,14 +65,17 @@ const WalletButton: React.FC<WalletButtonProps> = ({
         }
     };
 
-    const buttonFontSizeMapper: Record<Extract<TGenericSizes, 'lg' | 'md' | 'sm'>, TGenericSizes> = {
+    const buttonFontSizeMapper: Record<
+        Extract<TGenericSizes, 'lg' | 'md' | 'sm'>,
+        Extract<TGenericSizes, 'sm' | 'xs'>
+    > = {
         lg: 'sm',
         md: 'sm',
         sm: 'xs' as const,
     };
 
     return (
-        <button className={buttonClassNames} {...rest}>
+        <button className={buttonClassNames} disabled={disabled} onClick={onClick}>
             {hasIcon && icon}
             {hasText && (
                 <WalletText

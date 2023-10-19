@@ -68,9 +68,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                             >
                                 {button.icon}
                             </button>
-                            <WalletText lineHeight='3xs' size='2xs'>
-                                {button.text}
-                            </WalletText>
+                            <WalletText size='2xs'>{button.text}</WalletText>
                         </div>
                     ))}
                 </div>

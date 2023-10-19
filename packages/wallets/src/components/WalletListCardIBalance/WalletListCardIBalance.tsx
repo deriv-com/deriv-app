@@ -8,11 +8,11 @@ type TProps = {
 
 const WalletListCardIBalance: React.FC<TProps> = ({ balance }) => (
     <div className='wallets-balance__container'>
-        <WalletText align='right' color='primary' lineHeight='sm' size='xs'>
+        <WalletText align='right' color='primary' size='xs'>
             Wallet balance
         </WalletText>
 
-        <WalletText align='right' lineHeight='6xl' size='3xl' weight='bold'>
+        <WalletText align='right' size='3xl' weight='bold'>
             {balance}
         </WalletText>
     </div>

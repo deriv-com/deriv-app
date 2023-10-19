@@ -24,11 +24,7 @@ const WalletsAddMoreCardContent = ({ currency }: { currency: string }) => {
     const { isMobile } = useDevice();
     return (
         <div className='wallets-add-more__content'>
-            <WalletText
-                lineHeight={isMobile ? 'md' : 'xl'}
-                size={isMobile ? 'md' : 'sm'}
-                weight={isMobile ? 'normal' : 'bold'}
-            >
+            <WalletText size={isMobile ? 'md' : 'sm'} weight={isMobile ? 'normal' : 'bold'}>
                 {currency} Wallet
             </WalletText>
 

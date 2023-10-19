@@ -1,0 +1,115 @@
+$color-map: (
+    general: #333333,
+    primary: #999999,
+    success: #4bb4b3,
+    warning: #ffad3a,
+    error: #ec3f3f,
+    white: #ffffff,
+    black: #000000,
+    less-prominent: #999999,
+    red: #ff444f,
+    blue: #377cfc,
+);
+
+$font-size-map: (
+    '3xs': (
+        fontsize: 0.8rem,
+        lineheight: 1.2rem,
+    ),
+    '2xs': (
+        fontsize: 1rem,
+        lineheight: 1.4rem,
+    ),
+    'xs': (
+        fontsize: 1.2rem,
+        lineheight: 1.8rem,
+    ),
+    'sm': (
+        fontsize: 1.4rem,
+        lineheight: 2rem,
+    ),
+    'md': (
+        fontsize: 1.6rem,
+        lineheight: 2.4rem,
+    ),
+    'lg': (
+        fontsize: 1.8rem,
+        lineheight: 2.6rem,
+    ),
+    'xl': (
+        fontsize: 2rem,
+        lineheight: 3rem,
+    ),
+    '2xl': (
+        fontsize: 2.4rem,
+        lineheight: 3.4rem,
+    ),
+    '3xl': (
+        fontsize: 2.8rem,
+        lineheight: 3.6rem,
+    ),
+    '4xl': (
+        fontsize: 3.2rem,
+        lineheight: 4rem,
+    ),
+);
+
+$line-height-map: (
+    '3xs': 1.2rem,
+    '2xs': 1.4rem,
+    'xs': 1.6rem,
+    'sm': 1.8rem,
+    'md': 2rem,
+    'lg': 2.2rem,
+    'xl': 2.4rem,
+    '2xl': 2.6rem,
+    '3xl': 2.8rem,
+    '4xl': 3rem,
+    '5xl': 3.2rem,
+    '6xl': 3.6rem,
+);
+
+$font-weight-map: (
+    light: 300,
+    normal: 400,
+    bold: 700,
+);
+
+$font-align-map: (
+    left: left,
+    center: center,
+    right: right,
+);
+
+.wallets-text {
+    @each $color, $value in $color-map {
+        &-color-#{$color} {
+            color: $value;
+        }
+    }
+
+    @each $size, $values in $font-size-map {
+        &-size-#{$size} {
+            font-size: map-get($values, fontsize);
+            line-height: map-get($values, lineheight);
+        }
+    }
+
+    @each $lineHeight, $value in $line-height-map {
+        &-line-height-#{$lineHeight} {
+            line-height: $value;
+        }
+    }
+
+    @each $weight, $value in $font-weight-map {
+        &-weight-#{$weight} {
+            font-weight: $value;
+        }
+    }
+
+    @each $align, $value in $font-align-map {
+        &-align-#{$align} {
+            text-align: $value;
+        }
+    }
+}

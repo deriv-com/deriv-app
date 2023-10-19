@@ -51,7 +51,7 @@ const OptionsAndMultipliersListing = () => {
         <div className='wallets-options-and-multipliers-listing'>
             <section className='wallets-options-and-multipliers-listing__header'>
                 {!isMobile && (
-                    <WalletText align='center' lineHeight='6xl' size='3xl' weight='bold'>
+                    <WalletText align='center' size='2xl' weight='bold'>
                         Options & Multipliers
                     </WalletText>
                 )}
@@ -90,9 +90,7 @@ const OptionsAndMultipliersListing = () => {
                                 {account.title}
                             </WalletText>
 
-                            <WalletText lineHeight={isMobile ? 'md' : '2xs'} size={isMobile ? 'sm' : 'xs'}>
-                                {account.description}
-                            </WalletText>
+                            <WalletText size={isMobile ? 'sm' : 'xs'}>{account.description}</WalletText>
                         </div>
                     </TradingAccountCard>
                 ))}

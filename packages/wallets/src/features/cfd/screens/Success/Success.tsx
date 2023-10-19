@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
+import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
-import { WalletText } from '../../../../components';
 import './Success.scss';
 
 type TSuccessProps = {
@@ -53,14 +53,14 @@ const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, r
                     marketType={marketType}
                     platform={platform}
                 />
-                <WalletText lineHeight='3xs' size='2xs'>
+                <WalletText size='2xs'>
                     {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
                 </WalletText>
                 {/* <div className='wallets-success__info__text--type'></div> */}
-                <WalletText color='primary' lineHeight='sm' size='2xs'>
+                <WalletText color='primary' size='2xs'>
                     {data?.currency} Wallet
                 </WalletText>
-                <WalletText lineHeight='xs' size='sm' weight='bold'>
+                <WalletText size='sm' weight='bold'>
                     {data?.display_balance}
                 </WalletText>
             </WalletGradientBackground>

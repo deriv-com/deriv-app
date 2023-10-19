@@ -40,12 +40,12 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
     const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, maxLength }) => (
         <>
             {helperMessage && (
-                <WalletText color='less-prominent' lineHeight='sm' size='xs' style={{ float: 'left' }}>
+                <WalletText color='less-prominent' size='xs' style={{ float: 'left' }}>
                     {helperMessage}
                 </WalletText>
             )}
             {maxLength && (
-                <WalletText align='right' color='less-prominent' lineHeight='sm' size='xs' style={{ float: 'right' }}>
+                <WalletText align='right' color='less-prominent' size='xs' style={{ float: 'right' }}>
                     {value.length} / {maxLength}
                 </WalletText>
             )}

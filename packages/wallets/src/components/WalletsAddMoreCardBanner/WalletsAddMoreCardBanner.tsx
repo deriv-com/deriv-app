@@ -21,12 +21,7 @@ const WalletsAddMoreCardBanner = ({
                     <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
                 </span>
                 <div className='wallets-add-more__banner-landing-company'>
-                    <WalletText
-                        align='right'
-                        lineHeight={isMobile ? '3xs' : '2xs'}
-                        size={isMobile ? '3xs' : '2xs'}
-                        weight='bold'
-                    >
+                    <WalletText align='right' size={isMobile ? '3xs' : '2xs'} weight='bold'>
                         {landingCompanyName}
                     </WalletText>
                 </div>

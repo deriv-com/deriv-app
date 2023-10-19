@@ -4,7 +4,7 @@ import { Formik, Form } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
 import { isEmptyObject, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { max_question_text_length } from '../../Constants/trading-assessment';
+import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
 import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
@@ -163,7 +163,7 @@ const TradingAssessmentForm = ({
                     const { question_text, form_control, answer_options, questions } =
                         current_question_details.current_question;
                     const has_long_question = questions?.some(
-                        question => question.question_text.length > max_question_text_length
+                        question => question.question_text.length > MAX_QUESTION_TEXT_LENGTH
                     );
 
                     return (

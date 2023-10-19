@@ -1,1 +1,1 @@
-export const max_question_text_length = 90;
+export const MAX_QUESTION_TEXT_LENGTH = 90;

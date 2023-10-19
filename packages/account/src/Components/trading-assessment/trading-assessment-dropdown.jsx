@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { max_question_text_length } from '../../Constants/trading-assessment';
+import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 
 const TradingAssessmentDropdown = ({
     disabled_items,
@@ -35,7 +35,7 @@ const TradingAssessmentDropdown = ({
                     {({ field, meta }) => {
                         const should_extend_trading_frequency_field =
                             question.form_control === 'trading_frequency_financial_instruments' &&
-                            question?.question_text.length > max_question_text_length;
+                            question?.question_text.length > MAX_QUESTION_TEXT_LENGTH;
 
                         return (
                             <React.Fragment>

@@ -121,7 +121,6 @@ const AddressDetails = observer(
             <Formik initialValues={props.value} validate={handleValidate} validateOnMount onSubmit={handleSubmitData}>
                 {({
                     handleSubmit,
-                    errors,
                     isSubmitting,
                     values,
                     setFieldValue,
@@ -136,6 +135,7 @@ const AddressDetails = observer(
                             setRef: (instance: HTMLFormElement) => void;
                             height: number | string;
                         }) => (
+                            //noValidate here is for skipping default browser validation
                             <form ref={setRef} onSubmit={handleSubmit} noValidate>
                                 <Div100vhContainer
                                     className='details-form'

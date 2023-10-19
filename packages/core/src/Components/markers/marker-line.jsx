@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
 
-const MarkerLine = ({ is_beta_chart, label, line_style, marker_config, status }) => {
+const MarkerLine = ({ label, line_style, marker_config, status }) => {
     // TODO: Find a more elegant solution
     if (!marker_config) return <div />;
     return (
@@ -12,7 +12,7 @@ const MarkerLine = ({ is_beta_chart, label, line_style, marker_config, status })
             {label === marker_config.LINE_END.content_config.label && (
                 <Icon
                     icon='IcContractExitTimeCircle'
-                    className={is_beta_chart ? 'chart-marker-line__icon-alph' : 'chart-marker-line__icon'}
+                    className={'chart-marker-line__icon'}
                     color={status === 'lost' ? 'red' : 'green'}
                     size={24}
                 />
@@ -20,11 +20,7 @@ const MarkerLine = ({ is_beta_chart, label, line_style, marker_config, status })
             {label === marker_config.LINE_START.content_config.label && (
                 <Icon
                     icon='IcContractStartTimeCircle'
-                    className={
-                        is_beta_chart
-                            ? 'chart-marker-line__icon-beta chart-marker-line__icon--time'
-                            : 'chart-marker-line__icon chart-marker-line__icon--time'
-                    }
+                    className={'chart-marker-line__icon chart-marker-line__icon--time'}
                     color='secondary'
                     size={24}
                 />

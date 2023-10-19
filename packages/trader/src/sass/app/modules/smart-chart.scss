@@ -239,6 +239,18 @@
     }
 }
 
+.ciq-chart > .cq-inchart-subholder {
+    .chart-marker-line {
+        &__icon {
+            position: absolute;
+            bottom: 0;
+            left: -11px;
+            white-space: nowrap;
+            background-color: var(--general-main-1);
+        }
+    }
+}
+
 /** @define chart-marker-line */
 .chart-marker-line {
     height: 94.5%;
@@ -262,14 +274,6 @@
             height: 100%;
             width: 3px;
         }
-    }
-
-    &__icon-beta {
-        position: absolute;
-        bottom: 0;
-        left: -11px;
-        white-space: nowrap;
-        background-color: var(--general-main-1);
     }
 
     &__icon {

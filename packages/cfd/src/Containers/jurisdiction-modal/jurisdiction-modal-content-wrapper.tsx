@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -11,13 +11,6 @@ import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
-    useEffect(() => {
-        window.addEventListener('load', function () {
-            setTimeout(function () {
-                window.scrollTo(0, 1);
-            }, 0);
-        });
-    }, []);
     const { client, traders_hub } = useStore();
 
     const { show_eu_related_content } = traders_hub;

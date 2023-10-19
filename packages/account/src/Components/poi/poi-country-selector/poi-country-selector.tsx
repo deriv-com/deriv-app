@@ -48,15 +48,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
         handleSelectionNext?.();
     };
 
-    let failed_message: JSX.Element | null = null;
-    if (mismatch_status === IDV_ERROR_STATUS.Expired.code) {
-        failed_message = <Localize i18n_default_text='Your identity document has expired.' />;
-    }
-    if (mismatch_status === IDV_ERROR_STATUS.Failed.code) {
-        failed_message = (
-            <Localize i18n_default_text='We were unable to verify the identity document with the details provided.' />
-        );
-    }
+    const failed_message: React.ReactNode = mismatch_status ? IDV_ERROR_STATUS[mismatch_status]?.message ?? null : null;
 
     return (
         <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={submitHandler}>
@@ -80,7 +72,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                     >
                         {failed_message ? (
                             <React.Fragment>
-                                <Text className='' align='center' weight='bold' size={isMobile() ? 'xs' : 's'}>
+                                <Text align='center' weight='bold' size={isMobile() ? 'xs' : 's'}>
                                     <Localize i18n_default_text='Your identity verification failed because:' />
                                 </Text>
                                 <HintBox

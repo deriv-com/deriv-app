@@ -27,7 +27,9 @@ export const IDV_ERROR_STATUS: TIDVErrorStatus = Object.freeze({
     },
     DocumentRejected: {
         code: 'DocumentRejected',
-        message: <Localize i18n_default_text='Document was rejected by the provider' />,
+        message: (
+            <Localize i18n_default_text='We were unable to verify the identity document with the details provided.' />
+        ),
     },
     EmptyStatus: {
         code: 'EmptyStatus',

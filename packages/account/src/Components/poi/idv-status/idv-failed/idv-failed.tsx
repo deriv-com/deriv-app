@@ -96,8 +96,14 @@ const IdvFailed = ({
         changeable_fields: [],
     });
 
+    // Document upload not required for the below error codes
     const is_document_upload_required = React.useMemo(
-        () => [IDV_ERROR_STATUS.Expired.code, IDV_ERROR_STATUS.Failed.code].includes(mismatch_status),
+        () =>
+            ![
+                IDV_ERROR_STATUS.DobMismatch.code,
+                IDV_ERROR_STATUS.NameMismatch.code,
+                IDV_ERROR_STATUS.NameDobMismatch.code,
+            ].includes(mismatch_status),
         [mismatch_status]
     );
 

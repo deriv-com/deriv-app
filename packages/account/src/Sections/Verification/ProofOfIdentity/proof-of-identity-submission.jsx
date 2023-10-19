@@ -131,7 +131,11 @@ const POISubmission = observer(
                 setIdentityService(identity_last_attempt);
             } else if (
                 mismatch_status &&
-                ![IDV_ERROR_STATUS.Expired.code, IDV_ERROR_STATUS.Failed.code].includes(mismatch_status) &&
+                [
+                    IDV_ERROR_STATUS.DobMismatch.code,
+                    IDV_ERROR_STATUS.NameMismatch.code,
+                    IDV_ERROR_STATUS.NameDobMismatch.code,
+                ].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {
                 setSubmissionService(service_code.idv);

@@ -1,0 +1,53 @@
+.wallets-dynamic-leverage-modal {
+    width: 1200px;
+    height: 760px;
+    text-align: center;
+    border-radius: 8px;
+    background: var(--system-light-8-primary-background, #fff);
+
+    @include mobile {
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+        border-radius: 0;
+        overflow: scroll;
+    }
+
+    &__title {
+        display: flex;
+        gap: 1.6rem;
+        align-items: center;
+        padding: 0 16px 0 24px;
+        height: 56px;
+        border-bottom: 1px solid var(--general-section-2);
+
+        &-back {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: 2.4rem;
+        margin: 1.5rem 12.8rem 10rem;
+
+        @include mobile {
+            margin: 1.5rem 2.4rem 2.4rem;
+        }
+    }
+
+    &__content {
+        display: grid;
+        gap: 2.4rem;
+        grid-template-columns: 1fr 1fr;
+        margin: 0 10rem;
+
+        @include mobile {
+            grid-template-columns: 1fr;
+            margin: 0 6.5rem;
+        }
+    }
+}

@@ -9,6 +9,7 @@
         cursor: not-allowed;
     }
     &-size-sm {
+        height: 2.4rem;
         padding: 0.3rem 0.8rem;
         font-size: 1.2rem;
         line-height: 1.8rem;
@@ -35,7 +36,7 @@
             background: rgba(0, 0, 0, 0.08);
         }
     }
-    &-variant-text {
+    &-variant-ghost {
         background: none;
         border: none;
         &:hover {
@@ -71,5 +72,8 @@
         &:hover {
             background: var(--system-dark-5-active-background, #323738);
         }
+    }
+    &-full-width {
+        width: 100%;
     }
 }

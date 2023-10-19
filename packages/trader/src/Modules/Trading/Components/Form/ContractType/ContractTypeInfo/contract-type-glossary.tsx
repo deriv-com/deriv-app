@@ -3,7 +3,15 @@ import { Text } from '@deriv/components';
 import { VANILLALONG, TURBOS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
-const ContractTypeGlossary = ({ category }: { category: string }) => {
+const ContractTypeGlossary = ({
+    category,
+    is_major_pairs = false,
+    is_multiplier_fx = false,
+}: {
+    category: string;
+    is_major_pairs?: boolean;
+    is_multiplier_fx?: boolean;
+}) => {
     let content;
     if (category) {
         switch (category) {
@@ -176,6 +184,64 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                         type: 'paragraph',
                         text: (
                             <Localize i18n_default_text='Your contract will expire on this date (in GMT), based on the End time you’ve selected.' />
+                        ),
+                    },
+                ];
+                break;
+            case 'multiplier':
+                content = [
+                    { type: 'heading', text: <Localize i18n_default_text='Stop out' /> },
+                    {
+                        type: 'paragraph',
+                        text: (
+                            <Localize i18n_default_text='Your trade will be closed automatically at the nearest available asset price when your loss reaches a certain percentage of your stake, but your loss never exceeds your stake. This percentage depends on the chosen underlying asset and the Multiplier.' />
+                        ),
+                    },
+                    { type: 'heading', text: <Localize i18n_default_text='Take profit' /> },
+                    {
+                        type: 'paragraph',
+                        text: (
+                            <Localize i18n_default_text='If you select this feature, your trade will be closed automatically at the nearest available asset price when your profit reaches or exceeds the take profit amount. Your profit may be more than the amount you entered depending on the market price at closing.' />
+                        ),
+                    },
+                    { type: 'heading', text: <Localize i18n_default_text='Stop loss' /> },
+                    {
+                        type: 'paragraph',
+                        text: (
+                            <Localize i18n_default_text='If you select this feature, your trade will be closed automatically at the nearest available asset price when your loss reaches or exceeds the stop loss amount. Your loss may be more than the amount you entered depending on the market price at closing.' />
+                        ),
+                    },
+                    {
+                        type: is_multiplier_fx ? '' : 'heading',
+                        text: <Localize i18n_default_text='Deal cancellation' />,
+                    },
+                    {
+                        type: is_multiplier_fx ? '' : 'paragraph',
+                        text: (
+                            <Localize i18n_default_text='If you select this feature, you can cancel your trade within a chosen time frame if the asset price moves against your favour. You will get your stake back without profit/loss. We charge a small fee for this. Take profit and stop loss are disabled when deal cancellation is active.' />
+                        ),
+                    },
+                    { type: 'heading', text: <Localize i18n_default_text='Slippage risk' /> },
+                    {
+                        type: 'paragraph',
+                        text: (
+                            <Localize i18n_default_text='Slippage happens when the asset price changes by the time it reaches our servers.' />
+                        ),
+                    },
+                    { type: 'heading', text: <Localize i18n_default_text='Entry spot' /> },
+                    {
+                        type: 'paragraph',
+                        text: is_major_pairs ? (
+                            <Localize i18n_default_text='We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers for Major Pairs.' />
+                        ) : (
+                            <Localize i18n_default_text='We use current-tick-execution mechanism, which is the latest asset price when the trade opening is processed by our servers for Volatility Index, Basket Indices, Jump Indices and Crash/Boom Indices.' />
+                        ),
+                    },
+                    { type: 'heading', text: <Localize i18n_default_text='Exit spot' /> },
+                    {
+                        type: 'paragraph',
+                        text: (
+                            <Localize i18n_default_text='The latest asset price when the trade closure is processed by our servers.' />
                         ),
                     },
                 ];

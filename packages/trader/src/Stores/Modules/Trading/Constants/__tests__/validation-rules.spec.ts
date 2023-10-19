@@ -2,7 +2,6 @@ import { getValidationRules, getMultiplierValidationRules } from '../validation-
 import { TTradeStore } from 'Types';
 import { isTimeValid } from '@deriv/shared';
 import { isSessionAvailable } from '../../Helpers/start-date';
-
 import type { TRuleOptions } from 'Utils/Validator/validator';
 
 type TExtendedRuleOptions = TRuleOptions & { condition: (store: TTradeStore) => boolean; message: string };

@@ -17,6 +17,7 @@ const NicknameForm = ({ onCancel }: TNicknameFormProps) => {
     React.useEffect(() => {
         const closeForm = () => {
             general_store.setShouldShowPopup(false);
+            onCancel?.();
         };
 
         window.addEventListener('popstate', closeForm);

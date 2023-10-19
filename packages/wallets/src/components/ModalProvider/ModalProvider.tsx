@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
-import type { MT5AccountType } from '../ExternalTradingPlatforms';
+import { MT5AccountType } from '../../features/cfd/screens';
 
 type TModalContext = {
     hide: () => void;
@@ -15,6 +15,7 @@ type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketT
 
 type TModalState = {
     marketType?: TMarketTypes;
+    platform?: string;
 };
 
 const ModalContext = createContext<TModalContext | null>(null);

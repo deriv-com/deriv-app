@@ -1,16 +1,17 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
 import './WalletTransactionsTable.scss';
 
 type TProps<T> = {
     columns: ColumnDef<T>[];
     data: T[];
+    fetchMore?: (target: HTMLDivElement) => void;
     groupBy?: GroupingState;
     rowGroupRender: (data: T) => JSX.Element;
     rowRender: (data: T) => JSX.Element;
 };
 
-const WalletTransactionsTable = <T,>({ columns, data, groupBy, rowGroupRender, rowRender }: TProps<T>) => {
+const WalletTransactionsTable = <T,>({ columns, data, fetchMore, groupBy, rowGroupRender, rowRender }: TProps<T>) => {
     const table = useReactTable({
         columns,
         data,
@@ -18,9 +19,14 @@ const WalletTransactionsTable = <T,>({ columns, data, groupBy, rowGroupRender, r
         getGroupedRowModel: getGroupedRowModel<T>(),
         state: { grouping: useMemo(() => groupBy, [groupBy]) },
     });
+    const tableContainerRef = useRef<HTMLDivElement>(null);
 
     return (
-        <div className='wallets-transactions-table'>
+        <div
+            className='wallets-transactions-table'
+            onScroll={e => (fetchMore ? fetchMore(e.target as HTMLDivElement) : null)}
+            ref={tableContainerRef}
+        >
             {table.getRowModel().rows.map(rowGroup => (
                 <div className='wallets-transactions-table-row' key={rowGroup.id}>
                     {rowGroupRender(rowGroup.original)}

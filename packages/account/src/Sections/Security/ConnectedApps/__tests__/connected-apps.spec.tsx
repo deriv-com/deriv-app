@@ -1,7 +1,7 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ConnectedApps from '../connected-apps';
 import { WS } from '@deriv/shared';

@@ -1,13 +1,14 @@
 import React, { ReactNode } from 'react';
-import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api';
+import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
-import { WalletText } from '../../../../components';
 import './Success.scss';
-import { TMarketTypes, TPlatforms } from '../../types';
+import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../types';
 
 type TSuccessProps = {
     description: string;
+    displayBalance: TDisplayBalance;
     marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
     renderButton: () => ReactNode;
@@ -25,7 +26,14 @@ const marketTypeToPlatformMapper: Record<string, string> = {
     dxtrade: 'Deriv X',
 };
 
-const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, renderButton, title }) => {
+const Success: React.FC<TSuccessProps> = ({
+    description,
+    displayBalance,
+    marketType,
+    platform,
+    renderButton,
+    title,
+}) => {
     const { data } = useActiveWalletAccount();
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
@@ -61,7 +69,7 @@ const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, r
                     {data?.currency} Wallet
                 </WalletText>
                 <WalletText lineHeight='xs' size='sm' weight='bold'>
-                    {data?.display_balance}
+                    {displayBalance}
                 </WalletText>
             </WalletGradientBackground>
             <WalletText align='center' size='md' weight='bold'>

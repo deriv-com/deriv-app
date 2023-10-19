@@ -31,3 +31,9 @@ export namespace TMarketTypes {
     >[0]['payload']['market_type'];
     export type SortedMT5Accounts = Exclude<THooks.SortedMT5Accounts['market_type'], undefined>;
 }
+
+// NOTE: If in the future there is a case where we need a specific display balance from a hook, refactor this into another namespace
+export type TDisplayBalance =
+    | THooks.CtraderAccountsList['display_balance']
+    | THooks.DxtradeAccountsList['display_balance']
+    | THooks.MT5AccountsList['display_balance'];

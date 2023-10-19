@@ -7,9 +7,9 @@
     margin: 0 auto;
 
     @include mobile {
-        height: calc(100% - 7rem);
+        height: calc(100% - 7.4rem);
         &--has-toggle-buttons {
-            height: calc(100% - 14.45rem);
+            height: calc(100% - 14.85rem);
         }
     }
 

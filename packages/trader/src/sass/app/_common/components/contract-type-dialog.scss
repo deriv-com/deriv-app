@@ -107,7 +107,7 @@
 }
 
 .contract-type-widget__header ~ .dc-mobile-dialog__content {
-    height: calc(100% - $MOBILE_HEADER_HEIGHT);
+    height: 100%;
 }
 
 .dc-mobile-dialog__contracts-modal-info {

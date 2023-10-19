@@ -24,20 +24,6 @@
             flex-direction: column;
             align-items: flex-start;
             gap: 0.4rem;
-
-            &--virtual {
-                color: #ffffff;
-            }
-
-            &__curency {
-                font-size: 8px;
-            }
-
-            &__balance {
-                font-size: 12px;
-                font-weight: 700;
-                line-height: 18px;
-            }
         }
 
         &-landing_company {

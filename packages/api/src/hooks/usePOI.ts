@@ -1,22 +1,18 @@
 import { useMemo } from 'react';
 import useResidenceList from './useResidenceList';
-import useGetAccountStatus from './useGetAccountStatus';
 import useSettings from './useSettings';
-import useAccountStatus from './useAccountStatus';
+import useAuthentication from './useAuthentication';
 
-type TVerificationService = 'onfido' | 'idv' | 'manual';
-
-/** A custom hook to get the user's identity verification status. */
+/** A custom hook to get the proof of identity verification info of the current user. */
 const usePOI = () => {
-    const { data: get_account_status_data } = useGetAccountStatus();
-    const { data: account_status } = useAccountStatus();
+    const { data: authentication_data, ...rest } = useAuthentication();
     const { data: residence_list_data } = useResidenceList();
     const { data: get_settings_data } = useSettings();
 
     const previous_service = useMemo(() => {
-        const latest_poi_attempt = get_account_status_data?.authentication?.attempts?.latest;
-        return latest_poi_attempt?.service as TVerificationService;
-    }, [get_account_status_data?.authentication?.attempts?.latest]);
+        const latest_poi_attempt = authentication_data?.attempts?.latest;
+        return latest_poi_attempt?.service;
+    }, [authentication_data?.attempts?.latest]);
 
     /**
      * @description Get the previous POI attempts details (if any)
@@ -26,7 +22,7 @@ const usePOI = () => {
             return null;
         }
 
-        const services = get_account_status_data?.authentication?.identity?.services;
+        const services = authentication_data?.identity?.services;
         if (services && services.manual) {
             return {
                 service: previous_service,
@@ -42,7 +38,7 @@ const usePOI = () => {
             last_rejected: current_service?.last_rejected,
             submissions_left: current_service?.submissions_left || 0,
         };
-    }, [get_account_status_data?.authentication?.identity?.services, previous_service]);
+    }, [previous_service, authentication_data?.identity?.services]);
 
     /**
      * @description Get the next step based on a few check. Returns configuration for document validation as well
@@ -52,10 +48,10 @@ const usePOI = () => {
         const matching_residence_data = residence_list_data?.find(r => r.value === user_country_code);
         const is_idv_supported = matching_residence_data?.identity?.services?.idv?.is_country_supported;
         const is_onfido_supported = matching_residence_data?.identity?.services?.onfido?.documents_supported;
-        const services = get_account_status_data?.authentication?.identity?.services;
+        const services = authentication_data?.identity?.services;
         const idv_submission_left = services?.idv?.submissions_left ?? 0;
         const onfido_submission_left = services?.onfido?.submissions_left ?? 0;
-        if (is_idv_supported && idv_submission_left && !account_status?.is_idv_disallowed) {
+        if (is_idv_supported && idv_submission_left && !authentication_data?.is_idv_disallowed) {
             return {
                 service: 'idv',
                 submission_left: idv_submission_left,
@@ -72,16 +68,26 @@ const usePOI = () => {
             service: 'manual',
         };
     }, [
-        account_status?.is_idv_disallowed,
-        get_account_status_data?.authentication?.identity?.services,
         get_settings_data?.citizen,
         get_settings_data?.country_code,
         residence_list_data,
+        authentication_data?.identity?.services,
+        authentication_data?.is_idv_disallowed,
     ]);
 
+    const modified_verification_data = useMemo(() => {
+        if (!authentication_data) return;
+
+        return {
+            ...authentication_data?.identity,
+            previous: previous_poi,
+            next: next_poi,
+        };
+    }, [authentication_data, next_poi, previous_poi]);
+
     return {
-        previous: previous_poi,
-        next: next_poi,
+        data: modified_verification_data,
+        ...rest,
     };
 };
 

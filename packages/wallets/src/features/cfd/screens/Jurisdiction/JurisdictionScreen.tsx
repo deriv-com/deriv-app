@@ -42,13 +42,15 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction
                 ))}
             </div>
 
-            {selectedJurisdiction && (
+            {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
                 <div className='wallets-jurisdiction-screen__tnc'>
                     Add Your Deriv MT5 Financial account under Deriv (V) Ltd, regulated by the Vanuatu Financial
                     Services Commission.
                     <div className='wallets-jurisdiction-screen__tnc-checkbox'>
-                        <input type='checkbox' />
-                        <WalletText>I confirm and accept Deriv (V) Ltd’s Terms and Conditions</WalletText>
+                        <input id='tnc-checkbox' type='checkbox' />
+                        <label htmlFor='tnc-checkbox' style={{ cursor: 'pointer' }}>
+                            <WalletText>I confirm and accept Deriv (V) Ltd&lsquo;s Terms and Conditions</WalletText>
+                        </label>
                     </div>
                 </div>
             )}

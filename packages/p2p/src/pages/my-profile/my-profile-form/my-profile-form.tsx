@@ -76,8 +76,9 @@ const MyProfileForm = () => {
                                         is_submit_success={my_profile_store.is_submit_success}
                                         large
                                         primary
-                                        text={localize('Save')}
-                                    />
+                                    >
+                                        <Localize i18n_default_text='Save' />
+                                    </Button>
                                 )}
                             </Observer>
                         </div>

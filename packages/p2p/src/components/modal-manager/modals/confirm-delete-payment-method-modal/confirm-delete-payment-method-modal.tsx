@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 
@@ -32,14 +32,12 @@ const ConfirmDeletePaymentMethodModal = () => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    has_effect
-                    text={localize('Yes, remove')}
-                    onClick={my_profile_store.onClickDelete}
-                    secondary
-                    large
-                />
-                <Button has_effect text={localize('No')} onClick={hideModal} primary large />
+                <Button has_effect onClick={my_profile_store.onClickDelete} secondary large>
+                    <Localize i18n_default_text='Yes, remove' />
+                </Button>
+                <Button has_effect onClick={hideModal} primary large>
+                    <Localize i18n_default_text='No' />
+                </Button>
             </Modal.Footer>
         </Modal>
     );

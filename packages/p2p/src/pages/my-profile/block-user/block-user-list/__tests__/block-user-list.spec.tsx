@@ -1,6 +1,7 @@
 import React from 'react';
 import { screen, render, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores/index';
 import BlockUserList from '../block-user-list';
@@ -9,6 +10,10 @@ const mock_trade_partners_list = [
     { id: '0', is_blocked: 0, name: 'testA' },
     { id: '1', is_blocked: 1, name: 'testB' },
 ];
+
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+);
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     general_store: {
@@ -56,7 +61,7 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
 
 describe('<BlockUserList />', () => {
     it('should render the BlockUserList component', () => {
-        render(<BlockUserList />);
+        render(<BlockUserList />, { wrapper });
 
         expect(screen.getByPlaceholderText('Search by nickname')).toBeInTheDocument();
     });
@@ -64,7 +69,7 @@ describe('<BlockUserList />', () => {
     it('should render the loading screen if is_loading is true', () => {
         mock_store.my_profile_store.is_loading = true;
 
-        render(<BlockUserList />);
+        render(<BlockUserList />, { wrapper });
 
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
     });
@@ -74,7 +79,7 @@ describe('<BlockUserList />', () => {
         mock_store.general_store.error_code = 'TemporaryBar';
         mock_store.general_store.block_unblock_user_error = 'Test Error TempBar';
 
-        render(<BlockUserList />);
+        render(<BlockUserList />, { wrapper });
 
         expect(screen.getByText('Test Error TempBar')).toBeInTheDocument();
     });
@@ -83,7 +88,7 @@ describe('<BlockUserList />', () => {
         mock_store.general_store.error_code = '';
         mock_store.general_store.block_unblock_user_error = '';
 
-        render(<BlockUserList />);
+        render(<BlockUserList />, { wrapper });
 
         const searchInput = screen.getByPlaceholderText('Search by nickname');
 

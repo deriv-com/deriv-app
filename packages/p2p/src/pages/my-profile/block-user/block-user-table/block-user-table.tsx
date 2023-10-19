@@ -1,7 +1,6 @@
 import React from 'react';
 import { InfiniteDataList, Loading, Table, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import BlockUserEmpty from '../block-user-empty';
@@ -9,6 +8,9 @@ import BlockUserRow from './block-user-row';
 
 const BlockUserTable = () => {
     const { my_profile_store } = useStores();
+    const {
+        ui: { is_mobile },
+    } = useStore();
 
     React.useEffect(() => {
         my_profile_store.setTradePartnersList([]);
@@ -25,12 +27,12 @@ const BlockUserTable = () => {
     }, []);
 
     if (my_profile_store.is_block_user_table_loading) {
-        return <Loading is_fullscreen={isMobile()} />;
+        return <Loading is_fullscreen={is_mobile} />;
     }
 
     if (my_profile_store.search_term && my_profile_store.rendered_trade_partners_list.length === 0) {
         return (
-            <Text align='center' className='block-user-table__text' weight={isMobile() ? 'normal' : 'bold'}>
+            <Text align='center' className='block-user-table__text' weight={is_mobile ? 'normal' : 'bold'}>
                 <Localize i18n_default_text='There are no matching name.' />
             </Text>
         );

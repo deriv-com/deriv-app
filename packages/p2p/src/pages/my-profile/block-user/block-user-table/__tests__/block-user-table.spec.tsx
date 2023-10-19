@@ -1,5 +1,6 @@
 import React from 'react';
 import { screen, render, act } from '@testing-library/react';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { useStores } from 'Stores/index';
 import BlockUserTable from '../block-user-table';
 
@@ -9,6 +10,10 @@ const mock_trade_partners_list = [
     { id: '1', is_blocked: 0, name: 'test1' },
     { id: '2', is_blocked: 1, name: 'test2' },
 ];
+
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+);
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -40,7 +45,7 @@ describe('<BlockUserTable />', () => {
     });
 
     it('should show default message when user has no trade partners', () => {
-        render(<BlockUserTable />);
+        render(<BlockUserTable />, { wrapper });
 
         expect(screen.getByText('No one to show here')).toBeInTheDocument();
     });
@@ -48,7 +53,7 @@ describe('<BlockUserTable />', () => {
     it('should show loading screen if is_block_user_table_loading is true', () => {
         mock_store.my_profile_store.is_block_user_table_loading = true;
 
-        render(<BlockUserTable />);
+        render(<BlockUserTable />, { wrapper });
 
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
     });
@@ -57,7 +62,7 @@ describe('<BlockUserTable />', () => {
         mock_store.my_profile_store.search_term = 'sdasdsadas';
         mock_store.my_profile_store.is_trade_partners_list_empty = false;
 
-        render(<BlockUserTable />);
+        render(<BlockUserTable />, { wrapper });
 
         expect(screen.getByText('There are no matching name.')).toBeInTheDocument();
     });
@@ -68,7 +73,7 @@ describe('<BlockUserTable />', () => {
             mock_store.my_profile_store.rendered_trade_partners_list = mock_trade_partners_list;
         });
 
-        render(<BlockUserTable />);
+        render(<BlockUserTable />, { wrapper });
 
         expect(screen.getByTestId('dt_data_list')).toBeInTheDocument();
     });

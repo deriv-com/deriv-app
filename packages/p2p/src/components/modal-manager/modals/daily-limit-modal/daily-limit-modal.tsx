@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Button, Loading, Modal, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 
@@ -75,22 +75,29 @@ const DailyLimitModal = () => {
         if (is_daily_limit_upgrading) {
             return null;
         } else if (is_daily_limit_upgrade_success || is_there_daily_limit_error) {
-            return <Button has_effect text={localize('Ok')} onClick={hideModal} primary large />;
+            return (
+                <Button has_effect onClick={hideModal} primary large>
+                    <Localize i18n_default_text='Ok' />
+                </Button>
+            );
         }
 
         return (
             <>
-                <Button has_effect text={localize('No')} onClick={hideModal} secondary large />
+                <Button has_effect onClick={hideModal} secondary large>
+                    <Localize i18n_default_text='No' />
+                </Button>
                 <Button
                     has_effect
-                    text={localize('Yes, continue')}
                     onClick={() => {
                         my_profile_store.setIsDailyLimitUpgrading(true);
                         my_profile_store.upgradeDailyLimit();
                     }}
                     primary
                     large
-                />
+                >
+                    <Localize i18n_default_text='Yes, continue' />
+                </Button>
             </>
         );
     };

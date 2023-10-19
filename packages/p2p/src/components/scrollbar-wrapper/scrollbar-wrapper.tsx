@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useStore } from '@deriv/stores';
 
 type TScrollbarWrapper = {
-    children: JSX.Element;
     height?: string;
 };
 
-const ScrollbarWrapper = ({ children, height }: TScrollbarWrapper) => {
+const ScrollbarWrapper = ({ children, height }: PropsWithChildren<TScrollbarWrapper>) => {
     const {
         ui: { is_mobile },
     } = useStore();

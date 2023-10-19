@@ -26,17 +26,21 @@ type TPaymentMethodCardProps = {
 
 const PaymentMethodCard = ({
     add_payment_method,
-    disabled,
+    disabled = false,
     is_add = false,
     is_vertical_ellipsis_visible = true,
     label = undefined,
-    large,
-    medium,
-    onClick,
-    onClickAdd,
+    large = false,
+    medium = false,
+    onClick = () => {
+        // do nothing
+    },
+    onClickAdd = () => {
+        // do nothing
+    },
     payment_method,
     show_payment_method_name = true,
-    small,
+    small = false,
     style,
 }: TPaymentMethodCardProps) => {
     const { general_store, my_ads_store, my_profile_store } = useStores();

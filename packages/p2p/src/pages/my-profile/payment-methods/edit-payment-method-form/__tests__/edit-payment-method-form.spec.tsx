@@ -1,6 +1,7 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { useStores } from 'Stores/index';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { payment_method_info_alipay } from 'Pages/my-profile/__mocks__/mock-payment-method-data';
@@ -11,6 +12,10 @@ let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 const mock_modal_manager: DeepPartial<ReturnType<typeof useModalManagerContext>> = {
     showModal: jest.fn(),
 };
+
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+);
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -47,7 +52,7 @@ describe('<EditPaymentMethodForm />', () => {
     });
 
     it('should render the EditPaymentMethodForm component', () => {
-        render(<EditPaymentMethodForm />);
+        render(<EditPaymentMethodForm />, { wrapper });
 
         expect(screen.getByText('Edit payment method')).toBeInTheDocument();
         expect(screen.getByText('Choose your payment method')).toBeInTheDocument();
@@ -60,13 +65,13 @@ describe('<EditPaymentMethodForm />', () => {
     it('should render the Loading component if payment_method_info is empty', () => {
         mock_store.my_profile_store.payment_method_to_edit = {};
 
-        render(<EditPaymentMethodForm />);
+        render(<EditPaymentMethodForm />, { wrapper });
 
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
     });
 
     it('should call setShouldShowEditPaymentMethodForm if form fields are filled when clicking page return', () => {
-        render(<EditPaymentMethodForm />);
+        render(<EditPaymentMethodForm />, { wrapper });
 
         const pageReturnIcon = screen.getByTestId('dt_page_return_icon');
 
@@ -76,7 +81,7 @@ describe('<EditPaymentMethodForm />', () => {
     });
 
     it('should call setPaymentMethodToEdit and setShouldShowEditPaymentMethodForm if form fields are filled when clicking Cancel button', () => {
-        render(<EditPaymentMethodForm />);
+        render(<EditPaymentMethodForm />, { wrapper });
 
         const cancelButton = screen.getByRole('button', { name: 'Cancel' });
 
@@ -87,7 +92,7 @@ describe('<EditPaymentMethodForm />', () => {
     });
 
     it('should call showModal if form fields are not filled when clicking page return', async () => {
-        render(<EditPaymentMethodForm />);
+        render(<EditPaymentMethodForm />, { wrapper });
 
         const alipayIdInput = screen.getByLabelText('Alipay ID');
         const pageReturnIcon = screen.getByTestId('dt_page_return_icon');
@@ -102,7 +107,7 @@ describe('<EditPaymentMethodForm />', () => {
     });
 
     it('should call showModal if form fields are not filled when clicking Cancel button', async () => {
-        render(<EditPaymentMethodForm />);
+        render(<EditPaymentMethodForm />, { wrapper });
 
         const alipayIdInput = screen.getByLabelText('Alipay ID');
         const cancelButton = screen.getByRole('button', { name: 'Cancel' });

@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, FormikValues } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components';
-import { isDesktop, isEmptyObject, isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { isEmptyObject } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -13,6 +13,9 @@ import { TPaymentMethod } from 'Types/my-profile.types';
 
 const EditPaymentMethodForm = () => {
     const { general_store, my_profile_store } = useStores();
+    const {
+        ui: { is_desktop, is_mobile },
+    } = useStore();
     const { showModal } = useModalManagerContext();
     const {
         payment_method_to_edit,
@@ -132,9 +135,9 @@ const EditPaymentMethodForm = () => {
                                 <div
                                     className={classNames('edit-payment-method-form__buttons', {
                                         'edit-payment-method-form__buttons--separated-footer':
-                                            general_store.active_index === 3 && isMobile(),
+                                            general_store.active_index === 3 && is_mobile,
                                         'edit-payment-method-form__buttons--separated-footer-profile':
-                                            general_store.active_index === 3 && isDesktop(),
+                                            general_store.active_index === 3 && is_desktop,
                                     })}
                                 >
                                     <Button

@@ -5,17 +5,17 @@ import {
     useCreateMT5Account,
     useMT5AccountsList,
     useSettings,
-    useSortedMT5Accounts,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
 import { ModalWrapper, WalletButton } from '../../../../components/Base';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { Success, CreatePassword, EnterPassword } from '../../screens';
+import { TMarketTypes, TPlatforms } from '../../types';
 import { useModal } from '../../../../components/ModalProvider';
 
 type TProps = {
-    marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
-    platform: string;
+    marketType: TMarketTypes.SortedMT5Accounts;
+    platform: TPlatforms.All;
 };
 
 const marketTypeToTitleMapper: Record<TProps['marketType'], string> = {

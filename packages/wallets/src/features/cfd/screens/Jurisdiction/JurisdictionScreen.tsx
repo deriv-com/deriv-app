@@ -4,9 +4,10 @@ import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
 import { JurisdictionCard } from './JurisdictionCard';
 import './JurisdictionScreen.scss';
+import { THooks } from '../../types';
 
 type TJurisdictionScreenProps = {
-    selectedJurisdiction: NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[0]['shortcode'];
+    selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
     setSelectedJurisdiction: React.Dispatch<React.SetStateAction<string>>;
 };
 

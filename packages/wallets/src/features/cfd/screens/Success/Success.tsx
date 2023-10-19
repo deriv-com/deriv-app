@@ -4,11 +4,12 @@ import { WalletGradientBackground } from '../../../../components/WalletGradientB
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import { WalletText } from '../../../../components';
 import './Success.scss';
+import { TMarketTypes, TPlatforms } from '../../types';
 
 type TSuccessProps = {
     description: string;
-    marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
-    platform: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['platform'], undefined>;
+    marketType: TMarketTypes.SortedMT5Accounts;
+    platform: TPlatforms.All;
     renderButton: () => ReactNode;
     title: string;
 };
@@ -56,7 +57,6 @@ const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, r
                 <WalletText lineHeight='3xs' size='2xs'>
                     {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
                 </WalletText>
-                {/* <div className='wallets-success__info__text--type'></div> */}
                 <WalletText color='primary' lineHeight='sm' size='2xs'>
                     {data?.currency} Wallet
                 </WalletText>

@@ -1,20 +1,22 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { observer } from '@deriv/stores';
-
+import { Localize } from '@deriv/translations';
+import BotSnackbar from 'Components/bot-snackbar';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
 import QuickStrategy1 from '../../quick-strategy';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
-
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
-    const { dashboard, app, quick_strategy_store_1 } = useDBotStore();
+    const { dashboard, app, run_panel, quick_strategy_store_1 } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_open } = quick_strategy_store_1;
+    const { is_running } = run_panel;
+    const is_blockly_listener_registered = React.useRef(false);
+    const [show_snackbar, setShowSnackbar] = React.useState(false);
 
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
@@ -24,8 +26,43 @@ const BotBuilder = observer(() => {
         return () => onUnmount();
     }, [onMount, onUnmount]);
 
+    const handleBlockChangeOnBotRun = (e: Event) => {
+        if (e.type !== 'ui') {
+            setShowSnackbar(true);
+            removeBlockChangeListener();
+        }
+    };
+
+    const removeBlockChangeListener = () => {
+        is_blockly_listener_registered.current = false;
+        window.Blockly?.derivWorkspace?.removeChangeListener(handleBlockChangeOnBotRun);
+    };
+
+    React.useEffect(() => {
+        const workspace = window.Blockly?.derivWorkspace;
+        if (workspace && is_running && !is_blockly_listener_registered.current) {
+            is_blockly_listener_registered.current = true;
+            workspace.addChangeListener(handleBlockChangeOnBotRun);
+        } else {
+            setShowSnackbar(false);
+            removeBlockChangeListener();
+        }
+
+        return () => {
+            if (workspace && is_blockly_listener_registered.current) {
+                removeBlockChangeListener();
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_running]);
+
     return (
         <>
+            <BotSnackbar
+                is_open={show_snackbar}
+                message={<Localize i18n_default_text='Changes you make will not affect your running bot.' />}
+                handleClose={() => setShowSnackbar(false)}
+            />
             <div
                 className={classNames('bot-builder', {
                     'bot-builder--active': active_tab === 1 && !is_preview_on_popup,

@@ -4,12 +4,14 @@ import { Icon, Popover } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { useFeatureFlags } from '@deriv/hooks';
 
 const TradersHubOnboarding = observer(() => {
     const history = useHistory();
     const { traders_hub, ui } = useStore();
     const { setIsOnboardingVisited } = traders_hub;
     const { is_dark_mode_on } = ui;
+    const { is_next_wallet_enabled } = useFeatureFlags();
 
     return (
         <div data-testid='dt_traders_hub_onboarding'>
@@ -25,10 +27,17 @@ const TradersHubOnboarding = observer(() => {
                         data_testid='dt_traders_hub_onboarding_icon'
                         icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
-                        onClick={() => {
-                            history.push(routes.onboarding);
-                            setIsOnboardingVisited(false);
-                        }}
+                        onClick={
+                            is_next_wallet_enabled
+                                ? () => {
+                                      localStorage.setItem('walletsOnboarding', 'started');
+                                      window.dispatchEvent(new Event('storage'));
+                                  }
+                                : () => {
+                                      history.push(routes.onboarding);
+                                      setIsOnboardingVisited(false);
+                                  }
+                        }
                     />
                 </Popover>
             </div>

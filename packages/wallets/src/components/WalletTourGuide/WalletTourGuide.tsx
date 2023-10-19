@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Joyride, { ACTIONS, CallBackProps } from 'react-joyride';
 import { useActiveWalletAccount, useAvailableWallets } from '@deriv/api';
 import { WalletText } from '../Base';
 import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
 
-type TProps = {
-    isStarted?: boolean;
-    setIsStarted?: (value: boolean) => void;
-};
+const WalletTourGuide = () => {
+    const key = 'walletsOnboarding';
+    const [isStarted, setIsStarted] = useState(localStorage.getItem(key) === 'started');
 
-const WalletTourGuide = ({ isStarted = false, setIsStarted }: TProps) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAvailableWallets();
 
@@ -18,9 +16,21 @@ const WalletTourGuide = ({ isStarted = false, setIsStarted }: TProps) => {
         const { action } = data;
 
         if (action === ACTIONS.RESET) {
-            setIsStarted?.(false);
+            setIsStarted(false);
         }
     };
+
+    useEffect(() => {
+        const onStorage = () => {
+            setIsStarted(localStorage.getItem(key) === 'started');
+        };
+
+        window.addEventListener('storage', onStorage);
+
+        return () => {
+            window.removeEventListener('storage', onStorage);
+        };
+    }, []);
 
     if (!activeWallet) return <WalletText>...Loading</WalletText>;
 

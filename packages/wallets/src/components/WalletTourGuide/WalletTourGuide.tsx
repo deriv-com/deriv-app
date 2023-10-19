@@ -14,6 +14,9 @@ const WalletTourGuide = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAvailableWallets();
 
+    const fiatWalletLoginId = wallets?.[0]?.loginid;
+    const activeWalletLoginId = activeWallet?.loginid;
+
     const callbackHandle = (data: CallBackProps) => {
         const { action } = data;
 
@@ -24,37 +27,29 @@ const WalletTourGuide = () => {
     };
 
     useEffect(() => {
-        let timeoutId: NodeJS.Timeout;
-
         const switchToFiatWallet = (): boolean => {
-            if (activeWallet?.loginid && wallets?.[0]?.loginid && activeWallet.loginid !== wallets[0].loginid) {
-                switchAccount(wallets[0].loginid);
+            if (fiatWalletLoginId && fiatWalletLoginId !== activeWalletLoginId) {
+                switchAccount(fiatWalletLoginId);
                 return true;
             }
             return false;
         };
 
-        const startWithDelay = (needToStart: boolean) => {
+        const onStorage = () => {
+            const needToStart = localStorage.getItem(key) === 'started';
             if (needToStart) {
                 const isJustSwitched = switchToFiatWallet();
-                if (isJustSwitched) timeoutId = setTimeout(() => setIsStarted(needToStart), 500);
-                else setIsStarted(needToStart);
-                return;
+                if (isJustSwitched) setTimeout(() => setIsStarted(true), 1000);
+                else setIsStarted(true);
             }
-            setIsStarted(needToStart);
-        };
-
-        const onStorage = () => {
-            startWithDelay(localStorage.getItem(key) === 'started');
         };
 
         window.addEventListener('storage', onStorage);
 
         return () => {
             window.removeEventListener('storage', onStorage);
-            // clearTimeout(timeoutId);
         };
-    }, [activeWallet?.loginid, switchAccount, wallets]);
+    }, [activeWalletLoginId, fiatWalletLoginId, switchAccount]);
 
     if (!activeWallet) return <WalletText>...Loading</WalletText>;
 
@@ -72,7 +67,8 @@ const WalletTourGuide = () => {
             disableScrollParentFix
             floaterProps={{ disableAnimation: true }}
             run={isStarted}
-            scrollOffset={150}
+            scrollOffset={72}
+            scrollToFirstStep
             steps={tourStepConfig(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded)}
             tooltipComponent={TooltipComponent}
         />

@@ -22,7 +22,7 @@ export const tourStepConfig = (
         placement: 'bottom',
         spotlightPadding: 0,
         styles: { spotlight: { borderRadius: '1.6rem 1.6rem 0rem 0rem' } },
-        target: '.wallets-accordion__header:has(+ .wallets-accordion__content--visible)',
+        target: '.wallets-accordion__header',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallets
@@ -51,7 +51,7 @@ export const tourStepConfig = (
                 borderRadius: '6.4rem',
             },
         },
-        target: '.wallets-accordion__header:has(+ .wallets-accordion__content--visible) .wallets-header__actions',
+        target: '.wallets-accordion__header .wallets-header__actions',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallet actions
@@ -73,7 +73,6 @@ export const tourStepConfig = (
         disableOverlayClose: true,
         placement: 'right',
         spotlightPadding: 5,
-        // styles: { spotlight: { borderRadius: '0.6rem' } },
         styles: { spotlight: { borderRadius: '0.4rem', paddingLeft: '0.5rem', paddingRight: '0.5rem' } },
         target: '.wallets-mt5-list__content .wallets-trading-account-card',
         title: (

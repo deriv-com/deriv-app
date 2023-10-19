@@ -1,7 +1,7 @@
 import React, { RefObject } from 'react';
-import { truncateFileName } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { TFileDropzone } from 'Types/file-dropzone.types';
+import { truncateFileName } from 'Utils/file-uploader';
 
 type TPreviewSingle = {
     dropzone_ref: RefObject<HTMLElement>;

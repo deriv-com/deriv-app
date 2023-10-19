@@ -1,12 +1,13 @@
 import React from 'react';
+import { useActiveWalletAccount } from '@deriv/api';
 import DerivApps from '../../public/images/deriv-apps.svg';
 import { WalletButton, WalletText } from '../Base';
 
 type TProps = {
-    isMaltaWallet?: boolean;
+    isMaltaWallet?: NonNullable<ReturnType<typeof useActiveWalletAccount>['data']>['is_malta_wallet'];
 };
 
-export const DerivAppsGetAccount: React.FC<TProps> = ({ isMaltaWallet }) => {
+const DerivAppsGetAccount: React.FC<TProps> = ({ isMaltaWallet }) => {
     return (
         <div className='wallets-deriv-apps-section'>
             <DerivApps />
@@ -24,3 +25,5 @@ export const DerivAppsGetAccount: React.FC<TProps> = ({ isMaltaWallet }) => {
         </div>
     );
 };
+
+export { DerivAppsGetAccount };

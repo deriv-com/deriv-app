@@ -22,7 +22,7 @@ const marketTypeToIconMapper = {
 };
 
 type TProps = {
-    account: THooks.TMT5AccountsList;
+    account: THooks.MT5AccountsList;
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {

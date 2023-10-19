@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Modal } from '@deriv/components';
 import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -11,6 +11,13 @@ import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
+    useEffect(() => {
+        window.addEventListener('load', function () {
+            setTimeout(function () {
+                window.scrollTo(0, 1);
+            }, 0);
+        });
+    }, []);
     const { client, traders_hub } = useStore();
 
     const { show_eu_related_content } = traders_hub;
@@ -227,20 +234,20 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                         should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
                         should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
                     />
+                    <Modal.Footer className='jurisdiction-modal__footer-button' has_separator>
+                        <Button
+                            disabled={isNextButtonDisabled()}
+                            primary
+                            style={{ width: isMobile() ? '100%' : 'unset' }}
+                            onClick={() => {
+                                toggleJurisdictionModal();
+                                onSelectRealAccount();
+                            }}
+                        >
+                            {localize('Next')}
+                        </Button>
+                    </Modal.Footer>
                 </div>
-                <Modal.Footer className='jurisdiction-modal__footer-button' has_separator>
-                    <Button
-                        disabled={isNextButtonDisabled()}
-                        primary
-                        style={{ width: isMobile() ? '100%' : 'unset' }}
-                        onClick={() => {
-                            toggleJurisdictionModal();
-                            onSelectRealAccount();
-                        }}
-                    >
-                        {localize('Next')}
-                    </Button>
-                </Modal.Footer>
             </div>
         </div>
     );

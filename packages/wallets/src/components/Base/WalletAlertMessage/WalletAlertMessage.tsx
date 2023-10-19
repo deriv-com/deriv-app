@@ -3,7 +3,7 @@ import useDevice from '../../../hooks/useDevice';
 import ErrorCircleCrossmark from '../../../public/images/error-circle-crossmark.svg';
 import InfoCircleDots from '../../../public/images/info-circle-dots.svg';
 import SuccessCircleCheckmark from '../../../public/images/success-circle-checkmark.svg';
-import { WalletButton, WalletText } from '../index';
+import { WalletText } from '../index';
 import styles from './WalletAlertMessage.module.css';
 
 const typeMapper = {
@@ -21,23 +21,14 @@ const typeMapper = {
     },
 };
 
-type TAlertMessageProps =
-    | {
-          buttonLabel: ReactNode;
-          message: ReactNode;
-          onClickHandler: VoidFunction;
-          type: 'error' | 'info' | 'success';
-          variant: 'with-action-button';
-      }
-    | {
-          message: ReactNode;
-          type: 'error' | 'info' | 'success';
-          variant: 'base';
-      };
+type TProps = {
+    children?: ReactNode;
+    message: ReactNode;
+    type: 'error' | 'info' | 'success';
+};
 
-const WalletAlertMessage: React.FC<TAlertMessageProps> = props => {
+const WalletAlertMessage: React.FC<TProps> = ({ children, message, type }) => {
     const { isMobile } = useDevice();
-    const { message, type, variant } = props;
 
     const Icon = typeMapper[type].icon;
     const color = typeMapper[type].color;
@@ -55,11 +46,7 @@ const WalletAlertMessage: React.FC<TAlertMessageProps> = props => {
                     {message}
                 </WalletText>
             </div>
-            {variant === 'with-action-button' && props.buttonLabel && (
-                <div className={styles['wallets-alert-message__button-container']}>
-                    <WalletButton onClick={props.onClickHandler} size='sm' text={props.buttonLabel} />
-                </div>
-            )}
+            <div className={styles['wallets-alert-message__button-container']}>{children}</div>
         </div>
     );
 };

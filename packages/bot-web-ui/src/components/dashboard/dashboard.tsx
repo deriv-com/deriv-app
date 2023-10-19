@@ -19,12 +19,12 @@ import StrategyNotification from './strategy-notification';
 import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
-    const { dashboard, load_modal, run_panel, quick_strategy_store_1, summary_card } = useDBotStore();
+    const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
     const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
-    const { is_open } = quick_strategy_store_1;
+    const { is_open } = quick_strategy;
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const is_mobile = isMobile();

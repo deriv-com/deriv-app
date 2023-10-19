@@ -1,20 +1,16 @@
 import React from 'react';
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
-
 import { ApiHelpers } from '@deriv/bot-skeleton';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal } from '@deriv/components';
+import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
 import { SIZE_MIN, STRATEGIES } from './config';
 import Form from './form';
 import { TConfigItem, TDurationItemRaw, TFormData } from './types';
-
 import './quick-strategy.scss';
 
 type TFormikWrapper = {
@@ -22,9 +18,9 @@ type TFormikWrapper = {
 };
 
 const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
-    const { quick_strategy_store_1 } = useDBotStore();
+    const { quick_strategy } = useDBotStore();
     const [duration, setDuration] = React.useState<TDurationItemRaw | null>(null);
-    const { selected_strategy, form_data, onSubmit } = quick_strategy_store_1;
+    const { selected_strategy, form_data, onSubmit } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
 
     const initial_value: { [key: string]: string } = {
@@ -37,6 +33,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         size: String(SIZE_MIN),
         duration: '1',
         unit: '0',
+        action: 'run',
     };
 
     React.useEffect(() => {
@@ -128,10 +125,10 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
 });
 
 const QuickStrategy = observer(() => {
-    const { quick_strategy_store_1 } = useDBotStore();
+    const { quick_strategy } = useDBotStore();
     const { ui } = useStore();
     const { is_mobile } = ui;
-    const { is_open, setFormVisibility } = quick_strategy_store_1;
+    const { is_open, setFormVisibility } = quick_strategy;
 
     const handleClose = () => {
         setFormVisibility(false);

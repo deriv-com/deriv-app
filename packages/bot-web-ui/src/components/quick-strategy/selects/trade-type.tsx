@@ -1,11 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, IconTradeTypes, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
-
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type TTradeType = {
@@ -39,8 +37,8 @@ type TTradeTypeSelect = {
 const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ symbol, selected, fullWidth = false }) => {
     const [trade_types, setTradeTypes] = React.useState([]);
     const { setFieldValue } = useFormikContext();
-    const { quick_strategy_store_1 } = useDBotStore();
-    const { setValue } = quick_strategy_store_1;
+    const { quick_strategy } = useDBotStore();
+    const { setValue } = quick_strategy;
 
     React.useEffect(() => {
         if (symbol) {

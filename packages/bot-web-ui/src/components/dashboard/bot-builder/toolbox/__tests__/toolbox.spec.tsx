@@ -22,7 +22,7 @@ const mockDbotStore = {
     flyout: {
         setVisibility: jest.fn(),
     },
-    quick_strategy_store_1: {
+    quick_strategy: {
         setFormVisibility: jest.fn(),
     },
 };

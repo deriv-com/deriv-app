@@ -10,7 +10,7 @@ import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
 
 const Toolbox = observer(() => {
-    const { toolbox, flyout, quick_strategy_store_1 } = useDBotStore();
+    const { toolbox, flyout, quick_strategy } = useDBotStore();
     const {
         hasSubCategory,
         is_search_loading,
@@ -26,7 +26,7 @@ const Toolbox = observer(() => {
         toolbox_dom,
     } = toolbox;
 
-    const { setFormVisibility } = quick_strategy_store_1;
+    const { setFormVisibility } = quick_strategy;
     const { setVisibility, selected_category } = flyout;
 
     const toolbox_ref = React.useRef(ToolboxItems);

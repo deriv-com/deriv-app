@@ -15,6 +15,7 @@ export type TFormData = {
     profit?: number;
     loss?: number;
     unit?: number;
+    action: 'RUN' | 'EDIT';
 };
 
 export type TValidationType = 'min' | 'max' | 'required' | 'number' | 'ceil' | 'floor';

@@ -1,13 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
-
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import { TDurationItemRaw } from '../types';
 
 type TDurationUnitItem = {
@@ -30,8 +27,8 @@ type TDurationUnit = {
 const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = false, attached }) => {
     const [list, setList] = React.useState<TDurationUnitItem[]>([]);
     const { symbol, tradetype } = data;
-    const { quick_strategy_store_1 } = useDBotStore();
-    const { setValue } = quick_strategy_store_1;
+    const { quick_strategy } = useDBotStore();
+    const { setValue } = quick_strategy;
     const { setFieldValue } = useFormikContext();
 
     React.useEffect(() => {

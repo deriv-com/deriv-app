@@ -1,17 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
-
 import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import Icon from '@deriv/components/src/components/icon/icon';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import { STRATEGIES } from '../config';
 import { TFormData } from '../types';
-
 import '../quick-strategy.scss';
 
 type TDesktopFormWrapper = {
@@ -20,9 +16,9 @@ type TDesktopFormWrapper = {
 
 const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
-    const { submitForm, isValid, values } = useFormikContext();
-    const { quick_strategy_store_1 } = useDBotStore();
-    const { selected_strategy, setSelectedStrategy, setFormVisibility, onSubmit } = quick_strategy_store_1;
+    const { submitForm, isValid, setFieldValue } = useFormikContext();
+    const { quick_strategy, run_panel } = useDBotStore();
+    const { selected_strategy, setSelectedStrategy, setFormVisibility, toggleStopBotDialog } = quick_strategy;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
     const handleClose = () => {
         setFormVisibility(false);
@@ -33,8 +29,19 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     };
 
     const onEdit = async () => {
-        onSubmit(values as TFormData, false);
-        localStorage.setItem('qs-fields', JSON.stringify(values));
+        await setFieldValue('action', 'EDIT');
+        submitForm();
+    };
+
+    const handleSubmit = async () => {
+        if (run_panel.is_running) {
+            await setFieldValue('action', 'EDIT');
+            submitForm();
+            toggleStopBotDialog();
+        } else {
+            await setFieldValue('action', 'RUN');
+            submitForm();
+        }
     };
 
     return (
@@ -106,7 +113,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                         <Button secondary disabled={!isValid} onClick={onEdit}>
                             {localize('Edit')}
                         </Button>
-                        <Button data-testid='qs-run-button' primary onClick={submitForm} disabled={!isValid}>
+                        <Button data-testid='qs-run-button' primary onClick={handleSubmit} disabled={!isValid}>
                             {localize('Run')}
                         </Button>
                     </div>

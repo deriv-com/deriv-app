@@ -21,7 +21,7 @@ type TCardArray = {
 };
 
 const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
-    const { dashboard, load_modal, quick_strategy_store_1 } = useDBotStore();
+    const { dashboard, load_modal, quick_strategy } = useDBotStore();
     const {
         onCloseDialog,
         dialog_options,
@@ -33,7 +33,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         showVideoDialog,
     } = dashboard;
     const { handleFileChange, loadFileFromLocal } = load_modal;
-    const { setFormVisibility } = quick_strategy_store_1;
+    const { setFormVisibility } = quick_strategy;
 
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);

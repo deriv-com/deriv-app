@@ -1,16 +1,11 @@
 import React from 'react';
 import { Formik } from 'formik';
-
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import userEvent from '@testing-library/user-event';
-
+import { fireEvent, render, screen } from '@testing-library/react';
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { mock_ws } from 'Utils/mock';
-
 import QuickStrategyForm from '../form';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -139,7 +134,7 @@ describe('<QuickStrategyForm />', () => {
 
     beforeEach(() => {
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-        mock_DBot_store?.quick_strategy_store_1?.setSelectedStrategy('RSI');
+        mock_DBot_store?.quick_strategy?.setSelectedStrategy('RSI');
         const mock_onSubmit = jest.fn();
         const initial_value = {
             tradetype: 'callput',

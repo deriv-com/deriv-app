@@ -1,16 +1,11 @@
 import React from 'react';
-import { Formik } from 'formik';
-
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
-
-import RootStore from 'Stores/root-store';
-import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import { mock_ws } from 'Utils/mock';
-
+import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import QuickStrategy from '../quick-strategy';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -167,9 +162,9 @@ describe('<QuickStrategy />', () => {
     const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
     beforeEach(() => {
-        mock_DBot_store?.quick_strategy_store_1?.setValue('durationtype', 't');
-        mock_DBot_store?.quick_strategy_store_1?.setSelectedStrategy('MARTINGALE');
-        mock_DBot_store?.quick_strategy_store_1?.setFormVisibility(true);
+        mock_DBot_store?.quick_strategy?.setValue('durationtype', 't');
+        mock_DBot_store?.quick_strategy?.setSelectedStrategy('MARTINGALE');
+        mock_DBot_store?.quick_strategy?.setFormVisibility(true);
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
@@ -196,7 +191,7 @@ describe('<QuickStrategy />', () => {
             userEvent.click(screen.getByTestId('qs-run-button'));
         });
         await waitFor(() => {
-            expect(mock_DBot_store?.quick_strategy_store_1?.is_open).toBeFalsy();
+            expect(mock_DBot_store?.quick_strategy?.is_open).toBeFalsy();
         });
     });
 
@@ -211,7 +206,7 @@ describe('<QuickStrategy />', () => {
             userEvent.click(close_button);
         });
         await waitFor(() => {
-            expect(mock_DBot_store.quick_strategy_store_1.is_open).toBeFalsy();
+            expect(mock_DBot_store.quick_strategy.is_open).toBeFalsy();
         });
     });
 

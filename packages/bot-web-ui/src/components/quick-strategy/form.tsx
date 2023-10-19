@@ -14,8 +14,8 @@ import { TConfigItem, TFormData } from './types';
 
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
-    const { quick_strategy_store_1 } = useDBotStore();
-    const { selected_strategy } = quick_strategy_store_1;
+    const { quick_strategy } = useDBotStore();
+    const { selected_strategy } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
     const { values } = useFormikContext<TFormData>();

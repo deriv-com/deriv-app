@@ -26,8 +26,7 @@ const mockDbotStore = {
         onZoomInOutClick: jest.fn(),
         is_dialog_open: false,
     },
-    quick_strategy: {},
-    quick_strategy_store_1: {
+    quick_strategy: {
         setFormVisibility: jest.fn(),
     },
     dashboard: {},

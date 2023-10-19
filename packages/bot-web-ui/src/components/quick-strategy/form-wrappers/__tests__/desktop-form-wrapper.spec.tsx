@@ -1,16 +1,13 @@
 import React from 'react';
 import { Formik } from 'formik';
-
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
-
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { mock_ws } from 'Utils/mock';
-
 import DesktopFormWrapper from '../desktop-form-wrapper';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -48,7 +45,7 @@ describe('<DesktopFormWrapper />', () => {
         const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const initial_value = {};
-        mock_DBot_store?.quick_strategy_store_1.setFormVisibility(true);
+        mock_DBot_store?.quick_strategy.setFormVisibility(true);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
@@ -83,15 +80,15 @@ describe('<DesktopFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_DBot_store?.quick_strategy_store_1.is_open).toBeTruthy();
+        expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
 
         const close_button = screen.getByTestId('qs-desktop-close-button');
         userEvent.click(close_button);
-        expect(mock_DBot_store?.quick_strategy_store_1.is_open).toBeFalsy();
+        expect(mock_DBot_store?.quick_strategy.is_open).toBeFalsy();
     });
 
     it('should change the selected strategy', () => {
-        mock_DBot_store?.quick_strategy_store_1.setSelectedStrategy('MARTINGALE');
+        mock_DBot_store?.quick_strategy.setSelectedStrategy('MARTINGALE');
         render(
             <DesktopFormWrapper>
                 <div>test</div>
@@ -100,11 +97,11 @@ describe('<DesktopFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_DBot_store?.quick_strategy_store_1.selected_strategy).toBe('MARTINGALE');
+        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('MARTINGALE');
 
         const strategy = screen.getByText('D’Alembert');
         userEvent.click(strategy);
-        expect(mock_DBot_store?.quick_strategy_store_1.selected_strategy).toBe('D_ALEMBERT');
+        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('D_ALEMBERT');
     });
 
     it('shold open workspace', async () => {
@@ -116,11 +113,10 @@ describe('<DesktopFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_DBot_store?.quick_strategy_store_1.is_open).toBeTruthy();
+        expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
         const edit_button = screen.getByText('Edit');
         userEvent.click(edit_button);
-        await waitFor(() => expect(mock_DBot_store?.quick_strategy_store_1.is_open).toBeFalsy());
-        // expect(mock_DBot_store?.quick_strategy_store_1.is_open).toBeFalsy();
+        await waitFor(() => expect(mock_DBot_store?.quick_strategy.is_open).toBeFalsy());
     });
 
     it('should submit the form', async () => {
@@ -134,7 +130,7 @@ describe('<DesktopFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_DBot_store?.quick_strategy_store_1.is_open).toBeTruthy();
+        expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
         const submit_button = screen.getByRole('button', { name: 'Run' });
         userEvent.click(submit_button);
         await waitFor(() => expect(mock_onSubmit).toBeCalled());

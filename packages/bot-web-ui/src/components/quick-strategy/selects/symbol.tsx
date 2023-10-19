@@ -1,11 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
-
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
 
@@ -34,8 +32,8 @@ type TSymbolSelect = {
 };
 
 const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
-    const { quick_strategy_store_1 } = useDBotStore();
-    const { setValue } = quick_strategy_store_1;
+    const { quick_strategy } = useDBotStore();
+    const { setValue } = quick_strategy;
     const [active_symbols, setActiveSymbols] = React.useState([]);
     const { setFieldValue, values } = useFormikContext<TFormData>();
 

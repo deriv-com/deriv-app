@@ -12,7 +12,6 @@ import GoogleDriveStore from './google-drive-store';
 import JournalStore from './journal-store';
 import LoadModalStore from './load-modal-store';
 import QuickStrategyStore from './quick-strategy-store';
-import QuickStrategyStore1 from './quick-strategy-store-1';
 import RoutePromptDialogStore from './route-prompt-dialog-store';
 import RunPanelStore from './run-panel-store';
 import SaveModalStore from './save-modal-store';
@@ -49,7 +48,6 @@ export default class RootStore {
     public chart_store: ChartStore;
     public blockly_store: BlocklyStore;
     public data_collection_store: DataCollectionStore;
-    public quick_strategy_store_1: QuickStrategyStore1;
 
     constructor(core: TStores, ws: TWebSocket, dbot: TDbot) {
         this.ws = ws;
@@ -77,6 +75,5 @@ export default class RootStore {
         this.chart_store = new ChartStore(this);
         this.blockly_store = new BlocklyStore(this);
         this.data_collection_store = new DataCollectionStore(this, core);
-        this.quick_strategy_store_1 = new QuickStrategyStore1(this);
     }
 }

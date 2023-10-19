@@ -1,16 +1,13 @@
 import React from 'react';
 import { Formik } from 'formik';
-
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
-
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { mock_ws } from 'Utils/mock';
-
 import MobileFromWrapper from '../mobile-form-wrapper';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -48,7 +45,7 @@ describe('<MobileFormWrapper />', () => {
         const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const initial_value = {};
-        mock_DBot_store?.quick_strategy_store_1.setFormVisibility(true);
+        mock_DBot_store?.quick_strategy.setFormVisibility(true);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
@@ -75,7 +72,7 @@ describe('<MobileFormWrapper />', () => {
     });
 
     it('should change the selected strategy', () => {
-        mock_DBot_store?.quick_strategy_store_1.setSelectedStrategy('MARTINGALE');
+        mock_DBot_store?.quick_strategy.setSelectedStrategy('MARTINGALE');
         render(
             <MobileFromWrapper>
                 <div>test</div>
@@ -84,9 +81,9 @@ describe('<MobileFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_DBot_store?.quick_strategy_store_1.selected_strategy).toBe('MARTINGALE');
+        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('MARTINGALE');
         userEvent.selectOptions(screen.getByRole('combobox'), ['D_ALEMBERT']);
-        expect(mock_DBot_store?.quick_strategy_store_1.selected_strategy).toBe('D_ALEMBERT');
+        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('D_ALEMBERT');
     });
 
     it('should submit the form', async () => {
@@ -100,7 +97,7 @@ describe('<MobileFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_DBot_store?.quick_strategy_store_1.is_open).toBeTruthy();
+        expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
         const submit_button = screen.getByRole('button', { name: /Run/i });
         userEvent.click(submit_button);
         await waitFor(() => expect(mock_onSubmit).toBeCalled());

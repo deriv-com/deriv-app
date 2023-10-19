@@ -7,7 +7,7 @@ import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 
 const Toolbar = observer(() => {
-    const { run_panel, save_modal, load_modal, toolbar, quick_strategy_store_1 } = useDBotStore();
+    const { run_panel, save_modal, load_modal, toolbar, quick_strategy } = useDBotStore();
     const {
         ui: { is_mobile },
     } = useStore();
@@ -25,7 +25,7 @@ const Toolbar = observer(() => {
     const { toggleSaveModal } = save_modal;
     const { toggleLoadModal } = load_modal;
     const { is_running } = run_panel;
-    const { setFormVisibility } = quick_strategy_store_1;
+    const { setFormVisibility } = quick_strategy;
     const confirm_button_text = is_running ? localize('Yes') : localize('OK');
     const cancel_button_text = is_running ? localize('No') : localize('Cancel');
     const handleQuickStrategyOpen = () => {

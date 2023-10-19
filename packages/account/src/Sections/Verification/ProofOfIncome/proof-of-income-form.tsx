@@ -13,6 +13,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import FilesDescription from 'Components/file-uploader-container/files-descriptions';
 import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
@@ -36,8 +37,9 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
         DocumentUploadRequest['document_type'] | ''
     >('');
 
-    const { notifications } = useStore();
+    const { notifications, ui } = useStore();
     const { addNotificationMessageByKey, removeNotificationMessage, removeNotificationByKey } = notifications;
+    const { is_mobile } = ui;
 
     const initial_form_values: TInitialValues = {
         document_type: '',
@@ -68,8 +70,6 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                         const { income, needs_verification } = response.get_account_status.authentication;
                         const needs_poinc =
                             needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
-                        removeNotificationMessage({ key: 'authenticate' });
-                        removeNotificationByKey({ key: 'authenticate' });
                         removeNotificationMessage({ key: 'needs_poinc' });
                         removeNotificationByKey({ key: 'needs_poinc' });
                         removeNotificationMessage({ key: 'poinc_upload_limited' });
@@ -91,6 +91,15 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
             });
     };
 
+    const files_descriptions = [
+        <Localize key={1} i18n_default_text='The document must be up-to-date and signed by the issuance authority.' />,
+        <Localize key={2} i18n_default_text='The document must contain a letterhead.' />,
+        <Localize key={3} i18n_default_text='Invalid or incomplete documents shall be rejected.' />,
+    ];
+    const files_descriptions_title = (
+        <Localize i18n_default_text='The document must be recent and include your name and address:' />
+    );
+
     return (
         <Formik initialValues={initial_form_values} onSubmit={onSubmitValues} validate={validateFields}>
             {({
@@ -104,88 +113,87 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                 touched,
                 values,
             }) => (
-                <Form noValidate className='account-poinc-form' onSubmit={handleSubmit}>
+                <Form noValidate className='proof-of-income__form' onSubmit={handleSubmit}>
                     <FormBody scroll_offset={isDesktop() ? '0' : '200px'}>
-                        <div className='account-poinc-form__timeline-container'>
-                            <fieldset className='account-poinc-form__fieldset'>
-                                <Field name='document_type'>
-                                    {({ field }: FormikValues) => (
-                                        <React.Fragment>
-                                            <DesktopWrapper>
-                                                <Autocomplete
-                                                    {...field}
-                                                    name='document_type'
-                                                    data-lpignore='true'
-                                                    autoComplete='off'
-                                                    type='text'
-                                                    list_height='36rem'
-                                                    placeholder={localize('Please select a document to upload*')}
-                                                    error={touched.document_type && errors.document_type}
-                                                    list_items={poinc_documents_list}
-                                                    value={values.document_type}
-                                                    onChange={handleChange}
-                                                    onItemSelection={({
-                                                        value,
-                                                        text,
-                                                    }: typeof poinc_documents_list[number]) => {
-                                                        setFieldValue('document_type', value ? text : '', true);
-                                                        setStatus({ msg: '' });
-                                                    }}
-                                                    required
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    name='document_type'
-                                                    placeholder={localize('Please select a document to upload*')}
-                                                    label={localize('Please select a document to upload*')}
-                                                    value={values.document_type}
-                                                    list_items={poinc_documents_list}
-                                                    error={touched.document_type ? errors.document_type : undefined}
-                                                    use_text={true}
-                                                    onChange={e => {
-                                                        setFieldValue('document_type', e.target.value, true);
-                                                        setStatus({ msg: '' });
-                                                    }}
-                                                    required
-                                                    hide_top_placeholder
-                                                />
-                                            </MobileWrapper>
-                                        </React.Fragment>
-                                    )}
-                                </Field>
-                            </fieldset>
-                            <div className='account-poinc-form__upload-field'>
-                                <div className='account-poinc-form__notes-container'>
-                                    <FormSubHeader title={localize('Please note:')} />
-                                    <div className='account__file-uploader-box account__file-uploader-box-dashboard'>
-                                        <Text size='xs' line_height='s' color='less-prominent'>
-                                            <Localize i18n_default_text='The document must be up-to-date and signed by the issuance authority' />
-                                        </Text>
-                                        <Text size='xs' line_height='s' color='less-prominent'>
-                                            <Localize i18n_default_text='The document must contain a letterhead' />
-                                        </Text>
-                                        <Text size='xs' line_height='s' color='less-prominent'>
-                                            <Localize i18n_default_text='Invalid or incomplete documents shall be rejected' />
-                                        </Text>
-                                    </div>
-                                </div>
-                                <FileUploaderContainer
-                                    onRef={ref => (file_uploader_ref = ref)}
-                                    onFileDrop={df => {
-                                        setDocumentFile({
-                                            files: df?.files,
-                                            error_message: df?.error_message,
-                                        });
-                                        setStatus({ msg: '' });
-                                    }}
-                                    getSocket={WS.getSocket}
-                                    settings={{ documentType: uploading_document_type }}
-                                />
-                            </div>
+                        <fieldset className='proof-of-income__form-field'>
+                            <FormSubHeader
+                                title={localize('Select document')}
+                                title_text_size={is_mobile ? 'xs' : 's'}
+                            />
+                            <Field name='document_type'>
+                                {({ field }: FormikValues) => (
+                                    <React.Fragment>
+                                        <DesktopWrapper>
+                                            <Autocomplete
+                                                {...field}
+                                                name='document_type'
+                                                data-lpignore='true'
+                                                autoComplete='off'
+                                                type='text'
+                                                list_height='36rem'
+                                                placeholder={localize('Select your document*')}
+                                                error={touched.document_type && errors.document_type}
+                                                list_items={poinc_documents_list}
+                                                value={values.document_type}
+                                                onChange={handleChange}
+                                                onItemSelection={({
+                                                    value,
+                                                    text,
+                                                }: typeof poinc_documents_list[number]) => {
+                                                    setFieldValue('document_type', value ? text : '', true);
+                                                    setStatus({ msg: '' });
+                                                }}
+                                                required
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <SelectNative
+                                                name='document_type'
+                                                placeholder={localize('Select your document*')}
+                                                label={localize('Select your document*')}
+                                                value={values.document_type}
+                                                list_items={poinc_documents_list}
+                                                error={touched.document_type ? errors.document_type : undefined}
+                                                use_text={true}
+                                                onChange={e => {
+                                                    setFieldValue('document_type', e.target.value, true);
+                                                    setStatus({ msg: '' });
+                                                }}
+                                                required
+                                                hide_top_placeholder
+                                            />
+                                        </MobileWrapper>
+                                    </React.Fragment>
+                                )}
+                            </Field>
+                        </fieldset>
+                        <div className='proof-of-income__form-field'>
+                            <FormSubHeader
+                                title={localize('Document submission')}
+                                title_text_size={is_mobile ? 'xs' : 's'}
+                            />
+                            <FileUploaderContainer
+                                onRef={ref => (file_uploader_ref = ref)}
+                                onFileDrop={df => {
+                                    setDocumentFile({
+                                        files: df?.files,
+                                        error_message: df?.error_message,
+                                    });
+                                    setStatus({ msg: '' });
+                                }}
+                                getSocket={WS.getSocket}
+                                settings={{ documentType: uploading_document_type }}
+                                files_description={
+                                    <FilesDescription
+                                        descriptions={files_descriptions}
+                                        is_mobile={is_mobile}
+                                        title={files_descriptions_title}
+                                    />
+                                }
+                            />
                         </div>
                     </FormBody>
-                    <FormFooter className='account-form__footer-poinc'>
+                    <FormFooter>
                         {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
                         <Button
                             className='account-form__footer-btn'

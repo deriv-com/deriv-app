@@ -7,6 +7,7 @@ import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintB
 import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import FilesDescription from '../../../Components/file-uploader-container/files-descriptions';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormBodySection from '../../../Components/form-body-section';
@@ -18,31 +19,6 @@ import CommonMistakeExamples from '../../../Components/poa/common-mistakes/commo
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
 import { TFileRef } from 'Types';
-
-const FilesDescription = () => {
-    const descriptions = [
-        <Localize key={1} i18n_default_text='Utility bill: electricity, water, gas, or landline phone bill.' />,
-        <Localize
-            key={2}
-            i18n_default_text='Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.'
-        />,
-        <Localize key={3} i18n_default_text='Home rental agreement: valid and current agreement.' />,
-    ];
-    return (
-        <div className='files-description'>
-            <Text size={isMobile() ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
-                <Localize i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:' />
-            </Text>
-            <ul>
-                {descriptions.map(item => (
-                    <li key={item.props.key}>
-                        <Text size={isMobile() ? 'xxs' : 'xs'}>{item}</Text>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
-};
 
 let file_uploader_ref: TFileRef;
 
@@ -273,6 +249,17 @@ const ProofOfAddressForm = observer(
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
             return isMobile() && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
+        const files_descriptions = [
+            <Localize key={1} i18n_default_text='Utility bill: electricity, water, gas, or landline phone bill.' />,
+            <Localize
+                key={2}
+                i18n_default_text='Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.'
+            />,
+            <Localize key={3} i18n_default_text='Home rental agreement: valid and current agreement.' />,
+        ];
+        const files_descriptions_title = (
+            <Localize i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:' />
+        );
         return (
             <Formik initialValues={form_initial_values} onSubmit={onSubmitValues} validate={validateFields}>
                 {({
@@ -337,7 +324,13 @@ const ProofOfAddressForm = observer(
                                                     });
                                                 }}
                                                 getSocket={WS.getSocket}
-                                                files_description={<FilesDescription />}
+                                                is_mobile={isMobile()}
+                                                files_description={
+                                                    <FilesDescription
+                                                        title={files_descriptions_title}
+                                                        descriptions={files_descriptions}
+                                                    />
+                                                }
                                                 examples={<CommonMistakeExamples />}
                                             />
                                         </FormBodySection>

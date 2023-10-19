@@ -11,7 +11,7 @@ const ProofOfIncome = observer(() => {
     if (is_virtual) return <DemoMessage has_button />;
 
     return (
-        <div className='account-poinc__main-container'>
+        <div className='proof-of-income'>
             <ProofOfIncomeContainer is_switching={is_switching} refreshNotifications={refreshNotifications} />
         </div>
     );

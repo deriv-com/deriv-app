@@ -93,6 +93,7 @@ const AppNotificationMessages = ({
                   'identity',
                   'install_pwa',
                   'need_fa',
+                  'needs_poinc',
                   'notify_financial_assessment',
                   'poi_name_mismatch',
                   'poa_address_mismatch_failure',

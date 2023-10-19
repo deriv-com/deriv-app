@@ -1,11 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuthorize, useMT5AccountsList } from '@deriv/api';
+import { useAuthorize } from '@deriv/api';
 import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../../../public/images/mt5-swap-free.svg';
+import { THooks } from '../../../types';
 import './AddedMT5AccountsList.scss';
 
 const marketTypeToNameMapper = {
@@ -21,7 +22,7 @@ const marketTypeToIconMapper = {
 };
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
+    account: THooks.MT5AccountsList;
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
@@ -58,9 +59,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         </div>
                     )}
                 </div>
-                <p className='wallets-added-mt5__details-balance'>
-                    {account.display_balance} {account.currency}
-                </p>
+                <p className='wallets-added-mt5__details-balance'>{account.display_balance}</p>
                 <p className='wallets-added-mt5__details-loginid'>{account.display_login}</p>
             </div>
         </TradingAccountCard>

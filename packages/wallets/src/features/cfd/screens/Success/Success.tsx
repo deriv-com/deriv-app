@@ -1,12 +1,24 @@
 import React, { ReactNode } from 'react';
-import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
+import {
+    useActiveWalletAccount,
+    useCtraderAccountsList,
+    useDxtradeAccountsList,
+    useMT5AccountsList,
+    useSortedMT5Accounts,
+} from '@deriv/api';
+import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
-import { WalletText } from '../../../../components';
 import './Success.scss';
+
+type TDisplayBalance =
+    | Exclude<NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number]['display_balance'], undefined>
+    | Exclude<NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number]['display_balance'], undefined>
+    | Exclude<NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number]['display_balance'], undefined>;
 
 type TSuccessProps = {
     description: string;
+    displayBalance: TDisplayBalance;
     marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
     platform: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['platform'], undefined>;
     renderButton: () => ReactNode;
@@ -24,7 +36,14 @@ const marketTypeToPlatformMapper: Record<string, string> = {
     dxtrade: 'Deriv X',
 };
 
-const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, renderButton, title }) => {
+const Success: React.FC<TSuccessProps> = ({
+    description,
+    displayBalance,
+    marketType,
+    platform,
+    renderButton,
+    title,
+}) => {
     const { data } = useActiveWalletAccount();
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
@@ -56,12 +75,11 @@ const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, r
                 <WalletText lineHeight='3xs' size='2xs'>
                     {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
                 </WalletText>
-                {/* <div className='wallets-success__info__text--type'></div> */}
                 <WalletText color='primary' lineHeight='sm' size='2xs'>
                     {data?.currency} Wallet
                 </WalletText>
                 <WalletText lineHeight='xs' size='sm' weight='bold'>
-                    {data?.display_balance}
+                    {displayBalance}
                 </WalletText>
             </WalletGradientBackground>
             <WalletText align='center' size='md' weight='bold'>

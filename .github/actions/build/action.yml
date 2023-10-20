@@ -59,6 +59,8 @@ runs:
       GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}
       RUDDERSTACK_STAGING_KEY: ${{ inputs.RUDDERSTACK_STAGING_KEY }}
       RUDDERSTACK_URL: ${{ inputs.RUDDERSTACK_URL }}
+      STRAPI_API_URL: ${{ inputs.STRAPI_API_URL }}
+      STRAPI_TOKEN: ${{ inputs.STRAPI_TOKEN }}
 
     run: npm run build:prod
     shell: bash

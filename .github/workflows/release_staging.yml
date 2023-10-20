@@ -31,6 +31,8 @@ jobs:
         GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
         RUDDERSTACK_STAGING_KEY: ${{ vars.RUDDERSTACK_STAGING_KEY }}
         RUDDERSTACK_URL: ${{ vars.RUDDERSTACK_URL }}
+        STRAPI_API_URL: ${{ vars.STRAPI_API_URL }}
+        STRAPI_TOKEN: ${{ vars.STRAPI_TOKEN }}
     - name: Run tests
       run: npm test
     - name: Publish to Cloudflare Pages Staging 

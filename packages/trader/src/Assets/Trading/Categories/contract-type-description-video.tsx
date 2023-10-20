@@ -2,6 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { getUrlBase } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
+// import { useDTraderVideo } from '@deriv/hooks';
 
 type TContractTypeDescriptionVideo = {
     selected_contract_type?: string;
@@ -9,6 +10,8 @@ type TContractTypeDescriptionVideo = {
 };
 
 const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: TContractTypeDescriptionVideo) => {
+    // const response = useDTraderVideo();
+    // console.log('response', response);
     const { ui } = useStore();
     const { is_dark_mode_on: is_dark_theme, is_mobile } = ui;
     const getVideoSource = React.useCallback(

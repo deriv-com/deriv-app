@@ -89,8 +89,8 @@ const POISubmission = observer(
                 setSelectedCountry(getCountryFromResidence(country_code));
                 switch (service) {
                     case service_code.idv: {
-                        if (Number(idv.submissions_left) < 1) {
-                            if (Number(onfido.submissions_left) < 1) {
+                        if (Number(idv.submissions_left) < 1 || is_idv_disallowed) {
+                            if (Number(onfido.submissions_left) < 1 || country_code === 'ng') {
                                 setSubmissionService(service_code.manual);
                             } else {
                                 setSubmissionService(service_code.onfido);
@@ -124,6 +124,7 @@ const POISubmission = observer(
                 setSelectedCountry,
                 setSubmissionService,
                 setSubmissionStatus,
+                is_idv_disallowed,
             ]
         );
 

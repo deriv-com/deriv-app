@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { VANILLALONG, TURBOS } from '@deriv/shared';
-import { useTraderStore } from 'Stores/useTraderStores';
+import { ActiveSymbols } from '@deriv/api-types';
 import PositionsModalCard from '../positions-modal-card';
 import TraderProviders from '../../../../../trader-providers';
 
@@ -23,7 +23,7 @@ const default_mock_props = {
         date_expiry: 626512765,
         tick_count: 15,
     },
-    contract_update: 'test_contract_update',
+    contract_update: {},
     currency: 'USD',
     current_tick: 6,
     id: 123386875,
@@ -40,7 +40,7 @@ const default_mock_props = {
 const default_mock_store = {
     modules: {
         trade: {
-            active_symbols: ['Vol 10'] as unknown as ReturnType<typeof useTraderStore>['active_symbols'],
+            active_symbols: [{ symbol: 'R_10' }] as ActiveSymbols,
         },
     },
     ui: {
@@ -174,5 +174,21 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
         expect(screen.getByText(/2,671.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Payout limit:/i)).toBeInTheDocument();
+    });
+    it('should render the contract card for Multipliers', () => {
+        default_mock_props.contract_info.contract_type = 'multiplier';
+        render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
+
+        expect(screen.queryByText(PositionsCardLoader)).not.toBeInTheDocument();
+        expect(screen.getByText(SymbolDisplayName)).toBeInTheDocument();
+        expect(screen.getByText(/USD/i)).toBeInTheDocument();
+        expect(screen.getByText('Stake:')).toBeInTheDocument();
+        expect(screen.getByText(/Current stake:/i)).toBeInTheDocument();
+        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/Deal cancel. fee:/i)).toBeInTheDocument();
+        expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
+        expect(screen.getByText(/Take profit:/i)).toBeInTheDocument();
+        expect(screen.getByText(/Stop loss:/i)).toBeInTheDocument();
+        expect(screen.getByText(/Total profit\/loss:/i)).toBeInTheDocument();
     });
 });

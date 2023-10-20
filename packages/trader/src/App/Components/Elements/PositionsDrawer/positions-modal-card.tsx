@@ -259,7 +259,7 @@ const PositionsModalCard = observer(
             />
         );
 
-        const custom_contract_el = (
+        const common_contract_el = (
             <React.Fragment>
                 <ContractCard
                     contract_info={contract_info}
@@ -275,7 +275,7 @@ const PositionsModalCard = observer(
             </React.Fragment>
         );
 
-        const contract_el = is_vanilla ? contract_vanilla_el : custom_contract_el;
+        const contract_el = is_vanilla ? contract_vanilla_el : common_contract_el;
 
         return (
             <div id={`dt_drawer_card_${id}`} className={classNames('positions-modal-card__wrapper', className)}>

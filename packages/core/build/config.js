@@ -167,7 +167,7 @@ const copyConfig = base => {
     };
 };
 
-const generateSWConfig = is_release => ({
+const generateSWConfig = () => ({
     cleanupOutdatedCaches: true,
     exclude: [/\**/],
     runtimeCaching: [
@@ -230,9 +230,6 @@ const generateSWConfig = is_release => ({
     ],
     skipWaiting: true,
     clientsClaim: true,
-    ...(is_release && {
-        importScripts: [`https://cdn.pushwoosh.com/webpush/v3/pushwoosh-service-worker.js`],
-    }),
 });
 
 const htmlOutputConfig = is_release => ({

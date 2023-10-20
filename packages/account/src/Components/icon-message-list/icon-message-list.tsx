@@ -54,7 +54,7 @@ const IconMessageList = observer(({ className, icon, message, message_list = [],
                         <div className='account-management__list-container'>
                             <div className='account-management__list-message'>
                                 <div className='account-management__list-icon'>
-                                    <Icon icon='IcCloseCircle' color='red' />
+                                    <Icon icon='IcAlertDanger' color='red' />
                                 </div>
                                 <section>
                                     {message_list.length < 2 ? (

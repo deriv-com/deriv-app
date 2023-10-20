@@ -1,6 +1,7 @@
 import { action, observable, makeObservable, override } from 'mobx';
 import { routes, isEmptyObject, isForwardStarting, WS, contractCancelled, contractSold } from '@deriv/shared';
 import { Money } from '@deriv/components';
+import { RudderStack, getRudderstackConfig } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
@@ -261,6 +262,8 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     handleSell(response) {
+        const { action_names, event_names, form_names, subform_names } = getRudderstackConfig();
+        
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
             this.is_sell_requested = false;
@@ -278,6 +281,12 @@ export default class ContractReplayStore extends BaseStore {
             this.root_store.notifications.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );
+
+            RudderStack.track(event_names.reports, {
+                action: action_names.close_contract,
+                form_name: form_names.default,
+                subform_name: subform_names.contract_details,
+            });
         }
     }
 

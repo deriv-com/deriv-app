@@ -124,7 +124,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                         is_animated
                         has_rounded_button
                         onChange={e => {
-                            setSelectedTab(e.target.value);
+                            setSelectedTab(e.target.value as TSelectedTab);
                         }}
                         value={selected_tab}
                     />

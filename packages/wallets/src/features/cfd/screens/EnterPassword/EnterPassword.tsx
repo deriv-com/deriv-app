@@ -2,6 +2,7 @@ import React from 'react';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import './EnterPassword.scss';
 import { TMarketTypes, TPlatforms } from '../../types';
+import { PlatformToTitleMapper } from '../../constants';
 
 type TProps = {
     isLoading?: boolean;
@@ -12,13 +13,6 @@ type TProps = {
     platform: TPlatforms.All;
 };
 
-const platformToTitleMapper: Record<TPlatforms.All, string> = {
-    ctrader: 'cTrader',
-    derivez: 'Deriv EZ',
-    dxtrade: 'Deriv X',
-    mt5: 'Deriv MT5',
-};
-
 const EnterPassword: React.FC<TProps> = ({
     isLoading = false,
     marketType,
@@ -27,7 +21,7 @@ const EnterPassword: React.FC<TProps> = ({
     onSecondaryClick,
     platform,
 }) => {
-    const title = platformToTitleMapper[platform];
+    const title = PlatformToTitleMapper[platform];
     return (
         <React.Fragment>
             <div className='wallets-enter-password'>

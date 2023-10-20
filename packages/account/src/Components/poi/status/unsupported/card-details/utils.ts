@@ -39,6 +39,10 @@ export const validateFields = (values: FormikValues, fields: TFields = [], docum
             errors[name] = localize('{{label}} is required.', {
                 label,
             });
+        } else if (type === 'text' && value.length > 30) {
+            errors[name] = localize('{{label}} must be less than 30 characters.', {
+                label,
+            });
         } else if (type === 'text' && !/^[\w\s-]{0,30}$/g.test(value)) {
             errors[name] = localize('Only letters, numbers, space, underscore, and hyphen are allowed for {{label}}.', {
                 label,

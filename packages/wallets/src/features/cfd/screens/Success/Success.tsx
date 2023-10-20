@@ -5,6 +5,7 @@ import { WalletGradientBackground } from '../../../../components/WalletGradientB
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import './Success.scss';
 import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../types';
+import useDevice from '../../../../hooks/useDevice';
 
 type TSuccessProps = {
     description: string;
@@ -35,6 +36,7 @@ const Success: React.FC<TSuccessProps> = ({
     title,
 }) => {
     const { data } = useActiveWalletAccount();
+    const { isDesktop } = useDevice();
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
@@ -78,7 +80,7 @@ const Success: React.FC<TSuccessProps> = ({
             <WalletText align='center' size='sm'>
                 {description}
             </WalletText>
-            {renderButton()}
+            {isDesktop && renderButton()}
         </div>
     );
 };

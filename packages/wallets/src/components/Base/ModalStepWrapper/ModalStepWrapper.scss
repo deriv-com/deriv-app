@@ -12,16 +12,18 @@
         grid-template-rows: 9% auto;
 
         &--fixed {
-            grid-template-rows: 9% auto 8%;
+            grid-template-rows: 7% auto 8%;
         }
     }
 
     &__header {
-        padding: 2rem;
+        padding: 0 2rem;
         border-bottom: 2px solid #f2f3f4;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        display: grid;
+        grid-template-columns: auto 4%;
 
         &-close-icon {
             cursor: pointer;

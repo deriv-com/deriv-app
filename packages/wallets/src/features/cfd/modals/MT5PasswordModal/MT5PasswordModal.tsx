@@ -7,11 +7,13 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import { ModalWrapper, WalletButton } from '../../../../components/Base';
+import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { CreatePassword, EnterPassword, Success } from '../../screens';
 import { TMarketTypes, TPlatforms } from '../../types';
+import useDevice from '../../../../hooks/useDevice';
+import './MT5PasswordModal.scss';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -38,6 +40,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
     const { hide } = useModal();
+    const { isMobile } = useDevice();
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeWallet?.is_virtual;
@@ -78,10 +81,20 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         });
     };
 
-    return (
-        <ModalWrapper hideCloseButton={isSuccess}>
-            {isSuccess && (
-                <Success
+    if (isMobile) {
+        return (
+            <ModalStepWrapper
+                // title='Enter your Deriv MT5 password'
+                title=''
+                renderFooter={() => (
+                    <div className='wallets-mt5-password-modal__footer'>
+                        {/* <WalletButton text='Forgot password?' isFullWidth size='lg' variant='outlined' />
+                        <WalletButton text='Add account' isFullWidth size='lg' /> */}
+                        <WalletButton text='Create Deriv MT5 Password ' isFullWidth size='lg' />
+                    </div>
+                )}
+            >
+                {/* <Success
                     description={`You can now start practicing trading with your ${marketTypeTitle} ${
                         isDemo ? ' demo' : 'real'
                     } account.`}
@@ -92,9 +105,32 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     platform={platform}
                     renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
                     title={`Your ${marketTypeTitle} ${isDemo ? ' demo' : 'real'} account is ready`}
+                /> */}
+                <CreatePassword
+                    icon={<MT5PasswordIcon />}
+                    onPasswordChange={e => setPassword(e.target.value)}
+                    onPrimaryClick={onSubmit}
+                    platform='mt5'
                 />
-            )}
-            {!isSuccess &&
+            </ModalStepWrapper>
+        );
+    }
+
+    return (
+        <ModalWrapper hideCloseButton={isSuccess}>
+            {/* {isSuccess && ( */}
+            <Success
+                description={`You can now start practicing trading with your ${marketTypeTitle} ${
+                    isDemo ? ' demo' : 'real'
+                } account.`}
+                displayBalance={mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || ''}
+                marketType={marketType}
+                platform={platform}
+                renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
+                title={`Your ${marketTypeTitle} ${isDemo ? ' demo' : 'real'} account is ready`}
+            />
+            {/* )} */}
+            {/* {!isSuccess &&
                 (hasMT5Account ? (
                     <EnterPassword
                         marketType={marketType}
@@ -109,7 +145,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         onPrimaryClick={onSubmit}
                         platform='mt5'
                     />
-                ))}
+                ))} */}
         </ModalWrapper>
     );
 };

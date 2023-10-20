@@ -30,9 +30,9 @@ const CreatePassword: React.FC<TProps> = ({ icon, onPasswordChange, onPrimaryCli
                 <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
                 <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
             </div>
-            <button className='wallets-create-password-button' onClick={onPrimaryClick}>
+            {/* <button className='wallets-create-password-button' onClick={onPrimaryClick}>
                 Create {title} password
-            </button>
+            </button> */}
         </div>
     );
 };

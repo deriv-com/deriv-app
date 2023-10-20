@@ -393,9 +393,7 @@
             max-width: calc(100% - 2.4rem);
             line-height: 1.4;
             @include mobile {
-                &:not(&--multiplier) {
-                    max-width: unset;
-                }
+                max-width: unset;
             }
         }
         &__body {

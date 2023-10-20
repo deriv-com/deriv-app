@@ -61,10 +61,10 @@ const MultiplierCardBody = ({
                     'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
                 })}
             >
-                <ContractCardItem header={STAKE} className='dc-contract-card__stake' is_multiplier>
+                <ContractCardItem header={STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price - cancellation_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake' is_multiplier>
+                <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
                             'dc-contract-card--profit': +profit > 0,
@@ -74,7 +74,7 @@ const MultiplierCardBody = ({
                         <Money amount={bid_price} currency={currency} />
                     </div>
                 </ContractCardItem>
-                <ContractCardItem header={DEAL_CANCEL_FEE} className='dc-contract-card__deal-cancel-fee' is_multiplier>
+                <ContractCardItem header={DEAL_CANCEL_FEE} className='dc-contract-card__deal-cancel-fee'>
                     {cancellation_price ? (
                         <Money amount={cancellation_price} currency={currency} />
                     ) : (
@@ -83,19 +83,17 @@ const MultiplierCardBody = ({
                         </React.Fragment>
                     )}
                 </ContractCardItem>
-                <ContractCardItem header={BUY_PRICE} className='dc-contract-card__buy-price' is_multiplier>
+                <ContractCardItem header={BUY_PRICE} className='dc-contract-card__buy-price'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
                 {has_progress_slider && is_mobile && !is_sold && (
-                    <ContractCardItem className='dc-contract-card__date-expiry' is_multiplier>
-                        {progress_slider}
-                    </ContractCardItem>
+                    <ContractCardItem className='dc-contract-card__date-expiry'>{progress_slider}</ContractCardItem>
                 )}
                 <div className='dc-contract-card__limit-order-info'>
-                    <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit' is_multiplier>
+                    <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
                         {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                     </ContractCardItem>
-                    <ContractCardItem header={STOP_LOSS} className='dc-contract-card__stop-loss' is_multiplier>
+                    <ContractCardItem header={STOP_LOSS} className='dc-contract-card__stop-loss'>
                         {stop_loss ? (
                             <React.Fragment>
                                 <strong>-</strong>
@@ -131,7 +129,6 @@ const MultiplierCardBody = ({
                 is_crypto={isCryptocurrency(currency)}
                 is_loss={+profit < 0}
                 is_won={+profit > 0}
-                is_multiplier
             >
                 <Money amount={profit} currency={currency} />
                 <div

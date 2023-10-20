@@ -1,11 +1,12 @@
 import React from 'react';
-import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api';
 import { TradingAccountCard, WalletButton } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../../../public/images/mt5-swap-free.svg';
 import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
+import { THooks } from '../../../types';
 import './AvailableMT5AccountsList.scss';
 
 const marketTypeToDescriptionMapper = {
@@ -27,7 +28,7 @@ const marketTypeToIconMapper = {
 };
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
+    account: THooks.SortedMT5Accounts;
 };
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {

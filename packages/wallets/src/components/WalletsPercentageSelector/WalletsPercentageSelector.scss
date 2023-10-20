@@ -13,12 +13,13 @@
         height: 2.4rem;
         width: 8.7rem;
 
-        &--highlighted {
-            background-color: var(--status-success);
-        }
-
         @include mobile {
             width: 95%;
+        }
+
+        &__fill {
+            background-color: var(--status-success);
+            height: 100%;
         }
     }
 

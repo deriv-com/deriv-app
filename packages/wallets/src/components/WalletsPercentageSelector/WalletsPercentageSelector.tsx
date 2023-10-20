@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import WalletsPercentageSelectorBlock from './WalletsPercentageSelectorBlock';
 import './WalletsPercentageSelector.scss';
 
@@ -9,56 +9,33 @@ type TWalletsPercentageSelector = {
 };
 
 const WalletsPercentageSelector = ({ amount, balance, onChangePercentage }: TWalletsPercentageSelector) => {
-    const [selectedPercentage, setSelectedPercentage] = useState<number>(0);
-    const [isSetWithPercentageSelector, setIsSetWithPercentageSelector] = useState(false);
+    const percentageBlockCount = 4;
+    const percentageBlockSize = 100 / percentageBlockCount;
 
-    useEffect(() => {
-        if (isSetWithPercentageSelector) setIsSetWithPercentageSelector(false);
-    }, [amount, balance, isSetWithPercentageSelector]);
+    const percentageSelectorOptions = [...Array(percentageBlockCount).keys()].map(index => ({
+        label: index + 1 === percentageBlockCount ? 'All' : `${((index + 1) * 100) / percentageBlockCount}%`,
+        percentage: ((index + 1) * 100) / percentageBlockCount,
+    }));
 
-    const getIsHightlighted = useCallback(
-        (percentage: number) => {
-            return isSetWithPercentageSelector && percentage <= selectedPercentage;
+    const balancePercentage = useMemo(() => (amount * 100) / balance, [amount, balance]);
+
+    const getBlockFillPercentage = useCallback(
+        (blockPercentage: number) => {
+            if (balancePercentage >= blockPercentage) return 100;
+            if (balancePercentage < blockPercentage - percentageBlockSize) return 0;
+            return ((balancePercentage - (blockPercentage - percentageBlockSize)) * 100) / percentageBlockSize;
         },
-        [isSetWithPercentageSelector, selectedPercentage]
+        [balancePercentage, percentageBlockSize]
     );
-
-    const onClick = useCallback(
-        (percentage: number) => {
-            setSelectedPercentage(percentage);
-            setIsSetWithPercentageSelector(true);
-            onChangePercentage(percentage);
-        },
-        [onChangePercentage]
-    );
-
-    const percentageSelectorOptions = [
-        {
-            label: '25%',
-            percentage: 25,
-        },
-        {
-            label: '50%',
-            percentage: 50,
-        },
-        {
-            label: '75%',
-            percentage: 75,
-        },
-        {
-            label: 'All',
-            percentage: 100,
-        },
-    ] as const;
 
     return (
         <div className='wallets-percentage-selector'>
             {percentageSelectorOptions.map((option, index) => (
                 <WalletsPercentageSelectorBlock
-                    isHighlighted={getIsHightlighted(option.percentage)}
+                    fillPercentage={getBlockFillPercentage(option.percentage)}
                     key={index}
                     label={option.label}
-                    onClick={() => onClick(option.percentage)}
+                    onClick={() => onChangePercentage(option.percentage)}
                 />
             ))}
         </div>

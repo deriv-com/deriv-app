@@ -1,5 +1,4 @@
 import { localize } from '@deriv/translations';
-
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -71,7 +70,7 @@ export const duration: TConfigItem = {
 export const label_profit: TConfigItem = {
     type: 'label',
     label: localize('Profit Threshold'),
-    description: localize(`The bot will stop trading if your total ${'Profit'} exceeds this amount.`),
+    description: localize(`The bot will stop trading if your total profit exceeds this amount.`),
 };
 
 export const profit: TConfigItem = {
@@ -83,7 +82,7 @@ export const profit: TConfigItem = {
 export const label_loss: TConfigItem = {
     type: 'label',
     label: localize('Loss Threshold'),
-    description: localize(`The bot will stop trading if your total ${'Profit'} exceeds this amount.`),
+    description: localize(`The bot will stop trading if your total loss exceeds this amount.`),
 };
 
 export const loss: TConfigItem = {
@@ -115,12 +114,16 @@ export const size: TConfigItem = {
     ],
 };
 
-export const label_unit: TConfigItem = {
+export const label_unit_d_alembert: TConfigItem = {
     type: 'label',
     label: localize('Unit'),
-    description: localize(
-        'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 2.'
-    ),
+    description: localize("The amount that you may add to your stake if you're losing a trade."),
+};
+
+export const label_unit_oscars_grind: TConfigItem = {
+    type: 'label',
+    label: localize('Unit'),
+    description: localize('The amount that you may add to your stake after each successful trade.'),
 };
 
 export const unit: TConfigItem = {
@@ -154,7 +157,7 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [symbol, tradetype, label_initial_stake, initial_stake, label_duration, durationtype, duration],
-            [label_profit, profit, label_loss, loss, label_unit, unit],
+            [label_profit, profit, label_loss, loss, label_unit_d_alembert, unit],
         ],
     },
     OSCARS_GRIND: {
@@ -165,7 +168,7 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [symbol, tradetype, label_initial_stake, initial_stake, label_duration, durationtype, duration],
-            [label_profit, profit, label_loss, loss, label_unit, unit],
+            [label_profit, profit, label_loss, loss, label_unit_oscars_grind, unit],
         ],
     },
 };

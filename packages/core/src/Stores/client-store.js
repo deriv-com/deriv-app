@@ -2254,11 +2254,9 @@ export default class ClientStore extends BaseStore {
             if (is_social_signup_provider) {
                 const { get_account_status } = await WS.authorized.getAccountStatus();
 
-                const social_identity_provider = get_account_status?.social_identity_provider;
-
                 Analytics.trackEvent('ce_virtual_signup_form', {
                     action: 'signup_continued',
-                    signup_provider: social_identity_provider,
+                    signup_provider: get_account_status?.social_identity_provider,
                     form_name: this.root_store?.ui?.is_mobile
                         ? 'virtual_signup_web_mobile_default'
                         : 'virtual_signup_web_desktop_default',

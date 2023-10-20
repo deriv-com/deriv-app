@@ -22,6 +22,7 @@ import AppContent from './AppContent';
 // TODO: Lazy load smartchart styles
 import '@deriv/deriv-charts/dist/smartcharts.css';
 import 'Sass/app.scss';
+import { Analytics } from '@deriv/analytics';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -43,6 +44,16 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     React.useEffect(() => {
         initializeTranslations();
+
+        Analytics.initialise({
+            growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
+            growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
+            rudderstackKey:
+                process.env.NODE_ENV === 'production'
+                    ? process.env.RUDDERSTACK_PRODUCTION_KEY
+                    : process.env.RUDDERSTACK_STAGING_KEY,
+            enableDevMode: process.env.NODE_ENV !== 'production',
+        });
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());

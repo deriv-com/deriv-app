@@ -1,4 +1,7 @@
 .jurisdiction-modal {
+    &__header ~ .dc-mobile-dialog__content {
+        height: 100%;
+    }
     &__title {
         display: flex;
         gap: 1.6rem;

@@ -13,6 +13,17 @@ const TradersHubOnboarding = observer(() => {
     const { is_dark_mode_on } = ui;
     const { is_next_wallet_enabled } = useFeatureFlags();
 
+    const onClickHandler = () =>
+        is_next_wallet_enabled
+            ? () => {
+                  localStorage.setItem('walletsOnboarding', 'started');
+                  window.dispatchEvent(new Event('storage'));
+              }
+            : () => {
+                  history.push(routes.onboarding);
+                  setIsOnboardingVisited(false);
+              };
+
     return (
         <div data-testid='dt_traders_hub_onboarding'>
             <div className='traders-hub-header__tradershub--onboarding--logo'>
@@ -27,17 +38,7 @@ const TradersHubOnboarding = observer(() => {
                         data_testid='dt_traders_hub_onboarding_icon'
                         icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
-                        onClick={
-                            is_next_wallet_enabled
-                                ? () => {
-                                      localStorage.setItem('walletsOnboarding', 'started');
-                                      window.dispatchEvent(new Event('storage'));
-                                  }
-                                : () => {
-                                      history.push(routes.onboarding);
-                                      setIsOnboardingVisited(false);
-                                  }
-                        }
+                        onClick={onClickHandler}
                     />
                 </Popover>
             </div>

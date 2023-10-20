@@ -1645,9 +1645,10 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                Analytics.identifyEvent(user_id, {
-                    language: getLanguage().toLowerCase(),
+                Analytics.setAttributes({
+                    user_language: getLanguage().toLowerCase(),
                     app_id: getAppId(),
+                    user_id,
                 });
                 const current_page = window.location.hostname + window.location.pathname;
                 Analytics.pageView(current_page);
@@ -1722,10 +1723,11 @@ export default class ClientStore extends BaseStore {
             }
 
             if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
-            this.loginid !== 'null' && RudderStack.setAccountType(this.loginid.substring(0, 2));
+            this.loginid !== 'null' && Analytics.setAttributes({ account_type: this.loginid.substring(0, 2) });
             if (this.user_id) {
-                RudderStack.identifyEvent(this.user_id, {
-                    language: getLanguage().toLowerCase(),
+                Analytics.setAttributes({
+                    user_language: getLanguage().toLowerCase(),
+                    user_id: this.user_id,
                 });
             }
             await this.fetchResidenceList();
@@ -2126,7 +2128,7 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             this.cleanUp();
 
-            RudderStack.reset();
+            Analytics.reset();
             this.setLogout(true);
         }
 

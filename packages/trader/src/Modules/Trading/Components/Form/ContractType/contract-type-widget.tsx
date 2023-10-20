@@ -80,7 +80,7 @@ const ContractTypeWidget = observer(({ name, value, list, onChange, languageChan
             onChange({ target: { name, value: clicked_item.value } });
 
             if (subform_name === 'trade_type') {
-                RudderStack.track('ce_trade_types_form', {
+                Analytics.trackEvent('ce_trade_types_form', {
                     action: 'choose_trade_type',
                     subform_name,
                     tab_name: selected_category,
@@ -88,7 +88,7 @@ const ContractTypeWidget = observer(({ name, value, list, onChange, languageChan
                     form_name: 'default',
                 });
             } else {
-                RudderStack.track('ce_trade_types_form', {
+                Analytics.trackEvent('ce_trade_types_form', {
                     action: 'choose_trade_type',
                     subform_name,
                     trade_type_name: clicked_item?.text,
@@ -102,7 +102,7 @@ const ContractTypeWidget = observer(({ name, value, list, onChange, languageChan
         setInfoDialogVisibility(!is_info_dialog_open);
         setItem(clicked_item);
 
-        RudderStack.track('ce_trade_types_form', {
+        Analytics.trackEvent('ce_trade_types_form', {
             action: 'info_open',
             tab_name: selected_category,
             trade_type_name: clicked_item?.text,
@@ -115,7 +115,7 @@ const ContractTypeWidget = observer(({ name, value, list, onChange, languageChan
 
     const onSearchBlur = () => {
         if (search_query) {
-            RudderStack.track('ce_trade_types_form', {
+            Analytics.trackEvent('ce_trade_types_form', {
                 action: 'search',
                 search_string: search_query,
             });

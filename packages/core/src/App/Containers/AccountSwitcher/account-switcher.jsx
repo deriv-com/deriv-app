@@ -122,7 +122,7 @@ const AccountSwitcher = ({
         closeAccountsDialog();
         if (account_loginid === loginid) return;
         await switchAccount(loginid);
-        Analytics.setAccountType(loginid.substring(0, 2));
+        Analytics.setAttributes({ account_type: loginid.substring(0, 2) });
     };
 
     const resetBalance = async () => {

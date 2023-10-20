@@ -45,17 +45,17 @@ const AppContents = observer(({ children }) => {
 
     React.useEffect(() => {
         if (is_logged_in && user_id) {
-            Analytics.setAccountType(loginid.substring(0, 2));
+            Analytics.setAttributes({ account_type: loginid.substring(0, 2) });
             Analytics.identifyEvent(user_id, {
                 language: getLanguage().toLowerCase() || 'en',
             });
-            RudderStack.pageView(current_page);
+            Analytics.pageView(current_page);
         }
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    RudderStack.pageView(current_page);
+    Analytics.pageView(current_page);
 
     React.useEffect(() => {
         const allow_tracking = !is_eu_country || tracking_status === 'accepted';

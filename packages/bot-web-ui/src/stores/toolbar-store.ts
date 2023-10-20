@@ -7,6 +7,7 @@ interface IToolbarStore {
     file_name: string;
     has_undo_stack: boolean;
     has_redo_stack: boolean;
+    is_reset_button_clicked: boolean;
     onResetClick: () => void;
     closeResetDialog: () => void;
     onResetOkButtonClick: () => void;
@@ -29,6 +30,7 @@ export default class ToolbarStore implements IToolbarStore {
             file_name: observable,
             has_undo_stack: observable,
             has_redo_stack: observable,
+            is_reset_button_clicked: observable,
             onResetClick: action.bound,
             closeResetDialog: action.bound,
             onResetOkButtonClick: action.bound,
@@ -46,6 +48,11 @@ export default class ToolbarStore implements IToolbarStore {
     file_name = config.default_file_name;
     has_undo_stack = false;
     has_redo_stack = false;
+    is_reset_button_clicked = false;
+
+    setResetButtonState = (is_reset_button_clicked: boolean): void => {
+        this.is_reset_button_clicked = is_reset_button_clicked;
+    };
 
     onResetClick = (): void => {
         this.is_dialog_open = true;
@@ -64,10 +71,10 @@ export default class ToolbarStore implements IToolbarStore {
             'reset'
         );
         this.is_dialog_open = false;
-
         const { run_panel } = this.root_store;
-        if (run_panel.is_running) {
-            this.root_store.run_panel.stopBot();
+        const { is_running } = run_panel;
+        if (is_running) {
+            this.is_reset_button_clicked = true;
         }
     };
 

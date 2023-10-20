@@ -11,7 +11,7 @@ import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
-    const { dashboard, app, run_panel, quick_strategy } = useDBotStore();
+    const { dashboard, app, run_panel, toolbar, quick_strategy } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_open } = quick_strategy;
     const { is_running } = run_panel;
@@ -27,8 +27,12 @@ const BotBuilder = observer(() => {
     }, [onMount, onUnmount]);
 
     const handleBlockChangeOnBotRun = (e: Event) => {
-        if (e.type !== 'ui') {
+        const { is_reset_button_clicked, setResetButtonState } = toolbar;
+        if (e.type !== 'ui' && !is_reset_button_clicked) {
             setShowSnackbar(true);
+            removeBlockChangeListener();
+        } else if (is_reset_button_clicked) {
+            setResetButtonState(false);
             removeBlockChangeListener();
         }
     };

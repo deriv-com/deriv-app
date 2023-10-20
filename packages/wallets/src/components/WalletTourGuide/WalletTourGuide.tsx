@@ -9,7 +9,7 @@ const WalletTourGuide = () => {
     const key = 'walletsOnboarding';
     const [isStarted, setIsStarted] = useState(localStorage.getItem(key) === 'started');
 
-    const { switchAccount } = useAuthorize();
+    const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAvailableWallets();
@@ -27,20 +27,17 @@ const WalletTourGuide = () => {
     };
 
     useEffect(() => {
-        const switchToFiatWallet = (): boolean => {
+        const switchToFiatWallet = () => {
             if (fiatWalletLoginId && fiatWalletLoginId !== activeWalletLoginId) {
                 switchAccount(fiatWalletLoginId);
-                return true;
             }
-            return false;
         };
 
         const onStorage = () => {
             const needToStart = localStorage.getItem(key) === 'started';
             if (needToStart) {
-                const isJustSwitched = switchToFiatWallet();
-                if (isJustSwitched) setTimeout(() => setIsStarted(true), 1000);
-                else setIsStarted(true);
+                switchToFiatWallet();
+                setIsStarted(true);
             }
         };
 
@@ -64,9 +61,8 @@ const WalletTourGuide = () => {
             continuous
             disableCloseOnEsc
             disableOverlayClose
-            disableScrollParentFix
             floaterProps={{ disableAnimation: true }}
-            run={isStarted}
+            run={isStarted && !isLoading && !isFetching && isSuccess}
             scrollOffset={150}
             scrollToFirstStep
             steps={tourStepConfig(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded)}

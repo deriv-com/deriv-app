@@ -91,7 +91,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                                       size='xxs'
                                       weight='bold'
                                       align='center'
-                                      key={idx}
+                                      key={file.name}
                                       className='file-dropzone__filename'
                                   >
                                       {filename_limit ? truncateFileName(file, filename_limit) : file.name}

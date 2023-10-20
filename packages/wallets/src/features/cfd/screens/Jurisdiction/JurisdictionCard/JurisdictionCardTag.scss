@@ -1,7 +1,7 @@
 .wallets-jurisdiction-card-tag {
     background-color: #dfeaff;
     border-radius: 13px 13px 0 0;
-    padding: 8px;
+    padding: 0.8rem;
     position: absolute;
     top: 0;
     left: 0;
@@ -9,7 +9,7 @@
 
     &__label {
         color: #377cfc;
-        font-size: 12px;
+        font-size: 1.2rem;
         display: grid;
         place-items: center;
         font-weight: 700;

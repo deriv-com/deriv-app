@@ -1,9 +1,8 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
-import { Button, Modal, Icon, DataTable, Loading, Text } from '@deriv/components';
+import { DataTable, Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { WS } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
 import ConnectedAppsKnowMore from './connected-apps-know-more';
 import ConnectedAppsInfo from './connected-apps-info';
@@ -11,6 +10,7 @@ import ConnectedAppsEarnMore from './connected-apps-earn-more';
 import ConnectedAppsEmpty from './connected-apps-empty';
 import DataListTemplate from './data-list-template';
 import DataTableTemplate from './data-table-template';
+import ConnectedAppsRevokeModal from './connected-apps-revoke-modal';
 import './connected-apps.scss';
 
 type TSource = React.ComponentProps<typeof DataTable>['columns'];
@@ -87,7 +87,7 @@ const ConnectedApps = observer(() => {
                                 <DataTable
                                     className='connected-apps'
                                     data_source={connected_apps as unknown as TSource}
-                                    columns={DataTableTemplate(handleToggleModal)}
+                                    columns={DataTableTemplate({ handleToggleModal })}
                                     content_loader='span'
                                 />
                             </div>
@@ -101,26 +101,11 @@ const ConnectedApps = observer(() => {
                 <ConnectedAppsKnowMore />
                 <ConnectedAppsEarnMore />
             </section>
-            <Modal is_open={is_modal_open} className='connected-apps' width='44rem'>
-                <Modal.Body>
-                    <div className='connected-apps-modal--wrapper'>
-                        <div className='connected-apps-modal--icon'>
-                            <Icon icon='IcAccountTrashCan' size={128} />
-                            <Text as='p' color='prominent' weight='bold'>
-                                <Localize i18n_default_text='Confirm revoke access?' />
-                            </Text>
-                        </div>
-                        <div className='connected-apps-modal--buttons'>
-                            <Button large secondary onClick={() => handleToggleModal()}>
-                                <Localize i18n_default_text='Back' />
-                            </Button>
-                            <Button large primary onClick={handleRevokeAccess}>
-                                <Localize i18n_default_text='Confirm' />
-                            </Button>
-                        </div>
-                    </div>
-                </Modal.Body>
-            </Modal>
+            <ConnectedAppsRevokeModal
+                handleRevokeAccess={handleRevokeAccess}
+                handleToggleModal={handleToggleModal}
+                is_modal_open={is_modal_open}
+            />
         </div>
     );
 });

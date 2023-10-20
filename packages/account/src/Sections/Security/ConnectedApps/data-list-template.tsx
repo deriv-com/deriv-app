@@ -4,7 +4,7 @@ import { Button } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import DataListTemplateEntry from './data-list-template-entry';
-import { PrepareConnectedAppsScopes } from './template-helper';
+import { getConnectedAppsScopes } from './template-helper';
 
 type TDataListTemplate = { data_source: ApplicationObject; handleToggleModal: (app_id: number) => void };
 
@@ -25,7 +25,7 @@ const DataListTemplate = ({ data_source, handleToggleModal }: TDataListTemplate)
             <div className='connected-apps__list--permission'>
                 <DataListTemplateEntry
                     title={<Localize i18n_default_text='Permission' />}
-                    content={PrepareConnectedAppsScopes(data_source.scopes ?? [])}
+                    content={getConnectedAppsScopes(data_source.scopes ?? [])}
                 />
             </div>
             <div className='connected-apps__list--revoke'>

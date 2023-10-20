@@ -13,7 +13,7 @@ export const generatePermissions = (): Permissions => ({
     admin: localize('Admin'),
 });
 
-export const PrepareConnectedAppsScopes = (permissions_list: string[]) => {
+export const getConnectedAppsScopes = (permissions_list: string[]) => {
     const is_trading_information = permissions_list.includes('trading_information');
     let oauth_apps_list = [];
     if (is_trading_information) {

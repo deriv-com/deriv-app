@@ -21,7 +21,7 @@ const MT5AccountTypeModal = () => {
                         });
                         show(<JurisdictionModal />);
                     }}
-                    text='Get'
+                    text='Next'
                 />
             )}
             title='Select Deriv MT5’s account type'

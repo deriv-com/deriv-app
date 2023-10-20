@@ -1,16 +1,9 @@
 import React from 'react';
-import { useAvailableMT5Accounts, useCreateOtherCFDAccount } from '@deriv/api';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import './CreatePassword.scss';
+import { TPlatforms } from '../../types';
 
-type TPlatformMT5 = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number]['platform'];
-
-type TPlatformOtherAccounts =
-    | Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'];
-
-type TPlatform = TPlatformMT5 | TPlatformOtherAccounts;
-
-const platformToTitleMapper: Record<TPlatform, string> = {
+const platformToTitleMapper: Record<TPlatforms.All, string> = {
     ctrader: 'cTrader',
     dxtrade: 'Deriv X',
     mt5: 'Deriv MT5',
@@ -20,7 +13,7 @@ type TProps = {
     icon: React.ReactNode;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick: () => void;
-    platform: TPlatform;
+    platform: TPlatforms.All;
 };
 
 const CreatePassword: React.FC<TProps> = ({ icon, onPasswordChange, onPrimaryClick, platform }) => {

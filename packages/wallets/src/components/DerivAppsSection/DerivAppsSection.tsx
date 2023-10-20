@@ -6,7 +6,7 @@ import './DerivAppsSection.scss';
 
 const DerivAppsSection: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const tradingAccountLoginId = activeWallet?.linked_to?.find(account => account?.platform === 'dtrade')?.loginid;
+    const tradingAccountLoginId = activeWallet?.dtrade_loginid;
 
     return tradingAccountLoginId ? (
         <DerivAppsTradingAccount

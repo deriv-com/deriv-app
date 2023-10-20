@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useDynamicLeverage } from '@deriv/api';
 import { WalletText } from '../../../../components/Base';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
@@ -6,7 +6,12 @@ import './DynamicLeverageMarketCard.scss';
 
 type TDynamicLeverageMarketCardProps = ReturnType<typeof useDynamicLeverage>['data'][0];
 
-export const DynamicLeverageMarketCard = ({ data, description, leverage, title }: TDynamicLeverageMarketCardProps) => (
+export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
+    data,
+    description,
+    leverage,
+    title,
+}) => (
     <div className='wallets-dynamic-leverage-modal__market'>
         <div className='wallets-dynamic-leverage-modal__market-title'>
             <WalletText align='center' data-testid='market_title' size='xs' weight='bold'>

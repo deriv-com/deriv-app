@@ -1,12 +1,6 @@
 .wallets-dynamic-leverage-modal {
-    &__market {
-        &-table {
-            &-header {
-                &-cell {
-                    display: flex;
-                    flex-direction: column;
-                }
-            }
-        }
+    &__market-table-header-cell {
+        display: flex;
+        flex-direction: column;
     }
 }

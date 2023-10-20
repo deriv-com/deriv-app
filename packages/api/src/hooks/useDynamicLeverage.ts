@@ -1,7 +1,4 @@
-// import { useMemo } from 'react';
-// import useQuery from '../useQuery';
-
-// hardcoded dynamic leverage values, to be replaced with API call
+// TODO: hardcoded dynamic leverage values, to be replaced with API call
 const dynamic_leverages = [
     {
         key: 'forex',
@@ -114,7 +111,7 @@ const dynamic_leverages = [
 
 /** A custom hook that gets dynamic leverage values. */
 const useDynamicLeverage = () => {
-    // const { data: dynamic_leverage } = useQuery('dynamic_leverage');
+    // TODO: replace with API call once the endpoint is ready.
 
     return {
         data: dynamic_leverages,

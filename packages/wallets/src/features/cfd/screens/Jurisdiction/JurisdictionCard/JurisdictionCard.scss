@@ -102,11 +102,13 @@
 
 .wallets-dynamic-leverage-modal-transition {
     &-enter {
+        opacity: 0;
         transform: rotateY(-180deg);
-        transition: transform 0.6s ease;
+        transition: all 0.6s ease;
     }
 
     &-enter-active {
+        opacity: 1;
         transform: rotateY(0deg);
     }
 }

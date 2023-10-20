@@ -61,7 +61,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                             key={description?.text}
                             onClick={e => {
                                 e.stopPropagation();
-                                if (description.tag === 'dynamic-leverage') {
+                                if (description.tag === 'dynamicLeverage') {
                                     showDynamicLeverage();
                                 } else {
                                     setIsFlipped(true);

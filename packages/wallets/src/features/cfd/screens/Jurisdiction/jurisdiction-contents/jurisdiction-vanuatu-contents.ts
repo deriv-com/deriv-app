@@ -16,7 +16,7 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
             {
                 clickableDescription: [
                     {
-                        tag: 'dynamic-leverage',
+                        tag: 'dynamicLeverage',
                         text: 'Dynamic Leverage',
                         type: 'link',
                     },

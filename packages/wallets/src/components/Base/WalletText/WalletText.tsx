@@ -1,11 +1,13 @@
-import React, { ComponentProps, CSSProperties, ReactNode } from 'react';
+import React, { CSSProperties, ElementType, ReactNode } from 'react';
 import classNames from 'classnames';
 import { TGenericSizes } from '../types';
 import './WalletText.scss';
 
-interface WalletTextProps extends ComponentProps<'span'> {
+interface WalletTextProps {
     align?: CSSProperties['textAlign'];
+    as?: ElementType;
     children: ReactNode;
+    className?: string;
     color?: CSSProperties['color'] | 'error' | 'general' | 'primary' | 'success' | 'warning';
     lineHeight?: TGenericSizes;
     size?: Exclude<TGenericSizes, '3xs' | '6xl'>;
@@ -14,27 +16,27 @@ interface WalletTextProps extends ComponentProps<'span'> {
 
 const WalletText: React.FC<WalletTextProps> = ({
     align = 'left',
+    as = 'span',
     children,
+    className,
     color = 'general',
     lineHeight,
     size = 'md',
     weight = 'normal',
-    ...rest
 }) => {
     const textClassNames = classNames(
         'wallet-text',
-        `wallets-text-size-${size}`,
-        `wallets-text-weight-${weight}`,
-        `wallets-text-align-${align}`,
-        `wallets-text-color-${color}`,
-        `wallets-text-line-height-${lineHeight}`
+        `wallets-text__size--${size}`,
+        `wallets-text__weight--${weight}`,
+        `wallets-text__align--${align}`,
+        `wallets-text__color--${color}`,
+        `wallets-text__line-height--${lineHeight}`,
+        className
     );
 
-    return (
-        <span className={textClassNames} {...rest}>
-            {children}
-        </span>
-    );
+    const Tag = as;
+
+    return <Tag className={textClassNames}>{children}</Tag>;
 };
 
 export default WalletText;

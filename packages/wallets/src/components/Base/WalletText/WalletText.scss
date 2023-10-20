@@ -126,13 +126,13 @@ $font-align-map: (
 
 .wallets-text {
     @each $color, $value in $color-map {
-        &-color-#{$color} {
+        &__color--#{$color} {
             color: $value;
         }
     }
 
     @each $size, $values in $desktop-font-size-map {
-        &-size-#{$size} {
+        &__size--#{$size} {
             @include desktop {
                 font-size: map-get($values, size);
                 line-height: map-get($values, line_height);
@@ -141,7 +141,7 @@ $font-align-map: (
     }
 
     @each $size, $values in $mobile-font-size-map {
-        &-size-#{$size} {
+        &__size--#{$size} {
             @include mobile {
                 font-size: map-get($values, size);
                 line-height: map-get($values, line_height);
@@ -150,19 +150,19 @@ $font-align-map: (
     }
 
     @each $lineHeight, $value in $line-height-map {
-        &-line-height-#{$lineHeight} {
+        &__line-height--#{$lineHeight} {
             line-height: $value;
         }
     }
 
     @each $weight, $value in $font-weight-map {
-        &-weight-#{$weight} {
+        &__weight--#{$weight} {
             font-weight: $value;
         }
     }
 
     @each $align, $value in $font-align-map {
-        &-align-#{$align} {
+        &__align--#{$align} {
             text-align: $value;
         }
     }

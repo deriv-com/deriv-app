@@ -9,6 +9,7 @@
         cursor: not-allowed;
     }
     &-size-sm {
+        height: 2.4rem;
         padding: 0.3rem 0.8rem;
         font-size: 1.2rem;
         line-height: 1.8rem;

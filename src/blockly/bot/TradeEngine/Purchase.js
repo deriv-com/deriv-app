@@ -31,6 +31,7 @@ export default Engine =>
                 });
 
                 this.contractId = buy.contract_id;
+                this.subscribeToOpenContract(buy.contract_id);
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
 

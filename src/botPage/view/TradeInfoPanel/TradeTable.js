@@ -4,7 +4,6 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { Table, Column } from 'react-virtualized';
 import PropTypes from 'prop-types';
-import { api_base } from '@api-base';
 import { translate } from '@i18n';
 import { isNumber, saveAs, appendRow, updateRow } from '@utils';
 import { observer as globalObserver } from '@utilities/observer';
@@ -114,10 +113,10 @@ const TradeTable = ({ account_id }) => {
         }
     };
 
-    const settledContract = async ({ contract_id }) => {
+    const settledContract = async contract => {
         let settled = false;
         let delay = 3000;
-
+        const { contract_id } = contract;
         // const sleep = () => new Promise(resolve => setTimeout(() => ( resolve() ), delay));
         const sleep = () =>
             new Promise(resolve => {
@@ -129,7 +128,7 @@ const TradeTable = ({ account_id }) => {
         while (!settled) {
             await sleep();
             try {
-                await refreshContract(contract_id);
+                await refreshContract(contract);
                 const rows = account_state[account_id].rows; //eslint-disable-line
                 const contract_row = rows.find(row => row.contract_id === contract_id); //eslint-disable-line
                 if (contract_row && contract_row.contract_settled) {
@@ -143,37 +142,30 @@ const TradeTable = ({ account_id }) => {
         }
     };
 
-    const refreshContract = contract_id => {
-        this.contract_id = contract_id;
+    const refreshContract = async contract => {
+        const trade_obj = getTradeObject(contract);
+        const trade = {
+            ...trade_obj,
+            profit: getProfit(trade_obj),
+        };
+        if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
+            trade.exit_tick = '-';
+        }
 
-        api_base.api.onMessage().subscribe(({ data }) => {
-            if (data.msg_type === 'proposal_open_contract') {
-                const contract = data.proposal_open_contract;
-                const trade_obj = getTradeObject(contract);
-                const trade = {
-                    ...trade_obj,
-                    profit: getProfit(trade_obj),
+        const actual_rows = actual_account_state_ref.current[account_id].rows;
+        const updated_rows = actual_rows.map(row => {
+            const { reference } = row;
+            if (reference === trade.reference) {
+                return {
+                    contract_status: translate('Settled'),
+                    contract_settled: true,
+                    reference,
+                    ...trade,
                 };
-                if (trade.is_expired && trade.is_sold && !trade.exit_tick) {
-                    trade.exit_tick = '-';
-                }
-
-                const actual_rows = actual_account_state_ref.current[account_id].rows;
-                const updated_rows = actual_rows.map(row => {
-                    const { reference } = row;
-                    if (reference === trade.reference) {
-                        return {
-                            contract_status: translate('Settled'),
-                            contract_settled: true,
-                            reference,
-                            ...trade,
-                        };
-                    }
-                    return row;
-                });
-                setAccountState({ [account_id]: { rows: updated_rows } });
             }
+            return row;
         });
+        setAccountState({ [account_id]: { rows: updated_rows } });
     };
 
     React.useEffect(() => {

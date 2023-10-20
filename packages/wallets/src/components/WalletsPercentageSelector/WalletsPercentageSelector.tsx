@@ -2,6 +2,14 @@ import React, { useCallback, useMemo } from 'react';
 import WalletsPercentageSelectorBlock from './WalletsPercentageSelectorBlock';
 import './WalletsPercentageSelector.scss';
 
+const percentageBlockCount = 4;
+const percentageBlockSize = 100 / percentageBlockCount;
+
+const percentageSelectorOptions = [...Array(percentageBlockCount).keys()].map(index => ({
+    label: index + 1 === percentageBlockCount ? 'All' : `${((index + 1) * 100) / percentageBlockCount}%`,
+    percentage: ((index + 1) * 100) / percentageBlockCount,
+}));
+
 type TWalletsPercentageSelector = {
     amount: number;
     balance: number;
@@ -9,14 +17,6 @@ type TWalletsPercentageSelector = {
 };
 
 const WalletsPercentageSelector = ({ amount, balance, onChangePercentage }: TWalletsPercentageSelector) => {
-    const percentageBlockCount = 4;
-    const percentageBlockSize = 100 / percentageBlockCount;
-
-    const percentageSelectorOptions = [...Array(percentageBlockCount).keys()].map(index => ({
-        label: index + 1 === percentageBlockCount ? 'All' : `${((index + 1) * 100) / percentageBlockCount}%`,
-        percentage: ((index + 1) * 100) / percentageBlockCount,
-    }));
-
     const balancePercentage = useMemo(() => (amount * 100) / balance, [amount, balance]);
 
     const getBlockFillPercentage = useCallback(
@@ -25,7 +25,7 @@ const WalletsPercentageSelector = ({ amount, balance, onChangePercentage }: TWal
             if (balancePercentage < blockPercentage - percentageBlockSize) return 0;
             return ((balancePercentage - (blockPercentage - percentageBlockSize)) * 100) / percentageBlockSize;
         },
-        [balancePercentage, percentageBlockSize]
+        [balancePercentage]
     );
 
     return (

@@ -1,8 +1,5 @@
 import {
-    FinancialDetails,
-    PersonalDetails,
     TermsOfUse,
-    TradingAssessmentNewUser,
     addressDetailsConfig,
     currencySelectorConfig,
     financialDetailsConfig,
@@ -11,6 +8,9 @@ import {
     tradingAssessmentConfig,
 } from '@deriv/account';
 
+import FinancialDetails from '@deriv/account/src/Components/financial-details';
+import TradingAssessmentNewUser from '@deriv/account/src/Components/trading-assessment/trading-assessment-new-user';
+import PersonalDetails from '@deriv/account/src/Components/personal-details';
 import AddressDetails from '@deriv/account/src/Components/address-details';
 import CurrencySelector from '@deriv/account/src/Components/currency-selector';
 

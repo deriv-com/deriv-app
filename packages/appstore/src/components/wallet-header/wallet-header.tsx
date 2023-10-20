@@ -16,10 +16,9 @@ type TWalletHeader = {
 
 const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     const { client, traders_hub } = useStore();
-    const { switchAccount, loginid } = client;
+    const { switchAccount, loginid, mf_account_status } = client;
     const is_active = wallet_account.is_selected;
     // const [is_loading, setIsLoading] = useState(false);
-    const { multipliers_account_status } = traders_hub;
 
     const { is_demo, currency, gradient_card_class, currency_config, icon, balance, landing_company_name } =
         wallet_account;
@@ -56,7 +55,7 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
                         landing_company_name={landing_company_name}
                     />
                     <WalletHeaderButtons
-                        is_disabled={!!multipliers_account_status}
+                        is_disabled={!!mf_account_status}
                         is_open={is_active}
                         buttons={wallet_buttons}
                         wallet_account={wallet_account}

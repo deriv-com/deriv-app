@@ -6,7 +6,6 @@ import { localize } from '@deriv/translations';
 type TFinancialDetailsConfig = {
     real_account_signup_target: string;
     financial_assessment: GetFinancialAssessment;
-    is_eu_user: boolean;
 };
 
 const financial_details_config: (props: { financial_assessment: GetFinancialAssessment }) => TSchema = ({
@@ -57,7 +56,7 @@ const financial_details_config: (props: { financial_assessment: GetFinancialAsse
 };
 
 const financialDetailsConfig = (
-    { real_account_signup_target, financial_assessment, is_eu_user }: TFinancialDetailsConfig,
+    { real_account_signup_target, financial_assessment }: TFinancialDetailsConfig,
     FinancialDetails: React.Component
 ) => {
     const config = financial_details_config({ financial_assessment });
@@ -71,7 +70,6 @@ const financialDetailsConfig = (
         form_value: getDefaultFields(real_account_signup_target, config),
         props: {
             validate: generateValidationFunction(real_account_signup_target, config),
-            is_eu_user,
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };

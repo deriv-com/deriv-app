@@ -11,7 +11,7 @@ import {
     getNetIncomeList,
     getOccupationList,
     getSourceOfWealthList,
-} from 'Configs/financial-details-config';
+} from '../../Configs/financial-details-config';
 
 type TFinancialDetailsDropdownFieldProps = {
     dropdown_list: Array<object>;

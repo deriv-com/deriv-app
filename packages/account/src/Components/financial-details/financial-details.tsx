@@ -11,9 +11,10 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
 import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import InlineNoteWithIcon from 'Components/inline-note-with-icon';
+import InlineNoteWithIcon from '../inline-note-with-icon';
 
 type TFinancialDetailsFormValues = {
     income_source: string;
@@ -49,14 +50,17 @@ type TFinancialDetails = {
  * @param {TFinancialDetails} props  - props of the component
  * @returns {React.ReactNode} React component that renders FinancialDetails form.
  */
-const FinancialDetails = (props: TFinancialDetails) => {
+const FinancialDetails = observer((props: TFinancialDetails) => {
     const handleCancel = (values: TFinancialDetailsFormValues) => {
         const current_step = props.getCurrentStep() - 1;
         props.onSave(current_step, values);
         props.onCancel(current_step, props.goToPreviousStep);
     };
 
-    const { is_eu_user } = props;
+    const {
+        traders_hub: { is_eu_user },
+    } = useStore();
+
     const handleValidate = (values: TFinancialDetailsFormValues) => {
         const { errors } = splitValidationResultTypes(props.validate(values));
         return errors;
@@ -87,18 +91,17 @@ const FinancialDetails = (props: TFinancialDetails) => {
                                     height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
-                                    {is_eu_user && (
+                                    {is_eu_user ? (
                                         <div className='details-form__banner-container'>
                                             <InlineNoteWithIcon
                                                 icon='IcAlertWarning'
-                                                message={localize(
-                                                    'We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.'
-                                                )}
+                                                message={
+                                                    <Localize i18n_default_text='We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.' />
+                                                }
                                                 title={localize('Why do we collect this?')}
                                             />
                                         </div>
-                                    )}
-                                    {!is_eu_user && (
+                                    ) : (
                                         <Text
                                             as='p'
                                             color='prominent'
@@ -136,6 +139,6 @@ const FinancialDetails = (props: TFinancialDetails) => {
             }}
         </Formik>
     );
-};
+});
 
 export default FinancialDetails;

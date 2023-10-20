@@ -26,13 +26,9 @@ const AccountVerificationPendingModal = observer(({ is_visible, onConfirm }: TAc
                 <Localize i18n_default_text='You cannot trade as your documents are still under review. We will notify you by email once your verification is approved.' />
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    has_effect
-                    text={localize('OK')}
-                    onClick={onConfirm}
-                    primary
-                    className='account-verification-pending-modal-button'
-                />
+                <Button has_effect onClick={onConfirm} primary className='account-verification-pending-modal-button'>
+                    <Localize i18n_default_text='OK' />
+                </Button>
             </Modal.Footer>
         </Modal>
     );

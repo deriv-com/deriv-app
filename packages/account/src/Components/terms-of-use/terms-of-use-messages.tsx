@@ -57,13 +57,13 @@ export const BrokerSpecificMessage = ({ target }: { target: Extract<TBrokerCodes
         <Text as='h4' size='xs' weight='bold'>
             <Localize i18n_default_text='Trading accounts and funds' />
         </Text>
-        <p>
+        <Text as='p'>
             <Localize
                 i18n_default_text={
                     "You acknowledge that, subject to the Company's discretion, applicable regulations, and internal checks being fulfilled, we will open an account for you and allow you to deposit funds during the client acceptance procedure. However, until the verification of your account is completed, you will not be able to trade, withdraw or make further deposits. If you do not provide relevant documents within 30-days, we will refund the deposited amount through the same payment method you used to deposit."
                 }
             />
-        </p>
+        </Text>
     </React.Fragment>
 );
 

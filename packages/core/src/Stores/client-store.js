@@ -285,7 +285,6 @@ export default class ClientStore extends BaseStore {
             is_valid_login: computed,
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
-            has_deposited_for_first_time: computed,
             has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
@@ -825,10 +824,6 @@ export default class ClientStore extends BaseStore {
 
     get has_restricted_mt5_account() {
         return !!this.mt5_login_list.filter(mt5_account => mt5_account?.status?.includes('poa_failed')).length;
-    }
-
-    get has_deposited_for_first_time() {
-        return this.balance;
     }
 
     get has_mt5_account_with_rejected_poa() {
@@ -2661,7 +2656,7 @@ export default class ClientStore extends BaseStore {
             [ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU].includes(content_flag) &&
             this.has_maltainvest_account &&
             mf_status &&
-            ['pending', 'failed', 'need_verification'].includes(mf_status);
+            ['pending', 'failed', 'needs_verification'].includes(mf_status);
         return should_show_status_for_multipliers_account ? mf_status : null;
     }
 

@@ -6,7 +6,7 @@ import { isMobile } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
 import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
-import InlineNoteWithIcon from 'Components/inline-note-with-icon';
+import InlineNoteWithIcon from '../inline-note-with-icon';
 
 const TradingAssessmentForm = ({
     assessment_questions,
@@ -122,7 +122,7 @@ const TradingAssessmentForm = ({
 
     return (
         <div className={classNames('trading-assessment', class_name)}>
-            {is_eu_user && (
+            {is_eu_user ? (
                 <div className='details-form__banner-container'>
                     <InlineNoteWithIcon
                         icon='IcAlertWarning'
@@ -132,8 +132,7 @@ const TradingAssessmentForm = ({
                         title={localize('Why do we collect this?')}
                     />
                 </div>
-            )}
-            {!is_eu_user && (
+            ) : (
                 <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                     <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
                 </Text>

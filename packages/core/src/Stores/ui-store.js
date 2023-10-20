@@ -89,7 +89,7 @@ export default class UIStore extends BaseStore {
     has_real_account_signup_ended = false;
 
     // verification modal
-    is_verification_modal_visible = false;
+    is_verification_modal_visible = true;
 
     //verification document submitted modal
     is_verification_submitted = false;

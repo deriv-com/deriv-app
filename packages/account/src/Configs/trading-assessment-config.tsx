@@ -8,7 +8,6 @@ type TTradingAssessmentConfig = {
     financial_assessment: GetFinancialAssessment;
     real_account_signup_target: string;
     setSubSectionIndex: number;
-    is_eu_user: boolean;
 };
 
 export const trading_assessment_questions = () => [
@@ -317,7 +316,6 @@ const tradingAssessmentConfig = (
         financial_assessment,
         account_settings,
         setSubSectionIndex,
-        is_eu_user,
     }: TTradingAssessmentConfig,
     TradingAssessmentNewUser: React.Component
 ) => {
@@ -332,7 +330,6 @@ const tradingAssessmentConfig = (
         props: {
             validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
             assessment_questions: trading_assessment_questions(),
-            is_eu_user,
             disabled_items: account_settings?.immutable_fields,
             setSubSectionIndex,
         },

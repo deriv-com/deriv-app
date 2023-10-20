@@ -4,6 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import VerificationModalContent from './verification-modal-content';
 
 import './verification-modal.scss';
+import { localize } from '@deriv/translations';
 
 const VerificationModal = observer(() => {
     const { ui } = useStore();
@@ -15,10 +16,10 @@ const VerificationModal = observer(() => {
                 <Modal
                     className='verification-modal'
                     is_open={is_verification_modal_visible}
-                    title='Submit your proof of identity and address'
+                    title={localize('Submit your proof of identity and address')}
                     toggleModal={() => setIsVerificationModalVisible(false)}
-                    height='700px'
-                    width='996px'
+                    height='70rem'
+                    width='99.6rem'
                     exit_classname='verification-modal--custom-exit'
                 >
                     <VerificationModalContent
@@ -32,7 +33,7 @@ const VerificationModal = observer(() => {
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='deriv_app'
-                    title='Submit your proof of identity and address'
+                    title={localize('Submit your proof of identity and address')}
                     wrapper_classname='verification-modal'
                     visible={is_verification_modal_visible}
                     onClose={() => setIsVerificationModalVisible(false)}

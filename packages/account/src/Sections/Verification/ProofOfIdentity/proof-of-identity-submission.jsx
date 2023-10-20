@@ -90,7 +90,11 @@ const POISubmission = observer(
                 switch (service) {
                     case service_code.idv: {
                         if (Number(idv.submissions_left) < 1) {
-                            setSubmissionService(service_code.manual);
+                            if (Number(onfido.submissions_left) < 1) {
+                                setSubmissionService(service_code.manual);
+                            } else {
+                                setSubmissionService(service_code.onfido);
+                            }
                         } else {
                             setSubmissionService(service_code.idv);
                         }
@@ -190,7 +194,6 @@ const POISubmission = observer(
                         const country_code = selected_country.value;
                         const doc_obj = selected_country.identity.services.onfido.documents_supported;
                         const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
-
                         return (
                             <OnfidoSdkViewContainer
                                 country_code={country_code}

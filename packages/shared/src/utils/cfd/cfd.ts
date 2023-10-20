@@ -462,3 +462,6 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         is_idv_revoked,
     };
 };
+
+export const mt5_community_url =
+    'https://community.deriv.com/t/log-in-using-mt5-pc-or-mobile-app-application-guideline/49622';

@@ -8,11 +8,12 @@ type TProps = {
     device?: 'desktop' | 'mobile';
     hasShine?: boolean;
     isDemo?: boolean;
-    theme?: 'dark' | 'light' | Omit<string, 'dark' | 'light'>;
+    theme?: 'dark' | 'grey' | 'light';
     type?: 'card' | 'header';
 };
 
 const WalletGradientBackground: React.FC<TProps> = ({
+    bodyClassName,
     children,
     currency,
     device = 'desktop',
@@ -20,7 +21,6 @@ const WalletGradientBackground: React.FC<TProps> = ({
     isDemo = false,
     theme = 'light',
     type = 'card',
-    bodyClassName,
 }) => {
     const getClassName = () => {
         if (isDemo) return `wallets-gradient--demo-${device}-${type}-${theme}`;

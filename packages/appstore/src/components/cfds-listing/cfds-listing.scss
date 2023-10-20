@@ -30,7 +30,6 @@
         @include mobile {
             position: sticky;
             bottom: 0;
-            padding-bottom: 3rem;
         }
     }
     &__footer-button {
@@ -38,7 +37,6 @@
         @include mobile {
             position: sticky;
             bottom: 0;
-            padding-bottom: 3rem;
             width: 100%;
         }
     }

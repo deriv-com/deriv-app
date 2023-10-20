@@ -1,39 +1,19 @@
 import React, { ReactNode } from 'react';
-import {
-    useActiveWalletAccount,
-    useCtraderAccountsList,
-    useDxtradeAccountsList,
-    useMT5AccountsList,
-    useSortedMT5Accounts,
-} from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import './Success.scss';
-
-type TDisplayBalance =
-    | Exclude<NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number]['display_balance'], undefined>
-    | Exclude<NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number]['display_balance'], undefined>
-    | Exclude<NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number]['display_balance'], undefined>;
+import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../types';
+import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
 
 type TSuccessProps = {
     description: string;
     displayBalance: TDisplayBalance;
-    marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
-    platform: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['platform'], undefined>;
+    marketType: TMarketTypes.SortedMT5Accounts;
+    platform: TPlatforms.All;
     renderButton: () => ReactNode;
     title: string;
-};
-
-const marketTypeToTitleMapper: Record<TSuccessProps['marketType'], string> = {
-    all: 'Swap-Free',
-    financial: 'MT5 Financial',
-    synthetic: 'MT5 Derived',
-};
-
-const marketTypeToPlatformMapper: Record<string, string> = {
-    ctrader: 'cTrader',
-    dxtrade: 'Deriv X',
 };
 
 const Success: React.FC<TSuccessProps> = ({
@@ -49,9 +29,9 @@ const Success: React.FC<TSuccessProps> = ({
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
     const marketTypeTitle =
-        marketType === 'all' && Object.keys(marketTypeToPlatformMapper).includes(platform)
-            ? marketTypeToPlatformMapper[platform]
-            : marketTypeToTitleMapper[marketType];
+        marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
+            ? PlatformToTitleMapper[platform]
+            : MarketTypeToTitleMapper[marketType];
 
     return (
         <div className='wallets-success'>

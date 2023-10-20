@@ -20,7 +20,7 @@ const BinarySocketGeneral = (() => {
     const onOpen = is_ready => {
         responseTimeoutErrorTimer = setTimeout(() => {
             const error = new Error('deriv-api: no message received after 30s');
-            error.userId = client_store.loginid;
+            error.userId = client_store?.loginid;
             /* eslint-disable no-console */
             console.error(error);
         }, 30000);

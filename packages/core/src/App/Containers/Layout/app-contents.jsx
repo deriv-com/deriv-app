@@ -45,9 +45,10 @@ const AppContents = observer(({ children }) => {
 
     React.useEffect(() => {
         if (is_logged_in && user_id) {
-            Analytics.setAttributes({ account_type: loginid.substring(0, 2) });
-            Analytics.identifyEvent(user_id, {
-                language: getLanguage().toLowerCase() || 'en',
+            Analytics.setAttributes({
+                account_type: loginid.substring(0, 2),
+                user_id,
+                user_language: getLanguage().toLowerCase() || 'en',
             });
             Analytics.pageView(current_page);
         }

@@ -1,51 +1,10 @@
-type ChartTypesFormAction = {
-    action: 'open' | 'close' | 'choose_chart_type' | 'choose_time_interval';
-    form_name: string;
-    chart_type_name: string;
-    time_interval_name: string;
-    account_type: string;
-    device_type: string;
-};
-
-type MarketTypesFormAction = {
-    action:
-        | 'open'
-        | 'close'
-        | 'choose_market_type'
-        | 'search'
-        | 'info_redirect'
-        | 'add_to_favorites'
-        | 'delete_from_favorites';
-    form_name: string;
-    market_type_name: string;
-    search_string?: string;
-    tab_market_name?: string;
-    account_type: string;
-    device_type: string;
-};
-
-type IndicatorsTypesFormAction = {
-    action:
-        | 'open'
-        | 'close'
-        | 'add_active'
-        | 'clean_all_active'
-        | 'delete_active'
-        | 'edit_active'
-        | 'search'
-        | 'info_open'
-        | 'info_close';
-    form_name?: string;
-    indicator_type_name?: string;
-    indicators_category_name?: string;
-    search_string?: string;
-    subform_name?: string;
-    account_type: string;
-    device_type: string;
-};
+import type { TEvents } from '@deriv/analytics';
 
 export type TPayload = {
-    data: Omit<Partial<ChartTypesFormAction & MarketTypesFormAction & IndicatorsTypesFormAction>, 'action'> & {
+    data: Omit<
+        Partial<TEvents['ce_chart_types_form'] & TEvents['ce_market_types_form'] & TEvents['ce_indicators_types_form']>,
+        'action'
+    > & {
         action: string;
     };
     event_type: 'ce_chart_types_form' | 'ce_market_types_form' | 'ce_indicators_types_form';

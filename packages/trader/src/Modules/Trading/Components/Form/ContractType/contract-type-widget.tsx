@@ -54,6 +54,7 @@ const ContractTypeWidget = observer(({ name, value, list, onChange, languageChan
             Analytics.trackEvent('ce_trade_types_form', {
                 action: is_dialog_open ? 'open' : 'close',
                 form_source: 'contract_set_up_form',
+                form_name: 'default',
             });
         }
     }, [is_dialog_open]);

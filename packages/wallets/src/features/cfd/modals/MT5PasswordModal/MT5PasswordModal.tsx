@@ -5,17 +5,17 @@ import {
     useCreateMT5Account,
     useMT5AccountsList,
     useSettings,
-    useSortedMT5Accounts,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
 import { ModalWrapper, WalletButton } from '../../../../components/Base';
-import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { Success, CreatePassword, EnterPassword } from '../../screens';
 import { useModal } from '../../../../components/ModalProvider';
+import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
+import { CreatePassword, EnterPassword, Success } from '../../screens';
+import { TMarketTypes, TPlatforms } from '../../types';
 
 type TProps = {
-    marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
-    platform: string;
+    marketType: TMarketTypes.SortedMT5Accounts;
+    platform: TPlatforms.All;
 };
 
 const marketTypeToTitleMapper: Record<TProps['marketType'], string> = {
@@ -51,10 +51,12 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
 
         // in order to create account, we need to set a password through trading_platform_password_change endpoint first
         // then only mt5_create_account can be called, otherwise it will response an error for password required
-        await tradingPasswordChange({
-            new_password: password,
-            platform: 'mt5',
-        });
+        if (!mt5Accounts?.length) {
+            await tradingPasswordChange({
+                new_password: password,
+                platform: 'mt5',
+            });
+        }
 
         mutate({
             payload: {
@@ -83,6 +85,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     description={`You can now start practicing trading with your ${marketTypeTitle} ${
                         isDemo ? ' demo' : 'real'
                     } account.`}
+                    displayBalance={
+                        mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || ''
+                    }
                     marketType={marketType}
                     platform={platform}
                     renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}

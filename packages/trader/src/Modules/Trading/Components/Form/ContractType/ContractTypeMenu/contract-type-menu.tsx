@@ -11,7 +11,6 @@ import ContractType from '../contract-type';
 
 type TDialog = {
     categories: TList[];
-    info_banner?: React.ReactNode;
     item: React.ComponentProps<typeof ContractType.Info>['item'];
     selected?: string;
     children?: React.ReactNode;
@@ -27,7 +26,6 @@ type TDialog = {
 const Dialog = ({
     categories,
     children,
-    info_banner,
     is_info_dialog_open,
     is_open,
     item,
@@ -108,11 +106,11 @@ const Dialog = ({
                                         onChange={onChange}
                                         selectedKey='key'
                                     />
+
                                     <div className='dc-vertical-tab__content'>
                                         <div className='dc-vertical-tab__action-bar'>{action_bar_item}</div>
                                         <div className='dc-vertical-tab__content-container'>
                                             {selected_category_contract && <NoResultsMessage text={input_value} />}
-                                            {info_banner}
                                             {renderChildren()}
                                         </div>
                                     </div>

@@ -8,7 +8,7 @@ interface WalletTextProps extends ComponentProps<'span'> {
     children: ReactNode;
     color?: CSSProperties['color'] | 'error' | 'general' | 'primary' | 'success' | 'warning';
     lineHeight?: TGenericSizes;
-    size?: Exclude<TGenericSizes, '5xl' | '6xl'>;
+    size?: Exclude<TGenericSizes, '3xs' | '6xl'>;
     weight?: CSSProperties['fontWeight'];
 }
 

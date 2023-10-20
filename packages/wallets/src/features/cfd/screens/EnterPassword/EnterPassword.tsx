@@ -1,30 +1,18 @@
 import React from 'react';
-import { useAvailableMT5Accounts, useCreateOtherCFDAccount } from '@deriv/api';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import './EnterPassword.scss';
-
-type TPlatformMT5 = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number]['platform'];
-
-type TPlatformOtherAccounts = Parameters<
-    NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>
->[0]['payload']['platform'];
-
-type TPlatform = TPlatformMT5 | TPlatformOtherAccounts;
-
-type TMarketType = Parameters<
-    NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>
->[0]['payload']['market_type'];
+import { TMarketTypes, TPlatforms } from '../../types';
 
 type TProps = {
     isLoading?: boolean;
-    marketType: TMarketType;
+    marketType: TMarketTypes.CreateOtherCFDAccount;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
-    platform: TPlatform;
+    platform: TPlatforms.All;
 };
 
-const platformToTitleMapper: Record<TPlatform, string> = {
+const platformToTitleMapper: Record<TPlatforms.All, string> = {
     ctrader: 'cTrader',
     derivez: 'Deriv EZ',
     dxtrade: 'Deriv X',

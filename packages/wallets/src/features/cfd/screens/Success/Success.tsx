@@ -1,14 +1,16 @@
 import React, { ReactNode } from 'react';
-import { useActiveWalletAccount, useSortedMT5Accounts } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
+import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../types';
 import './Success.scss';
 
 type TSuccessProps = {
     description: string;
-    marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
-    platform: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['platform'], undefined>;
+    displayBalance: TDisplayBalance;
+    marketType: TMarketTypes.SortedMT5Accounts;
+    platform: TPlatforms.All;
     renderButton: () => ReactNode;
     title: string;
 };
@@ -24,7 +26,14 @@ const marketTypeToPlatformMapper: Record<string, string> = {
     dxtrade: 'Deriv X',
 };
 
-const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, renderButton, title }) => {
+const Success: React.FC<TSuccessProps> = ({
+    description,
+    displayBalance,
+    marketType,
+    platform,
+    renderButton,
+    title,
+}) => {
     const { data } = useActiveWalletAccount();
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
@@ -56,12 +65,11 @@ const Success: React.FC<TSuccessProps> = ({ description, marketType, platform, r
                 <WalletText size='2xs'>
                     {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
                 </WalletText>
-                {/* <div className='wallets-success__info__text--type'></div> */}
                 <WalletText color='primary' size='2xs'>
                     {data?.currency} Wallet
                 </WalletText>
                 <WalletText size='sm' weight='bold'>
-                    {data?.display_balance}
+                    {displayBalance}
                 </WalletText>
             </WalletGradientBackground>
             <WalletText align='center' size='md' weight='bold'>

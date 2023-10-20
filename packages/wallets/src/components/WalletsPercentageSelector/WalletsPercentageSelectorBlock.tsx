@@ -2,21 +2,21 @@ import React from 'react';
 import classNames from 'classnames';
 import { WalletText } from '../Base';
 
-type TPercentageSelectorBlock = {
+type TWalletsPercentageSelectorBlock = {
     isHighlighted?: boolean;
     label: string;
     onClick: VoidFunction;
 };
 
-const PercentageSelectorBlock = ({ isHighlighted, label, onClick }: TPercentageSelectorBlock) => {
+const WalletsPercentageSelectorBlock = ({ isHighlighted, label, onClick }: TWalletsPercentageSelectorBlock) => {
     return (
-        <div className='percentage-selector-block-container'>
-            <WalletText className='percentage-selector__text' color='prominent' size='xs'>
+        <div className='wallets-percentage-selector-block-container'>
+            <WalletText className='wallets-percentage-selector__text' color='prominent' size='xs'>
                 {label}
             </WalletText>
             <div
-                className={classNames('percentage-selector-block', {
-                    'percentage-selector-block--highlighted': isHighlighted,
+                className={classNames('wallets-percentage-selector-block', {
+                    'wallets-percentage-selector-block--highlighted': isHighlighted,
                 })}
                 onClick={onClick}
             />
@@ -24,4 +24,4 @@ const PercentageSelectorBlock = ({ isHighlighted, label, onClick }: TPercentageS
     );
 };
 
-export default PercentageSelectorBlock;
+export default WalletsPercentageSelectorBlock;

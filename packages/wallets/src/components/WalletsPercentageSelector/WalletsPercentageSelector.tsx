@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import PercentageSelectorBlock from './WalletsPercentageSelectorBlock';
+import WalletsPercentageSelectorBlock from './WalletsPercentageSelectorBlock';
 import './WalletsPercentageSelector.scss';
 
-type TPercentageSelector = {
+type TWalletsPercentageSelector = {
     amount: number;
     balance: number;
     onChangePercentage: (percentage: number) => void;
 };
 
-const PercentageSelector = ({ amount, balance, onChangePercentage }: TPercentageSelector) => {
+const WalletsPercentageSelector = ({ amount, balance, onChangePercentage }: TWalletsPercentageSelector) => {
     const [selectedPercentage, setSelectedPercentage] = useState<number>(0);
     const [isSetWithPercentageSelector, setIsSetWithPercentageSelector] = useState(false);
 
@@ -52,9 +52,9 @@ const PercentageSelector = ({ amount, balance, onChangePercentage }: TPercentage
     ] as const;
 
     return (
-        <div className='percentage-selector' data-testid='dt_percentage_selector_id'>
+        <div className='wallets-percentage-selector'>
             {percentageSelectorOptions.map((option, index) => (
-                <PercentageSelectorBlock
+                <WalletsPercentageSelectorBlock
                     isHighlighted={getIsHightlighted(option.percentage)}
                     key={index}
                     label={option.label}
@@ -65,4 +65,4 @@ const PercentageSelector = ({ amount, balance, onChangePercentage }: TPercentage
     );
 };
 
-export default PercentageSelector;
+export default WalletsPercentageSelector;

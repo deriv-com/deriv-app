@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Joyride, { ACTIONS, CallBackProps } from 'react-joyride';
+import useDevice from 'src/hooks/useDevice';
 import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
 import { WalletText } from '../Base';
 import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
@@ -8,6 +9,7 @@ import './WalletTourGuide.scss';
 const WalletTourGuide = () => {
     const key = 'walletsOnboarding';
     const [isStarted, setIsStarted] = useState(localStorage.getItem(key) === 'started');
+    const { isMobile } = useDevice();
 
     const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
@@ -65,7 +67,13 @@ const WalletTourGuide = () => {
             run={isStarted && !isLoading && !isFetching && isSuccess}
             scrollOffset={150}
             scrollToFirstStep
-            steps={tourStepConfig(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded)}
+            steps={tourStepConfig(
+                isMobile,
+                isDemoWallet,
+                hasMT5Account,
+                hasDerivAppsTradingAccount,
+                isAllWalletsAlreadyAdded
+            )}
             tooltipComponent={TooltipComponent}
         />
     );

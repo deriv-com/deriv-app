@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
+import useDevice from '../../../../hooks/useDevice';
 import { useModal } from '../../../../components/ModalProvider';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
@@ -15,6 +16,7 @@ const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
     const { modalState, show } = useModal();
     const { isLoading } = useAvailableMT5Accounts();
+    const { isMobile } = useDevice();
 
     const marketType = modalState?.marketType || 'all';
     const platform = modalState?.platform || 'mt5';
@@ -28,6 +30,7 @@ const JurisdictionModal = () => {
             renderFooter={() => (
                 <WalletButton
                     disabled={!selectedJurisdiction}
+                    isFullWidth={isMobile}
                     onClick={() => show(<MT5PasswordModal marketType={marketType} platform={platform} />)}
                     text='Next'
                 />

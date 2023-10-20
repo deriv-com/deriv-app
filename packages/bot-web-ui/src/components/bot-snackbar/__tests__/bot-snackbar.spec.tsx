@@ -43,6 +43,8 @@ jest.useFakeTimers();
 describe('BotSnackbar', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
     const mockHandleClose = jest.fn();
+    const test_message = <div>message test</div>;
+
     beforeAll(() => {
         const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
@@ -56,23 +58,21 @@ describe('BotSnackbar', () => {
         );
     });
     it('should render BotSnackbar with correct message', () => {
-        const test_message = 'message test';
         render(<BotSnackbar message={test_message} handleClose={mockHandleClose} is_open={true} />, {
             wrapper,
         });
-        expect(screen.getByText(test_message)).toBeInTheDocument();
+        expect(screen.getByText('message test')).toBeInTheDocument();
     });
 
     it('should not render BotSnackbar if snack bar is not opened', () => {
-        const test_message = 'message test';
         render(<BotSnackbar message={test_message} handleClose={mockHandleClose} is_open={false} />, {
             wrapper,
         });
-        expect(screen.queryByText(test_message)).not.toBeInTheDocument();
+        expect(screen.queryByText('message test')).not.toBeInTheDocument();
     });
 
     it('should render close button if snackbar is open', () => {
-        render(<BotSnackbar message='test' handleClose={mockHandleClose} is_open={true} />, {
+        render(<BotSnackbar message={test_message} handleClose={mockHandleClose} is_open={true} />, {
             wrapper,
         });
         const cls_btn = screen.getByTestId('bot-snackbar-notification-close');
@@ -80,7 +80,7 @@ describe('BotSnackbar', () => {
     });
 
     it('should hanlde close function on click close button', async () => {
-        render(<BotSnackbar message='test' handleClose={mockHandleClose} is_open={true} />, {
+        render(<BotSnackbar message={test_message} handleClose={mockHandleClose} is_open={true} />, {
             wrapper,
         });
         const cls_btn = screen.getByTestId('bot-snackbar-notification-close');
@@ -89,7 +89,7 @@ describe('BotSnackbar', () => {
     });
 
     it('should close snackbar after timeout is passed and mouse is not over the snackbar', async () => {
-        render(<BotSnackbar message='test' handleClose={mockHandleClose} is_open={true} timeout={4000} />, {
+        render(<BotSnackbar message={test_message} handleClose={mockHandleClose} is_open={true} timeout={4000} />, {
             wrapper,
         });
         const element = screen.getByTestId('bot-snackbar-notification-container');

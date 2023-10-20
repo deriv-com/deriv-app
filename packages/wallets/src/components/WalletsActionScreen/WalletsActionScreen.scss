@@ -1,0 +1,16 @@
+.wallets-action-screen {
+    text-align: center;
+
+    &__icon {
+        margin: 4rem 0rem;
+    }
+
+    &__title,
+    &__subtitle {
+        margin: 1.6rem 0rem;
+    }
+
+    &__button {
+        margin-top: 3rem;
+    }
+}

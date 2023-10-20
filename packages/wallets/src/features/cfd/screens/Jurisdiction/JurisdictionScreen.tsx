@@ -2,9 +2,9 @@ import React, { FC, useMemo } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
+import { THooks } from '../../types';
 import { JurisdictionCard } from './JurisdictionCard';
 import './JurisdictionScreen.scss';
-import { THooks } from '../../types';
 
 type TJurisdictionScreenProps = {
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
@@ -43,18 +43,20 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction
                 ))}
             </div>
 
-            {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
-                <div className='wallets-jurisdiction-screen__tnc'>
-                    Add Your Deriv MT5 Financial account under Deriv (V) Ltd, regulated by the Vanuatu Financial
-                    Services Commission.
-                    <div className='wallets-jurisdiction-screen__tnc-checkbox'>
-                        <input id='tnc-checkbox' type='checkbox' />
-                        <label htmlFor='tnc-checkbox' style={{ cursor: 'pointer' }}>
-                            <WalletText>I confirm and accept Deriv (V) Ltd&lsquo;s Terms and Conditions</WalletText>
-                        </label>
-                    </div>
-                </div>
-            )}
+            <div className='wallets-jurisdiction-screen__tnc'>
+                {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
+                    <>
+                        Add Your Deriv MT5 Financial account under Deriv (V) Ltd, regulated by the Vanuatu Financial
+                        Services Commission.
+                        <div className='wallets-jurisdiction-screen__tnc-checkbox'>
+                            <input id='tnc-checkbox' type='checkbox' />
+                            <label htmlFor='tnc-checkbox' style={{ cursor: 'pointer' }}>
+                                <WalletText>I confirm and accept Deriv (V) Ltd&lsquo;s Terms and Conditions</WalletText>
+                            </label>
+                        </div>
+                    </>
+                )}
+            </div>
         </div>
     );
 };

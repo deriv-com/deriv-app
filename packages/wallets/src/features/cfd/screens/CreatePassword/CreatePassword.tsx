@@ -1,7 +1,7 @@
 import React from 'react';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
-import './CreatePassword.scss';
 import { TPlatforms } from '../../types';
+import './CreatePassword.scss';
 
 const platformToTitleMapper: Record<TPlatforms.All, string> = {
     ctrader: 'cTrader',

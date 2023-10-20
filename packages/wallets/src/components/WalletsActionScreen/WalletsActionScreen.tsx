@@ -1,4 +1,4 @@
-import React, { ReactNode, PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import useDevice from '../../hooks/useDevice';
 import WalletButton from '../Base/WalletButton/WalletButton';
 import WalletText from '../Base/WalletText/WalletText';

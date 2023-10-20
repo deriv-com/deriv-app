@@ -1,9 +1,9 @@
 import React from 'react';
-import { useActiveWalletAccount, useMutation } from '@deriv/api';
 import { useHistory } from 'react-router-dom';
+import { useActiveWalletAccount, useMutation } from '@deriv/api';
+import WalletsActionScreen from '../../../../components/WalletsActionScreen/WalletsActionScreen';
 import IcResetDemoBalance from '../../../../public/images/ic-demo-reset-balance.svg';
 import IcResetDemoBalanceDone from '../../../../public/images/ic-demo-reset-balance-done.svg';
-import WalletsActionScreen from '../../../../components/WalletsActionScreen/WalletsActionScreen';
 
 const WalletResetBalance = () => {
     const history = useHistory();

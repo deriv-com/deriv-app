@@ -4,7 +4,7 @@ import ErrorCircleCrossmark from '../../../public/images/error-circle-crossmark.
 import InfoCircleDots from '../../../public/images/info-circle-dots.svg';
 import SuccessCircleCheckmark from '../../../public/images/success-circle-checkmark.svg';
 import { WalletText } from '../index';
-// import './WalletAlertMessage.scss';
+import './WalletAlertMessage.scss';
 
 const typeMapper = {
     error: {

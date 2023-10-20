@@ -12,6 +12,7 @@ type TQSInput = {
 };
 
 const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attached = false, name }) => {
+    const [has_focus, setFocus] = React.useState(false);
     const { setFieldValue, setFieldTouched } = useFormikContext();
     const is_number = type === 'number';
 
@@ -33,45 +34,48 @@ const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attache
                             'no-top-spacing': attached,
                         })}
                     >
-                        <Popover
-                            alignment='bottom'
-                            message={error}
-                            is_open={!!(error && touched)}
-                            zIndex='9999'
-                            classNameBubble='qs__warning-bubble'
-                            has_error
-                        >
-                            <Input
-                                data_testId='qs-input'
-                                className={classNames('qs__input', { error: has_error })}
-                                type={type}
-                                leading_icon={
-                                    is_number && (
-                                        <button
-                                            data-testid='qs-input-decrease'
-                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                handleChange(e, String(Number(field.value) - 1));
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    )
-                                }
-                                trailing_icon={
-                                    is_number && (
-                                        <button
-                                            data-testid='qs-input-increase'
-                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                handleChange(e, String(Number(field.value) + 1));
-                                            }}
-                                        >
-                                            +
-                                        </button>
-                                    )
-                                }
-                                {...field}
-                            />
-                        </Popover>
+                        <div onMouseEnter={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
+                            <Popover
+                                alignment='bottom'
+                                message={error}
+                                is_open={!!(error && touched && has_focus)}
+                                zIndex='9999'
+                                classNameBubble='qs__warning-bubble'
+                                has_error
+                                should_disable_pointer_events
+                            >
+                                <Input
+                                    data_testId='qs-input'
+                                    className={classNames('qs__input', { error: has_error })}
+                                    type={type}
+                                    leading_icon={
+                                        is_number && (
+                                            <button
+                                                data-testid='qs-input-decrease'
+                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                    handleChange(e, String(Number(Number(field.value) - 1).toFixed(2)));
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                        )
+                                    }
+                                    trailing_icon={
+                                        is_number && (
+                                            <button
+                                                data-testid='qs-input-increase'
+                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                    handleChange(e, String(Number(Number(field.value) + 1).toFixed(2)));
+                                                }}
+                                            >
+                                                +
+                                            </button>
+                                        )
+                                    }
+                                    {...field}
+                                />
+                            </Popover>
+                        </div>
                     </div>
                 );
             }}

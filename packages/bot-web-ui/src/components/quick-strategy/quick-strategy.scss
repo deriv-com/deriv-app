@@ -284,6 +284,23 @@
                 margin-right: 2.4rem;
             }
         }
+        &__option {
+            display: flex;
+            align-items: center;
+
+            &__text {
+                margin-left: 3rem;
+            }
+
+            &__icon {
+                background-color: var(--icon-grey-background);
+                margin-left: 0.8rem;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
     }
     .seddle-actions {
         position: absolute;

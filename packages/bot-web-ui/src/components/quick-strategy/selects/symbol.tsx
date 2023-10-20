@@ -19,9 +19,9 @@ type TMarketOption = {
 };
 
 const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
-    <div key={symbol.value} className='quick-strategy__option'>
+    <div key={symbol.value} className='qs__select__option'>
         <Icon data_testid='dt_symbol_icon' icon={`IcUnderlying${symbol.value}`} size={32} />
-        <Text className='quick-strategy__symbol' size='xs' color='prominent'>
+        <Text className='qs__select__option__text' size='xs' color='prominent'>
             {symbol.text}
         </Text>
     </div>
@@ -45,8 +45,8 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
         if (values?.symbol) {
             const has_symbol = !!symbols.find((symbol: { [key: string]: string }) => symbol.value === values.symbol);
             if (!has_symbol) {
-                setFieldValue('symbol', symbols[0].value);
-                setValue('symbol', symbols[0].value);
+                setFieldValue('symbol', symbols?.[0]?.value);
+                setValue('symbol', symbols?.[0]?.value);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -19,10 +19,10 @@ type TTradeTypeOption = {
 };
 
 const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type }) => (
-    <div key={trade_type.value} className='quick-strategy__option'>
-        <IconTradeTypes type={trade_type.icon[0]} className='quick-strategy__icon' />
-        <IconTradeTypes type={trade_type.icon[1]} className='quick-strategy__icon' />
-        <Text className='quick-strategy__symbol' size='xs' color='prominent'>
+    <div key={trade_type.value} className='qs__select__option'>
+        <IconTradeTypes type={trade_type.icon[0]} className='qs__select__option__icon' />
+        <IconTradeTypes type={trade_type.icon[1]} className='qs__select__option__icon' />
+        <Text className='qs__select__option__text' size='xs' color='prominent'>
             {trade_type.text}
         </Text>
     </div>
@@ -49,8 +49,8 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ symbol, selected, fullWid
 
                 const has_selected = trade_types?.some((trade_type: TTradeType) => trade_type.value === selected);
                 if (!has_selected && trade_types?.[0]?.value !== selected) {
-                    setFieldValue?.('tradetype', trade_types[0].value);
-                    setValue('tradetype', trade_types[0].value);
+                    setFieldValue?.('tradetype', trade_types?.[0].value);
+                    setValue('tradetype', trade_types?.[0].value);
                 }
             };
             getTradeTypes();

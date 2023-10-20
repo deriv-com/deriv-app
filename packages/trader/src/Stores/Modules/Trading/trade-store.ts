@@ -30,6 +30,7 @@ import {
     BARRIER_LINE_STYLES,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
+import type { TEvents } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
@@ -1615,6 +1616,7 @@ export default class TradeStore extends BaseStore {
         if (data) {
             Analytics.trackEvent(event_type, {
                 ...data,
+                action: data.action as TEvents['ce_indicators_types_form']['action'],
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 form_name: 'default',
             });

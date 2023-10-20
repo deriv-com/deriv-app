@@ -16,11 +16,15 @@ const BinarySocketGeneral = (() => {
         common_store.setIsSocketOpened(false);
     };
 
-    const timer = setTimeout(() => {
-        /* eslint-disable no-console */
-        console.error('deriv-api: no message received after 30s');
-    }, 30000);
+    let responseTimeoutErrorTimer = null;
     const onOpen = is_ready => {
+        responseTimeoutErrorTimer = setTimeout(() => {
+            const error = new Error('deriv-api: no message received after 30s');
+            error.userId = client_store?.loginid;
+            /* eslint-disable no-console */
+            console.error(error);
+        }, 30000);
+
         if (is_ready) {
             if (!client_store.is_valid_login) {
                 client_store.logout();
@@ -43,7 +47,7 @@ const BinarySocketGeneral = (() => {
     };
 
     const onMessage = response => {
-        clearTimeout(timer);
+        clearTimeout(responseTimeoutErrorTimer);
         handleError(response);
         // Header.hideNotification('CONNECTION_ERROR');
         switch (response.msg_type) {

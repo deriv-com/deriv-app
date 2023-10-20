@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { VANILLALONG, TURBOS } from '@deriv/shared';
@@ -99,12 +98,12 @@ describe('<PositionsModalCard />', () => {
         );
     };
 
-    it('should render loader if underlying in contract_info prop is falsy and contract is unsupported', () => {
+    it('should render loader if underlying in contract_info is falsy and contract is unsupported', () => {
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.getByText(PositionsCardLoader)).toBeInTheDocument();
     });
-    it('should render loader if underlying in contract_info prop is falsy and contract is supported', () => {
+    it('should render loader if underlying in contract_info is falsy and contract is supported', () => {
         default_mock_props.is_unsupported = false;
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
@@ -129,7 +128,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/Total profit\/loss:/i)).toBeInTheDocument();
         expect(screen.getByText(/35.68/i)).toBeInTheDocument();
     });
-    it('should render contract card for Turbos', () => {
+    it('should render specific contract card for Turbos', () => {
         default_mock_props.contract_info.contract_type = TURBOS.LONG;
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
@@ -162,7 +161,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/2,671.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Payout limit:/i)).toBeInTheDocument();
     });
-    it('should render contract card for Touch/No Touch same as for Rise/Fall', () => {
+    it('should render the same contract card for Touch/No Touch as for Rise/Fall', () => {
         default_mock_props.contract_info.contract_type = 'touch';
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 

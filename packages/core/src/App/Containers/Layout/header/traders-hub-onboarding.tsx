@@ -13,16 +13,15 @@ const TradersHubOnboarding = observer(() => {
     const { is_dark_mode_on } = ui;
     const { is_next_wallet_enabled } = useFeatureFlags();
 
-    const onClickHandler = () =>
-        is_next_wallet_enabled
-            ? () => {
-                  localStorage.setItem('walletsOnboarding', 'started');
-                  window.dispatchEvent(new Event('storage'));
-              }
-            : () => {
-                  history.push(routes.onboarding);
-                  setIsOnboardingVisited(false);
-              };
+    const onClickHandler = is_next_wallet_enabled
+        ? () => {
+              localStorage.setItem('walletsOnboarding', 'started');
+              window.dispatchEvent(new Event('storage'));
+          }
+        : () => {
+              history.push(routes.onboarding);
+              setIsOnboardingVisited(false);
+          };
 
     return (
         <div data-testid='dt_traders_hub_onboarding'>

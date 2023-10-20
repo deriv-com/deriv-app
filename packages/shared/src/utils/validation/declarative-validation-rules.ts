@@ -56,6 +56,10 @@ const validRegular = (value: string, options: TOptions) => options.regex?.test(v
 const confirmRequired = (value: string) => !!value;
 const checkPOBox = (value: string) => !/p[.\s]+o[.\s]+box/i.test(value);
 const validEmailToken = (value: string) => value.trim().length === 8;
+export const hasInvalidCharacters = (target_string: string) => /[^\dX\s]/.test(target_string);
+export const isFormattedCardNumber = (target_string: string) =>
+    /(^\d{4})\s(\d{2}X{2})\s(X{4})\s(\d{4}$)/.test(target_string);
+export const validFile = (file: File) => file?.type && /(image|application)\/(jpe?g|pdf|png)$/.test(file?.type);
 
 let pre_build_dvrs: TInitPreBuildDVRs, form_error_messages: TFormErrorMessagesTypes;
 

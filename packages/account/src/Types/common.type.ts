@@ -202,8 +202,13 @@ export type TPaymentMethodInfo = {
 
 export type TPaymentMethod = keyof ReturnType<typeof getPaymentMethodsConfig>;
 
-export type TPaymentMethodUploadData = {
-    files: Blob[];
+export type TProofOfOwnershipFormValue = Record<TPaymentMethod, TProofOfOwnershipData>;
+
+export type TProofOfOwnershipData = {
+    documents_required: number;
     id: number;
+    identifier_type: TPaymentMethodIdentifier;
+    is_generic_pm: boolean;
+    files?: Array<File>;
     payment_method_identifier: string;
-} & Pick<TPaymentMethodInfo, 'documents_required' | 'identifier_type' | 'is_generic_pm'>;
+};

@@ -4,11 +4,11 @@ import { useFormikContext } from 'formik';
 import { Input, Text } from '@deriv/components';
 import { IDENTIFIER_TYPES, VALIDATIONS } from '../../Constants/poo-identifier';
 import FileUploader from '../../Sections/Verification/ProofOfOwnership/file-uploader';
-import { TPaymentMethodInfo, TPaymentMethodUploadData } from '../../Types';
+import { TPaymentMethod, TPaymentMethodInfo, TProofOfOwnershipFormValue } from '../../Types';
 import ExampleLink from './example-link';
 
 type TExpandedCardProps = {
-    card_details?: TPaymentMethodInfo;
+    card_details: TPaymentMethodInfo;
     index: number;
     updateErrors: (index: number, item_index: number, sub_index: number) => void;
 };
@@ -21,36 +21,28 @@ type TExpandedCardProps = {
  * @returns React Component
  */
 const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps) => {
-    const { values, setFieldValue, errors } = useFormikContext<{ data: Partial<TPaymentMethodUploadData>[] }>();
+    const { values, setFieldValue, errors } = useFormikContext<Partial<TProofOfOwnershipFormValue>>();
+
+    const payment_method = card_details.payment_method.toLowerCase() as TPaymentMethod;
 
     const handleUploadedFile = async (name: string, file: Blob) => {
         await setFieldValue(name, file);
     };
+
     const handleBlur = (
-        name: string,
         payment_method_identifier: string,
         identifier_type: string,
-        item_id: string,
-        item_index: number,
+        item_id: number,
         documents_required: number
     ) => {
         handleIdentifierChange(
-            name,
             formatIdentifier(payment_method_identifier, identifier_type),
             item_id,
-            item_index,
             documents_required
         );
     };
-    const handleIdentifierChange = (
-        name: string,
-        payment_method_identifier: string,
-        item_id: string,
-        item_index: number,
-        documents_required: number
-    ) => {
-        setFieldValue(`${name}`, {
-            ...values.data?.[index]?.[item_index],
+    const handleIdentifierChange = (payment_method_identifier: string, item_id: number, documents_required: number) => {
+        setFieldValue(payment_method, {
             documents_required,
             id: item_id,
             payment_method_identifier,
@@ -74,6 +66,7 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
         }
         return formatted_id.replace(/(\w{4})/g, '$1 ').trim();
     };
+
     const isSpecialPM = (pm_icon: string) =>
         ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(ic => ic === pm_icon);
 
@@ -107,37 +100,29 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                                                     'proof-of-ownership__card-open-inputs-cardnumber',
                                                     {
                                                         'proof-of-ownership-valid-identifier':
-                                                            values?.data?.[index]?.[item_index]
-                                                                ?.payment_method_identifier &&
-                                                            !errors?.data?.[index]?.[item_index]
-                                                                ?.payment_method_identifier,
+                                                            values?.[payment_method]?.payment_method_identifier &&
+                                                            !errors?.[payment_method]?.payment_method_identifier,
                                                     }
                                                 )}
                                                 type='text'
                                                 onChange={e => {
                                                     handleIdentifierChange(
-                                                        `data[${index}].[${item_index}]`,
-                                                        e.currentTarget.value.trim(),
+                                                        e.target.value,
                                                         item.id,
-                                                        item_index,
                                                         card_details.documents_required
                                                     );
                                                 }}
-                                                value={
-                                                    values?.data?.[index]?.[item_index]?.payment_method_identifier || ''
-                                                }
+                                                value={values?.[payment_method]?.payment_method_identifier}
                                                 onBlur={e => {
                                                     handleBlur(
-                                                        `data[${index}].[${item_index}]`,
-                                                        e.currentTarget.value.trim(),
+                                                        e.target.value.trim(),
                                                         card_details?.identifier_type,
                                                         item.id,
-                                                        item_index,
                                                         card_details.documents_required
                                                     );
                                                 }}
                                                 data-testid='dt_payment_method_identifier'
-                                                error={errors?.data?.[index]?.[item_index]?.payment_method_identifier}
+                                                error={errors?.[payment_method]?.payment_method_identifier}
                                             />
                                         </div>
                                     )}
@@ -152,41 +137,33 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                                                             'proof-of-ownership__card-open-inputs-cardnumber',
                                                             {
                                                                 'proof-of-ownership-valid-identifier':
-                                                                    values?.data?.[index]?.[item_index]
+                                                                    values?.[payment_method]
                                                                         ?.payment_method_identifier &&
-                                                                    !errors?.data?.[index]?.[item_index]
+                                                                    !errors?.[payment_method]
                                                                         ?.payment_method_identifier,
                                                             }
                                                         )}
                                                         type='text'
                                                         onChange={e => {
                                                             handleIdentifierChange(
-                                                                `data[${index}].[${item_index}]`,
-                                                                e.currentTarget.value.trim(),
+                                                                e.target.value.trim(),
                                                                 item.id,
-                                                                item_index,
                                                                 card_details.documents_required
                                                             );
                                                         }}
                                                         value={
-                                                            values?.data?.[index]?.[item_index]
-                                                                ?.payment_method_identifier ?? ''
+                                                            values?.[payment_method]?.payment_method_identifier ?? ''
                                                         }
                                                         onBlur={e => {
                                                             handleBlur(
-                                                                `data[${index}].[${item_index}]`,
-                                                                e.currentTarget.value.trim(),
+                                                                e.target.value.trim(),
                                                                 card_details?.identifier_type,
                                                                 item.id,
-                                                                item_index,
                                                                 card_details.documents_required
                                                             );
                                                         }}
                                                         data-testid='dt_payment_method_identifier'
-                                                        error={
-                                                            errors?.data?.[index]?.[item_index]
-                                                                ?.payment_method_identifier
-                                                        }
+                                                        error={errors?.[payment_method]?.payment_method_identifier}
                                                     />
                                                 </div>
                                             )}
@@ -198,12 +175,10 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                                             >
                                                 <FileUploader
                                                     handleFile={handleUploadedFile}
-                                                    file_name={
-                                                        values?.data?.[index]?.[item_index]?.files?.[i]?.name ?? ''
-                                                    }
+                                                    file_name={values?.[payment_method]?.files?.[i]?.name ?? ''}
                                                     class_name='proof-of-ownership__card-open-inputs-photo'
-                                                    name={`data[${index}].[${item_index}].files[${i}]`}
-                                                    error={errors?.data?.[index]?.[item_index]?.files?.[i]}
+                                                    name={`${payment_method}.files[${i}]`}
+                                                    error={errors?.[payment_method]?.files?.[i]}
                                                     index={index}
                                                     item_index={item_index}
                                                     sub_index={i}

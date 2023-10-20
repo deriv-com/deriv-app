@@ -5,7 +5,7 @@ import ExpandedCard from './expanded-card';
 import { TPaymentMethodInfo } from '../../Types';
 
 type TCardProps = {
-    details?: TPaymentMethodInfo;
+    details: TPaymentMethodInfo;
     index: number;
     updateErrors: (index: number, item_index: number, sub_index: number) => void;
 };

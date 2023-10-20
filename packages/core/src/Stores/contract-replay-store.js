@@ -1,7 +1,7 @@
 import { action, observable, makeObservable, override } from 'mobx';
 import { routes, isEmptyObject, isForwardStarting, WS, contractCancelled, contractSold } from '@deriv/shared';
 import { Money } from '@deriv/components';
-import { RudderStack, getRudderstackConfig } from '@deriv/analytics';
+import { Analytics, getRudderstackConfig } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
@@ -282,7 +282,7 @@ export default class ContractReplayStore extends BaseStore {
                 contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );
 
-            RudderStack.track(event_names.reports, {
+            Analytics.trackEvent(event_names.reports, {
                 action: action_names.close_contract,
                 form_name: form_names.default,
                 subform_name: subform_names.contract_details,

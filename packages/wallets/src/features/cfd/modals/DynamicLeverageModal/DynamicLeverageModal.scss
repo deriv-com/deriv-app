@@ -52,15 +52,17 @@
     }
 }
 
-.wallets-jurisdiction-modal-transition {
-    &-enter {
-        opacity: 0;
+@keyframes flip {
+    from {
         transform: rotateY(-180deg);
-        transition: all 0.6s ease;
     }
-
-    &-enter-active {
-        opacity: 1;
+    to {
         transform: rotateY(0deg);
+    }
+}
+
+.wallets-jurisdiction-modal-transition {
+    &--animate {
+        animation: flip 0.6s;
     }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     getAppstorePlatforms,
@@ -12,7 +12,7 @@ import {
 } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { useActiveWallet, useGetMt5LoginListStatus } from '@deriv/hooks';
+import { useActiveWallet } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import {
     CFD_PLATFORMS,
@@ -45,7 +45,6 @@ const TradingAppCard = ({
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
-    login,
     market_type,
     wallet_account,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
@@ -58,7 +57,7 @@ const TradingAppCard = ({
     const { current_language } = common;
     const { is_account_being_created } = cfd;
 
-    const { status: banner_status } = useGetMt5LoginListStatus(login ?? '');
+    const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
     const demo_label = localize('Demo');
     const is_real_account = wallet_account ? !wallet_account.is_virtual : is_real;
 
@@ -80,18 +79,22 @@ const TradingAppCard = ({
             return app_desc;
         }
     };
-    console.log(
-        'getStatusBadgeConfig ,mt5_acc_auth_status',
-        getStatusBadgeConfig(mt5_acc_auth_status, openFailedVerificationModal, selected_mt5_jurisdiction),
-        mt5_acc_auth_status
-    );
-    console.log(getStatusBadgeConfig('migrated'));
+
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mt5_acc_auth_status,
         openFailedVerificationModal,
         selected_mt5_jurisdiction
     );
-    // const { text: badge_text_positions, icon: badge_icon_positions } = getStatusBadgeConfig(banner_status);
+
+    const handleStatusBadgeClick = (mt5_acc_auth_status: string) => {
+        switch (mt5_acc_auth_status) {
+            case MT5LoginListStatus.MIGRATED_WITH_POSITION:
+            case MT5LoginListStatus.MIGRATED_WITHOUT_POSITION:
+                return setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
+            default:
+                return null;
+        }
+    };
 
     const openStaticPage = () => {
         if (is_deriv_platform) {
@@ -123,9 +126,10 @@ const TradingAppCard = ({
         else;
     };
 
-    const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
-    const is_open_order_position = banner_status === MT5LoginListStatus.MIGRATED_WITH_POSITION;
-    const is_account_closed = banner_status === MT5LoginListStatus.MIGRATED_WITHOUT_POSITION;
+    const migration_status =
+        mt5_acc_auth_status === MT5LoginListStatus.MIGRATED_WITH_POSITION ||
+        mt5_acc_auth_status === MT5LoginListStatus.MIGRATED_WITHOUT_POSITION;
+    const disable_btn = mt5_acc_auth_status && !migration_status;
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
@@ -165,64 +169,19 @@ const TradingAppCard = ({
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {appDescription()}
                     </Text>
-                    {console.log('mt5_acc_auth_status', mt5_acc_auth_status)}
-                    {console.log('badge_icon, badge_text ', badge_icon, badge_text)}
                     {mt5_acc_auth_status && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
                             account_status={mt5_acc_auth_status}
                             icon={badge_icon}
                             text={badge_text}
+                            onClick={() => handleStatusBadgeClick(mt5_acc_auth_status)}
                         />
                     )}
-                    {/* {banner_status && (
-                        <StatusBadge
-                            className='trading-app-card__acc_status_badge'
-                            onClick={() => {
-                                setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
-                            }}
-                            account_status='open-order-position'
-                            icon={badge_icon_positions}
-                            text={badge_text_positions}
-                        />
-                    )} */}
-                    {/* {is_open_order_position && (
-                        <StatusBadge
-                            className='trading-app-card__acc_status_badge'
-                            onClick={() => {
-                                setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
-                            }}
-                            account_status='open-order-position'
-                            icon='IcAlertWarning'
-                            text={
-                                <Localize
-                                    i18n_default_text='<0>No new positions</0>'
-                                    components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
-                                />
-                            }
-                        />
-                    )}
-                    {is_account_closed && (
-                        <StatusBadge
-                            className='trading-app-card__acc_status_badge'
-                            onClick={() => {
-                                setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
-                            }}
-                            account_status='open-order-position'
-                            icon='IcAlertWarning'
-                            text={
-                                <Localize
-                                    i18n_default_text='<0>Account closed</0>'
-                                    components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
-                                />
-                            }
-                        />
-                    )} */}
                     {is_open_position_svg_modal_open && (
                         <OpenPositionsSVGModal
                             market_type={market_type}
-                            is_open_order_position={is_open_order_position}
-                            is_account_closed={is_account_closed}
+                            status={mt5_acc_auth_status ?? ''}
                             is_modal_open={is_open_position_svg_modal_open}
                             setModalOpen={setIsOpenPositionSvgModalOpen}
                         />
@@ -235,7 +194,7 @@ const TradingAppCard = ({
                         onAction={onAction}
                         is_external={is_external}
                         new_tab={new_tab}
-                        is_buttons_disabled={!!mt5_acc_auth_status}
+                        is_buttons_disabled={!!disable_btn}
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
                     />

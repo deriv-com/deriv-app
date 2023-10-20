@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, Icon, Money, StatusBadge } from '@deriv/components';
-import { useGetMt5LoginListStatus } from '@deriv/hooks';
+import { getStatusBadgeConfig } from '@deriv/account';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { Text, Icon, Money, StatusBadge } from '@deriv/components';
 import {
     CFD_PLATFORMS,
     getCFDAccountDisplay,
@@ -10,7 +10,6 @@ import {
     getPlatformSettings,
     getUrlBase,
     isMobile,
-    MT5LoginListStatus,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { getPlatformMt5DownloadLink } from '../Helpers/constants';
@@ -75,9 +74,7 @@ const DMT5TradeModal = ({
         return 'Financial';
     };
 
-    const { status: banner_status } = useGetMt5LoginListStatus(mt5_trade_account?.login ?? '');
-    const is_open_order_position = banner_status === MT5LoginListStatus.MIGRATED_WITH_POSITION;
-    const is_account_closed = banner_status === MT5LoginListStatus.MIGRATED_WITHOUT_POSITION;
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(mt5_trade_account.status);
 
     return (
         <div className='cfd-trade-modal-container'>
@@ -104,30 +101,12 @@ const DMT5TradeModal = ({
                             />
                         </Text>
                     )}
-                    {is_open_order_position && (
+                    {mt5_trade_account.status && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
-                            account_status='open-order-position'
-                            icon='IcAlertWarning'
-                            text={
-                                <Localize
-                                    i18n_default_text='<0>No new positions</0>'
-                                    components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
-                                />
-                            }
-                        />
-                    )}
-                    {is_account_closed && (
-                        <StatusBadge
-                            className='trading-app-card__acc_status_badge'
-                            account_status='open-order-position'
-                            icon='IcAlertWarning'
-                            text={
-                                <Localize
-                                    i18n_default_text='<0>Account closed</0>'
-                                    components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
-                                />
-                            }
+                            account_status={mt5_trade_account.status}
+                            icon={badge_icon}
+                            text={badge_text}
                         />
                     )}
                 </div>

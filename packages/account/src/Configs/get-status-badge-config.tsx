@@ -2,13 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { MT5LoginListStatus } from '@deriv/shared';
 
 const getStatusBadgeConfig = (
     account_status: string,
-    openFailedVerificationModal?: (selected_account_type: string) => void,
-    selected_account_type?: string
+    openFailedVerificationModal: (selected_account_type: string) => void,
+    selected_account_type: string
 ) => {
-    console.log(account_status);
+    const BadgeTextComponent = <Text key={0} weight='bold' size='xxxs' color='warning' />;
+
     switch (account_status) {
         case 'pending':
             return {
@@ -20,7 +22,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcAlertWarning',
             };
-        case 'migrated':
+        case 'failed':
             return {
                 text: (
                     <Localize
@@ -52,29 +54,19 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcAlertInfo',
             };
-        // case 'migrated':
-        //     return {
-        //         text: (
-        //             <Localize
-        //                 i18n_default_text='<0>No new positions</0>'
-        //                 components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
-        //             />
-        //         ),
-        //         icon: 'IcAlertWarning',
-        //     };
-        case 'migrated_without_position':
+        case MT5LoginListStatus.MIGRATED_WITH_POSITION:
             return {
-                text: (
-                    <Localize
-                        i18n_default_text='<0>Account closed</0>'
-                        components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
-                    />
-                ),
+                text: <Localize i18n_default_text='<0>No new positions</0>' components={[BadgeTextComponent]} />,
+                icon: 'IcAlertWarning',
+            };
+        case MT5LoginListStatus.MIGRATED_WITHOUT_POSITION:
+            return {
+                text: <Localize i18n_default_text='<0>Account closed</0>' components={[BadgeTextComponent]} />,
                 icon: 'IcAlertWarning',
             };
         default:
             return {
-                text: 'aaaa',
+                text: '',
                 icon: '',
             };
     }

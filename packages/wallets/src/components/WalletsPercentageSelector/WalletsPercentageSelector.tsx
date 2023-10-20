@@ -49,7 +49,7 @@ const PercentageSelector = ({ amount, balance, onChangePercentage }: TPercentage
             label: 'All',
             percentage: 100,
         },
-    ];
+    ] as const;
 
     return (
         <div className='percentage-selector' data-testid='dt_percentage_selector_id'>

@@ -7,7 +7,6 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
-import { TFormData } from '../types';
 import '../quick-strategy.scss';
 
 type TDesktopFormWrapper = {
@@ -16,7 +15,7 @@ type TDesktopFormWrapper = {
 
 const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
-    const { submitForm, isValid, setFieldValue } = useFormikContext();
+    const { submitForm, isValid, setFieldValue, resetForm } = useFormikContext();
     const { quick_strategy, run_panel } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, setFormVisibility, toggleStopBotDialog } = quick_strategy;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
@@ -26,6 +25,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
 
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
+        resetForm();
     };
 
     const onEdit = async () => {

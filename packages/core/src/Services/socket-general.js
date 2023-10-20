@@ -23,7 +23,7 @@ const BinarySocketGeneral = (() => {
             error.userId = client_store.loginid;
             /* eslint-disable no-console */
             console.error({ error });
-        }, 100);
+        }, 30000);
 
         if (is_ready) {
             if (!client_store.is_valid_login) {

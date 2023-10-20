@@ -53,7 +53,8 @@ const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attache
                                             <button
                                                 data-testid='qs-input-decrease'
                                                 onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                    handleChange(e, String(Number(Number(field.value) - 1).toFixed(2)));
+                                                    const value = Number(field.value) - 1;
+                                                    handleChange(e, String(value % 1 ? value.toFixed(2) : value));
                                                 }}
                                             >
                                                 -
@@ -65,7 +66,8 @@ const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attache
                                             <button
                                                 data-testid='qs-input-increase'
                                                 onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                    handleChange(e, String(Number(Number(field.value) + 1).toFixed(2)));
+                                                    const value = Number(field.value) + 1;
+                                                    handleChange(e, String(value % 1 ? value.toFixed(2) : value));
                                                 }}
                                             >
                                                 +

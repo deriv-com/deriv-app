@@ -52,7 +52,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                 </div>
                 <div className='qs__head__action'>
                     <span data-testid='qs-desktop-close-button' onClick={() => handleClose()}>
-                        <Icon icon='IcCloseIconDbot' />
+                        <Icon icon='IcCross' />
                     </span>
                 </div>
             </div>

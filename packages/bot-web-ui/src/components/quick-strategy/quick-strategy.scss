@@ -246,6 +246,7 @@
             &__field {
                 margin-left: 6rem;
                 font-weight: bold;
+                color: var(--text-general);
             }
 
             &__trailing-icon {
@@ -265,6 +266,7 @@
 
             &__field {
                 font-weight: bold;
+                color: var(--text-general);
             }
 
             &__leading-icon {
@@ -338,22 +340,31 @@
             &__leading-icon {
                 @extend .seddle-actions;
                 left: 0.3rem;
+                color: var(--text-general);
                 @include mobile() {
                     left: 0.2rem;
+                }
+                &:hover {
+                    background-color: var(--state-hover);
                 }
             }
 
             &__trailing-icon {
                 @extend .seddle-actions;
                 right: 0.3rem;
+                color: var(--text-general);
                 @include mobile() {
                     right: 0.2rem;
+                }
+                &:hover {
+                    background-color: var(--state-hover);
                 }
             }
 
             &__field {
                 margin: 0 4rem;
                 text-align: center;
+                color: var(--text-general);
             }
         }
         &.error {

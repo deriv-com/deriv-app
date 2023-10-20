@@ -83,7 +83,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                                     case 'max':
                                         schema = schema.max(
                                             max,
-                                            localize('Maximum duration {{ value }}', { value: max })
+                                            localize('Maximum duration: {{ value }}', { value: max })
                                         );
                                         break;
                                     case 'ceil':

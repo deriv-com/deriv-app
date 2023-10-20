@@ -25,6 +25,8 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
 
     const payment_method = card_details.payment_method.toLowerCase() as TPaymentMethod;
 
+    console.log('Card details: ', card_details);
+
     const handleUploadedFile = async (name: string, file: Blob) => {
         await setFieldValue(name, file);
     };

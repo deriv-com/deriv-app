@@ -2790,7 +2790,7 @@ export default class ClientStore extends BaseStore {
             if (cookie_value && cookie_value.clients_country) {
                 const client_country = cookie_value.clients_country;
                 /// Show beta chart only for these countries
-                this.is_beta_chart = ['zw', 'in', 'pk'].includes(client_country);
+                this.is_beta_chart = ['ke', 'in', 'pk'].includes(client_country);
             }
         } catch {
             this.is_beta_chart = false;

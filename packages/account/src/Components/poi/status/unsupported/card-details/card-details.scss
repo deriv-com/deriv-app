@@ -5,7 +5,7 @@
     display: flex;
 
     &--mobile {
-        padding: 2.4rem 1.6rem;
+        padding: 2.4rem;
     }
 
     h3 {
@@ -21,7 +21,7 @@
     }
     &__fields-wrap {
         display: flex;
-        margin-bottom: 0.7rem;
+        margin-bottom: 2rem;
 
         .manual-poi-details--mobile & {
             flex-wrap: wrap;
@@ -29,6 +29,12 @@
 
         .dc-datepicker {
             margin-left: 2.4rem;
+        }
+
+        @include mobile {
+            .dc-input {
+                margin-bottom: 2rem;
+            }
         }
     }
     &__field {
@@ -181,6 +187,11 @@
 
         .dc-btn:not(:last-of-type) {
             margin-right: 0.8rem;
+        }
+        @include mobile {
+            height: auto;
+            padding-bottom: unset;
+            padding-top: 2rem;
         }
     }
 }

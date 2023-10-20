@@ -16,6 +16,10 @@ const BinarySocketGeneral = (() => {
         common_store.setIsSocketOpened(false);
     };
 
+    const timer = setTimeout(() => {
+        /* eslint-disable no-console */
+        console.error('deriv-api: no message received after 30s');
+    }, 30000);
     const onOpen = is_ready => {
         if (is_ready) {
             if (!client_store.is_valid_login) {
@@ -39,6 +43,7 @@ const BinarySocketGeneral = (() => {
     };
 
     const onMessage = response => {
+        clearTimeout(timer);
         handleError(response);
         // Header.hideNotification('CONNECTION_ERROR');
         switch (response.msg_type) {

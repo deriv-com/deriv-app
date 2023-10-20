@@ -6,17 +6,13 @@ type TDataListTemplateEntry = {
     content: JSX.Element | string;
 };
 
-const DataListTemplateEntry = ({ title, content }: TDataListTemplateEntry) => {
-    const text_size = 'xxs';
-
-    return (
-        <React.Fragment>
-            <Text size={text_size} weight='bold'>
-                {title}
-            </Text>
-            <Text size={text_size}>{content}</Text>
-        </React.Fragment>
-    );
-};
+const DataListTemplateEntry = ({ title, content }: TDataListTemplateEntry) => (
+    <React.Fragment>
+        <Text size='xxs' weight='bold'>
+            {title}
+        </Text>
+        <Text size='xxs'>{content}</Text>
+    </React.Fragment>
+);
 
 export default DataListTemplateEntry;

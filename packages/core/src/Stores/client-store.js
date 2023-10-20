@@ -2585,14 +2585,14 @@ export default class ClientStore extends BaseStore {
     getChangeableFields() {
         const get_settings =
             Object.keys(this.account_settings).length === 0
-                ? WS.authorized.storage?.getSettings() || {}
+                ? WS.authorized.storage.getSettings()
                 : this.account_settings;
 
-        const readonly_fields = () =>
-            get_settings?.immutable_fields
-                ? [...get_settings?.immutable_fields, ...['immutable_fields', 'email', 'password']]
-                : [...['immutable_fields', 'email', 'password']];
-        return Object.keys(get_settings).filter(field => !readonly_fields().includes(field));
+        // the response from get_settings is not yet received and immutable_fields is undefined
+        const immutable_fields = get_settings?.immutable_fields || [];
+
+        const readonly_fields = [...immutable_fields, ...['immutable_fields', 'email', 'password']];
+        return Object.keys(get_settings).filter(field => !readonly_fields.includes(field));
     }
 
     syncWithLegacyPlatforms(active_loginid, client_accounts) {

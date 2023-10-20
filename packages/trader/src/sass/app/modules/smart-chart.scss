@@ -247,6 +247,10 @@
             left: -11px;
             white-space: nowrap;
             background-color: var(--general-main-1);
+
+            @include mobile {
+                left: -7px;
+            }
         }
     }
 }

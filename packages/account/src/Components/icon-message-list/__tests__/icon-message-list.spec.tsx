@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Icon } from '@deriv/components';
-import { ONFIDO_ERROR_STATUS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import IconMessageList from '../icon-message-list';
 
@@ -40,7 +39,7 @@ describe('<IconMessageList/>', () => {
     it('should render icon passed to the component', () => {
         renderComponent({});
         expect(screen.getByText('sampleIcon')).toBeInTheDocument();
-        expect(screen.getByText('IcCloseCircle')).toBeInTheDocument();
+        expect(screen.getByText('IcAlertDanger')).toBeInTheDocument();
     });
 
     it('should show message passed to the component', () => {

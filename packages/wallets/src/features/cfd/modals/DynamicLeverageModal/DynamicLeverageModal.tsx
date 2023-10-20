@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDynamicLeverage } from '@deriv/api';
-import { ModalTransition, ModalWrapper, WalletText } from '../../../../components';
+import { ModalWrapper, Transition, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import BackArrow from '../../../../public/images/ic-back-arrow.svg';
@@ -25,12 +25,12 @@ const DynamicLeverageModal = () => {
                                 marketType: 'financial',
                             });
                             show(
-                                <ModalTransition
+                                <Transition
                                     className='wallets-jurisdiction-modal-transition'
                                     key='wallets-jurisdiction-modal-transition'
                                 >
                                     <JurisdictionModal />
-                                </ModalTransition>
+                                </Transition>
                             );
                         }}
                     />

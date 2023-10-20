@@ -1,10 +1,10 @@
 import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 
-type TModalTransitionProps = {
+type TTransitionProps = {
     className?: string;
 };
 
-const ModalTransition: FC<PropsWithChildren<TModalTransitionProps>> = ({ children, className }) => {
+const Transition: FC<PropsWithChildren<TTransitionProps>> = ({ children, className }) => {
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
@@ -14,4 +14,4 @@ const ModalTransition: FC<PropsWithChildren<TModalTransitionProps>> = ({ childre
     return <div className={isMounted ? `${className}--animate` : ''}>{children}</div>;
 };
 
-export default ModalTransition;
+export default Transition;

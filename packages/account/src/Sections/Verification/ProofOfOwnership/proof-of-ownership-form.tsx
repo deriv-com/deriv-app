@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Form, Formik, FormikErrors, FormikProps } from 'formik';
+import { Form, Formik, FormikErrors } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button } from '@deriv/components';
 import {
@@ -20,7 +20,7 @@ import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
 import Card from '../../../Containers/proof-of-ownership/card';
-import { IDENTIFIER_TYPES, VALIDATIONS } from '../../../Constants/poo-identifier';
+import { IDENTIFIER_TYPES } from '../../../Constants/poo-identifier';
 import {
     TPaymentMethod,
     TPaymentMethodIdentifier,
@@ -94,16 +94,15 @@ const ProofOfOwnershipForm = ({
         payment_method_identifier: string,
         identifier_type: TPaymentMethodIdentifier
     ) => {
+        const default_error_message = localize('Enter your full card number');
         switch (identifier_type) {
             case IDENTIFIER_TYPES.CARD_NUMBER: {
-                if (payment_method_identifier.length > 19) {
-                    return isFormattedCardNumber(payment_method_identifier)
-                        ? null
-                        : localize('Enter your full card number');
+                if (payment_method_identifier.length < 16) {
+                    return default_error_message;
                 } else if (payment_method_identifier.length === 16) {
-                    return !hasInvalidCharacters(payment_method_identifier)
-                        ? null
-                        : localize('Enter your full card number');
+                    return !hasInvalidCharacters(payment_method_identifier) ? null : default_error_message;
+                } else if (payment_method_identifier.length > 19) {
+                    return isFormattedCardNumber(payment_method_identifier) ? null : default_error_message;
                 }
                 return null;
             }
@@ -136,22 +135,11 @@ const ProofOfOwnershipForm = ({
 
     const validateFields = (values: TProofOfOwnershipFormValue) => {
         let errors: FormikErrors<TProofOfOwnershipErrors> = {};
-        let total_documents_uploaded = 0;
-        let are_files_uploaded = false;
-
-        if (!values) {
-            return errors;
-        }
 
         Object.keys(values).forEach(card_key => {
             const card_data = values[card_key as TPaymentMethod];
-            // console.log('Card data: ', card_data);
             const is_payment_method_identifier_provided =
                 card_data.is_generic_pm || card_data.payment_method_identifier.trim()?.length > 0;
-            // total_documents_uploaded = card_data?.files?.length ?? 0;
-            // are_files_uploaded = total_documents_uploaded === card_data.documents_required;
-            // console.log('Status: ', total_documents_uploaded, card_data.documents_required);
-            // console.log('is_payment_method_identifier_provided: ', is_payment_method_identifier_provided, errors);
             if (is_payment_method_identifier_provided) {
                 const verify_payment_method_identifier = isValidPaymentMethodIdentifier(
                     card_data.payment_method_identifier.trim(),
@@ -169,47 +157,28 @@ const ProofOfOwnershipForm = ({
                     delete errors[card_key]?.payment_method_identifier;
                 }
             }
-            // console.log('Are files uploaded: ', are_files_uploaded, errors);
-            // if (!card_data?.files?.length) {
-            //     delete errors[card_key]?.files;
-            // }
-            // card_data?.files?.forEach((file, i) => {
-            //     const verify_file = isValidFile(file);
-            //     if (verify_file) {
-            //         errors = {
-            //             ...errors,
-            //             [card_key as TPaymentMethod]: {
-            //                 ...errors[card_key as TPaymentMethod],
-            //                 files: { ...errors[card_key as TPaymentMethod]?.files, [i]: verify_file },
-            //             },
-            //         };
-            //     } else {
-            //         delete errors[card_key]?.files[i];
-            //     }
-            // });
+            if (!card_data?.files?.length) {
+                delete errors[card_key]?.files;
+            }
+            card_data?.files?.forEach((file, i) => {
+                if (!file?.name) {
+                    return;
+                }
+                const verify_file = isValidFile(file);
+                if (verify_file) {
+                    errors = {
+                        ...errors,
+                        [card_key as TPaymentMethod]: {
+                            ...errors[card_key as TPaymentMethod],
+                            files: { ...errors[card_key as TPaymentMethod]?.files, [i]: verify_file },
+                        },
+                    };
+                } else {
+                    delete errors[card_key]?.files[i];
+                }
+            });
         });
         return errors;
-    };
-
-    const updateErrors = async (index: number, item_index: number, sub_index: number) => {
-        // let error_count = 0;
-        // const errors: FormikErrors<TInitialValues> = {};
-        // errors.data = [...(form_ref?.current?.errors?.data || [])];
-        // if (typeof errors?.data[index] === 'object') {
-        //     delete errors?.data?.[index]?.[item_index]?.files?.[sub_index];
-        //     const has_other_errors = errors?.data[index]?.[item_index]?.files?.some(error => error !== null);
-        //     if (!has_other_errors) {
-        //         delete errors?.data[index]?.[item_index];
-        //     }
-        //     errors?.data?.forEach(e => {
-        //         error_count += Object.keys(e || {}).length;
-        //     });
-        //     if (error_count === 0) {
-        //         errors.data = [];
-        //     }
-        // }
-        // await form_ref?.current?.setErrors(errors);
-        // await form_ref?.current?.validateForm();
     };
 
     const handleFormSubmit = values => {
@@ -279,69 +248,63 @@ const ProofOfOwnershipForm = ({
             innerRef={form_ref}
             onSubmit={handleFormSubmit}
         >
-            {({ isValid, dirty, status, values }) => {
-                console.log('Values: ', values);
-                return (
-                    <Form
-                        data-testid='dt_poo_form'
-                        className='proof-of-ownership'
-                        // onSubmit={e => {
-                        //     e.nativeEvent.preventDefault();
-                        //     e.nativeEvent.stopPropagation();
-                        //     e.nativeEvent.stopImmediatePropagation();
-                        //     handleSubmit(e);
-                        // }}
-                    >
-                        <FormBody scroll_offset={getScrollOffset(grouped_payment_method_data_keys.length)}>
-                            <FormSubHeader title={localize('Please upload the following document(s).')} />
-                            <FormBodySection>
-                                <fieldset>
-                                    {grouped_payment_method_data_keys?.map((grouped_payment_method_data_key, index) => (
-                                        <div
-                                            className='proof-of-ownership__form-content'
-                                            key={grouped_payment_method_data_key}
-                                        >
-                                            {grouped_payment_method_data_keys.length > 1 && (
-                                                <div className='proof-of-ownership__progress'>
-                                                    <div className='proof-of-ownership__progress-number'>
-                                                        {index + 1}
-                                                    </div>
-                                                    {index !== grouped_payment_method_data_keys.length - 1 && (
-                                                        <div className='proof-of-ownership__progress-bar' />
-                                                    )}
-                                                </div>
-                                            )}
-                                            <Card
-                                                index={index}
-                                                details={
-                                                    grouped_payment_method_data[
-                                                        grouped_payment_method_data_key
-                                                    ] as TPaymentMethodInfo
-                                                }
-                                                updateErrors={updateErrors}
-                                            />
-                                        </div>
-                                    ))}
-                                </fieldset>
-                            </FormBodySection>
-                        </FormBody>
-                        <FormFooter>
-                            <Button
-                                type='submit'
-                                className={classNames('account-form__footer-btn')}
-                                is_disabled={!dirty || !isValid}
-                                data-testid={'submit-button'}
-                                has_effect
-                                large
-                                primary
-                                is_loading={status.is_btn_loading}
-                            >
-                                <Localize i18n_default_text='Submit' />
-                            </Button>
-                        </FormFooter>
-                    </Form>
-                );
-            }}
+            {({ isValid, dirty, status, values }) => (
+                <Form
+                    data-testid='dt_poo_form'
+                    className='proof-of-ownership'
+                    // onSubmit={e => {
+                    //     e.nativeEvent.preventDefault();
+                    //     e.nativeEvent.stopPropagation();
+                    //     e.nativeEvent.stopImmediatePropagation();
+                    //     handleSubmit(e);
+                    // }}
+                >
+                    <FormBody scroll_offset={getScrollOffset(grouped_payment_method_data_keys.length)}>
+                        <FormSubHeader title={localize('Please upload the following document(s).')} />
+                        <FormBodySection>
+                            <fieldset>
+                                {grouped_payment_method_data_keys?.map((grouped_payment_method_data_key, index) => (
+                                    <div
+                                        className='proof-of-ownership__form-content'
+                                        key={grouped_payment_method_data_key}
+                                    >
+                                        {grouped_payment_method_data_keys.length > 1 && (
+                                            <div className='proof-of-ownership__progress'>
+                                                <div className='proof-of-ownership__progress-number'>{index + 1}</div>
+                                                {index !== grouped_payment_method_data_keys.length - 1 && (
+                                                    <div className='proof-of-ownership__progress-bar' />
+                                                )}
+                                            </div>
+                                        )}
+                                        <Card
+                                            index={index}
+                                            details={
+                                                grouped_payment_method_data[
+                                                    grouped_payment_method_data_key
+                                                ] as TPaymentMethodInfo
+                                            }
+                                        />
+                                    </div>
+                                ))}
+                            </fieldset>
+                        </FormBodySection>
+                    </FormBody>
+                    <FormFooter>
+                        <Button
+                            type='submit'
+                            className={classNames('account-form__footer-btn')}
+                            is_disabled={!dirty || !isValid}
+                            data-testid={'submit-button'}
+                            has_effect
+                            large
+                            primary
+                            is_loading={status.is_btn_loading}
+                        >
+                            <Localize i18n_default_text='Submit' />
+                        </Button>
+                    </FormFooter>
+                </Form>
+            )}
         </Formik>
     );
 };

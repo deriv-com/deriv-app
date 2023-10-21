@@ -2,15 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { Input, Text } from '@deriv/components';
-import { IDENTIFIER_TYPES, VALIDATIONS } from '../../Constants/poo-identifier';
+import { IDENTIFIER_TYPES } from '../../Constants/poo-identifier';
 import FileUploader from '../../Sections/Verification/ProofOfOwnership/file-uploader';
 import { TPaymentMethod, TPaymentMethodInfo, TProofOfOwnershipFormValue } from '../../Types';
 import ExampleLink from './example-link';
+import { hasInvalidCharacters } from '@deriv/shared';
 
 type TExpandedCardProps = {
     card_details: TPaymentMethodInfo;
-    index: number;
-    updateErrors: (index: number, item_index: number, sub_index: number) => void;
 };
 
 /**
@@ -20,16 +19,10 @@ type TExpandedCardProps = {
  * @param updateErrors Function to update errors
  * @returns React Component
  */
-const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps) => {
+const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
     const { values, setFieldValue, errors } = useFormikContext<Partial<TProofOfOwnershipFormValue>>();
 
     const payment_method = card_details.payment_method.toLowerCase() as TPaymentMethod;
-
-    console.log('Card details: ', card_details);
-
-    const handleUploadedFile = async (name: string, file: Blob) => {
-        await setFieldValue(name, file);
-    };
 
     const handleBlur = (
         payment_method_identifier: string,
@@ -45,6 +38,7 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
     };
     const handleIdentifierChange = (payment_method_identifier: string, item_id: number, documents_required: number) => {
         setFieldValue(payment_method, {
+            ...values?.[payment_method],
             documents_required,
             id: item_id,
             payment_method_identifier,
@@ -56,10 +50,7 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
     const formatIdentifier = (payment_method_identifier: string, identifier_type: string) => {
         let formatted_id = payment_method_identifier?.replace(/\s/g, '') || '';
         if (identifier_type === IDENTIFIER_TYPES.CARD_NUMBER) {
-            if (
-                formatted_id.length !== 16 ||
-                (formatted_id.length === 16 && VALIDATIONS.hasInvalidCharacters(formatted_id))
-            ) {
+            if (formatted_id.length !== 16 || (formatted_id.length === 16 && hasInvalidCharacters(formatted_id))) {
                 return formatted_id;
             }
             formatted_id = `${formatted_id.substring(0, 6)}XXXXXX${formatted_id.substring(12)}`;
@@ -176,15 +167,9 @@ const ExpandedCard = ({ card_details, index, updateErrors }: TExpandedCardProps)
                                                 })}
                                             >
                                                 <FileUploader
-                                                    handleFile={handleUploadedFile}
-                                                    file_name={values?.[payment_method]?.files?.[i]?.name ?? ''}
                                                     class_name='proof-of-ownership__card-open-inputs-photo'
-                                                    name={`${payment_method}.files[${i}]`}
-                                                    error={errors?.[payment_method]?.files?.[i]}
-                                                    index={index}
-                                                    item_index={item_index}
                                                     sub_index={i}
-                                                    updateErrors={updateErrors}
+                                                    name={payment_method}
                                                 />
                                             </div>
                                         </React.Fragment>

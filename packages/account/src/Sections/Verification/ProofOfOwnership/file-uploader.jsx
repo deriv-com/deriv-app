@@ -4,19 +4,14 @@ import { localize } from '@deriv/translations';
 import { Button, Input, Icon } from '@deriv/components';
 import { compressImageFiles } from '@deriv/shared';
 import PropTypes from 'prop-types';
+import { useFormikContext } from 'formik';
 
-const FileUploader = ({
-    class_name,
-    error,
-    file_name,
-    handleFile,
-    index,
-    item_index,
-    name,
-    sub_index,
-    updateErrors,
-}) => {
-    const [show_browse_button, setShowBrowseButton] = React.useState(!file_name);
+const FileUploader = ({ class_name, name, sub_index }) => {
+    const { values, setFieldValue, errors, setFieldError } = useFormikContext();
+
+    console.log('File-uploader: ', values, errors);
+
+    const [show_browse_button, setShowBrowseButton] = React.useState(!values[name]?.files?.[sub_index]?.name ?? '');
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);
     const handleClick = e => {
@@ -31,17 +26,35 @@ const FileUploader = ({
         event.nativeEvent.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
         const file_to_upload = await compressImageFiles([event.target.files[0]]);
-        handleFile(name, file_to_upload[0]);
+        const payment_file_data = [...values[name]?.files];
+        payment_file_data[sub_index] = file_to_upload[0];
+        await setFieldValue(name, {
+            ...values[name],
+            files: payment_file_data,
+        });
         setShowBrowseButton(!file_to_upload[0]);
     };
+
+    const updateError = () => {
+        const payment_method_error = errors?.[name]?.files;
+        delete payment_method_error?.[sub_index];
+        setFieldError(name, { ...errors?.[name], files: payment_method_error });
+    };
+
     const handleIconClick = async e => {
         e.nativeEvent.preventDefault();
         e.nativeEvent.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
         hidden_file_input.current.value = '';
-        await handleFile(name, '');
+
+        const payment_file_data = values[name]?.files;
+        payment_file_data[sub_index] = undefined;
+        await setFieldValue(name, {
+            ...values[name],
+            files: payment_file_data ?? [],
+        });
         setShowBrowseButton(prevState => !prevState);
-        await updateErrors(index, item_index, sub_index);
+        updateError();
     };
     return (
         <div className={classNames('poo-file-uploader', class_name)}>
@@ -59,12 +72,12 @@ const FileUploader = ({
                 label={localize('Choose a photo')}
                 maxLength={255}
                 hint={localize('Accepted formats: pdf, jpeg, jpg, and png. Max file size: 8MB')}
-                value={file_name}
+                value={values[name]?.files?.[sub_index]?.name ?? ''}
                 readOnly
                 color='less-prominent'
                 type={'text'}
                 tabIndex={'-1'}
-                error={error}
+                error={errors?.[name]?.files?.[sub_index]}
                 trailing_icon={
                     <Icon
                         onClick={handleIconClick}

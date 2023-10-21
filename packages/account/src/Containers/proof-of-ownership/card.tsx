@@ -7,7 +7,6 @@ import { TPaymentMethodInfo } from '../../Types';
 type TCardProps = {
     details: TPaymentMethodInfo;
     index: number;
-    updateErrors: (index: number, item_index: number, sub_index: number) => void;
 };
 
 /**
@@ -31,10 +30,9 @@ const ExpansionIcon = ({ is_open }: { is_open: boolean }) => (
  * @name Card
  * @param details - payment method details
  * @param index - index of payment method
- * @param updateErrors - function to update errors
  * @returns React Component
  */
-const Card = ({ details, index, updateErrors }: TCardProps) => {
+const Card = ({ details, index }: TCardProps) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const onClickHandler = () => {
@@ -66,7 +64,7 @@ const Card = ({ details, index, updateErrors }: TCardProps) => {
                     data-testid='dt_proof-of-ownership-button'
                 />
             </div>
-            {is_open && <ExpandedCard card_details={details} index={index} updateErrors={updateErrors} />}
+            {is_open && <ExpandedCard card_details={details} />}
         </div>
     );
 };

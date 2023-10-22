@@ -11,6 +11,7 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
 import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
@@ -69,7 +70,7 @@ const FinancialDetails = (props: TFinancialDetails) => {
             }}
             validateOnMount
         >
-            {({ handleSubmit, isSubmitting, errors, values }) => {
+            {({ handleSubmit, isSubmitting, errors, values, isValid }) => {
                 return (
                     <AutoHeightWrapper default_height={200}>
                         {({
@@ -101,7 +102,14 @@ const FinancialDetails = (props: TFinancialDetails) => {
                                 </Div100vhContainer>
                                 <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
-                                        is_disabled={isSubmitting || Object.keys(errors).length > 0}
+                                        is_disabled={
+                                            isSubmitting ||
+                                            Object.keys(errors).length > 0 ||
+                                            !!(
+                                                props.employment_status === EMPLOYMENT_VALUES.EMPLOYED &&
+                                                values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
+                                            )
+                                        }
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         has_cancel

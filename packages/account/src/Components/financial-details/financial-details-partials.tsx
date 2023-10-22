@@ -41,6 +41,57 @@ const FinancialDetailsDropdownField = ({
     field_key,
     placeholder = localize('Please select'),
     label,
+}: TFinancialDetailsDropdownFieldProps) => {
+    const { values, handleChange, handleBlur, touched, errors, setFieldValue } = useFormikContext<{
+        [key: string]: string;
+    }>();
+
+    return (
+        <Field name={field_key}>
+            {({ field }: FormikValues) => (
+                <React.Fragment>
+                    <DesktopWrapper>
+                        <Dropdown
+                            placeholder={label}
+                            is_align_text_left
+                            name={field.name}
+                            list={dropdown_list}
+                            value={values?.[field_key]}
+                            onChange={handleChange}
+                            handleBlur={handleBlur}
+                            error={touched?.[field_key] && errors?.[field_key]}
+                            list_portal_id='modal_root'
+                            required
+                            {...field}
+                        />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <SelectNative
+                            placeholder={placeholder}
+                            name={field.name}
+                            label={label}
+                            list_items={dropdown_list}
+                            value={values?.[field_key]}
+                            error={touched?.[field_key] && errors?.[field_key]}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                handleChange(e);
+                                setFieldValue('field_key', e.target.value, true);
+                            }}
+                            required
+                            {...field}
+                        />
+                    </MobileWrapper>
+                </React.Fragment>
+            )}
+        </Field>
+    );
+};
+
+const FinancialDetailsOccupationDropdownField = ({
+    dropdown_list,
+    field_key,
+    placeholder = localize('Please select'),
+    label,
     employment_status,
 }: TFinancialDetailsDropdownFieldProps) => {
     const { values, handleChange, handleBlur, touched, errors, setFieldValue } = useFormikContext<{
@@ -63,8 +114,11 @@ const FinancialDetailsDropdownField = ({
                             is_align_text_left
                             name={field.name}
                             list={dropdown_list}
-                            value={field.name === 'occupation' ? getFormattedOccupationValues() : values?.[field_key]}
-                            onChange={handleChange}
+                            value={getFormattedOccupationValues()}
+                            onChange={e => {
+                                setFieldValue('field_key', getFormattedOccupationValues(), true);
+                                handleChange(e);
+                            }}
                             handleBlur={handleBlur}
                             error={touched?.[field_key] && errors?.[field_key]}
                             list_portal_id='modal_root'
@@ -78,11 +132,11 @@ const FinancialDetailsDropdownField = ({
                             name={field.name}
                             label={label}
                             list_items={dropdown_list}
-                            value={field.name === 'occupation' ? getFormattedOccupationValues() : values?.[field_key]}
+                            value={getFormattedOccupationValues()}
                             error={touched?.[field_key] && errors?.[field_key]}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                setFieldValue('field_key', getFormattedOccupationValues(), true);
                                 handleChange(e);
-                                setFieldValue('field_key', e.target.value, true);
                             }}
                             required
                         />
@@ -92,7 +146,6 @@ const FinancialDetailsDropdownField = ({
         </Field>
     );
 };
-
 /**
  * Wrapper for financial details form fields.
  * @name FinancialInformation
@@ -111,7 +164,7 @@ const FinancialInformation = ({ employment_status }: TFinancialInformationProps)
                 field_key='employment_industry'
                 label={localize('Industry of employment')}
             />
-            <FinancialDetailsDropdownField
+            <FinancialDetailsOccupationDropdownField
                 dropdown_list={getFormattedOccupationList(employment_status)}
                 field_key='occupation'
                 label={localize('Occupation')}

@@ -401,6 +401,7 @@ const FinancialAssessment = observer(() => {
                     isSubmitting,
                     setFieldTouched,
                     dirty,
+                    setFieldValue,
                 }) => (
                     <React.Fragment>
                         {!is_appstore && isMobile() && is_confirmation_visible && (
@@ -548,7 +549,14 @@ const FinancialAssessment = observer(() => {
                                                     name='occupation'
                                                     list={getFormattedOccupationList(values.employment_status ?? '')}
                                                     value={getFormattedOccupationValues(values)}
-                                                    onChange={handleChange}
+                                                    onChange={e => {
+                                                        setFieldValue(
+                                                            'occupation',
+                                                            getFormattedOccupationValues(values),
+                                                            true
+                                                        );
+                                                        handleChange(e);
+                                                    }}
                                                     handleBlur={handleBlur}
                                                     error={touched.occupation && errors.occupation}
                                                     test_id='occupation'
@@ -565,6 +573,11 @@ const FinancialAssessment = observer(() => {
                                                     value={getFormattedOccupationValues(values)}
                                                     error={touched.occupation ? errors.occupation : undefined}
                                                     onChange={e => {
+                                                        setFieldValue(
+                                                            'occupation',
+                                                            getFormattedOccupationValues(values),
+                                                            true
+                                                        );
                                                         setFieldTouched('occupation', true);
                                                         handleChange(e);
                                                     }}
@@ -1049,7 +1062,14 @@ const FinancialAssessment = observer(() => {
                                         })}
                                         onClick={() => onClickSubmit(handleSubmit)}
                                         is_disabled={
-                                            isSubmitting || !dirty || is_btn_loading || Object.keys(errors).length > 0
+                                            isSubmitting ||
+                                            !dirty ||
+                                            is_btn_loading ||
+                                            Object.keys(errors).length > 0 ||
+                                            !!(
+                                                values.employment_status === EMPLOYMENT_VALUES.EMPLOYED &&
+                                                values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
+                                            )
                                         }
                                         has_effect
                                         is_loading={is_btn_loading}

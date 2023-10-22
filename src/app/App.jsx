@@ -14,7 +14,7 @@ const App = () => {
     const dispatch = useDispatch();
     const has_active_symbols = useSelector(state => state.client.active_symbols);
 
-    React.useEffect(() => {
+    const generateActiveSymbols = () => {
         api_base.getActiveSymbols().then(data => {
             symbolPromise.then(() => {
                 try {
@@ -25,6 +25,23 @@ const App = () => {
                 }
                 dispatch(setActiveSymbols(data));
             });
+        });
+    };
+
+    React.useEffect(() => {
+        api_base.api.expectResponse('authorize').then(() => generateActiveSymbols());
+        api_base.api.onMessage().subscribe(({ data }) => {
+            if (data.msg_type === 'active_symbols') {
+                symbolPromise.then(() => {
+                    try {
+                        /* eslint-disable no-new */
+                        new ActiveSymbols(data.active_symbols);
+                    } catch (error) {
+                        globalObserver.emit('Error', error);
+                    }
+                    dispatch(setActiveSymbols(data));
+                });
+            }
         });
     }, []);
 

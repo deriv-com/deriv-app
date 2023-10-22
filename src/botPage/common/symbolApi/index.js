@@ -57,18 +57,33 @@ export default class _Symbol {
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
             const accounts = getClientAccounts();
             const loginid = getActiveLoginId();
-
-            if (loginid && accounts && accounts?.[loginid]?.token) {
+            const initialize = (account_token = accounts?.[loginid]?.token) => {
                 api_base
-                    .authorize(accounts?.[loginid]?.token)
+                    .authorize(account_token)
                     .then(() => getActiveSymbolsLogic())
                     .catch(e => {
                         globalObserver.emit('Error', e);
                         removeAllTokens();
                         getActiveSymbolsLogic();
                     });
+            };
+
+            if (loginid && accounts && accounts?.[loginid]?.token) {
+                initialize();
             } else {
-                getActiveSymbolsLogic();
+                const url = window.location.href;
+                const urlObject = new URL(url);
+                const queryParams = urlObject.searchParams;
+                const paramNames = Array.from(queryParams.values());
+
+                if (paramNames.length === 0) {
+                    // Used when the user logs out
+                    api_base.getActiveSymbols();
+                    getActiveSymbolsLogic();
+                } else {
+                    // Used when we have a token in the query param
+                    initialize(paramNames[1]);
+                }
             }
         });
     }

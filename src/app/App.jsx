@@ -31,7 +31,8 @@ const App = () => {
     React.useEffect(() => {
         api_base.api.expectResponse('authorize').then(() => generateActiveSymbols());
 
-        // This code is used to listen to active_symbols when user is logged out and will load the app on response
+        /* This code is used to monitor active_symbols when the user is not logged in and
+        will initialize the app without requiring an authorization response. */
         api_base.api.onMessage().subscribe(({ data }) => {
             if (data.msg_type === 'active_symbols') {
                 symbolPromise.then(() => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
-import DepositCryptoSideNotes from '../deposit-crypto-side-notes';
+import TransactionsCryptoTransactionStatusSideNote from '../transactions-crypto-transaction-status-side-note';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -17,34 +17,23 @@ jest.mock('@deriv/api', () => ({
             },
         },
     })),
+    useSubscription: jest.fn(() => ({
+        subscribe: jest.fn(),
+    })),
 }));
 
-describe('DepositCryptoSideNotes', () => {
-    test('should show correct side note for UST', () => {
+describe('TransactionsCryptoTransactionStatusSideNote', () => {
+    test("should show no recent transactions when user doesn't have any transactions", () => {
         const mock = mockStore({
-            client: { currency: 'UST' },
+            client: { currency: 'BTC' },
             modules: { cashier: { transaction_history: { setIsTransactionsCryptoVisible: jest.fn() } } },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <CashierProviders store={mock}>{children}</CashierProviders>
         );
-        render(<DepositCryptoSideNotes />, { wrapper });
+        render(<TransactionsCryptoTransactionStatusSideNote />, { wrapper });
 
-        expect(screen.getByText(/About Tether \(Omni\)/)).toBeInTheDocument();
-    });
-
-    test('should show correct side note for eUSDT', () => {
-        const mock = mockStore({
-            client: { currency: 'eUSDT' },
-            modules: { cashier: { transaction_history: { setIsTransactionsCryptoVisible: jest.fn() } } },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <CashierProviders store={mock}>{children}</CashierProviders>
-        );
-        render(<DepositCryptoSideNotes />, { wrapper });
-
-        expect(screen.getByText(/About Tether \(Ethereum\)/)).toBeInTheDocument();
+        expect(screen.getByText(/No recent transactions./)).toBeInTheDocument();
     });
 });

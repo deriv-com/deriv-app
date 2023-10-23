@@ -1,18 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Form, Formik, FormikErrors } from 'formik';
+import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button } from '@deriv/components';
-import {
-    readFiles,
-    WS,
-    DOCUMENT_TYPE,
-    isFormattedCardNumber,
-    hasInvalidCharacters,
-    validEmail,
-    validPhone,
-    validFile,
-} from '@deriv/shared';
+import { readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
@@ -20,19 +11,12 @@ import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
 import Card from '../../../Containers/proof-of-ownership/card';
-import { IDENTIFIER_TYPES } from '../../../Constants/poo-identifier';
-import {
-    TPaymentMethod,
-    TPaymentMethodIdentifier,
-    TPaymentMethodInfo,
-    TProofOfOwnershipData,
-    TProofOfOwnershipFormValue,
-} from '../../../Types';
-import { PHONE_NUMBER_LENGTH } from 'Constants/personal-details';
+import { TPaymentMethod, TPaymentMethodInfo, TProofOfOwnershipFormValue } from '../../../Types';
+import { isValidPaymentMethodIdentifier, isValidFile } from './validation';
 
 type TProofOfOwnershipFormProps = {
     client_email: TCoreStores['client']['email'];
-    grouped_payment_method_data: Partial<Record<TPaymentMethod, TPaymentMethodInfo>>;
+    grouped_payment_method_data: Record<TPaymentMethod, TPaymentMethodInfo>;
     is_mobile: TCoreStores['ui']['is_mobile'];
     refreshNotifications: TCoreStores['notifications']['refreshNotifications'];
     updateAccountStatus: TCoreStores['client']['updateAccountStatus'];
@@ -41,10 +25,6 @@ type TProofOfOwnershipFormProps = {
 type TProofOfOwnershipErrors = Partial<
     Record<TPaymentMethod, { payment_method_identifier?: string; files?: Array<string> }>
 >;
-
-//need to check types
-// type TInitialValues = { data?: DeepPartial<TPaymentMethodUploadData>[][] };
-// type TErrors = { data?: { payment_method_identifier?: string; files?: File[] }[] };
 
 const ProofOfOwnershipForm = ({
     client_email,
@@ -56,7 +36,6 @@ const ProofOfOwnershipForm = ({
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data) as Array<TPaymentMethod>;
 
     let initial_values = {};
-    // const [form_state, setFormState] = React.useState({ is_btn_loading: false });
     const form_ref = React.useRef(null);
 
     const getScrollOffset = React.useCallback(
@@ -90,49 +69,6 @@ const ProofOfOwnershipForm = ({
         initial_values = { ...initial_values, ...form_value };
     }
 
-    const isValidPaymentMethodIdentifier = (
-        payment_method_identifier: string,
-        identifier_type: TPaymentMethodIdentifier
-    ) => {
-        const default_error_message = localize('Enter your full card number');
-        switch (identifier_type) {
-            case IDENTIFIER_TYPES.CARD_NUMBER: {
-                if (payment_method_identifier.length < 16) {
-                    return default_error_message;
-                } else if (payment_method_identifier.length === 16) {
-                    return !hasInvalidCharacters(payment_method_identifier) ? null : default_error_message;
-                } else if (payment_method_identifier.length > 19) {
-                    return isFormattedCardNumber(payment_method_identifier) ? null : default_error_message;
-                }
-                return null;
-            }
-            case IDENTIFIER_TYPES.EMAIL_ADDRESS: {
-                return validEmail(payment_method_identifier) ? null : localize('Enter valid email address');
-            }
-            case IDENTIFIER_TYPES.MOBILE_NUMBER: {
-                if (
-                    payment_method_identifier.length >= PHONE_NUMBER_LENGTH.MIN &&
-                    payment_method_identifier.length <= PHONE_NUMBER_LENGTH.MAX
-                ) {
-                    return validPhone(payment_method_identifier) ? null : localize('Enter valid phone number');
-                }
-                return null;
-            }
-            default: {
-                return null;
-            }
-        }
-    };
-
-    const isValidFile = (file: File) => {
-        if (!validFile(file)) {
-            return localize("That file format isn't supported. Please upload .pdf, .png, .jpg, or .jpeg files only.");
-        } else if (file?.size / 1024 > 8000) {
-            return localize('That file is too big (only up to 8MB allowed). Please upload another file.');
-        }
-        return null;
-    };
-
     const validateFields = (values: TProofOfOwnershipFormValue) => {
         let errors: FormikErrors<TProofOfOwnershipErrors> = {};
 
@@ -140,7 +76,23 @@ const ProofOfOwnershipForm = ({
             const card_data = values[card_key as TPaymentMethod];
             const is_payment_method_identifier_provided =
                 card_data.is_generic_pm || card_data.payment_method_identifier.trim()?.length > 0;
+            const are_files_uploaded =
+                card_data?.files?.filter(file => file?.name).length === card_data?.documents_required;
+
+            if (are_files_uploaded && !is_payment_method_identifier_provided) {
+                errors = {
+                    ...errors,
+                    [card_key as TPaymentMethod]: {
+                        ...(errors[card_key as TPaymentMethod] ?? {}),
+                        payment_method_identifier: localize('Please complete this field.'),
+                    },
+                };
+            } else {
+                delete errors[card_key]?.payment_method_identifier;
+            }
+
             if (is_payment_method_identifier_provided) {
+                console.log('Check is_payment_method_identifier_provided');
                 const verify_payment_method_identifier = isValidPaymentMethodIdentifier(
                     card_data.payment_method_identifier.trim(),
                     card_data.identifier_type
@@ -149,17 +101,24 @@ const ProofOfOwnershipForm = ({
                     errors = {
                         ...errors,
                         [card_key as TPaymentMethod]: {
-                            ...errors[card_key as TPaymentMethod],
+                            ...(errors[card_key as TPaymentMethod] ?? {}),
                             payment_method_identifier: verify_payment_method_identifier,
                         },
                     };
                 } else {
                     delete errors[card_key]?.payment_method_identifier;
                 }
+                if (!card_data?.files?.length) {
+                    errors = {
+                        ...errors,
+                        [card_key as TPaymentMethod]: {
+                            ...(errors[card_key as TPaymentMethod] ?? {}),
+                            files: [],
+                        },
+                    };
+                }
             }
-            if (!card_data?.files?.length) {
-                delete errors[card_key]?.files;
-            }
+
             card_data?.files?.forEach((file, i) => {
                 if (!file?.name) {
                     return;
@@ -169,77 +128,62 @@ const ProofOfOwnershipForm = ({
                     errors = {
                         ...errors,
                         [card_key as TPaymentMethod]: {
-                            ...errors[card_key as TPaymentMethod],
+                            ...(errors[card_key as TPaymentMethod] ?? {}),
                             files: { ...errors[card_key as TPaymentMethod]?.files, [i]: verify_file },
                         },
                     };
                 } else {
-                    delete errors[card_key]?.files[i];
+                    delete errors?.[card_key]?.files?.[i];
                 }
             });
         });
         return errors;
     };
 
-    const handleFormSubmit = values => {
-        console.log('data', values);
+    const handleFormSubmit = (
+        values: TProofOfOwnershipFormValue,
+        action: FormikHelpers<TProofOfOwnershipFormValue>
+    ) => {
+        console.log('Form submission', { values, action });
+        const { setFieldError, setStatus } = action;
         try {
-            setFormState({ ...form_state, ...{ is_btn_loading: true } });
+            setStatus({ is_btn_loading: true });
             const uploader = new DocumentUploader({ connection: WS.getSocket() });
-            if (form_ref.current.errors.length > 0) {
-                // Only upload if no errors and a file has been attached
-                return;
-            }
-            Object.keys(form_values).forEach(card_key => {
-                Object.keys(form_values[card_key]).forEach(async card_item_key => {
-                    const payment_method_details = form_values[card_key][card_item_key];
-                    if (payment_method_details.files.length > 0) {
-                        const processed_files = await readFiles(payment_method_details.files, fileReadErrorMessage, {
-                            documentType: DOCUMENT_TYPE.proof_of_ownership,
-                            proof_of_ownership: {
-                                details: {
-                                    email: client_email,
-                                    payment_identifier: payment_method_details.payment_method_identifier,
-                                },
-                                id: payment_method_details.id,
+
+            Object.keys(values).forEach(async card_key => {
+                const payment_method_details = values[card_key];
+                if (payment_method_details.files?.length) {
+                    const processed_files = await readFiles(payment_method_details.files, fileReadErrorMessage, {
+                        documentType: DOCUMENT_TYPE.proof_of_ownership,
+                        proof_of_ownership: {
+                            details: {
+                                email: client_email,
+                                payment_identifier: payment_method_details.payment_method_identifier,
                             },
-                        });
-                        console.log('Payload: ', processed_files);
-                        // processed_files.forEach(async (processed_file, sub_index) => {
-                        //     const response = await uploader.upload(processed_file);
-                        //     if (response.warning) {
-                        //         if (response.warning.trim() === 'DuplicateUpload') {
-                        //             let { errors: form_errors } = form_ref?.current;
-                        //             if (!form_errors?.data) {
-                        //                 form_errors = {};
-                        //                 form_errors.data = [];
-                        //                 form_errors.data[card_key] = {};
-                        //             } else if (!form_errors.data?.[card_key]) {
-                        //                 form_errors.data[card_key] = {};
-                        //             }
-                        //             form_errors.data[card_key][card_item_key] =
-                        //                 form_errors?.data?.[card_key]?.[card_item_key] ?? {};
-                        //             form_errors.data[card_key][card_item_key].files =
-                        //                 form_errors?.data?.[card_key]?.[card_item_key]?.files ?? [];
-                        //             form_errors.data[card_key][card_item_key].files[sub_index] = response.message; // Document already uploaded
-                        //             await form_ref.current.setErrors(form_errors);
-                        //             await form_ref.current.validateForm();
-                        //             setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                        //         } else {
-                        //             setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                        //         }
-                        //     } else {
-                        //         updateAccountStatus();
-                        //         refreshNotifications();
-                        //     }
-                        // });
-                    }
-                });
+                            id: payment_method_details.id,
+                        },
+                    });
+                    processed_files.forEach(async (processed_file, index) => {
+                        const response = await uploader.upload(processed_file);
+                        const upload_error = [];
+                        if (response.warning) {
+                            if (response.warning.trim() === 'DuplicateUpload') {
+                                upload_error[index] = response.message;
+                                setFieldError(card_key, { files: upload_error });
+                            }
+                        }
+                    });
+                }
             });
+            setStatus({ is_btn_loading: false });
+            console.log('Called update functions');
+            updateAccountStatus();
+            refreshNotifications();
         } catch (err) {
-            setFormState({ ...form_state, ...{ is_btn_loading: false } });
+            setStatus({ is_btn_loading: false });
         }
     };
+
     return (
         <Formik
             initialValues={initial_values}
@@ -248,17 +192,8 @@ const ProofOfOwnershipForm = ({
             innerRef={form_ref}
             onSubmit={handleFormSubmit}
         >
-            {({ isValid, dirty, status, values }) => (
-                <Form
-                    data-testid='dt_poo_form'
-                    className='proof-of-ownership'
-                    // onSubmit={e => {
-                    //     e.nativeEvent.preventDefault();
-                    //     e.nativeEvent.stopPropagation();
-                    //     e.nativeEvent.stopImmediatePropagation();
-                    //     handleSubmit(e);
-                    // }}
-                >
+            {({ isValid, dirty, status }) => (
+                <Form data-testid='dt_poo_form' className='proof-of-ownership'>
                     <FormBody scroll_offset={getScrollOffset(grouped_payment_method_data_keys.length)}>
                         <FormSubHeader title={localize('Please upload the following document(s).')} />
                         <FormBodySection>

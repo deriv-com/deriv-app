@@ -209,6 +209,6 @@ export type TProofOfOwnershipData = {
     id: number;
     identifier_type: TPaymentMethodIdentifier;
     is_generic_pm: boolean;
-    files: Array<File>;
+    files: Array<File | undefined>;
     payment_method_identifier: string;
 };

@@ -156,7 +156,9 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
                                                             );
                                                         }}
                                                         data-testid='dt_payment_method_identifier'
-                                                        error={errors?.[payment_method]?.payment_method_identifier}
+                                                        error={
+                                                            errors?.[payment_method]?.payment_method_identifier ?? ''
+                                                        }
                                                     />
                                                 </div>
                                             )}

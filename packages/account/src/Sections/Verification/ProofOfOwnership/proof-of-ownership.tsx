@@ -49,6 +49,7 @@ export const ProofOfOwnership = observer(() => {
     const onTryAgain = () => {
         setStatus(POO_STATUSES.NONE);
     };
+
     if (cards?.length > 0 && status !== POO_STATUSES.REJECTED) {
         return (
             <ProofOfOwnershipForm

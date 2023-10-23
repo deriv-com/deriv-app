@@ -1,13 +1,28 @@
 import React from 'react';
 import classNames from 'classnames';
-import { localize } from '@deriv/translations';
+import { useFormikContext } from 'formik';
 import { Button, Input, Icon } from '@deriv/components';
 import { compressImageFiles } from '@deriv/shared';
-import PropTypes from 'prop-types';
-import { useFormikContext } from 'formik';
+import { localize } from '@deriv/translations';
+import { TPaymentMethod, TProofOfOwnershipFormValue } from 'Types';
 
-const FileUploader = ({ class_name, name, sub_index }) => {
-    const { values, setFieldValue, errors, setFieldError } = useFormikContext();
+type TFileUploaderProps = {
+    class_name?: string;
+    name: TPaymentMethod;
+    sub_index: number;
+};
+
+/**
+ * Field to upload files for Payment methods in proof of ownership form
+ * @name FileUploader
+ * @param class_name - To add custom styles to class
+ * @param name - Payment method name
+ * @param sub_index - Index of the file
+ * @returns React Component
+ */
+
+const FileUploader = ({ class_name, name, sub_index }: TFileUploaderProps) => {
+    const { values, setFieldValue, errors, setFieldError } = useFormikContext<Partial<TProofOfOwnershipFormValue>>();
 
     const [show_browse_button, setShowBrowseButton] = React.useState(!values[name]?.files?.[sub_index]?.name ?? '');
     // Create a reference to the hidden file input element
@@ -16,7 +31,7 @@ const FileUploader = ({ class_name, name, sub_index }) => {
         e.nativeEvent.preventDefault();
         e.nativeEvent.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        hidden_file_input.current.click();
+        hidden_file_input?.current?.click();
     };
 
     const handleChange = async event => {
@@ -24,7 +39,7 @@ const FileUploader = ({ class_name, name, sub_index }) => {
         event.nativeEvent.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
         const file_to_upload = await compressImageFiles([event.target.files[0]]);
-        const payment_file_data = [...values[name]?.files];
+        const payment_file_data = [...(values[name]?.files ?? [])];
         payment_file_data[sub_index] = file_to_upload[0];
         await setFieldValue(name, {
             ...values[name],
@@ -36,16 +51,18 @@ const FileUploader = ({ class_name, name, sub_index }) => {
     const updateError = () => {
         const payment_method_error = errors?.[name]?.files;
         delete payment_method_error?.[sub_index];
-        setFieldError(name, { ...errors?.[name], files: payment_method_error });
+        setFieldError(name, { ...(errors?.[name] ?? {}), files: payment_method_error });
     };
 
     const handleIconClick = async e => {
         e.nativeEvent.preventDefault();
         e.nativeEvent.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        hidden_file_input.current.value = '';
+        if (hidden_file_input.current && 'value' in hidden_file_input.current) {
+            hidden_file_input.current.value = '';
+        }
 
-        const payment_file_data = values[name]?.files;
+        const payment_file_data = values[name]?.files ?? [];
         payment_file_data[sub_index] = undefined;
         await setFieldValue(name, {
             ...values[name],
@@ -74,7 +91,7 @@ const FileUploader = ({ class_name, name, sub_index }) => {
                 readOnly
                 color='less-prominent'
                 type={'text'}
-                tabIndex={'-1'}
+                tabIndex={-1}
                 error={errors?.[name]?.files?.[sub_index]}
                 trailing_icon={
                     <Icon
@@ -98,18 +115,6 @@ const FileUploader = ({ class_name, name, sub_index }) => {
             />
         </div>
     );
-};
-
-FileUploader.propTypes = {
-    class_name: PropTypes.string,
-    error: PropTypes.string,
-    file_name: PropTypes.string,
-    handleFile: PropTypes.func,
-    index: PropTypes.number,
-    item_index: PropTypes.number,
-    name: PropTypes.string,
-    sub_index: PropTypes.number,
-    updateErrors: PropTypes.func,
 };
 
 export default FileUploader;

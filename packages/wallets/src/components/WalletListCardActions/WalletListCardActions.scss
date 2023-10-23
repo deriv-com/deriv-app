@@ -77,16 +77,5 @@
             border-radius: 16px;
             border: 1px solid var(--system-light-5-active-background, #d6dadb);
         }
-
-        &-text {
-            color: var(--system-light-1-prominent-text, #333);
-            text-align: center;
-
-            /* mobile/extra small/XS - regular */
-            font-size: 1rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1.2rem; /* 150% */
-        }
     }
 }

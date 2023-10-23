@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ModalStepWrapper, WalletButton, WalletText } from '../../../../components/Base';
-import { JurisdictionModal } from '../../../../components/JurisdictionModal';
+import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { MT5AccountType } from '../../screens';
+import { JurisdictionModal } from '../JurisdictionModal';
 
 type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 
@@ -21,11 +21,8 @@ const MT5AccountTypeModal = () => {
                         });
                         show(<JurisdictionModal />);
                     }}
-                >
-                    <WalletText align='center' color='white' size='sm' weight='bold'>
-                        Get
-                    </WalletText>
-                </WalletButton>
+                    text='Next'
+                />
             )}
             title='Select Deriv MT5’s account type'
         >

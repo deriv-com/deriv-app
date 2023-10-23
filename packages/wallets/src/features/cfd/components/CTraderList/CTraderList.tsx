@@ -1,8 +1,10 @@
 import React from 'react';
 import { TradingAccountCard } from '../../../../components';
-import { WalletButton, WalletText } from '../../../../components/Base';
+import { WalletButton } from '../../../../components/Base';
 import CTrader from '../../../../public/images/ctrader.svg';
 import './CTraderList.scss';
+import { useModal } from '../../../../components/ModalProvider';
+import { MT5PasswordModal } from '../../modals';
 
 const ctraderMapper = [
     {
@@ -13,6 +15,8 @@ const ctraderMapper = [
 ];
 
 const CTraderList: React.FC = () => {
+    const { show } = useModal();
+
     return (
         <div className='wallets-ctrader'>
             <div className='wallets-ctrader__title'>
@@ -25,11 +29,11 @@ const CTraderList: React.FC = () => {
                         key={`ctrader--${account.title}`}
                         leading={() => <div className='wallets-ctrader__content__icon'>{account.icon}</div>}
                         trailing={() => (
-                            <WalletButton color='primary-light'>
-                                <WalletText align='center' color='error' size='sm' weight='bold'>
-                                    Get
-                                </WalletText>
-                            </WalletButton>
+                            <WalletButton
+                                color='primary-light'
+                                onClick={() => show(<MT5PasswordModal marketType='all' platform='ctrader' />)}
+                                text='Get'
+                            />
                         )}
                     >
                         <div className='wallets-ctrader__content__details'>

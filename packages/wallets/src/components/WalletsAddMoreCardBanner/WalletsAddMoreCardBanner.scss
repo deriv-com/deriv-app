@@ -49,13 +49,7 @@
             border: 0.1rem solid #000;
             border-radius: 0.2rem;
             padding: 0 0.4rem;
-            font-weight: 700;
-            line-height: 1.4rem;
-
-            @include mobile {
-                line-height: 1.2rem;
-                font-size: 0.8rem;
-            }
+            text-transform: uppercase;
         }
     }
 }

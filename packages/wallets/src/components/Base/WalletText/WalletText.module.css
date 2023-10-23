@@ -59,6 +59,54 @@
         text-align: right;
     }
 
+    &-line-height-3xs {
+        line-height: 1.2rem;
+    }
+
+    &-line-height-2xs {
+        line-height: 1.4rem;
+    }
+
+    &-line-height-xs {
+        line-height: 1.6rem;
+    }
+
+    &-line-height-sm {
+        line-height: 1.8rem;
+    }
+
+    &-line-height-md {
+        line-height: 2rem;
+    }
+
+    &-line-height-lg {
+        line-height: 2.2rem;
+    }
+
+    &-line-height-xl {
+        line-height: 2.4rem;
+    }
+
+    &-line-height-2xl {
+        line-height: 2.6rem;
+    }
+
+    &-line-height-3xl {
+        line-height: 2.8rem;
+    }
+
+    &-line-height-4xl {
+        line-height: 3rem;
+    }
+
+    &-line-height-5xl {
+        line-height: 3.2rem;
+    }
+
+    &-line-height-6xl {
+        line-height: 3.6rem;
+    }
+
     &-color-general {
         color: #333333;
     }
@@ -85,5 +133,17 @@
 
     &-color-black {
         color: #000000;
+    }
+
+    &-color-less-prominent {
+        color: #999999;
+    }
+
+    &-color-red {
+        color: #ff444f;
+    }
+
+    &-color-blue {
+        color: #377cfc;
     }
 }

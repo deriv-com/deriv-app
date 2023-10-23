@@ -6,8 +6,6 @@ import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
 
-const Blockly = window.Blockly;
-
 interface ILoadModalStore {
     active_index: number;
     is_load_modal_open: boolean;

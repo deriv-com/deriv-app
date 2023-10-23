@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { ComponentProps, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 import useDevice from '../../hooks/useDevice';
 import WalletButton from '../Base/WalletButton/WalletButton';
@@ -7,7 +7,7 @@ import './WalletsActionScreen.scss';
 
 type TProps = {
     actionText?: string;
-    actionVariant?: 'contained' | 'ghost' | 'outlined';
+    actionVariant?: ComponentProps<typeof WalletButton>['variant'];
     description: ReactNode;
     icon: ReactNode;
     onAction?: () => void;

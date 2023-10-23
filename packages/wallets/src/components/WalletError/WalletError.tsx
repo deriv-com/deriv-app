@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import ErrorIcon from '../../public/images/error-icon.svg';
+import WalletButton from '../Base/WalletButton/WalletButton';
 import WalletsActionScreen from '../WalletsActionScreen/WalletsActionScreen';
 
 type TProps = {
     buttonText?: string;
-    buttonVariant?: 'contained' | 'ghost' | 'outlined';
+    buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
     errorMessage: string;
     onClick?: () => void;
     title?: string;

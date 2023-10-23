@@ -13,7 +13,7 @@ const TradersHubOnboarding = observer(() => {
     const { setIsOnboardingVisited } = traders_hub;
     const { is_dark_mode_on } = ui;
     const { is_next_wallet_enabled } = useFeatureFlags();
-    const [_, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
+    const [, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
 
     const onClickHandler = is_next_wallet_enabled
         ? () => {

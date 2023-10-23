@@ -17,10 +17,8 @@
     }
 
     &__header {
-        padding: 0 2rem;
+        padding: 2rem;
         border-bottom: 2px solid #f2f3f4;
-        display: flex;
-        justify-content: space-between;
         align-items: center;
         display: grid;
         grid-template-columns: auto 4%;
@@ -34,6 +32,7 @@
             position: relative;
             z-index: 99;
             width: 100%;
+            padding: 0 2rem;
         }
     }
 

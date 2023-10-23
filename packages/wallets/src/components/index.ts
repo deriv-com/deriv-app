@@ -5,7 +5,6 @@ export * from './DesktopWalletsList';
 export * from './Loader';
 export * from './OptionsAndMultipliersListing';
 export * from './TradingAccountCard';
-export * from './Transition';
 export * from './WalletCard';
 export * from './WalletCardIcon';
 export * from './WalletListCard';

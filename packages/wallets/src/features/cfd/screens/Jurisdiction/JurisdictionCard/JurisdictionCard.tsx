@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { Transition, WalletText } from '../../../../../components';
+import { WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
@@ -35,12 +35,9 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
 
     const showDynamicLeverage = useCallback(() => {
         show(
-            <Transition
-                className='wallets-dynamic-leverage-modal-transition'
-                key='wallets-dynamic-leverage-modal-transition'
-            >
+            <div className='wallets-dynamic-leverage-modal-transition' key='wallets-dynamic-leverage-modal-transition'>
                 <DynamicLeverageModal />
-            </Transition>
+            </div>
         );
     }, [show]);
 

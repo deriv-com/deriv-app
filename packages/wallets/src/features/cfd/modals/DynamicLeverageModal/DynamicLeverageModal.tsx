@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDynamicLeverage } from '@deriv/api';
-import { ModalWrapper, Transition, WalletText } from '../../../../components';
+import { ModalWrapper, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import BackArrow from '../../../../public/images/ic-back-arrow.svg';
@@ -13,6 +13,17 @@ const DynamicLeverageModal = () => {
     const { isMobile } = useDevice();
     const { setModalState, show } = useModal();
 
+    const openJurisdictionModal = () => {
+        setModalState({
+            marketType: 'financial',
+        });
+        show(
+            <div className='wallets-jurisdiction-modal-transition' key='wallets-jurisdiction-modal-transition'>
+                <JurisdictionModal />
+            </div>
+        );
+    };
+
     return (
         <ModalWrapper hideCloseButton>
             <div className='wallets-dynamic-leverage-modal'>
@@ -20,19 +31,7 @@ const DynamicLeverageModal = () => {
                     <BackArrow
                         className='wallets-dynamic-leverage-modal__title-back'
                         data-testid='back_icon'
-                        onClick={() => {
-                            setModalState({
-                                marketType: 'financial',
-                            });
-                            show(
-                                <Transition
-                                    className='wallets-jurisdiction-modal-transition'
-                                    key='wallets-jurisdiction-modal-transition'
-                                >
-                                    <JurisdictionModal />
-                                </Transition>
-                            );
-                        }}
+                        onClick={openJurisdictionModal}
                     />
                     <WalletText color='prominent' size={isMobile ? 'xs' : 'sm'} weight='bold'>
                         Get more out of Deriv MT5 Financial

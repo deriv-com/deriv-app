@@ -8,6 +8,7 @@ export * from './OptionsAndMultipliersListing';
 export * from './TradingAccountCard';
 export * from './WalletCard';
 export * from './WalletCardIcon';
+export * from './WalletError';
 export * from './WalletListCard';
 export * from './WalletListCardActions';
 export * from './WalletListCardBadge';

@@ -3,16 +3,11 @@ import { useAvailableMT5Accounts } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
+import { MarketTypeToTitleMapper } from '../../constants';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
 import './JurisdictionModal.scss';
-
-const marketTypeToTitleMapper = {
-    all: 'Swap-Free',
-    financial: 'Financial',
-    synthetic: 'Derived',
-};
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
@@ -24,7 +19,7 @@ const JurisdictionModal = () => {
     const marketType = modalState?.marketType || 'all';
     const platform = modalState?.platform || 'mt5';
 
-    const capitalizedMarketType = marketTypeToTitleMapper[marketType];
+    const capitalizedMarketType = MarketTypeToTitleMapper[marketType];
 
     const toggleDynamicLeverage = useCallback(() => {
         setIsDynamicLeverageVisible(!isDynamicLeverageVisible);

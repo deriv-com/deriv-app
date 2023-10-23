@@ -13,9 +13,9 @@ jest.mock('@deriv/hooks', () => ({
     useIsSystemMaintenance: jest.fn(() => false),
 }));
 
-jest.mock('Components/crypto-transactions-history', () => {
-    const CryptoTransactionsHistory = () => <div>CryptoTransactionsHistory</div>;
-    return CryptoTransactionsHistory;
+jest.mock('Components/transactions-crypto-history', () => {
+    const TransactionsCryptoHistory = () => <div>TransactionsCryptoHistory</div>;
+    return TransactionsCryptoHistory;
 });
 
 jest.mock('../deposit-locked', () => {
@@ -48,7 +48,7 @@ describe('<Deposit />', () => {
                 cashier: {
                     iframe: {},
                     transaction_history: {
-                        is_crypto_transactions_visible: false,
+                        is_transactions_crypto_visible: false,
                     },
                     general_store: {
                         is_deposit: false,
@@ -69,7 +69,7 @@ describe('<Deposit />', () => {
         expect(screen.getByText('DepositLocked')).toBeInTheDocument();
     });
 
-    it('should render <CryptoTransactionsHistory /> component', () => {
+    it('should render <TransactionsCryptoHistory /> component', () => {
         const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
@@ -88,7 +88,7 @@ describe('<Deposit />', () => {
                 cashier: {
                     iframe: {},
                     transaction_history: {
-                        is_crypto_transactions_visible: true,
+                        is_transactions_crypto_visible: true,
                     },
                     general_store: {
                         is_deposit: false,
@@ -105,6 +105,6 @@ describe('<Deposit />', () => {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
-        expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
+        expect(screen.getByText('TransactionsCryptoHistory')).toBeInTheDocument();
     });
 });

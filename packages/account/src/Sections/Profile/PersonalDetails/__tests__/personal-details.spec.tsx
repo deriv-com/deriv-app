@@ -81,20 +81,25 @@ describe('<PersonalDetailsForm />', () => {
         );
     });
 
-    it('should render all the personal details fields', async () => {
+    it('should render all the personal details fields', () => {
         renderComponent();
-        expect(screen.getByText('First name*')).toBeInTheDocument();
-        expect(screen.getByText('Last name*')).toBeInTheDocument();
-        expect(screen.getByText('Place of birth')).toBeInTheDocument();
-        expect(screen.getByText('Date of birth*')).toBeInTheDocument();
-        expect(screen.getByText('Citizenship')).toBeInTheDocument();
-        expect(screen.getByText('Country of residence*')).toBeInTheDocument();
-        expect(screen.getByText('Phone number*')).toBeInTheDocument();
-        expect(screen.getByText('First line of address*')).toBeInTheDocument();
-        expect(screen.getByText('Second line of address (optional)')).toBeInTheDocument();
-        expect(screen.getByText('Town/City*')).toBeInTheDocument();
-        expect(screen.getByText('State/Province (optional)')).toBeInTheDocument();
-        expect(screen.getByText('Postal/ZIP code')).toBeInTheDocument();
+        const fields = [
+            'First name*',
+            'Last name*',
+            'Place of birth',
+            'Date of birth*',
+            'Citizenship',
+            'Country of residence*',
+            'Phone number*',
+            'First line of address*',
+            'Second line of address (optional)',
+            'Town/City*',
+            'State/Province (optional)',
+            'Postal/ZIP code',
+        ];
+        fields.forEach(value => {
+            expect(screen.getByText(value)).toBeInTheDocument();
+        });
     });
 
     it('should have "required" validation errors on required form fields', async () => {
@@ -117,16 +122,16 @@ describe('<PersonalDetailsForm />', () => {
         expect(screen.getByText(/You should enter 2-50 characters./)).toBeInTheDocument();
     });
 
-    it('should display error for 2-50 characters length validation, for First name when entered characters are more than 50', async () => {
+    it('should display error for 2-50 characters length validation, for Last name when entered characters are more than 50', async () => {
         renderComponent();
         await waitFor(() => {
-            const first_name = screen.getByTestId('dt_first_name');
+            const first_name = screen.getByTestId('dt_last_name');
             fireEvent.input(first_name, { target: { value: 'fifty chars fifty chars fifty chars fifty chars fifty' } });
         });
         expect(screen.getByText(/You should enter 2-50 characters./)).toBeInTheDocument();
     });
 
-    it('should display error for the regex validation, for First and Last name when unacceptable characters are entered', async () => {
+    it('should display error for the regex validation, for First name when unacceptable characters are entered', async () => {
         renderComponent();
 
         await waitFor(() => {
@@ -145,12 +150,43 @@ describe('<PersonalDetailsForm />', () => {
         });
     });
 
+    it('should update user profile after clicking on submit', async () => {
+        renderComponent();
+        const first_name = screen.getByTestId('dt_first_name') as HTMLInputElement;
+        await waitFor(() => {
+            expect(first_name.value).toBe('John');
+            fireEvent.input(first_name, { target: { value: 'James' } });
+        });
+        const submit_button = screen.getByRole('button', { name: /Submit/ });
+        userEvent.click(submit_button);
+        expect(first_name.value).toBe('James');
+    });
+
+    it('should only display country of residence if isVirtual is true', () => {
+        mock_store.client.is_virtual = true;
+        renderComponent();
+        const exceptional_fields = [
+            'First name*',
+            'Last name*',
+            'Place of birth',
+            'Date of birth*',
+            'Citizenship',
+            'Phone number*',
+            'First line of address*',
+            'Second line of address (optional)',
+            'Town/City*',
+            'State/Province (optional)',
+            'Postal/ZIP code',
+        ];
+        exceptional_fields.forEach(value => {
+            expect(screen.queryByText(value)).not.toBeInTheDocument();
+        });
+        expect(screen.getByText('Country of residence*')).toBeInTheDocument();
+    });
+
     it('should render loading component', () => {
         mock_settings.mutation.isLoading = true;
         renderComponent();
         expect(screen.queryByText(/Loading/)).toBeInTheDocument();
     });
-
-    test.todo('Personal details component tests for different landing companies');
-    test.todo('Personal detail update Profile');
 });

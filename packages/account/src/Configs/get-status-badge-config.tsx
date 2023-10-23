@@ -38,7 +38,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcRedWarning',
             };
-        case 'need_verification':
+        case 'needs_verification':
             return {
                 text: (
                     <Localize

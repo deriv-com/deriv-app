@@ -1,8 +1,9 @@
 import React from 'react';
 import VerificationModal from '../verification-modal';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -30,7 +31,7 @@ describe('<VerificationDocumentSubmited />', () => {
         jest.clearAllMocks();
     });
 
-    it('should not render the VerificationModal component', async () => {
+    it('should not render the VerificationModal component', () => {
         mock_store.ui.is_verification_modal_visible = true;
         const title = 'Submit your proof of identity and address';
         render(
@@ -42,7 +43,7 @@ describe('<VerificationDocumentSubmited />', () => {
         expect(screen.queryByText('VerificationModalContent')).not.toBeInTheDocument();
     });
 
-    it('should render the VerificationModal component', async () => {
+    it('should render the VerificationModal component', () => {
         (isDesktop as jest.Mock).mockReturnValue(true);
         mock_store.ui.is_verification_modal_visible = true;
         const title = 'Submit your proof of identity and address';
@@ -55,7 +56,7 @@ describe('<VerificationDocumentSubmited />', () => {
         expect(screen.getByText('VerificationModalContent')).toBeInTheDocument();
     });
 
-    it('should setIsVerificationModalVisible to false', async () => {
+    it('should setIsVerificationModalVisible to false', () => {
         (isDesktop as jest.Mock).mockReturnValue(true);
         mock_store.ui.is_verification_modal_visible = true;
         render(
@@ -65,11 +66,11 @@ describe('<VerificationDocumentSubmited />', () => {
         );
         const close_button = screen.getByRole('button');
         expect(close_button).toBeInTheDocument();
-        fireEvent.click(close_button);
+        userEvent.click(close_button);
         expect(mock_store.ui.setIsVerificationModalVisible).toHaveBeenCalledWith(false);
     });
 
-    it('should setIsVerificationModalVisible to be false in isMobile', async () => {
+    it('should setIsVerificationModalVisible to be false in isMobile', () => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'deriv_app');
         document.body.appendChild(modal_root_el);
@@ -84,7 +85,7 @@ describe('<VerificationDocumentSubmited />', () => {
         );
         const close_button = screen.getByTestId('dt-dc-mobile-dialog-close-btn');
         expect(close_button).toBeInTheDocument();
-        fireEvent.click(close_button);
+        userEvent.click(close_button);
         expect(mock_store.ui.setIsVerificationModalVisible).toHaveBeenCalledWith(false);
     });
 });

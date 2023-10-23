@@ -21,10 +21,7 @@ type TAccountTransferProps = {
 };
 
 const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSideNotes }: TAccountTransferProps) => {
-    const {
-        client,
-        traders_hub: { is_eu_user },
-    } = useStore();
+    const { client } = useStore();
     const { account_transfer, general_store } = useCashierStore();
 
     const {
@@ -70,8 +67,7 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
         return <Loading className='cashier__loader' is_fullscreen={false} />;
     }
 
-    // TODO:  modify the condition once cashier changes are done.
-    if (is_cashier_locked && !is_eu_user) {
+    if (is_cashier_locked) {
         return <CashierLocked />;
     }
     if (is_transfer_locked) {

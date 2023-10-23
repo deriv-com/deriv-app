@@ -127,8 +127,9 @@ describe('<WalletHeader />', () => {
             const mocked_store = mockStore({
                 client: {
                     loginid: 'MFW1231',
+                    mf_account_status: 'pending',
                 },
-                traders_hub: { multipliers_account_status: 'pending', is_eu_user: true },
+                traders_hub: { is_eu_user: true },
             });
 
             render(
@@ -154,8 +155,9 @@ describe('<WalletHeader />', () => {
             const mocked_store = mockStore({
                 client: {
                     loginid: 'MFW1231',
+                    mf_account_status: 'failed',
                 },
-                traders_hub: { multipliers_account_status: 'failed', is_eu_user: true },
+                traders_hub: { is_eu_user: true },
             });
 
             render(
@@ -181,8 +183,9 @@ describe('<WalletHeader />', () => {
             const mocked_store = mockStore({
                 client: {
                     loginid: 'MFW1231',
+                    mf_account_status: 'needs_verification',
                 },
-                traders_hub: { multipliers_account_status: 'need_verification', is_eu_user: true },
+                traders_hub: { is_eu_user: true },
             });
 
             render(

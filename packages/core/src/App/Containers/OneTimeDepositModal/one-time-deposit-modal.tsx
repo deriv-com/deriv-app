@@ -11,7 +11,7 @@ import {
 } from '@deriv/components';
 import { useHasMFAccountDeposited } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 
@@ -56,9 +56,9 @@ const OneTimeDepositModal = observer(() => {
                 <InlineMessage
                     type='information'
                     size='sm'
-                    message={localize(
-                        'We don’t charge deposit fees! Once your account is verified, you will be able to trade, make additional deposits, or withdraw funds.'
-                    )}
+                    message={
+                        <Localize i18n_default_text='We don’t charge deposit fees! Once your account is verified, you will be able to trade, make additional deposits, or withdraw funds.' />
+                    }
                 />
                 <Button
                     className='one-time-deposit-modal__description--livechat'
@@ -73,7 +73,7 @@ const OneTimeDepositModal = observer(() => {
                         className='one-time-deposit-modal__description--livechat-icon'
                     />
                     <Text color='loss-danger' size='xs' weight='bold'>
-                        {localize('Live chat')}
+                        <Localize i18n_default_text='Live Chat' />
                     </Text>
                 </Button>
             </div>

@@ -20,7 +20,6 @@ type TPersonalDetailsConfig = {
         document_type: string;
         document_number: string;
     };
-    is_eu_user?: boolean;
     residence: string;
     account_status: GetAccountStatus;
     is_high_risk_client_for_mt5?: boolean;
@@ -218,7 +217,6 @@ const personalDetailsConfig = <T>(
         account_settings,
         account_status,
         residence,
-        is_eu_user,
         is_high_risk_client_for_mt5,
     }: TPersonalDetailsConfig,
     PersonalDetails: T,
@@ -252,7 +250,6 @@ const personalDetailsConfig = <T>(
                 })
             ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
-            is_eu_user,
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

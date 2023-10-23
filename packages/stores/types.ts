@@ -363,7 +363,6 @@ type TClientStore = {
     current_fiat_currency?: string;
     has_any_real_account: boolean;
     getLimits: () => Promise<{ get_limits?: GetLimits }>;
-    has_deposited_for_first_time: boolean;
     has_active_real_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
@@ -904,7 +903,6 @@ type TTradersHubStore = {
     toggleRegulatorsCompareModal: () => void;
     openFailedVerificationModal: (selected_account_type: Record<string, unknown> | string) => void;
     modal_data: TModalData;
-    multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
     selected_platform_type: string;

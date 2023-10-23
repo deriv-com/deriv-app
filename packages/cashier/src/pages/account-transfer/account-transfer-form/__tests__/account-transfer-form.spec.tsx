@@ -5,6 +5,7 @@ import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { TError } from '../../../../types';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
@@ -185,7 +186,7 @@ describe('<AccountTransferForm />', () => {
 
         renderAccountTransferForm();
 
-        fireEvent.change(screen.getByTestId('dt_account_transfer_form_input'), { target: { value: '1' } });
+        userEvent.type(screen.getByTestId('dt_account_transfer_form_input'), '1');
 
         expect(await screen.findByText('Unavailable as your documents are still under review')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Transfer' })).toBeDisabled();

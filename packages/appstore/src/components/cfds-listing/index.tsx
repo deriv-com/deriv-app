@@ -120,7 +120,7 @@ const CFDsListing = observer(() => {
                     } else if (current_acc_status === 'verification_pending') {
                         return 'pending';
                     } else if (current_acc_status === 'needs_verification') {
-                        return 'need_verification';
+                        return 'needs_verification';
                     }
             }
         }

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthorize, useDepositFiatAddress } from '@deriv/api';
+import { isServerError } from '../../../../utils/utils';
 import { WalletsErrorScreen } from '../../../../components';
 import './DepositFiat.scss';
 
 const DepositFiat = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: iframeUrl, error, isError, mutate } = useDepositFiatAddress();
+    const { data: iframeUrl, error: depositError, isError, mutate } = useDepositFiatAddress();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -18,7 +19,10 @@ const DepositFiat = () => {
         }
     }, [isAuthorizeSuccess, mutate]);
 
-    if (isError) return <WalletsErrorScreen message={(error as Error).message} />;
+    //@ts-expect-error need to come up with a way to type an error in ReactQuery
+    if (isError && isServerError(depositError.error))
+        //@ts-expect-error need to come up with a way to type an error in ReactQuery
+        return <WalletsErrorScreen message={depositError.error.message} />;
 
     return (
         <React.Fragment>

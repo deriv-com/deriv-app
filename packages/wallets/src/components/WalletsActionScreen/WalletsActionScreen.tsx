@@ -5,12 +5,15 @@ import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
 
 type TProps = {
-    actionText?: string;
+    action: {
+        actionText?: string;
+        disabled?: boolean;
+        onAction?: VoidFunction;
+        variant?: NonNullable<React.ComponentProps<typeof WalletButton>['variant']>;
+    };
     description?: ReactNode;
     icon?: ReactNode;
-    onAction?: () => void;
     title?: string;
-    variant?: NonNullable<React.ComponentProps<typeof WalletButton>['variant']>;
 };
 
 /**
@@ -18,22 +21,13 @@ type TProps = {
  * As its common and repeated in many places,
  * at the moment of writing this, there are already 3 different patterns use to display ex
  *
+ * @param action
+ * @param description
  * @param icon
  * @param title
- * @param description
- * @param actionText
- * @param onAction
- * @param variant
  * @constructor
  */
-const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
-    actionText,
-    description,
-    icon,
-    onAction,
-    title,
-    variant,
-}) => {
+const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({ action, description, icon, title }) => {
     const { isMobile } = useDevice();
 
     return (
@@ -54,15 +48,16 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
                 </div>
             )}
 
-            {actionText && onAction && (
+            {action && (
                 <div className='wallets-action-screen__button'>
-                    {actionText && (
+                    {action.actionText && (
                         <WalletButton
                             color='primary'
-                            onClick={onAction}
+                            disabled={action.disabled}
+                            onClick={action.onAction}
                             size='lg'
-                            text={actionText}
-                            variant={variant}
+                            text={action.actionText}
+                            variant={action.variant}
                         />
                     )}
                 </div>

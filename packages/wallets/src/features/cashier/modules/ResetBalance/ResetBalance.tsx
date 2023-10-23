@@ -18,14 +18,16 @@ const ResetBalance = () => {
 
     return (
         <WalletsActionScreen
-            actionText={canReset ? 'Reset balance' : 'Transfer funds'}
+            action={{
+                actionText: canReset ? 'Reset balance' : 'Transfer funds',
+                onAction: canReset ? resetBalance : () => history.push(`/wallets/cashier/transfer`),
+            }}
             description={
                 isResetBalanceSuccess
                     ? 'Your balance has been reset to 10,000.00 USD.'
                     : 'Reset your virtual balance if it falls below 10,000.00 USD or exceeds 10,000.00 USD.'
             }
             icon={isResetBalanceSuccess ? <IcResetDemoBalanceDone /> : <IcResetDemoBalance />}
-            onAction={canReset ? resetBalance : () => history.push(`/wallets/cashier/transfer`)}
             title={'Reset balance to 10,000.00 USD'}
         />
     );

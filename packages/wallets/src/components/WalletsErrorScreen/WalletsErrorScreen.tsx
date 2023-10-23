@@ -11,12 +11,14 @@ const ErrorState: React.FC<TProps> = ({
 }) => {
     return (
         <WalletsActionScreen
-            actionText='Try again'
+            action={{
+                actionText: 'Try again',
+                onAction: () => window.location.reload(),
+                variant: 'ghost',
+            }}
             description={message}
             icon={<IcCashierError />}
-            onAction={() => window.location.reload()}
             title='Oops, something went wrong!'
-            variant='ghost'
         />
     );
 };

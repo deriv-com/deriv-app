@@ -142,7 +142,7 @@ export const STRATEGIES: TStrategies = {
         name: 'martingale',
         label: localize('Martingale'),
         description: localize(
-            'The Martingale doubles your stake after a loss and resets your stake after a win or when the pre-determined number of consecutive losses is reached. You decide your profit threshold, loss threshold, initial stake, and the number of consecutive losses before your stake resets.'
+            'The Martingale strategy multiplies the stake by the chosen multiplier after every losing trade. The stake for the next trade resets to the initial stake after a successful trade. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.'
         ),
         fields: [
             [symbol, tradetype, label_initial_stake, initial_stake, label_duration, durationtype, duration],
@@ -153,7 +153,7 @@ export const STRATEGIES: TStrategies = {
         name: 'dalembert',
         label: localize('D’Alembert'),
         description: localize(
-            'The concept of the D’Alembert Strategy is said to be similar to the Martingale Strategy where you will increase your contract size after a loss. With the D’Alembert Strategy, you will also decrease your contract size after a successful trade.'
+            "The D'Alembert strategy increases the stake after a losing trade and reduces the stake after a successful trade by the number of units that traders decide. One unit is equal to the amount of the initial stake. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
         ),
         fields: [
             [symbol, tradetype, label_initial_stake, initial_stake, label_duration, durationtype, duration],
@@ -164,7 +164,7 @@ export const STRATEGIES: TStrategies = {
         name: 'oscars_grind',
         label: localize('Oscar’s Grind'),
         description: localize(
-            'The Oscar’s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, the size of your contract will increase after successful trades, but remains unchanged after unsuccessful trades.'
+            "The Oscar's Grind strategy aims to potentially make one unit of profit per session. A new session starts when the target profit is reached. If a losing trade is followed by a successful one, the stake increases by one unit. In every other scenario, the stake for the next trade will be the same as the previous one. If the stake for the next trade exceeds the gap between the target profit and current loss of the session, it adjusts to the gap size. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
         ),
         fields: [
             [symbol, tradetype, label_initial_stake, initial_stake, label_duration, durationtype, duration],

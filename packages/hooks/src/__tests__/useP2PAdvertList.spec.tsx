@@ -16,7 +16,7 @@ jest.mock('@deriv/api', () => ({
 const mockUseInfiniteQuery = useInfiniteQuery as jest.MockedFunction<typeof useInfiniteQuery<'p2p_advert_list'>>;
 
 describe('useP2PAdvertList', () => {
-    it('should return an empty array if there is no response', () => {
+    it('should return undefined if there is no response', () => {
         const mock_store = mockStore({});
         // @ts-expect-error need to come up with a way to mock the return type of useInfiniteQuery
         mockUseInfiniteQuery.mockReturnValueOnce({});

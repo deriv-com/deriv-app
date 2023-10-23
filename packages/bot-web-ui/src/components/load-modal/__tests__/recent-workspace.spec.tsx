@@ -52,7 +52,7 @@ describe('RecentWorkspace', () => {
 
     it('should update selected strategy ID on clicking the strategy', () => {
         render(<RecentWorkspace workspace={mock_workspace} />, { wrapper });
-        const recent_workspace_item = screen.getByTestId('recent-workspace-item');
+        const recent_workspace_item = screen.getByTestId('dt_recent_workspace_item');
         userEvent.click(recent_workspace_item);
         expect(mock_DBot_store?.load_modal?.selected_strategy_id).toBe(mock_workspace.id);
     });

@@ -12,7 +12,19 @@
         flex-direction: column;
     }
 
-    &-content {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 4rem;
+        padding-inline: 0.5rem;
+
+        @include mobile {
+            align-items: center;
+        }
+    }
+
+    &__content {
         display: flex;
         flex-direction: column;
         gap: 1rem;
@@ -20,21 +32,9 @@
         @include mobile {
             align-items: center;
         }
+    }
 
-        &__container {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            gap: 4rem;
-            padding-inline: 0.5rem;
-
-            @include mobile {
-                align-items: center;
-            }
-        }
-
-        &__emphasize-text {
-            color: var(--brand-coral, #ff444f);
-        }
+    &__emphasized-text {
+        color: var(--brand-coral, #ff444f);
     }
 }

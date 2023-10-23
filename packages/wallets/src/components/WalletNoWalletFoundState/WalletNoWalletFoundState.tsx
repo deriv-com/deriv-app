@@ -12,26 +12,17 @@ const WalletNoWalletFoundState = () => {
     return (
         <div className='wallets-no-wallet-found-state'>
             <NoWalletIcon height={300} width={300} />
-            <div className='wallets-no-wallet-found-state-content__container'>
-                <div className='wallets-no-wallet-found-state-content'>
+            <div className='wallets-no-wallet-found-state__container'>
+                <div className='wallets-no-wallet-found-state__content'>
                     <WalletText size='3xl' weight='bold'>
                         You have no wallet account 🐣
                     </WalletText>
                     <WalletText size={isMobile ? 'sm' : 'md'}>
-                        Disable the{' '}
-                        <span className='wallets-no-wallet-found-state-content__emphasize-text'>next_wallet</span>{' '}
+                        Disable the <span className='wallets-no-wallet-found-state__emphasized-text'>next_wallet</span>{' '}
                         feature flag to see Trader&apos;s Hub.
                     </WalletText>
                 </div>
-                <WalletButton
-                    // @ts-expect-error putting `/endpoint` here because this component is only for internal use.
-                    onClick={() => history.push('/endpoint')}
-                    size='lg'
-                >
-                    <WalletText color='white' size='sm' weight='bold'>
-                        Endpoint
-                    </WalletText>
-                </WalletButton>
+                <WalletButton onClick={() => history.push('/endpoint')} size='lg' text='Endpoint' />
             </div>
         </div>
     );

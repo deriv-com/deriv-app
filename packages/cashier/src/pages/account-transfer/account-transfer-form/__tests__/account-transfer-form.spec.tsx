@@ -1,6 +1,5 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { useGetMt5LoginListStatus } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
@@ -13,12 +12,6 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 
 let mockRootStore: ReturnType<typeof mockStore>;
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useGetMt5LoginListStatus: jest.fn(() => ({})),
-}));
-const mockedUseGetMt5LoginListStatus = useGetMt5LoginListStatus as jest.MockedFunction<typeof useGetMt5LoginListStatus>;
 
 jest.mock('Assets/svgs/trading-platform', () =>
     jest.fn(props => <div data-testid={props.icon}>TradingPlatformIcon</div>)
@@ -76,7 +69,14 @@ describe('<AccountTransferForm />', () => {
                             is_dxtrade: false,
                             balance: 0,
                         },
-                        selected_to: { currency: 'USD', is_mt: false, is_crypto: false, is_dxtrade: false, balance: 0 },
+                        selected_to: {
+                            currency: 'USD',
+                            is_mt: false,
+                            is_crypto: false,
+                            is_dxtrade: false,
+                            balance: 0,
+                            status: '',
+                        },
                         transfer_fee: 2,
                         transfer_limit: {
                             min: 0,
@@ -287,7 +287,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should display "no new positions can be opened" when transferring amount to a migrated svg account with position', () => {
-        mockedUseGetMt5LoginListStatus.mockReturnValue({ status: 'migrated_with_position' });
+        mockRootStore.modules.cashier.account_transfer.selected_to.status = 'migrated_with_position';
         renderAccountTransferForm();
 
         expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
@@ -295,7 +295,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should display "no new positions can be opened" when transferring amount to a migrated svg account without position', () => {
-        mockedUseGetMt5LoginListStatus.mockReturnValue({ status: 'migrated_without_position' });
+        mockRootStore.modules.cashier.account_transfer.selected_to.status = 'migrated_without_position';
         renderAccountTransferForm();
 
         expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();

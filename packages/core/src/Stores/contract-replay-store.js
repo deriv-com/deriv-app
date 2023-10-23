@@ -263,7 +263,7 @@ export default class ContractReplayStore extends BaseStore {
 
     handleSell(response) {
         const { action_names, event_names, form_names, subform_names } = getRudderstackConfig();
-        
+
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
             this.is_sell_requested = false;

@@ -26,16 +26,23 @@ jest.mock('Stores', () => ({
 const mockUseStores = useStores as jest.MockedFunction<typeof useStores>;
 
 describe('useP2PAdvertiserAdverts', () => {
+    const mock_return_value = {
+        general_store: {
+            is_advertiser_info_subscribed: false,
+            counterparty_advertiser_id: 'test id 1234',
+        },
+        buy_sell_store: {
+            selected_local_currency: 'USD',
+        },
+        advertiser_page_store: { counterparty_type: 'buy' },
+    };
     it('should return the advertiser adverts object from response when is_advertiser_info_subscribed is true and counterparty_advertiser_id is defined', () => {
         mockUseStores.mockReturnValueOnce({
+            ...mock_return_value,
             general_store: {
+                ...mock_return_value.general_store,
                 is_advertiser_info_subscribed: true,
-                counterparty_advertiser_id: 'test id 1234',
             },
-            buy_sell_store: {
-                selected_local_currency: 'USD',
-            },
-            advertiser_page_store: { counterparty_type: 'buy' },
         });
         const { result } = renderHook(() => useP2PAdvertiserAdverts());
         const adverts_list = result.current.adverts;
@@ -48,14 +55,7 @@ describe('useP2PAdvertiserAdverts', () => {
     });
     it('should return the advertiser adverts object from response when is_advertiser_info_subscribed is false and counterparty_advertiser_id is defined', () => {
         mockUseStores.mockReturnValueOnce({
-            general_store: {
-                is_advertiser_info_subscribed: false,
-                counterparty_advertiser_id: 'test id 1234',
-            },
-            buy_sell_store: {
-                selected_local_currency: 'USD',
-            },
-            advertiser_page_store: { counterparty_type: 'buy' },
+            ...mock_return_value,
         });
         const { result } = renderHook(() => useP2PAdvertiserAdverts());
         const adverts_list = result.current.adverts;
@@ -69,14 +69,11 @@ describe('useP2PAdvertiserAdverts', () => {
 
     it('should return the advertiser adverts object from response when is_advertiser_info_subscribed is false and counterparty_advertiser_id is undefined', () => {
         mockUseStores.mockReturnValueOnce({
+            ...mock_return_value,
             general_store: {
-                is_advertiser_info_subscribed: false,
+                ...mock_return_value.general_store,
                 counterparty_advertiser_id: undefined,
             },
-            buy_sell_store: {
-                selected_local_currency: 'USD',
-            },
-            advertiser_page_store: { counterparty_type: 'buy' },
         });
         const { result } = renderHook(() => useP2PAdvertiserAdverts());
         const adverts_list = result.current.adverts;
@@ -89,14 +86,12 @@ describe('useP2PAdvertiserAdverts', () => {
     });
     it('should return the advertiser adverts object from response when is_advertiser_info_subscribed is true and counterparty_advertiser_id is undefined', () => {
         mockUseStores.mockReturnValueOnce({
+            ...mock_return_value,
             general_store: {
+                ...mock_return_value.general_store,
                 is_advertiser_info_subscribed: true,
                 counterparty_advertiser_id: undefined,
             },
-            buy_sell_store: {
-                selected_local_currency: 'USD',
-            },
-            advertiser_page_store: { counterparty_type: 'buy' },
         });
         const { result } = renderHook(() => useP2PAdvertiserAdverts());
         const adverts_list = result.current.adverts;
@@ -110,14 +105,7 @@ describe('useP2PAdvertiserAdverts', () => {
 
     it('should return the advertiser adverts object from response when selected_local_currency is truthy', () => {
         mockUseStores.mockReturnValueOnce({
-            general_store: {
-                is_advertiser_info_subscribed: false,
-                counterparty_advertiser_id: 'test id 1234',
-            },
-            buy_sell_store: {
-                selected_local_currency: 'USD',
-            },
-            advertiser_page_store: { counterparty_type: 'buy' },
+            ...mock_return_value,
         });
         const { result } = renderHook(() => useP2PAdvertiserAdverts());
         const adverts_list = result.current.adverts;
@@ -130,14 +118,11 @@ describe('useP2PAdvertiserAdverts', () => {
     });
     it('should return the advertiser adverts object from response when selected_local_currency is falsey', () => {
         mockUseStores.mockReturnValueOnce({
-            general_store: {
-                is_advertiser_info_subscribed: false,
-                counterparty_advertiser_id: 'test id 1234',
-            },
+            ...mock_return_value,
             buy_sell_store: {
+                ...mock_return_value.buy_sell_store,
                 selected_local_currency: undefined,
             },
-            advertiser_page_store: { counterparty_type: 'buy' },
         });
         const { result } = renderHook(() => useP2PAdvertiserAdverts());
         const adverts_list = result.current.adverts;

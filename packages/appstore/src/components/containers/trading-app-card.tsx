@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { getStatusBadgeConfig } from '@deriv/account';
+import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Text, StatusBadge } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
@@ -47,6 +47,7 @@ const TradingAppCard = ({
     openFailedVerificationModal,
     market_type,
     wallet_account,
+    login,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
     const {
         common,
@@ -180,6 +181,7 @@ const TradingAppCard = ({
                     )}
                     {is_open_position_svg_modal_open && (
                         <OpenPositionsSVGModal
+                            loginId={login}
                             market_type={market_type}
                             status={mt5_acc_auth_status ?? ''}
                             is_modal_open={is_open_position_svg_modal_open}

@@ -66,6 +66,7 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     platform?: TPlatform;
     openFailedVerificationModal?: (from_account: string) => void;
     market_type: string;
+    login: string;
 };
 
 export type TTradingPlatformAvailableAccount = {

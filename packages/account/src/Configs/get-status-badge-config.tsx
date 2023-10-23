@@ -5,9 +5,9 @@ import { Localize } from '@deriv/translations';
 import { MT5LoginListStatus } from '@deriv/shared';
 
 const getStatusBadgeConfig = (
-    account_status: string,
-    openFailedVerificationModal: (selected_account_type: string) => void,
-    selected_account_type: string
+    account_status: string | undefined | null,
+    openFailedVerificationModal?: (selected_account_type: string) => void,
+    selected_account_type?: string
 ) => {
     const BadgeTextComponent = <Text key={0} weight='bold' size='xxxs' color='warning' />;
 

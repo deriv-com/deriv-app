@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import {
     CFD_PLATFORMS,
     getCFDPlatformNames,
@@ -10,17 +9,34 @@ import {
     JURISDICTION_MARKET_TYPES,
     MT5LoginListStatus,
 } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
 type TOpenPositionsSVGModal = {
+    loginId: string;
     market_type: string;
     status: string;
     is_modal_open: boolean;
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const OpenPositionsSVGModal = ({ market_type, status, is_modal_open, setModalOpen }: TOpenPositionsSVGModal) => {
-    const { eligible_account_to_migrate_label } = useMT5SVGEligibleToMigrate();
+const OpenPositionsSVGModal = ({
+    loginId,
+    market_type,
+    status,
+    is_modal_open,
+    setModalOpen,
+}: TOpenPositionsSVGModal) => {
+    const {
+        modules: { cfd },
+    } = useStore();
+    const { migrated_mt5_accounts } = cfd;
+    const eligible_acnt = migrated_mt5_accounts.filter(account => {
+        return account.loginId === loginId;
+    });
+    const eligible_account_to_migrate_label = getFormattedJurisdictionMarketTypes(
+        Object.values(eligible_acnt[0]?.to_acc)[0]
+    );
     const account_type =
         market_type === JURISDICTION_MARKET_TYPES.FINANCIAL
             ? getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL)

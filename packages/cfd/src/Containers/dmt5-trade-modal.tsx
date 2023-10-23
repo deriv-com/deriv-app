@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStatusBadgeConfig } from '@deriv/account';
+import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Text, Icon, Money, StatusBadge } from '@deriv/components';
 import {

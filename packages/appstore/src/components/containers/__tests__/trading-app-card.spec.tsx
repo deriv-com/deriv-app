@@ -2,28 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
-import { useGetMt5LoginListStatus } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import TradingAppCard from '../trading-app-card';
-
-jest.mock('@deriv/account', () => ({
-    ...jest.requireActual('@deriv/account'),
-    getStatusBadgeConfig: jest.fn(() => ({
-        text: 'Pending verification',
-        icon: 'IcAlertWarning',
-    })),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useMT5SVGEligibleToMigrate: jest.fn(() => ({ eligible_account_to_migrate_label: 'BVI' })),
-    useGetMt5LoginListStatus: jest.fn(() => ({
-        is_flag_present: true,
-        flag_value: 1,
-    })),
-}));
-
-const mockUseGetMt5LoginListStatus = useGetMt5LoginListStatus as jest.MockedFunction<typeof useGetMt5LoginListStatus>;
 
 describe('<TradingAppCard/>', () => {
     let modal_root_el: HTMLDivElement;
@@ -50,7 +30,7 @@ describe('<TradingAppCard/>', () => {
         has_divider: false,
         platform: 'mt5',
         short_code_and_region: 'SVG',
-        mt5_acc_auth_status: null,
+        mt5_acc_auth_status: 'migrated_with_position',
         selected_mt5_jurisdiction: {
             platform: 'mt5',
             category: 'real',
@@ -58,7 +38,7 @@ describe('<TradingAppCard/>', () => {
             jurisdiction: 'svg',
         },
         openFailedVerificationModal: jest.fn(),
-        login: 'login_details',
+        login: 'MT5YFHU',
         market_type: 'synthetic',
     };
 
@@ -72,6 +52,18 @@ describe('<TradingAppCard/>', () => {
             content_flag: 'low_risk_cr_non_eu',
             is_real: true,
         },
+        modules: {
+            cfd: {
+                migrated_mt5_accounts: [
+                    {
+                        loginId: 'MT5YFHU',
+                        to_acc: {
+                            synthetic: 'bvi',
+                        },
+                    },
+                ],
+            },
+        },
     });
 
     const renderComponent = ({ props = mock_props }) => {
@@ -83,19 +75,19 @@ describe('<TradingAppCard/>', () => {
             </StoreProvider>
         );
     };
-    it('should render correct status badge if open_order_position_status key is present in BE response and the value is true', () => {
+    it('should render correct status badge if mt5_acc_auth_status value is migrated_with_position', () => {
         renderComponent({ props: mock_props });
 
         const status_badge = screen.getByText(/No new positions/);
         expect(status_badge).toBeInTheDocument();
     });
 
-    it('should render correct status badge if open_order_position_status key is present in BE response and the value is false', () => {
-        mockUseGetMt5LoginListStatus.mockReturnValueOnce({
-            is_flag_present: true,
-            flag_value: 0,
-        });
-        renderComponent({ props: mock_props });
+    it('should render correct status badge if mt5_acc_auth_status value is migrated_without_position', () => {
+        const new_mock_props = {
+            ...mock_props,
+            mt5_acc_auth_status: 'migrated_without_position',
+        };
+        renderComponent({ props: new_mock_props });
 
         const status_badge = screen.getByText(/Account closed/);
         expect(status_badge).toBeInTheDocument();
@@ -127,12 +119,12 @@ describe('<TradingAppCard/>', () => {
         expect(modal_content_bvi).not.toBeInTheDocument();
     });
 
-    it('should not render status badge if open_order_position_status key is not present in BE response', () => {
-        mockUseGetMt5LoginListStatus.mockReturnValueOnce({
-            is_flag_present: false,
-            flag_value: undefined,
-        });
-        renderComponent({ props: mock_props });
+    it('should not render status badge if mt5_acc_auth_status value is null', () => {
+        const new_mock_props = {
+            ...mock_props,
+            mt5_acc_auth_status: null,
+        };
+        renderComponent({ props: new_mock_props });
 
         const status_badge = screen.queryByText(/Account closed/);
         expect(status_badge).not.toBeInTheDocument();

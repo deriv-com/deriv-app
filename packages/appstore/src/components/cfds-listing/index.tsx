@@ -242,6 +242,7 @@ const CFDsListing = observer(() => {
                                 }}
                                 openFailedVerificationModal={openFailedVerificationModal}
                                 market_type={existing_account?.market_type}
+                                login={existing_account.login}
                             />
                         );
                     })}

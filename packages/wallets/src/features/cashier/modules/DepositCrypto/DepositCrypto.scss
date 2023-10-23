@@ -8,5 +8,7 @@
     @include mobile {
         width: 100%;
         justify-content: start;
+        padding-top: 0px;
+        gap: 16px;
     }
 }

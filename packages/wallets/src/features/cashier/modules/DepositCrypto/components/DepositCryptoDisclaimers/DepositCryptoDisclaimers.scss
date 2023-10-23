@@ -4,6 +4,10 @@
     justify-content: center;
     gap: 24px;
 
+    @include mobile {
+        gap: 16px;
+    }
+
     &__content {
         line-height: 14px;
     }

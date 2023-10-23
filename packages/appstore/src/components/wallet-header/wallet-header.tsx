@@ -15,7 +15,7 @@ type TWalletHeader = {
 };
 
 const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
-    const { client, traders_hub } = useStore();
+    const { client } = useStore();
     const { switchAccount, loginid, mf_account_status } = client;
     const is_active = wallet_account.is_selected;
     // const [is_loading, setIsLoading] = useState(false);

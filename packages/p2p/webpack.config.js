@@ -138,7 +138,7 @@ module.exports = function (env) {
                 minChunks: 1,
                 maxAsyncRequests: 30,
                 maxInitialRequests: 30,
-                enforceSizeThreshold: 50000,
+                maxSize: 2500000,
                 cacheGroups: {
                     defaultVendors: {
                         test: /[\\/]node_modules[\\/]/,

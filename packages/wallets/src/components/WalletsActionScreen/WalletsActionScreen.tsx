@@ -9,6 +9,7 @@ type TProps = {
     actionText?: string;
     actionVariant?: ComponentProps<typeof WalletButton>['variant'];
     description: ReactNode;
+    disabled?: boolean;
     icon: ReactNode;
     onAction?: () => void;
     title?: string;
@@ -20,16 +21,18 @@ type TProps = {
  * As its common and repeated in many places,
  * at the moment of writing this, there are already 3 different patterns use to display ex
  *
- * @param action
- * @param description
  * @param icon
  * @param title
+ * @param description
+ * @param actionText
+ * @param onAction
  * @constructor
  */
 const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     actionText,
     actionVariant = 'contained',
     description,
+    disabled = false,
     icon,
     onAction,
     title,
@@ -55,7 +58,14 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
                 </WalletText>
             </div>
             {actionText && (
-                <WalletButton color='primary' onClick={onAction} size='lg' text={actionText} variant={actionVariant} />
+                <WalletButton
+                    color='primary'
+                    disabled={disabled}
+                    onClick={onAction}
+                    size='lg'
+                    text={actionText}
+                    variant={actionVariant}
+                />
             )}
         </div>
     );

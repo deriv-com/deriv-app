@@ -18,5 +18,5 @@ runs:
       npm i wrangler@3.1.0
       cd packages/core
       npx wrangler pages deploy dist/ --project-name=deriv-app-pages --branch=uat
-      echo "New uat website - http://uat.cf-pages-deriv-app.deriv.com"
+      echo "New uat website - https://uat.cf-pages-deriv-app.deriv.com"
     shell: bash

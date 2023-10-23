@@ -29,13 +29,13 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef, setIsQRCodeLoaded }: TShar
 
     const advert_type = type === buy_sell.BUY ? 'Buy' : 'Sell';
 
-    React.useLayoutEffect(() => {
-        setIsQRCodeLoaded(true);
-    }, []);
-
     return (
         <div className='share-my-ads-card' ref={divRef}>
-            <img className='share-my-ads-card__icon' src={base64_images.deriv_p2p} />
+            <img
+                className='share-my-ads-card__icon'
+                src={base64_images.deriv_p2p}
+                onLoad={() => setIsQRCodeLoaded(true)}
+            />
             <Text className='share-my-ads-card__title' weight='bold' size='m'>
                 <Localize
                     i18n_default_text='{{type}} {{account_currency}}'

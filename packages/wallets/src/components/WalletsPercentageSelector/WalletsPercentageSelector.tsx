@@ -33,7 +33,7 @@ const WalletsPercentageSelector = ({ amount, balance, onChangePercentage }: TWal
             {percentageSelectorOptions.map((option, index) => (
                 <WalletsPercentageSelectorBlock
                     fillPercentage={getBlockFillPercentage(option.percentage)}
-                    key={index}
+                    key={`wallet-percentage-selector__${index}__${option.percentage}`}
                     label={option.label}
                     onClick={() => onChangePercentage(option.percentage)}
                 />

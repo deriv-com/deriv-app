@@ -24,7 +24,7 @@ type TFileUploaderProps = {
 const FileUploader = ({ class_name, name, sub_index }: TFileUploaderProps) => {
     const { values, setFieldValue, errors, setFieldError } = useFormikContext<Partial<TProofOfOwnershipFormValue>>();
 
-    const [show_browse_button, setShowBrowseButton] = React.useState(!values[name]?.files?.[sub_index]?.name ?? '');
+    const [show_browse_button, setShowBrowseButton] = React.useState(!values[name]?.files?.[sub_index]?.name);
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);
     const handleClick = e => {

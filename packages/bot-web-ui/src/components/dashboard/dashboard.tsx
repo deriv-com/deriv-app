@@ -197,6 +197,7 @@ const Dashboard = observer(() => {
                 is_visible={is_chart_modal_visible}
                 header_title=''
                 onCloseDraggable={setChartModalVisibility}
+                dragHandleClassName={'chart-modal-dialog__header-wrapper'}
             >
                 <ChartModal setChartModalVisibility={setChartModalVisibility} />
             </Draggable>

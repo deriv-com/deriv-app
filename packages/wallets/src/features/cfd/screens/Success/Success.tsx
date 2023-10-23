@@ -3,8 +3,8 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
+import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
 import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../types';
-import './Success.scss';
 
 type TSuccessProps = {
     description: string;
@@ -13,17 +13,6 @@ type TSuccessProps = {
     platform: TPlatforms.All;
     renderButton: () => ReactNode;
     title: string;
-};
-
-const marketTypeToTitleMapper: Record<TSuccessProps['marketType'], string> = {
-    all: 'Swap-Free',
-    financial: 'MT5 Financial',
-    synthetic: 'MT5 Derived',
-};
-
-const marketTypeToPlatformMapper: Record<string, string> = {
-    ctrader: 'cTrader',
-    dxtrade: 'Deriv X',
 };
 
 const Success: React.FC<TSuccessProps> = ({
@@ -39,9 +28,9 @@ const Success: React.FC<TSuccessProps> = ({
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
     const marketTypeTitle =
-        marketType === 'all' && Object.keys(marketTypeToPlatformMapper).includes(platform)
-            ? marketTypeToPlatformMapper[platform]
-            : marketTypeToTitleMapper[marketType];
+        marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
+            ? PlatformToTitleMapper[platform]
+            : MarketTypeToTitleMapper[marketType];
 
     return (
         <div className='wallets-success'>

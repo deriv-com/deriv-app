@@ -2,6 +2,7 @@ import React from 'react';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import { TPlatforms } from '../../types';
 import { PlatformToTitleMapper } from '../../constants';
+import './CreatePassword.scss';
 
 type TProps = {
     icon: React.ReactNode;

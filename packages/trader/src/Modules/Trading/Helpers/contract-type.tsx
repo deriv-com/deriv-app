@@ -212,11 +212,11 @@ const ACCU_MANUAL_VIDEO_URL = {
 
 export const getDescriptionVideoUrl = (contract_type: string, is_dark_theme: boolean, extension: string) => {
     const url = DESCRIPTION_VIDEO_URL[contract_type]?.[is_dark_theme ? 'dark' : 'light'][extension as 'mp4'];
-    return STRAPI_MEDIA_URL + url ?? '';
+    return url ? STRAPI_MEDIA_URL + url : '';
 };
 
 export const getAccuManualVideoUrl = (is_mobile: boolean, is_dark_theme: boolean, extension: string) => {
     const url =
         ACCU_MANUAL_VIDEO_URL[is_mobile ? 'mobile' : 'desktop'][is_dark_theme ? 'dark' : 'light'][extension as 'mp4'];
-    return STRAPI_MEDIA_URL + url ?? '';
+    return url ? STRAPI_MEDIA_URL + url : '';
 };

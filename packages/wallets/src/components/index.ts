@@ -1,5 +1,6 @@
 export * from './AccountsList';
 export * from './Base';
+export * from './DerivAppsSection';
 export * from './DesktopWalletsList';
 export * from './Loader';
 export * from './OptionsAndMultipliersListing';
@@ -17,3 +18,4 @@ export * from './WalletsAccordion';
 export * from './WalletsAddMoreCarousel';
 export * from './WalletsCarousel';
 export * from './WalletsCarouselContent';
+export * from './WalletTourGuide';

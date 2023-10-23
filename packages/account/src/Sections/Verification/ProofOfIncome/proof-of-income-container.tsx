@@ -3,13 +3,13 @@ import { Redirect } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
 import { AccountStatusResponse } from '@deriv/api-types';
+import ProofOfIncomeForm from './proof-of-income-form';
+import { income_status_codes } from './proof-of-income-utils';
+import { populateVerificationStatus } from '../Helpers/verification';
 import PoincFailed from '../../../Components/poinc/statuses/poinc-failed';
 import PoincReceived from '../../../Components/poinc/statuses/poinc-received';
 import PoincLimited from '../../../Components/poinc/statuses/poinc-limited';
 import PoincVerified from '../../../Components/poinc/statuses/poinc-verified';
-import { populateVerificationStatus } from '../Helpers/verification';
-import ProofOfIncomeForm from './proof-of-income-form';
-import { income_status_codes } from './proof-of-income-utils';
 
 type TProofOfIncomeContainer = {
     is_switching?: boolean;
@@ -60,6 +60,9 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
         authentication_status;
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (!needs_poinc) {
+        return <Redirect to={routes.account} />;
+    }
     if (
         allow_document_upload &&
         needs_poinc &&
@@ -68,9 +71,6 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
             income_status === income_status_codes.NONE)
     ) {
         return <ProofOfIncomeForm onSubmit={handleSubmit} />;
-    }
-    if (!needs_poinc) {
-        return <Redirect to={routes.account} />;
     }
     if (income_status === income_status_codes.PENDING) return <PoincReceived />;
     if (income_status === income_status_codes.VERIFIED) return <PoincVerified />;

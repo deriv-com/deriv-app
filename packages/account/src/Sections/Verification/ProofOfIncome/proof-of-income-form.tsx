@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, Formik, Form, FormikErrors, FormikHelpers, FormikValues } from 'formik';
-import { AccountStatusResponse, DocumentUploadRequest, DocumentUploadResponse } from '@deriv/api-types';
+import { AccountStatusResponse, DocumentUploadRequest } from '@deriv/api-types';
 import {
     Autocomplete,
     Button,
@@ -8,10 +8,9 @@ import {
     FormSubmitErrorMessage,
     MobileWrapper,
     SelectNative,
-    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, WS } from '@deriv/shared';
+import { WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import FilesDescription from 'Components/file-uploader-container/files-descriptions';
 import FormBody from 'Components/form-body';
@@ -39,7 +38,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
 
     const { notifications, ui } = useStore();
     const { addNotificationMessageByKey, removeNotificationMessage, removeNotificationByKey } = notifications;
-    const { is_mobile } = ui;
+    const { is_mobile, is_desktop } = ui;
 
     const initial_form_values: TInitialValues = {
         document_type: '',
@@ -114,7 +113,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                 values,
             }) => (
                 <Form noValidate className='proof-of-income__form' onSubmit={handleSubmit}>
-                    <FormBody scroll_offset={isDesktop() ? '0' : '200px'}>
+                    <FormBody scroll_offset={is_desktop ? '0' : '200px'}>
                         <fieldset className='proof-of-income__form-field'>
                             <FormSubHeader
                                 title={localize('Select document')}
@@ -153,7 +152,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                                                 label={localize('Select your document*')}
                                                 value={values.document_type}
                                                 list_items={poinc_documents_list}
-                                                error={touched.document_type ? errors.document_type : undefined}
+                                                error={touched.document_type && errors.document_type}
                                                 use_text={true}
                                                 onChange={e => {
                                                     setFieldValue('document_type', e.target.value, true);

@@ -364,7 +364,7 @@
         &-supported-formats {
             display: flex;
             justify-content: space-between;
-            margin: 1.6rem 0 2.4rem;
+            margin-top: 1.6rem;
 
             @include mobile {
                 margin-bottom: 1.6rem;

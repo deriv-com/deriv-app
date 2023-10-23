@@ -11,8 +11,8 @@ type TFileUploaderContainer = {
     onFileDrop: (file: TFile | undefined) => void;
     onRef: (ref: React.RefObject<null | { upload: () => void }> | undefined) => void;
     settings?: Partial<TSettings>;
-    files_description: React.ReactNode;
-    examples: React.ReactNode;
+    files_description?: React.ReactNode;
+    examples?: React.ReactNode;
 };
 
 const FileUploaderContainer = ({

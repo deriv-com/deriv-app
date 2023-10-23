@@ -2248,6 +2248,8 @@ $MIN_HEIGHT_FLOATING: calc(
 }
 
 .proof-of-income {
+    width: 100%;
+
     .account__scrollbars_container {
         padding: 0;
     }
@@ -2255,11 +2257,6 @@ $MIN_HEIGHT_FLOATING: calc(
     &__form {
         &-field {
             margin-bottom: 3.2rem;
-
-            .dc-input--error ::placeholder {
-                color: var(--text-loss-danger);
-                opacity: 1;
-            }
 
             @include mobile {
                 margin-bottom: 2.4rem;

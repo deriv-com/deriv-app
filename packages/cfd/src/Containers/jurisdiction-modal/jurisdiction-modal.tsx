@@ -34,7 +34,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
     const modal_content = (
         <div
             data-testid='modal_content'
-            className={classNames({
+            className={classNames('jurisdiction-modal__wrapper', {
                 'jurisdiction-modal__flipped': is_dynamic_leverage_visible,
             })}
         >

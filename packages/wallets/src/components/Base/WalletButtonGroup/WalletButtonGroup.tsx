@@ -1,5 +1,4 @@
-import React from 'react';
-import { type WalletButton } from '../WalletButton';
+import React, { Children } from 'react';
 import './WalletButtonGroup.scss';
 import classNames from 'classnames';
 

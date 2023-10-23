@@ -66,6 +66,12 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     };
 
     React.useEffect(() => {
+        if (divRef.current && divRef.current.classList.contains('share-my-ads-card')) {
+            setIsQRCodeLoaded(true);
+        }
+    }, [divRef.current]);
+
+    React.useEffect(() => {
         let timeout_clipboard: ReturnType<typeof setTimeout>;
         if (is_copied) {
             timeout_clipboard = setTimeout(() => {
@@ -89,12 +95,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                     </DesktopWrapper>
                     <div className='share-my-ads-modal__container'>
                         <div className='share-my-ads-modal__container__card'>
-                            <ShareMyAdsCard
-                                advert={advert}
-                                advert_url={advert_url}
-                                divRef={divRef}
-                                setIsQRCodeLoaded={setIsQRCodeLoaded}
-                            />
+                            <ShareMyAdsCard advert={advert} advert_url={advert_url} divRef={divRef} />
                             <Button
                                 className='share-my-ads-modal__container__card__download-button'
                                 disabled={!is_qr_code_loaded}

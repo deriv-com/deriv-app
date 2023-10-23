@@ -12,10 +12,9 @@ type TShareMyAdsCardProps = {
     advert: Partial<TAdvertProps>;
     advert_url: string;
     divRef: React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>;
-    setIsQRCodeLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ShareMyAdsCard = ({ advert, advert_url, divRef, setIsQRCodeLoaded }: TShareMyAdsCardProps) => {
+const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) => {
     const {
         account_currency,
         id,
@@ -31,11 +30,7 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef, setIsQRCodeLoaded }: TShar
 
     return (
         <div className='share-my-ads-card' ref={divRef}>
-            <img
-                className='share-my-ads-card__icon'
-                src={base64_images.deriv_p2p}
-                onLoad={() => setIsQRCodeLoaded(true)}
-            />
+            <img className='share-my-ads-card__icon' src={base64_images.deriv_p2p} />
             <Text className='share-my-ads-card__title' weight='bold' size='m'>
                 <Localize
                     i18n_default_text='{{type}} {{account_currency}}'

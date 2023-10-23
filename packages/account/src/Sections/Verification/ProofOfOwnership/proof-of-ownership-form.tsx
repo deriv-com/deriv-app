@@ -182,63 +182,63 @@ const ProofOfOwnershipForm = ({
     };
 
     const handleFormSubmit = values => {
-        // console.log('data', values);
-        // try {
-        //     setFormState({ ...form_state, ...{ is_btn_loading: true } });
-        //     const uploader = new DocumentUploader({ connection: WS.getSocket() });
-        //     if (form_ref.current.errors.length > 0) {
-        //         // Only upload if no errors and a file has been attached
-        //         return;
-        //     }
-        //     Object.keys(form_values).forEach(card_key => {
-        //         Object.keys(form_values[card_key]).forEach(async card_item_key => {
-        //             const payment_method_details = form_values[card_key][card_item_key];
-        //             if (payment_method_details.files.length > 0) {
-        //                 const processed_files = await readFiles(payment_method_details.files, fileReadErrorMessage, {
-        //                     documentType: DOCUMENT_TYPE.proof_of_ownership,
-        //                     proof_of_ownership: {
-        //                         details: {
-        //                             email: client_email,
-        //                             payment_identifier: payment_method_details.payment_method_identifier,
-        //                         },
-        //                         id: payment_method_details.id,
-        //                     },
-        //                 });
-        //                 console.log('Payload: ', processed_files);
-        //                 // processed_files.forEach(async (processed_file, sub_index) => {
-        //                 //     const response = await uploader.upload(processed_file);
-        //                 //     if (response.warning) {
-        //                 //         if (response.warning.trim() === 'DuplicateUpload') {
-        //                 //             let { errors: form_errors } = form_ref?.current;
-        //                 //             if (!form_errors?.data) {
-        //                 //                 form_errors = {};
-        //                 //                 form_errors.data = [];
-        //                 //                 form_errors.data[card_key] = {};
-        //                 //             } else if (!form_errors.data?.[card_key]) {
-        //                 //                 form_errors.data[card_key] = {};
-        //                 //             }
-        //                 //             form_errors.data[card_key][card_item_key] =
-        //                 //                 form_errors?.data?.[card_key]?.[card_item_key] ?? {};
-        //                 //             form_errors.data[card_key][card_item_key].files =
-        //                 //                 form_errors?.data?.[card_key]?.[card_item_key]?.files ?? [];
-        //                 //             form_errors.data[card_key][card_item_key].files[sub_index] = response.message; // Document already uploaded
-        //                 //             await form_ref.current.setErrors(form_errors);
-        //                 //             await form_ref.current.validateForm();
-        //                 //             setFormState({ ...form_state, ...{ is_btn_loading: false } });
-        //                 //         } else {
-        //                 //             setFormState({ ...form_state, ...{ is_btn_loading: false } });
-        //                 //         }
-        //                 //     } else {
-        //                 //         updateAccountStatus();
-        //                 //         refreshNotifications();
-        //                 //     }
-        //                 // });
-        //             }
-        //         });
-        //     });
-        // } catch (err) {
-        //     setFormState({ ...form_state, ...{ is_btn_loading: false } });
-        // }
+        console.log('data', values);
+        try {
+            setFormState({ ...form_state, ...{ is_btn_loading: true } });
+            const uploader = new DocumentUploader({ connection: WS.getSocket() });
+            if (form_ref.current.errors.length > 0) {
+                // Only upload if no errors and a file has been attached
+                return;
+            }
+            Object.keys(form_values).forEach(card_key => {
+                Object.keys(form_values[card_key]).forEach(async card_item_key => {
+                    const payment_method_details = form_values[card_key][card_item_key];
+                    if (payment_method_details.files.length > 0) {
+                        const processed_files = await readFiles(payment_method_details.files, fileReadErrorMessage, {
+                            documentType: DOCUMENT_TYPE.proof_of_ownership,
+                            proof_of_ownership: {
+                                details: {
+                                    email: client_email,
+                                    payment_identifier: payment_method_details.payment_method_identifier,
+                                },
+                                id: payment_method_details.id,
+                            },
+                        });
+                        console.log('Payload: ', processed_files);
+                        // processed_files.forEach(async (processed_file, sub_index) => {
+                        //     const response = await uploader.upload(processed_file);
+                        //     if (response.warning) {
+                        //         if (response.warning.trim() === 'DuplicateUpload') {
+                        //             let { errors: form_errors } = form_ref?.current;
+                        //             if (!form_errors?.data) {
+                        //                 form_errors = {};
+                        //                 form_errors.data = [];
+                        //                 form_errors.data[card_key] = {};
+                        //             } else if (!form_errors.data?.[card_key]) {
+                        //                 form_errors.data[card_key] = {};
+                        //             }
+                        //             form_errors.data[card_key][card_item_key] =
+                        //                 form_errors?.data?.[card_key]?.[card_item_key] ?? {};
+                        //             form_errors.data[card_key][card_item_key].files =
+                        //                 form_errors?.data?.[card_key]?.[card_item_key]?.files ?? [];
+                        //             form_errors.data[card_key][card_item_key].files[sub_index] = response.message; // Document already uploaded
+                        //             await form_ref.current.setErrors(form_errors);
+                        //             await form_ref.current.validateForm();
+                        //             setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                        //         } else {
+                        //             setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                        //         }
+                        //     } else {
+                        //         updateAccountStatus();
+                        //         refreshNotifications();
+                        //     }
+                        // });
+                    }
+                });
+            });
+        } catch (err) {
+            setFormState({ ...form_state, ...{ is_btn_loading: false } });
+        }
     };
     return (
         <Formik

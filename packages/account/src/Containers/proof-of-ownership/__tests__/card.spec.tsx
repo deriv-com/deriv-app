@@ -24,7 +24,6 @@ describe('Card', () => {
             documents_required: 1,
         },
         index: 0,
-        updateErrors: jest.fn(),
     };
 
     it('should render payment method card', () => {

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { Input, Text } from '@deriv/components';
 import { IDENTIFIER_TYPES } from '../../Constants/poo-identifier';
-import FileUploader from '../../Sections/Verification/ProofOfOwnership/file-uploader';
+import FileUploader from './file-uploader';
 import { TPaymentMethod, TPaymentMethodInfo, TProofOfOwnershipFormValue } from '../../Types';
 import ExampleLink from './example-link';
 import { hasInvalidCharacters } from '@deriv/shared';

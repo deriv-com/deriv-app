@@ -45,21 +45,15 @@ const grouped_payment_method_data: Record<string, TPaymentMethodInfo> = {
 describe('expanded-card.jsx', () => {
     const mock_props: React.ComponentProps<typeof ExpandedCard> = {
         card_details: grouped_payment_method_data.visa,
-        index: 0,
-        updateErrors: jest.fn(),
     };
 
     const renderComponent = ({ props = mock_props }) =>
         render(
             <Formik
                 initialValues={{
-                    data: [
-                        [
-                            {
-                                payment_method_identifier: '1234 56XX XXXX 1121',
-                            },
-                        ],
-                    ],
+                    visa: {
+                        payment_method_identifier: '1234 56XX XXXX 1121',
+                    },
                 }}
                 onSubmit={jest.fn()}
             >

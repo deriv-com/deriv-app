@@ -9,8 +9,6 @@ import { useFormikContext } from 'formik';
 const FileUploader = ({ class_name, name, sub_index }) => {
     const { values, setFieldValue, errors, setFieldError } = useFormikContext();
 
-    console.log('File-uploader: ', values, errors);
-
     const [show_browse_button, setShowBrowseButton] = React.useState(!values[name]?.files?.[sub_index]?.name ?? '');
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);

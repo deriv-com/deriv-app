@@ -205,7 +205,10 @@ class GoogleDriveUtil {
                             }
                         })
                         .catch(err => {
-                            if (err.status && err.status === 401) this.client.requestAccessToken({ prompt: '' });
+                            if (err.status && err.status === 401) {
+                                this.client.requestAccessToken({ prompt: '' });
+                                reject();
+                            }
 
                             const error = new TrackJSError(
                                 'GoogleDrive',
@@ -259,7 +262,10 @@ class GoogleDriveUtil {
                         })
                         .then(resolve)
                         .catch(err => {
-                            if (err?.status === 401) this.client.requestAccessToken({ prompt: '' });
+                            if (err?.status === 401) {
+                                this.client.requestAccessToken({ prompt: '' });
+                                reject();
+                            }
 
                             const error = new TrackJSError(
                                 'GoogleDrive',
@@ -306,7 +312,10 @@ class GoogleDriveUtil {
                             resolve();
                             return;
                         }
-                        if (xhr.status === 401) this.client.requestAccessToken({ prompt: '' });
+                        if (xhr.status === 401) {
+                            this.client.requestAccessToken({ prompt: '' });
+                            reject();
+                        }
                         const error = new TrackJSError(
                             'GoogleDrive',
                             translate('There was an error processing your request'),

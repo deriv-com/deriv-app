@@ -15,3 +15,8 @@ export const notify = (className, message) =>
         message,
         position: isMobile() ? 'left' : 'right',
     });
+
+export const notifyError = error =>
+    globalObserver.emit('Error', {
+        error,
+    });

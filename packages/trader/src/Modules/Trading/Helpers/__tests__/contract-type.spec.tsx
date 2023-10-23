@@ -3,6 +3,11 @@ import {
     getAvailableContractTypes,
     getContractCategoryKey,
     getContractTypes,
+    getDescriptionVideoUrl,
+    getAccuManualVideoUrl,
+    STRAPI_MEDIA_URL,
+    DESCRIPTION_VIDEO_URL,
+    ACCU_MANUAL_VIDEO_URL,
 } from '../contract-type';
 
 const contract_types_test_list = {
@@ -85,5 +90,31 @@ describe('getContractTypes', () => {
     });
     it('should return undefined if passed item has not the same value as some of the passed list', () => {
         expect(getContractTypes(contract_category_list, { value: 'match_diff' })).toEqual(undefined);
+    });
+});
+
+describe('getDescriptionVideoUrl', () => {
+    it('should return a correct URL for vanilla description video for dark mode & with .mp4 extension', () => {
+        expect(getDescriptionVideoUrl('vanilla', true, 'mp4')).toEqual(
+            STRAPI_MEDIA_URL + DESCRIPTION_VIDEO_URL.vanilla.dark.mp4
+        );
+    });
+    it('should return a correct URL for accumulators description video for light mode & with .webm extension', () => {
+        expect(getDescriptionVideoUrl('accumulator', false, 'webm')).toEqual(
+            STRAPI_MEDIA_URL + DESCRIPTION_VIDEO_URL.accumulator.light.webm
+        );
+    });
+});
+
+describe('getAccuManualVideoUrl', () => {
+    it('should return a correct URL for accumulators manual video for mobile, light mode & with .mp4 extension', () => {
+        expect(getAccuManualVideoUrl(true, false, 'mp4')).toEqual(
+            STRAPI_MEDIA_URL + ACCU_MANUAL_VIDEO_URL.mobile.light.mp4
+        );
+    });
+    it('should return a correct URL for accumulators manual video for desktop, dark mode & with .webm extension', () => {
+        expect(getAccuManualVideoUrl(false, true, 'webm')).toEqual(
+            STRAPI_MEDIA_URL + ACCU_MANUAL_VIDEO_URL.desktop.dark.webm
+        );
     });
 });

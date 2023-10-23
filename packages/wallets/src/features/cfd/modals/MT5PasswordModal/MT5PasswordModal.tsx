@@ -13,7 +13,6 @@ import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { CreatePassword, EnterPassword, Success } from '../../screens';
 import { TMarketTypes, TPlatforms } from '../../types';
 import useDevice from '../../../../hooks/useDevice';
-import './MT5PasswordModal.scss';
 import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
 
 type TProps = {

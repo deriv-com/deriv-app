@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useCombobox } from 'downshift';
 import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
 import { WalletText } from '../WalletText';
-import styles from './WalletDropdown.module.css';
+import './WalletDropdown.scss';
 
 type TProps = {
     icon?: React.ReactNode;
@@ -15,7 +15,7 @@ type TProps = {
     listHeight?: 'lg' | 'md' | 'sm';
     onSelect: (value: string) => void;
     type?: 'comboBox' | 'prompt';
-    value?: string;
+    value: string | undefined;
 };
 
 const WalletDropdown: React.FC<TProps> = ({
@@ -59,11 +59,11 @@ const WalletDropdown: React.FC<TProps> = ({
     }, [list]);
 
     return (
-        <div className={styles[`wallets-dropdown`]}>
-            <div className={styles[`wallets-dropdown__content`]}>
-                {icon && <div className={styles[`wallets-dropdown__icon`]}>{icon}</div>}
+        <div className='wallets-dropdown'>
+            <div className='wallets-dropdown__content'>
+                {icon && <div className='wallets-dropdown__icon'>{icon}</div>}
                 <input
-                    className={styles['wallets-dropdown__field']}
+                    className='wallets-dropdown__field'
                     id='dropdown-text'
                     onKeyUp={() => setShouldFilterList(true)}
                     placeholder={label}
@@ -73,8 +73,8 @@ const WalletDropdown: React.FC<TProps> = ({
                     {...getInputProps()}
                 />
                 <label
-                    className={classNames(styles[`wallets-dropdown__label`], {
-                        [styles[`wallets-dropdown__label--with-icon`]]: !!icon,
+                    className={classNames('wallets-dropdown__label', {
+                        'wallets-dropdown__label--with-icon': !!icon,
                     })}
                     htmlFor='dropdown-text'
                     {...getLabelProps()}
@@ -82,26 +82,20 @@ const WalletDropdown: React.FC<TProps> = ({
                     {label}
                 </label>
                 <button
-                    className={classNames(styles['wallets-dropdown__button'], {
-                        [styles['wallets-dropdown__button--active']]: isOpen,
+                    className={classNames('wallets-dropdown__button', {
+                        'wallets-dropdown__button--active': isOpen,
                     })}
                     {...getToggleButtonProps()}
                 >
                     <ArrowIcon />
                 </button>
             </div>
-            <ul
-                className={classNames(
-                    styles['wallets-dropdown__items'],
-                    styles[`wallets-dropdown__items--${listHeight}`]
-                )}
-                {...getMenuProps()}
-            >
+            <ul className={`wallets-dropdown__items wallets-dropdown__items--${listHeight}`} {...getMenuProps()}>
                 {isOpen &&
                     items.map((item, index) => (
                         <li
-                            className={classNames(styles['wallets-dropdown__item'], {
-                                [styles['wallets-dropdown__item--active']]: value === item.value,
+                            className={classNames('wallets-dropdown__item', {
+                                'wallets-dropdown__item--active': value === item.value,
                             })}
                             key={item.value}
                             onClick={() => clearFilter()}

@@ -3,7 +3,6 @@
     flex-direction: row;
     column-gap: 0.8rem;
     justify-content: flex-start;
-    min-height: 3.2rem;
 
     @include mobile {
         margin: 0;
@@ -35,7 +34,7 @@
     }
 
     &__message-container {
-        padding: 0.7rem 0;
+        padding: 0.6rem 0;
     }
 
     &__button-container {

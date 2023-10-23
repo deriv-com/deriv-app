@@ -2,6 +2,7 @@ export * from './AccountsList';
 export * from './Base';
 export * from './DerivAppsSection';
 export * from './DesktopWalletsList';
+export * from './FadedAnimatedList';
 export * from './Loader';
 export * from './OptionsAndMultipliersListing';
 export * from './TradingAccountCard';

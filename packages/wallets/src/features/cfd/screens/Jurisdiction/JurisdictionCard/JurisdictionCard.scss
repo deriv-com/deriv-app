@@ -1,7 +1,7 @@
 .wallets-jurisdiction-card {
     align-items: center;
-    border-radius: 16px;
-    border: 2px solid #f2f3f4;
+    border-radius: 1.6rem;
+    border: 0.2rem solid #f2f3f4;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -32,12 +32,12 @@
     }
 
     &:hover {
-        box-shadow: 0px 24px 48px 0px rgba(14, 14, 14, 0.18);
+        box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
     }
 
     &--selected {
-        border: 2px solid #85acb0;
-        box-shadow: 0px 24px 48px 0px rgba(14, 14, 14, 0.18);
+        border: 0.2rem solid #85acb0;
+        box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
     }
 
     &-front {
@@ -45,7 +45,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 16px;
+        padding: 1.6rem;
 
         transform-style: preserve-3d;
         transition: transform 0.6s;
@@ -55,24 +55,24 @@
         }
 
         &__label {
-            font-size: 20px;
+            font-size: 2rem;
             font-weight: 700;
-            line-height: 30px;
-            margin-bottom: 10px;
+            line-height: 3rem;
+            margin-bottom: 1rem;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 2rem;
         }
 
         &__tag {
             background-color: #661b20;
-            border-radius: 4px;
+            border-radius: 0.4rem;
             color: #ffffff;
             font-weight: 700;
             padding: 1rem;
 
             &-icons {
                 display: flex;
-                gap: 6px;
+                gap: 0.6rem;
             }
 
             &--red-darker {

@@ -79,7 +79,7 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
                         {label}
                     </label>
                 )}
-                {icon && <WalletButton icon={icon} onClick={onClickIcon} rounded='lg' size='sm' variant='ghost' />}
+                {icon && <WalletButton icon={icon} onClick={onClickIcon} rounded='md' size='sm' variant='ghost' />}
             </div>
             <div className='wallets-textfield__message-container'>
                 {showMessage && <MessageContainer helperMessage={helperMessage} maxLength={maxLength} />}

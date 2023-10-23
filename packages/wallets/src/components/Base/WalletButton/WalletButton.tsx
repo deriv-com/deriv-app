@@ -12,7 +12,7 @@ interface WalletButtonProps {
     icon?: ReactElement;
     isFullWidth?: boolean;
     onClick?: ComponentProps<'button'>['onClick'];
-    rounded?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
+    rounded?: Extract<TGenericSizes, 'md' | 'sm'>;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
     variant?: TVariant;

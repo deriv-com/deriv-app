@@ -29,7 +29,7 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef, setIsQRCodeLoaded }: TShar
 
     const advert_type = type === buy_sell.BUY ? 'Buy' : 'Sell';
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         setIsQRCodeLoaded(true);
     }, []);
 

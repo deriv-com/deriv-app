@@ -32,7 +32,7 @@ const mockProps = {
     toggleFilterDialog: jest.fn(),
 };
 
-describe('FilterDialog', () => {
+describe('Draggable', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
     beforeAll(() => {

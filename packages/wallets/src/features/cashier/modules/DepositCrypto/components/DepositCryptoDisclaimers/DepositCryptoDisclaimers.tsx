@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { InlineMessage } from '../../../../../../components/Base';
+import { InlineMessage, WalletText } from '../../../../../../components/Base';
 import useDevice from '../../../../../../hooks/useDevice';
 import './DepositCryptoDisclaimers.scss';
 
@@ -41,9 +41,14 @@ const DepositCryptoDisclaimers = () => {
                     </li>
                 </div>
             </InlineMessage>
-            <p className='wallets-deposit-crypto-disclaimers__note' style={{ fontSize: isMobile ? ' 1rem' : '1.2rem' }}>
-                <strong>Note:</strong>&nbsp;You’ll receive an email when your deposit start being processed.
-            </p>
+            <div className='wallets-deposit-crypto-disclaimers__note'>
+                <WalletText size='xs' weight='bold'>
+                    Note:
+                </WalletText>
+                <WalletText size='xs'>
+                    &nbsp;You’ll receive an email when your deposit start being processed.
+                </WalletText>
+            </div>
         </div>
     );
 };

@@ -543,6 +543,7 @@ export const icons =
         'IcPooSubmitted',
         'IcPooVerified',
         'IcPortfolio',
+        'IcPositionClosed',
         'IcPreviewIcon',
         'IcPreview',
         'IcProfile',

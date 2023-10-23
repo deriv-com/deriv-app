@@ -5,28 +5,18 @@ import {
     useCreateMT5Account,
     useMT5AccountsList,
     useSettings,
-    useSortedMT5Accounts,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
 import { ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { CreatePassword, EnterPassword, Success } from '../../screens';
+import { TMarketTypes, TPlatforms } from '../../types';
+import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
 
 type TProps = {
-    marketType: Exclude<NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number]['market_type'], undefined>;
-    platform: string;
-};
-
-const marketTypeToTitleMapper: Record<TProps['marketType'], string> = {
-    all: 'Swap-Free',
-    financial: 'MT5 Financial',
-    synthetic: 'MT5 Derived',
-};
-
-const marketTypeToPlatformTitleMapper: Record<string, string> = {
-    ctrader: 'cTrader',
-    dxtrade: 'Deriv X',
+    marketType: TMarketTypes.SortedMT5Accounts;
+    platform: TPlatforms.All;
 };
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
@@ -42,9 +32,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeWallet?.is_virtual;
     const marketTypeTitle =
-        marketType === 'all' && Object.keys(marketTypeToPlatformTitleMapper).includes(platform)
-            ? marketTypeToPlatformTitleMapper[platform]
-            : marketTypeToTitleMapper[marketType];
+        marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
+            ? PlatformToTitleMapper[platform]
+            : MarketTypeToTitleMapper[marketType];
 
     const onSubmit = async () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;

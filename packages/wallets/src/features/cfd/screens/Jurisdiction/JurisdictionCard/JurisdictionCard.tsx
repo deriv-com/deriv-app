@@ -41,6 +41,15 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
         );
     }, [show]);
 
+    const descriptionClickHandler = (tag?: string) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        event.stopPropagation();
+        if (tag === 'dynamicLeverage') {
+            showDynamicLeverage();
+        } else {
+            setIsFlipped(true);
+        }
+    };
+
     const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = useMemo<TJurisdictionCardItems>(
         () => getJurisdictionContents()[jurisdiction],
         [jurisdiction]
@@ -55,15 +64,8 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                     return (
                         <a
                             className='wallets-jurisdiction-card__link'
-                            key={description?.text}
-                            onClick={e => {
-                                e.stopPropagation();
-                                if (description.tag === 'dynamicLeverage') {
-                                    showDynamicLeverage();
-                                } else {
-                                    setIsFlipped(true);
-                                }
-                            }}
+                            key={description.text}
+                            onClick={descriptionClickHandler(description.tag)}
                         >
                             {description.text}{' '}
                         </a>

@@ -4,7 +4,9 @@ import { WalletText } from '../../../../components/Base';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
 import './DynamicLeverageMarketCard.scss';
 
-type TDynamicLeverageMarketCardProps = ReturnType<typeof useDynamicLeverage>['data'][0];
+type TDynamicLeverageMarketCardProps = NonNullable<
+    Exclude<ReturnType<typeof useDynamicLeverage>['data'][0], 'undefined'>
+>;
 
 export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
     data,
@@ -38,7 +40,7 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
                 <DynamicLeverageTableColumnHeader subtitle='(1:x)' title='Leverage' />
             </div>
             <div>
-                {data.map(columns => (
+                {data?.map(columns => (
                     <div
                         className='wallets-dynamic-leverage-modal__market-table-row'
                         key={`${columns.from}-${columns.to}-${columns.leverage}`}

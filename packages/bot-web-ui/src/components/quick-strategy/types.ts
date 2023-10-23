@@ -9,13 +9,13 @@ export type TFormData = {
     symbol?: string;
     tradetype?: string;
     durationtype?: string;
-    duration?: number;
-    stake?: number;
-    size?: number;
-    profit?: number;
-    loss?: number;
-    unit?: number;
-    action: 'RUN' | 'EDIT';
+    duration?: string;
+    stake?: string;
+    size?: string;
+    profit?: string;
+    loss?: string;
+    unit?: string;
+    action: string;
 };
 
 export type TValidationType = 'min' | 'max' | 'required' | 'number' | 'ceil' | 'floor';

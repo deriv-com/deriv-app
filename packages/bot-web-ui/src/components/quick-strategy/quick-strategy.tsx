@@ -1,14 +1,14 @@
 import React from 'react';
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
-import { ApiHelpers } from '@deriv/bot-skeleton';
+import { ApiHelpers, config as qs_config } from '@deriv/bot-skeleton';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
-import { SIZE_MIN, STRATEGIES } from './config';
+import { STRATEGIES } from './config';
 import Form from './form';
 import { TConfigItem, TDurationItemRaw, TFormData } from './types';
 import './quick-strategy.scss';
@@ -23,23 +23,23 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const { selected_strategy, form_data, onSubmit } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
 
-    const initial_value: { [key: string]: string } = {
-        symbol: '1HZ100V',
+    const initial_value: TFormData = {
+        symbol: qs_config.QUICK_STRATEGY.DEFAULT.symbol,
         tradetype: '',
-        durationtype: 't',
+        durationtype: qs_config.QUICK_STRATEGY.DEFAULT.durationtype,
         stake: '1',
         loss: '0',
         profit: '0',
-        size: String(SIZE_MIN),
+        size: String(qs_config.QUICK_STRATEGY.DEFAULT.size),
         duration: '1',
-        unit: '0',
-        action: 'run',
+        unit: String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
+        action: 'RUN',
     };
 
     React.useEffect(() => {
         const data = JSON.parse(localStorage.getItem('qs-fields') || '{}');
         Object.keys(data).forEach(key => {
-            initial_value[key] = data[key];
+            initial_value[key as keyof TFormData] = data[key];
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -113,12 +113,12 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     };
 
     const handleSubmit = (form_data: TFormData) => {
-        onSubmit(form_data, true); // true to load and run the bot
+        onSubmit(form_data); // true to load and run the bot
         localStorage?.setItem('qs-fields', JSON.stringify(form_data));
     };
 
     return (
-        <Formik initialValues={initial_value} validationSchema={getErrors()} onSubmit={handleSubmit}>
+        <Formik initialValues={initial_value} validationSchema={getErrors()} onSubmit={handleSubmit} validateOnBlur>
             {children}
         </Formik>
     );

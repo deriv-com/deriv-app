@@ -306,5 +306,12 @@ export const config = {
             SYMBOLS: ['1HZ150V', '1HZ250V'],
             SUBMARKETS: ['crash_index', 'non_stable_coin'],
         },
+        DEFAULT: {
+            symbol: '1HZ100V',
+            tradetype: 'callput',
+            durationtype: 't',
+            size: 2,
+            unit: 1,
+        },
     },
 };

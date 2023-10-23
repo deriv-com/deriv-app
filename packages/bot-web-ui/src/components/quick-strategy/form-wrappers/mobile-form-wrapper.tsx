@@ -13,14 +13,17 @@ type TMobileFormWrapper = {
 
 const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) => {
     // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
-    const { submitForm, isValid, setFieldValue, resetForm } = useFormikContext();
+    const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
     const { quick_strategy, run_panel } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, toggleStopBotDialog } = quick_strategy;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
 
+    React.useEffect(() => {
+        validateForm();
+    }, [selected_strategy, validateForm]);
+
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
-        resetForm();
     };
 
     const dropdown_list = Object.keys(STRATEGIES).map(key => ({

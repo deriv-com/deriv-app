@@ -15,7 +15,7 @@ type TDesktopFormWrapper = {
 
 const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
-    const { submitForm, isValid, setFieldValue, resetForm } = useFormikContext();
+    const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
     const { quick_strategy, run_panel } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, setFormVisibility, toggleStopBotDialog } = quick_strategy;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
@@ -23,9 +23,12 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
         setFormVisibility(false);
     };
 
+    React.useEffect(() => {
+        validateForm();
+    }, [selected_strategy, validateForm]);
+
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
-        resetForm();
     };
 
     const onEdit = async () => {

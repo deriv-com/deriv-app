@@ -1,5 +1,5 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
-import { ApiHelpers, load } from '@deriv/bot-skeleton';
+import { ApiHelpers, config as qs_config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { STRATEGIES } from 'Components/quick-strategy/config';
 import { TFormData } from 'Components/quick-strategy/types';
@@ -15,12 +15,12 @@ interface IQuickStrategyStore {
     root_store: RootStore;
     is_open: boolean;
     selected_strategy: string;
-    form_data: { [key: string]: string | number };
+    form_data: TFormData;
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
     setFormVisibility: (is_open: boolean) => void;
     setSelectedStrategy: (strategy: string) => void;
-    setValue: (name: string, value: string | number) => void;
+    setValue: (name: string, value: string) => void;
     onSubmit: (data: TFormData) => void;
     toggleStopBotDialog: () => void;
 }
@@ -29,10 +29,11 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     root_store: RootStore;
     is_open = false;
     selected_strategy = 'MARTINGALE';
-    form_data: { [key: string]: string | number } = {
-        symbol: '1HZ100V',
-        trade_type: 'callput',
-        duration_unit: 't',
+    form_data: TFormData = {
+        symbol: qs_config.QUICK_STRATEGY.DEFAULT.symbol,
+        tradetype: qs_config.QUICK_STRATEGY.DEFAULT.tradetype,
+        durationtype: qs_config.QUICK_STRATEGY.DEFAULT.durationtype,
+        action: 'RUN',
     };
     is_contract_dialog_open = false;
     is_stop_bot_dialog_open = false;
@@ -48,6 +49,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             is_contract_dialog_open: observable,
             is_stop_bot_dialog_open: observable,
             toggleStopBotDialog: action,
+            setValue: action,
         });
         this.root_store = root_store;
         reaction(
@@ -68,15 +70,15 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         this.selected_strategy = strategy;
     };
 
-    setValue = (name: string, value: string | number) => {
-        this.form_data[name] = value;
+    setValue = (name: string, value: string) => {
+        this.form_data[name as keyof TFormData] = value;
     };
 
     onSubmit = async (data: TFormData) => {
         const { contracts_for } = ApiHelpers.instance;
         const market = await contracts_for.getMarketBySymbol(data.symbol);
         const submarket = await contracts_for.getSubmarketBySymbol(data.symbol);
-        const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(data.trade_type);
+        const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(data.tradetype);
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
         const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);

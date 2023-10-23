@@ -70,6 +70,22 @@ jest.mock('@deriv/bot-skeleton', () => ({
             },
         },
     },
+    config: {
+        ...jest.requireActual('@deriv/bot-skeleton').config,
+        QUICK_STRATEGY: {
+            DISABLED: {
+                SYMBOLS: ['1HZ150V', '1HZ250V'],
+                SUBMARKETS: ['crash_index', 'non_stable_coin'],
+            },
+            DEFAULT: {
+                symbol: '1HZ100V',
+                tradetype: 'callput',
+                durationtype: 't',
+                size: 2,
+                unit: 1,
+            },
+        },
+    },
 }));
 
 jest.mock('../../../xml/martingale.xml', () => '');
@@ -82,7 +98,6 @@ window.Blockly = {
 };
 
 jest.mock('../config', () => ({
-    SIZE_MIN: 2,
     STRATEGIES: {
         MARTINGALE: {
             name: 'martingale',
@@ -210,7 +225,7 @@ describe('<QuickStrategy />', () => {
         });
     });
 
-    it('It should render desktop', async () => {
+    it('It should render desktop', () => {
         mock_store = mockStore({
             ui: {
                 is_mobile: false,

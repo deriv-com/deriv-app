@@ -1,3 +1,4 @@
+import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
@@ -12,8 +13,6 @@ export const FORM_TABS = [
         disabled: true,
     },
 ];
-
-export const SIZE_MIN = 2;
 
 const number_min_validation: TValidationItem = {
     type: 'min',
@@ -107,7 +106,7 @@ export const size: TConfigItem = {
         'floor',
         {
             type: 'min',
-            value: SIZE_MIN,
+            value: String(qs_config.QUICK_STRATEGY.DEFAULT.size),
             getMessage: (min: string | number) =>
                 localize('The value must be equal or greater than {{ min }}', { min }),
         },

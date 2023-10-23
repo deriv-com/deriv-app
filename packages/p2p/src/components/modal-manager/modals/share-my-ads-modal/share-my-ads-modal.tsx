@@ -22,6 +22,7 @@ import ShareMyAdsCard from './share-my-ads-card';
 import ShareMyAdsSocials from './share-my-ads-socials';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
+    const [is_qr_code_loaded, setIsQRCodeLoaded] = React.useState(false);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type, type } = advert;
     const { id: advertiser_id } = advertiser_details;
@@ -88,9 +89,15 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                     </DesktopWrapper>
                     <div className='share-my-ads-modal__container'>
                         <div className='share-my-ads-modal__container__card'>
-                            <ShareMyAdsCard advert={advert} advert_url={advert_url} divRef={divRef} />
+                            <ShareMyAdsCard
+                                advert={advert}
+                                advert_url={advert_url}
+                                divRef={divRef}
+                                setIsQRCodeLoaded={setIsQRCodeLoaded}
+                            />
                             <Button
                                 className='share-my-ads-modal__container__card__download-button'
+                                disabled={!is_qr_code_loaded}
                                 secondary
                                 onClick={handleGenerateImage}
                             >
@@ -120,7 +127,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                         <DesktopWrapper>
                             <div className='share-my-ads-modal__share'>
                                 <Text weight='bold'>
-                                    <Localize i18n_default_text='Share link to' />
+                                    <Localize i18n_default_text='Share via' />
                                 </Text>
                                 <ShareMyAdsSocials advert_url={advert_url} custom_message={custom_message} />
                                 <MyProfileSeparatorContainer.Line

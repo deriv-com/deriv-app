@@ -205,7 +205,7 @@ const BuySellModal = () => {
                 my_profile_store.hideAddPaymentMethodForm();
             }
         } else {
-            hideModal();
+            hideModal({ should_hide_all_modals: true });
             buy_sell_store.fetchAdvertiserAdverts();
             buy_sell_store.unsubscribeAdvertInfo();
         }

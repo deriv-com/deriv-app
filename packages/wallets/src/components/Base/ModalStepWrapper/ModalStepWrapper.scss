@@ -19,15 +19,17 @@
     &__header {
         padding: 2rem;
         border-bottom: 2px solid #f2f3f4;
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        display: grid;
-        grid-template-columns: auto 4%;
 
-        &-close-icon {
+        &--close-icon {
             cursor: pointer;
         }
 
         @include mobile {
+            display: grid;
+            grid-template-columns: auto 5%;
             background-color: #ffffff;
             position: relative;
             z-index: 99;

@@ -5,6 +5,7 @@ import { TMarketTypes, TPlatforms } from '../../types';
 import { PlatformToTitleMapper } from '../../constants';
 import useDevice from '../../../../hooks/useDevice';
 
+// TODO: Refactor the unnecessary props out once FlowProvider is integrated
 type TProps = {
     isLoading?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;

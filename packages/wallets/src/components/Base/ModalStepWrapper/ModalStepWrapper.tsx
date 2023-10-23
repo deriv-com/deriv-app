@@ -31,7 +31,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
                 <WalletText size={isMobile ? 'sm' : 'md'} weight='bold'>
                     {title}
                 </WalletText>
-                <CloseIcon className='wallets-modal-step-wrapper__header-close-icon' onClick={hide} />
+                <CloseIcon className='wallets-modal-step-wrapper__header--close-icon' onClick={hide} />
             </div>
             <div className='wallets-modal-step-wrapper__body'>
                 {children}

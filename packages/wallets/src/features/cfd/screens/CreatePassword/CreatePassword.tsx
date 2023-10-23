@@ -6,6 +6,7 @@ import { PlatformToTitleMapper } from '../../constants';
 import { WalletButton } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 
+// TODO: Refactor the unnecessary props out once FlowProvider is integrated
 type TProps = {
     icon: React.ReactNode;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;

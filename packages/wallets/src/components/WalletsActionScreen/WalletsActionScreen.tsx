@@ -1,19 +1,18 @@
-import React, { ReactNode, PropsWithChildren } from 'react';
+import React, { ComponentProps, PropsWithChildren, ReactNode } from 'react';
+import classNames from 'classnames';
 import useDevice from '../../hooks/useDevice';
 import WalletButton from '../Base/WalletButton/WalletButton';
 import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
 
 type TProps = {
-    action: {
-        actionText?: string;
-        disabled?: boolean;
-        onAction?: VoidFunction;
-        variant?: NonNullable<React.ComponentProps<typeof WalletButton>['variant']>;
-    };
-    description?: ReactNode;
-    icon?: ReactNode;
+    actionText?: string;
+    actionVariant?: ComponentProps<typeof WalletButton>['variant'];
+    description: ReactNode;
+    icon: ReactNode;
+    onAction?: () => void;
     title?: string;
+    type?: 'modal' | 'page';
 };
 
 /**
@@ -27,40 +26,36 @@ type TProps = {
  * @param title
  * @constructor
  */
-const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({ action, description, icon, title }) => {
+const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
+    actionText,
+    actionVariant = 'contained',
+    description,
+    icon,
+    onAction,
+    title,
+    type = 'page',
+}) => {
     const { isMobile } = useDevice();
 
     return (
-        <div className='wallets-action-screen'>
-            {icon && <div className='wallets-action-screen__icon'>{icon}</div>}
-
-            {title && (
-                <div className='wallets-action-screen__title'>
-                    <WalletText size={isMobile ? 'lg' : '2xl'} weight='bold'>
+        <div
+            className={classNames('wallets-action-screen', {
+                'wallets-action-screen__modal': type === 'modal',
+            })}
+        >
+            {icon}
+            <div className='wallets-action-screen__content'>
+                {title && (
+                    <WalletText align='center' size={isMobile ? 'sm' : 'md'} weight='bold'>
                         {title}
                     </WalletText>
-                </div>
-            )}
-
-            {description && (
-                <div className='wallets-action-screen__subtitle'>
-                    <WalletText size={isMobile ? 'md' : 'lg'}>{description}</WalletText>
-                </div>
-            )}
-
-            {action && (
-                <div className='wallets-action-screen__button'>
-                    {action.actionText && (
-                        <WalletButton
-                            color='primary'
-                            disabled={action.disabled}
-                            onClick={action.onAction}
-                            size='lg'
-                            text={action.actionText}
-                            variant={action.variant}
-                        />
-                    )}
-                </div>
+                )}
+                <WalletText align='center' size={isMobile ? 'sm' : 'md'}>
+                    {description}
+                </WalletText>
+            </div>
+            {actionText && (
+                <WalletButton color='primary' onClick={onAction} size='lg' text={actionText} variant={actionVariant} />
             )}
         </div>
     );

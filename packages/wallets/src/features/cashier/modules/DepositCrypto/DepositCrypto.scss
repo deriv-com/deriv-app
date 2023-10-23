@@ -5,6 +5,13 @@
     gap: 24px;
     position: relative;
 
+    &-container {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
     @include mobile {
         width: 100%;
         justify-content: start;

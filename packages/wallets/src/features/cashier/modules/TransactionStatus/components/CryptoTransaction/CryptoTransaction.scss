@@ -1,0 +1,55 @@
+.crypto-transaction {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+
+    &__type-and-status {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    &__amount-and-date {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin: 0.4rem 0;
+    }
+
+    &__status {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+
+        &-dot {
+            width: 0.4rem;
+            height: 0.4rem;
+            border-radius: $BORDER_RADIUS;
+
+            &-warning {
+                background: var(--status-warning);
+            }
+
+            &-successful {
+                background: var(--status-success);
+            }
+
+            &-unsuccessful {
+                background: var(--status-danger);
+            }
+        }
+    }
+
+    &__cancel-button {
+        margin-left: 0.3rem;
+        cursor: pointer;
+    }
+
+    &__link {
+        text-decoration: none;
+    }
+}

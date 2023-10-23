@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api';
+import { useHistory } from 'react-router-dom';
+import { useActiveWalletAccount, useCreateOtherCFDAccount, useDxtradeAccountsList } from '@deriv/api';
 import { ModalWrapper, WalletButton } from '../../../../components/Base';
-import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
-import { Success, CreatePassword } from '../../screens';
-import './DxtradeEnterPasswordModal.scss';
 import { useModal } from '../../../../components/ModalProvider';
+import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
+import { CreatePassword, Success } from '../../screens';
+import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
+    const history = useHistory();
     const [password, setPassword] = useState('');
     const { isSuccess, mutate } = useCreateOtherCFDAccount();
+    const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { hide } = useModal();
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
@@ -24,15 +27,35 @@ const DxtradeEnterPasswordModal = () => {
         });
     };
 
+    const successDescription =
+        accountType === 'demo'
+            ? 'Transfer virtual funds from your Demo Wallet to your Deriv X Demo account to practise trading.'
+            : `Transfer funds from your ${activeWallet?.currency} Wallet to your Deriv X account to start trading.`;
+
+    const dxtradeBalance = dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
+
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
-            {isSuccess && (
+            {isSuccess && dxtradeAccountListSuccess && (
                 <Success
-                    description={`You can now start practicing trading with your Deriv X ${accountType} account.`}
+                    description={successDescription}
+                    displayBalance={dxtradeBalance || ''}
                     marketType='all'
                     platform='dxtrade'
-                    renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
-                    title={`Your Deriv X ${accountType} account is ready`}
+                    renderButton={() => (
+                        <div className='wallets-dxtrade-enter-password__button'>
+                            <WalletButton onClick={hide} size='lg' text='Maybe later' variant='outlined' />
+                            <WalletButton
+                                onClick={() => {
+                                    hide();
+                                    history.push('/wallets/cashier/transfer');
+                                }}
+                                size='lg'
+                                text='Transfer funds'
+                            />
+                        </div>
+                    )}
+                    title={`Your Deriv X${accountType === 'demo' ? ` ${accountType}` : ''} account is ready`}
                 />
             )}
             {!isSuccess && (

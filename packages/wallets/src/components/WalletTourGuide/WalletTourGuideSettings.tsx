@@ -20,7 +20,7 @@ const getMobileSteps = (
     hasDerivAppsTradingAccount: boolean,
     isAllWalletsAlreadyAdded: boolean
 ): Step[] => [
-    // Wallet header
+    // Wallet card
     {
         content: (
             <WalletText size='sm'>
@@ -32,11 +32,30 @@ const getMobileSteps = (
         disableOverlayClose: true,
         placement: 'bottom',
         spotlightPadding: 0,
-        styles: { spotlight: { borderRadius: '1.6rem 1.6rem 0rem 0rem' } },
-        target: '.wallets-accordion__header',
+        styles: { spotlight: { borderRadius: '0.8rem' } },
+        target: '.wallets-carousel-content__container .wallets-card',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallets
+            </WalletText>
+        ),
+    },
+    // Choose Wallets
+    {
+        content: (
+            <WalletText size='sm'>
+                Choose your preferred Wallet above and tap the trade type to see which account is linked to that Wallet.
+            </WalletText>
+        ),
+        disableBeacon: true,
+        disableOverlayClose: true,
+        placement: 'bottom',
+        spotlightPadding: 4,
+        styles: { spotlight: { borderRadius: '0.6rem' } },
+        target: '.wallets-tabs-list',
+        title: (
+            <WalletText color='red' size='sm' weight='bold'>
+                Choose Wallets
             </WalletText>
         ),
     },
@@ -57,12 +76,8 @@ const getMobileSteps = (
         disableOverlayClose: true,
         placement: 'bottom',
         spotlightPadding: 4,
-        styles: {
-            spotlight: {
-                borderRadius: '6.4rem',
-            },
-        },
-        target: '.wallets-accordion__header .wallets-header__actions',
+        styles: { spotlight: { borderRadius: '0.8rem' } },
+        target: '.wallets-mobile-actions',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallet actions
@@ -82,9 +97,9 @@ const getMobileSteps = (
         ),
         disableBeacon: true,
         disableOverlayClose: true,
-        placement: 'right',
+        placement: 'top',
         spotlightPadding: 5,
-        styles: { spotlight: { borderRadius: '0.4rem', paddingLeft: '0.5rem', paddingRight: '0.5rem' } },
+        styles: { spotlight: { borderRadius: '0.8rem' } },
         target: '.wallets-mt5-list__content .wallets-trading-account-card',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
@@ -106,7 +121,7 @@ const getMobileSteps = (
         ),
         disableBeacon: true,
         disableOverlayClose: true,
-        placement: 'left',
+        placement: 'top',
         spotlightPadding: 0,
         styles: { spotlight: { borderRadius: '0.8rem' } },
         target: '.wallets-deriv-apps-section',
@@ -127,7 +142,7 @@ const getMobileSteps = (
         ),
         disableBeacon: true,
         disableOverlayClose: true,
-        placement: 'right',
+        placement: 'top',
         spotlightPadding: 5,
         styles: { spotlight: { borderRadius: '0.8rem' } },
         target: '.wallets-options-and-multipliers-listing__content .wallets-trading-account-card',
@@ -142,7 +157,7 @@ const getMobileSteps = (
         content: <WalletText size='sm'>Click Add on each card for more Wallets.</WalletText>,
         disableBeacon: true,
         disableOverlayClose: true,
-        placement: 'right',
+        placement: 'top',
         styles: { spotlight: { borderRadius: '1.6rem' } },
         target: isAllWalletsAlreadyAdded ? 'null' : '.wallets-add-more__card', // skip this if all wallets already added
         title: (
@@ -238,7 +253,7 @@ const getDesktopSteps = (
         disableOverlayClose: true,
         placement: 'right',
         spotlightPadding: 5,
-        styles: { spotlight: { borderRadius: '0.4rem', paddingLeft: '0.5rem', paddingRight: '0.5rem' } },
+        styles: { spotlight: { borderRadius: '0.4rem' } },
         target: '.wallets-mt5-list__content .wallets-trading-account-card',
         title: (
             <WalletText color='red' size='sm' weight='bold'>

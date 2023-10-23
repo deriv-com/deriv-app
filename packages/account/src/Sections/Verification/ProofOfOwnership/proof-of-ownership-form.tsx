@@ -92,7 +92,6 @@ const ProofOfOwnershipForm = ({
             }
 
             if (is_payment_method_identifier_provided) {
-                console.log('Check is_payment_method_identifier_provided');
                 const verify_payment_method_identifier = isValidPaymentMethodIdentifier(
                     card_data.payment_method_identifier.trim(),
                     card_data.identifier_type
@@ -144,7 +143,6 @@ const ProofOfOwnershipForm = ({
         values: TProofOfOwnershipFormValue,
         action: FormikHelpers<TProofOfOwnershipFormValue>
     ) => {
-        console.log('Form submission', { values, action });
         const { setFieldError, setStatus } = action;
         try {
             setStatus({ is_btn_loading: true });
@@ -171,14 +169,14 @@ const ProofOfOwnershipForm = ({
                                 upload_error[index] = response.message;
                                 setFieldError(card_key, { files: upload_error });
                             }
+                        } else {
+                            updateAccountStatus();
+                            refreshNotifications();
                         }
+                        setStatus({ is_btn_loading: false });
                     });
                 }
             });
-            setStatus({ is_btn_loading: false });
-            console.log('Called update functions');
-            updateAccountStatus();
-            refreshNotifications();
         } catch (err) {
             setStatus({ is_btn_loading: false });
         }

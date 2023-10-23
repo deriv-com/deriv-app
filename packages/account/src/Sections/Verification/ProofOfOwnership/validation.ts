@@ -20,18 +20,6 @@ export const isValidPaymentMethodIdentifier = (
             }
             return null;
         }
-        case IDENTIFIER_TYPES.EMAIL_ADDRESS: {
-            return validEmail(payment_method_identifier) ? null : localize('Enter valid email address');
-        }
-        case IDENTIFIER_TYPES.MOBILE_NUMBER: {
-            if (
-                payment_method_identifier.length >= PHONE_NUMBER_LENGTH.MIN &&
-                payment_method_identifier.length <= PHONE_NUMBER_LENGTH.MAX
-            ) {
-                return validPhone(payment_method_identifier) ? null : localize('Enter valid phone number');
-            }
-            return null;
-        }
         default: {
             return null;
         }

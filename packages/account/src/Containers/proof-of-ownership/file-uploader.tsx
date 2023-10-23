@@ -34,7 +34,7 @@ const FileUploader = ({ class_name, name, sub_index }: TFileUploaderProps) => {
         hidden_file_input?.current?.click();
     };
 
-    const handleChange = async event => {
+    const handleChange = async (event: React.FormEvent<HTMLInputElement>) => {
         event.nativeEvent.preventDefault();
         event.nativeEvent.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();

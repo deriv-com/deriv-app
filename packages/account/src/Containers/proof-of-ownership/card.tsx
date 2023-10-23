@@ -62,6 +62,7 @@ const Card = ({ details, index }: TCardProps) => {
                     onClick={onClickHandler}
                     transparent
                     data-testid='dt_proof-of-ownership-button'
+                    type='button'
                 />
             </div>
             {is_open && <ExpandedCard card_details={details} />}

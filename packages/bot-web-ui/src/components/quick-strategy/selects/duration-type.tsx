@@ -29,7 +29,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
     const { symbol, tradetype } = data;
     const { quick_strategy } = useDBotStore();
     const { setValue } = quick_strategy;
-    const { setFieldValue } = useFormikContext();
+    const { setFieldValue, validateForm } = useFormikContext();
 
     React.useEffect(() => {
         if (tradetype && symbol) {
@@ -46,7 +46,9 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                 const has_selected = duration_units?.some((duration: TDurationUnitItem) => duration.value === selected);
                 if (!has_selected) {
                     setFieldValue?.('durationtype', durations?.[0]?.unit);
-                    setFieldValue?.('duration', durations?.[0]?.min);
+                    setFieldValue?.('duration', durations?.[0]?.min).then(() => {
+                        validateForm();
+                    });
                     setValue('durationtype', durations?.[0]?.unit);
                 }
             };

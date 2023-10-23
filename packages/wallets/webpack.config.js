@@ -1,6 +1,7 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
+const pxToRemTransformer = require('./src/utils/transformer/px-to-rem-transformer');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -93,6 +94,7 @@ module.exports = function (env) {
                                 postcssOptions: {
                                     config: path.resolve(__dirname),
                                 },
+                                plugins: [pxToRemTransformer.default()],
                             },
                         },
                         {

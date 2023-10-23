@@ -8,7 +8,7 @@
         width: 100%;
         border-radius: 0.4rem;
         padding: 1rem 1.6rem;
-        border: 1px solid var(--system-light-5-active-background, #d6dadb);
+        border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
         background: var(--system-light-8-primary-background, #fff);
         display: inline-flex;
         gap: 1.6rem;
@@ -21,7 +21,7 @@
     }
 
     &__content:has(&__field:focus) {
-        border: 1px solid var(--brand-blue, #85acb0);
+        border: 0.1rem solid var(--brand-blue, #85acb0);
     }
 
     &__icon {

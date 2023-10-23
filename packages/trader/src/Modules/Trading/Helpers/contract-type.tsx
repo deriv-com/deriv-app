@@ -161,8 +161,8 @@ export const getContractTypes = (list: TList[], item: TItem) => findContractCate
 
 export const STRAPI_MEDIA_URL = 'https://chief-skinny-instrument.media.strapiapp.com/';
 /* In order to add more videos, please contact Deriv-com team,
-    send the properly named new video files to them and ask to upload the videos to CMS.
-    Then the urls for each video file will become available at https://chief-skinny-instrument.strapiapp.com/api/dtrader-videos
+    send the properly named new video files to them and ask to upload the videos to CMS,
+    so that their URLs become available at https://chief-skinny-instrument.strapiapp.com/api/dtrader-videos
   */
 export const DESCRIPTION_VIDEO_URL: TDtraderVideoUrl = {
     accumulator: {

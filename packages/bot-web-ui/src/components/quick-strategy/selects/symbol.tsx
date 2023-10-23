@@ -70,6 +70,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
                         <>
                             <Autocomplete
                                 {...rest_field}
+                                inputmode='none'
                                 data-testid='qs_autocomplete_symbol'
                                 autoComplete='off'
                                 className='qs__autocomplete'

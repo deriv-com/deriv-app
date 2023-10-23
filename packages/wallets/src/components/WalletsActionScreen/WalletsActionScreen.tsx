@@ -6,10 +6,11 @@ import './WalletsActionScreen.scss';
 
 type TProps = {
     actionText?: string;
-    description: ReactNode;
-    icon: ReactNode;
+    description?: ReactNode;
+    icon?: ReactNode;
     onAction?: () => void;
-    title: string;
+    title?: string;
+    variant?: NonNullable<React.ComponentProps<typeof WalletButton>['variant']>;
 };
 
 /**
@@ -22,6 +23,7 @@ type TProps = {
  * @param description
  * @param actionText
  * @param onAction
+ * @param variant
  * @constructor
  */
 const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
@@ -30,26 +32,41 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     icon,
     onAction,
     title,
+    variant,
 }) => {
     const { isMobile } = useDevice();
 
     return (
         <div className='wallets-action-screen'>
-            <div className='wallets-action-screen__icon'>{icon}</div>
+            {icon && <div className='wallets-action-screen__icon'>{icon}</div>}
 
-            <div className='wallets-action-screen__title'>
-                <WalletText size={isMobile ? 'lg' : '2xl'} weight='bold'>
-                    {title}
-                </WalletText>
-            </div>
+            {title && (
+                <div className='wallets-action-screen__title'>
+                    <WalletText size={isMobile ? 'lg' : '2xl'} weight='bold'>
+                        {title}
+                    </WalletText>
+                </div>
+            )}
 
-            <div className='wallets-action-screen__subtitle'>
-                <WalletText size={isMobile ? 'md' : 'lg'}>{description}</WalletText>
-            </div>
+            {description && (
+                <div className='wallets-action-screen__subtitle'>
+                    <WalletText size={isMobile ? 'md' : 'lg'}>{description}</WalletText>
+                </div>
+            )}
 
-            <div className='wallets-action-screen__button'>
-                {actionText && <WalletButton color='primary' onClick={onAction} size='lg' text={actionText} />}
-            </div>
+            {actionText && onAction && (
+                <div className='wallets-action-screen__button'>
+                    {actionText && (
+                        <WalletButton
+                            color='primary'
+                            onClick={onAction}
+                            size='lg'
+                            text={actionText}
+                            variant={variant}
+                        />
+                    )}
+                </div>
+            )}
         </div>
     );
 };

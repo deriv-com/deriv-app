@@ -17,4 +17,5 @@ export * from './WalletsAccordion';
 export * from './WalletsAddMoreCarousel';
 export * from './WalletsCarousel';
 export * from './WalletsCarouselContent';
+export * from './WalletsErrorScreen';
 export * from './WalletTourGuide';

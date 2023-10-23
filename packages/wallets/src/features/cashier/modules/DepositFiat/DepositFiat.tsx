@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthorize, useDepositFiatAddress } from '@deriv/api';
+import { WalletsErrorScreen } from '../../../../components';
 import './DepositFiat.scss';
 
 const DepositFiat = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: iframeUrl, isError, mutate } = useDepositFiatAddress();
+    const { data: iframeUrl, error, isError, mutate } = useDepositFiatAddress();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -17,7 +18,7 @@ const DepositFiat = () => {
         }
     }, [isAuthorizeSuccess, mutate]);
 
-    if (isError) return <p>Error</p>;
+    if (isError) return <WalletsErrorScreen message={(error as Error).message} />;
 
     return (
         <React.Fragment>

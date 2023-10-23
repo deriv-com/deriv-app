@@ -16,7 +16,7 @@ import { isValidPaymentMethodIdentifier, isValidFile } from './validation';
 
 type TProofOfOwnershipFormProps = {
     client_email: TCoreStores['client']['email'];
-    grouped_payment_method_data: Record<TPaymentMethod, TPaymentMethodInfo>;
+    grouped_payment_method_data: Partial<Record<TPaymentMethod, TPaymentMethodInfo>>;
     is_mobile: TCoreStores['ui']['is_mobile'];
     refreshNotifications: TCoreStores['notifications']['refreshNotifications'];
     updateAccountStatus: TCoreStores['client']['updateAccountStatus'];

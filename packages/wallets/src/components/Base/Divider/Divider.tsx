@@ -3,11 +3,11 @@ import './Divider.scss';
 
 type TProps = {
     margin?: React.CSSProperties['margin'];
-    vertical?: boolean;
+    variant?: 'horizontal' | 'vertical';
 };
 
-const Divider: React.FC<TProps> = ({ margin, vertical = false }) => (
-    <div className={vertical ? 'wallets-divider__vertical' : 'wallets-divider__horizontal'} style={{ margin }} />
+const Divider: React.FC<TProps> = ({ margin, variant = 'horizontal' }) => (
+    <div className={`wallets-divider__${variant}`} style={{ margin }} />
 );
 
 export default Divider;

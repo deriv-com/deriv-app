@@ -42,7 +42,7 @@ export const label_initial_stake: TConfigItem = {
 export const initial_stake: TConfigItem = {
     type: 'number',
     name: 'stake',
-    validation: ['number', 'ceil', number_min_validation],
+    validation: ['number', 'required', 'ceil', number_min_validation],
 };
 
 export const label_duration: TConfigItem = {
@@ -75,7 +75,7 @@ export const label_profit: TConfigItem = {
 export const profit: TConfigItem = {
     type: 'number',
     name: 'profit',
-    validation: ['number', 'ceil', number_min_validation],
+    validation: ['number', 'required', 'ceil', number_min_validation],
 };
 
 export const label_loss: TConfigItem = {
@@ -87,7 +87,7 @@ export const label_loss: TConfigItem = {
 export const loss: TConfigItem = {
     type: 'number',
     name: 'loss',
-    validation: ['number', 'ceil', number_min_validation],
+    validation: ['number', 'required', 'ceil', number_min_validation],
 };
 
 export const label_size: TConfigItem = {
@@ -103,6 +103,7 @@ export const size: TConfigItem = {
     name: 'size',
     validation: [
         'number',
+        'required',
         'floor',
         {
             type: 'min',
@@ -128,7 +129,7 @@ export const label_unit_oscars_grind: TConfigItem = {
 export const unit: TConfigItem = {
     type: 'number',
     name: 'unit',
-    validation: ['number', 'ceil', number_min_validation],
+    validation: ['number', 'required', 'ceil', number_min_validation],
 };
 
 export const config: TConfigItem[][] = [

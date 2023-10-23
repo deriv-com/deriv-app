@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Joyride, { ACTIONS, CallBackProps } from 'react-joyride';
+import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 // import useDevice from 'src/hooks/useDevice';
 import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
 import { WalletText } from '../Base';
@@ -8,7 +9,8 @@ import './WalletTourGuide.scss';
 
 const WalletTourGuide = () => {
     const key = 'walletsOnboarding';
-    const [isStarted, setIsStarted] = useState(localStorage.getItem(key) === 'started');
+    const startValue = 'started';
+    const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
     // const { isMobile } = useDevice();
     const isMobile = true;
 
@@ -24,8 +26,7 @@ const WalletTourGuide = () => {
         const { action } = data;
 
         if (action === ACTIONS.RESET) {
-            localStorage.removeItem(key);
-            setIsStarted(false);
+            setWalletsOnboarding('');
         }
     };
 
@@ -36,20 +37,11 @@ const WalletTourGuide = () => {
             }
         };
 
-        const onStorage = () => {
-            const needToStart = localStorage.getItem(key) === 'started';
-            if (needToStart) {
-                switchToFiatWallet();
-                setIsStarted(true);
-            }
-        };
-
-        window.addEventListener('storage', onStorage);
-
-        return () => {
-            window.removeEventListener('storage', onStorage);
-        };
-    }, [activeWalletLoginId, fiatWalletLoginId, switchAccount]);
+        const needToStart = walletsOnboarding === startValue;
+        if (needToStart) {
+            switchToFiatWallet();
+        }
+    }, [activeWalletLoginId, fiatWalletLoginId, switchAccount, walletsOnboarding]);
 
     if (!activeWallet) return <WalletText>...Loading</WalletText>;
 
@@ -65,7 +57,7 @@ const WalletTourGuide = () => {
             disableCloseOnEsc
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
-            run={isStarted && !isLoading && !isFetching && isSuccess}
+            run={walletsOnboarding === startValue && !isLoading && !isFetching && isSuccess}
             scrollOffset={isMobile ? 300 : 150}
             scrollToFirstStep
             steps={tourStepConfig(

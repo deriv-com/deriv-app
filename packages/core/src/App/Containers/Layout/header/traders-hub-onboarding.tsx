@@ -5,6 +5,7 @@ import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useFeatureFlags } from '@deriv/hooks';
+import { useLocalStorage } from 'usehooks-ts';
 
 const TradersHubOnboarding = observer(() => {
     const history = useHistory();
@@ -12,11 +13,11 @@ const TradersHubOnboarding = observer(() => {
     const { setIsOnboardingVisited } = traders_hub;
     const { is_dark_mode_on } = ui;
     const { is_next_wallet_enabled } = useFeatureFlags();
+    const [_, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
 
     const onClickHandler = is_next_wallet_enabled
         ? () => {
-              localStorage.setItem('walletsOnboarding', 'started');
-              window.dispatchEvent(new Event('storage'));
+              setWalletsOnboarding('started');
           }
         : () => {
               history.push(routes.onboarding);

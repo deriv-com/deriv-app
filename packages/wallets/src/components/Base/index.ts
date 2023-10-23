@@ -1,3 +1,4 @@
+export * from './Divider';
 export * from './InlineMessage';
 export * from './ModalStepWrapper';
 export * from './ModalWrapper';

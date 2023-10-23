@@ -66,12 +66,7 @@ const AdvertiserPageAdverts = () => {
                                     items={adverts}
                                     keyMapperFn={item => item.id}
                                     rowRenderer={AdvertiserPageRowRenderer}
-                                    loadMoreRowsFn={({ startIndex }) => {
-                                        return new Promise(resolve => {
-                                            loadMoreAdvertiserAdverts(startIndex);
-                                            resolve();
-                                        });
-                                    }}
+                                    loadMoreRowsFn={loadMoreAdvertiserAdverts}
                                     has_more_items_to_load={has_more_adverts_to_load}
                                 />
                             </Table.Body>

@@ -14,7 +14,7 @@ type TAdvertList = ReturnType<typeof useP2PAdvertList>['data'];
 const getSearchResults = (items: TAdvertList, search_term: string) => {
     if (search_term) {
         return items?.filter(item =>
-            item.advertiser_details.name.toLowerCase().includes(search_term.toLowerCase().trim())
+            item.advertiser_details?.name.toLowerCase().includes(search_term.toLowerCase().trim())
         );
     }
 };

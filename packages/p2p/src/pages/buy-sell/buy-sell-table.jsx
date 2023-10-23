@@ -115,12 +115,7 @@ const BuySellTable = ({ onScroll }) => {
                             data_list_className='buy-sell__data-list'
                             items={rendered_adverts}
                             rowRenderer={props => <BuySellRowRenderer {...props} />}
-                            loadMoreRowsFn={({ startIndex }) => {
-                                return new Promise(resolve => {
-                                    loadMoreAdverts(startIndex);
-                                    resolve();
-                                });
-                            }}
+                            loadMoreRowsFn={loadMoreAdverts}
                             has_filler
                             has_more_items_to_load={has_more_items_to_load}
                             keyMapperFn={item => item.id}

@@ -6,7 +6,7 @@ import { TradingAccountCard } from '../../../../../components/TradingAccountCard
 import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../../../public/images/mt5-swap-free.svg';
-import { THooks } from '../../../types';
+import { THooks } from '../../../../../types';
 import './AddedMT5AccountsList.scss';
 
 const marketTypeToNameMapper = {

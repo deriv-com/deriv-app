@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import Joyride, { ACTIONS, CallBackProps } from 'react-joyride';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-// import useDevice from 'src/hooks/useDevice';
 import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
+import useDevice from '../../hooks/useDevice';
 import { WalletText } from '../Base';
 import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
@@ -11,8 +11,7 @@ const WalletTourGuide = () => {
     const key = 'walletsOnboarding';
     const startValue = 'started';
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
-    // const { isMobile } = useDevice();
-    const isMobile = true;
+    const { isMobile } = useDevice();
 
     const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();

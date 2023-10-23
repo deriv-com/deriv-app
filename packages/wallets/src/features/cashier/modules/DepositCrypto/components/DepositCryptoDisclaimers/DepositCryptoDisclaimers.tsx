@@ -42,7 +42,7 @@ const DepositCryptoDisclaimers = () => {
                 </div>
             </InlineMessage>
             <p className='wallets-deposit-crypto-disclaimers__note' style={{ fontSize: isMobile ? ' 1rem' : '1.2rem' }}>
-                <strong>Note:</strong> You’ll receive an email when your deposit start being processed.
+                <strong>Note:</strong>&nbsp;You’ll receive an email when your deposit start being processed.
             </p>
         </div>
     );

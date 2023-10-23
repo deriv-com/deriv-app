@@ -27,7 +27,7 @@ const mockUseStores = useStores as jest.MockedFunction<typeof useStores>;
 
 describe('useP2PAdvertiserAdverts', () => {
     it('should return the advertiser adverts object from response when is_advertiser_info_subscribed is true and counterparty_advertiser_id is defined', () => {
-        mockUseStores.mockReturnValue({
+        mockUseStores.mockReturnValueOnce({
             general_store: {
                 is_advertiser_info_subscribed: true,
                 counterparty_advertiser_id: 'test id 1234',
@@ -47,7 +47,7 @@ describe('useP2PAdvertiserAdverts', () => {
         expect(adverts_list?.[0]?.advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the advertiser adverts object from response when is_advertiser_info_subscribed is false and counterparty_advertiser_id is defined', () => {
-        mockUseStores.mockReturnValue({
+        mockUseStores.mockReturnValueOnce({
             general_store: {
                 is_advertiser_info_subscribed: false,
                 counterparty_advertiser_id: 'test id 1234',
@@ -68,7 +68,7 @@ describe('useP2PAdvertiserAdverts', () => {
     });
 
     it('should return the advertiser adverts object from response when is_advertiser_info_subscribed is false and counterparty_advertiser_id is undefined', () => {
-        mockUseStores.mockReturnValue({
+        mockUseStores.mockReturnValueOnce({
             general_store: {
                 is_advertiser_info_subscribed: false,
                 counterparty_advertiser_id: undefined,
@@ -88,7 +88,7 @@ describe('useP2PAdvertiserAdverts', () => {
         expect(adverts_list?.[0]?.advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the advertiser adverts object from response when is_advertiser_info_subscribed is true and counterparty_advertiser_id is undefined', () => {
-        mockUseStores.mockReturnValue({
+        mockUseStores.mockReturnValueOnce({
             general_store: {
                 is_advertiser_info_subscribed: true,
                 counterparty_advertiser_id: undefined,
@@ -109,7 +109,7 @@ describe('useP2PAdvertiserAdverts', () => {
     });
 
     it('should return the advertiser adverts object from response when selected_local_currency is truthy', () => {
-        mockUseStores.mockReturnValue({
+        mockUseStores.mockReturnValueOnce({
             general_store: {
                 is_advertiser_info_subscribed: false,
                 counterparty_advertiser_id: 'test id 1234',
@@ -129,7 +129,7 @@ describe('useP2PAdvertiserAdverts', () => {
         expect(adverts_list?.[0]?.advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the advertiser adverts object from response when selected_local_currency is falsey', () => {
-        mockUseStores.mockReturnValue({
+        mockUseStores.mockReturnValueOnce({
             general_store: {
                 is_advertiser_info_subscribed: false,
                 counterparty_advertiser_id: 'test id 1234',

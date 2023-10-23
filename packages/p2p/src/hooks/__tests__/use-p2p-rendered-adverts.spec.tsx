@@ -41,7 +41,7 @@ const mockUseStores = useStores as jest.MockedFunction<typeof useStores>;
 
 const renderHookWithConfig = (config: Record<string, object>, mock?: TCoreStores) => {
     const mock_store = mock || mockStore({ ui: { is_mobile: false } });
-    mockUseStores.mockReturnValue(config);
+    mockUseStores.mockReturnValueOnce(config);
     const wrapper = ({ children }: { children: JSX.Element }) => (
         <StoreProvider store={mock_store}>{children}</StoreProvider>
     );

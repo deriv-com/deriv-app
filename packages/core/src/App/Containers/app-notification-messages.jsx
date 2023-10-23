@@ -118,6 +118,7 @@ const AppNotificationMessages = ({
                   'trustpilot',
                   'unwelcome',
                   'additional_kyc_info',
+                  'mt5_notification',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 

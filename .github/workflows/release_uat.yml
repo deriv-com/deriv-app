@@ -34,7 +34,7 @@ jobs:
         RUDDERSTACK_URL: ${{ vars.RUDDERSTACK_URL }}
     - name: Run tests
       run: npm test
-    - name: Publish to Cloudflare Pages Staging 
+    - name: Publish to Cloudflare Pages UAT 
       uses: "./.github/actions/publish_to_pages_uat"
       with:       
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

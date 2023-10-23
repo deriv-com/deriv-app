@@ -319,7 +319,9 @@ describe('<CurrencySelector/>', () => {
                 ...store.client,
                 is_dxtrade_allowed: true,
                 is_mt5_allowed: true,
-                is_eu: true,
+            },
+            traders_hub: {
+                is_eu_user: true,
             },
         };
         renderComponent({ store_config: new_store });
@@ -332,7 +334,9 @@ describe('<CurrencySelector/>', () => {
             client: {
                 ...store.client,
                 is_mt5_allowed: true,
-                is_eu: true,
+            },
+            traders_hub: {
+                is_eu_user: true,
             },
         };
         renderComponent({ store_config: new_store });

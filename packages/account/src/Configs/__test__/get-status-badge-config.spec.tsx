@@ -1,19 +1,27 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import getStatusBadgeConfig from 'Configs/get-status-badge-config';
 
 describe('getStatusBadgeConfig', () => {
     let account_status = '';
     const openFailedVerificationModal = jest.fn();
+    const setIsVerificationModalVisible = jest.fn();
     const selected_account_type = 'test type';
 
     const renderCheck = (
         account_status: Parameters<typeof getStatusBadgeConfig>[0],
         openFailedVerificationModal: Parameters<typeof getStatusBadgeConfig>[1],
-        selected_account_type: Parameters<typeof getStatusBadgeConfig>[2]
+        selected_account_type: Parameters<typeof getStatusBadgeConfig>[2],
+        setIsVerificationModalVisible?: Parameters<typeof getStatusBadgeConfig>[3]
     ) => {
-        const badge = getStatusBadgeConfig(account_status, openFailedVerificationModal, selected_account_type);
+        const badge = getStatusBadgeConfig(
+            account_status,
+            openFailedVerificationModal,
+            selected_account_type,
+            setIsVerificationModalVisible
+        );
         render(
             <BrowserRouter>
                 <div>{badge.text}</div>
@@ -43,17 +51,17 @@ describe('getStatusBadgeConfig', () => {
         expect(openFailedVerificationModal).toBeCalledWith(selected_account_type);
     });
 
-    it('should render need_verification status and redirect to identity', () => {
-        account_status = 'need_verification';
+    it('should render needs_verification status and redirect to identity', () => {
+        account_status = 'needs_verification';
 
-        renderCheck(account_status, openFailedVerificationModal, selected_account_type);
+        renderCheck(account_status, openFailedVerificationModal, selected_account_type, setIsVerificationModalVisible);
 
         expect(screen.getByText(/Needs verification./));
         expect(screen.getByText('IcAlertInfo'));
 
-        const btn = screen.getByRole('link', { name: 'Verify now' });
+        const btn = screen.getByText('Verify now');
         expect(btn).toBeInTheDocument();
-        expect(btn.hasAttribute('href'));
-        expect(btn.hasAttribute('/account/proof-of-identity'));
+        userEvent.click(btn);
+        expect(setIsVerificationModalVisible).toBeCalled();
     });
 });

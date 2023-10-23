@@ -3,7 +3,7 @@ import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
-import { useDepositFiatAddress, useDepositLocked, useHasMFAccountDeposited } from '@deriv/hooks';
+import { useDepositFiatAddress, useHasMFAccountDeposited } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import OneTimeDepositModal from './one-time-deposit-modal';

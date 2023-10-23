@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import TermsOfUse from '../terms-of-use';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -23,7 +24,7 @@ describe('<TermsOfUse/>', () => {
     const risk_warning_title = 'Risk warning';
     const svg_description =
         'Your account will be opened with Deriv (SVG) LLC, and will be subject to the laws of Saint Vincent and the Grenadines.';
-
+    const mock_store = mockStore({});
     const mock_props: React.ComponentProps<typeof TermsOfUse> = {
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
@@ -34,6 +35,14 @@ describe('<TermsOfUse/>', () => {
         value: { agreed_tos: false, agreed_tnc: false },
     };
 
+    const renderComponent = () => {
+        render(
+            <StoreProvider store={mock_store}>
+                <TermsOfUse {...mock_props} />
+            </StoreProvider>
+        );
+    };
+
     const commonFieldsCheck = () => {
         expect(screen.getByText(agree_check)).toBeInTheDocument();
         expect(screen.getByText(not_pep_check)).toBeInTheDocument();
@@ -42,7 +51,7 @@ describe('<TermsOfUse/>', () => {
     };
 
     it('should render TermsOfUse component for svg accounts', () => {
-        render(<TermsOfUse {...mock_props} />);
+        renderComponent();
 
         commonFieldsCheck();
         expect(screen.getByText(law_title)).toBeInTheDocument();
@@ -55,7 +64,7 @@ describe('<TermsOfUse/>', () => {
     it('should render TermsOfUse component for maltainvest accounts and show "Add account" button', () => {
         mock_props.real_account_signup_target = 'maltainvest';
 
-        render(<TermsOfUse {...mock_props} />);
+        renderComponent();
 
         commonFieldsCheck();
         expect(screen.getByText(law_title)).toBeInTheDocument();
@@ -74,7 +83,7 @@ describe('<TermsOfUse/>', () => {
 
         mock_props.real_account_signup_target = 'maltainvest';
 
-        render(<TermsOfUse {...mock_props} />);
+        renderComponent();
 
         commonFieldsCheck();
         expect(screen.getByText(law_title)).toBeInTheDocument();

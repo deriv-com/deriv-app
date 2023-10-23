@@ -43,8 +43,10 @@ const TradingAppCard = ({
     const {
         common,
         traders_hub,
+        ui,
         modules: { cfd },
     } = useStores();
+    const { setIsVerificationModalVisible } = ui;
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
@@ -74,7 +76,8 @@ const TradingAppCard = ({
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mt5_acc_auth_status,
         openFailedVerificationModal,
-        selected_mt5_jurisdiction
+        selected_mt5_jurisdiction,
+        setIsVerificationModalVisible
     );
 
     const openStaticPage = () => {

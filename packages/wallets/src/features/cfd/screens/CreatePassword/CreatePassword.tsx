@@ -2,13 +2,7 @@ import React from 'react';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import './CreatePassword.scss';
 import { TPlatforms } from '../../types';
-
-const platformToTitleMapper: Record<TPlatforms.All, string> = {
-    ctrader: 'cTrader',
-    derivez: 'Deriv EZ',
-    dxtrade: 'Deriv X',
-    mt5: 'Deriv MT5',
-};
+import { PlatformToTitleMapper } from '../../constants';
 
 type TProps = {
     icon: React.ReactNode;
@@ -18,7 +12,7 @@ type TProps = {
 };
 
 const CreatePassword: React.FC<TProps> = ({ icon, onPasswordChange, onPrimaryClick, platform }) => {
-    const title = platformToTitleMapper[platform];
+    const title = PlatformToTitleMapper[platform];
     return (
         <div className='wallets-create-password'>
             {icon}

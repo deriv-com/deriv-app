@@ -14,21 +14,11 @@ import { CreatePassword, EnterPassword, Success } from '../../screens';
 import { TMarketTypes, TPlatforms } from '../../types';
 import useDevice from '../../../../hooks/useDevice';
 import './MT5PasswordModal.scss';
+import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
-};
-
-const marketTypeToTitleMapper: Record<TProps['marketType'], string> = {
-    all: 'Swap-Free',
-    financial: 'MT5 Financial',
-    synthetic: 'MT5 Derived',
-};
-
-const marketTypeToPlatformTitleMapper: Record<string, string> = {
-    ctrader: 'cTrader',
-    dxtrade: 'Deriv X',
 };
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
@@ -45,9 +35,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeWallet?.is_virtual;
     const marketTypeTitle =
-        marketType === 'all' && Object.keys(marketTypeToPlatformTitleMapper).includes(platform)
-            ? marketTypeToPlatformTitleMapper[platform]
-            : marketTypeToTitleMapper[marketType];
+        marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
+            ? PlatformToTitleMapper[platform]
+            : MarketTypeToTitleMapper[marketType];
 
     const onSubmit = async () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
@@ -85,14 +75,14 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         return (
             <ModalStepWrapper
                 // title='Enter your Deriv MT5 password'
-                title=''
                 renderFooter={() => (
                     <div className='wallets-mt5-password-modal__footer'>
                         {/* <WalletButton text='Forgot password?' isFullWidth size='lg' variant='outlined' />
                         <WalletButton text='Add account' isFullWidth size='lg' /> */}
-                        <WalletButton text='Create Deriv MT5 Password ' isFullWidth size='lg' />
+                        <WalletButton isFullWidth size='lg' text='Create Deriv MT5 Password ' />
                     </div>
                 )}
+                title=''
             >
                 {/* <Success
                     description={`You can now start practicing trading with your ${marketTypeTitle} ${

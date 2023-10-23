@@ -9,4 +9,8 @@
     align-items: center;
     gap: 2.4rem;
     flex-shrink: 0;
+
+    @include mobile {
+        width: 90vw;
+    }
 }

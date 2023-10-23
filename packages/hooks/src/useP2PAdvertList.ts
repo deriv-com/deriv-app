@@ -10,7 +10,7 @@ const useP2PAdvertList = (
 ) => {
     const { getRate } = useExchangeRate();
 
-    const test = useInfiniteQuery('p2p_advert_list', {
+    const { data, fetchNextPage, ...rest } = useInfiniteQuery('p2p_advert_list', {
         payload: { ...payload, offset: payload?.offset || 0, limit: payload?.limit || 50 },
         options: {
             getNextPageParam: (lastPage, pages) => {
@@ -21,7 +21,6 @@ const useP2PAdvertList = (
         },
     });
 
-    const { data, fetchNextPage, ...rest } = test;
     // Flatten the data array.
     const flatten_data = React.useMemo(() => {
         if (!data?.pages?.length) return;

@@ -45,19 +45,18 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
     const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, maxLength }) => (
         <>
             {helperMessage && (
-                <WalletText className='wallets-textfield__message-container--msg' color='less-prominent' size='xs'>
-                    {helperMessage}
-                </WalletText>
+                <div className='wallets-textfield__message-container--msg'>
+                    <WalletText color='less-prominent' size='xs'>
+                        {helperMessage}
+                    </WalletText>
+                </div>
             )}
             {maxLength && (
-                <WalletText
-                    align='right'
-                    className='wallets-textfield__message-container--maxchar'
-                    color='less-prominent'
-                    size='xs'
-                >
-                    {value.length} / {maxLength}
-                </WalletText>
+                <div className='wallets-textfield__message-container--maxchar'>
+                    <WalletText align='right' color='less-prominent' size='xs'>
+                        {value.length} / {maxLength}
+                    </WalletText>
+                </div>
             )}
         </>
     );

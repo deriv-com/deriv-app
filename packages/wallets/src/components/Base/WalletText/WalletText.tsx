@@ -7,7 +7,6 @@ interface WalletTextProps {
     align?: CSSProperties['textAlign'];
     as?: ElementType;
     children: ReactNode;
-    className?: string;
     color?: CSSProperties['color'] | 'error' | 'general' | 'primary' | 'success' | 'warning';
     lineHeight?: TGenericSizes;
     size?: Exclude<TGenericSizes, '3xs' | '6xl' | '7xl'>;
@@ -18,7 +17,6 @@ const WalletText: React.FC<WalletTextProps> = ({
     align = 'left',
     as = 'span',
     children,
-    className,
     color = 'general',
     lineHeight,
     size = 'md',
@@ -30,8 +28,7 @@ const WalletText: React.FC<WalletTextProps> = ({
         `wallets-text__weight--${weight}`,
         `wallets-text__align--${align}`,
         `wallets-text__color--${color}`,
-        `wallets-text__line-height--${lineHeight}`,
-        className
+        `wallets-text__line-height--${lineHeight}`
     );
 
     const Tag = as;

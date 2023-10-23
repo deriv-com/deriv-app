@@ -2,7 +2,7 @@ import React from 'react';
 import { InlineMessage, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { CONNECTED_APPS_INFO_BULLETS } from 'Constants/connected-apps-config';
+import ConnectedAppsInfoBullets from './connected-apps-info-bullets';
 
 const ConnectedAppsInfo = observer(() => {
     const { ui } = useStore();
@@ -19,15 +19,7 @@ const ConnectedAppsInfo = observer(() => {
                     <Text as='h4' weight='bold' size={text_size}>
                         <Localize i18n_default_text='What are connected apps?' />
                     </Text>
-                    <ol className='connected-apps__list--ordered_list'>
-                        {CONNECTED_APPS_INFO_BULLETS.map(bullet => (
-                            <li key={bullet.key}>
-                                <Text as='p' size={text_size}>
-                                    {bullet.text}
-                                </Text>
-                            </li>
-                        ))}
-                    </ol>
+                    <ConnectedAppsInfoBullets class_name_dynamic_suffix='with-apps' text_size={text_size} />
                 </React.Fragment>
             }
         />

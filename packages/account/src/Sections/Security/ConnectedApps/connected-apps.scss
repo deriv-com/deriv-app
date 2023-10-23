@@ -28,16 +28,6 @@
             gap: 0.8rem;
         }
 
-        &--ordered_list {
-            list-style: auto;
-            font-size: 1rem;
-            padding: 1rem 0 0 1.5rem;
-
-            & li:nth-child(-n + 2) {
-                margin-bottom: 1.5rem;
-            }
-        }
-
         &--row {
             display: flex;
             justify-content: space-between;
@@ -69,7 +59,7 @@
 
     &__tabular {
         &--wrapper {
-            height: 28rem;
+            height: 36rem;
         }
     }
 
@@ -104,19 +94,30 @@
                 margin-top: 0;
             }
         }
+    }
 
-        &--bullets {
+    &__bullets {
+        &--list {
+            list-style: auto;
             display: flex;
             flex-direction: column;
+        }
+
+        &--with-apps {
+            gap: 1.4rem;
+            padding: 1.4rem 0 0 1.4rem;
+            @include mobile {
+                padding: 1rem 0 0 1rem;
+            }
+        }
+
+        &--without-apps {
+            padding: 0 1.6rem;
+            color: var(--text-primary);
             gap: 0.8rem;
             @include mobile {
                 gap: 0.4rem;
             }
-        }
-
-        &--entry {
-            display: flex;
-            gap: 0.4rem;
         }
     }
 

@@ -39,13 +39,10 @@ const ConnectedApps = observer(() => {
         }
     };
 
-    const handleToggleModal = React.useCallback(
-        (app_id: number | null = null) => {
-            setIsModalOpen(!is_modal_open);
-            setSelectedAppId(app_id);
-        },
-        [is_modal_open]
-    );
+    const handleToggleModal = React.useCallback((app_id: number | null = null) => {
+        setIsModalOpen(is_modal_open => !is_modal_open);
+        setSelectedAppId(app_id);
+    }, []);
 
     const revokeConnectedApp = React.useCallback(async (app_id: number | null) => {
         setLoading(true);

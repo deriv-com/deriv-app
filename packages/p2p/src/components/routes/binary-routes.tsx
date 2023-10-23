@@ -1,9 +1,8 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import { TRoute } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import getRoutesConfig from 'Constants/routes-config';
-import { TBinaryRoutes } from 'Types/routes.types';
+import { TBinaryRoutes, TRoute } from 'Types';
 
 const Loading = () => (
     <div>

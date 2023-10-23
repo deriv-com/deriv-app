@@ -6,7 +6,7 @@ import BuySell from 'Pages/buy-sell';
 import MyAds from 'Pages/my-ads';
 import MyProfile from 'Pages/my-profile';
 import Orders from 'Pages/orders';
-import { TRoute, TRouteConfig } from 'Types/routes.types';
+import { TRoute, TRouteConfig } from 'Types';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../components/page-404'));

@@ -80,12 +80,12 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
             {getWalletHeaderButtons(isDemo).map(button => (
                 <WalletButton
                     icon={button.icon}
-                    isRounded
                     key={button.name}
                     onClick={() => {
                         switchAccount(loginid);
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
+                    rounded='md'
                     text={isActive ? button.text : undefined}
                     variant='outlined'
                 />

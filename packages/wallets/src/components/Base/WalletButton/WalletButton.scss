@@ -82,11 +82,14 @@ $size-map: (
     }
 
     &__rounded {
-        &--default {
+        &--sm {
             border-radius: 0.4rem;
         }
-        &--full {
+        &--md {
             border-radius: 6.4rem;
+        }
+        &--lg {
+            border-radius: 100%;
         }
     }
 

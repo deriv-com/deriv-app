@@ -4,15 +4,15 @@ import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
 import './WalletButton.scss';
 
-type TVariant = 'ghost' | 'outlined' | ('contained' & { color: WalletButtonProps['color'] });
+type TVariant = 'contained' | 'ghost' | 'outlined';
 
 interface WalletButtonProps {
     color?: CSSProperties['color'] | 'primary-light' | 'primary';
     disabled?: ComponentProps<'button'>['disabled'];
     icon?: ReactElement;
     isFullWidth?: boolean;
-    isRounded?: boolean;
     onClick?: ComponentProps<'button'>['onClick'];
+    rounded?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
     variant?: TVariant;
@@ -23,8 +23,8 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     disabled = false,
     icon,
     isFullWidth = false,
-    isRounded = false,
     onClick,
+    rounded = 'sm',
     size = 'md',
     text,
     variant = 'contained',
@@ -39,7 +39,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
         'wallets-button',
         `wallets-button__size--${size}`,
         `wallets-button__variant--${variant}`,
-        isRounded ? 'wallets-button__rounded--full' : 'wallets-button__rounded--default',
+        `wallets-button__rounded--${rounded}`,
         isContained && `wallets-button__color--${color}`,
         isFullWidth && 'wallets-button__full-width'
     );
@@ -71,8 +71,8 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     > = {
         lg: 'sm',
         md: 'sm',
-        sm: 'xs' as const,
-    };
+        sm: 'xs',
+    } as const;
 
     return (
         <button className={buttonClassNames} disabled={disabled} onClick={onClick}>

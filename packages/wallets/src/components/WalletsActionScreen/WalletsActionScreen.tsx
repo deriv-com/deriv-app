@@ -1,5 +1,4 @@
-import React, { ReactNode, PropsWithChildren } from 'react';
-import useDevice from '../../hooks/useDevice';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import WalletButton from '../Base/WalletButton/WalletButton';
 import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
@@ -31,20 +30,18 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     onAction,
     title,
 }) => {
-    const { isMobile } = useDevice();
-
     return (
         <div className='wallets-action-screen'>
             <div className='wallets-action-screen__icon'>{icon}</div>
 
             <div className='wallets-action-screen__title'>
-                <WalletText size={isMobile ? 'lg' : '2xl'} weight='bold'>
+                <WalletText size='2xl' weight='bold'>
                     {title}
                 </WalletText>
             </div>
 
             <div className='wallets-action-screen__subtitle'>
-                <WalletText size={isMobile ? 'md' : 'lg'}>{description}</WalletText>
+                <WalletText size='lg'>{description}</WalletText>
             </div>
 
             <div className='wallets-action-screen__button'>

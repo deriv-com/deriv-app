@@ -24,26 +24,6 @@
         border: 1px solid var(--brand-blue, #85acb0);
     }
 
-    &__icon {
-        margin: auto;
-        width: 1.6rem;
-        height: 1.6rem;
-    }
-
-    &__message-container {
-        height: 2rem;
-        padding: 0.2rem 0rem 0rem 1.6rem;
-        width: 100%;
-
-        &--maxchar {
-            float: right;
-        }
-
-        &--msg {
-            float: left;
-        }
-    }
-
     &__field {
         font-family: inherit;
         outline: 0;
@@ -86,5 +66,25 @@
 
     &__field:focus ~ &__label {
         color: var(--brand-blue, #85acb0);
+    }
+
+    &__icon {
+        margin: auto;
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+
+    &__message-container {
+        height: 2rem;
+        padding: 0.2rem 0rem 0rem 1.6rem;
+        width: 100%;
+
+        &--maxchar {
+            float: right;
+        }
+
+        &--msg {
+            float: left;
+        }
     }
 }

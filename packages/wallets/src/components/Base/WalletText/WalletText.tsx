@@ -10,7 +10,7 @@ interface WalletTextProps {
     className?: string;
     color?: CSSProperties['color'] | 'error' | 'general' | 'primary' | 'success' | 'warning';
     lineHeight?: TGenericSizes;
-    size?: Exclude<TGenericSizes, '3xs' | '6xl'>;
+    size?: Exclude<TGenericSizes, '3xs' | '6xl' | '7xl'>;
     weight?: CSSProperties['fontWeight'];
 }
 

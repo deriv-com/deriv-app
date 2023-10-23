@@ -72,7 +72,7 @@ $mobile-font-size-map: (
         line_height: 2rem,
     ),
     'lg': (
-        mobile_fontsize: 1.6rem,
+        size: 1.6rem,
         line_height: 2.4rem,
     ),
     'xl': (
@@ -109,7 +109,8 @@ $line-height-map: (
     '3xl': 2.8rem,
     '4xl': 3rem,
     '5xl': 3.2rem,
-    '6xl': 3.6rem,
+    '6xl': 3.4rem,
+    '7xl': 3.6rem,
 );
 
 $font-weight-map: (

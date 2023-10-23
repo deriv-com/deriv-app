@@ -1,4 +1,5 @@
 import React, { ChangeEvent, ComponentProps, ReactElement, useState } from 'react';
+import { WalletButton } from '../WalletButton';
 import WalletText from '../WalletText/WalletText';
 import './WalletTextField.scss';
 
@@ -11,6 +12,7 @@ interface WalletTextFieldProps {
     leftIcon?: React.ReactNode;
     maxLength?: ComponentProps<'input'>['maxLength'];
     onChange?: ComponentProps<'input'>['onChange'];
+    onClickIcon?: ComponentProps<'button'>['onClick'];
     showMessage?: boolean;
     type?: ComponentProps<'input'>['type'];
 }
@@ -28,6 +30,7 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
     label,
     maxLength,
     onChange,
+    onClickIcon,
     showMessage = false,
     type = 'text',
 }) => {
@@ -76,7 +79,7 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
                         {label}
                     </label>
                 )}
-                {icon && <div className='wallets-textfield__icon'>{icon}</div>}
+                {icon && <WalletButton icon={icon} onClick={onClickIcon} rounded='lg' size='sm' variant='ghost' />}
             </div>
             <div className='wallets-textfield__message-container'>
                 {showMessage && <MessageContainer helperMessage={helperMessage} maxLength={maxLength} />}

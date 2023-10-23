@@ -66,8 +66,15 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     };
 
     React.useEffect(() => {
-        if (divRef.current && divRef.current.classList.contains('share-my-ads-card')) {
-            setIsQRCodeLoaded(true);
+        if (divRef.current) {
+            const styles = getComputedStyle(divRef.current);
+            const font_family = styles.getPropertyValue('font-family');
+            if (
+                font_family === '"IBM Plex Sans", sans-serif' &&
+                divRef.current.classList.contains('share-my-ads-card')
+            ) {
+                setIsQRCodeLoaded(true);
+            }
         }
     }, [divRef.current]);
 

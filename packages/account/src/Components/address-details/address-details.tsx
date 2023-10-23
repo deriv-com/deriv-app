@@ -165,7 +165,7 @@ const AddressDetails = observer(
                                     height_offset='90px'
                                     is_disabled={is_desktop}
                                 >
-                                    {is_eu_user && (
+                                    {is_eu_user ? (
                                         <div className='details-form__banner-container'>
                                             <InlineNoteWithIcon
                                                 icon='IcAlertWarning'
@@ -175,8 +175,7 @@ const AddressDetails = observer(
                                                 title={localize('Why do we collect this?')}
                                             />
                                         </div>
-                                    )}
-                                    {!is_eu_user && (
+                                    ) : (
                                         <Text
                                             as='p'
                                             align='left'

@@ -1,4 +1,4 @@
-.wallets-dynamic-leverage-modal {
+.wallets-dynamic-leverage-screen {
     width: 1200px;
     height: 760px;
     text-align: center;
@@ -13,29 +13,25 @@
         overflow: scroll;
     }
 
-    &__title {
-        display: flex;
-        gap: 1.6rem;
-        align-items: center;
-        padding: 0 16px 0 24px;
-        height: 56px;
-        border-bottom: 1px solid var(--general-section-2, #f2f3f4);
-
-        &-back {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-    }
-
     &__container {
         display: flex;
         flex-direction: column;
         gap: 2.4rem;
-        margin: 1.5rem 12.8rem 10rem;
+        margin: 1.5rem 12.8rem 0;
+        padding-bottom: 10rem;
+        transform: rotateY(-180deg);
+        backface-visibility: hidden;
+        position: absolute;
+        top: 0;
+        perspective: 100rem;
+        transition: transform 0.6s ease-in;
 
         @include mobile {
             margin: 1.5rem 2.4rem 2.4rem;
+        }
+
+        &--flip {
+            transform: rotateY(0deg);
         }
     }
 
@@ -50,17 +46,4 @@
             margin: 0 6.5rem;
         }
     }
-}
-
-@keyframes flip {
-    from {
-        transform: rotateY(-180deg);
-    }
-    to {
-        transform: rotateY(0deg);
-    }
-}
-
-.wallets-jurisdiction-modal-transition {
-    animation: flip 0.6s;
 }

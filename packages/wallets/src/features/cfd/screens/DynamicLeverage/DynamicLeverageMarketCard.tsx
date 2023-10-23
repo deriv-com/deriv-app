@@ -16,20 +16,15 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
 }) => (
     <div className='wallets-dynamic-leverage-modal__market'>
         <div className='wallets-dynamic-leverage-modal__market-title'>
-            <WalletText align='center' data-testid='market_title' size='xs' weight='bold'>
+            <WalletText align='center' data-testid='market_title' size='sm' weight='bold'>
                 {title}
             </WalletText>
             {!!description && (
-                <WalletText
-                    align='center'
-                    className='wallets-dynamic-leverage-modal__market-description'
-                    data-testid='description_title'
-                    size='3xs'
-                >
+                <WalletText align='center' data-testid='description_title' size='2xs' style={{ fontStyle: 'italic' }}>
                     {description}
                 </WalletText>
             )}
-            <WalletText align='center' color='error' data-testid='leverage_title' size='2xs'>
+            <WalletText align='center' color='error' data-testid='leverage_title' size='xs'>
                 {leverage}
             </WalletText>
         </div>
@@ -47,7 +42,7 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
                     >
                         {Object.entries(columns).map(([columnKey, value]) => (
                             <div key={`${title}_${columnKey}_${value}`}>
-                                <WalletText align='center' size='xs'>
+                                <WalletText align='center' size='sm'>
                                     {value}
                                 </WalletText>
                             </div>

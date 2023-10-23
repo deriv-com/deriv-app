@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
@@ -6,7 +6,8 @@ import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
-import { DynamicLeverageModal } from '../../../modals';
+import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
+// import { DynamicLeverageModal } from '../../../modals';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
 import JurisdictionCardBack from './JurisdictionCardBack';
@@ -31,20 +32,13 @@ const verificationIconsMapper: Record<string, JSX.Element> = {
 const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisdiction, onSelect }) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
-    const { modalState, show } = useModal();
-
-    const showDynamicLeverage = useCallback(() => {
-        show(
-            <div className='wallets-dynamic-leverage-modal-transition' key='wallets-dynamic-leverage-modal-transition'>
-                <DynamicLeverageModal />
-            </div>
-        );
-    }, [show]);
+    const { toggleDynamicLeverage } = useDynamicLeverageModalState();
+    const { modalState } = useModal();
 
     const descriptionClickHandler = (tag?: string) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.stopPropagation();
         if (tag === 'dynamicLeverage') {
-            showDynamicLeverage();
+            toggleDynamicLeverage();
         } else {
             setIsFlipped(true);
         }

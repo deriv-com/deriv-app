@@ -8,11 +8,11 @@ type TDynamicLeverageTableColumnHeader = {
 };
 
 export const DynamicLeverageTableColumnHeader: FC<TDynamicLeverageTableColumnHeader> = ({ subtitle, title }) => (
-    <div className='wallets-dynamic-leverage-modal__market-table-header-cell'>
-        <WalletText align='center' size='xs' weight='bold'>
+    <div className='wallets-dynamic-leverage-screen__market-table-header-cell'>
+        <WalletText align='center' size='sm' weight='bold'>
             {title}
         </WalletText>
-        <WalletText align='center' size='2xs'>
+        <WalletText align='center' size='xs'>
             {subtitle}
         </WalletText>
     </div>

@@ -151,9 +151,6 @@ export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
 };
 
 const dark_theme = {
-    accu_contract_shade: '#00a79e14',
-    accu_shade: '#377cfc14',
-    accu_shade_crossed: '#cc2e3d14',
     bg: '#0e0e0e',
     fg: '#ffffff',
     grey_border: '#6e6e6e',
@@ -164,9 +161,6 @@ const dark_theme = {
 };
 
 const light_theme = {
-    accu_contract_shade: '#4bb4b314',
-    accu_shade: '#377cfc14',
-    accu_shade_crossed: '#ec3f3f14',
     bg: '#ffffff',
     fg: '#333333',
     grey_border: '#999999',

@@ -12,7 +12,7 @@ const MarkerLine = ({ label, line_style, marker_config, status }) => {
             {label === marker_config.LINE_END.content_config.label && (
                 <Icon
                     icon='IcContractExitTimeCircle'
-                    className={'chart-marker-line__icon'}
+                    className='chart-marker-line__icon'
                     color={status === 'lost' ? 'red' : 'green'}
                     size={24}
                 />
@@ -20,7 +20,7 @@ const MarkerLine = ({ label, line_style, marker_config, status }) => {
             {label === marker_config.LINE_START.content_config.label && (
                 <Icon
                     icon='IcContractStartTimeCircle'
-                    className={'chart-marker-line__icon chart-marker-line__icon--time'}
+                    className='chart-marker-line__icon chart-marker-line__icon--time'
                     color='secondary'
                     size={24}
                 />
@@ -30,7 +30,6 @@ const MarkerLine = ({ label, line_style, marker_config, status }) => {
 };
 
 MarkerLine.propTypes = {
-    is_beta_chart: PropTypes.bool,
     label: PropTypes.string,
     line_style: PropTypes.string,
     marker_config: PropTypes.object,

@@ -20,7 +20,7 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
             })}
             key={workspace.id}
             onClick={selected_strategy_id === workspace.id ? undefined : () => previewRecentStrategy(workspace.id)}
-            data-testid={'recent-workspace-item'}
+            data-testid='recent-workspace-item'
         >
             <div className='load-strategy__recent-item-text load-dialog'>
                 <div className='load-strategy__recent-item-title'>{workspace.name}</div>

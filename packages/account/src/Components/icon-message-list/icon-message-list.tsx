@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Localize } from '@deriv/translations';
 import { Div100vhContainer, Text, Button, ThemedScrollbars, Icon } from '@deriv/components';
-import { formatOnfidoError } from '@deriv/shared';
+import { getOnfidoError } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import ListItem from './list-item';
 
 type TIconMessageList = {
@@ -58,12 +58,12 @@ const IconMessageList = observer(({ className, icon, message, message_list = [],
                                 </div>
                                 <section>
                                     {message_list.length < 2 ? (
-                                        <ListItem text={formatOnfidoError(message_list[0])} />
+                                        <ListItem text={getOnfidoError(message_list[0])} />
                                     ) : (
                                         message_list.map((text, idx) => (
                                             <ListItem
                                                 key={text}
-                                                text={formatOnfidoError(message_list[idx])}
+                                                text={getOnfidoError(message_list[idx])}
                                                 index={idx + 1}
                                             />
                                         ))

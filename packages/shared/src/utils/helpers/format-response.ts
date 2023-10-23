@@ -86,7 +86,14 @@ export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: stri
         : status[0] ?? IDV_ERROR_STATUS.Failed.code;
 };
 
-export const formatOnfidoError = (error: TOnfidoErrorStatus) => {
+export const formatOnfidoError = (errors: Array<TOnfidoErrorStatus> = [], status_code: string) => {
+    if (status_code === STATUS_CODES.EXPIRED) {
+        return [ONFIDO_ERROR_STATUS.Expired.code, ...errors];
+    }
+    return errors;
+};
+
+export const getOnfidoError = (error: TOnfidoErrorStatus) => {
     return ONFIDO_ERROR_STATUS[error]?.message ?? '';
 };
 

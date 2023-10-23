@@ -24,7 +24,6 @@ import {
     SessionStore,
     toMoment,
     urlForLanguage,
-    removeAccountIdPrefix,
 } from '@deriv/shared';
 import { RudderStack } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
@@ -2550,10 +2549,7 @@ export default class ClientStore extends BaseStore {
 
         if (!response.error) {
             this[`${platform}_accounts_list`] = response.trading_platform_accounts.map(account => {
-                // Temporary fix for cTrader only we are going to remove all prefixes in the future.
-                const display_login = removeAccountIdPrefix(
-                    account.error ? account.error.details.account_id : account.account_id
-                );
+                const display_login = account.error ? account.error.details.account_id : account.account_id;
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     if (platform === CFD_PLATFORMS.DXTRADE) {

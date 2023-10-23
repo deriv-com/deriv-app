@@ -69,8 +69,8 @@ const AccountFlow = () => {
     const { show } = useModal();
     const nextFlowHandler = ({
         currentScreenId,
-        switchScreen,
         switchNextScreen,
+        switchScreen,
     }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
             case 'bScreen':

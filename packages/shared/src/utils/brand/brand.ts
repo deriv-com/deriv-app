@@ -44,8 +44,8 @@ type TPlatformsAppstore = {
 
 const isDomainAllowed = (domain_name: string) => {
     // This regex will match any official deriv production and testing domain names.
-    // Allowed deriv domains: binary.sx, binary.com, deriv.com, deriv.be, deriv.me and their subdomains.
-    return /^(((.*)\.)?(binary\.(sx|com)|deriv.(com|me|be)))$/.test(domain_name);
+    // Allowed deriv domains: localhost, binary.sx, binary.com, deriv.com, deriv.be, deriv.me and their subdomains.
+    return /^(((.*)\.)?(localhost:8443|binary\.(sx|com)|deriv.(com|me|be)))$/.test(domain_name);
 };
 
 export const getLegalEntityName = (landing_company: keyof TLandingCompany) => {

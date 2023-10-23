@@ -384,6 +384,7 @@ export default class CFDStore extends BaseStore {
         // First name is not set when user has no real account
         return first_name ? [first_name, title].join(' ') : title;
     }
+
     async migrateMT5Accounts(values, actions) {
         const account_to_migrate = this.root_store.client.mt5_login_list.filter(
             acc => acc.landing_company_short === Jurisdiction.SVG && !!acc.eligible_to_migrate
@@ -395,7 +396,10 @@ export default class CFDStore extends BaseStore {
                 category: 'real',
                 type,
             };
-            this.migrated_mt5_accounts = [...this.migrated_mt5_accounts, { ...eligible_to_migrate }];
+            this.migrated_mt5_accounts = [
+                ...this.migrated_mt5_accounts,
+                { login_id: account.login, to_acc: { ...(eligible_to_migrate ?? {}) } },
+            ];
             return this.requestMigrateAccount(values, shortcode, account_type);
         });
 

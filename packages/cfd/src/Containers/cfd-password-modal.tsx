@@ -934,8 +934,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const getMigrationSubmitText = () => {
         const list = migrated_mt5_accounts.map(account => {
-            const [to_account_type] = Object.keys(account);
-            const [to_jurisdiction] = Object.values(account);
+            const to_acc = account?.to_acc ?? {};
+            const [to_account_type] = Object.keys(to_acc);
+            const [to_jurisdiction] = Object.values(to_acc);
 
             return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
                 to_account_type
@@ -947,7 +948,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 i18n_default_text="We've upgraded your MT5 account(s) by moving them to the {{eligible_account_migrate}} jurisdiction. Use your <0>{{migrated_accounts}}</0> new login ID and MT5 password to start trading."
                 values={{
                     eligible_account_migrate: getFormattedJurisdictionCode(
-                        migrated_mt5_accounts.map(account => Object.values(account))[0]
+                        migrated_mt5_accounts.map(account => Object.values(account?.to_acc ?? {}))?.[0]
                     ),
                     migrated_accounts: list.join(' and '), // [MT5 Derived Vanuatu and MT5 Financial Vanuatu]
                 }}

@@ -11,7 +11,7 @@ import QuickStrategy from '../quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
-    const { dashboard, app, run_panel, toolbar } = useDBotStore();
+    const { dashboard, app, run_panel } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_running } = run_panel;
     const is_blockly_listener_registered = React.useRef(false);
@@ -26,12 +26,8 @@ const BotBuilder = observer(() => {
     }, []);
 
     const handleBlockChangeOnBotRun = (e: Event) => {
-        const { is_reset_button_clicked, setResetButtonState } = toolbar;
-        if (e.type !== 'ui' && !is_reset_button_clicked) {
+        if (e.type !== 'ui') {
             setShowSnackbar(true);
-            removeBlockChangeListener();
-        } else if (is_reset_button_clicked) {
-            setResetButtonState(false);
             removeBlockChangeListener();
         }
     };

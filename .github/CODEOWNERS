@@ -103,7 +103,7 @@
 #  deriv-app/cashier
 # ==============================================================
 
-/packages/cashier/**/*                                          @farrah-deriv @nijil-deriv
+/packages/cashier/**/*                                          @farrah-deriv @nijil-deriv @wojciech-deriv
 
 
 # ==============================================================
@@ -159,11 +159,11 @@
 #  deriv-app/wallets
 # ==============================================================
 
-/packages/wallets/**/*                                          @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv
+/packages/wallets/**/*                                          @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv
 
 
 # ==============================================================
 #  deriv-app/api
 # ==============================================================
 
-/packages/api/**/*                                              @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv
+/packages/api/**/*                                              @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv

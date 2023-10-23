@@ -139,7 +139,7 @@ export default class AdvertiserPageStore extends BaseStore {
                 p2p_advertiser_info: 1,
                 id: general_store.counterparty_advertiser_id,
             }).then(response => {
-                if (response.error) {
+                if (response?.error) {
                     this.setErrorMessage(response.error);
                 } else {
                     this.setAdvertiserInfo(response);

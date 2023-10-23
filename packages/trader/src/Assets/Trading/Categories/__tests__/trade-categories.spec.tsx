@@ -2,7 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import TradeCategories from '../trade-categories';
 
-jest.mock('../accumulator-trade-description', () => jest.fn(() => 'mockedAccumulatorTradeDescription'));
+jest.mock('../Description/accumulator-trade-description', () => jest.fn(() => 'mockedAccumulatorTradeDescription'));
+jest.mock('../Description/turbos-trade-description', () => jest.fn(() => 'mockedTurbosTradeDescription'));
+jest.mock('../Description/multiplier-trade-description', () => jest.fn(() => 'mockedMultiplierTradeDescription'));
 
 describe('<TradeCategores />', () => {
     it('Ensure mockedAccumulatorTradeDescription is rendered correctly when trade category is "accumulator"', () => {
@@ -140,12 +142,12 @@ describe('<TradeCategores />', () => {
         ).toBeInTheDocument();
     });
     it('Ensure trade category "multiplier" description is rendered properly', () => {
-        render(<TradeCategories category='multiplier' onClick={jest.fn()} />);
-        expect(
-            screen.getByText(
-                /Predict the market direction and select either “Up” or “Down” to open a position. We will charge a commission when you open a position./i
-            )
-        ).toBeInTheDocument();
+        render(<TradeCategories category='multiplier' onClick={jest.fn()} is_multiplier_fx />);
+        expect(screen.getByText(/mockedMultiplierTradeDescription/i)).toBeInTheDocument();
+    });
+    it('Ensure trade category "turbosshort" description is rendered properly', () => {
+        render(<TradeCategories category='turbosshort' onClick={jest.fn()} />);
+        expect(screen.getByText(/mockedTurbosTradeDescription/i)).toBeInTheDocument();
     });
     it('Ensure trade category "vanillalongcall" description is rendered properly', () => {
         render(<TradeCategories category='vanillalongcall' onClick={jest.fn()} />);

@@ -20,6 +20,7 @@
             justify-content: space-between;
         }
         &-button {
+            z-index: 10;
             background-color: #ffffff;
             border: none;
             border-radius: 5px;
@@ -50,6 +51,17 @@
             border-radius: 0.2rem;
             padding: 0 0.4rem;
             text-transform: uppercase;
+        }
+    }
+
+    &__success-footer {
+        display: flex;
+        gap: 0.8rem;
+
+        @include mobile {
+            flex-direction: column;
+            padding-block: 1.6rem;
+            width: 100%;
         }
     }
 }

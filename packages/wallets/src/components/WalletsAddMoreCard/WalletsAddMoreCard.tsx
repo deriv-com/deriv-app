@@ -9,6 +9,7 @@ type TWalletsAddMoreCard = NonNullable<ReturnType<typeof useAvailableWallets>['d
 const WalletsAddMoreCard = ({
     currency,
     is_added: isAdded,
+    is_crypto: isCrypto,
     landing_company_name: landingCompanyName,
 }: TWalletsAddMoreCard) => {
     return (
@@ -17,6 +18,7 @@ const WalletsAddMoreCard = ({
                 <WalletsAddMoreCardBanner
                     currency={currency || 'USD'}
                     is_added={isAdded}
+                    is_crypto={isCrypto}
                     landing_company_name={landingCompanyName ?? ''}
                 />
             </WalletGradientBackground>

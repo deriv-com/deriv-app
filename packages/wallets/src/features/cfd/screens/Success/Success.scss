@@ -25,6 +25,10 @@
         position: relative;
         border-radius: 10px;
 
+        @include mobile {
+            height: fit-content;
+        }
+
         &-badge {
             position: absolute;
             top: 0;

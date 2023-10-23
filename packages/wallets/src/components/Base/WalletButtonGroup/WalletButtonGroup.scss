@@ -1,0 +1,13 @@
+.wallets-button-group {
+    display: flex;
+    width: 100%;
+    gap: 1.2rem;
+
+    &--vertical {
+        flex-direction: column;
+    }
+
+    &__item {
+        width: 100%;
+    }
+}

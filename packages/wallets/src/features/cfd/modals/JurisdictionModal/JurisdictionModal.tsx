@@ -5,12 +5,7 @@ import useDevice from '../../../../hooks/useDevice';
 import { useModal } from '../../../../components/ModalProvider';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
-
-const marketTypeToTitleMapper = {
-    all: 'Swap-Free',
-    financial: 'Financial',
-    synthetic: 'Derived',
-};
+import { MarketTypeToTitleMapper } from '../../constants';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
@@ -21,7 +16,7 @@ const JurisdictionModal = () => {
     const marketType = modalState?.marketType || 'all';
     const platform = modalState?.platform || 'mt5';
 
-    const capitalizedMarketType = marketTypeToTitleMapper[marketType];
+    const capitalizedMarketType = MarketTypeToTitleMapper[marketType];
 
     if (isLoading) return <h1>Loading...</h1>;
 

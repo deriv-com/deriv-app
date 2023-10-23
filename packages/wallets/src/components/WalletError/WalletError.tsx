@@ -1,26 +1,35 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import ErrorIcon from '../../public/images/error-icon.svg';
-import { WalletButton, WalletText } from '../Base';
-import { useModal } from '../ModalProvider';
-import './WalletError.scss';
+import WalletButton from '../Base/WalletButton/WalletButton';
+import WalletsActionScreen from '../WalletsActionScreen/WalletsActionScreen';
 
 type TProps = {
+    buttonText?: string;
+    buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
     errorMessage: string;
+    onClick?: () => void;
     title?: string;
+    type?: 'modal' | 'page';
 };
 
-const WalletError: React.FC<TProps> = ({ errorMessage, title }) => {
-    const modal = useModal();
-
+const WalletError: React.FC<TProps> = ({
+    buttonText = 'Try again',
+    buttonVariant = 'contained',
+    errorMessage,
+    onClick,
+    title,
+    type = 'page',
+}) => {
     return (
-        <div className='wallets-error'>
-            <ErrorIcon />
-            {title && <WalletText weight='bold'>{title}</WalletText>}
-            <WalletText align='center' size='sm'>
-                {errorMessage}
-            </WalletText>
-            <WalletButton onClick={() => modal.hide()} text='Close' />
-        </div>
+        <WalletsActionScreen
+            actionText={buttonText}
+            actionVariant={buttonVariant}
+            description={errorMessage}
+            icon={<ErrorIcon />}
+            onAction={onClick}
+            title={title}
+            type={type}
+        />
     );
 };
 

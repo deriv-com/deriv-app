@@ -10,10 +10,12 @@ import BuyToastNotification from './buy-toast-notification';
 import { observer, useStore } from '@deriv/stores';
 
 const RecentTradeInfo = observer(() => {
-    const { contract_trade } = useStore();
-    const { granularity, markers_array } = contract_trade;
+    const { contract_trade, client } = useStore();
+    const { granularity, filtered_contracts, markers_array } = contract_trade;
 
-    const latest_tick_contract = markers_array[markers_array.length - 1];
+    const latest_tick_contract = client.is_beta_chart
+        ? filtered_contracts[filtered_contracts.length - 1]
+        : markers_array[markers_array.length - 1];
     if (
         !latest_tick_contract ||
         !latest_tick_contract.contract_info.tick_stream ||

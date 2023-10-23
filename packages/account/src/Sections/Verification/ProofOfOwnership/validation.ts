@@ -1,6 +1,5 @@
-import { hasInvalidCharacters, isFormattedCardNumber, validEmail, validFile, validPhone } from '@deriv/shared';
+import { hasInvalidCharacters, isFormattedCardNumber, validFile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { PHONE_NUMBER_LENGTH } from 'Constants/personal-details';
 import { IDENTIFIER_TYPES } from 'Constants/poo-identifier';
 import { TPaymentMethodIdentifier } from 'Types';
 
@@ -9,21 +8,18 @@ export const isValidPaymentMethodIdentifier = (
     identifier_type: TPaymentMethodIdentifier
 ) => {
     const default_error_message = localize('Enter your full card number');
-    switch (identifier_type) {
-        case IDENTIFIER_TYPES.CARD_NUMBER: {
-            if (payment_method_identifier.length < 16) {
-                return default_error_message;
-            } else if (payment_method_identifier.length === 16) {
-                return !hasInvalidCharacters(payment_method_identifier) ? null : default_error_message;
-            } else if (payment_method_identifier.length > 19) {
-                return isFormattedCardNumber(payment_method_identifier) ? null : default_error_message;
-            }
-            return null;
+
+    if (identifier_type === IDENTIFIER_TYPES.CARD_NUMBER) {
+        if (payment_method_identifier.length < 16) {
+            return default_error_message;
+        } else if (payment_method_identifier.length === 16) {
+            return !hasInvalidCharacters(payment_method_identifier) ? null : default_error_message;
+        } else if (payment_method_identifier.length > 19) {
+            return isFormattedCardNumber(payment_method_identifier) ? null : default_error_message;
         }
-        default: {
-            return null;
-        }
+        return null;
     }
+    return null;
 };
 
 export const isValidFile = (file: File) => {

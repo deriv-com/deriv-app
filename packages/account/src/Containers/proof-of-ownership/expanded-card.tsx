@@ -80,7 +80,6 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
                 {card_details?.items &&
                     card_details?.items.map((item, item_index) => {
                         const controls_to_show = [...Array(item?.documents_required).keys()];
-                        console.log('Item: ', item);
                         return (
                             <div
                                 className='proof-of-ownership__card-open-inputs'

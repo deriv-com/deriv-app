@@ -9,13 +9,14 @@ import { POO_STATUSES } from 'Constants/poo-identifier';
 import getPaymentMethodsConfig from '../../../Configs/payment-method-config';
 import { TPaymentMethod, TPaymentMethodIdentifier, TPaymentMethodInfo } from 'Types';
 
+type TPaymentData = DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
+
 export const ProofOfOwnership = observer(() => {
     const { client, notifications, ui } = useStore();
     const { account_status, email: client_email, updateAccountStatus } = client;
     const { is_dark_mode_on: is_dark_mode, is_mobile } = ui;
     const { refreshNotifications } = notifications;
-    const cards = account_status?.authentication?.ownership
-        ?.requests as DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
+    const cards = account_status?.authentication?.ownership?.requests as TPaymentData;
     const [status, setStatus] = useState(POO_STATUSES.NONE);
 
     const grouped_payment_method_data = React.useMemo(() => {
@@ -44,7 +45,7 @@ export const ProofOfOwnership = observer(() => {
         return { groups };
     }, [cards, is_dark_mode]);
     useEffect(() => {
-        setStatus(account_status?.authentication?.ownership?.status?.toLowerCase() || '');
+        setStatus(account_status?.authentication?.ownership?.status?.toLowerCase() ?? '');
     }, [account_status]);
     const onTryAgain = () => {
         setStatus(POO_STATUSES.NONE);

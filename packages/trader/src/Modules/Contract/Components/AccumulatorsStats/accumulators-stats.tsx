@@ -23,7 +23,7 @@ export const ROW_SIZES = {
 const AccumulatorsStats = observer(({ is_expandable = true }: TAccumulatorStats) => {
     const { ui } = useStore();
     const { ticks_history_stats = {} } = useTraderStore();
-    const { is_dark_mode_on: is_dark_theme } = ui;
+    const { is_dark_mode_on: is_dark_theme, is_mobile } = ui;
 
     const [is_collapsed, setIsCollapsed] = React.useState(true);
     const [is_manual_open, setIsManualOpen] = React.useState(false);
@@ -49,6 +49,7 @@ const AccumulatorsStats = observer(({ is_expandable = true }: TAccumulatorStats)
                 <div className='accumulators-stats__title'>
                     <AccumulatorsStatsManualModal
                         is_dark_theme={is_dark_theme}
+                        is_mobile={is_mobile}
                         icon_classname='info'
                         is_manual_open={is_manual_open}
                         title={widget_title}

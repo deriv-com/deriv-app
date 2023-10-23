@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { getUrlBase } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
+import { getDescriptionVideoUrl } from 'Modules/Trading/Helpers/contract-type';
 
 type TContractTypeDescriptionVideo = {
     selected_contract_type?: string;
@@ -11,18 +11,6 @@ type TContractTypeDescriptionVideo = {
 const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: TContractTypeDescriptionVideo) => {
     const { ui } = useStore();
     const { is_dark_mode_on: is_dark_theme, is_mobile } = ui;
-    const getVideoSource = React.useCallback(
-        (extension: 'mp4' | 'webm') => {
-            return getUrlBase(
-                `/public/videos/${selected_contract_type}_description${is_dark_theme ? '_dark' : '_light'}.${extension}`
-            );
-        },
-        [is_dark_theme, selected_contract_type]
-    );
-
-    // memoize file paths for videos and open the modal only after we get them
-    const mp4_src = React.useMemo(() => getVideoSource('mp4'), [getVideoSource]);
-    const webm_src = React.useMemo(() => getVideoSource('webm'), [getVideoSource]);
     if (!selected_contract_type) {
         return null;
     }
@@ -42,8 +30,8 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: T
             data-testid={data_testid}
         >
             {/* a browser will select a source with extension it recognizes */}
-            <source src={mp4_src} type='video/mp4' />
-            <source src={webm_src} type='video/webm' />
+            <source src={getDescriptionVideoUrl(selected_contract_type, is_dark_theme, 'mp4')} type='video/mp4' />
+            <source src={getDescriptionVideoUrl(selected_contract_type, is_dark_theme, 'webm')} type='video/webm' />
             {localize('Unfortunately, your browser does not support the video.')}
         </video>
     );

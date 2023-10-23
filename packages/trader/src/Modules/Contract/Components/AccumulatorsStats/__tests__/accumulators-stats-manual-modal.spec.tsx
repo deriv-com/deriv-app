@@ -49,6 +49,7 @@ describe('AccumulatorsStatsManualModal', () => {
             title: 'Stats',
             icon_classname: 'info',
             is_manual_open: false,
+            is_mobile: false,
             toggleManual: jest.fn(() => {
                 props.is_manual_open = !props.is_manual_open;
             }),

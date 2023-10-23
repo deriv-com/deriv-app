@@ -14,6 +14,15 @@ type TItem = {
     value: string;
 };
 
+type TVideoVariants = {
+    dark: { mp4: string; webm: string };
+    light: { mp4: string; webm: string };
+};
+
+type TDtraderVideoUrl = {
+    [key: string]: TVideoVariants;
+};
+
 export const isMajorPairsSymbol = (checked_symbol: string, active_symbols: ActiveSymbols) =>
     active_symbols.some(({ submarket, symbol }) => /major_pairs/i.test(submarket) && checked_symbol === symbol);
 
@@ -149,3 +158,65 @@ export const findContractCategory = (list: Partial<TList[]>, item: TItem) =>
 export const getContractCategoryKey = (list: TList[], item: TItem) => findContractCategory(list, item)?.key;
 
 export const getContractTypes = (list: TList[], item: TItem) => findContractCategory(list, item)?.contract_types;
+
+const STRAPI_MEDIA_URL = 'https://chief-skinny-instrument.media.strapiapp.com/';
+/* In order to add more videos, please contact Deriv-com team,
+    send the properly named new video files to them and ask to upload the videos to CMS.
+    Then the urls for each video file will become available at https://chief-skinny-instrument.strapiapp.com/api/dtrader-videos
+  */
+const DESCRIPTION_VIDEO_URL: TDtraderVideoUrl = {
+    accumulator: {
+        light: {
+            mp4: 'accumulator_description_light_cdb533b66f.mp4',
+            webm: 'accumulator_description_light_c9ebc2f4ce.webm',
+        },
+        dark: {
+            mp4: 'accumulator_description_dark_04e41f4d77.mp4',
+            webm: 'accumulator_description_dark_1b5c77f52b.webm',
+        },
+    },
+    vanilla: {
+        light: {
+            mp4: 'vanilla_description_light_0bd428ad76.mp4',
+            webm: 'vanilla_description_light_0b8373eb16.webm',
+        },
+        dark: {
+            mp4: 'vanilla_description_dark_5b7c818a6f.mp4',
+            webm: 'vanilla_description_dark_2460d2e864.webm',
+        },
+    },
+};
+
+const ACCU_MANUAL_VIDEO_URL = {
+    desktop: {
+        light: {
+            mp4: 'accumulators_manual_desktop_d86097d525.mp4',
+            webm: 'accumulators_manual_desktop_c04d52a8f3.webm',
+        },
+        dark: {
+            mp4: 'accumulators_manual_desktop_dark_d8ecb5cde3.mp4',
+            webm: 'accumulators_manual_desktop_dark_4cec2afa4b.webm',
+        },
+    },
+    mobile: {
+        light: {
+            mp4: 'accumulators_manual_mobile_0664b3de44.mp4',
+            webm: 'accumulators_manual_mobile_7e4663e580.webm',
+        },
+        dark: {
+            mp4: 'accumulators_manual_mobile_dark_fae872a8cc.mp4',
+            webm: 'accumulators_manual_mobile_dark_8d97dd8816.webm',
+        },
+    },
+};
+
+export const getDescriptionVideoUrl = (contract_type: string, is_dark_theme: boolean, extension: string) => {
+    const url = DESCRIPTION_VIDEO_URL[contract_type]?.[is_dark_theme ? 'dark' : 'light'][extension as 'mp4'];
+    return STRAPI_MEDIA_URL + url ?? '';
+};
+
+export const getAccuManualVideoUrl = (is_mobile: boolean, is_dark_theme: boolean, extension: string) => {
+    const url =
+        ACCU_MANUAL_VIDEO_URL[is_mobile ? 'mobile' : 'desktop'][is_dark_theme ? 'dark' : 'light'][extension as 'mp4'];
+    return STRAPI_MEDIA_URL + url ?? '';
+};

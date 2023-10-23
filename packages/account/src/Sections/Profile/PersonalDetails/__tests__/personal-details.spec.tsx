@@ -150,6 +150,53 @@ describe('<PersonalDetailsForm />', () => {
         });
     });
 
+    it('should render professional client if support_professional_client is true with not verified account', async () => {
+        mock_store.client.current_landing_company.support_professional_client = 'true';
+        renderComponent();
+        const professional_client_text = [
+            /Professional Client/,
+            /By default, all Deriv.com clients are retail clients but anyone can request to be treated as a professional client./,
+            /A professional client receives a lower degree of client protection due to the following./,
+            /We presume that you possess the experience, knowledge, and expertise to make your own investment decisions and properly assess the risk involved./,
+            /We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings./,
+            /You’ll need to authenticate your account before requesting to become a professional client./,
+            /Authenticate my account/,
+        ];
+        professional_client_text.forEach(value => {
+            expect(screen.getByText(value)).toBeInTheDocument();
+        });
+        const auth_text = screen.getByText(/Authenticate my account/);
+        const auth_link = auth_text.getAttribute('href');
+        expect(auth_link).toBe('/account/proof-of-identity');
+    });
+
+    it('should render POI auth link', async () => {
+        mock_store.client.current_landing_company.support_professional_client = 'true';
+        renderComponent();
+        const auth_text = screen.getByText(/Authenticate my account/);
+        const auth_link = auth_text.getAttribute('href');
+        expect(auth_link).toBe('/account/proof-of-identity');
+    });
+
+    it('should render POA auth link', async () => {
+        mock_store.client.current_landing_company.support_professional_client = 'true';
+        mock_store.client.authentication_status.identity_status = 'verified';
+        renderComponent();
+        const auth_text = screen.getByText(/Authenticate my account/);
+        const auth_link = auth_text.getAttribute('href');
+        expect(auth_link).toBe('/account/proof-of-address');
+    });
+
+    it('should render professional client if support_professional_client is true with verified account', async () => {
+        mock_store.client.current_landing_company.support_professional_client = 'true';
+        mock_store.client.authentication_status.document_status = 'verified';
+        mock_store.client.authentication_status.identity_status = 'verified';
+        renderComponent();
+        expect(
+            screen.getByRole('checkbox', { name: /I would like to be treated as a professional client./ })
+        ).toBeInTheDocument();
+    });
+
     it('should update user profile after clicking on submit', async () => {
         renderComponent();
         const first_name = screen.getByTestId('dt_first_name') as HTMLInputElement;

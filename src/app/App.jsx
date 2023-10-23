@@ -13,18 +13,21 @@ import { setActiveSymbols } from '../redux-store/client-slice';
 const App = () => {
     const dispatch = useDispatch();
     const has_active_symbols = useSelector(state => state.client.active_symbols);
+    const getSymbols = data => {
+        symbolPromise.then(() => {
+            try {
+                /* eslint-disable no-new */
+                new ActiveSymbols(data.active_symbols);
+            } catch (error) {
+                globalObserver.emit('Error', error);
+            }
+            dispatch(setActiveSymbols(data));
+        });
+    };
 
     const generateActiveSymbols = () => {
         api_base.getActiveSymbols().then(data => {
-            symbolPromise.then(() => {
-                try {
-                    /* eslint-disable no-new */
-                    new ActiveSymbols(data.active_symbols);
-                } catch (error) {
-                    globalObserver.emit('Error', error);
-                }
-                dispatch(setActiveSymbols(data));
-            });
+            getSymbols(data);
         });
     };
 
@@ -35,15 +38,7 @@ const App = () => {
         will initialize the app without requiring an authorization response. */
         api_base.api.onMessage().subscribe(({ data }) => {
             if (data.msg_type === 'active_symbols') {
-                symbolPromise.then(() => {
-                    try {
-                        /* eslint-disable no-new */
-                        new ActiveSymbols(data.active_symbols);
-                    } catch (error) {
-                        globalObserver.emit('Error', error);
-                    }
-                    dispatch(setActiveSymbols(data));
-                });
+                getSymbols(data);
             }
         });
     }, []);

@@ -69,7 +69,7 @@ const Toolbar = observer(() => {
             >
                 {is_running ? (
                     <Localize
-                        i18n_default_text='The workspace will be reset to the default strategy and any unsaved changes will be lost. <0>Note: This will not affect your running bot.</0>'
+                        i18n_default_text='Deriv Bot will not proceed with any new trades. Any ongoing trades will be completed by our system. Any unsaved changes will be lost.<0>Note: Please check your statement to view completed transactions.</0>'
                         components={[
                             <div
                                 key={0}

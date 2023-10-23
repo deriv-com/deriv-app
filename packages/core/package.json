@@ -139,6 +139,7 @@
         "react-transition-group": "4.4.2",
         "react-window": "^1.8.5",
         "dotenv-webpack": "^8.0.1",
-        "@datadog/browser-rum": "^4.37.0"
+        "@datadog/browser-rum": "^4.37.0",
+        "usehooks-ts": "^2.7.0"
     }
 }

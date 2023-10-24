@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
+import useDevice from '../../../../hooks/useDevice';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
 import { MarketTypeToTitleMapper } from '../../constants';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
@@ -15,6 +16,7 @@ const JurisdictionModal = () => {
 
     const { modalState, show } = useModal();
     const { isLoading } = useAvailableMT5Accounts();
+    const { isMobile } = useDevice();
 
     const marketType = modalState?.marketType || 'all';
     const platform = modalState?.platform || 'mt5';
@@ -32,6 +34,7 @@ const JurisdictionModal = () => {
         : () => (
               <WalletButton
                   disabled={!selectedJurisdiction}
+                  isFullWidth={isMobile}
                   onClick={() => show(<MT5PasswordModal marketType={marketType} platform={platform} />)}
                   text='Next'
               />
@@ -43,8 +46,10 @@ const JurisdictionModal = () => {
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
             <ModalStepWrapper
                 renderFooter={modalFooter}
-                title={isDynamicLeverageVisible ? <DynamicLeverageTitle /> : jurisdictionTitle}
+                shouldHideHeader={isDynamicLeverageVisible}
+                title={jurisdictionTitle}
             >
+                {isDynamicLeverageVisible && <DynamicLeverageTitle />}
                 <div className='wallets-jurisdiction-modal'>
                     <JurisdictionScreen
                         selectedJurisdiction={selectedJurisdiction}

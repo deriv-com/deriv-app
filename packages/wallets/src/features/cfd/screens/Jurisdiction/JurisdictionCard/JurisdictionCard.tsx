@@ -80,10 +80,14 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                 onSelect(jurisdiction);
             }}
         >
-            {!isFlipped && isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
             <React.Fragment>
                 <div className='wallets-jurisdiction-card-front'>
-                    <div className='wallets-jurisdiction-card-front__label'>{header}</div>
+                    {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
+                    <div className='wallets-jurisdiction-card-front__label'>
+                        <WalletText align='center' size='lg' weight='bold'>
+                            {header}
+                        </WalletText>
+                    </div>
                     {rows.map(row => {
                         return (
                             <JurisdictionCardRow

@@ -4,7 +4,7 @@ import ErrorCircleCrossmark from '../../../public/images/error-circle-crossmark.
 import InfoCircleDots from '../../../public/images/info-circle-dots.svg';
 import SuccessCircleCheckmark from '../../../public/images/success-circle-checkmark.svg';
 import { WalletText } from '../index';
-import styles from './WalletAlertMessage.module.css';
+import './WalletAlertMessage.scss';
 
 const typeMapper = {
     error: {
@@ -34,19 +34,19 @@ const WalletAlertMessage: React.FC<TProps> = ({ children, message, type }) => {
     const color = typeMapper[type].color;
 
     return (
-        <div className={styles['wallets-alert-message']} data-testid='dt_wallet-alert-message'>
-            <div className={styles['wallets-alert-message__icon-container']}>
-                <div className={styles['wallets-alert-message__icon-container__line']} />
-                <div className={styles['wallets-alert-message__icon-container__icon']}>
+        <div className='wallets-alert-message' data-testid='dt_wallet-alert-message'>
+            <div className='wallets-alert-message__icon-container'>
+                <div className='wallets-alert-message__icon-container__line' />
+                <div className='wallets-alert-message__icon-container__icon'>
                     <Icon />
                 </div>
             </div>
-            <div className={styles['wallets-alert-message__message-container']}>
+            <div className='wallets-alert-message__message-container'>
                 <WalletText color={color} size={isMobile ? '2xs' : 'xs'}>
                     {message}
                 </WalletText>
             </div>
-            <div className={styles['wallets-alert-message__button-container']}>{children}</div>
+            {children && <div className='wallets-alert-message__button-container'>{children}</div>}
         </div>
     );
 };

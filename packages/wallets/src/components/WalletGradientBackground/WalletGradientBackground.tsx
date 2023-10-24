@@ -1,13 +1,14 @@
 import React from 'react';
+import { THooks } from '../../types';
 import './WalletGradientBackground.scss';
 
 type TProps = {
     bodyClassName?: string;
     children: React.ReactNode;
-    currency: string;
+    currency: THooks.WalletAccountsList['wallet_currency_type'];
     device?: 'desktop' | 'mobile';
     hasShine?: boolean;
-    isDemo?: boolean;
+    isDemo?: THooks.WalletAccountsList['is_virtual'];
     theme?: 'dark' | 'grey' | 'light';
     type?: 'card' | 'header';
 };

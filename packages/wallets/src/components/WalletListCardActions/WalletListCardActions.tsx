@@ -6,6 +6,7 @@ import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
+import { THooks } from '../../types';
 import { WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
@@ -43,9 +44,9 @@ const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
 };
 
 type TProps = {
-    isActive: boolean;
-    isDemo: boolean;
-    loginid: string;
+    isActive: THooks.WalletAccountsList['is_active'];
+    isDemo: THooks.WalletAccountsList['is_virtual'];
+    loginid: THooks.WalletAccountsList['loginid'];
 };
 
 const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {

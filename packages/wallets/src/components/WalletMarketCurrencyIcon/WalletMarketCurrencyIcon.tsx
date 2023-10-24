@@ -1,4 +1,5 @@
 import React, { ComponentType, SVGAttributes } from 'react';
+import type { useSortedMT5Accounts } from '@deriv/api';
 import CTraderIcon from '../../public/images/ctrader.svg';
 import DerivXIcon from '../../public/images/derivx.svg';
 import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
@@ -6,7 +7,6 @@ import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
-import type { useSortedMT5Accounts } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import './WalletMarketCurrencyIcon.scss';
 

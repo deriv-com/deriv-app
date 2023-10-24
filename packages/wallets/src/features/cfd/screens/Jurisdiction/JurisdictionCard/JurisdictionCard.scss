@@ -10,9 +10,10 @@
     position: relative;
     height: 100%;
 
-    transform-style: preserve-3d;
-    transition-duration: 0.6s;
+    transition-duration: 0.3s;
     transition-property: transform, box-shadow;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
 
     &--flip {
         transform: rotateY(180deg);
@@ -41,26 +42,35 @@
     }
 
     &-front {
+        -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
         display: flex;
         flex-direction: column;
+        height: 100%;
+        width: 100%;
         justify-content: center;
-        padding: 1.6rem;
+        padding: 2rem 1.6rem;
 
+        @include mobile {
+            width: 100%;
+        }
+
+        -webkit-transform-style: preserve-3d;
         transform-style: preserve-3d;
-        transition: transform 0.6s;
+        transition: transform 0.3s;
 
         &--flip {
+            -webkit-transform: rotateY(180deg);
             transform: rotateY(180deg);
         }
 
         &__label {
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 3rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             text-align: center;
-            margin-top: 2rem;
+
+            @include mobile {
+                margin-top: 2.5rem;
+            }
         }
 
         &__tag {
@@ -68,7 +78,7 @@
             border-radius: 0.4rem;
             color: #ffffff;
             font-weight: 700;
-            padding: 1rem;
+            padding: 0.5rem 1rem;
 
             &-icons {
                 display: flex;

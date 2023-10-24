@@ -27,7 +27,7 @@ const WalletsAddMoreCarousel = () => {
     return (
         <div className='wallets-add-more' ref={hoverRef}>
             <div className='wallets-add-more__header'>
-                <WalletText size={isMobile ? '3xl' : '4xl'} weight='bold'>
+                <WalletText size='2xl' weight='bold'>
                     Add more Wallets
                 </WalletText>
             </div>

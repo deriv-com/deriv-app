@@ -10,9 +10,9 @@ import {
 import { ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
+import { TMarketTypes, TPlatforms } from '../../../../types';
 import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
 import { CreatePassword, EnterPassword, Success } from '../../screens';
-import { TMarketTypes, TPlatforms } from '../../types';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;

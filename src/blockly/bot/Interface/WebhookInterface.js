@@ -1,11 +1,16 @@
 import { translate } from '@i18n';
-import { notify } from '../broadcast';
+import { notify, notifyError } from '../broadcast';
 
 export default Interface =>
     class extends Interface {
         // eslint-disable-next-line class-methods-use-this
         sendWebhook(url, payload) {
-            const onError = () => notify('warn', translate('Unable to send webhook'));
+            const onError = error => {
+                notify('warn', translate('Unable to send webhook'));
+                if (error) {
+                    notifyError(JSON.stringify(error, ['message', 'arguments', 'type', 'name']));
+                }
+            };
             const fetchOption = {
                 method: 'POST',
                 mode: 'cors',
@@ -22,7 +27,7 @@ export default Interface =>
                         onError();
                     }
                 })
-                .catch(onError);
+                .catch(error => onError(error));
         }
 
         getWebhookInterface() {

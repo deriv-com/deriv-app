@@ -65,10 +65,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
         }
     };
 
-    const buttonFontSizeMapper: Record<
-        Extract<TGenericSizes, 'lg' | 'md' | 'sm'>,
-        Extract<TGenericSizes, 'sm' | 'xs'>
-    > = {
+    const buttonFontSizeMapper = {
         lg: 'sm',
         md: 'sm',
         sm: 'xs',

@@ -20,7 +20,7 @@ import {
     getStaticUrl,
     getUrlSmartTrader,
     getUrlBinaryBot,
-    MT5LoginListStatus,
+    MT5AccountStatus,
 } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
@@ -89,8 +89,8 @@ const TradingAppCard = ({
 
     const handleStatusBadgeClick = (mt5_acc_auth_status: string) => {
         switch (mt5_acc_auth_status) {
-            case MT5LoginListStatus.MIGRATED_WITH_POSITION:
-            case MT5LoginListStatus.MIGRATED_WITHOUT_POSITION:
+            case MT5AccountStatus.MIGRATED_WITH_POSITION:
+            case MT5AccountStatus.MIGRATED_WITHOUT_POSITION:
                 return setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
             default:
                 return null;
@@ -128,8 +128,8 @@ const TradingAppCard = ({
     };
 
     const migration_status =
-        mt5_acc_auth_status === MT5LoginListStatus.MIGRATED_WITH_POSITION ||
-        mt5_acc_auth_status === MT5LoginListStatus.MIGRATED_WITHOUT_POSITION;
+        mt5_acc_auth_status === MT5AccountStatus.MIGRATED_WITH_POSITION ||
+        mt5_acc_auth_status === MT5AccountStatus.MIGRATED_WITHOUT_POSITION;
     const disable_btn = mt5_acc_auth_status && !migration_status;
 
     return (

@@ -7,7 +7,7 @@ import {
     getFormattedJurisdictionMarketTypes,
     Jurisdiction,
     JURISDICTION_MARKET_TYPES,
-    MT5LoginListStatus,
+    MT5AccountStatus,
 } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -43,7 +43,7 @@ const OpenPositionsSVGModal = ({
             : getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.DERIVED);
     const from_account = getFormattedJurisdictionCode(Jurisdiction.SVG);
     const cfd_platform = getCFDPlatformNames(CFD_PLATFORMS.MT5);
-    const is_open_order_position = status === MT5LoginListStatus.MIGRATED_WITH_POSITION;
+    const is_open_order_position = status === MT5AccountStatus.MIGRATED_WITH_POSITION;
 
     const onClick = () => {
         setModalOpen(false);

@@ -9,7 +9,7 @@ import {
     getCurrencyName,
     getPlatformSettings,
     validNumber,
-    MT5LoginListStatus,
+    MT5AccountStatus,
     routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -122,8 +122,8 @@ const AccountTransferForm = observer(
         } = crypto_fiat_converter;
 
         const is_open_order_position_status_present =
-            selected_to.status === MT5LoginListStatus.MIGRATED_WITH_POSITION ||
-            selected_to.status === MT5LoginListStatus.MIGRATED_WITHOUT_POSITION;
+            selected_to.status === MT5AccountStatus.MIGRATED_WITH_POSITION ||
+            selected_to.status === MT5AccountStatus.MIGRATED_WITHOUT_POSITION;
 
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});

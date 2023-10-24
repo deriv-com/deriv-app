@@ -7,7 +7,6 @@ import {
     VerifyEmailResponse,
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
-import { TCFDPasswordFormValues } from './cfd-password-modal/cfd-password-modal';
 import {
     TTradingPlatformAvailableAccount,
     TExistingData,
@@ -19,6 +18,7 @@ import {
     TCFDsPlatformType,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
+import { TCFDPasswordFormValues } from './cfd-password-modal/types';
 
 export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;

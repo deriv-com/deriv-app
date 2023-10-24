@@ -12,13 +12,23 @@
     }
 
     &__header {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        align-self: stretch;
         padding-bottom: 24px;
+
+        &-title {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
 
         @include mobile {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin: auto 1.8rem;
+            padding-top: 1.5rem;
         }
 
         &-subtitle {

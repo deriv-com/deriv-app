@@ -82,6 +82,7 @@ const ContractInfo = ({
         >
             <div
                 id={`dt_purchase_${type.toLowerCase()}_price`}
+                data-testid={`dt_purchase_${type.toLowerCase()}_price`}
                 className={classNames('trade-container__price-info', {
                     'trade-container__price-info--disabled': has_error_or_not_loaded,
                     'trade-container__price-info--slide': is_loading && !should_fade,

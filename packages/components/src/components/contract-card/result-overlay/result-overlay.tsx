@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { NavLink } from 'react-router-dom';
 import Icon from '../../icon';
 import { TGetCardLables, TGetContractPath } from '../../types';
+import Text from '../../text';
 
 type TResultOverlayProps = {
     contract_id?: number;
@@ -15,6 +16,7 @@ type TResultOverlayProps = {
     is_visible: boolean;
     onClick: () => void;
     onClickRemove?: (contract_id?: number) => void;
+    payout_info: string;
     result: string;
 };
 
@@ -30,17 +32,8 @@ export const ResultStatusIcon = ({ getCardLabels, is_contract_won }: TResultStat
             'dc-result__caption--lost': !is_contract_won,
         })}
     >
-        {is_contract_won ? (
-            <React.Fragment>
-                {getCardLabels().WON}
-                <Icon icon='IcCheckmarkCircle' className='dc-result__icon' color='green' />
-            </React.Fragment>
-        ) : (
-            <React.Fragment>
-                {getCardLabels().LOST}
-                <Icon icon='IcCrossCircle' className='dc-result__icon' color='red' />
-            </React.Fragment>
-        )}
+        <Icon icon='IcPositionClosed' className='dc-result__icon' color={is_contract_won ? 'green' : 'red'} />
+        {getCardLabels().CLOSED}
     </span>
 );
 
@@ -53,6 +46,7 @@ const ResultOverlay = ({
     is_visible,
     onClick,
     onClickRemove,
+    payout_info,
     result,
 }: TResultOverlayProps) => {
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -100,7 +94,20 @@ const ResultOverlay = ({
                             onClick={handleClick}
                         />
                     )}
-                    <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_contract_won} />
+                    <div className='dc-result__content'>
+                        <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_contract_won} />
+                        <Text
+                            className={classNames('dc-result__payout', {
+                                'dc-result__payout--won': is_contract_won,
+                                'dc-result__payout--lost': !is_contract_won,
+                            })}
+                            weight='bold'
+                            size='s'
+                            line_height='xxl'
+                        >
+                            {payout_info}
+                        </Text>
+                    </div>
                 </div>
             </CSSTransition>
         </React.Fragment>

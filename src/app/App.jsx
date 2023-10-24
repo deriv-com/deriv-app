@@ -15,7 +15,7 @@ const App = () => {
     const has_active_symbols = useSelector(state => state.client.active_symbols);
     const has_logged_in = useSelector(state => state.client.is_logged);
 
-    const getSymbols = data => {
+    const initActiveSymbols = data => {
         symbolPromise.then(() => {
             try {
                 /* eslint-disable no-new */
@@ -27,20 +27,18 @@ const App = () => {
         });
     };
 
-    const generateActiveSymbols = () => {
-        api_base.getActiveSymbols().then(data => {
-            getSymbols(data);
-        });
-    };
-
     React.useEffect(() => {
-        api_base.api.expectResponse('authorize').then(() => generateActiveSymbols());
+        api_base.api.expectResponse('authorize').then(() =>
+            api_base.getActiveSymbols().then(data => {
+                initActiveSymbols(data);
+            })
+        );
 
         /* This code is used to monitor active_symbols when the user is not logged in and
         will initialize the app without requiring an authorization response. */
         const listenToActiveSymbols = data => {
             if (!has_logged_in && data.msg_type === 'active_symbols') {
-                getSymbols(data);
+                initActiveSymbols(data);
             }
         };
 

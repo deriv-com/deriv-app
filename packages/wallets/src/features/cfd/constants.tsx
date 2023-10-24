@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { TMarketTypes, TPlatforms } from './types';
+import { TMarketTypes, TPlatforms } from '../../types';
 import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
 import DerivedMT5Icon from '../../public/images/mt5-derived.svg';

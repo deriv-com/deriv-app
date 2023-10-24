@@ -39,7 +39,7 @@ const WalletAlertMessage: React.FC<TProps> = ({ children, message, type }) => {
                 </div>
             </div>
             <div className='wallets-alert-message__message-container'>
-                <WalletText color={color} size={'xs'}>
+                <WalletText color={color} size='xs'>
                     {message}
                 </WalletText>
             </div>

@@ -5,7 +5,6 @@ import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { TError } from '../../../../types';
-import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
@@ -13,14 +12,6 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 
 let mockRootStore: ReturnType<typeof mockStore>;
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useIsMt5LoginListStatusPresent: jest.fn(() => ({ is_flag_present: false, flag_value: undefined })),
-}));
-const mockedUseIsMt5LoginListStatusPresent = useIsMt5LoginListStatusPresent as jest.MockedFunction<
-    typeof useIsMt5LoginListStatusPresent
->;
 
 jest.mock('Assets/svgs/trading-platform', () =>
     jest.fn(props => <div data-testid={props.icon}>TradingPlatformIcon</div>)
@@ -78,7 +69,14 @@ describe('<AccountTransferForm />', () => {
                             is_dxtrade: false,
                             balance: 0,
                         },
-                        selected_to: { currency: 'USD', is_mt: false, is_crypto: false, is_dxtrade: false, balance: 0 },
+                        selected_to: {
+                            currency: 'USD',
+                            is_mt: false,
+                            is_crypto: false,
+                            is_dxtrade: false,
+                            balance: 0,
+                            status: '',
+                        },
                         transfer_fee: 2,
                         transfer_limit: {
                             min: 0,
@@ -288,18 +286,20 @@ describe('<AccountTransferForm />', () => {
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
 
-    it('should display no new positions can be opened when transferring amount to a migrated svg account', () => {
-        mockedUseIsMt5LoginListStatusPresent.mockReturnValue({ is_flag_present: true, flag_value: 1 });
+    it('should display "no new positions can be opened" when transferring amount to a migrated svg account with position', () => {
+        mockRootStore.modules.cashier.account_transfer.selected_to.status = 'migrated_with_position';
         renderAccountTransferForm();
+
         expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
         expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
     });
 
-    it('should display the number of transfers remaining when transferring amount to a non migrated svg accounts', () => {
-        mockedUseIsMt5LoginListStatusPresent.mockReturnValue({ is_flag_present: false, flag_value: undefined });
+    it('should display "no new positions can be opened" when transferring amount to a migrated svg account without position', () => {
+        mockRootStore.modules.cashier.account_transfer.selected_to.status = 'migrated_without_position';
         renderAccountTransferForm();
-        expect(screen.getByText(/You have 0 transfer remaining for today./i)).toBeInTheDocument();
-        expect(screen.queryByText(/You can no longer open new positions with this account./i)).not.toBeInTheDocument();
+
+        expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
+        expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
     });
 
     describe('<Dropdown />', () => {

@@ -2,17 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import OpenPositionsSVGModal from '../open-positions-svg-modal';
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useMT5SVGEligibleToMigrate: jest.fn(() => ({ eligible_account_to_migrate_label: 'BVI' })),
-}));
-
-const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.MockedFunction<
-    typeof useMT5SVGEligibleToMigrate
->;
 
 describe('<OpenPositionsSVGModal/>', () => {
     let modal_root_el: HTMLDivElement;
@@ -27,17 +18,35 @@ describe('<OpenPositionsSVGModal/>', () => {
     });
 
     const mock_props = {
+        loginId: 'MT5YFHU',
         market_type: 'financial',
-        open_order_position_status: true,
+        status: 'migrated_with_position',
         is_modal_open: true,
         setModalOpen: jest.fn(),
     };
 
-    const renderComponent = ({ props = mock_props }) => {
+    const store_config = mockStore({
+        modules: {
+            cfd: {
+                migrated_mt5_accounts: [
+                    {
+                        loginId: 'MT5YFHU',
+                        to_account: {
+                            synthetic: 'bvi',
+                        },
+                    },
+                ],
+            },
+        },
+    });
+
+    const renderComponent = ({ props = mock_props, store = store_config }) => {
         return render(
-            <APIProvider>
-                <OpenPositionsSVGModal {...props} />
-            </APIProvider>
+            <StoreProvider store={store}>
+                <APIProvider>
+                    <OpenPositionsSVGModal {...props} />
+                </APIProvider>
+            </StoreProvider>
         );
     };
 
@@ -46,18 +55,18 @@ describe('<OpenPositionsSVGModal/>', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should render title correctly when open_order_position_status is true', () => {
+    it('should render title correctly when status is migrated_with_position', () => {
         renderComponent({ props: mock_props });
 
         const modal_title = screen.getByText(/No new positions/i);
         expect(modal_title).toBeInTheDocument();
     });
 
-    it('should render title correctly when open_order_position_status is false', () => {
+    it('should render title correctly when status is migrated_without_position', () => {
         const new_mock_props = {
             ...mock_props,
             market_type: 'financial',
-            open_order_position_status: false,
+            status: 'migrated_without_position',
         };
         renderComponent({ props: new_mock_props });
 
@@ -65,12 +74,7 @@ describe('<OpenPositionsSVGModal/>', () => {
         expect(modal_title).toBeInTheDocument();
     });
 
-    it('should render modal content correctly when open_order_position_status is true and user migrates to BVI', () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useMT5SVGEligibleToMigrate
-        mockUseMT5SVGEligibleToMigrate.mockReturnValue({
-            eligible_account_to_migrate_label: 'BVI',
-        });
-
+    it('should render modal content correctly when status is migrated_with_position and user migrates to BVI', () => {
         renderComponent({ props: mock_props });
         const modal_content_bvi = screen.getByText(
             /You can no longer open new positions with your MT5 Financial SVG account. Please use your MT5 Financial BVI account to open new positions./
@@ -78,27 +82,33 @@ describe('<OpenPositionsSVGModal/>', () => {
         expect(modal_content_bvi).toBeInTheDocument();
     });
 
-    it('should render modal content correctly when open_order_position_status is true and user migrates to Vanuatu', () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useMT5SVGEligibleToMigrate
-        mockUseMT5SVGEligibleToMigrate.mockReturnValue({
-            eligible_account_to_migrate_label: 'Vanuatu',
-        });
-        renderComponent({ props: mock_props });
+    it('should render modal content correctly when status is migrated_with_position and user migrates to Vanuatu', () => {
+        const new_store_config = {
+            ...store_config,
+            modules: {
+                cfd: {
+                    migrated_mt5_accounts: [
+                        {
+                            loginId: 'MT5YFHU',
+                            to_account: {
+                                financial: 'vanuatu',
+                            },
+                        },
+                    ],
+                },
+            },
+        };
+        renderComponent({ props: mock_props, store: new_store_config });
         const modal_content_vanuatu = screen.getByText(
             /You can no longer open new positions with your MT5 Financial SVG account. Please use your MT5 Financial Vanuatu account to open new positions./
         );
         expect(modal_content_vanuatu).toBeInTheDocument();
     });
 
-    it('should render modal content correctly when open_order_position_status is true and market_type is derived', () => {
-        // @ts-expect-error need to come up with a way to mock the return type of useMT5SVGEligibleToMigrate
-        mockUseMT5SVGEligibleToMigrate.mockReturnValue({
-            eligible_account_to_migrate_label: 'BVI',
-        });
+    it('should render modal content correctly when status is migrated_with_position and market_type is derived', () => {
         const mock_props_derived = {
             ...mock_props,
             market_type: 'derived',
-            open_order_position_status: true,
         };
         renderComponent({ props: mock_props_derived });
 
@@ -108,11 +118,11 @@ describe('<OpenPositionsSVGModal/>', () => {
         expect(modal_content_derived).toBeInTheDocument();
     });
 
-    it('should render modal content correctly when open_order_position_status is false and market_type is derived', () => {
+    it('should render modal content correctly when status is migrated_without_position and market_type is derived', () => {
         const new_mock_props = {
             ...mock_props,
             market_type: 'derived',
-            open_order_position_status: false,
+            status: 'migrated_without_position',
         };
         renderComponent({ props: new_mock_props });
         const modal_content = screen.getByText(
@@ -121,11 +131,11 @@ describe('<OpenPositionsSVGModal/>', () => {
         expect(modal_content).toBeInTheDocument();
     });
 
-    it('should render modal content correctly when open_order_position_status is false and market_type is financial', () => {
+    it('should render modal content correctly when status is migrated_without_position and market_type is financial', () => {
         const new_mock_props = {
             ...mock_props,
             market_type: 'financial',
-            open_order_position_status: false,
+            status: 'migrated_without_position',
         };
         renderComponent({ props: new_mock_props });
         const modal_content = screen.getByText(

@@ -1,6 +1,8 @@
 import React, { ComponentProps, useEffect, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { TransactionsCompleted, TransactionsFilter, TransactionsPending } from './components';
+import { WalletDropdown } from '../../../../components';
+import FilterIcon from '../../../../public/images/filter.svg';
+import { TransactionsCompleted, TransactionsPending } from './components';
 import './Transactions.scss';
 
 type TTransactionsPendingFilter = ComponentProps<typeof TransactionsPending>['filter'];
@@ -59,7 +61,16 @@ const Transactions = () => {
                         </label>
                     </div>
                 )}
-                <TransactionsFilter isPendingActive={isPendingActive} onSelect={setFilterValue} />
+                <WalletDropdown
+                    icon={<FilterIcon />}
+                    label='Filter'
+                    list={Object.keys(filtersMapper[isPendingActive ? 'pending' : 'completed']).map(key => ({
+                        text: key.replace(/^\w/, c => c.toUpperCase()),
+                        value: key,
+                    }))}
+                    onSelect={value => setFilterValue(value)}
+                    value={filterValue}
+                />
             </div>
             {isPendingActive ? (
                 <TransactionsPending filter={filtersMapper.pending[filterValue] as TTransactionsPendingFilter} />

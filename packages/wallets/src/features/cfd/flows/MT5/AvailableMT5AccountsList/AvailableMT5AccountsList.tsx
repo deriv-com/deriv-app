@@ -3,7 +3,7 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { TradingAccountCard, WalletButton } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
-import { THooks } from '../../../types';
+import { THooks } from '../../../../../types';
 import './AvailableMT5AccountsList.scss';
 import { MarketTypeToDescriptionMapper, MarketTypeToIconMapper, MarketTypeToTitleMapper } from '../../../constants';
 

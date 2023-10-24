@@ -11,9 +11,11 @@ type TWalletsPercentageSelectorBlock = {
 const WalletsPercentageSelectorBlock = ({ fillPercentage, label, onClick }: TWalletsPercentageSelectorBlock) => {
     return (
         <div className='wallets-percentage-selector-block-container'>
-            <WalletText className='wallets-percentage-selector__text' color='prominent' size='xs'>
-                {label}
-            </WalletText>
+            <div className='wallets-percentage-selector__text'>
+                <WalletText color='prominent' size='xs'>
+                    {label}
+                </WalletText>
+            </div>
             <div className='wallets-percentage-selector-block' onClick={onClick}>
                 <div className='wallets-percentage-selector-block__fill' style={{ width: `${fillPercentage}%` }} />
             </div>

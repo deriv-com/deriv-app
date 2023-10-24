@@ -4,7 +4,7 @@ import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import './Success.scss';
-import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../types';
+import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
 import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
 
 type TSuccessProps = {

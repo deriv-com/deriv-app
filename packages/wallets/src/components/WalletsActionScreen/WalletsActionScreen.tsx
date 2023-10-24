@@ -1,4 +1,5 @@
-import React, { ReactNode, PropsWithChildren } from 'react';
+import React, { ComponentProps, PropsWithChildren, ReactNode } from 'react';
+import classNames from 'classnames';
 import useDevice from '../../hooks/useDevice';
 import WalletButton from '../Base/WalletButton/WalletButton';
 import WalletText from '../Base/WalletText/WalletText';
@@ -6,10 +7,12 @@ import './WalletsActionScreen.scss';
 
 type TProps = {
     actionText?: string;
+    actionVariant?: ComponentProps<typeof WalletButton>['variant'];
     description: ReactNode;
     icon: ReactNode;
     onAction?: () => void;
-    title: string;
+    title?: string;
+    type?: 'modal' | 'page';
 };
 
 /**
@@ -26,30 +29,35 @@ type TProps = {
  */
 const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     actionText,
+    actionVariant = 'contained',
     description,
     icon,
     onAction,
     title,
+    type = 'page',
 }) => {
     const { isMobile } = useDevice();
 
     return (
-        <div className='wallets-action-screen'>
-            <div className='wallets-action-screen__icon'>{icon}</div>
-
-            <div className='wallets-action-screen__title'>
-                <WalletText size={isMobile ? 'lg' : '2xl'} weight='bold'>
-                    {title}
+        <div
+            className={classNames('wallets-action-screen', {
+                'wallets-action-screen__modal': type === 'modal',
+            })}
+        >
+            {icon}
+            <div className='wallets-action-screen__content'>
+                {title && (
+                    <WalletText align='center' size={isMobile ? 'sm' : 'md'} weight='bold'>
+                        {title}
+                    </WalletText>
+                )}
+                <WalletText align='center' size={isMobile ? 'sm' : 'md'}>
+                    {description}
                 </WalletText>
             </div>
-
-            <div className='wallets-action-screen__subtitle'>
-                <WalletText size={isMobile ? 'md' : 'lg'}>{description}</WalletText>
-            </div>
-
-            <div className='wallets-action-screen__button'>
-                {actionText && <WalletButton color='primary' onClick={onAction} size='lg' text={actionText} />}
-            </div>
+            {actionText && (
+                <WalletButton color='primary' onClick={onAction} size='lg' text={actionText} variant={actionVariant} />
+            )}
         </div>
     );
 };

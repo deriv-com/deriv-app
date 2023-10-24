@@ -1,11 +1,12 @@
 import React from 'react';
 import useDevice from '../../hooks/useDevice';
+import { THooks } from '../../types';
 import { WalletText } from '../Base';
 import './WalletListCardBadge.scss';
 
 type TProps = {
-    isDemo?: boolean;
-    label?: string;
+    isDemo?: THooks.WalletAccountsList['is_virtual'];
+    label?: THooks.WalletAccountsList['landing_company_name'];
 };
 
 const WalletListCardBadge: React.FC<TProps> = ({ isDemo, label }) => {

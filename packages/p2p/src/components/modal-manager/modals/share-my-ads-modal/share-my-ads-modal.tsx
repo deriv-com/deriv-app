@@ -132,7 +132,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                             />
                             <Button
                                 className='share-my-ads-modal__container__card__download-button'
-                                disabled={is_download_disabled && !has_image_loaded}
+                                disabled={is_download_disabled}
                                 secondary
                                 onClick={handleGenerateImage}
                             >

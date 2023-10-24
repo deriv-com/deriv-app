@@ -1,0 +1,12 @@
+.wallets-deposit-fiat {
+    &__iframe {
+        width: 50%;
+        max-width: 58.8rem;
+        height: 100%;
+        border: none;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+}

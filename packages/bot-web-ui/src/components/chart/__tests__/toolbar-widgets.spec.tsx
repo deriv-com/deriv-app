@@ -51,21 +51,31 @@ describe('ToolbarWidgets', () => {
         );
     });
 
-    it('should render ToolbarWidgets in desktop', () => {
+    it('should render ToolbarWidgets in desktop', async () => {
         (isMobile as jest.Mock).mockReturnValueOnce(false);
         (isDesktop as jest.Mock).mockReturnValueOnce(true);
-        render(<ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />, {
-            wrapper,
-        });
-        expect(screen.getByText('Mocked StudyLegend')).toBeInTheDocument();
+        render(
+            <React.Suspense fallback={<div />}>
+                <ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />
+            </React.Suspense>,
+            {
+                wrapper,
+            }
+        );
+        expect(await screen.findByText('Mocked StudyLegend')).toBeInTheDocument();
     });
 
-    it('should render ToolbarWidgets in mobile', () => {
+    it('should render ToolbarWidgets in mobile', async () => {
         (isMobile as jest.Mock).mockReturnValueOnce(true);
         (isDesktop as jest.Mock).mockReturnValueOnce(false);
-        render(<ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />, {
-            wrapper,
-        });
-        expect(screen.queryByText('Mocked StudyLegend')).not.toBeInTheDocument();
+        render(
+            <React.Suspense fallback={<div />}>
+                <ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />
+            </React.Suspense>,
+            {
+                wrapper,
+            }
+        );
+        expect(await screen.findByText('Mocked ChartMode')).toBeInTheDocument();
     });
 });

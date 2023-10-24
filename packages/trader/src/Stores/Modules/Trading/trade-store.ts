@@ -196,7 +196,6 @@ export default class TradeStore extends BaseStore {
     contract_start_type = '';
     contract_type = '';
     contract_types_list: TContractTypesList = {};
-    non_available_contract_types_list: TContractTypesList = {};
     trade_types: { [key: string]: string } = {};
 
     // Amount
@@ -300,6 +299,7 @@ export default class TradeStore extends BaseStore {
 
     initial_barriers?: { barrier_1: string; barrier_2: string };
     is_initial_barrier_applied = false;
+    is_digits_widget_active = false;
 
     should_skip_prepost_lifecycle = false;
 
@@ -382,6 +382,7 @@ export default class TradeStore extends BaseStore {
             hovered_contract_type: observable,
             is_accumulator: computed,
             is_chart_loading: observable,
+            is_digits_widget_active: observable,
             is_equal: observable,
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
@@ -399,7 +400,6 @@ export default class TradeStore extends BaseStore {
             maximum_ticks: observable,
             multiplier_range_list: observable,
             multiplier: observable,
-            non_available_contract_types_list: observable,
             previous_symbol: observable,
             proposal_info: observable.ref,
             purchase_info: observable.ref,
@@ -471,6 +471,7 @@ export default class TradeStore extends BaseStore {
             setContractTypes: action.bound,
             setDefaultSymbol: action.bound,
             setIsTradeParamsExpanded: action.bound,
+            setIsDigitsWidgetActive: action.bound,
             setMarketStatus: action.bound,
             setMobileDigitView: action.bound,
             setPreviousSymbol: action.bound,
@@ -1035,7 +1036,7 @@ export default class TradeStore extends BaseStore {
         if (obj_new_values.contract_type === 'accumulator') {
             savePreviousChartMode(chart_type, granularity);
             updateGranularity(0);
-            updateChartType('mountain');
+            updateChartType(this.root_store.client.is_beta_chart ? 'line' : 'mountain');
         } else if (
             (obj_new_values.contract_type || obj_new_values.symbol) &&
             prev_chart_type &&
@@ -1692,5 +1693,9 @@ export default class TradeStore extends BaseStore {
         if (this.is_vanilla) {
             this.strike_price_choices = { barrier: this.barrier_1, barrier_choices };
         }
+    }
+
+    setIsDigitsWidgetActive(is_active: boolean) {
+        this.is_digits_widget_active = is_active;
     }
 }

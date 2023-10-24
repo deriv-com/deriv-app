@@ -16,9 +16,10 @@ const typeIconMapper = {
 type TProps = RequireAtLeastOne<{ children: React.ReactNode; message: React.ReactNode; title: React.ReactNode }> & {
     size?: 'lg' | 'md' | 'sm' | 'xs';
     type?: keyof typeof typeIconMapper;
+    variant?: 'contained' | 'outlined';
 };
 
-const InlineMessage: React.FC<TProps> = ({ children, message, size = 'xs', title, type = 'warning' }) => {
+const InlineMessage: React.FC<TProps> = ({ children, message, size = 'xs', title, type = 'warning', variant }) => {
     const { isMobile } = useDevice();
     const Icon = typeIconMapper[type];
     const iconSize = size === 'lg' && !isMobile ? 24 : 16;
@@ -36,9 +37,15 @@ const InlineMessage: React.FC<TProps> = ({ children, message, size = 'xs', title
     const fontSize = sizeToFontSizeMapper[size];
 
     return (
-        <div className={`wallets-inline-message wallets-inline-message__${type} wallets-inline-message__${size} `}>
-            <Icon className={`wallets-inline-message__icon__${size}`} height={iconSize} width={iconSize} />
-            <span className={`wallets-inline-message__messages inline-message__messages__${size}`} style={{ fontSize }}>
+        <div
+            className={`wallets-inline-message 
+                         wallets-inline-message--${type} 
+                         wallets-inline-message--${size} 
+                         wallets-inline-message--${variant} 
+                         `}
+        >
+            <Icon className={`wallets-inline-message__icon--${size}`} height={iconSize} width={iconSize} />
+            <span className={`wallets-inline-message__messages inline-message__messages--${size}`} style={{ fontSize }}>
                 {title && <strong>{title}</strong>}
                 {message && <span>{message}</span>}
                 {children}

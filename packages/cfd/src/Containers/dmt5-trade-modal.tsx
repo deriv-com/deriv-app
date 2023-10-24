@@ -101,7 +101,7 @@ const DMT5TradeModal = ({
                             />
                         </Text>
                     )}
-                    {mt5_trade_account.status && (
+                    {mt5_trade_account?.status && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
                             account_status={mt5_trade_account.status}

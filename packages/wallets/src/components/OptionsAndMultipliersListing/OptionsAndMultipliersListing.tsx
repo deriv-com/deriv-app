@@ -64,7 +64,7 @@ const OptionsAndMultipliersListing = () => {
                             Earn a range of payouts by correctly predicting market price movements with{' '}
                             <a
                                 className='wallets-options-and-multipliers-listing__header-subtitle__link'
-                                href='https://deriv.com/trade-types/options/'
+                                href='https://deriv.com/trade-types/options/digital-options/up-and-down/'
                                 key={0}
                                 rel='noopener noreferrer'
                                 target='_blank'

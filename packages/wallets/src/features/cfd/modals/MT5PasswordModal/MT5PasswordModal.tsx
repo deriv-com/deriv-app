@@ -7,13 +7,7 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import {
-    ModalStepWrapper,
-    ModalWrapper,
-    WalletButton,
-    WalletButtonGroup,
-    WalletText,
-} from '../../../../components/Base';
+import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { CreatePassword, EnterPassword, Success } from '../../screens';

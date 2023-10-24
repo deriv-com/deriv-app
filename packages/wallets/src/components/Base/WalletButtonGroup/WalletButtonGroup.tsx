@@ -11,8 +11,8 @@ const WalletButtonGroup: FC<PropsWithChildren<TWalletButtonGroupProps>> = ({ chi
     return (
         <div
             className={classNames('wallets-button-group', {
-                'wallets-button-group--vertical': isVertical,
                 'wallets-button-group--flex': isFlex,
+                'wallets-button-group--vertical': isVertical,
             })}
         >
             {children}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useActiveWalletAccount } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import IcAppstoreBinaryBot from '../../public/images/ic-appstore-binary-bot.svg';
 import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
@@ -47,6 +48,7 @@ const optionsAndMultipliers = [
 const OptionsAndMultipliersListing = () => {
     const history = useHistory();
     const { isMobile } = useDevice();
+    const { data } = useActiveWalletAccount();
 
     return (
         <div className='wallets-options-and-multipliers-listing'>
@@ -88,14 +90,16 @@ const OptionsAndMultipliersListing = () => {
                         leading={() => (
                             <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
                         )}
-                        trailing={() => (
-                            <WalletButton
-                                onClick={() => {
-                                    history.push(account.redirect);
-                                }}
-                                text='Open'
-                            />
-                        )}
+                        trailing={() =>
+                            data?.dtrade_loginid && (
+                                <WalletButton
+                                    onClick={() => {
+                                        history.push(account.redirect);
+                                    }}
+                                    text='Open'
+                                />
+                            )
+                        }
                     >
                         <div className='wallets-options-and-multipliers-listing__content__details'>
                             <WalletText size='sm' weight='bold'>

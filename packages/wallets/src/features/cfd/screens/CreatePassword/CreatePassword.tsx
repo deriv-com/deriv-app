@@ -1,31 +1,18 @@
 import React from 'react';
-import { useAvailableMT5Accounts, useCreateOtherCFDAccount } from '@deriv/api';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import './CreatePassword.scss';
-
-type TPlatformMT5 = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number]['platform'];
-
-type TPlatformOtherAccounts =
-    | Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'];
-
-type TPlatform = TPlatformMT5 | TPlatformOtherAccounts;
-
-const platformToTitleMapper: Record<TPlatform, string> = {
-    ctrader: 'cTrader',
-    derivez: 'Deriv EZ',
-    dxtrade: 'Deriv X',
-    mt5: 'Deriv MT5',
-};
+import { TPlatforms } from '../../../../types';
+import { PlatformToTitleMapper } from '../../constants';
 
 type TProps = {
     icon: React.ReactNode;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick: () => void;
-    platform: TPlatform;
+    platform: TPlatforms.All;
 };
 
 const CreatePassword: React.FC<TProps> = ({ icon, onPasswordChange, onPrimaryClick, platform }) => {
-    const title = platformToTitleMapper[platform];
+    const title = PlatformToTitleMapper[platform];
     return (
         <div className='wallets-create-password'>
             {icon}

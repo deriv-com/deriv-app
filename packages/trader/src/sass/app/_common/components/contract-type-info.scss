@@ -27,6 +27,7 @@
     }
     &__content {
         /* postcss-bem-linter: ignore */
+
         &-glossary {
             &--heading {
                 margin: 0 !important;
@@ -51,10 +52,6 @@
             @include typeface(--paragraph-left-normal-black, none);
             margin-bottom: 1.6rem;
             color: var(--text-general);
-
-            @supports (-moz-appearance: none) {
-                width: 98%;
-            }
         }
 
         /* postcss-bem-linter: ignore */
@@ -119,6 +116,10 @@
 
         &--has-toggle-buttons {
             margin-top: 0;
+
+            @supports (-moz-appearance: none) {
+                width: 98%;
+            }
         }
     }
     &__action-bar {

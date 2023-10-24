@@ -10,13 +10,14 @@ type TProps = {
     isActive: boolean;
     isDemo: boolean;
     loginid: string;
+    title: string;
 };
 
-const WalletListCardIDetails: React.FC<TProps> = ({ badge, currency, isActive, isDemo, loginid }) => (
+const WalletListCardIDetails: React.FC<TProps> = ({ badge, isActive, isDemo, loginid, title }) => (
     <div className='wallets-list-details__action-container'>
         <div className='wallets-list-details__elements'>
-            <WalletListCardTitle currency={currency} />
-            {!isDemo && badge && <WalletListCardBadge label={badge.toUpperCase()} />}
+            <WalletListCardTitle title={title} />
+            {badge && <WalletListCardBadge isDemo={isDemo} label={badge} />}
         </div>
         <WalletListCardActions isActive={isActive} isDemo={isDemo} loginid={loginid} />
     </div>

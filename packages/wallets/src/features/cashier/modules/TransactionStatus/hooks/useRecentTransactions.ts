@@ -1,9 +1,11 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import moment from 'moment';
 import { useCryptoTransactions } from '@deriv/api';
 
 const useRecentTransactions = () => {
-    const { data: transactions, ...rest } = useCryptoTransactions();
+    const { data: transactions, subscribe, ...rest } = useCryptoTransactions();
+
+    useEffect(() => subscribe(), [subscribe]);
 
     const recentTransactions = useMemo(
         () =>

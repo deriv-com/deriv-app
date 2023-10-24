@@ -18,7 +18,7 @@ const CryptoTransaction = ({ currencyDisplayCode: currency, transaction }: TCryp
     return (
         <div className='crypto-transaction'>
             <div className='crypto-transaction__type-and-status'>
-                <WalletText size='2xs' weight='normal'>
+                <WalletText lineHeight='sm' size='xs' weight='normal'>
                     {transaction.is_deposit ? `Deposit ${currency}` : `Withdrawal ${currency}`}
                 </WalletText>
                 <div className='crypto-transaction__status'>
@@ -28,7 +28,7 @@ const CryptoTransaction = ({ currencyDisplayCode: currency, transaction }: TCryp
                             `crypto-transaction__status-dot-${transaction.statusColor}`
                         )}
                     />
-                    <WalletText lineHeight='sm' size='3xs'>
+                    <WalletText lineHeight='2xs' size='2xs'>
                         {transaction.statusName}
                     </WalletText>
                     {!!transaction.is_valid_to_cancel && (
@@ -42,35 +42,39 @@ const CryptoTransaction = ({ currencyDisplayCode: currency, transaction }: TCryp
                 </div>
             </div>
             <div className='crypto-transaction__amount-and-date'>
-                <WalletText color='less-prominent' size='3xs'>
+                <WalletText color='less-prominent' size='2xs'>
                     {transaction.amount} {currency}
                 </WalletText>
-                <WalletText color='less-prominent' size='3xs'>
+                <WalletText color='less-prominent' size='2xs'>
                     {transaction.submitDateDisplay}
                 </WalletText>
             </div>
             <div>
-                <WalletText size='3xs'>Address:</WalletText>
+                <WalletText lineHeight='2xs' size='2xs'>
+                    Address:
+                </WalletText>
                 <a href={transaction.address_url}>
-                    <WalletText className='crypto-transaction__link' color='red' size='3xs'>
+                    <WalletText className='crypto-transaction__link' color='red' lineHeight='2xs' size='2xs'>
                         {transaction.addressHashDisplay}
                     </WalletText>
                 </a>
             </div>
-            <WalletText size='3xs'>
-                <div>
-                    <WalletText size='3xs'>Transaction hash:</WalletText>
-                    <a href={transaction.transaction_url}>
-                        <WalletText className='crypto-transaction__link' color='red' size='3xs'>
-                            {transaction.transactionHashDisplay}
-                        </WalletText>
-                    </a>
-                </div>
-            </WalletText>
+            <div>
+                <WalletText lineHeight='2xs' size='2xs'>
+                    Transaction hash:
+                </WalletText>
+                <a href={transaction.transaction_url}>
+                    <WalletText className='crypto-transaction__link' color='red' lineHeight='2xs' size='2xs'>
+                        {transaction.transactionHashDisplay}
+                    </WalletText>
+                </a>
+            </div>
             {transaction.is_deposit && (
                 <div>
-                    <WalletText size='3xs'>Confirmations:</WalletText>
-                    <WalletText color='red' key={0} size='3xs'>
+                    <WalletText lineHeight='2xs' size='2xs'>
+                        Confirmations:
+                    </WalletText>
+                    <WalletText color='red' key={0} lineHeight='2xs' size='2xs'>
                         {transaction.confirmationDisplay}
                     </WalletText>
                 </div>

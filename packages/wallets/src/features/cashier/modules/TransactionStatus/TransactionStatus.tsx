@@ -26,7 +26,9 @@ const TransactionStatus = ({ transactionType }: TTransactionStatus) => {
 
     const TransactionDetail = useCallback(() => {
         const filteredTransactions =
-            recentTransactions?.filter(el => (transactionType === 'deposit' ? el.is_deposit : el.is_withdrawal)) || [];
+            recentTransactions?.filter(el =>
+                !transactionType || transactionType === 'deposit' ? el.is_deposit : el.is_withdrawal
+            ) || [];
 
         return (
             <React.Fragment>

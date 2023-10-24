@@ -3,8 +3,9 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
+import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
 import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
-import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../types';
+import './Success.scss';
 
 type TSuccessProps = {
     description: string;

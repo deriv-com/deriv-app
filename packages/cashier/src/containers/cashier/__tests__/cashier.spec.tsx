@@ -93,7 +93,7 @@ describe('<Cashier />', () => {
                         setActiveTab: jest.fn(),
                     },
                     transaction_history: {
-                        is_crypto_transactions_visible: false,
+                        is_transactions_crypto_visible: false,
                     },
                     payment_agent: {
                         is_payment_agent_visible: false,
@@ -143,7 +143,7 @@ describe('<Cashier />', () => {
                         setActiveTab: jest.fn(),
                     },
                     transaction_history: {
-                        is_crypto_transactions_visible: true,
+                        is_transactions_crypto_visible: true,
                     },
                     payment_agent: {
                         is_payment_agent_visible: true,
@@ -196,7 +196,7 @@ describe('<Cashier />', () => {
     //                     setActiveTab: jest.fn(),
     //                 },
     //                 transaction_history: {
-    //                     is_crypto_transactions_visible: false,
+    //                     is_transactions_crypto_visible: false,
     //                 },
     //                 payment_agent: {
     //                     is_payment_agent_visible: true,
@@ -249,7 +249,7 @@ describe('<Cashier />', () => {
                         setActiveTab: jest.fn(),
                     },
                     transaction_history: {
-                        is_crypto_transactions_visible: true,
+                        is_transactions_crypto_visible: true,
                     },
                     payment_agent: {
                         is_payment_agent_visible: true,
@@ -301,7 +301,7 @@ describe('<Cashier />', () => {
                         setActiveTab: jest.fn(),
                     },
                     transaction_history: {
-                        is_crypto_transactions_visible: true,
+                        is_transactions_crypto_visible: true,
                     },
                     payment_agent: {
                         is_payment_agent_visible: true,
@@ -354,7 +354,7 @@ describe('<Cashier />', () => {
                         setActiveTab: jest.fn(),
                     },
                     transaction_history: {
-                        is_crypto_transactions_visible: true,
+                        is_transactions_crypto_visible: true,
                     },
                     payment_agent: {
                         is_payment_agent_visible: true,

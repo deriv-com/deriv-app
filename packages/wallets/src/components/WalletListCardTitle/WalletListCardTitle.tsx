@@ -3,13 +3,13 @@ import { useWalletAccountsList } from '@deriv/api';
 import { WalletText } from '../Base';
 
 type TProps = {
-    currency: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[0]['currency'];
+    title: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[0]['currency'];
 };
 
-const WalletListCardTitle: React.FC<TProps> = ({ currency }) => {
+const WalletListCardTitle: React.FC<TProps> = ({ title }) => {
     return (
         <WalletText size='xl' weight='bold'>
-            {currency} Wallet
+            {title} Wallet
         </WalletText>
     );
 };

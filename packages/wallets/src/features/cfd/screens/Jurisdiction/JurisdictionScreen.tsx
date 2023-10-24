@@ -4,7 +4,7 @@ import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
 import { JurisdictionCard } from './JurisdictionCard';
 import './JurisdictionScreen.scss';
-import { THooks } from '../../types';
+import { THooks } from '../../../../types';
 
 type TJurisdictionScreenProps = {
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];

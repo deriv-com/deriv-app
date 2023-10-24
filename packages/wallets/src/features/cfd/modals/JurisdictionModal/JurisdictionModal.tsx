@@ -8,7 +8,6 @@ import { MarketTypeToTitleMapper } from '../../constants';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
-import './JurisdictionModal.scss';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');

@@ -45,7 +45,7 @@ const optionsAndMultipliers = [
     },
 ];
 
-const OptionsAndMultipliersListing = () => {
+const OptionsAndMultipliersListing: React.FC = () => {
     const history = useHistory();
     const { isMobile } = useDevice();
     const { data } = useActiveWalletAccount();

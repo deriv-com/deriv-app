@@ -74,7 +74,7 @@ const DMT5TradeModal = ({
         return 'Financial';
     };
 
-    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(mt5_trade_account.status);
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(mt5_trade_account?.status);
 
     return (
         <div className='cfd-trade-modal-container'>

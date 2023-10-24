@@ -130,7 +130,7 @@ const TradingAppCard = ({
     const migration_status =
         mt5_acc_auth_status === MT5AccountStatus.MIGRATED_WITH_POSITION ||
         mt5_acc_auth_status === MT5AccountStatus.MIGRATED_WITHOUT_POSITION;
-    const disable_btn = mt5_acc_auth_status && !migration_status;
+    const is_not_migrated = !!(mt5_acc_auth_status && !migration_status);
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
@@ -196,7 +196,7 @@ const TradingAppCard = ({
                         onAction={onAction}
                         is_external={is_external}
                         new_tab={new_tab}
-                        is_buttons_disabled={!!disable_btn}
+                        is_buttons_disabled={is_not_migrated}
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
                     />

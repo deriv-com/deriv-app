@@ -11,7 +11,7 @@
         border: 1.5px solid var(--status-info);
         align-items: center;
 
-        &--migrated,
+        &--migrated_with_position,
         &--migrated_without_position,
         &--pending {
             border-color: var(--status-warning);

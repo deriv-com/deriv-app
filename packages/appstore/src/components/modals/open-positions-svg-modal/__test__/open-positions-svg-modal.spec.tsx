@@ -31,7 +31,7 @@ describe('<OpenPositionsSVGModal/>', () => {
                 migrated_mt5_accounts: [
                     {
                         loginId: 'MT5YFHU',
-                        to_acc: {
+                        to_account: {
                             synthetic: 'bvi',
                         },
                     },
@@ -90,7 +90,7 @@ describe('<OpenPositionsSVGModal/>', () => {
                     migrated_mt5_accounts: [
                         {
                             loginId: 'MT5YFHU',
-                            to_acc: {
+                            to_account: {
                                 financial: 'vanuatu',
                             },
                         },
@@ -100,7 +100,7 @@ describe('<OpenPositionsSVGModal/>', () => {
         };
         renderComponent({ props: mock_props, store: new_store_config });
         const modal_content_vanuatu = screen.getByText(
-            /You can no longer open new positions with your MT5 Financial SVG account. Please use your MT5 Financial VANUATU account to open new positions./
+            /You can no longer open new positions with your MT5 Financial SVG account. Please use your MT5 Financial Vanuatu account to open new positions./
         );
         expect(modal_content_vanuatu).toBeInTheDocument();
     });

@@ -31,11 +31,11 @@ const OpenPositionsSVGModal = ({
         modules: { cfd },
     } = useStore();
     const { migrated_mt5_accounts } = cfd;
-    const eligible_acnt = migrated_mt5_accounts.filter(account => {
+    const eligible_account = migrated_mt5_accounts.filter(account => {
         return account.loginId === loginId;
     });
-    const eligible_account_to_migrate_label = getFormattedJurisdictionMarketTypes(
-        Object.values(eligible_acnt[0]?.to_acc)[0]
+    const eligible_account_to_migrate_label = getFormattedJurisdictionCode(
+        Object.values(eligible_account[0]?.to_account)[0]
     );
     const account_type =
         market_type === JURISDICTION_MARKET_TYPES.FINANCIAL

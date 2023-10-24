@@ -67,7 +67,7 @@ describe('<DMT5TradeModal/>', () => {
                 migrated_mt5_accounts: [
                     {
                         loginId: 'MT5YFHU',
-                        to_acc: {
+                        to_account: {
                             synthetic: 'bvi',
                         },
                     },

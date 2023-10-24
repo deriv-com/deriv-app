@@ -398,7 +398,7 @@ export default class CFDStore extends BaseStore {
             };
             this.migrated_mt5_accounts = [
                 ...this.migrated_mt5_accounts,
-                { login_id: account.login, to_acc: { ...(eligible_to_migrate ?? {}) } },
+                { login_id: account.login, to_account: { ...(eligible_to_migrate ?? {}) } },
             ];
             return this.requestMigrateAccount(values, shortcode, account_type);
         });

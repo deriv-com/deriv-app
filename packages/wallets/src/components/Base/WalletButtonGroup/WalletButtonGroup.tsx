@@ -1,21 +1,21 @@
-import React, { Children } from 'react';
-import './WalletButtonGroup.scss';
+import React, { FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
+import './WalletButtonGroup.scss';
 
 type TWalletButtonGroupProps = {
+    isFlex?: boolean;
     isVertical?: boolean;
 };
 
-const WalletButtonGroup: React.FC<React.PropsWithChildren<TWalletButtonGroupProps>> = ({ children, isVertical }) => {
+const WalletButtonGroup: FC<PropsWithChildren<TWalletButtonGroupProps>> = ({ children, isFlex, isVertical }) => {
     return (
         <div
             className={classNames('wallets-button-group', {
                 'wallets-button-group--vertical': isVertical,
+                'wallets-button-group--flex': isFlex,
             })}
         >
-            {Children.map(children, child => (
-                <div className='wallets-button-group__item'>{child}</div>
-            ))}
+            {children}
         </div>
     );
 };

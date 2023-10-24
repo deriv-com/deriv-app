@@ -643,13 +643,37 @@ describe('isSmartTraderContract', () => {
 });
 
 describe('isResetContract', () => {
-    it('should return true if contract_type is RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET', () => {
+    it('should return true if contract_type is RESET', () => {
         expect(ContractUtils.isResetContract('reset')).toBe(true);
     });
-    it('should return false if contract_type is not RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET', () => {
+    it('should return false if contract_type is not RESET', () => {
         expect(ContractUtils.isResetContract('put')).toBe(false);
     });
     it('should return false if contract_type was not passed', () => {
         expect(ContractUtils.isResetContract('')).toBe(false);
+    });
+});
+
+describe('isAsiansContract', () => {
+    it('should return true if contract_type is ASIAN', () => {
+        expect(ContractUtils.isAsiansContract('asian')).toBe(true);
+    });
+    it('should return false if contract_type is not ASIAN', () => {
+        expect(ContractUtils.isAsiansContract('put')).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.isAsiansContract('')).toBe(false);
+    });
+});
+
+describe('hasTwoBarriers', () => {
+    it('should return true if contract_type is EXPIRY|RANGE|UPORDOWN', () => {
+        expect(ContractUtils.hasTwoBarriers('EXPIRY')).toBe(true);
+    });
+    it('should return false if contract_type is not EXPIRY', () => {
+        expect(ContractUtils.hasTwoBarriers('turbos')).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.hasTwoBarriers('')).toBe(false);
     });
 });

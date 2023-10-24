@@ -2,7 +2,7 @@
     &__actions {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 0.4rem;
     }
 
     &__details {
@@ -11,26 +11,26 @@
         &-title {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.8rem;
             align-self: stretch;
 
             &-text {
                 color: var(--system-light-2-general-text, #333);
 
                 /* desktop/paragraph/P2 - regular */
-                font-size: 14px;
+                font-size: 1.4rem;
                 font-style: normal;
                 font-weight: 400;
-                line-height: 20px; /* 142.857% */
+                line-height: 2rem; /* 142.857% */
             }
 
             &-landing-company {
                 display: flex;
-                height: 24px;
-                padding: 0px 4px;
+                height: 2.4rem;
+                padding: 0rem 0.4rem;
                 align-items: center;
-                gap: 4px;
-                border-radius: 4px;
+                gap: 0.4rem;
+                border-radius: 0.4rem;
                 background: var(--system-light-7-secondary-background, #f2f3f4);
             }
 
@@ -38,10 +38,10 @@
                 color: var(--system-light-1-prominent-text, #333);
 
                 /* desktop/extra small/XS - bold */
-                font-size: 10px;
+                font-size: 1rem;
                 font-style: normal;
                 font-weight: 700;
-                line-height: 14px; /* 140% */
+                line-height: 1.4rem; /* 140% */
                 text-transform: uppercase;
             }
         }
@@ -50,29 +50,29 @@
             color: var(--system-light-3-less-prominent-text, #999);
 
             /* desktop/small/S - bold */
-            font-size: 12px;
+            font-size: 1.2rem;
             font-style: normal;
             font-weight: 700;
-            line-height: 18px; /* 150% */
+            line-height: 1.8rem; /* 150% */
         }
 
         &-balance {
             color: var(--system-light-1-prominent-text, #333);
 
             /* desktop/paragraph/P2 - bold */
-            font-size: 14px;
+            font-size: 1.4rem;
             font-style: normal;
             font-weight: 700;
-            line-height: 20px; /* 142.857% */
+            line-height: 2rem; /* 142.857% */
         }
 
         &-description {
             font-size: 1.2rem;
-            line-height: 14px;
+            line-height: 1.4rem;
 
             @include mobile {
                 font-size: 1.4rem;
-                line-height: 20px;
+                line-height: 2rem;
             }
         }
     }

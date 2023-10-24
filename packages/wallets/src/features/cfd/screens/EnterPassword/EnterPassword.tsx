@@ -1,9 +1,9 @@
 import React from 'react';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
-import './EnterPassword.scss';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { PlatformToTitleMapper } from '../../constants';
 import useDevice from '../../../../hooks/useDevice';
+import './EnterPassword.scss';
 
 // TODO: Refactor the unnecessary props out once FlowProvider is integrated
 type TProps = {

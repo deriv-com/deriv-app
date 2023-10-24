@@ -1,7 +1,6 @@
 .wallets-modal-step-wrapper {
     background-color: #ffffff;
     border-radius: 8px;
-    width: 85vw;
 
     @include mobile {
         height: 100vh;
@@ -12,7 +11,7 @@
         grid-template-rows: 9% auto;
 
         &--fixed {
-            grid-template-rows: 9% auto 8%;
+            grid-template-rows: 7% auto 8%;
         }
     }
 
@@ -23,15 +22,18 @@
         justify-content: space-between;
         align-items: center;
 
-        &-close-icon {
+        &--close-icon {
             cursor: pointer;
         }
 
         @include mobile {
+            display: grid;
+            grid-template-columns: auto 5%;
             background-color: #ffffff;
             position: relative;
             z-index: 99;
             width: 100%;
+            padding: 0 2rem;
         }
     }
 

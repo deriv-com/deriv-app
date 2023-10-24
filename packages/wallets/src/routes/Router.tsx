@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { useWalletAccountsList } from '@deriv/api';
+import { WalletNoWalletFoundState } from '../components';
 import { CashierModalRoute } from './CashierModalRoute';
 import { WalletsListingRoute } from './WalletsListingRoute';
 
@@ -20,11 +22,18 @@ declare module 'react-router-dom' {
     export function useRouteMatch(path: TRoutes): boolean;
 }
 
-const Router: React.FC = () => (
-    <Switch>
-        <Route component={CashierModalRoute} path={`${prefix}/cashier`} />
-        <Route component={WalletsListingRoute} path={prefix} />
-    </Switch>
-);
+const Router: React.FC = () => {
+    const { data: walletAccounts, isLoading } = useWalletAccountsList();
+
+    if ((!walletAccounts || !walletAccounts.length) && !isLoading)
+        return <Route component={WalletNoWalletFoundState} path={prefix} />;
+
+    return (
+        <Switch>
+            <Route component={CashierModalRoute} path={`${prefix}/cashier`} />
+            <Route component={WalletsListingRoute} path={prefix} />
+        </Switch>
+    );
+};
 
 export default Router;

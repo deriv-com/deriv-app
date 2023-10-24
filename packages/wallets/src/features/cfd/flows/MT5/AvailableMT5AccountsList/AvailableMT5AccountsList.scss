@@ -12,6 +12,7 @@
 
     &__details {
         flex-grow: 1;
+        user-select: none;
         &-title {
             font-weight: bold;
             font-size: 1.4rem;

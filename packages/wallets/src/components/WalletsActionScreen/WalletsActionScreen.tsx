@@ -8,6 +8,7 @@ type TProps = {
     actionText?: string;
     actionVariant?: ComponentProps<typeof WalletButton>['variant'];
     description: ReactNode;
+    disabled?: boolean;
     icon: ReactNode;
     onAction?: () => void;
     title?: string;
@@ -30,6 +31,7 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     actionText,
     actionVariant = 'contained',
     description,
+    disabled = false,
     icon,
     onAction,
     title,
@@ -53,7 +55,14 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
                 </WalletText>
             </div>
             {actionText && (
-                <WalletButton color='primary' onClick={onAction} size='lg' text={actionText} variant={actionVariant} />
+                <WalletButton
+                    color='primary'
+                    disabled={disabled}
+                    onClick={onAction}
+                    size='lg'
+                    text={actionText}
+                    variant={actionVariant}
+                />
             )}
         </div>
     );

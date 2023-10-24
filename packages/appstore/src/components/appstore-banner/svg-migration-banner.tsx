@@ -67,11 +67,7 @@ const SVGMigrationBanner = observer(() => {
                     <Localize i18n_default_text='Upgrade now' />
                 </Button>
             </div>
-            {is_dark_mode_on ? (
-                <AppstoreBannerImage image={image_dark_mode} className='appstore-banner__image' />
-            ) : (
-                <AppstoreBannerImage image={image} className='appstore-banner__image' />
-            )}
+            <AppstoreBannerImage image={is_dark_mode_on ? image_dark_mode : image} className='appstore-banner__image' />
         </div>
     );
 });

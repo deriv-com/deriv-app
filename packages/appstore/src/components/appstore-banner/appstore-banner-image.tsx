@@ -4,13 +4,13 @@ import SVGMigrateDesktopImageDark from 'Assets/svgs/banner/svg-migrate-desktop-d
 import SVGMigrateMobileImage from 'Assets/svgs/banner/svg-migrate-mobile.svg';
 import SVGMigrateMobileImageDark from 'Assets/svgs/banner/svg-migrate-mobile-dark.svg';
 
-export type BannerImageProps<T> = {
+export type TBannerImageProps<T> = {
     image: T;
     className?: string;
     width?: number;
 };
 
-type TAppstoreBannerImageList = keyof typeof AppstoreBannerImageList;
+type TAppstoreBannerImageListProps = keyof typeof AppstoreBannerImageList;
 
 const AppstoreBannerImageList = {
     svg_migrate_desktop: SVGMigrateDesktopImage,
@@ -19,7 +19,7 @@ const AppstoreBannerImageList = {
     svg_migrate_mobile_dark: SVGMigrateMobileImageDark,
 };
 
-const AppstoreBannerImage = ({ image, className, width }: BannerImageProps<TAppstoreBannerImageList>) => {
+const AppstoreBannerImage = ({ image, className, width }: TBannerImageProps<TAppstoreBannerImageListProps>) => {
     const Component = AppstoreBannerImageList[image] as React.ElementType;
     const data_testid = `dt_${image}`;
 

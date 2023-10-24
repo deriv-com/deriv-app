@@ -411,7 +411,7 @@ type TClientStore = {
     loginid?: string;
     pre_switch_broadcast: boolean;
     residence: string;
-    responseMt5LoginList: ({ mt5_login_list }: { mt5_login_list: ExtendedMt5LoginList[] }) => ExtendedMt5LoginList[]; // we can remove this after BE is done
+    responseMt5LoginList: ({ mt5_login_list }: { mt5_login_list: ExtendedMt5LoginList[] }) => ExtendedMt5LoginList[]; // we can remove this after BE types is updated
     responseTradingPlatformAccountsList: ({
         trading_platform_accounts,
     }: {

@@ -4,7 +4,7 @@ import { TradingAccountCard, WalletButton } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { MarketTypeToDescriptionMapper, MarketTypeToIconMapper, MarketTypeToTitleMapper } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
-import { THooks } from '../../../types';
+import { THooks } from '../../../../../types';
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {

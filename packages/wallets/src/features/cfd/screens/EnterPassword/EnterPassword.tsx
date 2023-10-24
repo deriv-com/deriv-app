@@ -1,8 +1,8 @@
 import React from 'react';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
-import { PlatformToTitleMapper } from '../../constants';
-import { TMarketTypes, TPlatforms } from '../../types';
 import './EnterPassword.scss';
+import { TMarketTypes, TPlatforms } from '../../../../types';
+import { PlatformToTitleMapper } from '../../constants';
 
 type TProps = {
     isLoading?: boolean;

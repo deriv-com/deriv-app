@@ -4,7 +4,7 @@ import { useAuthorize } from '@deriv/api';
 import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { MarketTypeToIconMapper, MarketTypeToTitleMapper } from '../../../constants';
-import { THooks } from '../../../types';
+import { THooks } from '../../../../../types';
 import './AddedMT5AccountsList.scss';
 
 type TProps = {

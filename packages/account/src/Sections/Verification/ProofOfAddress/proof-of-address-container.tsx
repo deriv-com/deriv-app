@@ -28,7 +28,7 @@ type TAuthenticationStatus = Record<
     boolean
 > & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
 
-const ProofOfAddressContainer = observer(() => {
+const ProofOfAddressContainer = observer(props => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = React.useState<TAuthenticationStatus>({
         allow_document_upload: false,
@@ -44,9 +44,10 @@ const ProofOfAddressContainer = observer(() => {
         poa_address_mismatch: false,
     });
 
-    const { client, notifications, common } = useStore();
+    const { client, notifications, common, ui } = useStore();
     const { app_routing_history } = common;
     const { landing_company_shortcode, has_restricted_mt5_account, is_switching } = client;
+    const { is_verification_modal_visible } = ui;
     const { refreshNotifications } = notifications;
 
     const is_mx_mlt = landing_company_shortcode === 'iom' || landing_company_shortcode === 'malta';
@@ -94,6 +95,9 @@ const ProofOfAddressContainer = observer(() => {
             ...authentication_status,
             ...{ has_submitted_poa: true, needs_poi },
         }));
+        if (is_verification_modal_visible) {
+            props.onSubmit();
+        }
     };
 
     const {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { InlineMessage, WalletText } from '../../../../../../components/Base';
-import useDevice from '../../../../../../hooks/useDevice';
 import './DepositCryptoDisclaimers.scss';
 
 // Check with BE to see if we can get the network name from the API.
@@ -17,7 +16,6 @@ const cryptoCurrencyToNetworkMapper: Record<string, string> = {
 
 const DepositCryptoDisclaimers = () => {
     const { data } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
     const { currency } = data || {};
 
     return (

@@ -39,7 +39,7 @@ const POISubmission = observer(
 
         const { client, notifications } = useStore();
 
-        const { account_settings, getChangeableFields } = client;
+        const { account_settings, getChangeableFields, is_high_risk } = client;
         const { refreshNotifications } = notifications;
 
         const handleSelectionNext = () => {
@@ -81,26 +81,34 @@ const POISubmission = observer(
 
         const needs_resubmission = has_require_submission || allow_poi_resubmission;
 
-        const mismatch_status = formatIDVError(idv.last_rejected, idv.status);
+        const mismatch_status = formatIDVError(idv.last_rejected, idv.status, is_high_risk);
 
         const setIdentityService = React.useCallback(
             identity_last_attempt => {
                 const { service, country_code } = identity_last_attempt;
+                setSelectedCountry(getCountryFromResidence(country_code));
                 switch (service) {
                     case service_code.idv: {
-                        if (Number(idv.submissions_left) < 1) {
-                            setSubmissionService(service_code.manual);
+                        if (Number(idv.submissions_left) < 1 || is_idv_disallowed) {
+                            if (Number(onfido.submissions_left) < 1 || country_code === 'ng') {
+                                setSubmissionService(service_code.manual);
+                            } else {
+                                setSubmissionService(service_code.onfido);
+                            }
+                        } else {
+                            setSubmissionService(service_code.idv);
                         }
                         break;
                     }
                     case service_code.onfido: {
                         if (Number(onfido.submissions_left) < 1) {
                             setSubmissionService(service_code.manual);
+                        } else {
+                            setSubmissionService(service_code.onfido);
                         }
                         break;
                     }
                     case service_code.manual: {
-                        setSelectedCountry(getCountryFromResidence(country_code));
                         setSubmissionService(service_code.manual);
                         break;
                     }
@@ -116,6 +124,7 @@ const POISubmission = observer(
                 setSelectedCountry,
                 setSubmissionService,
                 setSubmissionStatus,
+                is_idv_disallowed,
             ]
         );
 
@@ -127,7 +136,11 @@ const POISubmission = observer(
                 setIdentityService(identity_last_attempt);
             } else if (
                 mismatch_status &&
-                ![idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].includes(mismatch_status) &&
+                ![
+                    idv_error_statuses.poi_expired,
+                    idv_error_statuses.poi_failed,
+                    idv_error_statuses.poi_high_risk,
+                ].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {
                 setSubmissionService(service_code.idv);

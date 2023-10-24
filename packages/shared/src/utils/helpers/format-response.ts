@@ -61,12 +61,20 @@ export const formatPortfolioPosition = (
 export type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
 
 //formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
-export const formatIDVError = (errors: string[], status_code: string) => {
+export const formatIDVError = (errors: string[], status_code: string, is_high_risk?: boolean) => {
     /**
      * Check required incase of DIEL client
      */
-    if (errors.length === 0 && (status_code === STATUS_CODES.NONE || status_code === STATUS_CODES.VERIFIED))
+    if (
+        errors.length === 0 &&
+        (status_code === STATUS_CODES.NONE || status_code === STATUS_CODES.VERIFIED) &&
+        !is_high_risk
+    ) {
         return null;
+    }
+    if (is_high_risk && status_code === STATUS_CODES.VERIFIED) {
+        return 'POI_HIGH_RISK';
+    }
     const error_keys: Record<string, TIDVErrorStatus> = {
         name: 'POI_NAME_MISMATCH',
         birth: 'POI_DOB_MISMATCH',

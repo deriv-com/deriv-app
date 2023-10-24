@@ -4,9 +4,10 @@ import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
 import { JurisdictionCard } from './JurisdictionCard';
 import './JurisdictionScreen.scss';
+import { THooks } from '../../../../types';
 
 type TJurisdictionScreenProps = {
-    selectedJurisdiction: NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[0]['shortcode'];
+    selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
     setSelectedJurisdiction: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -47,8 +48,10 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction
                     Add Your Deriv MT5 Financial account under Deriv (V) Ltd, regulated by the Vanuatu Financial
                     Services Commission.
                     <div className='wallets-jurisdiction-screen__tnc-checkbox'>
-                        <input type='checkbox' />
-                        <WalletText>I confirm and accept Deriv (V) Ltd’s Terms and Conditions</WalletText>
+                        <input id='tnc-checkbox' type='checkbox' />
+                        <label htmlFor='tnc-checkbox' style={{ cursor: 'pointer' }}>
+                            <WalletText>I confirm and accept Deriv (V) Ltd&lsquo;s Terms and Conditions</WalletText>
+                        </label>
                     </div>
                 </div>
             )}

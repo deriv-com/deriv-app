@@ -26,8 +26,8 @@ const TransactionStatus = ({ transactionType }: TTransactionStatus) => {
 
     const TransactionDetail = useCallback(() => {
         const filteredTransactions =
-            recentTransactions?.filter(el =>
-                !transactionType || transactionType === 'deposit' ? el.is_deposit : el.is_withdrawal
+            recentTransactions?.filter(
+                el => !transactionType || (transactionType === 'deposit' ? el.is_deposit : el.is_withdrawal)
             ) || [];
 
         return (
@@ -49,9 +49,14 @@ const TransactionStatus = ({ transactionType }: TTransactionStatus) => {
                     </React.Fragment>
                 ))}
                 {filteredTransactions.length > 3 && (
-                    <WalletButton className='transaction-status-button' color='white' onClick={() => {}} size='sm'>
-                        View more
-                    </WalletButton>
+                    <WalletButton
+                        color='transparent'
+                        isFullWidth={true}
+                        onClick={() => {}}
+                        size='sm'
+                        text='View more'
+                        variant='outlined'
+                    />
                 )}
                 {filteredTransactions.length === 0 && <NoTransactionState />}
             </React.Fragment>

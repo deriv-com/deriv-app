@@ -49,7 +49,8 @@
         cursor: pointer;
     }
 
-    &__link {
+    &__red-text {
+        color: var(--brand-coral, #ff444f);
         text-decoration: none;
     }
 }

@@ -49,33 +49,23 @@ const CryptoTransaction = ({ currencyDisplayCode: currency, transaction }: TCryp
                     {transaction.submitDateDisplay}
                 </WalletText>
             </div>
-            <div>
-                <WalletText lineHeight='2xs' size='2xs'>
-                    Address:
-                </WalletText>
-                <a href={transaction.address_url}>
-                    <WalletText className='crypto-transaction__link' color='red' lineHeight='2xs' size='2xs'>
-                        {transaction.addressHashDisplay}
-                    </WalletText>
+            <WalletText lineHeight='2xs' size='2xs'>
+                Address:{' '}
+                <a className='crypto-transaction__red-text' href={transaction.address_url}>
+                    {transaction.addressHashDisplay}
                 </a>
-            </div>
-            <div>
-                <WalletText lineHeight='2xs' size='2xs'>
-                    Transaction hash:
-                </WalletText>
-                <a href={transaction.transaction_url}>
-                    <WalletText className='crypto-transaction__link' color='red' lineHeight='2xs' size='2xs'>
-                        {transaction.transactionHashDisplay}
-                    </WalletText>
+            </WalletText>
+            <WalletText lineHeight='2xs' size='2xs'>
+                Transaction hash:{' '}
+                <a className='crypto-transaction__red-text' href={transaction.transaction_url}>
+                    {transaction.transactionHashDisplay}
                 </a>
-            </div>
+            </WalletText>
             {transaction.is_deposit && (
                 <div>
                     <WalletText lineHeight='2xs' size='2xs'>
-                        Confirmations:
-                    </WalletText>
-                    <WalletText color='red' key={0} lineHeight='2xs' size='2xs'>
-                        {transaction.confirmationDisplay}
+                        Confirmations:{' '}
+                        <span className='crypto-transaction__red-text'>{transaction.confirmationDisplay}</span>
                     </WalletText>
                 </div>
             )}

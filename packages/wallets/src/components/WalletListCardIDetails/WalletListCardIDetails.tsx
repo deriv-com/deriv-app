@@ -1,16 +1,17 @@
 import React from 'react';
+import { THooks } from '../../types';
 import WalletListCardActions from '../WalletListCardActions/WalletListCardActions';
 import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
 import WalletListCardTitle from '../WalletListCardTitle/WalletListCardTitle';
 import './WalletListCardIDetails.scss';
 
 type TProps = {
-    badge?: string;
-    currency: string;
-    isActive: boolean;
-    isDemo: boolean;
-    loginid: string;
-    title: string;
+    badge?: THooks.WalletAccountsList['landing_company_name'];
+    currency: THooks.WalletAccountsList['wallet_currency_type'];
+    isActive: THooks.WalletAccountsList['is_active'];
+    isDemo: THooks.WalletAccountsList['is_virtual'];
+    loginid: THooks.WalletAccountsList['loginid'];
+    title: Exclude<THooks.WalletAccountsList['currency'], undefined>;
 };
 
 const WalletListCardIDetails: React.FC<TProps> = ({ badge, isActive, isDemo, loginid, title }) => (

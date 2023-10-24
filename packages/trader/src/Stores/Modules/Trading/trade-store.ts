@@ -278,6 +278,7 @@ export default class TradeStore extends BaseStore {
     hovered_contract_type?: string | null;
     cancellation_duration = '60m';
     cancellation_range_list: Array<TTextValueStrings> = [];
+    cached_multiplier_cancellation_list: Array<TTextValueStrings> = [];
 
     // Turbos trade params
     long_barriers: TBarriersData = {};
@@ -353,6 +354,7 @@ export default class TradeStore extends BaseStore {
             cancellation_duration: observable,
             cancellation_price: observable,
             cancellation_range_list: observable,
+            cached_multiplier_cancellation_list: observable,
             commission: observable,
             contract_expiry_type: observable,
             contract_start_type: observable,
@@ -1454,6 +1456,7 @@ export default class TradeStore extends BaseStore {
         this.root_store.notifications.setShouldShowPopups(false);
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
+        this.resetAccumulatorData();
         this.onLogout(this.logoutListener);
         this.onClientInit(this.clientInitListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
@@ -1499,6 +1502,7 @@ export default class TradeStore extends BaseStore {
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;
         }
+        this.clearContracts();
         this.resetAccumulatorData();
         if (this.is_vanilla) {
             this.setBarrierChoices([]);
@@ -1550,6 +1554,7 @@ export default class TradeStore extends BaseStore {
                     current_spot_data = {
                         current_spot: prices?.[prices?.length - 1],
                         current_spot_time: times?.[times?.length - 1],
+                        prev_spot_time: times?.[times?.length - 2],
                     };
                 } else {
                     return;

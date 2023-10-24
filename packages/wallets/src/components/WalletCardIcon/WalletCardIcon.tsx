@@ -1,5 +1,4 @@
 import React from 'react';
-
 import useDevice from '../../hooks/useDevice';
 import Bitcoin from '../../public/images/bitcoin.svg';
 import Demo from '../../public/images/demo.svg';
@@ -10,6 +9,7 @@ import GBP from '../../public/images/gbp.svg';
 import LTC from '../../public/images/ltc.svg';
 import USD from '../../public/images/usd.svg';
 import USDC from '../../public/images/usdc.svg';
+import { TGenericSizes } from '../../types';
 
 const typeToIconMapper = {
     BTC: Bitcoin,
@@ -30,7 +30,7 @@ const typeToWidthMapper = {
         lg: { desktop: 90, mobile: 45 },
         md: { desktop: 72, mobile: 36 },
         sm: { desktop: 60, mobile: 60 },
-        xl: { desktop: 120, mobile: 100 },
+        xl: { desktop: 120, mobile: 80 },
     },
     roundedIcon: {
         lg: { desktop: 48, mobile: 32 },
@@ -43,7 +43,7 @@ const typeToWidthMapper = {
 const typesWithRoundedIcon = ['EUR', 'GBP', 'USD'];
 
 type TProps = {
-    size?: 'lg' | 'md' | 'sm' | 'xl';
+    size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm' | 'xl'>;
     type: Omit<string, keyof typeof typeToIconMapper> | keyof typeof typeToIconMapper;
 };
 

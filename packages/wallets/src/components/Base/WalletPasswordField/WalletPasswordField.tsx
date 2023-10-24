@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { zxcvbn } from '@zxcvbn-ts/core';
 import { WalletTextField } from '../WalletTextField';
-import './WalletPasswordMeter.scss';
+import './WalletPasswordField.scss';
 
-const WalletPasswordMeter = ({ label = 'Password' }) => {
+const WalletPasswordField = ({ label = 'Password' }) => {
     const [password, setPassword] = useState<string>('');
 
     const getPasswordStrength = () => {
@@ -34,4 +34,4 @@ const WalletPasswordMeter = ({ label = 'Password' }) => {
     );
 };
 
-export default WalletPasswordMeter;
+export default WalletPasswordField;

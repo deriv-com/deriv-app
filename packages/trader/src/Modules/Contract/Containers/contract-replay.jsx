@@ -268,6 +268,9 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
         };
 
         if (isMobile()) {
+            if (is_beta_chart) {
+                chart_margin.top = 48;
+            }
             chart_margin.bottom = 48;
         }
 

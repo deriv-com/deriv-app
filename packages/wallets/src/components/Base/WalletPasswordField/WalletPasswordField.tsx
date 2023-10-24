@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { zxcvbn } from '@zxcvbn-ts/core';
 import { WalletTextField } from '../WalletTextField';
 import './WalletPasswordField.scss';
 
-const WalletPasswordField = ({ label = 'Password' }) => {
+type StrengthMessage = Record<1 | 2 | 3 | 4, string>;
+
+interface WalletPasswordFieldProps {
+    label?: string;
+    maxLength?: number;
+    messageObj?: StrengthMessage;
+}
+
+const WalletPasswordField: FC<WalletPasswordFieldProps> = ({ label = 'Password', maxLength, messageObj }) => {
     const [password, setPassword] = useState<string>('');
+    const hasMessage = !!messageObj;
+    const hasMaxLength = !!maxLength;
 
     const getPasswordStrength = () => {
         const result = zxcvbn(password);
         return result.score;
     };
+
+    const strength = getPasswordStrength();
 
     const getProgressColor = () => {
         const strengthColors = [
@@ -20,13 +32,24 @@ const WalletPasswordField = ({ label = 'Password' }) => {
             'wallets-password__meter--complete',
         ];
 
-        const strength = getPasswordStrength();
         return strengthColors[strength];
+    };
+
+    const getProgressText = (messageObj: StrengthMessage) => {
+        if (!messageObj) return '';
+        return messageObj[strength as keyof StrengthMessage];
     };
 
     return (
         <div className='wallets-password'>
-            <WalletTextField label={label} onChange={e => setPassword(e.target.value)} type='password' />
+            <WalletTextField
+                helperMessage={getProgressText(messageObj as StrengthMessage)}
+                label={label}
+                maxLength={maxLength}
+                onChange={e => setPassword(e.target.value)}
+                showMessage={hasMessage || hasMaxLength}
+                type='password'
+            />
             <div className='wallets-password__meter'>
                 <div className={getProgressColor()} />
             </div>

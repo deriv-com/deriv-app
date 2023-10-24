@@ -89,12 +89,12 @@ const TradingAssessmentExistingUser = ({
                 has_sub_header
             />
         );
-    } else if (true) {
+    } else if (should_show_trade_assessment_form) {
         return (
             <React.Fragment>
                 <DesktopWrapper>
                     <Modal
-                        is_open={true}
+                        is_open={should_show_trade_assessment_form}
                         title={localize('Trading Experience Assessment')}
                         width='904px'
                         has_close_icon={false}

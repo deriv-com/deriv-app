@@ -13,6 +13,8 @@ import { setActiveSymbols } from '../redux-store/client-slice';
 const App = () => {
     const dispatch = useDispatch();
     const has_active_symbols = useSelector(state => state.client.active_symbols);
+    const has_logged_in = useSelector(state => state.client.is_logged);
+
     const getSymbols = data => {
         symbolPromise.then(() => {
             try {
@@ -36,11 +38,17 @@ const App = () => {
 
         /* This code is used to monitor active_symbols when the user is not logged in and
         will initialize the app without requiring an authorization response. */
-        api_base.api.onMessage().subscribe(({ data }) => {
-            if (data.msg_type === 'active_symbols') {
+        const listenToActiveSymbols = data => {
+            if (!has_logged_in && data.msg_type === 'active_symbols') {
                 getSymbols(data);
             }
-        });
+        };
+
+        api_base.api.onMessage().subscribe(({ data }) => listenToActiveSymbols(data));
+
+        return () => {
+            api_base.api.onMessage().unsubscribe(listenToActiveSymbols);
+        };
     }, []);
 
     TrackJS.install(trackjs_config);

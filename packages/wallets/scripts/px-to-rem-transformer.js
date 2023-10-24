@@ -1,9 +1,8 @@
-import postcss from 'postcss';
 import fs from 'fs';
 import glob from 'glob';
+import postcss from 'postcss';
 
 const plugin = () => ({
-    postcssPlugin: 'postcss-px-to-rem',
     Once(root) {
         root.walkRules(rule => {
             rule.walkDecls(decl => {
@@ -16,6 +15,7 @@ const plugin = () => ({
             });
         });
     },
+    postcssPlugin: 'postcss-px-to-rem',
 });
 
 plugin.postcss = true;

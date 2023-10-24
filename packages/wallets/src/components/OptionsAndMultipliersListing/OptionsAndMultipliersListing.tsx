@@ -64,16 +64,20 @@ const OptionsAndMultipliersListing = () => {
                             Earn a range of payouts by correctly predicting market price movements with{' '}
                             <a
                                 className='wallets-options-and-multipliers-listing__header-subtitle__link'
-                                href='#'
+                                href='https://deriv.com/trade-types/options/'
                                 key={0}
+                                rel='noopener noreferrer'
+                                target='_blank'
                             >
                                 options
                             </a>
                             , or get the upside of CFDs without risking more than your initial stake with{' '}
                             <a
                                 className='wallets-options-and-multipliers-listing__header-subtitle__link'
-                                href='#'
+                                href='https://deriv.com/trade-types/multiplier/'
                                 key={1}
+                                rel='noopener noreferrer'
+                                target='_blank'
                             >
                                 multipliers
                             </a>

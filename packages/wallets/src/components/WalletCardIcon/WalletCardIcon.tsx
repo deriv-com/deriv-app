@@ -43,7 +43,7 @@ const typeToWidthMapper = {
 const typesWithRoundedIcon = ['EUR', 'GBP', 'USD'];
 
 type TProps = {
-    size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
+    size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm' | 'xl'>;
     type: Omit<string, keyof typeof typeToIconMapper> | keyof typeof typeToIconMapper;
 };
 

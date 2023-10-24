@@ -8,7 +8,7 @@ type TProps = {
 
 const WalletListCardTitle: React.FC<TProps> = ({ title }) => {
     return (
-        <WalletText size='xl' weight='bold'>
+        <WalletText size='lg' weight='bold'>
             {title} Wallet
         </WalletText>
     );

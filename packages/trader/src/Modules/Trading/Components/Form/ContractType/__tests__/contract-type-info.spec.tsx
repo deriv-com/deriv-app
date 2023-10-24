@@ -8,19 +8,6 @@ import TraderProviders from '../../../../../../trader-providers';
 jest.mock('Assets/Trading/Categories/trade-categories-gif', () => jest.fn(() => 'TradeCategoriesGif'));
 jest.mock('Assets/Trading/Categories/trade-categories', () => jest.fn(() => 'TradeDescription'));
 jest.mock('../ContractTypeInfo/contract-type-glossary', () => jest.fn(() => 'TradeTypeGlossary'));
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
-    observer: jest.fn(x => x),
-    useStore: jest.fn(() => ({
-        ui: {
-            is_mobile: false,
-        },
-        modules: {
-            trade: {
-                is_vanilla_fx: false,
-            },
-        },
-    })),
 jest.mock('../../../../Helpers/contract-type', () => ({
     ...jest.requireActual('../../../../Helpers/contract-type'),
     isMajorPairsSymbol: jest.fn(() => true),
@@ -282,6 +269,7 @@ const default_mock_store = {
         trade: {
             cached_multiplier_cancellation_list: [],
             symbol: 'test_symbol',
+            is_vanilla_fx: false,
         },
     },
     active_symbols: {

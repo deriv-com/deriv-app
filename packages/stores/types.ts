@@ -507,6 +507,8 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    prev_account_type: string;
+    is_beta_chart: boolean;
 };
 
 type TCommonStoreError = {
@@ -763,6 +765,7 @@ type TContractTradeStore = {
     clearError: () => void;
     contracts: TContractStore[];
     error_message: string;
+    filtered_contracts: TPortfolioPosition[];
     getContractById: (contract_id?: number) => TContractStore;
     granularity: null | number;
     has_crossed_accu_barriers: boolean;

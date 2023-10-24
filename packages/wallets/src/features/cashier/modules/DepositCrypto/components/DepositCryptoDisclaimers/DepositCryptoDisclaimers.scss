@@ -1,0 +1,17 @@
+.wallets-deposit-crypto-disclaimers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2.4rem;
+
+    &__content {
+        line-height: 1.4rem;
+    }
+
+    &__note {
+        display: flex;
+        justify-content: center;
+        font-size: 1.2rem;
+        line-height: 1.8rem;
+    }
+}

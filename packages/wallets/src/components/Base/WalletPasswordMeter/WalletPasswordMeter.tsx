@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import zxcvbn from 'zxcvbn';
+import { zxcvbn } from '@zxcvbn-ts/core';
 import { WalletTextField } from '../WalletTextField';
 import './WalletPasswordMeter.scss';
 

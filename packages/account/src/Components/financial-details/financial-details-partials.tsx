@@ -23,7 +23,7 @@ type TFinancialDetailsDropdownFieldProps = {
 };
 
 type TFinancialInformationProps = {
-    employment_status: string;
+    employment_status?: string;
 };
 
 /**

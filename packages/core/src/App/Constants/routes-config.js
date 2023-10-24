@@ -21,13 +21,6 @@ const Reports = React.lazy(() => {
     return import(/* webpackChunkName: "reports" */ '@deriv/reports');
 });
 
-const CFD = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
-    })
-);
-
 const CFDCompareAccounts = React.lazy(() => {
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
@@ -112,11 +105,6 @@ const getModules = () => {
                     icon_component: 'IcStatement',
                 },
             ],
-        },
-        {
-            path: routes.mt5,
-            component: CFD,
-            getTitle: () => localize('CFDs'),
         },
         {
             path: routes.compare_cfds,

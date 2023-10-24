@@ -2,14 +2,15 @@ import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useCombobox } from 'downshift';
 import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
+import reactNodeToString from '../../../utils/reactNodeToString';
 import { WalletText } from '../WalletText';
 import './WalletDropdown.scss';
 
 type TProps = {
     icon?: React.ReactNode;
-    label?: string;
+    label?: React.ReactNode;
     list: {
-        text: string;
+        text: React.ReactNode;
         value: string;
     }[];
     listHeight?: 'lg' | 'md' | 'sm';
@@ -34,14 +35,19 @@ const WalletDropdown: React.FC<TProps> = ({
         setItems(list);
     }, [list]);
     const { getInputProps, getItemProps, getLabelProps, getMenuProps, getToggleButtonProps, isOpen } = useCombobox({
-        defaultSelectedItem: items.find(item => item.value === value),
         items,
         itemToString(item) {
-            return item ? item.text : '';
+            return item ? reactNodeToString(item.text) : '';
         },
         onInputValueChange({ inputValue }) {
             if (shouldFilterList) {
-                setItems(list.filter(item => item.text.toLowerCase().includes(inputValue?.toLowerCase() ?? '')));
+                setItems(
+                    list.filter(item =>
+                        reactNodeToString(item.text)
+                            .toLowerCase()
+                            .includes(inputValue?.toLowerCase() ?? '')
+                    )
+                );
             }
         },
         onIsOpenChange({ isOpen }) {
@@ -52,6 +58,7 @@ const WalletDropdown: React.FC<TProps> = ({
         onSelectedItemChange({ selectedItem }) {
             onSelect(selectedItem?.value ?? '');
         },
+        selectedItem: items.find(item => item.value === value),
     });
 
     useEffect(() => {
@@ -66,7 +73,7 @@ const WalletDropdown: React.FC<TProps> = ({
                     className='wallets-dropdown__field'
                     id='dropdown-text'
                     onKeyUp={() => setShouldFilterList(true)}
-                    placeholder={label}
+                    placeholder={reactNodeToString(label)}
                     readOnly={type !== 'comboBox'}
                     type='text'
                     value={value}

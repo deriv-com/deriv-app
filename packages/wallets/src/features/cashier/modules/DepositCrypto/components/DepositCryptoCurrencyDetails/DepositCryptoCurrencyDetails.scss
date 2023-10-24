@@ -1,9 +1,9 @@
 .wallets-deposit-crypto-currency-details {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 1, 6rem;
     align-self: center;
 
     @include mobile {
-        font-size: 14px;
+        font-size: 1.4rem;
     }
 }

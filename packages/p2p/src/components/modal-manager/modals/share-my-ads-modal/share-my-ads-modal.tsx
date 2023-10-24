@@ -22,7 +22,7 @@ import ShareMyAdsCard from './share-my-ads-card';
 import ShareMyAdsSocials from './share-my-ads-socials';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
-    const [is_qr_code_loaded, setIsQRCodeLoaded] = React.useState(false);
+    const [is_download_disabled, setIsDownloadDisabled] = React.useState(true);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type, type } = advert;
     const { id: advertiser_id } = advertiser_details;
@@ -65,18 +65,31 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         });
     };
 
+    // React.useEffect(() => {
+    //     if (divRef.current) {
+    //         const styles = getComputedStyle(divRef.current);
+    //         const font_family = styles.getPropertyValue('font-family');
+    //         if (
+    //             font_family === '"IBM Plex Sans", sans-serif' &&
+    //             divRef.current.classList.contains('share-my-ads-card')
+    //         ) {
+    //             setIsDownloadDisabled(true);
+    //         }
+    //     }
+    // }, [divRef.current]);
+
     React.useEffect(() => {
-        if (divRef.current) {
-            const styles = getComputedStyle(divRef.current);
-            const font_family = styles.getPropertyValue('font-family');
-            if (
-                font_family === '"IBM Plex Sans", sans-serif' &&
-                divRef.current.classList.contains('share-my-ads-card')
-            ) {
-                setIsQRCodeLoaded(true);
-            }
+        let download_timeout: ReturnType<typeof setTimeout>;
+        if (is_download_disabled) {
+            download_timeout = setTimeout(() => {
+                setIsDownloadDisabled(false);
+            }, 5000);
         }
-    }, [divRef.current]);
+        return () => {
+            clearTimeout(download_timeout);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_download_disabled]);
 
     React.useEffect(() => {
         let timeout_clipboard: ReturnType<typeof setTimeout>;
@@ -105,7 +118,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                             <ShareMyAdsCard advert={advert} advert_url={advert_url} divRef={divRef} />
                             <Button
                                 className='share-my-ads-modal__container__card__download-button'
-                                disabled={!is_qr_code_loaded}
+                                disabled={is_download_disabled}
                                 secondary
                                 onClick={handleGenerateImage}
                             >

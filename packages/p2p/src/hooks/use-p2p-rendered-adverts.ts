@@ -30,23 +30,25 @@ const getRenderedAdverts = (
     is_mobile: boolean,
     filtered_items: TAdvertList = []
 ) => {
+    const EMPTY_ITEM_PLACE_HOLDER = { id: 'WATCH_THIS_SPACE' };
+    const NO_MATCH_ROW = { id: 'NO_MATCH_ROW' };
     let rendered_adverts: DeepPartial<TAdvertList> = [];
     if (is_mobile) {
         if (search_term) {
-            rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
+            rendered_adverts = [EMPTY_ITEM_PLACE_HOLDER, NO_MATCH_ROW];
             if (search_results?.length) {
-                rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, ...search_results];
+                rendered_adverts = [EMPTY_ITEM_PLACE_HOLDER, ...search_results];
             }
         } else {
             // This allows for the sliding animation on the Buy/Sell toggle as it pushes
             // an empty item with an item that holds the same height of the toggle container.
             // Also see: buy-sell-row.jsx
-            rendered_adverts = [{ id: 'WATCH_THIS_SPACE' }, ...filtered_items];
+            rendered_adverts = [EMPTY_ITEM_PLACE_HOLDER, ...filtered_items];
         }
     } else {
         rendered_adverts = filtered_items;
         if (search_term) {
-            rendered_adverts = [{ id: 'NO_MATCH_ROW' }];
+            rendered_adverts = [NO_MATCH_ROW];
             if (search_results?.length) {
                 rendered_adverts = search_results;
             }

@@ -54,9 +54,7 @@ describe('useP2PAdvertiserAdverts', () => {
         expect(adverts_list?.[0]?.advertiser_details?.name).toBe('client Test90000253');
     });
     it('should return the advertiser adverts object from response when is_advertiser_info_subscribed is false and counterparty_advertiser_id is defined', () => {
-        mockUseStores.mockReturnValueOnce({
-            ...mock_return_value,
-        });
+        mockUseStores.mockReturnValueOnce(mock_return_value);
         const { result } = renderHook(() => useP2PAdvertiserAdverts());
         const adverts_list = result.current.adverts;
 
@@ -104,9 +102,7 @@ describe('useP2PAdvertiserAdverts', () => {
     });
 
     it('should return the advertiser adverts object from response when selected_local_currency is truthy', () => {
-        mockUseStores.mockReturnValueOnce({
-            ...mock_return_value,
-        });
+        mockUseStores.mockReturnValueOnce(mock_return_value);
         const { result } = renderHook(() => useP2PAdvertiserAdverts());
         const adverts_list = result.current.adverts;
 

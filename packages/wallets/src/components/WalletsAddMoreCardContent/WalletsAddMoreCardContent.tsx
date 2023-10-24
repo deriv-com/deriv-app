@@ -1,4 +1,5 @@
 import React from 'react';
+import { WalletText } from '../Base';
 
 type TWalletDescriptionMapper = {
     [key: string]: string;
@@ -21,8 +22,11 @@ const walletDescriptionMapper: TWalletDescriptionMapper = {
 const WalletsAddMoreCardContent = ({ currency }: { currency: string }) => {
     return (
         <div className='wallets-add-more__content'>
-            <h3 className='wallets-add-more__content-header'>{currency} Wallet</h3>
-            <div className='wallets-add-more__content-body'>{walletDescriptionMapper[currency]}</div>
+            <WalletText size='md' weight='bold'>
+                {currency} Wallet
+            </WalletText>
+
+            <WalletText size='sm'>{walletDescriptionMapper[currency]}</WalletText>
         </div>
     );
 };

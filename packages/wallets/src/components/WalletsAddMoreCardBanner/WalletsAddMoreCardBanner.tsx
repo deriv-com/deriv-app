@@ -2,6 +2,7 @@ import React from 'react';
 import type { useAvailableWallets } from '@deriv/api';
 import CheckIcon from '../../public/images/check.svg';
 import PlusIcon from '../../public/images/plus.svg';
+import { WalletText } from '../Base';
 import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 
 type TWalletsAddMoreCardBannerProps = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[0];
@@ -17,9 +18,11 @@ const WalletsAddMoreCardBanner = ({
                 <span className='wallets-add-more__banner-logo'>
                     <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
                 </span>
-                <span className='wallets-add-more__banner-landing-company'>
-                    {landingCompanyName ? landingCompanyName.toUpperCase() : ''}
-                </span>
+                <div className='wallets-add-more__banner-landing-company'>
+                    <WalletText align='right' size='xs' weight='bold'>
+                        {landingCompanyName}
+                    </WalletText>
+                </div>
             </div>
             <button
                 className={`wallets-add-more__banner-button ${

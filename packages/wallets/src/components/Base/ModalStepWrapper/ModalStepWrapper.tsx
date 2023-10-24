@@ -2,6 +2,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import CloseIcon from '../../../public/images/close-icon.svg';
 import { useModal } from '../../ModalProvider';
+import { WalletText } from '../WalletText';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
@@ -25,8 +26,10 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
             })}
         >
             <div className='wallets-modal-step-wrapper__header'>
-                {title}
-                <CloseIcon className='wallets-modal-step-wrapper__header-close-icon' onClick={hide} />
+                <WalletText size='md' weight='bold'>
+                    {title}
+                </WalletText>
+                <CloseIcon className='wallets-modal-step-wrapper__header--close-icon' onClick={hide} />
             </div>
             <div className='wallets-modal-step-wrapper__body'>
                 {children}

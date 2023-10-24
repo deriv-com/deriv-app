@@ -1,0 +1,43 @@
+.wallets-alert-message {
+    display: flex;
+    flex-direction: row;
+    column-gap: 0.8rem;
+    justify-content: flex-start;
+
+    @include mobile {
+        margin: 0;
+    }
+
+    &__icon-container {
+        position: relative;
+
+        &__line {
+            border: 1px solid var(--light-5-active-background, #d6dadb);
+            position: absolute;
+            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        &__icon {
+            display: flex;
+            position: relative;
+            margin-top: 0.8rem;
+        }
+    }
+
+    &__message-container,
+    &__button-container {
+        display: flex;
+        align-items: center;
+    }
+
+    &__message-container {
+        padding: 0.6rem 0;
+    }
+
+    &__button-container {
+        margin-left: auto;
+    }
+}

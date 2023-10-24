@@ -23,7 +23,7 @@ const mockDbotStore = {
         setVisibility: jest.fn(),
     },
     quick_strategy: {
-        loadDataStrategy: jest.fn(),
+        setFormVisibility: jest.fn(),
     },
 };
 

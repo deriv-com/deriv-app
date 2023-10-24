@@ -1,34 +1,19 @@
 import React from 'react';
-import { useAvailableMT5Accounts, useCreateOtherCFDAccount } from '@deriv/api';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import './EnterPassword.scss';
+import { TMarketTypes, TPlatforms } from '../../../../types';
+import { PlatformToTitleMapper } from '../../constants';
+import useDevice from '../../../../hooks/useDevice';
 
-type TPlatformMT5 = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number]['platform'];
-
-type TPlatformOtherAccounts = Parameters<
-    NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>
->[0]['payload']['platform'];
-
-type TPlatform = TPlatformMT5 | TPlatformOtherAccounts;
-
-type TMarketType = Parameters<
-    NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>
->[0]['payload']['market_type'];
-
+// TODO: Refactor the unnecessary props out once FlowProvider is integrated
 type TProps = {
     isLoading?: boolean;
-    marketType: TMarketType;
+    marketType: TMarketTypes.CreateOtherCFDAccount;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
-    platform: TPlatform;
-};
-
-const platformToTitleMapper: Record<TPlatform, string> = {
-    ctrader: 'cTrader',
-    derivez: 'Deriv EZ',
-    dxtrade: 'Deriv X',
-    mt5: 'Deriv MT5',
+    password: string;
+    platform: TPlatforms.All;
 };
 
 const EnterPassword: React.FC<TProps> = ({
@@ -37,32 +22,38 @@ const EnterPassword: React.FC<TProps> = ({
     onPasswordChange,
     onPrimaryClick,
     onSecondaryClick,
+    password,
     platform,
 }) => {
-    const title = platformToTitleMapper[platform];
+    const { isDesktop } = useDevice();
+    const title = PlatformToTitleMapper[platform];
     return (
-        <React.Fragment>
-            <div className='wallets-enter-password'>
-                <div className='wallets-enter-password--container'>
-                    <div className='wallets-enter-password-title'>Enter your {title} password</div>
-                    <span className='wallets-enter-password-subtitle'>
-                        Enter your {title} password to add a {title} {marketType} account.
-                    </span>
-                    <div className='wallets-enter-password-input'>
-                        <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
-                        <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
-                    </div>
+        <div className='wallets-enter-password'>
+            <div className='wallets-enter-password--container'>
+                {isDesktop && <div className='wallets-enter-password-title'>Enter your {title} password</div>}
+                <span className='wallets-enter-password-subtitle'>
+                    Enter your {title} password to add a {title} {marketType} account.
+                </span>
+                <div className='wallets-enter-password-input'>
+                    <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
+                    <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
                 </div>
+            </div>
+            {isDesktop && (
                 <div className='wallets-enter-password-buttons'>
                     <button className='wallets-enter-password-forgot-password-button' onClick={onSecondaryClick}>
                         Forgot password?
                     </button>
-                    <button className='wallets-enter-password-add-button' disabled={isLoading} onClick={onPrimaryClick}>
+                    <button
+                        className='wallets-enter-password-add-button'
+                        disabled={isLoading || !password}
+                        onClick={onPrimaryClick}
+                    >
                         Add account
                     </button>
                 </div>
-            </div>
-        </React.Fragment>
+            )}
+        </div>
     );
 };
 

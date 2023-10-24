@@ -63,4 +63,9 @@ describe('RadioGroupWithInfoMobile', () => {
         expect(popover).toBeInTheDocument();
         expect(popover).toHaveClass('dc-popover__trade-params');
     });
+    it('should not render popover components if should_show_tooltip is falsy', () => {
+        render(<RadioGroupWithInfoMobile {...props} should_show_tooltip={false} />);
+
+        expect(screen.queryByText(/popover/i)).not.toBeInTheDocument();
+    });
 });

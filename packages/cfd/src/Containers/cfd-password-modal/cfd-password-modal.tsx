@@ -28,6 +28,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from '../../Components/success-dialog.jsx';
 import '../../sass/cfd.scss';
+import './cfd-password-modal.scss';
 
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';

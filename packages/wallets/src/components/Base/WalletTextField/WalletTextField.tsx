@@ -1,6 +1,7 @@
 import React, { ChangeEvent, ComponentProps, ReactElement, useState } from 'react';
+import { WalletButton } from '../WalletButton';
 import WalletText from '../WalletText/WalletText';
-import styles from './WalletTextField.modules.css';
+import './WalletTextField.scss';
 
 interface WalletTextFieldProps {
     defaultValue?: string;
@@ -11,6 +12,7 @@ interface WalletTextFieldProps {
     leftIcon?: React.ReactNode;
     maxLength?: ComponentProps<'input'>['maxLength'];
     onChange?: ComponentProps<'input'>['onChange'];
+    onClickIcon?: ComponentProps<'button'>['onClick'];
     showMessage?: boolean;
     type?: ComponentProps<'input'>['type'];
 }
@@ -28,6 +30,7 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
     label,
     maxLength,
     onChange,
+    onClickIcon,
     showMessage = false,
     type = 'text',
 }) => {
@@ -42,23 +45,27 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
     const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, maxLength }) => (
         <>
             {helperMessage && (
-                <WalletText color='less-prominent' lineHeight='sm' size='xs' style={{ float: 'left' }}>
-                    {helperMessage}
-                </WalletText>
+                <div className='wallets-textfield__message-container--msg'>
+                    <WalletText color='less-prominent' size='xs'>
+                        {helperMessage}
+                    </WalletText>
+                </div>
             )}
             {maxLength && (
-                <WalletText align='right' color='less-prominent' lineHeight='sm' size='xs' style={{ float: 'right' }}>
-                    {value.length} / {maxLength}
-                </WalletText>
+                <div className='wallets-textfield__message-container--maxchar'>
+                    <WalletText align='right' color='less-prominent' size='xs'>
+                        {value.length} / {maxLength}
+                    </WalletText>
+                </div>
             )}
         </>
     );
 
     return (
-        <div className={styles['wallets-textfield']}>
-            <div className={styles['wallets-textfield__content']}>
+        <div className='wallets-textfield'>
+            <div className='wallets-textfield__content'>
                 <input
-                    className={styles['wallets-textfield__field']}
+                    className='wallets-textfield__field'
                     id={id}
                     maxLength={maxLength}
                     onChange={handleChange}
@@ -67,13 +74,13 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
                     value={value}
                 />
                 {label && (
-                    <label className={styles['wallets-textfield__label']} htmlFor={id}>
+                    <label className='wallets-textfield__label' htmlFor={id}>
                         {label}
                     </label>
                 )}
-                {icon && <div className={styles['wallets-textfield__icon']}>{icon}</div>}
+                {icon && <WalletButton icon={icon} onClick={onClickIcon} rounded='md' size='sm' variant='ghost' />}
             </div>
-            <div className={styles['wallets-textfield__message-container']}>
+            <div className='wallets-textfield__message-container'>
                 {showMessage && <MessageContainer helperMessage={helperMessage} maxLength={maxLength} />}
             </div>
         </div>

@@ -1067,7 +1067,7 @@ const FinancialAssessment = observer(() => {
                                             is_btn_loading ||
                                             Object.keys(errors).length > 0 ||
                                             !!(
-                                                values.employment_status === EMPLOYMENT_VALUES.EMPLOYED &&
+                                                values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED &&
                                                 values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
                                             )
                                         }

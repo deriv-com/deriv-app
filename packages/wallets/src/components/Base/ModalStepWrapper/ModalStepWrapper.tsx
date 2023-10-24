@@ -1,6 +1,5 @@
 import React, { FC, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
-import useDevice from '../../../hooks/useDevice';
 import CloseIcon from '../../../public/images/close-icon.svg';
 import { useModal } from '../../ModalProvider';
 import { WalletText } from '../WalletText';
@@ -19,7 +18,6 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     title,
 }) => {
     const { hide } = useModal();
-    const { isMobile } = useDevice();
 
     return (
         <div
@@ -29,10 +27,10 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         >
             {typeof title === 'string' ? (
                 <div className='wallets-modal-step-wrapper__header'>
-                    <WalletText size={isMobile ? 'sm' : 'md'} weight='bold'>
+                    <WalletText size='md' weight='bold'>
                         {title}
                     </WalletText>
-                    <CloseIcon className='wallets-modal-step-wrapper__header-close-icon' onClick={hide} />
+                    <CloseIcon className='wallets-modal-step-wrapper__header--close-icon' onClick={hide} />
                 </div>
             ) : (
                 title

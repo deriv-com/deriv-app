@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
+import { THooks } from '../../../../types';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
-import { THooks } from '../../types';
 import { JurisdictionCard } from './JurisdictionCard';
 import './JurisdictionScreen.scss';
 

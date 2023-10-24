@@ -1,4 +1,5 @@
 import React from 'react';
+import { WalletText } from '../Base';
 import './WalletListCardIBalance.scss';
 
 type TProps = {
@@ -7,8 +8,13 @@ type TProps = {
 
 const WalletListCardIBalance: React.FC<TProps> = ({ balance }) => (
     <div className='wallets-balance__container'>
-        <div className='wallets-balance__title'>Wallet balance</div>
-        <div className='wallets-balance__value'>{balance}</div>
+        <WalletText align='right' color='primary' lineHeight='sm' size='xs'>
+            Wallet balance
+        </WalletText>
+
+        <WalletText align='right' lineHeight='6xl' size='3xl' weight='bold'>
+            {balance}
+        </WalletText>
     </div>
 );
 

@@ -4,9 +4,9 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
-import { Button, DesktopWrapper, MobileDialog, MobileWrapper,Modal, Text } from '@deriv/components';
+import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { Localize,localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 
 import { connect } from 'Stores/connect';
 

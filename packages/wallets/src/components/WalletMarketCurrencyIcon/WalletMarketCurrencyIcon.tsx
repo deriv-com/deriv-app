@@ -1,12 +1,13 @@
 import React, { ComponentType, SVGAttributes } from 'react';
-import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
-import DerivXIcon from '../../public/images/derivx.svg';
+import type { useSortedMT5Accounts } from '@deriv/api';
 import CTraderIcon from '../../public/images/ctrader.svg';
+import DerivXIcon from '../../public/images/derivx.svg';
+import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
 import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
-import type { useSortedMT5Accounts } from '@deriv/api';
+import useDevice from '../../hooks/useDevice';
 import './WalletMarketCurrencyIcon.scss';
 
 const marketTypeToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
@@ -28,6 +29,8 @@ type TWalletMarketCurrencyIconProps = {
 };
 
 const WalletMarketCurrencyIcon = ({ currency, isDemo, marketType, platform }: TWalletMarketCurrencyIconProps) => {
+    const { isMobile } = useDevice();
+
     const MarketTypeIcon =
         marketType === 'all' && Object.keys(marketTypeToPlatformIconMapper).includes(platform)
             ? marketTypeToPlatformIconMapper[platform]
@@ -42,7 +45,7 @@ const WalletMarketCurrencyIcon = ({ currency, isDemo, marketType, platform }: TW
                 }`}
             >
                 <WalletGradientBackground currency={currency} hasShine isDemo={isDemo} type='card'>
-                    <WalletCardIcon type={isDemo ? 'Demo' : currency} />
+                    <WalletCardIcon size={isMobile ? 'xl' : 'lg'} type={isDemo ? 'Demo' : currency} />
                 </WalletGradientBackground>
             </div>
         </div>

@@ -107,9 +107,6 @@ module.exports = function (env) {
                         'style-loader',
                         {
                             loader: 'css-loader',
-                            options: {
-                                url: false,
-                            },
                         },
                         {
                             loader: 'postcss-loader',
@@ -131,11 +128,22 @@ module.exports = function (env) {
                             loader: 'sass-resources-loader',
                             options: {
                                 // Provide path to the file with resources
-                                // eslint-disable-next-line global-require, import/no-dynamic-require
-                                resources: require('@deriv/shared/src/styles/index.js'),
+                                resources: [
+                                    // eslint-disable-next-line global-require, import/no-dynamic-require
+                                    ...require('@deriv/shared/src/styles/index.js'),
+                                ],
                             },
                         },
                     ],
+                },
+                {
+                    test: /\.svg$/,
+                    exclude: [/node_modules/, path.resolve('../', 'wallets')],
+                    include: /public\//,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'appstore/public/[name].[contenthash][ext]',
+                    },
                 },
                 {
                     test: /\.svg$/,

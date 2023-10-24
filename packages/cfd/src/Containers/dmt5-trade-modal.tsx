@@ -1,24 +1,29 @@
 import React from 'react';
-import { Text, Button, Icon, Money, Popover } from '@deriv/components';
-import { TPasswordBoxProps, TTradingPlatformAccounts } from '../Components/props.types';
+
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { Icon, Money, Text } from '@deriv/components';
 import {
     CFD_PLATFORMS,
-    isMobile,
     getCFDAccountDisplay,
+    getCFDAccountKey,
     getCFDPlatformLabel,
     getPlatformSettings,
     getUrlBase,
-    getCFDAccountKey,
+    isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { CFDAccountCopy } from '../Components/cfd-account-copy';
-import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
+import SpecBox from '../Components/specbox';
+import PasswordBox from '../Components/passwordbox';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TTradingPlatformAccounts } from '../Components/props.types';
+
 import { TCFDPasswordReset } from './props.types';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid;
+    mt5_trade_account: DetailsOfEachMT5Loginid & {
+        webtrader_url?: string;
+    };
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,
@@ -29,60 +34,6 @@ type TMT5TradeModalProps = {
     ) => void;
     toggleModal: () => void;
 };
-
-export type TSpecBoxProps = {
-    value: string | undefined;
-    is_bold?: boolean;
-};
-
-const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
-    <div className='cfd-trade-modal__spec-box'>
-        <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-trade-modal__spec-text'>
-            {value}
-        </Text>
-        <CFDAccountCopy text={value} className='cfd-trade-modal__spec-copy' />
-    </div>
-);
-
-const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
-    <div className='cfd-trade-modal__password-box'>
-        <div className='cfd-trade-modal__password-text'>
-            <Popover
-                alignment='right'
-                message={localize(
-                    'Use these credentials to log in to your {{platform}} account on the website and mobile apps.',
-                    {
-                        platform: getCFDPlatformLabel(platform),
-                    }
-                )}
-                classNameBubble='cfd-trade-modal__password-tooltip'
-                zIndex={9999}
-            >
-                <Text size='xs'>***************</Text>
-            </Popover>
-        </div>
-        <Popover
-            className='cfd-trade-modal__password-popover'
-            alignment='left'
-            message={localize('Change Password')}
-            relative_render
-            zIndex={9999}
-        >
-            <Button
-                className='cfd-trade-modal__password-action'
-                transparent
-                onClick={onClick}
-                icon={
-                    <Icon
-                        icon='IcEdit'
-                        className='da-article__learn-more-icon'
-                        custom_color='var(--text-less-prominent)'
-                    />
-                }
-            />
-        </Popover>
-    </div>
-);
 
 const getTitle = (market_type: string, show_eu_related_content: boolean) => {
     if (show_eu_related_content) localize('MT5 CFDs');
@@ -150,7 +101,7 @@ const DMT5TradeModal = ({
             <div className='cfd-trade-modal__login-specs'>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                    <SpecBox is_bold value={'Deriv Limited'} />
+                    <SpecBox is_bold is_broker value={'Deriv.com Limited'} />
                 </div>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>
@@ -169,7 +120,7 @@ const DMT5TradeModal = ({
                                 const account_type = getCFDAccountKey({
                                     market_type: mt5_trade_account.market_type,
                                     sub_account_type: mt5_trade_account.sub_account_type,
-                                    platform: CFD_PLATFORMS.DMT5,
+                                    platform: CFD_PLATFORMS.MT5,
                                     shortcode: mt5_trade_account.landing_company_short,
                                 });
                                 onPasswordManager(
@@ -204,11 +155,7 @@ const DMT5TradeModal = ({
                     <a
                         className='dc-btn cfd-trade-modal__download-center-app--option-link'
                         type='button'
-                        href={getMT5WebTerminalLink({
-                            category: mt5_trade_account.account_type,
-                            loginid: (mt5_trade_account as TTradingPlatformAccounts).display_login,
-                            server_name: (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment,
-                        })}
+                        href={mt5_trade_account.webtrader_url}
                         target='_blank'
                         rel='noopener noreferrer'
                     >
@@ -217,7 +164,7 @@ const DMT5TradeModal = ({
                         </Text>
                     </a>
                 </div>
-                <div className='cfd-trade-modal__download-center-app--option'>
+                <div className='cfd-trade-modal__download-center-app--option cfd-trade-modal__download-center-app--option-hide'>
                     <Icon icon='IcWindowsLogo' size={32} />
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('MetaTrader 5 Windows app')}
@@ -234,7 +181,7 @@ const DMT5TradeModal = ({
                         </Text>
                     </a>
                 </div>
-                <div className='cfd-trade-modal__download-center-app--option'>
+                <div className='cfd-trade-modal__download-center-app--option cfd-trade-modal__download-center-app--option-hide'>
                     <Icon icon='IcMacosLogo' size={32} />
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('MetaTrader 5 MacOS app')}
@@ -251,7 +198,7 @@ const DMT5TradeModal = ({
                         </Text>
                     </a>
                 </div>
-                <div className='cfd-trade-modal__download-center-app--option'>
+                <div className='cfd-trade-modal__download-center-app--option cfd-trade-modal__download-center-app--option-hide'>
                     <Icon icon='IcLinuxLogo' size={32} />
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('MetaTrader 5 Linux app')}
@@ -296,16 +243,15 @@ const DMT5TradeModal = ({
                         <Icon icon='IcInstallationHuawei' width={135} height={40} />
                     </a>
                 </div>
-                {!isMobile() && (
-                    <div className='cfd-trade-modal__download-center-options--qrcode'>
-                        <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
-                        <Text align='center' size='xxs'>
-                            {localize('Scan the QR code to download {{ platform }}.', {
-                                platform: getPlatformSettings('mt5').name,
-                            })}
-                        </Text>
-                    </div>
-                )}
+
+                <div className='cfd-trade-modal__download-center-options--qrcode cfd-trade-modal__download-center-options--qrcode-hide'>
+                    <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
+                    <Text align='center' size='xxs'>
+                        {localize('Scan the QR code to download {{ platform }}.', {
+                            platform: getPlatformSettings('mt5').name,
+                        })}
+                    </Text>
+                </div>
             </div>
         </div>
     );

@@ -1,4 +1,5 @@
-import type { TDbot, TRootStore, TWebSocket } from 'Types';
+import { TStores } from '@deriv/stores/types';
+import type { TDbot, TWebSocket } from 'Types';
 import AppStore from './app-store';
 import BlocklyStore from './blockly-store';
 import ChartStore from './chart-store';
@@ -48,7 +49,7 @@ export default class RootStore {
     public blockly_store: BlocklyStore;
     public data_collection_store: DataCollectionStore;
 
-    constructor(core: TRootStore, ws: TWebSocket, dbot: TDbot) {
+    constructor(core: TStores, ws: TWebSocket, dbot: TDbot) {
         this.ws = ws;
         this.dbot = dbot;
         this.app = new AppStore(this, core);

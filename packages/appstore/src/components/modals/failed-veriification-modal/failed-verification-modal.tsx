@@ -66,7 +66,7 @@ const FailedVerificationModal = () => {
     const { disableApp, enableApp } = ui;
     const is_from_multipliers = open_failed_verification_for === 'multipliers';
 
-    const { poi_resubmit_for_vanuatu_maltainvest, poi_resubmit_for_bvi_labuan, need_poa_resubmission } =
+    const { poi_resubmit_for_maltainvest, poi_resubmit_for_bvi_labuan_vanuatu, need_poa_resubmission } =
         getAuthenticationStatusInfo(account_status);
     const history = useHistory();
 
@@ -88,14 +88,10 @@ const FailedVerificationModal = () => {
     };
 
     const should_resubmit_poi = () => {
-        if (
-            is_from_multipliers ||
-            open_failed_verification_for === 'vanuatu' ||
-            open_failed_verification_for === 'maltainvest'
-        ) {
-            return poi_resubmit_for_vanuatu_maltainvest;
+        if (is_from_multipliers || open_failed_verification_for === 'maltainvest') {
+            return poi_resubmit_for_maltainvest;
         }
-        return poi_resubmit_for_bvi_labuan;
+        return poi_resubmit_for_bvi_labuan_vanuatu;
     };
     const should_resubmit_poa = need_poa_resubmission;
     const from_account_label = is_from_multipliers ? localize('Multipliers') : localize('MT5');

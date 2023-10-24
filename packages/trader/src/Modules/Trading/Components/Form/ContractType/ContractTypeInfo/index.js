@@ -1,5 +1,5 @@
-import Info from './contract-type-info.jsx';
+import Info from './contract-type-info';
 
-export { default as Header } from './contract-type-info-header.jsx';
+export { default as Header } from './contract-type-info-header';
 
 export default Info;

@@ -8,11 +8,11 @@ const GTM = (() => {
     };
 
     const getServerTime = () => {
-        return root_store.server_time.unix();
+        return root_store?.core?.server_time?.unix() || Date.now();
     };
 
     const pushDataLayer = data => {
-        return root_store.core.gtm.pushDataLayer(data);
+        return root_store?.core?.gtm?.pushDataLayer(data);
     };
 
     const init = _root_store => {

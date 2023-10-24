@@ -1,12 +1,11 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import RegulatorsCompareModalContent from './regulators-compare-modal-content';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } from '@deriv/components';
 
 const RegulatorsCompareModal = () => {
-    const { traders_hub, ui } = useStores();
+    const { traders_hub, ui } = useStore();
     const { is_regulators_compare_modal_visible, toggleRegulatorsCompareModal } = traders_hub;
     const { disableApp, enableApp } = ui;
     const closeModal = () => {

@@ -1,0 +1,21 @@
+.wallets-list-card {
+    &__badge {
+        display: flex;
+        padding: 0px 4px;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        border-radius: 2px;
+        border: 1px solid var(--system-light-1-prominent-text, #333);
+
+        &--demo {
+            display: flex;
+            padding: 1px 6px;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            border-radius: 2px;
+            background: var(--status-light-information, #377cfc);
+        }
+    }
+}

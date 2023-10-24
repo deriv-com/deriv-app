@@ -1,54 +1,59 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 
-type TToolbar = {
-    active_tab: string;
-    file_name: string;
-    has_redo_stack: boolean;
-    has_undo_stack: boolean;
-    is_dialog_open: boolean;
-    is_drawer_open: boolean;
-    is_running: boolean;
-    is_stop_button_disabled: boolean;
-    is_stop_button_visible: boolean;
-    closeResetDialog: () => void;
-    onOkButtonClick: () => void;
-    onResetClick: () => void;
-    onRunButtonClick: () => void;
-    onSortClick: () => void;
-    onUndoClick: () => void;
-    onZoomInOutClick: () => void;
-    toggleSaveLoadModal: () => void;
-    toggleLoadModal: () => void;
-    toggleSaveModal: () => void;
-    loadDataStrategy: () => void;
-};
-
-const Toolbar = (props: TToolbar) => {
-    const { is_running, is_dialog_open, onOkButtonClick, closeResetDialog } = props;
+const Toolbar = observer(() => {
+    const { run_panel, save_modal, load_modal, toolbar, quick_strategy } = useDBotStore();
+    const {
+        ui: { is_mobile },
+    } = useStore();
+    const {
+        has_redo_stack,
+        has_undo_stack,
+        is_dialog_open,
+        closeResetDialog,
+        onResetOkButtonClick: onOkButtonClick,
+        onResetClick,
+        onSortClick,
+        onUndoClick,
+        onZoomInOutClick,
+    } = toolbar;
+    const { toggleSaveModal } = save_modal;
+    const { toggleLoadModal } = load_modal;
+    const { is_running } = run_panel;
+    const { setFormVisibility } = quick_strategy;
     const confirm_button_text = is_running ? localize('Yes') : localize('OK');
     const cancel_button_text = is_running ? localize('No') : localize('Cancel');
-
+    const handleQuickStrategyOpen = () => {
+        setFormVisibility(true);
+    };
     return (
         <React.Fragment>
             <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
                 <div className='toolbar__section'>
-                    {isMobile() && (
+                    {is_mobile && (
                         <ToolbarButton
                             popover_message={localize('Click here to start building your Deriv Bot.')}
                             button_id='db-toolbar__get-started-button'
                             button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
-                            buttonOnClick={props.loadDataStrategy}
+                            buttonOnClick={handleQuickStrategyOpen}
                             button_text={localize('Quick strategy')}
                         />
                     )}
-                    <WorkspaceGroup {...props} />
+                    <WorkspaceGroup
+                        has_redo_stack={has_redo_stack}
+                        has_undo_stack={has_undo_stack}
+                        onResetClick={onResetClick}
+                        onSortClick={onSortClick}
+                        onUndoClick={onUndoClick}
+                        onZoomInOutClick={onZoomInOutClick}
+                        toggleLoadModal={toggleLoadModal}
+                        toggleSaveModal={toggleSaveModal}
+                    />
                 </div>
             </div>
             <Dialog
@@ -65,7 +70,7 @@ const Toolbar = (props: TToolbar) => {
             >
                 {is_running ? (
                     <Localize
-                        i18n_default_text='Deriv Bot will not proceed with any new trades. Any ongoing trades will be completed by our system. Any unsaved changes will be lost.<0>Note: Please check your statement to view completed transactions.</0>'
+                        i18n_default_text='The workspace will be reset to the default strategy and any unsaved changes will be lost. <0>Note: This will not affect your running bot.</0>'
                         components={[
                             <div
                                 key={0}
@@ -75,31 +80,11 @@ const Toolbar = (props: TToolbar) => {
                         ]}
                     />
                 ) : (
-                    localize('Any unsaved changes will be lost.')
+                    <Localize i18n_default_text='Any unsaved changes will be lost.' />
                 )}
             </Dialog>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ blockly_store, run_panel, save_modal, load_modal, toolbar, quick_strategy }: RootStore) => ({
-    active_tab: blockly_store.active_tab,
-    file_name: toolbar.file_name,
-    has_redo_stack: toolbar.has_redo_stack,
-    has_undo_stack: toolbar.has_undo_stack,
-    is_dialog_open: toolbar.is_dialog_open,
-    is_drawer_open: run_panel.is_drawer_open,
-    is_running: run_panel.is_running,
-    is_stop_button_disabled: run_panel.is_stop_button_disabled,
-    is_stop_button_visible: run_panel.is_stop_button_visible,
-    closeResetDialog: toolbar.closeResetDialog,
-    onOkButtonClick: toolbar.onResetOkButtonClick,
-    onResetClick: toolbar.onResetClick,
-    onRunButtonClick: run_panel.onRunButtonClick,
-    onSortClick: toolbar.onSortClick,
-    onUndoClick: toolbar.onUndoClick,
-    onZoomInOutClick: toolbar.onZoomInOutClick,
-    toggleLoadModal: load_modal.toggleLoadModal,
-    toggleSaveModal: save_modal.toggleSaveModal,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
-}))(Toolbar);
+export default Toolbar;

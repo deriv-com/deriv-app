@@ -2,48 +2,33 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from '../../../../stores/useDBotStore';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
 
-type TToolbox = {
-    hasSubCategory: (param: HTMLCollection) => boolean;
-    is_search_loading: boolean;
-    is_toolbox_open: boolean;
-    onMount: (param?: React.RefObject<typeof ToolboxItems>) => void;
-    onSearch: () => void;
-    onSearchBlur: () => void;
-    onSearchClear: () => void;
-    onSearchKeyUp: () => void;
-    onToolboxItemClick: (category: ChildNode) => void;
-    onToolboxItemExpand: (index: number) => void;
-    onUnmount: () => void;
-    setVisibility: (param: boolean) => void;
-    sub_category_index: number[];
-    toggleDrawer: () => void;
-    toolbox_dom: HTMLElement;
-    loadDataStrategy: () => void;
-};
+const Toolbox = observer(() => {
+    const { toolbox, flyout, quick_strategy } = useDBotStore();
+    const {
+        hasSubCategory,
+        is_search_loading,
+        onMount,
+        onSearch,
+        onSearchBlur,
+        onSearchClear,
+        onSearchKeyUp,
+        onToolboxItemClick,
+        onToolboxItemExpand,
+        onUnmount,
+        sub_category_index,
+        toolbox_dom,
+    } = toolbox;
 
-const Toolbox = ({
-    hasSubCategory,
-    is_search_loading,
-    onMount,
-    onSearch,
-    onSearchBlur,
-    onSearchClear,
-    onSearchKeyUp,
-    onToolboxItemClick,
-    onToolboxItemExpand,
-    onUnmount,
-    setVisibility,
-    sub_category_index,
-    toolbox_dom,
-    loadDataStrategy,
-}: TToolbox) => {
+    const { setFormVisibility } = quick_strategy;
+    const { setVisibility, selected_category } = flyout;
+
     const toolbox_ref = React.useRef(ToolboxItems);
     const [is_open, setOpen] = React.useState(true);
 
@@ -52,6 +37,10 @@ const Toolbox = ({
         return () => onUnmount();
     }, []);
 
+    const handleQuickStrategyOpen = () => {
+        setFormVisibility(true);
+    };
+
     if (!isMobile()) {
         return (
             <div className='dashboard__toolbox' data-testid='dashboard__toolbox'>
@@ -59,7 +48,7 @@ const Toolbox = ({
                     popover_message={localize('Click here to start building your Deriv Bot.')}
                     button_id='db-toolbar__get-started-button'
                     button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
-                    buttonOnClick={loadDataStrategy}
+                    buttonOnClick={handleQuickStrategyOpen}
                     button_text={localize('Quick strategy')}
                 />
                 <div id='gtm-toolbox' className='db-toolbox__content'>
@@ -95,14 +84,17 @@ const Toolbox = ({
                         />
                         <div className='db-toolbox__category-menu'>
                             {toolbox_dom &&
-                                (Array.from(toolbox_dom.childNodes) as HTMLElement[]).map((category, index) => {
+                                Array.from(toolbox_dom.childNodes as HTMLElement[]).map((category, index) => {
                                     if (category.tagName.toUpperCase() === 'CATEGORY') {
                                         const has_sub_category = hasSubCategory(category.children);
                                         const is_sub_category_open = sub_category_index.includes(index);
                                         return (
                                             <div
                                                 key={`db-toolbox__row--${category.getAttribute('id')}`}
-                                                className='db-toolbox__row'
+                                                className={classNames('db-toolbox__row', {
+                                                    'db-toolbox__row--active':
+                                                        selected_category?.getAttribute('id') === category?.id,
+                                                })}
                                             >
                                                 <div
                                                     className='db-toolbox__item'
@@ -138,7 +130,15 @@ const Toolbox = ({
                                                                     key={`db-toolbox__sub-category-row--${subCategory.getAttribute(
                                                                         'id'
                                                                     )}`}
-                                                                    className='db-toolbox__sub-category-row'
+                                                                    className={classNames(
+                                                                        'db-toolbox__sub-category-row',
+                                                                        {
+                                                                            'db-toolbox__sub-category-row--active':
+                                                                                selected_category?.getAttribute(
+                                                                                    'id'
+                                                                                ) === subCategory?.id,
+                                                                        }
+                                                                    )}
                                                                     onClick={() => {
                                                                         onToolboxItemClick(subCategory);
                                                                     }}
@@ -164,23 +164,6 @@ const Toolbox = ({
         );
     }
     return null;
-};
+});
 
-export default connect(({ toolbox, flyout, quick_strategy }: RootStore) => ({
-    hasSubCategory: toolbox.hasSubCategory,
-    is_search_loading: toolbox.is_search_loading,
-    is_toolbox_open: toolbox.is_toolbox_open,
-    onMount: toolbox.onMount,
-    onSearch: toolbox.onSearch,
-    onSearchBlur: toolbox.onSearchBlur,
-    onSearchClear: toolbox.onSearchClear,
-    onSearchKeyUp: toolbox.onSearchKeyUp,
-    onToolboxItemClick: toolbox.onToolboxItemClick,
-    onToolboxItemExpand: toolbox.onToolboxItemExpand,
-    onUnmount: toolbox.onUnmount,
-    setVisibility: flyout.setVisibility,
-    sub_category_index: toolbox.sub_category_index,
-    toggleDrawer: toolbox.toggleDrawer,
-    toolbox_dom: toolbox.toolbox_dom,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
-}))(Toolbox);
+export default Toolbox;

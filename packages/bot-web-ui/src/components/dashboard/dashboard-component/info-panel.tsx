@@ -1,28 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { DesktopWrapper, Icon, MobileWrapper, Modal, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
+
 import { SIDEBAR_INTRO } from './constants';
 
-type TInfoPanel = {
-    has_started_onboarding_tour: boolean;
-    is_info_panel_visible: boolean;
-    setActiveTab: (param: number) => void;
-    setActiveTabTutorial: (param: number) => void;
-    setInfoPanelVisibility: (state: boolean) => void;
-};
-
-const InfoPanel = ({
-    has_started_onboarding_tour,
-    is_info_panel_visible,
-    setActiveTab,
-    setActiveTabTutorial,
-    setInfoPanelVisibility,
-}: TInfoPanel) => {
-    const is_mobile = isMobile();
+const InfoPanel = observer(() => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
+    const { dashboard } = useDBotStore();
+    const { active_tour, is_info_panel_visible, setActiveTab, setActiveTabTutorial, setInfoPanelVisibility } =
+        dashboard;
     const switchTab = (link: boolean, label: string) => {
         const tutorial_link = link ? setActiveTab(DBOT_TABS.TUTORIAL) : null;
         const tutorial_label = label === 'Guide' ? setActiveTabTutorial(0) : setActiveTabTutorial(1);
@@ -74,7 +67,7 @@ const InfoPanel = ({
     return (
         <>
             <DesktopWrapper>
-                {!has_started_onboarding_tour && (
+                {!active_tour && (
                     <div
                         className={classNames('tab__dashboard__info-panel', {
                             'tab__dashboard__info-panel--active': is_info_panel_visible,
@@ -96,12 +89,6 @@ const InfoPanel = ({
             </MobileWrapper>
         </>
     );
-};
+});
 
-export default connect(({ dashboard }: RootStore) => ({
-    has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
-    is_info_panel_visible: dashboard.is_info_panel_visible,
-    setActiveTab: dashboard.setActiveTab,
-    setActiveTabTutorial: dashboard.setActiveTabTutorial,
-    setInfoPanelVisibility: dashboard.setInfoPanelVisibility,
-}))(InfoPanel);
+export default InfoPanel;

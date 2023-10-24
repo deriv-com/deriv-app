@@ -14,6 +14,8 @@ export const ProofOfOwnership = observer(() => {
     const { is_dark_mode_on: is_dark_mode } = ui;
     const cards = account_status?.authentication?.ownership?.requests;
     const [status, setStatus] = useState(POO_STATUSES.none);
+    const citizen = client?.account_settings?.citizen || client?.account_settings?.country_code;
+
     const grouped_payment_method_data = React.useMemo(() => {
         const groups = {};
         const payment_methods_config = getPaymentMethodsConfig();
@@ -50,6 +52,7 @@ export const ProofOfOwnership = observer(() => {
                 updateAccountStatus={updateAccountStatus}
                 refreshNotifications={refreshNotifications}
                 client_email={client_email}
+                citizen={citizen}
             />
         ); // Proof of ownership is required.
     }

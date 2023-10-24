@@ -39,7 +39,7 @@
         }
         &:hover {
             .notifications-toggle__icon {
-                @extend %inline-icon.active;
+                @extend %inline-icon-active;
             }
         }
     }
@@ -155,6 +155,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        &__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         &__icon {
             width: 64px;

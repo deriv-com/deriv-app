@@ -1,15 +1,18 @@
 import React from 'react';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { get, init, timePromise } from '../../../cashier/src/utils/server_time';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+
 import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
+
+import { Localize, localize } from 'Components/i18next';
+import { api_error_codes } from 'Constants/api-error-codes';
+import { buy_sell } from 'Constants/buy-sell';
+import { order_list } from 'Constants/order-list';
 import BaseStore from 'Stores/base_store';
-import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-import { order_list } from 'Constants/order-list';
-import { buy_sell } from 'Constants/buy-sell';
-import { api_error_codes } from 'Constants/api-error-codes';
+
+import { get, init, timePromise } from '../utils/server_time';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;
@@ -51,6 +54,7 @@ export default class GeneralStore extends BaseStore {
     review_period;
     saved_form_state = null;
     should_show_real_name = false;
+    should_show_poa = false;
     should_show_popup = false;
     user_blocked_count = 0;
     user_blocked_until = null;
@@ -112,6 +116,7 @@ export default class GeneralStore extends BaseStore {
             review_period: observable,
             saved_form_state: observable,
             should_show_real_name: observable,
+            should_show_poa: observable,
             should_show_popup: observable,
             user_blocked_count: observable,
             user_blocked_until: observable,
@@ -121,7 +126,6 @@ export default class GeneralStore extends BaseStore {
             is_active_tab: computed,
             is_barred: computed,
             is_form_modified: computed,
-            is_my_profile_tab_visible: computed,
             should_show_dp2p_blocked: computed,
             blockUnblockUser: action.bound,
             createAdvertiser: action.bound,
@@ -132,7 +136,6 @@ export default class GeneralStore extends BaseStore {
             showCompletedOrderNotification: action.bound,
             handleTabClick: action.bound,
             onMount: action.bound,
-            subscribeToLocalCurrency: action.bound,
             onUnmount: action.bound,
             onNicknamePopupClose: action.bound,
             redirectTo: action.bound,
@@ -171,6 +174,7 @@ export default class GeneralStore extends BaseStore {
             setIsAdvertiserBlocked: action.bound,
             setIsBlockUnblockUserLoading: action.bound,
             setShouldShowRealName: action.bound,
+            setShouldShowPoa: action.bound,
             setShouldShowPopup: action.bound,
             setUserBlockedCount: action.bound,
             setUserBlockedUntil: action.bound,
@@ -211,12 +215,8 @@ export default class GeneralStore extends BaseStore {
         return this.form_state?.dirty || this.saved_form_state;
     }
 
-    get is_my_profile_tab_visible() {
-        return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
-    }
-
     get should_show_dp2p_blocked() {
-        return this.is_blocked || this.is_high_risk || this.is_p2p_blocked_for_pa;
+        return this.is_blocked || this.is_high_risk || this.is_p2p_blocked_for_pa || this.should_show_poa;
     }
 
     blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
@@ -240,6 +240,7 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
+                    this.hideModal();
                     const { code, message } = response.error;
                     this.setErrorCode(code);
                     this.setBlockUnblockUserError(message);
@@ -254,7 +255,7 @@ export default class GeneralStore extends BaseStore {
             p2p_advertiser_create: 1,
             name,
         }).then(response => {
-            const { sendbird_store, buy_sell_store } = this.root_store;
+            const { sendbird_store } = this.root_store;
             const { error, p2p_advertiser_create } = response;
             const {
                 daily_buy,
@@ -278,7 +279,7 @@ export default class GeneralStore extends BaseStore {
                 this.setNicknameError(undefined);
                 sendbird_store.handleP2pAdvertiserInfo(response);
                 this.toggleNicknamePopup();
-                buy_sell_store.hideVerification();
+                this.hideModal();
             }
         });
     }
@@ -481,7 +482,7 @@ export default class GeneralStore extends BaseStore {
                     this.setIsBlocked(true);
                 }
 
-                if (!is_authenticated && !is_fa_not_complete) this.setIsBlocked(true);
+                if (!is_authenticated && !is_fa_not_complete) this.setShouldShowPoa(true);
 
                 if (is_fa_not_complete) this.setIsHighRisk(true);
             }
@@ -512,47 +513,12 @@ export default class GeneralStore extends BaseStore {
                     },
                     [this.setP2pOrderList]
                 ),
-                exchange_rate_subscription: subscribeWS(
-                    {
-                        exchange_rates: 1,
-                        base_currency: this.external_stores.client.currency,
-                        subscribe: 1,
-                        target_currency:
-                            this.root_store.buy_sell_store.selected_local_currency ??
-                            this.external_stores.client.local_currency_config?.currency,
-                    },
-                    [this.root_store.floating_rate_store.fetchExchangeRate]
-                ),
             };
-
-            this.disposeLocalCurrencyReaction = reaction(
-                () => [this.root_store.buy_sell_store.local_currency, this.active_index],
-                () => {
-                    this.subscribeToLocalCurrency();
-                }
-            );
 
             if (this.ws_subscriptions) {
                 this.setIsLoading(false);
             }
         });
-    }
-
-    subscribeToLocalCurrency() {
-        const { floating_rate_store, buy_sell_store } = this.root_store;
-        const client_currency = this.external_stores.client.local_currency_config?.currency;
-
-        this.ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
-        this.ws_subscriptions.exchange_rate_subscription = subscribeWS(
-            {
-                exchange_rates: 1,
-                base_currency: this.external_stores.client.currency,
-                subscribe: 1,
-                target_currency:
-                    this.active_index > 0 ? client_currency : buy_sell_store.local_currency ?? client_currency,
-            },
-            [floating_rate_store.fetchExchangeRate]
-        );
     }
 
     onUnmount() {
@@ -563,10 +529,6 @@ export default class GeneralStore extends BaseStore {
 
         if (typeof this.disposeUserBarredReaction === 'function') {
             this.disposeUserBarredReaction();
-        }
-
-        if (typeof this.disposeLocalCurrencyReaction === 'function') {
-            this.disposeLocalCurrencyReaction();
         }
 
         this.setActiveIndex(0);
@@ -739,19 +701,13 @@ export default class GeneralStore extends BaseStore {
             if (!!response && response.error) {
                 floating_rate_store.setApiErrorMessage(response.error.message);
             } else {
-                const {
-                    fixed_rate_adverts,
-                    float_rate_adverts,
-                    float_rate_offset_limit,
-                    fixed_rate_adverts_end_date,
-                    override_exchange_rate,
-                } = response.website_status.p2p_config;
+                const { fixed_rate_adverts, float_rate_adverts, float_rate_offset_limit, fixed_rate_adverts_end_date } =
+                    response.website_status.p2p_config;
                 floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
                 floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
                 floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
                 floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
                 floating_rate_store.setApiErrorMessage(null);
-                if (override_exchange_rate) floating_rate_store.setOverrideExchangeRate(override_exchange_rate);
             }
         });
     }
@@ -805,6 +761,10 @@ export default class GeneralStore extends BaseStore {
 
     setShouldShowRealName(should_show_real_name) {
         this.should_show_real_name = should_show_real_name;
+    }
+
+    setShouldShowPoa(should_show_poa) {
+        this.should_show_poa = should_show_poa;
     }
 
     setShouldShowPopup(should_show_popup) {
@@ -950,15 +910,7 @@ export default class GeneralStore extends BaseStore {
                 return !v(values[key]);
             });
 
-            if (error_index !== -1) {
-                switch (key) {
-                    case 'nickname':
-                    default: {
-                        errors[key] = nickname_messages[error_index];
-                        break;
-                    }
-                }
-            }
+            if (error_index !== -1) errors[key] = nickname_messages[error_index];
         });
 
         return errors;

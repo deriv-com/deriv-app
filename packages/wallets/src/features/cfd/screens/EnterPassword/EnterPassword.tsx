@@ -1,6 +1,6 @@
 import React from 'react';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
-import { TMarketTypes, TPlatforms } from '../../types';
+import { TMarketTypes, TPlatforms } from '../../../../types';
 import { PlatformToTitleMapper } from '../../constants';
 import './EnterPassword.scss';
 

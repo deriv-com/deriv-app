@@ -52,7 +52,7 @@ const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 const CTRADER_IOS_APP_URL = 'https://apps.apple.com/cy/app/ctrader/id767428811';
 const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.ct';
 
-const getBrokerName = () => 'Deriv Holdings (Guernsey) Limited';
+const getBrokerName = () => 'Deriv.com Limited';
 
 const getTopUpConfig = () => {
     return {
@@ -103,7 +103,7 @@ const getPlatformCTraderDownloadLink = (platform: TMobilePlatforms) => {
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
     switch (platform || OSDetect()) {
         case 'windows':
-            return 'https://download.mql5.com/cdn/web/deriv.holdings.guernsey/mt5/deriv5setup.exe';
+            return 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe';
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
         case 'ios':

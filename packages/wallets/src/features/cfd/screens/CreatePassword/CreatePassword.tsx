@@ -1,10 +1,10 @@
 import React from 'react';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
-import './CreatePassword.scss';
 import { TPlatforms } from '../../../../types';
 import { PlatformToTitleMapper } from '../../constants';
 import { WalletButton } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
+import './CreatePassword.scss';
 
 // TODO: Refactor the unnecessary props out once FlowProvider is integrated
 type TProps = {

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
+import useAuthentication from './useAuthentication';
 import useResidenceList from './useResidenceList';
 import useSettings from './useSettings';
-import useAuthentication from './useAuthentication';
 
 /** A custom hook to get the proof of identity verification info of the current user. */
 const usePOI = () => {

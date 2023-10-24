@@ -8,7 +8,7 @@ import uploadFile from '../../../file-uploader-container/upload-file';
 import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfido-sdk-view-container';
 
 import CardDetails from './card-details';
-import { SELFIE_DOCUMENT } from './constants';
+import { SELFIE_DOCUMENT, getDocumentIndex } from './constants';
 import { FormikValues } from 'formik';
 
 const STATUS = {
@@ -18,24 +18,7 @@ const STATUS = {
 };
 
 type TDetailComponent = {
-    document: {
-        onfido_name?: string;
-        card: {
-            title: string;
-            description: string;
-            icon: string;
-        };
-        details: {
-            fields: {
-                name: string;
-                label: string;
-                type: string;
-                required: boolean;
-            }[];
-            documents_title: string;
-            documents: object[];
-        };
-    };
+    document: ReturnType<typeof getDocumentIndex>[number];
     onClickBack: () => void;
     root_class: string;
     country_code_key?: string;

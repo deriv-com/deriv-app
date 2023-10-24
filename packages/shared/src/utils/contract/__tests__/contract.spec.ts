@@ -629,3 +629,27 @@ describe('getLocalizedTurbosSubtype', () => {
         expect(screen.getByText('Short')).toBeInTheDocument();
     });
 });
+
+describe('isSmartTraderContract', () => {
+    it('should return true if contract_type is RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET', () => {
+        expect(ContractUtils.isSmartTraderContract('range')).toBe(true);
+    });
+    it('should return false if contract_type is not RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET', () => {
+        expect(ContractUtils.isSmartTraderContract('call')).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.isSmartTraderContract('')).toBe(false);
+    });
+});
+
+describe('isResetContract', () => {
+    it('should return true if contract_type is RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET', () => {
+        expect(ContractUtils.isResetContract('reset')).toBe(true);
+    });
+    it('should return false if contract_type is not RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET', () => {
+        expect(ContractUtils.isResetContract('put')).toBe(false);
+    });
+    it('should return false if contract_type was not passed', () => {
+        expect(ContractUtils.isResetContract('')).toBe(false);
+    });
+});

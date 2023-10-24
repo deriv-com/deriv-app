@@ -48,4 +48,10 @@ describe('<ContractAuditItem />', () => {
         expect(screen.getByText(/2023-10-11/i)).toBeInTheDocument();
         expect(screen.getByText(/12:40:45 GMT/i)).toBeInTheDocument();
     });
+
+    it('should render additional info if additional_info was passed', () => {
+        render(<ContractAuditItem {...mock_default_props} additional_info='Additional information' />);
+
+        expect(screen.getByText(/Additional information/i)).toBeInTheDocument();
+    });
 });

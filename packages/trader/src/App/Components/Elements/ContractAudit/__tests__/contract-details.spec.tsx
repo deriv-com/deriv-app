@@ -10,6 +10,7 @@ const contract_types = {
     vanilla: 'vanillalongcall',
     digit: 'digit',
     expiry: 'expiry',
+    reset: 'reset',
 };
 const contract_info = {
     barrier: '1460.00',
@@ -36,6 +37,7 @@ const contract_info = {
     low_barrier: '2020',
     display_number_of_contracts: '0.04958',
     profit: -0.1,
+    reset_time: undefined,
     status: 'open',
     transaction_ids: { buy: 420381262708 },
 } as TContractInfo;
@@ -47,6 +49,7 @@ const mock_default_props = {
     duration_unit: 'test_duration_unit',
     exit_spot: '123',
     is_vanilla: false,
+    reset_barrier: '2070.88',
 };
 
 jest.mock('@deriv/shared', () => ({
@@ -115,6 +118,17 @@ describe('<ContractDetails />', () => {
         render(<ContractDetails {...new_props} />);
 
         expect(screen.getByText('Payout per point')).toBeInTheDocument();
+    });
+
+    it('should render reset time and reset barrier information for Reset contract if it was passed in prop', () => {
+        const new_props = { ...mock_default_props };
+        new_props.contract_info.contract_type = contract_types.reset;
+        new_props.contract_info.reset_time = 1235782312876;
+        render(<ContractDetails {...new_props} />);
+
+        expect(screen.getByText('Reset time')).toBeInTheDocument();
+        expect(screen.getByText('Reset barrier')).toBeInTheDocument();
+        expect(screen.getByText('2,070.88')).toBeInTheDocument();
     });
 
     it('getLabel function should return correct label if user sold the contract and it ended before cancellation expired', () => {

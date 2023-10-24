@@ -12,9 +12,10 @@ type TShareMyAdsCardProps = {
     advert: Partial<TAdvertProps>;
     advert_url: string;
     divRef: React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>;
+    setHasImageLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) => {
+const ShareMyAdsCard = ({ advert, advert_url, divRef, setHasImageLoaded }: TShareMyAdsCardProps) => {
     const {
         account_currency,
         id,
@@ -30,7 +31,11 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
 
     return (
         <div className='share-my-ads-card' ref={divRef}>
-            <img className='share-my-ads-card__icon' src={base64_images.deriv_p2p} />
+            <img
+                className='share-my-ads-card__icon'
+                src={base64_images.deriv_p2p}
+                onLoad={() => setHasImageLoaded(true)}
+            />
             <Text className='share-my-ads-card__title' weight='bold' size='m'>
                 <Localize
                     i18n_default_text='{{type}} {{account_currency}}'

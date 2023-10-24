@@ -23,6 +23,7 @@ import ShareMyAdsSocials from './share-my-ads-socials';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const [is_download_disabled, setIsDownloadDisabled] = React.useState(true);
+    const [has_image_loaded, setHasImageLoaded] = React.useState(false);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type, type } = advert;
     const { id: advertiser_id } = advertiser_details;
@@ -65,27 +66,39 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         });
     };
 
+    // React.useEffect(() => {
+    //     if (divRef.current) {
+    //         const span = divRef.current.querySelector('.share-my-ads-card__qr-text');
+
+    //         if (span) {
+    //             const div_styles = getComputedStyle(divRef.current);
+    //             const text_styles = getComputedStyle(span);
+
+    //             const font_family = div_styles.getPropertyValue('font-family');
+    //             const margin = text_styles.getPropertyValue('margin');
+
+    //             if (
+    //                 font_family === '"IBM Plex Sans", sans-serif' &&
+    //                 divRef.current.classList.contains('share-my-ads-card') &&
+    //                 margin === '15px 0px 0px'
+    //             ) {
+    //                 setIsDownloadDisabled(false);
+    //             }
+    //         }
+    //     }
+    // }, [divRef.current]);
+
     React.useEffect(() => {
-        if (divRef.current) {
-            const span = divRef.current.querySelector('.share-my-ads-card__qr-text');
-
-            if (span) {
-                const div_styles = getComputedStyle(divRef.current);
-                const text_styles = getComputedStyle(span);
-
-                const font_family = div_styles.getPropertyValue('font-family');
-                const margin = text_styles.getPropertyValue('margin');
-
-                if (
-                    font_family === '"IBM Plex Sans", sans-serif' &&
-                    divRef.current.classList.contains('share-my-ads-card') &&
-                    margin === '15px 0px 0px'
-                ) {
-                    setIsDownloadDisabled(false);
-                }
-            }
+        let download_timeout: ReturnType<typeof setTimeout>;
+        if (is_download_disabled && has_image_loaded) {
+            download_timeout = setTimeout(() => {
+                setIsDownloadDisabled(false);
+            }, 5000);
         }
-    }, [divRef.current]);
+        return () => {
+            clearTimeout(download_timeout);
+        };
+    }, [is_download_disabled, has_image_loaded]);
 
     React.useEffect(() => {
         let timeout_clipboard: ReturnType<typeof setTimeout>;
@@ -111,10 +124,15 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                     </DesktopWrapper>
                     <div className='share-my-ads-modal__container'>
                         <div className='share-my-ads-modal__container__card'>
-                            <ShareMyAdsCard advert={advert} advert_url={advert_url} divRef={divRef} />
+                            <ShareMyAdsCard
+                                advert={advert}
+                                advert_url={advert_url}
+                                divRef={divRef}
+                                setHasImageLoaded={setHasImageLoaded}
+                            />
                             <Button
                                 className='share-my-ads-modal__container__card__download-button'
-                                disabled={is_download_disabled}
+                                disabled={is_download_disabled && !has_image_loaded}
                                 secondary
                                 onClick={handleGenerateImage}
                             >

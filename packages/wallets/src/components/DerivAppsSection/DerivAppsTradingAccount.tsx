@@ -1,11 +1,12 @@
 import React from 'react';
 import DerivApps from '../../public/images/deriv-apps.svg';
+import { THooks } from '../../types';
 import { WalletButton, WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 
 type TProps = {
-    isDemo?: boolean;
-    label?: string;
+    isDemo?: THooks.ActiveWalletAccount['is_virtual'];
+    label?: THooks.ActiveWalletAccount['landing_company_name'];
     tradingAccountLoginId?: string;
 };
 

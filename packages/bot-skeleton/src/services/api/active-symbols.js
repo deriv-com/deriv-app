@@ -5,7 +5,6 @@ import { config } from '../../constants/config';
 export default class ActiveSymbols {
     constructor(ws, trading_times) {
         this.active_symbols = [];
-        this.disabled_markets = [];
         this.disabled_symbols = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
         this.disabled_submarkets = ['energy', 'step_index'];
         this.init_promise = new PendingPromise();
@@ -50,9 +49,8 @@ export default class ActiveSymbols {
     processActiveSymbols() {
         return this.active_symbols.reduce((processed_symbols, symbol) => {
             if (
-                this.disabled_markets.includes(symbol.market) ||
-                this.disabled_symbols.includes(symbol.symbol) ||
-                this.disabled_submarkets.includes(symbol.submarket)
+                config.DISABLED_SYMBOLS.includes(symbol.symbol) ||
+                config.DISABLED_SUBMARKETS.includes(symbol.submarket)
             ) {
                 return processed_symbols;
             }
@@ -122,8 +120,41 @@ export default class ActiveSymbols {
                 });
             });
         });
-
+        this.getSymbolsForBot();
         return all_symbols;
+    }
+
+    /**
+     *
+     * @returns {Array} Symbols and their submarkets + markets for deriv-bot
+     */
+    getSymbolsForBot() {
+        const { DISABLED } = config.QUICK_STRATEGY;
+        const symbols_for_bot = [];
+        Object.keys(this.processed_symbols).forEach(market_name => {
+            if (this.isMarketClosed(market_name)) return;
+
+            const market = this.processed_symbols[market_name];
+            const { submarkets } = market;
+
+            Object.keys(submarkets).forEach(submarket_name => {
+                if (DISABLED.SUBMARKETS.includes(submarket_name)) return;
+                const submarket = submarkets[submarket_name];
+                const { symbols } = submarket;
+
+                Object.keys(symbols).forEach(symbol_name => {
+                    if (DISABLED.SYMBOLS.includes(symbol_name)) return;
+                    const symbol = symbols[symbol_name];
+                    symbols_for_bot.push({
+                        group: submarket.display_name,
+                        text: symbol.display_name,
+                        value: symbol_name,
+                    });
+                });
+            });
+        });
+
+        return symbols_for_bot;
     }
 
     getMarketDropdownOptions() {

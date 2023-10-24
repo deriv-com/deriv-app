@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { useAuthorize } from '@deriv/api';
 import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
-import { THooks } from '../../../types';
-import './AddedMT5AccountsList.scss';
 import { MarketTypeToIconMapper, MarketTypeToTitleMapper } from '../../../constants';
+import { THooks } from '../../../../../types';
+import './AddedMT5AccountsList.scss';
 
 type TProps = {
     account: THooks.MT5AccountsList;

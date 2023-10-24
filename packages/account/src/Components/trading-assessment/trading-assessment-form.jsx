@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { observer, useStore } from '@deriv/stores';
 import { Formik, Form } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -7,7 +8,6 @@ import { localize, Localize, getLanguage } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
 import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
 import InlineNoteWithIcon from '../inline-note-with-icon';
-import { observer, useStore } from '@deriv/stores';
 
 const TradingAssessmentForm = observer(
     ({

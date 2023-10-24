@@ -1,6 +1,8 @@
+import { useMemo } from 'react';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useMutation from '../useMutation';
 
+/** A custom hook to create new wallet account */
 const useCreateWallet = () => {
     const invalidate = useInvalidateQuery();
     const {
@@ -15,8 +17,16 @@ const useCreateWallet = () => {
         return _mutate({ payload: params });
     };
 
+    const modified_data = useMemo(() => {
+        if (!data?.new_account_wallet) return;
+
+        return data.new_account_wallet;
+    }, [data?.new_account_wallet]);
+
     return {
-        data: data?.new_account_wallet,
+        /** New account information */
+        data: modified_data,
+        /** A function to create new wallet */
         mutate,
         ...rest,
     };

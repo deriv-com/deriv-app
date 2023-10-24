@@ -10,27 +10,28 @@ const AddedCTraderAccountsList: React.FC = () => {
     const history = useHistory();
     const { data: cTraderAccounts } = useCtraderAccountsList();
 
+    const leading = () => (
+        <div className='wallets-added-ctrader-accounts__icon'>
+            <CTrader />
+        </div>
+    );
+
+    const trailing = () => (
+        <div className='wallets-added-ctrader-accounts__actions'>
+            <WalletButton
+                onClick={() => {
+                    history.push('/wallets/cashier/transfer');
+                }}
+                text='Transfer'
+                variant='outlined'
+            />
+            <WalletButton text='Open' />
+        </div>
+    );
+
     return (
         <div className='wallets-added-ctrader-accounts'>
-            <TradingAccountCard
-                leading={() => (
-                    <div className='wallets-added-ctrader-accounts__icon'>
-                        <CTrader />
-                    </div>
-                )}
-                trailing={() => (
-                    <div className='wallets-added-ctrader-accounts__actions'>
-                        <WalletButton
-                            onClick={() => {
-                                history.push('/wallets/cashier/transfer');
-                            }}
-                            text='Transfer'
-                            variant='outlined'
-                        />
-                        <WalletButton text='Open' />
-                    </div>
-                )}
-            >
+            <TradingAccountCard leading={() => leading()} trailing={() => trailing()}>
                 <div className='wallets-added-ctrader-accounts__details'>
                     {cTraderAccounts?.map(account => (
                         <React.Fragment key={`added-ctrader-${account.login}`}>

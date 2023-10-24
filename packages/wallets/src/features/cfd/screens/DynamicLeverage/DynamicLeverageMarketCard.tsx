@@ -19,7 +19,7 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
             <WalletText align='center' data-testid='market_title' size='sm' weight='bold'>
                 {title}
             </WalletText>
-            {!!description && (
+            {description && (
                 <WalletText align='center' data-testid='description_title' fontStyle='italic' size='2xs'>
                     {description}
                 </WalletText>

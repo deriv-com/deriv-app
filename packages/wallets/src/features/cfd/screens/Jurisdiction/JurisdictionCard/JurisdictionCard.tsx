@@ -7,7 +7,6 @@ import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
-// import { DynamicLeverageModal } from '../../../modals';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
 import JurisdictionCardBack from './JurisdictionCardBack';

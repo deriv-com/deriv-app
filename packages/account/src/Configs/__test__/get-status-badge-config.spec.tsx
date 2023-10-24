@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import getStatusBadgeConfig from 'Configs/get-status-badge-config';
+import { AccountStatus } from '@deriv/shared';
 
 describe('getStatusBadgeConfig', () => {
     let account_status = '';
@@ -31,7 +32,7 @@ describe('getStatusBadgeConfig', () => {
     };
 
     it('should render pending status', () => {
-        account_status = 'pending';
+        account_status = AccountStatus.PENDING;
 
         renderCheck(account_status, openFailedVerificationModal, selected_account_type);
 
@@ -40,7 +41,7 @@ describe('getStatusBadgeConfig', () => {
     });
 
     it('should render failed status and trigger "Why?"', () => {
-        account_status = 'failed';
+        account_status = AccountStatus.FAILED;
 
         renderCheck(account_status, openFailedVerificationModal, selected_account_type);
 
@@ -52,7 +53,7 @@ describe('getStatusBadgeConfig', () => {
     });
 
     it('should render needs_verification status and redirect to identity', () => {
-        account_status = 'needs_verification';
+        account_status = AccountStatus.NEEDS_VERIFICATION;
 
         renderCheck(account_status, openFailedVerificationModal, selected_account_type, setIsVerificationModalVisible);
 

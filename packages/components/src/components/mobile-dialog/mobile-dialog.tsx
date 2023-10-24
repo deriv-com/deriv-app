@@ -113,7 +113,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                         </Text>
                         {has_close_icon && (
                             <div
-                                data-testid='dt-dc-mobile-dialog-close-btn'
+                                data-testid='dt_dc_mobile_dialog_close_btn'
                                 className='icons dc-btn-close dc-mobile-dialog__close-btn'
                                 onClick={props.onClose}
                             >

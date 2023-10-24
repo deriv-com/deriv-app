@@ -55,7 +55,6 @@ type TAddressDetails = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    is_gb_residence: boolean | string;
     selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
     has_real_account: boolean;
@@ -77,7 +76,6 @@ type TAutoComplete = {
  * @param goToPreviousStep - function to go to previous step
  * @param validate - function to validate form values
  * @param onSubmit - function to submit form values
- * @param is_gb_residence - is residence Great Britan
  * @param selected_step_ref - reference to selected step
  * @param value - form values
  * @param disabled_items - array of disabled fields
@@ -93,7 +91,6 @@ const AddressDetails = observer(
         goToPreviousStep,
         validate,
         onSubmit,
-        is_gb_residence,
         selected_step_ref,
         disabled_items,
         has_real_account,
@@ -169,9 +166,9 @@ const AddressDetails = observer(
                                         <div className='details-form__banner-container'>
                                             <InlineNoteWithIcon
                                                 icon='IcAlertWarning'
-                                                message={localize(
-                                                    'For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.'
-                                                )}
+                                                message={
+                                                    <Localize i18n_default_text='For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.' />
+                                                }
                                                 title={localize('Why do we collect this?')}
                                             />
                                         </div>
@@ -302,7 +299,6 @@ const AddressDetails = observer(
                                             )}
                                             <FormInputField
                                                 name='address_postcode'
-                                                required={!!is_gb_residence}
                                                 label={localize('Postal/ZIP Code')}
                                                 placeholder={localize('Postal/ZIP Code')}
                                                 onChange={e => {

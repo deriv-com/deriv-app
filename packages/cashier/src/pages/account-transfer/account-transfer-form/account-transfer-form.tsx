@@ -10,6 +10,7 @@ import {
     getPlatformSettings,
     validNumber,
     routes,
+    AccountStatus,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
@@ -171,8 +172,8 @@ const AccountTransferForm = observer(
         const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
         const is_derivez_transfer = selected_to.is_derivez || selected_from.is_derivez;
 
-        const is_mf_status_pending = mf_account_status === 'pending';
-        const is_mf_status_need_verification = mf_account_status === 'need_verification';
+        const is_mf_status_pending = mf_account_status === AccountStatus.PENDING;
+        const is_mf_status_need_verification = mf_account_status === AccountStatus.NEEDS_VERIFICATION;
         const is_mf_status_pending_or_needs_verification = is_mf_status_pending || is_mf_status_need_verification;
 
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;

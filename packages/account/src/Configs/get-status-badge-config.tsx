@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { AccountStatus } from '@deriv/shared';
 
 const getStatusBadgeConfig = (
     account_status: string,
@@ -9,7 +10,7 @@ const getStatusBadgeConfig = (
     setIsVerificationModalVisible?: (value: boolean) => void
 ) => {
     switch (account_status) {
-        case 'pending':
+        case AccountStatus.PENDING:
             return {
                 text: (
                     <Localize
@@ -19,7 +20,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcAlertWarning',
             };
-        case 'failed':
+        case AccountStatus.FAILED:
             return {
                 text: (
                     <Localize
@@ -38,7 +39,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcRedWarning',
             };
-        case 'needs_verification':
+        case AccountStatus.NEEDS_VERIFICATION:
             return {
                 text: (
                     <Localize

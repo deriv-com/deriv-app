@@ -25,6 +25,7 @@ import {
     SessionStore,
     toMoment,
     urlForLanguage,
+    AccountStatus,
 } from '@deriv/shared';
 import { RudderStack } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
@@ -2656,7 +2657,7 @@ export default class ClientStore extends BaseStore {
             [ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU].includes(content_flag) &&
             this.has_maltainvest_account &&
             mf_status &&
-            ['pending', 'failed', 'needs_verification'].includes(mf_status);
+            [AccountStatus.PENDING, AccountStatus.FAILED, AccountStatus.NEEDS_VERIFICATION].includes(mf_status);
         return should_show_status_for_multipliers_account ? mf_status : null;
     }
 

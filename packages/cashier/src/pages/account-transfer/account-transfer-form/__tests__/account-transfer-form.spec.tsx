@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { isMobile } from '@deriv/shared';
+import { AccountStatus, isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
@@ -182,7 +182,7 @@ describe('<AccountTransferForm />', () => {
     });
 
     it('should show an error and transfer button should be disabled if mf_account_status is pending', async () => {
-        mockRootStore.client.mf_account_status = 'pending';
+        mockRootStore.client.mf_account_status = AccountStatus.PENDING;
 
         renderAccountTransferForm();
 

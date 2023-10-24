@@ -56,7 +56,6 @@ describe('<AddressDetails/>', () => {
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
         goToPreviousStep: jest.fn(),
-        is_gb_residence: '',
         onCancel: jest.fn(),
         onSave: jest.fn(),
         onSubmit: jest.fn(),

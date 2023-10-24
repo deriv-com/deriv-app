@@ -1,5 +1,12 @@
 import { action, makeObservable, observable, reaction, computed } from 'mobx';
-import { getCFDAvailableAccount, CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms } from '@deriv/shared';
+import {
+    getCFDAvailableAccount,
+    CFD_PLATFORMS,
+    ContentFlag,
+    formatMoney,
+    getAppstorePlatforms,
+    AccountStatus,
+} from '@deriv/shared';
 import BaseStore from './base-store';
 import { localize } from '@deriv/translations';
 import { isEuCountry } from '_common/utility';
@@ -369,7 +376,7 @@ export default class TradersHubStore extends BaseStore {
 
     get is_currency_switcher_disabled_for_mf() {
         const { mf_account_status } = this.root_store.client;
-        return !!(this.is_eu_user && mf_account_status && mf_account_status !== 'need_verification');
+        return !!(this.is_eu_user && mf_account_status && mf_account_status !== AccountStatus.NEEDS_VERIFICATION);
     }
 
     setTogglePlatformType(platform_type) {

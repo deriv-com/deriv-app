@@ -83,7 +83,7 @@ describe('<VerificationDocumentSubmited />', () => {
                 <VerificationModal />
             </StoreProvider>
         );
-        const close_button = screen.getByTestId('dt-dc-mobile-dialog-close-btn');
+        const close_button = screen.getByTestId('dt_dc_mobile_dialog_close_btn');
         expect(close_button).toBeInTheDocument();
         userEvent.click(close_button);
         expect(mock_store.ui.setIsVerificationModalVisible).toHaveBeenCalledWith(false);

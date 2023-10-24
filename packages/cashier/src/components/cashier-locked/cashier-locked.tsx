@@ -5,6 +5,7 @@ import { EmptyState } from '@deriv/components';
 import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import getMessage from './cashier-locked-provider';
 import './cashier-locked.scss';
+import { AccountStatus } from '@deriv/shared';
 
 const CashierLocked = observer(() => {
     const { client } = useStore();
@@ -34,7 +35,7 @@ const CashierLocked = observer(() => {
         is_deposit_locked,
         is_withdrawal_locked,
         is_identity_verification_needed,
-        is_pending_verification: mf_account_status === 'pending',
+        is_pending_verification: mf_account_status === AccountStatus.PENDING,
     });
 
     return (

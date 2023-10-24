@@ -6,6 +6,7 @@ import { getStatusBadgeConfig } from '@deriv/account';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { TWalletAccount } from 'Types';
 import WalletHeader from '..';
+import { AccountStatus } from '@deriv/shared';
 
 const mockedRootStore = mockStore({});
 
@@ -127,7 +128,7 @@ describe('<WalletHeader />', () => {
             const mocked_store = mockStore({
                 client: {
                     loginid: 'MFW1231',
-                    mf_account_status: 'pending',
+                    mf_account_status: AccountStatus.PENDING,
                 },
                 traders_hub: { is_eu_user: true },
             });
@@ -155,7 +156,7 @@ describe('<WalletHeader />', () => {
             const mocked_store = mockStore({
                 client: {
                     loginid: 'MFW1231',
-                    mf_account_status: 'failed',
+                    mf_account_status: AccountStatus.FAILED,
                 },
                 traders_hub: { is_eu_user: true },
             });
@@ -183,7 +184,7 @@ describe('<WalletHeader />', () => {
             const mocked_store = mockStore({
                 client: {
                     loginid: 'MFW1231',
-                    mf_account_status: 'needs_verification',
+                    mf_account_status: AccountStatus.NEEDS_VERIFICATION,
                 },
                 traders_hub: { is_eu_user: true },
             });

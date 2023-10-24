@@ -1,16 +1,23 @@
 .wallets-action-screen {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.4rem;
 
-    &__icon {
-        margin: 4rem 0rem;
+    @include mobile {
+        gap: 1.6rem;
     }
 
-    &__title,
-    &__subtitle {
-        margin: 1.6rem 0rem;
+    &__modal {
+        padding: 2.4rem;
+        border-radius: 0.8rem;
+        background: #fff;
+        box-shadow: 0px 32px 64px 0px rgba(14, 14, 14, 0.14);
     }
 
-    &__button {
-        margin-top: 3rem;
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
     }
 }

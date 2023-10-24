@@ -1,9 +1,9 @@
 import React, { FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
-import useDevice from '../../../hooks/useDevice';
 import CloseIcon from '../../../public/images/close-icon.svg';
 import { useModal } from '../../ModalProvider';
 import { WalletText } from '../WalletText';
+import useDevice from '../../../hooks/useDevice';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {

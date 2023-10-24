@@ -65,31 +65,27 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         });
     };
 
-    // React.useEffect(() => {
-    //     if (divRef.current) {
-    //         const styles = getComputedStyle(divRef.current);
-    //         const font_family = styles.getPropertyValue('font-family');
-    //         if (
-    //             font_family === '"IBM Plex Sans", sans-serif' &&
-    //             divRef.current.classList.contains('share-my-ads-card')
-    //         ) {
-    //             setIsDownloadDisabled(true);
-    //         }
-    //     }
-    // }, [divRef.current]);
-
     React.useEffect(() => {
-        let download_timeout: ReturnType<typeof setTimeout>;
-        if (is_download_disabled) {
-            download_timeout = setTimeout(() => {
-                setIsDownloadDisabled(false);
-            }, 5000);
+        if (divRef.current) {
+            const span = divRef.current.querySelector('.share-my-ads-card__qr-text');
+
+            if (span) {
+                const div_styles = getComputedStyle(divRef.current);
+                const text_styles = getComputedStyle(span);
+
+                const font_family = div_styles.getPropertyValue('font-family');
+                const margin = text_styles.getPropertyValue('margin');
+
+                if (
+                    font_family === '"IBM Plex Sans", sans-serif' &&
+                    divRef.current.classList.contains('share-my-ads-card') &&
+                    margin === '15px 0px 0px'
+                ) {
+                    setIsDownloadDisabled(false);
+                }
+            }
         }
-        return () => {
-            clearTimeout(download_timeout);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_download_disabled]);
+    }, [divRef.current]);
 
     React.useEffect(() => {
         let timeout_clipboard: ReturnType<typeof setTimeout>;

@@ -64,8 +64,11 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding-left: 0;
+        padding-left: 1.2em;
 
+        @include mobile {
+            padding-left: 0;
+        }
         /* postcss-bem-linter: ignore */
         .category-wrapper {
             margin: 0 0.2em;

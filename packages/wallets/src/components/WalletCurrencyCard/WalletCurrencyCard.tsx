@@ -1,12 +1,13 @@
 import React from 'react';
+import { TGenericSizes, THooks } from '../../types';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import './WalletCurrencyCard.scss';
 
 type TProps = {
-    currency: string;
-    isDemo?: boolean;
-    size?: 'lg' | 'md' | 'sm';
+    currency: THooks.WalletAccountsList['wallet_currency_type'];
+    isDemo?: THooks.WalletAccountsList['is_virtual'];
+    size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
 };
 
 const WalletCurrencyCard: React.FC<TProps> = ({ currency, isDemo, size = 'lg' }: TProps) => {

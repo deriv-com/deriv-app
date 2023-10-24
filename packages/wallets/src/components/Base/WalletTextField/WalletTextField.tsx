@@ -12,6 +12,7 @@ interface WalletTextFieldProps {
     maxLength?: ComponentProps<'input'>['maxLength'];
     onChange?: ComponentProps<'input'>['onChange'];
     showMessage?: boolean;
+    type?: ComponentProps<'input'>['type'];
 }
 
 type MessageContainerProps = {
@@ -28,6 +29,7 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
     maxLength,
     onChange,
     showMessage = false,
+    type = 'text',
 }) => {
     const [value, setValue] = useState(defaultValue);
 
@@ -61,7 +63,7 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
                     maxLength={maxLength}
                     onChange={handleChange}
                     placeholder={label}
-                    type='text'
+                    type={type}
                     value={value}
                 />
                 {label && (

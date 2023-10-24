@@ -7,5 +7,6 @@ export * from './Tabs';
 export * from './WalletAlertMessage';
 export * from './WalletButton';
 export * from './WalletClipboard';
+export * from './WalletPasswordMeter';
 export * from './WalletText';
 export * from './WalletTextField';

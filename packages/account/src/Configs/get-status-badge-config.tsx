@@ -49,7 +49,7 @@ const getStatusBadgeConfig = (
                                 key={1}
                                 className='link-need-verification'
                                 onClick={() => setIsVerificationModalVisible?.(true)}
-                            />, // TODO: [deriv-eu] change this link when we have the new verification pop-up
+                            />,
                         ]}
                     />
                 ),

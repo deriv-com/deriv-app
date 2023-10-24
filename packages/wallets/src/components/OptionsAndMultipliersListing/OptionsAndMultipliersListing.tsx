@@ -81,6 +81,7 @@ const OptionsAndMultipliersListing = () => {
                             >
                                 multipliers
                             </a>
+                            .
                         </h1>
                     </div>
                 </div>

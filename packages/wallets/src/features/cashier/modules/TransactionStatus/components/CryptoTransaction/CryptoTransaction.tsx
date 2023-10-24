@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { WalletText } from '../../../../../../components/Base/WalletText';
+import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
 import useRecentTransactions from '../../hooks/useRecentTransactions';
@@ -17,15 +17,15 @@ const CryptoTransaction = ({ currencyDisplayCode: currency, transaction }: TCryp
 
     return (
         <div className='crypto-transaction'>
-            <div className='crypto-transaction__type-and-status'>
-                <WalletText lineHeight='sm' size='xs' weight='normal'>
+            <div className='crypto-transaction--type-and-status'>
+                <WalletText lineHeight='sm' size='xs'>
                     {transaction.is_deposit ? `Deposit ${currency}` : `Withdrawal ${currency}`}
                 </WalletText>
-                <div className='crypto-transaction__status'>
+                <div className='crypto-transaction-status'>
                     <div
                         className={classNames(
-                            'crypto-transaction__status-dot',
-                            `crypto-transaction__status-dot-${transaction.statusColor}`
+                            'crypto-transaction-status-dot',
+                            `crypto-transaction-status-dot--${transaction.statusColor}`
                         )}
                     />
                     <WalletText lineHeight='2xs' size='2xs'>
@@ -33,7 +33,7 @@ const CryptoTransaction = ({ currencyDisplayCode: currency, transaction }: TCryp
                     </WalletText>
                     {!!transaction.is_valid_to_cancel && (
                         <div
-                            className='crypto-transaction__cancel-button'
+                            className='crypto-transaction--cancel-button'
                             onClick={() => show(<CancelTransactionModal onCancel={() => {}} />)}
                         >
                             <IcCrossLight />
@@ -41,7 +41,7 @@ const CryptoTransaction = ({ currencyDisplayCode: currency, transaction }: TCryp
                     )}
                 </div>
             </div>
-            <div className='crypto-transaction__amount-and-date'>
+            <div className='crypto-transaction--amount-and-date'>
                 <WalletText color='less-prominent' size='2xs'>
                     {transaction.amount} {currency}
                 </WalletText>
@@ -51,13 +51,13 @@ const CryptoTransaction = ({ currencyDisplayCode: currency, transaction }: TCryp
             </div>
             <WalletText lineHeight='2xs' size='2xs'>
                 Address:{' '}
-                <a className='crypto-transaction__red-text' href={transaction.address_url}>
+                <a className='crypto-transaction--red-text' href={transaction.address_url}>
                     {transaction.addressHashDisplay}
                 </a>
             </WalletText>
             <WalletText lineHeight='2xs' size='2xs'>
                 Transaction hash:{' '}
-                <a className='crypto-transaction__red-text' href={transaction.transaction_url}>
+                <a className='crypto-transaction--red-text' href={transaction.transaction_url}>
                     {transaction.transactionHashDisplay}
                 </a>
             </WalletText>
@@ -65,7 +65,7 @@ const CryptoTransaction = ({ currencyDisplayCode: currency, transaction }: TCryp
                 <div>
                     <WalletText lineHeight='2xs' size='2xs'>
                         Confirmations:{' '}
-                        <span className='crypto-transaction__red-text'>{transaction.confirmationDisplay}</span>
+                        <span className='crypto-transaction--red-text'>{transaction.confirmationDisplay}</span>
                     </WalletText>
                 </div>
             )}

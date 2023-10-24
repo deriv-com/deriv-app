@@ -3,14 +3,15 @@ import moment from 'moment';
 import { useCryptoTransactions } from '@deriv/api';
 
 const useRecentTransactions = () => {
-    const { data: transactions, subscribe, ...rest } = useCryptoTransactions();
+    const { data: transactions, error, isLoading, subscribe, ...rest } = useCryptoTransactions();
 
     useEffect(() => subscribe(), [subscribe]);
+
+    const isError = useMemo(() => !isLoading && error !== undefined, [error, isLoading]);
 
     const recentTransactions = useMemo(
         () =>
             transactions?.map(transaction => {
-                const isDeposit = transaction.transaction_type === 'deposit';
                 const submitDate = transaction.submit_date;
                 const confirmations = transaction.confirmations;
                 const addressHash = transaction.address_hash;
@@ -117,25 +118,30 @@ const useRecentTransactions = () => {
                     VERIFIED: '-',
                 } as const;
 
-                const statusColor = isDeposit
-                    ? depositStatusColorMapper[transaction.status_code]
-                    : withdrawalStatusColorMapper[transaction.status_code];
+                const statusColor =
+                    transaction.transaction_type === 'deposit'
+                        ? depositStatusColorMapper[transaction.status_code]
+                        : withdrawalStatusColorMapper[transaction.status_code];
 
-                const statusName = isDeposit
-                    ? depositStatusNameMapper[transaction.status_code]
-                    : withdrawalStatusNameMapper[transaction.status_code];
+                const statusName =
+                    transaction.transaction_type === 'deposit'
+                        ? depositStatusNameMapper[transaction.status_code]
+                        : withdrawalStatusNameMapper[transaction.status_code];
 
-                const statusDescription = isDeposit
-                    ? depositStatusDescriptionMapper[transaction.status_code]
-                    : withdrawalStatusDescriptionMapper[transaction.status_code];
+                const statusDescription =
+                    transaction.transaction_type === 'deposit'
+                        ? depositStatusDescriptionMapper[transaction.status_code]
+                        : withdrawalStatusDescriptionMapper[transaction.status_code];
 
-                const transactionHashDisplay = isDeposit
-                    ? depositTransactionHashDisplayMapper[transaction.status_code]
-                    : withdrawalTransactionHashDisplayMapper[transaction.status_code];
+                const transactionHashDisplay =
+                    transaction.transaction_type === 'deposit'
+                        ? depositTransactionHashDisplayMapper[transaction.status_code]
+                        : withdrawalTransactionHashDisplayMapper[transaction.status_code];
 
-                const confirmationDisplay = isDeposit
-                    ? depositConfirmationDisplayMapper[transaction.status_code]
-                    : withdrawalConfirmationDisplayMapper[transaction.status_code];
+                const confirmationDisplay =
+                    transaction.transaction_type === 'deposit'
+                        ? depositConfirmationDisplayMapper[transaction.status_code]
+                        : withdrawalConfirmationDisplayMapper[transaction.status_code];
 
                 const submitDateDisplay = moment
                     .unix(submitDate || 0)
@@ -146,7 +152,6 @@ const useRecentTransactions = () => {
                     ...transaction,
                     addressHashDisplay: addressHashObscure,
                     confirmationDisplay,
-                    isDeposit,
                     statusColor,
                     statusDescription,
                     statusName,
@@ -157,7 +162,7 @@ const useRecentTransactions = () => {
         [transactions]
     );
 
-    return { recentTransactions, ...rest };
+    return { isError, isLoading, recentTransactions, ...rest };
 };
 
 export default useRecentTransactions;

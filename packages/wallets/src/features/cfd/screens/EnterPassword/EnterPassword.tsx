@@ -1,7 +1,7 @@
 import React from 'react';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import './EnterPassword.scss';
-import { TMarketTypes, TPlatforms } from '../../types';
+import { TMarketTypes, TPlatforms } from '../../../../types';
 import { PlatformToTitleMapper } from '../../constants';
 import useDevice from '../../../../hooks/useDevice';
 

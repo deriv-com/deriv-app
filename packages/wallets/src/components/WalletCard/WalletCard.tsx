@@ -33,16 +33,11 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
                         </div>
                     </div>
                     <div className='wallets-card__details__bottom'>
-                        <WalletText color={account?.is_virtual ? 'white' : 'black'} lineHeight='xs' size='xs'>
+                        <WalletText color={account?.is_virtual ? 'white' : 'black'} size='2xs'>
                             {account?.currency} Wallet
                         </WalletText>
                         <p className='wallets-card__details__bottom__balance'>
-                            <WalletText
-                                color={account?.is_virtual ? 'white' : 'black'}
-                                lineHeight='xs'
-                                size='xs'
-                                weight='bold'
-                            >
+                            <WalletText color={account?.is_virtual ? 'white' : 'black'} size='sm' weight='bold'>
                                 {account?.display_balance}
                             </WalletText>
                         </p>

@@ -181,7 +181,7 @@ const TradingAppCard = ({
                     )}
                     {is_open_position_svg_modal_open && (
                         <OpenPositionsSVGModal
-                            loginId={login}
+                            loginId={login ?? ''}
                             market_type={market_type}
                             status={mt5_acc_auth_status ?? ''}
                             is_modal_open={is_open_position_svg_modal_open}

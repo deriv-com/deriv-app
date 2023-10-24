@@ -115,7 +115,7 @@ describe('<DMT5TradeModal/>', () => {
         };
         renderComponent({ props: new_mock_props });
 
-        const status_badge = screen.queryByText(/Account closed/);
-        expect(status_badge).not.toBeInTheDocument();
+        expect(screen.queryByText(/No new positions/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Account closed/)).not.toBeInTheDocument();
     });
 });

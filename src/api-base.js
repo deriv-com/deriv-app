@@ -67,7 +67,7 @@ class APIBase {
         });
         const { has_reality_check = false } = landing_company_details;
 
-        const client_accounts = await getClientAccounts();
+        const client_accounts = getClientAccounts();
         if (client_accounts && Object.keys(client_accounts).length) {
             client_accounts[this.active_login_id].hasRealityCheck = has_reality_check;
         }

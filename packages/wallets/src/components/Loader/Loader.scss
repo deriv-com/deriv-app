@@ -6,7 +6,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 20px;
+    height: 2rem;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -15,10 +15,10 @@
         $loader: loader 1.2s ease infinite both;
         display: block;
         align-items: flex-end;
-        width: 5px;
+        width: 0.5rem;
         height: 25%;
         animation: $loader;
-        border-radius: 5px;
+        border-radius: 0.5rem;
         bottom: 0;
 
         &:nth-child(2) {

@@ -24,6 +24,22 @@ const copyConfig = base => {
             to: 'js/smartcharts/',
         },
         {
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist'),
+            to: 'js/smartchartsbeta/',
+        },
+        {
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            to: 'assets',
+        },
+        {
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            to: 'contract/assets',
+        },
+        {
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            to: 'bot/assets',
+        },
+        {
             from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/js/'),
             to: 'account/js',
         },
@@ -167,7 +183,7 @@ const generateSWConfig = () => ({
         },
         {
             urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/);
+                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts|smartchartsbeta))).*$/);
             },
             handler: 'CacheFirst',
             options: {
@@ -179,7 +195,7 @@ const generateSWConfig = () => ({
         },
         {
             urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/smartcharts\//);
+                return url.pathname.match(/^\/js\/(smartcharts|smartchartsbeta)\//);
             },
             handler: 'CacheFirst',
             options: {

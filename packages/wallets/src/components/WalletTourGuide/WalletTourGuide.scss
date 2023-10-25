@@ -9,7 +9,7 @@
         width: 28rem;
 
         /* Shadows/xxxl */
-        box-shadow: 0px 32px 64px 0px rgba(14, 14, 14, 0.14);
+        box-shadow: 0rem 3.2rem 6.4rem 0rem rgba(14, 14, 14, 0.14);
     }
 
     &__header {
@@ -24,7 +24,7 @@
         background: var(--system-light-8-primary-background, #fff);
 
         /* divider/light/bottom/1px */
-        box-shadow: 0px -1px 0px 0px #f2f3f4 inset;
+        box-shadow: 0rem -0.1rem 0rem 0rem #f2f3f4 inset;
     }
 
     &__content {

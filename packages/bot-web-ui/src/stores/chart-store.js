@@ -1,6 +1,7 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 // import { tabs_title } from '../constants/bot-contents';
 import { ServerTime } from '@deriv/bot-skeleton';
+import { LocalStore } from '@deriv/shared';
 
 const g_subscribers_map = {};
 let WS;
@@ -35,6 +36,8 @@ export default class ChartStore {
             () => run_panel.is_running,
             () => (run_panel.is_running ? this.onStartBot() : this.onStopBot())
         );
+
+        this.restoreFromStorage();
     }
 
     symbol;
@@ -75,18 +78,53 @@ export default class ChartStore {
 
     onSymbolChange(symbol) {
         this.symbol = symbol;
+        this.saveToLocalStorage();
     }
 
     updateGranularity(granularity) {
         this.granularity = granularity;
+        this.saveToLocalStorage();
     }
 
     updateChartType(chart_type) {
         this.chart_type = chart_type;
+        this.saveToLocalStorage();
     }
 
     setChartStatus(status) {
         this.is_chart_loading = status;
+    }
+
+    saveToLocalStorage() {
+        if (!this.root_store?.app?.core?.client?.is_beta_chart) return;
+        LocalStore.set(
+            'bot.chart_props',
+            JSON.stringify({
+                symbol: this.symbol,
+                granularity: this.granularity,
+                chart_type: this.chart_type,
+            })
+        );
+    }
+
+    restoreFromStorage() {
+        if (!this.root_store?.app?.core?.client?.is_beta_chart) return;
+
+        try {
+            const props = LocalStore.get('bot.chart_props');
+
+            if (props) {
+                const { symbol, granularity, chart_type } = JSON.parse(props);
+                this.symbol = symbol;
+                this.granularity = granularity;
+                this.chart_type = chart_type;
+            } else {
+                this.granularity = 0;
+                this.chart_type = 'line';
+            }
+        } catch {
+            LocalStore.remove('bot.chart_props');
+        }
     }
 
     // #region WS

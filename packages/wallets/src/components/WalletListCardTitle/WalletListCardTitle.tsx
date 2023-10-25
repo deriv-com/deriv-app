@@ -1,15 +1,15 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import { THooks } from '../../types';
 import { WalletText } from '../Base';
 
 type TProps = {
-    currency: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[0]['currency'];
+    title: THooks.WalletAccountsList['currency'];
 };
 
-const WalletListCardTitle: React.FC<TProps> = ({ currency }) => {
+const WalletListCardTitle: React.FC<TProps> = ({ title }) => {
     return (
-        <WalletText lineHeight='4xl' size='xl' weight='bold'>
-            {currency} Wallet
+        <WalletText size='lg' weight='bold'>
+            {title} Wallet
         </WalletText>
     );
 };

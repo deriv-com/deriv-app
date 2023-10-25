@@ -1313,27 +1313,40 @@
     }
 }
 .dc-modal__container_cfd-success-dialog {
-    .success-change__icon-area {
-        width: 128px;
-        margin: 0 auto;
-        position: relative;
+    .success {
+        &-change__icon-area {
+            width: 128px;
+            margin: 0 auto;
+            position: relative;
 
-        &--large .bottom-right-overlay {
-            position: absolute;
-            left: 76px;
-            top: 76px;
+            &--large .bottom-right-overlay {
+                position: absolute;
+                left: 76px;
+                top: 76px;
 
-            @include mobile {
-                left: 78px;
-                top: 58px;
+                @include mobile {
+                    left: 78px;
+                    top: 58px;
+                }
+            }
+            &--xlarge .bottom-right-overlay {
+                position: absolute;
+                bottom: 0.8rem;
+                right: -2.8rem;
+                height: 5.2rem;
+                width: 5.2rem;
             }
         }
-        &--xlarge .bottom-right-overlay {
-            position: absolute;
-            bottom: 0.8rem;
-            right: -2.8rem;
-            height: 5.2rem;
-            width: 5.2rem;
+
+        &-migrated {
+            &--text-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 1.6rem;
+                @include mobile {
+                    gap: 0.8rem;
+                }
+            }
         }
     }
     .dc-modal-body {

@@ -255,7 +255,7 @@ export default class ContractReplayStore extends BaseStore {
 
     onClickSell(contract_id) {
         const { bid_price } = this.contract_info;
-        if (contract_id && bid_price) {
+        if (contract_id && (bid_price || bid_price === 0)) {
             this.is_sell_requested = true;
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
@@ -263,7 +263,7 @@ export default class ContractReplayStore extends BaseStore {
 
     handleSell(response) {
         const { action_names, event_names, form_names, subform_names } = getRudderstackConfig();
-        
+
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
             this.is_sell_requested = false;

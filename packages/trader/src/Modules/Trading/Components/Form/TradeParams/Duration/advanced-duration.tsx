@@ -113,69 +113,65 @@ const AdvancedDuration = observer(
                     />
                 )}
                 {expiry_type === 'duration' ? (
-                    <>
-                        <div className='duration-container'>
-                            {duration_units_list.length >= 1 && (
-                                <Dropdown
-                                    classNameDisplay='dc-dropdown__display--duration'
-                                    disabled={false}
-                                    is_alignment_left
-                                    is_nativepicker={false}
-                                    list={duration_units_list}
-                                    name='advanced_duration_unit'
-                                    no_border={true}
-                                    onChange={changeDurationUnit}
-                                    value={advanced_duration_unit}
-                                />
-                            )}
-                            {advanced_duration_unit === 't' && contract_expiry_type === 'tick' && (
-                                <RangeSlider name='duration' value={duration_t} {...shared_input_props} />
-                            )}
-                            {advanced_duration_unit === 'd' && (
-                                <TradingDatePicker
-                                    id='dt_advanced_duration_datepicker'
-                                    mode='duration'
-                                    name='duration'
-                                    is_24_hours_contract={is_24_hours_contract}
-                                />
-                            )}
-                            {advanced_duration_unit !== 't' && advanced_duration_unit !== 'd' && (
-                                <InputField
-                                    id='dt_advanced_duration_input'
-                                    classNameInput='trade-container__input'
-                                    current_focus={current_focus}
-                                    error_messages={validation_errors.duration}
-                                    label={duration_units_list.length === 1 ? duration_units_list[0].text : undefined}
-                                    name='duration'
-                                    setCurrentFocus={setCurrentFocus}
-                                    value={getDurationFromUnit(advanced_duration_unit)}
-                                    {...number_input_props}
-                                    {...shared_input_props}
-                                />
-                            )}
-                            {is_vanilla && (
-                                <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />
-                            )}
-                            {advanced_duration_unit === 'd' && (
-                                <ExpiryText expiry_epoch={Number(expiry_epoch)} has_error={has_error} />
-                            )}
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div className={endtime_container_class}>
+                    <div className='duration-container'>
+                        {duration_units_list.length >= 1 && (
+                            <Dropdown
+                                classNameDisplay='dc-dropdown__display--duration'
+                                disabled={false}
+                                is_alignment_left
+                                is_nativepicker={false}
+                                list={duration_units_list}
+                                name='advanced_duration_unit'
+                                no_border={true}
+                                onChange={changeDurationUnit}
+                                value={advanced_duration_unit}
+                            />
+                        )}
+                        {advanced_duration_unit === 't' && contract_expiry_type === 'tick' && (
+                            <RangeSlider name='duration' value={duration_t} {...shared_input_props} />
+                        )}
+                        {advanced_duration_unit === 'd' && (
                             <TradingDatePicker
                                 id='dt_advanced_duration_datepicker'
-                                name='expiry_date'
+                                mode='duration'
+                                name='duration'
                                 is_24_hours_contract={is_24_hours_contract}
                             />
-                            {
-                                is_24_hours_contract && <TradingTimePicker />
-                                // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
-                            }
-                            {!is_24_hours_contract && <ExpiryText expiry_epoch={Number(expiry_epoch)} />}
-                        </div>
-                    </>
+                        )}
+                        {advanced_duration_unit !== 't' && advanced_duration_unit !== 'd' && (
+                            <InputField
+                                id='dt_advanced_duration_input'
+                                classNameInput='trade-container__input'
+                                current_focus={current_focus}
+                                error_messages={validation_errors.duration}
+                                label={duration_units_list.length === 1 ? duration_units_list[0].text : undefined}
+                                name='duration'
+                                setCurrentFocus={setCurrentFocus}
+                                value={getDurationFromUnit(advanced_duration_unit)}
+                                {...number_input_props}
+                                {...shared_input_props}
+                            />
+                        )}
+                        {is_vanilla && (
+                            <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />
+                        )}
+                        {advanced_duration_unit === 'd' && (
+                            <ExpiryText expiry_epoch={Number(expiry_epoch)} has_error={has_error} />
+                        )}
+                    </div>
+                ) : (
+                    <div className={endtime_container_class}>
+                        <TradingDatePicker
+                            id='dt_advanced_duration_datepicker'
+                            name='expiry_date'
+                            is_24_hours_contract={is_24_hours_contract}
+                        />
+                        {
+                            is_24_hours_contract && <TradingTimePicker />
+                            // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
+                        }
+                        {!is_24_hours_contract && <ExpiryText expiry_epoch={Number(expiry_epoch)} />}
+                    </div>
                 )}
             </>
         );

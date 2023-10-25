@@ -80,7 +80,7 @@ const ContractDrawer = observer(
                 is_open
                 is_turbos={is_turbos}
                 duration={getDurationTime(contract_info)}
-                duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
+                duration_unit={getDurationUnitText(getDurationPeriod(contract_info)) ?? ''}
                 exit_spot={exit_spot}
                 has_result={
                     !!is_sold || is_multiplier || is_vanilla || is_turbos || is_accumulator || is_smarttrader_contract

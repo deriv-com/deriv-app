@@ -17,16 +17,14 @@ const DurationToggle = ({ name, onChange, value }: TDurationToggle) => {
         'advanced-simple-toggle__icon--active': value,
     });
     return (
-        <>
-            <button
-                id={value ? 'dt_advanced_toggle' : 'dt_simple_toggle'}
-                className='advanced-simple-toggle'
-                onClick={toggle}
-                aria-label={localize('Toggle between advanced and simple duration settings')}
-            >
-                <Icon icon='IcChevronDown' className={icon_className} />
-            </button>
-        </>
+        <button
+            id={value ? 'dt_advanced_toggle' : 'dt_simple_toggle'}
+            className='advanced-simple-toggle'
+            onClick={toggle}
+            aria-label={localize('Toggle between advanced and simple duration settings')}
+        >
+            <Icon icon='IcChevronDown' className={icon_className} />
+        </button>
     );
 };
 

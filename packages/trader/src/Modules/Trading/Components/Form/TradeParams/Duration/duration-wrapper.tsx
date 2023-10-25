@@ -113,7 +113,7 @@ const DurationWrapper = observer(({ is_minimized }: TDurationWrapper) => {
             }
 
             if (
-                !(current_duration < Number(min_value)) &&
+                current_duration >= Number(min_value) &&
                 current_duration > Number(max_value) &&
                 duration_unit !== 'd'
             ) {

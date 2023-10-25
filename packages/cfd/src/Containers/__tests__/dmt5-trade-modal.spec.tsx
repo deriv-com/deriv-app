@@ -115,6 +115,7 @@ describe('<DMT5TradeModal/>', () => {
         };
         renderComponent({ props: new_mock_props });
 
+        expect(screen.queryByText(/Pending verification/)).not.toBeInTheDocument();
         expect(screen.queryByText(/No new positions/)).not.toBeInTheDocument();
         expect(screen.queryByText(/Account closed/)).not.toBeInTheDocument();
     });

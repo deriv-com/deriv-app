@@ -31,61 +31,57 @@ const WalletCashierHeader = ({ hideWalletDetails }: { hideWalletDetails: boolean
             theme='light'
             type='header'
         >
-            <main className='wallets-cashier-header'>
-                <section className='wallets-cashier-header__info'>
-                    <div className='wallets-cashier-header__info__top-left'>
-                        <div className='wallets-cashier-header__info__top-left__details'>
-                            <WalletText>{data?.currency} Wallet</WalletText>
-                            {data?.landing_company_name && (
-                                <WalletListCardBadge isDemo={data?.is_virtual} label={data?.landing_company_name} />
-                            )}
-                        </div>
-
-                        <WalletText lineHeight='7xl' size='xl' weight='bold'>
-                            {data?.display_balance}
-                        </WalletText>
-                    </div>
-                    <div className='wallets-cashier-header__info__top-right'>
-                        {data?.wallet_currency_type && (
-                            <div
-                                className={classNames('wallets-cashier-header__info__top-right__icon', {
-                                    'wallets-hide-details': isMobile && hideWalletDetails,
-                                })}
-                            >
-                                <WalletCardIcon size='xl' type={data?.wallet_currency_type} />
+            <div className='wallets-cashier-header__wrapper'>
+                <main className='wallets-cashier-header'>
+                    <section className='wallets-cashier-header__info'>
+                        <div className='wallets-cashier-header__info__top-left'>
+                            <div className='wallets-cashier-header__info__top-left__details'>
+                                <WalletText>{data?.currency} Wallet</WalletText>
+                                {data?.landing_company_name && (
+                                    <WalletListCardBadge isDemo={data?.is_virtual} label={data?.landing_company_name} />
+                                )}
                             </div>
-                        )}
-                        <button
-                            className='wallets-cashier-header__close-button'
-                            onClick={() => history.push('/wallets')}
-                        >
-                            <CloseIcon />
-                        </button>
-                    </div>
-                </section>
-                <section className='wallets-cashier-header__tabs'>
-                    {tabs.map(tab => (
-                        <>
+
+                            <WalletText lineHeight='7xl' size='xl' weight='bold'>
+                                {data?.display_balance}
+                            </WalletText>
+                        </div>
+                        <div className='wallets-cashier-header__info__top-right'>
+                            {data?.wallet_currency_type && (
+                                <WalletCardIcon size='xl' type={data?.wallet_currency_type} />
+                            )}
                             <button
-                                className={`wallets-cashier-header__tabs__tab ${
-                                    location.pathname === `/wallets/cashier/${tab}`
-                                        ? 'wallets-cashier-header__tabs__tab--active'
-                                        : ''
-                                }`}
-                                key={`cashier-tab-${tab}`}
-                                onClick={() => history.push(`/wallets/cashier/${tab}`)}
+                                className='wallets-cashier-header__close-button'
+                                onClick={() => history.push('/wallets')}
                             >
-                                <WalletText
-                                    size='sm'
-                                    weight={location.pathname === `/wallets/cashier/${tab}` ? 'bold' : 'normal'}
-                                >
-                                    {tab}
-                                </WalletText>
+                                <CloseIcon />
                             </button>
-                        </>
-                    ))}
-                </section>
-            </main>
+                        </div>
+                    </section>
+                    <section className='wallets-cashier-header__tabs'>
+                        {tabs.map(tab => (
+                            <>
+                                <button
+                                    className={`wallets-cashier-header__tabs__tab ${
+                                        location.pathname === `/wallets/cashier/${tab}`
+                                            ? 'wallets-cashier-header__tabs__tab--active'
+                                            : ''
+                                    }`}
+                                    key={`cashier-tab-${tab}`}
+                                    onClick={() => history.push(`/wallets/cashier/${tab}`)}
+                                >
+                                    <WalletText
+                                        size='sm'
+                                        weight={location.pathname === `/wallets/cashier/${tab}` ? 'bold' : 'normal'}
+                                    >
+                                        {tab}
+                                    </WalletText>
+                                </button>
+                            </>
+                        ))}
+                    </section>
+                </main>
+            </div>
         </WalletGradientBackground>
     );
 };

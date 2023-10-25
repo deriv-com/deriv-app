@@ -215,7 +215,9 @@ export class RudderStack {
 
         if (!is_production && !is_staging) return;
 
-        const RUDDERSTACK_KEY = process.env.RUDDERSTACK_KEY;
+        const RUDDERSTACK_KEY = is_production
+            ? process.env.RUDDERSTACK_PRODUCTION_KEY
+            : process.env.RUDDERSTACK_STAGING_KEY;
         const RUDDERSTACK_URL = process.env.RUDDERSTACK_URL;
 
         if (RUDDERSTACK_KEY && RUDDERSTACK_URL) {

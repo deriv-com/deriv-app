@@ -12,7 +12,7 @@ import './WalletCashierHeader.scss';
 const realAccountTabs = ['deposit', 'withdraw', 'transfer', 'transactions'];
 const virtualAccountTabs = ['withdraw', 'transfer', 'transactions', 'reset-balance'];
 
-const WalletCashierHeader = ({ hide_wallet_details }: { hide_wallet_details: boolean }) => {
+const WalletCashierHeader = ({ hideWalletDetails }: { hideWalletDetails: boolean }) => {
     const { data } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
@@ -35,7 +35,7 @@ const WalletCashierHeader = ({ hide_wallet_details }: { hide_wallet_details: boo
                     <div className='wallets-cashier-header__info__top-left'>
                         <div
                             className={classNames('wallets-cashier-header__info__top-left__details', {
-                                'wallets-hide-details': isMobile && hide_wallet_details,
+                                'wallets-hide-details': isMobile && hideWalletDetails,
                             })}
                         >
                             <h1 className='wallets-cashier-header__info__top-left__details__title'>
@@ -51,7 +51,7 @@ const WalletCashierHeader = ({ hide_wallet_details }: { hide_wallet_details: boo
                         {data?.wallet_currency_type && (
                             <div
                                 className={classNames('wallets-cashier-header__info__top-right__icon', {
-                                    'wallets-hide-details': isMobile && hide_wallet_details,
+                                    'wallets-hide-details': isMobile && hideWalletDetails,
                                 })}
                             >
                                 <WalletCardIcon size='xl' type={data?.wallet_currency_type} />

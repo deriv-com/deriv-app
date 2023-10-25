@@ -16,7 +16,7 @@ const WalletCashier = () => {
 
     return (
         <div className='wallets-cashier'>
-            <WalletCashierHeader hide_wallet_details={is_content_scrolled} />
+            <WalletCashierHeader hideWalletDetails={is_content_scrolled} />
             <div className='wallets-cashier-content' onScroll={onContentScroll}>
                 <WalletCashierContent />
             </div>

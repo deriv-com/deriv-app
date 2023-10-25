@@ -22,7 +22,7 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
 
                         {showResend && (
                             <WalletsActionScreen
-                                actionText={<>Resend email{counter ? ` in ${counter}s` : ''}</>}
+                                actionText={<p>Resend email{counter ? ` in ${counter}s` : ''}</p>}
                                 description='Check your spam or junk folder. If it’s not there, try resending the email.'
                                 disabled={!!counter}
                                 onAction={sendEmail}

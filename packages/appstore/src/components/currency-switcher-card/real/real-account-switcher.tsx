@@ -7,12 +7,10 @@ import { useStore, observer } from '@deriv/stores';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
 import { IsIconCurrency } from 'Assets/svgs/currency';
+import { useMFAccountStatus } from '@deriv/hooks';
 
-type AccountNeedsVerificationProps = {
-    mf_account_status: string;
-};
-
-const AccountNeedsVerification = observer(({ mf_account_status }: AccountNeedsVerificationProps) => {
+const AccountNeedsVerification = observer(() => {
+    const mf_account_status = useMFAccountStatus();
     const { client, traders_hub } = useStore();
     const { account_list, loginid } = client;
     const { openModal, openFailedVerificationModal } = traders_hub;
@@ -46,7 +44,8 @@ const AccountNeedsVerification = observer(({ mf_account_status }: AccountNeedsVe
 
 const RealAccountSwitcher = observer(() => {
     const { client, traders_hub } = useStore();
-    const { is_logging_in, is_switching, has_maltainvest_account, mf_account_status } = client;
+    const mf_account_status = useMFAccountStatus();
+    const { is_logging_in, is_switching, has_maltainvest_account } = client;
     const { is_eu_user, no_CR_account, no_MF_account } = traders_hub;
 
     const eu_account = is_eu_user && !no_MF_account;
@@ -62,7 +61,7 @@ const RealAccountSwitcher = observer(() => {
     }
 
     if (mf_account_status && is_eu_user) {
-        return <AccountNeedsVerification mf_account_status={mf_account_status} />;
+        return <AccountNeedsVerification />;
     }
 
     if (has_maltainvest_account && is_eu_user) {

@@ -7,6 +7,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { TWalletAccount } from 'Types';
 import WalletHeader from '..';
 import { AccountStatus } from '@deriv/shared';
+import { useMFAccountStatus } from '@deriv/hooks';
 
 const mockedRootStore = mockStore({});
 
@@ -18,6 +19,7 @@ jest.mock('@deriv/account', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useWalletModalActionHandler: jest.fn(() => ({ setWalletModalActiveTabIndex: jest.fn(), handleAction: jest.fn() })),
+    useMFAccountStatus: jest.fn(),
 }));
 
 describe('<WalletHeader />', () => {
@@ -35,6 +37,10 @@ describe('<WalletHeader />', () => {
         currency_config: undefined,
         icon: '',
     };
+
+    beforeEach(() => {
+        (useMFAccountStatus as jest.Mock).mockReturnValue(null);
+    });
 
     describe('Check currency card', () => {
         it('Should render right currency card for DEMO', () => {
@@ -117,6 +123,7 @@ describe('<WalletHeader />', () => {
 
         it('Should render badge Pending verification', () => {
             getStatusBadgeConfig.mockReturnValue({ icon: '', text: 'Pending verification' });
+            (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.PENDING);
 
             const mocked_props = {
                 ...default_mocked_props,
@@ -128,7 +135,6 @@ describe('<WalletHeader />', () => {
             const mocked_store = mockStore({
                 client: {
                     loginid: 'MFW1231',
-                    mf_account_status: AccountStatus.PENDING,
                 },
                 traders_hub: { is_eu_user: true },
             });
@@ -145,6 +151,7 @@ describe('<WalletHeader />', () => {
 
         it('Should render badge Verification failed', () => {
             getStatusBadgeConfig.mockReturnValue({ icon: '', text: 'Verification failed' });
+            (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.FAILED);
 
             const mocked_props = {
                 ...default_mocked_props,
@@ -156,7 +163,6 @@ describe('<WalletHeader />', () => {
             const mocked_store = mockStore({
                 client: {
                     loginid: 'MFW1231',
-                    mf_account_status: AccountStatus.FAILED,
                 },
                 traders_hub: { is_eu_user: true },
             });
@@ -173,6 +179,7 @@ describe('<WalletHeader />', () => {
 
         it('Should render badge Need verification', () => {
             getStatusBadgeConfig.mockReturnValue({ icon: '', text: 'Need verification' });
+            (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.NEEDS_VERIFICATION);
 
             const mocked_props = {
                 ...default_mocked_props,
@@ -184,7 +191,6 @@ describe('<WalletHeader />', () => {
             const mocked_store = mockStore({
                 client: {
                     loginid: 'MFW1231',
-                    mf_account_status: AccountStatus.NEEDS_VERIFICATION,
                 },
                 traders_hub: { is_eu_user: true },
             });

@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { useStore, observer } from '@deriv/stores';
 import { EmptyState } from '@deriv/components';
-import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked, useIsSystemMaintenance, useMFAccountStatus } from '@deriv/hooks';
 import getMessage from './cashier-locked-provider';
 import './cashier-locked.scss';
 import { AccountStatus } from '@deriv/shared';
@@ -17,8 +17,8 @@ const CashierLocked = observer(() => {
         is_withdrawal_lock: is_withdrawal_locked,
         loginid,
         is_identity_verification_needed,
-        mf_account_status,
     } = client;
+    const mf_account_status = useMFAccountStatus();
     const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
     const is_deposit_locked = useDepositLocked();

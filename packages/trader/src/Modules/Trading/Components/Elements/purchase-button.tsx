@@ -5,6 +5,7 @@ import { useStore } from '@deriv/stores';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
 import { AccountStatus, getContractTypeDisplay } from '@deriv/shared';
 import { TProposalTypeInfo, TTradeStore } from 'Types';
+import { useMFAccountStatus } from '@deriv/hooks';
 
 type TPurchaseButton = {
     basis: string;
@@ -76,9 +77,9 @@ const PurchaseButton = ({
     type,
 }: TPurchaseButton) => {
     const {
-        client: { mf_account_status },
         ui: { setIsMFVericationPendingModal },
     } = useStore();
+    const mf_account_status = useMFAccountStatus();
     const getIconType = () => {
         if (!should_fade && is_loading) return '';
         return is_high_low ? `${type.toLowerCase()}_barrier` : type.toLowerCase();

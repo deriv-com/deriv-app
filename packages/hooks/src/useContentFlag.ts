@@ -3,7 +3,6 @@ import { useStore } from '@deriv/stores';
 const useContentFlag = () => {
     const { traders_hub } = useStore();
     const { content_flag } = traders_hub;
-
     return {
         is_low_risk_cr_non_eu: content_flag === 'low_risk_cr_non_eu',
         is_low_risk_cr_eu: content_flag === 'low_risk_cr_eu',

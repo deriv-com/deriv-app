@@ -27,20 +27,12 @@ describe('<CountrySelector/>', () => {
     let mock_props: React.ComponentProps<typeof CountrySelector> = {
         handleSelectionNext: jest.fn(),
         is_from_external: false,
-        // residence_list: [{ value: '', text: '' }],
-        // selected_country: '',
     };
 
     beforeEach(() => {
         mock_props = {
             handleSelectionNext: jest.fn(),
             is_from_external: false,
-            // residence_list: [
-            //     { value: 'Country 1', text: 'Country 1' },
-            //     { value: 'Country 2', text: 'Country 2' },
-            //     { value: 'Country 3', text: 'Country 3' },
-            // ],
-            // selected_country: '',
         };
     });
 
@@ -114,7 +106,6 @@ describe('<CountrySelector/>', () => {
     it('should trigger selection functions and next button', async () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
-        // mock_props.selected_country = 'Country 2';
 
         const new_poi_context_config = {
             ...poi_context_config,

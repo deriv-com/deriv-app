@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { WalletClipboard, WalletText } from '../../../../../components/Base';
+import EditIcon from '../../../../../public/images/ic-edit.svg';
 import './MT5TradeClipboard.scss';
 
-const MT5TradeClipboard = () => {
+type TMT5TradeClipboardProps = {
+    label: string;
+    value: string;
+    variant?: 'clipboard' | 'password';
+};
+const MT5TradeClipboard: FC<TMT5TradeClipboardProps> = ({ label, value, variant = 'clipboard' }) => {
     return (
         <div className='wallets-mt5-trade-clipboard'>
-            <WalletText size='md' color='less-prominent'>
-                Server
+            <WalletText color='less-prominent' size='sm'>
+                {label}
             </WalletText>
             <div className='wallets-mt5-trade-clipboard__values'>
-                <WalletText size='md' weight='bold'>
-                    Deriv-Demo
+                <WalletText size='sm' weight='bold'>
+                    {value}
                 </WalletText>
-                <WalletClipboard textCopy='lol' successMessage='lol' popoverAlignment='right' />
+                {variant === 'clipboard' ? (
+                    <WalletClipboard popoverAlignment='right' successMessage='lol' textCopy={value} />
+                ) : (
+                    <EditIcon className='wallets-mt5-trade-clipboard__edit' />
+                )}
             </div>
         </div>
     );

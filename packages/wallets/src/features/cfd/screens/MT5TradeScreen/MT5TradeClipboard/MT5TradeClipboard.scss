@@ -10,13 +10,18 @@
         display: flex;
         align-items: center;
 
-        & .wallet-text {
-            font-family: 'Courier';
+        & .wallets-text {
+            font-family: 'Courier', serif;
         }
 
         & .wallets-clipboard {
             border: none;
             border-radius: none;
         }
+    }
+
+    &__edit {
+        margin: 0 0.5rem;
+        cursor: pointer;
     }
 }

@@ -8,15 +8,11 @@ import { WalletText } from '../../../../components/Base';
 import QRCode from 'qrcode.react';
 import useDevice from '../../../../hooks/useDevice';
 
-type TModalTradeWrapperProps = {};
-
-const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapperProps>> = ({ children }) => {
-    const { isDesktop, isMobile } = useDevice();
+const ModalTradeWrapper: FC<PropsWithChildren<unknown>> = ({ children }) => {
+    const { isDesktop } = useDevice();
 
     return (
         <ModalStepWrapper
-            title='Trade'
-            shouldFixedFooter={isDesktop}
             renderFooter={() => {
                 return (
                     <div className='wallets-modal-trade-wrapper__footer'>
@@ -31,7 +27,8 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapperProps>> = ({ chi
                             </div>
                             {isDesktop && (
                                 <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
-                                    <WalletText align='center' size='sm'>
+                                    <QRCode size={80} value='asd' />
+                                    <WalletText align='center' size='xs'>
                                         Scan the QR code to download Deriv MT5
                                     </WalletText>
                                 </div>
@@ -40,6 +37,8 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapperProps>> = ({ chi
                     </div>
                 );
             }}
+            shouldFixedFooter={isDesktop}
+            title='Trade'
         >
             {children}
         </ModalStepWrapper>

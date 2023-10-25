@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMutation, useInvalidateQuery } from '@deriv/api';
+import { useMutation } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
 
 type TNotificationEventPayload = TSocketRequestPayload<'notification_event'>['payload'];
@@ -10,12 +10,7 @@ type TNotificationEventPayload = TSocketRequestPayload<'notification_event'>['pa
  * @returns response, mutation function and other properties from useRequest hook
  */
 const useNotificationEvent = () => {
-    const invalidate = useInvalidateQuery();
-    const { data, mutate, ...rest } = useMutation('notification_event', {
-        onSuccess: () => {
-            invalidate('notification_event');
-        },
-    });
+    const { data, mutate, ...rest } = useMutation('notification_event');
 
     /**
      * Function to send notification event to the server

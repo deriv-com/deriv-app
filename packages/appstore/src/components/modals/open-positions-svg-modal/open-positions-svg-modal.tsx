@@ -35,7 +35,7 @@ const OpenPositionsSVGModal = ({
         return account.loginId === loginId;
     });
     const eligible_account_to_migrate_label = getFormattedJurisdictionCode(
-        Object.values(eligible_account[0]?.to_account)[0]
+        Object.values(eligible_account[0]?.to_account ?? {})[0]
     );
     const account_type =
         market_type === JURISDICTION_MARKET_TYPES.FINANCIAL

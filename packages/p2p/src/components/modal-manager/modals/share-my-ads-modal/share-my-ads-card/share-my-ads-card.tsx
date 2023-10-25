@@ -74,6 +74,7 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
                             excavate: true,
                         }}
                     />
+                    <img className='share-my-ads-card__qr-icon' src={base64_images.dp2p_logo} />
                 </div>
                 <Text className='share-my-ads-card__qr-text' color='less-prominent' size='xxs'>
                     <Localize i18n_default_text='Scan this code to order via Deriv P2P' />

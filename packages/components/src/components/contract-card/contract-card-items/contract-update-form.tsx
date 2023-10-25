@@ -15,10 +15,31 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
-import { TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
-import { TGeneralContractCardBodyProps } from './contract-card-body';
-import { TGetCardLables } from '../../types';
+import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
+import { TGetCardLables, TToastConfig } from '../../types';
 
+export type TGeneralContractCardBodyProps = {
+    addToast: (toast_config: TToastConfig) => void;
+    contract_info: TContractInfo;
+    contract_update: TContractInfo['contract_update'];
+    connectWithContractUpdate?: (contract_update_form: React.ElementType) => React.ElementType;
+    currency: string;
+    current_focus?: string | null;
+    error_message_alignment?: string;
+    getCardLabels: TGetCardLables;
+    getContractById: (contract_id: number) => TContractStore;
+    should_show_cancellation_warning: boolean;
+    has_progress_slider: boolean;
+    is_mobile: boolean;
+    is_sold: boolean;
+    onMouseLeave?: () => void;
+    removeToast: (toast_id: string) => void;
+    setCurrentFocus: (name: string) => void;
+    status?: string;
+    toggleCancellationWarning: (state_change?: boolean) => void;
+    progress_slider?: React.ReactNode;
+    is_positions?: boolean;
+};
 export type TContractUpdateFormProps = Pick<
     TGeneralContractCardBodyProps,
     | 'addToast'
@@ -33,7 +54,7 @@ export type TContractUpdateFormProps = Pick<
     contract: TContractStore;
     error_message_alignment?: string;
     getCardLabels: TGetCardLables;
-    onMouseLeave: () => void;
+    onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string | null) => void;
     status: string;

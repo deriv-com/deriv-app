@@ -11,13 +11,13 @@ type TLastDigitPrediction = Pick<
     'barrier' | 'is_digit_contract' | 'has_entry_spot' | 'onLastDigitSpot'
 > & {
     contract_type?: string;
-    digits: number[];
+    digits?: number[];
     digits_info: { [key: string]: { digit: number; spot: string } };
     dimension: number;
     is_ended?: boolean;
-    is_trade_page: boolean;
-    onDigitChange: (event: { target: { name: string; value: number } }) => void;
-    selected_digit: number | boolean;
+    is_trade_page?: boolean;
+    onDigitChange?: (event: { target: { name: string; value: number } }) => void;
+    selected_digit?: number;
     status?: ProposalOpenContract['status'];
     tick?: TicksStreamResponse['tick'];
     trade_type?: string;
@@ -138,7 +138,7 @@ const LastDigitPrediction = ({
                     value={idx}
                     onLastDigitSpot={onLastDigitSpot}
                     onSelect={isSelectableDigitType() ? handleSelect : null}
-                    selected_digit={isSelectableDigitType() ? selected_digit : false}
+                    selected_digit={isSelectableDigitType() ? selected_digit : undefined}
                 />
             ))}
             <LastDigitPointer is_lost={is_lost} is_trade_page={is_trade_page} is_won={is_won} position={position} />

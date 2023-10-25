@@ -5,11 +5,11 @@ import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
 
 type TProps = {
-    actionText?: string;
+    actionText?: ReactNode;
     actionVariant?: ComponentProps<typeof WalletButton>['variant'];
     description: ReactNode;
     disabled?: boolean;
-    icon: ReactNode;
+    icon?: ReactNode;
     onAction?: () => void;
     title?: string;
     type?: 'modal' | 'page';

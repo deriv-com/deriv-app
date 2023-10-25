@@ -16,7 +16,7 @@ const CancelTransactionModal: React.FC<TCancelTransactionModal> = ({ transaction
     const { isMobile } = useDevice();
 
     const onCancel = useCallback(() => {
-        mutate({ id: transactionId });
+        mutate({ payload: { id: transactionId } });
         hide();
     }, [hide, mutate, transactionId]);
 

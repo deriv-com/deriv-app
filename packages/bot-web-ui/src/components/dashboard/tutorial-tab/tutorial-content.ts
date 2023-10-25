@@ -324,7 +324,7 @@ export const faq_content: TFaqContent[] = [
             },
             {
                 type: 'image',
-                src: getImageLocation('loss_control_trade_parameter.png'),
+                src: getImageLocation('loss_control_trade_parameters.png'),
             },
             {
                 type: 'text',
@@ -344,7 +344,7 @@ export const faq_content: TFaqContent[] = [
             },
             {
                 type: 'image',
-                src: getImageLocation('loss_control_restart_trading_conditions.png'),
+                src: getImageLocation('loss_control_restart_trade_conditions.png'),
             },
         ],
     },

@@ -73,7 +73,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
 
     return (
         <button className={buttonClassNames} disabled={disabled} onClick={onClick}>
-            {hasIcon && icon}
+            {hasIcon && <div className='wallets-button__icon-container'>{icon}</div>}
             {hasText && (
                 <WalletText
                     align='center'

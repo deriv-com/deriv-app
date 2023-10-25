@@ -509,6 +509,8 @@ type TClientStore = {
     ) => Promise<SetFinancialAssessmentResponse>;
     setIsAlreadyAttempted: (value: boolean) => void;
     is_already_attempted: boolean;
+    prev_account_type: string;
+    is_beta_chart: boolean;
 };
 
 type TCommonStoreError = {

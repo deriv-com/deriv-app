@@ -39,8 +39,9 @@ const POISubmission = observer(
 
         const { client, notifications } = useStore();
 
-        const { account_settings, getChangeableFields, is_high_risk } = client;
+        const { account_settings, getChangeableFields, account_status } = client;
         const { refreshNotifications } = notifications;
+        const is_high_risk = account_status.risk_classification === 'high';
 
         const handleSelectionNext = () => {
             if (Object.keys(selected_country).length) {

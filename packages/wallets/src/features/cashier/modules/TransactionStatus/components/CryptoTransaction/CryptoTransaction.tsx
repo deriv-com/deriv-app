@@ -35,7 +35,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     {!!transaction.is_valid_to_cancel && (
                         <div
                             className='crypto-transaction--cancel-button'
-                            onClick={() => show(<CancelTransactionModal onCancel={() => {}} />)}
+                            onClick={() => show(<CancelTransactionModal transactionId={transaction.id} />)}
                         >
                             <IcCrossLight />
                         </div>

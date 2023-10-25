@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useCancelTransaction } from '@deriv/api';
 import { ModalWrapper, WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
+import { THooks } from '../../../../../../types';
 import './CancelTransactionModal.scss';
 
 type TCancelTransactionModal = {
-    onCancel: VoidFunction;
+    transactionId: THooks.CryptoTransactions['id'];
 };
 
-const CancelTransactionModal: React.FC<TCancelTransactionModal> = ({ onCancel }) => {
+const CancelTransactionModal: React.FC<TCancelTransactionModal> = ({ transactionId }) => {
+    const { mutate } = useCancelTransaction();
     const { hide } = useModal();
     const { isMobile } = useDevice();
+
+    const onCancel = useCallback(() => {
+        mutate({ id: transactionId });
+        hide();
+    }, [hide, mutate, transactionId]);
 
     return (
         <ModalWrapper hideCloseButton>

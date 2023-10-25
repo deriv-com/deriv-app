@@ -68,7 +68,7 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
                         value={advert_url}
                         size={isMobile() ? 120 : 140}
                         imageSettings={{
-                            src: base64_images.dp2p_logo,
+                            src: '',
                             height: 25,
                             width: 25,
                             excavate: true,

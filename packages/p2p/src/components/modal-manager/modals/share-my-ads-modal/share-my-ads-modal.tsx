@@ -24,7 +24,6 @@ import ShareMyAdsCard from './share-my-ads-card';
 import ShareMyAdsSocials from './share-my-ads-socials';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
-    // const [is_downloading, setIsDownloading] = React.useState(false);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type, type } = advert;
     const { id: advertiser_id } = advertiser_details;
@@ -69,13 +68,22 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
 
     const handleGenerateImage = async () => {
         if (divRef.current) {
-            const canvas = await html2canvas(divRef.current, { useCORS: true, allowTaint: true });
-            const screenshot = canvas.toDataURL('image/png', 1.0);
-            const file_name = `${advert.type}_${advert.id}.png`;
-            const link = document.createElement('a');
-            link.download = file_name;
-            link.href = screenshot;
-            link.click();
+            const images = divRef.current.getElementsByTagName('img');
+            const has_images_loaded = Array.from(images).every(image => image.complete);
+
+            if (has_images_loaded) {
+                const p2p_logo_height = getComputedStyle(images[1]).getPropertyValue('height');
+
+                if (p2p_logo_height === '25px') {
+                    const canvas = await html2canvas(divRef.current, { useCORS: true, allowTaint: true });
+                    const screenshot = canvas.toDataURL('image/png', 1.0);
+                    const file_name = `${advert.type}_${advert.id}.png`;
+                    const link = document.createElement('a');
+                    link.download = file_name;
+                    link.href = screenshot;
+                    link.click();
+                }
+            }
         }
     };
 

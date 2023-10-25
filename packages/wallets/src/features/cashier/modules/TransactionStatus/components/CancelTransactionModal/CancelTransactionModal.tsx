@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useCancelTransaction } from '@deriv/api';
+import { useCancelCryptoTransaction } from '@deriv/api';
 import { ModalWrapper, WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
@@ -11,7 +11,7 @@ type TCancelTransactionModal = {
 };
 
 const CancelTransactionModal: React.FC<TCancelTransactionModal> = ({ transactionId }) => {
-    const { mutate } = useCancelTransaction();
+    const { mutate } = useCancelCryptoTransaction();
     const { hide } = useModal();
     const { isMobile } = useDevice();
 

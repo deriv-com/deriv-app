@@ -6,10 +6,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 1.6rem;
 
     @include mobile {
-        padding-top: 1.6rem;
-        height: 12.2rem;
+        padding-top: 0rem;
+        height: fit-content;
     }
 
     &__info {
@@ -19,7 +20,7 @@
         padding-inline: 4rem;
 
         @include mobile {
-            padding-inline: 1.6rem;
+            padding: 1.6rem 1.6rem 0rem;
         }
     }
 
@@ -53,6 +54,18 @@
         display: flex;
         gap: 0.8rem;
         align-items: center;
+        
+        @include mobile {
+            visibility: visible;
+            transition: visibility 0s, height 0.2s ease;
+            height: 2rem;
+        }
+    }
+
+    &__currency-icon {
+        @include mobile {
+            transition: visibility 0s, height 0.2s ease;
+        }
     }
 
     &__tabs {
@@ -102,4 +115,9 @@
             }
         }
     }
+}
+
+.wallets-hide-details {
+    height: 0;
+    visibility: hidden;
 }

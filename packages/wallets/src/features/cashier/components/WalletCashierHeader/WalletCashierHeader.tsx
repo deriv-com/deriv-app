@@ -13,6 +13,10 @@ import IcCashierWithdrawal from '../../../../public/images/ic-cashier-withdrawal
 import ResetBalance from '../../../../public/images/plus-thin.svg';
 import './WalletCashierHeader.scss';
 
+type TProps = {
+    hideWalletDetails: boolean;
+};
+
 const realAccountTabs = [
     {
         icon: <IcCashierAdd />,
@@ -54,7 +58,7 @@ const virtualAccountTabs = [
     },
 ] as const;
 
-const WalletCashierHeader = () => {
+const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const activeTabRef = useRef<HTMLDivElement>(null);
@@ -79,7 +83,11 @@ const WalletCashierHeader = () => {
             <main className='wallets-cashier-header'>
                 <section className='wallets-cashier-header__info'>
                     <div className='wallets-cashier-header__top-left-info'>
-                        <div className='wallets-cashier-header__details'>
+                        <div
+                            className={classNames('wallets-cashier-header__details', {
+                                'wallets-hide-details': isMobile && hideWalletDetails,
+                            })}
+                        >
                             <WalletText
                                 color={activeWallet?.is_virtual ? 'system-dark-2-general-text' : 'general'}
                                 size='md'
@@ -99,7 +107,13 @@ const WalletCashierHeader = () => {
                     </div>
                     <div className='wallets-cashier-header__top-right-info'>
                         {activeWallet?.wallet_currency_type && (
-                            <WalletCardIcon size='xl' type={activeWallet?.wallet_currency_type} />
+                            <div
+                                className={classNames('wallets-cashier-header__currency-icon', {
+                                    'wallets-hide-details': isMobile && hideWalletDetails,
+                                })}
+                            >
+                                <WalletCardIcon size='xl' type={activeWallet?.wallet_currency_type} />
+                            </div>
                         )}
                         <CloseIcon
                             className={classNames('wallets-cashier-header__close-icon', {

@@ -4,11 +4,10 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
 import { useDepositFiatAddress, useHasMFAccountDeposited } from '@deriv/hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import { TStores } from '@deriv/stores/types';
+import { StoreProvider, mockStore, useStore } from '@deriv/stores';
 import OneTimeDepositModal from './one-time-deposit-modal';
 
-let mock_store: TStores;
+let mock_store: ReturnType<typeof useStore>;
 
 jest.mock('@deriv/hooks', () => ({
     useDepositFiatAddress: jest.fn(() => ({

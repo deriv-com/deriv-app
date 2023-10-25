@@ -2,6 +2,7 @@ import React from 'react';
 import RealAccountSwitcher from '../real-account-switcher';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { AccountStatus } from '@deriv/shared';
 
 jest.mock('Components/containers/currency-switcher-container', () => ({
     __esModule: true,
@@ -43,7 +44,7 @@ describe('RealAccountSwitcher', () => {
                 is_eu_user: true,
             },
             client: {
-                mf_account_status: 'pending',
+                mf_account_status: AccountStatus.PENDING,
             },
         });
         const wrapper = ({ children }: { children: JSX.Element }) => (

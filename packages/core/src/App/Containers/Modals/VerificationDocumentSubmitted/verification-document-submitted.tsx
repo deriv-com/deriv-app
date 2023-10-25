@@ -8,8 +8,8 @@ const VerificationDocumentSubmitted = observer(() => {
     const { ui } = useStore();
     const { is_verification_submitted, setIsVerificationSubmitted } = ui;
     const message = <Localize i18n_default_text='We’ve received your documents' />;
-    const description = localize(
-        'We’ll need 1 - 3 days to review your documents and notify you by email. You can practice with demo accounts in the meantime.'
+    const description = (
+        <Localize i18n_default_text='We’ll need 1 - 3 days to review your documents and notify you by email. You can practice with demo accounts in the meantime.' />
     );
     const onClick = () => {
         setIsVerificationSubmitted(false);

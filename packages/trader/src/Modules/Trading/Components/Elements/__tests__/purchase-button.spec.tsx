@@ -5,6 +5,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import PurchaseButton from '../purchase-button';
+import { JsxElement } from 'typescript';
 
 const default_mocked_props = {
     basis: '',
@@ -49,24 +50,20 @@ jest.mock('Modules/Trading/Components/Form/Purchase/contract-info', () => jest.f
 
 const mock_store = mockStore({});
 
+const renderComponent = (children: JSX.Element) => {
+    render(<StoreProvider store={mock_store}>{children}</StoreProvider>);
+};
+
 describe('<PurchaseButton />', () => {
     it('should render a button with specific text for contract type and icon', () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <PurchaseButton {...default_mocked_props} is_vanilla />
-            </StoreProvider>
-        );
+        renderComponent(<PurchaseButton {...default_mocked_props} is_vanilla />);
 
         expect(screen.getByText(/TradeIcon/i)).toBeInTheDocument();
         expect(screen.getByText(/Call/i)).toBeInTheDocument();
     });
 
     it('should apply a specific classNames if is_loading === true', () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <PurchaseButton {...default_mocked_props} is_vanilla is_loading index={0} />
-            </StoreProvider>
-        );
+        renderComponent(<PurchaseButton {...default_mocked_props} is_vanilla is_loading index={0} />);
 
         const purchase_button = screen.getByRole('button');
 
@@ -75,11 +72,7 @@ describe('<PurchaseButton />', () => {
     });
 
     it('should call function setPurchaseState and onClickPurchase if purchase button was clicked', () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <PurchaseButton {...default_mocked_props} is_vanilla />
-            </StoreProvider>
-        );
+        renderComponent(<PurchaseButton {...default_mocked_props} is_vanilla />);
 
         const purchase_button = screen.getByRole('button');
         userEvent.click(purchase_button);
@@ -89,31 +82,21 @@ describe('<PurchaseButton />', () => {
     });
 
     it('should render the button with <Money /> component inside for multipliers contract', () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <PurchaseButton {...default_mocked_props} is_multiplier type='MULTUP' />
-            </StoreProvider>
-        );
+        renderComponent(<PurchaseButton {...default_mocked_props} is_multiplier type='MULTUP' />);
 
         expect(screen.getByText(/UP/i)).toBeInTheDocument();
         expect(screen.getByText(/MoneyComponent/i)).toBeInTheDocument();
     });
 
     it('should render the button for accumulators', () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <PurchaseButton {...default_mocked_props} is_accumulator type='ACCU' />
-            </StoreProvider>
-        );
+        renderComponent(<PurchaseButton {...default_mocked_props} is_accumulator type='ACCU' />);
 
         expect(screen.getByText(/Buy/i)).toBeInTheDocument();
     });
 
     it('should render icon with specific type if is_high_low === true', () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <PurchaseButton {...default_mocked_props} is_disabled is_loading is_high_low should_fade type='CALL' />
-            </StoreProvider>
+        renderComponent(
+            <PurchaseButton {...default_mocked_props} is_disabled is_loading is_high_low should_fade type='CALL' />
         );
 
         expect(screen.getByText(/Higher/i)).toBeInTheDocument();
@@ -123,11 +106,7 @@ describe('<PurchaseButton />', () => {
     it('should render ContractInfo for mobile if contract type is not accumulators, turbos or vanillas', () => {
         (isMobile as jest.Mock).mockReturnValueOnce(true);
         (isDesktop as jest.Mock).mockReturnValueOnce(false);
-        render(
-            <StoreProvider store={mock_store}>
-                <PurchaseButton {...default_mocked_props} is_multiplier type='MULTUP' />
-            </StoreProvider>
-        );
+        renderComponent(<PurchaseButton {...default_mocked_props} is_multiplier type='MULTUP' />);
 
         expect(screen.getByText(/ContractInfo/i)).toBeInTheDocument();
     });

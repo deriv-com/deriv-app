@@ -17,6 +17,14 @@ describe('<VerificationDocumentSubmited />', () => {
     let modal_root_el: HTMLDivElement;
     const mock_store = mockStore({});
 
+    const renderComponent = () => {
+        render(
+            <StoreProvider store={mock_store}>
+                <VerificationModal />
+            </StoreProvider>
+        );
+    };
+
     beforeAll(() => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -34,11 +42,7 @@ describe('<VerificationDocumentSubmited />', () => {
     it('should not render the VerificationModal component', () => {
         mock_store.ui.is_verification_modal_visible = true;
         const title = 'Submit your proof of identity and address';
-        render(
-            <StoreProvider store={mock_store}>
-                <VerificationModal />
-            </StoreProvider>
-        );
+        renderComponent();
         expect(screen.queryByText(title)).not.toBeInTheDocument();
         expect(screen.queryByText('VerificationModalContent')).not.toBeInTheDocument();
     });
@@ -47,11 +51,7 @@ describe('<VerificationDocumentSubmited />', () => {
         (isDesktop as jest.Mock).mockReturnValue(true);
         mock_store.ui.is_verification_modal_visible = true;
         const title = 'Submit your proof of identity and address';
-        render(
-            <StoreProvider store={mock_store}>
-                <VerificationModal />
-            </StoreProvider>
-        );
+        renderComponent();
         expect(screen.getByText(title)).toBeInTheDocument();
         expect(screen.getByText('VerificationModalContent')).toBeInTheDocument();
     });
@@ -59,11 +59,7 @@ describe('<VerificationDocumentSubmited />', () => {
     it('should setIsVerificationModalVisible to false', () => {
         (isDesktop as jest.Mock).mockReturnValue(true);
         mock_store.ui.is_verification_modal_visible = true;
-        render(
-            <StoreProvider store={mock_store}>
-                <VerificationModal />
-            </StoreProvider>
-        );
+        renderComponent();
         const close_button = screen.getByRole('button');
         expect(close_button).toBeInTheDocument();
         userEvent.click(close_button);
@@ -78,11 +74,7 @@ describe('<VerificationDocumentSubmited />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
         mock_store.ui.is_verification_modal_visible = true;
-        render(
-            <StoreProvider store={mock_store}>
-                <VerificationModal />
-            </StoreProvider>
-        );
+        renderComponent();
         const close_button = screen.getByTestId('dt_dc_mobile_dialog_close_btn');
         expect(close_button).toBeInTheDocument();
         userEvent.click(close_button);

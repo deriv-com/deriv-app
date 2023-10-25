@@ -26,8 +26,7 @@ describe('useHasMFAccountDeposited', () => {
     );
 
     beforeEach(() => {
-        // @ts-expect-error need to come up with a way to mock the return type of useQuery
-        mockUseQuery.mockReturnValue(mock_useQuery_return_value);
+        (mockUseQuery as jest.Mock).mockReturnValue(mock_useQuery_return_value);
     });
 
     test('should return false if expected status is not in account_status', () => {

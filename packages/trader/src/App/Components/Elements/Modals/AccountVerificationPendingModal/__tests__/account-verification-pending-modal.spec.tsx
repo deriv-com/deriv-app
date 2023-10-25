@@ -16,7 +16,7 @@ describe('<AccountVerificationPendingModal />', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof AccountVerificationPendingModal> = {
         is_visible: true,
         onConfirm: jest.fn(),
     };

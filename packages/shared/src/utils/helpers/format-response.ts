@@ -73,7 +73,7 @@ export const formatIDVError = (errors: string[], status_code: string, is_high_ri
         return null;
     }
     if (is_high_risk && status_code === STATUS_CODES.VERIFIED) {
-        return 'POI_HIGH_RISK';
+        return idv_error_statuses.poi_high_risk;
     }
     const error_keys: Record<string, TIDVErrorStatus> = {
         name: 'POI_NAME_MISMATCH',
@@ -81,7 +81,7 @@ export const formatIDVError = (errors: string[], status_code: string, is_high_ri
         rejected: 'POI_FAILED',
     };
     if (status_code === STATUS_CODES.EXPIRED) {
-        return 'POI_EXPIRED';
+        return idv_error_statuses.poi_expired;
     }
     const status: TIDVErrorStatus[] = [];
     errors.forEach(error => {
@@ -93,8 +93,8 @@ export const formatIDVError = (errors: string[], status_code: string, is_high_ri
     return status.includes(error_keys.name) &&
         status.includes(error_keys.birth) &&
         !status.includes(error_keys.rejected)
-        ? 'POI_NAME_DOB_MISMATCH'
-        : status[0] ?? 'POI_FAILED';
+        ? idv_error_statuses.poi_name_dob_mismatch
+        : status[0] ?? idv_error_statuses.poi_failed;
 };
 
 export const isVerificationServiceSupported = (

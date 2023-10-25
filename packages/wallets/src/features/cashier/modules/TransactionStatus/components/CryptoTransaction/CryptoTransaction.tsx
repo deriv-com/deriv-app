@@ -3,12 +3,13 @@ import classNames from 'classnames';
 import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
+import { THooks } from '../../../../../../types';
 import useRecentTransactions from '../../hooks/useRecentTransactions';
 import { CancelTransactionModal } from '../CancelTransactionModal';
 import './CryptoTransaction.scss';
 
 type TCryptoTransaction = {
-    currencyDisplayCode: string;
+    currencyDisplayCode: THooks.CurrencyConfig['code'];
     transaction: NonNullable<ReturnType<typeof useRecentTransactions>['recentTransactions']>[number];
 };
 

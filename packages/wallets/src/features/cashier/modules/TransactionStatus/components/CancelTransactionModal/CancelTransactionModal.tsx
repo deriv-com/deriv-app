@@ -8,14 +8,14 @@ type TCancelTransactionModal = {
     onCancel: VoidFunction;
 };
 
-const CancelTransactionModal: React.FC<TCancelTransactionModal> = ({onCancel}) => {
+const CancelTransactionModal: React.FC<TCancelTransactionModal> = ({ onCancel }) => {
     const { hide } = useModal();
     const { isMobile } = useDevice();
 
     return (
         <ModalWrapper hideCloseButton>
             <div className='crypto-transactions-cancel-modal'>
-                <WalletText lineHeight={isMobile ? 'md' : 'xl'} size='md' weight='bold'>
+                <WalletText lineHeight={isMobile ? 'md' : 'xl'} weight='bold'>
                     Cancel transaction
                 </WalletText>
                 <WalletText lineHeight={isMobile ? 'sm' : 'lg'} size='sm'>

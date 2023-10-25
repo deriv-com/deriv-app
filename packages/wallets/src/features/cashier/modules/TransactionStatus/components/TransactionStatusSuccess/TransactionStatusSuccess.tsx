@@ -23,7 +23,7 @@ const TransactionStatusSuccess = ({ recentTransactions, transactionType, wallet 
                     {filteredTransactions?.slice(0, 3).map((transaction, index) => (
                         <React.Fragment key={transaction.id}>
                             <CryptoTransaction
-                                currencyDisplayCode={wallet?.currency_config?.code || ''}
+                                currencyDisplayCode={wallet.currency_config?.code || ''}
                                 key={transaction.id}
                                 transaction={transaction}
                             />

@@ -10,7 +10,8 @@ const InfoBoxLongcode = ({ contract_info }: TInfoBoxLongcode) => {
     const max_longcode_length = isMobile() ? 47 : 150;
     const [is_collapsed, setIsCollapsed] = React.useState(true);
 
-    const handleToggle = () => {
+    const handleToggle = (ev: React.MouseEvent<HTMLElement>) => {
+        ev.preventDefault();
         setIsCollapsed(!is_collapsed);
     };
 

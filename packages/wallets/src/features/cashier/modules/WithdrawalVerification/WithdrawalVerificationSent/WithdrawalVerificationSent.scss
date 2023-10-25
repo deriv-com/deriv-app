@@ -2,27 +2,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
-    padding-top: 40px;
+    gap: 2.4rem;
+    padding-top: 4rem;
 
     &__description {
         color: #000;
         text-align: center;
-        font-size: 16px;
+        font-size: 1.6rem;
         font-style: normal;
         font-weight: 400;
-        line-height: 20px; /* 142.857% */
+        line-height: 2rem; /* 142.857% */
 
         @include mobile {
-            font-size: 14px;
+            font-size: 1.4rem;
         }
     }
 
     &-icon {
         display: flex;
-        width: 128px;
-        height: 128px;
-        padding: 13.091px 13.089px 13.091px 13.091px;
+        width: 12.8rem;
+        height: 12.8rem;
+        padding: 1.3rem;
         justify-content: center;
         align-items: center;
         flex-shrink: 0;
@@ -32,8 +32,8 @@
         all: unset;
         cursor: pointer;
         display: flex;
-        height: 40px;
-        padding: 10px 16px;
+        height: 4rem;
+        padding: 1rem 1.6rem;
         justify-content: center;
         align-items: center;
         flex-shrink: 0;
@@ -41,46 +41,46 @@
         text-align: center;
 
         /* desktop/paragraph/P2 - bold */
-        font-size: 14px;
+        font-size: 1.4rem;
         font-style: normal;
         font-weight: 700;
-        line-height: 20px; /* 142.857% */
+        line-height: 2rem; /* 142.857% */
     }
 
     &__messages {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 8px;
+        gap: 0.8rem;
     }
 
     &__resend {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 24px;
-        padding-top: 24px;
+        gap: 2.4rem;
+        padding-top: 2.4rem;
 
         &-button {
             all: unset;
             cursor: pointer;
             display: inline-flex;
-            height: 40px;
-            padding: 0 16px;
+            height: 4rem;
+            padding: 0 1.6rem;
             justify-content: center;
             align-items: center;
             flex-shrink: 0;
 
-            border-radius: 4px;
+            border-radius: 0.4rem;
             background: var(--button-primary-default, #ff444f);
             color: var(--system-dark-1-prominent-text, #fff);
             text-align: center;
 
             /* desktop/paragraph/P2 - bold */
-            font-size: 14px;
+            font-size: 1.4rem;
             font-style: normal;
             font-weight: 700;
-            line-height: 20px; /* 142.857% */
+            line-height: 2rem; /* 142.857% */
 
             &:disabled {
                 cursor: not-allowed;
@@ -91,14 +91,14 @@
         &-content {
             color: #000;
             text-align: center;
-            font-size: 14px;
+            font-size: 1.4rem;
             font-style: normal;
             font-weight: 400;
-            line-height: 20px; /* 142.857% */
+            line-height: 2rem; /* 142.857% */
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 0.8rem;
 
             &__title {
                 font-weight: 700;
@@ -109,13 +109,13 @@
     &__title {
         color: var(--system-light-2-general-text, #333);
         text-align: center;
-        font-size: 16px;
+        font-size: 1.6rem;
         font-style: normal;
         font-weight: 700;
-        line-height: 24px; /* 150% */
+        line-height: 2.4rem; /* 150% */
 
         @include mobile {
-            font-size: 14px;
+            font-size: 1.4rem;
         }
     }
 }

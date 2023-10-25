@@ -69,6 +69,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 isConnectionOpened={is_socket_opened}
                 getMarketsOrder={getMarketsOrder}
                 isLive={true}
+                leftMargin={80}
             />
         </div>
     );

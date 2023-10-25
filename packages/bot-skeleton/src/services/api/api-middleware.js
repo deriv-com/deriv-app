@@ -2,7 +2,8 @@ import { datadogLogs } from '@datadog/browser-logs';
 import { formatDate, formatTime } from '@deriv/shared';
 
 const DATADOG_CLIENT_TOKEN_LOGS = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
-console.log("BOT_SKELETON", process.env.NODE_ENV, process.env.REF_NAME)
+//eslint-disable-next-line
+console.log('BOT_SKELETON', process.env.NODE_ENV, process.env.REF_NAME);
 const isProduction = process.env.NODE_ENV === 'production';
 const isStaging = process.env.NODE_ENV === 'staging';
 let dataDogSessionSampleRate = 0;

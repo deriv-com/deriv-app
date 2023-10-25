@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-console.log("CORE_DDOG", process.env.NODE_ENV, process.env.REF_NAME)
+//eslint-disable-next-line
+console.log('CORE_DDOG', process.env.NODE_ENV, process.env.REF_NAME);
 const DATADOG_APP_ID = process.env.DATADOG_APPLICATION_ID ?? '';
 const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ?? '';
 const isProduction = process.env.NODE_ENV === 'production';

@@ -8,7 +8,7 @@ type TCancelTransactionModal = {
     onCancel: VoidFunction;
 };
 
-const CancelTransactionModal = ({ onCancel }: TCancelTransactionModal) => {
+const CancelTransactionModal: React.FC<TCancelTransactionModal> = ({onCancel}) => {
     const { hide } = useModal();
     const { isMobile } = useDevice();
 

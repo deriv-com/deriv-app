@@ -38,10 +38,10 @@
                 display: flex;
                 gap: 2.4rem;
                 align-items: center;
-                visibility: visible;
-                transition: visibility 0s, height 0.2s ease;
 
                 @include mobile {
+                    visibility: visible;
+                    transition: visibility 0s, height 0.2s ease;
                     height: 2rem;
                     gap: 0.8rem;
                 }
@@ -75,7 +75,9 @@
             }
 
             &__icon {
-                transition: visibility 0s, height 0.2s ease;
+                @include mobile {
+                    transition: visibility 0s, height 0.2s ease;
+                }
             }
         }
     }

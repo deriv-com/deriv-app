@@ -1,29 +1,27 @@
 .transaction-status {
-    &-container {
-        /* This positioning is temporary, ideally it should be determined by the parent component whenever we use `TransactionStatus` */
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 28.2rem;
+    /* This positioning is temporary, ideally it should be determined by the parent component whenever we use `TransactionStatus` */
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 28.2rem;
 
-        display: flex;
-        align-self: stretch;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.8rem;
-        background-color: var(--general-section-1, #f2f3f4);
-        border-radius: 0.8rem;
-        padding: 1.6rem 2.4rem;
-    }
+    display: flex;
+    align-self: stretch;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+    background-color: var(--general-section-1, #f2f3f4);
+    border-radius: 0.8rem;
+    padding: 1.6rem 2.4rem;
 
-    &-header {
+    &__header {
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    &-body {
+    &__body {
         position: relative;
         width: 100%;
         display: flex;
@@ -31,7 +29,7 @@
         gap: 0.8rem;
     }
 
-    &-divider {
+    &__divider {
         width: 100%;
         height: 1px;
         background-color: var(--color-grey-5, #d6dadb);

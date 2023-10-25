@@ -6,7 +6,7 @@ const TransactionStatusError = () => (
         <WalletText lineHeight='sm' size='xs'>
             Unfortunately, we cannot retrieve the information at this time.
         </WalletText>
-        <div className='transaction-status-error-divider' />
+        <div className='transaction-status-error__divider' />
         <WalletButton
             color='transparent'
             isFullWidth={true}

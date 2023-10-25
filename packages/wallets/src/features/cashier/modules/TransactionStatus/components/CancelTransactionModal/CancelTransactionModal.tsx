@@ -29,7 +29,7 @@ const CancelTransactionModal: React.FC<TCancelTransactionModal> = ({ transaction
                 <WalletText lineHeight={isMobile ? 'sm' : 'lg'} size='sm'>
                     Are you sure you want to cancel this transaction?
                 </WalletText>
-                <div className='crypto-transactions-cancel-modal-buttons-container'>
+                <div className='crypto-transactions-cancel-modal__buttons-container'>
                     <WalletButton
                         color='transparent'
                         onClick={hide}

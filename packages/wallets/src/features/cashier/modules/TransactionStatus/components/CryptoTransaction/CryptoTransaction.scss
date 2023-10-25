@@ -5,14 +5,14 @@
     flex-direction: column;
     flex: 1;
 
-    &--type-and-status {
+    &__type-and-status {
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
     }
 
-    &--amount-and-date {
+    &__amount-and-date {
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -20,12 +20,12 @@
         margin: 0.4rem 0;
     }
 
-    &-status {
+    &__status {
         display: flex;
         align-items: center;
         gap: 0.2rem;
 
-        &-dot {
+        &__dot {
             width: 0.4rem;
             height: 0.4rem;
             border-radius: 0.2rem;
@@ -44,12 +44,12 @@
         }
     }
 
-    &--cancel-button {
+    &__cancel-button {
         margin-left: 0.3rem;
         cursor: pointer;
     }
 
-    &--red-text {
+    &__red-text {
         color: var(--brand-coral, #ff444f);
         text-decoration: none;
     }

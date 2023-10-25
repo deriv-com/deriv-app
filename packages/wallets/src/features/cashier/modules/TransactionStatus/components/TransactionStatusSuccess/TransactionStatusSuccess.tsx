@@ -34,8 +34,8 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
                             <div
                                 className={
                                     index < filteredTransactions.length - 1 && index < 2
-                                        ? 'transaction-status-success-divider--light'
-                                        : 'transaction-status-success-divider'
+                                        ? 'transaction-status-success__divider--light'
+                                        : 'transaction-status-success__divider'
                                 }
                             />
                         </React.Fragment>
@@ -56,7 +56,7 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
             ) : (
                 <React.Fragment>
                     <WalletText size='xs'>No recent transactions.</WalletText>
-                    <div className='transaction-status-success-divider' />
+                    <div className='transaction-status-success__divider' />
                 </React.Fragment>
             )}
         </React.Fragment>

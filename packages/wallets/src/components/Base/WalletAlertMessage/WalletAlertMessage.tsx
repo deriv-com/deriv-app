@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import useDevice from '../../../hooks/useDevice';
 import ErrorCircleCrossmark from '../../../public/images/error-circle-crossmark.svg';
 import InfoCircleDots from '../../../public/images/info-circle-dots.svg';
 import SuccessCircleCheckmark from '../../../public/images/success-circle-checkmark.svg';
@@ -28,8 +27,6 @@ type TProps = {
 };
 
 const WalletAlertMessage: React.FC<TProps> = ({ children, message, type }) => {
-    const { isMobile } = useDevice();
-
     const Icon = typeMapper[type].icon;
     const color = typeMapper[type].color;
 
@@ -42,7 +39,7 @@ const WalletAlertMessage: React.FC<TProps> = ({ children, message, type }) => {
                 </div>
             </div>
             <div className='wallets-alert-message__message-container'>
-                <WalletText color={color} size={isMobile ? '2xs' : 'xs'}>
+                <WalletText color={color} size='xs'>
                     {message}
                 </WalletText>
             </div>

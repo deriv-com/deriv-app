@@ -172,22 +172,24 @@ const ProofOfOwnershipForm = ({
                             id: payment_method_details.id,
                         },
                     });
-                    processed_files.reduce(async (promise, processed_file) => {
+                    processed_files.reduce(async (promise, processed_file, index) => {
                         await promise;
                         const response = await uploader.upload(processed_file);
-
+                        const upload_error = [];
                         if (response.warning) {
                             if (response.warning.trim() === 'DuplicateUpload' && response.message) {
-                                const error_message = response.message as string;
-                                setFieldError(card_key, { files: error_message });
+                                upload_error[index] = response.message;
+                                setFieldError(card_key, { files: upload_error });
                             }
                         } else {
+                            console.log('Called update');
                             updateAccountStatus();
                             refreshNotifications();
                         }
                     }, Promise.resolve());
                 }
             }, Promise.resolve());
+            console.log('Button unset');
             setStatus({ is_btn_loading: false });
         } catch (err) {
             setStatus({ is_btn_loading: false });

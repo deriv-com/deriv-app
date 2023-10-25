@@ -4,7 +4,6 @@ import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Redirect } from 'react-router-dom';
 import { Authorize, GetAccountStatus, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Platforms } from '@deriv/shared';
-import { TFile } from '@deriv/shared/src/utils/files/image/image_utility';
 import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
 import getPaymentMethodsConfig from '../Configs/payment-method-config';
 
@@ -190,6 +189,8 @@ export type TPaymentMethodInfo = {
     identifier_type: TPaymentMethodIdentifier | '';
     is_generic_pm: boolean;
 };
+
+export type TFile = File & { file: Blob };
 
 export type TPaymentMethod = keyof ReturnType<typeof getPaymentMethodsConfig>;
 

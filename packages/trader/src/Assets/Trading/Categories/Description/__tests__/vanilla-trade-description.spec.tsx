@@ -14,6 +14,13 @@ describe('<VanillaTradeDescription />', () => {
         expect(screen.getByText(/Vanilla options allow you to predict/i)).toBeInTheDocument();
     });
 
+    it('specific text of description should be rendered if is_vanilla_fx is true', () => {
+        render(<VanillaTradeDescription {...mocked_props} is_vanilla_fx />);
+
+        expect(screen.getByText(/payout per pip/i)).toBeInTheDocument();
+        expect(screen.getByText(/You may sell the contract up to 24 hours before expiry/i)).toBeInTheDocument();
+    });
+
     it('should call a function if word from vocabulary was clicked', () => {
         render(<VanillaTradeDescription {...mocked_props} />);
 

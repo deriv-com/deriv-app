@@ -26,10 +26,12 @@ import { VANILLALONG, TURBOS } from '@deriv/shared';
 const TradeCategories = ({
     category,
     onClick,
+    is_vanilla_fx = false,
     is_multiplier_fx = false,
 }: {
     category?: string;
     onClick: React.MouseEventHandler<HTMLSpanElement>;
+    is_vanilla_fx?: boolean;
     is_multiplier_fx?: boolean;
 }) => {
     let TradeTypeTemplate;
@@ -98,7 +100,7 @@ const TradeCategories = ({
                 break;
             case VANILLALONG.CALL:
             case VANILLALONG.PUT:
-                TradeTypeTemplate = <VanillaTradeDescription onClick={onClick} />;
+                TradeTypeTemplate = <VanillaTradeDescription is_vanilla_fx={is_vanilla_fx} onClick={onClick} />;
                 break;
             default:
                 TradeTypeTemplate = (

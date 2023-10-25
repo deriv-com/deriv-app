@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
 import useRecentTransactions from '../../hooks/useRecentTransactions';
@@ -15,6 +16,8 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
     transactionType,
     wallet,
 }) => {
+    const history = useHistory();
+
     const filteredTransactions =
         recentTransactions?.filter(
             el => !transactionType || (transactionType === 'deposit' ? el.is_deposit : el.is_withdrawal)
@@ -45,7 +48,8 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
                             color='transparent'
                             isFullWidth={true}
                             onClick={() => {
-                                /* should open the list of recent transactions */
+                                // should navigate to transactions page with "Pending transactions" toggle on and filter set to `transactionType`
+                                history.push('wallets/cashier/transactions');
                             }}
                             size='sm'
                             text='View more'

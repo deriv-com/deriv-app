@@ -1,7 +1,8 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import moment from 'moment';
 import { useCryptoTransactions } from '@deriv/api';
 import { getTruncatedString } from '@deriv/utils';
+import { THooks } from '../../../../../types';
 import {
     depositConfirmationDisplayMapper,
     depositStatusColorMapper,
@@ -16,10 +17,19 @@ import {
 } from '../utils/transactionDetailsMappers';
 
 // This hook is used to populate transactions from `useCryptoTransactions` with data that is needed for the UI.
-const useRecentTransactions = () => {
-    const { data: transactions, subscribe, ...rest } = useCryptoTransactions();
+const useRecentTransactions = (transactionType?: THooks.CryptoTransactions['transaction_type']) => {
+    const { data: transactions, resetData, subscribe, unsubscribe, ...rest } = useCryptoTransactions();
 
-    useEffect(() => subscribe(), [subscribe]);
+    useEffect(() => {
+        subscribe({ payload: { transaction_type: transactionType } });
+        return () => unsubscribe();
+    }, [subscribe, transactionType, unsubscribe]);
+
+    const refresh = useCallback(() => {
+        unsubscribe();
+        resetData();
+        subscribe({ payload: { transaction_type: transactionType } });
+    }, [resetData, subscribe, transactionType, unsubscribe]);
 
     const recentTransactions = useMemo(
         () =>
@@ -79,7 +89,7 @@ const useRecentTransactions = () => {
         [transactions]
     );
 
-    return { recentTransactions, ...rest };
+    return { recentTransactions, refresh, ...rest };
 };
 
 export default useRecentTransactions;

@@ -1,7 +1,11 @@
 import React from 'react';
 import { WalletButton, WalletText } from '../../../../../../components/Base';
 
-const TransactionStatusError = () => (
+type TTransactionStatusError = {
+    refresh: VoidFunction;
+};
+
+const TransactionStatusError: React.FC<TTransactionStatusError> = ({ refresh }) => (
     <React.Fragment>
         <WalletText lineHeight='sm' size='xs'>
             Unfortunately, we cannot retrieve the information at this time.
@@ -10,9 +14,7 @@ const TransactionStatusError = () => (
         <WalletButton
             color='transparent'
             isFullWidth={true}
-            onClick={() => {
-                /* should re-subscribe */
-            }}
+            onClick={refresh}
             size='sm'
             text='Refresh'
             variant='outlined'

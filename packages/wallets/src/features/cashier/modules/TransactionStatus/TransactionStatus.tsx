@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../../../components/Base';
 import { Loader } from '../../../../components/Loader';
@@ -18,11 +18,13 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
         error: recentTransactionsError,
         isLoading: isTransactionsLoading,
         recentTransactions,
-    } = useRecentTransactions();
+        refresh: refreshRecentTransactions,
+    } = useRecentTransactions(transactionType);
     const {
         data: wallet,
         error: activeWalletAccountError,
         isLoading: isActiveWalletAccountLoading,
+        refetch,
     } = useActiveWalletAccount();
 
     const isLoading = useMemo(
@@ -35,6 +37,11 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
         [activeWalletAccountError, recentTransactionsError]
     );
 
+    const refresh = useCallback(() => {
+        refreshRecentTransactions();
+        refetch();
+    }, [refetch, refreshRecentTransactions]);
+
     return (
         <div className='transaction-status'>
             <div className='transaction-status__header'>
@@ -44,7 +51,7 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
             <div className='transaction-status__divider' />
             <div className='transaction-status__body'>
                 {!isError && isLoading && <Loader color='#85acb0' />}
-                {isError && <TransactionStatusError />}
+                {isError && <TransactionStatusError refresh={refresh} />}
                 {!isLoading && !isError && wallet && (
                     <TransactionStatusSuccess
                         recentTransactions={recentTransactions}

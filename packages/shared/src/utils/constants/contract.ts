@@ -7,10 +7,11 @@ import { shouldShowCancellation, shouldShowExpiration, TURBOS, VANILLALONG } fro
 export const getLocalizedBasis = () =>
     ({
         accumulator: localize('Accumulators'),
-        payout: localize('Payout'),
-        payout_per_point: localize('Payout per point'),
-        stake: localize('Stake'),
         multiplier: localize('Multiplier'),
+        payout_per_pip: localize('Payout per pip'),
+        payout_per_point: localize('Payout per point'),
+        payout: localize('Payout'),
+        stake: localize('Stake'),
         turbos: localize('Turbos'),
     } as const);
 

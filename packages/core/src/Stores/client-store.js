@@ -2610,7 +2610,10 @@ export default class ClientStore extends BaseStore {
                 ? WS.authorized.storage.getSettings()
                 : this.account_settings;
 
-        const readonly_fields = [...get_settings.immutable_fields, ...['immutable_fields', 'email', 'password']];
+        // the response from get_settings is not yet received and immutable_fields is undefined
+        const immutable_fields = get_settings?.immutable_fields || [];
+
+        const readonly_fields = [...immutable_fields, ...['immutable_fields', 'email', 'password']];
         return Object.keys(get_settings).filter(field => !readonly_fields.includes(field));
     }
 

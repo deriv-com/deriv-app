@@ -1,0 +1,9 @@
+.wallets-divider {
+    &__horizontal {
+        border-top: 1px solid var(--general-section-1, #f2f3f4);
+    }
+
+    &__vertical {
+        border-right: 1px solid var(--general-section-1, #f2f3f4);
+    }
+}

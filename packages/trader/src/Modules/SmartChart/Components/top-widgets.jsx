@@ -5,14 +5,17 @@ import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isAccumulatorContract, isDigitContract } from '@deriv/shared';
 import { ChartTitle } from 'Modules/SmartChart';
+import { ChartTitleBeta } from 'Modules/SmartChartBeta';
 import BuyToastNotification from './buy-toast-notification';
 import { observer, useStore } from '@deriv/stores';
 
 const RecentTradeInfo = observer(() => {
-    const { contract_trade } = useStore();
-    const { granularity, markers_array } = contract_trade;
+    const { contract_trade, client } = useStore();
+    const { granularity, filtered_contracts, markers_array } = contract_trade;
 
-    const latest_tick_contract = markers_array[markers_array.length - 1];
+    const latest_tick_contract = client.is_beta_chart
+        ? filtered_contracts[filtered_contracts.length - 1]
+        : markers_array[markers_array.length - 1];
     if (
         !latest_tick_contract ||
         !latest_tick_contract.contract_info.tick_stream ||
@@ -42,9 +45,11 @@ const TopWidgets = ({
     open_market,
     open,
     is_digits_widget_active,
+    is_beta_chart,
 }) => {
+    const ChartTitleComponent = is_beta_chart ? ChartTitleBeta : ChartTitle;
     const ChartTitleLocal = (
-        <ChartTitle
+        <ChartTitleComponent
             open_market={open_market}
             open={open}
             enabled={is_title_enabled}
@@ -90,6 +95,7 @@ TopWidgets.propTypes = {
     open_market: PropTypes.object,
     theme: PropTypes.string,
     y_axis_width: PropTypes.number,
+    is_beta_chart: PropTypes.bool,
 };
 
 export default TopWidgets;

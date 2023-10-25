@@ -23,7 +23,7 @@ describe('DepositCryptoSideNotes', () => {
     test('should show correct side note for UST', () => {
         const mock = mockStore({
             client: { currency: 'UST' },
-            modules: { cashier: { transaction_history: { setIsCryptoTransactionsVisible: jest.fn() } } },
+            modules: { cashier: { transaction_history: { setIsTransactionsCryptoVisible: jest.fn() } } },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -37,7 +37,7 @@ describe('DepositCryptoSideNotes', () => {
     test('should show correct side note for eUSDT', () => {
         const mock = mockStore({
             client: { currency: 'eUSDT' },
-            modules: { cashier: { transaction_history: { setIsCryptoTransactionsVisible: jest.fn() } } },
+            modules: { cashier: { transaction_history: { setIsTransactionsCryptoVisible: jest.fn() } } },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

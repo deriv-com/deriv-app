@@ -5,14 +5,15 @@ import { Localize } from '@deriv/translations';
 import BotSnackbar from 'Components/bot-snackbar';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
+import QuickStrategy1 from '../../quick-strategy';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
-import QuickStrategy from '../quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
-    const { dashboard, app, run_panel } = useDBotStore();
+    const { dashboard, app, run_panel, toolbar, quick_strategy } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
+    const { is_open } = quick_strategy;
     const { is_running } = run_panel;
     const is_blockly_listener_registered = React.useRef(false);
     const [show_snackbar, setShowSnackbar] = React.useState(false);
@@ -23,11 +24,15 @@ const BotBuilder = observer(() => {
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
-    }, []);
+    }, [onMount, onUnmount]);
 
     const handleBlockChangeOnBotRun = (e: Event) => {
-        if (e.type !== 'ui') {
+        const { is_reset_button_clicked, setResetButtonState } = toolbar;
+        if (e.type !== 'ui' && !is_reset_button_clicked) {
             setShowSnackbar(true);
+            removeBlockChangeListener();
+        } else if (is_reset_button_clicked) {
+            setResetButtonState(false);
             removeBlockChangeListener();
         }
     };
@@ -86,7 +91,7 @@ const BotBuilder = observer(() => {
             {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}
             <LoadModal />
             <SaveModal />
-            <QuickStrategy />
+            {is_open && <QuickStrategy1 />}
         </>
     );
 });

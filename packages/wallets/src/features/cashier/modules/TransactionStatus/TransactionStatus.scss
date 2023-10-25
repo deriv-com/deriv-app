@@ -1,9 +1,11 @@
 .transaction-status {
     &-container {
+        /* This positioning is temporary, ideally it should be determined by the parent component whenever we use `TransactionStatus` */
         position: absolute;
         top: 0;
         right: 0;
         width: 28.2rem;
+
         display: flex;
         align-self: stretch;
         flex-direction: column;

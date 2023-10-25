@@ -6,6 +6,7 @@ export * from './FadedAnimatedList';
 export * from './Loader';
 export * from './OptionsAndMultipliersListing';
 export * from './TradingAccountCard';
+export * from './VerificationStatusBadge';
 export * from './WalletCard';
 export * from './WalletCardIcon';
 export * from './WalletError';

@@ -1,0 +1,21 @@
+.wallets-verification-status-badge {
+    display: flex;
+    flex-direction: row;
+    gap: 0.8rem;
+    align-items: center;
+    border-radius: 4px;
+    padding: 2px 6px;
+    width: 25rem;
+
+    &--pending {
+        border: 1px solid var(--status-light-warning, #ffad3a);
+    }
+
+    &--rejected {
+        border: 1px solid var(--status-light-danger, #ec3f3f);
+    }
+
+    &--needs_verification {
+        border: 1px solid var(--status-light-information, #377cfc);
+    }
+}

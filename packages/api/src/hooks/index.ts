@@ -26,6 +26,7 @@ export { default as useDxtradeAccountsList } from './useDxtradeAccountsList';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
 export { default as useLandingCompany } from './useLandingCompany';
 export { default as useMT5AccountsList } from './useMT5AccountsList';
+export { default as usePOA } from './usePOA';
 export { default as usePOI } from './usePOI';
 export { default as useResidenceList } from './useResidenceList';
 export { default as useSettings } from './useSettings';

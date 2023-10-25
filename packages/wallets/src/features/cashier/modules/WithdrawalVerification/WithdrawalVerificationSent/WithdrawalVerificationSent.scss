@@ -1,13 +1,11 @@
 .wallets-withdrawal-verification-sent {
     padding: 4.8rem 1.6rem;
 
-    &__description {
-        display: flex;
-        flex-direction: column;
-        gap: 2.4rem;
+    &__icon {
+        padding: 1.3rem;
     }
 
-    &-icon {
-        padding: 1.3rem;
+    &__resend {
+        padding-top: 2.4rem;
     }
 }

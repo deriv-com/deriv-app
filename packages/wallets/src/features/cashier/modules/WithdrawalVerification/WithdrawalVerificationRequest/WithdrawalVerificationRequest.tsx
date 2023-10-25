@@ -1,6 +1,7 @@
 import React from 'react';
 import EmailVerification from '../../../../../public/images/email-verification.svg';
 import WalletsActionScreen from '../../../../../components/WalletsActionScreen/WalletsActionScreen';
+import { WalletText } from '../../../../../components';
 import './WithdrawalVerificationRequest.scss';
 
 type TProps = {
@@ -12,17 +13,18 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
         <div className='wallets-withdrawal-verification-request'>
             <WalletsActionScreen
                 actionText='Send email'
+                // TODO: Add line breaks
                 description={
-                    <p className='wallets-withdrawal-verification-request__description'>
-                        <span>
-                            Click the button below and we’ll send you an email with a link. Click that link to verify
-                            your withdrawal request.
-                        </span>
-                        <span>This is to protect your account from unauthorised withdrawals.</span>
-                    </p>
+                    <>
+                        Click the button below and we’ll send you an email with a link. Click that link to verify your
+                        withdrawal request.
+                        <br />
+                        <br />
+                        This is to protect your account from unauthorised withdrawals.
+                    </>
                 }
                 icon={
-                    <div className='wallets-withdrawal-verification-request-icon'>
+                    <div className='wallets-withdrawal-verification-request__icon'>
                         <EmailVerification />
                     </div>
                 }

@@ -43,13 +43,13 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
     }, [refetch, refreshRecentTransactions]);
 
     return (
-        <div className='transaction-status'>
-            <div className='transaction-status__header'>
+        <div className='wallets-transaction-status'>
+            <div className='wallets-transaction-status__header'>
                 <WalletText weight='bold'>Transaction status</WalletText>
                 {isError && <Warning />}
             </div>
-            <div className='transaction-status__divider' />
-            <div className='transaction-status__body'>
+            <div className='wallets-transaction-status__divider' />
+            <div className='wallets-transaction-status__body'>
                 {!isError && isLoading && <Loader color='#85acb0' />}
                 {isError && <TransactionStatusError refresh={refresh} />}
                 {!isLoading && !isError && wallet && (

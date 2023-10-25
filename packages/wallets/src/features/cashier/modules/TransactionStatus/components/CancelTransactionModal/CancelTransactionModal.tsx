@@ -22,14 +22,14 @@ const CancelTransactionModal: React.FC<TCancelTransactionModal> = ({ transaction
 
     return (
         <ModalWrapper hideCloseButton>
-            <div className='crypto-transactions-cancel-modal'>
+            <div className='wallets-crypto-transactions-cancel-modal'>
                 <WalletText lineHeight={isMobile ? 'md' : 'xl'} weight='bold'>
                     Cancel transaction
                 </WalletText>
                 <WalletText lineHeight={isMobile ? 'sm' : 'lg'} size='sm'>
                     Are you sure you want to cancel this transaction?
                 </WalletText>
-                <div className='crypto-transactions-cancel-modal__buttons-container'>
+                <div className='wallets-crypto-transactions-cancel-modal__buttons-container'>
                     <WalletButton
                         color='transparent'
                         onClick={hide}

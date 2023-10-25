@@ -17,16 +17,16 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
     const { show } = useModal();
 
     return (
-        <div className='crypto-transaction'>
-            <div className='crypto-transaction__type-and-status'>
+        <div className='wallets-crypto-transaction'>
+            <div className='wallets-crypto-transaction__type-and-status'>
                 <WalletText lineHeight='sm' size='xs'>
                     {transaction.is_deposit ? `Deposit ${currency}` : `Withdrawal ${currency}`}
                 </WalletText>
-                <div className='crypto-transaction__status'>
+                <div className='wallets-crypto-transaction__status'>
                     <div
                         className={classNames(
-                            'crypto-transaction__status__dot',
-                            `crypto-transaction__status__dot--${transaction.statusColor}`
+                            'wallets-crypto-transaction__status__dot',
+                            `wallets-crypto-transaction__status__dot--${transaction.statusColor}`
                         )}
                     />
                     <WalletText lineHeight='2xs' size='2xs'>
@@ -34,7 +34,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     </WalletText>
                     {!!transaction.is_valid_to_cancel && (
                         <div
-                            className='crypto-transaction__cancel-button'
+                            className='wallets-crypto-transaction__cancel-button'
                             onClick={() => show(<CancelTransactionModal transactionId={transaction.id} />)}
                         >
                             <IcCrossLight />
@@ -42,7 +42,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     )}
                 </div>
             </div>
-            <div className='crypto-transaction__amount-and-date'>
+            <div className='wallets-crypto-transaction__amount-and-date'>
                 <WalletText color='less-prominent' size='2xs'>
                     {transaction.amount} {currency}
                 </WalletText>
@@ -52,13 +52,13 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
             </div>
             <WalletText lineHeight='2xs' size='2xs'>
                 Address:{' '}
-                <a className='crypto-transaction__red-text' href={transaction.address_url}>
+                <a className='wallets-crypto-transaction__red-text' href={transaction.address_url}>
                     {transaction.addressHashDisplay}
                 </a>
             </WalletText>
             <WalletText lineHeight='2xs' size='2xs'>
                 Transaction hash:{' '}
-                <a className='crypto-transaction__red-text' href={transaction.transaction_url}>
+                <a className='wallets-crypto-transaction__red-text' href={transaction.transaction_url}>
                     {transaction.transactionHashDisplay}
                 </a>
             </WalletText>
@@ -66,7 +66,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                 <div>
                     <WalletText lineHeight='2xs' size='2xs'>
                         Confirmations:{' '}
-                        <span className='crypto-transaction__red-text'>{transaction.confirmationDisplay}</span>
+                        <span className='wallets-crypto-transaction__red-text'>{transaction.confirmationDisplay}</span>
                     </WalletText>
                 </div>
             )}

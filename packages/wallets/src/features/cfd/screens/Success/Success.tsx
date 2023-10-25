@@ -3,13 +3,17 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
-import './Success.scss';
+import useDevice from '../../../../hooks/useDevice';
 import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
 import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
+import './Success.scss';
 
 type TSuccessProps = {
     description: string;
-    displayBalance: TDisplayBalance;
+    displayBalance:
+        | TDisplayBalance.CtraderAccountsList
+        | TDisplayBalance.DxtradeAccountsList
+        | TDisplayBalance.MT5AccountsList;
     marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
     renderButton: () => ReactNode;
@@ -25,6 +29,7 @@ const Success: React.FC<TSuccessProps> = ({
     title,
 }) => {
     const { data } = useActiveWalletAccount();
+    const { isDesktop } = useDevice();
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
@@ -52,13 +57,13 @@ const Success: React.FC<TSuccessProps> = ({
                     marketType={marketType}
                     platform={platform}
                 />
-                <WalletText lineHeight='3xs' size='2xs'>
+                <WalletText size='2xs'>
                     {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
                 </WalletText>
-                <WalletText color='primary' lineHeight='sm' size='2xs'>
+                <WalletText color='primary' size='2xs'>
                     {data?.currency} Wallet
                 </WalletText>
-                <WalletText lineHeight='xs' size='sm' weight='bold'>
+                <WalletText size='sm' weight='bold'>
                     {displayBalance}
                 </WalletText>
             </WalletGradientBackground>
@@ -68,7 +73,7 @@ const Success: React.FC<TSuccessProps> = ({
             <WalletText align='center' size='sm'>
                 {description}
             </WalletText>
-            {renderButton()}
+            {isDesktop && renderButton()}
         </div>
     );
 };

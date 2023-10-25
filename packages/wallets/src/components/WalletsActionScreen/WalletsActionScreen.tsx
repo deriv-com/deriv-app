@@ -1,6 +1,5 @@
 import React, { ComponentProps, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
-import useDevice from '../../hooks/useDevice';
 import WalletButton from '../Base/WalletButton/WalletButton';
 import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
@@ -9,6 +8,7 @@ type TProps = {
     actionText?: string;
     actionVariant?: ComponentProps<typeof WalletButton>['variant'];
     description: ReactNode;
+    disabled?: boolean;
     icon: ReactNode;
     onAction?: () => void;
     title?: string;
@@ -31,13 +31,12 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     actionText,
     actionVariant = 'contained',
     description,
+    disabled = false,
     icon,
     onAction,
     title,
     type = 'page',
 }) => {
-    const { isMobile } = useDevice();
-
     return (
         <div
             className={classNames('wallets-action-screen', {
@@ -47,16 +46,23 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
             {icon}
             <div className='wallets-action-screen__content'>
                 {title && (
-                    <WalletText align='center' size={isMobile ? 'sm' : 'md'} weight='bold'>
+                    <WalletText align='center' size='md' weight='bold'>
                         {title}
                     </WalletText>
                 )}
-                <WalletText align='center' size={isMobile ? 'sm' : 'md'}>
+                <WalletText align='center' size='md'>
                     {description}
                 </WalletText>
             </div>
             {actionText && (
-                <WalletButton color='primary' onClick={onAction} size='lg' text={actionText} variant={actionVariant} />
+                <WalletButton
+                    color='primary'
+                    disabled={disabled}
+                    onClick={onAction}
+                    size='lg'
+                    text={actionText}
+                    variant={actionVariant}
+                />
             )}
         </div>
     );

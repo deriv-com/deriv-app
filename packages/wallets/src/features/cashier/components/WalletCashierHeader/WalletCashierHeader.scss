@@ -6,10 +6,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 1.6rem;
 
     @include mobile {
-        padding-top: 1.6rem;
-        height: 12.2rem;
+        padding-top: 0rem;
+        transition: height 0.2s ease-in;
+        height: fit-content;
     }
 
     &__close-button {
@@ -24,7 +26,7 @@
         padding-inline: 2.4rem;
 
         @include mobile {
-            padding-inline: 1.6rem;
+            padding: 1.6rem 1.6rem 0rem;
         }
 
         &__top-left {
@@ -38,6 +40,9 @@
                 align-items: center;
 
                 @include mobile {
+                    visibility: visible;
+                    transition: visibility 0s, height 0.2s ease;
+                    height: 2rem;
                     gap: 0.8rem;
                 }
 
@@ -67,6 +72,12 @@
 
             @include mobile {
                 gap: 0.8rem;
+            }
+
+            &__icon {
+                @include mobile {
+                    transition: visibility 0s, height 0.2s ease;
+                }
             }
         }
     }
@@ -113,4 +124,9 @@
             }
         }
     }
+}
+
+.wallets-hide-details {
+    height: 0;
+    visibility: hidden;
 }

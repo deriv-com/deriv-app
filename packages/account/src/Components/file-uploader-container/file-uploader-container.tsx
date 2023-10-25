@@ -6,8 +6,8 @@ import { observer, useStore } from '@deriv/stores';
 
 type TFileUploaderContainer = {
     onFileDrop: (files: File[]) => void;
-    files_description: React.ReactNode;
-    examples: React.ReactNode;
+    files_description?: React.ReactNode;
+    examples?: React.ReactNode;
     onError?: (error_message: string) => void;
 };
 

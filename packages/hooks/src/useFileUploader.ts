@@ -3,7 +3,7 @@ import { useMutation } from '@deriv/api';
 import { WS, compressImageFiles, readFiles } from '@deriv/shared';
 import { useCallback, useMemo, useState } from 'react';
 
-type TSettingsPayload = Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload'];
+type TSettingsPayload = Partial<Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload']>;
 
 type TFile =
     | Partial<

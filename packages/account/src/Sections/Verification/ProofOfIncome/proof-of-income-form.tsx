@@ -9,8 +9,9 @@ import {
     MobileWrapper,
     SelectNative,
 } from '@deriv/components';
+import { useFileUploader } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from '@deriv/shared';
+import { isEqualArray, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import FilesDescription from 'Components/file-uploader-container/files-descriptions';
 import FormBody from 'Components/form-body';
@@ -18,7 +19,7 @@ import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
 import { income_status_codes, poinc_documents_list } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 import FileUploaderContainer from '../../../Components/file-uploader-container';
-import { TFileRef } from 'Types';
+import { isServerError } from 'Helpers/utils';
 
 type TProofOfIncomeForm = {
     onSubmit: (status: typeof income_status_codes[keyof typeof income_status_codes]) => void;
@@ -28,17 +29,15 @@ type TInitialValues = {
     document_type: DocumentUploadRequest['document_type'] | '';
 };
 
-let file_uploader_ref: TFileRef;
-
 const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
-    const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
-    const [uploading_document_type, setUploadingDocumentType] = React.useState<
-        DocumentUploadRequest['document_type'] | ''
-    >('');
+    const [document_file, setDocumentFile] = React.useState<File[]>([]);
+    const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
 
     const { notifications, ui } = useStore();
     const { addNotificationMessageByKey, removeNotificationMessage, removeNotificationByKey } = notifications;
     const { is_mobile, is_desktop } = ui;
+
+    const { upload } = useFileUploader();
 
     const initial_form_values: TInitialValues = {
         document_type: '',
@@ -55,39 +54,44 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
         return errors;
     };
 
-    const onSubmitValues = (values: TInitialValues, { setStatus, setSubmitting }: FormikHelpers<TInitialValues>) => {
+    const onSubmitValues = async (
+        values: TInitialValues,
+        { setStatus, setSubmitting }: FormikHelpers<TInitialValues>
+    ) => {
+        setStatus({ msg: '' });
         const uploading_value = poinc_documents_list.find(doc => doc.text === values.document_type)?.value ?? '';
-        setUploadingDocumentType(uploading_value);
 
-        file_uploader_ref?.current
-            ?.upload()
-            .then(api_response => {
+        if (uploading_value) {
+            setSubmitting(true);
+            try {
+                const api_response = await upload(document_file, { document_type: uploading_value });
                 if (api_response.warning) {
                     setStatus({ msg: api_response.message });
                 } else {
-                    WS.authorized.getAccountStatus().then((response: DeepRequired<AccountStatusResponse>) => {
-                        const { income, needs_verification } = response.get_account_status.authentication;
-                        const needs_poinc =
-                            needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
-                        removeNotificationMessage({ key: 'needs_poinc' });
-                        removeNotificationByKey({ key: 'needs_poinc' });
-                        removeNotificationMessage({ key: 'poinc_upload_limited' });
-                        removeNotificationByKey({ key: 'poinc_upload_limited' });
-                        onSubmit(income?.status);
-                        if (needs_poinc) {
-                            addNotificationMessageByKey('needs_poinc');
-                        }
-                    });
+                    const get_account_status_response: DeepRequired<AccountStatusResponse> =
+                        await WS.authorized.getAccountStatus();
+
+                    const { income, needs_verification } =
+                        get_account_status_response.get_account_status.authentication;
+                    const needs_poinc =
+                        needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
+                    removeNotificationMessage({ key: 'needs_poinc' });
+                    removeNotificationByKey({ key: 'needs_poinc' });
+                    removeNotificationMessage({ key: 'poinc_upload_limited' });
+                    removeNotificationByKey({ key: 'poinc_upload_limited' });
+                    onSubmit(income?.status);
+                    if (needs_poinc) {
+                        addNotificationMessageByKey('needs_poinc');
+                    }
                 }
-            })
-            .catch((error: Error) => {
-                if (error?.message) {
+            } catch (error) {
+                if (isServerError(error)) {
                     setStatus({ msg: error.message });
                 }
-            })
-            .then(() => {
+            } finally {
                 setSubmitting(false);
-            });
+            }
+        }
     };
 
     const files_descriptions = [
@@ -106,6 +110,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                 handleChange,
                 handleSubmit,
                 isSubmitting,
+                isValid,
                 setFieldValue,
                 setStatus,
                 status,
@@ -172,16 +177,13 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                                 title_text_size={is_mobile ? 'xs' : 's'}
                             />
                             <FileUploaderContainer
-                                onRef={ref => (file_uploader_ref = ref)}
-                                onFileDrop={df => {
-                                    setDocumentFile({
-                                        files: df?.files,
-                                        error_message: df?.error_message,
+                                onFileDrop={files => {
+                                    setDocumentFile(prevFiles => {
+                                        if (!isEqualArray(prevFiles, files)) setStatus({ msg: '' });
+                                        return files;
                                     });
-                                    setStatus({ msg: '' });
                                 }}
-                                getSocket={WS.getSocket}
-                                settings={{ documentType: uploading_document_type }}
+                                onError={setFileSelectionError}
                                 files_description={
                                     <FilesDescription
                                         descriptions={files_descriptions}
@@ -199,9 +201,9 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                             type='submit'
                             is_disabled={
                                 isSubmitting ||
-                                !!(!values.document_type || errors.document_type) ||
-                                document_file.files?.length < 1 ||
-                                !!document_file.error_message ||
+                                !isValid ||
+                                document_file.length < 1 ||
+                                !!file_selection_error ||
                                 !!status.msg
                             }
                             is_loading={isSubmitting}

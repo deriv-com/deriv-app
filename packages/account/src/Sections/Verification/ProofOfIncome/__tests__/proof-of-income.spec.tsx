@@ -28,9 +28,11 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {
         authorized: {
-            getAccountStatus: jest.fn().mockResolvedValue({
-                get_account_status: { ...mocked_get_account_status },
-            }),
+            getAccountStatus: jest.fn(() =>
+                Promise.resolve({
+                    get_account_status: { ...mocked_get_account_status },
+                })
+            ),
         },
         getSocket: jest.fn(() => Promise.resolve()),
     },

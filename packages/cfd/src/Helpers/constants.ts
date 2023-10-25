@@ -42,7 +42,7 @@ const CTRADER_DESKTOP_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-set
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
 
 const CTRADER_UAT_URL = 'https://ct-uat.deriv.com/';
-const CTRADER_PRODUCTION_URL = 'https://ct-uat.deriv.com/';
+const CTRADER_PRODUCTION_URL = 'https://ct.deriv.com/';
 
 const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
 const DERIVEZ_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go/id1550561298';

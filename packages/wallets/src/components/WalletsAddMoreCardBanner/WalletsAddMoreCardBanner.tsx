@@ -1,24 +1,25 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAccountsList, type useAvailableWallets, useCreateWallet } from '@deriv/api';
+import { useAccountsList, useCreateWallet } from '@deriv/api';
 import { Success } from '../../features/cfd';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import CheckIcon from '../../public/images/check.svg';
 import PlusIcon from '../../public/images/plus.svg';
+import { THooks } from '../../types';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 import { WalletError } from '../WalletError';
 
-type TWalletsAddMoreCardBannerProps = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[0];
+type TProps = THooks.AvailableWallets;
 
-const WalletsAddMoreCardBanner = ({
+const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     currency,
     is_added: isAdded,
     is_crypto: isCrypto,
     landing_company_name: landingCompanyName,
-}: TWalletsAddMoreCardBannerProps) => {
+}: TProps) => {
     const { switchAccount } = useAccountsList();
     const { data, error, isSuccess: isMutateSuccess, mutate, status } = useCreateWallet();
     const { isMobile } = useDevice();
@@ -97,12 +98,7 @@ const WalletsAddMoreCardBanner = ({
                     <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
                 </span>
                 <div className='wallets-add-more__banner-landing-company'>
-                    <WalletText
-                        align='right'
-                        lineHeight={isMobile ? '3xs' : '2xs'}
-                        size={isMobile ? '3xs' : '2xs'}
-                        weight='bold'
-                    >
+                    <WalletText align='right' size='xs' weight='bold'>
                         {landingCompanyName}
                     </WalletText>
                 </div>

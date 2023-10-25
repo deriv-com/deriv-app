@@ -33,7 +33,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         showVideoDialog,
     } = dashboard;
     const { handleFileChange, loadFileFromLocal } = load_modal;
-    const { loadDataStrategy } = quick_strategy;
+    const { setFormVisibility } = quick_strategy;
 
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
@@ -69,7 +69,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             content: localize('Quick strategy'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
-                loadDataStrategy();
+                setFormVisibility(true);
             },
         },
     ];

@@ -8,7 +8,7 @@ import { WalletsAddMoreLoader } from '../SkeletonLoader';
 import WalletsAddMoreCard from '../WalletsAddMoreCard';
 import './WalletsAddMoreCarousel.scss';
 
-const WalletsAddMoreCarousel = () => {
+const WalletsAddMoreCarousel: React.FC = () => {
     const { isDesktop, isMobile } = useDevice();
     const { data: availableWallets, isLoading } = useAvailableWallets();
     const [walletsAddMoreEmblaRef, walletsAddMoreEmblaAPI] = useEmblaCarousel({
@@ -27,7 +27,7 @@ const WalletsAddMoreCarousel = () => {
     return (
         <div className='wallets-add-more' ref={hoverRef}>
             <div className='wallets-add-more__header'>
-                <WalletText size={isMobile ? '3xl' : '4xl'} weight='bold'>
+                <WalletText size='2xl' weight='bold'>
                     Add more Wallets
                 </WalletText>
             </div>

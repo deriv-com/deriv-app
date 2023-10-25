@@ -17,21 +17,21 @@
         gap: 2.4rem;
         border-radius: 1.6rem;
         position: relative;
-        overflow: hidden;
 
         &--virtual {
             &:before {
                 content: '';
                 display: block;
                 position: absolute;
-                top: -100vh;
-                width: 200vw;
-                height: 200vh;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
                 border-radius: 1.6rem;
                 background-image: url('../../public/images/wallet-demo-desktop-bg.svg');
                 background-repeat: repeat;
+                background-size: 6rem;
                 opacity: 0.24;
-                rotate: -30deg;
             }
         }
     }

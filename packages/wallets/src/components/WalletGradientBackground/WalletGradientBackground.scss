@@ -1,6 +1,5 @@
 .wallets-gradient {
     position: relative;
-    overflow: hidden;
 
     &__shine {
         position: absolute;
@@ -1183,14 +1182,15 @@
                 content: '';
                 display: block;
                 position: absolute;
-                top: -100vh;
-                width: 200vw;
-                height: 200vh;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
                 background-image: url('../../public/images/wallet-demo-bg-light.svg');
                 background-repeat: repeat;
+                background-size: 7rem;
                 mix-blend-mode: overlay;
                 opacity: 0.24;
-                rotate: -30deg;
             }
         }
     }

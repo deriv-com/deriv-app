@@ -1,7 +1,8 @@
 .wallets-cashier-header {
+    width: 100%;
     max-width: 128rem;
     height: 16rem;
-    padding-top: 2.4rem;
+    padding: 2.4rem 4rem 0rem;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -29,7 +30,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-inline: 2.4rem;
 
         @include mobile {
             padding-inline: 1.6rem;
@@ -81,7 +81,6 @@
     &__tabs {
         display: flex;
         overflow-x: scroll;
-        padding-inline: 2.4rem;
         -ms-overflow-style: none;
         scrollbar-width: none;
 
@@ -120,4 +119,10 @@
             }
         }
     }
+}
+
+.wallets-cashier-header__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

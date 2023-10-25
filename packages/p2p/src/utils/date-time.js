@@ -1,4 +1,4 @@
-export const getFormattedDateString = (date_obj, is_local = false, has_seconds = false) => {
+export const getFormattedDateString = (date_obj, is_local = false, has_seconds = false, only_date = false) => {
     if (!(date_obj instanceof Date)) {
         throw Error('getFormattedDateString argument needs an instance of Date');
     }
@@ -10,6 +10,10 @@ export const getFormattedDateString = (date_obj, is_local = false, has_seconds =
     // Return time in the format "HH:mm:ss". e.g.: "01 Jan 1970 21:01:11"
     if (!has_seconds) {
         times.pop();
+    }
+
+    if (only_date) {
+        return `${month} ${day} ${year}`;
     }
 
     const time_without_sec = times.join(':');

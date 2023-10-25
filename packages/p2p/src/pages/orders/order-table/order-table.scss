@@ -64,7 +64,7 @@
 
     &-grid {
         // Sizes are different for inactive due to timeout being full time string.
-        grid-template-columns: 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 2fr;
+        grid-template-columns: 2fr 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 2fr;
 
         &--active {
             grid-template-columns: 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 1.5fr;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, DatePicker, InputField, MobileDialog } from '@deriv/components';
+import { DatePicker, InputField, MobileDialog } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
-import { Localize, localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
 import CompositeCalendarMobileFooter from './composite-calendar-mobile-footer';
 import CalendarRadioButton from '../calendar-radio-buton';
 import { TInputDateRange } from '../composite-calendar';
@@ -179,15 +179,6 @@ const CompositeCalendarMobile = ({
                             />
                         </div>
                     </div>
-                    <Button
-                        className='composite-calendar-mobile__actions-today'
-                        onClick={selectToday}
-                        has_effect
-                        tertiary
-                        large
-                    >
-                        <Localize i18n_default_text='Back to today' />
-                    </Button>
                 </div>
             </MobileDialog>
         </React.Fragment>

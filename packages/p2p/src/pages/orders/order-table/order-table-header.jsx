@@ -18,6 +18,7 @@ const OrderTableHeader = observer(({ children }) => {
                         'order-table-grid--active': general_store.is_active_tab,
                     })}
                 >
+                    {general_store.order_table_type !== 'active' && <Table.Head>{localize('Date')}</Table.Head>}
                     <Table.Head>{localize('Order')}</Table.Head>
                     <Table.Head>{localize('Order ID')}</Table.Head>
                     <Table.Head>{localize('Counterparty')}</Table.Head>

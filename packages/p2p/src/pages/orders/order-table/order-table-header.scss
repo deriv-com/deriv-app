@@ -2,4 +2,9 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+    .dc-table__header {
+        > .order-table-grid {
+            padding: 0 2.4rem;
+        }
+    }
 }

@@ -42,13 +42,7 @@ describe('CompositeCalendarMobile', () => {
     it('should open the mobile dialog on clicking the calendar field', () => {
         render(<CompositeCalendarMobile {...mock_props} />);
         userEvent.click(screen.getByText('Input Field'));
-        expect(screen.getByText('Back to today')).toBeInTheDocument();
-    });
-    it('should handle backtotoday button click', () => {
-        render(<CompositeCalendarMobile {...mock_props} />);
-        userEvent.click(screen.getByText('Input Field'));
-        userEvent.click(screen.getByRole('button', { name: 'Back to today' }));
-        expect(mock_props.onChange).toHaveBeenCalled();
+        expect(screen.getByText('Custom')).toBeInTheDocument();
     });
     it('should close the modal on close click', async () => {
         render(<CompositeCalendarMobile {...mock_props} />);

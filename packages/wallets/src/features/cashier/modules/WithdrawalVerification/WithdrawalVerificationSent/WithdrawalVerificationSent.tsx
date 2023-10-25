@@ -37,7 +37,7 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                     </div>
                 }
                 onAction={() => {
-                    sendEmail;
+                    sendEmail();
                     setShowResend(!showResend);
                 }}
                 title='We’ve sent you an email.'

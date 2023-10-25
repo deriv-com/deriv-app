@@ -10,7 +10,11 @@ type TTransactionStatusSuccess = {
     wallet: THooks.ActiveWalletAccount;
 };
 
-const TransactionStatusSuccess = ({ recentTransactions, transactionType, wallet }: TTransactionStatusSuccess) => {
+const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
+    recentTransactions,
+    transactionType,
+    wallet,
+}) => {
     const filteredTransactions =
         recentTransactions?.filter(
             el => !transactionType || (transactionType === 'deposit' ? el.is_deposit : el.is_withdrawal)

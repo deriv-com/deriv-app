@@ -13,7 +13,7 @@ type TCryptoTransaction = {
     transaction: NonNullable<ReturnType<typeof useRecentTransactions>['recentTransactions']>[number];
 };
 
-const CryptoTransaction = ({ currencyDisplayCode: currency, transaction }: TCryptoTransaction) => {
+const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: currency, transaction }) => {
     const { show } = useModal();
 
     return (

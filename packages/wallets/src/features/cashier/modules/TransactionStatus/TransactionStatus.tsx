@@ -13,7 +13,7 @@ type TTransactionStatus = {
     transactionType?: THooks.CryptoTransactions['transaction_type'];
 };
 
-const TransactionStatus = ({ transactionType }: TTransactionStatus) => {
+const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) => {
     const {
         error: recentTransactionsError,
         isLoading: isTransactionsLoading,

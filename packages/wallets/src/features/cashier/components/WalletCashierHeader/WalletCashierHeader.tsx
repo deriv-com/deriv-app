@@ -7,6 +7,7 @@ import { WalletListCardBadge } from '../../../../components/WalletListCardBadge'
 import useDevice from '../../../../hooks/useDevice';
 import CloseIcon from '../../../../public/images/close-icon.svg';
 import './WalletCashierHeader.scss';
+import { WalletText } from '../../../../components';
 
 const realAccountTabs = ['deposit', 'withdraw', 'transfer', 'transactions'];
 const virtualAccountTabs = ['withdraw', 'transfer', 'transactions', 'reset-balance'];
@@ -33,14 +34,15 @@ const WalletCashierHeader = () => {
                 <section className='wallets-cashier-header__info'>
                     <div className='wallets-cashier-header__info__top-left'>
                         <div className='wallets-cashier-header__info__top-left__details'>
-                            <h1 className='wallets-cashier-header__info__top-left__details__title'>
-                                {data?.currency} Wallet
-                            </h1>
+                            <WalletText>{data?.currency} Wallet</WalletText>
                             {data?.landing_company_name && (
                                 <WalletListCardBadge isDemo={data?.is_virtual} label={data?.landing_company_name} />
                             )}
                         </div>
-                        <p className='wallets-cashier-header__info__top-left__balance'>{data?.display_balance}</p>
+
+                        <WalletText lineHeight='7xl' size='xl' weight='bold'>
+                            {data?.display_balance}
+                        </WalletText>
                     </div>
                     <div className='wallets-cashier-header__info__top-right'>
                         {data?.wallet_currency_type && <WalletCardIcon size='xl' type={data?.wallet_currency_type} />}
@@ -54,17 +56,24 @@ const WalletCashierHeader = () => {
                 </section>
                 <section className='wallets-cashier-header__tabs'>
                     {tabs.map(tab => (
-                        <button
-                            className={`wallets-cashier-header__tabs__tab ${
-                                location.pathname === `/wallets/cashier/${tab}`
-                                    ? 'wallets-cashier-header__tabs__tab--active'
-                                    : ''
-                            }`}
-                            key={`cashier-tab-${tab}`}
-                            onClick={() => history.push(`/wallets/cashier/${tab}`)}
-                        >
-                            {tab}
-                        </button>
+                        <>
+                            <button
+                                className={`wallets-cashier-header__tabs__tab ${
+                                    location.pathname === `/wallets/cashier/${tab}`
+                                        ? 'wallets-cashier-header__tabs__tab--active'
+                                        : ''
+                                }`}
+                                key={`cashier-tab-${tab}`}
+                                onClick={() => history.push(`/wallets/cashier/${tab}`)}
+                            >
+                                <WalletText
+                                    size='sm'
+                                    weight={location.pathname === `/wallets/cashier/${tab}` ? 'bold' : 'normal'}
+                                >
+                                    {tab}
+                                </WalletText>
+                            </button>
+                        </>
                     ))}
                 </section>
             </main>

@@ -2,7 +2,7 @@ import 'Sass/app/modules/trading-mobile.scss';
 import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom } from '@deriv/components';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier';
-import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
+import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit';
 import { TTextValueStrings } from 'Types';
 import { observer, useStore } from '@deriv/stores';
@@ -17,7 +17,7 @@ type TTradeParamsModal = {
     toggleModal: () => void;
 };
 
-type TTradeParamsMobile = {
+export type TTradeParamsMobile = {
     currency: string;
     toggleModal: () => void;
     isVisible: (component_key: string) => boolean;
@@ -283,7 +283,6 @@ const TradeParamsMobile = observer(
                 {isVisible('duration') ? (
                     <div data-header-content={getHeaderContent('duration')}>
                         <DurationMobile
-                            // @ts-expect-error: TODO: check if TS error is gone after <DurationMobile /> is migrated to TS
                             toggleModal={toggleModal}
                             amount_tab_idx={amount_tab_idx}
                             duration_tab_idx={duration_tab_idx}

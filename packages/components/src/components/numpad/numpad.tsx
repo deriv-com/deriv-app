@@ -8,7 +8,7 @@ import { useLongPress } from '../../hooks';
 
 type TNumpad = {
     className?: string;
-    currency: string;
+    currency?: string;
     is_regular?: boolean;
     is_currency?: boolean;
     is_submit_disabled?: boolean;

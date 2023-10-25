@@ -12,7 +12,7 @@ type TStepInput = {
     onChange: (increment_value: string | number, pip_size: number) => void;
     render?: (props: { value: string; className: string }) => React.ReactNode;
     pip_size: number;
-    currency: string;
+    currency?: string;
     label?: string;
 };
 

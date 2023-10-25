@@ -1,10 +1,15 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const DurationToggle = ({ name, onChange, value }) => {
+type TDurationToggle = {
+    name: string;
+    onChange: ({ target }: { target: { name: string; value: boolean } }) => void;
+    value: boolean;
+};
+
+const DurationToggle = ({ name, onChange, value }: TDurationToggle) => {
     const toggle = () => {
         onChange({ target: { value: !value, name } });
     };
@@ -19,20 +24,10 @@ const DurationToggle = ({ name, onChange, value }) => {
                 onClick={toggle}
                 aria-label={localize('Toggle between advanced and simple duration settings')}
             >
-                <Icon
-                    icon='IcChevronDown'
-                    className={icon_className}
-                    classNamePath={'advanced-simple-toggle__icon-path'}
-                />
+                <Icon icon='IcChevronDown' className={icon_className} />
             </button>
         </>
     );
-};
-
-DurationToggle.propTypes = {
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    value: PropTypes.bool,
 };
 
 export default DurationToggle;

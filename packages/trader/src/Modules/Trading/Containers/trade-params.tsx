@@ -29,10 +29,7 @@ const TradeParams = observer(({ is_minimized = false }: TTradeParams) => {
 
     return (
         <React.Fragment>
-            {isVisible('duration') && (
-                // @ts-expect-error: TODO: check if TS error is gone after <Duration /> is migrated to TS
-                <Duration key={'duration'} is_minimized={is_minimized} />
-            )}
+            {isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
             {isVisible('accumulator') && <Accumulator key={'accumulator'} />}

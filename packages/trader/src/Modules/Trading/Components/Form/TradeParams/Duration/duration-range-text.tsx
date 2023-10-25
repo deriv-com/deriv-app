@@ -4,9 +4,9 @@ import { addComma } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 type TDurationRangeText = {
-    min: string;
-    max: string;
-    duration_unit_text: string;
+    min: number | null;
+    max: number | null;
+    duration_unit_text?: string;
 };
 
 const DurationRangeText = ({ min, max, duration_unit_text }: TDurationRangeText) => (

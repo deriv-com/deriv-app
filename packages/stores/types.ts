@@ -555,15 +555,18 @@ type TCommonStore = {
 
 type TUiStore = {
     advanced_duration_unit: string;
+    advanced_expiry_type: string;
     addToast: (toast_config: TAddToastProps) => void;
     account_switcher_disabled_message: string;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
+    duration_t: number;
     enableApp: () => void;
     has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
+    getDurationFromUnit: (unit: string) => string;
     is_account_settings_visible: boolean;
     is_additional_kyc_info_modal_open: boolean;
     is_advanced_duration: boolean;
@@ -587,6 +590,7 @@ type TUiStore = {
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     is_unsupported_contract_modal_visible: boolean;
+    onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
@@ -617,6 +621,7 @@ type TUiStore = {
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
+    simple_duration_unit: string;
     toggleAccountsDialog: () => void;
     toggleAccountSettings: (props?: boolean) => void;
     toggleCashier: () => void;

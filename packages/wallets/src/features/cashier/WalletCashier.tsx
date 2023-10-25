@@ -5,7 +5,7 @@ import './WalletCashier.scss';
 
 const WalletCashier = () => {
     const { isLoading } = useActiveWalletAccount();
-    const [is_content_scrolled, setIsContentScrolled] = useState(false);
+    const [isContentScrolled, setIsContentScrolled] = useState(false);
 
     const onContentScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         const target = e.target as HTMLDivElement;
@@ -16,7 +16,7 @@ const WalletCashier = () => {
 
     return (
         <div className='wallets-cashier'>
-            <WalletCashierHeader hideWalletDetails={is_content_scrolled} />
+            <WalletCashierHeader hideWalletDetails={isContentScrolled} />
             <div className='wallets-cashier-content' onScroll={onContentScroll}>
                 <WalletCashierContent />
             </div>

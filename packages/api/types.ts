@@ -1697,6 +1697,30 @@ export type TSocketSubscribableEndpointNames =
 
 export type TSocketResponse<T extends TSocketEndpointNames> = TSocketEndpoints[T]['response'];
 
+export type TSocketError<T extends TSocketEndpointNames> = {
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Error object.
+     */
+    error: {
+        code: string;
+        message: string;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: T;
+    /**
+     * [Optional] Used to map request to response.
+     */
+    req_id?: number;
+};
+
 export type TSocketResponseData<T extends TSocketEndpointNames> = Omit<
     NoStringIndex<TSocketResponse<T>>,
     'req_id' | 'msg_type' | 'echo_req' | 'subscription'
@@ -1736,15 +1760,15 @@ export type TSocketRequestPayload<
       };
 
 export type TSocketRequestQueryOptions<T extends TSocketEndpointNames> = Parameters<
-    typeof useQuery<TSocketResponseData<T>, unknown>
+    typeof useQuery<TSocketResponseData<T>, TSocketError<T>>
 >[2];
 
 export type TSocketRequestInfiniteQueryOptions<T extends TSocketEndpointNames> = Parameters<
-    typeof useInfiniteQuery<TSocketResponseData<T>, unknown>
+    typeof useInfiniteQuery<TSocketResponseData<T>, TSocketError<T>>
 >[2];
 
 export type TSocketRequestMutationOptions<T extends TSocketEndpointNames> = Parameters<
-    typeof useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>
+    typeof useMutation<TSocketResponseData<T>, TSocketError<T>, TSocketAcceptableProps<T>>
 >[2];
 
 type TSocketRequestWithOptions<

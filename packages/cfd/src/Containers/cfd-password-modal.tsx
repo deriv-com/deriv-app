@@ -491,7 +491,7 @@ const CFDPasswordForm = ({
                     values={{
                         platform: getCFDPlatformLabel(platform),
                         platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
-                        account: !show_eu_related_content ? getAccountTitle(platform, account_type, account_title) : '',
+                        account: !show_eu_related_content ? accountTitle(account_type.category) : '',
                         jurisdiction_shortcode: showJuristiction(),
                     }}
                 />
@@ -503,7 +503,7 @@ const CFDPasswordForm = ({
                     values={{
                         platform: getCFDPlatformLabel(platform),
                         platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
-                        account: getAccountTitle(platform, account_type, account_title),
+                        account: accountTitle(account_type.category),
                     }}
                 />
             );
@@ -522,6 +522,18 @@ const CFDPasswordForm = ({
             />
         );
     }
+
+    const accountTitle = (category: string) => {
+        switch (platform) {
+            case 'ctrader':
+            case 'derivez':
+                return 'CFD';
+            case 'dxtrade':
+                return category === 'real' ? 'Real' : '';
+            default:
+                return account_title;
+        }
+    };
 
     const showJuristiction = () => {
         if (platform === CFD_PLATFORMS.DXTRADE) {

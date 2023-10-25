@@ -1,16 +1,34 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { getDisplayStatus, isCryptocurrency } from '@deriv/shared';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 import ContractCardItem from './contract-card-item';
 import Icon from '../../icon';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
+import { TGetCardLables } from '../../types';
 
-const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sold, progress_slider, status }) => {
-    const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit } = contract_info;
+export type TVanillaOptionsCardBodyProps = {
+    contract_info: TContractInfo;
+    currency: string;
+    getCardLabels: TGetCardLables;
+    is_sold: boolean;
+    progress_slider: React.ReactNode;
+    status?: string;
+};
+
+const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
+    contract_info,
+    currency,
+    getCardLabels,
+    is_sold,
+    progress_slider,
+    status,
+}) => {
+    const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit }: TContractInfo =
+        contract_info;
     const contract_value = is_sold ? sell_price : bid_price;
     const { CONTRACT_VALUE, ENTRY_SPOT, PURCHASE_PRICE, STRIKE, TOTAL_PROFIT_LOSS } = getCardLabels();
 
@@ -27,25 +45,26 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                     </ContractCardItem>
 
                     <ContractCardItem header={ENTRY_SPOT}>
-                        <Money amount={entry_spot_display_value} />
+                        {entry_spot_display_value && <Money amount={entry_spot_display_value} />}
                     </ContractCardItem>
 
                     <ContractCardItem header={STRIKE}>
-                        <Money amount={barrier} />
+                        {barrier && <Money amount={barrier} />}
                     </ContractCardItem>
                 </div>
                 <ContractCardItem
                     className='dc-contract-card-item__total-profit-loss'
                     header={TOTAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={+profit < 0}
-                    is_won={+profit > 0}
+                    is_loss={Number(profit) < 0}
+                    is_won={Number(profit) > 0}
                 >
                     <Money amount={profit} currency={currency} />
                     <div
                         className={classNames('dc-contract-card__indicative--movement', {
                             'dc-contract-card__indicative--movement-complete': is_sold,
                         })}
+                        data-testid='dc-contract-card__indicative--movement'
                     >
                         {status === 'profit' && <Icon icon='IcProfit' />}
                         {status === 'loss' && <Icon icon='IcLoss' />}
@@ -60,7 +79,9 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                         </ContractCardItem>
 
                         <ContractCardItem header={ENTRY_SPOT}>
-                            <Money amount={entry_spot_display_value} currency={currency} />
+                            {entry_spot_display_value && (
+                                <Money amount={entry_spot_display_value} currency={currency} />
+                            )}
                         </ContractCardItem>
                     </div>
 
@@ -70,7 +91,7 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                         </ContractCardItem>
 
                         <ContractCardItem header={STRIKE}>
-                            <Money amount={barrier} currency={currency} />
+                            {barrier && <Money amount={barrier} currency={currency} />}
                         </ContractCardItem>
                     </div>
 
@@ -86,14 +107,15 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                         className='dc-contract-card-item__total-profit-loss'
                         header={TOTAL_PROFIT_LOSS}
                         is_crypto={isCryptocurrency(currency)}
-                        is_loss={+profit < 0}
-                        is_won={+profit > 0}
+                        is_loss={Number(profit) < 0}
+                        is_won={Number(profit) > 0}
                     >
                         <Money amount={profit} currency={currency} />
                         <div
                             className={classNames('dc-contract-card__indicative--movement', {
                                 'dc-contract-card__indicative--movement-complete': is_sold,
                             })}
+                            data-testid='dc-contract-card__indicative--movement-mobile'
                         >
                             {status === 'profit' && <Icon icon='IcProfit' />}
                             {status === 'loss' && <Icon icon='IcLoss' />}
@@ -103,15 +125,6 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
             </MobileWrapper>
         </React.Fragment>
     );
-};
-
-VanillaOptionsCardBody.propTypes = {
-    contract_info: PropTypes.object,
-    currency: PropTypes.string,
-    getCardLabels: PropTypes.func,
-    is_sold: PropTypes.bool,
-    progress_slider: PropTypes.node,
-    status: PropTypes.string,
 };
 
 export default React.memo(VanillaOptionsCardBody);

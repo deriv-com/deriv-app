@@ -255,7 +255,7 @@ export default class ContractReplayStore extends BaseStore {
 
     onClickSell(contract_id) {
         const { bid_price } = this.contract_info;
-        if (contract_id && bid_price) {
+        if (contract_id && (bid_price || bid_price === 0)) {
             this.is_sell_requested = true;
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }

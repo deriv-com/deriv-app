@@ -20,6 +20,7 @@ import { ad_type } from 'Constants/floating-rate';
 import { TAdvert } from 'Types';
 import ShareMyAdsCard from './share-my-ads-card';
 import ShareMyAdsSocials from './share-my-ads-socials';
+import card_styles from './share-my-ads-card/share-my-ads-card.scss';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
     // const [is_download_disabled, setIsDownloadDisabled] = React.useState(true);
@@ -48,14 +49,16 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         event.stopPropagation();
     };
 
+    const options = {
+        style: card_styles,
+    };
+
     const handleGenerateImage = async () => {
         if (divRef.current) {
-            const images = divRef.current.getElementsByTagName('img');
-            const has_images_loaded = Array.from(images).every(image => image.complete);
+            const file_name = `${advert.type}_${advert.id}.png`;
+            const dataUrl = await toPng(divRef.current, options);
 
-            if (has_images_loaded && document.readyState === 'complete') {
-                const file_name = `${advert.type}_${advert.id}.png`;
-                const dataUrl = await toPng(divRef.current);
+            if (dataUrl) {
                 const link = document.createElement('a');
                 link.download = file_name;
                 link.href = dataUrl;

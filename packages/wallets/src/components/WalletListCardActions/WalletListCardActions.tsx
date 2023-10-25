@@ -6,13 +6,15 @@ import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
+import { THooks } from '../../types';
+import { WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
     const buttons = [
         {
             icon: <IcCashierAdd />,
-            name: 'deposit',
+            name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? 'Reset balance' : 'Deposit',
         },
         {
@@ -42,9 +44,9 @@ const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
 };
 
 type TProps = {
-    isActive: boolean;
-    isDemo: boolean;
-    loginid: string;
+    isActive: THooks.WalletAccountsList['is_active'];
+    isDemo: THooks.WalletAccountsList['is_virtual'];
+    loginid: THooks.WalletAccountsList['loginid'];
 };
 
 const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {
@@ -62,12 +64,12 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                                 className='wallets-mobile-actions-content-icon'
                                 key={button.name}
                                 onClick={() => {
-                                    history.push(`/appstore/traders-hub/cashier/${button.name}`);
+                                    history.push(`/wallets/cashier/${button.name}`);
                                 }}
                             >
                                 {button.icon}
                             </button>
-                            <div className='wallets-mobile-actions-content-text'>{button.text}</div>
+                            <WalletText size='sm'>{button.text}</WalletText>
                         </div>
                     ))}
                 </div>
@@ -77,23 +79,17 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
     return (
         <div className='wallets-header__actions'>
             {getWalletHeaderButtons(isDemo).map(button => (
-                <button
-                    className='wallets-header__button'
+                <WalletButton
+                    icon={button.icon}
                     key={button.name}
-                    onClick={async () => {
-                        await switchAccount(loginid);
-                        history.push(`/appstore/traders-hub/cashier/${button.name}`);
+                    onClick={() => {
+                        switchAccount(loginid);
+                        history.push(`/wallets/cashier/${button.name}`);
                     }}
-                >
-                    {button.icon}
-                    <span
-                        className={`wallets-header__actions-label ${
-                            isActive ? 'wallets-header__actions-label--active' : ''
-                        }`}
-                    >
-                        {button.text}
-                    </span>
-                </button>
+                    rounded='md'
+                    text={isActive ? button.text : undefined}
+                    variant='outlined'
+                />
             ))}
         </div>
     );

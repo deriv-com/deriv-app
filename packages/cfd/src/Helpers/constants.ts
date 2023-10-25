@@ -38,9 +38,7 @@ const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
 const CTRADER_DESKTOP_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
-
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
-
 const CTRADER_URL = 'https://ct.deriv.com/';
 
 const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
@@ -53,9 +51,9 @@ const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=c
 const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 
 const CTRADER_IOS_APP_URL = 'https://apps.apple.com/cy/app/ctrader/id767428811';
-const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.spotware.ct&hl=en&gl=US';
+const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.ct';
 
-const getBrokerName = () => 'Deriv Holdings (Guernsey) Limited';
+const getBrokerName = () => 'Deriv.com Limited';
 
 const getTopUpConfig = () => {
     return {
@@ -106,7 +104,7 @@ const getPlatformCTraderDownloadLink = (platform: TMobilePlatforms) => {
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
     switch (platform || OSDetect()) {
         case DESKTOP_PLATFORMS.WINDOWS:
-            return 'https://download.mql5.com/cdn/web/deriv.holdings.guernsey/mt5/deriv5setup.exe';
+            return 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe';
         case DESKTOP_PLATFORMS.LINUX:
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
         case MOBILE_PLATFORMS.IOS:
@@ -118,7 +116,7 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
         case MOBILE_PLATFORMS.ANDROID:
             return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02';
         default:
-            return getMT5WebTerminalLink({ category: CATEGORY.REAL }); // Web
+            return '';
     }
 };
 
@@ -146,22 +144,6 @@ const getDerivEzWebTerminalLink = (category: string, token?: string) => {
     return url;
 };
 
-const getMT5WebTerminalLink = ({
-    category,
-    loginid,
-    server_name = 'Deriv-Server',
-}: {
-    category?: string;
-    loginid?: string;
-    server_name?: string;
-}) => {
-    const is_demo = category === CATEGORY.DEMO;
-    const server = is_demo ? 'Deriv-Demo' : server_name;
-    const login = loginid ?? '';
-
-    return `https://metatraderweb.app/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
-};
-
 export {
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
@@ -180,6 +162,5 @@ export {
     platformsIcons,
     getTitle,
     getDerivEzWebTerminalLink,
-    getMT5WebTerminalLink,
     getTopUpConfig,
 };

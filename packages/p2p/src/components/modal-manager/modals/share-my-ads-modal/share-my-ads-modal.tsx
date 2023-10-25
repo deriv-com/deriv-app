@@ -68,21 +68,16 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
 
     const handleGenerateImage = async () => {
         if (divRef.current) {
-            const images = divRef.current.getElementsByTagName('img');
-            const has_images_loaded = Array.from(images).every(image => image.complete);
+            const p2p_logo = divRef.current.querySelector('.share-my-ads-card__qr-container');
 
-            if (has_images_loaded) {
-                const p2p_logo_height = getComputedStyle(images[1]).getPropertyValue('height');
-
-                if (p2p_logo_height === '25px') {
-                    const canvas = await html2canvas(divRef.current, { useCORS: true, allowTaint: true });
-                    const screenshot = canvas.toDataURL('image/png', 1.0);
-                    const file_name = `${advert.type}_${advert.id}.png`;
-                    const link = document.createElement('a');
-                    link.download = file_name;
-                    link.href = screenshot;
-                    link.click();
-                }
+            if (p2p_logo) {
+                const canvas = await html2canvas(divRef.current, { useCORS: true, allowTaint: true });
+                const screenshot = canvas.toDataURL('image/png', 1.0);
+                const file_name = `${advert.type}_${advert.id}.png`;
+                const link = document.createElement('a');
+                link.download = file_name;
+                link.href = screenshot;
+                link.click();
             }
         }
     };

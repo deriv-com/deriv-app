@@ -1,8 +1,7 @@
 import React from 'react';
-import { toPng } from 'html-to-image';
+import html2canvas from 'html2canvas';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { base64_images } from 'Constants/base64-images';
 import ShareMyAdsModal from '../share-my-ads-modal';
 
 const el_modal = document.createElement('div');
@@ -27,6 +26,13 @@ const mock_modal_manager = {
 
 jest.mock('html-to-image', () => ({
     toPng: jest.fn(),
+}));
+
+jest.mock('html2canvas', () => ({
+    __esModule: true,
+    default: jest.fn().mockResolvedValue({
+        toDataURL: jest.fn(),
+    }),
 }));
 
 jest.mock('qrcode.react', () => ({ QRCodeSVG: () => <div>QR code</div> }));
@@ -109,16 +115,12 @@ describe('<ShareMyAdsModal />', () => {
         );
     });
 
-    it('should call handleGenerateImage function when clicking on Download this QR code button', async () => {
-        const dataUrl = base64_images.dp2p_logo;
-
-        (toPng as jest.MockedFunction<typeof toPng>).mockResolvedValueOnce(dataUrl);
-
+    it('should call html2canvas function when clicking on Download this QR code button', async () => {
         render(<ShareMyAdsModal advert={mock_advert} />);
 
         const download_button = screen.getByRole('button', { name: 'Download this QR code' });
         userEvent.click(download_button);
 
-        expect(toPng).toHaveBeenCalled();
+        expect(html2canvas).toBeCalled();
     });
 });

@@ -23,11 +23,14 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     const { hide } = useModal();
     const { isMobile } = useDevice();
     const hasRenderFooter = typeof renderFooter === 'function';
+    const fixedFooter = shouldFixedFooter && hasRenderFooter;
 
     return (
         <div
             className={classNames('wallets-modal-step-wrapper', {
-                'wallets-modal-step-wrapper--fixed': shouldFixedFooter,
+                'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
+                'wallets-modal-step-wrapper--no-header': shouldHideHeader && !fixedFooter,
+                'wallets-modal-step-wrapper--no-header--fixed-footer': shouldHideHeader && fixedFooter,
             })}
         >
             {!shouldHideHeader && (

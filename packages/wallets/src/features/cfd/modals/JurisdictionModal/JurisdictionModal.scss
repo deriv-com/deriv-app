@@ -3,4 +3,9 @@
     height: 80vh;
     width: 85vw;
     perspective: 200rem;
+
+    @include mobile {
+        height: auto;
+        width: 100%;
+    }
 }

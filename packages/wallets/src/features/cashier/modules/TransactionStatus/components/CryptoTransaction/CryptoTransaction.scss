@@ -28,18 +28,18 @@
         &-dot {
             width: 0.4rem;
             height: 0.4rem;
-            border-radius: $BORDER_RADIUS;
+            border-radius: 0.2rem;
 
             &--warning {
-                background: var(--status-warning);
+                background: var(--status-warning, #ffad3a);
             }
 
             &--successful {
-                background: var(--status-success);
+                background: var(--status-success, #4bb4b3);
             }
 
             &--unsuccessful {
-                background: var(--status-danger);
+                background: var(--status-danger, #ec3f3f);
             }
         }
     }

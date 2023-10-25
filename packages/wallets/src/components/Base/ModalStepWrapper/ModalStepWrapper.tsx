@@ -33,7 +33,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
             {!shouldHideHeader && (
                 <div className='wallets-modal-step-wrapper__header'>
                     {title && (
-                        <WalletText size={isMobile ? 'sm' : 'md'} weight='bold'>
+                        <WalletText size='md' weight='bold'>
                             {title}
                         </WalletText>
                     )}

@@ -1,0 +1,22 @@
+.wallets-mt5-trade-clipboard {
+    display: flex;
+    align-items: center;
+    height: 3.2rem;
+    justify-content: space-between;
+    background-color: #f2f3f4;
+    padding: 0.5rem 0 0.5rem 0.8rem;
+
+    &__values {
+        display: flex;
+        align-items: center;
+
+        & .wallet-text {
+            font-family: 'Courier';
+        }
+
+        & .wallets-clipboard {
+            border: none;
+            border-radius: none;
+        }
+    }
+}

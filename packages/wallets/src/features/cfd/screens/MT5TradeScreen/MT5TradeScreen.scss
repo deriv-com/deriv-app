@@ -1,0 +1,66 @@
+.wallets-mt5-trade-screen {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    width: 45vw;
+    height: 40vh;
+    padding: 2.4rem;
+    gap: 2.4rem;
+
+    @include mobile {
+        width: 100%;
+        height: auto;
+    }
+
+    &__details {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        &--left {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+
+            & > svg {
+                transform: scale(0.6);
+            }
+
+            .wallets-mt5-trade-screen__details-title {
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+        }
+    }
+
+    &__clipboards {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+
+        & .wallets-mt5-trade-clipboard:first-child {
+            border-radius: 0.7rem 0.7rem 0 0;
+        }
+
+        & .wallets-mt5-trade-clipboard:last-child {
+            border-radius: 0 0 0.7rem 0.7rem;
+        }
+    }
+
+    &__maintainance {
+        display: grid;
+        grid-template-columns: 8% auto;
+    }
+
+    &__metatrader {
+        align-items: center;
+        display: grid;
+        grid-template-columns: 10% auto 10%;
+        grid-gap: 1.6rem;
+        border-top: 0.2rem solid #f2f3f4;
+        width: 100%;
+        padding: 1.6rem 2.4rem 0 2.4rem;
+    }
+}

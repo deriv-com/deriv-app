@@ -13,3 +13,8 @@
         height: calc(100svh - 4rem); // 100svh - 4rem (header)
     }
 }
+
+.wallets-modal-responsive-root {
+    position: absolute;
+    z-index: 1;
+}

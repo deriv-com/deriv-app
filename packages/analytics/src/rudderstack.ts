@@ -210,6 +210,7 @@ export class RudderStack {
     }
 
     init() {
+        console.log("RudderStack.init()", process.env.NODE_ENV, process.env.REF_NAME)
         const is_production = process.env.NODE_ENV === 'production';
         const is_staging = process.env.NODE_ENV === 'staging';
 

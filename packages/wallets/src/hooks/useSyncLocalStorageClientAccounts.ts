@@ -30,7 +30,7 @@ const useSyncLocalStorageClientAccounts = () => {
                     token: newAccount.oauth_token,
                 };
 
-                const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+                const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') ?? '{}');
                 localStorage.setItem(
                     'client.accounts',
                     JSON.stringify({ ...clientAccounts, [newAccount.client_id]: dataToStore })

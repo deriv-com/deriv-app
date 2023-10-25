@@ -49,7 +49,6 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
             modal.show(
                 <WalletError
                     buttonText='Close'
-                    // @ts-expect-error BE returns error.message as string
                     errorMessage={error.error.message}
                     onClick={() => modal.hide()}
                     type='modal'

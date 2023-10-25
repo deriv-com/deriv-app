@@ -117,7 +117,8 @@ const ProofOfOwnershipForm = ({
                 } else {
                     delete errors[card_key as TPaymentMethod]?.payment_method_identifier;
                 }
-                if (!card_data?.files?.length) {
+
+                if (!are_files_uploaded) {
                     errors = {
                         ...errors,
                         [card_key as TPaymentMethod]: {
@@ -149,7 +150,7 @@ const ProofOfOwnershipForm = ({
         return errors;
     };
 
-    const handleFormSubmit = (
+    const handleFormSubmit = async (
         values: Partial<TProofOfOwnershipFormValue>,
         action: FormikHelpers<Partial<TProofOfOwnershipFormValue>>
     ) => {
@@ -157,8 +158,8 @@ const ProofOfOwnershipForm = ({
         try {
             setStatus({ is_btn_loading: true });
             const uploader = new DocumentUploader({ connection: WS.getSocket() });
-
-            Object.keys(values).forEach(async card_key => {
+            await Object.keys(values).reduce(async (promise, card_key) => {
+                await promise;
                 const payment_method_details = values[card_key as TPaymentMethod];
                 if (payment_method_details?.files?.length) {
                     const processed_files = await readFiles(payment_method_details.files, fileReadErrorMessage, {
@@ -171,7 +172,8 @@ const ProofOfOwnershipForm = ({
                             id: payment_method_details.id,
                         },
                     });
-                    const uploadPromises = processed_files.map(async processed_file => {
+                    processed_files.reduce(async (promise, processed_file) => {
+                        await promise;
                         const response = await uploader.upload(processed_file);
 
                         if (response.warning) {
@@ -183,12 +185,10 @@ const ProofOfOwnershipForm = ({
                             updateAccountStatus();
                             refreshNotifications();
                         }
-                    });
-
-                    await Promise.all(uploadPromises);
-                    setStatus({ is_btn_loading: false });
+                    }, Promise.resolve());
                 }
-            });
+            }, Promise.resolve());
+            setStatus({ is_btn_loading: false });
         } catch (err) {
             setStatus({ is_btn_loading: false });
         }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import useSubscription from '../useSubscription';
 import { getTruncatedString } from '@deriv/utils';
 
@@ -24,6 +24,9 @@ type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type
 const useCryptoTransactions = () => {
     const { subscribe, data, ...rest } = useSubscription('cashier_payments');
     const [transactions, setTransactions] = useState<TModifiedTransaction[]>();
+
+    // Reset transactions data
+    const resetData = useCallback(() => setTransactions(undefined), []);
 
     useEffect(() => {
         setTransactions(old_transactions => {
@@ -91,6 +94,8 @@ const useCryptoTransactions = () => {
         data: sorted_transactions,
         /** Returns the last transaction if exists. */
         last_transaction,
+        /** Reset transactions data */
+        resetData,
         subscribe,
         ...rest,
     };

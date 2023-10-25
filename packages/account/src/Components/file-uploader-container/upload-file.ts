@@ -1,23 +1,15 @@
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { localize } from '@deriv/translations';
-import { compressImageFiles, readFiles, DOCUMENT_TYPE, PAGE_TYPE } from '@deriv/shared';
+import { compressImageFiles, readFiles, TSettings } from '@deriv/shared';
 import { TFile } from 'Types';
 
-type TDocumentSettings = {
-    documentType: keyof typeof DOCUMENT_TYPE;
-    pageType: keyof typeof PAGE_TYPE;
-    expirationDate: string;
-    documentId: string;
-    lifetimeValid: boolean;
-};
-
-type TProcessedFile = TFile & TDocumentSettings & { message: string };
+type TProcessedFile = TFile & TSettings & { message: string };
 
 const fileReadErrorMessage = (filename: string) => {
     return localize('Unable to read file {{name}}', { name: filename });
 };
 
-const uploadFile = (file: File, getSocket: () => WebSocket, settings: TDocumentSettings) => {
+const uploadFile = (file: File, getSocket: () => WebSocket, settings: TSettings) => {
     return new Promise((resolve, reject) => {
         if (!file) {
             reject();

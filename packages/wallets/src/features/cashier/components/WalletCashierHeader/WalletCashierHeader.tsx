@@ -8,13 +8,19 @@ import useDevice from '../../../../hooks/useDevice';
 import CloseIcon from '../../../../public/images/close-icon.svg';
 import './WalletCashierHeader.scss';
 
-const tabs = ['deposit', 'withdraw', 'transfer', 'transactions'] as const;
+const realAccountTabs = ['deposit', 'withdraw', 'transfer', 'transactions'];
+const virtualAccountTabs = ['withdraw', 'transfer', 'transactions', 'reset-balance'];
 
 const WalletCashierHeader = () => {
     const { data } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
     const location = useLocation();
+
+    let tabs = realAccountTabs;
+    if (data?.is_virtual) {
+        tabs = virtualAccountTabs;
+    }
 
     return (
         <WalletGradientBackground

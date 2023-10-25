@@ -474,9 +474,8 @@ const CFDPasswordForm = ({
             </React.Fragment>
         );
     }
-
     const getPasswordModalTitle = () => {
-        if (is_mt5_migration_modal_enabled) {
+        if (is_mt5_migration_modal_enabled)
             return (
                 <Localize
                     i18n_default_text='Enter your {{platform}} password to move your account(s).'
@@ -485,7 +484,7 @@ const CFDPasswordForm = ({
                     }}
                 />
             );
-        } else if (account_type.category === 'real')
+        else if (account_type.category === 'real')
             return (
                 <Localize
                     i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
@@ -523,17 +522,6 @@ const CFDPasswordForm = ({
             />
         );
     }
-
-    const accountTitle = () => {
-        switch (platform) {
-            case 'ctrader':
-            case 'derivez':
-            case 'derivx':
-                return 'CFD';
-            default:
-                return account_title;
-        }
-    };
 
     const showJuristiction = () => {
         if (platform === CFD_PLATFORMS.DXTRADE) {

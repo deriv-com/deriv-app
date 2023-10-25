@@ -3,11 +3,12 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useHover } from 'usehooks-ts';
 import { useAvailableWallets } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
+import { WalletText } from '../Base';
 import { WalletsAddMoreLoader } from '../SkeletonLoader';
 import WalletsAddMoreCard from '../WalletsAddMoreCard';
 import './WalletsAddMoreCarousel.scss';
 
-const WalletsAddMoreCarousel = () => {
+const WalletsAddMoreCarousel: React.FC = () => {
     const { isDesktop, isMobile } = useDevice();
     const { data: availableWallets, isLoading } = useAvailableWallets();
     const [walletsAddMoreEmblaRef, walletsAddMoreEmblaAPI] = useEmblaCarousel({
@@ -25,7 +26,11 @@ const WalletsAddMoreCarousel = () => {
 
     return (
         <div className='wallets-add-more' ref={hoverRef}>
-            <h2 className='wallets-add-more__header'>Add more Wallets</h2>
+            <div className='wallets-add-more__header'>
+                <WalletText size='2xl' weight='bold'>
+                    Add more Wallets
+                </WalletText>
+            </div>
             <div className='wallets-add-more__carousel' data-testid='dt-wallets-add-more' ref={walletsAddMoreEmblaRef}>
                 <div className='wallets-add-more__carousel-wrapper'>
                     {isLoading &&

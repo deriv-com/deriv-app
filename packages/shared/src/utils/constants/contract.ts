@@ -7,10 +7,11 @@ import { shouldShowCancellation, shouldShowExpiration, TURBOS, VANILLALONG } fro
 export const getLocalizedBasis = () =>
     ({
         accumulator: localize('Accumulators'),
-        payout: localize('Payout'),
-        payout_per_point: localize('Payout per point'),
-        stake: localize('Stake'),
         multiplier: localize('Multiplier'),
+        payout_per_pip: localize('Payout per pip'),
+        payout_per_point: localize('Payout per point'),
+        payout: localize('Payout'),
+        stake: localize('Stake'),
         turbos: localize('Turbos'),
     } as const);
 
@@ -218,6 +219,7 @@ export const getCardLabels = () =>
         BUY_PRICE: localize('Buy price:'),
         CANCEL: localize('Cancel'),
         CLOSE: localize('Close'),
+        CLOSED: localize('Closed'),
         CONTRACT_VALUE: localize('Contract value:'),
         CURRENT_STAKE: localize('Current stake:'),
         DAY: localize('day'),
@@ -318,6 +320,9 @@ export const getMarketNamesMap = () =>
         WLDXAU: localize('Gold Basket'),
         WLDUSD: localize('USD Basket'),
         '1HZ10V': localize('Volatility 10 (1s) Index'),
+        '1HZ25V': localize('Volatility 25 (1s) Index'),
+        '1HZ50V': localize('Volatility 50 (1s) Index'),
+        '1HZ75V': localize('Volatility 75 (1s) Index'),
         '1HZ100V': localize('Volatility 100 (1s) Index'),
         '1HZ150V': localize('Volatility 150 (1s) Index'),
         '1HZ200V': localize('Volatility 200 (1s) Index'),

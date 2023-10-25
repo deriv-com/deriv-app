@@ -15,6 +15,7 @@ import {
     withdrawalTransactionHashDisplayMapper,
 } from '../utils/transactionDetailsMappers';
 
+// This hook is used to populate transactions from `useCryptoTransactions` with data that is needed for the UI.
 const useRecentTransactions = () => {
     const { data: transactions, subscribe, ...rest } = useCryptoTransactions();
 

@@ -524,7 +524,6 @@
         &-description {
             display: flex;
             justify-content: center;
-            margin-top: 1.4rem;
         }
 
         &-app {
@@ -879,20 +878,6 @@
     position: relative;
     width: 100%;
 
-    .poi-form-on-signup__fields {
-        .dc-autocomplete {
-            margin-bottom: 0;
-        }
-    }
-
-    .account-form__poi-confirm-example {
-        gap: 1.6rem;
-
-        @include mobile {
-            gap: 0;
-        }
-    }
-
     &__body {
         width: 100%;
         .poi-form-on-signup {
@@ -947,18 +932,6 @@
         @include desktop() {
             .onfido-container {
                 padding-top: 1.6rem;
-            }
-        }
-
-        .proof-of-identity__mismatch-container {
-            max-width: 70.2rem;
-            margin-inline: auto;
-
-            .account__scrollbars_container {
-                padding-top: 2.4rem;
-            }
-            .dc-themed-scrollbars {
-                padding-inline: 1.6rem;
             }
         }
     }

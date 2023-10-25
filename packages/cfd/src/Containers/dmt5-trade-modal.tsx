@@ -1,25 +1,29 @@
 import React from 'react';
-import { Text, Icon, Money } from '@deriv/components';
-import { TTradingPlatformAccounts } from '../Components/props.types';
+
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { Icon, Money, Text } from '@deriv/components';
 import {
     CFD_PLATFORMS,
-    isMobile,
     getCFDAccountDisplay,
+    getCFDAccountKey,
     getCFDPlatformLabel,
     getPlatformSettings,
     getUrlBase,
-    getCFDAccountKey,
+    isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
 import PasswordBox from '../Components/passwordbox';
-import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TTradingPlatformAccounts } from '../Components/props.types';
+
 import { TCFDPasswordReset } from './props.types';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid;
+    mt5_trade_account: DetailsOfEachMT5Loginid & {
+        webtrader_url?: string;
+    };
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,
@@ -97,7 +101,7 @@ const DMT5TradeModal = ({
             <div className='cfd-trade-modal__login-specs'>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                    <SpecBox is_bold is_broker value={'Deriv Holdings (Guernsey) Limited'} />
+                    <SpecBox is_bold is_broker value={'Deriv.com Limited'} />
                 </div>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>
@@ -151,11 +155,7 @@ const DMT5TradeModal = ({
                     <a
                         className='dc-btn cfd-trade-modal__download-center-app--option-link'
                         type='button'
-                        href={getMT5WebTerminalLink({
-                            category: mt5_trade_account.account_type,
-                            loginid: (mt5_trade_account as TTradingPlatformAccounts).display_login,
-                            server_name: (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment,
-                        })}
+                        href={mt5_trade_account.webtrader_url}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

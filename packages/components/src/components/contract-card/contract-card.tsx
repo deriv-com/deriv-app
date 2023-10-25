@@ -10,6 +10,7 @@ import ResultOverlay from './result-overlay';
 import DesktopWrapper from '../desktop-wrapper';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TGetContractPath } from '../types';
+import { formatMoney } from '@deriv/shared';
 
 type TContractCardProps = {
     contract_info: TContractInfo;
@@ -40,7 +41,7 @@ const ContractCard = ({
     toggleUnsupportedContractModal,
 }: React.PropsWithChildren<TContractCardProps>) => {
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
-
+    const payout = formatMoney(contract_info.currency ?? '', profit_loss > 0 ? profit_loss : 0, true);
     return (
         <React.Fragment>
             {should_show_result_overlay && (
@@ -54,6 +55,7 @@ const ContractCard = ({
                         is_visible={!!contract_info.is_sold}
                         onClickRemove={onClickRemove}
                         onClick={() => toggleUnsupportedContractModal?.(true)}
+                        payout_info={`${payout} ${contract_info.currency}`}
                         result={result || fallback_result}
                         is_positions={is_positions}
                     />

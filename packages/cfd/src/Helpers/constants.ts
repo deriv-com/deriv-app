@@ -1,4 +1,4 @@
-import { OSDetect, getPlatformFromUrl } from '@deriv/shared';
+import { OSDetect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 
@@ -26,6 +26,19 @@ const platformsIcons = (platform: TCFDsPlatformType) => {
         default:
             return '';
     }
+};
+
+const getPlatformFromUrl = (domain = window.location.hostname) => {
+    const resolutions = {
+        is_staging_deriv_app: /staging-app\.deriv\.(com|me|be)/i.test(domain),
+        is_deriv_app: /app\.deriv\.(com|me|be)/i.test(domain),
+        is_test_link: /(.*)\.binary\.sx/i.test(domain),
+    };
+
+    return {
+        ...resolutions,
+        is_staging: resolutions.is_staging_deriv_app,
+    };
 };
 
 const getTitle = (market_type: string, is_eu_user: boolean) => {

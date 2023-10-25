@@ -86,17 +86,6 @@ const CompositeCalendarMobile = ({
         setIsOpen(false);
     };
 
-    const selectToday = () => {
-        const new_date_range = {
-            duration: 0,
-            label: localize('Today'),
-        };
-        selectDateRange(new_date_range, true);
-        setAppliedDateRange(new_date_range);
-        setSelectedDateRange(new_date_range);
-        setIsOpen(false);
-    };
-
     const selectDate = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
         setSelectedDateRange({ value: CUSTOM_KEY });
 

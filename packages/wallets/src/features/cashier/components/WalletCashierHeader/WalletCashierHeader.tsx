@@ -57,11 +57,10 @@ const virtualAccountTabs = [
 const WalletCashierHeader = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
+    const activeTabRef = useRef<HTMLDivElement>(null);
     const history = useHistory();
     const location = useLocation();
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
-
-    const activeTabRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (isMobile && activeTabRef.current) {
@@ -79,8 +78,8 @@ const WalletCashierHeader = () => {
         >
             <main className='wallets-cashier-header'>
                 <section className='wallets-cashier-header__info'>
-                    <div className='wallets-cashier-header__info__top-left'>
-                        <div className='wallets-cashier-header__info__top-left__details'>
+                    <div className='wallets-cashier-header__top-left-info'>
+                        <div className='wallets-cashier-header__details'>
                             <WalletText
                                 color={activeWallet?.is_virtual ? 'system-dark-2-general-text' : 'general'}
                                 size='md'
@@ -98,7 +97,7 @@ const WalletCashierHeader = () => {
                             {activeWallet?.display_balance}
                         </WalletText>
                     </div>
-                    <div className='wallets-cashier-header__info__top-right'>
+                    <div className='wallets-cashier-header__top-right-info'>
                         {activeWallet?.wallet_currency_type && (
                             <WalletCardIcon size='xl' type={activeWallet?.wallet_currency_type} />
                         )}
@@ -115,16 +114,16 @@ const WalletCashierHeader = () => {
                         const isActiveTab = location.pathname === `/wallets/cashier/${tab.path}`;
                         return (
                             <div
-                                className={`wallets-cashier-header__tabs__tab ${
-                                    isActiveTab ? 'wallets-cashier-header__tabs__tab--active' : ''
+                                className={`wallets-cashier-header__tab ${
+                                    isActiveTab ? 'wallets-cashier-header__tab--active' : ''
                                 }`}
                                 key={`cashier-tab-${tab.path}`}
                                 onClick={() => history.push(`/wallets/cashier/${tab.path}`)}
                                 ref={isActiveTab ? activeTabRef : null}
                             >
                                 <div
-                                    className={classNames('wallets-cashier-header__tabs__tab__icon', {
-                                        'wallets-cashier-header__tabs__tab__icon--system-dark-2-general-text':
+                                    className={classNames('wallets-cashier-header__tab-icon', {
+                                        'wallets-cashier-header__tab-icon--system-dark-2-general-text':
                                             activeWallet?.is_virtual && !isActiveTab,
                                     })}
                                 >

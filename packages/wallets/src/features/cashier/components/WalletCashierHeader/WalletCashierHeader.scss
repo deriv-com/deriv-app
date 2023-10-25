@@ -12,6 +12,27 @@
         height: 12.2rem;
     }
 
+    &__info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: 4rem;
+
+        @include mobile {
+            padding-inline: 1.6rem;
+        }
+    }
+
+    &__top-right-info {
+        display: flex;
+        gap: 1.6rem;
+        align-items: start;
+
+        @include mobile {
+            gap: 0.8rem;
+        }
+    }
+
     &__close-icon {
         cursor: pointer;
 
@@ -22,37 +43,16 @@
         }
     }
 
-    &__info {
+    &__top-left-info {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    &__details {
+        display: flex;
+        gap: 0.8rem;
         align-items: center;
-        padding-inline: 4rem;
-
-        @include mobile {
-            padding-inline: 1.6rem;
-        }
-
-        &__top-left {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-
-            &__details {
-                display: flex;
-                gap: 0.8rem;
-                align-items: center;
-            }
-        }
-
-        &__top-right {
-            display: flex;
-            gap: 1.6rem;
-            align-items: start;
-
-            @include mobile {
-                gap: 0.8rem;
-            }
-        }
     }
 
     &__tabs {
@@ -69,36 +69,36 @@
         @include mobile {
             padding-inline: 1.6rem;
         }
+    }
 
-        &__tab {
-            all: unset;
-            display: flex;
-            min-width: 11.2rem;
-            height: 4.8rem;
-            padding-inline: 1.6rem;
-            justify-content: center;
-            align-items: center;
-            gap: 0.8rem;
-            flex-shrink: 0;
-            cursor: pointer;
+    &__tab {
+        all: unset;
+        display: flex;
+        min-width: 11.2rem;
+        height: 4.8rem;
+        padding-inline: 1.6rem;
+        justify-content: center;
+        align-items: center;
+        gap: 0.8rem;
+        flex-shrink: 0;
+        cursor: pointer;
 
-            &__icon {
-                &--system-dark-2-general-text {
-                    path {
-                        fill: var(--system-dark-2-general-text, #c2c2c2);
-                    }
-                }
-            }
+        @include mobile {
+            height: 4rem;
+            min-width: 7.2rem;
+            padding-inline: 2.4rem;
+        }
 
-            @include mobile {
-                height: 4rem;
-                min-width: 7.2rem;
-                padding-inline: 2.4rem;
-            }
+        &--active {
+            border-radius: 1.6rem 1.6rem 0rem 0rem;
+            background: var(--light-8-primary-background, #fff);
+        }
+    }
 
-            &--active {
-                border-radius: 1.6rem 1.6rem 0rem 0rem;
-                background: var(--light-8-primary-background, #fff);
+    &__tab-icon {
+        &--system-dark-2-general-text {
+            path {
+                fill: var(--system-dark-2-general-text, #c2c2c2);
             }
         }
     }

@@ -8,7 +8,7 @@ type TProps = {
     setIsStarted?: (value: boolean) => void;
 };
 
-const WalletTourGuide = ({ isStarted = false, setIsStarted }: TProps) => {
+const WalletTourGuide: React.FC<TProps> = ({ isStarted, setIsStarted }) => {
     const callbackHandle = (data: CallBackProps) => {
         if (data.action === 'reset') {
             setIsStarted?.(false);

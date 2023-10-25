@@ -7,6 +7,7 @@ type TSwipeableWrapper = {
     className?: string;
     onChange?: (prop?: number) => void;
     is_disabled?: boolean;
+    is_swipe_disabled?: boolean;
 } & SwipeableProps;
 
 const SwipeableWrapper = ({ children, className, onChange, ...props }: React.PropsWithChildren<TSwipeableWrapper>) => {
@@ -20,16 +21,18 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }: React.Pro
         };
     }, [active_index, onChange]);
 
-    const swipedLeft = () => {
+    const swipedLeft = (is_nav_click = false) => {
         if (props.is_disabled) return;
+        if (props.is_swipe_disabled && !is_nav_click) return;
         const is_reached_end = active_index + 1 === React.Children.toArray(children).length;
         if (!is_reached_end) {
             setActiveIndex(active_index + 1);
         }
     };
 
-    const swipedRight = () => {
+    const swipedRight = (is_nav_click = false) => {
         if (props.is_disabled) return;
+        if (props.is_swipe_disabled && !is_nav_click) return;
         if (active_index > 0) {
             setActiveIndex(active_index - 1);
         }
@@ -40,8 +43,8 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }: React.Pro
     });
 
     const swipe_handlers = useSwipeable({
-        onSwipedLeft: swipedLeft,
-        onSwipedRight: swipedRight,
+        onSwipedLeft: () => swipedLeft(false),
+        onSwipedRight: () => swipedRight(false),
         ...props,
     });
 
@@ -50,7 +53,7 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }: React.Pro
             <div
                 {...swipe_handlers}
                 style={{
-                    transform: `translateX(${props.is_disabled ? -100 : active_index * -100}vw)`,
+                    left: `${props.is_disabled ? -100 : active_index * -100}vw`,
                 }}
                 className={classNames('dc-swipeable__view', className)}
                 {...props}
@@ -63,14 +66,14 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }: React.Pro
                         className='dc-swipeable__nav__item'
                         icon='IcChevronDoubleLeft'
                         size={24}
-                        onClick={swipedRight}
+                        onClick={() => swipedRight(true)}
                         color={active_index === 0 || props.is_disabled ? 'disabled' : ''}
                     />
                     <Icon
                         className='dc-swipeable__nav__item'
                         icon='IcChevronDoubleRight'
                         size={24}
-                        onClick={swipedLeft}
+                        onClick={() => swipedLeft(true)}
                         color={
                             active_index + 1 === React.Children.toArray(children).length || props.is_disabled
                                 ? 'disabled'

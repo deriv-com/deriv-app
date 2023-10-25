@@ -4,7 +4,7 @@
         display: flex;
         align-items: flex-start;
         width: 100%;
-        border-radius: 16px;
+        border-radius: 1.6rem;
         background: none;
         z-index: 10;
     }
@@ -14,7 +14,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 24px;
+        gap: 2.4rem;
         align-self: stretch;
     }
 
@@ -22,19 +22,19 @@
         display: flex;
         flex: 1;
         align-items: center;
-        gap: 24px;
+        gap: 2.4rem;
         align-self: stretch;
-        border-radius: 16px;
+        border-radius: 1.6rem;
 
         &-icon {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-shrink: 0;
-            border-radius: 4px;
-            padding: 10px 16px;
-            min-width: 122px;
-            min-height: 75px;
+            border-radius: 0.4rem;
+            padding: 1rem 1.6rem;
+            min-width: 12.2rem;
+            min-height: 7.5rem;
         }
     }
 }

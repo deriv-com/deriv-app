@@ -6,10 +6,10 @@
 
     &__content {
         display: flex;
-        gap: 16px;
+        gap: 1.6rem;
 
         &--is-input {
-            gap: 8px;
+            gap: 0.8rem;
         }
 
         &__card {
@@ -28,13 +28,13 @@
             color: var(--system-light-2-general-text, #333);
 
             /* mobile/small/S - regular */
-            font-size: 12px;
+            font-size: 1.2rem;
             font-style: normal;
             font-weight: 400;
-            line-height: 14px; /* 140% */
+            line-height: 1.4rem; /* 140% */
 
             &--is-input {
-                font-size: 10px;
+                font-size: 1rem;
             }
         }
 
@@ -42,14 +42,14 @@
             color: var(--system-light-1-prominent-text, #333);
 
             /* desktop/subtitle/Sub 2 - bold */
-            font-size: 20px;
+            font-size: 2rem;
             font-style: normal;
             font-weight: 700;
-            line-height: 30px; /* 150% */
+            line-height: 3rem; /* 150% */
 
             &--is-input {
-                font-size: 10px;
-                line-height: 14px;
+                font-size: 1rem;
+                line-height: 1.4rem;
             }
         }
     }

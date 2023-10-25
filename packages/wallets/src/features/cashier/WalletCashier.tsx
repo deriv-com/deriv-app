@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletCashierContent, WalletCashierHeader } from './components';
 import './WalletCashier.scss';

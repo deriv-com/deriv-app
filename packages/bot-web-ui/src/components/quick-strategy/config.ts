@@ -69,7 +69,7 @@ export const duration: TConfigItem = {
 export const label_profit: TConfigItem = {
     type: 'label',
     label: localize('Profit Threshold'),
-    description: localize(`The bot will stop trading if your total profit exceeds this amount.`),
+    description: localize('The bot will stop trading if your total profit exceeds this amount.'),
 };
 
 export const profit: TConfigItem = {
@@ -81,7 +81,7 @@ export const profit: TConfigItem = {
 export const label_loss: TConfigItem = {
     type: 'label',
     label: localize('Loss Threshold'),
-    description: localize(`The bot will stop trading if your total loss exceeds this amount.`),
+    description: localize('The bot will stop trading if your total loss exceeds this amount.'),
 };
 
 export const loss: TConfigItem = {

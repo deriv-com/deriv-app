@@ -41,11 +41,9 @@
         &-btn {
             z-index: 1;
             position: absolute;
-            height: 4rem;
-            width: 4rem;
-            border-radius: 50%;
-            cursor: pointer;
             top: 45%;
+            box-shadow: 0px 24px 24px 0px rgba(0, 0, 0, 0.08), 0px 0px 24px 0px rgba(0, 0, 0, 0.08);
+            border-radius: 50%;
 
             &--prev {
                 left: 1.6rem;
@@ -54,7 +52,6 @@
                 right: 1.6rem;
             }
             &:disabled {
-                opacity: 0.3;
                 display: none;
             }
         }

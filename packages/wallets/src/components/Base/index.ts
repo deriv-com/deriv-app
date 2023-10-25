@@ -1,4 +1,5 @@
 export * from './Divider';
+export * from './IconButton';
 export * from './InlineMessage';
 export * from './ModalStepWrapper';
 export * from './ModalWrapper';

@@ -84,9 +84,11 @@ $size-map: (
         &--md {
             border-radius: 6.4rem;
         }
-        &--lg {
-            border-radius: 100%;
-        }
+    }
+
+    &__icon-container {
+        width: 1.6rem;
+        height: 1.6rem;
     }
 
     &__full-width {

@@ -94,7 +94,7 @@ export const getSocketURL = () => {
     const is_real = loginid && !/^(VRT|VRW)/.test(loginid);
 
     const server = is_real ? 'green' : 'blue';
-    const server_url = `${server}.binaryws.com`;
+    const server_url = `${server}.derivws.com`;
 
     return server_url;
 };
@@ -110,7 +110,7 @@ export const checkAndSetEndpointFromUrl = () => {
             url_params.delete('qa_server');
             url_params.delete('app_id');
 
-            if (/^(^(www\.)?qa[0-9]{1,4}\.deriv.dev|(.*)\.binaryws\.com)$/.test(qa_server) && /^[0-9]+$/.test(app_id)) {
+            if (/^(^(www\.)?qa[0-9]{1,4}\.deriv.dev|(.*)\.derivws\.com)$/.test(qa_server) && /^[0-9]+$/.test(app_id)) {
                 localStorage.setItem('config.app_id', app_id);
                 localStorage.setItem('config.server_url', qa_server);
             }

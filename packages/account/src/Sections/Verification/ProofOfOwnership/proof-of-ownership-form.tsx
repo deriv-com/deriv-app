@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button } from '@deriv/components';
 import { readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
@@ -11,7 +11,7 @@ import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';
 import FormBodySection from '../../../Components/form-body-section';
 import Card from '../../../Containers/proof-of-ownership/card';
-import { TPaymentMethod, TPaymentMethodInfo, TProofOfOwnershipFormValue } from '../../../Types';
+import { TPaymentMethod, TPaymentMethodInfo, TProofOfOwnershipData, TProofOfOwnershipFormValue } from '../../../Types';
 import { isValidPaymentMethodIdentifier, isValidFile } from './validation';
 
 type TProofOfOwnershipFormProps = {
@@ -35,7 +35,7 @@ const ProofOfOwnershipForm = ({
 }: TProofOfOwnershipFormProps) => {
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data) as Array<TPaymentMethod>;
 
-    let initial_values = {};
+    let initial_values: Partial<TProofOfOwnershipFormValue> = {};
     const form_ref = React.useRef(null);
 
     const getScrollOffset = React.useCallback(
@@ -52,7 +52,7 @@ const ProofOfOwnershipForm = ({
     };
 
     if (grouped_payment_method_data_keys) {
-        const default_value = {
+        const default_value: TProofOfOwnershipData = {
             documents_required: 0,
             id: 0,
             identifier_type: '',
@@ -60,22 +60,32 @@ const ProofOfOwnershipForm = ({
             payment_method_identifier: '',
             files: [],
         };
-        const form_value = grouped_payment_method_data_keys.reduce((acc, payment_method) => {
-            const { documents_required, is_generic_pm } = grouped_payment_method_data[payment_method];
-            acc[payment_method] = { ...default_value, documents_required, is_generic_pm };
+        const form_value = grouped_payment_method_data_keys.reduce<
+            Partial<Record<TPaymentMethod, TProofOfOwnershipData>>
+        >((acc, payment_method) => {
+            const documents_required = grouped_payment_method_data[payment_method]?.documents_required;
+            const is_generic_pm = grouped_payment_method_data[payment_method]?.is_generic_pm;
+            acc[payment_method] = { ...default_value };
+            if (documents_required) {
+                acc[payment_method].documents_required = documents_required;
+            }
+            if (is_generic_pm) {
+                acc[payment_method].is_generic_pm = is_generic_pm;
+            }
+
             return acc;
         }, {});
 
         initial_values = { ...initial_values, ...form_value };
     }
 
-    const validateFields = (values: TProofOfOwnershipFormValue) => {
-        let errors: FormikErrors<TProofOfOwnershipErrors> = {};
+    const validateFields = (values: Partial<TProofOfOwnershipFormValue>) => {
+        let errors: TProofOfOwnershipErrors = {};
 
         Object.keys(values).forEach(card_key => {
             const card_data = values[card_key as TPaymentMethod];
             const is_payment_method_identifier_provided =
-                card_data.is_generic_pm || card_data.payment_method_identifier.trim()?.length > 0;
+                card_data?.is_generic_pm || !!card_data?.payment_method_identifier.trim()?.length;
             const are_files_uploaded =
                 card_data?.files?.filter(file => file?.name).length === card_data?.documents_required;
 
@@ -88,7 +98,7 @@ const ProofOfOwnershipForm = ({
                     },
                 };
             } else {
-                delete errors[card_key]?.payment_method_identifier;
+                delete errors[card_key as TPaymentMethod]?.payment_method_identifier;
             }
 
             if (is_payment_method_identifier_provided) {
@@ -105,7 +115,7 @@ const ProofOfOwnershipForm = ({
                         },
                     };
                 } else {
-                    delete errors[card_key]?.payment_method_identifier;
+                    delete errors[card_key as TPaymentMethod]?.payment_method_identifier;
                 }
                 if (!card_data?.files?.length) {
                     errors = {
@@ -132,7 +142,7 @@ const ProofOfOwnershipForm = ({
                         },
                     };
                 } else {
-                    delete errors?.[card_key]?.files?.[i];
+                    delete errors?.[card_key as TPaymentMethod]?.files?.[i];
                 }
             });
         });
@@ -140,8 +150,8 @@ const ProofOfOwnershipForm = ({
     };
 
     const handleFormSubmit = (
-        values: TProofOfOwnershipFormValue,
-        action: FormikHelpers<TProofOfOwnershipFormValue>
+        values: Partial<TProofOfOwnershipFormValue>,
+        action: FormikHelpers<Partial<TProofOfOwnershipFormValue>>
     ) => {
         const { setFieldError, setStatus } = action;
         try {
@@ -149,8 +159,8 @@ const ProofOfOwnershipForm = ({
             const uploader = new DocumentUploader({ connection: WS.getSocket() });
 
             Object.keys(values).forEach(async card_key => {
-                const payment_method_details = values[card_key];
-                if (payment_method_details.files?.length) {
+                const payment_method_details = values[card_key as TPaymentMethod];
+                if (payment_method_details?.files?.length) {
                     const processed_files = await readFiles(payment_method_details.files, fileReadErrorMessage, {
                         documentType: DOCUMENT_TYPE.proof_of_ownership,
                         proof_of_ownership: {
@@ -161,20 +171,22 @@ const ProofOfOwnershipForm = ({
                             id: payment_method_details.id,
                         },
                     });
-                    processed_files.forEach(async (processed_file, index) => {
+                    const uploadPromises = processed_files.map(async processed_file => {
                         const response = await uploader.upload(processed_file);
-                        const upload_error = [];
+
                         if (response.warning) {
-                            if (response.warning.trim() === 'DuplicateUpload') {
-                                upload_error[index] = response.message;
-                                setFieldError(card_key, { files: upload_error });
+                            if (response.warning.trim() === 'DuplicateUpload' && response.message) {
+                                const error_message = response.message as string;
+                                setFieldError(card_key, { files: error_message });
                             }
                         } else {
                             updateAccountStatus();
                             refreshNotifications();
                         }
-                        setStatus({ is_btn_loading: false });
                     });
+
+                    await Promise.all(uploadPromises);
+                    setStatus({ is_btn_loading: false });
                 }
             });
         } catch (err) {

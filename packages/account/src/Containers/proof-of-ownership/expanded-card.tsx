@@ -16,7 +16,6 @@ type TExpandedCardProps = {
  *
  * @param card_details Details of payment method
  * @param index Index of payment method
- * @param updateErrors Function to update errors
  * @returns React Component
  */
 const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
@@ -78,7 +77,7 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
             ))}
             <fieldset>
                 {card_details?.items &&
-                    card_details?.items.map((item, item_index) => {
+                    card_details?.items.map(item => {
                         const controls_to_show = [...Array(item?.documents_required).keys()];
                         return (
                             <div

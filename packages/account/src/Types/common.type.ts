@@ -4,6 +4,7 @@ import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Redirect } from 'react-router-dom';
 import { Authorize, GetAccountStatus, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
 import { Platforms } from '@deriv/shared';
+import { TFile } from '@deriv/shared/src/utils/files/image/image_utility';
 import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
 import getPaymentMethodsConfig from '../Configs/payment-method-config';
 
@@ -107,16 +108,6 @@ type TIdentity = {
     };
 };
 
-export type TFile = {
-    path: string;
-    lastModified: number;
-    lastModifiedDate: Date;
-    name: string;
-    size: number;
-    type: string;
-    webkitRelativePath: string;
-};
-
 export type TPOIStatus = {
     needs_poa?: boolean;
     redirect_button?: React.ReactElement;
@@ -196,7 +187,7 @@ export type TPaymentMethodInfo = {
     items: DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
     instructions: string[] | JSX.Element[];
     input_label: string | null;
-    identifier_type: TPaymentMethodIdentifier;
+    identifier_type: TPaymentMethodIdentifier | '';
     is_generic_pm: boolean;
 };
 
@@ -207,8 +198,8 @@ export type TProofOfOwnershipFormValue = Record<TPaymentMethod, TProofOfOwnershi
 export type TProofOfOwnershipData = {
     documents_required: number;
     id: number;
-    identifier_type: TPaymentMethodIdentifier;
+    identifier_type: TPaymentMethodIdentifier | '';
     is_generic_pm: boolean;
-    files: Array<File | undefined>;
-    payment_method_identifier: string;
+    files: Array<TFile>;
+    payment_method_identifier: TPaymentMethod | '';
 };

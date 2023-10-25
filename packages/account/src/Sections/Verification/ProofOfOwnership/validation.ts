@@ -5,7 +5,7 @@ import { TPaymentMethodIdentifier } from 'Types';
 
 export const isValidPaymentMethodIdentifier = (
     payment_method_identifier: string,
-    identifier_type: TPaymentMethodIdentifier
+    identifier_type: TPaymentMethodIdentifier | ''
 ) => {
     const default_error_message = localize('Enter your full card number');
 

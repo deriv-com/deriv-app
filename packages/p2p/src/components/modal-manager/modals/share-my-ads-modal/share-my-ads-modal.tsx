@@ -68,7 +68,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
 
     const handleGenerateImage = async () => {
         if (divRef.current) {
-            const p2p_logo = divRef.current.querySelector('.share-my-ads-card__qr-container');
+            const p2p_logo = divRef.current.querySelector('.share-my-ads-card__qr-icon');
 
             if (p2p_logo) {
                 const canvas = await html2canvas(divRef.current, { useCORS: true, allowTaint: true });

@@ -506,6 +506,8 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    prev_account_type: string;
+    is_beta_chart: boolean;
 };
 
 type TCommonStoreError = {

@@ -5,7 +5,7 @@
     display: flex;
 
     &--mobile {
-        padding: 2.4rem 1.6rem;
+        padding: 2.4rem;
     }
 
     h3 {
@@ -21,21 +21,24 @@
     }
     &__fields-wrap {
         display: flex;
-        margin-bottom: 0.7rem;
+        margin-bottom: 2rem;
 
         .manual-poi-details--mobile & {
             flex-wrap: wrap;
         }
-    }
-    &__field {
-        &:first-of-type {
-            margin-right: 2.4rem;
-            margin-bottom: 1.75rem;
 
-            .manual-poi-details--mobile & {
-                margin-right: 0;
+        .dc-datepicker {
+            margin-left: 2.4rem;
+        }
+
+        @include mobile {
+            .dc-input {
+                margin-bottom: 2rem;
             }
         }
+    }
+    &__field {
+        margin-bottom: 1.75rem;
     }
     &__divider {
         height: 2px;
@@ -145,6 +148,7 @@
         display: flex;
         flex-wrap: wrap;
         margin-bottom: 1.7rem;
+        justify-content: center;
     }
     &__icons-item {
         flex: 0.25;
@@ -183,6 +187,11 @@
 
         .dc-btn:not(:last-of-type) {
             margin-right: 0.8rem;
+        }
+        @include mobile {
+            height: auto;
+            padding-bottom: unset;
+            padding-top: 2rem;
         }
     }
 }

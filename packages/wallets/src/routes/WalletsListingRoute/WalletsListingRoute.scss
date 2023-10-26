@@ -4,9 +4,9 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 24px;
+    gap: 2.4rem;
 
     @include desktop {
-        padding: 40px;
+        padding: 4rem;
     }
 }

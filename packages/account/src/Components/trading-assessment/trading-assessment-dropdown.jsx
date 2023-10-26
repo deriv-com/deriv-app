@@ -1,8 +1,9 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { localize, getLanguage } from '@deriv/translations';
-import classNames from 'classnames';
+import { localize } from '@deriv/translations';
+import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 
 const TradingAssessmentDropdown = ({
     disabled_items,
@@ -31,27 +32,27 @@ const TradingAssessmentDropdown = ({
         <div className='trading-assessment__wrapper__dropdown'>
             {item_list.map(question => (
                 <Field name={question.form_control} key={question.form_control}>
-                    {() => {
+                    {({ field, meta }) => {
+                        const should_extend_trading_frequency_field =
+                            question.form_control === 'trading_frequency_financial_instruments' &&
+                            question?.question_text.length > MAX_QUESTION_TEXT_LENGTH;
+
                         return (
                             <React.Fragment>
                                 <DesktopWrapper>
                                     <Dropdown
-                                        classNameDisplay={classNames(
-                                            'trading-assessment__wrapper__dropdown--mobile--display',
-                                            {
-                                                'trading-frequency--field':
-                                                    question.form_control ===
-                                                        'trading_frequency_financial_instruments' &&
-                                                    ['ID', 'FR'].includes(getLanguage()),
-                                            }
-                                        )}
+                                        {...field}
+                                        classNameDisplay={classNames({
+                                            'trading-frequency--field': should_extend_trading_frequency_field,
+                                        })}
                                         is_align_text_left
-                                        name={question?.question_text}
+                                        name={question?.form_control}
                                         placeholder={question?.question_text}
                                         list={question?.answer_options}
                                         onChange={e => onChange(e, question.form_control, setFieldValue)}
                                         value={values[question.form_control]}
                                         disabled={disabled_items.includes(question.form_control)}
+                                        error={meta.touched && meta.error}
                                     />
                                 </DesktopWrapper>
                                 <MobileWrapper>
@@ -59,9 +60,10 @@ const TradingAssessmentDropdown = ({
                                         {question?.question_text}
                                     </Text>
                                     <SelectNative
+                                        {...field}
                                         placeholder={localize('Please select')}
                                         label={localize('Please select')}
-                                        name={question?.question_text}
+                                        name={question?.form_control}
                                         list_items={question?.answer_options}
                                         onChange={e => {
                                             onChange(e, question.form_control, setFieldValue);
@@ -69,6 +71,7 @@ const TradingAssessmentDropdown = ({
                                         value={values[question.form_control]}
                                         hide_top_placeholder
                                         disabled={disabled_items.includes(question.form_control)}
+                                        error={meta.touched && meta.error}
                                     />
                                 </MobileWrapper>
                             </React.Fragment>

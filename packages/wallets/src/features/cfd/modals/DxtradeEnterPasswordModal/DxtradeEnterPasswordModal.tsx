@@ -63,6 +63,7 @@ const DxtradeEnterPasswordModal = () => {
                     icon={<DxTradePasswordIcon />}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
+                    password={password}
                     platform='dxtrade'
                 />
             )}

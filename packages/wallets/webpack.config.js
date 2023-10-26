@@ -2,7 +2,8 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 
-const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const is_release =
+    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 const svg_loaders = [
     {
@@ -152,7 +153,7 @@ module.exports = function (env) {
                 minSize: 102400,
                 minSizeReduction: 102400,
                 minChunks: 1,
-                maxAsyncRequests: 5,
+                maxAsyncRequests: 30,
                 maxInitialRequests: 3,
                 automaticNameDelimiter: '~',
                 enforceSizeThreshold: 500000,

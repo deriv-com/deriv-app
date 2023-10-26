@@ -1,7 +1,6 @@
 .wallets-modal-step-wrapper {
     background-color: #ffffff;
-    border-radius: 8px;
-    width: 85vw;
+    border-radius: 0.8rem;
 
     @include mobile {
         height: 100vh;
@@ -12,13 +11,13 @@
         grid-template-rows: 9% auto;
 
         &--fixed {
-            grid-template-rows: 9% auto 8%;
+            grid-template-rows: 7% auto 8%;
         }
     }
 
     &__header {
         padding: 2rem;
-        border-bottom: 2px solid #f2f3f4;
+        border-bottom: 0.2rem solid #f2f3f4;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -28,10 +27,13 @@
         }
 
         @include mobile {
+            display: grid;
+            grid-template-columns: auto 5%;
             background-color: #ffffff;
             position: relative;
             z-index: 99;
             width: 100%;
+            padding: 0 2rem;
         }
     }
 
@@ -46,7 +48,7 @@
         height: 10%;
         width: 100%;
         bottom: 0;
-        border-top: 2px solid #f2f3f4;
+        border-top: 0.2rem solid #f2f3f4;
         display: flex;
         justify-content: flex-end;
         align-items: center;

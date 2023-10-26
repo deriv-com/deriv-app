@@ -2,7 +2,8 @@ const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 // const { transformContentUrlBase } = require('./helpers');
 
-const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const IS_RELEASE =
+    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 const generateSWConfig = () => ({
     importWorkboxFrom: 'local',

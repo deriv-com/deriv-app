@@ -58,7 +58,7 @@ const Dashboard = observer(() => {
     }, []);
 
     React.useEffect(() => {
-        if (is_strategy_modal_open) {
+        if (is_open) {
             setTourDialogVisibility(false);
         }
 

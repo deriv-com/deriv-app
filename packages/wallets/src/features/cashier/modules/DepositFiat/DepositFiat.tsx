@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthorize, useDepositFiatAddress } from '@deriv/api';
-import { isServerError } from '../../../../utils/utils';
 import { WalletsErrorScreen } from '../../../../components';
+import { isServerError } from '../../../../utils/utils';
 import './DepositFiat.scss';
 
 const DepositFiat = () => {
@@ -19,9 +19,7 @@ const DepositFiat = () => {
         }
     }, [isAuthorizeSuccess, mutate]);
 
-    //@ts-expect-error need to come up with a way to type an error in ReactQuery
     if (isError && isServerError(depositError.error))
-        //@ts-expect-error need to come up with a way to type an error in ReactQuery
         return <WalletsErrorScreen message={depositError.error.message} />;
 
     return (

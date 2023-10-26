@@ -1,52 +1,37 @@
-import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage, TFile } from './image/image_utility';
+import { useMutation } from '@deriv/api';
+import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage } from './image/image_utility';
 
-export type TSettings = {
-    documentType?: typeof DOCUMENT_TYPE[keyof typeof DOCUMENT_TYPE];
-    pageType?: typeof PAGE_TYPE[keyof typeof PAGE_TYPE];
-    expirationDate?: string;
-    documentId?: string;
-    lifetimeValid?: boolean;
-    document_issuing_country?: string;
-    proof_of_ownership?: {
-        details?: {
-            email: string;
-            payment_identifier: string;
-        };
-        id?: number;
-    };
-};
+export type TSettings = Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload'];
 
-type TFileObject = TSettings & {
+export type TFileObject = TSettings & {
     filename: File['name'];
     buffer: FileReader['result'];
     documentFormat: string;
     file_size: File['size'];
 };
 
-export const truncateFileName = (file: TFile, limit: number) => {
+export const truncateFileName = (file: File, limit: number) => {
     const string_limit_regex = new RegExp(`(.{${limit || 30}})..+`);
     return file?.name?.replace(string_limit_regex, `$1….${getFileExtension(file)}`);
 };
 
-export const getFileExtension = (file: TFile) => {
+export const getFileExtension = (file: Blob) => {
     const f = file?.type?.match(/[^/]+$/);
     return f && f[0];
 };
 
-export const compressImageFiles = (files: TFile[]) => {
+export const compressImageFiles = (files?: File[]) => {
+    if (!files?.length) return Promise.resolve([]);
+
     const promises: Promise<Blob>[] = [];
-    files.forEach(f => {
+    Array.from(files).forEach(file => {
         const promise = new Promise<Blob>(resolve => {
-            if (isImageType(f.type)) {
-                convertToBase64(f).then(img => {
-                    compressImg(img as TImage).then(compressed_img => {
-                        const file_arr = f;
-                        file_arr.file = compressed_img;
-                        resolve(file_arr.file);
-                    });
+            if (isImageType(file.type)) {
+                convertToBase64(file).then(img => {
+                    compressImg(img as TImage).then(resolve);
                 });
             } else {
-                resolve(f);
+                resolve(file);
             }
         });
         promises.push(promise);
@@ -55,22 +40,31 @@ export const compressImageFiles = (files: TFile[]) => {
     return Promise.all(promises);
 };
 
-export const readFiles = (files: TFile[], getFileReadErrorMessage: (t: string) => string, settings: TSettings) => {
-    const promises: Promise<TFileObject | { message: string }>[] = [];
+export const readFiles = (
+    files: Blob[],
+    getFileReadErrorMessage: (t: string) => string,
+    settings?: Partial<TSettings>
+) => {
+    const promises: Array<Promise<Partial<TFileObject> | { message: string }>> = [];
 
     files.forEach(f => {
         const fr = new FileReader();
-        const promise = new Promise<TFileObject | { message: string }>(resolve => {
+        const promise = new Promise<Partial<TFileObject> | { message: string }>(resolve => {
             fr.onload = () => {
-                const file_obj = {
+                const file_metadata = {
                     filename: f.name,
                     buffer: fr.result,
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
-                    ...settings,
-                    documentType: settings?.documentType ?? 'utility_bill',
+                    documentType: settings?.document_type ?? DOCUMENT_TYPES.utility_bill,
+                    documentId: settings?.document_id,
+                    expirationDate: settings?.expiration_date,
+                    lifetimeValid: settings?.lifetime_valid,
+                    pageType: settings?.page_type,
+                    proof_of_ownership: settings?.proof_of_ownership,
+                    document_issuing_country: settings?.document_issuing_country,
                 };
-                resolve(file_obj);
+                resolve(file_metadata);
             };
 
             fr.onerror = () => {
@@ -95,7 +89,7 @@ export const max_document_size = 8388608;
 
 export const supported_filetypes = 'image/png, image/jpeg, image/jpg, image/gif, application/pdf';
 
-export const DOCUMENT_TYPE = {
+export const DOCUMENT_TYPE = Object.freeze({
     amlglobalcheck: 'amlglobalcheck',
     bankstatement: 'bankstatement',
     docverification: 'docverification',
@@ -109,13 +103,13 @@ export const DOCUMENT_TYPE = {
     proofaddress: 'proofaddress',
     proofid: 'proofid',
     utility_bill: 'utility_bill',
-} as const;
+});
 
-export const PAGE_TYPE = {
+export const PAGE_TYPE = Object.freeze({
     back: 'back',
     front: 'front',
     photo: 'photo',
-} as const;
+});
 
 export const getSupportedFiles = (filename: string) =>
     /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|pdf|PDF)$/.test(filename);

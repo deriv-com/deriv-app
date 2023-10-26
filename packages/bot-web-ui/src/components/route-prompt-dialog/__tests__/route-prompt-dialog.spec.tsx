@@ -38,8 +38,8 @@ describe('RoutePromptDialog', () => {
     });
 
     it('should render RoutePromptDialog', () => {
-        const { container } = render(<RoutePromptDialog />, { wrapper });
         mock_DBot_store?.route_prompt_dialog?.setShoudShow(true);
+        const { container } = render(<RoutePromptDialog />, { wrapper });
         expect(container).toBeInTheDocument();
     });
 
@@ -51,7 +51,6 @@ describe('RoutePromptDialog', () => {
 
     it('should confirm and hide RoutePromptDialog on clicking confirm button', () => {
         render(<RoutePromptDialog />, { wrapper });
-        mock_DBot_store?.route_prompt_dialog?.onConfirm();
         const confirm_button_text = screen.getByText("Yes, I'll come back later");
         userEvent.click(confirm_button_text);
         expect(mock_DBot_store?.route_prompt_dialog?.should_show).toBeFalsy();
@@ -59,9 +58,8 @@ describe('RoutePromptDialog', () => {
     });
 
     it('should hide RoutePromptDialog on clicking cancel button', () => {
-        render(<RoutePromptDialog />, { wrapper });
         mock_DBot_store?.route_prompt_dialog?.setShoudShow(true);
-        mock_DBot_store?.route_prompt_dialog?.onCancel();
+        render(<RoutePromptDialog />, { wrapper });
         const cancel_button_text = screen.getByText("No, I'll stay");
         userEvent.click(cancel_button_text);
         expect(mock_DBot_store?.route_prompt_dialog?.should_show).toBeFalsy();

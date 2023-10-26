@@ -1,4 +1,4 @@
-import { OSDetect } from '@deriv/shared';
+import { OSDetect, getPlatformFromUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 
@@ -33,12 +33,16 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
     return market_type;
 };
 
+const { is_staging, is_test_link } = getPlatformFromUrl();
+
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
 const CTRADER_DESKTOP_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
-const CTRADER_URL = 'https://ct.deriv.com/';
+
+const CTRADER_UAT_URL = 'https://ct-uat.deriv.com/';
+const CTRADER_PRODUCTION_URL = 'https://ct.deriv.com/';
 
 const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
 const DERIVEZ_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go/id1550561298';
@@ -53,6 +57,8 @@ const CTRADER_IOS_APP_URL = 'https://apps.apple.com/cy/app/ctrader/id767428811';
 const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.ct';
 
 const getBrokerName = () => 'Deriv.com Limited';
+
+const CTRADER_URL = is_staging || is_test_link ? CTRADER_UAT_URL : CTRADER_PRODUCTION_URL;
 
 const getTopUpConfig = () => {
     return {

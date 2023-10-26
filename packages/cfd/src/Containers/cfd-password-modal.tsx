@@ -906,7 +906,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         }}
                         components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
                     />
-                    {platform === CFD_PLATFORMS.DXTRADE ? (
+                    {platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
                     ) : (
                         <ReviewMessageForMT5

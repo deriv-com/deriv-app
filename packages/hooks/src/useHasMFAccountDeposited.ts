@@ -2,7 +2,7 @@ import { useQuery } from '@deriv/api';
 
 /** A custom hook to check whether the current mf account has deposited based on status in account_status */
 const useHasMFAccountDeposited = () => {
-    const expected_status = ['unwelcome', 'withdrawal_locked', 'cashier_locked'];
+    const expected_status = ['withdrawal_locked', 'cashier_locked'];
 
     /** Check if the status contains one of the expected status
      * @param {string[]} status - status from account_status

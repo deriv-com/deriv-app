@@ -24,6 +24,25 @@
         }
     }
 
+    &__top-left-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    &__details {
+        display: flex;
+        gap: 2.4rem;
+        align-items: center;
+
+        @include mobile {
+            opacity: 1;
+            max-height: 2rem;
+            transition: opacity 0.25s ease, max-height 0.25s ease;
+            gap: 0.8rem;
+        }
+    }
+
     &__top-right-info {
         display: flex;
         gap: 1.6rem;
@@ -34,6 +53,13 @@
         }
     }
 
+    &__currency-icon > :first-child {
+        @include mobile {
+            max-height: 4.8rem;
+            transition: opacity 0.2s ease, max-height 0.2s ease;
+        }
+    }
+
     &__close-icon {
         cursor: pointer;
 
@@ -41,30 +67,6 @@
             path {
                 fill: var(--light-8-primary-background, #fff);
             }
-        }
-    }
-
-    &__top-left-info {
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem;
-    }
-
-    &__details {
-        display: flex;
-        gap: 0.8rem;
-        align-items: center;
-        
-        @include mobile {
-            visibility: visible;
-            transition: visibility 0s, height 0.2s ease;
-            height: 2rem;
-        }
-    }
-
-    &__currency-icon {
-        @include mobile {
-            transition: visibility 0s, height 0.2s ease;
         }
     }
 
@@ -115,9 +117,14 @@
             }
         }
     }
-}
 
-.wallets-hide-details {
-    height: 0;
-    visibility: hidden;
+    &__hide-details {
+        max-height: 0;
+        opacity: 0;
+    }
+
+    &__hide-currency-icon > :first-child {
+        max-height: 0;
+        opacity: 0;
+    }
 }

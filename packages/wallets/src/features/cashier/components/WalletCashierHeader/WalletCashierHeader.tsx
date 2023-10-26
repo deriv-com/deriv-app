@@ -85,7 +85,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                     <div className='wallets-cashier-header__top-left-info'>
                         <div
                             className={classNames('wallets-cashier-header__details', {
-                                'wallets-hide-details': isMobile && hideWalletDetails,
+                                'wallets-cashier-header__hide-details': isMobile && hideWalletDetails,
                             })}
                         >
                             <WalletText
@@ -109,7 +109,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                         {activeWallet?.wallet_currency_type && (
                             <div
                                 className={classNames('wallets-cashier-header__currency-icon', {
-                                    'wallets-hide-details': isMobile && hideWalletDetails,
+                                    'wallets-cashier-header__hide-currency-icon': isMobile && hideWalletDetails,
                                 })}
                             >
                                 <WalletCardIcon size='xl' type={activeWallet?.wallet_currency_type} />

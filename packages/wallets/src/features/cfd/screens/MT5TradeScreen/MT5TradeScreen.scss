@@ -48,11 +48,11 @@
             flex-direction: column;
             gap: 0.2rem;
 
-            & .wallets-mt5-trade-clipboard:first-child {
+            & .wallets-mt5-trade-details-item:first-child {
                 border-radius: 0.7rem 0.7rem 0 0;
             }
 
-            & .wallets-mt5-trade-clipboard:last-child {
+            & .wallets-mt5-trade-details-item:last-child {
                 border-radius: 0 0 0.7rem 0.7rem;
             }
         }

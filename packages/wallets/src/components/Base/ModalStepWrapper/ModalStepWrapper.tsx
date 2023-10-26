@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import CloseIcon from '../../../public/images/close-icon.svg';
 import { useModal } from '../../ModalProvider';
 import { WalletText } from '../WalletText';
-import useDevice from '../../../hooks/useDevice';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
@@ -21,7 +20,6 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     title,
 }) => {
     const { hide } = useModal();
-    const { isMobile } = useDevice();
     const hasRenderFooter = typeof renderFooter === 'function';
 
     return (
@@ -32,11 +30,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         >
             {!shouldHideHeader && (
                 <div className='wallets-modal-step-wrapper__header'>
-                    {title && (
-                        <WalletText size='md' weight='bold'>
-                            {title}
-                        </WalletText>
-                    )}
+                    {title && <WalletText weight='bold'>{title}</WalletText>}
                     <CloseIcon className='wallets-modal-step-wrapper__header-close-icon' onClick={hide} />
                 </div>
             )}

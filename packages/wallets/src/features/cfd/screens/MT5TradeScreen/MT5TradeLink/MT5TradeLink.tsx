@@ -7,24 +7,24 @@ import LinuxIcon from '../../../../../public/images/ic-linux-logo.svg';
 import './MT5TradeLink.scss';
 
 const AppToIconMapper = {
+    linux: <LinuxIcon />,
+    macos: <MacOSIcon />,
     web: <MT5Icon />,
     windows: <WindowsIcon />,
-    macos: <MacOSIcon />,
-    linux: <LinuxIcon />,
 };
 
 const AppToTitleMapper = {
+    linux: 'MetaTrader 5 Linux app',
+    macos: 'MetaTrader 5 MacOS app',
     web: 'MetaTrader 5 web',
     windows: 'MetaTrader 5 Windows app',
-    macos: 'MetaTrader 5 MacOS app',
-    linux: 'MetaTrader 5 Linux app',
 };
 
 const AppToButtonTextMapper = {
+    linux: 'Learn more',
+    macos: 'Download',
     web: 'Open',
     windows: 'Download',
-    macos: 'Download',
-    linux: 'Learn more',
 };
 
 type TMT5TradeLinkProps = {

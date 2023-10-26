@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ModalTradeWrapper } from '../../components';
 import { MT5TradeScreen } from '../../screens';
 

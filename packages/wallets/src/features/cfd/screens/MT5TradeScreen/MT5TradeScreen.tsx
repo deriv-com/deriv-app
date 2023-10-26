@@ -1,7 +1,7 @@
 import React from 'react';
 import { WalletText } from '../../../../components/Base';
 import DerivedMT5Icon from '../../../../public/images/mt5-derived.svg';
-import { MT5TradeClipboard } from './MT5TradeClipboard';
+import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
 import useDevice from '../../../../hooks/useDevice';
 import { MT5TradeLink } from './MT5TradeLink';
@@ -27,10 +27,10 @@ const MT5TradeScreen = () => {
                 </div>
 
                 <div className='wallets-mt5-trade-screen__details-clipboards'>
-                    <MT5TradeClipboard label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
-                    <MT5TradeClipboard label='Server' value='Deriv-Server' />
-                    <MT5TradeClipboard label='Login ID' value='123456789' />
-                    <MT5TradeClipboard label='Password' value='********' variant='password' />
+                    <MT5TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
+                    <MT5TradeDetailsItem label='Server' value='Deriv-Server' />
+                    <MT5TradeDetailsItem label='Login ID' value='123456789' />
+                    <MT5TradeDetailsItem label='Password' value='********' variant='password' />
                 </div>
 
                 <div className='wallets-mt5-trade-screen__details-maintainance'>

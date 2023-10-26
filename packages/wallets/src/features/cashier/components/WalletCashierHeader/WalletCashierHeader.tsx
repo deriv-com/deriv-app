@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletCardIcon } from '../../../../components/WalletCardIcon';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';

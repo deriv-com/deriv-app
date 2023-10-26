@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import DMT5TradeModal from '../dmt5-trade-modal';
 
@@ -79,9 +78,7 @@ describe('<DMT5TradeModal/>', () => {
     const renderComponent = ({ props = mock_props }) => {
         return render(
             <StoreProvider store={store_config}>
-                <APIProvider>
-                    <DMT5TradeModal {...props} />
-                </APIProvider>
+                <DMT5TradeModal {...props} />
             </StoreProvider>
         );
     };

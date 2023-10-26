@@ -2,7 +2,6 @@ import React from 'react';
 import MT5MigrationBackSideContent from '../mt5-migration-back-side-content';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { APIProvider } from '@deriv/api';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import userEvent from '@testing-library/user-event';
@@ -42,11 +41,9 @@ describe('MT5MigrationBackSideContent', () => {
         response_migration_context: ReturnType<typeof useMT5MigrationModalContext>;
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock_store}>
-                    <CFDStoreProvider>{children}</CFDStoreProvider>
-                </StoreProvider>
-            </APIProvider>
+            <StoreProvider store={mock_store}>
+                <CFDStoreProvider>{children}</CFDStoreProvider>
+            </StoreProvider>
         );
         // @ts-expect-error response return value is not required to have all object
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);
@@ -72,11 +69,11 @@ describe('MT5MigrationBackSideContent', () => {
         expect(screen.getAllByText(/your funds will remain in your existing mt5 account\(s\)\./i)).toHaveLength(2);
         expect(
             screen.getByText(
-                /you can continue trading on your existing mt5 account\(s\) until you close all open positions\./i
+                /you can continue to hold your current open positions in your existing mt5 account\(s\)\./i
             )
         ).toBeInTheDocument();
         expect(
-            screen.getAllByText(/new mt5 account\(s\) under the bvi jurisdiction will be created for future trades\./i)
+            screen.getAllByText(/new mt5 account\(s\) under the bvi jurisdiction will be created for new trades\./i)
         ).toHaveLength(2);
         expect(screen.getByText(/if you don\’t have open positions/i)).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
@@ -92,9 +89,7 @@ describe('MT5MigrationBackSideContent', () => {
         response.eligible_account_to_migrate_label = 'vanuatu';
         renderComponent();
         expect(
-            screen.getAllByText(
-                /new mt5 account\(s\) under the vanuatu jurisdiction will be created for future trades\./i
-            )
+            screen.getAllByText(/new mt5 account\(s\) under the vanuatu jurisdiction will be created for new trades\./i)
         ).toHaveLength(2);
         expect(
             screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv vanuatu ltd\’s/i)
@@ -125,7 +120,6 @@ describe('MT5MigrationBackSideContent', () => {
         expect(mock_store.common.setAppstorePlatform).toBeCalled();
         expect(mock_store.modules.cfd.setJurisdictionSelectedShortcode).toBeCalled();
         expect(mock_store.ui.setMT5MigrationModalEnabled).toBeCalled();
-        expect(mock_store.modules.cfd.setAccountType).toBeCalled();
         expect(mock_store.ui.toggleMT5MigrationModal).toBeCalled();
         expect(mock_store.modules.cfd.enableCFDPasswordModal).toBeCalled();
     });

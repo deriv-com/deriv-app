@@ -1,8 +1,8 @@
 import React from 'react';
+import { Formik } from 'formik';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import IDVForm from '../idv-form';
-import { Formik } from 'formik';
 
 jest.mock('Helpers/utils', () => ({
     ...jest.requireActual('Helpers/utils'),
@@ -23,24 +23,6 @@ jest.mock('Helpers/utils', () => ({
         };
         return data[country_code][key];
     }),
-}));
-
-jest.mock('formik', () => ({
-    ...jest.requireActual('formik'),
-    useFormikContext: jest.fn(() => ({
-        values: {
-            document_type: {},
-            document_number: '',
-        },
-        errors: {},
-        touched: {},
-        setFieldValue: jest.fn(),
-        setFieldTouched: jest.fn(),
-        validateForm: jest.fn(),
-        validateField: jest.fn(),
-        handleBlur: jest.fn(),
-        handleChange: jest.fn(),
-    })),
 }));
 
 jest.mock('@deriv/shared', () => ({

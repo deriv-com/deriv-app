@@ -1,4 +1,4 @@
-import React, { ComponentProps, PropsWithChildren, ReactNode } from 'react';
+import React, { ComponentProps, PropsWithChildren, ReactNode, isValidElement } from 'react';
 import classNames from 'classnames';
 import WalletButton from '../Base/WalletButton/WalletButton';
 import WalletText from '../Base/WalletText/WalletText';
@@ -50,9 +50,13 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
                         {title}
                     </WalletText>
                 )}
-                <WalletText align='center' size='md'>
-                    {description}
-                </WalletText>
+                {isValidElement(description) ? (
+                    description
+                ) : (
+                    <WalletText align='center' size='md'>
+                        {description}
+                    </WalletText>
+                )}
             </div>
             {actionText && (
                 <WalletButton

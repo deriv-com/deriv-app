@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import EmailSent from '../../../../../public/images/email-sent.svg';
+import WalletsActionScreen from '../../../../../components/WalletsActionScreen/WalletsActionScreen';
 import './WithdrawalVerificationSent.scss';
 
 type TProps = {
@@ -12,41 +13,32 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
 
     return (
         <div className='wallets-withdrawal-verification-sent'>
-            <div className='wallets-withdrawal-verification-sent-icon'>
-                <EmailSent />
-            </div>
-
-            <div className='wallets-withdrawal-verification-sent__messages'>
-                <p className='wallets-withdrawal-verification-sent__title'>We’ve sent you an email.</p>
-                <p className='wallets-withdrawal-verification-sent__description'>
-                    Please check your email for the verification link to complete the process.
-                </p>
-            </div>
-            {!showResend && (
-                <button
-                    className='wallets-withdrawal-verification-sent__link-button'
-                    onClick={() => setShowResend(!showResend)}
-                >
-                    Didn’t receive the email?
-                </button>
-            )}
-            {showResend && (
-                <div className='wallets-withdrawal-verification-sent__resend'>
-                    <div className='wallets-withdrawal-verification-sent__resend-content'>
-                        <p className='wallets-withdrawal-verification-sent__resend-content__title'>
-                            Didn’t receive the email?
-                        </p>
-                        <p>Check your spam or junk folder. If it’s not there, try resending the email.</p>
+            <WalletsActionScreen
+                actionText={!showResend && 'Didn’t receive the email?'}
+                actionVariant='ghost'
+                description='Please check your email for the verification link to complete the process.'
+                icon={
+                    <div className='wallets-withdrawal-verification-sent__icon'>
+                        <EmailSent />
                     </div>
-                    <button
-                        className='wallets-withdrawal-verification-sent__resend-button'
+                }
+                onAction={() => {
+                    sendEmail();
+                    setShowResend(!showResend);
+                }}
+                title='We’ve sent you an email.'
+            />
+            <div className='wallets-withdrawal-verification-sent__resend'>
+                {showResend && (
+                    <WalletsActionScreen
+                        actionText={`Resend email${counter ? ` in ${counter}s` : ''}`}
+                        description='Check your spam or junk folder. If it’s not there, try resending the email.'
                         disabled={!!counter}
-                        onClick={sendEmail}
-                    >
-                        Resend email{counter ? ` in ${counter}s` : ''}
-                    </button>
-                </div>
-            )}
+                        onAction={sendEmail}
+                        title='Didn’t receive the email?'
+                    />
+                )}
+            </div>
         </div>
     );
 };

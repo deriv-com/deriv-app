@@ -9,6 +9,7 @@ export default class BlockConversion {
         this.workspace = this.createWorkspace();
         this.workspace_variables = {};
         this.has_market_block = false;
+        this.exception_blocks = ['r_100'];
     }
 
     getConversions() {
@@ -400,9 +401,11 @@ export default class BlockConversion {
             return xml;
         }
 
-        const has_illegal_block = this.getIllegalBlocks().some(
-            illegal_block_type => !!xml.querySelector(`block[type="${illegal_block_type}"]`)
-        );
+        const has_illegal_block = this.getIllegalBlocks().some(illegal_block_type => {
+            if (!this.exception_blocks.includes(illegal_block_type)) {
+                return !!xml.querySelector(`block[type="${illegal_block_type}"]`);
+            }
+        });
 
         if (has_illegal_block) {
             if (showIncompatibleStrategyDialog) {

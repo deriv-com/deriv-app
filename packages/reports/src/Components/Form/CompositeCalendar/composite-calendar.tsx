@@ -178,9 +178,9 @@ const CompositeCalendar = observer((props: TCompositeCalendar) => {
             <MobileWrapper>
                 <CompositeCalendarMobile
                     duration_list={list}
-                    {...props}
                     setCurrentFocus={setCurrentFocus}
                     current_focus={current_focus}
+                    {...props}
                 />
             </MobileWrapper>
         </React.Fragment>

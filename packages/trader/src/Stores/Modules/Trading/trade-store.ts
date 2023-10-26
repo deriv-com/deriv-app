@@ -29,6 +29,7 @@ import {
     unsupported_contract_types_list,
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
+    hasBarrier,
 } from '@deriv/shared';
 import { RudderStack } from '@deriv/analytics';
 import type { TEvents } from '@deriv/analytics';
@@ -1630,6 +1631,10 @@ export default class TradeStore extends BaseStore {
 
     get has_alternative_source() {
         return this.is_multiplier && !!this.hovered_contract_type;
+    }
+
+    get has_barrier() {
+        return hasBarrier(this.contract_type);
     }
 
     get is_accumulator() {

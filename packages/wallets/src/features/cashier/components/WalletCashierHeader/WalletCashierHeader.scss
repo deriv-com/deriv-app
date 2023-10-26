@@ -1,3 +1,9 @@
+.wallets-cashier-header-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .wallets-cashier-header {
     width: 100%;
     max-width: 128rem;
@@ -11,7 +17,7 @@
     gap: 1.6rem;
 
     @include mobile {
-        padding-top: 0rem;
+        padding: 0;
         transition: height 0.2s ease-in;
         height: fit-content;
     }

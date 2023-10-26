@@ -31,7 +31,7 @@ const WalletCashierHeader = ({ hideWalletDetails }: { hideWalletDetails: boolean
             theme='light'
             type='header'
         >
-            <div className='wallets-cashier-header__wrapper'>
+            <div className='wallets-cashier-header-wrapper'>
                 <main className='wallets-cashier-header'>
                     <section className='wallets-cashier-header__info'>
                         <div className='wallets-cashier-header__info__top-left'>

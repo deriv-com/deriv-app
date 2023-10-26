@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, Icon, Money, StatusBadge } from '@deriv/components';
-import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
+import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { Text, Icon, Money, StatusBadge } from '@deriv/components';
 import {
     CFD_PLATFORMS,
     getCFDAccountDisplay,
@@ -74,9 +74,7 @@ const DMT5TradeModal = ({
         return 'Financial';
     };
 
-    const { is_flag_present: is_open_order_position_status_present, flag_value: open_order_position_status } =
-        useIsMt5LoginListStatusPresent('open_order_position_status', mt5_trade_account?.login ?? '');
-    const status_text = open_order_position_status ? 'No new positions' : 'Account closed';
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(mt5_trade_account?.status);
 
     return (
         <div className='cfd-trade-modal-container'>
@@ -103,18 +101,12 @@ const DMT5TradeModal = ({
                             />
                         </Text>
                     )}
-                    {is_open_order_position_status_present && (
+                    {mt5_trade_account?.status && (
                         <StatusBadge
-                            className='cfd-trade-modal__acc_status_badge'
-                            account_status='open-order-position'
-                            icon='IcAlertWarning'
-                            text={
-                                <Localize
-                                    i18n_default_text='<0>{{status_text}}</0>'
-                                    values={{ status_text }}
-                                    components={[<Text key={0} weight='bold' size='xxxs' color='warning' />]}
-                                />
-                            }
+                            className='trading-app-card__acc_status_badge'
+                            account_status={mt5_trade_account.status}
+                            icon={badge_icon}
+                            text={badge_text}
                         />
                     )}
                 </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { APIProvider } from '@deriv/api';
-import { useIsMt5LoginListStatusPresent } from '@deriv/hooks';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import DMT5TradeModal from '../dmt5-trade-modal';
 
 jest.mock('@deriv/components', () => ({
@@ -15,18 +15,6 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockTradingPlatformIcon'));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useIsMt5LoginListStatusPresent: jest.fn(() => ({
-        is_flag_present: true,
-        flag_value: true,
-    })),
-}));
-
-const mockUseIsMt5LoginListStatusPresent = useIsMt5LoginListStatusPresent as jest.MockedFunction<
-    typeof useIsMt5LoginListStatusPresent
->;
 
 describe('<DMT5TradeModal/>', () => {
     const mock_props: React.ComponentProps<typeof DMT5TradeModal> = {
@@ -54,7 +42,7 @@ describe('<DMT5TradeModal/>', () => {
                 },
                 id: 'p01_ts03',
             },
-            status: null,
+            status: 'migrated_with_position',
             sub_account_category: '',
             sub_account_type: 'financial',
             webtrader_url: 'https://mt5-dev-real-web.regentmarkets.com/terminal',
@@ -73,40 +61,62 @@ describe('<DMT5TradeModal/>', () => {
         toggleModal: jest.fn(),
     };
 
+    const store_config = mockStore({
+        modules: {
+            cfd: {
+                migrated_mt5_accounts: [
+                    {
+                        loginId: 'MT5YFHU',
+                        to_account: {
+                            synthetic: 'bvi',
+                        },
+                    },
+                ],
+            },
+        },
+    });
+
     const renderComponent = ({ props = mock_props }) => {
         return render(
-            <APIProvider>
-                <DMT5TradeModal {...props} />
-            </APIProvider>
+            <StoreProvider store={store_config}>
+                <APIProvider>
+                    <DMT5TradeModal {...props} />
+                </APIProvider>
+            </StoreProvider>
         );
     };
 
-    it('should render correct status badge if open_order_position_status is present in BE response and the key value is true', () => {
+    it('should render correct status badge if mt5_acc_auth_status value is migrated_with_position', () => {
         renderComponent({ props: mock_props });
 
         const status_badge = screen.getByText(/No new positions/);
         expect(status_badge).toBeInTheDocument();
     });
 
-    it('should render correct status badge if open_order_position_status is present in BE response and the key value is false', () => {
-        mockUseIsMt5LoginListStatusPresent.mockReturnValue({
-            is_flag_present: true,
-            flag_value: false,
-        });
-        renderComponent({ props: mock_props });
+    it('should render correct status badge if mt5_acc_auth_status value is migrated_without_position', () => {
+        const new_mock_props = {
+            ...mock_props,
+            mt5_trade_account: {
+                status: 'migrated_without_position',
+            },
+        };
+        renderComponent({ props: new_mock_props });
 
         const status_badge = screen.getByText(/Account closed/);
         expect(status_badge).toBeInTheDocument();
     });
 
-    it('should not render status badge if open_order_position_status is not present in BE response', () => {
-        mockUseIsMt5LoginListStatusPresent.mockReturnValue({
-            is_flag_present: false,
-            flag_value: undefined,
-        });
-        renderComponent({ props: mock_props });
+    it('should not render status badge if mt5_acc_auth_status value is null', () => {
+        const new_mock_props = {
+            ...mock_props,
+            mt5_trade_account: {
+                status: null,
+            },
+        };
+        renderComponent({ props: new_mock_props });
 
-        const status_badge = screen.queryByText(/No new positions/);
-        expect(status_badge).not.toBeInTheDocument();
+        expect(screen.queryByText(/Pending verification/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/No new positions/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Account closed/)).not.toBeInTheDocument();
     });
 });

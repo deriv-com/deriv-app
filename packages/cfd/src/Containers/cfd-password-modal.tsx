@@ -642,7 +642,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateAccountStatus,
     } = client;
     const { show_eu_related_content } = traders_hub;
-    const { is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled } = ui;
+    const { is_mobile, is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled } = ui;
 
     const {
         account_title,
@@ -934,25 +934,38 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const getMigrationSubmitText = () => {
         const list = migrated_mt5_accounts.map(account => {
-            const [to_account_type] = Object.keys(account);
-            const [to_jurisdiction] = Object.values(account);
+            const to_account = account?.to_account ?? {};
+            const [to_account_type] = Object.keys(to_account);
+            const [to_jurisdiction] = Object.values(to_account);
 
             return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
                 to_account_type
             )} ${getFormattedJurisdictionCode(to_jurisdiction)}`;
         });
+        const text_size = is_mobile ? 'xxs' : 'xs';
 
         return (
-            <Localize
-                i18n_default_text="We've upgraded your MT5 account(s) by moving them to the {{eligible_account_migrate}} jurisdiction. Use your <0>{{migrated_accounts}}</0> new login ID and MT5 password to start trading."
-                values={{
-                    eligible_account_migrate: getFormattedJurisdictionCode(
-                        migrated_mt5_accounts.map(account => Object.values(account))[0]
-                    ),
-                    migrated_accounts: list.join(' and '), // [MT5 Derived Vanuatu and MT5 Financial Vanuatu]
-                }}
-                components={[<strong key={0} />]}
-            />
+            <div className='success-migrated--text-wrapper'>
+                <Text size={text_size} as='p' align='center'>
+                    <Localize
+                        i18n_default_text="We've upgraded your MT5 account(s) by moving them to the {{eligible_account_migrate}} jurisdiction."
+                        values={{
+                            eligible_account_migrate: getFormattedJurisdictionCode(
+                                migrated_mt5_accounts.map(account => Object.values(account?.to_account ?? {})?.[0])?.[0]
+                            ),
+                        }}
+                    />
+                </Text>
+                <Text size={text_size} as='p' align='center'>
+                    <Localize
+                        i18n_default_text='Use your <0>{{migrated_accounts}}</0> new login ID and MT5 password to start trading.'
+                        values={{
+                            migrated_accounts: list.join(' and '), // [MT5 Derived Vanuatu and MT5 Financial Vanuatu]
+                        }}
+                        components={[<strong key={0} />]}
+                    />
+                </Text>
+            </div>
         );
     };
 

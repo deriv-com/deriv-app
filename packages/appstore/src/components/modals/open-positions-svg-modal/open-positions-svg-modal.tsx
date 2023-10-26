@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import {
     CFD_PLATFORMS,
     getCFDPlatformNames,
@@ -8,30 +7,43 @@ import {
     getFormattedJurisdictionMarketTypes,
     Jurisdiction,
     JURISDICTION_MARKET_TYPES,
+    MT5AccountStatus,
 } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
 type TOpenPositionsSVGModal = {
+    loginId: string;
     market_type: string;
-    open_order_position_status: boolean | undefined;
+    status: string;
     is_modal_open: boolean;
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const OpenPositionsSVGModal = ({
+    loginId,
     market_type,
-    open_order_position_status,
+    status,
     is_modal_open,
     setModalOpen,
 }: TOpenPositionsSVGModal) => {
-    const { eligible_account_to_migrate_label } = useMT5SVGEligibleToMigrate();
-    const title = open_order_position_status ? 'No new positions' : 'Account closed';
+    const {
+        modules: { cfd },
+    } = useStore();
+    const { migrated_mt5_accounts } = cfd;
+    const eligible_account = migrated_mt5_accounts.filter(account => {
+        return account.loginId === loginId;
+    });
+    const eligible_account_to_migrate_label = getFormattedJurisdictionCode(
+        Object.values(eligible_account[0]?.to_account ?? {})[0]
+    );
     const account_type =
         market_type === JURISDICTION_MARKET_TYPES.FINANCIAL
             ? getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL)
             : getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.DERIVED);
     const from_account = getFormattedJurisdictionCode(Jurisdiction.SVG);
     const cfd_platform = getCFDPlatformNames(CFD_PLATFORMS.MT5);
+    const is_open_order_position = status === MT5AccountStatus.MIGRATED_WITH_POSITION;
 
     const onClick = () => {
         setModalOpen(false);
@@ -45,10 +57,14 @@ const OpenPositionsSVGModal = ({
         >
             <Modal.Body>
                 <Text as='h1' color='prominent' weight='bold' className='open-positions-svg__modal-title'>
-                    <Localize i18n_default_text='{{title}}' values={{ title }} />
+                    {is_open_order_position ? (
+                        <Localize i18n_default_text='No new positions' />
+                    ) : (
+                        <Localize i18n_default_text='Account closed' />
+                    )}
                 </Text>
                 <Text as='p' color='prominent ' size='xs'>
-                    {open_order_position_status ? (
+                    {is_open_order_position ? (
                         <Localize
                             i18n_default_text='You can no longer open new positions with your {{cfd_platform}} {{account_type}} {{from_account}} account. Please use your {{cfd_platform}} {{account_type}} {{eligible_account_to_migrate_label}} account to open new positions.'
                             values={{ account_type, from_account, eligible_account_to_migrate_label, cfd_platform }}

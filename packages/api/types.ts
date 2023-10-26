@@ -76,7 +76,7 @@ import type {
     LogOutRequest,
     LogOutResponse,
     MT5AccountsListRequest,
-    // MT5AccountsListResponse, TODO: uncomment this once api response for mt5_login_list is updated
+    MT5AccountsListResponse,
     MT5DepositRequest,
     MT5DepositResponse,
     MT5GetSettingRequest,
@@ -1401,7 +1401,7 @@ type TSocketEndpoints = {
     };
     mt5_login_list: {
         request: MT5AccountsListRequest;
-        response: ExtendedMT5AccountsListResponse;
+        response: MT5AccountsListResponse;
     };
     mt5_new_account: {
         request: MT5NewAccountRequest;
@@ -1806,71 +1806,3 @@ export type TSocketPaginateableEndpointNames = KeysMatching<
     TSocketEndpoints,
     { request: { limit?: number; offset?: number } }
 >;
-
-interface ExtendedMT5AccountsListResponse {
-    mt5_login_list?: ExtendedMt5LoginList;
-    echo_req: {
-        [k: string]: unknown;
-    };
-    msg_type: 'mt5_login_list';
-    req_id?: number;
-    [k: string]: unknown;
-}
-
-type ExtendedMt5LoginList = ExtendedDetailsOfEachMT5Loginid[];
-
-type TEligibleToMigrate = {
-    synthetic?: string;
-    financial?: string;
-};
-
-interface ExtendedDetailsOfEachMT5Loginid {
-    account_type?: 'demo' | 'real';
-    balance?: number;
-    country?: string;
-    currency?: string;
-    display_balance?: string;
-    email?: string;
-    error?: {
-        code?: string;
-        details?: {
-            account_type?: string;
-            login?: string;
-            server?: string;
-            server_info?: {
-                environment?: 'Deriv-Demo' | 'Deriv-Server' | 'Deriv-Server-02';
-                geolocation?: {
-                    group?: string;
-                    location?: string;
-                    region?: string;
-                    sequence?: number;
-                };
-                id?: string;
-            };
-        };
-        message_to_client?: string;
-    };
-    group?: string;
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu' | 'seychelles';
-    leverage?: number;
-    login?: string;
-    market_type?: 'financial' | 'synthetic' | 'all';
-    name?: string;
-    server?: string;
-    server_info?: {
-        environment?: 'Deriv-Demo' | 'Deriv-Server' | 'Deriv-Server-02';
-        geolocation?: {
-            group?: string;
-            location?: string;
-            region?: string;
-            sequence?: number;
-        };
-        id?: string;
-    };
-    status?: null | string;
-    sub_account_category?: '' | 'swap_free' | 'swap_free_high_risk' | 'ibt' | 'stp';
-    sub_account_type?: 'standard' | 'financial' | 'financial_stp' | 'swap_free';
-    webtrader_url?: string;
-    eligible_to_migrate?: TEligibleToMigrate;
-    open_order_position_status?: number;
-}

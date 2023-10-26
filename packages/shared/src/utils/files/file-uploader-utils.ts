@@ -56,7 +56,7 @@ export const readFiles = (
                     buffer: fr.result,
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
-                    documentType: settings?.document_type ?? DOCUMENT_TYPES.utility_bill,
+                    documentType: settings?.document_type ?? DOCUMENT_TYPE.utility_bill,
                     documentId: settings?.document_id,
                     expirationDate: settings?.expiration_date,
                     lifetimeValid: settings?.lifetime_valid,

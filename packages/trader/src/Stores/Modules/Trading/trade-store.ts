@@ -18,6 +18,7 @@ import {
     isMarketClosed,
     isMobile,
     isTurbosContract,
+    isVanillaFxContract,
     isVanillaContract,
     pickDefaultSymbol,
     resetEndTimeOnVolatilityIndices,
@@ -442,6 +443,7 @@ export default class TradeStore extends BaseStore {
             is_symbol_in_active_symbols: computed,
             is_synthetics_available: computed,
             is_vanilla: computed,
+            is_vanilla_fx: computed,
             loadActiveSymbols: action.bound,
             logoutListener: action.bound,
             main_barrier_flattened: computed,
@@ -1320,6 +1322,7 @@ export default class TradeStore extends BaseStore {
             // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
             if ((this.is_turbos || this.is_vanilla) && response.error.details?.barrier_choices) {
                 const { barrier_choices, max_stake, min_stake } = response.error.details;
+
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
                 this.setBarrierChoices(barrier_choices as string[]);
                 if (!this.barrier_choices.includes(this.barrier_1)) {
@@ -1643,6 +1646,10 @@ export default class TradeStore extends BaseStore {
 
     get is_vanilla() {
         return isVanillaContract(this.contract_type);
+    }
+
+    get is_vanilla_fx() {
+        return isVanillaFxContract(this.contract_type, this.symbol);
     }
 
     setContractPurchaseToastbox(response: Buy) {

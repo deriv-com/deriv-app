@@ -2605,13 +2605,11 @@ export default class ClientStore extends BaseStore {
     }
 
     getChangeableFields() {
-        const get_settings =
-            Object.keys(this.account_settings).length === 0
-                ? WS.authorized.storage.getSettings()
-                : this.account_settings;
-
-        const readonly_fields = [...get_settings.immutable_fields, ...['immutable_fields', 'email', 'password']];
-        return Object.keys(get_settings).filter(field => !readonly_fields.includes(field));
+        const readonly_fields = [
+            ...(this.account_settings.immutable_fields || []),
+            ...['immutable_fields', 'email', 'password'],
+        ];
+        return Object.keys(this.account_settings).filter(field => !readonly_fields.includes(field));
     }
 
     syncWithLegacyPlatforms(active_loginid, client_accounts) {

@@ -49,6 +49,8 @@ const HOISTED_PACKAGES = {
     '@deriv/deriv-charts': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts'),
 };
 
+const BROWSER_AUTO_OPEN = process.env.BROWSER_AUTO_OPEN !== 'disable';
+
 const ALIASES = {
     _common: path.resolve(__dirname, '../src/_common'),
     App: path.resolve(__dirname, '../src/App'),
@@ -165,6 +167,7 @@ const plugins = ({ base, is_test_env }) => {
 module.exports = {
     IS_RELEASE,
     ALIASES,
+    BROWSER_AUTO_OPEN,
     plugins,
     rules,
     MINIMIZERS,

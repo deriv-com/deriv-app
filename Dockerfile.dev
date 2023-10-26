@@ -1,0 +1,11 @@
+FROM node:18
+
+WORKDIR /usr/src/app
+
+ENV BROWSER_AUTO_OPEN=disable
+
+COPY . .
+
+RUN npm run bootstrap
+
+CMD ["npm", "run", "serve", "core"]

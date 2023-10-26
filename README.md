@@ -80,6 +80,22 @@ Before running or contribute to this project, you need to have the setup of the 
 
 <br />
 
+## Docker Development Environment
+
+You can run a development environment inside a docker container:
+
+### Build the image:
+
+```
+docker build -f Dockerfile.dev -t local/deriv-app .
+```
+
+### Run the image:
+
+```
+docker run -p 8443:8443 local/deriv-app
+```
+
 ## Packages
 
 | Package name   | Docs                                                                                                                | Version                                                                                                                      |

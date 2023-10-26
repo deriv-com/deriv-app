@@ -1,6 +1,6 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletCardIcon } from '../../../../components/WalletCardIcon';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
@@ -35,7 +35,7 @@ const WalletCashierHeader = ({ hideWalletDetails }: { hideWalletDetails: boolean
                     <div className='wallets-cashier-header__info__top-left'>
                         <div
                             className={classNames('wallets-cashier-header__info__top-left__details', {
-                                'wallets-hide-details': isMobile && hideWalletDetails,
+                                'wallets-cashier-header__hide-details': isMobile && hideWalletDetails,
                             })}
                         >
                             <h1 className='wallets-cashier-header__info__top-left__details__title'>
@@ -51,7 +51,7 @@ const WalletCashierHeader = ({ hideWalletDetails }: { hideWalletDetails: boolean
                         {data?.wallet_currency_type && (
                             <div
                                 className={classNames('wallets-cashier-header__info__top-right__icon', {
-                                    'wallets-hide-details': isMobile && hideWalletDetails,
+                                    'wallets-cashier-header__hide-currency-icon': isMobile && hideWalletDetails,
                                 })}
                             >
                                 <WalletCardIcon size='xl' type={data?.wallet_currency_type} />

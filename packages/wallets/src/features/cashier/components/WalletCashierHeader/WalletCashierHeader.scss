@@ -10,7 +10,6 @@
 
     @include mobile {
         padding-top: 0rem;
-        transition: height 0.2s ease-in;
         height: fit-content;
     }
 
@@ -40,9 +39,9 @@
                 align-items: center;
 
                 @include mobile {
-                    visibility: visible;
-                    transition: visibility 0s, height 0.2s ease;
-                    height: 2rem;
+                    opacity: 1;
+                    max-height: 2rem;
+                    transition: opacity 0.25s ease, max-height 0.25s ease;
                     gap: 0.8rem;
                 }
 
@@ -74,9 +73,10 @@
                 gap: 0.8rem;
             }
 
-            &__icon {
+            &__icon > :first-child {
                 @include mobile {
-                    transition: visibility 0s, height 0.2s ease;
+                    max-height: 4.8rem;
+                    transition: opacity 0.2s ease, max-height 0.2s ease;
                 }
             }
         }
@@ -124,9 +124,14 @@
             }
         }
     }
-}
 
-.wallets-hide-details {
-    height: 0;
-    visibility: hidden;
+    &__hide-details {
+        max-height: 0;
+        opacity: 0;
+    }
+
+    &__hide-currency-icon > :first-child {
+        max-height: 0;
+        opacity: 0;
+    }
 }

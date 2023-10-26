@@ -20,11 +20,11 @@ import {
     shouldShowIdentityInformation,
 } from 'Helpers/utils';
 import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
-
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -42,19 +42,15 @@ const PersonalDetails = ({
     is_virtual,
     is_fully_authenticated,
     account_opening_reason_list,
-    selected_step_ref,
     closeRealAccountSignup,
     has_real_account,
     ...props
 }) => {
     const { account_status, account_settings, residence, real_account_signup_target } = props;
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
+    const [no_confirmation_needed, setNoConfirmationNeeded] = React.useState(false);
 
     const PoiNameDobExampleIcon = PoiNameDobExample;
-
-    const isSubmitDisabled = errors => {
-        return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
-    };
 
     const handleCancel = values => {
         const current_step = getCurrentStep() - 1;
@@ -86,10 +82,16 @@ const PersonalDetails = ({
         }
 
         errors.document_number = isDocumentNumberValid(document_number, document_type);
+
+        if (document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && !values.confirmation_checkbox) {
+            errors.confirmation_checkbox = 'error';
+        }
         return removeEmptyPropertiesFromObject(errors);
     };
 
     const handleValidate = values => {
+        setNoConfirmationNeeded(values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id);
+
         let idv_error = {};
         if (is_rendered_for_idv) {
             idv_error = validateIDV(values);
@@ -123,26 +125,32 @@ const PersonalDetails = ({
 
     return (
         <Formik
-            innerRef={selected_step_ref}
             initialValues={{ ...props.value }}
             validate={handleValidate}
             validateOnMount
             enableReinitialize
-            initialStatus={{ is_confirmed: !is_rendered_for_idv }}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, values, status }) => (
+            {({ handleSubmit, isSubmitting, values }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form
+                            noValidate
                             ref={setRef}
                             onSubmit={handleSubmit}
                             autoComplete='off'
                             onClick={closeToolTip}
                             data-testid='personal_details_form'
                         >
+                            <ScrollToFieldWithError
+                                fields_to_scroll_bottom={isMobile() ? '' : ['account_opening_reason']}
+                                fields_to_scroll_top={isMobile() ? ['account_opening_reason'] : ''}
+                                should_recollect_inputs_names={
+                                    values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
+                                }
+                            />
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {!is_rendered_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>
@@ -185,7 +193,7 @@ const PersonalDetails = ({
                                             side_note={<PoiNameDobExampleIcon />}
                                             is_rendered_for_idv={is_rendered_for_idv}
                                             editable_fields={getEditableFields(
-                                                status?.is_confirmed,
+                                                values.confirmation_checkbox,
                                                 values?.document_type?.id
                                             )}
                                             residence_list={residence_list}
@@ -203,9 +211,7 @@ const PersonalDetails = ({
                                                     components={[<strong key={0} />]}
                                                 />
                                             }
-                                            no_confirmation_needed={
-                                                values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
-                                            }
+                                            no_confirmation_needed={no_confirmation_needed}
                                         />
                                     </div>
                                 </ThemedScrollbars>
@@ -214,7 +220,7 @@ const PersonalDetails = ({
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     has_cancel
-                                    is_disabled={!status?.is_confirmed || isSubmitDisabled(errors)}
+                                    is_disabled={isSubmitting}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}

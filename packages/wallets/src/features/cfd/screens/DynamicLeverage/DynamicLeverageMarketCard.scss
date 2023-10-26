@@ -1,7 +1,7 @@
 .wallets-dynamic-leverage-modal {
     &__market {
-        border: 1px solid var(--border-hover, #999999);
-        border-radius: 8px;
+        border: 0.1rem solid var(--border-hover, #999999);
+        border-radius: 0.8rem;
         overflow: hidden;
         background-color: var(--general-hover, #e6e9e9);
         height: 24.8rem;

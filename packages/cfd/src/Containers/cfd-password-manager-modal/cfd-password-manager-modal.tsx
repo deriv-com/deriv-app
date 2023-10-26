@@ -23,9 +23,9 @@ import {
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { FormikErrors } from 'formik';
-import CFDStore from '../Stores/Modules/CFD/cfd-store';
-import TradingPasswordManager from './trading-password-manager';
-import InvestorPasswordManager from './investor-password-manager';
+import CFDStore from '../../Stores/Modules/CFD/cfd-store';
+import TradingPasswordManager from '../trading-password-manager';
+import InvestorPasswordManager from '../investor-password-manager';
 import {
     TCountdownComponent,
     TCFDPasswordReset,
@@ -34,9 +34,9 @@ import {
     TCFDPasswordManagerModal,
     TFormValues,
     TPasswordManagerModalFormValues,
-} from './props.types';
+} from '../props.types';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);

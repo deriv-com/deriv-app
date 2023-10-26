@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render, fireEvent, waitFor, act, cleanup } from '@testing-library/react';
 import CFDPasswordManagerModal from '../cfd-password-manager-modal';
 import { BrowserRouter } from 'react-router-dom';
-import CFDProviders from '../../cfd-providers';
+import CFDProviders from '../../../cfd-providers';
 import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {

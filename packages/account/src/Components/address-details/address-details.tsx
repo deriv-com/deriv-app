@@ -1,15 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {
-    Formik,
-    Field,
-    FormikProps,
-    FormikErrors,
-    FormikHelpers,
-    FormikHandlers,
-    FormikState,
-    FieldProps,
-} from 'formik';
+import { Formik, Field, FormikProps, FormikHelpers, FormikHandlers, FormikState, FieldProps } from 'formik';
 import { StatesList } from '@deriv/api-types';
 import {
     Autocomplete,
@@ -30,6 +21,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 import { FormInputField } from '../forms/form-fields';
+import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export type TAddressDetailFormProps = {
@@ -107,11 +99,6 @@ const AddressDetails = observer(
         const { is_desktop, is_mobile } = ui;
         const { data: states_list, isFetched } = useStatesList(residence);
 
-        const isSubmitDisabled = (errors: FormikErrors<TAddressDetailFormProps> = {}): boolean => {
-            const is_submitting = selected_step_ref?.current?.isSubmitting ?? false;
-            return is_submitting || Object.keys(errors).length > 0;
-        };
-
         const handleCancel = (values: TAddressDetailFormProps) => {
             const current_step = (getCurrentStep?.() || 1) - 1;
             onSave(current_step, values);
@@ -133,16 +120,10 @@ const AddressDetails = observer(
         };
 
         return (
-            <Formik
-                innerRef={selected_step_ref}
-                initialValues={props.value}
-                validate={handleValidate}
-                validateOnMount
-                onSubmit={handleSubmitData}
-            >
+            <Formik initialValues={props.value} validate={handleValidate} validateOnMount onSubmit={handleSubmitData}>
                 {({
                     handleSubmit,
-                    errors,
+                    isSubmitting,
                     values,
                     setFieldValue,
                     handleChange,
@@ -156,12 +137,14 @@ const AddressDetails = observer(
                             setRef: (instance: HTMLFormElement) => void;
                             height: number | string;
                         }) => (
-                            <form ref={setRef} onSubmit={handleSubmit}>
+                            //noValidate here is for skipping default browser validation
+                            <form ref={setRef} onSubmit={handleSubmit} noValidate>
                                 <Div100vhContainer
                                     className='details-form'
                                     height_offset='90px'
                                     is_disabled={is_desktop}
                                 >
+                                    <ScrollToFieldWithError />
                                     {is_eu_user ? (
                                         <div className='details-form__banner-container'>
                                             <InlineNoteWithIcon
@@ -315,7 +298,7 @@ const AddressDetails = observer(
                                 </Div100vhContainer>
                                 <Modal.Footer has_separator is_bypassed={is_mobile}>
                                     <FormSubmitButton
-                                        is_disabled={isSubmitDisabled(errors)}
+                                        is_disabled={isSubmitting}
                                         label={localize('Next')}
                                         is_absolute={is_mobile}
                                         has_cancel

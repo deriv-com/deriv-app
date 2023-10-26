@@ -67,7 +67,7 @@ const SVGMigrationBanner = observer(() => {
                 </Button>
             </div>
             <div className='appstore-banner__svg-migrate-banner-overlay' />
-            <AppstoreBannerImage image={image} className='appstore-banner__image' />
+            <AppstoreBannerImage image={image} class_name='appstore-banner__image' />
         </div>
     );
 });

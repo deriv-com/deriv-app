@@ -4,7 +4,7 @@ import SVGMigrateMobileImage from 'Assets/svgs/banner/svg-migrate-mobile.svg';
 
 export type TBannerImageProps<T> = {
     image: T;
-    className?: string;
+    class_name?: string;
     width?: number;
 };
 
@@ -15,11 +15,11 @@ const AppstoreBannerImageList = {
     svg_migrate_mobile: SVGMigrateMobileImage,
 };
 
-const AppstoreBannerImage = ({ image, className, width }: TBannerImageProps<TAppstoreBannerImageListProps>) => {
-    const Component = AppstoreBannerImageList[image] as React.ElementType;
+const AppstoreBannerImage = ({ image, class_name, width }: TBannerImageProps<TAppstoreBannerImageListProps>) => {
+    const Component = AppstoreBannerImageList[image];
     const data_testid = `dt_${image}`;
 
-    return <Component className={className} style={{ width }} data-testid={data_testid} />;
+    return <Component className={class_name} style={{ width }} data-testid={data_testid} />;
 };
 
 export default AppstoreBannerImage;

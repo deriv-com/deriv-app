@@ -6,39 +6,42 @@ import MacOSIcon from '../../../../../public/images/ic-macos-logo.svg';
 import LinuxIcon from '../../../../../public/images/ic-linux-logo.svg';
 import './MT5TradeLink.scss';
 
-const AppToIconMapper = {
-    linux: <LinuxIcon />,
-    macos: <MacOSIcon />,
-    web: <MT5Icon />,
-    windows: <WindowsIcon />,
-};
-
-const AppToTitleMapper = {
-    linux: 'MetaTrader 5 Linux app',
-    macos: 'MetaTrader 5 MacOS app',
-    web: 'MetaTrader 5 web',
-    windows: 'MetaTrader 5 Windows app',
-};
-
-const AppToButtonTextMapper = {
-    linux: 'Learn more',
-    macos: 'Download',
-    web: 'Open',
-    windows: 'Download',
+const AppToContentMapper = {
+    linux: {
+        icon: <LinuxIcon />,
+        text: 'Learn more',
+        title: 'MetaTrader 5 Linux app',
+    },
+    macos: {
+        icon: <MacOSIcon />,
+        text: 'Download',
+        title: 'MetaTrader 5 MacOS app',
+    },
+    web: {
+        icon: <MT5Icon />,
+        text: 'Open',
+        title: 'MetaTrader 5 web',
+    },
+    windows: {
+        icon: <WindowsIcon />,
+        text: 'Download',
+        title: 'MetaTrader 5 Windows app',
+    },
 };
 
 type TMT5TradeLinkProps = {
-    app: keyof typeof AppToIconMapper;
+    app: keyof typeof AppToContentMapper;
 };
 
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app }) => {
+    const content = AppToContentMapper[app];
     return (
         <div className='wallets-mt5-trade-link'>
             <div className='wallets-mt5-trade-link--left'>
-                <div className='wallets-mt5-trade-link--left-icon'>{AppToIconMapper[app]}</div>
-                <WalletText size='sm'>{AppToTitleMapper[app]}</WalletText>
+                <div className='wallets-mt5-trade-link--left-icon'>{content.icon}</div>
+                <WalletText size='sm'>{content.title}</WalletText>
             </div>
-            <WalletButton size='sm' text={AppToButtonTextMapper[app]} variant='outlined' />
+            <WalletButton size='sm' text={content.text} variant='outlined' />
         </div>
     );
 };

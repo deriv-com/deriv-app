@@ -85,7 +85,7 @@ Before running or contribute to this project, you need to have the setup of the 
 You can run a development environment inside a docker container:
 
 ```
-docker run -p 8443:8443 ghcr.io/binary-com/deriv-app:master
+docker run -it -p 8443:8443 ghcr.io/binary-com/deriv-app:master
 ```
 
 ### Build the image:
@@ -97,7 +97,7 @@ docker build -f Dockerfile.dev -t local/deriv-app .
 ### Run the image:
 
 ```
-docker run -p 8443:8443 local/deriv-app
+docker run -it -p 8443:8443 local/deriv-app
 ```
 
 ## Packages

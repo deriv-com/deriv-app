@@ -34,7 +34,11 @@ const WalletCashierHeader = ({ hideWalletDetails }: { hideWalletDetails: boolean
                 <main className='wallets-cashier-header'>
                     <section className='wallets-cashier-header__info'>
                         <div className='wallets-cashier-header__info__top-left'>
-                            <div className='wallets-cashier-header__info__top-left__details'>
+                            <div
+                                className={`wallets-cashier-header__info__top-left__details ${
+                                    hideWalletDetails ? 'wallets-hide-details' : ''
+                                }`}
+                            >
                                 <WalletText>{data?.currency} Wallet</WalletText>
                                 {data?.landing_company_name && (
                                     <WalletListCardBadge isDemo={data?.is_virtual} label={data?.landing_company_name} />
@@ -47,7 +51,13 @@ const WalletCashierHeader = ({ hideWalletDetails }: { hideWalletDetails: boolean
                         </div>
                         <div className='wallets-cashier-header__info__top-right'>
                             {data?.wallet_currency_type && (
-                                <WalletCardIcon size='xl' type={data?.wallet_currency_type} />
+                                <div
+                                    className={`wallets-cashier-header__info__top-right__icon ${
+                                        hideWalletDetails ? 'wallets-hide-details' : ''
+                                    }`}
+                                >
+                                    <WalletCardIcon size='xl' type={data?.wallet_currency_type} />
+                                </div>
                             )}
                             <button
                                 className='wallets-cashier-header__close-button'

@@ -1,83 +1,71 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
-import { getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/constants';
+import { optionsAndMultipliersContent } from '../../constants/constants';
+import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
-import IcAppstoreBinaryBot from '../../public/images/ic-appstore-binary-bot.svg';
-import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
-import IcAppstoreDerivGo from '../../public/images/ic-appstore-deriv-go.svg';
-import IcAppstoreDerivTrader from '../../public/images/ic-appstore-deriv-trader.svg';
-import IcAppstoreSmartTrader from '../../public/images/ic-appstore-smart-trader.svg';
 import { WalletButton, WalletText } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
 import { TradingAccountCard } from '../TradingAccountCard';
 import './OptionsAndMultipliersListing.scss';
 
-const optionsAndMultipliers = [
-    {
-        description: 'Options and multipliers trading platform.',
-        icon: <IcAppstoreDerivTrader />,
-        redirect: '/',
-        title: 'Deriv Trader',
-    },
-    {
-        description: 'Automate your trading, no coding needed.',
-        icon: <IcAppstoreDerivBot />,
-        redirect: '/bot',
-        title: 'Deriv Bot',
-    },
-    {
-        description: 'Our legacy options trading platform.',
-        icon: <IcAppstoreSmartTrader />,
-        isExternal: true,
-        redirect: getUrlSmartTrader(),
-        title: 'SmartTrader',
-    },
-    {
-        description: 'Our legacy automated trading platform.',
-        icon: <IcAppstoreBinaryBot />,
-        isExternal: true,
-        redirect: getUrlBinaryBot(),
-        title: 'Binary Bot',
-    },
-    {
-        description: 'Trade on the go with our mobile app.',
-        icon: <IcAppstoreDerivGo />,
-        redirect: '',
-        title: 'Deriv GO',
-    },
-];
-type TShowOpenButtonProps = {
-    isExternal?: boolean;
-    redirect: string;
+type TShowButtonProps = Pick<typeof optionsAndMultipliersContent[number], 'isExternal' | 'redirect'>;
+
+type TLinkTitleProps = Pick<typeof optionsAndMultipliersContent[number], 'icon' | 'title'>;
+
+const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
+    const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        event.persist();
+        switch (title) {
+            case 'Deriv Trader':
+                window.open(getStaticUrl(`/dtrader`));
+                break;
+            case 'Deriv Bot':
+                window.open(getStaticUrl(`/dbot`));
+                break;
+            case 'SmartTrader':
+                window.open(getUrlSmartTrader());
+                break;
+            case 'Binary Bot':
+                window.open(getUrlBinaryBot());
+                break;
+            case 'Deriv GO':
+                window.open(getStaticUrl('/deriv-go'));
+                break;
+            default:
+                break;
+        }
+    };
+
+    return (
+        <div className='wallets-options-and-multipliers-listing__content__icon' onClick={handleClick}>
+            {icon}
+        </div>
+    );
+};
+
+const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
+    const history = useHistory();
+    const { data } = useActiveWalletAccount();
+    if (data?.dtrade_loginid) {
+        return (
+            <WalletButton
+                onClick={() => {
+                    if (isExternal) {
+                        window.open(redirect, '_blank');
+                    } else {
+                        history.push(redirect);
+                    }
+                }}
+                text='Open'
+            />
+        );
+    }
+    return null;
 };
 
 const OptionsAndMultipliersListing: React.FC = () => {
-    const history = useHistory();
     const { isMobile } = useDevice();
-    const { data } = useActiveWalletAccount();
-
-    const openExternalLink = (url: string) => {
-        window.open(url, '_blank');
-    };
-
-    const ShowOpenButton = ({ isExternal, redirect }: TShowOpenButtonProps) => {
-        if (data?.dtrade_loginid) {
-            return (
-                <WalletButton
-                    onClick={() => {
-                        if (isExternal) {
-                            openExternalLink(redirect);
-                        } else {
-                            history.push(redirect);
-                        }
-                    }}
-                    text='Open'
-                />
-            );
-        }
-        return null;
-    };
 
     return (
         <div className='wallets-options-and-multipliers-listing'>
@@ -117,24 +105,27 @@ const OptionsAndMultipliersListing: React.FC = () => {
                 <DerivAppsSection />
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
-                {optionsAndMultipliers.map(account => (
-                    <TradingAccountCard
-                        {...account}
-                        key={`trading-account-card-${account.title}`}
-                        leading={() => (
-                            <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
-                        )}
-                        trailing={() => <ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />}
-                    >
-                        <div className='wallets-options-and-multipliers-listing__content__details'>
-                            <WalletText size='sm' weight='bold'>
-                                {account.title}
-                            </WalletText>
+                {optionsAndMultipliersContent.map(account => {
+                    const title = account.title;
+                    return (
+                        <TradingAccountCard
+                            {...account}
+                            key={`trading-account-card-${account.title}`}
+                            leading={() => <LinkTitle icon={account.icon} title={title} />}
+                            trailing={() => (
+                                <ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />
+                            )}
+                        >
+                            <div className='wallets-options-and-multipliers-listing__content__details'>
+                                <WalletText size='sm' weight='bold'>
+                                    {account.title}
+                                </WalletText>
 
-                            <WalletText size='xs'>{account.description}</WalletText>
-                        </div>
-                    </TradingAccountCard>
-                ))}
+                                <WalletText size='xs'>{account.description}</WalletText>
+                            </div>
+                        </TradingAccountCard>
+                    );
+                })}
             </div>
         </div>
     );

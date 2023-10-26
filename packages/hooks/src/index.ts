@@ -64,3 +64,4 @@ export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT
 export { default as useCFDCanGetMoreMT5Accounts } from './useCFDCanGetMoreMT5Accounts';
 export { default as useNotificationEvent } from './useNotificationEvent';
 export { default as useServiceToken } from './useServiceToken';
+export { default as useFileUploader } from './useFileUploader';

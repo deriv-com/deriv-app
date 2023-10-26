@@ -19,10 +19,9 @@ import { Localize, localize } from '@deriv/translations';
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
 import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
 import FormBodySection from '../form-body-section';
+import { DateOfBirthField, FormInputField } from './form-fields';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
-import ConfirmationCheckbox from './confirmation-checkbox';
-import { DateOfBirthField, FormInputField } from './form-fields';
 
 const PersonalDetailsForm = props => {
     const {
@@ -54,8 +53,7 @@ const PersonalDetailsForm = props => {
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
 
-    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched, setStatus, status } =
-        useFormikContext();
+    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
     React.useEffect(() => {
         if (should_close_tooltip) {
@@ -63,12 +61,6 @@ const PersonalDetailsForm = props => {
             setShouldCloseTooltip(false);
         }
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
-
-    React.useEffect(() => {
-        if (no_confirmation_needed && typeof status === 'object' && !status.is_confirmed) {
-            setStatus({ ...status, is_confirmed: true });
-        }
-    }, [no_confirmation_needed, setStatus, status]);
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_rendered_for_idv;
@@ -201,6 +193,7 @@ const PersonalDetailsForm = props => {
                                             disabled={
                                                 !!values.salutation && isFieldImmutable('salutation', editable_fields)
                                             }
+                                            has_error={!!(touched.salutation && errors.salutation)}
                                         />
                                     ))}
                                 </RadioGroup>
@@ -524,6 +517,9 @@ const PersonalDetailsForm = props => {
                                         )}
                                         withTabIndex={0}
                                         data-testid='tax_identification_confirm'
+                                        has_error={
+                                            !!(touched.tax_identification_confirm && errors.tax_identification_confirm)
+                                        }
                                     />
                                 )}
                             </React.Fragment>
@@ -542,11 +538,17 @@ const PersonalDetailsForm = props => {
                     </fieldset>
                 </FormBodySection>
                 {!no_confirmation_needed && is_rendered_for_idv && (
-                    <ConfirmationCheckbox
-                        disabled={is_confirmation_checkbox_disabled}
+                    <Checkbox
+                        name='confirmation_checkbox'
+                        className='formik__confirmation-checkbox'
+                        value={values.confirmation_checkbox}
                         label={
                             <Localize i18n_default_text='I confirm that the name and date of birth above match my chosen identity document' />
                         }
+                        label_font_size={isMobile() ? 'xxs' : 'xs'}
+                        disabled={is_confirmation_checkbox_disabled}
+                        onChange={handleChange}
+                        has_error={!!(touched.confirmation_checkbox && errors.confirmation_checkbox)}
                     />
                 )}
             </div>

@@ -46,7 +46,7 @@ type TIDVDocumentSubmitProps = {
     getChangeableFields: () => Array<string>;
 };
 
-type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm;
+type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm & { confirmation_checkbox: boolean };
 
 const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_country }: TIDVDocumentSubmitProps) => {
     const {
@@ -74,6 +74,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
             example_format: '',
         },
         document_number: '',
+        confirmation_checkbox: false,
         ...form_initial_values,
     };
 
@@ -98,6 +99,10 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
         }
         if (values.last_name) {
             errors.last_name = validateName(values.last_name);
+        }
+
+        if (!values.confirmation_checkbox) {
+            errors.confirmation_checkbox = 'error';
         }
 
         return removeEmptyPropertiesFromObject(errors);
@@ -190,7 +195,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
                             })}
                             is_rendered_for_idv
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={status?.is_confirmed ? [] : changeable_fields}
+                            editable_fields={values.confirmation_checkbox ? [] : changeable_fields}
                             side_note={side_note_image}
                             inline_note_text={
                                 <Localize
@@ -210,7 +215,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
                             className='proof-of-identity__submit-button'
                             type='submit'
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
+                            is_disabled={!dirty || isSubmitting || !isValid}
                             text={localize('Verify')}
                             large
                             primary

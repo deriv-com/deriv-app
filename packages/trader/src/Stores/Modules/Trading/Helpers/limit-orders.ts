@@ -2,11 +2,10 @@ import { isMultiplierContract, BARRIER_COLORS, BARRIER_LINE_STYLES } from '@deri
 import { ChartBarrierStore } from '../../SmartChart/chart-barrier-store';
 import { removeBarrier } from '../../SmartChart/Helpers/barriers';
 import { useStore } from '@deriv/stores';
+import { getProposalInfo } from './proposal';
 
-const isLimitOrderBarrierSupported = (
-    contract_type: string,
-    contract_info: ReturnType<typeof useStore>['portfolio']['all_positions'][0]['contract_info']
-) => isMultiplierContract(contract_type) && contract_info.limit_order;
+const isLimitOrderBarrierSupported = (contract_type: string, contract_info: ReturnType<typeof getProposalInfo>) =>
+    isMultiplierContract(contract_type) && contract_info.limit_order;
 
 export const LIMIT_ORDER_TYPES = {
     STOP_OUT: 'stop_out',
@@ -18,14 +17,14 @@ type TBarrier = ChartBarrierStore & { key?: string };
 
 type TSetLimitOrderBarriers = {
     barriers: TBarrier[];
-    contract_type: string;
-    contract_info: Parameters<typeof isLimitOrderBarrierSupported>[1];
+    contract_type?: string;
+    contract_info?: ReturnType<typeof getProposalInfo>;
     is_over: boolean;
 };
 export const setLimitOrderBarriers = ({
     barriers,
-    contract_type,
-    contract_info = {},
+    contract_type = '',
+    contract_info = {} as ReturnType<typeof getProposalInfo>,
     is_over,
 }: TSetLimitOrderBarriers) => {
     if (is_over && isLimitOrderBarrierSupported(contract_type, contract_info)) {
@@ -53,7 +52,6 @@ export const setLimitOrderBarriers = ({
 
                 barrier.onChange({
                     high: obj_limit_order.value,
-                    low: undefined, //TODO: wait until ChartBarrierStore is ts migrated and 'low' can be an optional parameter
                 });
             } else {
                 const obj_barrier = {
@@ -87,7 +85,7 @@ export const setLimitOrderBarriers = ({
  */
 export const getLimitOrder = (
     contract_update: Pick<
-        ReturnType<typeof useStore>['contract_trade'],
+        ReturnType<typeof useStore>['contract_trade']['contracts'][number],
         | 'has_contract_update_stop_loss'
         | 'has_contract_update_take_profit'
         | 'contract_update_stop_loss'

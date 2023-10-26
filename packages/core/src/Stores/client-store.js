@@ -53,7 +53,6 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
-    ctrader_available_accounts = [];
     derivez_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
@@ -84,6 +83,7 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
+    is_beta_chart = false;
 
     // All possible landing companies of user between all
     standpoint = {
@@ -167,7 +167,6 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
-            ctrader_available_accounts: observable,
             derivez_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
@@ -384,7 +383,6 @@ export default class ClientStore extends BaseStore {
             responseTradingPlatformAvailableAccounts: action.bound,
             responseDerivezAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
-            responseCTraderAvailableAccounts: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
             syncWithLegacyPlatforms: action.bound,
@@ -406,6 +404,8 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
+            is_beta_chart: observable,
+            setIsBetaChart: action.bound,
         });
 
         reaction(
@@ -439,6 +439,8 @@ export default class ClientStore extends BaseStore {
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
             () => this.root_store.ui.closeRealAccountSignup()
         );
+
+        this.setIsBetaChart();
     }
 
     get balance() {
@@ -695,7 +697,7 @@ export default class ClientStore extends BaseStore {
         if (Object.keys(this.currencies_list).length > 0) {
             const keys = Object.keys(this.currencies_list);
             // Fix for edge case when logging out from crypto accounts causes Fiat list to be empty
-            if (this.currencies_list[localize('Fiat')].length < 1) return 'USD';
+            if (this.currencies_list[localize('Fiat')]?.length < 1) return 'USD';
             return Object.values(this.currencies_list[`${keys[0]}`])[0].text;
         }
 
@@ -867,7 +869,7 @@ export default class ClientStore extends BaseStore {
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
         const is_current_mf = this.landing_company_shortcode === 'maltainvest';
         return (
-            is_current_mf || //is_currently logged in mf account via trdaershub
+            is_current_mf || //is_currently logged in mf account via tradershub
             (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
                 ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
                   eu_shortcode_regex.test(gaming_shortcode)
@@ -1321,6 +1323,25 @@ export default class ClientStore extends BaseStore {
         this.website_status = response.website_status;
         this.responseWebsiteStatus(response);
         setCurrencies(this.website_status);
+
+        // TODO: remove the below lines after full smartcharts v2 launch.
+        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+            ? deriv_urls.DERIV_HOST_NAME
+            : window.location.hostname;
+        const { clients_country } = this.website_status;
+
+        const options = {
+            domain,
+            expires: 7,
+        };
+
+        try {
+            const cookie = Cookies.get('website_status') ? JSON.parse(Cookies.get('website_status')) : {};
+            cookie.clients_country = clients_country;
+            Cookies.set('website_status', cookie, options);
+        } catch (e) {
+            Cookies.set('website_status', { clients_country }, options);
+        }
     }
 
     async accountRealReaction(response) {
@@ -1709,7 +1730,6 @@ export default class ClientStore extends BaseStore {
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
-            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER).then(this.responseCTraderAvailableAccounts);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseDerivezAvailableAccounts);
@@ -1949,7 +1969,7 @@ export default class ClientStore extends BaseStore {
         // if real to virtual --> switch to blue
         // if virtual to real --> switch to green
         // else keep the existing connection
-        const should_switch_socket_connection = this.is_virtual || /VRTC/.test(from_login_id);
+        const should_switch_socket_connection = this.is_virtual || /VRTC|VRW/.test(from_login_id);
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection();
@@ -2539,12 +2559,6 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    responseCTraderAvailableAccounts(response) {
-        if (!response.error) {
-            this.ctrader_available_accounts = response.trading_platform_available_accounts;
-        }
-    }
-
     responseDerivezAvailableAccounts(response) {
         if (!response.error) {
             this.derivez_available_accounts = response.trading_platform_accounts;
@@ -2596,7 +2610,10 @@ export default class ClientStore extends BaseStore {
                 ? WS.authorized.storage.getSettings()
                 : this.account_settings;
 
-        const readonly_fields = [...get_settings.immutable_fields, ...['immutable_fields', 'email', 'password']];
+        // the response from get_settings is not yet received and immutable_fields is undefined
+        const immutable_fields = get_settings?.immutable_fields || [];
+
+        const readonly_fields = [...immutable_fields, ...['immutable_fields', 'email', 'password']];
         return Object.keys(get_settings).filter(field => !readonly_fields.includes(field));
     }
 
@@ -2765,5 +2782,22 @@ export default class ClientStore extends BaseStore {
 
         return is_p2p_visible;
     }
+
+    setIsBetaChart = () => {
+        const website_status = Cookies.get('website_status');
+        if (!website_status) return;
+
+        try {
+            const cookie_value = JSON.parse(website_status);
+
+            if (cookie_value && cookie_value.clients_country) {
+                const client_country = cookie_value.clients_country;
+                /// Show beta chart only for these countries
+                this.is_beta_chart = ['ke', 'in', 'pk'].includes(client_country);
+            }
+        } catch {
+            this.is_beta_chart = false;
+        }
+    };
 }
 /* eslint-enable */

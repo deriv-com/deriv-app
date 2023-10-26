@@ -39,7 +39,7 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
             case 'dxtrade':
                 return 'https://onelink.to/grmtyx';
             case 'ctrader':
-                return 'https://onelink.to/yvk2a5';
+                return 'https://onelink.to/hyqpv7';
             default:
                 return 'https://onelink.to/grmtyx';
         }
@@ -54,8 +54,8 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
             />
             <Text align='center' size='xxs'>
                 <Localize
-                    i18n_default_text='Scan the QR code to download {{Deriv}} {{ platform }}.'
-                    values={{ platform: platformsText(acc_type), Deriv: acc_type !== 'ctrader' ? 'Deriv' : '' }}
+                    i18n_default_text='Scan the QR code to download Deriv {{ platform }}.'
+                    values={{ platform: platformsText(acc_type) }}
                 />
             </Text>
         </React.Fragment>

@@ -16,7 +16,7 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
             <WalletsActionScreen
                 actionText={!showResend && 'Didn’t receive the email?'}
                 actionVariant='ghost'
-                description={'Please check your email for the verification link to complete the process.'}
+                description='Please check your email for the verification link to complete the process.'
                 icon={
                     <div className='wallets-withdrawal-verification-sent__icon'>
                         <EmailSent />

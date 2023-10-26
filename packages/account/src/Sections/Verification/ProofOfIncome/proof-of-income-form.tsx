@@ -94,9 +94,17 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
     };
 
     const files_descriptions = [
-        <Localize key={1} i18n_default_text='The document must be up-to-date and signed by the issuance authority.' />,
-        <Localize key={2} i18n_default_text='The document must contain a letterhead.' />,
-        <Localize key={3} i18n_default_text='Invalid or incomplete documents shall be rejected.' />,
+        {
+            key: 'signed_document',
+            value: (
+                <Localize i18n_default_text='The document must be up-to-date and signed by the issuance authority.' />
+            ),
+        },
+        { key: 'contains_letterhead', value: <Localize i18n_default_text='The document must contain a letterhead.' /> },
+        {
+            key: 'invalid_rejected',
+            value: <Localize i18n_default_text='Invalid or incomplete documents shall be rejected.' />,
+        },
     ];
     const files_descriptions_title = (
         <Localize i18n_default_text='The document must be recent and include your name and address:' />
@@ -186,7 +194,6 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                                 files_description={
                                     <FilesDescription
                                         descriptions={files_descriptions}
-                                        is_mobile={is_mobile}
                                         title={files_descriptions_title}
                                     />
                                 }

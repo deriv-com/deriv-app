@@ -34,6 +34,8 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         duration: '1',
         unit: String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
         action: 'RUN',
+        max_stake: 10,
+        set_max_stake: false,
     };
 
     React.useEffect(() => {

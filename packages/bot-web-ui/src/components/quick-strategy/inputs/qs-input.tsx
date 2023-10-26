@@ -1,20 +1,37 @@
 import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-
 import { Input, Popover } from '@deriv/components';
+import { TFormData } from '../types';
 
 type TQSInput = {
     name: string;
     type?: string;
     fullwidth?: boolean;
     attached?: boolean;
+    should_have?: { key: string; value: string | number | boolean }[];
 };
 
-const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attached = false, name }) => {
+const QSInput: React.FC<TQSInput> = ({
+    type = 'text',
+    fullwidth = false,
+    attached = false,
+    name,
+    should_have = [],
+}) => {
     const [has_focus, setFocus] = React.useState(false);
-    const { setFieldValue, setFieldTouched } = useFormikContext();
+    const [is_disabled, setDisabled] = React.useState(false);
+    const { setFieldValue, setFieldTouched, values } = useFormikContext<TFormData>();
     const is_number = type === 'number';
+
+    React.useEffect(() => {
+        should_have?.every((item: { key: string; value: string | number | boolean }) => {
+            return values[item.key as keyof TFormData] === item.value;
+        })
+            ? setDisabled(false)
+            : setDisabled(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [values]);
 
     const handleChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
         e?.preventDefault();
@@ -56,6 +73,7 @@ const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attache
                                                     const value = Number(field.value) - 1;
                                                     handleChange(e, String(value % 1 ? value.toFixed(2) : value));
                                                 }}
+                                                disabled={is_disabled}
                                             >
                                                 -
                                             </button>
@@ -69,11 +87,13 @@ const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attache
                                                     const value = Number(field.value) + 1;
                                                     handleChange(e, String(value % 1 ? value.toFixed(2) : value));
                                                 }}
+                                                disabled={is_disabled}
                                             >
                                                 +
                                             </button>
                                         )
                                     }
+                                    disabled={is_disabled}
                                     {...field}
                                 />
                             </Popover>

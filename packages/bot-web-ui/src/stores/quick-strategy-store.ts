@@ -82,11 +82,17 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
         const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
+
         const modifyValueInputs = (key: string, value: number) => {
             const el_value_inputs = strategy_dom?.querySelectorAll(`value[strategy_value="${key}"]`);
-
             el_value_inputs?.forEach((el_value_input: HTMLElement) => {
-                el_value_input.innerHTML = `<shadow type="math_number"><field name="NUM">${value}</field></shadow>`;
+                if (key.includes('boolean'))
+                    if (value)
+                        el_value_input.innerHTML = `<block type="logic_boolean"><field name="BOOL">TRUE</field></block>`;
+                    else
+                        el_value_input.innerHTML = `<block type="logic_boolean"><field name="BOOL">FALSE</field></block>`;
+                else
+                    el_value_input.innerHTML = `<shadow type="math_number"><field name="NUM">${value}</field></shadow>`;
             });
         };
 
@@ -136,7 +142,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
 
         await load({
             block_string: Blockly.Xml.domToText(strategy_dom),
-            file_name: selected_strategy.name,
+            file_name: selected_strategy.label,
             workspace,
             from: save_types.UNSAVED,
             drop_event: null,

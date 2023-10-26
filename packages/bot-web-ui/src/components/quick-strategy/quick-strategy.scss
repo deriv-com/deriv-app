@@ -275,7 +275,6 @@
             &__leading-icon {
                 top: 1.6rem;
                 left: 1.6rem;
-
                 .dc-icon {
                     margin-right: 0.6rem;
 
@@ -350,6 +349,10 @@
                 &:hover {
                     background-color: var(--state-hover);
                 }
+                &:disabled {
+                    opacity: 0.32;
+                    pointer-events: none;
+                }
             }
 
             &__trailing-icon {
@@ -361,6 +364,10 @@
                 }
                 &:hover {
                     background-color: var(--state-hover);
+                }
+                &:disabled {
+                    opacity: 0.32;
+                    pointer-events: none;
                 }
             }
 

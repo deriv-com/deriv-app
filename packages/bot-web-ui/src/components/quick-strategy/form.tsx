@@ -8,6 +8,7 @@ import { useFormikContext } from 'formik';
 import TradeTypeSelect from './selects/trade-type';
 import DurationTypeSelect from './selects/duration-type';
 import QSInput from './inputs/qs-input';
+import QSCheckbox from './inputs/qs-checkbox';
 import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
 import { TConfigItem, TFormData } from './types';
@@ -57,7 +58,7 @@ const QuickStrategyForm = observer(() => {
                                         key={key}
                                         type='number'
                                         attached={field.attached}
-                                        name={field.name}
+                                        name={field.name as string}
                                     />
                                 );
                             case 'label':
@@ -71,8 +72,8 @@ const QuickStrategyForm = observer(() => {
                                 return (
                                     <TradeTypeSelect
                                         key={key}
-                                        symbol={values?.symbol || ''}
-                                        selected={values?.tradetype || ''}
+                                        symbol={(values?.symbol as string) || ''}
+                                        selected={(values?.tradetype as string) || ''}
                                         fullWidth
                                     />
                                 );
@@ -81,10 +82,20 @@ const QuickStrategyForm = observer(() => {
                                     <DurationTypeSelect
                                         key={key}
                                         data={{
-                                            symbol: values?.symbol || '',
-                                            tradetype: values?.tradetype || '',
+                                            symbol: (values?.symbol as string) || '',
+                                            tradetype: (values?.tradetype as string) || '',
                                         }}
                                         attached={field.attached}
+                                    />
+                                );
+                            case 'checkbox':
+                                return (
+                                    <QSCheckbox
+                                        {...field}
+                                        key={key}
+                                        attached={field.attached}
+                                        name={field.name as string}
+                                        label={field.label as string}
                                     />
                                 );
                             default:

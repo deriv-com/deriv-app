@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
+import { VANILLALONG, TURBOS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import AccumulatorTradeDescription from './Description/accumulator-trade-description';
 import AsianTradeDescription from './Description/asian-trade-description';
@@ -21,7 +22,6 @@ import TurbosTradeDescription from './Description/turbos-trade-description';
 import TouchTradeDescription from './Description/touch-trade-description';
 import TickHighLowTradeDescription from './Description/tick-high-low-trade-description';
 import VanillaTradeDescription from './Description/vanilla-trade-description';
-import { VANILLALONG, TURBOS } from '@deriv/shared';
 
 const TradeCategories = ({
     category,

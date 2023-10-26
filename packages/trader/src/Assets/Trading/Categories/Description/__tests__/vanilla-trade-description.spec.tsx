@@ -24,8 +24,8 @@ describe('<VanillaTradeDescription />', () => {
     it('should call a function if word from vocabulary was clicked', () => {
         render(<VanillaTradeDescription {...mocked_props} />);
 
-        const vocabulary_word = screen.getByText(/payout per point/i);
-        userEvent.click(vocabulary_word);
+        const glossary_word = screen.getByText(/payout per point/i);
+        userEvent.click(glossary_word);
 
         expect(mocked_props.onClick).toBeCalled();
     });

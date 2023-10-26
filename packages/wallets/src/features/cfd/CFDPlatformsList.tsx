@@ -25,10 +25,9 @@ const CFDPlatformsList = () => {
                         Trade with leverage and tight spreads for better returns on trades.{' '}
                         <a
                             className='wallets-cfd-list__header-description__link'
-                            // href='https://deriv.com/trade-types/cfds/'
-                            // rel='noopener noreferrer'
-                            // target='_blank'
-                            onClick={() => show(<MT5TradeModal />)}
+                            href='https://deriv.com/trade-types/cfds/'
+                            rel='noopener noreferrer'
+                            target='_blank'
                         >
                             Learn more
                         </a>

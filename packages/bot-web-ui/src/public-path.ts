@@ -1,5 +1,3 @@
-import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
-
 const getUrlBase = (path = '') => {
     const l = window.location;
 
@@ -38,4 +36,3 @@ const initSurvicate = () => {
 export { initSurvicate, initSurvicateCalled };
 
 setBotPublicPath(getUrlBase('/'));
-setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));

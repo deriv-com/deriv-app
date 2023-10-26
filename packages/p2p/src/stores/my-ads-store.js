@@ -534,7 +534,6 @@ export default class MyAdsStore extends BaseStore {
         this.is_table_loading = is_table_loading;
     }
 
-
     setMaximumOrderAmount(maximum_order_amount) {
         this.maximum_order_amount = maximum_order_amount;
     }

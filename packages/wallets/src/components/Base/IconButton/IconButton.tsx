@@ -4,7 +4,7 @@ import { TGenericSizes } from '../types';
 import './IconButton.scss';
 
 interface IconButtonProps {
-    color?: CSSProperties['color'] | 'primary' | 'transparent';
+    color?: CSSProperties['color'] | 'primary';
     disabled?: ComponentProps<'button'>['disabled'];
     icon?: React.ReactNode;
     isRound?: boolean;

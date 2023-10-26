@@ -5,16 +5,18 @@ import {
     epochToMoment,
     getCancellationPrice,
     getCurrencyDisplayCode,
+    getLocalizedBasis,
     hasTwoBarriers,
     isAccumulatorContract,
+    isEndedBeforeCancellationExpired,
     isMobile,
     isMultiplierContract,
     isSmartTraderContract,
     isAsiansContract,
     isTurbosContract,
-    isUserSold,
-    isEndedBeforeCancellationExpired,
     isUserCancelled,
+    isUserSold,
+    isVanillaFxContract,
     toGMTFormat,
     TContractInfo,
 } from '@deriv/shared';
@@ -49,17 +51,18 @@ const ContractDetails = ({
         commission,
         contract_type,
         currency,
+        date_start,
+        display_number_of_contracts,
         entry_spot_display_value,
         entry_tick_time,
         exit_tick_time,
         high_barrier,
+        low_barrier,
         profit,
-        date_start,
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
-        low_barrier,
-        display_number_of_contracts,
+        underlying,
     } = contract_info;
 
     const is_profit = Number(profit) >= 0;
@@ -73,6 +76,10 @@ const ContractDetails = ({
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${ticks_label}`;
     const { action_names, event_names, form_names, form_sources } = getRudderstackConfig();
+
+    const vanilla_payout_text = isVanillaFxContract(contract_type, underlying)
+        ? getLocalizedBasis().payout_per_pip
+        : getLocalizedBasis().payout_per_point;
 
     const getLabel = () => {
         if (isUserSold(contract_info) && isEndedBeforeCancellationExpired(contract_info))
@@ -170,7 +177,7 @@ const ContractDetails = ({
                             <ContractAuditItem
                                 id='dt_bt_label'
                                 icon={<Icon icon='IcContractPayout' size={24} />}
-                                label={localize('Payout per point')}
+                                label={vanilla_payout_text}
                                 value={
                                     display_number_of_contracts
                                         ? `${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}`

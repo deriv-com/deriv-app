@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Form, Formik, FormikHelpers } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button } from '@deriv/components';
-import { readFiles, WS, DOCUMENT_TYPE } from '@deriv/shared';
+import { readFiles, WS, UPLOAD_FILE_TYPE } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
@@ -163,7 +163,7 @@ const ProofOfOwnershipForm = ({
                 const payment_method_details = values[card_key as TPaymentMethod];
                 if (payment_method_details?.files?.length) {
                     const processed_files = await readFiles(payment_method_details.files, fileReadErrorMessage, {
-                        documentType: DOCUMENT_TYPE.proof_of_ownership,
+                        documentType: UPLOAD_FILE_TYPE.proof_of_ownership,
                         proof_of_ownership: {
                             details: {
                                 email: client_email,

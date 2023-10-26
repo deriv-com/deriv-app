@@ -56,7 +56,7 @@ export const readFiles = (
                     buffer: fr.result,
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
-                    documentType: settings?.document_type ?? DOCUMENT_TYPE.utility_bill,
+                    documentType: settings?.document_type ?? UPLOAD_FILE_TYPE.utility_bill,
                     documentId: settings?.document_id,
                     expirationDate: settings?.expiration_date,
                     lifetimeValid: settings?.lifetime_valid,
@@ -89,7 +89,7 @@ export const max_document_size = 8388608;
 
 export const supported_filetypes = 'image/png, image/jpeg, image/jpg, image/gif, application/pdf';
 
-export const DOCUMENT_TYPE = Object.freeze({
+export const UPLOAD_FILE_TYPE = Object.freeze({
     amlglobalcheck: 'amlglobalcheck',
     bankstatement: 'bankstatement',
     docverification: 'docverification',

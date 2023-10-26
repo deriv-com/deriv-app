@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
+import { getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/constants';
 import useDevice from '../../hooks/useDevice';
 import IcAppstoreBinaryBot from '../../public/images/ic-appstore-binary-bot.svg';
 import IcAppstoreDerivBot from '../../public/images/ic-appstore-deriv-bot.svg';
@@ -28,13 +29,15 @@ const optionsAndMultipliers = [
     {
         description: 'Our legacy options trading platform.',
         icon: <IcAppstoreSmartTrader />,
-        redirect: '',
+        isExternal: true,
+        redirect: getUrlSmartTrader(),
         title: 'SmartTrader',
     },
     {
         description: 'Our legacy automated trading platform.',
         icon: <IcAppstoreBinaryBot />,
-        redirect: '',
+        isExternal: true,
+        redirect: getUrlBinaryBot(),
         title: 'Binary Bot',
     },
     {
@@ -44,11 +47,37 @@ const optionsAndMultipliers = [
         title: 'Deriv GO',
     },
 ];
+type TShowOpenButtonProps = {
+    isExternal?: boolean;
+    redirect: string;
+};
 
 const OptionsAndMultipliersListing: React.FC = () => {
     const history = useHistory();
     const { isMobile } = useDevice();
     const { data } = useActiveWalletAccount();
+
+    const openExternalLink = (url: string) => {
+        window.open(url, '_blank');
+    };
+
+    const ShowOpenButton = ({ isExternal, redirect }: TShowOpenButtonProps) => {
+        if (data?.dtrade_loginid) {
+            return (
+                <WalletButton
+                    onClick={() => {
+                        if (isExternal) {
+                            openExternalLink(redirect);
+                        } else {
+                            history.push(redirect);
+                        }
+                    }}
+                    text='Open'
+                />
+            );
+        }
+        return null;
+    };
 
     return (
         <div className='wallets-options-and-multipliers-listing'>
@@ -95,16 +124,7 @@ const OptionsAndMultipliersListing: React.FC = () => {
                         leading={() => (
                             <div className='wallets-options-and-multipliers-listing__content__icon'>{account.icon}</div>
                         )}
-                        trailing={() =>
-                            data?.dtrade_loginid && (
-                                <WalletButton
-                                    onClick={() => {
-                                        history.push(account.redirect);
-                                    }}
-                                    text='Open'
-                                />
-                            )
-                        }
+                        trailing={() => <ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />}
                     >
                         <div className='wallets-options-and-multipliers-listing__content__details'>
                             <WalletText size='sm' weight='bold'>

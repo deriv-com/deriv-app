@@ -16,14 +16,13 @@ const SVGMigrationBanner = observer(() => {
         eligible_svg_to_vanuatu_derived_accounts,
         eligible_svg_to_vanuatu_financial_accounts,
     } = useMT5SVGEligibleToMigrate();
-    const { is_mobile, toggleMT5MigrationModal, is_dark_mode_on } = ui;
+    const { is_mobile, toggleMT5MigrationModal } = ui;
     const { setMT5MigrationError } = cfd;
     const has_derived_mt5_to_migrate = eligible_svg_to_bvi_derived_accounts || eligible_svg_to_vanuatu_derived_accounts;
     const has_financial_mt5_to_migrate =
         eligible_svg_to_bvi_financial_accounts || eligible_svg_to_vanuatu_financial_accounts;
     const has_derived_and_financial_mt5 = has_derived_mt5_to_migrate && has_financial_mt5_to_migrate;
     const image = is_mobile ? 'svg_migrate_mobile' : 'svg_migrate_desktop';
-    const image_dark_mode = is_mobile ? 'svg_migrate_mobile_dark' : 'svg_migrate_desktop_dark';
     const size: string = is_mobile ? 'xs' : 'm';
 
     const getAccountTitle = () => {
@@ -67,7 +66,8 @@ const SVGMigrationBanner = observer(() => {
                     <Localize i18n_default_text='Upgrade now' />
                 </Button>
             </div>
-            <AppstoreBannerImage image={is_dark_mode_on ? image_dark_mode : image} className='appstore-banner__image' />
+            <div className='appstore-banner__svg-migrate-banner-overlay' />
+            <AppstoreBannerImage image={image} className='appstore-banner__image' />
         </div>
     );
 });

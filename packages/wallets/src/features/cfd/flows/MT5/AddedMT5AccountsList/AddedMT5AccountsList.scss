@@ -1,4 +1,7 @@
 .wallets-added-mt5 {
+    &__icon {
+        cursor: pointer;
+    }
     &__actions {
         display: flex;
         flex-direction: column;
@@ -7,6 +10,7 @@
 
     &__details {
         flex-grow: 1;
+        user-select: none;
 
         &-title {
             display: flex;

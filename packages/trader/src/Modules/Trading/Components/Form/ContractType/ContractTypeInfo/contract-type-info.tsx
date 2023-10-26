@@ -31,6 +31,9 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const {
         active_symbols: { active_symbols },
         ui: { is_mobile },
+        modules: {
+            trade: { is_vanilla_fx },
+        },
     } = useStore();
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
@@ -93,12 +96,14 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                                 <TradeCategories
                                     category={type.value}
                                     onClick={onClickGlossary}
+                                    is_vanilla_fx={is_vanilla_fx}
                                     is_multiplier_fx={!cached_multiplier_cancellation_list?.length}
                                 />
                             </React.Fragment>
                         ) : (
                             <ContractTypeGlossary
                                 category={type.value}
+                                is_vanilla_fx={is_vanilla_fx}
                                 is_multiplier_fx={!cached_multiplier_cancellation_list?.length}
                                 is_major_pairs={isMajorPairsSymbol(symbol, active_symbols)}
                             />

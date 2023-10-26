@@ -6,49 +6,50 @@ import MacOSIcon from '../../../../../public/images/ic-macos-logo.svg';
 import LinuxIcon from '../../../../../public/images/ic-linux-logo.svg';
 import './MT5TradeLink.scss';
 
-const AppToIconMapper = {
-    linux: <LinuxIcon />,
-    macos: <MacOSIcon />,
-    web: <MT5Icon />,
-    windows: <WindowsIcon />,
-};
-
-const AppToTitleMapper = {
-    linux: 'MetaTrader 5 Linux app',
-    macos: 'MetaTrader 5 MacOS app',
-    web: 'MetaTrader 5 web',
-    windows: 'MetaTrader 5 Windows app',
-};
-
-const AppToButtonTextMapper = {
-    linux: 'Learn more',
-    macos: 'Download',
-    web: 'Open',
-    windows: 'Download',
-};
-
-const AppToLinkMapper = {
-    windows: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
-    linux: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
-    macos: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
+const AppToContentMapper = {
+    linux: {
+        icon: <LinuxIcon />,
+        text: 'Learn more',
+        title: 'MetaTrader 5 Linux app',
+        link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
+    },
+    macos: {
+        icon: <MacOSIcon />,
+        text: 'Download',
+        title: 'MetaTrader 5 MacOS app',
+        link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
+    },
+    web: {
+        icon: <MT5Icon />,
+        text: 'Open',
+        title: 'MetaTrader 5 web',
+        link: '',
+    },
+    windows: {
+        icon: <WindowsIcon />,
+        text: 'Download',
+        title: 'MetaTrader 5 Windows app',
+        link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
+    },
 };
 
 type TMT5TradeLinkProps = {
-    app: keyof typeof AppToIconMapper;
+    app: keyof typeof AppToContentMapper;
     webtraderUrl?: string;
 };
 
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app, webtraderUrl = '' }) => {
+    const content = AppToContentMapper[app];
     return (
         <div className='wallets-mt5-trade-link'>
             <div className='wallets-mt5-trade-link--left'>
-                <div className='wallets-mt5-trade-link--left-icon'>{AppToIconMapper[app]}</div>
-                <WalletText size='sm'>{AppToTitleMapper[app]}</WalletText>
+                <div className='wallets-mt5-trade-link--left-icon'>{content.icon}</div>
+                <WalletText size='sm'>{content.title}</WalletText>
             </div>
             <WalletButton
-                onClick={() => window.open(app === 'web' ? webtraderUrl : AppToLinkMapper[app])}
+                onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
                 size='sm'
-                text={AppToButtonTextMapper[app]}
+                text={content.text}
                 variant='outlined'
             />
         </div>

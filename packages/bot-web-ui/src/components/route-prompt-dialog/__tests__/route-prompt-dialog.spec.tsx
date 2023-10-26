@@ -51,7 +51,7 @@ describe('RoutePromptDialog', () => {
 
     it('should confirm and hide RoutePromptDialog on clicking confirm button', () => {
         render(<RoutePromptDialog />, { wrapper });
-        const confirm_button_text = screen.getByText("Yes, I'll come back later");
+        const confirm_button_text = screen.getByRole('button', { name: "Yes, I'll come back later" });
         userEvent.click(confirm_button_text);
         expect(mock_DBot_store?.route_prompt_dialog?.should_show).toBeFalsy();
         expect(mock_DBot_store?.route_prompt_dialog?.is_confirmed).toBeTruthy();
@@ -60,7 +60,7 @@ describe('RoutePromptDialog', () => {
     it('should hide RoutePromptDialog on clicking cancel button', () => {
         mock_DBot_store?.route_prompt_dialog?.setShoudShow(true);
         render(<RoutePromptDialog />, { wrapper });
-        const cancel_button_text = screen.getByText("No, I'll stay");
+        const cancel_button_text = screen.getByRole('button', { name: "No, I'll stay" });
         userEvent.click(cancel_button_text);
         expect(mock_DBot_store?.route_prompt_dialog?.should_show).toBeFalsy();
     });

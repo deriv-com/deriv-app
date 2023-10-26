@@ -20,12 +20,10 @@ jest.mock('Helpers/utils', () => ({
                 document_1: {
                     new_display_name: '',
                     example_format: '5436454364243',
-                    sample_image: '',
                 },
                 document_2: {
                     new_display_name: '',
                     example_format: 'A-52431',
-                    sample_image: '',
                 },
             },
         };
@@ -106,7 +104,7 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(mock_props.handleBack).toHaveBeenCalledTimes(1);
 
         const document_type_input = screen.getByLabelText('Choose the document type');
-        const document_number_input = screen.getByLabelText('Enter your document number');
+        const document_number_input = screen.getByPlaceholderText('Enter your document number');
         expect(document_number_input).toBeDisabled();
         expect(screen.queryByText('Test document 1 name')).not.toBeInTheDocument();
         expect(screen.queryByText('Test document 2 name')).not.toBeInTheDocument();
@@ -141,7 +139,7 @@ describe('<IdvDocumentSubmit/>', () => {
 
         const document_type_input = screen.getByRole<HTMLTextAreaElement>('combobox');
         expect(document_type_input.name).toBe('document_type');
-        const document_number_input = screen.getByLabelText<HTMLTextAreaElement>('Enter your document number');
+        const document_number_input = screen.getByPlaceholderText<HTMLTextAreaElement>('Enter your document number');
         expect(document_number_input.name).toBe('document_number');
         expect(document_number_input).toBeDisabled();
 
@@ -164,7 +162,9 @@ describe('<IdvDocumentSubmit/>', () => {
         });
         fireEvent.click(confirmation_checkbox);
 
-        expect(verifyBtn).toBeEnabled();
+        await waitFor(() => {
+            expect(verifyBtn).toBeEnabled();
+        });
         fireEvent.click(verifyBtn);
         await waitFor(() => {
             expect(mock_props.handleViewComplete).toHaveBeenCalledTimes(1);

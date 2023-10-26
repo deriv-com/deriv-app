@@ -3,28 +3,16 @@ import { Icon, Money, Text, Popover } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset';
 import { observer } from '@deriv/stores';
-import { getContractSubtype, isVanillaContract } from '@deriv/shared';
+import { getContractSubtype, getLocalizedBasis } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { TProposalTypeInfo } from 'Types';
 
 type TProposalInfo = {
-    [key: string]: {
-        has_error?: boolean;
-        id: string;
-        has_increased?: boolean;
-        message?: string;
-        cancellation?: {
-            ask_price: number;
-            date_expiry: number;
-        };
-        growth_rate?: number;
-        obj_contract_basis?: Record<'text' | 'value', string>;
-        returns?: string;
-        stake: string;
-    };
+    [key: string]: TProposalTypeInfo;
 };
 
 const PayoutPerPointMobile = observer(() => {
-    const { currency, proposal_info, contract_type } = useTraderStore();
+    const { currency, proposal_info, contract_type, is_vanilla, is_vanilla_fx } = useTraderStore();
     const contract_key = contract_type?.toUpperCase();
     // remove assertion and local TProposalInfo type after TS migration for trade package is complete
     const { has_error, has_increased, id, message, obj_contract_basis } =
@@ -35,8 +23,16 @@ const PayoutPerPointMobile = observer(() => {
         Long: localize('For Long:'),
         Short: localize('For Short:'),
     };
-    const tooltip_text = isVanillaContract(contract_type) ? (
+    const vanilla_payout_message = is_vanilla_fx ? (
+        <Localize
+            i18n_default_text='The payout at expiry is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
+            components={[<strong key={0} />]}
+        />
+    ) : (
         <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.' />
+    );
+    const tooltip_text = is_vanilla ? (
+        vanilla_payout_message
     ) : (
         <Localize
             i18n_default_text='<0>{{title}}</0> {{message}}'
@@ -52,7 +48,7 @@ const PayoutPerPointMobile = observer(() => {
         <Fieldset className='payout-per-point'>
             <div className='payout-per-point__label-wrapper'>
                 <Text size='xs' color='less-prominent' className='payout-per-point__label'>
-                    {label}
+                    {is_vanilla_fx ? getLocalizedBasis().payout_per_pip : label}
                 </Text>
                 <Popover
                     alignment='top'

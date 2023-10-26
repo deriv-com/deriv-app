@@ -1,8 +1,9 @@
 import React from 'react';
-import { Table, Text, ThemedScrollbars, Div100vhContainer } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { isDesktop, CFD_PLATFORMS, isLandingCompanyEnabled } from '@deriv/shared';
+
 import { LandingCompany } from '@deriv/api-types';
+import { Div100vhContainer, Table, Text, ThemedScrollbars } from '@deriv/components';
+import { CFD_PLATFORMS, isDesktop, isLandingCompanyEnabled } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 
 type TCFDAttributeDescriberProps = {
     name: string;

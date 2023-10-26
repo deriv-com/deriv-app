@@ -2,13 +2,32 @@ import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { TradingAccountCard, WalletButton } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
+import { getStaticUrl } from '../../../../../helpers/urls';
+import { THooks } from '../../../../../types';
 import { MarketTypeToDescriptionMapper, MarketTypeToIconMapper, MarketTypeToTitleMapper } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal } from '../../../modals';
-import { THooks } from '../../../../../types';
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {
     account: THooks.SortedMT5Accounts;
+};
+
+const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
+    const IconToLink = () => {
+        switch (account.market_type) {
+            case 'financial':
+            case 'synthetic':
+            case 'all':
+                return window.open(getStaticUrl('/dmt5'));
+            default:
+                return window.open(getStaticUrl('/dmt5'));
+        }
+    };
+    return (
+        <div className='wallets-available-mt5__icon' onClick={() => IconToLink()}>
+            {MarketTypeToIconMapper[account.market_type || 'all']}
+        </div>
+    );
 };
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
@@ -17,11 +36,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
     return (
         <TradingAccountCard
-            leading={() => (
-                <div className='wallets-available-mt5__icon'>
-                    {MarketTypeToIconMapper[account.market_type || 'all']}
-                </div>
-            )}
+            leading={() => <MT5AccountIcon account={account} />}
             trailing={() => (
                 <WalletButton
                     color='primary-light'

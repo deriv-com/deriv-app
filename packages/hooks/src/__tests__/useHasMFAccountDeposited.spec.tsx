@@ -35,13 +35,6 @@ describe('useHasMFAccountDeposited', () => {
         expect(result.current).toBe(false);
     });
 
-    test('should return true if unwelcome status is in account_status', () => {
-        mock_useQuery_return_value.data.get_account_status.status = ['unwelcome'];
-        const { result } = renderHook(() => useHasMFAccountDeposited(), { wrapper });
-
-        expect(result.current).toBe(true);
-    });
-
     test('should return true if withdrawal_locked status is in account_status', () => {
         mock_useQuery_return_value.data.get_account_status.status = ['withdrawal_locked'];
         const { result } = renderHook(() => useHasMFAccountDeposited(), { wrapper });

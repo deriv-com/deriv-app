@@ -9,8 +9,8 @@ import './DepositCrypto.scss';
 
 const DepositCrypto = () => {
     return (
-        <div className='wallets-deposit-crypto-container'>
-            <div className='wallets-deposit-crypto'>
+        <div className='wallets-deposit-crypto'>
+            <div className='wallets-deposit-crypto__main-content'>
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoAddress />
                 <DepositCryptoDisclaimers />

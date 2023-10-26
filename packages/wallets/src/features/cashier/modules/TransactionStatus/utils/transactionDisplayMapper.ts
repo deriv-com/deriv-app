@@ -2,43 +2,37 @@ import moment from 'moment';
 import { getTruncatedString } from '@deriv/utils';
 import { THooks } from '../../../../../types';
 
-// eslint-disable-next-line camelcase
-const depositDisplayMapper = (transaction: THooks.CryptoTransactions & { transaction_type: 'deposit' }) => {
+const transactionDetailsMapper = (transaction: THooks.CryptoTransactions) => {
     const transactionHashObscure = transaction.transaction_hash
         ? `${getTruncatedString(transaction.transaction_hash, { length: 8, type: 'middle' })}`
         : 'Pending';
 
-    return {
-        CONFIRMED: {
-            confirmationDisplay: 'Confirmed',
-            description: 'Your deposit is successful.',
-            statusColor: 'successful',
-            statusName: 'Successful',
-            transactionHashDisplay: transactionHashObscure,
-        },
-        ERROR: {
-            confirmationDisplay: 'NA',
-            description:
-                'Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.',
-            statusColor: 'unsuccessful',
-            statusName: 'Unsuccessful',
-            transactionHashDisplay: 'NA',
-        },
-        PENDING: {
-            confirmationDisplay: transaction.confirmations ? `${transaction.confirmations}` : 'Pending',
-            description: 'We’ve received your request and are waiting for more blockchain confirmations.',
-            statusColor: 'warning',
-            statusName: 'In process',
-            transactionHashDisplay: transactionHashObscure,
-        },
-    }[transaction.status_code];
-};
-
-// eslint-disable-next-line camelcase
-const withdrawalDisplayMapper = (transaction: THooks.CryptoTransactions & { transaction_type: 'withdrawal' }) => {
-    const transactionHashObscure = transaction.transaction_hash
-        ? `${getTruncatedString(transaction.transaction_hash, { length: 8, type: 'middle' })}`
-        : 'Pending';
+    if (transaction.transaction_type === 'deposit') {
+        return {
+            CONFIRMED: {
+                confirmationDisplay: 'Confirmed',
+                description: 'Your deposit is successful.',
+                statusColor: 'successful',
+                statusName: 'Successful',
+                transactionHashDisplay: transactionHashObscure,
+            },
+            ERROR: {
+                confirmationDisplay: 'NA',
+                description:
+                    'Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.',
+                statusColor: 'unsuccessful',
+                statusName: 'Unsuccessful',
+                transactionHashDisplay: 'NA',
+            },
+            PENDING: {
+                confirmationDisplay: transaction.confirmations ? `${transaction.confirmations}` : 'Pending',
+                description: 'We’ve received your request and are waiting for more blockchain confirmations.',
+                statusColor: 'warning',
+                statusName: 'In process',
+                transactionHashDisplay: transactionHashObscure,
+            },
+        }[transaction.status_code];
+    }
 
     return {
         CANCELLED: {
@@ -127,9 +121,7 @@ const transactionDisplayMapper = (transaction: THooks.CryptoTransactions) => {
         .format('MMM D, YYYY');
     return {
         ...transaction,
-        ...(transaction.transaction_type === 'deposit'
-            ? depositDisplayMapper(transaction)
-            : withdrawalDisplayMapper(transaction)),
+        ...transactionDetailsMapper(transaction),
         addressHashDisplay: addressHashObscure,
         submitDateDisplay,
     };

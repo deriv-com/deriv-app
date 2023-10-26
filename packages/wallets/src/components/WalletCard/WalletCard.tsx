@@ -1,43 +1,45 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import { THooks } from '../../types';
+import { WalletText } from '../Base';
+import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
-import { WalletListCardIcon } from '../WalletListCardIcon';
 import './WalletCard.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    account: THooks.WalletAccountsList;
 };
 
 const WalletCard: React.FC<TProps> = ({ account }) => {
-    const { wallet_currency_type, landing_company_name, currency, display_balance, is_virtual, currency_config } =
-        account || {};
-
-    const formattedLandingCompany =
-        landing_company_name === 'virtual' ? 'Demo' : landing_company_name?.toUpperCase() || 'SVG';
-
     return (
         <div className='wallets-card'>
             <WalletGradientBackground
-                is_demo={is_virtual}
-                currency={currency_config?.display_code || 'USD'}
-                type='card'
+                currency={account?.wallet_currency_type || 'USD'}
                 device='mobile'
-                has_shine
+                hasShine
+                isDemo={account?.is_virtual}
+                type='card'
             >
                 <div className='wallets-card__details'>
                     <div className='wallets-card__details__top'>
-                        <WalletListCardIcon type={wallet_currency_type} />
+                        <WalletCardIcon type={account?.wallet_currency_type} />
                         <div className='wallets-card__details-landing_company'>
-                            {landing_company_name && (
-                                <WalletListCardBadge label={formattedLandingCompany} is_demo={account?.is_virtual} />
+                            {account?.landing_company_name && (
+                                <WalletListCardBadge
+                                    isDemo={account?.is_virtual}
+                                    label={account?.landing_company_name}
+                                />
                             )}
                         </div>
                     </div>
-                    <div className={`wallets-card__details__bottom${is_virtual ? '--virtual' : ''}`}>
-                        <p className='wallets-card__details__bottom__currency'>{currency} Wallet</p>
+                    <div className='wallets-card__details__bottom'>
+                        <WalletText color={account?.is_virtual ? 'white' : 'black'} size='2xs'>
+                            {account?.currency} Wallet
+                        </WalletText>
                         <p className='wallets-card__details__bottom__balance'>
-                            {display_balance} {currency}
+                            <WalletText color={account?.is_virtual ? 'white' : 'black'} size='sm' weight='bold'>
+                                {account?.display_balance}
+                            </WalletText>
                         </p>
                     </div>
                 </div>

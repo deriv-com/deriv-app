@@ -17,6 +17,7 @@ const PaymentMethods = ({ formik_ref }) => {
     React.useEffect(() => {
         my_profile_store.setIsLoading(true);
         my_profile_store.getAdvertiserPaymentMethods();
+        my_profile_store.getPaymentMethodsList();
         my_profile_store.setShouldShowAddPaymentMethodForm(false);
         my_profile_store.setShouldShowEditPaymentMethodForm(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps

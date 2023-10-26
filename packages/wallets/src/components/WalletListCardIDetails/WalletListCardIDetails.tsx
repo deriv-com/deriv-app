@@ -1,28 +1,27 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import { THooks } from '../../types';
+import WalletListCardActions from '../WalletListCardActions/WalletListCardActions';
 import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
-import WalletListCardIActions from '../WalletListCardIActions/WalletListCardIActions';
 import WalletListCardTitle from '../WalletListCardTitle/WalletListCardTitle';
 import './WalletListCardIDetails.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    badge?: THooks.WalletAccountsList['landing_company_name'];
+    currency: THooks.WalletAccountsList['wallet_currency_type'];
+    isActive: THooks.WalletAccountsList['is_active'];
+    isDemo: THooks.WalletAccountsList['is_virtual'];
+    loginid: THooks.WalletAccountsList['loginid'];
+    title: Exclude<THooks.WalletAccountsList['currency'], undefined>;
 };
 
-const WalletListCardIDetails: React.FC<TProps> = ({ account }) => {
-    const { currency_config, landing_company_name, is_virtual } = account;
-
-    return (
-        <div className='wallets-list-details__action-container'>
-            <div className='wallets-list-details__elements'>
-                {currency_config?.display_code && <WalletListCardTitle currency={currency_config?.display_code} />}
-                {landing_company_name && !is_virtual && (
-                    <WalletListCardBadge label={landing_company_name.toUpperCase()} />
-                )}
-            </div>
-            <WalletListCardIActions account={account} />
+const WalletListCardIDetails: React.FC<TProps> = ({ badge, isActive, isDemo, loginid, title }) => (
+    <div className='wallets-list-details__action-container'>
+        <div className='wallets-list-details__elements'>
+            <WalletListCardTitle title={title} />
+            {badge && <WalletListCardBadge isDemo={isDemo} label={badge} />}
         </div>
-    );
-};
+        <WalletListCardActions isActive={isActive} isDemo={isDemo} loginid={loginid} />
+    </div>
+);
 
 export default WalletListCardIDetails;

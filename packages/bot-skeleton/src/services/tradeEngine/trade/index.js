@@ -6,12 +6,12 @@ import OpenContract from './OpenContract';
 import Proposal from './Proposal';
 import Purchase from './Purchase';
 import Sell from './Sell';
-import { start } from './state/actions';
+import { start, proposalsReady } from './state/actions';
 import * as constants from './state/constants';
 import rootReducer from './state/reducers';
 import Ticks from './Ticks';
 import Total from './Total';
-import { doUntilDone } from '../utils/helpers';
+import { doUntilDone, checkBlocksForProposalRequest } from '../utils/helpers';
 import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
@@ -95,17 +95,22 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         const validated_trade_options = this.validateTradeOptions(tradeOptions);
 
-        this.tradeOptions = validated_trade_options;
+        this.tradeOptions = { ...validated_trade_options, symbol: this.options.symbol };
         this.store.dispatch(start());
         this.checkLimits(validated_trade_options);
-        this.makeProposals({ ...this.options, ...validated_trade_options });
-        this.checkProposalReady();
+
+        this.makeDirectPurchaseDecision();
     }
 
     loginAndGetBalance(token) {
         if (this.token === token) {
             return Promise.resolve();
         }
+        // for strategies using total runs, GetTotalRuns function is trying to get loginid and it gets called before Proposals calls.
+        // the below required loginid to be set in Proposal calls where loginAndGetBalance gets resolved.
+        // Earlier this used to happen as soon as we get ticks_history response and by the time GetTotalRuns gets called we have required info.
+        this.accountInfo = api_base.account_info;
+        this.token = api_base.token;
         return new Promise(resolve => {
             // Try to recover from a situation where API doesn't give us a correct response on
             // "proposal_open_contract" which would make the bot run forever. When there's a "sell"
@@ -125,8 +130,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                         }
                     }, 1500);
                 }
-                this.accountInfo = api_base.account_info;
-                this.token = api_base.token;
                 resolve();
             });
             api_base.pushSubscription(subscription);
@@ -144,5 +147,17 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             return watchBefore(this.store);
         }
         return watchDuring(this.store);
+    }
+
+    makeDirectPurchaseDecision() {
+        const { has_payout_block, is_basis_payout } = checkBlocksForProposalRequest();
+        this.is_proposal_subscription_required = has_payout_block || is_basis_payout;
+
+        if (this.is_proposal_subscription_required) {
+            this.makeProposals({ ...this.options, ...this.tradeOptions });
+            this.checkProposalReady();
+        } else {
+            this.store.dispatch(proposalsReady());
+        }
     }
 }

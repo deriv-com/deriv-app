@@ -1,32 +1,21 @@
 .wallets-list-card {
     &__badge {
         display: flex;
-        padding: 0px 4px;
+        padding: 0rem 0.4rem;
         justify-content: center;
         align-items: center;
-        gap: 4px;
-        border-radius: 2px;
-        border: 1px solid var(--system-light-1-prominent-text, #333);
+        gap: 0.4rem;
+        border-radius: 0.2rem;
+        border: 0.1rem solid var(--system-light-1-prominent-text, #333);
 
         &--demo {
             display: flex;
-            padding: 0px 4px;
+            padding: 0.1rem 0.6rem;
             justify-content: center;
             align-items: center;
-            gap: 4px;
-            border-radius: 2px;
+            gap: 0.4rem;
+            border-radius: 0.2rem;
             background: var(--status-light-information, #377cfc);
-            color: #ffffff;
         }
-    }
-    &__name {
-        color: var(--system-light-1-prominent-text, #333);
-
-        /* desktop/extra small/XS - bold */
-        font-family: 'IBM Plex Sans';
-        font-size: 10px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 14px; /* 140% */
     }
 }

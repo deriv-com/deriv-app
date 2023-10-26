@@ -1,4 +1,4 @@
-import { OSDetect } from '@deriv/shared';
+import { OSDetect, getPlatformFromUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 
@@ -28,25 +28,12 @@ const platformsIcons = (platform: TCFDsPlatformType) => {
     }
 };
 
-const getPlatformFromUrl = (domain = window.location.hostname) => {
-    const resolutions = {
-        is_staging_deriv_app: /staging-app\.deriv\.(com|me|be)/i.test(domain),
-        is_deriv_app: /app\.deriv\.(com|me|be)/i.test(domain),
-        is_test_link: /(.*)\.binary\.sx/i.test(domain),
-    };
-
-    return {
-        ...resolutions,
-        is_staging: resolutions.is_staging_deriv_app,
-    };
-};
-
 const getTitle = (market_type: string, is_eu_user: boolean) => {
     if (is_eu_user) localize('MT5 CFDs');
     return market_type;
 };
 
-const { is_staging_deriv_app, is_test_link } = getPlatformFromUrl();
+const { is_staging, is_test_link } = getPlatformFromUrl();
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
@@ -71,7 +58,7 @@ const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=c
 
 const getBrokerName = () => 'Deriv.com Limited';
 
-const CTRADER_URL = is_staging_deriv_app || is_test_link ? CTRADER_UAT_URL : CTRADER_PRODUCTION_URL;
+const CTRADER_URL = is_staging || is_test_link ? CTRADER_UAT_URL : CTRADER_PRODUCTION_URL;
 
 const getTopUpConfig = () => {
     return {

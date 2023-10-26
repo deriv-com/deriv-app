@@ -13,6 +13,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 
 type TFinancialDetailsFormValues = {
     income_source: string;
@@ -59,6 +60,11 @@ const FinancialDetails = (props: TFinancialDetails) => {
         return errors;
     };
 
+    const fields_to_scroll_top = isMobile()
+        ? ['income_source', 'account_turnover', 'estimated_worth']
+        : ['income_source'];
+    const fields_to_scroll_bottom = isMobile() ? [] : ['account_turnover', 'estimated_worth'];
+
     return (
         <Formik
             initialValues={{ ...props.value }}
@@ -68,7 +74,7 @@ const FinancialDetails = (props: TFinancialDetails) => {
             }}
             validateOnMount
         >
-            {({ handleSubmit, isSubmitting, errors, values }) => {
+            {({ handleSubmit, isSubmitting, values }) => {
                 return (
                     <AutoHeightWrapper default_height={200}>
                         {({
@@ -78,7 +84,11 @@ const FinancialDetails = (props: TFinancialDetails) => {
                             setRef: (instance: HTMLFormElement) => void;
                             height?: number | string;
                         }) => (
-                            <form ref={setRef} onSubmit={handleSubmit}>
+                            <form ref={setRef} onSubmit={handleSubmit} noValidate>
+                                <ScrollToFieldWithError
+                                    fields_to_scroll_top={fields_to_scroll_top}
+                                    fields_to_scroll_bottom={fields_to_scroll_bottom}
+                                />
                                 <Div100vhContainer
                                     className={classNames('details-form', 'financial-assessment')}
                                     height_offset='110px'
@@ -100,7 +110,7 @@ const FinancialDetails = (props: TFinancialDetails) => {
                                 </Div100vhContainer>
                                 <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
-                                        is_disabled={isSubmitting || Object.keys(errors).length > 0}
+                                        is_disabled={isSubmitting}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         has_cancel

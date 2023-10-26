@@ -15,11 +15,11 @@ const useMT5SVGEligibleToMigrate = () => {
         const no_of_svg_accounts_to_migrate = svg_accounts_to_migrate.length;
 
         const is_eligible_for_svg_to_bvi_migration = !!svg_accounts_to_migrate.filter(account =>
-            Object.values(account.eligible_to_migrate || {}).includes(Jurisdiction.BVI)
+            Object.values(account.eligible_to_migrate ?? {}).includes(Jurisdiction.BVI)
         ).length;
 
         const is_eligible_for_svg_to_vanuatu_migration = !!svg_accounts_to_migrate.filter(account =>
-            Object.values(account.eligible_to_migrate || {}).includes(Jurisdiction.VANUATU)
+            Object.values(account.eligible_to_migrate ?? {}).includes(Jurisdiction.VANUATU)
         ).length;
 
         const getEligibleAccountToMigrate = () => {

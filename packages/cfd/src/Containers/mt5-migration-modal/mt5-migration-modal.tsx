@@ -12,6 +12,7 @@ const MT5MigrationModal = observer(() => {
     const {
         disableApp,
         enableApp,
+        is_mt5_migration_modal_waiting_on_other_modals,
         is_mt5_migration_modal_open,
         is_mobile,
         toggleMT5MigrationModal,
@@ -28,10 +29,10 @@ const MT5MigrationModal = observer(() => {
         </Text>
     );
     React.useEffect(() => {
-        if (has_svg_accounts_to_migrate) {
+        if (has_svg_accounts_to_migrate && !is_mt5_migration_modal_waiting_on_other_modals) {
             toggleMT5MigrationModal();
         }
-    }, [has_svg_accounts_to_migrate, toggleMT5MigrationModal]);
+    }, [has_svg_accounts_to_migrate, is_mt5_migration_modal_waiting_on_other_modals, toggleMT5MigrationModal]);
 
     React.useEffect(() => {
         if (mt5_migration_error) {

@@ -31,9 +31,7 @@ const OpenPositionsSVGModal = ({
         modules: { cfd },
     } = useStore();
     const { migrated_mt5_accounts } = cfd;
-    const eligible_account = migrated_mt5_accounts.filter(account => {
-        return account.loginId === loginId;
-    });
+    const eligible_account = migrated_mt5_accounts.filter(account => account.loginId === loginId);
     const eligible_account_to_migrate_label = getFormattedJurisdictionCode(
         Object.values(eligible_account[0]?.to_account ?? {})[0]
     );
@@ -43,7 +41,7 @@ const OpenPositionsSVGModal = ({
             : getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.DERIVED);
     const from_account = getFormattedJurisdictionCode(Jurisdiction.SVG);
     const cfd_platform = getCFDPlatformNames(CFD_PLATFORMS.MT5);
-    const is_open_order_position = status === MT5AccountStatus.MIGRATED_WITH_POSITION;
+    const is_migrated_with_position = status === MT5AccountStatus.MIGRATED_WITH_POSITION;
 
     const onClick = () => {
         setModalOpen(false);
@@ -57,14 +55,14 @@ const OpenPositionsSVGModal = ({
         >
             <Modal.Body>
                 <Text as='h1' color='prominent' weight='bold' className='open-positions-svg__modal-title'>
-                    {is_open_order_position ? (
+                    {is_migrated_with_position ? (
                         <Localize i18n_default_text='No new positions' />
                     ) : (
                         <Localize i18n_default_text='Account closed' />
                     )}
                 </Text>
                 <Text as='p' color='prominent ' size='xs'>
-                    {is_open_order_position ? (
+                    {is_migrated_with_position ? (
                         <Localize
                             i18n_default_text='You can no longer open new positions with your {{cfd_platform}} {{account_type}} {{from_account}} account. Please use your {{cfd_platform}} {{account_type}} {{eligible_account_to_migrate_label}} account to open new positions.'
                             values={{ account_type, from_account, eligible_account_to_migrate_label, cfd_platform }}

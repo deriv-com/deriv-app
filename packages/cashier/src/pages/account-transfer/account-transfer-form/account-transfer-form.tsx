@@ -121,7 +121,7 @@ const AccountTransferForm = observer(
             resetConverter,
         } = crypto_fiat_converter;
 
-        const is_open_order_position_status_present =
+        const is_migration_status_present =
             selected_to.status === MT5AccountStatus.MIGRATED_WITH_POSITION ||
             selected_to.status === MT5AccountStatus.MIGRATED_WITHOUT_POSITION;
 
@@ -349,7 +349,7 @@ const AccountTransferForm = observer(
             has_reached_maximum_daily_transfers = !remaining_transfers;
 
             let hint_text;
-            if (is_open_order_position_status_present) {
+            if (is_migration_status_present) {
                 hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
             } else {
                 const transfer_text = remaining_transfers > 1 ? 'transfers' : 'transfer';
@@ -362,7 +362,7 @@ const AccountTransferForm = observer(
             }
             setTransferToHint(hint_text);
             resetConverter();
-        }, [account_limits, is_open_order_position_status_present, selected_from, selected_to]); // eslint-disable-line react-hooks/exhaustive-deps
+        }, [account_limits, is_migration_status_present, selected_from, selected_to]); // eslint-disable-line react-hooks/exhaustive-deps
 
         const is_mt5_restricted =
             selected_from?.is_mt &&

@@ -3,14 +3,23 @@ import useInfiniteQuery from '../useInfiniteQuery';
 import { TSocketRequestPayload } from '../../types';
 import useAuthorize from './useAuthorize';
 import useInvalidateQuery from '../useInvalidateQuery';
+import useActiveAccount from './useActiveAccount';
 
 type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['action_type'];
 
 /** A custom hook to get the summary of account transactions */
 const useTransactions = () => {
-    const { isFetching, isSuccess } = useAuthorize();
+    const {
+        data: { preferred_language },
+        isFetching,
+        isSuccess,
+    } = useAuthorize();
+
+    const { data: account } = useActiveAccount();
+    const display_code = account?.currency_config?.display_code || 'USD';
+    const fractional_digits = account?.currency_config?.fractional_digits || 2;
+
     const [filter, setFilter] = useState<TFilter>();
-    const invalidate = useInvalidateQuery();
     const { data, fetchNextPage, ...rest } = useInfiniteQuery('statement', {
         options: {
             enabled: !isFetching && isSuccess,
@@ -25,6 +34,7 @@ const useTransactions = () => {
         },
     });
 
+    const invalidate = useInvalidateQuery();
     useEffect(() => {
         invalidate('statement');
     }, [filter, invalidate]);
@@ -42,8 +52,20 @@ const useTransactions = () => {
 
         return flatten_data?.map(transaction => ({
             ...transaction,
+            /** The transaction amount in currency format. */
+            display_amount: `${Intl.NumberFormat(preferred_language || 'en-US', {
+                minimumFractionDigits: fractional_digits,
+                maximumFractionDigits: fractional_digits,
+                minimumIntegerDigits: 1,
+            }).format(transaction?.amount || 0)} ${display_code}`,
+            /** The balance of account after the transaction in currency format. */
+            display_balance_after: `${Intl.NumberFormat(preferred_language || 'en-US', {
+                minimumFractionDigits: fractional_digits,
+                maximumFractionDigits: fractional_digits,
+                minimumIntegerDigits: 1,
+            }).format(transaction?.balance_after || 0)} ${display_code}`,
         }));
-    }, [flatten_data]);
+    }, [flatten_data, preferred_language, fractional_digits, display_code]);
 
     return {
         /** List of account transactions */

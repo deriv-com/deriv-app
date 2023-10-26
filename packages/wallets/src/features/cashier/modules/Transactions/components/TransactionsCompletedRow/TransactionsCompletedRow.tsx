@@ -11,15 +11,6 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ transaction }) => {
     const { data } = useActiveWalletAccount();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
 
-    const formattedAmount = useMemo(() => {
-        if (!transaction?.amount) return;
-
-        if (transaction.amount > 0) {
-            return `+${transaction.amount}`;
-        }
-        return transaction.amount;
-    }, [transaction]);
-
     return (
         <div className='wallets-transactions-completed-row'>
             <div className='wallets-transactions-completed-row__account-details'>
@@ -41,10 +32,11 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ transaction }) => {
                             : ''
                     }`}
                 >
-                    {formattedAmount}
+                    {transaction?.amount && transaction?.amount > 0 ? '+' : ''}
+                    {transaction.display_amount}
                 </p>
                 <p className='wallets-transactions-completed-row__transaction-details__balance'>
-                    Balance: {transaction.balance_after}
+                    Balance: {transaction.display_balance_after}
                 </p>
             </div>
         </div>

@@ -81,9 +81,7 @@ const Input = ({
 
     const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
         setCurrentFocus?.(null);
-        if (onBlur) {
-            onBlur(e);
-        }
+        onBlur?.(e);
     };
     const onFocus = () => setCurrentFocus?.(name);
 

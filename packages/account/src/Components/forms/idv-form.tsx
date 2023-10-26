@@ -205,7 +205,9 @@ const IDVForm = ({
                                                             }
                                                             disabled={!values.document_type.id}
                                                             error={
-                                                                (touched.document_number && errors.document_number) ||
+                                                                (values.document_type.id &&
+                                                                    touched.document_number &&
+                                                                    errors.document_number) ||
                                                                 errors.error_message
                                                             }
                                                             autoComplete='off'
@@ -219,7 +221,10 @@ const IDVForm = ({
                                                             }
                                                             className='additional-field'
                                                             required
-                                                            label={generatePlaceholderText(selected_doc)}
+                                                            label={
+                                                                values.document_type.id &&
+                                                                generatePlaceholderText(selected_doc)
+                                                            }
                                                         />
                                                         {values.document_type.additional?.display_name && (
                                                             <Input

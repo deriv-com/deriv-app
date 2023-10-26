@@ -642,7 +642,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateAccountStatus,
     } = client;
     const { show_eu_related_content } = traders_hub;
-    const { is_mobile, is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled } = ui;
+    const {
+        is_mobile,
+        is_mt5_migration_modal_enabled,
+        setMT5MigrationModalEnabled,
+        setMT5MigrationModalWaitingOnOtherModals,
+    } = ui;
 
     const {
         account_title,
@@ -736,6 +741,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const closeDialogs = () => {
         setCFDSuccessDialog(false);
+        setMT5MigrationModalWaitingOnOtherModals(false);
         if (is_mt5_migration_modal_enabled) setMT5MigrationModalEnabled(false);
         setError(false);
     };
@@ -806,6 +812,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const should_show_migration_success =
         !has_cfd_error && is_mt5_migration_modal_enabled && is_cfd_success_dialog_enabled && is_password_modal_exited;
+    if (should_show_migration_success) {
+        setMT5MigrationModalWaitingOnOtherModals(true);
+    }
 
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
@@ -1064,23 +1073,21 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 width={isMobile() ? '32.8rem' : 'auto'}
                 is_medium_button={isMobile()}
             />
-            {should_show_migration_success && (
-                <SuccessDialog
-                    is_open={should_show_migration_success}
-                    toggleModal={closeModal}
-                    onCancel={closeModal}
-                    onSubmit={closeModal}
-                    classNameMessage='cfd-password-modal__message'
-                    message={getMigrationSubmitText()}
-                    icon={<Icon icon='IcMt5MigrationSuccess' size={128} />}
-                    icon_size='xlarge'
-                    text_submit={localize('OK')}
-                    has_cancel={false}
-                    has_close_icon={false}
-                    width={isMobile() ? '32.8rem' : 'auto'}
-                    is_medium_button={isMobile()}
-                />
-            )}
+            <SuccessDialog
+                is_open={should_show_migration_success}
+                toggleModal={closeModal}
+                onCancel={closeModal}
+                onSubmit={closeModal}
+                classNameMessage='cfd-password-modal__message'
+                message={getMigrationSubmitText()}
+                icon={<Icon icon='IcMt5MigrationSuccess' size={128} />}
+                icon_size='xlarge'
+                text_submit={localize('OK')}
+                has_cancel={false}
+                has_close_icon={false}
+                width={isMobile() ? '32.8rem' : 'auto'}
+                is_medium_button={isMobile()}
+            />
             <SentEmailModal
                 is_open={should_show_sent_email_modal}
                 identifier_title='trading_password'

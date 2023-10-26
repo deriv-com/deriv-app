@@ -1,5 +1,5 @@
 import React from 'react';
-import { WalletButton, WalletText } from '../../../../../../components/Base';
+import { Divider, WalletButton, WalletText } from '../../../../../../components/Base';
 
 type TTransactionStatusError = {
     refresh: VoidFunction;
@@ -10,7 +10,7 @@ const TransactionStatusError: React.FC<TTransactionStatusError> = ({ refresh }) 
         <WalletText lineHeight='sm' size='xs'>
             Unfortunately, we cannot retrieve the information at this time.
         </WalletText>
-        <div className='wallets-transaction-status-error__divider' />
+        <Divider color='#d6dadb' /> {/* --color-grey-5 */}
         <WalletButton
             color='transparent'
             isFullWidth={true}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { WalletButton, WalletText } from '../../../../../../components/Base';
+import { Divider, WalletButton, WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
 import useRecentTransactions from '../../hooks/useRecentTransactions';
 import { CryptoTransaction } from '../CryptoTransaction';
@@ -34,12 +34,8 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
                                 key={transaction.id}
                                 transaction={transaction}
                             />
-                            <div
-                                className={
-                                    index < filteredTransactions.length - 1 && index < 2
-                                        ? 'wallets-transaction-status-success__divider--light'
-                                        : 'wallets-transaction-status-success__divider'
-                                }
+                            <Divider
+                                color={index < filteredTransactions.length - 1 && index < 2 ? '#e6e9e9' : '#d6dadb'}
                             />
                         </React.Fragment>
                     ))}
@@ -60,7 +56,7 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
             ) : (
                 <React.Fragment>
                     <WalletText size='xs'>No recent transactions.</WalletText>
-                    <div className='wallets-transaction-status-success__divider' />
+                    <Divider color='#d6dadb' /> {/* --color-grey-5 */}
                 </React.Fragment>
             )}
         </React.Fragment>

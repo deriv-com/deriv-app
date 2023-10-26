@@ -1595,7 +1595,7 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
-            if (this.root_store.client.loginid && Object.keys(this.root_store.client.accounts || {}).length) {
+            if (this.root_store.client.is_logged_in) {
                 return WS.authorized.activeSymbols('brief');
             }
             return WS.activeSymbols('brief');

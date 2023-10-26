@@ -192,6 +192,7 @@
             padding: 0.5rem;
             width: 50%;
             display: inline-block;
+            vertical-align: middle;
             &.full-width {
                 width: 100%;
             }
@@ -275,6 +276,7 @@
             &__leading-icon {
                 top: 1.6rem;
                 left: 1.6rem;
+
                 .dc-icon {
                     margin-right: 0.6rem;
 
@@ -400,6 +402,26 @@
             background: transparent;
             margin-bottom: -1rem;
             justify-content: center;
+        }
+    }
+    &__checkbox {
+        height: var(--input-height);
+        background: var(--general-main-1);
+        border-radius: 0.4rem;
+        display: flex;
+        align-items: center;
+        &__container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: calc(var(--input-height) - 0.5rem);
+            width: 100%;
+            padding: 0 2.4rem 0 1.6rem;
+            .dc-checkbox {
+                .dc-text {
+                    font-weight: bold;
+                }
+            }
         }
     }
 }

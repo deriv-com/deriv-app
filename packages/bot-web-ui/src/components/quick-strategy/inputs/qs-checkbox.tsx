@@ -29,16 +29,18 @@ const QSCheckbox: React.FC<TQSCheckbox> = observer(({ name, label, description, 
             {({ field }: FieldProps) => {
                 return (
                     <div className={classNames('qs__form__field', { 'full-width': fullwidth })}>
-                        <div className='qs__input-label'>
-                            <Checkbox {...field} label={label} onChange={handleChange} checked={!!values[name]} />
-                            <span>
-                                <Popover
-                                    message={description}
-                                    zIndex='9999'
-                                    alignment={is_mobile ? 'bottom' : 'right'}
-                                    icon='info'
-                                />
-                            </span>
+                        <div className='qs__checkbox'>
+                            <div className='qs__checkbox__container'>
+                                <Checkbox {...field} label={label} onChange={handleChange} checked={!!values[name]} />
+                                <span>
+                                    <Popover
+                                        message={description}
+                                        zIndex='9999'
+                                        alignment={is_mobile ? 'bottom' : 'right'}
+                                        icon='info'
+                                    />
+                                </span>
+                            </div>
                         </div>
                     </div>
                 );

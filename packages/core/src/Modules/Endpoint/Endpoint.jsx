@@ -115,7 +115,7 @@ const Endpoint = () => {
                         </Text>
                     </div>
 
-                    <InputField name='server' label='Server' hint='e.g. frontend.binaryws.com' />
+                    <InputField name='server' label='Server' hint='e.g. frontend.derivws.com' />
                     <InputField
                         name='app_id'
                         label='OAuth App ID'

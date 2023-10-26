@@ -20,7 +20,8 @@ import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
-    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour } = dashboard;
+    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour, setTourDialogVisibility } =
+        dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
@@ -57,6 +58,10 @@ const Dashboard = observer(() => {
     }, []);
 
     React.useEffect(() => {
+        if (is_open) {
+            setTourDialogVisibility(false);
+        }
+
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
             if (is_mobile) handleTabChange(Number(active_hash_tab));

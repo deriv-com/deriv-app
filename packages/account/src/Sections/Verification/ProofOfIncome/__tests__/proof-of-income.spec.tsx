@@ -71,10 +71,12 @@ describe('ProofOfIncome', () => {
 
         expect(screen.getByText('MockedDemoMessage')).toBeInTheDocument();
     });
+
     it('Should redirect if ProofOfIncome is not required ', async () => {
         componentTestRender(mock_tore);
         expect(await screen.findByText('Redirect')).toBeInTheDocument();
     });
+
     it('Should render ProofOfIncome form when it is required', async () => {
         const mocked_get_account_status_for_poinc_required = {
             authentication: {
@@ -116,6 +118,7 @@ describe('ProofOfIncome', () => {
         expect(button).toHaveTextContent('Save and submit');
         expect(button).toBeDisabled();
     });
+
     it('Should render ProofOfIncome and upload the document successfully', async () => {
         const mocked_get_account_status_for_poinc_required = {
             authentication: {
@@ -166,7 +169,6 @@ describe('ProofOfIncome', () => {
             expect(file_input?.files?.[0]).toBe(file);
             expect(file_input.files).toHaveLength(1);
             expect(button).toBeEnabled();
-            userEvent.click(button);
         });
     });
 });

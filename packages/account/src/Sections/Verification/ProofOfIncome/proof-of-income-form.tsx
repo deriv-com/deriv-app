@@ -58,7 +58,6 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
         values: TInitialValues,
         { setStatus, setSubmitting }: FormikHelpers<TInitialValues>
     ) => {
-        setStatus({ msg: '' });
         const uploading_value = poinc_documents_list.find(doc => doc.text === values.document_type)?.value ?? '';
 
         if (uploading_value) {

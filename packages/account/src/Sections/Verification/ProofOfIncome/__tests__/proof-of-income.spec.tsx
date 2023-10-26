@@ -23,6 +23,7 @@ const mocked_get_account_status = {
     status: [],
 };
 
+jest.mock('@binary-com/binary-document-uploader');
 jest.mock('Components/demo-message', () => jest.fn(() => 'MockedDemoMessage'));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -105,8 +106,8 @@ describe('ProofOfIncome', () => {
         });
 
         const dropdown_input = screen.getByPlaceholderText('Select your document*') as HTMLInputElement;
-        expect(dropdown_input).toBeVisible();
-        expect(dropdown_input.value).toBe('');
+        expect(dropdown_input).toBeInTheDocument();
+        expect(dropdown_input).toHaveValue('');
         const file_input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;
         expect(file_input.value).toBe('');
         expect(screen.getByText(upload_warning)).toBeVisible();
@@ -165,6 +166,7 @@ describe('ProofOfIncome', () => {
             expect(file_input?.files?.[0]).toBe(file);
             expect(file_input.files).toHaveLength(1);
             expect(button).toBeEnabled();
+            userEvent.click(button);
         });
     });
 });

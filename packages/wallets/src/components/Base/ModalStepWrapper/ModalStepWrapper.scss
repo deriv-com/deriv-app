@@ -3,7 +3,6 @@
     border-radius: 0.8rem;
 
     @include mobile {
-        // height: 100vh;
         height: calc(100vh - 40px);
         width: 100vw;
         margin: 0;

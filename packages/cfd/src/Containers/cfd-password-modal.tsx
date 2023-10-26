@@ -812,7 +812,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const should_show_migration_success =
         !has_cfd_error && is_mt5_migration_modal_enabled && is_cfd_success_dialog_enabled && is_password_modal_exited;
-    if (should_show_migration_success) {
+
+    if (should_show_success || should_show_migration_success) {
         setMT5MigrationModalWaitingOnOtherModals(true);
     }
 

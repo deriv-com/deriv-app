@@ -60,7 +60,7 @@ const virtualAccountTabs = [
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
-    const activeTabRef = useRef<HTMLDivElement>(null);
+    const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
@@ -126,7 +126,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                     {tabs.map(tab => {
                         const isActiveTab = location.pathname === `/wallets/cashier/${tab.path}`;
                         return (
-                            <div
+                            <button
                                 className={`wallets-cashier-header__tab ${
                                     isActiveTab ? 'wallets-cashier-header__tab--active' : ''
                                 }`}
@@ -153,7 +153,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 >
                                     {tab.text}
                                 </WalletText>
-                            </div>
+                            </button>
                         );
                     })}
                 </section>

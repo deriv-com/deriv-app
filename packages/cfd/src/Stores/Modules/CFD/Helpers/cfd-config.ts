@@ -1,5 +1,4 @@
 import { localize } from '@deriv/translations';
-import { Jurisdiction } from '@deriv/shared';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;

@@ -6,6 +6,8 @@ import { TradingAccountCard } from '../../../../../components/TradingAccountCard
 import { MarketTypeToIconMapper, MarketTypeToTitleMapper } from '../../../constants';
 import { THooks } from '../../../../../types';
 import './AddedMT5AccountsList.scss';
+import { useModal } from '../../../../../components/ModalProvider';
+import { MT5TradeModal } from '../../../modals';
 
 type TProps = {
     account: THooks.MT5AccountsList;
@@ -14,6 +16,8 @@ type TProps = {
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
+    const { show } = useModal();
+
     return (
         <TradingAccountCard
             leading={() => (
@@ -28,7 +32,14 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         text='Transfer'
                         variant='outlined'
                     />
-                    <WalletButton text='Open' />
+                    <WalletButton
+                        onClick={() =>
+                            show(
+                                <MT5TradeModal marketType={account.market_type || 'all'} platform={account.platform} />
+                            )
+                        }
+                        text='Open'
+                    />
                 </div>
             )}
         >

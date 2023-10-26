@@ -27,18 +27,30 @@ const AppToButtonTextMapper = {
     windows: 'Download',
 };
 
-type TMT5TradeLinkProps = {
-    app: keyof typeof AppToIconMapper;
+const AppToLinkMapper = {
+    windows: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
+    linux: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
+    macos: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
 };
 
-const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app }) => {
+type TMT5TradeLinkProps = {
+    app: keyof typeof AppToIconMapper;
+    webtraderUrl?: string;
+};
+
+const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app, webtraderUrl = '' }) => {
     return (
         <div className='wallets-mt5-trade-link'>
             <div className='wallets-mt5-trade-link--left'>
                 <div className='wallets-mt5-trade-link--left-icon'>{AppToIconMapper[app]}</div>
                 <WalletText size='sm'>{AppToTitleMapper[app]}</WalletText>
             </div>
-            <WalletButton size='sm' text={AppToButtonTextMapper[app]} variant='outlined' />
+            <WalletButton
+                onClick={() => window.open(app === 'web' ? webtraderUrl : AppToLinkMapper[app])}
+                size='sm'
+                text={AppToButtonTextMapper[app]}
+                variant='outlined'
+            />
         </div>
     );
 };

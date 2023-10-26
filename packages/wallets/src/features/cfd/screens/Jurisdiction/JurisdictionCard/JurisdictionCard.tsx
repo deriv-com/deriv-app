@@ -30,13 +30,13 @@ const verificationIconsMapper: Record<string, JSX.Element> = {
 const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisdiction, onSelect }) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
-    const { modalState } = useModal();
+    const { getModalState } = useModal();
 
     const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = useMemo<TJurisdictionCardItems>(
         () => getJurisdictionContents()[jurisdiction],
         [jurisdiction]
     );
-    const marketType = modalState?.marketType || 'all';
+    const marketType = getModalState('marketType') || 'all';
     const rows = contents[marketType] || [];
 
     const parseDescription = (row: TJurisdictionCardSection) => {

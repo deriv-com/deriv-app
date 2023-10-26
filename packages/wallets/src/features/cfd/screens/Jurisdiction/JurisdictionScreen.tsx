@@ -12,13 +12,12 @@ type TJurisdictionScreenProps = {
 };
 
 const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction, setSelectedJurisdiction }) => {
-    const { modalState } = useModal();
+    const { getModalState } = useModal();
     const { data, isLoading } = useAvailableMT5Accounts();
+    const marketType = getModalState('marketType');
     const jurisdictions = useMemo(
-        () =>
-            data?.filter(account => account.market_type === modalState?.marketType).map(account => account.shortcode) ||
-            [],
-        [data, modalState?.marketType]
+        () => data?.filter(account => account.market_type === marketType).map(account => account.shortcode) || [],
+        [data, marketType]
     );
 
     if (isLoading) return <WalletText>Loading...</WalletText>;

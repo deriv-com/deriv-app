@@ -9,12 +9,12 @@ import { MT5PasswordModal } from '..';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
-    const { modalState, show } = useModal();
+    const { getModalState, show } = useModal();
     const { isLoading } = useAvailableMT5Accounts();
     const { isMobile } = useDevice();
 
-    const marketType = modalState?.marketType || 'all';
-    const platform = modalState?.platform || 'mt5';
+    const marketType = getModalState('marketType') || 'all';
+    const platform = getModalState('platform') || 'mt5';
 
     const capitalizedMarketType = MarketTypeToTitleMapper[marketType];
 

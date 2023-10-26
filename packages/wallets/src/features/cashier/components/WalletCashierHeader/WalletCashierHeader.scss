@@ -1,5 +1,8 @@
 .wallets-cashier-header {
+    width: 100%;
+    max-width: 128rem;
     height: 16rem;
+    margin: 0 auto;
     padding-top: 2.4rem;
     position: relative;
     overflow: hidden;
@@ -9,7 +12,7 @@
     gap: 1.6rem;
 
     @include mobile {
-        padding-top: 0rem;
+        padding-top: 0;
         height: fit-content;
     }
 

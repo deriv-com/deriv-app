@@ -6,11 +6,10 @@ import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../.
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
 import CloseIcon from '../../../../public/images/close-icon.svg';
-import IcCashierAdd from '../../../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../../../public/images/ic-cashier-transfer.svg';
-import IcCashierWithdrawal from '../../../../public/images/ic-cashier-withdrawal.svg';
-import ResetBalance from '../../../../public/images/plus-thin.svg';
+import WithdrawMinus from '../../../../public/images/minus.svg';
+import DepositPlus from '../../../../public/images/plus-thin.svg';
 import './WalletCashierHeader.scss';
 
 type TProps = {
@@ -19,12 +18,12 @@ type TProps = {
 
 const realAccountTabs = [
     {
-        icon: <IcCashierAdd />,
+        icon: <DepositPlus />,
         path: 'deposit',
         text: 'Deposit',
     },
     {
-        icon: <IcCashierWithdrawal />,
+        icon: <WithdrawMinus />,
         path: 'withdraw',
         text: 'Withdraw',
     },
@@ -52,7 +51,7 @@ const virtualAccountTabs = [
         text: 'Transactions',
     },
     {
-        icon: <ResetBalance />,
+        icon: <DepositPlus />,
         path: 'reset-balance',
         text: 'Reset balance',
     },

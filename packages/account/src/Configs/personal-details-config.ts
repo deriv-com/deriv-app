@@ -185,6 +185,11 @@ export const personal_details_config = ({
             supported_in: ['svg'],
             rules: [],
         },
+        confirmation_checkbox: {
+            default_value: false,
+            supported_in: ['svg'],
+            rules: [],
+        },
     };
 
     // Need to check if client is high risk (only have SVG i.e. China & Russia)

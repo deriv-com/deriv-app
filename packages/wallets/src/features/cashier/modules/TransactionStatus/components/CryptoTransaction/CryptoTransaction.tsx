@@ -26,7 +26,9 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     <div
                         className={classNames(
                             'wallets-crypto-transaction__status__dot',
-                            `wallets-crypto-transaction__status__dot--${transaction.statusColor}`
+                            `wallets-crypto-transaction__status__dot--${transaction.status_code
+                                .toLowerCase()
+                                .replace('_', '-')}`
                         )}
                     />
                     <WalletText lineHeight='2xs' size='2xs'>

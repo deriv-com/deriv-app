@@ -30,15 +30,24 @@
             height: 0.4rem;
             border-radius: 0.2rem;
 
-            &--warning {
+            &--pending,
+            &--locked,
+            &--performing-blockchain-txn,
+            &--processing,
+            &--reverting,
+            &--verified {
                 background: var(--status-warning, #ffad3a);
             }
 
-            &--successful {
+            &--confirmed,
+            &--sent {
                 background: var(--status-success, #4bb4b3);
             }
 
-            &--unsuccessful {
+            &--error,
+            &--cancelled,
+            &--rejected,
+            &--reverted {
                 background: var(--status-danger, #ec3f3f);
             }
         }

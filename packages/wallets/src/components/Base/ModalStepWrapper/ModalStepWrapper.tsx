@@ -6,18 +6,21 @@ import { WalletText } from '../WalletText';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
-    renderFooter: () => React.ReactNode;
+    renderFooter?: () => React.ReactNode;
     shouldFixedFooter?: boolean;
-    title: string;
+    shouldHideHeader?: boolean;
+    title?: string;
 };
 
 const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     children,
     renderFooter,
     shouldFixedFooter = true,
+    shouldHideHeader = false,
     title,
 }) => {
     const { hide } = useModal();
+    const hasRenderFooter = typeof renderFooter === 'function';
 
     return (
         <div
@@ -25,17 +28,21 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
                 'wallets-modal-step-wrapper--fixed': shouldFixedFooter,
             })}
         >
-            <div className='wallets-modal-step-wrapper__header'>
-                <WalletText size='md' weight='bold'>
-                    {title}
-                </WalletText>
-                <CloseIcon className='wallets-modal-step-wrapper__header--close-icon' onClick={hide} />
-            </div>
+            {!shouldHideHeader && (
+                <div className='wallets-modal-step-wrapper__header'>
+                    {title && <WalletText weight='bold'>{title}</WalletText>}
+                    <CloseIcon className='wallets-modal-step-wrapper__header-close-icon' onClick={hide} />
+                </div>
+            )}
             <div className='wallets-modal-step-wrapper__body'>
                 {children}
-                {!shouldFixedFooter && <div className='wallets-modal-step-wrapper__footer'>{renderFooter()}</div>}
+                {!shouldFixedFooter && hasRenderFooter && (
+                    <div className='wallets-modal-step-wrapper__footer'>{renderFooter()}</div>
+                )}
             </div>
-            {shouldFixedFooter && <div className='wallets-modal-step-wrapper__footer'>{renderFooter()}</div>}
+            {shouldFixedFooter && hasRenderFooter && (
+                <div className='wallets-modal-step-wrapper__footer'>{renderFooter()}</div>
+            )}
         </div>
     );
 };

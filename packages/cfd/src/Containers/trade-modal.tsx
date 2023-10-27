@@ -53,13 +53,11 @@ const PlatformIconsAndDescriptions = (
                         ]}
                     />
                 </Text>
-                {platform !== CFD_PLATFORMS.CTRADER
-                    ? (mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
-                          <Text color='less-prominent' size='xxxs' line_height='xxxs'>
-                              {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
-                          </Text>
-                      )
-                    : ''}
+                {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
+                    <Text color='less-prominent' size='xxxs' line_height='xxxs'>
+                        {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
+                    </Text>
+                )}
             </div>
         </React.Fragment>
     );

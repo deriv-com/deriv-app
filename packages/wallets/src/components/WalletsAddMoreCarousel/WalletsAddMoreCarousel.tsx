@@ -8,7 +8,7 @@ import { WalletsAddMoreLoader } from '../SkeletonLoader';
 import WalletsAddMoreCard from '../WalletsAddMoreCard';
 import './WalletsAddMoreCarousel.scss';
 
-const WalletsAddMoreCarousel = () => {
+const WalletsAddMoreCarousel: React.FC = () => {
     const { isDesktop, isMobile } = useDevice();
     const { data: availableWallets, isLoading } = useAvailableWallets();
     const [walletsAddMoreEmblaRef, walletsAddMoreEmblaAPI] = useEmblaCarousel({

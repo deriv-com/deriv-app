@@ -5,7 +5,7 @@ import NoWalletIcon from '../../public/images/no-wallet.svg';
 import { WalletButton, WalletText } from '../Base';
 import './WalletNoWalletFoundState.scss';
 
-const WalletNoWalletFoundState = () => {
+const WalletNoWalletFoundState: React.FC = () => {
     const { isMobile } = useDevice();
     const history = useHistory();
 

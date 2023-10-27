@@ -283,7 +283,12 @@ const CreatePassword = ({
                             width='122'
                             height='108'
                         />
-                        <Text size='s' weight='bold' className='cfd-password-modal__create-password-title'>
+                        <Text
+                            size='s'
+                            align='center'
+                            weight='bold'
+                            className='cfd-password-modal__create-password-title'
+                        >
                             <Localize
                                 i18n_default_text='Create a {{platform}} password'
                                 values={{
@@ -476,12 +481,13 @@ const CFDPasswordForm = ({
         );
     }
 
-    const accountTitle = () => {
+    const accountTitle = (category: string) => {
         switch (platform) {
             case 'ctrader':
             case 'derivez':
-            case 'derivx':
                 return 'CFD';
+            case 'dxtrade':
+                return category === 'real' ? 'Real' : '';
             default:
                 return account_title;
         }
@@ -526,7 +532,9 @@ const CFDPasswordForm = ({
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
                                             platform_name: getCFDPlatformNames(platform),
-                                            account: !show_eu_related_content ? accountTitle() : '',
+                                            account: !show_eu_related_content
+                                                ? accountTitle(account_type.category)
+                                                : '',
                                             jurisdiction_shortcode: showJuristiction(),
                                         }}
                                     />
@@ -537,7 +545,7 @@ const CFDPasswordForm = ({
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
                                             platform_name: getCFDPlatformNames(platform),
-                                            account: accountTitle(),
+                                            account: accountTitle(account_type.category),
                                         }}
                                     />
                                 )}
@@ -868,7 +876,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         }}
                         components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
                     />
-                    {platform === CFD_PLATFORMS.DXTRADE ? (
+                    {platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
                     ) : (
                         <ReviewMessageForMT5

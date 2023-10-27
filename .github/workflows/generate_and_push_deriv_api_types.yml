@@ -60,7 +60,7 @@ jobs:
       
       - name: Checkout repo
         id: step4
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
           ref: master

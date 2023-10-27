@@ -10,7 +10,7 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
-import platform_config from 'App/Constants/platform-config';
+import platform_config from 'App/Constants/platform-config.ts';
 import { withRouter } from 'react-router-dom';
 
 const DefaultHeader = ({

@@ -391,7 +391,7 @@ const DMT5CompareModalContent = observer(
                         toggleCFDVerificationModal();
                     }
                     break;
-                case 'derivx':
+                case 'dxtrade':
                     setAppstorePlatform(CFD_PLATFORMS.DXTRADE);
                     openPasswordModal(type_of_account);
                     break;

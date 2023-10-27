@@ -6,7 +6,7 @@ import ContractTypeDescriptionVideo from '../contract-type-description-video';
 import { TCoreStores } from '@deriv/stores/types';
 
 const default_mocked_props = {
-    selected_contract_type: 'vanilla',
+    selected_contract_type: 'vanillalongcall',
     data_testid: 'dt_description_video',
 };
 
@@ -33,5 +33,14 @@ describe('<ContractTypeDescriptionVideo />', () => {
         render(mockContractTypeDescriptionVideo(mock_root_store, default_mocked_props));
 
         expect(screen.getByTestId(/description_video/i)).toBeInTheDocument();
+    });
+    it('should render the component with video of proper width and height if it is mobile', () => {
+        const mock_root_store = mockStore({ ui: { is_mobile: true } });
+        render(mockContractTypeDescriptionVideo(mock_root_store, default_mocked_props));
+        const video = screen.getByTestId(/description_video/i);
+
+        expect(video).toBeInTheDocument();
+        expect(video).toHaveAttribute('width', '328');
+        expect(video).toHaveAttribute('height', '184.5');
     });
 });

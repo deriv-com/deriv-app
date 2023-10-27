@@ -1,14 +1,21 @@
 import React from 'react';
+import { THooks } from '../../types';
+import { WalletText } from '../Base';
 import './WalletListCardIBalance.scss';
 
 type TProps = {
-    balance: string;
+    balance: THooks.WalletAccountsList['display_balance'];
 };
 
 const WalletListCardIBalance: React.FC<TProps> = ({ balance }) => (
     <div className='wallets-balance__container'>
-        <div className='wallets-balance__title'>Wallet balance</div>
-        <div className='wallets-balance__value'>{balance}</div>
+        <WalletText align='right' color='primary' size='xs'>
+            Wallet balance
+        </WalletText>
+
+        <WalletText align='right' size='xl' weight='bold'>
+            {balance}
+        </WalletText>
     </div>
 );
 

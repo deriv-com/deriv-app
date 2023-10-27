@@ -4,13 +4,14 @@ import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } fr
 import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
-import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
+import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
-import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements.jsx';
+import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
+import ToolbarWidgetsBeta from '../../SmartChartBeta/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
@@ -44,6 +45,7 @@ const Trade = observer(() => {
         prepareTradeStore,
         setContractTypes,
         setMobileDigitView,
+        setIsDigitsWidgetActive,
         show_digits_stats,
         is_accumulator,
         symbol,
@@ -67,7 +69,7 @@ const Trade = observer(() => {
     const [try_open_markets, setTryOpenMarkets] = React.useState(false);
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
-    const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
+    const [swipe_index, setSwipeIndex] = React.useState(0);
     const charts_ref = React.useRef();
 
     const open_market = React.useMemo(() => {
@@ -124,6 +126,7 @@ const Trade = observer(() => {
     const onChangeSwipeableIndex = index => {
         setMobileDigitView(index === 0);
         setIsDigitsWidgetActive(index === 0);
+        setSwipeIndex(index);
     };
 
     const onTryOtherMarkets = async () => {
@@ -142,11 +145,10 @@ const Trade = observer(() => {
                 open_market={open_market}
                 open={try_synthetic_indices || try_open_markets}
                 charts_ref={charts_ref}
-                is_digits_widget_active={is_digits_widget_active}
                 {...params}
             />
         ),
-        [open_market, try_synthetic_indices, try_open_markets, charts_ref, is_digits_widget_active]
+        [open_market, try_synthetic_indices, try_open_markets]
     );
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
@@ -200,6 +202,7 @@ const Trade = observer(() => {
                                 is_chart_loading ||
                                 should_show_active_symbols_loading
                             }
+                            is_swipe_disabled={swipe_index === 1}
                             className={classNames({ 'vanilla-trade-chart': is_vanilla })}
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
@@ -243,9 +246,9 @@ export default Trade;
 // CHART (ChartTrade)--------------------------------------------------------
 
 /* eslint-disable */
-import { SmartChart } from 'Modules/SmartChart';
+import SmartChartSwitcher from './smart-chart-switcher.jsx';
 
-const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
+const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChartSwitcher innerRef={ref} {...props} />);
 
 // ChartMarkers --------------------------
 const ChartMarkers = observer(config => {
@@ -276,14 +279,15 @@ const ChartTrade = observer(props => {
         accumulator_contract_barriers_data,
         chart_type,
         granularity,
+        markers_array,
         has_crossed_accu_barriers,
         updateGranularity,
         updateChartType,
     } = contract_trade;
     const { all_positions } = portfolio;
-    const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
+    const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on, is_positions_drawer_on } = ui;
     const { is_socket_opened, current_language } = common;
-    const { currency, should_show_eu_content } = client;
+    const { currency, is_beta_chart, should_show_eu_content } = client;
     const {
         chartStateChange,
         is_trade_enabled,
@@ -300,7 +304,6 @@ const ChartTrade = observer(props => {
         wsSubscribe,
         active_symbols,
         has_alternative_source,
-        refToAddTick,
     } = useTraderStore();
 
     const settings = {
@@ -350,6 +353,7 @@ const ChartTrade = observer(props => {
         <SmartChartWithRef
             ref={charts_ref}
             barriers={barriers}
+            contracts_array={markers_array}
             bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={isMobile() ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
@@ -384,21 +388,28 @@ const ChartTrade = observer(props => {
             topWidgets={is_trade_enabled ? topWidgets : null}
             isConnectionOpened={is_socket_opened}
             clearChart={false}
-            toolbarWidget={() => (
-                <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
-            )}
+            toolbarWidget={() => {
+                if (is_beta_chart) {
+                    return (
+                        <ToolbarWidgetsBeta updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                    );
+                } else
+                    return <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />;
+            }}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
             shouldFetchTradingTimes={!end_epoch}
             hasAlternativeSource={has_alternative_source}
-            refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
             should_zoom_out_on_yaxis={is_accumulator}
             yAxisMargin={{
                 top: isMobile() ? 76 : 106,
             }}
+            isLive={true}
+            leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
+            is_beta={is_beta_chart}
         >
-            <ChartMarkers />
+            {!is_beta_chart && <ChartMarkers />}
             {is_accumulator && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}
@@ -410,6 +421,7 @@ const ChartTrade = observer(props => {
                         getDecimalPlaces(currency) <= 2
                     }
                     symbol={symbol}
+                    is_beta_chart={is_beta_chart}
                 />
             )}
         </SmartChartWithRef>

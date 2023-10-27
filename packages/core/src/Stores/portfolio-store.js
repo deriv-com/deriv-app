@@ -11,6 +11,7 @@ import {
     getCurrentTick,
     getDisplayStatus,
     WS,
+    filterDisabledPositions,
     formatPortfolioPosition,
     contractCancelled,
     contractSold,
@@ -22,6 +23,7 @@ import {
     TURBOS,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
+import { RudderStack, getRudderstackConfig } from '@deriv/analytics';
 import { ChartBarrierStore } from './chart-barrier-store';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
@@ -131,6 +133,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         if (response.portfolio.contracts) {
             this.positions = response.portfolio.contracts
+                .filter(filterDisabledPositions)
                 .map(pos => formatPortfolioPosition(pos, this.root_store.active_symbols.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
 
@@ -322,6 +325,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     handleSell(response) {
+        const { action_names, event_names, form_names, subform_names } = getRudderstackConfig();
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
             const i = this.getPositionIndexById(response.echo_req.sell);
@@ -343,6 +347,12 @@ export default class PortfolioStore extends BaseStore {
             this.root_store.notifications.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );
+
+            RudderStack.track(event_names.reports, {
+                action: action_names.close_contract,
+                form_name: form_names.default,
+                subform_name: subform_names.open_positions,
+            });
         }
     }
 

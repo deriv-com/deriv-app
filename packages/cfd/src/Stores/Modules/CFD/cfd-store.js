@@ -1,6 +1,6 @@
 import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS, Jurisdiction } from '@deriv/shared';
-import BaseStore from 'Stores/base-store';
+import BaseStore from '../../base-store';
 import { getDxCompanies, getMtCompanies, getDerivezCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
@@ -294,14 +294,15 @@ export default class CFDStore extends BaseStore {
                 this.demoCFDSignup();
             }
         } else if (platform === CFD_PLATFORMS.CTRADER) {
+            this.setJurisdictionSelectedShortcode('svg');
             if (this.account_type.category === 'demo') {
-                this.setJurisdictionSelectedShortcode('svg');
                 this.setIsAccountBeingCreated(true);
             }
             const account_creation_values = {
                 platform,
                 account_type: this.account_type.category,
                 market_type: this.account_type.type,
+                company: this.jurisdiction_selected_shortcode,
             };
             const response = await this.openCFDAccount(account_creation_values);
             if (!response.error) {

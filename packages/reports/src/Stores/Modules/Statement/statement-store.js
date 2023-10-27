@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, runInAction, makeObservable, override } from 'mobx';
-import { toMoment, WS } from '@deriv/shared';
+import { filterDisabledPositions, toMoment, WS } from '@deriv/shared';
 
 import { formatStatementTransaction } from './Helpers/format-response';
 import getDateBoundaries from '../Profit/Helpers/format-request';
@@ -113,13 +113,15 @@ export default class StatementStore extends BaseStore {
             return;
         }
 
-        const formatted_transactions = response.statement.transactions.map(transaction =>
-            formatStatementTransaction(
-                transaction,
-                this.root_store.client.currency,
-                this.root_store.active_symbols.active_symbols
+        const formatted_transactions = response.statement.transactions
+            .map(transaction =>
+                formatStatementTransaction(
+                    transaction,
+                    this.root_store.client.currency,
+                    this.root_store.active_symbols.active_symbols
+                )
             )
-        );
+            .filter(filterDisabledPositions);
 
         if (should_load_partially) {
             this.data = [...formatted_transactions, ...this.data];

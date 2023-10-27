@@ -1,22 +1,24 @@
 import React from 'react';
+import { THooks } from '../../types';
+import { WalletText } from '../Base';
 import './WalletListCardBadge.scss';
 
 type TProps = {
-    is_demo?: boolean;
-    label: string;
+    isDemo?: THooks.WalletAccountsList['is_virtual'];
+    label?: THooks.WalletAccountsList['landing_company_name'];
 };
 
-const WalletListCardBadge: React.FC<TProps> = ({ is_demo, label }) => {
-    const className = is_demo ? 'wallets-list-card__badge--demo' : 'wallets-list-card__badge';
+const WalletListCardBadge: React.FC<TProps> = ({ isDemo, label }) => {
+    const className = isDemo ? 'wallets-list-card__badge--demo' : 'wallets-list-card__badge';
 
-    const labelStyle: React.CSSProperties = {
-        color: is_demo ? 'white' : 'black',
-    };
+    const formattedLabel = label === 'virtual' ? 'Demo' : label?.toUpperCase() || 'SVG';
 
     return (
         <div className={className}>
             <div className='wallets-list-card__name'>
-                <p style={labelStyle}>{label}</p>
+                <WalletText color={isDemo ? 'white' : 'black'} size='2xs' weight='bold'>
+                    {formattedLabel}
+                </WalletText>
             </div>
         </div>
     );

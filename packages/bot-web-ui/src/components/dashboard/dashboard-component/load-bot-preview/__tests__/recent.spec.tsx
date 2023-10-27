@@ -1,18 +1,15 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
-import { isMobile } from '@deriv/shared';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import RecentComponent from '../recent';
-import DashboardStore from 'Stores/dashboard-store';
-import LoadModalStore from 'Stores/load-modal-store';
-import SaveModalStore from 'Stores/save-modal-store';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
+    isMobile: jest.fn(() => true),
 }));
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -36,24 +33,11 @@ const dashboard_strategies = [
 describe('RecentComponent', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
-    beforeAll(() => {
+    beforeEach(() => {
         const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
-        mock_DBot_store = {
-            ...mock_DBot_store,
-            dashboard: {
-                ...mock_DBot_store.dashboard,
-                setStrategySaveType: jest.fn(),
-                is_dark_mode: false,
-            } as unknown as DashboardStore,
-            load_modal: {
-                ...mock_DBot_store.load_modal,
-                setDashboardStrategies: jest.fn(),
-                getDashboardStrategies: jest.fn(),
-                dashboard_strategies,
-            } as unknown as LoadModalStore,
-        };
+        mock_DBot_store?.load_modal.setDashboardStrategies(dashboard_strategies);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
@@ -66,8 +50,8 @@ describe('RecentComponent', () => {
 
     it('Should display the list of strategies', () => {
         render(<RecentComponent />, { wrapper });
-        const recent_сomponent = screen.getByText('Your bots:');
 
+        const recent_сomponent = screen.getByText('Your bots:');
         const strategy_one = screen.getByText('Strategy1');
         const strategy_two = screen.getByText('Strategy2');
 
@@ -77,7 +61,6 @@ describe('RecentComponent', () => {
     });
 
     it('Should display text size equal to "xs" when using the mobile version', () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(true);
         render(<RecentComponent />, { wrapper });
 
         const load_strategy_label = screen.getByText('Your bots:');
@@ -87,16 +70,11 @@ describe('RecentComponent', () => {
     });
 
     it('Should not display anything if the list of strategies is empty', () => {
-        if (mock_DBot_store) {
-            mock_DBot_store = {
-                ...mock_DBot_store,
-                load_modal: { ...mock_DBot_store.load_modal, dashboard_strategies: [] } as LoadModalStore,
-            };
-        }
+        mock_DBot_store?.load_modal.setDashboardStrategies([]);
+
         render(<RecentComponent />, { wrapper });
 
         const recent_component = screen.queryByText('Your bots:');
-
         expect(recent_component).not.toBeInTheDocument();
     });
 });

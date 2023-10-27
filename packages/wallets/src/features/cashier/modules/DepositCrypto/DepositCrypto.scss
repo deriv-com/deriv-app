@@ -1,12 +1,22 @@
 .wallets-deposit-crypto {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 2.4rem;
     position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    &__main-content {
+        display: flex;
+        flex-direction: column;
+        padding-top: 2.4rem;
+        justify-content: center;
+        gap: 2.4rem;
+        position: relative;
+    }
 
     @include mobile {
         width: 100%;
         justify-content: start;
+        padding-top: 0rem;
+        gap: 1.6rem;
     }
 }

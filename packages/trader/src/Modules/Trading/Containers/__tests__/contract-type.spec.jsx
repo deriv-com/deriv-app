@@ -12,6 +12,7 @@ const default_mock_store = {
             contract_types_list: {},
             cancellation_range_list: [],
             is_mobile_digit_view_selected: false,
+            non_available_contract_types_list: {},
             onChange: jest.fn(),
             symbol: '1HZ100V',
         },

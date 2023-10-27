@@ -25,6 +25,9 @@ describe('messageWithButtonMockProps', () => {
 
     it('should get appropriate icon when getIcon is called', () => {
         expect(getIcon('warn')).toEqual('IcAlertWarning');
+        expect(getIcon('info')).toEqual('IcAlertInfo');
+        expect(getIcon('error')).toEqual('IcAlertDanger');
+        expect(getIcon('')).toEqual('IcAlertWarning');
     });
 
     it('should render messageWithImage', () => {

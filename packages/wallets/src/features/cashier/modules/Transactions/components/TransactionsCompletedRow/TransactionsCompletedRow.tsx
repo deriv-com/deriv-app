@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
-import { useActiveWalletAccount, useTransactions } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../../../../../components/Base';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
+import { THooks } from '../../../../../../types';
 import './TransactionsCompletedRow.scss';
 
 type TProps = {
-    transaction: NonNullable<ReturnType<typeof useTransactions>['data']>[number];
+    transaction: THooks.Transactions;
 };
 
 const TransactionsCompletedRow: React.FC<TProps> = ({ transaction }) => {

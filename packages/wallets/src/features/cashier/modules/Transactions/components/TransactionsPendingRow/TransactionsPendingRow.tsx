@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
-import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
+import { THooks } from '../../../../../../types';
 import { CancelTransactionModal } from '../../../../components/CancelTransactionModal';
 import './TransactionsPendingRow.scss';
 
@@ -72,7 +73,7 @@ const statusCodeMapper = {
 };
 
 type TProps = {
-    transaction: NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
+    transaction: THooks.CryptoTransactions;
 };
 
 const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {

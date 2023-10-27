@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import OpenPositionsSVGModal from '../open-positions-svg-modal';
 
@@ -43,9 +42,7 @@ describe('<OpenPositionsSVGModal/>', () => {
     const renderComponent = ({ props = mock_props, store = store_config }) => {
         return render(
             <StoreProvider store={store}>
-                <APIProvider>
-                    <OpenPositionsSVGModal {...props} />
-                </APIProvider>
+                <OpenPositionsSVGModal {...props} />
             </StoreProvider>
         );
     };

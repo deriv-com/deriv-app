@@ -1,13 +1,25 @@
-import { getImageLocation } from '../../../public-path';
+import { getImageLocation } from '../../../../public-path';
 import { localize } from '@deriv/translations';
 
 export type TDescription = Pick<TContent, 'type' | 'content' | 'src' | 'imageclass'>;
 
-export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src'>;
+export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src' | 'tab_id'>;
 
 export type TGuideContent = Omit<TContent, 'title' | 'description'>;
 
 export type TUserGuideContent = Omit<TContent, 'title' | 'description'>;
+
+type TQuickStrateggyContent = {
+    id: string;
+    type: string;
+    content: string[];
+    description: {
+        title?: string;
+        content?: string;
+        image?: string;
+    }[];
+    tab_id: number;
+};
 
 export type TContent = {
     content?: string;
@@ -19,7 +31,9 @@ export type TContent = {
     type: string;
     url?: string;
     imageclass?: string;
+    tab_id: number;
 };
+
 export const user_guide_content: TUserGuideContent[] = [
     {
         id: 1,
@@ -27,6 +41,7 @@ export const user_guide_content: TUserGuideContent[] = [
         subtype: 'OnBoard',
         content: localize('Get started on Deriv Bot'),
         src: getImageLocation('dbot-onboard-tour.png'),
+        tab_id: 0,
     },
     {
         id: 2,
@@ -34,6 +49,7 @@ export const user_guide_content: TUserGuideContent[] = [
         subtype: 'BotBuilder',
         content: localize('Let’s build a bot!'),
         src: getImageLocation('bot-builder-tour.png'),
+        tab_id: 0,
     },
 ];
 
@@ -44,6 +60,7 @@ export const guide_content: TGuideContent[] = [
         content: localize('Deriv Bot - your automated trading partner'),
         url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
         src: getImageLocation('video_dbot.webp'),
+        tab_id: 0,
     },
 ];
 
@@ -58,6 +75,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('Where do I find the blocks I need?'),
@@ -97,6 +115,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('How do I remove blocks from the workspace?'),
@@ -108,6 +127,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('How do I create variables?'),
@@ -129,6 +149,7 @@ export const faq_content: TFaqContent[] = [
                 content: localize('3. Choose the block you want and drag it to the workspace.'),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('Do you offer pre-built trading bots on Deriv Bot?'),
@@ -140,6 +161,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('What is a quick strategy?'),
@@ -179,6 +201,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('How do I save my strategy?'),
@@ -190,6 +213,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('How do I import my own trading bot into Deriv Bot?'),
@@ -237,6 +261,7 @@ export const faq_content: TFaqContent[] = [
                 content: localize('3. Your bot will be loaded accordingly.'),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('How do I reset the workspace?'),
@@ -248,6 +273,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('How do I clear my transaction log?'),
@@ -269,6 +295,7 @@ export const faq_content: TFaqContent[] = [
                 src: getImageLocation('reset_transaction_log_message.png'),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('How do I control my losses with Deriv Bot?'),
@@ -337,6 +364,7 @@ export const faq_content: TFaqContent[] = [
                 src: getImageLocation('loss_control_restart_trade_conditions.png'),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('Can I run Deriv Bot on multiple tabs in my web browser?'),
@@ -348,6 +376,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('Can I trade cryptocurrencies on Deriv Bot?'),
@@ -357,6 +386,7 @@ export const faq_content: TFaqContent[] = [
                 content: localize("No, we don't offer cryptocurrencies on Deriv Bot."),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('Do you sell trading bots?'),
@@ -368,6 +398,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('In which countries is Deriv Bot available?'),
@@ -379,6 +410,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('If I close my web browser, will Deriv Bot continue to run?'),
@@ -388,6 +420,7 @@ export const faq_content: TFaqContent[] = [
                 content: localize('No, Deriv Bot will stop running when your web browser is closed.'),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('What are the most popular strategies for automated trading?'),
@@ -399,6 +432,7 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
     },
     {
         title: localize('How do I build a trading bot?'),
@@ -410,5 +444,58 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
+        tab_id: 2,
+    },
+];
+
+export const quick_strategy_content: TQuickStrateggyContent[] = [
+    {
+        id: 'martingale',
+        type: localize('About Martingale'),
+        content: [localize('What is Martingale strategy?'), localize('How does the Martingale strategy works?')],
+        description: [
+            {
+                title: localize('What is Martingale Strategy?'),
+                content: localize(
+                    'The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century.'
+                ),
+            },
+            {
+                title: localize('How does the Martingale Strategy work?'),
+                content: localize(
+                    'The Martingale doubles your stake after a loss and resets your stake after a win or when the pre-determined number of consecutive losses is reached. You decide your profit threshold, loss threshold, initial stake, and the number of consecutive losses before your stake resets.'
+                ),
+            },
+            {
+                image: getImageLocation('dbot-martingale-work.png'),
+            },
+            {
+                title: localize('Here’s the example when you set: '),
+                content: localize('Initial Stake: $100, Losing Streak Cycle Limit: 3 consecutive losses.'),
+            },
+            {
+                image: getImageLocation('dbot-martingale-table.png'),
+            },
+            {
+                title: localize(
+                    'Trader’s input: Profit Threshold (martingale:profitThreshold), Loss Threshold (martingale:lossThreshold), Initial Stake (martingale:initialStake), and Streak Cycle (martingale:losingstreakcycle)'
+                ),
+            },
+        ],
+        tab_id: 1,
+    },
+    {
+        id: 'dalembert',
+        type: localize("About D'Alembert"),
+        content: [localize("What is D'Alembert strategy?"), localize("How does the D'Alembert strategy works?")],
+        description: [],
+        tab_id: 1,
+    },
+    {
+        id: 'oscar-grind',
+        type: localize("About Oscar's Grind"),
+        content: [localize("What is Oscar's Grind strategy?"), localize("How does the Oscar's Grind strategy works?")],
+        description: [],
+        tab_id: 1,
     },
 ];

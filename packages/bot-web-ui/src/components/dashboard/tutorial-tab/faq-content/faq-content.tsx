@@ -4,7 +4,7 @@ import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { TDescription } from './tutorial-content';
+import { TDescription } from '../config';
 
 type TFAQContent = {
     faq_list: TFAQList[];
@@ -83,7 +83,7 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
                     {title}
                 </Text>
             ),
-            content: description.map((item, index) => (
+            content: description?.map((item, index) => (
                 <FAQ {...item} key={`faq-description-item-${item?.content}-${index}`} />
             )),
         }));

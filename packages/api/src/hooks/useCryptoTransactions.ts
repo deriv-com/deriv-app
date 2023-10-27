@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import useSubscription from '../useSubscription';
+import useActiveAccount from './useActiveAccount';
+import useAuthorize from './useAuthorize';
 import { getTruncatedString } from '@deriv/utils';
 
 type TTransaction = NonNullable<
@@ -24,6 +26,14 @@ type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type
 const useCryptoTransactions = () => {
     const { subscribe, data, ...rest } = useSubscription('cashier_payments');
     const [transactions, setTransactions] = useState<TModifiedTransaction[]>();
+
+    const {
+        data: { preferred_language },
+    } = useAuthorize();
+
+    const { data: account } = useActiveAccount();
+    const display_code = account?.currency_config?.display_code || 'USD';
+    const fractional_digits = account?.currency_config?.fractional_digits || 2;
 
     // Reset transactions data
     const resetData = useCallback(() => setTransactions(undefined), []);
@@ -63,6 +73,12 @@ const useCryptoTransactions = () => {
 
         return transactions.map(transaction => ({
             ...transaction,
+            /** Formatted amount */
+            formatted_amount: `${Intl.NumberFormat(preferred_language || 'en-US', {
+                minimumFractionDigits: fractional_digits,
+                maximumFractionDigits: fractional_digits,
+                minimumIntegerDigits: 1,
+            }).format(transaction.amount || 0)} ${display_code}`,
             /** Formatted transaction hash */
             formatted_transaction_hash: transaction.transaction_hash
                 ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })
@@ -79,7 +95,7 @@ const useCryptoTransactions = () => {
             /** Determine if the transaction is a withdrawal or not. */
             is_withdrawal: transaction.transaction_type === 'withdrawal',
         }));
-    }, [transactions]);
+    }, [display_code, fractional_digits, preferred_language, transactions]);
 
     // Sort transactions by submit time.
     const sorted_transactions = useMemo(

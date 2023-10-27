@@ -43,6 +43,11 @@
             max-height: 2rem;
             transition: opacity 0.25s ease, max-height 0.25s ease;
             gap: 0.8rem;
+
+            &--hide-details {
+                max-height: 0;
+                opacity: 0;
+            }
         }
     }
 
@@ -56,10 +61,17 @@
         }
     }
 
-    &__currency-icon > :first-child {
+    &__currency-icon {
         @include mobile {
-            max-height: 4.8rem;
-            transition: opacity 0.2s ease, max-height 0.2s ease;
+            & > :first-child {
+                max-height: 4.8rem;
+                transition: opacity 0.2s ease, max-height 0.2s ease;
+            }
+
+            &--hide-currency-icon > :first-child {
+                max-height: 0;
+                opacity: 0;
+            }
         }
     }
 
@@ -119,15 +131,5 @@
                 fill: var(--system-dark-2-general-text, #c2c2c2);
             }
         }
-    }
-
-    &__hide-details {
-        max-height: 0;
-        opacity: 0;
-    }
-
-    &__hide-currency-icon > :first-child {
-        max-height: 0;
-        opacity: 0;
     }
 }

@@ -6,10 +6,11 @@ import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../.
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
 import CloseIcon from '../../../../public/images/close-icon.svg';
+import IcCashierAdd from '../../../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../../../public/images/ic-cashier-transfer.svg';
-import WithdrawMinus from '../../../../public/images/minus.svg';
-import DepositPlus from '../../../../public/images/plus-thin.svg';
+import IcCashierWithdrawal from '../../../../public/images/ic-cashier-withdrawal.svg';
+import ResetBalance from '../../../../public/images/plus-thin.svg';
 import './WalletCashierHeader.scss';
 
 type TProps = {
@@ -18,12 +19,12 @@ type TProps = {
 
 const realAccountTabs = [
     {
-        icon: <DepositPlus />,
+        icon: <IcCashierAdd />,
         path: 'deposit',
         text: 'Deposit',
     },
     {
-        icon: <WithdrawMinus />,
+        icon: <IcCashierWithdrawal />,
         path: 'withdraw',
         text: 'Withdraw',
     },
@@ -51,7 +52,7 @@ const virtualAccountTabs = [
         text: 'Transactions',
     },
     {
-        icon: <DepositPlus />,
+        icon: <ResetBalance />,
         path: 'reset-balance',
         text: 'Reset balance',
     },
@@ -84,7 +85,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                     <div className='wallets-cashier-header__top-left-info'>
                         <div
                             className={classNames('wallets-cashier-header__details', {
-                                'wallets-cashier-header__hide-details': isMobile && hideWalletDetails,
+                                'wallets-cashier-header__details--hide-details': hideWalletDetails,
                             })}
                         >
                             <WalletText
@@ -108,7 +109,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                         {activeWallet?.wallet_currency_type && (
                             <div
                                 className={classNames('wallets-cashier-header__currency-icon', {
-                                    'wallets-cashier-header__hide-currency-icon': isMobile && hideWalletDetails,
+                                    'wallets-cashier-header__currency-icon--hide-currency-icon': hideWalletDetails,
                                 })}
                             >
                                 <WalletCardIcon size='xl' type={activeWallet?.wallet_currency_type} />

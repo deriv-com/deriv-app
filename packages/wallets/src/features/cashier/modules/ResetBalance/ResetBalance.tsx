@@ -24,7 +24,7 @@ const ResetBalance = () => {
                 }
                 icon={isResetBalanceSuccess ? <IcResetDemoBalanceDone /> : <IcResetDemoBalance />}
                 onAction={isResetBalanceSuccess ? () => history.push(`/wallets/cashier/transfer`) : resetBalance}
-                title={isResetBalanceSuccess ? 'Reset balance to 10,000.00 USD' : 'Success'}
+                title={isResetBalanceSuccess ? 'Success' : 'Reset balance'}
             />
         </div>
     );

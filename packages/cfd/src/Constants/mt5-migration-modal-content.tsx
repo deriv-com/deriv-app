@@ -13,14 +13,14 @@ const getMigrationModalDetails = (to_account: string) => [
             {
                 id: 'description2',
                 text: (
-                    <Localize i18n_default_text='You can continue trading on your existing MT5 account(s) until you close all open positions.' />
+                    <Localize i18n_default_text='You can continue to hold your current open positions in your existing MT5 account(s).' />
                 ),
             },
             {
                 id: 'description3',
                 text: (
                     <Localize
-                        i18n_default_text='New MT5 account(s) under the {{to_account}} jurisdiction will be created for future trades.'
+                        i18n_default_text='New MT5 account(s) under the {{to_account}} jurisdiction will be created for new trades.'
                         values={{ to_account }}
                     />
                 ),
@@ -39,7 +39,7 @@ const getMigrationModalDetails = (to_account: string) => [
                 id: 'description2',
                 text: (
                     <Localize
-                        i18n_default_text='New MT5 account(s) under the {{to_account}} jurisdiction will be created for future trades.'
+                        i18n_default_text='New MT5 account(s) under the {{to_account}} jurisdiction will be created for new trades.'
                         values={{ to_account }}
                     />
                 ),

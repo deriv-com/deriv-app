@@ -12,8 +12,7 @@ const MT5MigrationBackSideContent = observer(() => {
     const { ui, common } = useStore();
     const { toggleMT5MigrationModal, setMT5MigrationModalEnabled, is_mobile } = ui;
     const { setAppstorePlatform } = common;
-    const { enableCFDPasswordModal, mt5_migration_error, setJurisdictionSelectedShortcode, setAccountType } =
-        useCfdStore();
+    const { enableCFDPasswordModal, mt5_migration_error, setJurisdictionSelectedShortcode } = useCfdStore();
 
     const { getEligibleAccountToMigrate, eligible_account_to_migrate_label } = useMT5SVGEligibleToMigrate();
     const { setShowModalFrontSide } = useMT5MigrationModalContext();
@@ -28,7 +27,6 @@ const MT5MigrationBackSideContent = observer(() => {
         setAppstorePlatform(CFD_PLATFORMS.MT5);
         setJurisdictionSelectedShortcode(getEligibleAccountToMigrate());
         setMT5MigrationModalEnabled(true);
-        setAccountType({ category: 'real', type: 'financial' }); // TODO: remove hardcoded value once BE is ready
         toggleMT5MigrationModal();
         enableCFDPasswordModal();
     };

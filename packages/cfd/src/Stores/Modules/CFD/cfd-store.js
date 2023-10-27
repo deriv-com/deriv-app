@@ -307,14 +307,15 @@ export default class CFDStore extends BaseStore {
                 this.demoCFDSignup();
             }
         } else if (platform === CFD_PLATFORMS.CTRADER) {
+            this.setJurisdictionSelectedShortcode('svg');
             if (this.account_type.category === 'demo') {
-                this.setJurisdictionSelectedShortcode('svg');
                 this.setIsAccountBeingCreated(true);
             }
             const account_creation_values = {
                 platform,
                 account_type: this.account_type.category,
                 market_type: this.account_type.type,
+                company: this.jurisdiction_selected_shortcode,
             };
             const response = await this.openCFDAccount(account_creation_values);
             if (!response.error) {
@@ -377,9 +378,9 @@ export default class CFDStore extends BaseStore {
         this.is_cfd_password_modal_enabled = true;
     }
 
-    getName() {
+    getName(account_type = this.account_type) {
         const { first_name } = this.root_store.client.account_settings && this.root_store.client.account_settings;
-        const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
+        const title = this.mt5_companies[account_type?.category][account_type?.type].title;
 
         // First name is not set when user has no real account
         return first_name ? [first_name, title].join(' ') : title;
@@ -433,7 +434,7 @@ export default class CFDStore extends BaseStore {
     }
 
     requestMigrateAccount(values, shortcode, account_type) {
-        const name = this.getName();
+        const name = this.getName(account_type);
         const leverage = this.mt5_companies[account_type.category][account_type.type].leverage;
         const type_request = getAccountTypeFields(account_type);
         const { address_line_1, address_line_2, address_postcode, address_city, address_state, country_code, phone } =

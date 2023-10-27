@@ -66,7 +66,8 @@ const SVGMigrationBanner = observer(() => {
                     <Localize i18n_default_text='Upgrade now' />
                 </Button>
             </div>
-            <AppstoreBannerImage image={image} className='appstore-banner__image' />
+            <div className='appstore-banner__svg-migrate-banner-overlay' />
+            <AppstoreBannerImage image={image} class_name='appstore-banner__image' />
         </div>
     );
 });

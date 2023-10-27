@@ -2,7 +2,6 @@ import React from 'react';
 import MT5MigrationFrontSideContent from '../mt5-migration-front-side-content';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { APIProvider } from '@deriv/api';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
@@ -33,9 +32,7 @@ describe('MT5MigrationFrontSideContent', () => {
 
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock_store}>{children}</StoreProvider>
-            </APIProvider>
+            <StoreProvider store={mock_store}>{children}</StoreProvider>
         );
         // @ts-expect-error response return value is not required to have all object
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);

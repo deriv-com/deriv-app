@@ -1,27 +1,33 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuthorize, useMT5AccountsList } from '@deriv/api';
+import { useAuthorize } from '@deriv/api';
 import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
-import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
-import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';
-import SwapFreeMT5 from '../../../../../public/images/mt5-swap-free.svg';
+import { getStaticUrl } from '../../../../../helpers/urls';
+import { THooks } from '../../../../../types';
+import { MarketTypeToIconMapper, MarketTypeToTitleMapper } from '../../../constants';
 import './AddedMT5AccountsList.scss';
 
-const marketTypeToNameMapper = {
-    all: 'Swap-Free',
-    financial: 'Financial',
-    synthetic: 'Derived',
-};
-
-const marketTypeToIconMapper = {
-    all: <SwapFreeMT5 />,
-    financial: <FinancialMT5 />,
-    synthetic: <DerivedMT5 />,
-};
-
 type TProps = {
-    account: NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
+    account: THooks.MT5AccountsList;
+};
+
+const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
+    const IconToLink = () => {
+        switch (account.market_type) {
+            case 'financial':
+            case 'synthetic':
+            case 'all':
+                return window.open(getStaticUrl('/dmt5'));
+            default:
+                return window.open(getStaticUrl('/dmt5'));
+        }
+    };
+    return (
+        <div className='wallets-added-mt5__icon' onClick={() => IconToLink()}>
+            {MarketTypeToIconMapper[account.market_type || 'all']}
+        </div>
+    );
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
@@ -29,9 +35,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const history = useHistory();
     return (
         <TradingAccountCard
-            leading={() => (
-                <div className='wallets-added-mt5__icon'>{marketTypeToIconMapper[account.market_type || 'all']}</div>
-            )}
+            leading={() => <MT5AccountIcon account={account} />}
             trailing={() => (
                 <div className='wallets-added-mt5__actions'>
                     <WalletButton
@@ -48,7 +52,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             <div className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
                     <p className='wallets-added-mt5__details-title-text'>
-                        {marketTypeToNameMapper[account.market_type || 'all']}
+                        {MarketTypeToTitleMapper[account.market_type || 'all']}
                     </p>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>

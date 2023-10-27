@@ -25,13 +25,13 @@ describe('TransactionHistoryStore', () => {
     it('should cancel a crypto transaction', async () => {
         await transaction_history_store.cancelCryptoTransaction('175');
         expect(transaction_history_store.selected_crypto_transaction_id).toBeFalsy();
-        expect(transaction_history_store.is_crypto_transactions_cancel_modal_visible).toBeFalsy();
+        expect(transaction_history_store.is_transactions_crypto_cancel_modal_visible).toBeFalsy();
     });
 
     it('should not proceed with the cancellation of a crypto transaction if there is an error', async () => {
-        const spySetIsCryptoTransactionsCancelModalVisible = jest.spyOn(
+        const spySetIsTransactionsCryptoCancelModalVisible = jest.spyOn(
             transaction_history_store,
-            'setIsCryptoTransactionsCancelModalVisible'
+            'setIsTransactionsCryptoCancelModalVisible'
         );
         const spySetSelectedCryptoTransactionId = jest.spyOn(
             transaction_history_store,
@@ -44,7 +44,7 @@ describe('TransactionHistoryStore', () => {
             );
             await transaction_history_store.cancelCryptoTransaction('175');
         } catch (e) {
-            expect(spySetIsCryptoTransactionsCancelModalVisible).not.toHaveBeenCalled();
+            expect(spySetIsTransactionsCryptoCancelModalVisible).not.toHaveBeenCalled();
             expect(spySetSelectedCryptoTransactionId).not.toHaveBeenCalled();
         }
     });
@@ -55,23 +55,23 @@ describe('TransactionHistoryStore', () => {
     });
 
     it('should set crypto transactions cancel modal visibility', () => {
-        transaction_history_store.setIsCryptoTransactionsCancelModalVisible(true);
-        expect(transaction_history_store.is_crypto_transactions_cancel_modal_visible).toBe(true);
+        transaction_history_store.setIsTransactionsCryptoCancelModalVisible(true);
+        expect(transaction_history_store.is_transactions_crypto_cancel_modal_visible).toBe(true);
 
-        transaction_history_store.setIsCryptoTransactionsCancelModalVisible(false);
-        expect(transaction_history_store.is_crypto_transactions_cancel_modal_visible).toBe(false);
+        transaction_history_store.setIsTransactionsCryptoCancelModalVisible(false);
+        expect(transaction_history_store.is_transactions_crypto_cancel_modal_visible).toBe(false);
     });
 
     it('should show crypto transactions cancel modal', () => {
-        transaction_history_store.showCryptoTransactionsCancelModal('1');
+        transaction_history_store.showTransactionsCryptoCancelModal('1');
         expect(transaction_history_store.selected_crypto_transaction_id).toBe('1');
-        expect(transaction_history_store.is_crypto_transactions_cancel_modal_visible).toBe(true);
+        expect(transaction_history_store.is_transactions_crypto_cancel_modal_visible).toBe(true);
     });
 
     it('should hide crypto transactions cancel modal', () => {
-        transaction_history_store.hideCryptoTransactionsCancelModal();
+        transaction_history_store.hideTransactionsCryptoCancelModal();
         expect(transaction_history_store.selected_crypto_transaction_id).toBeFalsy();
-        expect(transaction_history_store.is_crypto_transactions_cancel_modal_visible).toBe(false);
+        expect(transaction_history_store.is_transactions_crypto_cancel_modal_visible).toBe(false);
     });
 
     it('should set selected crypto transaction status', () => {
@@ -85,15 +85,15 @@ describe('TransactionHistoryStore', () => {
     });
 
     it('should set crypto transactions status modal visibility', () => {
-        transaction_history_store.setIsCryptoTransactionsStatusModalVisible(true);
-        expect(transaction_history_store.is_crypto_transactions_status_modal_visible).toBe(true);
+        transaction_history_store.setIsTransactionsCryptoStatusModalVisible(true);
+        expect(transaction_history_store.is_transactions_crypto_status_modal_visible).toBe(true);
 
-        transaction_history_store.setIsCryptoTransactionsStatusModalVisible(false);
-        expect(transaction_history_store.is_crypto_transactions_status_modal_visible).toBe(false);
+        transaction_history_store.setIsTransactionsCryptoStatusModalVisible(false);
+        expect(transaction_history_store.is_transactions_crypto_status_modal_visible).toBe(false);
     });
 
     it('should show crypto transactions status modal', () => {
-        transaction_history_store.showCryptoTransactionsStatusModal(
+        transaction_history_store.showTransactionsCryptoStatusModal(
             'We’ve received your request and are waiting for more blockchain confirmations.',
             'In process'
         );
@@ -101,19 +101,19 @@ describe('TransactionHistoryStore', () => {
         expect(transaction_history_store.selected_crypto_status_description).toBe(
             'We’ve received your request and are waiting for more blockchain confirmations.'
         );
-        expect(transaction_history_store.is_crypto_transactions_status_modal_visible).toBe(true);
+        expect(transaction_history_store.is_transactions_crypto_status_modal_visible).toBe(true);
     });
 
     it('should hide crypto transactions status modal', () => {
-        transaction_history_store.hideCryptoTransactionsStatusModal();
-        expect(transaction_history_store.is_crypto_transactions_status_modal_visible).toBe(false);
+        transaction_history_store.hideTransactionsCryptoStatusModal();
+        expect(transaction_history_store.is_transactions_crypto_status_modal_visible).toBe(false);
     });
 
     it('should set crypto transactions visibility', () => {
-        transaction_history_store.setIsCryptoTransactionsVisible(true);
-        expect(transaction_history_store.is_crypto_transactions_visible).toBe(true);
+        transaction_history_store.setIsTransactionsCryptoVisible(true);
+        expect(transaction_history_store.is_transactions_crypto_visible).toBe(true);
 
-        transaction_history_store.setIsCryptoTransactionsVisible(false);
-        expect(transaction_history_store.is_crypto_transactions_visible).toBe(false);
+        transaction_history_store.setIsTransactionsCryptoVisible(false);
+        expect(transaction_history_store.is_transactions_crypto_visible).toBe(false);
     });
 });

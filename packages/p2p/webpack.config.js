@@ -5,7 +5,8 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
-const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const is_release =
+    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 const is_publishing = process.env.NPM_PUBLISHING_MODE === '1';
 
 module.exports = function (env) {
@@ -139,7 +140,7 @@ module.exports = function (env) {
                 minChunks: 1,
                 maxAsyncRequests: 30,
                 maxInitialRequests: 30,
-                enforceSizeThreshold: 50000,
+                maxSize: 2500000,
                 cacheGroups: {
                     defaultVendors: {
                         test: /[\\/]node_modules[\\/]/,

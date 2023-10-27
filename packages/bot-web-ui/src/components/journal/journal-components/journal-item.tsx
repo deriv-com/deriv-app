@@ -38,7 +38,7 @@ const JournalItem = ({ row, is_new_row, measure }: TJournalItemProps) => {
     const date_el = DateItem({ date, time });
 
     return (
-        <CSSTransition in={in_prop} timeout={500} classNames='list__animation'>
+        <CSSTransition in={in_prop} timeout={500} classNames='list__animation' data-testid='mock-css-transition'>
             <div className='journal__item'>
                 <div className='journal__item-content'>
                     {getJournalItemContent(message, message_type, className, extra as TJournalItemExtra, measure)}

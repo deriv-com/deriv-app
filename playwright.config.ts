@@ -30,11 +30,10 @@ export default defineConfig({
     },
 
     webServer: {
-        command: 'npm run serve core',
+        command: 'npx -y local-web-server -p 8443 --spa index.html --https -d packages/core/dist',
         url: 'https://localhost:8443',
         reuseExistingServer: true,
         ignoreHTTPSErrors: true,
-        timeout: 150 * 1000,
         stdout: 'ignore',
         stderr: 'pipe',
     },

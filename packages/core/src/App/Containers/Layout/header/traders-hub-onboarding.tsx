@@ -9,7 +9,12 @@ const TradersHubOnboarding = observer(() => {
     const history = useHistory();
     const { traders_hub, ui } = useStore();
     const { setIsOnboardingVisited } = traders_hub;
-    const { is_dark_mode_on } = ui;
+    const { is_dark_mode_on, is_mobile } = ui;
+
+    const onRedirectToOnboarding = () => {
+        history.push(routes.onboarding);
+        setIsOnboardingVisited(false);
+    };
 
     return (
         <div data-testid='dt_traders_hub_onboarding'>
@@ -26,8 +31,13 @@ const TradersHubOnboarding = observer(() => {
                         icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
                         onClick={() => {
-                            history.push(routes.onboarding);
-                            setIsOnboardingVisited(false);
+                            onRedirectToOnboarding();
+                        }}
+                        onTouchStart={(e: React.TouchEvent<SVGSVGElement>) => {
+                            e.preventDefault();
+                            if (is_mobile) {
+                                onRedirectToOnboarding();
+                            }
                         }}
                     />
                 </Popover>

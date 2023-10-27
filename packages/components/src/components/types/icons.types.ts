@@ -29,7 +29,7 @@ export type TIconProps = {
     onMouseDown?: () => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
-    onTouchStart?: () => void;
+    onTouchStart?: React.TouchEventHandler<SVGSVGElement>;
     size?: number | string;
     width?: number | string;
     id?: string;

@@ -25,7 +25,7 @@ describe('SelfExclusionStore', () => {
         };
     });
 
-    it('should initialize with default values', () => {
+    it('Should initialize with default values', () => {
         const store = new SelfExclusionStore(null, mockCore);
 
         expect(store.api_max_losses).toBe(0);
@@ -33,7 +33,7 @@ describe('SelfExclusionStore', () => {
         expect(store.is_restricted).toBe(false);
     });
 
-    it('should return initial values', () => {
+    it('Should return initial values', () => {
         const store = new SelfExclusionStore(null, mockCore);
 
         expect(store.initial_values).toEqual({
@@ -42,41 +42,64 @@ describe('SelfExclusionStore', () => {
         });
     });
 
-    it('should allow bot to run by default', () => {
+    it('Should return run_limit as part of initial values when it is not -1', () => {
+        const store = new SelfExclusionStore(null, mockCore);
+        store.setRunLimit(5);
+
+        expect(store.initial_values.run_limit).toBe(5);
+    });
+
+    it('Should return empty string for run_limit in initial values when it is -1', () => {
+        const store = new SelfExclusionStore(null, mockCore);
+
+        expect(store.initial_values.run_limit).toBe('');
+    });
+
+    it('Should allow bot to run by default', () => {
         const store = new SelfExclusionStore(null, mockCore);
 
         expect(store.should_bot_run).toBe(true);
     });
 
-    it('should not allow bot to run under certain conditions', () => {
+    it('Should not allow bot to run under certain conditions', () => {
         mockCore.client.is_eu = true;
         const store = new SelfExclusionStore(null, mockCore);
 
         expect(store.should_bot_run).toBe(false);
     });
 
-    it('should set is_restricted', () => {
+    it('Should not allow the bot to run when client is EU, not virtual and run_limit is -1', () => {
+        mockCore.client.is_eu = true;
+        mockCore.client.is_virtual = false;
+
+        const store = new SelfExclusionStore(null, mockCore);
+        store.setRunLimit(-1);
+
+        expect(store.should_bot_run).toBe(false);
+    });
+
+    it('Should set is_restricted', () => {
         const store = new SelfExclusionStore(null, mockCore);
         store.setIsRestricted(true);
 
         expect(store.is_restricted).toBe(true);
     });
 
-    it('should set api_max_losses', () => {
+    it('Should set api_max_losses', () => {
         const store = new SelfExclusionStore(null, mockCore);
         store.setApiMaxLosses(100);
 
         expect(store.api_max_losses).toBe(100);
     });
 
-    it('should set run_limit', () => {
+    it('Should set run_limit', () => {
         const store = new SelfExclusionStore(null, mockCore);
         store.setRunLimit(50);
 
         expect(store.run_limit).toBe(50);
     });
 
-    it('should reset self exclusion values', () => {
+    it('Should reset self exclusion values', () => {
         const store = new SelfExclusionStore(null, mockCore);
         store.resetSelfExclusion();
 
@@ -85,7 +108,7 @@ describe('SelfExclusionStore', () => {
         expect(store.run_limit).toBe(-1);
     });
 
-    it('should update api_max_losses after checking restriction', async () => {
+    it('Should update api_max_losses after checking restriction', async () => {
         mockCore.client.self_exclusion.max_losses = 150;
         const store = new SelfExclusionStore(null, mockCore);
         await store.checkRestriction();

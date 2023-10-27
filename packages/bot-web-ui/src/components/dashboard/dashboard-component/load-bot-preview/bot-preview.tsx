@@ -1,5 +1,5 @@
 import React, { RefObject } from 'react';
-import WorkspaceControl from './workspace-control';
+import WorkspaceControl from '../../../load-modal/workspace-control';
 
 type TBotPreview = {
     id_ref: RefObject<HTMLDivElement>;

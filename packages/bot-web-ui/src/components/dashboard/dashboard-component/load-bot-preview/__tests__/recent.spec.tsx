@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
-import { DBotStoreProvider, mockDBotStore, useDBotStore } from 'Stores/useDBotStore';
+import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import RecentComponent from '../recent';
 import DashboardStore from 'Stores/dashboard-store';
 import LoadModalStore from 'Stores/load-modal-store';
@@ -44,34 +44,15 @@ describe('RecentComponent', () => {
             ...mock_DBot_store,
             dashboard: {
                 ...mock_DBot_store.dashboard,
-                setPreviewOnPopup: jest.fn(),
-                setOpenSettings: jest.fn(),
                 setStrategySaveType: jest.fn(),
                 is_dark_mode: false,
-                initInfoPanel: jest.fn(),
-            } as DashboardStore,
+            } as unknown as DashboardStore,
             load_modal: {
                 ...mock_DBot_store.load_modal,
-                loadFileFromLocal: jest.fn(),
-                toggleLoadModal: jest.fn(),
-                setLoadedLocalFile: jest.fn(),
-                preview_workspace: jest.fn() as unknown,
-                selected_strategy: jest.fn() as unknown,
-                tab_name: 'google_tab',
                 setDashboardStrategies: jest.fn(),
                 getDashboardStrategies: jest.fn(),
-                onDriveOpen: jest.fn(),
                 dashboard_strategies,
-                getRecentFileIcon: jest.fn(),
-                getSaveType: jest.fn(),
-            } as LoadModalStore,
-            save_modal: {
-                ...mock_DBot_store.save_modal,
-                toggleSaveModal: jest.fn(),
-                updateBotName: jest.fn(),
-                onConfirmSave: jest.fn(),
-                onDriveConnect: jest.fn(),
-            } as SaveModalStore,
+            } as unknown as LoadModalStore,
         };
 
         wrapper = ({ children }: { children: JSX.Element }) => (

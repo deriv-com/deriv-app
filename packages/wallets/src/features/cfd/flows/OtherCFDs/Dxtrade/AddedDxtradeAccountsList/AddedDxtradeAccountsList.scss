@@ -1,4 +1,8 @@
 .wallets-available-derivx {
+    &__icon {
+        cursor: pointer;
+    }
+
     &__actions {
         display: flex;
         flex-direction: column;

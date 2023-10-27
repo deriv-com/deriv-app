@@ -1,5 +1,4 @@
 import { journalError } from '../bot-notifications';
-import { localize } from '@deriv/translations';
 
 describe('journalError function', () => {
     it('Should return the correct error object', () => {
@@ -7,8 +6,8 @@ describe('journalError function', () => {
         const error = journalError(mockOnClick);
 
         expect(error.key).toBe('bot_error');
-        expect(error.header).toBe(localize('The bot encountered an error while running.'));
-        expect(error.action.text).toBe(localize('View in Journal'));
+        expect(error.header).toBe('The bot encountered an error while running.');
+        expect(error.action.text).toBe('View in Journal');
         expect(error.type).toBe('danger');
 
         error.action.onClick();

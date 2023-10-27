@@ -6,7 +6,7 @@ import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../.
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
 import CloseIcon from '../../../../public/images/close-icon.svg';
-import IcCashierAdd from '../../../../public/images/ic-cashier-deposit.svg';
+import IcCashierDeposit from '../../../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../../../public/images/ic-cashier-withdrawal.svg';
@@ -19,7 +19,7 @@ type TProps = {
 
 const realAccountTabs = [
     {
-        icon: <IcCashierAdd />,
+        icon: <IcCashierDeposit />,
         path: 'deposit',
         text: 'Deposit',
     },

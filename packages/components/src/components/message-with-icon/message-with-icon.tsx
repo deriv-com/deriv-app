@@ -3,23 +3,24 @@ import classNames from 'classnames';
 import { isDesktop } from '@deriv/shared';
 import Text from '../text/text';
 import Div100vhContainer from '../div100vh-container';
+import Icon from '../icon';
 
-type TIconWithMessage = {
-    className?: string;
+type TMessageWithIcon = {
+    className?: React.ReactNode;
     full_width?: boolean;
-    icon: React.ReactElement;
+    icon?: string;
     message: React.ReactNode;
     text?: string | React.ReactElement;
 };
 
-const IconWithMessage = ({
+const MessageWithIcon = ({
     children,
     className,
     full_width,
     icon,
     message,
     text,
-}: React.PropsWithChildren<TIconWithMessage>) => (
+}: React.PropsWithChildren<TMessageWithIcon>) => (
     <Div100vhContainer
         className={classNames('account-management__message-wrapper', {
             'account-management__message-wrapper-full-width': full_width,
@@ -38,7 +39,7 @@ const IconWithMessage = ({
                         [`${className}__message-icon`]: className,
                     })}
                 >
-                    {icon}
+                    <Icon icon={icon} width={72} height={72} />
                 </div>
             )}
             <Text
@@ -72,4 +73,4 @@ const IconWithMessage = ({
     </Div100vhContainer>
 );
 
-export default IconWithMessage;
+export default MessageWithIcon;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Icon, Modal, IconWithMessage } from '@deriv/components';
+import { Button, Modal, MessageWithIcon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import './verification-document-submitted.scss';
 
 const VerificationDocumentSubmitted = observer(() => {
@@ -21,15 +21,11 @@ const VerificationDocumentSubmitted = observer(() => {
             is_open={is_verification_submitted}
             has_close_icon={false}
         >
-            <IconWithMessage
-                message={message}
-                icon={<Icon icon='IcAccountTick' width={72} height={72} />}
-                text={description}
-            >
+            <MessageWithIcon message={message} icon='IcAccountTick' text={description}>
                 <Button className='dc-dialog__button' has_effect onClick={onClick} primary large>
                     <Localize i18n_default_text='Continue' />
                 </Button>
-            </IconWithMessage>
+            </MessageWithIcon>
         </Modal>
     );
 });

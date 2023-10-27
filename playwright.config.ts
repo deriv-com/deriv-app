@@ -29,6 +29,15 @@ export default defineConfig({
         trace: 'on-first-retry',
     },
 
+    webServer: {
+        command: 'npm run serve core',
+        url: 'https://localhost:8443',
+        reuseExistingServer: true,
+        ignoreHTTPSErrors: true,
+        stdout: 'ignore',
+        stderr: 'pipe',
+    },
+
     /* Configure projects for major browsers */
     projects: [
         {

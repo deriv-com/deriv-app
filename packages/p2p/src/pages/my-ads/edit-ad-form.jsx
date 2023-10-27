@@ -114,7 +114,6 @@ const EditAdForm = () => {
             });
             setSelectedMethods(selected_payment_method_values);
         }
-
         if (payment_method_details) {
             Object.entries(payment_method_details)?.map(pm => {
                 selected_methods.push(pm[0]);

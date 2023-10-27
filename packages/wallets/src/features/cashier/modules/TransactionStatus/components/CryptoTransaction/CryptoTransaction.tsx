@@ -4,8 +4,8 @@ import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
 import { THooks } from '../../../../../../types';
+import { CancelTransactionModal } from '../../../../components/CancelTransactionModal';
 import useRecentTransactions from '../../hooks/useRecentTransactions';
-import { CancelTransactionModal } from '../CancelTransactionModal';
 import './CryptoTransaction.scss';
 
 type TCryptoTransaction = {

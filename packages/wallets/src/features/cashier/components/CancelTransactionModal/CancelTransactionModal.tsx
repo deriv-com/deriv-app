@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useCancelCryptoTransaction } from '@deriv/api';
-import { ModalWrapper, WalletButton, WalletText } from '../../../../../../components/Base';
-import { useModal } from '../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../hooks/useDevice';
-import { THooks } from '../../../../../../types';
+import { ModalWrapper, WalletButton, WalletText } from '../../../../components/Base';
+import { useModal } from '../../../../components/ModalProvider';
+import useDevice from '../../../../hooks/useDevice';
+import { THooks } from '../../../../types';
 import './CancelTransactionModal.scss';
 
 type TCancelTransactionModal = {

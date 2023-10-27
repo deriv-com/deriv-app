@@ -1,12 +1,10 @@
 import React, { FC } from 'react';
-import { useDynamicLeverage } from '@deriv/api';
 import { WalletText } from '../../../../components/Base';
+import { THooks } from '../../../../types';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
 import './DynamicLeverageMarketCard.scss';
 
-type TDynamicLeverageMarketCardProps = NonNullable<
-    Exclude<ReturnType<typeof useDynamicLeverage>['data'][0], 'undefined'>
->;
+type TDynamicLeverageMarketCardProps = THooks.DynamicLeverage;
 
 export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
     data,

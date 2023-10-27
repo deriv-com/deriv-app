@@ -16,15 +16,8 @@ const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.Mocked
     typeof useMT5SVGEligibleToMigrate
 >;
 
-type TUseMT5SVGEligibleToMigrateReturnValue = {
-    eligible_svg_to_bvi_derived_accounts: boolean;
-    eligible_svg_to_bvi_financial_accounts: boolean;
-    eligible_svg_to_vanuatu_derived_accounts: boolean;
-    eligible_svg_to_vanuatu_financial_accounts: boolean;
-};
-
 describe('SVGMigrationBanner', () => {
-    let response: TUseMT5SVGEligibleToMigrateReturnValue;
+    let response: ReturnType<typeof useMT5SVGEligibleToMigrate>;
 
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -38,10 +31,17 @@ describe('SVGMigrationBanner', () => {
 
     beforeEach(() => {
         response = {
+            getEligibleAccountToMigrate: jest.fn(),
+            svg_accounts_to_migrate: [],
+            no_of_svg_accounts_to_migrate: 0,
+            has_svg_accounts_to_migrate: false,
+            eligible_account_to_migrate_label: false,
             eligible_svg_to_bvi_derived_accounts: false,
             eligible_svg_to_bvi_financial_accounts: false,
             eligible_svg_to_vanuatu_derived_accounts: false,
             eligible_svg_to_vanuatu_financial_accounts: false,
+            has_derived_and_financial_mt5: true,
+            has_derived_mt5_to_migrate: true,
         };
     });
 

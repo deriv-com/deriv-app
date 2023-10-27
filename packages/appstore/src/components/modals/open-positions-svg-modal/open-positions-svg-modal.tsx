@@ -35,10 +35,11 @@ const OpenPositionsSVGModal = ({
     const eligible_account_to_migrate_label = getFormattedJurisdictionCode(
         Object.values(eligible_account[0]?.to_account ?? {})[0]
     );
-    const account_type =
+    const account_type = getFormattedJurisdictionMarketTypes(
         market_type === JURISDICTION_MARKET_TYPES.FINANCIAL
-            ? getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL)
-            : getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.DERIVED);
+            ? JURISDICTION_MARKET_TYPES.FINANCIAL
+            : JURISDICTION_MARKET_TYPES.DERIVED
+    );
     const from_account = getFormattedJurisdictionCode(Jurisdiction.SVG);
     const cfd_platform = getCFDPlatformNames(CFD_PLATFORMS.MT5);
     const is_migrated_with_position = status === MT5AccountStatus.MIGRATED_WITH_POSITION;

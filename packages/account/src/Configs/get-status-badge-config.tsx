@@ -5,14 +5,14 @@ import { MT5AccountStatus } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const getStatusBadgeConfig = (
-    account_status: string | undefined | null,
+    account_status: typeof MT5AccountStatus[keyof typeof MT5AccountStatus],
     openFailedVerificationModal?: (selected_account_type: string) => void,
     selected_account_type?: string
 ) => {
     const BadgeTextComponent = <Text key={0} weight='bold' size='xxxs' color='warning' />;
 
     switch (account_status) {
-        case 'pending':
+        case MT5AccountStatus.PENDING:
             return {
                 text: (
                     <Localize
@@ -22,7 +22,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcAlertWarning',
             };
-        case 'failed':
+        case MT5AccountStatus.FAILED:
             return {
                 text: (
                     <Localize
@@ -41,7 +41,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcRedWarning',
             };
-        case 'need_verification':
+        case MT5AccountStatus.NEEDS_VERIFICATION:
             return {
                 text: (
                     <Localize

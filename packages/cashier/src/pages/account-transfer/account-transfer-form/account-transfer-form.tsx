@@ -362,7 +362,22 @@ const AccountTransferForm = observer(
             }
             setTransferToHint(hint_text);
             resetConverter();
-        }, [account_limits, is_migration_status_present, selected_from, selected_to]); // eslint-disable-line react-hooks/exhaustive-deps
+        }, [
+            account_limits,
+            ctrader_remaining_transfers?.available,
+            derivez_remaining_transfers?.available,
+            dxtrade_remaining_transfers?.available,
+            internal_remaining_transfers?.available,
+            is_ctrader_transfer,
+            is_derivez_transfer,
+            is_dxtrade_transfer,
+            is_migration_status_present,
+            is_mt_transfer,
+            mt5_remaining_transfers?.available,
+            resetConverter,
+            selected_from,
+            selected_to,
+        ]);
 
         const is_mt5_restricted =
             selected_from?.is_mt &&

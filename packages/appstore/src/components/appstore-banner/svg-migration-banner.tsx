@@ -10,20 +10,13 @@ const SVGMigrationBanner = observer(() => {
         ui,
         modules: { cfd },
     } = useStore();
-    const {
-        eligible_svg_to_bvi_derived_accounts,
-        eligible_svg_to_bvi_financial_accounts,
-        eligible_svg_to_vanuatu_derived_accounts,
-        eligible_svg_to_vanuatu_financial_accounts,
-    } = useMT5SVGEligibleToMigrate();
     const { is_mobile, toggleMT5MigrationModal } = ui;
     const { setMT5MigrationError } = cfd;
-    const has_derived_mt5_to_migrate = eligible_svg_to_bvi_derived_accounts || eligible_svg_to_vanuatu_derived_accounts;
-    const has_financial_mt5_to_migrate =
-        eligible_svg_to_bvi_financial_accounts || eligible_svg_to_vanuatu_financial_accounts;
-    const has_derived_and_financial_mt5 = has_derived_mt5_to_migrate && has_financial_mt5_to_migrate;
+
+    const { has_derived_mt5_to_migrate, has_derived_and_financial_mt5 } = useMT5SVGEligibleToMigrate();
+
     const image = is_mobile ? 'svg_migrate_mobile' : 'svg_migrate_desktop';
-    const size: string = is_mobile ? 'xs' : 'm';
+    const size = is_mobile ? 'xs' : 'm';
 
     const getAccountTitle = () => {
         return has_derived_mt5_to_migrate ? 'MT5 Derived SVG' : 'MT5 Financial SVG';

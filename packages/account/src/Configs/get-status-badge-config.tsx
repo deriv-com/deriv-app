@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Text } from '@deriv/components';
-import { MT5AccountStatus } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const getStatusBadgeConfig = (
-    account_status: typeof MT5AccountStatus[keyof typeof MT5AccountStatus],
+    account_status: typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS],
     openFailedVerificationModal?: (selected_account_type: string) => void,
     selected_account_type?: string
 ) => {
     const BadgeTextComponent = <Text key={0} weight='bold' size='xxxs' color='warning' />;
 
     switch (account_status) {
-        case MT5AccountStatus.PENDING:
+        case MT5_ACCOUNT_STATUS.PENDING:
             return {
                 text: (
                     <Localize
@@ -22,7 +22,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcAlertWarning',
             };
-        case MT5AccountStatus.FAILED:
+        case MT5_ACCOUNT_STATUS.FAILED:
             return {
                 text: (
                     <Localize
@@ -41,7 +41,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcRedWarning',
             };
-        case MT5AccountStatus.NEEDS_VERIFICATION:
+        case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION:
             return {
                 text: (
                     <Localize
@@ -54,12 +54,12 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcAlertInfo',
             };
-        case MT5AccountStatus.MIGRATED_WITH_POSITION:
+        case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:
             return {
                 text: <Localize i18n_default_text='<0>No new positions</0>' components={[BadgeTextComponent]} />,
                 icon: 'IcAlertWarning',
             };
-        case MT5AccountStatus.MIGRATED_WITHOUT_POSITION:
+        case MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION:
             return {
                 text: <Localize i18n_default_text='<0>Account closed</0>' components={[BadgeTextComponent]} />,
                 icon: 'IcAlertWarning',

@@ -44,6 +44,7 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { CATEGORY } from 'src/Helpers/cfd-config';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -484,25 +485,31 @@ const CFDPasswordForm = ({
                     }}
                 />
             );
-        else if (account_type.category === 'real')
+        else if (account_type.category === CATEGORY.REAL)
             return (
                 <Localize
                     i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                     values={{
                         platform: getCFDPlatformLabel(platform),
-                        platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
+                        platform_name:
+                            platform === CFD_PLATFORMS.MT5
+                                ? getCFDPlatformNames(CFD_PLATFORMS.MT5)
+                                : getCFDPlatformLabel(platform),
                         account: !show_eu_related_content ? accountTitle(account_type.category) : '',
                         jurisdiction_shortcode: showJuristiction(),
                     }}
                 />
             );
-        else if (account_type.category === 'demo') {
+        else if (account_type.category === CATEGORY.DEMO) {
             return (
                 <Localize
                     i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
                     values={{
                         platform: getCFDPlatformLabel(platform),
-                        platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
+                        platform_name:
+                            platform === CFD_PLATFORMS.MT5
+                                ? getCFDPlatformNames(CFD_PLATFORMS.MT5)
+                                : getCFDPlatformLabel(platform),
                         account: accountTitle(account_type.category),
                     }}
                 />
@@ -529,7 +536,7 @@ const CFDPasswordForm = ({
             case 'derivez':
                 return 'CFD';
             case 'dxtrade':
-                return category === 'real' ? 'Real' : '';
+                return category === CATEGORY.REAL ? 'Real' : '';
             default:
                 return account_title;
         }
@@ -754,7 +761,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const closeOpenSuccess = () => {
         disableCFDPasswordModal();
         closeDialogs();
-        if (account_type.category === 'real') {
+        if (account_type.category === CATEGORY.REAL) {
             sessionStorage.setItem('cfd_transfer_to_login_id', new_account_response.login || '');
             history.push(routes.cashier_acc_transfer);
         }
@@ -766,9 +773,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         // if account type is real convert redirect_to from 1 or 2 to 10 or 20
         // and if account type is demo convert redirect_to from 1 or 2 to 11 or 21
-        if (account_type.category === 'real') {
+        if (account_type.category === CATEGORY.REAL) {
             redirect_to = Number(`${redirect_to}0`);
-        } else if (account_type.category === 'demo') {
+        } else if (account_type.category === CATEGORY.DEMO) {
             redirect_to = Number(`${redirect_to}1`);
         }
 
@@ -836,7 +843,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     }, [should_set_trading_password, should_show_password]);
 
     const success_modal_submit_label = React.useMemo(() => {
-        if (account_type.category === 'real') {
+        if (account_type.category === CATEGORY.REAL) {
             if (platform === CFD_PLATFORMS.MT5) {
                 return is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
             }
@@ -849,7 +856,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const { category, type } = account_type;
         if (!category && !type) return '';
 
-        const category_label = category === 'real' ? localize('real') : localize('demo');
+        const category_label = category === CATEGORY.REAL ? localize('real') : localize('demo');
         let type_label = '';
         switch (platform) {
             case CFD_PLATFORMS.MT5:
@@ -887,7 +894,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             return type_label;
         };
 
-        if (category === 'real') {
+        if (category === CATEGORY.REAL) {
             let platformName = '';
             switch (platform) {
                 case CFD_PLATFORMS.MT5:
@@ -1067,8 +1074,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 text_submit={success_modal_submit_label}
                 has_cancel={
                     platform === CFD_PLATFORMS.MT5
-                        ? is_selected_mt5_verified && account_type.category === 'real'
-                        : account_type.category === 'real'
+                        ? is_selected_mt5_verified && account_type.category === CATEGORY.REAL
+                        : account_type.category === CATEGORY.REAL
                 }
                 has_close_icon={false}
                 width={isMobile() ? '32.8rem' : 'auto'}

@@ -5,7 +5,7 @@ import Icon from '../icon';
 import './status-badge.scss';
 
 type StatusBadgeProps = {
-    account_status: string;
+    account_status: string | null;
     icon: string;
     text: ReactNode;
     onClick?: () => void;

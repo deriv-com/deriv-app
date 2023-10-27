@@ -78,6 +78,26 @@ describe('SelfExclusionStore', () => {
         expect(store.should_bot_run).toBe(false);
     });
 
+    it('Should allow the bot to run when client is not EU even if run_limit is -1', () => {
+        mockCore.client.is_eu = false;
+
+        const store = new SelfExclusionStore(null, mockCore);
+        store.setRunLimit(-1);
+
+        expect(store.should_bot_run).toBe(true);
+    });
+
+    it('Should not allow the bot to run when client is EU, not virtual and run_limit is -1 regardless of api_max_losses value', () => {
+        mockCore.client.is_eu = true;
+        mockCore.client.is_virtual = false;
+
+        const store = new SelfExclusionStore(null, mockCore);
+        store.setApiMaxLosses(10); // set a value other than 0 to isolate the test from this condition
+        store.setRunLimit(-1);
+
+        expect(store.should_bot_run).toBe(false);
+    });
+
     it('Should set is_restricted', () => {
         const store = new SelfExclusionStore(null, mockCore);
         store.setIsRestricted(true);

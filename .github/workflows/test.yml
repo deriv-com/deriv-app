@@ -47,8 +47,6 @@ jobs:
       run: bash ./scripts/check-tests.sh packages/analytics/src
     - name: Run tests
       run: npm run test:ci
-    - name: Build the bundled app
-      run: npm run build:all
     - name: Install Playwright Browsers
       run: npx playwright install
     - name: Run integration tests

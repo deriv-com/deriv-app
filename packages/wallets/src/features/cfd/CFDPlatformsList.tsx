@@ -1,5 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
+import { WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
 import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from './components';
@@ -13,9 +14,9 @@ const CFDPlatformsList = () => {
         <div className='wallets-cfd-list'>
             <section className='wallets-cfd-list__header'>
                 {!isMobile && (
-                    <div className='wallets-cfd-list__header-title'>
+                    <WalletText size='xl' weight='bold'>
                         <h1>CFDs</h1>
-                    </div>
+                    </WalletText>
                 )}
                 <div className='wallets-cfd-list__header-description'>
                     <h1>

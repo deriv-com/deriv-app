@@ -14,39 +14,51 @@ type TQSCheckbox = {
     attached?: boolean;
 };
 
-const QSCheckbox: React.FC<TQSCheckbox> = observer(({ name, label, description, fullwidth = false }) => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
-    const { values, setFieldValue, validateForm } = useFormikContext<TFormData>();
+const QSCheckbox: React.FC<TQSCheckbox> = observer(
+    ({ name, label, description, fullwidth = false, attached = false }) => {
+        const { ui } = useStore();
+        const { is_mobile } = ui;
+        const { values, setFieldValue, validateForm } = useFormikContext<TFormData>();
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setFieldValue(name, e.target.checked);
-        validateForm();
-    };
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+            setFieldValue(name, e.target.checked);
+            validateForm();
+        };
 
-    return (
-        <Field name={name}>
-            {({ field }: FieldProps) => {
-                return (
-                    <div className={classNames('qs__form__field', { 'full-width': fullwidth })}>
-                        <div className='qs__checkbox'>
-                            <div className='qs__checkbox__container'>
-                                <Checkbox {...field} label={label} onChange={handleChange} checked={!!values[name]} />
-                                <span>
-                                    <Popover
-                                        message={description}
-                                        zIndex='9999'
-                                        alignment={is_mobile ? 'bottom' : 'right'}
-                                        icon='info'
+        return (
+            <Field name={name}>
+                {({ field }: FieldProps) => {
+                    return (
+                        <div
+                            className={classNames('qs__form__field', {
+                                'full-width': fullwidth,
+                                'no-border-bottom-radius': attached,
+                            })}
+                        >
+                            <div className='qs__checkbox'>
+                                <div className='qs__checkbox__container'>
+                                    <Checkbox
+                                        {...field}
+                                        label={label}
+                                        onChange={handleChange}
+                                        checked={!!values[name]}
                                     />
-                                </span>
+                                    <span>
+                                        <Popover
+                                            message={description}
+                                            zIndex='9999'
+                                            alignment={is_mobile ? 'bottom' : 'right'}
+                                            icon='info'
+                                        />
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                );
-            }}
-        </Field>
-    );
-});
+                    );
+                }}
+            </Field>
+        );
+    }
+);
 
 export default QSCheckbox;

@@ -137,6 +137,7 @@ const CHECKBOX_MAX_STAKE: TConfigItem = {
     name: 'boolean_max_stake',
     label: localize('Max stake'),
     description: localize('The stake for your next trade will reset to the initial stake if it exceeds this value.'),
+    attached: true,
 };
 
 const MAX_STAKE: TConfigItem = {
@@ -144,6 +145,7 @@ const MAX_STAKE: TConfigItem = {
     name: 'max_stake',
     validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION],
     should_have: [{ key: 'boolean_max_stake', value: true }],
+    attached: true,
 };
 
 export const STRATEGIES: TStrategies = {

@@ -186,6 +186,7 @@
             @include mobile() {
                 margin-bottom: 0;
                 padding-bottom: 1.6rem;
+                max-height: calc(100vh - 12.2rem) !important;
             }
         }
         &__field {
@@ -210,6 +211,12 @@
 
                 &.no-top-border-radius {
                     .dc-input__container {
+                        border-bottom-left-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+                }
+                &.no-border-bottom-radius {
+                    .qs__checkbox {
                         border-bottom-left-radius: 0;
                         border-bottom-right-radius: 0;
                     }

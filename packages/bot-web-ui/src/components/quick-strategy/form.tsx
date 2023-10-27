@@ -4,14 +4,13 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import { observer, useStore } from '@deriv/stores';
 import './quick-strategy.scss';
 import SymbolSelect from './selects/symbol';
-import { useFormikContext } from 'formik';
 import TradeTypeSelect from './selects/trade-type';
 import DurationTypeSelect from './selects/duration-type';
 import QSInput from './inputs/qs-input';
 import QSCheckbox from './inputs/qs-checkbox';
 import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
-import { TConfigItem, TFormData } from './types';
+import { TConfigItem } from './types';
 
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
@@ -19,7 +18,6 @@ const QuickStrategyForm = observer(() => {
     const { selected_strategy } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
-    const { values } = useFormikContext<TFormData>();
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
@@ -29,7 +27,7 @@ const QuickStrategyForm = observer(() => {
     }, []);
 
     const handleEnter = (event: KeyboardEvent) => {
-        if ((event?.key && event.key === 'Enter') || (event?.keyCode && event.keyCode === 13)) {
+        if (event?.key && event.key == 'Enter') {
             event.preventDefault();
             event.stopPropagation();
         }
@@ -50,54 +48,31 @@ const QuickStrategyForm = observer(() => {
                             return null;
                         }
                         switch (field.type) {
+                            // Generic or common fields
                             case 'number':
                                 if (!field.name) return null;
-                                return (
-                                    <QSInput
-                                        {...field}
-                                        key={key}
-                                        type='number'
-                                        attached={field.attached}
-                                        name={field.name as string}
-                                    />
-                                );
+                                return <QSInput {...field} key={key} name={field.name as string} />;
                             case 'label':
                                 if (!field.label) return null;
                                 return (
                                     <QSInputLabel key={key} label={field.label} description={field.description || ''} />
-                                );
-                            case 'symbol':
-                                return <SymbolSelect key={key} fullWidth />;
-                            case 'tradetype':
-                                return (
-                                    <TradeTypeSelect
-                                        key={key}
-                                        symbol={(values?.symbol as string) || ''}
-                                        selected={(values?.tradetype as string) || ''}
-                                        fullWidth
-                                    />
-                                );
-                            case 'durationtype':
-                                return (
-                                    <DurationTypeSelect
-                                        key={key}
-                                        data={{
-                                            symbol: (values?.symbol as string) || '',
-                                            tradetype: (values?.tradetype as string) || '',
-                                        }}
-                                        attached={field.attached}
-                                    />
                                 );
                             case 'checkbox':
                                 return (
                                     <QSCheckbox
                                         {...field}
                                         key={key}
-                                        attached={field.attached}
                                         name={field.name as string}
                                         label={field.label as string}
                                     />
                                 );
+                            // Dedicated components only for Quick-Strategy
+                            case 'symbol':
+                                return <SymbolSelect {...field} key={key} />;
+                            case 'tradetype':
+                                return <TradeTypeSelect {...field} key={key} />;
+                            case 'durationtype':
+                                return <DurationTypeSelect {...field} key={key} />;
                             default:
                                 return null;
                         }

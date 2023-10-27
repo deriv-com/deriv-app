@@ -19,8 +19,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
-// TODO: Lazy load smartchart styles
-import '@deriv/deriv-charts/dist/smartcharts.css';
 import 'Sass/app.scss';
 import { Analytics } from '@deriv/analytics';
 
@@ -43,6 +41,14 @@ const AppWithoutTranslation = ({ root_store }) => {
     React.useEffect(initCFDStore, []);
 
     React.useEffect(() => {
+        const loadSmartchartsStyles = () => {
+            if (root_store.client.is_beta_chart) {
+                import('@deriv/deriv-charts-beta/dist/smartcharts.css');
+            } else {
+                import('@deriv/deriv-charts/dist/smartcharts.css');
+            }
+        };
+
         initializeTranslations();
 
         Analytics.initialise({
@@ -60,6 +66,7 @@ const AppWithoutTranslation = ({ root_store }) => {
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
         root_store.common.setPlatform();
+        loadSmartchartsStyles();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

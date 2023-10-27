@@ -1,4 +1,5 @@
 import React from 'react';
+import { WalletText } from '../../../../../components/Base';
 import './JurisdictionCardTag.scss';
 
 type TJurisdictionCardTagProps = {
@@ -7,7 +8,9 @@ type TJurisdictionCardTagProps = {
 const JurisdictionCardTag: React.FC<TJurisdictionCardTagProps> = ({ tag }) => {
     return (
         <div className='wallets-jurisdiction-card-tag'>
-            <div className='wallets-jurisdiction-card-tag__label'>{tag}</div>
+            <WalletText align='center' color='blue' lineHeight='3xs' size='xs' weight='bold'>
+                {tag}
+            </WalletText>
         </div>
     );
 };

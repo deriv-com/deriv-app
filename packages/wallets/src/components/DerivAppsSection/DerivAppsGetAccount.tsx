@@ -1,10 +1,10 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
 import DerivApps from '../../public/images/deriv-apps.svg';
+import { THooks } from '../../types';
 import { WalletButton, WalletText } from '../Base';
 
 type TProps = {
-    isMaltaWallet?: NonNullable<ReturnType<typeof useActiveWalletAccount>['data']>['is_malta_wallet'];
+    isMaltaWallet?: THooks.ActiveWalletAccount['is_malta_wallet'];
 };
 
 const DerivAppsGetAccount: React.FC<TProps> = ({ isMaltaWallet }) => {

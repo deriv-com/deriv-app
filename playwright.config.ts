@@ -34,6 +34,7 @@ export default defineConfig({
         url: 'https://localhost:8443',
         reuseExistingServer: true,
         ignoreHTTPSErrors: true,
+        timeout: 150 * 1000,
         stdout: 'ignore',
         stderr: 'pipe',
     },

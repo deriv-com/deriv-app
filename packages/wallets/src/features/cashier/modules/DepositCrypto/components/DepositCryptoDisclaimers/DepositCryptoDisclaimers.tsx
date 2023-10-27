@@ -22,7 +22,9 @@ const DepositCryptoDisclaimers = () => {
         <div className='wallets-deposit-crypto-disclaimers'>
             <InlineMessage>
                 <div className='wallets-deposit-crypto-disclaimers__content'>
-                    <p>To avoid loss of funds:</p>
+                    <WalletText size='2xs' weight='bold'>
+                        To avoid loss of funds:
+                    </WalletText>
                     <br />
                     {data?.currency_config?.minimum_deposit && (
                         <li>

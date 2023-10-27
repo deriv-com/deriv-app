@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletCardIcon } from '../../../../components/WalletCardIcon';
@@ -11,7 +12,7 @@ import './WalletCashierHeader.scss';
 const realAccountTabs = ['deposit', 'withdraw', 'transfer', 'transactions'];
 const virtualAccountTabs = ['withdraw', 'transfer', 'transactions', 'reset-balance'];
 
-const WalletCashierHeader = () => {
+const WalletCashierHeader = ({ hideWalletDetails }: { hideWalletDetails: boolean }) => {
     const { data } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
@@ -32,7 +33,11 @@ const WalletCashierHeader = () => {
             <main className='wallets-cashier-header'>
                 <section className='wallets-cashier-header__info'>
                     <div className='wallets-cashier-header__info__top-left'>
-                        <div className='wallets-cashier-header__info__top-left__details'>
+                        <div
+                            className={classNames('wallets-cashier-header__info__top-left__details', {
+                                'wallets-cashier-header__hide-details': isMobile && hideWalletDetails,
+                            })}
+                        >
                             <h1 className='wallets-cashier-header__info__top-left__details__title'>
                                 {data?.currency} Wallet
                             </h1>
@@ -43,7 +48,15 @@ const WalletCashierHeader = () => {
                         <p className='wallets-cashier-header__info__top-left__balance'>{data?.display_balance}</p>
                     </div>
                     <div className='wallets-cashier-header__info__top-right'>
-                        {data?.wallet_currency_type && <WalletCardIcon size='xl' type={data?.wallet_currency_type} />}
+                        {data?.wallet_currency_type && (
+                            <div
+                                className={classNames('wallets-cashier-header__info__top-right__icon', {
+                                    'wallets-cashier-header__hide-currency-icon': isMobile && hideWalletDetails,
+                                })}
+                            >
+                                <WalletCardIcon size='xl' type={data?.wallet_currency_type} />
+                            </div>
+                        )}
                         <button
                             className='wallets-cashier-header__close-button'
                             onClick={() => history.push('/wallets')}

@@ -177,7 +177,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 </WalletText>
                 {transaction.is_valid_to_cancel && (
                     <button
-                        className='wallets-crypto-transaction__cancel-button'
+                        className='wallets-transactions-pending-row__transaction-cancel-button'
                         onClick={() => show(<CancelTransactionModal transactionId={transaction.id} />)}
                     >
                         <IcCrossLight />

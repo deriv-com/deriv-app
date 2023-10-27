@@ -74,5 +74,13 @@
         &-time {
             width: 6.5rem;
         }
+
+        &-cancel-button {
+            margin-left: 1rem;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+            background-color: transparent;
+        }
     }
 }

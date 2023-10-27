@@ -9,27 +9,27 @@ import './MT5TradeLink.scss';
 const AppToContentMapper = {
     linux: {
         icon: <LinuxIcon />,
+        link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
         text: 'Learn more',
         title: 'MetaTrader 5 Linux app',
-        link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
     },
     macos: {
         icon: <MacOSIcon />,
+        link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
         text: 'Download',
         title: 'MetaTrader 5 MacOS app',
-        link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
     },
     web: {
         icon: <MT5Icon />,
+        link: '',
         text: 'Open',
         title: 'MetaTrader 5 web',
-        link: '',
     },
     windows: {
         icon: <WindowsIcon />,
+        link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
         text: 'Download',
         title: 'MetaTrader 5 Windows app',
-        link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
     },
 };
 

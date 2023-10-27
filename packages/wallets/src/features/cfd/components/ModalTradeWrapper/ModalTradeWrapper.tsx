@@ -11,9 +11,9 @@ import { TMarketTypes, TPlatforms } from '../../../../types';
 import { PlatformToTitleMapper } from '../../constants';
 
 const AppToLinkMapper = {
-    ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
     android: 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
     huawei: 'https://appgallery.huawei.com/#/app/C102015329',
+    ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
 };
 
 const PlatformToLinkMapper = {
@@ -28,7 +28,7 @@ type TModalTradeWrapper = {
     platform: TPlatforms.MT5 | TPlatforms.OtherAccounts;
 };
 
-const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children, marketType, platform }) => {
+const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children, platform }) => {
     const { isDesktop } = useDevice();
 
     return (

@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
-import { MT5AccountType } from '../../features/cfd/screens';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms, TMarketTypes } from '../../types';
 
@@ -64,7 +63,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     return (
         <ModalContext.Provider
-            value={{ hide, isOpen: content !== null, modalState, getModalState, setModalState, show }}
+            value={{ hide, isOpen: content !== null, getModalState, modalState, setModalState, show }}
         >
             {children}
             {isDesktop &&

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import { TInputMode } from './input-field';
 
+export type TInputMode = 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';
 type TInputProps = {
     ariaLabel?: string;
     changeValue: (

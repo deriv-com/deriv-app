@@ -30,40 +30,4 @@
         height: 100%;
         border-bottom: 1px solid var(--system-light-6-hover-background, #e6e9e9);
     }
-
-    &__icon {
-        width: 48px;
-        height: 48px;
-    }
-
-    &__details {
-        flex-grow: 1;
-
-        &-title {
-            font-weight: bold;
-            font-size: 1.4rem;
-            line-height: 20px;
-        }
-
-        &-description {
-            font-size: 1.2rem;
-            line-height: 14px;
-
-            @include mobile {
-                font-size: 1.4rem;
-                line-height: 20px;
-            }
-        }
-    }
-
-    &__action {
-        outline: none;
-        border: none;
-        color: var(--system-dark-1-prominent-text, #fff);
-        font-weight: bold;
-        padding: 6px 16px;
-        border-radius: 4px;
-        background: var(--button-primary-default, #ff444f);
-        cursor: pointer;
-    }
 }

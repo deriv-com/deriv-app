@@ -3,6 +3,9 @@ on:
   pull_request:
     branches:
     - master
+  push:
+    branches:
+      - master
 jobs:
   build_and_test:
     name: Build And Test
@@ -15,6 +18,9 @@ jobs:
       uses: "./.github/actions/setup_node"
     - name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
+    - name: Invalidate NPM Cache
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      uses: "./.github/actions/invalidate_npm_cache"
     - name: Build
       uses: "./.github/actions/build"
     - name: Check TypeScript for @deriv/api
@@ -27,11 +33,12 @@ jobs:
       run: npx tsc --project packages/analytics/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/stores
       run: npx tsc --project packages/stores/tsconfig.json -noEmit
-    - name: Check TypeScript and linting for @deriv/wallets
-      run: |-
-        npx tsc --project packages/wallets/tsconfig.json -noEmit
-        npx eslint --fix --config packages/wallets/.eslintrc.js packages/wallets
-        npx stylelint packages/wallets/**/*.scss
+    - name: Check TypeScript for @deriv/wallets
+      run: npx tsc --project packages/wallets/tsconfig.json -noEmit
+    - name: Check ESLint for @deriv/wallets
+      run: npx eslint --fix --ignore-path packages/wallets/.eslintignore --config packages/wallets/.eslintrc.js packages/wallets
+    - name: Check Stylelint for @deriv/wallets
+      run: npx stylelint packages/wallets/**/*.scss
     - name: Check tests for @deriv/hooks
       run: bash ./scripts/check-tests.sh packages/hooks/src
     - name: Check tests for @deriv/utils

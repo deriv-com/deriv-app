@@ -1,12 +1,15 @@
 import { useQuery as _useQuery } from '@tanstack/react-query';
-import useAPI from './useAPI';
+
 import type {
     TSocketAcceptableProps,
     TSocketEndpointNames,
+    TSocketError,
     TSocketRequestPayload,
     TSocketRequestQueryOptions,
     TSocketResponseData,
 } from '../types';
+
+import useAPI from './useAPI';
 import { getQueryKeys } from './utils';
 
 const useQuery = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcceptableProps<T, true>) => {
@@ -15,7 +18,11 @@ const useQuery = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcce
     const options = prop && 'options' in prop ? (prop.options as TSocketRequestQueryOptions<T>) : undefined;
     const { send } = useAPI();
 
-    return _useQuery<TSocketResponseData<T>, unknown>(getQueryKeys(name, payload), () => send(name, payload), options);
+    return _useQuery<TSocketResponseData<T>, TSocketError<T>>(
+        getQueryKeys(name, payload),
+        () => send(name, payload),
+        options
+    );
 };
 
 export default useQuery;

@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { Checkbox, Dropdown, Popover, PopoverMessageCheckbox } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset';
-import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+
+import Fieldset from 'App/Components/Form/fieldset';
+import { onChangeCancellationDuration, onToggleCancellation } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const CancelDeal = observer(() => {
@@ -78,7 +80,7 @@ const CancelDeal = observer(() => {
                             id='dt_cancellation-checkbox__tooltip'
                             is_bubble_hover_enabled
                             message={localize(
-                                'Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.'
+                                'When this is active, you can cancel your trade within the chosen time frame. Your stake will be returned without loss.'
                             )}
                             classNameBubble='trade-container__deal-cancellation-popover'
                             margin={216}

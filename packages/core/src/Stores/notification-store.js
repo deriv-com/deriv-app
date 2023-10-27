@@ -1,9 +1,9 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
+
 import { StaticUrl } from '@deriv/components';
 import {
-    LocalStore,
     daysSince,
     formatDate,
     formatMoney,
@@ -15,13 +15,18 @@ import {
     isEmptyObject,
     isMobile,
     isMultiplierContract,
+    LocalStore,
     platform_name,
     routes,
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
+
+import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
+
 import {
     excluded_notifications,
     getCashierValidations,
@@ -29,7 +34,6 @@ import {
     hasMissingRequiredField,
     maintenance_notifications,
 } from './Helpers/client-notifications';
-import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
 import BaseStore from './base-store';
 
 export default class NotificationStore extends BaseStore {
@@ -315,6 +319,9 @@ export default class NotificationStore extends BaseStore {
 
             this.handlePOAAddressMismatchNotifications();
 
+            if (status?.includes('mt5_additional_kyc_required'))
+                this.addNotificationMessage(this.client_notifications.additional_kyc_info);
+
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
             } else {
@@ -538,6 +545,9 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
+            if (client && this.root_store.client.mt5_login_list.length > 0) {
+                this.addNotificationMessage(this.client_notifications.mt5_notification);
+            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
@@ -598,7 +608,7 @@ export default class NotificationStore extends BaseStore {
         this.handleClientNotifications();
     }
 
-    removeAllNotificationMessages(should_close_persistent) {
+    removeAllNotificationMessages(should_close_persistent = false) {
         this.notification_messages = should_close_persistent
             ? []
             : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
@@ -647,10 +657,10 @@ export default class NotificationStore extends BaseStore {
     resetVirtualBalanceNotification(loginid) {
         const { accounts, is_logged_in } = this.root_store.client;
         if (!is_logged_in) return;
-        if (!accounts[loginid].is_virtual) return;
+        if (!accounts[loginid]?.is_virtual) return;
         const min_reset_limit = 1000;
         const max_reset_limit = 999000;
-        const balance = parseInt(accounts[loginid].balance);
+        const balance = parseInt(accounts[loginid]?.balance);
 
         // Display notification message to user with virtual account to reset their balance
         // if the balance is less than equals to 1000 or more than equals to 999000
@@ -672,7 +682,7 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
         const { setMT5NotificationModal } = this.root_store.traders_hub;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
@@ -1393,14 +1403,58 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Resubmit proof of identity'),
                 },
             },
+            wallets_migrated: {
+                key: 'wallets_migrated',
+                header: localize('Your Wallets are ready'),
+                message: localize(
+                    'To complete the upgrade, please log out and log in again to add more accounts and make transactions with your Wallets.'
+                ),
+                action: {
+                    onClick: async () => {
+                        await logout();
+                    },
+                    text: localize('Log out'),
+                },
+                type: 'announce',
+            },
+            wallets_failed: {
+                key: 'wallets_failed',
+                header: localize('Sorry for the interruption'),
+                message: localize(
+                    "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
+                ),
+                action: {
+                    onClick: async () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Go to LiveChat'),
+                },
+                type: 'danger',
+            },
             mt5_notification: {
                 key: 'mt5_notification',
-                header: localize('Trouble accessing Deriv MT5 on your mobile?'),
+                header: localize('Deriv MT5: Your action is needed'),
                 message: localize('Follow these simple instructions to fix it.'),
                 action: {
                     text: localize('Learn more'),
                     onClick: () => {
                         setMT5NotificationModal(true);
+                    },
+                },
+                type: 'warning',
+            },
+            additional_kyc_info: {
+                key: 'additional_kyc_info',
+                header: <Localize i18n_default_text='Pending action required' />,
+                message: (
+                    <Localize i18n_default_text='We require additional information for your Deriv MT5 account(s). Please take a moment to update your information now.' />
+                ),
+                action: {
+                    text: localize('Update now'),
+                    onClick: () => {
+                        if (this.is_notifications_visible) this.toggleNotificationsModal();
+                        ui.toggleAdditionalKycInfoModal();
+                        this.markNotificationMessage({ key: 'additional_kyc_info' });
                     },
                 },
                 type: 'warning',
@@ -1418,7 +1472,6 @@ export default class NotificationStore extends BaseStore {
         this.p2p_redirect_to = p2p_redirect_to;
     }
 
-    //TODO (yauheni-kryzhyk): this method is not used. leaving this for the upcoming new pop-up notifications implementation
     setShouldShowPopups(should_show_popups) {
         this.should_show_popups = should_show_popups;
     }
@@ -1484,23 +1537,6 @@ export default class NotificationStore extends BaseStore {
             type: 'danger',
             should_show_again: true,
             platform: 'Account',
-        });
-    };
-
-    showAccountSwitchToRealNotification = (loginid, currency) => {
-        const regulation = loginid?.startsWith('CR') ? localize('non-EU') : localize('EU');
-
-        this.addNotificationMessage({
-            key: 'switched_to_real',
-            header: localize('Switched to real account'),
-            message: (
-                <Localize
-                    i18n_default_text='To access the cashier, you are now in your {{regulation}} {{currency}} ({{loginid}}) account.'
-                    values={{ loginid, currency, regulation }}
-                />
-            ),
-            type: 'info',
-            should_show_again: true,
         });
     };
 

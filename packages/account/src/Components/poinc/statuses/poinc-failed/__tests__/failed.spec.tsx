@@ -1,5 +1,7 @@
 import React from 'react';
-import { fireEvent, screen, render } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { PoincFailed } from '../failed';
 
 describe('<PoincFailed/>', () => {
@@ -9,7 +11,7 @@ describe('<PoincFailed/>', () => {
         expect(screen.getByText('Income verification failed')).toBeInTheDocument();
         expect(screen.getByText(/please check the email we've sent you for further information/i)).toBeInTheDocument();
         const btn = screen.getByRole('button', { name: /try again/i });
-        fireEvent.click(btn);
+        userEvent.click(btn);
         expect(mockOnReSubmit).toHaveBeenCalled();
     });
 });

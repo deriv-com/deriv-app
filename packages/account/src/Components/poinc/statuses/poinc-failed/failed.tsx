@@ -22,10 +22,11 @@ export const PoincFailed = ({ onReSubmit }: TPoincUnverified) => (
         <Button
             type='button'
             className='account-management__continue'
-            onClick={() => onReSubmit('none')}
+            onClick={() => onReSubmit(income_status_codes.NONE)}
             large
-            text={localize('Try Again')}
             primary
-        />
+        >
+            <Localize i18n_default_text='Try Again' />
+        </Button>
     </IconMessageContent>
 );

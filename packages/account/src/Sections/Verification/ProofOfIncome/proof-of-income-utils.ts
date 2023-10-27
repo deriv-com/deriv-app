@@ -8,7 +8,7 @@ export const income_status_codes = {
     LOCKED: 'locked',
 } as const;
 
-export const poinc_documents_list = [
+export const getPoincDocumentsList = () => [
     { text: localize('Tax return'), value: 'tax_return' },
     { text: localize('Employment contract'), value: 'employment_contract' },
     { text: localize('Payslip'), value: 'payslip' },
@@ -18,4 +18,4 @@ export const poinc_documents_list = [
     { text: localize('Memorandum'), value: 'memorandum' },
     { text: localize('Authorisation letter'), value: 'authorisation_letter' },
     { text: localize('Declarations'), value: 'declarations' },
-] as const;
+];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { WS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
@@ -163,7 +163,7 @@ describe('ProofOfIncome', () => {
 
         const file = new File(['test document'], 'test_document.png', { type: 'image/png' });
 
-        fireEvent.change(file_input, { target: { files: [file] } });
+        userEvent.upload(file_input, [file]);
 
         await waitFor(() => {
             expect(file_input?.files?.[0]).toBe(file);

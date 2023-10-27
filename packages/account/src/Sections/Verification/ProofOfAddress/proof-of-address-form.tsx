@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
+import { useFileUploader } from '@deriv/hooks';
 import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -15,7 +16,7 @@ import FileUploaderContainer from '../../../Components/file-uploader-container';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
-import { useFileUploader } from '@deriv/hooks';
+import { getFileUploaderDescriptions } from 'Constants/file-uploader';
 
 type TProofOfAddressForm = {
     is_resubmit: boolean;
@@ -60,6 +61,8 @@ const ProofOfAddressForm = observer(
             should_allow_submit: true,
             should_show_form: true,
         });
+
+        const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa'), []);
 
         const { upload } = useFileUploader();
 
@@ -232,9 +235,7 @@ const ProofOfAddressForm = observer(
             address_postcode,
         };
 
-        if (api_initial_load_error) {
-            return <LoadErrorMessage error_message={api_initial_load_error} />;
-        }
+        if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
         if (form_initial_values.address_state) {
@@ -248,25 +249,7 @@ const ProofOfAddressForm = observer(
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
             return is_mobile && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
-        const files_descriptions = [
-            {
-                key: 'utility_bill',
-                value: <Localize i18n_default_text='Utility bill: electricity, water, gas, or landline phone bill.' />,
-            },
-            {
-                key: 'financial_legal_government_document',
-                value: (
-                    <Localize i18n_default_text='Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.' />
-                ),
-            },
-            {
-                key: 'home_rental_agreement',
-                value: <Localize i18n_default_text='Home rental agreement: valid and current agreement.' />,
-            },
-        ];
-        const files_descriptions_title = (
-            <Localize i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:' />
-        );
+
         return (
             <Formik
                 initialValues={form_initial_values}
@@ -315,8 +298,8 @@ const ProofOfAddressForm = observer(
                                                 onError={setFileSelectionError}
                                                 files_description={
                                                     <FilesDescription
-                                                        title={files_descriptions_title}
-                                                        descriptions={files_descriptions}
+                                                        title={poa_uploader_files_descriptions.title}
+                                                        descriptions={poa_uploader_files_descriptions.descriptions}
                                                     />
                                                 }
                                                 examples={<CommonMistakeExamples />}

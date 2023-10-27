@@ -59,19 +59,16 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
     const { allow_document_upload, allow_poinc_resubmission, income_status, needs_poinc, is_age_verified } =
         authentication_status;
 
-    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (!needs_poinc) {
-        return <Redirect to={routes.account} />;
-    }
-    if (
+    const should_show_poinc_form =
         allow_document_upload &&
         needs_poinc &&
         is_age_verified &&
         ((allow_poinc_resubmission && income_status === income_status_codes.LOCKED) ||
-            income_status === income_status_codes.NONE)
-    ) {
-        return <ProofOfIncomeForm onSubmit={handleSubmit} />;
-    }
+            income_status === income_status_codes.NONE);
+
+    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (!needs_poinc) return <Redirect to={routes.account} />;
+    if (should_show_poinc_form) return <ProofOfIncomeForm onSubmit={handleSubmit} />;
     if (income_status === income_status_codes.PENDING) return <PoincReceived />;
     if (income_status === income_status_codes.VERIFIED) return <PoincVerified />;
     if (income_status === income_status_codes.REJECTED) return <PoincFailed onReSubmit={handleSubmit} />;

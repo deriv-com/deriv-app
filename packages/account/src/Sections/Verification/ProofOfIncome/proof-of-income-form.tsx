@@ -17,9 +17,10 @@ import FilesDescription from 'Components/file-uploader-container/files-descripti
 import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
-import { income_status_codes, poinc_documents_list } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 import FileUploaderContainer from '../../../Components/file-uploader-container';
+import { getFileUploaderDescriptions } from 'Constants/file-uploader';
 import { isServerError } from 'Helpers/utils';
+import { income_status_codes, getPoincDocumentsList } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 
 type TProofOfIncomeForm = {
     onSubmit: (status: typeof income_status_codes[keyof typeof income_status_codes]) => void;
@@ -32,6 +33,9 @@ type TInitialValues = {
 const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
     const [document_file, setDocumentFile] = React.useState<File[]>([]);
     const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
+
+    const poinc_documents_list = React.useMemo(() => getPoincDocumentsList(), []);
+    const poinc_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poinc'), []);
 
     const { notifications, ui } = useStore();
     const { addNotificationMessageByKey, removeNotificationMessage, removeNotificationByKey } = notifications;
@@ -46,8 +50,9 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
     const validateFields = (values: TInitialValues) => {
         const errors: FormikErrors<TInitialValues> = {};
         const { document_type } = values;
+        const is_document_type_supported = Boolean(poinc_documents_list.find(c => c.text === document_type));
 
-        if (!document_type || !poinc_documents_list.find(c => c.text === document_type)) {
+        if (!document_type || !is_document_type_supported) {
             errors.document_type = localize('This field is required.');
         }
 
@@ -73,7 +78,8 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                     const { income, needs_verification } =
                         get_account_status_response.get_account_status.authentication;
                     const needs_poinc =
-                        needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
+                        needs_verification.includes('income') &&
+                        [income_status_codes.REJECTED, income_status_codes.NONE].includes(income?.status);
                     removeNotificationMessage({ key: 'needs_poinc' });
                     removeNotificationByKey({ key: 'needs_poinc' });
                     removeNotificationMessage({ key: 'poinc_upload_limited' });
@@ -93,23 +99,6 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
         }
     };
 
-    const files_descriptions = [
-        {
-            key: 'signed_document',
-            value: (
-                <Localize i18n_default_text='The document must be up-to-date and signed by the issuance authority.' />
-            ),
-        },
-        { key: 'contains_letterhead', value: <Localize i18n_default_text='The document must contain a letterhead.' /> },
-        {
-            key: 'invalid_rejected',
-            value: <Localize i18n_default_text='Invalid or incomplete documents shall be rejected.' />,
-        },
-    ];
-    const files_descriptions_title = (
-        <Localize i18n_default_text='The document must be recent and include your name and address:' />
-    );
-
     return (
         <Formik initialValues={initial_form_values} onSubmit={onSubmitValues} validate={validateFields}>
             {({
@@ -125,7 +114,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                 values,
             }) => (
                 <Form noValidate className='proof-of-income__form' onSubmit={handleSubmit}>
-                    <FormBody scroll_offset={is_desktop ? '0' : '200px'}>
+                    <FormBody scroll_offset={is_desktop ? '0' : '20rem'}>
                         <fieldset className='proof-of-income__form-field'>
                             <FormSubHeader
                                 title={localize('Select document')}
@@ -165,7 +154,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                                                 value={values.document_type}
                                                 list_items={poinc_documents_list}
                                                 error={touched.document_type && errors.document_type}
-                                                use_text={true}
+                                                use_text
                                                 onChange={e => {
                                                     setFieldValue('document_type', e.target.value, true);
                                                     setStatus({ msg: '' });
@@ -193,8 +182,8 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                                 onError={setFileSelectionError}
                                 files_description={
                                     <FilesDescription
-                                        descriptions={files_descriptions}
-                                        title={files_descriptions_title}
+                                        descriptions={poinc_uploader_files_descriptions.descriptions}
+                                        title={poinc_uploader_files_descriptions.title}
                                     />
                                 }
                             />
@@ -208,15 +197,16 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                             is_disabled={
                                 isSubmitting ||
                                 !isValid ||
-                                document_file.length < 1 ||
+                                !document_file.length ||
                                 !!file_selection_error ||
                                 !!status.msg
                             }
                             is_loading={isSubmitting}
                             has_effect
-                            text={localize('Save and submit')}
                             primary
-                        />
+                        >
+                            <Localize i18n_default_text='Save and submit' />
+                        </Button>
                     </FormFooter>
                 </Form>
             )}

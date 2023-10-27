@@ -1,11 +1,7 @@
 import { Text } from '@deriv/components';
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-
-type TFilesDescription = {
-    descriptions: { key: string; value: JSX.Element }[];
-    title: React.ReactNode;
-};
+import { TFilesDescription } from 'Types';
 
 const FilesDescription = observer(({ descriptions, title }: TFilesDescription) => {
     const {
@@ -18,7 +14,7 @@ const FilesDescription = observer(({ descriptions, title }: TFilesDescription) =
             </Text>
             <ul>
                 {descriptions.map(item => (
-                    <li key={item.key}>
+                    <li key={item.id}>
                         <Text size={is_mobile ? 'xxs' : 'xs'} line_height={is_mobile ? 'l' : 'xl'}>
                             {item.value}
                         </Text>

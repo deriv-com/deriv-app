@@ -501,7 +501,6 @@ type TClientStore = {
     is_svg: boolean;
     real_account_creation_unlock_date: string;
     setPrevAccountType: (account_type: string) => void;
-    mf_account_status: string;
     init: (login_new_user?: LoginURLParams<1>) => void;
     setLoginId: (loginid: string) => void;
     resetLocalStorageValues: (loginid: string) => void;

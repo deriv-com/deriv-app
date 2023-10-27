@@ -55,13 +55,13 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
             <WalletText lineHeight='2xs' size='2xs'>
                 Address:{' '}
                 <a className='wallets-crypto-transaction__red-text' href={transaction.address_url}>
-                    {transaction.addressHashDisplay}
+                    {transaction.formatted_address_hash}
                 </a>
             </WalletText>
             <WalletText lineHeight='2xs' size='2xs'>
                 Transaction hash:{' '}
                 <a className='wallets-crypto-transaction__red-text' href={transaction.transaction_url}>
-                    {transaction.transactionHashDisplay}
+                    {transaction.formatted_transaction_hash}
                 </a>
             </WalletText>
             {transaction.is_deposit && (

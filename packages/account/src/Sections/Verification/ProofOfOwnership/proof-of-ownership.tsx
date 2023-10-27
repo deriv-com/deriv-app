@@ -16,25 +16,25 @@ export const ProofOfOwnership = observer(() => {
     const { account_status, email: client_email, updateAccountStatus } = client;
     const { is_dark_mode_on: is_dark_mode, is_mobile } = ui;
     const { refreshNotifications } = notifications;
-    const cards = account_status?.authentication?.ownership?.requests as TPaymentData;
+    const cards = account_status?.authentication?.ownership?.requests;
     const [status, setStatus] = useState(POO_STATUSES.NONE);
 
     const grouped_payment_method_data = React.useMemo(() => {
         const groups: Partial<Record<TPaymentMethod, TPaymentMethodInfo>> = {};
         const payment_methods_config = getPaymentMethodsConfig();
         cards?.forEach(card => {
-            const card_payment_method = card?.payment_method?.toLowerCase() || '';
+            const card_payment_method = card?.payment_method?.toLowerCase();
             const card_details =
                 payment_methods_config[card_payment_method as TPaymentMethod] || payment_methods_config.other;
 
             if (groups[card_payment_method as TPaymentMethod]) {
-                groups[card_payment_method as TPaymentMethod]?.items?.push(card);
+                groups[card_payment_method as TPaymentMethod]?.items?.push(card as TPaymentData[number]);
             } else {
                 groups[card_payment_method as TPaymentMethod] = {
-                    documents_required: card?.documents_required,
+                    documents_required: (card as TPaymentData[number])?.documents_required,
                     icon: is_dark_mode ? card_details?.icon_dark : card_details?.icon_light,
-                    payment_method: card?.payment_method,
-                    items: [card],
+                    payment_method: (card as TPaymentData[number])?.payment_method,
+                    items: [card as TPaymentData[number]],
                     instructions: card_details.instructions,
                     input_label: card_details?.input_label,
                     identifier_type: card_details.identifier_type as TPaymentMethodIdentifier,
@@ -51,7 +51,7 @@ export const ProofOfOwnership = observer(() => {
         setStatus(POO_STATUSES.NONE);
     };
 
-    if (cards?.length > 0 && status !== POO_STATUSES.REJECTED) {
+    if (cards?.length && status !== POO_STATUSES.REJECTED) {
         return (
             <ProofOfOwnershipForm
                 client_email={client_email}
@@ -60,20 +60,12 @@ export const ProofOfOwnership = observer(() => {
                 refreshNotifications={refreshNotifications}
                 updateAccountStatus={updateAccountStatus}
             />
-        ); // Proof of ownership is required.
+        );
     }
-    if (status === POO_STATUSES.VERIFIED) {
-        return <POOVerified />; // Proof of ownership verified
-    }
-    if (status === POO_STATUSES.PENDING) {
-        return <POOSubmitted />; // Proof of ownership submitted pending review
-    }
-    if (status === POO_STATUSES.NONE) {
-        return <POONotRequired />; // Client does not need proof of ownership.
-    }
-    if (status === POO_STATUSES.REJECTED) {
-        return <POORejetced onTryAgain={onTryAgain} />; // Proof of ownership rejected
-    }
+    if (status === POO_STATUSES.VERIFIED) return <POOVerified />;
+    if (status === POO_STATUSES.PENDING) return <POOSubmitted />;
+    if (status === POO_STATUSES.NONE) return <POONotRequired />;
+    if (status === POO_STATUSES.REJECTED) return <POORejetced onTryAgain={onTryAgain} />;
     return <Loading is_fullscreen={false} className='account__initial-loader' />;
 });
 

@@ -18,7 +18,7 @@ import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
 import FileUploaderContainer from '../../../Components/file-uploader-container';
-import { getFileUploaderDescriptions } from 'Constants/file-uploader';
+import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
 import { isServerError } from 'Helpers/utils';
 import { income_status_codes, getPoincDocumentsList } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 

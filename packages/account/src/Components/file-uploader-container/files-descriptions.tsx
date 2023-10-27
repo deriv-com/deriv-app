@@ -1,7 +1,7 @@
 import { Text } from '@deriv/components';
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { TFilesDescription } from 'Types';
+import { TFilesDescription } from '../../Types';
 
 const FilesDescription = observer(({ descriptions, title }: TFilesDescription) => {
     const {

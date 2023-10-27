@@ -1,6 +1,6 @@
 import { Localize } from '@deriv/translations';
 import React from 'react';
-import { TFilesDescription } from 'Types';
+import { TFilesDescription } from '../Types';
 
 export const getFileUploaderDescriptions = (page: string): TFilesDescription => {
     const proof_of_income_descriptions = {

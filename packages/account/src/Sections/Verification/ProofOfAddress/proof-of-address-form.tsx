@@ -16,7 +16,7 @@ import FileUploaderContainer from '../../../Components/file-uploader-container';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
-import { getFileUploaderDescriptions } from 'Constants/file-uploader';
+import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
 
 type TProofOfAddressForm = {
     is_resubmit: boolean;

@@ -23,3 +23,12 @@
         user-select: none;
     }
 }
+
+.wallets-success-modal {
+    &--footer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+}

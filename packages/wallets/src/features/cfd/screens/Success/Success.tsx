@@ -14,8 +14,8 @@ type TSuccessProps = {
         | TDisplayBalance.CtraderAccountsList
         | TDisplayBalance.DxtradeAccountsList
         | TDisplayBalance.MT5AccountsList;
-    marketType: TMarketTypes.SortedMT5Accounts;
-    platform: TPlatforms.All;
+    marketType?: TMarketTypes.SortedMT5Accounts;
+    platform?: TPlatforms.All;
     renderButton: () => ReactNode;
     title: string;
 };
@@ -33,10 +33,15 @@ const Success: React.FC<TSuccessProps> = ({
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
-    const marketTypeTitle =
-        marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
-            ? PlatformToTitleMapper[platform]
-            : MarketTypeToTitleMapper[marketType];
+    let marketTypeTitle: string;
+    if (marketType && platform) {
+        marketTypeTitle =
+            marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
+                ? PlatformToTitleMapper[platform]
+                : MarketTypeToTitleMapper[marketType];
+    } else {
+        marketTypeTitle = 'Deriv Apps';
+    }
 
     return (
         <div className='wallets-success'>

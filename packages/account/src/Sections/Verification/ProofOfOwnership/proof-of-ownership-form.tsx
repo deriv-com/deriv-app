@@ -40,9 +40,9 @@ const ProofOfOwnershipForm = ({
 
     const getScrollOffset = React.useCallback(
         (items_count = 0) => {
-            if (is_mobile) return '200px';
-            if (items_count <= 2) return '0px';
-            return '80px';
+            if (is_mobile) return '20rem';
+            if (items_count <= 2) return '0rem';
+            return '8rem';
         },
         [is_mobile]
     );
@@ -213,7 +213,7 @@ const ProofOfOwnershipForm = ({
                                         className='proof-of-ownership__form-content'
                                         key={grouped_payment_method_data_key}
                                     >
-                                        {grouped_payment_method_data_keys.length > 1 && (
+                                        {grouped_payment_method_data_keys.length && (
                                             <div className='proof-of-ownership__progress'>
                                                 <div className='proof-of-ownership__progress-number'>{index + 1}</div>
                                                 {index !== grouped_payment_method_data_keys.length - 1 && (

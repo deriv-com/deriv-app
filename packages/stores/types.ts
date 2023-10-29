@@ -173,10 +173,6 @@ type TCtraderAccountsList = DetailsOfEachMT5Loginid & {
     platform?: string;
 };
 
-type ExtendedMt5LoginList = DetailsOfEachMT5Loginid & {
-    eligible_to_migrate?: Record<string, string>;
-};
-
 type TAccountsList = {
     account?: {
         balance?: string | number;
@@ -203,7 +199,7 @@ type TAccountsList = {
     is_virtual?: boolean | number;
     loginid?: string;
     trader_accounts_list?: DetailsOfEachMT5Loginid[];
-    mt5_login_list?: ExtendedMt5LoginList[];
+    mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 }[];
 
@@ -411,7 +407,11 @@ type TClientStore = {
     loginid?: string;
     pre_switch_broadcast: boolean;
     residence: string;
-    responseMt5LoginList: ({ mt5_login_list }: { mt5_login_list: ExtendedMt5LoginList[] }) => ExtendedMt5LoginList[]; // we can remove this after BE types is updated
+    responseMt5LoginList: ({
+        mt5_login_list,
+    }: {
+        mt5_login_list: DetailsOfEachMT5Loginid[];
+    }) => DetailsOfEachMT5Loginid[];
     responseTradingPlatformAccountsList: ({
         trading_platform_accounts,
     }: {
@@ -449,7 +449,7 @@ type TClientStore = {
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
-    mt5_login_list: ExtendedMt5LoginList[];
+    mt5_login_list: DetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial' | 'gaming' | 'all') => boolean;

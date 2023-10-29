@@ -2,6 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { getUrlBase } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
+import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
 
 type TContractTypeDescriptionVideo = {
     selected_contract_type?: string;
@@ -11,6 +12,9 @@ type TContractTypeDescriptionVideo = {
 const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: TContractTypeDescriptionVideo) => {
     const { ui } = useStore();
     const { is_dark_mode_on: is_dark_theme, is_mobile } = ui;
+    // This ref will be used for creation of a custom player later, e.g. ref.current.play():
+    // More: https://developers.cloudflare.com/stream/viewing-videos/using-the-stream-player/using-the-player-api/
+    const ref = React.useRef<StreamPlayerApi>();
     const getVideoSource = React.useCallback(
         (extension: 'mp4' | 'webm') => {
             return getUrlBase(
@@ -26,7 +30,21 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: T
     if (!selected_contract_type) {
         return null;
     }
-    return (
+    return selected_contract_type === 'accumulator' && !is_mobile && !is_dark_theme ? (
+        // Test for Accumulators video for light theme in desktop.
+        // More: https://www.npmjs.com/package/@cloudflare/stream-react
+        <Stream
+            autoplay
+            controls
+            data-testid={data_testid}
+            letterboxColor='transparent'
+            loop
+            preload='auto'
+            src='c4b95d108a456bd2ec177499abbeec6d'
+            streamRef={ref}
+            className='contract-type-info__video-stream'
+        />
+    ) : (
         <video
             autoPlay
             loop

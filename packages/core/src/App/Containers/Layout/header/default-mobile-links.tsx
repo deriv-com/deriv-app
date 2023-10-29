@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Icon, Popover } from '@deriv/components';
+import { Button, Icon } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 

@@ -11,18 +11,13 @@ const TradersHubOnboarding = observer(() => {
     const { setIsOnboardingVisited } = traders_hub;
     const { is_dark_mode_on, is_mobile } = ui;
 
-    const onRedirectToOnboarding = () => {
-        history.push(routes.onboarding);
-        setIsOnboardingVisited(false);
-    };
-
     return (
         <div data-testid='dt_traders_hub_onboarding'>
             <div className='traders-hub-header__tradershub--onboarding--logo'>
                 <Popover
                     classNameBubble='account-settings-toggle__tooltip'
                     alignment='bottom'
-                    message={<Localize i18n_default_text='View onboarding' />}
+                    message={!is_mobile && <Localize i18n_default_text='View onboarding' />}
                     should_disable_pointer_events
                     zIndex='9999'
                 >
@@ -31,13 +26,8 @@ const TradersHubOnboarding = observer(() => {
                         icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
                         onClick={() => {
-                            onRedirectToOnboarding();
-                        }}
-                        onTouchStart={(e: React.TouchEvent<SVGSVGElement>) => {
-                            e.preventDefault();
-                            if (is_mobile) {
-                                onRedirectToOnboarding();
-                            }
+                            history.push(routes.onboarding);
+                            setIsOnboardingVisited(false);
                         }}
                     />
                 </Popover>

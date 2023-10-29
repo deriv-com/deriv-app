@@ -3,6 +3,14 @@ import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import {
+    CFD_PLATFORMS,
+    getCFDPlatformNames,
+    Jurisdiction,
+    getFormattedJurisdictionMarketTypes,
+    getFormattedJurisdictionCode,
+    JURISDICTION_MARKET_TYPES,
+} from '@deriv/shared';
 import AppstoreBannerImage from './appstore-banner-image';
 
 const SVGMigrationBanner = observer(() => {
@@ -25,9 +33,10 @@ const SVGMigrationBanner = observer(() => {
     const image = is_mobile ? 'svg_migrate_mobile' : 'svg_migrate_desktop';
     const size: string = is_mobile ? 'xs' : 'm';
 
-    const getAccountTitle = () => {
-        return has_derived_mt5_to_migrate ? 'MT5 Derived SVG' : 'MT5 Financial SVG';
-    };
+    const getAccountTitle = (account_to_migrate: typeof Jurisdiction[keyof typeof Jurisdiction]) =>
+        `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
+            account_to_migrate
+        )} ${getFormattedJurisdictionCode(Jurisdiction.SVG)}`;
 
     const openMT5MigrationModal = () => {
         setMT5MigrationError('');
@@ -38,10 +47,14 @@ const SVGMigrationBanner = observer(() => {
         <div className='appstore-banner__container appstore-banner__svg-migrate-banner'>
             <div className='appstore-banner__svg-migrate-banner-description'>
                 <div className='appstore-banner__svg-migrate-banner-description__text'>
-                    {has_derived_and_financial_mt5 ? (
+                    {!has_derived_and_financial_mt5 ? (
                         <Text size={size}>
                             <Localize
-                                i18n_default_text='We’re upgrading your <0>MT5 Derived SVG</0> and <0>MT5 Financial SVG</0> account.'
+                                i18n_default_text='We’re upgrading your <0>{{account_1}}</0> and <0>{{account_2}} </0> account.'
+                                values={{
+                                    account_1: getAccountTitle(JURISDICTION_MARKET_TYPES.DERIVED),
+                                    account_2: getAccountTitle(JURISDICTION_MARKET_TYPES.FINANCIAL),
+                                }}
                                 components={[<strong key={0} />]}
                             />
                         </Text>
@@ -50,7 +63,11 @@ const SVGMigrationBanner = observer(() => {
                             <Localize
                                 i18n_default_text='We’re upgrading your <0>{{account_title}}</0> account.'
                                 values={{
-                                    account_title: getAccountTitle(),
+                                    account_title: getAccountTitle(
+                                        has_derived_mt5_to_migrate
+                                            ? JURISDICTION_MARKET_TYPES.DERIVED
+                                            : JURISDICTION_MARKET_TYPES.FINANCIAL
+                                    ),
                                 }}
                                 components={[<strong key={0} />]}
                             />

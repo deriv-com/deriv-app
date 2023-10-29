@@ -8,7 +8,7 @@ const useMT5SVGEligibleToMigrate = () => {
 
     const mt5_migration_config = React.useMemo(() => {
         const svg_accounts_to_migrate = mt5_login_list.filter(
-            account => account.landing_company_short === 'svg' && !!account.eligible_to_migrate
+            account => account.landing_company_short === Jurisdiction.SVG && !!account.eligible_to_migrate
         );
 
         const has_svg_accounts_to_migrate = !!svg_accounts_to_migrate.length;

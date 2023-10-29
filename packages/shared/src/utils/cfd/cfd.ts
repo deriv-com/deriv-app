@@ -511,3 +511,13 @@ export const getFormattedJurisdictionMarketTypes = (jurisdiction_market_type: st
     }
     return formatted_market_type;
 };
+
+type TGetMT5AccountTitle = {
+    account_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES];
+    jurisdiction: typeof Jurisdiction[keyof typeof Jurisdiction];
+};
+export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5AccountTitle) => {
+    return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
+        account_type
+    )} ${getFormattedJurisdictionCode(jurisdiction)}`;
+};

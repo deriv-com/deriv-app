@@ -13,7 +13,7 @@ import {
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { getPlatformMt5DownloadLink } from '../Helpers/constants';
-import SpecBox from '../Components/specbox';
+import SpecBox from '../Components/spec-box';
 import PasswordBox from '../Components/password-box';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { TTradingPlatformAccounts } from '../Components/props.types';

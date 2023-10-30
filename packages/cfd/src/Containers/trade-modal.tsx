@@ -6,7 +6,7 @@ import { CFD_PLATFORMS, getCFDAccountKey, isMobile, mobileOSDetect } from '@deri
 import { localize, Localize } from '@deriv/translations';
 import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../Helpers/config';
 import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../Helpers/constants';
-import SpecBox from '../Components/specbox';
+import SpecBox from '../Components/spec-box';
 import PasswordBox from '../Components/password-box';
 import { TCFDPasswordReset } from './props.types';
 

@@ -50,11 +50,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         variant='outlined'
                     />
                     <WalletButton
-                        onClick={() =>
-                            show(
-                                <MT5TradeModal marketType={account.market_type || 'all'} platform={account.platform} />
-                            )
-                        }
+                        onClick={() => show(<MT5TradeModal marketType={account.market_type || 'all'} platform='mt5' />)}
                         text='Open'
                     />
                 </div>

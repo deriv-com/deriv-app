@@ -87,6 +87,10 @@
             & .wallets-mt5-trade-details-item:last-child {
                 border-radius: 0 0 0.7rem 0.7rem;
             }
+
+            & .wallets-mt5-trade-details-item--info:last-child {
+                border-radius: 0.4rem;
+            }
         }
 
         &-maintainance {

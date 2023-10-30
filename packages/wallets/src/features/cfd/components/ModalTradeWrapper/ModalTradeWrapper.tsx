@@ -10,21 +10,56 @@ import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { PlatformToTitleMapper } from '../../constants';
 
-const AppToLinkMapper = {
+const MT5ToLinkMapper = {
     android: 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
     huawei: 'https://appgallery.huawei.com/#/app/C102015329',
     ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
 };
 
-const PlatformToLinkMapper = {
+const LinksMapper: Record<
+    TPlatforms.All,
+    {
+        android: string;
+        huawei?: string;
+        ios: string;
+    }
+> = {
+    mt5: {
+        android: 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
+        huawei: 'https://appgallery.huawei.com/#/app/C102015329',
+        ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
+    },
+    ctrader: {
+        ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
+        android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
+    },
+    dxtrade: {
+        ios: 'https://apps.apple.com/us/app/deriv-x/id1563337503',
+        android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',
+        huawei: 'https://appgallery.huawei.com/app/C104633219',
+    },
+    derivez: {
+        ios: 'https://apps.apple.com/my/app/deriv-go/id1550561298',
+        android: 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1',
+        huawei: 'https://appgallery.huawei.com/#/app/C103801913',
+    },
+};
+
+const PlatformToLinkMapper: Record<TPlatforms.All, string> = {
     derivez: 'https://onelink.to/bkdwkd',
     dxtrade: 'https://onelink.to/grmtyx',
     ctrader: 'https://onelink.to/hyqpv7',
     mt5: 'https://onelink.to/grmtyx',
 };
 
+const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SVGElement>>> = {
+    ios: InstallationAppleIcon,
+    android: InstallationGoogleIcon,
+    huawei: InstallationHuaweiIcon,
+};
+
 type TModalTradeWrapper = {
-    marketType: TMarketTypes.All;
+    marketType?: TMarketTypes.All;
     platform: TPlatforms.MT5 | TPlatforms.OtherAccounts;
 };
 
@@ -41,9 +76,11 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                         </WalletText>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
-                                <InstallationAppleIcon onClick={() => window.open(AppToLinkMapper.ios)} />
-                                <InstallationGoogleIcon onClick={() => window.open(AppToLinkMapper.android)} />
-                                <InstallationHuaweiIcon onClick={() => window.open(AppToLinkMapper.huawei)} />
+                                {Object.keys(LinksMapper[platform]).map((app, i) => {
+                                    const AppIcon = AppToIconMapper[app];
+                                    const appLink = LinksMapper[platform][app as 'android' | 'huawei' | 'ios'];
+                                    return <AppIcon key={`${app}-${i}`} onClick={() => window.open(appLink)} />;
+                                })}
                             </div>
                             {isDesktop && (
                                 <div className='wallets-modal-trade-wrapper__footer-installations-qr'>

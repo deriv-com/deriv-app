@@ -5,7 +5,7 @@ import { TMarketTypes, TPlatforms } from '../../../../types';
 import { useModal } from '../../../../components/ModalProvider';
 
 type TMT5TradeModal = {
-    marketType: TMarketTypes.All;
+    marketType?: TMarketTypes.All;
     platform: TPlatforms.All;
 };
 
@@ -13,6 +13,7 @@ const MT5TradeModal: FC<TMT5TradeModal> = ({ marketType, platform }) => {
     const { setModalState } = useModal();
     useEffect(() => {
         setModalState('marketType', marketType);
+        setModalState('platform', platform);
     }, []);
 
     return (

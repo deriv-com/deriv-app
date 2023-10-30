@@ -3,6 +3,9 @@ import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
 import { TMarketTypes, TPlatforms } from '../../types';
 import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
+import DerivXIcon from '../../public/images/derivx.svg';
+import DerivEZIcon from '../../public/images/derivez.svg';
+import CTraderIcon from '../../public/images/ctrader.svg';
 
 export const MarketTypeToTitleMapper: Record<TMarketTypes.All, string> = {
     all: 'Swap-Free',
@@ -27,4 +30,11 @@ export const MarketTypeToIconMapper: Record<TMarketTypes.All, ReactNode> = {
     all: <SwapFreeMT5Icon />,
     financial: <FinancialMT5Icon />,
     synthetic: <DerivedMT5Icon />,
+};
+
+export const PlatformToIconMapper: Record<TPlatforms.All, ReactNode> = {
+    mt5: <DerivedMT5Icon />,
+    dxtrade: <DerivXIcon />,
+    derivez: <DerivEZIcon />,
+    ctrader: <CTraderIcon />,
 };

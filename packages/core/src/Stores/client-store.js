@@ -1679,11 +1679,11 @@ export default class ClientStore extends BaseStore {
                 Analytics.setAttributes({
                     app_id: getAppId(),
                 });
-                tracking.identifyEvent(user_id, {
+                tracking?.identifyEvent(user_id, {
                     language: getLanguage().toLowerCase(),
                 });
                 const current_page = window.location.hostname + window.location.pathname;
-                Analytics.pageView(current_page);
+                Analytics?.pageView(current_page);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1757,7 +1757,7 @@ export default class ClientStore extends BaseStore {
             if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
             this.loginid !== 'null' && Analytics.setAttributes({ account_type: this.loginid.substring(0, 2) });
             if (this.user_id) {
-                tracking.identifyEvent(this.user_id, {
+                tracking?.identifyEvent(this.user_id, {
                     language: getLanguage().toLowerCase(),
                 });
             }

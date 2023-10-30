@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { Text } from '@deriv/components';
 
-import { CFDAccountCopy } from './cfd-account-copy';
+import { CopyTextIcon } from './copy-text-icon';
 
 export type TSpecBoxProps = {
     value?: string;
@@ -20,7 +20,7 @@ const SpecBox = ({ value, is_bold, is_broker }: TSpecBoxProps) => (
         >
             {value}
         </Text>
-        <CFDAccountCopy text={value} className='cfd-trade-modal__spec-copy' />
+        <CopyTextIcon text={value} className='cfd-trade-modal__spec-copy' />
     </div>
 );
 

@@ -17,7 +17,7 @@ import {
 } from '../Helpers/constants';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
-import { CFDAccountCopy } from './cfd-account-copy';
+import { CopyTextIcon } from './copy-text-icon';
 import {
     TAccountIconValues,
     TCFDAccountCard,
@@ -69,7 +69,7 @@ const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
         <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-account-card__spec-text'>
             {value}
         </Text>
-        <CFDAccountCopy text={value} className='cfd-account-card__spec-copy' />
+        <CopyTextIcon text={value} className='cfd-account-card__spec-copy' />
     </div>
 );
 

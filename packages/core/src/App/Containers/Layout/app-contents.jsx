@@ -49,7 +49,7 @@ const AppContents = observer(({ children }) => {
             Analytics?.setAttributes({
                 account_type: loginid.substring(0, 2),
             });
-            tracking.identifyEvent(user_id, {
+            tracking?.identifyEvent(user_id, {
                 language: getLanguage().toLowerCase() || 'en',
             });
             Analytics?.pageView(current_page);

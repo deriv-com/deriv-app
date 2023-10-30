@@ -1,5 +1,5 @@
 import React from 'react';
-import { toPng } from 'html-to-image';
+import html2canvas from 'html2canvas';
 import {
     Button,
     Clipboard,
@@ -27,7 +27,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const { id: advertiser_id } = advertiser_details;
     const { hideModal, is_modal_open } = useModalManagerContext();
 
-    const divRef = React.useRef(null);
+    const div_ref = React.useRef(null);
     const advert_url = `${websiteUrl()}cashier/p2p/advertiser?id=${advertiser_id}&advert_id=${id}`;
     const is_buy_ad = type === buy_sell.BUY;
     const custom_message = localize(
@@ -48,13 +48,18 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     };
 
     const handleGenerateImage = async () => {
-        if (divRef.current) {
-            const file_name = `${advert.type}_${advert.id}.png`;
-            const dataUrl = await toPng(divRef.current);
-            const link = document.createElement('a');
-            link.download = file_name;
-            link.href = dataUrl;
-            link.click();
+        if (div_ref.current) {
+            const p2p_logo = div_ref.current.querySelector('.share-my-ads-card__qr-icon');
+
+            if (p2p_logo) {
+                const canvas = await html2canvas(div_ref.current, { useCORS: true, allowTaint: true });
+                const screenshot = canvas.toDataURL('image/png', 1.0);
+                const file_name = `${advert.type}_${advert.id}.png`;
+                const link = document.createElement('a');
+                link.download = file_name;
+                link.href = screenshot;
+                link.click();
+            }
         }
     };
 
@@ -88,7 +93,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                     </DesktopWrapper>
                     <div className='share-my-ads-modal__container'>
                         <div className='share-my-ads-modal__container__card'>
-                            <ShareMyAdsCard advert={advert} advert_url={advert_url} divRef={divRef} />
+                            <ShareMyAdsCard advert={advert} advert_url={advert_url} div_ref={div_ref} />
                             <Button
                                 className='share-my-ads-modal__container__card__download-button'
                                 secondary
@@ -120,7 +125,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                         <DesktopWrapper>
                             <div className='share-my-ads-modal__share'>
                                 <Text weight='bold'>
-                                    <Localize i18n_default_text='Share link to' />
+                                    <Localize i18n_default_text='Share via' />
                                 </Text>
                                 <ShareMyAdsSocials advert_url={advert_url} custom_message={custom_message} />
                                 <MyProfileSeparatorContainer.Line

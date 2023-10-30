@@ -4,16 +4,17 @@ import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { base64_images } from 'Constants/base64-images';
+import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { TAdvertProps } from 'Types';
 
 type TShareMyAdsCardProps = {
     advert: Partial<TAdvertProps>;
     advert_url: string;
-    divRef: React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>;
+    div_ref: React.MutableRefObject<HTMLDivElement> | React.MutableRefObject<null>;
 };
 
-const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) => {
+const ShareMyAdsCard = ({ advert, advert_url, div_ref }: TShareMyAdsCardProps) => {
     const {
         account_currency,
         id,
@@ -25,11 +26,16 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
         type,
     } = advert;
 
+    const advert_type = type === buy_sell.BUY ? 'Buy' : 'Sell';
+
     return (
-        <div className='share-my-ads-card' ref={divRef}>
-            <img className='share-my-ads-card__icon' src={base64_images.deriv_p2p} />
+        <div className='share-my-ads-card' ref={div_ref}>
+            <img alt='deriv_p2p' className='share-my-ads-card__icon' src={base64_images.deriv_p2p} />
             <Text className='share-my-ads-card__title' weight='bold' size='m'>
-                <Localize i18n_default_text='{{type}} {{account_currency}}' values={{ type, account_currency }} />
+                <Localize
+                    i18n_default_text='{{type}} {{account_currency}}'
+                    values={{ type: advert_type, account_currency }}
+                />
             </Text>
             <div className='share-my-ads-card__numbers'>
                 <div className='share-my-ads-card__numbers-text'>
@@ -37,7 +43,7 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
                         <Localize i18n_default_text='ID number' />
                     </Text>
                     <Text color='colored-background' size='xs'>
-                        <Localize i18n_default_text='Limit' />
+                        <Localize i18n_default_text='Limits' />
                     </Text>
                     <Text color='colored-background' size='xs'>
                         <Localize i18n_default_text='Rate' />
@@ -62,11 +68,18 @@ const ShareMyAdsCard = ({ advert, advert_url, divRef }: TShareMyAdsCardProps) =>
                         value={advert_url}
                         size={isMobile() ? 120 : 140}
                         imageSettings={{
-                            src: base64_images.dp2p_logo,
+                            src: '',
                             height: 25,
                             width: 25,
                             excavate: true,
                         }}
+                    />
+                    <img
+                        alt='dp2p_logo'
+                        className='share-my-ads-card__qr-icon'
+                        src={base64_images.dp2p_logo}
+                        height='25'
+                        width='25'
                     />
                 </div>
                 <Text className='share-my-ads-card__qr-text' color='less-prominent' size='xxs'>

@@ -4,7 +4,7 @@ import { reaction } from 'mobx';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
-import { daysSince, isMobile, routes } from '@deriv/shared';
+import { daysSince, isDesktop, isMobile, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 
 import { Localize, localize } from 'Components/i18next';
@@ -127,7 +127,7 @@ const AdvertiserPage = () => {
 
     React.useEffect(() => {
         if (is_advertiser && !is_barred) {
-            if (isFetching) {
+            if (isFetching && isDesktop()) {
                 showModal({ key: 'LoadingModal' });
             } else if (counterparty_advert_id) {
                 setShowAdvertInfo();

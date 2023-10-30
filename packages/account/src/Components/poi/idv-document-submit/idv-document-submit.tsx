@@ -158,14 +158,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
     };
 
     return (
-        <Formik
-            initialValues={{ ...initial_values }}
-            validate={validateFields}
-            initialStatus={{
-                is_confirmed: false,
-            }}
-            onSubmit={submitHandler}
-        >
+        <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
             {({ dirty, isSubmitting, isValid, values, status }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset'>
                     {status?.error_message && (

@@ -1,0 +1,18 @@
+.account-switcher-wallet {
+    display: flex;
+    flex-flow: column nowrap;
+
+    &__header {
+        padding: 1rem;
+        border-bottom: 1px solid var(--general-hover);
+    }
+
+    &__list {
+        padding: 0.4rem 0.8rem;
+        border-bottom: 1px solid var(--general-hover);
+    }
+
+    &__button {
+        margin: 1.6rem;
+    }
+}

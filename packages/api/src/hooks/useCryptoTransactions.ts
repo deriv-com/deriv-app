@@ -102,7 +102,7 @@ const useCryptoTransactions = () => {
                 case 'LOCKED':
                     return 'In review';
                 default:
-                    '';
+                    return '';
             }
         };
 

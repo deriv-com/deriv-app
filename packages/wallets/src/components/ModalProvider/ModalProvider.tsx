@@ -63,7 +63,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     return (
         <ModalContext.Provider
-            value={{ hide, isOpen: content !== null, getModalState, modalState, setModalState, show }}
+            value={{ getModalState, hide, isOpen: content !== null, modalState, setModalState, show }}
         >
             {children}
             {isDesktop &&

@@ -24,38 +24,38 @@ const LinksMapper: Record<
         ios: string;
     }
 > = {
+    ctrader: {
+        android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
+        ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
+    },
+    derivez: {
+        android: 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1',
+        huawei: 'https://appgallery.huawei.com/#/app/C103801913',
+        ios: 'https://apps.apple.com/my/app/deriv-go/id1550561298',
+    },
+    dxtrade: {
+        android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',
+        huawei: 'https://appgallery.huawei.com/app/C104633219',
+        ios: 'https://apps.apple.com/us/app/deriv-x/id1563337503',
+    },
     mt5: {
         android: 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
         huawei: 'https://appgallery.huawei.com/#/app/C102015329',
         ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
     },
-    ctrader: {
-        ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
-    },
-    dxtrade: {
-        ios: 'https://apps.apple.com/us/app/deriv-x/id1563337503',
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',
-        huawei: 'https://appgallery.huawei.com/app/C104633219',
-    },
-    derivez: {
-        ios: 'https://apps.apple.com/my/app/deriv-go/id1550561298',
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1',
-        huawei: 'https://appgallery.huawei.com/#/app/C103801913',
-    },
 };
 
 const PlatformToLinkMapper: Record<TPlatforms.All, string> = {
+    ctrader: 'https://onelink.to/hyqpv7',
     derivez: 'https://onelink.to/bkdwkd',
     dxtrade: 'https://onelink.to/grmtyx',
-    ctrader: 'https://onelink.to/hyqpv7',
     mt5: 'https://onelink.to/grmtyx',
 };
 
 const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SVGElement>>> = {
-    ios: InstallationAppleIcon,
     android: InstallationGoogleIcon,
     huawei: InstallationHuaweiIcon,
+    ios: InstallationAppleIcon,
 };
 
 type TModalTradeWrapper = {

@@ -33,8 +33,8 @@ export const MarketTypeToIconMapper: Record<TMarketTypes.All, ReactNode> = {
 };
 
 export const PlatformToIconMapper: Record<TPlatforms.All, ReactNode> = {
-    mt5: <DerivedMT5Icon />,
-    dxtrade: <DerivXIcon />,
-    derivez: <DerivEZIcon />,
     ctrader: <CTraderIcon />,
+    derivez: <DerivEZIcon />,
+    dxtrade: <DerivXIcon />,
+    mt5: <DerivedMT5Icon />,
 };

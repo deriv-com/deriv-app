@@ -45,9 +45,9 @@ const AppToContentMapper = {
 };
 
 const PlatformToLabelIconMapper = {
-    dxtrade: <DerivXLabelIcon />,
-    derivez: <DerivEZLabelIcon />,
     ctrader: <CTraderLabelIcon />,
+    derivez: <DerivEZLabelIcon />,
+    dxtrade: <DerivXLabelIcon />,
 };
 
 type TMT5TradeLinkProps = {

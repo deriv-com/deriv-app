@@ -13,7 +13,7 @@ import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import AccountsInfoLoaderWallets from 'App/Components/Layout/Header/wallets/accounts-info-loader-wallets';
-import { TradersHubHomeButton } from './trading-hub-header';
+import TradersHubHomeButton from './traders-hub-home-button';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
 

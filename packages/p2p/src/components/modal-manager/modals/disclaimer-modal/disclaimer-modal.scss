@@ -1,0 +1,38 @@
+.dc-modal {
+    &__container_disclaimer-modal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .disclaimer-modal {
+            &__body {
+                padding-bottom: 0rem;
+                &-title {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                &-icon {
+                    margin: 1.6rem 0;
+                }
+
+                &-bullets {
+                    margin-bottom: 1.6rem;
+                    & > ul {
+                        padding-left: 2rem;
+                        list-style-type: disc;
+                    }
+                }
+
+                .dc-checkbox__box {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+
+    &-footer {
+        align-self: end;
+    }
+}

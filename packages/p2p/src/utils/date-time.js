@@ -50,3 +50,13 @@ export const secondsToTimer = distance => {
 
     return `${toDoubleDigits(hours)}:${toDoubleDigits(minutes)}:${toDoubleDigits(seconds)}`;
 };
+
+// The function below returns the time difference in hours between the current time and the time set
+export const getHoursDifference = time_set => {
+    if (!time_set) return undefined;
+    const current_time = new Date();
+    const updated_time = new Date(time_set);
+    const difference = current_time.getTime() - updated_time.getTime();
+    const hours_difference = Math.floor(difference / 1000 / 60);
+    return hours_difference;
+};

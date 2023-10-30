@@ -13,17 +13,35 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-
+import { getHoursDifference } from 'Utils/date-time';
 import { localize } from './i18next';
 
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
     const { showModal, hideModal } = useModalManagerContext();
+    let interval;
     const {
         notifications: { setP2POrderProps },
+        client: { loginid },
     } = useStore();
     const notification_count = useP2PNotificationCount();
     const history = useHistory();
+
+    // Check if it has been 24 hours since the user last saw the disclaimer modal
+    const checkShowDisclaimerModal = () => {
+        if (!(getHoursDifference(localStorage.getItem(`${loginid}_disclaimer_shown`)) < 24)) {
+            showModal({ key: 'DisclaimerModal' });
+        }
+    };
+
+    React.useEffect(() => {
+        checkShowDisclaimerModal();
+        interval = setInterval(() => {
+            checkShowDisclaimerModal();
+            // checks whether to show the disclaimer modal every hour
+        }, 3600000);
+        return () => clearInterval(interval);
+    }, []);
 
     React.useEffect(() => {
         buy_sell_store.setTableType(buy_sell.BUY);
@@ -61,30 +79,33 @@ const AppContent = ({ order_id }) => {
     }
 
     return (
-        <Tabs
-            active_index={general_store.active_index}
-            className={classNames({ p2p__tabs: general_store.active_index === 0 && isMobile() })}
-            header_fit_content={!isMobile()}
-            is_100vw={isMobile()}
-            is_scrollable
-            is_overflow_hidden
-            onTabItemClick={active_tab_index => {
-                general_store.handleTabClick(active_tab_index);
-                history.push({
-                    pathname: general_store.active_tab_route,
-                });
-            }}
-            top
-        >
-            <div label={localize('Buy / Sell')}>
-                <TemporarilyBarredHint />
-            </div>
-            <div data-count={notification_count} label={localize('Orders')} />
-            <div label={localize('My ads')}>
-                <TemporarilyBarredHint />
-            </div>
-            <div label={localize('My profile')} />
-        </Tabs>
+        <>
+            {/* <div><img src={path_reference} /></div> */}
+            <Tabs
+                active_index={general_store.active_index}
+                className={classNames({ p2p__tabs: general_store.active_index === 0 && isMobile() })}
+                header_fit_content={!isMobile()}
+                is_100vw={isMobile()}
+                is_scrollable
+                is_overflow_hidden
+                onTabItemClick={active_tab_index => {
+                    general_store.handleTabClick(active_tab_index);
+                    history.push({
+                        pathname: general_store.active_tab_route,
+                    });
+                }}
+                top
+            >
+                <div label={localize('Buy / Sell')}>
+                    <TemporarilyBarredHint />
+                </div>
+                <div data-count={notification_count} label={localize('Orders')} />
+                <div label={localize('My ads')}>
+                    <TemporarilyBarredHint />
+                </div>
+                <div label={localize('My profile')} />
+            </Tabs>
+        </>
     );
 };
 

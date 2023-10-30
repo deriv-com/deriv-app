@@ -36,28 +36,24 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
     if (!data) return <TransactionsNoDataState />;
 
     return (
-        <div>
-            <TransactionsTable
-                columns={[
-                    {
-                        accessorFn: row =>
-                            row.transaction_time && moment.unix(row.transaction_time).format('DD MMM YYYY'),
-                        accessorKey: 'date',
-                        header: 'Date',
-                    },
-                ]}
-                data={data}
-                fetchMore={fetchMoreOnBottomReached}
-                groupBy={['date']}
-                rowGroupRender={transaction => (
-                    <p className='wallets-transactions-completed__group-title'>
-                        {transaction.transaction_time &&
-                            moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
-                    </p>
-                )}
-                rowRender={transaction => <TransactionsCompletedRow transaction={transaction} />}
-            />
-        </div>
+        <TransactionsTable
+            columns={[
+                {
+                    accessorFn: row => row.transaction_time && moment.unix(row.transaction_time).format('DD MMM YYYY'),
+                    accessorKey: 'date',
+                    header: 'Date',
+                },
+            ]}
+            data={data}
+            fetchMore={fetchMoreOnBottomReached}
+            groupBy={['date']}
+            rowGroupRender={transaction => (
+                <p className='wallets-transactions-completed__group-title'>
+                    {transaction.transaction_time && moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
+                </p>
+            )}
+            rowRender={transaction => <TransactionsCompletedRow transaction={transaction} />}
+        />
     );
 };
 

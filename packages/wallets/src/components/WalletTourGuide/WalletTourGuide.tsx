@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Joyride, { ACTIONS, CallBackProps } from 'react-joyride';
+import Joyride, { ACTIONS, CallBackProps } from 'react-joyride-scrollparent';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
 import { WalletText } from '../Base';

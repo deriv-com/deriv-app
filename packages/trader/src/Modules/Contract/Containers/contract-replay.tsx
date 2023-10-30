@@ -15,7 +15,6 @@ import {
     isDesktop,
     isEmptyObject,
     isHighLow,
-    isMobile,
     isMultiplierContract,
     isTurbosContract,
     isVanillaContract,
@@ -51,7 +50,12 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
     } = contract_replay;
     const { contract_info, contract_update, contract_update_history, is_digit_contract } = contract_store;
     const { routeBackInApp } = common;
-    const { is_dark_mode_on: is_dark_theme, notification_messages_ui: NotificationMessages, toggleHistoryTab } = ui;
+    const {
+        is_dark_mode_on: is_dark_theme,
+        is_mobile,
+        notification_messages_ui: NotificationMessages,
+        toggleHistoryTab,
+    } = ui;
     const trade_type_feature_flag =
         contract_info.shortcode &&
         getContractTypeFeatureFlag(contract_info.contract_type ?? '', isHighLow(contract_info));
@@ -105,7 +109,6 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             contract_update={contract_update}
             contract_update_history={contract_update_history}
             is_accumulator={is_accumulator}
-            // is_chart_loading={is_chart_loading}
             is_dark_theme={is_dark_theme}
             is_market_closed={is_market_closed}
             is_multiplier={is_multiplier}
@@ -153,7 +156,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                     <MobileWrapper>
                         <div
                             className={classNames('contract-drawer__mobile-wrapper', {
-                                'contract-drawer__mobile-wrapper--is-multiplier': isMobile() && is_multiplier,
+                                'contract-drawer__mobile-wrapper--is-multiplier': is_mobile && is_multiplier,
                             })}
                         >
                             {contract_drawer_el}
@@ -162,7 +165,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                     <React.Suspense fallback={<div />}>
                         <div
                             className={classNames('replay-chart__container', {
-                                'replay-chart__container--is-multiplier': isMobile() && is_multiplier,
+                                'replay-chart__container--is-multiplier': is_mobile && is_multiplier,
                                 'vanilla-trade-chart': is_vanilla,
                             })}
                         >

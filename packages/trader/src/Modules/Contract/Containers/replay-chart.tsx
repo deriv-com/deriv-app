@@ -1,13 +1,6 @@
 import React from 'react';
 import { usePrevious } from '@deriv/components';
-import {
-    getDurationPeriod,
-    getDurationUnitText,
-    getEndTime,
-    getPlatformRedirect,
-    isDesktop,
-    isMobile,
-} from '@deriv/shared';
+import { getDurationPeriod, getDurationUnitText, getEndTime, getPlatformRedirect, isDesktop } from '@deriv/shared';
 import SmartChartSwitcher from '../../Trading/Containers/smart-chart-switcher.jsx';
 import { ChartBottomWidgets, ChartTopWidgets } from './contract-replay-widget.jsx';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
@@ -41,7 +34,7 @@ const ReplayChart = observer(
         const { underlying: symbol, audit_details } = contract_info;
         const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
         const { app_routing_history, current_language, is_socket_opened } = common;
-        const { is_chart_layout_default, is_chart_countdown_visible } = ui;
+        const { is_chart_layout_default, is_chart_countdown_visible, is_mobile } = ui;
         const { end_epoch, chart_type, start_epoch, granularity } = contract_config || {};
         const is_dark_theme = is_dark_theme_prop || ui.is_dark_mode_on;
 
@@ -75,11 +68,11 @@ const ReplayChart = observer(
 
         const getChartYAxisMargin = () => {
             const chart_margin = {
-                top: isMobile() ? 96 : 148,
+                top: is_mobile ? 96 : 148,
                 bottom: isBottomWidgetVisible() ? 128 : 112,
             };
 
-            if (isMobile()) {
+            if (is_mobile) {
                 if (is_beta_chart) {
                     chart_margin.top = 48;
                 }
@@ -102,15 +95,15 @@ const ReplayChart = observer(
                 chartType={chart_type}
                 endEpoch={end_epoch}
                 margin={margin || null}
-                isMobile={isMobile()}
+                isMobile={is_mobile}
                 enabledNavigationWidget={isDesktop()}
                 enabledChartFooter={false}
                 granularity={granularity}
                 requestAPI={wsSendRequest}
                 requestForget={wsForget}
                 requestForgetStream={wsForgetStream}
-                crosshair={isMobile() ? 0 : undefined}
-                maxTick={isMobile() ? 8 : undefined}
+                crosshair={is_mobile ? 0 : undefined}
+                maxTick={is_mobile ? 8 : undefined}
                 requestSubscribe={wsSubscribe}
                 settings={settings}
                 startEpoch={start_epoch}
@@ -127,7 +120,7 @@ const ReplayChart = observer(
                 shouldFetchTradingTimes={false}
                 should_zoom_out_on_yaxis={is_accumulator_contract}
                 yAxisMargin={getChartYAxisMargin()}
-                anchorChartToLeft={isMobile()}
+                anchorChartToLeft={is_mobile}
                 shouldFetchTickHistory={
                     getDurationUnitText(getDurationPeriod(contract_info)) !== 'seconds' ||
                     contract_info.status === 'open'

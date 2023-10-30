@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -7,6 +8,7 @@ import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
+import { useExchangeRates2, useActiveAccount, useMT5AccountsList } from '@deriv/api';
 
 const AssetSummary = observer(() => {
     const { traders_hub, client, common } = useStore();
@@ -25,6 +27,35 @@ const AssetSummary = observer(() => {
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
     const eu_account = is_eu_user && !no_MF_account;
     const cr_account = !is_eu_user && !no_CR_account;
+
+    const { data: exchange_rates, subscribe, unsubscribe } = useExchangeRates2();
+
+    const { data: mt5_data } = useMT5AccountsList();
+    const { data: active_data } = useActiveAccount();
+
+    React.useEffect(() => {
+        console.log('mt5_data', mt5_data);
+        console.log('active_data', active_data);
+        if (!((is_switching || is_logging_in) && (eu_account || cr_account))) {
+            subscribe({
+                payload: {
+                    base_currency: 'AUD',
+                    target_currency: 'EUR',
+                },
+            });
+        }
+    }, [is_switching, is_logging_in, eu_account, cr_account, subscribe]);
+
+    React.useEffect(() => {
+        if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
+            // console.log('un-subscribing in the component');
+            unsubscribe();
+        }
+    }, [is_switching, is_logging_in, eu_account, cr_account, unsubscribe]);
+
+    // React.useEffect(() => {
+    //     console.log('data', exchange_rates);
+    // }, [data]);
 
     //dont show loader if user has no respective regional account
     if ((is_switching || is_logging_in) && (eu_account || cr_account)) {

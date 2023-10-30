@@ -5,14 +5,18 @@ import { observer } from 'mobx-react-lite';
 import useStore from '../useStore';
 
 const ExchangeRatesProvider = observer(({ children }: React.PropsWithChildren<unknown>) => {
-    const { data, subscribe } = useSubscription('exchange_rates');
+    const { data, subscribe, unsubscribe } = useSubscription('exchange_rates');
     const {
         exchange_rates: { update },
     } = useStore();
 
     useEffect(() => {
         subscribe({ payload: { base_currency: 'USD' } });
-    }, [subscribe]);
+
+        return () => {
+            unsubscribe();
+        };
+    }, [subscribe, unsubscribe]);
 
     useEffect(() => {
         if (data) {

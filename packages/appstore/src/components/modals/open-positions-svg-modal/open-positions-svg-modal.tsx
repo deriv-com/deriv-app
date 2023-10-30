@@ -23,8 +23,8 @@ const OpenPositionsSVGModal = ({
         modules: { cfd },
     } = useStore();
     const { migrated_mt5_accounts } = cfd;
-    const eligible_account = migrated_mt5_accounts.filter(account => account.loginId === loginId);
-    const eligible_account_to_migrate_label = Object.values(eligible_account[0]?.to_account ?? {})[0];
+    const eligible_account = migrated_mt5_accounts?.filter(account => account?.loginId === loginId);
+    const eligible_account_to_migrate_label = Object.values(eligible_account[0]?.to_account ?? {})?.[0];
 
     const is_migrated_with_position = status === MT5AccountStatus.MIGRATED_WITH_POSITION;
 
@@ -47,7 +47,7 @@ const OpenPositionsSVGModal = ({
                     )}
                 </Text>
                 <Text as='p' color='prominent ' size='xs'>
-                    {!is_migrated_with_position ? (
+                    {is_migrated_with_position ? (
                         <Localize
                             i18n_default_text='You can no longer open new positions with your {{from_account}} account. Please use your {{to_account}} account to open new positions.'
                             values={{

@@ -6,27 +6,36 @@
     min-height: 6rem;
 
     &__hash {
-        width: fit-content;
         display: flex;
         align-items: center;
         justify-content: space-between;
         border: 0.1rem solid #e6e6e6;
         border-radius: 0.4rem;
-        box-sizing: border-box;
+
+        @include mobile {
+            width: 100%;
+            max-width: 32.8rem;
+        }
 
         &-text {
+            min-width: 29.4rem;
             padding: 0.8rem;
+        }
+
+        &-clipboard {
+            display: flex;
+            align-items: center;
+            height: 100%;
+
+            // & .wallets-clipboard {
+            //     padding: 0.8rem;
+            // }
         }
 
         &-divider {
             width: 1px;
             height: 100%;
             background: #e6e6e6;
-        }
-
-        &-clipboard .wallets-clipboard {
-            height: 100%;
-            padding: 0.8rem;
         }
     }
 }

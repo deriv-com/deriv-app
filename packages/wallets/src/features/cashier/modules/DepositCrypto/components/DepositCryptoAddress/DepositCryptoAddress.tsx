@@ -33,8 +33,8 @@ const DepositCryptoAddress = () => {
                         {depositCryptoAddress}
                     </WalletText>
                 </div>
-                <div className='wallets-deposit-crypto-address__hash-divider' />
                 <div className='wallets-deposit-crypto-address__hash-clipboard'>
+                    <div className='wallets-deposit-crypto-address__hash-divider' />
                     <WalletClipboard
                         infoMessage={isMobile ? undefined : 'copy'}
                         popoverAlignment={isMobile ? 'left' : 'bottom'}

@@ -9,6 +9,7 @@ import { TWalletAccount } from 'Types';
 import { getWalletHeaderButtons } from 'Constants/utils';
 import { observer, useStore } from '@deriv/stores';
 import './wallet-header.scss';
+import { useMFAccountStatus } from '@deriv/hooks';
 
 type TWalletHeader = {
     wallet_account: TWalletAccount;
@@ -16,8 +17,9 @@ type TWalletHeader = {
 
 const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     const { client } = useStore();
-    const { switchAccount, loginid, mf_account_status } = client;
+    const { switchAccount, loginid } = client;
     const is_active = wallet_account.is_selected;
+    const mf_account_status = useMFAccountStatus();
     // const [is_loading, setIsLoading] = useState(false);
 
     const { is_demo, currency, gradient_card_class, currency_config, icon, balance, landing_company_name } =

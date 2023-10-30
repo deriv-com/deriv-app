@@ -3,16 +3,18 @@ import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
-import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked, useMFAccountStatus } from '@deriv/hooks';
 import { mockStore } from '@deriv/stores';
 import CashierLocked from '../cashier-locked';
 import CashierProviders from '../../../cashier-providers';
 import { TCoreStores } from '@deriv/stores/types';
+import { AccountStatus } from '@deriv/shared';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useDepositLocked: jest.fn(() => false),
     useCashierLocked: jest.fn(() => false),
+    useMFAccountStatus: jest.fn(),
 }));
 
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
@@ -28,6 +30,7 @@ describe('<CashierLocked />', () => {
     beforeEach(() => {
         mockUseDepositLocked.mockReturnValue(false);
         mockUseCashierLocked.mockReturnValue(false);
+        (useMFAccountStatus as jest.Mock).mockReturnValue(null);
         mock_store = mockStore({
             client: {
                 mt5_login_list: [
@@ -263,9 +266,9 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if eu client`s verification is pending and landed in deposit page', () => {
+        (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.PENDING);
         mock_store.client.current_currency_type = 'fiat';
         mock_store.client.is_eu = true;
-        mock_store.client.mf_account_status = 'pending';
         mockUseCashierLocked.mockReturnValue(true);
         history.push('/cashier/deposit');
 
@@ -282,9 +285,9 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if eu client`s verification is pending and landed in withdrawal page', () => {
+        (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.PENDING);
         mock_store.client.current_currency_type = 'fiat';
         mock_store.client.is_eu = true;
-        mock_store.client.mf_account_status = 'pending';
         mockUseCashierLocked.mockReturnValue(true);
         history.push('/cashier/withdrawal');
 
@@ -301,9 +304,9 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if eu client`s verification is pending and landed in transfer page', () => {
+        (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.PENDING);
         mock_store.client.current_currency_type = 'fiat';
         mock_store.client.is_eu = true;
-        mock_store.client.mf_account_status = 'pending';
         mockUseCashierLocked.mockReturnValue(true);
         history.push('/cashier/account-transfer');
 

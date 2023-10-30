@@ -27,7 +27,6 @@ describe('<ServicesErrorModal />', () => {
     const modal_props = {
         is_visible: true,
         onConfirm: jest.fn(),
-        mf_account_status: null,
         is_logged_in: true,
     };
     it('Should return null if code or message is missing', () => {

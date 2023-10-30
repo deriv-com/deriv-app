@@ -8,7 +8,7 @@ import RootStore from 'Stores/index';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';
-import { useHasSetCurrency } from '@deriv/hooks';
+import { useHasSetCurrency, useMFAccountStatus } from '@deriv/hooks';
 
 type CurrencySelectionModalProps = {
     //TODO: Replace the type with a proper one when ts migration cards merged
@@ -23,7 +23,6 @@ type CurrencySelectionModalProps = {
     openFailedVerificationModal: (from_account: string) => void;
     selected_region: string;
     switchAccount: (loginid: string) => void;
-    mf_account_status: string | null;
     toggleSetCurrencyModal: () => void;
     has_any_real_account: boolean;
 };
@@ -38,10 +37,10 @@ const CurrencySelectionModal = ({
     openFailedVerificationModal,
     selected_region,
     switchAccount,
-    mf_account_status,
     toggleSetCurrencyModal,
     has_any_real_account,
 }: CurrencySelectionModalProps) => {
+    const mf_account_status = useMFAccountStatus();
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mf_account_status,
         openFailedVerificationModal,

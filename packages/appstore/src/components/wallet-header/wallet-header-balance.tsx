@@ -5,14 +5,15 @@ import { useStore, observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { TWalletAccount } from 'Types';
 import { formatMoney } from '@deriv/shared';
+import { useMFAccountStatus } from '@deriv/hooks';
 
 type TWalletHeaderBalance = Pick<TWalletAccount, 'balance' | 'currency'>;
 
 const WalletHeaderBalance = observer(({ balance, currency }: TWalletHeaderBalance) => {
     const {
         traders_hub: { openFailedVerificationModal, is_eu_user },
-        client: { mf_account_status },
     } = useStore();
+    const mf_account_status = useMFAccountStatus();
 
     const balance_amount = (
         <Text weight='bold' size='m' color='prominent'>

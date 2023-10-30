@@ -21,6 +21,8 @@ jobs:
     - name: Invalidate NPM Cache
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       uses: "./.github/actions/invalidate_npm_cache"
+    - name: Build
+      run: npm run build:all
     - name: Install Playwright Browsers
       run: npx playwright install
     - name: Run integration tests

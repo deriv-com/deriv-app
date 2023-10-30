@@ -2,11 +2,10 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Divider, WalletButton, WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
-import useRecentTransactions from '../../hooks/useRecentTransactions';
 import { CryptoTransaction } from '../CryptoTransaction';
 
 type TTransactionStatusSuccess = {
-    recentTransactions: ReturnType<typeof useRecentTransactions>['recentTransactions'];
+    recentTransactions: THooks.CryptoTransactions[];
     transactionType?: THooks.CryptoTransactions['transaction_type'];
     wallet: THooks.ActiveWalletAccount;
 };

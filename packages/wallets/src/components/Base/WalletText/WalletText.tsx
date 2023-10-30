@@ -1,39 +1,42 @@
-import React, { ComponentProps, CSSProperties, ReactNode } from 'react';
+import React, { CSSProperties, ElementType, ReactNode } from 'react';
 import classNames from 'classnames';
-import styles from './WalletText.module.css';
+import { TGenericSizes } from '../types';
+import './WalletText.scss';
 
-interface WalletTextProps extends ComponentProps<'span'> {
+interface WalletTextProps {
     align?: CSSProperties['textAlign'];
+    as?: ElementType;
     children: ReactNode;
     color?: CSSProperties['color'] | 'error' | 'general' | 'primary' | 'success' | 'warning';
-    lineHeight?: '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '4xs' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
-    size?: '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '4xs' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
+    fontStyle?: CSSProperties['fontStyle'];
+    lineHeight?: TGenericSizes;
+    size?: Exclude<TGenericSizes, '3xs' | '6xl' | '7xl'>;
     weight?: CSSProperties['fontWeight'];
 }
 
 const WalletText: React.FC<WalletTextProps> = ({
     align = 'left',
+    as = 'span',
     children,
     color = 'general',
-    lineHeight = 'md',
+    fontStyle = 'normal',
+    lineHeight,
     size = 'md',
     weight = 'normal',
-    ...rest
 }) => {
     const textClassNames = classNames(
-        styles.wallets,
-        styles[`wallets-text-size-${size}`],
-        styles[`wallets-text-weight-${weight}`],
-        styles[`wallets-text-align-${align}`],
-        styles[`wallets-text-color-${color}`],
-        styles[`wallets-text-line-height-${lineHeight}`]
+        'wallet-text',
+        `wallets-text__size--${size}`,
+        `wallets-text__weight--${weight}`,
+        `wallets-text__align--${align}`,
+        `wallets-text__color--${color}`,
+        `wallets-text__line-height--${lineHeight}`,
+        `wallets-text__font-style--${fontStyle}`
     );
 
-    return (
-        <span className={textClassNames} {...rest}>
-            {children}
-        </span>
-    );
+    const Tag = as;
+
+    return <Tag className={textClassNames}>{children}</Tag>;
 };
 
 export default WalletText;

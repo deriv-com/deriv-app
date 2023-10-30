@@ -11,16 +11,19 @@ type TSummary = {
 };
 
 const Summary = observer(({ is_drawer_open }: TSummary) => {
-    const { summary_card } = useDBotStore();
+    const { dashboard, summary_card } = useDBotStore();
     const { is_contract_loading, contract_info } = summary_card;
+    const { active_tour } = dashboard;
+
     const is_mobile = isMobile();
     return (
         <div
             className={classnames({
                 'run-panel-tab__content': !is_mobile,
                 'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
-                'run-panel-tab__content--summary-tab': !is_mobile && is_drawer_open,
+                'run-panel-tab__content--summary-tab': (!is_mobile && is_drawer_open) || active_tour,
             })}
+            data-testid='mock-summary'
         >
             <ThemedScrollbars
                 className={classnames({

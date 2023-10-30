@@ -299,9 +299,8 @@ export default class ContractStore extends BaseStore {
                 high_barrier: high,
                 low_barrier,
                 reset_time,
-                // reset_barrier,
+                reset_barrier,
             } = contract_info;
-            const reset_barrier = '2350.00';
             const high_barrier = this.accu_high_barrier || barrier || high;
             if (
                 isBarrierSupported(contract_type) &&
@@ -445,7 +444,7 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
         high_barrier,
         low_barrier,
         reset_time,
-        reset_barrier = '2350.00',
+        reset_barrier,
     } = contract_info;
     const is_accumulator_contract = isAccumulatorContract(contract_type);
     const is_digit_contract = isDigitContract(contract_type);

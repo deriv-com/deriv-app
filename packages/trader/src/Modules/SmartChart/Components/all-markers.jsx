@@ -355,8 +355,9 @@ const TickContract = RawMarkerMaker(
             is_accumulator_trade_without_contract,
             is_sold,
             is_expired,
+            // tick_stream,
             tick_count,
-            reset_barrier = '2350.00',
+            reset_barrier,
         },
     }) => {
         /** @type {CanvasRenderingContext2D} */
@@ -656,7 +657,7 @@ const NonTickContract = RawMarkerMaker(
             is_sold,
             status,
             profit,
-            reset_barrier = '2350.00',
+            reset_barrier,
         },
     }) => {
         /** @type {CanvasRenderingContext2D} */

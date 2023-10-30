@@ -48,7 +48,7 @@ const ContractDetails = ({
     duration_unit,
     exit_spot,
     is_vanilla,
-    reset_barrier = '2350.00',
+    reset_barrier,
 }: TContractDetails) => {
     const {
         commission,

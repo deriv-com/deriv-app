@@ -7,7 +7,7 @@ export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader' | 'derivez';
 
 export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
 
-export type TCFDAccountCopy = {
+export type TCopyToClipboard = {
     text: string | undefined;
     className: string;
 };

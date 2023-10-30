@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { CFDAccountCopy } from '../cfd-account-copy';
+import { CopyToClipboard } from '../cfd-account-copy';
 
-describe('<CFDAccountCopy />', () => {
+describe('<CopyToClipboard />', () => {
     it('component should be rendered', () => {
-        const { getByTestId } = render(<CFDAccountCopy />);
+        const { getByTestId } = render(<CopyToClipboard />);
         const mainDiv = getByTestId('cfd_account_copy_main_div');
 
         expect(mainDiv).toBeInTheDocument();

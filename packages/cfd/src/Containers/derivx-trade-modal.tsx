@@ -11,7 +11,7 @@ import {
     isMobile,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { CFDAccountCopy } from '../Components/cfd-account-copy';
+import { CopyToClipboard } from '../Components/copy-to-clipboard';
 import { QRCode } from 'react-qrcode';
 import {
     getDXTradeWebTerminalLink,
@@ -51,7 +51,7 @@ const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
         <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-trade-modal__spec-text'>
             {value}
         </Text>
-        <CFDAccountCopy text={value} className='cfd-trade-modal__spec-copy' />
+        <CopyToClipboard text={value} className='cfd-trade-modal__spec-copy' />
     </div>
 );
 

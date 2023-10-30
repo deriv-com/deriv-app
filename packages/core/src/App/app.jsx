@@ -50,16 +50,17 @@ const AppWithoutTranslation = ({ root_store }) => {
         };
 
         initializeTranslations();
-
-        Analytics.initialise({
-            growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
-            growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
-            rudderstackKey:
-                process.env.NODE_ENV === 'production'
-                    ? process.env.RUDDERSTACK_PRODUCTION_KEY
-                    : process.env.RUDDERSTACK_STAGING_KEY,
-            enableDevMode: process.env.NODE_ENV !== 'production',
-        });
+        if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+            Analytics.initialise({
+                growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
+                growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
+                rudderstackKey:
+                    process.env.NODE_ENV === 'production'
+                        ? process.env.RUDDERSTACK_PRODUCTION_KEY
+                        : process.env.RUDDERSTACK_STAGING_KEY,
+                enableDevMode: process.env.NODE_ENV !== 'production',
+            });
+        }
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());

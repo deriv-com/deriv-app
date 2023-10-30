@@ -2,13 +2,13 @@ import React from 'react';
 import { FormikValues } from 'formik/dist/types';
 import ProofOfAddressForm from '@deriv/account/src/Sections/Verification/ProofOfAddress/proof-of-address-form';
 
-type TCFDPOA = {
+type TProofOfAddress = {
     index: number;
     onSave: (index: number, values: FormikValues) => void;
     onSubmit: (index: number, values: FormikValues) => void;
 };
 
-const CFDPOA = ({ index, onSave, onSubmit }: TCFDPOA) => {
+const ProofOfAddress = ({ index, onSave, onSubmit }: TProofOfAddress) => {
     const onSubmitForCFDModal = (index: number, values: FormikValues) => {
         onSave(index, values);
         onSubmit(index, values);
@@ -21,4 +21,4 @@ const CFDPOA = ({ index, onSave, onSubmit }: TCFDPOA) => {
     );
 };
 
-export default CFDPOA;
+export default ProofOfAddress;

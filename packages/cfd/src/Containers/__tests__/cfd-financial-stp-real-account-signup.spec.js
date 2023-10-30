@@ -20,7 +20,7 @@ const MockComponent = ({ prevStep, nextStep }) => (
 jest.mock('../../Components/cfd-poa', () =>
     jest.fn(({ onCancel, onSubmit }) => (
         <div>
-            CFDPOA
+            ProofOfAddress
             <MockComponent prevStep={onCancel} nextStep={onSubmit} />
         </div>
     ))
@@ -63,7 +63,7 @@ const steps = [
         body: 'ProofOfIdentity',
     },
     {
-        body: 'CFDPOA',
+        body: 'ProofOfAddress',
     },
 ];
 

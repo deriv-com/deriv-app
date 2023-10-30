@@ -256,7 +256,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
     const { is_beta_chart } = client;
 
-    const MarkerComponent = !is_beta_chart ? allMarkers[barriers_marker?.type] : undefined;
+    const MarkerComponent = is_beta_chart ? undefined : allMarkers[barriers_marker?.type];
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && is_digit_contract;
@@ -357,7 +357,6 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             )}
             {isResetContract(contract_info.contract_type) && !!markers_array && reset_time && (
                 <MarkerComponent
-                    key={barriers_marker.key}
                     is_dark_theme={is_dark_theme}
                     granularity={granularity}
                     is_in_contract_details

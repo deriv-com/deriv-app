@@ -1,6 +1,6 @@
 import React from 'react';
 import { Money, Icon, ThemedScrollbars } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import {
     epochToMoment,
     getCancellationPrice,
@@ -38,7 +38,7 @@ type TContractDetails = {
     duration_unit: string;
     exit_spot?: string;
     is_vanilla?: boolean;
-    reset_barrier?: string;
+    reset_barrier?: TContractInfo['reset_barrier'];
 };
 
 const ContractDetails = ({
@@ -81,9 +81,14 @@ const ContractDetails = ({
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${ticks_label}`;
     const additional_info =
-        isResetContract(contract_type) && longcode
-            ? localize(`The reset time is ${longcode.split(/or\s+([^\n.]+)/i)[1]}`)
-            : '';
+        isResetContract(contract_type) && longcode ? (
+            <Localize
+                i18n_default_text='The reset time is {{ reset_time }}'
+                values={{ reset_time: longcode.split(/or\s+([^\n.]+)/i)[1] }}
+            />
+        ) : (
+            ''
+        );
 
     const vanilla_payout_text = isVanillaFxContract(contract_type, underlying)
         ? getLocalizedBasis().payout_per_pip

@@ -350,10 +350,8 @@ export default class ContractStore extends BaseStore {
 
                     // for call gradient should be applied to the lowest barrier, for put - to the highest
                     if (/RESETCALL/i.test(contract_type) && +reset_barrier < +entry_spot) {
-                        // reset_barrier_object.updateBarrierShade(true, contract_type);
                         main_barrier.updateBarrierShade(false, contract_type);
                     } else if (/RESETPUT/i.test(contract_type) && +reset_barrier > +entry_spot) {
-                        // reset_barrier_object.updateBarrierShade(true, contract_type);
                         main_barrier.updateBarrierShade(false, contract_type);
                     }
                 }

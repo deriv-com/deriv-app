@@ -26,7 +26,6 @@ export type TContractStore = {
 export type TContractInfo = ProposalOpenContract &
     Portfolio1 & {
         contract_update?: ContractUpdate;
-        reset_barrier?: string;
     };
 
 export type TTickItem = {

@@ -138,7 +138,6 @@ type TPortfolioPosition = {
     contract_info: ProposalOpenContract &
         Portfolio1 & {
             contract_update?: ContractUpdate;
-            reset_barrier?: string;
         };
     details?: string;
     display_name: string;

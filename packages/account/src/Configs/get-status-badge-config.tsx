@@ -41,7 +41,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcRedWarning',
             };
-        case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION:
+        case MT5_ACCOUNT_STATUS.NEED_VERIFICATION:
             return {
                 text: (
                     <Localize

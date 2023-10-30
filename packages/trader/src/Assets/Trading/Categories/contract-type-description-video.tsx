@@ -15,6 +15,7 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: T
     // This ref will be used for creation of a custom player later, e.g. ref.current.play():
     // More: https://developers.cloudflare.com/stream/viewing-videos/using-the-stream-player/using-the-player-api/
     const ref = React.useRef<StreamPlayerApi>();
+    const accumulator_video_uid = 'c4b95d108a456bd2ec177499abbeec6d';
     const getVideoSource = React.useCallback(
         (extension: 'mp4' | 'webm') => {
             return getUrlBase(
@@ -40,7 +41,7 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: T
             letterboxColor='transparent'
             loop
             preload='auto'
-            src='c4b95d108a456bd2ec177499abbeec6d'
+            src={accumulator_video_uid}
             streamRef={ref}
             className='contract-type-info__video-stream'
         />

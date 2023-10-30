@@ -65,7 +65,7 @@ describe('MT5MigrationModal', () => {
         expect(screen.getByRole('button')).toBeInTheDocument();
     });
 
-    it('should render functions when close button is clicked', async () => {
+    it('should render functions when close button is clicked', () => {
         renderComponent();
         const close_button = screen.getByRole('button');
         userEvent.click(close_button);

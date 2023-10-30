@@ -7,7 +7,7 @@ import { localize, Localize } from '@deriv/translations';
 import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../Helpers/config';
 import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
-import PasswordBox from '../Components/passwordbox';
+import PasswordBox from '../Components/password-box';
 import { TCFDPasswordReset } from './props.types';
 
 type TTradeModalProps = {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
+import { Tooltip } from '../Tooltip';
 import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
 import Clipboard from '../../../public/images/clipboard.svg';
 import './WalletClipboard.scss';
@@ -17,6 +18,7 @@ const WalletClipboard = ({
 }: TProps) => {
     const [, copy] = useCopyToClipboard();
     const [isCopied, setIsCopied] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
     let timeoutClipboard: ReturnType<typeof setTimeout>;
 
     const onClick = (event: { stopPropagation: () => void }) => {
@@ -33,9 +35,16 @@ const WalletClipboard = ({
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <button className='wallets-clipboard' onClick={onClick}>
-            {isCopied ? <CheckmarkCircle /> : <Clipboard />}
-        </button>
+        <Tooltip alignment='right' isVisible={isHovered} message={isCopied ? 'Copied!' : 'Copy'}>
+            <button
+                className='wallets-clipboard'
+                onClick={onClick}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
+                {isCopied ? <CheckmarkCircle /> : <Clipboard />}
+            </button>
+        </Tooltip>
     );
 };
 

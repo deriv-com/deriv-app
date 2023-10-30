@@ -5,6 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import Text from '../text/text';
 import Icon from '../icon/icon';
 import Div100vhContainer from '../div100vh-container';
+import ThemedScrollbars from '../themed-scrollbars';
 
 type TMobileDialog = {
     content_height_offset?: string;
@@ -13,6 +14,7 @@ type TMobileDialog = {
     has_close_icon?: boolean;
     has_full_height?: boolean;
     header_classname?: string;
+    info_banner?: React.ReactNode;
     onClose: React.MouseEventHandler;
     portal_element_id: string;
     renderTitle?: () => string;
@@ -28,6 +30,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         has_close_icon = true,
         has_full_height,
         header_classname,
+        info_banner,
         portal_element_id,
         renderTitle,
         title,
@@ -97,26 +100,34 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                 <Div100vhContainer
                     className={classNames('dc-mobile-dialog__container', {
                         'dc-mobile-dialog__container--has-scroll': props.has_content_scroll,
+                        'dc-mobile-dialog__container--has-info-banner': info_banner,
                     })}
                     height_offset={props.content_height_offset || '8px'}
                 >
-                    <div className={classNames('dc-mobile-dialog__header', header_classname)}>
-                        <Text
-                            as='h2'
-                            size='xs'
-                            color='prominent'
-                            weight='bold'
-                            line_height='unset'
-                            className='dc-mobile-dialog__title'
-                        >
-                            {renderTitle ? renderTitle() : title}
-                        </Text>
-                        {has_close_icon && (
-                            <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
-                                <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
-                            </div>
-                        )}
-                    </div>
+                    <ThemedScrollbars
+                        is_bypassed={!info_banner}
+                        is_scrollbar_hidden
+                        className={info_banner ? classNames('dc-mobile-dialog__header-wrapper', header_classname) : ''}
+                    >
+                        <div className={classNames('dc-mobile-dialog__header', !info_banner && header_classname)}>
+                            <Text
+                                as='h2'
+                                size='xs'
+                                color='prominent'
+                                weight='bold'
+                                line_height='unset'
+                                className='dc-mobile-dialog__title'
+                            >
+                                {renderTitle ? renderTitle() : title}
+                            </Text>
+                            {has_close_icon && (
+                                <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
+                                    <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
+                                </div>
+                            )}
+                        </div>
+                        {info_banner}
+                    </ThemedScrollbars>
                     <div
                         className={classNames('dc-mobile-dialog__content', {
                             'dc-mobile-dialog__content--is-full-height': has_full_height,

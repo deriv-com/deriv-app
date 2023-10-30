@@ -112,7 +112,6 @@ describe('<TradingAppCard/>', () => {
             /You can no longer open new positions with your MT5 Derived SVG account. Please use your MT5 Derived BVI account to open new positions./
         );
         const okButton = screen.getByRole('button', { name: /OK/i });
-
         userEvent.click(okButton);
         await waitFor(() => {
             expect(modal_content_bvi).not.toBeInTheDocument();

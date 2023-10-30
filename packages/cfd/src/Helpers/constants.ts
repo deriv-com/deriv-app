@@ -1,14 +1,15 @@
 import { OSDetect, getPlatformFromUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
+import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
 
 const platformsText = (platform: TCFDsPlatformType) => {
     switch (platform) {
-        case 'ctrader':
+        case CFD_PLATFORMS.CTRADER:
             return 'cTrader';
-        case 'derivez':
+        case CFD_PLATFORMS.DERIVEZ:
             return 'EZ';
-        case 'dxtrade':
+        case CFD_PLATFORMS.DXTRADE:
             return 'X';
         default:
             return '';
@@ -17,11 +18,11 @@ const platformsText = (platform: TCFDsPlatformType) => {
 
 const platformsIcons = (platform: TCFDsPlatformType) => {
     switch (platform) {
-        case 'derivez':
+        case CFD_PLATFORMS.DERIVEZ:
             return 'DerivEz';
-        case 'dxtrade':
+        case CFD_PLATFORMS.DXTRADE:
             return 'Dxtrade';
-        case 'ctrader':
+        case CFD_PLATFORMS.CTRADER:
             return 'Ctrader';
         default:
             return '';
@@ -69,24 +70,24 @@ const getTopUpConfig = () => {
 
 const getPlatformDXTradeDownloadLink = (platform?: TMobilePlatforms) => {
     switch (platform) {
-        case 'ios':
+        case MOBILE_PLATFORMS.IOS:
             return DXTRADE_IOS_APP_URL;
-        case 'huawei':
+        case MOBILE_PLATFORMS.HAUWEI:
             return DXTRADE_HUAWEI_APP_URL;
-        case 'android':
+        case MOBILE_PLATFORMS.ANDROID:
             return DXTRADE_ANDROID_APP_URL;
         default:
             return '';
     }
 };
 
-const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+const getPlatformDerivEZDownloadLink = (platform: TMobilePlatforms) => {
     switch (platform) {
-        case 'ios':
+        case MOBILE_PLATFORMS.IOS:
             return DERIVEZ_IOS_APP_URL;
-        case 'android':
+        case MOBILE_PLATFORMS.ANDROID:
             return DERIVEZ_ANDROID_APP_URL;
-        case 'huawei':
+        case MOBILE_PLATFORMS.HAUWEI:
             return DERIVEZ_HUAWEI_APP_URL;
         default:
             return '';
@@ -95,11 +96,11 @@ const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') 
 
 const getPlatformCTraderDownloadLink = (platform: TMobilePlatforms) => {
     switch (platform) {
-        case 'ios':
+        case MOBILE_PLATFORMS.IOS:
             return CTRADER_IOS_APP_URL;
-        case 'android':
+        case MOBILE_PLATFORMS.ANDROID:
             return CTRADER_ANDROID_APP_URL;
-        case 'huawei':
+        case MOBILE_PLATFORMS.HAUWEI:
             return '';
         default:
             return CTRADER_ANDROID_APP_URL;
@@ -108,17 +109,17 @@ const getPlatformCTraderDownloadLink = (platform: TMobilePlatforms) => {
 
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
     switch (platform || OSDetect()) {
-        case 'windows':
+        case DESKTOP_PLATFORMS.WINDOWS:
             return 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe';
-        case 'linux':
+        case DESKTOP_PLATFORMS.LINUX:
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
-        case 'ios':
+        case MOBILE_PLATFORMS.IOS:
             return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02';
-        case 'macos':
+        case DESKTOP_PLATFORMS.MACOS:
             return 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg';
-        case 'huawei':
+        case MOBILE_PLATFORMS.HAUWEI:
             return 'https://appgallery.huawei.com/#/app/C102015329';
-        case 'android':
+        case MOBILE_PLATFORMS.ANDROID:
             return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02';
         default:
             return '';
@@ -126,7 +127,7 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
 };
 
 const getDXTradeWebTerminalLink = (category: string, token?: string) => {
-    let url = category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
+    let url = category === CATEGORY.REAL ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
 
     if (token) {
         url += `?token=${token}`;

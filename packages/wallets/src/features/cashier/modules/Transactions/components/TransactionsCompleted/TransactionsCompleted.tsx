@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useTransactions } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
+import { Loader } from '../../../../../../components';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsTable } from '../TransactionsTable';
@@ -14,7 +15,8 @@ type TProps = {
 };
 
 const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
-    const { data, fetchNextPage, isFetching, setFilter } = useTransactions();
+    const { data: transactions, fetchNextPage, isFetching, isLoading, setFilter } = useTransactions();
+    const [shouldShowLoader, setShouldShowLoader] = useState(true);
 
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
@@ -31,9 +33,18 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
 
     useEffect(() => {
         setFilter(filter);
+        setShouldShowLoader(true);
     }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (!data) return <TransactionsNoDataState />;
+    useEffect(() => {
+        if (!isFetching && !isLoading) {
+            setShouldShowLoader(false);
+        }
+    }, [transactions, isFetching, isLoading]);
+
+    if (shouldShowLoader) return <Loader />;
+
+    if (!transactions) return <TransactionsNoDataState />;
 
     return (
         <TransactionsTable
@@ -44,7 +55,7 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
                     header: 'Date',
                 },
             ]}
-            data={data}
+            data={transactions}
             fetchMore={fetchMoreOnBottomReached}
             groupBy={['date']}
             rowGroupRender={transaction => (

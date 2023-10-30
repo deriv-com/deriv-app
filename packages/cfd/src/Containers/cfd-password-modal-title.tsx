@@ -4,7 +4,7 @@ import { getCFDPlatformNames, getCFDPlatformLabel, CFD_PLATFORMS, getFormattedJu
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { CATEGORY } from '../Helpers/cfd-config';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCFDPasswordModalTitleProps = { platform: string };
 

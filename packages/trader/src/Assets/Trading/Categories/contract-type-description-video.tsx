@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { getUrlBase } from '@deriv/shared';
+import { getUrlBase, isAccumulatorContract } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
 
@@ -31,8 +31,8 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: T
     if (!selected_contract_type) {
         return null;
     }
-    return selected_contract_type === 'accumulator' && !is_mobile && !is_dark_theme ? (
-        // Test for Accumulators video for light theme in desktop.
+    return isAccumulatorContract(selected_contract_type) && !is_dark_theme ? (
+        // Test for Accumulators video for light theme.
         // More: https://www.npmjs.com/package/@cloudflare/stream-react
         <Stream
             autoplay

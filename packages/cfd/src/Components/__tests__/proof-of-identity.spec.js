@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import CFDPOI from '../cfd-poi';
+import ProofOfIdentity from '../proof-of-identity';
 import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
 
@@ -8,7 +8,7 @@ jest.mock('@deriv/account/src/Sections/Verification/ProofOfIdentity/proof-of-ide
     jest.fn(() => <div>ProofOfIdentityContainerForMt5</div>)
 );
 
-describe('<CFDPOI />', () => {
+describe('<ProofOfIdentity />', () => {
     let props;
     let mockRootStore;
 
@@ -98,7 +98,7 @@ describe('<CFDPOI />', () => {
     });
 
     it('should render ProofOfIdentityContainerForMt5', () => {
-        render(<CFDPOI {...props} />, {
+        render(<ProofOfIdentity {...props} />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
         expect(screen.getByText('ProofOfIdentityContainerForMt5')).toBeInTheDocument();

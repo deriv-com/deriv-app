@@ -46,7 +46,7 @@ describe('MT5MigrationFrontSideContent', () => {
         };
     });
 
-    it('should render MT5MigrationFrontSideContent', async () => {
+    it('should render MT5MigrationFrontSideContent', () => {
         renderComponent();
         const getByTextCaseInsensitive = (text: string) =>
             screen.getByText(content => content.toLowerCase() === text.toLowerCase());

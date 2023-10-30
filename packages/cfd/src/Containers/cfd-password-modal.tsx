@@ -22,10 +22,9 @@ import {
 } from '@deriv/components';
 import {
     CFD_PLATFORMS,
-    getCFDPlatformNames,
     getAuthenticationStatusInfo,
-    getFormattedJurisdictionMarketTypes,
     getCFDPlatformLabel,
+    getMT5AccountTitle,
     getErrorMessages,
     getFormattedJurisdictionCode,
     getLegalEntityName,
@@ -948,9 +947,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             const [to_account_type] = Object.keys(to_account);
             const [to_jurisdiction] = Object.values(to_account);
 
-            return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
-                to_account_type
-            )} ${getFormattedJurisdictionCode(to_jurisdiction)}`;
+            return getMT5AccountTitle({ account_type: to_account_type, jurisdiction: to_jurisdiction });
         });
         const text_size = is_mobile ? 'xxs' : 'xs';
 

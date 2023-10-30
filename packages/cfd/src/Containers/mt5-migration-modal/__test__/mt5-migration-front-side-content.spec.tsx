@@ -19,22 +19,13 @@ const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.Mocked
     typeof useMT5SVGEligibleToMigrate
 >;
 
-type TUseMT5SVGEligibleToMigrateReturnValue = {
-    eligible_account_to_migrate_label: string;
-    eligible_svg_to_bvi_derived_accounts: boolean;
-    eligible_svg_to_bvi_financial_accounts: boolean;
-    eligible_svg_to_vanuatu_derived_accounts: boolean;
-    eligible_svg_to_vanuatu_financial_accounts: boolean;
-};
-
 describe('MT5MigrationFrontSideContent', () => {
-    let response: TUseMT5SVGEligibleToMigrateReturnValue;
+    let response: ReturnType<typeof useMT5SVGEligibleToMigrate>;
 
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );
-        // @ts-expect-error response return value is not required to have all object
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);
         render(<MT5MigrationFrontSideContent />, { wrapper });
     };
@@ -46,6 +37,12 @@ describe('MT5MigrationFrontSideContent', () => {
             eligible_svg_to_bvi_financial_accounts: false,
             eligible_svg_to_vanuatu_derived_accounts: false,
             eligible_svg_to_vanuatu_financial_accounts: false,
+            getEligibleAccountToMigrate: jest.fn(),
+            has_derived_and_financial_mt5: false,
+            has_derived_mt5_to_migrate: false,
+            has_svg_accounts_to_migrate: false,
+            no_of_svg_accounts_to_migrate: 0,
+            svg_accounts_to_migrate: [],
         };
     });
 

@@ -11,7 +11,11 @@ jest.mock('@deriv/hooks', () => ({
 const mock_store = mockStore({});
 
 describe('MT5MigrationAccountIcons', () => {
-    const renderComponent = (to: string, type: string) => {
+    type TMT5MigrationAccountIconsProps = React.ComponentProps<typeof MT5MigrationAccountIcons>;
+    const renderComponent = (
+        to: TMT5MigrationAccountIconsProps['to'],
+        type: TMT5MigrationAccountIconsProps['type']
+    ) => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );

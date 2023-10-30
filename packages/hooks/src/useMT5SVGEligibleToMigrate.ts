@@ -49,16 +49,24 @@ const useMT5SVGEligibleToMigrate = () => {
             account => account.eligible_to_migrate?.financial === Jurisdiction.VANUATU
         ).length;
 
+        const has_derived_mt5_to_migrate =
+            eligible_svg_to_bvi_derived_accounts || eligible_svg_to_vanuatu_derived_accounts;
+        const has_financial_mt5_to_migrate =
+            eligible_svg_to_bvi_financial_accounts || eligible_svg_to_vanuatu_financial_accounts;
+        const has_derived_and_financial_mt5 = has_derived_mt5_to_migrate && has_financial_mt5_to_migrate;
+
         return {
-            getEligibleAccountToMigrate,
-            svg_accounts_to_migrate,
-            no_of_svg_accounts_to_migrate,
-            has_svg_accounts_to_migrate,
             eligible_account_to_migrate_label,
             eligible_svg_to_bvi_derived_accounts,
             eligible_svg_to_bvi_financial_accounts,
             eligible_svg_to_vanuatu_derived_accounts,
             eligible_svg_to_vanuatu_financial_accounts,
+            getEligibleAccountToMigrate,
+            has_derived_and_financial_mt5,
+            has_derived_mt5_to_migrate,
+            has_svg_accounts_to_migrate,
+            no_of_svg_accounts_to_migrate,
+            svg_accounts_to_migrate,
         };
     }, [mt5_login_list]);
     return {

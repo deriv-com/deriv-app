@@ -28,6 +28,7 @@ const MT5MigrationModal = observer(() => {
             <Localize i18n_default_text='Enhancing your trading experience' />
         </Text>
     );
+
     React.useEffect(() => {
         if (has_svg_accounts_to_migrate && !is_mt5_migration_modal_waiting_on_other_modals) {
             toggleMT5MigrationModal();
@@ -35,11 +36,8 @@ const MT5MigrationModal = observer(() => {
     }, [has_svg_accounts_to_migrate, is_mt5_migration_modal_waiting_on_other_modals, toggleMT5MigrationModal]);
 
     React.useEffect(() => {
-        if (mt5_migration_error) {
-            setShowModalFrontSide(false);
-        } else {
-            setShowModalFrontSide(true);
-        }
+        const has_mt5_migration_error = !!mt5_migration_error;
+        setShowModalFrontSide(!has_mt5_migration_error);
     }, [mt5_migration_error, setShowModalFrontSide]);
 
     const closeModal = () => {

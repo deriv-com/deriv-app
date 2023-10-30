@@ -6,7 +6,7 @@ import { TCopyTextIcon } from './props.types';
 
 const CopyTextIcon = ({ text, className }: TCopyTextIcon) => {
     return (
-        <div className={className} data-testid='cfd_account_copy_main_div'>
+        <div className={className} data-testid='copy_text_icon_main_div'>
             <Clipboard
                 text_copy={text}
                 info_message={isMobile() ? '' : localize('copy')}

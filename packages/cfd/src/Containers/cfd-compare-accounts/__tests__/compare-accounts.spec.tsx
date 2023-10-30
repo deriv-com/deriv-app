@@ -3,7 +3,7 @@ import { MemoryRouter, useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import CompareCFDs from '../cfd-compare-accounts';
+import CompareCFDs from '../compare-accounts';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

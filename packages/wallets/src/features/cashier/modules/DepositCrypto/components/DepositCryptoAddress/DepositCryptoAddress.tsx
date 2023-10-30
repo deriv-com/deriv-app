@@ -26,7 +26,7 @@ const DepositCryptoAddress = () => {
 
     return (
         <div className='wallets-deposit-crypto-address'>
-            <QRCode size={isMobile ? 128 : 160} value={depositCryptoAddress || ''} />
+            <QRCode size={128} value={depositCryptoAddress || ''} />
             <div className='wallets-deposit-crypto-address__hash-container'>
                 <p className='wallets-deposit-crypto-address__hash'>{depositCryptoAddress}</p>
                 <WalletClipboard

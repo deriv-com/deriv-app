@@ -26,7 +26,6 @@
     "dependencies": {
         "@deriv/api": "^1.0.0",
         "@deriv/account": "^1.0.0",
-        "@deriv/api": "^1.0.0",
         "@deriv/api-types": "^1.0.118",
         "@deriv/cashier": "^1.0.0",
         "@deriv/cfd": "^1.0.0",

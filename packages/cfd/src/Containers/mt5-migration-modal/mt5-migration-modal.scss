@@ -61,7 +61,7 @@
         &-card {
             height: 29.6rem;
             width: 26.2rem;
-            background-color: $color-grey-2;
+            background-color: var(--general-section-1);
             border-radius: $BORDER-RADIUS * 2;
             &-content {
                 margin: 1.6rem;

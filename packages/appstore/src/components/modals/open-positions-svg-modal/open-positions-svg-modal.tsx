@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { Jurisdiction, MT5AccountStatus, getMT5AccountTitle } from '@deriv/shared';
+import { Jurisdiction, MT5_ACCOUNT_STATUS, getMT5AccountTitle } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
@@ -26,7 +26,7 @@ const OpenPositionsSVGModal = ({
     const eligible_account = migrated_mt5_accounts?.filter(account => account?.loginId === loginId);
     const eligible_account_to_migrate_label = Object.values(eligible_account[0]?.to_account ?? {})?.[0];
 
-    const is_migrated_with_position = status === MT5AccountStatus.MIGRATED_WITH_POSITION;
+    const is_migrated_with_position = status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
 
     const onClick = () => {
         setModalOpen(false);

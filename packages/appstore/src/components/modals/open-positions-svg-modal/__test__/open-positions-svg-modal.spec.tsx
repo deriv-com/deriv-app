@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import OpenPositionsSVGModal from '../open-positions-svg-modal';
 
@@ -17,7 +16,7 @@ describe('<OpenPositionsSVGModal/>', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof OpenPositionsSVGModal> = {
         loginId: 'MT5YFHU',
         market_type: 'financial',
         status: 'migrated_with_position',
@@ -43,9 +42,7 @@ describe('<OpenPositionsSVGModal/>', () => {
     const renderComponent = ({ props = mock_props, store = store_config }) => {
         return render(
             <StoreProvider store={store}>
-                <APIProvider>
-                    <OpenPositionsSVGModal {...props} />
-                </APIProvider>
+                <OpenPositionsSVGModal {...props} />
             </StoreProvider>
         );
     };
@@ -63,7 +60,7 @@ describe('<OpenPositionsSVGModal/>', () => {
     });
 
     it('should render title correctly when status is migrated_without_position', () => {
-        const new_mock_props = {
+        const new_mock_props: React.ComponentProps<typeof OpenPositionsSVGModal> = {
             ...mock_props,
             market_type: 'financial',
             status: 'migrated_without_position',
@@ -119,7 +116,7 @@ describe('<OpenPositionsSVGModal/>', () => {
     });
 
     it('should render modal content correctly when status is migrated_without_position and market_type is derived', () => {
-        const new_mock_props = {
+        const new_mock_props: React.ComponentProps<typeof OpenPositionsSVGModal> = {
             ...mock_props,
             market_type: 'derived',
             status: 'migrated_without_position',
@@ -132,7 +129,7 @@ describe('<OpenPositionsSVGModal/>', () => {
     });
 
     it('should render modal content correctly when status is migrated_without_position and market_type is financial', () => {
-        const new_mock_props = {
+        const new_mock_props: React.ComponentProps<typeof OpenPositionsSVGModal> = {
             ...mock_props,
             market_type: 'financial',
             status: 'migrated_without_position',

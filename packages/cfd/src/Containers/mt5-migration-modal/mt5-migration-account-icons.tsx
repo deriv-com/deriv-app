@@ -1,11 +1,11 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
+import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '@deriv/shared/src/utils/constants';
 import { observer, useStore } from '@deriv/stores';
-import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '@deriv/shared';
 
 type TMT5MigrationAccountIconsProps = {
-    to: string;
-    type: string;
+    to: typeof Jurisdiction[keyof typeof Jurisdiction];
+    type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES];
 };
 
 const MT5MigrationAccountIcons = observer(({ to, type }: TMT5MigrationAccountIconsProps) => {

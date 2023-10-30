@@ -1,7 +1,13 @@
 import React from 'react';
+import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
 
-const getMigrationModalDetails = (to_account: string) => [
+type TMigrationModalDetails = Exclude<
+    NonNullable<ReturnType<typeof useMT5SVGEligibleToMigrate>>['eligible_account_to_migrate_label'],
+    undefined
+>;
+
+const getMigrationModalDetails = (to_account: TMigrationModalDetails) => [
     {
         key: 'have_open_positions',
         title: <Localize i18n_default_text='If you have open positions' />,

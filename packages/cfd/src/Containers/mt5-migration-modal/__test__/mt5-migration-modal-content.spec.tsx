@@ -20,12 +20,6 @@ jest.mock('../mt5-migration-back-side-content', () => {
     return MockMT5BacksideContent;
 });
 
-const mock_store = mockStore({
-    ui: {
-        is_mobile: false,
-    },
-});
-
 const mockUseMT5MigrationModalContext = useMT5MigrationModalContext as jest.MockedFunction<
     typeof useMT5MigrationModalContext
 >;
@@ -35,7 +29,7 @@ describe('MT5MigrationModalContent', () => {
 
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>
+            <StoreProvider store={mockStore({})}>
                 <CFDStoreProvider>{children}</CFDStoreProvider>
             </StoreProvider>
         );

@@ -5,7 +5,7 @@ import SVGMigrateMobileImage from 'Assets/svgs/banner/svg-migrate-mobile.svg';
 export type TBannerImageProps<T> = {
     image: T;
     class_name?: string;
-    width?: number;
+    width?: React.CSSProperties['width'];
 };
 
 type TAppstoreBannerImageListProps = keyof typeof AppstoreBannerImageList;

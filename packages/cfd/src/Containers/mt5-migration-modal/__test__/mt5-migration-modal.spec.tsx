@@ -23,10 +23,7 @@ document.body.appendChild(modal_root_el);
 
 const mock_store = mockStore({
     ui: {
-        is_mobile: false,
         is_mt5_migration_modal_open: true,
-        setMT5MigrationModalEnabled: jest.fn(),
-        toggleMT5MigrationModal: jest.fn(),
     },
 });
 
@@ -65,7 +62,7 @@ describe('MT5MigrationModal', () => {
         expect(screen.getByRole('button')).toBeInTheDocument();
     });
 
-    it('should render functions when close button is clicked', async () => {
+    it('should render functions when close button is clicked', () => {
         renderComponent();
         const close_button = screen.getByRole('button');
         userEvent.click(close_button);

@@ -347,13 +347,7 @@ export default class ContractStore extends BaseStore {
                     });
 
                     barriers.push(reset_barrier_object);
-
-                    // for call gradient should be applied to the lowest barrier, for put - to the highest
-                    if (/RESETCALL/i.test(contract_type) && +reset_barrier < +entry_spot) {
-                        main_barrier.updateBarrierShade(false, contract_type);
-                    } else if (/RESETPUT/i.test(contract_type) && +reset_barrier > +entry_spot) {
-                        main_barrier.updateBarrierShade(false, contract_type);
-                    }
+                    main_barrier.updateBarrierShade(false, contract_type);
                 }
             }
         }
@@ -496,7 +490,7 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
                     type: 'TickContract',
                     key: `${contract_id}-date_start`,
                     epoch_array: [reset_time, ...ticks_epoch_array],
-                    price_array: [reset_barrier],
+                    price_array: [price_array[0], reset_barrier],
                 };
             }
             return {
@@ -534,7 +528,7 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
                 type: 'NonTickContract',
                 key: `${contract_id}-date_start`,
                 epoch_array: [reset_time, ...epoch_array],
-                price_array: [reset_barrier],
+                price_array: [price_array[0], reset_barrier],
             };
         }
         return {

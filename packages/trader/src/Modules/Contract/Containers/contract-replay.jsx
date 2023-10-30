@@ -235,6 +235,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const { app_routing_history, current_language, is_socket_opened } = common;
     const { is_dark_mode_on: is_dark_theme, is_chart_layout_default, is_chart_countdown_visible } = ui;
     const { end_epoch, chart_type, start_epoch, granularity } = contract_config;
+    const is_reset_contract = isResetContract(contract_info.contract_type);
     /**
      * TODO: remove forcing light theme once DBot supports dark theme
      * DBot does not support for dark theme since till now,
@@ -344,7 +345,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                         is_bottom_widget_visible={isBottomWidgetVisible()}
                     />
                 ))}
-            {!is_beta_chart && is_accumulator_contract && !!markers_array && (
+            {!is_beta_chart && is_accumulator_contract && !!markers_array && !is_reset_contract && (
                 <DelayedAccuBarriersMarker
                     marker_component={MarkerComponent}
                     key={barriers_marker.key}
@@ -355,7 +356,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                     {...barriers_marker}
                 />
             )}
-            {isResetContract(contract_info.contract_type) && !!markers_array && reset_time && (
+            {is_reset_contract && !!markers_array && reset_time && (
                 <MarkerComponent
                     is_dark_theme={is_dark_theme}
                     granularity={granularity}

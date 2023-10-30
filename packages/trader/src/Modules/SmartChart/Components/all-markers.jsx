@@ -246,8 +246,8 @@ const draw_reset_barrier = ({
     bottom,
     stroke_color,
     has_persistent_borders = false,
+    barrier_gradient,
     reset_barrier,
-    has_gradient,
     scale,
 }) => {
     ctx.save();
@@ -267,41 +267,39 @@ const draw_reset_barrier = ({
     ctx.setLineDash([]);
     ctx.textAlign = 'right';
 
-    if ((is_top_visible || has_persistent_borders) && reset_barrier === top) {
+    if ((is_top_visible || has_persistent_borders) && barrier_gradient === top) {
         ctx.fillStyle = stroke_color;
         ctx.beginPath();
         ctx.setLineDash([2, 3]);
-        ctx.moveTo(start_left + 1.5 * scale, displayed_top);
-        ctx.lineTo(end_left, displayed_top);
+        ctx.moveTo(start_left + 1.5 * scale, reset_barrier);
+        ctx.lineTo(end_left, reset_barrier);
         ctx.fill();
         ctx.stroke();
     }
 
-    if ((is_bottom_visible || has_persistent_borders) && reset_barrier === bottom) {
+    if ((is_bottom_visible || has_persistent_borders) && barrier_gradient === bottom) {
         ctx.fillStyle = stroke_color;
         ctx.beginPath();
         ctx.setLineDash([2, 3]);
-        ctx.moveTo(start_left + 1.5 * scale, displayed_bottom);
-        ctx.lineTo(end_left, displayed_bottom);
+        ctx.moveTo(start_left + 1.5 * scale, reset_barrier);
+        ctx.lineTo(end_left, reset_barrier);
         ctx.fill();
         ctx.stroke();
     }
     let gradient;
-    //for reset call gradient area between barriers from bottom to top
-    if (reset_barrier === bottom) {
-        gradient = ctx.createLinearGradient(start_left, displayed_top, start_left, displayed_bottom);
-        gradient.addColorStop(0.99, 'rgba(75, 180, 179, 0.25)');
-        gradient.addColorStop(0.01, 'rgba(75, 180, 179, 0)');
-    }
-    //for reset put gradient area between barriers from top to bottom
-    if (reset_barrier === top) {
+    //This case is for Reset Call
+    if (barrier_gradient === bottom) {
         gradient = ctx.createLinearGradient(start_left, displayed_bottom, start_left, displayed_top);
-        gradient.addColorStop(0.99, 'rgba(75, 180, 179, 0.25)');
-        gradient.addColorStop(0.01, 'rgba(75, 180, 179, 0)');
+        gradient.addColorStop(0.02, 'rgba(75, 180, 179, 0.16)');
+        gradient.addColorStop(0.98, 'rgba(75, 180, 179, 0.00)');
     }
-    if (!has_gradient) {
-        gradient = 'transparent';
+    //This case is for Reset Put
+    if (barrier_gradient === top) {
+        gradient = ctx.createLinearGradient(start_left, displayed_top, start_left, displayed_bottom);
+        gradient.addColorStop(0.02, 'rgba(75, 180, 179, 0.16)');
+        gradient.addColorStop(0.98, 'rgba(75, 180, 179, 0.00)');
     }
+
     ctx.fillStyle = gradient;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
     ctx.restore();
@@ -347,7 +345,6 @@ const TickContract = RawMarkerMaker(
         contract_info: {
             accu_barriers_difference,
             contract_type,
-            entry_spot,
             exit_tick_time,
             status,
             profit,
@@ -357,7 +354,6 @@ const TickContract = RawMarkerMaker(
             is_expired,
             // tick_stream,
             tick_count,
-            reset_barrier,
         },
     }) => {
         /** @type {CanvasRenderingContext2D} */
@@ -413,18 +409,18 @@ const TickContract = RawMarkerMaker(
 
         if (isResetContract(contract_type)) {
             const is_reset_call_contract = /RESETCALL/i.test(contract_type);
-            // for reset call we are showing gradient to the lowest barrier, for put - the highest
-            const has_gradient =
-                (is_reset_call_contract && +reset_barrier < +entry_spot) ||
-                (!is_reset_call_contract && +reset_barrier > +entry_spot);
+            const biggest_barrier = Math.max(barrier, barrier_2);
+            const smallest_barrier = Math.min(barrier, barrier_2);
+            // for Reset Call we are showing gradient to the lowest barrier (the biggest one), for put - the highest (smallest)
+            const barrier_gradient = is_reset_call_contract ? biggest_barrier : smallest_barrier;
             draw_reset_barrier({
-                has_gradient,
                 ctx,
                 stroke_color: '#999999',
                 start_left: start.left,
-                top: is_reset_call_contract ? barrier - 120 : barrier,
-                bottom: is_reset_call_contract ? barrier : barrier + 120,
-                reset_barrier: barrier,
+                top: is_reset_call_contract ? barrier_gradient - 96 : barrier_gradient,
+                bottom: is_reset_call_contract ? barrier_gradient : barrier_gradient + 96,
+                barrier_gradient,
+                reset_barrier: barrier_2,
                 scale,
             });
             return;

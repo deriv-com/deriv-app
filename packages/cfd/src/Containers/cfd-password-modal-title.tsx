@@ -3,7 +3,7 @@ import { Text } from '@deriv/components';
 import { getCFDPlatformNames, getCFDPlatformLabel, CFD_PLATFORMS, getFormattedJurisdictionCode } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { CATEGORY } from 'src/Helpers/cfd-config';
+import { CATEGORY } from '../Helpers/cfd-config';
 import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCFDPasswordModalTitleProps = { platform: string };

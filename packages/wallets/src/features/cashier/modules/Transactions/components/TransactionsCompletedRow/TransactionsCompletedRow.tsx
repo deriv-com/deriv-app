@@ -21,8 +21,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ transaction }) => {
                 <WalletCurrencyCard currency={data?.currency || 'USD'} isDemo={data?.is_virtual} size='md' />
                 <div className='wallets-transactions-completed-row__type-and-wallet-name'>
                     <WalletText color='primary' size='xs'>
-                        {transaction.action_type.charAt(0).toUpperCase() +
-                            transaction.action_type.slice(1).replace('_', ' ')}
+                        {transaction.action_type.replace(/^\w/, c => c.toUpperCase())}
                     </WalletText>
                     <WalletText color='general' size='xs' weight='bold'>
                         {displayCode} Wallet

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
 import { optionsAndMultipliersContent } from '../../constants/constants';
@@ -66,9 +67,14 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
 
 const OptionsAndMultipliersListing: React.FC = () => {
     const { isMobile } = useDevice();
+    const { data } = useActiveWalletAccount();
 
     return (
-        <div className='wallets-options-and-multipliers-listing'>
+        <div
+            className={classNames('wallets-options-and-multipliers-listing', {
+                'wallets-options-and-multipliers-listing--border': data?.is_crypto,
+            })}
+        >
             <section className='wallets-options-and-multipliers-listing__header'>
                 <div className='wallets-options-and-multipliers-listing__header-title'>
                     {!isMobile && (

@@ -566,7 +566,6 @@ async function setupMocks({ baseURL, page, mocks }: SetupMocksOptions) {
         .poll(
             async () => {
                 return page.evaluate(() => {
-                    console.log(document.body.innerHTML);
                     return window.localStorage.getItem('active_loginid');
                 });
             },

@@ -1,5 +1,6 @@
 .wallets-transactions {
-    width: 80rem;
+    width: 100%;
+    max-width: 80rem;
 
     &__header {
         display: flex;

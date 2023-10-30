@@ -1678,7 +1678,7 @@ export default class ClientStore extends BaseStore {
                     language: getLanguage().toLowerCase(),
                 });
                 const current_page = window.location.hostname + window.location.pathname;
-                Analytics.pageView(current_page);
+                Analytics?.pageView(current_page);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',

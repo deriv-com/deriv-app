@@ -45,8 +45,8 @@ const AppContents = observer(({ children }) => {
 
     React.useEffect(() => {
         if (is_logged_in && user_id) {
-            const { tracking } = Analytics.getInstances();
-            Analytics.setAttributes({
+            const { tracking } = Analytics?.getInstances();
+            Analytics?.setAttributes({
                 account_type: loginid.substring(0, 2),
             });
             tracking.identifyEvent(user_id, {

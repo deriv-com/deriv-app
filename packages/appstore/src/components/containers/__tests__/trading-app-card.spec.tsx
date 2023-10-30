@@ -1,7 +1,6 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import TradingAppCard from '../trading-app-card';
 
@@ -69,9 +68,7 @@ describe('<TradingAppCard/>', () => {
     const renderComponent = ({ props = mock_props }) => {
         render(
             <StoreProvider store={store_config}>
-                <APIProvider>
-                    <TradingAppCard {...props} />
-                </APIProvider>
+                <TradingAppCard {...props} />
             </StoreProvider>
         );
     };
@@ -105,7 +102,7 @@ describe('<TradingAppCard/>', () => {
         expect(modal_content_bvi).toBeInTheDocument();
     });
 
-    it('should close OpenPositionsSVGModal when user clicks on the OK', () => {
+    it('should close OpenPositionsSVGModal when user clicks on the OK', async () => {
         renderComponent({ props: mock_props });
 
         const status_badge = screen.getByText('No new positions');
@@ -115,8 +112,10 @@ describe('<TradingAppCard/>', () => {
             /You can no longer open new positions with your MT5 Derived SVG account. Please use your MT5 Derived BVI account to open new positions./
         );
         const okButton = screen.getByRole('button', { name: /OK/i });
-        userEvent.click(okButton);
-        expect(modal_content_bvi).not.toBeInTheDocument();
+        await waitFor(() => {
+            userEvent.click(okButton);
+            expect(modal_content_bvi).not.toBeInTheDocument();
+        });
     });
 
     it('should not render status badge if mt5_acc_auth_status value is null', () => {

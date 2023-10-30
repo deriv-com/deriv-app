@@ -183,15 +183,13 @@ const TradingAppCard = ({
                             onClick={() => handleStatusBadgeClick(mt5_acc_auth_status)}
                         />
                     )}
-                    {is_open_position_svg_modal_open && (
-                        <OpenPositionsSVGModal
-                            loginId={login ?? ''}
-                            market_type={market_type}
-                            status={mt5_acc_auth_status ?? ''}
-                            is_modal_open={is_open_position_svg_modal_open}
-                            setModalOpen={setIsOpenPositionSvgModalOpen}
-                        />
-                    )}
+                    <OpenPositionsSVGModal
+                        loginId={login ?? ''}
+                        market_type={market_type}
+                        status={mt5_acc_auth_status ?? ''}
+                        is_modal_open={is_open_position_svg_modal_open}
+                        setModalOpen={setIsOpenPositionSvgModalOpen}
+                    />
                 </div>
                 <div className='trading-app-card__actions'>
                     <TradingAppCardActions

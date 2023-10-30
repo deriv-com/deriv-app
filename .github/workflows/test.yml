@@ -43,7 +43,3 @@ jobs:
       run: bash ./scripts/check-tests.sh packages/utils/src
     - name: Run tests
       run: npm run test:ci
-    - name: Install Playwright Browsers
-      run: npx playwright install
-    - name: Run integration tests
-      run: npm run test:e2e

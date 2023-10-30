@@ -33,6 +33,7 @@ type TPositionDrawerCardItem = TPortfolioStore &
         measure?: () => void;
         onClickRemove: ReturnType<typeof useStore>['portfolio']['removePositionById'];
         row?: TPortfolioPosition | { [key: string]: any };
+        reset_barrier?: string;
         server_time: ReturnType<typeof useStore>['common']['server_time'];
         symbol: ReturnType<typeof useTraderStore>['symbol'];
     };

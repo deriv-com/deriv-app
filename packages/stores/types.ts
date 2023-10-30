@@ -138,6 +138,7 @@ type TPortfolioPosition = {
     contract_info: ProposalOpenContract &
         Portfolio1 & {
             contract_update?: ContractUpdate;
+            reset_barrier?: string;
         };
     details?: string;
     display_name: string;
@@ -757,7 +758,7 @@ type TContractTradeStore = {
     clearError: () => void;
     contracts: TContractStore[];
     error_message: string;
-    getContractById: (contract_id?: number) => TContractStore;
+    getContractById: (contract_id: number) => TContractStore;
     granularity: null | number;
     has_crossed_accu_barriers: boolean;
     has_error: boolean;

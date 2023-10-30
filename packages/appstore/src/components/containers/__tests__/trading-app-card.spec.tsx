@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import TradingAppCard from '../trading-app-card';
 
@@ -69,9 +68,7 @@ describe('<TradingAppCard/>', () => {
     const renderComponent = ({ props = mock_props }) => {
         render(
             <StoreProvider store={store_config}>
-                <APIProvider>
-                    <TradingAppCard {...props} />
-                </APIProvider>
+                <TradingAppCard {...props} />
             </StoreProvider>
         );
     };

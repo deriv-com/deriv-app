@@ -509,6 +509,7 @@ type TClientStore = {
     ) => Promise<SetFinancialAssessmentResponse>;
     prev_account_type: string;
     is_beta_chart: boolean;
+    is_bot_allowed: boolean;
 };
 
 type TCommonStoreError = {

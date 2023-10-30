@@ -26,7 +26,6 @@
         }
     }
     &__content {
-        width: 98%;
         /* postcss-bem-linter: ignore */
         &-glossary {
             &--heading {
@@ -135,6 +134,7 @@
     &__scrollbars {
         position: relative;
         height: 100%;
+        padding-right: 1rem;
         &-description--active {
             transition: transform 0.3s linear;
         }

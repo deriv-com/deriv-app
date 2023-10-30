@@ -6,27 +6,55 @@
     min-height: 6rem;
 
     &__hash {
-        color: #000;
-        text-align: center;
-        font-size: 1.4rem;
-        font-weight: 700;
-        padding: 0.8rem 1rem;
-        border-radius: 0.4rem 0rem 0rem 0.4rem;
-        border: 0.1rem solid #e6e9e9;
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 0.1rem solid #e6e6e6;
+        border-radius: 0.4rem;
+        box-sizing: border-box;
 
-        @include mobile {
-            font-size: 1.2rem;
-            text-overflow: ellipsis;
+        &-text {
+            padding: 0.8rem;
         }
 
-        &-container {
-            display: flex;
-            align-items: center;
+        &-divider {
+            width: 1px;
+            height: 100%;
+            background: #e6e6e6;
         }
-    }
 
-    &__loader {
-        position: relative;
-        height: 6rem;
+        &-clipboard .wallets-clipboard {
+            height: 100%;
+            padding: 0.8rem;
+            // border-left: 0.1rem solid #e6e6e6;
+        }
+        //     color: #000;
+        //     text-align: center;
+        //     font-size: 1.4rem;
+        //     font-weight: 700;
+
+        //     @include mobile {
+        //         font-size: 1.2rem;
+        //         text-overflow: ellipsis;
+        //     }
+
+        //     &-container {
+        //         display: flex;
+        //         align-items: center;
+        //         justify-content: space-around;
+        //         height: 3.6rem;
+        //         border: 0.1rem solid #e6e6e6;
+        //         padding: 0.8rem 1rem;
+
+        //         @include mobile {
+        //             height: 3.4rem;
+        //         }
+        //     }
+        // }
+
+        // &__loader {
+        //     position: relative;
+        //     height: 6rem;
     }
 }

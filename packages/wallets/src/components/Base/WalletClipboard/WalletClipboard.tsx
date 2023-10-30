@@ -4,6 +4,7 @@ import { Tooltip } from '../Tooltip';
 import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
 import Clipboard from '../../../public/images/clipboard.svg';
 import './WalletClipboard.scss';
+import useDevice from '../../../hooks/useDevice';
 
 type TProps = {
     infoMessage?: string;
@@ -17,6 +18,7 @@ const WalletClipboard = ({
     textCopy,
 }: TProps) => {
     const [, copy] = useCopyToClipboard();
+    const { isMobile } = useDevice();
     const [isCopied, setIsCopied] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     let timeoutClipboard: ReturnType<typeof setTimeout>;
@@ -35,7 +37,7 @@ const WalletClipboard = ({
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Tooltip alignment='right' isVisible={isHovered} message={isCopied ? 'Copied!' : 'Copy'}>
+        <Tooltip alignment='right' isVisible={isHovered && !isMobile} message={isCopied ? 'Copied!' : 'Copy'}>
             <button
                 className='wallets-clipboard'
                 onClick={onClick}

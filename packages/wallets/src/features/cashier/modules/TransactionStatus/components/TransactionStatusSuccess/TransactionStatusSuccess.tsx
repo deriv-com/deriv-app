@@ -5,20 +5,16 @@ import { THooks } from '../../../../../../types';
 import { CryptoTransaction } from '../CryptoTransaction';
 
 type TTransactionStatusSuccess = {
-    recentTransactions: THooks.CryptoTransactions[];
     transactionType?: THooks.CryptoTransactions['transaction_type'];
+    transactions: THooks.CryptoTransactions[];
     wallet: THooks.ActiveWalletAccount;
 };
 
-const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
-    recentTransactions,
-    transactionType,
-    wallet,
-}) => {
+const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transactionType, transactions, wallet }) => {
     const history = useHistory();
 
     const filteredTransactions =
-        recentTransactions?.filter(
+        transactions?.filter(
             el => !transactionType || (transactionType === 'deposit' ? el.is_deposit : el.is_withdrawal)
         ) || [];
 

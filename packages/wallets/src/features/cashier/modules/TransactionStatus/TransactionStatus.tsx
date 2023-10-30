@@ -60,10 +60,10 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
             <div className='wallets-transaction-status__body'>
                 {!isError && isLoading && <Loader color='#85acb0' />}
                 {isError && <TransactionStatusError refresh={refresh} />}
-                {!isLoading && !isError && wallet && (
+                {!isLoading && !isError && wallet && transactions && (
                     <TransactionStatusSuccess
-                        recentTransactions={transactions}
                         transactionType={transactionType}
+                        transactions={transactions}
                         wallet={wallet}
                     />
                 )}

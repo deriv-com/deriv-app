@@ -1,14 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import {
-    CFD_PLATFORMS,
-    getCFDPlatformNames,
-    getFormattedJurisdictionCode,
-    getFormattedJurisdictionMarketTypes,
-    Jurisdiction,
-    JURISDICTION_MARKET_TYPES,
-    MT5_ACCOUNT_STATUS,
-} from '@deriv/shared';
+import { Jurisdiction, MT5_ACCOUNT_STATUS, getMT5AccountTitle } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
@@ -31,17 +23,9 @@ const OpenPositionsSVGModal = ({
         modules: { cfd },
     } = useStore();
     const { migrated_mt5_accounts } = cfd;
-    const eligible_account = migrated_mt5_accounts.filter(account => account.loginId === loginId);
-    const eligible_account_to_migrate_label = getFormattedJurisdictionCode(
-        Object.values(eligible_account[0]?.to_account ?? {})[0]
-    );
-    const account_type = getFormattedJurisdictionMarketTypes(
-        market_type === JURISDICTION_MARKET_TYPES.FINANCIAL
-            ? JURISDICTION_MARKET_TYPES.FINANCIAL
-            : JURISDICTION_MARKET_TYPES.DERIVED
-    );
-    const from_account = getFormattedJurisdictionCode(Jurisdiction.SVG);
-    const cfd_platform = getCFDPlatformNames(CFD_PLATFORMS.MT5);
+    const eligible_account = migrated_mt5_accounts?.filter(account => account?.loginId === loginId);
+    const eligible_account_to_migrate_label = Object.values(eligible_account[0]?.to_account ?? {})?.[0];
+
     const is_migrated_with_position = status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
 
     const onClick = () => {
@@ -65,13 +49,27 @@ const OpenPositionsSVGModal = ({
                 <Text as='p' color='prominent ' size='xs'>
                     {is_migrated_with_position ? (
                         <Localize
-                            i18n_default_text='You can no longer open new positions with your {{cfd_platform}} {{account_type}} {{from_account}} account. Please use your {{cfd_platform}} {{account_type}} {{eligible_account_to_migrate_label}} account to open new positions.'
-                            values={{ account_type, from_account, eligible_account_to_migrate_label, cfd_platform }}
+                            i18n_default_text='You can no longer open new positions with your {{from_account}} account. Please use your {{to_account}} account to open new positions.'
+                            values={{
+                                from_account: getMT5AccountTitle({
+                                    account_type: market_type,
+                                    jurisdiction: Jurisdiction.SVG,
+                                }),
+                                to_account: getMT5AccountTitle({
+                                    account_type: market_type,
+                                    jurisdiction: eligible_account_to_migrate_label,
+                                }),
+                            }}
                         />
                     ) : (
                         <Localize
-                            i18n_default_text='Your {{cfd_platform}} {{account_type}} {{from_account}} account will be archived after 30 days of inactivity. You can still access your trade history until the account is archived.'
-                            values={{ account_type, from_account, cfd_platform }}
+                            i18n_default_text='Your {{from_account}} account will be archived after 30 days of inactivity. You can still access your trade history until the account is archived.'
+                            values={{
+                                from_account: getMT5AccountTitle({
+                                    account_type: market_type,
+                                    jurisdiction: Jurisdiction.SVG,
+                                }),
+                            }}
                         />
                     )}
                 </Text>

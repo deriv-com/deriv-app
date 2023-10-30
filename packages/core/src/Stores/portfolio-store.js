@@ -23,7 +23,7 @@ import {
     TURBOS,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
-import { RudderStack, getRudderstackConfig } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import { ChartBarrierStore } from './chart-barrier-store';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
@@ -325,7 +325,6 @@ export default class PortfolioStore extends BaseStore {
     }
 
     handleSell(response) {
-        const { action_names, event_names, form_names, subform_names } = getRudderstackConfig();
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
             const i = this.getPositionIndexById(response.echo_req.sell);
@@ -348,10 +347,10 @@ export default class PortfolioStore extends BaseStore {
                 contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );
 
-            RudderStack.track(event_names.reports, {
-                action: action_names.close_contract,
-                form_name: form_names.default,
-                subform_name: subform_names.open_positions,
+            Analytics.trackEvent('ce_reports_form', {
+                action: 'close_contract',
+                form_name: 'default',
+                subform_name: 'open_positions_form',
             });
         }
     }

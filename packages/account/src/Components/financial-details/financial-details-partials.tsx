@@ -116,7 +116,7 @@ const FinancialDetailsOccupationDropdownField = ({
                             list={dropdown_list}
                             value={getFormattedOccupationValues()}
                             onChange={e => {
-                                setFieldValue('field_key', getFormattedOccupationValues(), true);
+                                setFieldValue(field_key, getFormattedOccupationValues(), true);
                                 handleChange(e);
                             }}
                             handleBlur={handleBlur}
@@ -135,7 +135,7 @@ const FinancialDetailsOccupationDropdownField = ({
                             value={getFormattedOccupationValues()}
                             error={touched?.[field_key] && errors?.[field_key]}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                setFieldValue('field_key', getFormattedOccupationValues(), true);
+                                setFieldValue(field_key, getFormattedOccupationValues(), true);
                                 handleChange(e);
                             }}
                             required

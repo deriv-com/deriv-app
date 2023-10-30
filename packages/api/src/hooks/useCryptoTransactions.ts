@@ -71,6 +71,41 @@ const useCryptoTransactions = () => {
     const modified_transactions = useMemo(() => {
         if (!transactions || !transactions.length) return undefined;
 
+        const getFormattedConfirmations = (transaction: TModifiedTransaction) => {
+            switch (transaction.status_code) {
+                case 'CONFIRMED':
+                    return 'Confirmed';
+                case 'ERROR':
+                    return 'NA';
+                default:
+                    return transaction.confirmations || 'Pending';
+            }
+        };
+
+        const getStatusName = (transaction: TModifiedTransaction) => {
+            switch (transaction.status_code) {
+                case 'CONFIRMED':
+                case 'SENT':
+                    return 'Successful';
+                case 'ERROR':
+                case 'REJECTED':
+                case 'REVERTED':
+                    return 'Unsuccessful';
+                case 'PENDING':
+                case 'PERFORMING_BLOCKCHAIN_TXN':
+                case 'PROCESSING':
+                case 'REVERTING':
+                case 'VERIFIED':
+                    return 'In process';
+                case 'CANCELLED':
+                    return 'Cancelled';
+                case 'LOCKED':
+                    return 'In review';
+                default:
+                    '';
+            }
+        };
+
         return transactions.map(transaction => ({
             ...transaction,
             /** Formatted amount */
@@ -88,12 +123,13 @@ const useCryptoTransactions = () => {
                 ? getTruncatedString(transaction.address_hash, { type: 'middle' })
                 : 'NA',
             /** Formatted confirmations status */
-            formatted_confirmations:
-                transaction.status_code === 'CONFIRMED' ? 'Confirmed' : transaction.confirmations || 'Pending',
+            formatted_confirmations: getFormattedConfirmations(transaction),
             /** Determine if the transaction is a deposit or not. */
             is_deposit: transaction.transaction_type === 'deposit',
             /** Determine if the transaction is a withdrawal or not. */
             is_withdrawal: transaction.transaction_type === 'withdrawal',
+            /** Status name */
+            status_name: getStatusName(transaction),
         }));
     }, [display_code, fractional_digits, preferred_language, transactions]);
 

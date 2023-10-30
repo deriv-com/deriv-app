@@ -3,7 +3,6 @@ import React from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Money, Text } from '@deriv/components';
 import {
-    CFD_PLATFORMS,
     getCFDAccountDisplay,
     getCFDAccountKey,
     getCFDPlatformLabel,
@@ -19,6 +18,7 @@ import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
+import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid & {
@@ -48,10 +48,10 @@ const DMT5TradeModal = ({
 }: TMT5TradeModalProps) => {
     const getCompanyShortcode = () => {
         if (
-            (mt5_trade_account.account_type === 'demo' &&
-                mt5_trade_account.market_type === 'financial' &&
-                mt5_trade_account.landing_company_short === 'labuan') ||
-            mt5_trade_account.account_type === 'real'
+            (mt5_trade_account.account_type === CATEGORY.DEMO &&
+                mt5_trade_account.market_type === MARKET_TYPE.FINANCIAL &&
+                mt5_trade_account.landing_company_short === JURISDICTION.LABUAN) ||
+            mt5_trade_account.account_type === CATEGORY.REAL
         ) {
             return mt5_trade_account.landing_company_short;
         }
@@ -69,8 +69,8 @@ const DMT5TradeModal = ({
         });
     const getAccountTitle = () => {
         if (show_eu_related_content) return 'CFDs';
-        else if (mt5_trade_account.market_type === 'synthetic') return 'Derived';
-        else if (mt5_trade_account.market_type === 'all') return 'SwapFree';
+        else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Derived';
+        else if (mt5_trade_account.market_type === MARKET_TYPE.ALL) return 'SwapFree';
         return 'Financial';
     };
     return (

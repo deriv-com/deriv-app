@@ -10,8 +10,16 @@
         display: grid;
         grid-template-rows: 6rem auto;
 
-        &--fixed {
+        &--fixed-footer {
             grid-template-rows: 6rem auto 7rem;
+        }
+
+        &--no-header {
+            grid-template-rows: auto;
+        }
+
+        &--no-header--fixed-footer {
+            grid-template-rows: auto 7rem;
         }
     }
 

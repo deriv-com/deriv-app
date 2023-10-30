@@ -182,3 +182,16 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
         left: 0;
     }
 }
+
+.dc-modal__container_info-box-longcode--modal {
+    .dc-modal {
+        &-body {
+            padding: 0.8rem 1.6rem;
+        }
+        &-footer {
+            .dc-btn {
+                min-width: 5.2rem;
+            }
+        }
+    }
+}

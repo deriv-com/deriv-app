@@ -68,8 +68,8 @@ const MultiplierCardBody = ({
                 <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
-                            'dc-contract-card--profit': +total_profit > 0,
-                            'dc-contract-card--loss': +total_profit < 0,
+                            'dc-contract-card--profit': total_profit > 0,
+                            'dc-contract-card--loss': total_profit < 0,
                         })}
                     >
                         <Money amount={bid_price} currency={currency} />
@@ -128,17 +128,17 @@ const MultiplierCardBody = ({
                 className='dc-contract-card-item__total-profit-loss'
                 header={TOTAL_PROFIT_LOSS}
                 is_crypto={isCryptocurrency(currency)}
-                is_loss={+total_profit < 0}
-                is_won={+total_profit > 0}
+                is_loss={total_profit < 0}
+                is_won={total_profit > 0}
             >
                 <Money amount={Math.abs(total_profit)} currency={currency} />
                 <div
                     className={classNames('dc-contract-card__indicative--movement', {
                         'dc-contract-card__indicative--movement-complete': is_sold,
                     })}
+                    data-testid={`dt_indicative_movement_${total_profit > 0 ? 'profit' : 'loss'}`}
                 >
-                    {status === 'profit' && <Icon icon='IcProfit' />}
-                    {status === 'loss' && <Icon icon='IcLoss' />}
+                    {total_profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
                 </div>
             </ContractCardItem>
         </React.Fragment>

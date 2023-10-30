@@ -2,7 +2,7 @@ import React from 'react';
 import { Div100vhContainer, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TCFDPersonalDetailsContainerProps } from './props.types';
-import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
+import PersonalDetailsForm from '../Components/personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
 import { observer, useStore } from '@deriv/stores';
@@ -107,7 +107,7 @@ const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsC
                 </Text>
             </div>
             <div className='cfd-personal-details-modal__body'>
-                <CFDPersonalDetailsForm
+                <PersonalDetailsForm
                     form_error={form_error}
                     index={2}
                     is_loading={is_loading}

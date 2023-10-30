@@ -45,6 +45,7 @@ import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CATEGORY } from 'src/Helpers/cfd-config';
+import CFDPasswordModalTitle from './cfd-password-modal-title';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -92,11 +93,6 @@ type TReviewMsgForMT5 = {
 };
 
 type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
-    account_title: string;
-    account_type: {
-        category?: string;
-        type?: string;
-    };
     closeModal: () => void;
     error_type?: string;
     form_error?: string;
@@ -105,11 +101,9 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     is_mt5_migration_modal_enabled: boolean;
     is_dxtrade_allowed: boolean;
     is_real_financial_stp: boolean;
-    jurisdiction_selected_shortcode: string;
     onCancel: () => void;
     onForgotPassword: () => void;
     should_set_trading_password: boolean;
-    show_eu_related_content: boolean;
     submitPassword: TOnSubmitPassword;
 };
 
@@ -405,20 +399,16 @@ const CFDCreatePasswordForm = ({
 };
 
 const CFDPasswordForm = ({
-    account_title,
-    account_type,
     closeModal,
     error_message,
     error_type,
     form_error,
     has_mt5_account,
     is_real_financial_stp,
-    jurisdiction_selected_shortcode,
     onCancel,
     onForgotPassword,
     platform,
     should_set_trading_password,
-    show_eu_related_content,
     submitPassword,
     is_mt5_migration_modal_enabled,
     validatePassword,
@@ -475,47 +465,6 @@ const CFDPasswordForm = ({
             </React.Fragment>
         );
     }
-    const getPasswordModalTitle = () => {
-        if (is_mt5_migration_modal_enabled)
-            return (
-                <Localize
-                    i18n_default_text='Enter your {{platform}} password to move your account(s).'
-                    values={{
-                        platform: getCFDPlatformLabel(platform),
-                    }}
-                />
-            );
-        else if (account_type.category === CATEGORY.REAL)
-            return (
-                <Localize
-                    i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
-                    values={{
-                        platform: getCFDPlatformLabel(platform),
-                        platform_name:
-                            platform === CFD_PLATFORMS.MT5
-                                ? getCFDPlatformNames(CFD_PLATFORMS.MT5)
-                                : getCFDPlatformLabel(platform),
-                        account: !show_eu_related_content ? accountTitle(account_type.category) : '',
-                        jurisdiction_shortcode: showJuristiction(),
-                    }}
-                />
-            );
-        else if (account_type.category === CATEGORY.DEMO) {
-            return (
-                <Localize
-                    i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
-                    values={{
-                        platform: getCFDPlatformLabel(platform),
-                        platform_name:
-                            platform === CFD_PLATFORMS.MT5
-                                ? getCFDPlatformNames(CFD_PLATFORMS.MT5)
-                                : getCFDPlatformLabel(platform),
-                        account: accountTitle(account_type.category),
-                    }}
-                />
-            );
-        }
-    };
 
     if (should_set_trading_password) {
         return (
@@ -529,27 +478,6 @@ const CFDPasswordForm = ({
             />
         );
     }
-
-    const accountTitle = (category: string) => {
-        switch (platform) {
-            case 'ctrader':
-            case 'derivez':
-                return 'CFD';
-            case 'dxtrade':
-                return category === CATEGORY.REAL ? 'Real' : '';
-            default:
-                return account_title;
-        }
-    };
-
-    const showJuristiction = () => {
-        if (platform === CFD_PLATFORMS.DXTRADE) {
-            return '';
-        } else if (!show_eu_related_content) {
-            return getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        }
-        return 'CFDs';
-    };
 
     return (
         <Formik
@@ -573,11 +501,7 @@ const CFDPasswordForm = ({
             }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
-                        {!should_set_trading_password && (
-                            <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-                                {getPasswordModalTitle()}
-                            </Text>
-                        )}
+                        {!should_set_trading_password && <CFDPasswordModalTitle platform={platform} />}
                         <div className='input-element'>
                             <PasswordInput
                                 autoComplete='new-password'
@@ -657,7 +581,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     } = ui;
 
     const {
-        account_title,
         account_type,
         disableCFDPasswordModal,
         error_message,
@@ -989,14 +912,11 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const cfd_password_form = (
         <CFDPasswordForm
             is_bvi={is_bvi}
-            account_title={account_title}
-            account_type={account_type}
             closeModal={closeModal}
             error_type={error_type}
             error_message={error_message}
             has_mt5_account={has_mt5_account}
             form_error={form_error}
-            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
             should_set_trading_password={should_set_trading_password}
             is_real_financial_stp={is_real_financial_stp}
             validatePassword={validatePassword}
@@ -1005,7 +925,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             platform={platform}
             is_dxtrade_allowed={is_dxtrade_allowed}
             onCancel={closeModal}
-            show_eu_related_content={show_eu_related_content}
             is_mt5_migration_modal_enabled={is_mt5_migration_modal_enabled}
         />
     );

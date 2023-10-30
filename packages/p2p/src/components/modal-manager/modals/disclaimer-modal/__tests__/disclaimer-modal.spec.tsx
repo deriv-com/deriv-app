@@ -1,8 +1,8 @@
 import React from 'react';
-import { getByText, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import DisclaimerModal from '../disclaimer-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import DisclaimerModal from '../disclaimer-modal';
 
 const mock_modal_manager_context = {
     hideModal: jest.fn(),

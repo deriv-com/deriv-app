@@ -79,33 +79,30 @@ const AppContent = ({ order_id }) => {
     }
 
     return (
-        <>
-            {/* <div><img src={path_reference} /></div> */}
-            <Tabs
-                active_index={general_store.active_index}
-                className={classNames({ p2p__tabs: general_store.active_index === 0 && isMobile() })}
-                header_fit_content={!isMobile()}
-                is_100vw={isMobile()}
-                is_scrollable
-                is_overflow_hidden
-                onTabItemClick={active_tab_index => {
-                    general_store.handleTabClick(active_tab_index);
-                    history.push({
-                        pathname: general_store.active_tab_route,
-                    });
-                }}
-                top
-            >
-                <div label={localize('Buy / Sell')}>
-                    <TemporarilyBarredHint />
-                </div>
-                <div data-count={notification_count} label={localize('Orders')} />
-                <div label={localize('My ads')}>
-                    <TemporarilyBarredHint />
-                </div>
-                <div label={localize('My profile')} />
-            </Tabs>
-        </>
+        <Tabs
+            active_index={general_store.active_index}
+            className={classNames({ p2p__tabs: general_store.active_index === 0 && isMobile() })}
+            header_fit_content={!isMobile()}
+            is_100vw={isMobile()}
+            is_scrollable
+            is_overflow_hidden
+            onTabItemClick={active_tab_index => {
+                general_store.handleTabClick(active_tab_index);
+                history.push({
+                    pathname: general_store.active_tab_route,
+                });
+            }}
+            top
+        >
+            <div label={localize('Buy / Sell')}>
+                <TemporarilyBarredHint />
+            </div>
+            <div data-count={notification_count} label={localize('Orders')} />
+            <div label={localize('My ads')}>
+                <TemporarilyBarredHint />
+            </div>
+            <div label={localize('My profile')} />
+        </Tabs>
     );
 };
 

@@ -28,7 +28,6 @@ import {
     getErrorMessages,
     getLegalEntityName,
     isDesktop,
-    isMobile,
     routes,
     validLength,
     validPassword,
@@ -137,10 +136,12 @@ const PasswordModalHeader = ({
     is_password_reset_error,
     platform,
 }: TPasswordModalHeaderProps) => {
-    const element = isMobile() ? 'p' : 'span';
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+    const element = is_mobile ? 'p' : 'span';
     const alignment = 'center';
     const font_size = 's';
-    const style = isMobile()
+    const style = is_mobile
         ? {
               padding: '2rem',
           }
@@ -425,6 +426,8 @@ const CFDPasswordForm = ({
     submitPassword,
     validatePassword,
 }: TCFDPasswordFormProps) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const button_label = React.useMemo(() => {
         if (error_type === 'PasswordReset') {
             return localize('Try later');
@@ -463,7 +466,7 @@ const CFDPasswordForm = ({
                                     has_cancel={has_cancel_button}
                                     cancel_label={cancel_button_label}
                                     onCancel={handleCancel}
-                                    is_absolute={isMobile()}
+                                    is_absolute={is_mobile}
                                     label={button_label}
                                 />
                             </form>
@@ -603,7 +606,7 @@ const CFDPasswordForm = ({
                         has_cancel={has_cancel_button}
                         cancel_label={cancel_button_label}
                         onCancel={handleCancel}
-                        is_absolute={isMobile()}
+                        is_absolute={is_mobile}
                         is_loading={isSubmitting}
                         label={button_label}
                         is_center={should_set_trading_password}
@@ -616,7 +619,8 @@ const CFDPasswordForm = ({
 };
 
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
-    const { client, traders_hub } = useStore();
+    const { client, traders_hub, ui } = useStore();
+    const { is_mobile } = ui;
 
     const {
         email,
@@ -800,7 +804,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const should_show_password_dialog = React.useMemo(() => {
         if (should_show_password) {
-            if (!should_set_trading_password) return isMobile();
+            if (!should_set_trading_password) return is_mobile;
         }
         return false;
     }, [should_set_trading_password, should_show_password]);
@@ -945,7 +949,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
-            width={isMobile() ? '32.8rem' : 'auto'}
+            width={is_mobile ? '32.8rem' : 'auto'}
         >
             {cfd_password_form}
         </Modal>
@@ -1001,8 +1005,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         : account_type.category === 'real'
                 }
                 has_close_icon={false}
-                width={isMobile() ? '32.8rem' : 'auto'}
-                is_medium_button={isMobile()}
+                width={is_mobile ? '32.8rem' : 'auto'}
+                is_medium_button={is_mobile}
             />
             <SentEmailModal
                 is_open={should_show_sent_email_modal}

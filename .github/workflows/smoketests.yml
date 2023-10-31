@@ -31,7 +31,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: deriv-com/e2e-deriv-app
-        #repository: deriv-experiments/Cypress-demo
 
     - name: Cypress run
       # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action

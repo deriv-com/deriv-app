@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStore } from '@deriv/stores';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import InfoBoxLongcode from '../info-box-longcode';
 
@@ -17,36 +16,39 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Icon: jest.fn(() => 'MockedIcon'),
 }));
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
-    observer: jest.fn(x => x),
-    useStore: jest.fn(() => ({
-        ui: {
-            is_mobile: false,
-        },
-    })),
-}));
 
 describe('InfoBoxLongcode', () => {
+    const MockInfoBoxLongcode = (mocked_props: any) => {
+        const mocked_store = mockStore({
+            ui: {
+                is_mobile: false,
+            },
+        });
+        return (
+            <StoreProvider store={mocked_store}>
+                <InfoBoxLongcode {...mocked_props} />
+            </StoreProvider>
+        );
+    };
     it('should render InfoBoxLongcode component', () => {
-        render(<InfoBoxLongcode {...mocked_props} />);
+        render(<MockInfoBoxLongcode {...mocked_props} />);
 
         expect(screen.getByText('MockedIcon')).toBeInTheDocument();
         expect(screen.getByText(test_longcode_short)).toBeInTheDocument();
     });
     it('should not render specific text if longcode is less then 150 symbols', () => {
-        render(<InfoBoxLongcode {...mocked_props} />);
+        render(<MockInfoBoxLongcode {...mocked_props} />);
 
         expect(screen.queryByText(/View more/i)).not.toBeInTheDocument();
     });
     it('should render specific text "View more" if longcode is more then 150 symbols', () => {
         mocked_props.contract_info.longcode = test_longcode_long;
-        render(<InfoBoxLongcode {...mocked_props} />);
+        render(<MockInfoBoxLongcode {...mocked_props} />);
 
         expect(screen.getByText(/View more/i)).toBeInTheDocument();
     });
     it('should render specific text "View less" if longcode is more then 150 symbols and user click on expand button', () => {
-        render(<InfoBoxLongcode {...mocked_props} />);
+        render(<MockInfoBoxLongcode {...mocked_props} />);
         userEvent.click(screen.getByText(/View more/i));
 
         expect(screen.queryByText(/View more/i)).not.toBeInTheDocument();
@@ -87,5 +89,7 @@ describe('InfoBoxLongcode', () => {
         expect(screen.getByText(/View more/i)).toBeInTheDocument();
         expect(screen.getByText(/Trade info/i)).toBeInTheDocument();
         expect(screen.getByText(/Ok/i)).toBeInTheDocument();
+
+        document.body.removeChild(modal_root_el);
     });
 });

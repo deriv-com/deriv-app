@@ -345,7 +345,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                         is_bottom_widget_visible={isBottomWidgetVisible()}
                     />
                 ))}
-            {!is_beta_chart && is_accumulator_contract && !!markers_array && !is_reset_contract && (
+            {!is_beta_chart && is_accumulator_contract && !!markers_array && (
                 <DelayedAccuBarriersMarker
                     marker_component={MarkerComponent}
                     key={barriers_marker.key}

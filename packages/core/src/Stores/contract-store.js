@@ -257,16 +257,16 @@ export default class ContractStore extends BaseStore {
             this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
             return;
         }
-        if (
-            this.barriers_array.length === 1 &&
-            isResetContract(contract_info.contract_type) &&
-            contract_info.reset_time
-        ) {
-            this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
-            return;
-        }
 
         if (contract_info) {
+            if (
+                this.barriers_array.length === 1 &&
+                isResetContract(contract_info.contract_type) &&
+                contract_info.reset_time
+            ) {
+                this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
+                return;
+            }
             if (
                 isBarrierSupported(contract_type) &&
                 (barrier || high_barrier) &&
@@ -302,6 +302,11 @@ export default class ContractStore extends BaseStore {
                 reset_barrier,
             } = contract_info;
             const high_barrier = this.accu_high_barrier || barrier || high;
+            const common_props = {
+                color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
+                not_draggable: true,
+                shade: DEFAULT_SHADES['2'],
+            };
             if (
                 isBarrierSupported(contract_type) &&
                 !isResetContract(contract_type) &&
@@ -313,9 +318,8 @@ export default class ContractStore extends BaseStore {
                     this.accu_low_barrier || low_barrier,
                     null,
                     {
-                        color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
+                        ...common_props,
                         line_style: !isAccumulatorContract(contract_type) && BARRIER_LINE_STYLES.SOLID,
-                        not_draggable: true,
                         hideBarrierLine: isAccumulatorContract(contract_type),
                         shade: isAccumulatorContract(contract_type) && DEFAULT_SHADES['2'],
                     }
@@ -326,11 +330,8 @@ export default class ContractStore extends BaseStore {
                 barriers = [main_barrier];
             } else if (isResetContract(contract_type) && entry_spot) {
                 const main_barrier = new ChartBarrierStore(entry_spot, low_barrier, null, {
-                    color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
-                    line_style: BARRIER_LINE_STYLES.SOLID,
-                    not_draggable: true,
+                    ...common_props,
                     hideBarrierLine: false,
-                    shade: DEFAULT_SHADES['2'],
                 });
 
                 main_barrier.updateBarrierShade(true, contract_type);
@@ -339,11 +340,9 @@ export default class ContractStore extends BaseStore {
 
                 if (reset_time) {
                     const reset_barrier_object = new ChartBarrierStore(reset_barrier, low_barrier, null, {
-                        color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
+                        ...common_props,
                         line_style: BARRIER_LINE_STYLES.DASHED,
-                        not_draggable: true,
                         hideBarrierLine: true,
-                        shade: DEFAULT_SHADES['2'],
                     });
 
                     barriers.push(reset_barrier_object);
@@ -445,7 +444,11 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
             ? [entry_tick_time, ...tick_stream.map(t => t.epoch).slice(1)]
             : tick_stream?.map(t => t.epoch)) || [];
     const ticks_epoch_array = tick_stream ? ticks_epochs : [];
-
+    const types = {
+        tickContract: 'TickContract',
+        digitContract: 'DigitContract',
+        nonTickContract: 'NonTickContract',
+    };
     // window.ci = toJS(contract_info);
 
     let price_array = [];
@@ -471,7 +474,7 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
     }
     // if we have not yet received the first POC response
     if (!transaction_ids) {
-        const type = is_digit_contract ? 'DigitContract' : 'TickContract';
+        const type = is_digit_contract ? types.digitContract : types.tickContract;
         return {
             type,
             contract_info: toJS(contract_info),
@@ -482,33 +485,30 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
     }
 
     if (tick_count >= 1) {
-        if (!isDigitContract(contract_type)) {
-            // TickContract
-            if (isResetContract(contract_type)) {
-                return {
-                    contract_info: toJS(contract_info),
-                    type: 'TickContract',
-                    key: `${contract_id}-date_start`,
-                    epoch_array: [reset_time, ...ticks_epoch_array],
-                    price_array: [price_array[0], reset_barrier],
-                };
-            }
-            return {
-                contract_info: toJS(contract_info),
-                type: 'TickContract',
-                key: `${contract_id}-date_start`,
-                epoch_array: [date_start, ...ticks_epoch_array],
-                price_array,
-            };
-        }
-        // DigitContract
-        return {
+        // TickContract
+        const tick_contract_info = {
             contract_info: toJS(contract_info),
-            type: 'DigitContract',
+            type: types.tickContract,
             key: `${contract_id}-date_start`,
             epoch_array: [date_start, ...ticks_epoch_array],
             price_array,
         };
+
+        if (isDigitContract(contract_type)) {
+            return {
+                ...tick_contract_info,
+                type: types.digitContract,
+            };
+        }
+
+        if (isResetContract(contract_type)) {
+            return {
+                ...tick_contract_info,
+                epoch_array: [reset_time, ...ticks_epoch_array],
+                price_array: [price_array[0], reset_barrier],
+            };
+        }
+        return tick_contract_info;
     }
     // NonTickContract
     if (!tick_count) {
@@ -516,28 +516,25 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
         const end_time = getEndTime(contract_info) || date_expiry;
         // the order of items in epoch_array matches the NonTickContract params.
         const epoch_array = [date_start, end_time];
-        if (entry_tick_time) {
-            epoch_array.push(entry_tick_time);
-        }
-        if (exit_tick_time) {
-            epoch_array.push(exit_tick_time);
-        }
-        if (isResetContract(contract_type)) {
-            return {
-                contract_info: toJS(contract_info),
-                type: 'NonTickContract',
-                key: `${contract_id}-date_start`,
-                epoch_array: [reset_time, ...epoch_array],
-                price_array: [price_array[0], reset_barrier],
-            };
-        }
-        return {
+
+        if (entry_tick_time) epoch_array.push(entry_tick_time);
+        if (exit_tick_time) epoch_array.push(exit_tick_time);
+
+        const non_tick_contract_info = {
             contract_info: toJS(contract_info),
-            type: 'NonTickContract',
+            type: types.nonTickContract,
             key: `${contract_id}-date_start`,
             epoch_array,
             price_array,
         };
+        if (isResetContract(contract_type)) {
+            return {
+                ...non_tick_contract_info,
+                epoch_array: [reset_time, ...epoch_array],
+                price_array: [price_array[0], reset_barrier],
+            };
+        }
+        return non_tick_contract_info;
     }
     return null;
 }

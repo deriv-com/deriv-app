@@ -240,7 +240,7 @@ const drawAccuBarrierRange = ({
     ctx.restore();
 };
 
-const draw_reset_barrier = ({
+const drawResetBarrier = ({
     ctx,
     start_left,
     top,
@@ -414,7 +414,7 @@ const TickContract = RawMarkerMaker(
             const highest_barrier = Math.min(barrier, barrier_2);
             // for Reset Call we are showing gradient to the lowest barrier (the biggest one), for put - the highest (smallest)
             const barrier_gradient = is_reset_call_contract ? lowest_barrier : highest_barrier;
-            draw_reset_barrier({
+            drawResetBarrier({
                 ctx,
                 stroke_color: '#999999',
                 start_left: start.left,
@@ -690,7 +690,7 @@ const NonTickContract = RawMarkerMaker(
             const highest_barrier = Math.min(barrier, entry_tick_top);
             // for Reset Call we are showing gradient to the lowest barrier (the biggest one), for put - the highest (smallest)
             const barrier_gradient = is_reset_call_contract ? lowest_barrier : highest_barrier;
-            draw_reset_barrier({
+            drawResetBarrier({
                 ctx,
                 stroke_color: '#999999',
                 start_left: start.left,

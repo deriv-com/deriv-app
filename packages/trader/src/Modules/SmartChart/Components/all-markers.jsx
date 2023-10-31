@@ -245,24 +245,14 @@ const drawAccuBarrierRange = ({
     ctx.restore();
 };
 
-const drawResetBarrier = ({
-    ctx,
-    start_left,
-    top,
-    bottom,
-    stroke_color,
-    has_persistent_borders = false,
-    barrier_gradient,
-    reset_barrier,
-    scale,
-}) => {
+const drawResetBarrier = ({ ctx, start_left, top, bottom, stroke_color, barrier_gradient, reset_barrier, scale }) => {
     ctx.save();
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
     const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
-    const is_top_visible = top < end_top && (top >= 0 || !has_persistent_borders);
+    const is_top_visible = top < end_top;
     const is_bottom_visible = bottom < end_top;
     // using 2 instead of 0 to distance the top barrier line from the top of the chart and make it clearly visible in C.Details:
-    const persistent_top = top < 0 && has_persistent_borders ? 2 : end_top;
+    const persistent_top = top < 0 && end_top;
     const displayed_top = is_top_visible ? top : persistent_top;
     const displayed_bottom = is_bottom_visible ? bottom : end_top;
     const is_start_left_visible = start_left < end_left;
@@ -273,7 +263,7 @@ const drawResetBarrier = ({
     ctx.setLineDash([]);
     ctx.textAlign = 'right';
 
-    if ((is_top_visible || has_persistent_borders) && barrier_gradient === top) {
+    if (is_top_visible && barrier_gradient === top) {
         ctx.fillStyle = stroke_color;
         ctx.beginPath();
         ctx.setLineDash([2, 3]);
@@ -283,7 +273,7 @@ const drawResetBarrier = ({
         ctx.stroke();
     }
 
-    if ((is_bottom_visible || has_persistent_borders) && barrier_gradient === bottom) {
+    if (is_bottom_visible && barrier_gradient === bottom) {
         ctx.fillStyle = stroke_color;
         ctx.beginPath();
         ctx.setLineDash([2, 3]);

@@ -37,7 +37,7 @@ const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.Mocked
 >;
 
 describe('MT5MigrationBackSideContent', () => {
-    let response: Partial<ReturnType<typeof useMT5SVGEligibleToMigrate>>,
+    let response: ReturnType<typeof useMT5SVGEligibleToMigrate>,
         response_migration_context: ReturnType<typeof useMT5MigrationModalContext>;
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -45,7 +45,6 @@ describe('MT5MigrationBackSideContent', () => {
                 <CFDStoreProvider>{children}</CFDStoreProvider>
             </StoreProvider>
         );
-        // @ts-expect-error response return value is not required to have all object
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);
         mockUseMT5MigrationModalContext.mockReturnValue(response_migration_context);
         render(<MT5MigrationBackSideContent />, { wrapper });
@@ -55,6 +54,15 @@ describe('MT5MigrationBackSideContent', () => {
         response = {
             eligible_account_to_migrate_label: 'bvi',
             getEligibleAccountToMigrate: jest.fn().mockReturnValue('bvi'),
+            eligible_svg_to_bvi_derived_accounts: false,
+            eligible_svg_to_bvi_financial_accounts: false,
+            eligible_svg_to_vanuatu_derived_accounts: false,
+            eligible_svg_to_vanuatu_financial_accounts: false,
+            has_derived_and_financial_mt5: false,
+            has_derived_mt5_to_migrate: false,
+            has_svg_accounts_to_migrate: false,
+            no_of_svg_accounts_to_migrate: 0,
+            svg_accounts_to_migrate: [],
         };
         response_migration_context = {
             show_modal_front_side: true,
@@ -75,10 +83,10 @@ describe('MT5MigrationBackSideContent', () => {
         expect(
             screen.getAllByText(/new mt5 account\(s\) under the bvi jurisdiction will be created for new trades\./i)
         ).toHaveLength(2);
-        expect(screen.getByText(/if you don\’t have open positions/i)).toBeInTheDocument();
+        expect(screen.getByText(/if you don’t have open positions/i)).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
         expect(
-            screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv bvi ltd\’s/i)
+            screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv bvi ltd’s/i)
         ).toBeInTheDocument();
         expect(screen.getByText(/terms and conditions/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Back' })).toBeInTheDocument();
@@ -92,7 +100,7 @@ describe('MT5MigrationBackSideContent', () => {
             screen.getAllByText(/new mt5 account\(s\) under the vanuatu jurisdiction will be created for new trades\./i)
         ).toHaveLength(2);
         expect(
-            screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv vanuatu ltd\’s/i)
+            screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv vanuatu ltd’s/i)
         ).toBeInTheDocument();
     });
 

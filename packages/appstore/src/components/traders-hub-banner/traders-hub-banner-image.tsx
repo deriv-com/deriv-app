@@ -2,8 +2,8 @@ import React from 'react';
 import MigrateDesktopImage from 'Assets/svgs/banner/migrate-desktop.svg';
 import MigrateMobileImage from 'Assets/svgs/banner/migrate-mobile.svg';
 
-export type TBannerImageProps<T> = {
-    image: T;
+export type TBannerImageProps<TTradersHubBannerImageListProps> = {
+    image: TTradersHubBannerImageListProps;
     class_name?: string;
     width?: React.CSSProperties['width'];
 };

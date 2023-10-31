@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import JurisdictionModalCheckbox from '../jurisdiction-modal-checkbox';
 import RootStore from 'Stores/index';
 import { Jurisdiction } from '@deriv/shared';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('JurisdictionModalCheckbox', () => {
     const mock_store = {
@@ -22,71 +23,81 @@ describe('JurisdictionModalCheckbox', () => {
         should_restrict_vanuatu_account_creation: false,
     };
 
+    const renderComponent = (props = mock_props) => {
+        render(
+            <StoreProvider store={mockStore({})}>
+                <JurisdictionModalCheckbox {...props} />
+            </StoreProvider>
+        );
+    };
+
     it('should not render JurisdictionModalCheckbox when jurisdiction is not selected', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} />);
+        renderComponent({ ...mock_props });
         expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
     });
 
     it('should render labuan account and displays checkbox', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.LABUAN} />);
+        renderComponent({ ...mock_props, jurisdiction_selected_shortcode: Jurisdiction.LABUAN });
         expect(screen.queryByRole('checkbox')).toBeInTheDocument();
     });
 
     it('should render function onCheck when checkbox is clicked for labuan account', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.LABUAN} />);
+        renderComponent({ ...mock_props, jurisdiction_selected_shortcode: Jurisdiction.LABUAN });
         const checkbox = screen.getByRole('checkbox');
         fireEvent.click(checkbox);
         expect(mock_props.onCheck).toHaveBeenCalled();
     });
 
     it('should render svg account without displaying checkbox', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.SVG} />);
+        renderComponent({ ...mock_props, jurisdiction_selected_shortcode: Jurisdiction.SVG });
         expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
     });
 
     it('should render bvi account without restriction and displays checkbox', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.BVI} />);
+        renderComponent({ ...mock_props, jurisdiction_selected_shortcode: Jurisdiction.BVI });
         expect(screen.queryByRole('checkbox')).toBeInTheDocument();
     });
 
     it('should render function onCheck when checkbox is clicked for bvi account without restriction', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.BVI} />);
+        renderComponent({ ...mock_props, jurisdiction_selected_shortcode: Jurisdiction.BVI });
         const checkbox = screen.getByRole('checkbox');
         fireEvent.click(checkbox);
         expect(mock_props.onCheck).toHaveBeenCalled();
     });
 
     it('should render bvi account with restriction and does not display checkbox', () => {
-        render(
-            <JurisdictionModalCheckbox
-                {...mock_props}
-                jurisdiction_selected_shortcode={Jurisdiction.BVI}
-                should_restrict_bvi_account_creation
-            />
-        );
+        renderComponent({
+            ...mock_props,
+            jurisdiction_selected_shortcode: Jurisdiction.BVI,
+            should_restrict_bvi_account_creation: true,
+        });
         expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
     });
 
     it('should render vanuatu account without restriction and displays checkbox', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.VANUATU} />);
+        renderComponent({
+            ...mock_props,
+            jurisdiction_selected_shortcode: Jurisdiction.VANUATU,
+        });
         expect(screen.queryByRole('checkbox')).toBeInTheDocument();
     });
 
     it('should render function onCheck when checkbox is clicked for vanuatu account without restriction', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.VANUATU} />);
+        renderComponent({
+            ...mock_props,
+            jurisdiction_selected_shortcode: Jurisdiction.VANUATU,
+        });
         const checkbox = screen.getByRole('checkbox');
         fireEvent.click(checkbox);
         expect(mock_props.onCheck).toHaveBeenCalled();
     });
 
     it('should render vanuatu account with restriction and does not display checkbox', () => {
-        render(
-            <JurisdictionModalCheckbox
-                {...mock_props}
-                jurisdiction_selected_shortcode={Jurisdiction.VANUATU}
-                should_restrict_vanuatu_account_creation
-            />
-        );
+        renderComponent({
+            ...mock_props,
+            jurisdiction_selected_shortcode: Jurisdiction.VANUATU,
+            should_restrict_vanuatu_account_creation: true,
+        });
         expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
     });
 });

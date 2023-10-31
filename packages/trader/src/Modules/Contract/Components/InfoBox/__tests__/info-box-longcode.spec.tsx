@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import InfoBoxLongcode from '../info-box-longcode';
+import InfoBoxLongcode, { TInfoBoxLongcode } from '../info-box-longcode';
 
 const test_longcode_short = 'test longcode';
 const test_longcode_long =
@@ -18,7 +18,7 @@ jest.mock('@deriv/components', () => ({
 }));
 
 describe('InfoBoxLongcode', () => {
-    const MockInfoBoxLongcode = (mocked_props: any) => {
+    const MockInfoBoxLongcode = (mocked_props: TInfoBoxLongcode) => {
         const mocked_store = mockStore({
             ui: {
                 is_mobile: false,

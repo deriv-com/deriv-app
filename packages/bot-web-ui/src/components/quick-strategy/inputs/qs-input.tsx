@@ -2,6 +2,7 @@ import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Input, Popover } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { TFormData } from '../types';
 
 type TQSInput = {
@@ -10,99 +11,85 @@ type TQSInput = {
     fullwidth?: boolean;
     attached?: boolean;
     should_have?: { key: string; value: string | number | boolean }[];
+    disabled?: boolean;
 };
 
-const QSInput: React.FC<TQSInput> = ({
-    type = 'text',
-    fullwidth = false,
-    attached = false,
-    name,
-    should_have = [],
-}) => {
-    const [has_focus, setFocus] = React.useState(false);
-    const [is_disabled, setDisabled] = React.useState(false);
-    const { setFieldValue, setFieldTouched, values } = useFormikContext<TFormData>();
-    const is_number = type === 'number';
+const QSInput: React.FC<TQSInput> = observer(
+    ({ type = 'text', fullwidth = false, attached = false, name, disabled = false }) => {
+        const [has_focus, setFocus] = React.useState(false);
+        const { setFieldValue, setFieldTouched } = useFormikContext<TFormData>();
+        const is_number = type === 'number';
 
-    React.useEffect(() => {
-        should_have?.every((item: { key: string; value: string | number | boolean }) => {
-            return values[item.key as keyof TFormData] === item.value;
-        })
-            ? setDisabled(false)
-            : setDisabled(true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [values]);
-
-    const handleChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
-        e?.preventDefault();
-        setFieldTouched(name, true, true);
-        setFieldValue(name, value);
-    };
-
-    return (
-        <Field name={name} key={name} id={name}>
-            {({ field, meta }: FieldProps) => {
-                const { error, touched } = meta;
-                const has_error = error && touched;
-                return (
-                    <div
-                        className={classNames('qs__form__field', {
-                            'full-width': fullwidth,
-                            'no-top-spacing': attached,
-                        })}
-                    >
-                        <div onMouseEnter={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
-                            <Popover
-                                alignment='bottom'
-                                message={error}
-                                is_open={!!(error && touched && has_focus)}
-                                zIndex='9999'
-                                classNameBubble='qs__warning-bubble'
-                                has_error
-                                should_disable_pointer_events
-                            >
-                                <Input
-                                    data_testId='qs-input'
-                                    className={classNames('qs__input', { error: has_error })}
-                                    type={type}
-                                    leading_icon={
-                                        is_number && (
-                                            <button
-                                                data-testid='qs-input-decrease'
-                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                    const value = Number(field.value) - 1;
-                                                    handleChange(e, String(value % 1 ? value.toFixed(2) : value));
-                                                }}
-                                                disabled={is_disabled}
-                                            >
-                                                -
-                                            </button>
-                                        )
-                                    }
-                                    trailing_icon={
-                                        is_number && (
-                                            <button
-                                                data-testid='qs-input-increase'
-                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                    const value = Number(field.value) + 1;
-                                                    handleChange(e, String(value % 1 ? value.toFixed(2) : value));
-                                                }}
-                                                disabled={is_disabled}
-                                            >
-                                                +
-                                            </button>
-                                        )
-                                    }
-                                    disabled={is_disabled}
-                                    {...field}
-                                />
-                            </Popover>
+        const handleChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
+            e?.preventDefault();
+            setFieldTouched(name, true, true);
+            setFieldValue(name, value);
+        };
+        return (
+            <Field name={name} key={name} id={name}>
+                {({ field, meta }: FieldProps) => {
+                    const { error, touched } = meta;
+                    const has_error = error && touched;
+                    return (
+                        <div
+                            className={classNames('qs__form__field', {
+                                'full-width': fullwidth,
+                                'no-top-spacing': attached,
+                            })}
+                        >
+                            <div onMouseEnter={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
+                                <Popover
+                                    alignment='bottom'
+                                    message={error}
+                                    is_open={!!(error && touched && has_focus)}
+                                    zIndex='9999'
+                                    classNameBubble='qs__warning-bubble'
+                                    has_error
+                                    should_disable_pointer_events
+                                >
+                                    <Input
+                                        data_testId='qs-input'
+                                        className={classNames('qs__input', { error: has_error })}
+                                        type={type}
+                                        leading_icon={
+                                            is_number && (
+                                                <button
+                                                    data-testid='qs-input-decrease'
+                                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                        const value = Number(field.value) - 1;
+                                                        handleChange(e, String(value % 1 ? value.toFixed(2) : value));
+                                                    }}
+                                                    disabled={disabled}
+                                                >
+                                                    -
+                                                </button>
+                                            )
+                                        }
+                                        trailing_icon={
+                                            is_number && (
+                                                <button
+                                                    data-testid='qs-input-increase'
+                                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                        const value = Number(field.value) + 1;
+                                                        handleChange(e, String(value % 1 ? value.toFixed(2) : value));
+                                                    }}
+                                                    disabled={disabled}
+                                                >
+                                                    +
+                                                </button>
+                                            )
+                                        }
+                                        disabled={disabled}
+                                        {...field}
+                                    />
+                                </Popover>
+                            </div>
                         </div>
-                    </div>
-                );
-            }}
-        </Field>
-    );
-};
+                    );
+                }}
+            </Field>
+        );
+    }
+);
 
 export default QSInput;

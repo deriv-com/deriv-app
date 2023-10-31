@@ -3,67 +3,33 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import DurationUnit from '../duration-type';
+import QSCheckbox from '../qs-checkbox';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
-jest.mock('@deriv/bot-skeleton', () => ({
-    ...jest.requireActual('@deriv/bot-skeleton'),
-    ApiHelpers: {
-        instance: {
-            contracts_for: {
-                getDurations: () => [
-                    {
-                        display: 'Ticks',
-                        unit: 't',
-                        min: 1,
-                        max: 10,
-                    },
-                    {
-                        display: 'sample',
-                        unit: 's',
-                        min: 10,
-                        max: 20,
-                    },
-                ],
-                getMarketBySymbol: jest.fn(),
-                getSubmarketBySymbol: jest.fn(),
-                getTradeTypeCategoryByTradeType: jest.fn(),
-            },
-        },
-    },
-}));
-
-window.Blockly = {
-    Xml: {
-        textToDom: jest.fn(),
-        domToText: jest.fn(),
-    },
-};
-
-describe('<DurationUnit />', () => {
+describe('<QSCheckbox />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
     beforeEach(() => {
         const mock_store = mockStore({
             ui: {
-                is_mobile: true,
+                is_mobile: false,
             },
         });
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const mock_onSubmit = jest.fn();
         const initial_value = {
-            durationtype: 1,
             symbol: 'R_100',
-            tradetype: 'callput',
+            boolean_max_stake: false,
+            duration: 1,
         };
 
         wrapper = ({ children }: { children: JSX.Element }) => (
@@ -83,25 +49,32 @@ describe('<DurationUnit />', () => {
         );
     });
 
-    it('should render DurationUnit', async () => {
-        const { container } = render(<DurationUnit />, {
+    it('should render QSCheckbox', () => {
+        const { container } = render(<QSCheckbox name='max-stake' label='Max Stake' />, {
             wrapper,
         });
-        await waitFor(() => {
-            expect(container).toBeInTheDocument();
-        });
+
+        expect(container).toBeInTheDocument();
     });
 
-    it('should select item from list', async () => {
-        render(<DurationUnit />, {
+    it('should render description', () => {
+        render(<QSCheckbox name='max-stake' label='Max Stake' description='Max stake field mock description' />, {
             wrapper,
         });
-        const autocomplete_element = screen.getByTestId('qs_autocomplete_durationtype');
-        userEvent.click(autocomplete_element);
-        await waitFor(() => {
-            const option_element = screen.getByText('sample');
-            userEvent.click(option_element);
+        userEvent.click(screen.getByTestId('dt_popover_wrapper'));
+        act(() => {
+            fireEvent.mouseOver(screen.getByText('Max Stake'));
         });
-        expect(autocomplete_element).toHaveDisplayValue('sample');
+        expect(screen.getByText('Max stake field mock description')).toBeInTheDocument();
+    });
+
+    it('should change value', () => {
+        render(<QSCheckbox name='boolean_max_stake' label='Max Stake' />, {
+            wrapper,
+        });
+        const checkbox = screen.getByTestId('qs-checkbox');
+        userEvent.click(checkbox);
+        expect(checkbox).toBeChecked();
+        expect(screen.getByText('Max Stake')).toBeInTheDocument();
     });
 });

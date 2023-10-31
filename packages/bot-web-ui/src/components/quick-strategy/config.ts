@@ -28,9 +28,14 @@ const SYMBOL: TConfigItem = {
 
 const TRADETYPE: TConfigItem = {
     type: 'tradetype',
-    fullWidth: true,
     name: 'tradetype',
     dependencies: ['symbol'],
+};
+
+const CONTRACT_TYPE: TConfigItem = {
+    type: 'contract_type',
+    name: 'contract_type',
+    dependencies: ['symbol', 'tradetype'],
 };
 
 const LABEL_STAKE: TConfigItem = {
@@ -94,7 +99,7 @@ const LABEL_SIZE: TConfigItem = {
     type: 'label',
     label: localize('Size'),
     description: localize(
-        'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 2.'
+        'The multiplier amount used to increase your stake if you’re losing a trade. Value must be higher than 1.'
     ),
 };
 
@@ -156,7 +161,7 @@ export const STRATEGIES: TStrategies = {
             'The Martingale strategy multiplies the stake by the chosen multiplier after every losing trade. The stake for the next trade resets to the initial stake after a successful trade. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.'
         ),
         fields: [
-            [SYMBOL, TRADETYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
+            [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },

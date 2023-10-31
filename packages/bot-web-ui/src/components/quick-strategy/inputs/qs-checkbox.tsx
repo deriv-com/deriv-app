@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Checkbox, Popover } from '@deriv/components';
@@ -20,8 +20,8 @@ const QSCheckbox: React.FC<TQSCheckbox> = observer(
         const { is_mobile } = ui;
         const { values, setFieldValue, validateForm } = useFormikContext<TFormData>();
 
-        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-            setFieldValue(name, e.target.checked);
+        const handleChange = () => {
+            setFieldValue(name, !values?.[name]);
             validateForm();
         };
 
@@ -41,7 +41,7 @@ const QSCheckbox: React.FC<TQSCheckbox> = observer(
                                         {...field}
                                         label={label}
                                         onChange={handleChange}
-                                        checked={!!values[name]}
+                                        data-testid='qs-checkbox'
                                     />
                                     <span>
                                         <Popover

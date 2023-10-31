@@ -5,12 +5,14 @@ import { observer, useStore } from '@deriv/stores';
 import './quick-strategy.scss';
 import SymbolSelect from './selects/symbol';
 import TradeTypeSelect from './selects/trade-type';
+import ContractTypeSelect from './selects/contract-type';
 import DurationTypeSelect from './selects/duration-type';
 import QSInput from './inputs/qs-input';
 import QSCheckbox from './inputs/qs-checkbox';
 import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
-import { TConfigItem } from './types';
+import { TConfigItem, TFormData } from './types';
+import { useFormikContext } from 'formik';
 
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
@@ -18,6 +20,7 @@ const QuickStrategyForm = observer(() => {
     const { selected_strategy } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
+    const { values } = useFormikContext<TFormData>();
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
@@ -49,9 +52,28 @@ const QuickStrategyForm = observer(() => {
                         }
                         switch (field.type) {
                             // Generic or common fields
-                            case 'number':
+                            case 'number': {
                                 if (!field.name) return null;
+                                const { should_have = [] } = field;
+                                if (should_have?.length) {
+                                    const should_enable = should_have.every((item: TFormData) => {
+                                        return values[item.key as keyof TFormData] === item.value;
+                                    });
+                                    if (!should_enable && is_mobile) {
+                                        return null;
+                                    }
+                                    return (
+                                        <QSInput
+                                            {...field}
+                                            key={key}
+                                            name={field.name as string}
+                                            disabled={!should_enable}
+                                        />
+                                    );
+                                }
                                 return <QSInput {...field} key={key} name={field.name as string} />;
+                            }
+
                             case 'label':
                                 if (!field.label) return null;
                                 return (
@@ -73,6 +95,8 @@ const QuickStrategyForm = observer(() => {
                                 return <TradeTypeSelect {...field} key={key} />;
                             case 'durationtype':
                                 return <DurationTypeSelect {...field} key={key} />;
+                            case 'contract_type':
+                                return <ContractTypeSelect {...field} key={key} />;
                             default:
                                 return null;
                         }

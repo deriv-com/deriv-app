@@ -34,7 +34,7 @@ const InfoBoxLongcode = observer(({ contract_info }: TInfoBoxLongcode) => {
                 {` `}
                 {contract_info?.longcode && contract_info.longcode.length > max_longcode_length && (
                     <Text as='a' href='#' size='xs' onClick={handleToggle} className='info-box-longcode-text'>
-                        {is_collapsed ? (
+                        {is_collapsed || is_mobile ? (
                             <Localize i18n_default_text='View more' />
                         ) : (
                             <Localize i18n_default_text='View less' />

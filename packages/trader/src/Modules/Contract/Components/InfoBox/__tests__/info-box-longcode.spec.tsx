@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import InfoBoxLongcode from '../info-box-longcode';
 
 const test_longcode_short = 'test longcode';
@@ -52,26 +53,38 @@ describe('InfoBoxLongcode', () => {
         expect(screen.getByText(/View less/i)).toBeInTheDocument();
     });
     it('should render specific text "View more" if longcode is more then 47 symbols for mobile', () => {
-        (useStore as jest.Mock).mockReturnValue({
+        const mocked_store = mockStore({
             ui: {
                 is_mobile: true,
             },
         });
         mocked_props.contract_info.longcode = test_longcode_mobile;
-        render(<InfoBoxLongcode {...mocked_props} />);
+        render(
+            <StoreProvider store={mocked_store}>
+                <InfoBoxLongcode {...mocked_props} />
+            </StoreProvider>
+        );
 
         expect(screen.getByText(/View more/i)).toBeInTheDocument();
     });
     it('should render modal if longcode is more then 47 symbols for mobile and user clicks on "View more" button', () => {
-        (useStore as jest.Mock).mockReturnValue({
+        const mocked_store = mockStore({
             ui: {
                 is_mobile: true,
             },
         });
+        const modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
         mocked_props.contract_info.longcode = test_longcode_mobile;
-        render(<InfoBoxLongcode {...mocked_props} />);
+        render(
+            <StoreProvider store={mocked_store}>
+                <InfoBoxLongcode {...mocked_props} />
+            </StoreProvider>
+        );
         userEvent.click(screen.getByText(/View more/i));
 
+        expect(screen.getByText(/View more/i)).toBeInTheDocument();
         expect(screen.getByText(/Trade info/i)).toBeInTheDocument();
         expect(screen.getByText(/Ok/i)).toBeInTheDocument();
     });

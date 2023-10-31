@@ -24,6 +24,7 @@ const StatusBadge = ({
             `switcher-status-badge__container--${account_status ?? 'failed'}`
         )}
         onClick={onClick}
+        onKeyDown={onClick}
     >
         <div
             className={classNames(

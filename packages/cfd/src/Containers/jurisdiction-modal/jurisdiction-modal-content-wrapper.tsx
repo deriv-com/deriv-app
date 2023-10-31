@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { TJurisdictionModalContentWrapperProps } from '../props.types';
@@ -12,7 +12,8 @@ import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { MARKET_TYPE, JURISDICTION } from '../../Helpers/cfd-config';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
-    const { client, traders_hub } = useStore();
+    const { client, traders_hub, ui } = useStore();
+    const { is_mobile } = ui;
 
     const { show_eu_related_content, is_eu_user } = traders_hub;
 
@@ -233,7 +234,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                     <Button
                         disabled={isNextButtonDisabled()}
                         primary
-                        style={{ width: isMobile() ? '100%' : 'unset' }}
+                        style={{ width: is_mobile ? '100%' : 'unset' }}
                         onClick={() => {
                             toggleJurisdictionModal();
                             onSelectRealAccount();

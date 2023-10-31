@@ -97,7 +97,7 @@ class APIMiddleware {
         if (req_type === 'buy') {
             performance.mark('first_proposal_or_run_end');
             if (performance.getEntriesByName('bot-start', 'mark').length) {
-                performance.measure('run_proposal_or_direct_buy', 'bot-start', 'first_proposal_or_run_end');
+                const measure = performance.measure('run_proposal_or_direct_buy', 'bot-start', 'first_proposal_or_run_end');
                 console.table('run_proposal_or_direct_buy', measure.duration);
                 performance.clearMarks('bot-start');
             }

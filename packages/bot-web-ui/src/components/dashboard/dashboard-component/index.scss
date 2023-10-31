@@ -116,7 +116,7 @@
                         @include align-center;
                         flex-direction: column;
                         justify-content: flex-start;
-                        height: 100%;
+                        height: 100vh;
                         margin-top: 5rem;
 
                         svg {
@@ -124,6 +124,10 @@
                         }
                         h1 {
                             margin-bottom: 0.8rem;
+                        }
+                        span {
+                            word-break: break-word;
+                            text-align: center;
                         }
                     }
                 }

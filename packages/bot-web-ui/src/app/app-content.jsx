@@ -11,7 +11,6 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from '../components';
 import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
-// import QuickStrategyDetailsModal from 'Components/dashboard/tutorial-tab/quick-strategy-content/quick-strategy-details-modal';
 
 const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
@@ -128,7 +127,6 @@ const AppContent = observer(() => {
                 <BotStopped />
                 <RoutePromptDialog />
                 <TransactionDetailsModal />
-                {/* <QuickStrategyDetailsModal /> */}
             </div>
         </>
     );

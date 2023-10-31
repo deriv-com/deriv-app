@@ -5,7 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { useFilterTutorialsTab } from './hook/useFilterForTutorials';
-import { generateTutorialTabs } from './common/tutorial-tabs';
+import { generateTutorialTabs } from './common/common-tabs';
 
 const TutorialsTabMobile = observer(() => {
     const { dashboard } = useDBotStore();
@@ -24,7 +24,7 @@ const TutorialsTabMobile = observer(() => {
         active_tab_tutorials
     );
 
-    const { tutorial_tabs } = generateTutorialTabs(
+    const tutorial_tabs = generateTutorialTabs(
         {
             guide_tab_content,
             faq_tab_content,

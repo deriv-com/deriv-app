@@ -306,6 +306,8 @@
                         &__title,
                         &__content {
                             margin-bottom: 0.8rem;
+                            word-break: break-word;
+                            text-align: center;
                         }
                     }
                 }

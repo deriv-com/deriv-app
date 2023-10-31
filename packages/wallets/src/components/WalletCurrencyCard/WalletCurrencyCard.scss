@@ -1,0 +1,25 @@
+.wallets-currency-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 0.4rem;
+
+    &-lg {
+        min-width: 12.2rem;
+        min-height: 7.5rem;
+        padding: 1rem 1.6rem;
+    }
+
+    &-md {
+        width: 5rem;
+        height: 3.5rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    &-sm {
+        width: 4.6rem;
+        height: 3.1rem;
+        padding: 0.2rem 0.4rem;
+    }
+}

@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import useFetch from '../useFetch';
+import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
 
 /** A custom hook that gets the balance for all the user accounts. */
 const useBalance = () => {
     const { isSuccess } = useAuthorize();
-    const { data: balance_data, ...rest } = useFetch('balance', {
+    const { data: balance_data, ...rest } = useQuery('balance', {
         payload: { account: 'all' },
         options: {
             enabled: isSuccess,

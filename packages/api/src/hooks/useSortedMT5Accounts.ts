@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import useMT5AccountsList from './useMT5AccountsList';
 import useAvailableMT5Accounts from './useAvailableMT5Accounts';
 
+/** A custom hook to get the sorted added and non-added MT5 accounts. */
 const useSortedMT5Accounts = () => {
     const { data: all_available_mt5_accounts } = useAvailableMT5Accounts();
     const { data: mt5_accounts, ...rest } = useMT5AccountsList();

@@ -1,30 +1,34 @@
 import React from 'react';
-import WalletGradientBackground from '../WalletGradientBackground/WalletGradientBackground';
+import { THooks } from '../../types';
+import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import WalletListCardIBalance from '../WalletListCardIBalance/WalletListCardIBalance';
-import WalletListCardIcon from '../WalletListCardIcon/WalletListCardIcon';
 import WalletListCardIDetails from '../WalletListCardIDetails/WalletListCardIDetails';
 import './WalletListCard.scss';
 
 type TProps = {
-    badge?: string;
-    balance: string;
-    currency: string;
-    isDemo: boolean;
-    loginid: string;
-    walletType: string;
+    badge?: THooks.WalletAccountsList['landing_company_name'];
+    balance: THooks.WalletAccountsList['display_balance'];
+    currency: THooks.WalletAccountsList['wallet_currency_type'];
+    isActive: THooks.WalletAccountsList['is_active'];
+    isDemo: THooks.WalletAccountsList['is_virtual'];
+    loginid: THooks.WalletAccountsList['loginid'];
+    title: Exclude<THooks.WalletAccountsList['currency'], undefined>;
 };
 
-const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isDemo, loginid, walletType }) => (
+const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isActive, isDemo, loginid, title }) => (
     <div className='wallets-list-header__card_container'>
         <div className='wallets-list-header__content'>
             <div className='wallets-list-header__details-container'>
-                <WalletGradientBackground currency={currency} is_demo={isDemo} type='card'>
-                    <div className='wallets-list-header__details-container-icon'>
-                        <WalletListCardIcon type={walletType} />
-                    </div>
-                </WalletGradientBackground>
+                <WalletCurrencyCard currency={currency} isDemo={isDemo} />
 
-                <WalletListCardIDetails badge={badge} currency={currency} isDemo={isDemo} loginid={loginid} />
+                <WalletListCardIDetails
+                    badge={badge}
+                    currency={currency}
+                    isActive={isActive}
+                    isDemo={isDemo}
+                    loginid={loginid}
+                    title={title}
+                />
             </div>
             <WalletListCardIBalance balance={balance} />
         </div>

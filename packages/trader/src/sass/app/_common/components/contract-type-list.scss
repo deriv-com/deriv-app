@@ -1,7 +1,10 @@
 /** @define contract-type-list; */
 .contract-type-list {
-    padding: 1.6rem;
+    padding: 1.6rem 0.8rem;
 
+    @include mobile {
+        padding: 1.6rem;
+    }
     &__label {
         @include typeface(--paragraph-left-bold-black);
         color: var(--text-prominent);
@@ -13,6 +16,13 @@
     }
     &__contracts-wrapper {
         margin-bottom: 1.4rem;
+    }
+    &--unavailable-category {
+        opacity: 0.32;
+        pointer-events: none;
+    }
+    &--no-top-padding {
+        padding-top: 0;
     }
 }
 
@@ -41,6 +51,7 @@
 
     &__title {
         padding-left: 1.6rem;
+        word-wrap: anywhere;
     }
 
     &__container {

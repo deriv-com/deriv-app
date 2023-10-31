@@ -1,12 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
-import { Link } from 'react-router-dom';
+
 import {
     Autocomplete,
     Checkbox,
-    Dropdown,
     DesktopWrapper,
+    Dropdown,
     MobileWrapper,
     Popover,
     RadioGroup,
@@ -15,13 +16,13 @@ import {
 } from '@deriv/components';
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import FormSubHeader from '../form-sub-header';
 import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
-import InlineNoteWithIcon from '../inline-note-with-icon';
-import FormBodySection from '../form-body-section';
-import { DateOfBirthField, FormInputField } from './form-fields.jsx';
-import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
 import { isFieldImmutable } from '../../Helpers/utils';
+import FormBodySection from '../form-body-section';
+import { DateOfBirthField, FormInputField } from './form-fields';
+import FormSubHeader from '../form-sub-header';
+import InlineNoteWithIcon from '../inline-note-with-icon';
+import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
 
 const PersonalDetailsForm = props => {
     const {
@@ -43,6 +44,7 @@ const PersonalDetailsForm = props => {
         setShouldCloseTooltip,
         class_name,
         states_list,
+        no_confirmation_needed,
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
@@ -94,6 +96,12 @@ const PersonalDetailsForm = props => {
         }
     }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
+    const handleSalutationSelection = event => {
+        if (event.target?.type === 'radio') {
+            setFieldValue('salutation', event.target?.value);
+        }
+    };
+
     const name_dob_clarification_message = (
         <Localize
             i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
@@ -107,6 +115,11 @@ const PersonalDetailsForm = props => {
 
     // need to put this check related to DIEL clients
     const is_svg_only = is_svg && !is_mf;
+
+    // need to disable the checkbox if the user has not filled in the name and dob fields initially
+    const is_confirmation_checkbox_disabled = ['first_name', 'last_name', 'date_of_birth'].some(
+        field => !values[field] || errors[field]
+    );
 
     return (
         <React.Fragment>
@@ -131,6 +144,8 @@ const PersonalDetailsForm = props => {
                 <FormBodySection
                     has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
                     side_note={<PoiNameDobExampleIcon />}
+                    side_note_position='right'
+                    type='image'
                 >
                     <fieldset className='account-form__fieldset'>
                         {'salutation' in values && (
@@ -162,27 +177,30 @@ const PersonalDetailsForm = props => {
                             />
                         )}
                         {'salutation' in values && (
-                            <RadioGroup
-                                className='dc-radio__input'
-                                name='salutation'
-                                selected={values.salutation}
-                                onToggle={e => {
-                                    e.persist();
-                                    setFieldValue('salutation', e.target.value);
-                                }}
-                                required
-                            >
-                                {salutation_list.map(item => (
-                                    <RadioGroup.Item
-                                        key={item.value}
-                                        label={item.label}
-                                        value={item.value}
-                                        disabled={
-                                            !!values.salutation && isFieldImmutable('salutation', editable_fields)
-                                        }
-                                    />
-                                ))}
-                            </RadioGroup>
+                            <span onClick={handleSalutationSelection}>
+                                <RadioGroup
+                                    className='dc-radio__input'
+                                    name='salutation'
+                                    selected={values.salutation}
+                                    onToggle={e => {
+                                        e.persist();
+                                        setFieldValue('salutation', e.target.value);
+                                    }}
+                                    required
+                                >
+                                    {salutation_list.map(item => (
+                                        <RadioGroup.Item
+                                            key={item.value}
+                                            label={item.label}
+                                            value={item.value}
+                                            disabled={
+                                                !!values.salutation && isFieldImmutable('salutation', editable_fields)
+                                            }
+                                            has_error={!!(touched.salutation && errors.salutation)}
+                                        />
+                                    ))}
+                                </RadioGroup>
+                            </span>
                         )}
                         {'first_name' in values && (
                             <FormInputField
@@ -502,6 +520,9 @@ const PersonalDetailsForm = props => {
                                         )}
                                         withTabIndex={0}
                                         data-testid='tax_identification_confirm'
+                                        has_error={
+                                            !!(touched.tax_identification_confirm && errors.tax_identification_confirm)
+                                        }
                                     />
                                 )}
                             </React.Fragment>
@@ -519,6 +540,20 @@ const PersonalDetailsForm = props => {
                         )}
                     </fieldset>
                 </FormBodySection>
+                {!no_confirmation_needed && is_qualified_for_idv && (
+                    <Checkbox
+                        name='confirmation_checkbox'
+                        className='formik__confirmation-checkbox'
+                        value={values.confirmation_checkbox}
+                        label={
+                            <Localize i18n_default_text='I confirm that the name and date of birth above match my chosen identity document' />
+                        }
+                        label_font_size={isMobile() ? 'xxs' : 'xs'}
+                        disabled={is_confirmation_checkbox_disabled}
+                        onChange={handleChange}
+                        has_error={!!(touched.confirmation_checkbox && errors.confirmation_checkbox)}
+                    />
+                )}
             </div>
 
             {is_svg_only && (

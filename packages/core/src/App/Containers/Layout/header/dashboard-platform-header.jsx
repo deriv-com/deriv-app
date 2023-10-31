@@ -8,7 +8,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import PropTypes from 'prop-types';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
-import platform_config from 'App/Constants/platform-config';
+import platform_config from 'App/Constants/platform-config.ts';
 
 const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;

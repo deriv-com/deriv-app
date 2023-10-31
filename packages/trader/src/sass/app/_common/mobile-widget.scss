@@ -137,6 +137,16 @@
             }
         }
     }
+    &__wide {
+        min-width: 11.9rem;
+        padding: 0 0.8rem;
+    }
+    &__label {
+        align-items: flex-start;
+        .mobile-widget__item {
+            margin-left: 2.4rem;
+        }
+    }
     &__wrapper {
         display: flex;
 
@@ -180,5 +190,23 @@
     &__basis {
         font-weight: bold;
         color: var(--text-prominent);
+    }
+}
+
+.duration_amount_selector {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 4.65rem;
+    padding: 0.7rem 0.8rem;
+
+    .mobile-widget {
+        &__duration {
+            display: flex;
+            justify-content: flex-start;
+        }
+        &__amount--container {
+            display: flex;
+            justify-content: space-between;
+        }
     }
 }

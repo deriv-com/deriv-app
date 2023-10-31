@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field, FieldProps } from 'formik';
 import { localize } from '@deriv/translations';
 import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
-import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
+import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative } from '@deriv/components';
 import {
     getDocumentData,
     preventEmptyClipboardPaste,
@@ -25,17 +25,15 @@ const IDVForm = ({
     can_skip_document_verification = false,
 }: TIDVForm) => {
     const [document_list, setDocumentList] = React.useState<TDocument[]>([]);
-    const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
-    const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv ?? {};
+    const { documents_supported: document_data } = selected_country?.identity?.services?.idv ?? {};
 
     const default_document = {
         id: '',
         text: '',
         value: '',
         example_format: '',
-        sample_image: '',
     };
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
@@ -50,29 +48,29 @@ const IDVForm = ({
 
             const new_document_list = filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
-                const { new_display_name, example_format, sample_image, additional_document_example_format } =
-                    getDocumentData(selected_country.value ?? '', key);
+                const { new_display_name, example_format, additional_document_example_format } = getDocumentData(
+                    selected_country.value ?? '',
+                    key
+                );
                 const needs_additional_document = !!document_data[key].additional;
 
                 if (needs_additional_document) {
                     return {
                         id: key,
-                        text: new_display_name || display_name,
+                        text: display_name ?? new_display_name, // Display document name from API if available, else use the one from the helper function
                         additional: {
                             display_name: document_data[key].additional?.display_name,
                             format: document_data[key].additional?.format,
                             example_format: additional_document_example_format,
                         },
                         value: format,
-                        sample_image,
                         example_format,
                     };
                 }
                 return {
                     id: key,
-                    text: new_display_name || display_name,
+                    text: display_name ?? new_display_name, // Display document name from API if available, else use the one from the helper function
                     value: format,
-                    sample_image,
                     example_format,
                 };
             });
@@ -109,9 +107,6 @@ const IDVForm = ({
             setFieldValue('document_number', '', true);
             setFieldValue('document_additional', '', true);
         }
-        if (has_visual_sample) {
-            setDocumentImage(item.sample_image ?? '');
-        }
     };
 
     return (
@@ -124,11 +119,7 @@ const IDVForm = ({
                                 'proof-of-identity__container--idv': hide_hint,
                             })}
                         >
-                            <div
-                                className={classNames('proof-of-identity__inner-container', {
-                                    'proof-of-identity__inner-container--incl-image': document_image,
-                                })}
-                            >
+                            <div className={classNames('proof-of-identity__inner-container')}>
                                 <div className='proof-of-identity__fieldset-container'>
                                     <fieldset className={classNames({ 'proof-of-identity__fieldset': !hide_hint })}>
                                         <Field name='document_type'>
@@ -153,7 +144,7 @@ const IDVForm = ({
                                                                     }
                                                                 }}
                                                                 onChange={handleChange}
-                                                                onItemSelection={(item: TDocumentList) => {
+                                                                onItemSelection={(item: TDocument) => {
                                                                     if (
                                                                         item.text === 'No results found' ||
                                                                         !item.text
@@ -213,7 +204,9 @@ const IDVForm = ({
                                                             }
                                                             disabled={!values.document_type.id}
                                                             error={
-                                                                (touched.document_number && errors.document_number) ||
+                                                                (values.document_type.id &&
+                                                                    touched.document_number &&
+                                                                    errors.document_number) ||
                                                                 errors.error_message
                                                             }
                                                             autoComplete='off'
@@ -227,7 +220,10 @@ const IDVForm = ({
                                                             }
                                                             className='additional-field'
                                                             required
-                                                            label={generatePlaceholderText(selected_doc)}
+                                                            label={
+                                                                values.document_type.id &&
+                                                                generatePlaceholderText(selected_doc)
+                                                            }
                                                         />
                                                         {values.document_type.additional?.display_name && (
                                                             <Input
@@ -263,20 +259,6 @@ const IDVForm = ({
                                         </fieldset>
                                     )}
                                 </div>
-                                {document_image && (
-                                    <div className='proof-of-identity__sample-container'>
-                                        <Text size='xxs' weight='bold'>
-                                            {localize('Sample:')}
-                                        </Text>
-                                        <div className='proof-of-identity__image-container'>
-                                            <img
-                                                className='proof-of-identity__image'
-                                                src={document_image}
-                                                alt='document sample image'
-                                            />
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>

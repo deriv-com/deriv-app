@@ -39,7 +39,7 @@ type TVerticalTab = {
     list_groups?: TItem[];
     onClickClose?: () => void;
     setVerticalTabIndex?: (index: number) => void;
-    tab_headers_note: React.ReactNode | React.ReactNode[];
+    tab_headers_note?: React.ReactNode | React.ReactNode[];
     title?: string;
     vertical_tab_index?: number;
 };

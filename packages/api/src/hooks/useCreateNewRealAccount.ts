@@ -13,7 +13,7 @@ const useCreateNewRealAccount = () => {
 
     // Add additional information to the new real trading account response.
     const modified_data = useMemo(() => {
-        if (!data?.new_account_real) return undefined;
+        if (!data?.new_account_real) return;
 
         return { ...data?.new_account_real };
     }, [data]);

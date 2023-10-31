@@ -33,14 +33,17 @@ const Success: React.FC<TSuccessProps> = ({
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
-    let marketTypeTitle: string;
+    const isMarketTypeAll = marketType === 'all';
+
+    let marketTypeTitle = 'Deriv Apps';
+
     if (marketType && platform) {
-        marketTypeTitle =
-            marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
-                ? PlatformToTitleMapper[platform]
-                : MarketTypeToTitleMapper[marketType];
-    } else {
-        marketTypeTitle = 'Deriv Apps';
+        const isPlatformValid = Object.keys(PlatformToTitleMapper).includes(platform);
+        if (isMarketTypeAll && isPlatformValid) {
+            marketTypeTitle = PlatformToTitleMapper[platform];
+        } else {
+            marketTypeTitle = MarketTypeToTitleMapper[marketType];
+        }
     }
 
     return (

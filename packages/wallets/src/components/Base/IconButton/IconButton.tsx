@@ -17,7 +17,7 @@ const IconButton: FC<IconButtonProps> = ({ color = 'primary', disabled, icon, is
         'wallets-icon-button',
         `wallets-icon-button__size--${size}`,
         `wallets-icon-button__color--${color}`,
-        isRound ? 'wallets-icon-button__border-radius--round' : 'wallets-icon-button__border-radius--default'
+        `wallets-icon-button__border-radius--${isRound ? 'round' : 'default'}`
     );
 
     return (

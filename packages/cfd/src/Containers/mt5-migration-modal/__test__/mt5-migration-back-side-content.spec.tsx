@@ -86,7 +86,7 @@ describe('MT5MigrationBackSideContent', () => {
         expect(screen.getByText(/if you don’t have open positions/i)).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
         expect(
-            screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv bvi ltd\’s/i)
+            screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv bvi ltd’s/i)
         ).toBeInTheDocument();
         expect(screen.getByText(/terms and conditions/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Back' })).toBeInTheDocument();

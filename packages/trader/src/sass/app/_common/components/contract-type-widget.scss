@@ -106,7 +106,8 @@
             top: 0.2rem;
             margin-right: 0.7rem;
         }
-        &--vanilla {
+        &--vanillalongcall,
+        &--vanillalongput {
             margin-right: 0.4rem;
         }
         .contract-type-widget__display {

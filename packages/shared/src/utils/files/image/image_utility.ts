@@ -1,5 +1,4 @@
 import 'canvas-toBlob';
-import { TFile } from '../file-uploader-utils';
 
 declare global {
     interface Blob {
@@ -12,6 +11,8 @@ export type TImage = {
     src: string;
     filename: string;
 };
+
+export type TFile = File & { file: Blob };
 
 const compressImg = (image: TImage): Promise<Blob> =>
     new Promise(resolve => {
@@ -56,7 +57,7 @@ const compressImg = (image: TImage): Promise<Blob> =>
         };
     });
 
-const convertToBase64 = (file: TFile) =>
+const convertToBase64 = (file: File) =>
     new Promise(resolve => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -68,7 +69,7 @@ const convertToBase64 = (file: TFile) =>
 
 const isImageType = (filename: string) => /(gif|jpg|jpeg|tiff|png)$/i.test(filename);
 
-const getFormatFromMIME = (file: TFile) =>
+const getFormatFromMIME = (file: Blob) =>
     (file.type.split('/')[1] || (file.name.match(/\.([\w\d]+)$/) || [])[1] || '').toUpperCase();
 
 export { compressImg, convertToBase64, isImageType, getFormatFromMIME };

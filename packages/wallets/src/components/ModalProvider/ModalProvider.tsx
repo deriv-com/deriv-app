@@ -1,17 +1,28 @@
-import React, { useRef } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
+import { MT5AccountType } from '../../features/cfd/screens';
+import useDevice from '../../hooks/useDevice';
 
 type TModalContext = {
     hide: () => void;
     isOpen: boolean;
+    modalState?: TModalState;
+    setModalState: (newModalState: Partial<TModalState>) => void;
     show: (ModalContent: React.ReactNode) => void;
 };
 
-const ModalContext = React.createContext<TModalContext | null>(null);
+type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];
+
+type TModalState = {
+    marketType?: TMarketTypes;
+    platform?: string;
+};
+
+const ModalContext = createContext<TModalContext | null>(null);
 
 export const useModal = () => {
-    const context = React.useContext(ModalContext);
+    const context = useContext(ModalContext);
 
     if (!context) throw new Error('useModal() must be called within a component wrapped in ModalProvider.');
 
@@ -20,24 +31,49 @@ export const useModal = () => {
 
 const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const modalRef = useRef<HTMLDivElement>(null);
-    const [content, setContent] = React.useState<React.ReactNode | null>();
+    const [content, setContent] = useState<React.ReactNode | null>();
+    const modalState = useRef<TModalState>();
+    const { isDesktop, isMobile } = useDevice();
 
-    const rootRef = React.useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
+    const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
+    const rootResponsiveRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_responsive_root'));
+
+    const setModalState = (newModalState: Partial<TModalState>) => {
+        modalState.current = {
+            ...modalState.current,
+            ...newModalState,
+        };
+    };
 
     const show = (ModalContent: React.ReactNode) => {
         setContent(ModalContent);
     };
 
+    useEffect(() => {
+        if (!rootResponsiveRef.current) {
+            rootResponsiveRef.current = document.getElementById('wallets_modal_responsive_root');
+        }
+    }, []);
+
     const hide = () => {
         setContent(null);
     };
 
-    useOnClickOutside(modalRef, hide);
+    useOnClickOutside(modalRef, isDesktop ? hide : () => undefined);
 
     return (
-        <ModalContext.Provider value={{ hide, isOpen: content !== null, show }}>
+        <ModalContext.Provider
+            value={{ hide, isOpen: content !== null, modalState: modalState.current, setModalState, show }}
+        >
             {children}
-            {rootRef.current && content && createPortal(<div ref={modalRef}>{content}</div>, rootRef.current)}
+            {isDesktop &&
+                rootRef.current &&
+                content &&
+                createPortal(<div ref={modalRef}>{content}</div>, rootRef.current)}
+            {isMobile &&
+                rootResponsiveRef.current &&
+                content &&
+                createPortal(<div ref={modalRef}>{content}</div>, rootResponsiveRef.current)}
         </ModalContext.Provider>
     );
 };

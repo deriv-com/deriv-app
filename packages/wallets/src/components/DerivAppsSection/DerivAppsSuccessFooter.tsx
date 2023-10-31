@@ -11,7 +11,7 @@ const DerivAppsSuccessFooter = () => {
     const history = useHistory();
 
     return (
-        <div className='wallets-deriv-apps-success-modal__footer'>
+        <div className='wallets-deriv-apps-success-footer'>
             <WalletButton isFullWidth={!isDesktop} onClick={hide} size='lg' text='Maybe later' variant='outlined' />
             <WalletButton
                 isFullWidth={!isDesktop}

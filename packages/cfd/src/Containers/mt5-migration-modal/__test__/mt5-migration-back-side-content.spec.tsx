@@ -83,7 +83,7 @@ describe('MT5MigrationBackSideContent', () => {
         expect(
             screen.getAllByText(/new mt5 account\(s\) under the bvi jurisdiction will be created for new trades\./i)
         ).toHaveLength(2);
-        expect(screen.getByText(/if you don\’t have open positions/i)).toBeInTheDocument();
+        expect(screen.getByText(/if you don’t have open positions/i)).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
         expect(
             screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv bvi ltd\’s/i)
@@ -100,7 +100,7 @@ describe('MT5MigrationBackSideContent', () => {
             screen.getAllByText(/new mt5 account\(s\) under the vanuatu jurisdiction will be created for new trades\./i)
         ).toHaveLength(2);
         expect(
-            screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv vanuatu ltd\’s/i)
+            screen.getByText(/i agree to move my mt5 account\(s\) and agree to deriv vanuatu ltd’s/i)
         ).toBeInTheDocument();
     });
 

@@ -8,7 +8,7 @@ import type {
     TSocketResponseData,
 } from '../types';
 import useAPI from './useAPI';
-import { getQueryKeys } from './utils/query-utils';
+import { getQueryKeys } from './utils';
 
 const useQuery = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcceptableProps<T, true>) => {
     const prop = props?.[0];

@@ -11,7 +11,7 @@ import type {
 } from '../types';
 
 import useAPI from './useAPI';
-import { getQueryKeys } from './utils/query-utils';
+import { getQueryKeys } from './utils';
 
 const useInfiniteQuery = <T extends TSocketPaginateableEndpointNames>(
     name: T,

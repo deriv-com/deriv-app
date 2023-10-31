@@ -40,6 +40,13 @@ datadogRum.init({
     version: dataDogVersion,
     trackFrustrations: true,
     enableExperimentalFeatures: ['clickmap'],
-    excludedActivityUrls: [/^https:\/\/api.telegram.org.*$/],
+    beforeSend: event => {
+        if (event.type === 'resource') {
+            event.resource.url = event.resource.url.replace(
+                /^https:\/\/api.telegram.org.*$/,
+                'telegram token=REDACTED'
+            );
+        }
+    },
 });
 datadogRum.startSessionReplayRecording();

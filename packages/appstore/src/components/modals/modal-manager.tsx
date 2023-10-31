@@ -11,7 +11,7 @@ import JurisdictionModal from '@deriv/cfd/src/Containers/jurisdiction-modal/juri
 import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
 import CFDDbviOnBoarding from '@deriv/cfd/src/Containers/cfd-dbvi-onboarding';
 import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
-import CFDTopUpDemoModal from '@deriv/cfd/src/Containers/cfd-top-up-demo-modal';
+import TopUpDemoModal from '@deriv/cfd/src/Containers/top-up-demo-modal';
 import MT5TradeModal from '@deriv/cfd/src/Containers/mt5-trade-modal';
 import CFDPasswordManagerModal from '@deriv/cfd/src/Containers/cfd-password-manager-modal';
 import CompareAccountsModal from '@deriv/cfd/src/Containers/compare-accounts-modal';
@@ -129,7 +129,7 @@ const ModalManager = () => {
             <CFDDbviOnBoarding />
             <CFDResetPasswordModal platform={platform} />
             <CFDServerErrorDialog />
-            <CFDTopUpDemoModal platform={platform} />
+            <TopUpDemoModal platform={platform} />
             <MT5TradeModal
                 is_open={is_mt5_trade_modal_visible}
                 onPasswordManager={togglePasswordManagerModal}

@@ -23,7 +23,7 @@ import CFDDownloadContainer from '../Components/cfd-download-container';
 import CFDPasswordManagerModal from './cfd-password-manager-modal';
 import CFDPasswordModal from './cfd-password-modal';
 import ServerErrorDialog from './server-error-dialog';
-import CFDTopUpDemoModal from './cfd-top-up-demo-modal';
+import TopUpDemoModal from './top-up-demo-modal';
 import CFDResetPasswordModal from './cfd-reset-password-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import SwitchToRealAccountModal from './switch-to-real-account';
@@ -649,7 +649,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
                             ctrader_tokens={ctrader_tokens}
                             derivez_tokens={derivez_tokens}
                         />
-                        <CFDTopUpDemoModal platform={platform} />
+                        <TopUpDemoModal platform={platform} />
                         <CFDPasswordModal platform={platform} />
                         <ServerErrorDialog />
                         {platform === CFD_PLATFORMS.MT5 && is_logged_in && <CFDDbviOnboarding />}

@@ -14,11 +14,11 @@ import { getTopUpConfig } from '../Helpers/constants';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
-type TCFDTopUpDemoModalProps = {
+type TTopUpDemoModalProps = {
     platform: string;
 };
 
-const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
+const TopUpDemoModal = observer(({ platform }: TTopUpDemoModalProps) => {
     const { ui } = useStore();
 
     const {
@@ -205,4 +205,4 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
     );
 });
 
-export default CFDTopUpDemoModal;
+export default TopUpDemoModal;

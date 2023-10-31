@@ -260,7 +260,7 @@ export default class ClientStore extends BaseStore {
             is_financial_assessment_needed: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
-            is_poa_older_than_six_months: computed,
+            is_poa_expired: computed,
             real_account_creation_unlock_date: computed,
             is_tnc_needed: computed,
             is_social_signup: computed,
@@ -720,7 +720,7 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.includes('financial_assessment_notification');
     }
 
-    get is_poa_older_than_six_months() {
+    get is_poa_expired() {
         return this.account_status?.status?.includes('poa_expired');
     }
 

@@ -390,7 +390,7 @@ type TClientStore = {
     is_low_risk: boolean;
     is_mt5_password_not_set: boolean;
     is_pending_proof_of_ownership: boolean;
-    is_poa_older_than_six_months: boolean;
+    is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;

@@ -6,6 +6,7 @@ import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
+import { THooks } from '../../types';
 import { WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
@@ -36,16 +37,22 @@ const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
     // Filter out the "Withdraw" button when is_demo is true
     const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdraw') : buttons;
 
-    return filteredButtons.map(button => ({
+    const orderForDemo = ['transfer', 'transactions', 'reset-balance'];
+
+    const sortedButtons = isDemo
+        ? [...filteredButtons].sort((a, b) => orderForDemo.indexOf(a.name) - orderForDemo.indexOf(b.name))
+        : filteredButtons;
+
+    return sortedButtons.map(button => ({
         ...button,
         action: () => handleAction?.(),
     }));
 };
 
 type TProps = {
-    isActive: boolean;
-    isDemo: boolean;
-    loginid: string;
+    isActive: THooks.WalletAccountsList['is_active'];
+    isDemo: THooks.WalletAccountsList['is_virtual'];
+    loginid: THooks.WalletAccountsList['loginid'];
 };
 
 const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {

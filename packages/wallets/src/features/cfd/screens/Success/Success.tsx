@@ -3,14 +3,17 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
-import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
 import useDevice from '../../../../hooks/useDevice';
+import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
 import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
 import './Success.scss';
 
 type TSuccessProps = {
     description: string;
-    displayBalance: TDisplayBalance;
+    displayBalance:
+        | TDisplayBalance.CtraderAccountsList
+        | TDisplayBalance.DxtradeAccountsList
+        | TDisplayBalance.MT5AccountsList;
     marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
     renderButton: () => ReactNode;

@@ -13,13 +13,11 @@ import {
 } from '../../Stores/Modules/CFD/Helpers/cfd-config';
 import { MobileDialog, Modal } from '@deriv/components';
 import {
-    CFD_PLATFORMS,
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
     getErrorMessages,
     isDesktop,
     isMobile,
-    Jurisdiction,
     routes,
     validLength,
     validPassword,
@@ -36,6 +34,7 @@ import { PasswordModalHeader } from './password-modal-header';
 import { IconType } from './icon-type';
 import { TCFDPasswordFormValues, TOnSubmitPassword } from './types';
 import { CFDPasswordForm } from './cfd-password-form';
+import { CFD_PLATFORMS, JURISDICTION } from '../../Helpers/cfd-config';
 
 type TReviewMsgForMT5 = {
     is_selected_mt5_verified: boolean;
@@ -58,12 +57,18 @@ const ReviewMessageForMT5 = ({
         return (
             <Localize i18n_default_text='To start trading, top-up funds from your Deriv account into this account.' />
         );
-    } else if ([Jurisdiction.BVI, Jurisdiction.VANUATU].includes(jurisdiction_selected_shortcode)) {
+    } else if (
+        jurisdiction_selected_shortcode === JURISDICTION.BVI ||
+        jurisdiction_selected_shortcode === JURISDICTION.VANUATU
+    ) {
         if (manual_status === 'pending') {
             return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
         }
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 5 minutes.' />;
-    } else if ([Jurisdiction.LABUAN, Jurisdiction.MALTA_INVEST].includes(jurisdiction_selected_shortcode)) {
+    } else if (
+        jurisdiction_selected_shortcode === JURISDICTION.LABUAN ||
+        jurisdiction_selected_shortcode === JURISDICTION.MALTA_INVEST
+    ) {
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
     }
     return null;
@@ -122,17 +127,17 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const getVerificationStatus = () => {
         switch (jurisdiction_selected_shortcode) {
-            case Jurisdiction.SVG:
+            case JURISDICTION.SVG:
                 setIsSelectedMT5Verified(true);
                 break;
-            case Jurisdiction.BVI:
-            case Jurisdiction.VANUATU:
+            case JURISDICTION.BVI:
+            case JURISDICTION.VANUATU:
                 setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_vanuatu);
                 break;
-            case Jurisdiction.LABUAN:
+            case JURISDICTION.LABUAN:
                 setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_vanuatu && poa_verified);
                 break;
-            case Jurisdiction.MALTA_INVEST:
+            case JURISDICTION.MALTA_INVEST:
                 setIsSelectedMT5Verified(poi_verified_for_maltainvest && poa_verified);
                 break;
             default:
@@ -296,7 +301,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
+        const mt5_platform_label = jurisdiction_selected_shortcode !== JURISDICTION.MALTA_INVEST ? 'Deriv MT5' : '';
 
         const accountTypes = () => {
             if (platform === 'dxtrade' && type_label === 'Derived') {

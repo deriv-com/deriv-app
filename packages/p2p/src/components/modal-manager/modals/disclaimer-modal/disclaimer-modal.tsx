@@ -22,7 +22,7 @@ const ModalTitle = () => {
         </React.Fragment>
     );
 };
-const getDislaimerStatements = () => [
+const disclaimer_statements = [
     <Localize
         i18n_default_text='If you’re selling, only release funds to the buyer after you’ve received payment.'
         key={0}
@@ -40,7 +40,7 @@ const getDislaimerStatements = () => [
 ];
 
 const DisclaimerModal = () => {
-    const [is_checked, setIsChecked] = React.useState<boolean>(false);
+    const [is_checked, setIsChecked] = React.useState(false);
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { client, ui } = useStore();
     const { loginid } = client;
@@ -62,27 +62,25 @@ const DisclaimerModal = () => {
             is_title_centered
         >
             <Modal.Body className='disclaimer-modal__body'>
-                <React.Fragment>
-                    <ul className='disclaimer-modal__body-list'>
-                        {getDislaimerStatements().map((statement, idx) => (
-                            <li key={idx}>
-                                <Text line_height={is_mobile ? 'l' : 'xl'} size={is_mobile ? 'xxs' : 'xs'}>
-                                    {statement}
-                                </Text>
-                            </li>
-                        ))}
-                    </ul>
-                    <Checkbox
-                        onChange={() => setIsChecked(prev_state => !prev_state)}
-                        name='disclaimer-checkbox'
-                        value={is_checked}
-                        label={
+                <ul className='disclaimer-modal__body-list'>
+                    {disclaimer_statements.map((statement, idx) => (
+                        <li key={idx}>
                             <Text line_height={is_mobile ? 'l' : 'xl'} size={is_mobile ? 'xxs' : 'xs'}>
-                                <Localize i18n_default_text='I’ve read and understood the above reminder.' />
+                                {statement}
                             </Text>
-                        }
-                    />
-                </React.Fragment>
+                        </li>
+                    ))}
+                </ul>
+                <Checkbox
+                    onChange={() => setIsChecked(prev_state => !prev_state)}
+                    name='disclaimer-checkbox'
+                    value={is_checked}
+                    label={
+                        <Text line_height={is_mobile ? 'l' : 'xl'} size={is_mobile ? 'xxs' : 'xs'}>
+                            <Localize i18n_default_text='I’ve read and understood the above reminder.' />
+                        </Text>
+                    }
+                />
             </Modal.Body>
             <Modal.Footer className='disclaimer-modal__footer'>
                 <Button has_effect onClick={onClickConfirm} primary large disabled={!is_checked}>

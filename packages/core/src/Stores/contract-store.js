@@ -339,13 +339,13 @@ export default class ContractStore extends BaseStore {
                 barriers = [main_barrier];
 
                 if (reset_time) {
-                    const reset_barrier_object = new ChartBarrierStore(reset_barrier, low_barrier, null, {
+                    const reset_barrier_instance = new ChartBarrierStore(reset_barrier, low_barrier, null, {
                         ...common_props,
                         line_style: BARRIER_LINE_STYLES.DASHED,
                         hideBarrierLine: true,
                     });
 
-                    barriers.push(reset_barrier_object);
+                    barriers.push(reset_barrier_instance);
                     main_barrier.updateBarrierShade(false, contract_type);
                 }
             }
@@ -439,15 +439,16 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
     } = contract_info;
     const is_accumulator_contract = isAccumulatorContract(contract_type);
     const is_digit_contract = isDigitContract(contract_type);
+    const is_reset_contract = isResetContract(contract_type);
     const ticks_epochs =
         (is_accumulator_contract && tick_stream?.length === 10
             ? [entry_tick_time, ...tick_stream.map(t => t.epoch).slice(1)]
             : tick_stream?.map(t => t.epoch)) || [];
     const ticks_epoch_array = tick_stream ? ticks_epochs : [];
     const types = {
-        tickContract: 'TickContract',
-        digitContract: 'DigitContract',
-        nonTickContract: 'NonTickContract',
+        tick_contract: 'TickContract',
+        digit_contract: 'DigitContract',
+        nonTick_contract: 'NonTickContract',
     };
     // window.ci = toJS(contract_info);
 
@@ -474,7 +475,7 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
     }
     // if we have not yet received the first POC response
     if (!transaction_ids) {
-        const type = is_digit_contract ? types.digitContract : types.tickContract;
+        const type = is_digit_contract ? types.digit_contract : types.tick_contract;
         return {
             type,
             contract_info: toJS(contract_info),
@@ -488,7 +489,7 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
         // TickContract
         const tick_contract_info = {
             contract_info: toJS(contract_info),
-            type: types.tickContract,
+            type: types.tick_contract,
             key: `${contract_id}-date_start`,
             epoch_array: [date_start, ...ticks_epoch_array],
             price_array,
@@ -497,11 +498,11 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
         if (isDigitContract(contract_type)) {
             return {
                 ...tick_contract_info,
-                type: types.digitContract,
+                type: types.digit_contract,
             };
         }
 
-        if (isResetContract(contract_type)) {
+        if (is_reset_contract) {
             return {
                 ...tick_contract_info,
                 epoch_array: [reset_time, ...ticks_epoch_array],
@@ -522,12 +523,12 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }
 
         const non_tick_contract_info = {
             contract_info: toJS(contract_info),
-            type: types.nonTickContract,
+            type: types.nonTick_contract,
             key: `${contract_id}-date_start`,
             epoch_array,
             price_array,
         };
-        if (isResetContract(contract_type)) {
+        if (is_reset_contract) {
             return {
                 ...non_tick_contract_info,
                 epoch_array: [reset_time, ...epoch_array],

@@ -10,12 +10,6 @@ import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { PlatformToTitleMapper } from '../../constants';
 
-const MT5ToLinkMapper = {
-    android: 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
-    huawei: 'https://appgallery.huawei.com/#/app/C102015329',
-    ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
-};
-
 const LinksMapper: Record<
     TPlatforms.All,
     {

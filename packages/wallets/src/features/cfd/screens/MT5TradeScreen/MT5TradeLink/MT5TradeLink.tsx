@@ -12,6 +12,12 @@ import { THooks, TPlatforms } from '../../../../../types';
 import { PlatformToTitleMapper } from '../../../constants';
 
 const AppToContentMapper = {
+    ctrader: {
+        icon: <WindowsIcon />,
+        link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
+        text: 'Download',
+        title: 'CTrader Windows App',
+    },
     linux: {
         icon: <LinuxIcon />,
         link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
@@ -35,12 +41,6 @@ const AppToContentMapper = {
         link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
         text: 'Download',
         title: 'MetaTrader 5 Windows app',
-    },
-    ctrader: {
-        icon: <WindowsIcon />,
-        link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
-        text: 'Download',
-        title: 'CTrader Windows App',
     },
 };
 

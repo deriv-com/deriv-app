@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
 import { useCryptoTransactions } from '@deriv/api';
+import { Loader } from '../../../../../../components';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsPendingRow } from '../TransactionsPendingRow';
 import { TransactionsTable } from '../TransactionsTable';
@@ -13,7 +14,7 @@ type TProps = {
 };
 
 const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
-    const { data, resetData, subscribe, unsubscribe } = useCryptoTransactions();
+    const { data: transactions, isLoading, isSubscribed, resetData, subscribe, unsubscribe } = useCryptoTransactions();
 
     useEffect(() => {
         resetData();
@@ -22,7 +23,9 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
         return () => unsubscribe();
     }, [filter, resetData, subscribe, unsubscribe]);
 
-    if (!data) return <TransactionsNoDataState />;
+    if (!isSubscribed || isLoading) return <Loader />;
+
+    if (!transactions) return <TransactionsNoDataState />;
 
     return (
         <div className='wallets-transactions-pending'>
@@ -34,7 +37,7 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
                         header: 'Date',
                     },
                 ]}
-                data={data}
+                data={transactions}
                 groupBy={['date']}
                 rowGroupRender={transaction => (
                     <p className='wallets-transactions-pending__group-title'>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '@deriv/shared/src/utils/constants';
+import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 type TMT5MigrationAccountIconsProps = {

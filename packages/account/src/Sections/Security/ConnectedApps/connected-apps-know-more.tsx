@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import Article from 'Components/article';
 
 const openAPIManagingWebsite = () => {
@@ -12,7 +12,7 @@ const openAPIManagingWebsite = () => {
 
 const ConnectedAppsKnowMore = () => (
     <Article
-        title={localize('Want to know more about APIs?')}
+        title={<Localize i18n_default_text='Want to know more about APIs?' />}
         descriptions={[
             <Localize
                 key={0}

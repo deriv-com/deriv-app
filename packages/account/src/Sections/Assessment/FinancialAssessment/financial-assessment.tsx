@@ -33,7 +33,6 @@ import {
     getEstimatedWorthList,
     getIncomeSourceList,
     getNetIncomeList,
-    getOccupationList,
     getSourceOfWealthList,
     getBinaryOptionsTradingExperienceList,
     getBinaryOptionsTradingFrequencyList,
@@ -46,6 +45,8 @@ import {
 } from './financial-information-list';
 import type { TCoreStores } from '@deriv/stores/types';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
+import { getFormattedOccupationList } from 'Configs/financial-details-config';
+import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
@@ -342,6 +343,11 @@ const FinancialAssessment = observer(() => {
         return '80px';
     };
 
+    const getFormattedOccupationValues = values =>
+        values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED && values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
+            ? ''
+            : values?.occupation;
+
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
@@ -395,6 +401,7 @@ const FinancialAssessment = observer(() => {
                     isSubmitting,
                     setFieldTouched,
                     dirty,
+                    setFieldValue,
                 }) => (
                     <React.Fragment>
                         {!is_appstore && isMobile() && is_confirmation_visible && (
@@ -540,11 +547,19 @@ const FinancialAssessment = observer(() => {
                                                     placeholder={localize('Occupation')}
                                                     is_align_text_left
                                                     name='occupation'
-                                                    list={getOccupationList()}
-                                                    value={values.occupation}
-                                                    onChange={handleChange}
+                                                    list={getFormattedOccupationList(values.employment_status ?? '')}
+                                                    value={getFormattedOccupationValues(values)}
+                                                    onChange={e => {
+                                                        setFieldValue(
+                                                            'occupation',
+                                                            getFormattedOccupationValues(values),
+                                                            true
+                                                        );
+                                                        handleChange(e);
+                                                    }}
                                                     handleBlur={handleBlur}
                                                     error={touched.occupation && errors.occupation}
+                                                    test_id='occupation'
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
@@ -552,13 +567,21 @@ const FinancialAssessment = observer(() => {
                                                     placeholder={localize('Please select')}
                                                     name='occupation'
                                                     label={localize('Occupation')}
-                                                    list_items={getOccupationList()}
-                                                    value={values.occupation}
+                                                    list_items={getFormattedOccupationList(
+                                                        values.employment_status ?? ''
+                                                    )}
+                                                    value={getFormattedOccupationValues(values)}
                                                     error={touched.occupation ? errors.occupation : undefined}
                                                     onChange={e => {
+                                                        setFieldValue(
+                                                            'occupation',
+                                                            getFormattedOccupationValues(values),
+                                                            true
+                                                        );
                                                         setFieldTouched('occupation', true);
                                                         handleChange(e);
                                                     }}
+                                                    data_testid='occupation'
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
@@ -1039,7 +1062,14 @@ const FinancialAssessment = observer(() => {
                                         })}
                                         onClick={() => onClickSubmit(handleSubmit)}
                                         is_disabled={
-                                            isSubmitting || !dirty || is_btn_loading || Object.keys(errors).length > 0
+                                            isSubmitting ||
+                                            !dirty ||
+                                            is_btn_loading ||
+                                            Object.keys(errors).length > 0 ||
+                                            !!(
+                                                values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED &&
+                                                values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
+                                            )
                                         }
                                         has_effect
                                         is_loading={is_btn_loading}

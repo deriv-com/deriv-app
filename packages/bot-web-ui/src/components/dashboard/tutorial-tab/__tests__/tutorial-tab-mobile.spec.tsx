@@ -58,7 +58,7 @@ describe('<TutorialsTabDesktop />', () => {
     });
 
     it('should toggle the search bar visibility when the arrow icon is clicked', () => {
-        const arrowIcon = screen.getByTestId('id-arrow-left-bold'); // Replace with the correct text/selector
+        const arrowIcon = screen.getByTestId('id-arrow-left-bold');
         const searchInput = screen.getByTestId('id-test-input-search');
 
         expect(searchInput).toBeInTheDocument();

@@ -116,7 +116,7 @@ const CollapsibleTradeParams = ({
                     <AllowEqualsMobile />
                 </div>
             )}
-            {(is_multiplier || is_turbos) && (
+            {is_multiplier && (
                 <div data-collapsible='true'>
                     <RiskManagementInfo />
                 </div>
@@ -140,6 +140,17 @@ const CollapsibleTradeParams = ({
                     <AccumulatorsInfoDisplay />
                 </div>,
             ]}
+            {is_turbos && (
+                <div data-collapsible='true' className={classNames('take-profit', 'mobile-widget')}>
+                    <TakeProfit
+                        //@ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected
+                        take_profit={take_profit}
+                        has_take_profit={has_take_profit}
+                        onChange={onChange}
+                        has_info={false}
+                    />
+                </div>
+            )}
             {(is_turbos || is_vanilla) && <PayoutPerPointMobile />}
             <div
                 className={classNames({

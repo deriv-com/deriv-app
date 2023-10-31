@@ -1,12 +1,15 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { Jurisdiction, MT5_ACCOUNT_STATUS, getMT5AccountTitle } from '@deriv/shared';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { TTradingPlatformAvailableAccount } from '../account-type-modal/types';
+import { TMarketType } from '../../../types/common.types';
 
 type TOpenPositionsSVGModal = {
-    loginId: string;
-    market_type: string;
+    loginId: DetailsOfEachMT5Loginid['login'];
+    market_type: NonNullable<TTradingPlatformAvailableAccount['market_type']> | TMarketType;
     status: string;
     is_modal_open: boolean;
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;

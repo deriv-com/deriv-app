@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { getCFDPlatformNames, getCFDPlatformLabel, CFD_PLATFORMS, getFormattedJurisdictionCode } from '@deriv/shared';
+import { getCFDPlatformNames, getCFDPlatformLabel, getFormattedJurisdictionCode } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { CATEGORY } from '../Helpers/cfd-config';
+import { CATEGORY, CFD_PLATFORMS } from '../Helpers/cfd-config';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
-type TCFDPasswordModalTitleProps = { platform: string };
+type TCFDPasswordModalTitleProps = { platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS] };
 
 const CFDPasswordModalTitle = observer(({ platform }: TCFDPasswordModalTitleProps) => {
     const { traders_hub, ui } = useStore();
@@ -14,7 +14,7 @@ const CFDPasswordModalTitle = observer(({ platform }: TCFDPasswordModalTitleProp
     const { is_mt5_migration_modal_enabled } = ui;
     const { account_title, account_type, jurisdiction_selected_shortcode } = useCfdStore();
 
-    const accountTitle = (category: string) => {
+    const accountTitle = (category: typeof CATEGORY[keyof typeof CATEGORY]) => {
         switch (platform) {
             case 'ctrader':
             case 'derivez':

@@ -11,7 +11,7 @@
         height: 75vh;
     }
 
-    &-content {
+    &__content {
         width: 100%;
         max-width: 80rem;
         display: flex;
@@ -19,7 +19,7 @@
         gap: 1.6rem;
     }
 
-    &-row {
+    &__row {
         display: flex;
         flex-direction: column;
         gap: 0.8rem;

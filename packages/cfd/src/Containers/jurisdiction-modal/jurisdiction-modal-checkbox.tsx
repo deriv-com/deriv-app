@@ -35,7 +35,7 @@ const JurisdictionCheckBox = ({
     };
 
     const getCheckboxLabel = () => (
-        <Text as='p' size={isMobile() ? 'xxs' : 'xs'} line_height='xs'>
+        <Text as='p' align='center' size={isMobile() ? 'xxs' : 'xs'} line_height='xs'>
             <Localize
                 i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
                 values={{ company: dbvi_company_names[jurisdiction_selected_shortcode].name }}

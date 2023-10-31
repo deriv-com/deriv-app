@@ -1,34 +1,26 @@
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
-import { routes, PlatformContext, moduleLoader } from '@deriv/shared';
+import { routes, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useActiveAccount } from '@deriv/hooks';
 import { LoginButton } from '../login-button.jsx';
 import { SignupButton } from '../signup-button.jsx';
 import { BinaryLink } from '../../../Routes/index.js';
 import ToggleNotifications from '../toggle-notifications.jsx';
+import AccountInfoWallets from './account-info-wallets';
 import 'Sass/app/_common/components/account-switcher.scss';
 
-const AccountInfoWallets = React.lazy(() =>
-    moduleLoader(() => import('App/Components/Layout/Header/wallets/account-info-wallets.tsx'))
-);
-
-type TAccountActionsWallets = {
-    is_deposit_button_disabled: boolean;
-};
-
-const AccountActionsWallets = observer(({ is_deposit_button_disabled }: TAccountActionsWallets) => {
+const AccountActionsWallets = observer(() => {
     const { is_appstore } = React.useContext(PlatformContext);
 
     const { client, ui, notifications } = useStore();
-    const { is_logged_in } = client;
+    const { is_logged_in, accounts, loginid } = client;
     const { openRealAccountSignup, toggleAccountsDialog, is_mobile, is_accounts_switcher_on } = ui;
     const { is_notifications_visible, notifications: notificationsArray, toggleNotificationsModal } = notifications;
 
     const notifications_count = notificationsArray?.length;
 
-    const active_account = useActiveAccount();
+    const active_account = accounts?.[loginid ?? ''];
     const is_virtual = active_account?.is_virtual;
     const currency = active_account?.currency;
 
@@ -88,7 +80,6 @@ const AccountActionsWallets = observer(({ is_deposit_button_disabled }: TAccount
                         // eslint-disable-next-line @typescript-eslint/no-empty-function
                         onClick={() => {}}
                         primary
-                        as_disabled={is_deposit_button_disabled}
                     />
                 )}
             </React.Fragment>

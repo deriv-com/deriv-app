@@ -202,6 +202,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             should_allow_authentication: false,
             active_accounts: [],
             account_list: [],
+            wallet_list: [],
+            has_wallet: false,
             available_crypto_currencies: [],
             selectCurrency: jest.fn(),
             setAccountStatus: jest.fn(),

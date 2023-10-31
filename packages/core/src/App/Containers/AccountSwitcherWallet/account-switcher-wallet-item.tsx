@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { AppLinkedWithWalletIcon, Text } from '@deriv/components';
-import { useActiveAccount, useWalletAccountsList } from '@deriv/hooks';
+// import { useActiveAccount, useWalletAccountsList } from '@deriv/hooks';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
@@ -9,7 +9,8 @@ import { Localize } from '@deriv/translations';
 import './account-switcher-wallet-item.scss';
 
 type TAccountSwitcherWalletItemProps = {
-    account: ReturnType<typeof useWalletAccountsList>['data'][number];
+    // account: ReturnType<typeof useWalletAccountsList>['data'][number];
+    account: any;
     closeAccountsDialog: () => void;
     show_badge?: boolean;
 };
@@ -34,7 +35,7 @@ export const AccountSwitcherWalletItem = observer(
             client: { switchAccount },
         } = useStore();
 
-        const active_account = useActiveAccount();
+        const active_account = {} as any;
 
         const theme = is_dark_mode_on ? 'dark' : 'light';
         const app_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';

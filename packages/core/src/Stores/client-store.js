@@ -27,6 +27,7 @@ import {
     getAppId,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
+import { getWalletCurrencyIcon } from '@deriv/utils';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
@@ -243,6 +244,8 @@ export default class ClientStore extends BaseStore {
             current_fiat_currency: computed,
             current_landing_company: computed,
             account_list: computed,
+            wallet_list: computed,
+            has_wallet: computed,
             has_real_mt5_login: computed,
             has_real_dxtrade_login: computed,
             has_account_error_in_mt5_real_list: computed,
@@ -613,6 +616,38 @@ export default class ClientStore extends BaseStore {
 
     get account_list() {
         return this.all_loginids.map(id => this.getAccountInfo(id)).filter(account => account);
+    }
+
+    get wallet_list() {
+        return this.all_loginids
+            .filter(id => this.getAccount(id)?.account_category === 'wallet')
+            .map(id => {
+                const account = this.getAccount(id);
+                // const currency = account.currency;
+                const is_disabled = Boolean(account.is_disabled);
+                const is_virtual = Boolean(account.is_virtual);
+                const icon = getWalletCurrencyIcon(
+                    account.is_virtual ? 'demo' : account.currency,
+                    this.root_store.ui.is_dark_mode_on
+                );
+                const loginid = id;
+                const landing_company_name = account.landing_company_name?.replace('maltainvest', 'malta');
+                const is_malta_wallet = landing_company_name === 'malta';
+
+                return {
+                    ...account,
+                    icon,
+                    is_disabled,
+                    is_virtual,
+                    is_malta_wallet,
+                    landing_company_name,
+                    loginid,
+                };
+            });
+    }
+
+    get has_wallet() {
+        return this.all_loginids.some(id => this.getAccount(id)?.account_category === 'wallet');
     }
 
     get has_real_mt5_login() {

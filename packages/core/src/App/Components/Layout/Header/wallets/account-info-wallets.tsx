@@ -5,12 +5,12 @@ import { Icon, WalletIcon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { formatMoney } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import {
-    useActiveAccount,
-    useActiveWalletAccount,
-    useLinkedWalletsAccounts,
-    useWalletAccountsList,
-} from '@deriv/hooks';
+// import {
+//     useActiveAccount,
+//     useActiveWalletAccount,
+//     useLinkedWalletsAccounts,
+//     useWalletAccountsList,
+// } from '@deriv/hooks';
 import { AccountSwitcherWallet } from 'App/Containers/AccountSwitcherWallet';
 import { AccountsInfoLoader } from '../Components/Preloader';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
@@ -41,7 +41,8 @@ type TMobileInfoIcon = {
 
 type TDesktopInfoIcons = {
     wallet_account: ReturnType<typeof useWalletAccountsList>['data'][number];
-    active_account: ReturnType<typeof useActiveAccount>;
+    // active_account: ReturnType<typeof useActiveAccount>;
+    active_account: any;
     show_badge?: boolean;
 };
 
@@ -116,10 +117,10 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     const { switchAccount, is_logged_in } = client;
     const { is_mobile, account_switcher_disabled_message, disableApp, enableApp } = ui;
 
-    const active_account = useActiveAccount();
-    const active_wallet = useActiveWalletAccount();
-    const { data: wallets_list } = useWalletAccountsList();
-    const { data: linked_accounts } = useLinkedWalletsAccounts();
+    const active_account = {} as any;
+    const active_wallet = {} as any;
+    const { data: wallets_list } = { data: [] as any };
+    const { data: linked_accounts } = { data: [] as any };
 
     let linked_dtrade_trading_account_loginind = active_account?.loginid;
 

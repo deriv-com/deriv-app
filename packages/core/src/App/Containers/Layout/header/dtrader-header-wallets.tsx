@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { useActiveAccount, useWalletMigration } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { routes, platforms } from '@deriv/shared';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
@@ -68,12 +67,22 @@ const MenuLeft = observer(() => {
 
 const MenuRight = observer(() => {
     const { client, ui } = useStore();
-    const { is_logged_in, is_logging_in, is_switching } = client;
+    const { is_logged_in, is_logging_in, is_switching, accounts, loginid, is_crypto } = client;
     const { is_mobile } = ui;
 
-    const { is_in_progress } = useWalletMigration();
-    const active_account = useActiveAccount();
+    const active_account = accounts?.[loginid ?? ''];
     const currency = active_account?.currency ?? '';
+
+    // console.log(
+    //     'accounts = , ',
+    //     accounts,
+    //     // ', account_list = ',
+    //     // account_list,
+    //     ', wallet_list = ',
+    //     wallet_list
+    //     // ', active_account = ',
+    //     // active_account
+    // );
 
     return (
         <div
@@ -91,14 +100,14 @@ const MenuRight = observer(() => {
                     id='dt_core_header_acc-info-preloader'
                     className={classNames('acc-info__preloader__dtrader acc-info__preloader__dtrader--wallets', {
                         'acc-info__preloader__dtrader--no-currency': !currency,
-                        'acc-info__preloader__dtrader--is-crypto': active_account?.currency_config?.type === 'crypto',
+                        'acc-info__preloader__dtrader--is-crypto': is_crypto(currency),
                     })}
                 >
                     <AccountsInfoLoaderWallets is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />
                 </div>
             )}
             <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
-                <AccountActionsWallets is_deposit_button_disabled={is_in_progress} />
+                <AccountActionsWallets />
             </div>
         </div>
     );

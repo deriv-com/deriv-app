@@ -6,7 +6,7 @@ import { AccountSwitcherWalletItem } from '../account-switcher-wallet-item';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useActiveAccount: jest.fn(() => ({ data: { loginid: 'CR007' } })),
+    // useActiveAccount: jest.fn(() => ({ data: { loginid: 'CR007' } })),
 }));
 
 const account: React.ComponentProps<typeof AccountSwitcherWalletItem>['account'] = {

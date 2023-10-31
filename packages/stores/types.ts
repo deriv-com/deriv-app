@@ -173,6 +173,28 @@ type TCtraderAccountsList = DetailsOfEachMT5Loginid & {
     platform?: string;
 };
 
+type TWalletList = {
+    accepted_bch?: number;
+    account_category?: 'wallet' | 'trading';
+    account_type?: string;
+    balance?: number;
+    country?: string;
+    created_at?: number;
+    currency?: string;
+    email?: string;
+    excluded_until?: string;
+    icon?: string;
+    is_virtual?: boolean;
+    is_disabled?: boolean;
+    loginid?: string;
+    landing_company_name?: string;
+    landing_company_shortcode?: string;
+    linked_to?: { loginid: string; platform: string }[];
+    residence?: string;
+    session_start?: number;
+    token?: string;
+}[];
+
 type TAccountsList = {
     account?: {
         balance?: string | number;
@@ -349,6 +371,8 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
+    wallet_list: TWalletList;
+    has_wallet: boolean;
     account_status: GetAccountStatus;
     available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
     balance?: string | number;

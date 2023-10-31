@@ -18,7 +18,6 @@ export interface IDashboardStore {
     is_file_supported: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
-    is_quick_strategy_modal_open: boolean;
     onCloseDialog: () => void;
     onCloseTour: (param: Partial<string>) => void;
     onTourEnd: (step: number, is_tour_active: boolean) => void;
@@ -31,7 +30,6 @@ export interface IDashboardStore {
     setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     setStrategySaveType: (param: string) => void;
-    QuickStrategyDetailsModal: (param: boolean) => void;
     show_toast: boolean;
     show_mobile_tour_dialog: boolean;
     showVideoDialog: (param: { [key: string]: string }) => void;
@@ -59,9 +57,7 @@ export default class DashboardStore implements IDashboardStore {
             is_preview_on_popup: observable,
             is_tour_dialog_visible: observable,
             is_web_socket_intialised: observable,
-            is_quick_strategy_modal_open: observable,
             is_dark_mode: computed,
-            QuickStrategyDetailsModal: action.bound,
             onCloseDialog: action.bound,
             onCloseTour: action.bound,
             onTourEnd: action.bound,
@@ -147,11 +143,6 @@ export default class DashboardStore implements IDashboardStore {
     strategy_save_type = 'unsaved';
     toast_message = '';
     is_web_socket_intialised = true;
-    is_quick_strategy_modal_open = false;
-
-    QuickStrategyDetailsModal = () => {
-        this.is_quick_strategy_modal_open = !this.is_quick_strategy_modal_open;
-    };
 
     get is_dark_mode() {
         const {

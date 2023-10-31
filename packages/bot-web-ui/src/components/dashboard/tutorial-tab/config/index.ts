@@ -9,18 +9,6 @@ export type TGuideContent = Omit<TContent, 'title' | 'description'>;
 
 export type TUserGuideContent = Omit<TContent, 'title' | 'description'>;
 
-type TQuickStrateggyContent = {
-    id: string;
-    type: string;
-    content: string[];
-    description: {
-        title?: string;
-        content?: string;
-        image?: string;
-    }[];
-    tab_id: number;
-};
-
 export type TContent = {
     content?: string;
     description: TDescription[];
@@ -445,57 +433,5 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
-    },
-];
-
-export const quick_strategy_content: TQuickStrateggyContent[] = [
-    {
-        id: 'martingale',
-        type: localize('About Martingale'),
-        content: [localize('What is Martingale strategy?'), localize('How does the Martingale strategy works?')],
-        description: [
-            {
-                title: localize('What is Martingale Strategy?'),
-                content: localize(
-                    'The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century.'
-                ),
-            },
-            {
-                title: localize('How does the Martingale Strategy work?'),
-                content: localize(
-                    'The Martingale doubles your stake after a loss and resets your stake after a win or when the pre-determined number of consecutive losses is reached. You decide your profit threshold, loss threshold, initial stake, and the number of consecutive losses before your stake resets.'
-                ),
-            },
-            {
-                image: getImageLocation('dbot-martingale-work.png'),
-            },
-            {
-                title: localize('Here’s the example when you set: '),
-                content: localize('Initial Stake: $100, Losing Streak Cycle Limit: 3 consecutive losses.'),
-            },
-            {
-                image: getImageLocation('dbot-martingale-table.png'),
-            },
-            {
-                title: localize(
-                    'Trader’s input: Profit Threshold (martingale:profitThreshold), Loss Threshold (martingale:lossThreshold), Initial Stake (martingale:initialStake), and Streak Cycle (martingale:losingstreakcycle)'
-                ),
-            },
-        ],
-        tab_id: 1,
-    },
-    {
-        id: 'dalembert',
-        type: localize("About D'Alembert"),
-        content: [localize("What is D'Alembert strategy?"), localize("How does the D'Alembert strategy works?")],
-        description: [],
-        tab_id: 1,
-    },
-    {
-        id: 'oscar-grind',
-        type: localize("About Oscar's Grind"),
-        content: [localize("What is Oscar's Grind strategy?"), localize("How does the Oscar's Grind strategy works?")],
-        description: [],
-        tab_id: 1,
     },
 ];

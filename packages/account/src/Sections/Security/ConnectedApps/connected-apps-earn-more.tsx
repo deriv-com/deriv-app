@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import Article from 'Components/article';
 
 const openDerivAPIWebsite = () => {
@@ -8,7 +8,7 @@ const openDerivAPIWebsite = () => {
 
 const ConnectedAppsEarnMore = () => (
     <Article
-        title={localize('Earn more with Deriv API')}
+        title={<Localize i18n_default_text='Earn more with Deriv API' />}
         descriptions={[
             <Localize
                 key={0}

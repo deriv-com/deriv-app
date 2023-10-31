@@ -3,7 +3,6 @@ import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { useDBotStore } from 'Stores/useDBotStore';
 import { TDescription } from '../config';
 
 type TFAQContent = {
@@ -88,7 +87,7 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
     };
 
     return (
-        <div>
+        <div data-testid='id-faq__wrapper'>
             <div className='faq__wrapper' ref={faq_wrapper_element}>
                 {faq_list && faq_list?.length > 0 && (
                     <>
@@ -97,7 +96,7 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
                                 {localize('FAQ')}
                             </Text>
                         )}
-                        <div onClick={handleAccordionClick}>
+                        <div data-testid='id-accordion-test' onClick={handleAccordionClick}>
                             <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
                         </div>
                     </>

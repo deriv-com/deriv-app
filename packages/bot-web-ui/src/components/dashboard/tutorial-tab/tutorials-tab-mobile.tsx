@@ -65,24 +65,32 @@ const TutorialsTabMobile = observer(() => {
 
     return (
         <>
-            <div className='tutorials-mobile'>
+            <div className='tutorials-mobile' data-testid='test-tutorials-mobile'>
                 <div
                     className={classNames('tutorials-mobile__select', {
                         'tutorials-mobile__select--show-search': showSearchBar,
                         'tutorials-mobile__select--hide-search': !showSearchBar,
                     })}
+                    data-testid={showSearchBar ? 'id-search-visible' : 'id-search-hidden'}
                 >
                     <>
-                        <Icon onClick={onHandleChangeMobile} className='arrow-left-bold' icon='IcArrowLeftBold' />
+                        <Icon
+                            onClick={onHandleChangeMobile}
+                            data_testid='id-arrow-left-bold'
+                            className='arrow-left-bold'
+                            icon='IcArrowLeftBold'
+                        />
                         <input
                             type='text'
                             placeholder={localize('Search')}
                             className='dc-tabs__wrapper__group__search-input'
+                            data-testid='id-test-input-search'
                             onChange={onSearch}
                             onFocus={onFocusSearch}
                             value={faq_search_value}
                         />
                         <Icon
+                            data_testid='id-close-icon'
                             className='close-icon'
                             data-testid='id-test-search'
                             width='1.6rem'
@@ -93,6 +101,7 @@ const TutorialsTabMobile = observer(() => {
                     </>
                     <>
                         <SelectNative
+                            data_testid='id-tutorials-select'
                             className='dc-tabs__wrapper__group__search-input--active'
                             list_items={tutorial_tabs.map(({ label }, idx) => ({
                                 id: idx,

@@ -2,7 +2,29 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import UserGuide from '../user-guide';
-import { mocked_props } from './dashboard-component.spec';
+
+const mocked_props = {
+    active_tab: '3',
+    is_tour_dialog_visible: true,
+    dialog_options: {
+        title: 'string',
+        message: 'string',
+        ok_button_text: 'string',
+        cancel_button_text: 'string',
+    },
+    Blockly: jest.fn(),
+    faq_search_value: '',
+    guide_list: [],
+    is_dialog_open: true,
+    onOkButtonClick: jest.fn(),
+    setActiveTab: jest.fn(() => 3),
+    setOnBoardTourRunState: jest.fn(),
+    setTourActiv: jest.fn(),
+    setTourDialogVisibility: jest.fn(),
+    showVideoDialog: jest.fn(),
+    performSelfExclusionCheck: jest.fn(),
+    setActiveTabTutorial: jest.fn(),
+};
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

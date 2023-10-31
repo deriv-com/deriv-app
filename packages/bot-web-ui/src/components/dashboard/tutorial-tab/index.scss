@@ -425,39 +425,15 @@
     }
 
     &__guide,
-    &__quick_strategy,
     &__faq,
     &__search {
         @include mobile {
             height: calc(100vh - 28.1rem);
             overflow: auto;
             .tutorials-wrap,
-            // .tutorials-quick-strategy {
-            //     margin-bottom: 3rem;
-            // }
             .faq__wrapper {
                 overflow: unset;
             }
         }
-    }
-}
-
-.quick-strategy-details-modal {
-    padding: 1.6rem;
-    height: calc(100vh - 20rem);
-    overflow: auto;
-    border-top: 1px solid var(--border-divider);
-    &__image {
-        text-align: center;
-        margin-bottom: 2.4rem;
-        img {
-            width: 100%;
-        }
-    }
-    &__content {
-        margin-bottom: 2.4rem;
-    }
-    &__title {
-        margin-bottom: 0.4rem;
     }
 }

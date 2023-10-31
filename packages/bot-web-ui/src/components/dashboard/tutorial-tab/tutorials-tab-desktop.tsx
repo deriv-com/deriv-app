@@ -45,14 +45,14 @@ const TutorialsTabDesktop = observer(() => {
                 <div className='dc-tabs__wrapper__group'>
                     <Icon
                         className='search-icon'
-                        data-testid='id-test-search'
+                        data_testid='id-test-search'
                         width='1.6rem'
                         height='1.6rem'
                         icon='IcSearch'
                     />
                     <input
                         ref={input_ref}
-                        data-testid='id-test-search'
+                        data-testid='id-test-input-search'
                         type='text'
                         placeholder={localize('Search')}
                         className='dc-tabs__wrapper__group__search-input'
@@ -62,7 +62,7 @@ const TutorialsTabDesktop = observer(() => {
                     />
                     <Icon
                         className='close-icon'
-                        data-testid='id-test-search'
+                        data_testid='id-test-close'
                         width='1.6rem'
                         height='1.6rem'
                         icon='IcDbotClose'

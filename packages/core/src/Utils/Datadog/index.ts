@@ -25,7 +25,9 @@ if (isProduction) {
     dataDogEnv = 'staging';
 }
 
-try {
+// we do it in order avoid error "application id is not configured, no RUM data will be collected"
+// for test-links where application ID has not been configured and therefore RUM data will not be collected
+if (isProduction || isStaging) {
     datadogRum.init({
         applicationId: isStaging || isProduction ? DATADOG_APP_ID : '',
         clientToken: isStaging || isProduction ? DATADOG_CLIENT_TOKEN : '',
@@ -43,12 +45,6 @@ try {
         enableExperimentalFeatures: ['clickmap'],
         excludedActivityUrls: [/^https:\/\/api.telegram.org.*$/],
     });
+
     datadogRum.startSessionReplayRecording();
-    // we do it in order avoid error "application id is not configured, no RUM data will be collected"
-    // for test-links where application ID has not been configured and therefore RUM data will not be collected
-} catch (error: unknown) {
-    if (isProduction || isStaging) {
-        /* eslint-disable no-console */
-        console.log('DataDog RUM error:', error);
-    }
 }

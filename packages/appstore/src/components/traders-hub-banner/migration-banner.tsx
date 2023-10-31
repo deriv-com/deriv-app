@@ -4,9 +4,9 @@ import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { getMT5AccountTitle, JURISDICTION_MARKET_TYPES, Jurisdiction } from '@deriv/shared';
-import AppstoreBannerImage from './appstore-banner-image';
+import TradersHubBannerImage from './traders-hub-banner-image';
 
-const SVGMigrationBanner = observer(() => {
+const MigrationBanner = observer(() => {
     const {
         ui,
         modules: { cfd },
@@ -16,7 +16,7 @@ const SVGMigrationBanner = observer(() => {
 
     const { has_derived_mt5_to_migrate, has_derived_and_financial_mt5 } = useMT5SVGEligibleToMigrate();
 
-    const image = is_mobile ? 'svg_migrate_mobile' : 'svg_migrate_desktop';
+    const image = is_mobile ? 'migrate_mobile' : 'migrate_desktop';
     const size = is_mobile ? 'xs' : 'm';
 
     const openMT5MigrationModal = () => {
@@ -25,9 +25,9 @@ const SVGMigrationBanner = observer(() => {
     };
 
     return (
-        <div className='appstore-banner__container appstore-banner__svg-migrate-banner'>
-            <div className='appstore-banner__svg-migrate-banner-description'>
-                <div className='appstore-banner__svg-migrate-banner-description__text'>
+        <div className='traders-hub-banner__container traders-hub-banner__migrate-banner'>
+            <div className='traders-hub-banner__migrate-banner-description'>
+                <div className='traders-hub-banner__migrate-banner-description__text'>
                     {has_derived_and_financial_mt5 ? (
                         <Text size={size}>
                             <Localize
@@ -63,7 +63,7 @@ const SVGMigrationBanner = observer(() => {
                     )}
                 </div>
                 <Button
-                    className='appstore-banner__svg-migrate-banner-button'
+                    className='traders-hub-banner__migrate-banner-button'
                     primary
                     large
                     onClick={openMT5MigrationModal}
@@ -71,9 +71,9 @@ const SVGMigrationBanner = observer(() => {
                     <Localize i18n_default_text='Upgrade now' />
                 </Button>
             </div>
-            <AppstoreBannerImage image={image} class_name='appstore-banner__image' />
+            <TradersHubBannerImage image={image} class_name='traders-hub-banner__image' />
         </div>
     );
 });
 
-export default SVGMigrationBanner;
+export default MigrationBanner;

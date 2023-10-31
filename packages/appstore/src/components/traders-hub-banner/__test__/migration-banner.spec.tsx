@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import SVGMigrationBanner from '../svg-migration-banner';
+import MigrationBanner from '../migration-banner';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { APIProvider } from '@deriv/api';
@@ -16,7 +16,7 @@ const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.Mocked
     typeof useMT5SVGEligibleToMigrate
 >;
 
-describe('SVGMigrationBanner', () => {
+describe('MigrationBanner', () => {
     let response: ReturnType<typeof useMT5SVGEligibleToMigrate>;
 
     const renderComponent = () => {
@@ -26,7 +26,7 @@ describe('SVGMigrationBanner', () => {
             </APIProvider>
         );
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);
-        render(<SVGMigrationBanner />, { wrapper });
+        render(<MigrationBanner />, { wrapper });
     };
 
     beforeEach(() => {
@@ -45,7 +45,7 @@ describe('SVGMigrationBanner', () => {
         };
     });
 
-    it('should render SVGMigrationBanner with both MT5 Derived SVG and MT5 Financial SVG text', () => {
+    it('should render MigrationBanner with both MT5 Derived SVG and MT5 Financial SVG text', () => {
         response.eligible_svg_to_bvi_derived_accounts = true;
         response.eligible_svg_to_bvi_financial_accounts = true;
         renderComponent();
@@ -54,10 +54,10 @@ describe('SVGMigrationBanner', () => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });
         expect(screen.getByRole('button', { name: /upgrade now/i })).toBeInTheDocument();
-        expect(screen.getByTestId('dt_svg_migrate_desktop')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_migrate_desktop')).toBeInTheDocument();
     });
 
-    it('should render SVGMigrationBanner with MT5 Derived SVG', () => {
+    it('should render MigrationBanner with MT5 Derived SVG', () => {
         response.eligible_svg_to_vanuatu_derived_accounts = true;
         renderComponent();
         const texts = [/We’re upgrading your/i, /MT5 Derived SVG/i, /account./i];
@@ -65,10 +65,10 @@ describe('SVGMigrationBanner', () => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });
         expect(screen.getByRole('button', { name: /upgrade now/i })).toBeInTheDocument();
-        expect(screen.getByTestId('dt_svg_migrate_desktop')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_migrate_desktop')).toBeInTheDocument();
     });
 
-    it('should render SVGMigrationBanner with MT5 Financial SVG', () => {
+    it('should render MigrationBanner with MT5 Financial SVG', () => {
         response.eligible_svg_to_vanuatu_financial_accounts = true;
         renderComponent();
         const texts = [/We’re upgrading your/i, /MT5 Financial SVG/i, /account./i];
@@ -76,12 +76,12 @@ describe('SVGMigrationBanner', () => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });
         expect(screen.getByRole('button', { name: /upgrade now/i })).toBeInTheDocument();
-        expect(screen.getByTestId('dt_svg_migrate_desktop')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_migrate_desktop')).toBeInTheDocument();
     });
 
-    it('should render SVGMigrationBanner with migration mobile image', () => {
+    it('should render MigrationBanner with migration mobile image', () => {
         mock_store.ui.is_mobile = true;
         renderComponent();
-        expect(screen.getByTestId('dt_svg_migrate_mobile')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_migrate_mobile')).toBeInTheDocument();
     });
 });

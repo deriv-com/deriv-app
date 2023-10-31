@@ -1,10 +1,10 @@
-.appstore-banner {
+.traders-hub-banner {
     &__container {
         position: relative;
         margin-bottom: 2.4rem;
         overflow: hidden;
         background-color: var(--general-main-1);
-        border: 1px solid var(--appstore-banner-border-color);
+        border: 1px solid var(--traders-hub-banner-border-color);
         border-radius: $BORDER_RADIUS * 4;
 
         @include mobile {
@@ -28,7 +28,7 @@
         }
     }
 
-    &__svg-migrate-banner {
+    &__migrate-banner {
         height: 18rem;
 
         @include mobile {

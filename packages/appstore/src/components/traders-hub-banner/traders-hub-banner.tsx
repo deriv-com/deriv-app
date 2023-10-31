@@ -1,12 +1,12 @@
 import React from 'react';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
-import SVGMigrationBanner from './svg-migration-banner';
+import MigrationBanner from './migration-banner';
 
-const AppstoreBanner = observer(() => {
+const TradersHubBanner = observer(() => {
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
 
-    return has_svg_accounts_to_migrate ? <SVGMigrationBanner /> : null;
+    return has_svg_accounts_to_migrate ? <MigrationBanner /> : null;
 });
 
-export default AppstoreBanner;
+export default TradersHubBanner;

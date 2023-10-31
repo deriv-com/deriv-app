@@ -23,13 +23,11 @@ const useMT5SVGEligibleToMigrate = () => {
         ).length;
 
         const getEligibleAccountToMigrate = () => {
-            let account_to_migrate = '';
             if (is_eligible_for_svg_to_bvi_migration) {
-                account_to_migrate = Jurisdiction.BVI;
+                return Jurisdiction.BVI;
             } else if (is_eligible_for_svg_to_vanuatu_migration) {
-                account_to_migrate = Jurisdiction.VANUATU;
+                return Jurisdiction.VANUATU;
             }
-            return account_to_migrate;
         };
         const eligible_account_to_migrate_label = getFormattedJurisdictionCode(getEligibleAccountToMigrate());
 

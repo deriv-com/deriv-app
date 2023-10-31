@@ -19,7 +19,7 @@ const ConnectedAppsInfo = observer(() => {
                     <Text as='h4' weight='bold' size={text_size}>
                         <Localize i18n_default_text='What are connected apps?' />
                     </Text>
-                    <ConnectedAppsInfoBullets class_name_dynamic_suffix='with-apps' />
+                    <ConnectedAppsInfoBullets class_name='connected-apps__bullets--with-apps' />
                 </React.Fragment>
             }
         />

@@ -79,8 +79,8 @@
             .dc-select-native {
                 margin-bottom: 3.2rem;
             }
-            @include mobile{
-                &--email-consent{
+            @include mobile {
+                &--email-consent {
                     margin-bottom: 1.6rem;
                 }
             }
@@ -338,7 +338,6 @@
                 }
 
                 @include mobile {
-
                     &--has-bottom-margin {
                         margin-bottom: 1.6rem;
                     }
@@ -445,7 +444,7 @@
 
             &__fieldset {
                 margin-bottom: 2rem;
-                @include mobile{
+                @include mobile {
                     margin-bottom: 1.6rem;
                 }
                 &-input {
@@ -453,13 +452,27 @@
                         margin-bottom: unset;
                     }
                 }
+                &-container {
+                    display: flex;
+                    flex-direction: column;
+                }
             }
         }
     }
 
     .additional-field {
         margin-top: 0.8rem;
-        margin-bottom: 2rem;
+        margin-bottom: 2rem !important;
+        @include mobile {
+            margin-top: 1.6rem;
+        }
+
+        .dc-input {
+            margin-bottom: unset;
+            &__bottom-label {
+                margin-bottom: -2rem;
+            }
+        }
     }
 }
 
@@ -635,10 +648,10 @@
             justify-content: center;
             padding: 0 1.6rem;
 
-            &--status{
-                    height: 100%;
-                    width: 100%;
-                    position: absolute;
+            &--status {
+                height: 100%;
+                width: 100%;
+                position: absolute;
             }
         }
 
@@ -673,7 +686,7 @@
             height: 128px;
             margin-bottom: 2.6rem;
 
-            @include desktop{
+            @include desktop {
                 margin-top: 5.2rem;
             }
 
@@ -766,7 +779,6 @@
         margin-right: auto;
     }
 
-
     &__fieldset {
         width: 39.5rem;
 
@@ -853,8 +865,8 @@
 
     &__mismatch-container {
         .idv-form {
-            @include desktop{
-            margin-bottom: 1.6rem;
+            @include desktop {
+                margin-bottom: 1.6rem;
             }
         }
 
@@ -881,7 +893,7 @@
             }
         }
 
-        .account-form__header.details{
+        .account-form__header.details {
             margin-top: unset;
         }
     }

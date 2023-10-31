@@ -96,6 +96,8 @@ export const generatePlaceholderText = (selected_doc: string): string => {
             return localize('Enter Driver License Reference number');
         case 'ssnit':
             return localize('Enter your SSNIT number');
+        case 'national_id_no_photo':
+            return localize('Enter your National Identification Number (NIN)');
         default:
             return localize('Enter your document number');
     }

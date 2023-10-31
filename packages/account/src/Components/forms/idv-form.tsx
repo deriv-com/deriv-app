@@ -186,14 +186,14 @@ const IDVForm = ({
                                         </Field>
                                     </fieldset>
                                     {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && (
-                                        <fieldset
-                                            className={classNames({
-                                                'proof-of-identity__fieldset-input': !hide_hint,
-                                            })}
-                                        >
-                                            <Field name='document_number'>
-                                                {({ field }: FieldProps) => (
-                                                    <React.Fragment>
+                                        <React.Fragment>
+                                            <fieldset
+                                                className={classNames('additional-field', {
+                                                    'proof-of-identity__fieldset-input': !hide_hint,
+                                                })}
+                                            >
+                                                <Field name='document_number'>
+                                                    {({ field }: FieldProps) => (
                                                         <Input
                                                             {...field}
                                                             name='document_number'
@@ -219,14 +219,19 @@ const IDVForm = ({
                                                             onKeyUp={(e: { target: HTMLInputElement }) =>
                                                                 onKeyUp(e, 'document_number')
                                                             }
-                                                            className='additional-field'
                                                             required
                                                             label={
                                                                 values.document_type.id &&
                                                                 generatePlaceholderText(selected_doc)
                                                             }
                                                         />
-                                                        {values.document_type.additional?.display_name && (
+                                                    )}
+                                                </Field>
+                                            </fieldset>
+                                            {values.document_type.additional?.display_name && (
+                                                <fieldset className='additional-field'>
+                                                    <Field name='document_additional'>
+                                                        {({ field }: FieldProps) => (
                                                             <Input
                                                                 {...field}
                                                                 name='document_additional'
@@ -254,10 +259,10 @@ const IDVForm = ({
                                                                 required
                                                             />
                                                         )}
-                                                    </React.Fragment>
-                                                )}
-                                            </Field>
-                                        </fieldset>
+                                                    </Field>
+                                                </fieldset>
+                                            )}
+                                        </React.Fragment>
                                     )}
                                 </div>
                             </div>

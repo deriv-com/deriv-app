@@ -29,6 +29,12 @@ describe('generatePlaceholderText', () => {
     it('should return the correct placeholder text for passport', () => {
         expect(generatePlaceholderText('passport')).toEqual('Enter your document number');
     });
+
+    it('should return the correct placeholder text for NIN for Uganda', () => {
+        expect(generatePlaceholderText('national_id_no_photo')).toEqual(
+            'Enter your National Identification Number (NIN)'
+        );
+    });
 });
 
 describe('documentAdditionalError', () => {

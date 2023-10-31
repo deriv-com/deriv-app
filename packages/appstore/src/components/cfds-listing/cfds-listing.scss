@@ -45,6 +45,7 @@
         @include desktop {
             height: 76rem;
             perspective: 100rem;
+            overflow: scroll;
         }
     }
 

@@ -736,15 +736,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         !is_cfd_success_dialog_enabled &&
         (!has_cfd_error || is_password_error || is_password_reset);
 
-    const should_show_success =
-        !has_cfd_error &&
-        is_cfd_success_dialog_enabled &&
-        is_cfd_password_modal_enabled &&
-        is_password_modal_exited &&
-        !is_mt5_migration_modal_enabled;
+    const should_show_success_modals = !has_cfd_error && is_cfd_success_dialog_enabled && is_password_modal_exited;
 
-    const should_show_migration_success =
-        !has_cfd_error && is_mt5_migration_modal_enabled && is_cfd_success_dialog_enabled && is_password_modal_exited;
+    const should_show_success =
+        should_show_success_modals && is_cfd_password_modal_enabled && !is_mt5_migration_modal_enabled;
+
+    const should_show_migration_success = should_show_success_modals && is_mt5_migration_modal_enabled;
 
     if (should_show_success || should_show_migration_success) {
         setMT5MigrationModalWaitingOnOtherModals(true);

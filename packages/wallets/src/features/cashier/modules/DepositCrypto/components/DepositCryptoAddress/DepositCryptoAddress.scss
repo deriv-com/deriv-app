@@ -6,6 +6,7 @@
     min-height: 6rem;
 
     &__hash {
+        width: fit-content;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -18,18 +19,20 @@
         }
 
         &-text {
-            min-width: 29.4rem;
+            overflow-x: hidden;
             padding: 0.8rem;
+            text-overflow: ellipsis;
         }
 
         &-clipboard {
             display: flex;
             align-items: center;
             height: 100%;
+            gap: 0.8rem;
 
-            // & .wallets-clipboard {
-            //     padding: 0.8rem;
-            // }
+            & .wallets-clipboard {
+                padding: 0.8rem 0.8rem 0.8rem 0;
+            }
         }
 
         &-divider {

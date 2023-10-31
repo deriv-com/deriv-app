@@ -17,14 +17,9 @@
     & .dc-tabs {
         width: 100%;
         overflow-x: auto;
+
         &::-webkit-scrollbar {
             display: none;
-        }
-
-        &--p2p__tabs {
-            @include mobile {
-                overflow: hidden;
-            }
         }
 
         .dc-themed-scrollbars-wrapper li {

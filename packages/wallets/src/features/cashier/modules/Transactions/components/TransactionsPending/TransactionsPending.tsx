@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import { useCryptoTransactions } from '@deriv/api';
 import { Loader } from '../../../../../../components';
@@ -14,24 +14,16 @@ type TProps = {
 };
 
 const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
-    const { data: transactions, isLoading, isSubscribed, resetData, subscribe, unsubscribe } = useCryptoTransactions();
-    const [shouldShowLoader, setShouldShowLoader] = useState(true);
+    const { data: transactions, isLoading, resetData, subscribe, unsubscribe } = useCryptoTransactions();
 
     useEffect(() => {
-        setShouldShowLoader(true);
         resetData();
         subscribe({ payload: { transaction_type: filter } });
 
         return () => unsubscribe();
     }, [filter, resetData, subscribe, unsubscribe]);
 
-    useEffect(() => {
-        if (isSubscribed && !isLoading) {
-            setShouldShowLoader(false);
-        }
-    }, [isLoading, isSubscribed]);
-
-    if (shouldShowLoader) return <Loader />;
+    if (!transactions && isLoading) return <Loader />;
 
     if (!transactions) return <TransactionsNoDataState />;
 

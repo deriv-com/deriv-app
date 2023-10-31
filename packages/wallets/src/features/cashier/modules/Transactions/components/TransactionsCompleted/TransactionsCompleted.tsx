@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
 import { useTransactions } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
@@ -16,7 +16,6 @@ type TProps = {
 
 const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
     const { data: transactions, fetchNextPage, isFetching, isLoading, setFilter } = useTransactions();
-    const [shouldShowLoader, setShouldShowLoader] = useState(true);
 
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
@@ -33,16 +32,9 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
 
     useEffect(() => {
         setFilter(filter);
-        setShouldShowLoader(true);
     }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    useEffect(() => {
-        if (!isFetching && !isLoading) {
-            setShouldShowLoader(false);
-        }
-    }, [transactions, isFetching, isLoading]);
-
-    if (shouldShowLoader) return <Loader />;
+    if (!transactions && (isFetching || isLoading)) return <Loader />;
 
     if (!transactions) return <TransactionsNoDataState />;
 

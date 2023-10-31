@@ -140,9 +140,8 @@ export const CFDPasswordForm = ({
 
     const accountTitle = () => {
         switch (platform) {
-            case 'ctrader':
-            case 'derivez':
-            case 'dxtrade':
+            case CFD_PLATFORMS.CTRADER:
+            case CFD_PLATFORMS.DXTRADE:
                 return 'CFD';
             default:
                 return account_title;

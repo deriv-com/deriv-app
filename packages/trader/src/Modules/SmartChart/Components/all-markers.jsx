@@ -14,6 +14,7 @@ import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS from './icons';
 
 const is_firefox = navigator.userAgent.search('Firefox') > 0;
+const GRADIENT_HIGHT = 96;
 
 const RawMarkerMaker = draw_callback => {
     const Marker = ({ epoch_array, price_array, ...rest }) => (
@@ -409,16 +410,16 @@ const TickContract = RawMarkerMaker(
 
         if (isResetContract(contract_type)) {
             const is_reset_call_contract = /RESETCALL/i.test(contract_type);
-            const biggest_barrier = Math.max(barrier, barrier_2);
-            const smallest_barrier = Math.min(barrier, barrier_2);
+            const lowest_barrier = Math.max(barrier, barrier_2);
+            const highest_barrier = Math.min(barrier, barrier_2);
             // for Reset Call we are showing gradient to the lowest barrier (the biggest one), for put - the highest (smallest)
-            const barrier_gradient = is_reset_call_contract ? biggest_barrier : smallest_barrier;
+            const barrier_gradient = is_reset_call_contract ? lowest_barrier : highest_barrier;
             draw_reset_barrier({
                 ctx,
                 stroke_color: '#999999',
                 start_left: start.left,
-                top: is_reset_call_contract ? barrier_gradient - 96 : barrier_gradient,
-                bottom: is_reset_call_contract ? barrier_gradient : barrier_gradient + 96,
+                top: is_reset_call_contract ? barrier_gradient - GRADIENT_HIGHT : barrier_gradient,
+                bottom: is_reset_call_contract ? barrier_gradient : barrier_gradient + GRADIENT_HIGHT,
                 barrier_gradient,
                 reset_barrier: barrier_2,
                 scale,
@@ -647,13 +648,11 @@ const NonTickContract = RawMarkerMaker(
         currency,
         contract_info: {
             contract_type,
-            entry_spot,
             // exit_tick_time,
             // is_expired,
             is_sold,
             status,
             profit,
-            reset_barrier,
         },
     }) => {
         /** @type {CanvasRenderingContext2D} */
@@ -687,18 +686,18 @@ const NonTickContract = RawMarkerMaker(
 
         if (isResetContract(contract_type)) {
             const is_reset_call_contract = /RESETCALL/i.test(contract_type);
-            // for reset call we are showing gradient to the lowest barrier, for put - the highest
-            const has_gradient =
-                (is_reset_call_contract && +reset_barrier < +entry_spot) ||
-                (!is_reset_call_contract && +reset_barrier > +entry_spot);
+            const lowest_barrier = Math.max(barrier, entry_tick_top);
+            const highest_barrier = Math.min(barrier, entry_tick_top);
+            // for Reset Call we are showing gradient to the lowest barrier (the biggest one), for put - the highest (smallest)
+            const barrier_gradient = is_reset_call_contract ? lowest_barrier : highest_barrier;
             draw_reset_barrier({
-                has_gradient,
                 ctx,
                 stroke_color: '#999999',
                 start_left: start.left,
-                top: is_reset_call_contract ? barrier - 120 : barrier,
-                bottom: is_reset_call_contract ? barrier : barrier + 120,
-                reset_barrier: barrier,
+                top: is_reset_call_contract ? barrier_gradient - GRADIENT_HIGHT : barrier_gradient,
+                bottom: is_reset_call_contract ? barrier_gradient : barrier_gradient + GRADIENT_HIGHT,
+                barrier_gradient,
+                reset_barrier: entry_tick_top,
                 scale,
             });
             return;

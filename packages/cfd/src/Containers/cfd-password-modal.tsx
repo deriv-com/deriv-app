@@ -1013,8 +1013,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 text_submit={localize('OK')}
                 has_cancel={false}
                 has_close_icon={false}
-                width={isMobile() ? '32.8rem' : 'auto'}
-                is_medium_button={isMobile()}
+                width={is_mobile ? '32.8rem' : 'auto'}
+                is_medium_button={is_mobile}
             />
             <SentEmailModal
                 is_open={should_show_sent_email_modal}

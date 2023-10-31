@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import CFDServerErrorDialog from '../cfd-server-error-dialog';
+import ServerErrorDialog from '../server-error-dialog';
 import CFDProviders from '../../cfd-providers';
 
-describe('<CFDServerErrorDialog /> ', () => {
+describe('<ServerErrorDialog /> ', () => {
     beforeAll(() => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -34,7 +34,7 @@ describe('<CFDServerErrorDialog /> ', () => {
     });
 
     it('should render the component properly', () => {
-        const { container } = render(<CFDServerErrorDialog />, {
+        const { container } = render(<ServerErrorDialog />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
@@ -42,7 +42,7 @@ describe('<CFDServerErrorDialog /> ', () => {
     });
 
     it('should render the proper text and error message', () => {
-        render(<CFDServerErrorDialog />, {
+        render(<ServerErrorDialog />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
@@ -63,7 +63,7 @@ describe('<CFDServerErrorDialog /> ', () => {
                 },
             },
         };
-        render(<CFDServerErrorDialog />, {
+        render(<ServerErrorDialog />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(new_mockRootStore)}>{children}</CFDProviders>,
         });
 
@@ -83,7 +83,7 @@ describe('<CFDServerErrorDialog /> ', () => {
             },
         };
 
-        render(<CFDServerErrorDialog />, {
+        render(<ServerErrorDialog />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(new_mockRootStore)}>{children}</CFDProviders>,
         });
 
@@ -91,7 +91,7 @@ describe('<CFDServerErrorDialog /> ', () => {
     });
 
     it('should clear the component if OK is clicked', () => {
-        render(<CFDServerErrorDialog />, {
+        render(<ServerErrorDialog />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 

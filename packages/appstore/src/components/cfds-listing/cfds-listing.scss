@@ -43,9 +43,12 @@
     }
     &__wrapper {
         @include desktop {
-            height: 76rem;
+            height: 69rem;
             perspective: 100rem;
             overflow: scroll;
+            &:has(.jurisdiction-modal__scrollable-content .cfd-jurisdiction-card--financial__wrapper) {
+                height: 76rem;
+            }
         }
     }
 
@@ -185,7 +188,7 @@
     &__footnotes-container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+
         gap: 1rem;
         margin: 1rem;
         @include desktop {
@@ -233,6 +236,16 @@
         & > p {
             font-size: 16px;
             text-align: center;
+        }
+    }
+}
+
+.cfd-jurisdiction-card--financial {
+    &__footnotes-container {
+        @include desktop {
+            gap: 1rem;
+            min-height: 7.6rem;
+            margin: 1rem;
         }
     }
 }

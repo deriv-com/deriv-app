@@ -1,5 +1,3 @@
-@import './quick-strategy-content/index.scss';
-
 @mixin position-center {
     display: flex;
     justify-content: center;
@@ -253,9 +251,16 @@
                 padding: 1.6rem 0;
                 z-index: 1;
 
-                svg {
+                .search-icon {
+                    cursor: pointer;
                     position: absolute;
                     left: 1.5rem;
+                    z-index: 1;
+                }
+                .close-icon {
+                    cursor: pointer;
+                    position: absolute;
+                    right: 1.5rem;
                     z-index: 1;
                 }
 
@@ -266,7 +271,7 @@
                     outline: none;
                     background-color: transparent;
                     font-size: 1.4rem;
-                    padding-left: 3rem;
+                    padding: 0 3rem;
                     border: solid 0.1rem var(--checkbox-disabled-grey);
                     color: var(--text-general);
 
@@ -287,7 +292,24 @@
                 &__content {
                     margin: -6.5rem 2.4rem;
                     width: 100%;
+                    &--no-result {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-start;
+
+                        align-items: center;
+                        height: 100vh;
+                        margin: unset;
+                        svg {
+                            margin-bottom: 2.4rem;
+                        }
+                        &__title,
+                        &__content {
+                            margin-bottom: 0.8rem;
+                        }
+                    }
                 }
+
                 &--top {
                     display: flex;
                     @include mobile {
@@ -325,6 +347,9 @@
                         display: flex;
                         justify-content: flex-start;
                         padding: 0 1.6rem;
+                        &:nth-child(3) {
+                            display: none;
+                        }
                     }
                 }
 
@@ -352,6 +377,9 @@
                 margin-right: 17px;
                 transition: all 0.3s;
             }
+            .dc-select-native__picker option[value='Search'] {
+                display: none;
+            }
             &--show-search {
                 .dc-select-native {
                     width: 0;
@@ -363,6 +391,13 @@
                 }
                 .arrow-left-bold {
                     display: block;
+                }
+                .close-icon {
+                    display: block;
+                    cursor: pointer;
+                    position: absolute;
+                    right: 2.5rem;
+                    z-index: 1;
                 }
                 .dc-select-native__display,
                 .dc-select-native__picker,
@@ -376,7 +411,8 @@
                     width: 0;
                     display: none;
                 }
-                .arrow-left-bold {
+                .arrow-left-bold,
+                .close-icon {
                     display: none;
                 }
                 .search-icon {

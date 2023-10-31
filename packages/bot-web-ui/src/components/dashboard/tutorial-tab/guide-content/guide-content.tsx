@@ -26,7 +26,6 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
     const { dashboard } = useDBotStore();
     const {
         dialog_options,
-        faq_search_value,
         is_dialog_open,
         onCloseDialog: onOkButtonClick,
         setActiveTab,
@@ -55,9 +54,17 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
         () => (
             <div className='tutorials-wrap'>
                 {guide_list?.length > 0 && (
-                    <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        {localize('Step-by-step guides')}
-                    </Text>
+                    <>
+                        <Text
+                            align='center'
+                            weight='bold'
+                            color='prominent'
+                            line_height='s'
+                            size={is_mobile ? 'xxs' : 's'}
+                        >
+                            {localize('Step-by-step guides')}
+                        </Text>
+                    </>
                 )}
                 <div className='tutorials-wrap__group'>
                     {guide_list?.map(({ id, content, src, type, subtype }) => {
@@ -134,15 +141,6 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                             )
                         );
                     })}
-                    {!guide_list.length && (
-                        <div className='tutorials-wrap__group__nosearch'>
-                            <Text as='h1' weight='bold' line_height='xxs'>
-                                {localize('No results found "{{ faq_search_value }}"', {
-                                    faq_search_value,
-                                })}
-                            </Text>
-                        </div>
-                    )}
                 </div>
                 <Dialog
                     title={dialog_options.title}

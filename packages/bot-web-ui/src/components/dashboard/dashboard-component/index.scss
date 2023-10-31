@@ -111,6 +111,21 @@
                 @include mobile {
                     width: 100%;
                     overflow-x: auto;
+
+                    &--no-result {
+                        @include align-center;
+                        flex-direction: column;
+                        justify-content: flex-start;
+                        height: 100%;
+                        margin-top: 5rem;
+
+                        svg {
+                            margin-bottom: 2.4rem;
+                        }
+                        h1 {
+                            margin-bottom: 0.8rem;
+                        }
+                    }
                 }
 
                 &--dashboard {

@@ -43,8 +43,6 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
 };
 
 const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => {
-    const { dashboard } = useDBotStore();
-    const { faq_search_value } = dashboard;
     const faq_wrapper_element = React.useRef<HTMLDivElement>(null);
     const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -92,23 +90,17 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
     return (
         <div>
             <div className='faq__wrapper' ref={faq_wrapper_element}>
-                {!hide_header && (
-                    <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                        {localize('FAQ')}
-                    </Text>
-                )}
-                {faq_list?.length ? (
-                    <div onClick={handleAccordionClick}>
-                        <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
-                    </div>
-                ) : (
-                    <div className='faq__wrapper__nosearch'>
-                        <Text as='h1' weight='bold' line_height='xxs'>
-                            {localize('No results found "{{ faq_search_value }}"', {
-                                faq_search_value,
-                            })}
-                        </Text>
-                    </div>
+                {faq_list && faq_list?.length > 0 && (
+                    <>
+                        {!hide_header && (
+                            <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
+                                {localize('FAQ')}
+                            </Text>
+                        )}
+                        <div onClick={handleAccordionClick}>
+                            <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
+                        </div>
+                    </>
                 )}
             </div>
         </div>

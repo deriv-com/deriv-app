@@ -17,12 +17,12 @@ const DepositCryptoAddress = () => {
         }
     }, [isAuthorizeSuccess, mutate]);
 
-    // if (isLoading)
-    return (
-        <div className='wallets-deposit-crypto-address__loader'>
-            <WalletsDepositCryptoQRLoader />
-        </div>
-    );
+    if (isLoading)
+        return (
+            <div className='wallets-deposit-crypto-address__loader'>
+                <WalletsDepositCryptoQRLoader />
+            </div>
+        );
 
     return (
         <div className='wallets-deposit-crypto-address'>

@@ -4,6 +4,41 @@ import { useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
+const ModalTitle = () => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+    return (
+        <React.Fragment>
+            <Icon icon='IcWarning' size={64} className='disclaimer-modal__body-icon' />
+            <Text
+                as='p'
+                color='prominent'
+                weight='bold'
+                line_height={is_mobile ? 'xl' : 'xxl'}
+                size={is_mobile ? 'xs' : 's'}
+            >
+                <Localize i18n_default_text='For your safety:' />
+            </Text>
+        </React.Fragment>
+    );
+};
+const getDislaimerStatements = () => [
+    <Localize
+        i18n_default_text='If you’re selling, only release funds to the buyer after you’ve received payment.'
+        key={0}
+    />,
+    <Localize i18n_default_text='We’ll never ask you to release funds on behalf of anyone.' key={1} />,
+    <Localize
+        i18n_default_text="Read the instructions in the ad carefully before making your order. If there's anything unclear, check with the advertiser first."
+        key={2}
+    />,
+    <Localize
+        i18n_default_text='Only discuss your P2P order details within the in-app chatbox, and nowhere else.'
+        key={3}
+    />,
+    <Localize i18n_default_text='All P2P transactions are final and cannot be reversed.' key={4} />,
+];
+
 const DisclaimerModal = () => {
     const [is_checked, setIsChecked] = React.useState<boolean>(false);
     const { hideModal, is_modal_open } = useModalManagerContext();
@@ -18,47 +53,27 @@ const DisclaimerModal = () => {
     };
 
     return (
-        <Modal className='disclaimer-modal' is_open={is_modal_open} small has_close_icon={false}>
+        <Modal
+            className='disclaimer-modal'
+            is_open={is_modal_open}
+            small
+            has_close_icon={false}
+            title={<ModalTitle />}
+            is_title_centered
+        >
             <Modal.Body className='disclaimer-modal__body'>
                 <React.Fragment>
-                    <div className='disclaimer-modal__body-title'>
-                        <Icon icon='IcWarning' size={64} className='disclaimer-modal__body-icon' />
-                        <Text
-                            as='p'
-                            color='prominent'
-                            weight='bold'
-                            line_height={is_mobile ? 'xl' : 'xxl'}
-                            size={is_mobile ? 'xs' : 's'}
-                        >
-                            <Localize i18n_default_text='For your safety:' />
-                        </Text>
-                    </div>
-                    <Text
-                        as='div'
-                        line_height={is_mobile ? 'l' : 'xl'}
-                        size={is_mobile ? 'xxs' : 'xs'}
-                        className='disclaimer-modal__body-bullets'
-                    >
-                        <ul>
-                            <li>
-                                <Localize i18n_default_text='If you’re selling, only release funds to the buyer after you’ve received payment.' />
+                    <ul className='disclaimer-modal__body-list'>
+                        {getDislaimerStatements().map((statement, idx) => (
+                            <li key={idx}>
+                                <Text line_height={is_mobile ? 'l' : 'xl'} size={is_mobile ? 'xxs' : 'xs'}>
+                                    {statement}
+                                </Text>
                             </li>
-                            <li>
-                                <Localize i18n_default_text='We’ll never ask you to release funds on behalf of anyone.' />
-                            </li>
-                            <li>
-                                <Localize i18n_default_text="Read the instructions in the ad carefully before making your order. If there's anything unclear, check with the advertiser first." />
-                            </li>
-                            <li>
-                                <Localize i18n_default_text='Only discuss your P2P order details within the in-app chatbox, and nowhere else.' />
-                            </li>
-                            <li>
-                                <Localize i18n_default_text='All P2P transactions are final and cannot be reversed.' />
-                            </li>
-                        </ul>
-                    </Text>
+                        ))}
+                    </ul>
                     <Checkbox
-                        onChange={() => setIsChecked(!is_checked)}
+                        onChange={() => setIsChecked(prev_state => !prev_state)}
                         name='disclaimer-checkbox'
                         value={is_checked}
                         label={

@@ -20,8 +20,6 @@ const useTransactions = () => {
     const fractional_digits = account?.currency_config?.fractional_digits || 2;
 
     const [filter, setFilter] = useState<TFilter>();
-
-    const invalidate = useInvalidateQuery();
     const { data, fetchNextPage, remove, ...rest } = useInfiniteQuery('statement', {
         options: {
             enabled: !isFetching && isSuccess,

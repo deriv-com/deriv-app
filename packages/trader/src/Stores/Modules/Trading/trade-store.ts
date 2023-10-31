@@ -30,7 +30,7 @@ import {
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
 } from '@deriv/shared';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import type { TEvents } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -197,6 +197,7 @@ export default class TradeStore extends BaseStore {
     contract_start_type = '';
     contract_type = '';
     contract_types_list: TContractTypesList = {};
+    non_available_contract_types_list: TContractTypesList = {};
     trade_types: { [key: string]: string } = {};
 
     // Amount
@@ -401,6 +402,7 @@ export default class TradeStore extends BaseStore {
             maximum_ticks: observable,
             multiplier_range_list: observable,
             multiplier: observable,
+            non_available_contract_types_list: observable,
             previous_symbol: observable,
             proposal_info: observable.ref,
             purchase_info: observable.ref,
@@ -1620,11 +1622,12 @@ export default class TradeStore extends BaseStore {
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {
-            RudderStack.track(event_type, {
+            Analytics.trackEvent(event_type, {
                 ...data,
+                action: data.action as TEvents['ce_indicators_types_form']['action'],
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 form_name: 'default',
-            } as TEvents['ce_chart_types_form']);
+            });
         }
     }
 

@@ -11,12 +11,11 @@ import JurisdictionModalTitle from './jurisdiction-modal-title';
 import { MARKET_TYPE } from '../../Helpers/cfd-config';
 
 const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalProps) => {
-    const { traders_hub, ui, common, client } = useStore();
+    const { traders_hub, ui, common } = useStore();
 
     const { show_eu_related_content } = traders_hub;
     const { disableApp, enableApp } = ui;
     const { platform } = common;
-    const { is_eu } = client;
 
     const { account_type, is_jurisdiction_modal_visible, toggleJurisdictionModal } = useCfdStore();
 
@@ -40,7 +39,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
             })}
         >
             <JurisdictionModalContentWrapper openPasswordModal={openPasswordModal} />
-            {account_type.type === 'financial' && !is_eu && <DynamicLeverageModalContent />}
+            <DynamicLeverageModalContent />
         </div>
     );
 
@@ -76,7 +75,6 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                             visible={is_jurisdiction_modal_visible}
                             onClose={onJurisdictionModalToggle}
                             has_close_icon={!is_dynamic_leverage_visible}
-                            header_classname='jurisdiction-modal__header'
                             title={
                                 <JurisdictionModalTitle
                                     show_eu_related_content={show_eu_related_content}

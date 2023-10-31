@@ -467,7 +467,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
 export const mt5_community_url =
     'https://community.deriv.com/t/log-in-using-mt5-pc-or-mobile-app-application-guideline/49622';
 
-export const getFormattedJurisdictionCode = (jurisdiction_code: string) => {
+export const getFormattedJurisdictionCode = (jurisdiction_code: typeof Jurisdiction[keyof typeof Jurisdiction]) => {
     let formatted_label = '';
 
     switch (jurisdiction_code) {
@@ -487,14 +487,14 @@ export const getFormattedJurisdictionCode = (jurisdiction_code: string) => {
             formatted_label = localize('Malta');
             break;
         default:
-            formatted_label = jurisdiction_code?.toUpperCase();
             break;
     }
-
     return formatted_label;
 };
 
-export const getFormattedJurisdictionMarketTypes = (jurisdiction_market_type: string) => {
+export const getFormattedJurisdictionMarketTypes = (
+    jurisdiction_market_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES] | TMarketType
+) => {
     let formatted_market_type = '';
 
     switch (jurisdiction_market_type) {
@@ -506,7 +506,6 @@ export const getFormattedJurisdictionMarketTypes = (jurisdiction_market_type: st
             formatted_market_type = localize('Financial');
             break;
         default:
-            formatted_market_type = jurisdiction_market_type?.toUpperCase();
             break;
     }
     return formatted_market_type;

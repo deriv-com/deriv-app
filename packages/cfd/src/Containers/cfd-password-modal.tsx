@@ -62,7 +62,7 @@ type TIconTypeProps = {
 };
 
 type TCFDPasswordFormReusedProps = {
-    platform: string;
+    platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
     error_message: string;
     validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
 };
@@ -107,7 +107,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
 type TCFDPasswordModalProps = {
     error_type?: string;
     form_error?: string;
-    platform: string;
+    platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
 };
 
 const getAccountTitle = (

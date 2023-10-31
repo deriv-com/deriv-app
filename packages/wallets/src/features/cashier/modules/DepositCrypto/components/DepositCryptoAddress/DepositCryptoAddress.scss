@@ -5,6 +5,13 @@
     gap: 2.4rem;
     min-height: 6rem;
 
+    &__loader {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     &__hash {
         width: fit-content;
         display: flex;

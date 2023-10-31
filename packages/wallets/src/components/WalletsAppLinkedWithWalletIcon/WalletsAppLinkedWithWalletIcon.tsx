@@ -20,7 +20,7 @@ const WalletsAppLinkedWithWalletIcon = ({ appIcon, currency, size = 'medium', wa
 
             {/* Wallet Icon */}
             <div className='wallets-app-linked-with-wallet-icon__wallet-icon'>
-                <WalletGradientBackground currency={currency}>
+                <WalletGradientBackground currency={currency && currency.toUpperCase()}>
                     <WalletBaseIcon
                         className='wallets-app-linked-with-wallet-icon__wallet-base-icon'
                         icon={walletIcon}

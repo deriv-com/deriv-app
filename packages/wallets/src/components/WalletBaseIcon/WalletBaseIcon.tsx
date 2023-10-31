@@ -8,20 +8,22 @@ import IcWalletDerivP2PDark from '../../public/images/wallet/ic-wallet-deriv-p2p
 
 import IcWalletDerivDemoLight from '../../public/images/wallet/ic-wallet-deriv-demo-light.svg';
 import IcWalletDerivDemoDark from '../../public/images/wallet/ic-wallet-deriv-demo-dark.svg';
-import IcWalletCurrencyUsd from '../../public/images/wallet/ic-wallet-currency-usd.svg';
-import IcWalletCurrencyEur from '../../public/images/wallet/ic-wallet-currency-eur.svg';
-import IcWalletCurrencyAud from '../../public/images/wallet/ic-wallet-currency-aud.svg';
-import IcWalletCurrencyGbp from '../../public/images/wallet/ic-wallet-currency-gbp.svg';
-import IcWalletBitcoinLight from '../../public/images/wallet/ic-wallet-bitcoin-light.svg';
-import IcWalletBitcoinDark from '../../public/images/wallet/ic-wallet-bitcoin-dark.svg';
-import IcWalletEthereumLight from '../../public/images/wallet/ic-wallet-ethereum-light.svg';
-import IcWalletEthereumDark from '../../public/images/wallet/ic-wallet-ethereum-dark.svg';
-import IcWalletLiteCoinLight from '../../public/images/wallet/ic-wallet-lite-coin-light.svg';
-import IcWalletLiteCoinDark from '../../public/images/wallet/ic-wallet-lite-coin-dark.svg';
-import IcWalletUsdCoinLight from '../../public/images/wallet/ic-wallet-usd-coin-light.svg';
-import IcWalletUsdCoinDark from '../../public/images/wallet/ic-wallet-usd-coin-dark.svg';
-import IcWalletTetherLight from '../../public/images/wallet/ic-wallet-tether-light.svg';
-import IcWalletTetherDark from '../../public/images/wallet/ic-wallet-tether-dark.svg';
+
+import IcWalletCurrencyUsd from '../../public/images/currencies/usd.svg';
+import IcWalletCurrencyEur from '../../public/images/currencies/eur.svg';
+import IcWalletCurrencyAud from '../../public/images/currencies/aud.svg';
+import IcWalletCurrencyGbp from '../../public/images/currencies/gbp.svg';
+
+import IcWalletBitcoinLight from '../../public/images/currencies/btc.svg';
+import IcWalletBitcoinDark from '../../public/images/currencies/btc-dark.svg';
+import IcWalletEthereumLight from '../../public/images/currencies/eth.svg';
+import IcWalletEthereumDark from '../../public/images/currencies/eth-dark.svg';
+import IcWalletLiteCoinLight from '../../public/images/currencies/ltc.svg';
+import IcWalletLiteCoinDark from '../../public/images/currencies/ltc-dark.svg';
+import IcWalletUsdCoinLight from '../../public/images/currencies/usdc.svg';
+import IcWalletUsdCoinDark from '../../public/images/currencies/usdc-dark.svg';
+import IcWalletTetherLight from '../../public/images/currencies/usdt.svg';
+import IcWalletTetherDark from '../../public/images/currencies/usdt-dark.svg';
 
 interface IconTypes {
     [key: string]: ComponentType<SVGAttributes<SVGElement>>;

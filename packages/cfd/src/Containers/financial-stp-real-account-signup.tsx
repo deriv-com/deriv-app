@@ -6,7 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import ProofOfAddress from '../Components/proof-of-address';
 import ProofOfIdentity from '../Components/proof-of-identity';
-import CFDPersonalDetailsContainer from './cfd-personal-details-container';
+import PersonalDetailsContainer from './personal-details-container';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TFinancialStpRealAccountSignupProps = {
@@ -35,7 +35,7 @@ type TItem = {
 };
 
 type TItemsState<T extends TItem> = {
-    body: typeof ProofOfIdentity | typeof ProofOfAddress | typeof CFDPersonalDetailsContainer;
+    body: typeof ProofOfIdentity | typeof ProofOfAddress | typeof PersonalDetailsContainer;
     form_value: { [key: string]: string | undefined };
     forwarded_props: Array<Partial<keyof T>>;
 };
@@ -110,7 +110,7 @@ const FinancialStpRealAccountSignup = observer(({ onFinish }: TFinancialStpRealA
     };
 
     const personal_details_config: TItemsState<typeof passthroughProps> = {
-        body: CFDPersonalDetailsContainer,
+        body: PersonalDetailsContainer,
         form_value: {
             citizen: '',
             place_of_birth: '',
@@ -191,7 +191,7 @@ const FinancialStpRealAccountSignup = observer(({ onFinish }: TFinancialStpRealA
 
     const BodyComponent = getCurrent('body') as typeof ProofOfIdentity &
         typeof ProofOfAddress &
-        typeof CFDPersonalDetailsContainer;
+        typeof PersonalDetailsContainer;
 
     const form_value = getCurrent('form_value');
 

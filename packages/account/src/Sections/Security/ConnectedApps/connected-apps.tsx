@@ -51,6 +51,7 @@ const ConnectedApps = observer(() => {
             /* eslint-disable no-console */
             fetchConnectedApps().catch(error => console.error('error: ', error));
         } else {
+            setLoading(false);
             setError(true);
         }
     }, []);

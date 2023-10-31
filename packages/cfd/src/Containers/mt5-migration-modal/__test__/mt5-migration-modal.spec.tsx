@@ -32,7 +32,7 @@ const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.Mocked
 >;
 
 describe('MT5MigrationModal', () => {
-    let response: Partial<ReturnType<typeof useMT5SVGEligibleToMigrate>>;
+    let response: ReturnType<typeof useMT5SVGEligibleToMigrate>;
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <MT5MigrationModalContext.Provider
@@ -43,7 +43,6 @@ describe('MT5MigrationModal', () => {
                 </StoreProvider>
             </MT5MigrationModalContext.Provider>
         );
-        // @ts-expect-error response return value is not required to have all object
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);
         render(<MT5MigrationModal />, { wrapper });
     };
@@ -52,6 +51,15 @@ describe('MT5MigrationModal', () => {
         response = {
             no_of_svg_accounts_to_migrate: 0,
             has_svg_accounts_to_migrate: true,
+            eligible_account_to_migrate_label: 'bvi',
+            eligible_svg_to_bvi_derived_accounts: false,
+            eligible_svg_to_bvi_financial_accounts: false,
+            eligible_svg_to_vanuatu_derived_accounts: false,
+            eligible_svg_to_vanuatu_financial_accounts: false,
+            getEligibleAccountToMigrate: jest.fn().mockReturnValue('bvi'),
+            has_derived_and_financial_mt5: false,
+            has_derived_mt5_to_migrate: false,
+            svg_accounts_to_migrate: [],
         };
     });
 

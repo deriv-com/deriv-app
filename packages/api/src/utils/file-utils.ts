@@ -25,7 +25,7 @@ type TCompressImage = TBase64Image & {
  * @param {number} [params.options.quality=DEFAULT_IMAGE_QUALITY] - The image quality (0 to 1) for compression.
  * @returns {Promise<Blob>} A Promise that resolves with the compressed image as a Blob.
  */
-export const compressImage = ({ src, filename, options }: TCompressImage): Promise<Blob | null> => {
+export const compressImage = ({ src, filename, options }: TCompressImage): Promise<Blob | undefined> => {
     const { maxWidth = DEFAULT_IMAGE_WIDTH, quality = DEFAULT_IMAGE_QUALITY } = options || {};
 
     return new Promise((resolve, reject) => {

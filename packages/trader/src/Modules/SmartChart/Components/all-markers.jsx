@@ -53,6 +53,11 @@ const light_theme = {
     won: '#4bb4b3',
 };
 
+const gradient_color = {
+    intensive: 'rgba(75, 180, 179, 0.16)',
+    blurred: 'rgba(75, 180, 179, 0.00)',
+};
+
 function getColor({ status, profit, is_dark_theme, is_vanilla }) {
     const colors = is_dark_theme ? dark_theme : light_theme;
     let color = colors[status || 'open'];
@@ -291,14 +296,14 @@ const drawResetBarrier = ({
     //This case is for Reset Call
     if (barrier_gradient === bottom) {
         gradient = ctx.createLinearGradient(start_left, displayed_bottom, start_left, displayed_top);
-        gradient.addColorStop(0.02, 'rgba(75, 180, 179, 0.16)');
-        gradient.addColorStop(0.98, 'rgba(75, 180, 179, 0.00)');
+        gradient.addColorStop(0.02, gradient_color.intensive);
+        gradient.addColorStop(0.98, gradient_color.blurred);
     }
     //This case is for Reset Put
     if (barrier_gradient === top) {
         gradient = ctx.createLinearGradient(start_left, displayed_top, start_left, displayed_bottom);
-        gradient.addColorStop(0.02, 'rgba(75, 180, 179, 0.16)');
-        gradient.addColorStop(0.98, 'rgba(75, 180, 179, 0.00)');
+        gradient.addColorStop(0.02, gradient_color.intensive);
+        gradient.addColorStop(0.98, gradient_color.blurred);
     }
 
     ctx.fillStyle = gradient;

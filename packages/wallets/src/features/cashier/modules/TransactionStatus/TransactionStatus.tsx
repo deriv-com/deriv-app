@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { Divider, WalletText } from '../../../../components/Base';
-import { Loader } from '../../../../components/Loader';
 import { WalletsTransactionStatusLoader } from '../../../../components';
 import Warning from '../../../../public/images/warning.svg';
 import { THooks } from '../../../../types';

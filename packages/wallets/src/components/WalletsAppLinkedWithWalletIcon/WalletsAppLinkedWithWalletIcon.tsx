@@ -12,7 +12,10 @@ type TAppIconProps = {
 
 const WalletsAppLinkedWithWalletIcon = ({ appIcon, currency, size = 'medium', walletIcon }: TAppIconProps) => {
     return (
-        <div className={`wallets-app-linked-with-wallet-icon wallets-app-linked-with-wallet-icon--${size}`}>
+        <div
+            className={`wallets-app-linked-with-wallet-icon wallets-app-linked-with-wallet-icon--${size}`}
+            data-testid='wallets-app-linked-with-wallet-icon'
+        >
             {/* App Icon */}
             <div className='wallets-app-linked-with-wallet-icon__app-icon'>
                 <WalletBaseIcon icon={appIcon} />

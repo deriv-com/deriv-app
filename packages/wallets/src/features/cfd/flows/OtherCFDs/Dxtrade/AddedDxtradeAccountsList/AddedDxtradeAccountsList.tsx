@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useDxtradeAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../../components';
 import { WalletButton } from '../../../../../../components/Base';
+import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/derivx.svg';
 import './AddedDxtradeAccountsList.scss';
 
@@ -13,7 +14,12 @@ const AddedDxtradeAccountsList: React.FC = () => {
     return (
         <TradingAccountCard
             leading={() => (
-                <div className='wallets-available-derivx__icon'>
+                <div
+                    className='wallets-available-derivx__icon'
+                    onClick={() => {
+                        window.open(getStaticUrl('/derivx'));
+                    }}
+                >
                     <DerivX />
                 </div>
             )}

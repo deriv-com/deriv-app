@@ -15,3 +15,10 @@ export const POO_STATUSES = {
     REJECTED: 'rejected',
     VERIFIED: 'verified',
 };
+
+export const CARD_NUMBER = {
+    MAX_LENGTH: 19,
+    MIN_LENGTH: 16,
+};
+
+export const MAX_FILE_SIZE = 8000; // 8MB

@@ -186,3 +186,6 @@ export const flatten = <T extends Array<unknown>>(arr: T) => [].concat(...arr);
 
 export const isServerError = (error: unknown): error is TServerError =>
     typeof error === 'object' && error !== null && 'code' in error;
+
+export const isSpecialPaymentMethod = (payment_method_icon: string) =>
+    ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(icon => icon === payment_method_icon);

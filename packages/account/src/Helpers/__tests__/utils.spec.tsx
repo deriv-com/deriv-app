@@ -10,6 +10,7 @@ import {
     isFieldImmutable,
     preventEmptyClipboardPaste,
     shouldShowIdentityInformation,
+    isSpecialPaymentMethod,
 } from '../utils';
 
 describe('generatePlaceholderText', () => {
@@ -226,5 +227,23 @@ describe('isDocumentNumberValid', () => {
         };
         const errorMessage = isDocumentNumberValid('08123456F753', mock_document_type);
         expect(errorMessage).toBeUndefined();
+    });
+});
+
+describe('isSpecialPaymentMethod', () => {
+    it('should return false if payment method icon is IcCreditCard', () => {
+        expect(isSpecialPaymentMethod('IcCreditCard')).toBeFalsy();
+    });
+
+    it('should return true if payment method icon is IcOnlineNaira', () => {
+        expect(isSpecialPaymentMethod('IcOnlineNaira')).toBeTruthy();
+    });
+
+    it('should return true if payment method icon is IcAstroPayLight', () => {
+        expect(isSpecialPaymentMethod('IcAstroPayLight')).toBeTruthy();
+    });
+
+    it('should return true if payment method icon is IcAstroPayDark', () => {
+        expect(isSpecialPaymentMethod('IcAstroPayDark')).toBeTruthy();
     });
 });

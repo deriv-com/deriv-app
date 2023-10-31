@@ -18,7 +18,6 @@ type TCardProps = {
 const ExpansionIcon = ({ is_open }: { is_open: boolean }) => (
     <Icon
         icon='IcChevronUpBold'
-        size={16}
         className={classNames('proof-of-ownership__card-item-icon', {
             'proof-of-ownership__card-item-icon--invert': !is_open,
         })}

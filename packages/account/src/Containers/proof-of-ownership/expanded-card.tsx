@@ -2,11 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { Input, Text } from '@deriv/components';
+import { hasInvalidCharacters } from '@deriv/shared';
 import { IDENTIFIER_TYPES } from '../../Constants/poo-identifier';
+import { isSpecialPaymentMethod } from '../../Helpers/utils';
 import FileUploader from './file-uploader';
 import { TPaymentMethod, TPaymentMethodInfo, TProofOfOwnershipFormValue } from '../../Types';
 import ExampleLink from './example-link';
-import { hasInvalidCharacters } from '@deriv/shared';
 
 type TExpandedCardProps = {
     card_details: TPaymentMethodInfo;
@@ -59,9 +60,6 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
         return formatted_id.replace(/(\w{4})/g, '$1 ').trim();
     };
 
-    const isSpecialPM = (pm_icon: string) =>
-        ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(ic => ic === pm_icon);
-
     return (
         <div>
             {card_details?.instructions?.map(instruction => (
@@ -84,7 +82,7 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
                                 className='proof-of-ownership__card-open-inputs'
                                 key={`${item.payment_method}-${item.id}`}
                             >
-                                {card_details?.input_label && isSpecialPM(card_details?.icon) && (
+                                {card_details?.input_label && isSpecialPaymentMethod(card_details?.icon) && (
                                     <div className='proof-of-ownership__card-open-inputs-field'>
                                         <Input
                                             label={card_details?.input_label}
@@ -118,7 +116,7 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
                                 )}
                                 {controls_to_show.map(i => (
                                     <React.Fragment key={`${item?.id}-${i}`}>
-                                        {card_details?.input_label && !isSpecialPM(card_details?.icon) && (
+                                        {card_details?.input_label && !isSpecialPaymentMethod(card_details?.icon) && (
                                             <div className='proof-of-ownership__card-open-inputs-field'>
                                                 <Input
                                                     label={card_details?.input_label}

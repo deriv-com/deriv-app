@@ -10,7 +10,7 @@ import './DxtradeEnterPasswordModal.scss';
 const DxtradeEnterPasswordModal = () => {
     const history = useHistory();
     const [password, setPassword] = useState('');
-    const { isSuccess, mutate } = useCreateOtherCFDAccount();
+    const { isLoading, isSuccess, mutate } = useCreateOtherCFDAccount();
     const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { hide } = useModal();
@@ -61,6 +61,7 @@ const DxtradeEnterPasswordModal = () => {
             {!isSuccess && (
                 <CreatePassword
                     icon={<DxTradePasswordIcon />}
+                    isLoading={isLoading}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
                     password={password}

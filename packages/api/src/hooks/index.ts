@@ -24,6 +24,7 @@ export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDerivezAccountsList } from './useDerivezAccountsList';
 export { default as useDerivezServiceToken } from './useDerivezServiceToken';
 export { default as useDxtradeAccountsList } from './useDxtradeAccountsList';
+export { default as useDynamicLeverage } from './useDynamicLeverage';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
 export { default as useLandingCompany } from './useLandingCompany';
 export { default as useMT5AccountsList } from './useMT5AccountsList';

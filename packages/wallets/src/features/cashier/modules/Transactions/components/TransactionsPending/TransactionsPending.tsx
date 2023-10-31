@@ -14,7 +14,7 @@ type TProps = {
 };
 
 const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
-    const { data: transactions, isLoading, resetData, subscribe, unsubscribe } = useCryptoTransactions();
+    const { data: transactions, isLoading, isSubscribed, resetData, subscribe, unsubscribe } = useCryptoTransactions();
 
     useEffect(() => {
         resetData();
@@ -23,7 +23,7 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
         return () => unsubscribe();
     }, [filter, resetData, subscribe, unsubscribe]);
 
-    if (!transactions && isLoading) return <Loader />;
+    if (!isSubscribed || isLoading) return <Loader />;
 
     if (!transactions) return <TransactionsNoDataState />;
 

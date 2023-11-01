@@ -24,7 +24,7 @@ export const MarketDetails = {
 } as const;
 
 export const PlatformToTitleMapper: Record<TPlatforms.All, string> = {
-    ctrader: 'cTrader',
+    ctrader: 'Deriv cTrader',
     derivez: 'Deriv EZ',
     dxtrade: 'Deriv X',
     mt5: 'Deriv MT5',

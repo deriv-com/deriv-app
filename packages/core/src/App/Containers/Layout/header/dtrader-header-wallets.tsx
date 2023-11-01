@@ -73,17 +73,6 @@ const MenuRight = observer(() => {
     const active_account = accounts?.[loginid ?? ''];
     const currency = active_account?.currency ?? '';
 
-    // console.log(
-    //     'accounts = , ',
-    //     accounts,
-    //     // ', account_list = ',
-    //     // account_list,
-    //     ', wallet_list = ',
-    //     wallet_list
-    //     // ', active_account = ',
-    //     // active_account
-    // );
-
     return (
         <div
             className={classNames('header__menu-right', {

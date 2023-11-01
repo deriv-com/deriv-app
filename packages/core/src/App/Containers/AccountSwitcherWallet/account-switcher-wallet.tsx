@@ -1,20 +1,22 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
-import { useWalletAccountsList } from '@deriv/hooks';
+// import { useWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
 import './account-switcher-wallet.scss';
+import { observer, useStore } from '@deriv/stores';
 
 type TAccountSwitcherWalletProps = {
     is_visible: boolean;
     toggle: (value: boolean) => void;
 };
 
-export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWalletProps) => {
-    const { data: wallets } = useWalletAccountsList();
-    const dtrade_account_wallets = React.useMemo(() => wallets?.filter(wallet => wallet.dtrade_loginid), [wallets]);
+export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountSwitcherWalletProps) => {
+    const { client } = useStore();
+    const { wallet_list } = client;
+    const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
     const history = useHistory();
 
@@ -31,7 +33,7 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
 
     const handleTradersHubRedirect = async () => {
         closeAccountsDialog();
-        history.push(routes.traders_hub);
+        history.push(routes.wallets);
     };
 
     return (
@@ -67,4 +69,4 @@ export const AccountSwitcherWallet = ({ is_visible, toggle }: TAccountSwitcherWa
             />
         </div>
     );
-};
+});

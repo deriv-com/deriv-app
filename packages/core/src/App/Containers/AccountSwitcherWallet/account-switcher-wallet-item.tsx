@@ -1,16 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
 import { AppLinkedWithWalletIcon, Text } from '@deriv/components';
-// import { useActiveAccount, useWalletAccountsList } from '@deriv/hooks';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
+import { TStores } from '@deriv/stores/types';
 import { Localize } from '@deriv/translations';
+import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
 import './account-switcher-wallet-item.scss';
 
 type TAccountSwitcherWalletItemProps = {
-    // account: ReturnType<typeof useWalletAccountsList>['data'][number];
-    account: any;
+    account: TStores['client']['wallet_list'][number];
     closeAccountsDialog: () => void;
     show_badge?: boolean;
 };
@@ -19,28 +18,26 @@ export const AccountSwitcherWalletItem = observer(
     ({ closeAccountsDialog, account, show_badge = false }: TAccountSwitcherWalletItemProps) => {
         const {
             currency,
-            currency_config,
             dtrade_loginid,
             dtrade_balance,
             gradients,
             icons,
-            is_active,
             is_virtual,
             landing_company_name,
             linked_to,
+            icon_type,
+            loginid,
         } = account;
 
         const {
             ui: { is_dark_mode_on },
-            client: { switchAccount },
+            client: { switchAccount, loginid: active_loginid },
         } = useStore();
-
-        const active_account = {} as any;
 
         const theme = is_dark_mode_on ? 'dark' : 'light';
         const app_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
-        const icon_type = is_virtual ? 'demo' : currency_config?.type;
-        const is_selected = is_active || linked_to?.some(account => account.loginid === active_account?.loginid);
+        const is_active = loginid === active_loginid;
+        const is_selected = is_active || linked_to?.some(account => account.loginid === active_loginid);
 
         const onAccountSwitch = async () => {
             closeAccountsDialog();
@@ -59,9 +56,9 @@ export const AccountSwitcherWalletItem = observer(
                 <div>
                     <AppLinkedWithWalletIcon
                         app_icon={app_icon}
-                        gradient_class={gradients.card[theme]}
+                        gradient_class={gradients?.card[theme] ?? ''}
                         type={icon_type}
-                        wallet_icon={icons[theme]}
+                        wallet_icon={icons?.[theme] ?? ''}
                         hide_watermark
                     />
                 </div>
@@ -73,17 +70,14 @@ export const AccountSwitcherWalletItem = observer(
                         {is_virtual ? (
                             <Localize i18n_default_text='Demo Wallet' />
                         ) : (
-                            <Localize
-                                i18n_default_text='{{currency}} Wallet'
-                                values={{ currency: currency_config?.display_code }}
-                            />
+                            <Localize i18n_default_text='{{currency}} Wallet' values={{ currency }} />
                         )}
                     </Text>
                     <Text size='xs' weight='bold'>
-                        {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency_config?.display_code}`}
+                        {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency}`}
                     </Text>
                 </div>
-                {show_badge && <WalletBadge is_demo={is_virtual} label={landing_company_name} />}
+                {show_badge && <WalletBadge is_demo={Boolean(is_virtual)} label={landing_company_name} />}
             </div>
         );
     }

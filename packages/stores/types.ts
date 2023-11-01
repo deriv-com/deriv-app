@@ -185,9 +185,8 @@ type TWalletList = {
     dtrade_balance?: number;
     email?: string;
     excluded_until?: string;
-    gradient_card_class?: string;
-    gradient_header_class?: string;
-    icon?: string;
+    gradients?: Record<'card' | 'header', Record<'light' | 'dark', string>>;
+    icons?: Record<'light' | 'dark', string>;
     icon_type?: 'demo' | 'fiat' | 'crypto';
     is_virtual?: boolean;
     is_disabled?: boolean;

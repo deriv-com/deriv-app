@@ -75,6 +75,7 @@ const MobileInfoIcon = ({ currency, is_virtual }: Partial<TMobileInfoIcon>) => (
 const DesktopInfoIcons = observer(({ wallet_account, active_account, show_badge = false }: TDesktopInfoIcons) => {
     const { ui } = useStore();
     const { is_dark_mode_on } = ui;
+    const theme = is_dark_mode_on ? 'dark' : 'light';
 
     return (
         <div className='acc-info__wallets-container'>
@@ -84,9 +85,9 @@ const DesktopInfoIcons = observer(({ wallet_account, active_account, show_badge 
                 data_testid='dt_ic_wallet_options'
             />
             <WalletIcon
-                icon={wallet_account?.icon ?? ''}
+                icon={wallet_account?.icons?.[theme] ?? ''}
                 type={wallet_account?.icon_type}
-                gradient_class={wallet_account?.gradient_card_class}
+                gradient_class={wallet_account?.gradients?.card[theme]}
                 size={'small'}
                 has_bg
                 hide_watermark
@@ -112,13 +113,10 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     const { switchAccount, is_logged_in, loginid, accounts, wallet_list, linked_wallets_accounts } = client;
     const { is_mobile, account_switcher_disabled_message, disableApp, enableApp } = ui;
 
-    const active_account = {
-        ...accounts?.[loginid ?? ''],
-        loginid,
-    };
+    const active_account = accounts?.[loginid ?? ''];
     const active_wallet = wallet_list?.find(wallet => wallet.loginid === loginid);
 
-    let linked_dtrade_trading_account_loginid = active_account?.loginid;
+    let linked_dtrade_trading_account_loginid = loginid;
 
     if (active_wallet) {
         // get 'dtrade' loginid account linked to the current wallet
@@ -126,10 +124,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
             active_wallet.dtrade_loginid || linked_wallets_accounts.dtrade?.[0]?.loginid;
 
         // switch to dtrade account
-        if (
-            linked_dtrade_trading_account_loginid &&
-            linked_dtrade_trading_account_loginid !== active_account?.loginid
-        ) {
+        if (linked_dtrade_trading_account_loginid && linked_dtrade_trading_account_loginid !== loginid) {
             switchAccount(linked_dtrade_trading_account_loginid);
         }
     }

@@ -27,7 +27,6 @@ import {
     getAppId,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
-import { getWalletCurrencyIcon } from '@deriv/utils';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
@@ -619,6 +618,61 @@ export default class ClientStore extends BaseStore {
     }
 
     get wallet_list() {
+        const currency_to_icon_mapper = {
+            Demo: {
+                dark: 'IcWalletDerivDemoDark',
+                light: 'IcWalletDerivDemoLight',
+            },
+            USD: {
+                dark: 'IcWalletCurrencyUsd',
+                light: 'IcWalletCurrencyUsd',
+            },
+            EUR: {
+                dark: 'IcWalletCurrencyEur',
+                light: 'IcWalletCurrencyEur',
+            },
+            AUD: {
+                dark: 'IcWalletCurrencyAud',
+                light: 'IcWalletCurrencyAud',
+            },
+            GBP: {
+                dark: 'IcWalletCurrencyGbp',
+                light: 'IcWalletCurrencyGbp',
+            },
+            BTC: {
+                dark: 'IcWalletBitcoinDark',
+                light: 'IcWalletBitcoinLight',
+            },
+            ETH: {
+                dark: 'IcWalletEthereumDark',
+                light: 'IcWalletEthereumLight',
+            },
+            USDT: {
+                dark: 'IcWalletTetherDark',
+                light: 'IcWalletTetherLight',
+            },
+            eUSDT: {
+                dark: 'IcWalletTetherDark',
+                light: 'IcWalletTetherLight',
+            },
+            tUSDT: {
+                dark: 'IcWalletTetherDark',
+                light: 'IcWalletTetherLight',
+            },
+            UST: {
+                dark: 'IcWalletTetherDark',
+                light: 'IcWalletTetherLight',
+            },
+            LTC: {
+                dark: 'IcWalletLiteCoinDark',
+                light: 'IcWalletLiteCoinLight',
+            },
+            USDC: {
+                dark: 'IcWalletUsdCoinDark',
+                light: 'IcWalletUsdCoinLight',
+            },
+        };
+
         return this.all_loginids
             .filter(id => this.getAccount(id)?.account_category === 'wallet')
             .map(id => {
@@ -627,10 +681,7 @@ export default class ClientStore extends BaseStore {
                 const currency = account.currency;
                 const is_disabled = Boolean(account.is_disabled);
                 const is_virtual = Boolean(account.is_virtual);
-                const icon = getWalletCurrencyIcon(
-                    account.is_virtual ? 'demo' : account.currency,
-                    this.root_store.ui.is_dark_mode_on
-                );
+
                 const fiat_or_crypto = this.is_crypto(currency) ? 'crypto' : 'fiat';
                 const icon_type = is_virtual ? 'demo' : fiat_or_crypto;
                 const landing_company_name = account.landing_company_name?.replace('maltainvest', 'malta');
@@ -639,25 +690,33 @@ export default class ClientStore extends BaseStore {
                 const dtrade_balance = this.accounts?.[dtrade_loginid]?.balance;
 
                 const wallet_currency_type = is_virtual ? 'Demo' : currency || '';
-                const wallet_gradient_class_name = `${wallet_currency_type.toLowerCase()}-bg${
-                    this.root_store.ui.is_dark_mode_on ? '--dark' : ''
-                }`;
-                const gradient_header_class = `wallet-header__${wallet_gradient_class_name}`;
-                const gradient_card_class = `wallet-card__${wallet_gradient_class_name}`;
+                const icons = currency_to_icon_mapper[wallet_currency_type];
+
+                const gradients = {
+                    /** The gradient class name for the wallet header background. */
+                    header: {
+                        dark: `wallet-header__${wallet_currency_type.toLowerCase()}-bg--dark`,
+                        light: `wallet-header__${wallet_currency_type.toLowerCase()}-bg`,
+                    },
+                    /** The gradient class name for the wallet card background. */
+                    card: {
+                        dark: `wallet-card__${wallet_currency_type.toLowerCase()}-bg--dark`,
+                        light: `wallet-card__${wallet_currency_type.toLowerCase()}-bg`,
+                    },
+                };
 
                 return {
                     ...account,
                     dtrade_loginid,
                     dtrade_balance,
-                    icon,
+                    icons,
                     icon_type,
                     is_disabled,
                     is_virtual,
                     is_malta_wallet,
                     landing_company_name,
                     loginid,
-                    gradient_header_class,
-                    gradient_card_class,
+                    gradients,
                 };
             });
     }

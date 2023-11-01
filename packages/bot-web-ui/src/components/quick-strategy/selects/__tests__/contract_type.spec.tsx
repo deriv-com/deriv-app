@@ -59,7 +59,67 @@ window.Blockly = {
     },
 };
 
-describe('<ContractType />', () => {
+describe('<ContractType /> Responsive', () => {
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+
+    beforeEach(() => {
+        const mock_store = mockStore({
+            ui: {
+                is_mobile: true,
+            },
+        });
+        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
+        const mock_onSubmit = jest.fn();
+        const initial_value = {
+            durationtype: 1,
+            symbol: 'R_100',
+            tradetype: 'callput',
+            type: '',
+        };
+
+        wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock_store}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
+                    <Formik
+                        initialValues={initial_value}
+                        validationSchema={Yup.object().shape({
+                            duration_value: Yup.number().min(1, 'Minimum value should be more than 0'),
+                        })}
+                        onSubmit={mock_onSubmit}
+                    >
+                        {children}
+                    </Formik>
+                </DBotStoreProvider>
+            </StoreProvider>
+        );
+    });
+
+    it('should render ContractTypes', async () => {
+        const { container } = render(<ContractType name='type' />, {
+            wrapper,
+        });
+        await waitFor(() => {
+            expect(container).toBeInTheDocument();
+        });
+    });
+
+    it('should select item from tabs', async () => {
+        render(<ContractType name='type' />, {
+            wrapper,
+        });
+        const tabs = screen.getByTestId('dt-qs-contract-types');
+        userEvent.click(tabs);
+        await waitFor(() => {
+            const option_element = screen.getByText('RISE');
+            userEvent.click(option_element);
+        });
+        // eslint-disable-next-line testing-library/no-node-access
+        const active = screen.getByText('RISE')?.parentElement;
+        expect(active).toHaveClass('qs__form__field__list__item--active');
+    });
+});
+
+describe('<ContractType /> Desktop', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
     beforeEach(() => {

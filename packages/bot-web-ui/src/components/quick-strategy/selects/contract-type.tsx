@@ -65,7 +65,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
                     const selected_item = list?.find(item => item.value === field.value);
                     if (is_mobile) {
                         return (
-                            <ul className='qs__form__field__list'>
+                            <ul className='qs__form__field__list' data-testid='dt-qs-contract-types'>
                                 {list.map(item => {
                                     const is_active = selected_item?.value === item.value;
                                     return (

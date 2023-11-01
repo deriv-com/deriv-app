@@ -38,6 +38,8 @@ const Success: React.FC<TSuccessProps> = ({
             ? PlatformToTitleMapper[platform]
             : MarketTypeToTitleMapper[marketType];
 
+    const marketTitlePrefix = platform === 'mt5' ? PlatformToTitleMapper.mt5 : '';
+
     return (
         <div className='wallets-success'>
             <WalletGradientBackground
@@ -58,7 +60,7 @@ const Success: React.FC<TSuccessProps> = ({
                     platform={platform}
                 />
                 <WalletText size='2xs'>
-                    MT5 {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
+                    {marketTitlePrefix} {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
                 </WalletText>
                 <WalletText color='primary' size='2xs'>
                     {data?.currency} Wallet

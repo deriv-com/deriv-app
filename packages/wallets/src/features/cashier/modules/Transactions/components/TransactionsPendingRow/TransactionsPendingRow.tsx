@@ -167,8 +167,8 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
             <div className={classNames('wallets-transactions-pending-row__transaction-status')}>
                 <div
                     className={classNames(
-                        'wallets-transactions-pending-row__transaction-status__dot',
-                        `wallets-transactions-pending-row__transaction-status__dot--${transaction.status_code
+                        'wallets-transactions-pending-row__transaction-status-dot',
+                        `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
                             .toLowerCase()
                             .replace('_', '-')}`
                     )}

@@ -22,6 +22,41 @@ type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type
         | { transaction_type: 'withdrawal'; status_code: TWithdrawalStatus }
     );
 
+const getFormattedConfirmations = (transaction: TModifiedTransaction) => {
+    switch (transaction.status_code) {
+        case 'CONFIRMED':
+            return 'Confirmed';
+        case 'ERROR':
+            return 'NA';
+        default:
+            return transaction.confirmations || 'Pending';
+    }
+};
+
+const getStatusName = (status_code: TModifiedTransaction['status_code']) => {
+    switch (status_code) {
+        case 'CONFIRMED':
+        case 'SENT':
+            return 'Successful';
+        case 'ERROR':
+        case 'REJECTED':
+        case 'REVERTED':
+            return 'Unsuccessful';
+        case 'PENDING':
+        case 'PERFORMING_BLOCKCHAIN_TXN':
+        case 'PROCESSING':
+        case 'REVERTING':
+        case 'VERIFIED':
+            return 'In process';
+        case 'CANCELLED':
+            return 'Cancelled';
+        case 'LOCKED':
+            return 'In review';
+        default:
+            return '';
+    }
+};
+
 /** A custom hook that returns the list of pending crypto transactions for the current user. */
 const useCryptoTransactions = () => {
     const { subscribe, data, ...rest } = useSubscription('cashier_payments');
@@ -71,41 +106,6 @@ const useCryptoTransactions = () => {
     const modified_transactions = useMemo(() => {
         if (!transactions || !transactions.length) return undefined;
 
-        const getFormattedConfirmations = (transaction: TModifiedTransaction) => {
-            switch (transaction.status_code) {
-                case 'CONFIRMED':
-                    return 'Confirmed';
-                case 'ERROR':
-                    return 'NA';
-                default:
-                    return transaction.confirmations || 'Pending';
-            }
-        };
-
-        const getStatusName = (transaction: TModifiedTransaction) => {
-            switch (transaction.status_code) {
-                case 'CONFIRMED':
-                case 'SENT':
-                    return 'Successful';
-                case 'ERROR':
-                case 'REJECTED':
-                case 'REVERTED':
-                    return 'Unsuccessful';
-                case 'PENDING':
-                case 'PERFORMING_BLOCKCHAIN_TXN':
-                case 'PROCESSING':
-                case 'REVERTING':
-                case 'VERIFIED':
-                    return 'In process';
-                case 'CANCELLED':
-                    return 'Cancelled';
-                case 'LOCKED':
-                    return 'In review';
-                default:
-                    return '';
-            }
-        };
-
         return transactions.map(transaction => ({
             ...transaction,
             /** Formatted amount */
@@ -129,7 +129,7 @@ const useCryptoTransactions = () => {
             /** Determine if the transaction is a withdrawal or not. */
             is_withdrawal: transaction.transaction_type === 'withdrawal',
             /** Status name */
-            status_name: getStatusName(transaction),
+            status_name: getStatusName(transaction.status_code),
         }));
     }, [display_code, fractional_digits, preferred_language, transactions]);
 

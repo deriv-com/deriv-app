@@ -20,7 +20,6 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     const { switchAccount, loginid } = client;
     const is_active = wallet_account.is_selected;
     const mf_account_status = useMFAccountStatus();
-    // const [is_loading, setIsLoading] = useState(false);
 
     const { is_demo, currency, gradient_card_class, currency_config, icon, balance, landing_company_name } =
         wallet_account;
@@ -28,17 +27,8 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     const wallet_buttons = getWalletHeaderButtons(wallet_account.is_demo);
 
     const onArrowClickHandler = async () => {
-        // setIsLoading(true);
         if (loginid !== wallet_account.loginid) await switchAccount(wallet_account.loginid);
-        // setIsLoading(false);
     };
-
-    /** @todo: uncomment this when we have a skeleton loader for wallet header*/
-    // useEffect(() => {
-    //     if (is_authorize) {
-    //         setIsLoading(false);
-    //     }
-    // }, [is_authorize]);}
 
     return (
         <div className={classNames('wallet-header', { 'wallet-header__demo': is_demo })}>

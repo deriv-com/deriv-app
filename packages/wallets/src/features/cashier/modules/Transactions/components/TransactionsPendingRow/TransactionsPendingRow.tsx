@@ -10,68 +10,6 @@ import { THooks } from '../../../../../../types';
 import { CancelTransactionModal } from '../../../../components/CancelTransactionModal';
 import './TransactionsPendingRow.scss';
 
-const statusCodeMapper = {
-    deposit: {
-        CONFIRMED: {
-            description: 'Your deposit is successful.',
-            name: 'Successful',
-        },
-        ERROR: {
-            description:
-                'Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.',
-            name: 'Unsuccessful',
-        },
-        PENDING: {
-            description: 'We’ve received your request and are waiting for more blockchain confirmations.',
-            name: 'In process',
-        },
-    },
-    withdrawal: {
-        CANCELLED: {
-            description: 'You’ve cancelled your withdrawal request.',
-            name: 'Cancelled',
-        },
-        ERROR: {
-            description:
-                'Your withdrawal is unsuccessful due to an error on the blockchain. Please contact us via live chat for more info.',
-            name: 'Unsuccessful',
-        },
-        LOCKED: {
-            description:
-                "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
-            name: 'In review',
-        },
-        PERFORMING_BLOCKCHAIN_TXN: {
-            description: 'We’re sending your request to the blockchain.',
-            name: 'In process',
-        },
-        PROCESSING: {
-            description: 'We’re awaiting confirmation from the blockchain.',
-            name: 'In process',
-        },
-        REJECTED: {
-            description: "Your withdrawal is unsuccessful. We've sent you an email with more information.",
-            name: 'Unsuccessful',
-        },
-        REVERTED: {
-            description: "Your withdrawal is unsuccessful. We've sent you an email with more information.",
-            name: 'Unsuccessful',
-        },
-        REVERTING: {
-            description: "We're processing your withdrawal.",
-            name: 'In process',
-        },
-        SENT: {
-            description: 'Your withdrawal is successful.',
-            name: 'Successful',
-        },
-        VERIFIED: {
-            description: 'We’re processing your withdrawal.',
-            name: 'In process',
-        },
-    },
-};
-
 type TProps = {
     transaction: THooks.CryptoTransactions;
 };
@@ -79,13 +17,6 @@ type TProps = {
 const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     const { data } = useActiveWalletAccount();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
-    const formattedStatus = useMemo(() => {
-        if (transaction.transaction_type === 'deposit') {
-            return statusCodeMapper.deposit[transaction.status_code];
-        } else if (transaction.transaction_type === 'withdrawal') {
-            return statusCodeMapper.withdrawal[transaction.status_code];
-        }
-    }, [transaction]);
     const { show } = useModal();
 
     return (
@@ -174,7 +105,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     )}
                 />
                 <WalletText color='general' size='sm'>
-                    {formattedStatus?.name}
+                    {transaction.status_name}
                 </WalletText>
                 {transaction.is_valid_to_cancel && (
                     <button

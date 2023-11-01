@@ -26,7 +26,7 @@ const QSInput: React.FC<TQSInput> = ({ type = 'text', fullwidth = false, attache
         <Field name={name} key={name} id={name}>
             {({ field, meta }: FieldProps) => {
                 const { error, touched } = meta;
-                const has_error = error;
+                const has_error = error && touched;
                 return (
                     <div
                         className={classNames('qs__form__field', {

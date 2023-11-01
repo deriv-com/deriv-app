@@ -36,13 +36,14 @@ const AccountTransferNote = ({
 }: TAccountTransferNoteProps) => {
     const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
     const platform_name_mt5 = getPlatformSettings('mt5').name;
+    const platform_name_ctrader = getPlatformSettings('ctrader').name;
 
     const getTransferFeeNote = useCallback(() => {
         if (transfer_fee === 0) {
             return is_dxtrade_allowed ? (
                 <Localize
-                    i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
-                    values={{ platform_name_dxtrade, platform_name_mt5 }}
+                    i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts, between your Deriv fiat and {{platform_name_ctrader}} accounts, and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
+                    values={{ platform_name_dxtrade, platform_name_mt5, platform_name_ctrader }}
                 />
             ) : (
                 <Localize
@@ -112,6 +113,7 @@ const AccountTransferNote = ({
         minimum_fee,
         platform_name_dxtrade,
         platform_name_mt5,
+        platform_name_ctrader,
         transfer_fee,
     ]);
 
@@ -121,19 +123,21 @@ const AccountTransferNote = ({
                 <React.Fragment>
                     <AccountTransferBullet>
                         <Localize
-                            i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, and {{platform_name_dxtrade}} accounts.'
-                            values={{ platform_name_dxtrade, platform_name_mt5 }}
+                            i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, {{platform_name_ctrader}}, and {{platform_name_dxtrade}} accounts.'
+                            values={{ platform_name_dxtrade, platform_name_mt5, platform_name_ctrader }}
                         />
                     </AccountTransferBullet>
                     <AccountTransferBullet>
                         <Localize
-                            i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and {{platform_name_dxtrade}} accounts.'
+                            i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts, up to {{ allowed_ctrader }} transfers between your Deriv and {{platform_name_ctrader}} accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and {{platform_name_dxtrade}} accounts.'
                             values={{
                                 allowed_internal: allowed_transfers_count?.internal,
                                 allowed_mt5: allowed_transfers_count?.mt5,
                                 allowed_dxtrade: allowed_transfers_count?.dxtrade,
+                                allowed_ctrader: allowed_transfers_count?.ctrader,
                                 platform_name_dxtrade,
                                 platform_name_mt5,
+                                platform_name_ctrader,
                             }}
                         />
                     </AccountTransferBullet>
@@ -163,10 +167,12 @@ const AccountTransferNote = ({
     }, [
         allowed_transfers_count?.dxtrade,
         allowed_transfers_count?.internal,
+        allowed_transfers_count?.ctrader,
         allowed_transfers_count?.mt5,
         is_dxtrade_allowed,
         platform_name_dxtrade,
         platform_name_mt5,
+        platform_name_ctrader,
     ]);
 
     return (

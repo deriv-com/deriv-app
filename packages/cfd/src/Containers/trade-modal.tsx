@@ -2,11 +2,10 @@ import React from 'react';
 
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Money, Text } from '@deriv/components';
-
+import { getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
 import { TCFDDashboardContainer, TCFDsPlatformType, TTradingPlatformAccounts } from 'Components/props.types';
-
-import { CFD_PLATFORMS, getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 import PasswordBox from '../Components/passwordbox';
 import SpecBox from '../Components/specbox';
 import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from '../Helpers/config';
@@ -56,13 +55,11 @@ const PlatformIconsAndDescriptions = (
                         ]}
                     />
                 </Text>
-                {platform !== CFD_PLATFORMS.CTRADER
-                    ? (mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
-                          <Text color='less-prominent' size='xxxs' line_height='xxxs'>
-                              {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
-                          </Text>
-                      )
-                    : ''}
+                {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
+                    <Text color='less-prominent' size='xxxs' line_height='xxxs'>
+                        {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
+                    </Text>
+                )}
             </div>
         </React.Fragment>
     );
@@ -189,7 +186,7 @@ const TradeModal = ({
                                         const account_type = getCFDAccountKey({
                                             market_type: mt5_trade_account.market_type,
                                             sub_account_type: mt5_trade_account.sub_account_type,
-                                            platform: CFD_PLATFORMS.DMT5,
+                                            platform: CFD_PLATFORMS.MT5,
                                             shortcode: mt5_trade_account.landing_company_short,
                                         });
                                         onPasswordManager(

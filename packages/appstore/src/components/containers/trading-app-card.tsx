@@ -43,6 +43,7 @@ const TradingAppCard = ({
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
     wallet_account,
+    is_new = false,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
     const {
         common,
@@ -64,15 +65,6 @@ const TradingAppCard = ({
     const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
         app_desc: description,
         link_to: '',
-    };
-
-    const appDescription = () => {
-        if (
-            platform !== CFD_PLATFORMS.CTRADER ||
-            (platform === CFD_PLATFORMS.CTRADER && action_type !== 'multi-action')
-        ) {
-            return app_desc;
-        }
     };
 
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
@@ -136,17 +128,29 @@ const TradingAppCard = ({
                             </Text>
                         )}
                     </div>
-                    <Text
-                        className='title'
-                        size='xs'
-                        line_height='s'
-                        weight='bold'
-                        color={action_type === 'trade' ? 'prominent' : 'general'}
-                    >
-                        {!is_real_account && !sub_title && !is_deriv_platform ? `${name} ${demo_label}` : name}
-                    </Text>
+                    <div>
+                        <Text
+                            className='title'
+                            size='xs'
+                            line_height='s'
+                            weight='bold'
+                            color={action_type === 'trade' ? 'prominent' : 'general'}
+                        >
+                            {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
+                        </Text>
+                        {is_new && (
+                            <Text
+                                className='trading-app-card__details__new'
+                                weight='bolder'
+                                size='xxxs'
+                                line_height='s'
+                            >
+                                {localize('NEW!')}
+                            </Text>
+                        )}
+                    </div>
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
-                        {appDescription()}
+                        {app_desc}
                     </Text>
                     {mt5_acc_auth_status && (
                         <StatusBadge

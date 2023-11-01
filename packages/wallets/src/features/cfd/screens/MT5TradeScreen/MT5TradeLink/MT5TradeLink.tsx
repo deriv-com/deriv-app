@@ -54,7 +54,7 @@ const PlatformToLabelIconMapper = {
 
 type TMT5TradeLinkProps = {
     app?: keyof typeof AppToContentMapper;
-    isDemo?: boolean;
+    isDemo?: THooks.ActiveWalletAccount['is_virtual'];
     platform?: TPlatforms.All;
     webtraderUrl?: THooks.MT5AccountsList['webtrader_url'];
 };

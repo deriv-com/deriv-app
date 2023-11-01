@@ -73,6 +73,9 @@
 }
 
 .account-form {
+    &__poi-inline-message {
+        margin-bottom: 1.6rem;
+    }
     &__poi-confirm-example {
         display: flex;
         flex-direction: column;

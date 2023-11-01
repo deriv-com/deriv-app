@@ -8,6 +8,7 @@ import {
     Checkbox,
     DesktopWrapper,
     Dropdown,
+    InlineMessage,
     MobileWrapper,
     Popover,
     RadioGroup,
@@ -30,7 +31,6 @@ const PersonalDetailsForm = props => {
         is_mf,
         is_svg,
         is_qualified_for_idv,
-        should_hide_helper_image,
         editable_fields = [],
         has_real_account,
         residence_list,
@@ -75,7 +75,7 @@ const PersonalDetailsForm = props => {
     };
 
     const getFieldHint = field_name =>
-        is_qualified_for_idv || is_rendered_for_onfido ? (
+        (is_svg && !is_mf) || is_rendered_for_onfido ? (
             <Localize
                 i18n_default_text={'Your {{ field_name }} as in your identity document'}
                 values={{ field_name }}
@@ -128,11 +128,10 @@ const PersonalDetailsForm = props => {
                     'account-form__poi-confirm-example': is_qualified_for_idv,
                 })}
             >
-                {(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image && (
-                    <InlineNoteWithIcon
-                        message={name_dob_clarification_message}
-                        font_size={isMobile() ? 'xxxs' : 'xs'}
-                    />
+                {(is_svg_only || is_rendered_for_onfido) && (
+                    <div className='account-form__poi-inline-message'>
+                        <InlineMessage message={name_dob_clarification_message} size='md' />
+                    </div>
                 )}
                 {is_qualified_for_poa && (
                     <InlineNoteWithIcon
@@ -142,7 +141,7 @@ const PersonalDetailsForm = props => {
                     />
                 )}
                 <FormBodySection
-                    has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
+                    has_side_note={is_svg_only || is_rendered_for_onfido}
                     side_note={<PoiNameDobExampleIcon />}
                     side_note_position='right'
                     type='image'
@@ -171,7 +170,7 @@ const PersonalDetailsForm = props => {
                                 </Text>
                             </div>
                         )}
-                        {!is_qualified_for_idv && !is_rendered_for_onfido && !is_qualified_for_poa && (
+                        {is_mf && !is_rendered_for_onfido && !is_qualified_for_poa && (
                             <FormSubHeader
                                 title={'salutation' in values ? localize('Title and name') : localize('Name')}
                             />
@@ -230,9 +229,7 @@ const PersonalDetailsForm = props => {
                                 data-testid='last_name'
                             />
                         )}
-                        {!is_qualified_for_idv && !is_rendered_for_onfido && !is_qualified_for_poa && (
-                            <FormSubHeader title={localize('Other details')} />
-                        )}
+                        {is_mf && !is_qualified_for_poa && <FormSubHeader title={localize('Other details')} />}
                         {'date_of_birth' in values && (
                             <DateOfBirthField
                                 name='date_of_birth'

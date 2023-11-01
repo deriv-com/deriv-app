@@ -101,7 +101,7 @@ export const IdvDocSubmitOnSignup = ({
             {({ errors, handleBlur, handleChange, isSubmitting, isValid, setFieldValue, touched, dirty, values }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
                     <section className='mt5-layout__container'>
-                        <FormSubHeader title={localize('Identity verification')} />
+                        <FormSubHeader title={localize('sdfIdentity verification')} />
                         <IDVForm
                             errors={errors}
                             touched={touched}

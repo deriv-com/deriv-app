@@ -932,7 +932,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                             onBlur={handleBlur}
                                                             warn={getWarningMessages(values).tax_identification_number}
                                                             error={errors.tax_identification_number}
-                                                            disabled={!isChangeableField('tax_identification_number')}
+                                                            // disabled={!isChangeableField('tax_identification_number')}
                                                             required
                                                         />
                                                     </fieldset>

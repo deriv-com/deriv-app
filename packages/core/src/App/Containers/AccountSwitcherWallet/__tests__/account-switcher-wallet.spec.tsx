@@ -38,7 +38,7 @@ describe('AccountSwitcherWalletComponent', () => {
         render(<AccountSwitcherWallet {...props} />, { wrapper: wrapper(mock) });
         expect(screen.getByText('Deriv Apps accounts')).toBeInTheDocument();
         expect(screen.getByText('AccountSwitcherWalletItem')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Looking for CFDs? Go to Trader’s hub' })).toBeInTheDocument();
+        expect(screen.getByText('Looking for CFDs? Go to Trader’s hub')).toBeInTheDocument();
     });
 
     it('should render list items based on the number of wallets', () => {
@@ -60,7 +60,7 @@ describe('AccountSwitcherWalletComponent', () => {
         const mock = mockStore({});
 
         render(<AccountSwitcherWallet {...props} />, { wrapper: wrapper(mock) });
-        const button = screen.getByRole('button');
+        const button = screen.getByTestId('dt_go_to_arrow');
         userEvent.click(button);
         expect(props.toggle).toHaveBeenCalledTimes(1);
     });

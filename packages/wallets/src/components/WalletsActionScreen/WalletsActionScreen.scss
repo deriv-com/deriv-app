@@ -4,10 +4,6 @@
     align-items: center;
     gap: 2.4rem;
 
-    @include mobile {
-        gap: 1.6rem;
-    }
-
     &__modal {
         padding: 2.4rem;
         border-radius: 0.8rem;

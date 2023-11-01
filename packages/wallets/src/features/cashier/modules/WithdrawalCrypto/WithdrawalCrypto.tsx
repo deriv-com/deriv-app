@@ -1,7 +1,7 @@
 import React from 'react';
 import { InlineMessage, WalletText, WalletTextField } from '../../../../components';
 import './WithdrawalCrypto.scss';
-import { WithdrawalCryptoPercentageSelector } from './components';
+import { WithdrawalCryptoAmountConverter, WithdrawalCryptoPercentageSelector } from './components';
 
 const WithdrawalCrypto = () => {
     return (
@@ -20,9 +20,10 @@ const WithdrawalCrypto = () => {
                 </InlineMessage>
             </div>
             <div className='wallets-withdrawal-crypto-address'>
-                <WalletTextField label='Your Bitcoin cryptocurrency wallet address' maxLength={588} />
+                <WalletTextField label='Your BTC Wallet address' />
             </div>
             <WithdrawalCryptoPercentageSelector />
+            <WithdrawalCryptoAmountConverter />
         </div>
     );
 };

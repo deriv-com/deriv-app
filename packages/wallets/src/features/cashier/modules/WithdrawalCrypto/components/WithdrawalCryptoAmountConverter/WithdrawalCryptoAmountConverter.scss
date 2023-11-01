@@ -1,0 +1,21 @@
+.wallets-withdrawal-crypto-amount-converter {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.4rem;
+
+    &__arrow {
+        height: 4rem;
+
+        @include mobile {
+            height: fit-content;
+        }
+    }
+
+    @include mobile {
+        flex-direction: column;
+        gap: 1.6rem;
+    }
+}

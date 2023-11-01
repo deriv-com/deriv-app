@@ -26,7 +26,7 @@ const WithdrawalCryptoPercentageSelector = () => {
                 </div>
                 <div className='wallets-withdrawal-crypto-percentage-selector__item'>
                     <WalletText as='div' size='sm'>
-                        100%
+                        All
                     </WalletText>
                     <div className='wallets-withdrawal-crypto-percentage-selector__button' />
                 </div>

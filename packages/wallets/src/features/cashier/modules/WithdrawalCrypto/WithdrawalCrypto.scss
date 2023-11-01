@@ -8,6 +8,11 @@
     @include mobile {
         gap: 1.6rem;
     }
+
+    & .wallets-textfield {
+        width: 100%;
+        max-width: none;
+    }
 }
 
 .wallets-withdrawal-crypto-disclaimer {

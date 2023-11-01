@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { ApiHelpers } from '@deriv/bot-skeleton';
@@ -34,11 +34,13 @@ type TSymbolSelect = {
 
 const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const { quick_strategy } = useDBotStore();
-    const { setValue } = quick_strategy;
     const {
-        ui: { is_mobile },
+        ui: { is_mobile, is_desktop },
     } = useStore();
+    const { setValue } = quick_strategy;
     const [active_symbols, setActiveSymbols] = React.useState([]);
+    const [is_input_started, setIsInputStarted] = useState(false);
+    const [input_value, setInputValue] = useState('');
     const { setFieldValue, values } = useFormikContext<TFormData>();
 
     React.useEffect(() => {
@@ -65,11 +67,30 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
         [active_symbols]
     );
 
+    const handleFocus = () => {
+        if (!is_input_started) {
+            setIsInputStarted(true);
+            setFieldValue('symbol', '');
+            setInputValue('');
+        }
+    };
+
+    const handleItemSelection = (item: TItem) => {
+        if (item) {
+            const { value } = item as TSymbol;
+            setFieldValue('symbol', value);
+            setValue('symbol', value);
+            setIsInputStarted(false);
+        }
+    };
+
     return (
         <div className={classNames('qs__form__field', { 'full-width': fullWidth })}>
             <Field name='symbol' key='asset' id='asset'>
                 {({ field: { value, ...rest_field } }: FieldProps) => {
                     const selected_symbol = symbols.find(symbol => symbol.value === value);
+                    setInputValue(selected_symbol?.text as string);
+
                     return (
                         <>
                             <Autocomplete
@@ -79,14 +100,15 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
                                 data-testid='qs_autocomplete_symbol'
                                 autoComplete='off'
                                 className='qs__autocomplete'
-                                value={selected_symbol?.text || ''}
+                                value={selected_symbol?.text || input_value}
                                 list_items={symbols}
-                                onItemSelection={(item: TItem) => {
-                                    if (item?.value) {
-                                        setFieldValue?.('symbol', (item as TSymbol)?.value as string);
-                                        setValue('symbol', (item as TSymbol)?.value as string);
-                                    }
-                                }}
+                                onItemSelection={handleItemSelection}
+                                onChange={
+                                    is_desktop
+                                        ? (e: React.ChangeEvent<HTMLSelectElement>) => setInputValue(e.target.value)
+                                        : false
+                                }
+                                onFocus={is_desktop ? handleFocus : false}
                                 leading_icon={<Icon icon={`IcUnderlying${selected_symbol?.value}`} size={24} />}
                             />
                         </>

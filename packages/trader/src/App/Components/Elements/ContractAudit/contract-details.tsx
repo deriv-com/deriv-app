@@ -6,6 +6,7 @@ import {
     getCancellationPrice,
     getCurrencyDisplayCode,
     getLocalizedBasis,
+    formatResetDuration,
     hasTwoBarriers,
     isAccumulatorContract,
     isEndedBeforeCancellationExpired,
@@ -65,7 +66,6 @@ const ContractDetails = ({
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
-        longcode,
         reset_time,
         underlying,
     } = contract_info;
@@ -80,15 +80,20 @@ const ContractDetails = ({
     const ticks_duration_text = isAccumulatorContract(contract_type)
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${ticks_label}`;
-    const additional_info =
-        isResetContract(contract_type) && longcode ? (
-            <Localize
-                i18n_default_text='The reset time is {{ reset_time }}'
-                values={{ reset_time: longcode.split(/or\s+([^\n.]+)/i)[1] }}
-            />
-        ) : (
-            ''
-        );
+
+    const additional_info = isResetContract(contract_type) ? (
+        <Localize
+            i18n_default_text='The reset time is {{ reset_time }}'
+            values={{
+                reset_time:
+                    Number(tick_count) > 0
+                        ? `${Math.floor(Number(tick_count) / 2)} ${ticks_label}`
+                        : formatResetDuration(contract_info),
+            }}
+        />
+    ) : (
+        ''
+    );
 
     const vanilla_payout_text = isVanillaFxContract(contract_type, underlying)
         ? getLocalizedBasis().payout_per_pip

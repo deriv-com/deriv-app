@@ -5,6 +5,7 @@ import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocuments } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
+import { AUTH_STATUS_CODES } from '../Constants/auth-status-codes';
 
 export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
     let error_message = null;
@@ -46,7 +47,13 @@ export const shouldShowIdentityInformation = ({
 }: TIDVSupportCheck) => {
     const country = residence_list.find(item => item.value === citizen);
     const maltainvest = real_account_signup_target === 'maltainvest';
-    const should_skip_idv = account_status?.status?.some((status: string) => status === 'skip_idv'); //status added by BE when idv should be skipped for the user
+    const identity = account_status?.authentication?.identity;
+    const is_onfido_verified = identity?.services?.onfido?.status === AUTH_STATUS_CODES.verified;
+    const is_manual_verified = identity?.services?.manual?.status === AUTH_STATUS_CODES.verified;
+    const is_identity_verified = identity?.status === AUTH_STATUS_CODES.verified;
+    const should_skip_idv =
+        ((is_onfido_verified || is_manual_verified) && is_identity_verified) ||
+        account_status?.status?.some((status: string) => status === 'skip_idv'); //status added by BE when idv should be skipped for the user
     return Boolean(
         !maltainvest && citizen && country?.identity?.services?.idv?.is_country_supported && !should_skip_idv
     );

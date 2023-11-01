@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import WalletBaseIcon from '../WalletBaseIcon';
+import WalletResponsiveSvg from '../WalletResponsiveSvg';
 
-describe('<WalletBaseIcon/>', () => {
+describe('<WalletResponsiveSvg/>', () => {
     it('render container and svg properly', () => {
-        render(<WalletBaseIcon icon='IcWalletOptionsLight' />);
+        render(<WalletResponsiveSvg icon='IcWalletOptionsLight' />);
 
         const divElement = screen.getByTestId('dt_wallet_icon');
 
@@ -15,7 +15,7 @@ describe('<WalletBaseIcon/>', () => {
     });
 
     it('renders svg in responsive manner', () => {
-        render(<WalletBaseIcon icon='IcWalletOptionsLight' />);
+        render(<WalletResponsiveSvg icon='IcWalletOptionsLight' />);
 
         const divElement = screen.getByTestId('dt_wallet_icon');
 
@@ -23,5 +23,11 @@ describe('<WalletBaseIcon/>', () => {
         const mockedSvgElement = divElement.querySelector('file-mock-stub');
 
         expect(mockedSvgElement).toHaveAttribute('preserveAspectRatio');
+    });
+
+    it('renders nothing when there is no svg provided', () => {
+        const { container } = render(<WalletResponsiveSvg icon='' />);
+
+        expect(container).toBeEmptyDOMElement();
     });
 });

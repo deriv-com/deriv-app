@@ -1,5 +1,5 @@
 import React from 'react';
-import { WalletBaseIcon } from '../WalletBaseIcon';
+import { WalletResponsiveSvg } from '../WalletResponsiveSvg';
 import './WalletsAppLinkedWithWalletIcon.scss';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 
@@ -18,13 +18,13 @@ const WalletsAppLinkedWithWalletIcon = ({ appIcon, currency, size = 'medium', wa
         >
             {/* App Icon */}
             <div className='wallets-app-linked-with-wallet-icon__app-icon'>
-                <WalletBaseIcon icon={appIcon} />
+                <WalletResponsiveSvg icon={appIcon} />
             </div>
 
             {/* Wallet Icon */}
             <div className='wallets-app-linked-with-wallet-icon__wallet-icon'>
                 <WalletGradientBackground currency={currency && currency.toUpperCase()}>
-                    <WalletBaseIcon
+                    <WalletResponsiveSvg
                         className='wallets-app-linked-with-wallet-icon__wallet-base-icon'
                         icon={walletIcon}
                     />

@@ -1,5 +1,5 @@
 import React, { ComponentType, SVGAttributes } from 'react';
-import './WalletBaseIcon.scss';
+import './WalletResponsiveSvg.scss';
 
 import IcWalletOptionsLight from '../../public/images/wallet/ic-wallet-options-light.svg';
 import IcWalletOptionsDark from '../../public/images/wallet/ic-wallet-options-dark.svg';
@@ -55,10 +55,10 @@ const ICONS: IconTypes = {
 
 type TWalletIconProps = {
     className?: string;
-    icon: string;
+    icon: keyof typeof ICONS;
 };
 
-const WalletBaseIcon = ({ className = '', icon }: TWalletIconProps) => {
+const WalletResponsiveSvg = ({ className = '', icon }: TWalletIconProps) => {
     const IconSvg: ComponentType<SVGAttributes<SVGElement>> = ICONS[icon];
 
     if (!IconSvg) {
@@ -66,10 +66,10 @@ const WalletBaseIcon = ({ className = '', icon }: TWalletIconProps) => {
     }
 
     return (
-        <div className={`wallets-base-icon ${className}`} data-testid='dt_wallet_icon'>
+        <div className={`wallets-responsive-svg ${className}`} data-testid='dt_wallet_icon'>
             <IconSvg preserveAspectRatio='xMidYMid meet' />
         </div>
     );
 };
 
-export default WalletBaseIcon;
+export default WalletResponsiveSvg;

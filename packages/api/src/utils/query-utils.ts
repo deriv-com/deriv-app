@@ -7,7 +7,7 @@ export const getQueryKeys = (name: string, props?: Record<string, unknown>) => {
     if (Object.keys(props).length === 0) return [name];
 
     const ordered_props = Object.keys(props)
-        .sort()
+        .sort((a, b) => a.localeCompare(b))
         .reduce((obj, key) => {
             obj[key] = props[key];
 

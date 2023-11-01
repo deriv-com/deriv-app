@@ -1,7 +1,4 @@
 .jurisdiction-modal {
-    &__header ~ .dc-mobile-dialog__content {
-        height: 100%;
-    }
     &__title {
         display: flex;
         gap: 1.6rem;
@@ -17,35 +14,44 @@
     &__content-wrapper {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        @include desktop {
+            overflow: auto;
+        }
         width: 100%;
-        height: 100%;
         position: absolute;
         backface-visibility: hidden;
         transition: transform 0.6s ease;
         transform: rotateY(0deg);
     }
-
+    &__scrollable-content {
+        @include desktop {
+            overflow: auto;
+            height: 69rem;
+        }
+    }
     &__footer-content {
         background-color: var(--general-main-1);
         @include mobile {
             position: sticky;
-            bottom: 0;
+            bottom: 7.2rem;
         }
     }
     &__footer-button {
         background-color: var(--general-main-1);
         @include mobile {
+            height: 7.2rem;
             position: sticky;
             bottom: 0;
-            width: 100%;
         }
     }
+
     &__wrapper {
-        @include desktop {
-            height: 76rem;
-            perspective: 100rem;
-            overflow: scroll;
+        height: 76rem;
+        perspective: 100rem;
+        overflow: scroll;
+
+        @include mobile {
+            height: calc(100vh - 4rem);
         }
     }
 
@@ -63,10 +69,6 @@
                 height: 70rem;
                 transform: rotateY(-180deg);
                 visibility: hidden;
-
-                @include mobile {
-                    height: 100%;
-                }
             }
         }
 
@@ -98,7 +100,7 @@
     }
 
     &__wrapper {
-        margin: 3rem 5rem 1rem;
+        margin: 4rem 6rem 2rem;
         display: flex;
         justify-content: center;
         gap: 1.6rem;
@@ -109,7 +111,7 @@
             flex-direction: column;
             align-items: center;
             overflow-y: scroll;
-            height: 100%;
+            height: 60%;
         }
     }
     &--selected {
@@ -179,6 +181,7 @@
         @include mobile {
             min-height: auto;
             width: 100%;
+            height: 100%;
         }
     }
 
@@ -214,7 +217,6 @@
         display: flex;
         justify-content: center;
         @include mobile {
-            margin-bottom: 1rem;
             padding: 0.8rem;
         }
     }
@@ -435,7 +437,6 @@
     &__maintenance {
         display: flex;
         padding-top: 1rem;
-        align-items: center;
 
         &-icon {
             padding-right: 0.5rem;
@@ -523,7 +524,6 @@
         &-description {
             display: flex;
             justify-content: center;
-            margin-top: 1.4rem;
         }
 
         &-app {
@@ -554,6 +554,11 @@
 
                     &:hover {
                         background-color: var(--button-secondary-hover);
+                    }
+                }
+                &-hide {
+                    @include mobile {
+                        display: none;
                     }
                 }
             }
@@ -643,6 +648,11 @@
                 align-items: center;
                 border: 1px solid var(--border-disabled);
                 border-radius: 5px;
+                &-hide {
+                    @include mobile {
+                        display: none;
+                    }
+                }
             }
         }
         &-text {
@@ -803,7 +813,7 @@
 
         @include mobile {
             grid-template-columns: 1fr;
-            margin: 0 6.5rem 3rem;
+            margin: 0 6.5rem;
         }
     }
 

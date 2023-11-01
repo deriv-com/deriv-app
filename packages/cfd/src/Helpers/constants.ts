@@ -8,7 +8,6 @@ const platformsText = (platform: TCFDsPlatformType) => {
     switch (platform) {
         case CFD_PLATFORMS.CTRADER:
             return 'cTrader';
-        case 'dxtrade':
         case CFD_PLATFORMS.DXTRADE:
             return 'X';
         default:
@@ -18,7 +17,6 @@ const platformsText = (platform: TCFDsPlatformType) => {
 
 const platformsIcons = (platform: TCFDsPlatformType) => {
     switch (platform) {
-        case 'dxtrade':
         case CFD_PLATFORMS.DXTRADE:
             return 'Dxtrade';
         case CFD_PLATFORMS.CTRADER:

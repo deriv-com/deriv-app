@@ -33,7 +33,6 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
 
     const QRCodeLinks = () => {
         switch (acc_type) {
-            case 'dxtrade':
             case CFD_PLATFORMS.DXTRADE:
                 return 'https://onelink.to/grmtyx';
             case CFD_PLATFORMS.CTRADER:
@@ -80,7 +79,6 @@ export const PlatformsDesktopDownload = ({
                     is_demo ? CATEGORY.DEMO : CATEGORY.REAL,
                     ctrader_tokens && ctrader_tokens[is_demo ? CATEGORY.DEMO : CATEGORY.REAL]
                 );
-            case 'dxtrade':
             case CFD_PLATFORMS.DXTRADE:
                 return getDXTradeWebTerminalLink(
                     is_demo ? 'demo' : 'real',

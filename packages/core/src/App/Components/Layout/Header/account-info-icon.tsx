@@ -9,7 +9,7 @@ type TAccountInfoIcon = {
 const AccountInfoIcon = ({ is_virtual, currency }: TAccountInfoIcon) => (
     <Icon
         data_testid='dt_icon'
-        icon={`IcCurrency-${is_virtual ? 'virtual' : currency || 'Unknown'}`}
+        icon={`IcCurrency-${is_virtual ? 'virtual' : currency ?? 'Unknown'}`}
         className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
         size={24}
     />

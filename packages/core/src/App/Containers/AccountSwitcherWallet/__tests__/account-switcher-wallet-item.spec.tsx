@@ -4,13 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { AccountSwitcherWalletItem } from '../account-switcher-wallet-item';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-}));
-
 const account: React.ComponentProps<typeof AccountSwitcherWalletItem>['account'] = {
     currency: 'USD',
-    currency_config: { type: 'fiat', name: 'US dollar', display_code: 'USD' },
     dtrade_balance: 100,
     dtrade_loginid: 'CR007',
     gradients: {
@@ -18,23 +13,14 @@ const account: React.ComponentProps<typeof AccountSwitcherWalletItem>['account']
         header: { dark: 'wallet-header__usd-bg--dark', light: 'wallet-header__usd-bg' },
     },
     icons: { dark: 'icons__dark', light: 'icons__light' },
-    is_active: true,
     is_virtual: false,
     landing_company_name: 'svg',
-    linked_to: [{ loginid: 'CR007' }],
-    wallet_currency_type: '',
+    linked_to: [{ loginid: 'CR007', platform: 'dtrade' }],
     is_malta_wallet: false,
-    is_demo: false,
-    is_selected: false,
-    gradient_header_class: 'wallet-header__usd-bg',
-    gradient_card_class: 'wallet-card__usd-bg',
-    icon: '',
     balance: 0,
     created_at: undefined,
     excluded_until: undefined,
     is_disabled: false,
-    is_trading: false,
-    is_wallet: false,
     loginid: '',
 };
 
@@ -101,16 +87,8 @@ describe('AccountSwitcherWalletItem', () => {
 
     it('should call switchAccount when clicked not selected', async () => {
         const switchAccount = jest.fn();
-        const store = mockStore({ client: { switchAccount } });
-        const tempProps = {
-            ...props,
-            account: {
-                ...account,
-                is_active: false,
-                linked_to: [{ loginid: 'CR008' }],
-            },
-        };
-        render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
+        const store = mockStore({ client: { switchAccount, loginid: 'CR008' } });
+        render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
         userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
         expect(switchAccount).toHaveBeenCalledWith('CR007');
         expect(props.closeAccountsDialog).toHaveBeenCalled();

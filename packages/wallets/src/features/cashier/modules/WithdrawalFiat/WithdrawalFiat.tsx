@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useWithdrawalFiatAddress } from '@deriv/api';
+import { useCashierFiatAddress } from '@deriv/api';
 import { Loader } from '../../../../components';
 import { WithdrawalVerificationModule } from '../WithdrawalVerification';
 import './WithdrawalFiat.scss';
 
 const WithdrawalFiat = () => {
-    const verification_code = sessionStorage.getItem('verification_code');
-    const { data: iframeUrl, mutate } = useWithdrawalFiatAddress(verification_code!);
-    const [isLoading, setIsLoading] = useState(true);
+    const verificationCode = sessionStorage.getItem('verification_code');
+    const { data: iframeUrl, isLoading, mutate } = useCashierFiatAddress();
 
     useEffect(() => {
-        setIsLoading(true);
-    }, [iframeUrl]);
+        if (iframeUrl) sessionStorage.removeItem('verification_code');
+    }, [iframeUrl, isLoading]);
 
     useEffect(() => {
-        mutate();
+        if (verificationCode)
+            mutate('withdraw', {
+                verification_code: verificationCode,
+            });
     }, [mutate]);
 
-    if (verification_code || iframeUrl) {
+    if (verificationCode || iframeUrl) {
         return (
             <React.Fragment>
                 {isLoading && <Loader />}
@@ -25,7 +27,6 @@ const WithdrawalFiat = () => {
                     <iframe
                         className='wallets-withdrawal-fiat__iframe'
                         key={iframeUrl}
-                        onLoad={() => setIsLoading(false)}
                         src={iframeUrl}
                         style={{ display: isLoading ? 'none' : 'block' }}
                     />

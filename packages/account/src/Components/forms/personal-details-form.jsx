@@ -141,7 +141,7 @@ const PersonalDetailsForm = props => {
                     />
                 )}
                 <FormBodySection
-                    has_side_note={is_svg_only || is_rendered_for_onfido}
+                    has_side_note={is_svg_only || is_rendered_for_onfido || is_qualified_for_idv}
                     side_note={<PoiNameDobExampleIcon />}
                     side_note_position='right'
                     type='image'

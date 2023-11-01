@@ -4,13 +4,20 @@
     display: flex;
     justify-content: center;
 
+    @include mobile {
+        flex-direction: column;
+    }
+
     &__main-content {
         display: flex;
         flex-direction: column;
         padding-top: 2.4rem;
-        justify-content: center;
         gap: 2.4rem;
         position: relative;
+
+        @include mobile {
+            padding: 0;
+        }
     }
 
     @include mobile {

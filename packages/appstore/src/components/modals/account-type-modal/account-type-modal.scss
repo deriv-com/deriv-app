@@ -59,13 +59,4 @@
         justify-content: center;
         margin-bottom: 1rem;
     }
-
-    &__footer-button {
-        background-color: var(--general-main-1);
-        @include mobile {
-            position: sticky;
-            bottom: 0;
-            width: 100%;
-        }
-    }
 }

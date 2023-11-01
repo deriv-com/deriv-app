@@ -209,40 +209,45 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                     synthetic_available_accounts={synthetic_available_accounts}
                     all_market_type_available_accounts={all_market_type_available_accounts}
                 />
-            </div>
-            <div className={classNames('jurisdiction-modal__footer-content', `cfd-jurisdiction-card__footer-wrapper`)}>
-                <div className={`cfd-jurisdiction-card--${account_type.type}__footnotes-container`}>
-                    <JurisdictionModalFootNote
-                        account_status={account_status}
-                        account_type={account_type.type}
-                        card_classname={`cfd-jurisdiction-card--${account_type.type}`}
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
-                        should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
-                    />
-                    <JurisdictionCheckBox
-                        is_checked={checked}
-                        onCheck={() => setChecked(!checked)}
-                        class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
-                        should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
-                    />
+                <div
+                    className={classNames(
+                        'jurisdiction-modal__footer-content',
+                        `cfd-jurisdiction-card--${account_type.type}__footer-wrapper`
+                    )}
+                >
+                    <div className={`cfd-jurisdiction-card--${account_type.type}__footnotes-container`}>
+                        <JurisdictionModalFootNote
+                            account_status={account_status}
+                            account_type={account_type.type}
+                            card_classname={`cfd-jurisdiction-card--${account_type.type}`}
+                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                            should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                            should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
+                        />
+                        <JurisdictionCheckBox
+                            is_checked={checked}
+                            onCheck={() => setChecked(!checked)}
+                            class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
+                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                            should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                            should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
+                        />
+                    </div>
                 </div>
-                <Modal.Footer className='jurisdiction-modal__footer-button' has_separator>
-                    <Button
-                        disabled={isNextButtonDisabled()}
-                        primary
-                        style={{ width: isMobile() ? '100%' : 'unset' }}
-                        onClick={() => {
-                            toggleJurisdictionModal();
-                            onSelectRealAccount();
-                        }}
-                    >
-                        {localize('Next')}
-                    </Button>
-                </Modal.Footer>
             </div>
+            <Modal.Footer className='jurisdiction-modal__footer-button' has_separator>
+                <Button
+                    disabled={isNextButtonDisabled()}
+                    primary
+                    style={{ width: isMobile() ? '100%' : 'unset' }}
+                    onClick={() => {
+                        toggleJurisdictionModal();
+                        onSelectRealAccount();
+                    }}
+                >
+                    {localize('Next')}
+                </Button>
+            </Modal.Footer>
         </div>
     );
 });

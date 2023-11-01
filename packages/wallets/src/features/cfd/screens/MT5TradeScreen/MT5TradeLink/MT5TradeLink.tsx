@@ -65,7 +65,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
     const { data: derivezToken } = useDerivezServiceToken();
 
     const onClickWebTerminal = () => {
-        const { isStaging, isTestLink } = getPlatformFromUrl(window.location.hostname);
+        const { isStaging, isTestLink } = getPlatformFromUrl();
         let url;
         switch (platform) {
             case 'dxtrade':

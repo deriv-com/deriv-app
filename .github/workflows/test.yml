@@ -1,11 +1,9 @@
-name: Deriv App Test Workflow
+name: Deriv App PR Test Workflow
 on:
   pull_request:
     branches:
     - master
-  push:
-    branches:
-      - master
+
 jobs:
   build_and_test:
     name: Build And Test

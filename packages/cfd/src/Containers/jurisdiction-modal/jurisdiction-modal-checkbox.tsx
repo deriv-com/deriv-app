@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, StaticUrl, Text } from '@deriv/components';
-import { isMobile, Jurisdiction } from '@deriv/shared';
+import { is_mobile, Jurisdiction } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TJurisdictionCheckBoxProps } from '../props.types';
 
@@ -35,7 +35,7 @@ const JurisdictionCheckBox = ({
     };
 
     const getCheckboxLabel = () => (
-        <Text as='p' size={isMobile() ? 'xxs' : 'xs'} line_height='xs'>
+        <Text as='p' size={is_mobile ? 'xxs' : 'xs'} line_height='xs'>
             <Localize
                 i18n_default_text="I confirm and accept {{company}} 's <0>Terms and Conditions</0>"
                 values={{ company: dbvi_company_names[jurisdiction_selected_shortcode].name }}

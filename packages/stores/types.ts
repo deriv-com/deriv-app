@@ -181,11 +181,17 @@ type TWalletList = {
     country?: string;
     created_at?: number;
     currency?: string;
+    dtrade_loginid?: string;
+    dtrade_balance?: number;
     email?: string;
     excluded_until?: string;
+    gradient_card_class?: string;
+    gradient_header_class?: string;
     icon?: string;
+    icon_type?: 'demo' | 'fiat' | 'crypto';
     is_virtual?: boolean;
     is_disabled?: boolean;
+    is_malta_wallet?: boolean;
     loginid?: string;
     landing_company_name?: string;
     landing_company_shortcode?: string;
@@ -359,6 +365,15 @@ type TCountryStandpoint = {
     is_united_kingdom: boolean;
 };
 
+type TLinkedAccount = {
+    loginid?: string;
+    platform?: 'derivez' | 'dtrade' | 'dwallet' | 'dxtrade' | 'mt5';
+};
+
+type TLinkedWalletsAccounts = {
+    [key in Exclude<TLinkedAccount['platform'], undefined>]: TLinkedAccount[];
+};
+
 type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
     account_type: string;
@@ -372,6 +387,7 @@ type TClientStore = {
     };
     account_list: TAccountsList;
     wallet_list: TWalletList;
+    linked_wallets_accounts: TLinkedWalletsAccounts;
     has_wallet: boolean;
     account_status: GetAccountStatus;
     available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;

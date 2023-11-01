@@ -623,31 +623,62 @@ export default class ClientStore extends BaseStore {
             .filter(id => this.getAccount(id)?.account_category === 'wallet')
             .map(id => {
                 const account = this.getAccount(id);
-                // const currency = account.currency;
+                const loginid = id;
+                const currency = account.currency;
                 const is_disabled = Boolean(account.is_disabled);
                 const is_virtual = Boolean(account.is_virtual);
                 const icon = getWalletCurrencyIcon(
                     account.is_virtual ? 'demo' : account.currency,
                     this.root_store.ui.is_dark_mode_on
                 );
-                const loginid = id;
+                const fiat_or_crypto = this.is_crypto(currency) ? 'crypto' : 'fiat';
+                const icon_type = is_virtual ? 'demo' : fiat_or_crypto;
                 const landing_company_name = account.landing_company_name?.replace('maltainvest', 'malta');
                 const is_malta_wallet = landing_company_name === 'malta';
+                const dtrade_loginid = account?.linked_to?.find(account => account?.platform === 'dtrade')?.loginid;
+                const dtrade_balance = this.accounts?.[dtrade_loginid]?.balance;
+
+                const wallet_currency_type = is_virtual ? 'Demo' : currency || '';
+                const wallet_gradient_class_name = `${wallet_currency_type.toLowerCase()}-bg${
+                    this.root_store.ui.is_dark_mode_on ? '--dark' : ''
+                }`;
+                const gradient_header_class = `wallet-header__${wallet_gradient_class_name}`;
+                const gradient_card_class = `wallet-card__${wallet_gradient_class_name}`;
 
                 return {
                     ...account,
+                    dtrade_loginid,
+                    dtrade_balance,
                     icon,
+                    icon_type,
                     is_disabled,
                     is_virtual,
                     is_malta_wallet,
                     landing_company_name,
                     loginid,
+                    gradient_header_class,
+                    gradient_card_class,
                 };
             });
     }
 
     get has_wallet() {
         return this.all_loginids.some(id => this.getAccount(id)?.account_category === 'wallet');
+    }
+
+    get linked_wallets_accounts() {
+        const linked_accounts = { derivez: [], dtrade: [], dwallet: [], dxtrade: [], mt5: [] };
+
+        this.wallet_list?.forEach(account => {
+            const linked = account.linked_to;
+
+            linked?.forEach(linked_to_account => {
+                if (linked_to_account?.platform && linked_to_account?.loginid)
+                    linked_accounts[linked_to_account.platform].push(linked_to_account);
+            });
+        });
+
+        return linked_accounts;
     }
 
     get has_real_mt5_login() {

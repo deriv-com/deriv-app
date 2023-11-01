@@ -9,10 +9,10 @@ import {
 } from '@deriv/api';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
+import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import useDevice from '../../../../hooks/useDevice';
-import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
+import { MarketDetails, PlatformToTitleMapper } from '../../constants';
 import { CreatePassword, EnterPassword, Success } from '../../screens';
 
 type TProps = {
@@ -36,7 +36,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const marketTypeTitle =
         marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
             ? PlatformToTitleMapper[platform]
-            : MarketTypeToTitleMapper[marketType];
+            : MarketDetails[marketType].title;
 
     const onSubmit = async () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;

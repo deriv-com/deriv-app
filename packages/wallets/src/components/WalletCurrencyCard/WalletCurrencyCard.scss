@@ -5,19 +5,19 @@
     flex-shrink: 0;
     border-radius: 0.4rem;
 
-    &-lg {
+    &--lg {
         min-width: 12.2rem;
         min-height: 7.5rem;
         padding: 1rem 1.6rem;
     }
 
-    &-md {
+    &--md {
         width: 6.4rem;
         height: 4rem;
         padding: 0.5rem 0.8rem;
     }
 
-    &-sm {
+    &--sm {
         width: 4rem;
         height: 2.4rem;
         padding: 0.2rem 0.4rem;

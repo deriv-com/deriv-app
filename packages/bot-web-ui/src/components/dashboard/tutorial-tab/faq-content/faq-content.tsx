@@ -60,6 +60,13 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
         }, 5);
     };
 
+    const handleKeyboardEvent = e => {
+        const enterKeyCodes = ['Enter', 'Return', 13];
+        if (enterKeyCodes.includes(e.key) || enterKeyCodes.includes(e.keyCode)) {
+            handleAccordionClick();
+        }
+    };
+
     React.useEffect(() => {
         return () => {
             if (timer_id.current) clearTimeout(timer_id.current);
@@ -96,7 +103,11 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
                                 {localize('FAQ')}
                             </Text>
                         )}
-                        <div data-testid='id-accordion-test' onClick={handleAccordionClick}>
+                        <div
+                            data-testid='id-accordion-test'
+                            onClick={handleAccordionClick}
+                            onKeyDown={handleKeyboardEvent}
+                        >
                             <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
                         </div>
                     </>

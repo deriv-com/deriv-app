@@ -13,7 +13,7 @@ const TutorialsTabDesktop = observer(() => {
     const { is_mobile } = ui;
     const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue, active_tab } = dashboard;
     const search = faq_search_value?.toLowerCase();
-    const { guide_tab_content, faq_tab_content, filtered_list } = useFilterTutorialsTab(
+    const { guide_tab_content, faq_tab_content, filtered_tab_list } = useFilterTutorialsTab(
         search,
         active_tab,
         active_tab_tutorials
@@ -22,7 +22,7 @@ const TutorialsTabDesktop = observer(() => {
         {
             guide_tab_content,
             faq_tab_content,
-            filtered_list,
+            filtered_tab_list,
         },
         is_mobile,
         search
@@ -40,49 +40,42 @@ const TutorialsTabDesktop = observer(() => {
     };
 
     return (
-        <>
-            <div className='dc-tabs__wrapper'>
-                <div className='dc-tabs__wrapper__group'>
-                    <Icon
-                        className='search-icon'
-                        data_testid='id-test-search'
-                        width='1.6rem'
-                        height='1.6rem'
-                        icon='IcSearch'
-                    />
-                    <input
-                        ref={input_ref}
-                        data-testid='id-test-input-search'
-                        type='text'
-                        placeholder={localize('Search')}
-                        className='dc-tabs__wrapper__group__search-input'
-                        onChange={onSearch}
-                        onFocus={onFocusSearch}
-                        value={faq_search_value}
-                    />
-                    <Icon
-                        className='close-icon'
-                        data_testid='id-test-close'
-                        width='1.6rem'
-                        height='1.6rem'
-                        icon='IcDbotClose'
-                        onClick={onCloseHandleSearch}
-                    />
-                </div>
-                <Tabs
-                    className='tutorials'
-                    active_index={active_tab_tutorials}
-                    onTabItemClick={setActiveTabTutorial}
-                    top
-                >
-                    {tutorial_tabs.map(({ label, content }) => (
-                        <div label={label} key={label}>
-                            {content}
-                        </div>
-                    ))}
-                </Tabs>
+        <div className='dc-tabs__wrapper'>
+            <div className='dc-tabs__wrapper__group'>
+                <Icon
+                    className='search-icon'
+                    data_testid='id-test-search'
+                    width='1.6rem'
+                    height='1.6rem'
+                    icon='IcSearch'
+                />
+                <input
+                    ref={input_ref}
+                    data-testid='id-test-input-search'
+                    type='text'
+                    placeholder={localize('Search')}
+                    className='dc-tabs__wrapper__group__search-input'
+                    onChange={onSearch}
+                    onFocus={onFocusSearch}
+                    value={faq_search_value}
+                />
+                <Icon
+                    className='close-icon'
+                    data_testid='id-test-close'
+                    width='1.6rem'
+                    height='1.6rem'
+                    icon='IcDbotClose'
+                    onClick={onCloseHandleSearch}
+                />
             </div>
-        </>
+            <Tabs className='tutorials' active_index={active_tab_tutorials} onTabItemClick={setActiveTabTutorial} top>
+                {tutorial_tabs.map(({ label, content }) => (
+                    <div label={label} key={label}>
+                        {content}
+                    </div>
+                ))}
+            </Tabs>
+        </div>
     );
 });
 

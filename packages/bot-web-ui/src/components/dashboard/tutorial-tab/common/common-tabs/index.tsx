@@ -37,7 +37,7 @@ const SearchTab = React.memo(
 SearchTab.displayName = 'SearchTab';
 
 export const generateTutorialTabs = (sidebar_content, is_mobile, search) => {
-    const { guide_tab_content, faq_tab_content, filtered_list } = sidebar_content;
+    const { guide_tab_content, faq_tab_content, filtered_tab_list } = sidebar_content;
 
     const tutorial_tabs = [
         { label: localize('Guide'), content: <GuideTab guideList={guide_tab_content} /> },
@@ -46,7 +46,7 @@ export const generateTutorialTabs = (sidebar_content, is_mobile, search) => {
             label: localize('Search'),
             content: search && (
                 <SearchTab
-                    filteredList={filtered_list}
+                    filteredList={filtered_tab_list}
                     guideList={guide_tab_content}
                     faqList={faq_tab_content}
                     isMobile={is_mobile}

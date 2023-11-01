@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Dialog, Icon, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { removeKeyValue } from 'Utils/settings';
@@ -23,6 +22,8 @@ type TGuideContent = {
 };
 
 const GuideContent = observer(({ guide_list }: TGuideContent) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { dashboard } = useDBotStore();
     const {
         dialog_options,
@@ -34,7 +35,6 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
         setActiveTour,
         setShowMobileTourDialog,
     } = dashboard;
-    const is_mobile = isMobile();
 
     const triggerTour = (type: string) => {
         if (type === 'OnBoard') {
@@ -50,21 +50,20 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
         }
     };
 
+    const handleKeyboardEvent = e => {
+        const enterKeyCodes = ['Enter', 'Return', 13];
+        if (enterKeyCodes.includes(e.key) || enterKeyCodes.includes(e.keyCode)) {
+            triggerTour('OnBoard');
+        }
+    };
+
     return React.useMemo(
         () => (
             <div className='tutorials-wrap'>
                 {guide_list?.length > 0 && (
-                    <>
-                        <Text
-                            align='center'
-                            weight='bold'
-                            color='prominent'
-                            line_height='s'
-                            size={is_mobile ? 'xxs' : 's'}
-                        >
-                            {localize('Step-by-step guides')}
-                        </Text>
-                    </>
+                    <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
+                        {localize('Step-by-step guides')}
+                    </Text>
                 )}
                 <div className='tutorials-wrap__group'>
                     {guide_list?.map(({ id, content, src, type, subtype }) => {
@@ -74,6 +73,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                                     className='tutorials-wrap__group__cards tutorials-wrap--tour'
                                     key={id}
                                     onClick={() => triggerTour(subtype)}
+                                    onKeyDown={handleKeyboardEvent}
                                 >
                                     <div
                                         className={classNames('tutorials-wrap__placeholder__tours', {

@@ -32,7 +32,7 @@ describe('<TutorialsTabDesktop />', () => {
                 </DBotStoreProvider>
             </StoreProvider>
         );
-        const { container } = render(
+        render(
             <BrowserRouter>
                 <TutorialsTabMobile />
             </BrowserRouter>,

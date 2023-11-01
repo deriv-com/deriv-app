@@ -41,3 +41,4 @@ export { default as useTransferBetweenAccounts } from './useTransferBetweenAccou
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
 export { default as useWalletMigration } from './useWalletMigration';
+export { default as useDxtradeServiceToken } from './useDxtradeServiceToken';

@@ -4,7 +4,7 @@ import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
 import { TPlatforms } from '../../types';
 
-export const MarketDetails = {
+export const MarketTypeDetails = {
     all: {
         description:
             'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs',

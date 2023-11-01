@@ -5,7 +5,7 @@ import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
-import { MarketDetails } from '../../../constants';
+import { MarketTypeDetails } from '../../../constants';
 import './AddedMT5AccountsList.scss';
 
 type TProps = {
@@ -25,7 +25,7 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
     };
     return (
         <div className='wallets-added-mt5__icon' onClick={() => IconToLink()}>
-            {MarketDetails[account.market_type || 'all'].icon}
+            {MarketTypeDetails[account.market_type || 'all'].icon}
         </div>
     );
 };
@@ -33,7 +33,7 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
-    const { title } = MarketDetails[account.market_type || 'all'];
+    const { title } = MarketTypeDetails[account.market_type || 'all'];
 
     return (
         <TradingAccountCard

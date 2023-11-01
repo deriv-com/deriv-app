@@ -5,7 +5,7 @@ import { WalletGradientBackground } from '../../../../components/WalletGradientB
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import useDevice from '../../../../hooks/useDevice';
 import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
-import { MarketDetails, PlatformToTitleMapper } from '../../constants';
+import { MarketTypeDetails, PlatformToTitleMapper } from '../../constants';
 import './Success.scss';
 
 type TSuccessProps = {
@@ -42,7 +42,7 @@ const Success: React.FC<TSuccessProps> = ({
         if (isMarketTypeAll && isPlatformValid) {
             marketTypeTitle = PlatformToTitleMapper[platform];
         } else {
-            marketTypeTitle = MarketDetails[marketType].title;
+            marketTypeTitle = MarketTypeDetails[marketType].title;
         }
     }
 

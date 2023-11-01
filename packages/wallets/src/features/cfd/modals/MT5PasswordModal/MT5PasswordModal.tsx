@@ -12,7 +12,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { MarketDetails, PlatformToTitleMapper } from '../../constants';
+import { MarketTypeDetails, PlatformToTitleMapper } from '../../constants';
 import { CreatePassword, EnterPassword, Success } from '../../screens';
 
 type TProps = {
@@ -37,7 +37,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const marketTypeTitle =
         marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
             ? PlatformToTitleMapper[platform]
-            : MarketDetails[marketType].title;
+            : MarketTypeDetails[marketType].title;
 
     const onSubmit = async () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;

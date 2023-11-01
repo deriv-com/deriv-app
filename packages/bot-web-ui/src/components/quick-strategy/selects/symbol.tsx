@@ -5,6 +5,7 @@ import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { useStore } from '@deriv/stores';
 import { TFormData } from '../types';
 
 type TSymbol = {
@@ -34,6 +35,9 @@ type TSymbolSelect = {
 const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const { quick_strategy } = useDBotStore();
     const { setValue } = quick_strategy;
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const [active_symbols, setActiveSymbols] = React.useState([]);
     const { setFieldValue, values } = useFormikContext<TFormData>();
 
@@ -70,6 +74,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
                         <>
                             <Autocomplete
                                 {...rest_field}
+                                readOnly={is_mobile}
                                 inputMode='none'
                                 data-testid='qs_autocomplete_symbol'
                                 autoComplete='off'

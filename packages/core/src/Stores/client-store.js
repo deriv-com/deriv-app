@@ -244,6 +244,7 @@ export default class ClientStore extends BaseStore {
             current_landing_company: computed,
             account_list: computed,
             wallet_list: computed,
+            linked_wallets_accounts: computed,
             has_wallet: computed,
             has_real_mt5_login: computed,
             has_real_dxtrade_login: computed,

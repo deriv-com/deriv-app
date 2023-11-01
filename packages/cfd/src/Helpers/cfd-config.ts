@@ -1,7 +1,6 @@
 export const CFD_PLATFORMS = {
     MT5: 'mt5',
     DXTRADE: 'dxtrade',
-    DERIVEZ: 'derivez',
     CTRADER: 'ctrader',
     CFD: 'cfd',
     CFDS: 'CFDs',

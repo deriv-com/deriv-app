@@ -12,7 +12,6 @@ export const MarketTypeToTitleMapper: Record<TMarketTypes.All, string> = {
 
 export const PlatformToTitleMapper: Record<TPlatforms.All, string> = {
     ctrader: 'Deriv cTrader',
-    derivez: 'Deriv EZ',
     dxtrade: 'Deriv X',
     mt5: 'Deriv MT5',
 };

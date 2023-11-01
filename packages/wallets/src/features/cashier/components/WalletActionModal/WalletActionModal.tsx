@@ -10,13 +10,19 @@ type TWalletActionModal = {
         text: string;
     }[];
     description: string;
+    hideCloseButton?: React.ComponentProps<typeof ModalWrapper>['hideCloseButton'];
     title: string;
 };
 
-const WalletActionModal: React.FC<TWalletActionModal> = ({ actionButtonsOptions, description, title }) => {
+const WalletActionModal: React.FC<TWalletActionModal> = ({
+    actionButtonsOptions,
+    description,
+    hideCloseButton = false,
+    title,
+}) => {
     const { isMobile } = useDevice();
     return (
-        <ModalWrapper hideCloseButton>
+        <ModalWrapper hideCloseButton={hideCloseButton}>
             <div className='wallets-action-modal'>
                 <WalletText lineHeight={isMobile ? 'md' : 'xl'} weight='bold'>
                     {title}
@@ -40,4 +46,5 @@ const WalletActionModal: React.FC<TWalletActionModal> = ({ actionButtonsOptions,
         </ModalWrapper>
     );
 };
+
 export default WalletActionModal;

@@ -1,12 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
-// import { useWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
-import './account-switcher-wallet.scss';
 import { observer, useStore } from '@deriv/stores';
+import './account-switcher-wallet.scss';
 
 type TAccountSwitcherWalletProps = {
     is_visible: boolean;

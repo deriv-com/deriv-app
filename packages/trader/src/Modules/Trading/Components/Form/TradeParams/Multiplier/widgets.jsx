@@ -89,7 +89,6 @@ const RadioGroupOptionsWidget = ({
             <div
                 className={classNames('mobile-widget mobile-widget__multiplier-options', {
                     'mobile-widget__label': should_show_new_label,
-                    'mobile-widget__wide': !tooltip_message,
                 })}
                 onClick={toggleModal}
             >
@@ -113,7 +112,13 @@ const RadioGroupOptionsWidget = ({
                     </span>
                 )}
                 {should_show_new_label && (
-                    <Text className='dc-dropdown__label--new' weight='bold' size='xxxs' line_height='s'>
+                    <Text
+                        className='dc-dropdown__label--new'
+                        weight='bold'
+                        size='xxxs'
+                        line_height='s'
+                        color='colored-background'
+                    >
                         <Localize i18n_default_text='NEW!' />
                     </Text>
                 )}

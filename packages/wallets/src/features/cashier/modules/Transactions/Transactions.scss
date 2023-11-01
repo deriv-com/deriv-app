@@ -1,7 +1,12 @@
 .wallets-transactions {
-    width: 70vw;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     &__header {
+        width: 100%;
+        max-width: 80rem;
         display: flex;
         gap: 16px;
         justify-content: flex-end;

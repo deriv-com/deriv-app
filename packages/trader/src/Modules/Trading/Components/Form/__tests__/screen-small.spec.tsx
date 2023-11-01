@@ -29,6 +29,7 @@ const default_mock_store = {
             is_trade_params_expanded: false,
             setIsTradeParamsExpanded: jest.fn(),
             take_profit: 'test',
+            last_digit: 9,
         },
     },
 };
@@ -99,6 +100,12 @@ describe('<ScreenSmall />', () => {
         expect(screen.getByText(/MobileWidget/i)).toBeInTheDocument();
         expect(screen.getByText(/Purchase/i)).toBeInTheDocument();
         expect(screen.queryByText(/TradeParamsLoader/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/TradeTypeTabs/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Digit: 9/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/LastDigitMobile/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/BarrierMobile/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/BarrierSelector/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Strike/i)).not.toBeInTheDocument();
     });
     it('should call function setIsTradeParamsExpanded if MobileWidget was toggled', () => {
         render(mockScreenSmall(mockStore(default_mock_store), default_mock_props));
@@ -116,6 +123,7 @@ describe('<ScreenSmall />', () => {
         expect(screen.getByText(/AccumulatorsAmountMobile/i)).toBeInTheDocument();
     });
     it('should render all specific for Multipliers components inside CollapsibleTradeParams if is_multiplier === true', () => {
+        default_mock_store.modules.trade.is_accumulator = false;
         default_mock_store.modules.trade.is_multiplier = true;
         render(mockScreenSmall(mockStore(default_mock_store), default_mock_props));
 
@@ -123,10 +131,11 @@ describe('<ScreenSmall />', () => {
         expect(screen.getByText(/RiskManagementInfo/i)).toBeInTheDocument();
     });
     it('should render all specific for Turbos components inside CollapsibleTradeParams if is_turbos === true', () => {
+        default_mock_store.modules.trade.is_multiplier = false;
         default_mock_store.modules.trade.is_turbos = true;
         render(mockScreenSmall(mockStore(default_mock_store), default_mock_props));
 
-        expect(screen.getByText(/RiskManagementInfo/i)).toBeInTheDocument();
+        expect(screen.getByText(/TakeProfit/i)).toBeInTheDocument();
         expect(screen.getByText(/PayoutPerPointMobile/i)).toBeInTheDocument();
     });
     it('should render all specific components inside CollapsibleTradeParams if isVisible returns true for current trade type', () => {
@@ -140,12 +149,14 @@ describe('<ScreenSmall />', () => {
         render(mockScreenSmall(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.getByText(/TradeTypeTabs/i)).toBeInTheDocument();
+        expect(screen.getByText(/Digit: 9/i)).toBeInTheDocument();
         expect(screen.getByText(/LastDigitMobile/i)).toBeInTheDocument();
         expect(screen.getByText(/BarrierMobile/i)).toBeInTheDocument();
         expect(screen.getByText(/BarrierSelector/i)).toBeInTheDocument();
         expect(screen.getByText(/Strike/i)).toBeInTheDocument();
     });
     it('should render specific for allow_equals component inside CollapsibleTradeParams', () => {
+        default_mock_store.modules.trade.is_turbos = false;
         default_mock_store.modules.trade.is_equal = true;
         default_mock_store.modules.trade.contract_type = 'rise_fall_equal';
         default_mock_store.modules.trade.contract_types_list = {

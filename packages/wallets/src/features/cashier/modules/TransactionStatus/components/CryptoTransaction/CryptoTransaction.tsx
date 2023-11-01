@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
+import { useCancelCryptoTransaction } from '@deriv/api';
 import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
 import { THooks } from '../../../../../../types';
-import { CancelTransactionModal } from '../../../../components/CancelTransactionModal';
+import { WalletActionModal } from '../../../../components/WalletActionModal';
 import './CryptoTransaction.scss';
 
 type TCryptoTransaction = {
@@ -14,7 +15,14 @@ type TCryptoTransaction = {
 };
 
 const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: currency, transaction }) => {
-    const { show } = useModal();
+    const { hide, show } = useModal();
+
+    const { mutate } = useCancelCryptoTransaction();
+
+    const cancelTransaction = useCallback(() => {
+        mutate({ payload: { id: transaction.id } });
+        hide();
+    }, [hide, mutate, transaction.id]);
 
     return (
         <div className='wallets-crypto-transaction'>
@@ -37,7 +45,26 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     {!!transaction.is_valid_to_cancel && (
                         <button
                             className='wallets-crypto-transaction__cancel-button'
-                            onClick={() => show(<CancelTransactionModal transactionId={transaction.id} />)}
+                            onClick={() =>
+                                show(
+                                    <WalletActionModal
+                                        actionButtonsOptions={[
+                                            {
+                                                onClick: hide,
+                                                text: "No, don't cancel",
+                                            },
+                                            {
+                                                isPrimary: true,
+                                                onClick: cancelTransaction,
+                                                text: 'Yes, cancel',
+                                            },
+                                        ]}
+                                        description='Are you sure you want to cancel this transaction?'
+                                        hideCloseButton={true}
+                                        title='Cancel transaction'
+                                    />
+                                )
+                            }
                         >
                             <IcCrossLight />
                         </button>

@@ -203,6 +203,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             active_accounts: [],
             account_list: [],
             wallet_list: [],
+            linked_wallets_accounts: { derivez: [], dtrade: [], dwallet: [], dxtrade: [], mt5: [] },
             has_wallet: false,
             available_crypto_currencies: [],
             selectCurrency: jest.fn(),

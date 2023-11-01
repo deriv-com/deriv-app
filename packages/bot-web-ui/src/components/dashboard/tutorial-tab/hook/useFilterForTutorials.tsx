@@ -4,14 +4,14 @@ import { faq_content, guide_content, user_guide_content } from '../config';
 export const useFilterTutorialsTab = (search, active_tab, active_tab_tutorials) => {
     const [guide_tab_content, setGuideContent] = React.useState([...user_guide_content, ...guide_content]);
     const [faq_tab_content, setFAQContent] = React.useState([...faq_content]);
-    const [tutorial_tab_content, setTutorialContent] = React.useState([...guide_tab_content, ...faq_tab_content]);
+    const [tutorial_content, setTutorialContent] = React.useState([...guide_tab_content, ...faq_tab_content]);
     const [filtered_tab_list, setFilteredList] = React.useState([]);
 
     const removeHTMLTagsFromString = (param = '') => param.replace(/<.*?>/g, '');
     const filterContentBySearch = (content, search) => removeHTMLTagsFromString(content).toLowerCase().includes(search);
 
     React.useEffect(() => {
-        const unified_filtered_list = tutorial_tab_content?.filter(({ title, description = [], content }) => {
+        const unified_filtered_list = tutorial_content?.filter(({ title, description = [], content }) => {
             const descriptionMatch = description
                 .filter(item => item.type === 'text')
                 .map(item => item.content)
@@ -33,7 +33,7 @@ export const useFilterTutorialsTab = (search, active_tab, active_tab_tutorials) 
         if (!search) {
             setGuideContent([...user_guide_content, ...guide_content]);
             setFAQContent([...faq_content]);
-            setTutorialContent(tutorial_tab_content);
+            setTutorialContent(tutorial_content);
         }
     }, [search, active_tab, active_tab_tutorials]);
 
@@ -41,7 +41,7 @@ export const useFilterTutorialsTab = (search, active_tab, active_tab_tutorials) 
         guide_tab_content,
         faq_tab_content,
         filtered_tab_list,
-        tutorial_tab_content,
+        tutorial_content,
         setGuideContent,
         setFAQContent,
         setTutorialContent,

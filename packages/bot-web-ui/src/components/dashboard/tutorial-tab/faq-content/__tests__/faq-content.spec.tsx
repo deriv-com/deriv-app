@@ -30,7 +30,6 @@ const mockedFaqContent = [
         ],
         tab_id: 2,
     },
-    // Add more mocked FAQ items as needed
 ];
 
 describe('<FAQContent />', () => {
@@ -63,6 +62,4 @@ describe('<FAQContent />', () => {
         const acc = screen.getByTestId('id-accordion-test');
         fireEvent.click(acc);
     });
-
-    // Add more test cases as needed
 });

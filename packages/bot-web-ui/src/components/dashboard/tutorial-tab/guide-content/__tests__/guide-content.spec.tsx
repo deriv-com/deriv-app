@@ -1,6 +1,6 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import GuideContent from '../guide-content';

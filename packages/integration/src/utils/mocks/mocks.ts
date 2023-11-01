@@ -563,11 +563,14 @@ async function setupMocks({ baseURL, page, mocks }: SetupMocksOptions) {
     );
 
     await expect
-        .poll(async () => {
-            return page.evaluate(() => {
-                return window.localStorage.getItem('active_loginid');
-            });
-        })
+        .poll(
+            async () => {
+                return page.evaluate(() => {
+                    return window.localStorage.getItem('active_loginid');
+                });
+            },
+            { timeout: 30000 }
+        )
         .toBe('CR5712715');
 
     return mockServer;

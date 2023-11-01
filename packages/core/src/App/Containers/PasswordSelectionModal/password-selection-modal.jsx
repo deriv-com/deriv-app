@@ -6,6 +6,7 @@ import { Button, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { getErrorMessages, redirectToSignUp } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { Analytics } from '@deriv/analytics';
 
 import SignupSeparatorContainer from '../AccountSignupModal/signup-separator-container.jsx';
 
@@ -27,6 +28,15 @@ const PasswordSelectionModal = observer(
     }) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
+
+        React.useEffect(() => {
+            Analytics.trackEvent('ce_virtual_signup_form', {
+                action: 'password_screen_opened',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            });
+
+            //eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
 
         return (
             <div className='account-signup__password-selection'>

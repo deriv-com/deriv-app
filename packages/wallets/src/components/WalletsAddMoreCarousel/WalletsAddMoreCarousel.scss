@@ -1,7 +1,7 @@
 .wallets-add-more {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 123.2rem;
     padding-top: 2.4rem;
 
     @include mobile {
@@ -10,12 +10,9 @@
     }
 
     &__header {
-        font-size: 3.2rem;
-        font-weight: 700;
         margin-bottom: 1.6rem;
 
         @include mobile {
-            font-size: 2.8rem;
             padding-left: 1.6rem;
             margin-bottom: 0;
         }

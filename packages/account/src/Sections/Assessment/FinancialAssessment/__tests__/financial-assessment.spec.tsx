@@ -1,0 +1,75 @@
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import FinancialAssessment from '../financial-assessment';
+
+jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    WS: {
+        wait: jest.fn(() => Promise.resolve()),
+        setSettings: jest.fn(() => Promise.resolve({ error: '' })),
+        authorized: {
+            storage: {
+                getFinancialAssessment: jest.fn(() =>
+                    Promise.resolve({
+                        get_financial_assessment: {
+                            account_turnover: '',
+                            cfd_score: 0,
+                            education_level: '',
+                            employment_industry: '',
+                            employment_status: 'Employed',
+                            estimated_worth: '',
+                            financial_information_score: '',
+                            income_source: '',
+                            net_income: '',
+                            occupation: '',
+                            source_of_wealth: '',
+                            total_score: '',
+                            trading_score: '',
+                        },
+                    })
+                ),
+            },
+        },
+    },
+    useWS: () => undefined,
+}));
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+    return {
+        ...original_module,
+        Loading: jest.fn(() => 'mockedLoading'),
+    };
+});
+describe('<FinancialAssessment/>', () => {
+    const mock = mockStore({});
+    const rendercomponent = () => {
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+        render(
+            <BrowserRouter>
+                <FinancialAssessment />
+            </BrowserRouter>,
+            { wrapper }
+        );
+    };
+    it('should render FinancialAssessment component', async () => {
+        rendercomponent();
+        await waitFor(() => {
+            expect(screen.getByText('Financial information')).toBeInTheDocument();
+            expect(screen.getByText('Source of income')).toBeInTheDocument();
+            expect(screen.getByText('Employment status')).toBeInTheDocument();
+            expect(screen.getByText('Industry of employment')).toBeInTheDocument();
+            expect(screen.getByText('Occupation')).toBeInTheDocument();
+            expect(screen.getByText('Source of wealth')).toBeInTheDocument();
+            expect(screen.getByText('Level of education')).toBeInTheDocument();
+            expect(screen.getByText('Net annual income')).toBeInTheDocument();
+            expect(screen.getByText('Source of wealth')).toBeInTheDocument();
+            expect(screen.getByText('Estimated net worth')).toBeInTheDocument();
+            expect(screen.getByText('Anticipated account turnover')).toBeInTheDocument();
+        });
+    });
+});

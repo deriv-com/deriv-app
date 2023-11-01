@@ -1,7 +1,8 @@
 import React from 'react';
-import { WithdrawalVerificationModule } from '../../modules';
+import { WithdrawalCryptoModule, WithdrawalVerificationModule } from '../../modules';
 
 const WalletWithdrawal = () => {
+    return <WithdrawalCryptoModule />;
     return <WithdrawalVerificationModule />;
 };
 

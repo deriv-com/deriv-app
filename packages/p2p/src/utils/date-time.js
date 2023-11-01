@@ -62,6 +62,6 @@ export const getHoursDifference = time_set => {
     const current_time = new Date();
     const updated_time = new Date(time_set);
     const difference = current_time.getTime() - updated_time.getTime();
-    const hours_difference = Math.floor(difference / 1000 / 60);
+    const hours_difference = Math.floor(difference / 1000 / 60 / 60);
     return hours_difference;
 };

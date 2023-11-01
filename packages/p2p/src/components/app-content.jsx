@@ -19,7 +19,7 @@ import { localize } from './i18next';
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
     const { showModal, hideModal } = useModalManagerContext();
-    let interval;
+    let timeout;
     const {
         notifications: { setP2POrderProps },
         client: { loginid },
@@ -27,20 +27,23 @@ const AppContent = ({ order_id }) => {
     const notification_count = useP2PNotificationCount();
     const history = useHistory();
 
-    // Check if it has been 24 hours since the user last saw the disclaimer modal
-    const checkShowDisclaimerModal = () => {
-        if (!(getHoursDifference(localStorage.getItem(`${loginid}_disclaimer_shown`)) < 24)) {
-            showModal({ key: 'DisclaimerModal' });
-        }
+    const handleDisclaimerTimeout = time_lapsed => {
+        timeout = setTimeout(() => {
+            showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
+        }, (24 - time_lapsed) * 3600000);
     };
 
     React.useEffect(() => {
-        checkShowDisclaimerModal();
-        interval = setInterval(() => {
-            checkShowDisclaimerModal();
-            // checks whether to show the disclaimer modal every hour
-        }, 3600000);
-        return () => clearInterval(interval);
+        const time_lapsed = getHoursDifference(localStorage.getItem(`${loginid}_disclaimer_shown`));
+        if (time_lapsed === undefined || time_lapsed > 24) {
+            showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
+        } else {
+            handleDisclaimerTimeout(time_lapsed);
+        }
+
+        return () => {
+            clearTimeout(timeout);
+        };
     }, []);
 
     React.useEffect(() => {

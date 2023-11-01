@@ -39,7 +39,11 @@ const disclaimer_statements = [
     <Localize i18n_default_text='All P2P transactions are final and cannot be reversed.' key={4} />,
 ];
 
-const DisclaimerModal = () => {
+type TDisclaimerModalProps = {
+    handleDisclaimerTimeout: (time_left: number) => void;
+};
+
+const DisclaimerModal = ({ handleDisclaimerTimeout }: TDisclaimerModalProps) => {
     const [is_checked, setIsChecked] = React.useState(false);
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { client, ui } = useStore();
@@ -50,6 +54,7 @@ const DisclaimerModal = () => {
         const current_date = new Date().toISOString();
         localStorage.setItem(`${loginid}_disclaimer_shown`, current_date);
         hideModal();
+        handleDisclaimerTimeout(0);
     };
 
     return (

@@ -46,7 +46,7 @@ const Cashier = React.lazy(() =>
 const Bot = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
+        return import(/* webpackChunkName: "bot-web-ui-app" */ '@deriv/bot-web-ui');
     })
 );
 
@@ -354,7 +354,7 @@ const getModules = () => {
                     icon_component: 'IcCashierOnRamp',
                 },
                 {
-                    path: routes.cashier_crypto_transactions,
+                    path: routes.cashier_transactions_crypto,
                     component: Cashier,
                     is_invisible: true,
                 },

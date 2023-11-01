@@ -41,6 +41,15 @@
             background-color: var(--icon-grey-background);
             border-radius: 4px;
         }
+        &__new {
+            padding: 0.1rem 0.6rem;
+            height: fit-content;
+            width: fit-content;
+            margin-left: 1rem;
+            background-color: var(--brand-red-coral);
+            color: var(--text-colored-background);
+            border-radius: $BORDER_RADIUS * 4;
+        }
     }
 
     &__actions {

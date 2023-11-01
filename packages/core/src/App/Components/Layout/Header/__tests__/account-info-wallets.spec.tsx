@@ -1,144 +1,105 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider, useFetch } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AccountInfoWallets from '../wallets/account-info-wallets';
-
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn((name: string) => {
-        if (name === 'authorize') {
-            return {
-                data: {
-                    authorize: {
-                        account_list: [
-                            {
-                                account_category: 'wallet',
-                                currency: 'USD',
-                                is_virtual: 1,
-                                is_disabled: 0,
-                                loginid: 'CRW909900',
-                                linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                            },
-                            {
-                                account_category: 'trading',
-                                currency: 'USD',
-                                is_virtual: 1,
-                                is_disabled: 0,
-                                loginid: 'CR123',
-                            },
-                        ],
-                        loginid: 'CR123',
-                    },
-                },
-            };
-        } else if (name === 'balance') {
-            return {
-                data: {
-                    balance: {
-                        accounts: {
-                            CRW909900: {
-                                balance: 0,
-                            },
-                            CR123: {
-                                balance: 1234.56,
-                            },
-                        },
-                    },
-                },
-            };
-        } else if (name === 'website_status') {
-            return {
-                data: {
-                    website_status: {
-                        currencies_config: {
-                            AUD: { type: 'fiat', display_code: 'AUD' },
-                            BTC: { type: 'crypto', display_code: 'BTC' },
-                            ETH: { type: 'crypto', display_code: 'ETH' },
-                            UST: { type: 'crypto', display_code: 'UST' },
-                            USD: { type: 'fiat', display_code: 'USD' },
-                        },
-                    },
-                },
-            };
-        } else if (name === 'crypto_config') {
-            return {
-                data: {
-                    crypto_config: {
-                        currencies_config: {
-                            BTC: {
-                                minimum_withdrawal: 0.00034286,
-                            },
-                            ETH: {
-                                minimum_withdrawal: 0.02728729,
-                            },
-                            LTC: {
-                                minimum_withdrawal: 0.06032091,
-                            },
-                            USDC: {
-                                minimum_withdrawal: 50,
-                            },
-                            UST: {
-                                minimum_withdrawal: 24.99,
-                            },
-                            eUSDT: {
-                                minimum_withdrawal: 50.05,
-                            },
-                        },
-                    },
-                },
-            };
-        }
-
-        return undefined;
-    }),
-}));
-
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'balance' | 'website_status'>>;
 
 describe('AccountInfoWallets component', () => {
     const wrapper = (mock: ReturnType<typeof mockStore>) => {
         const Component = ({ children }: { children: JSX.Element }) => {
-            return (
-                <APIProvider>
-                    <StoreProvider store={mock}>{children}</StoreProvider>
-                </APIProvider>
-            );
+            return <StoreProvider store={mock}>{children}</StoreProvider>;
         };
         return Component;
     };
 
+    const default_mock: Partial<typeof mockStore> = {
+        client: {
+            accounts: {
+                CRW909900: {
+                    account_category: 'wallet',
+                    currency: 'USD',
+                    is_virtual: 0,
+                    is_disabled: 0,
+                    linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    balance: 0,
+                },
+                CR123: {
+                    account_category: 'trading',
+                    currency: 'USD',
+                    is_virtual: 0,
+                    is_disabled: 0,
+                    balance: 1234.56,
+                },
+            },
+            loginid: 'CR123',
+            wallet_list: [
+                {
+                    account_category: 'wallet',
+                    currency: 'USD',
+                    icons: {
+                        dark: 'IcWalletCurrencyUsd',
+                        light: 'IcWalletCurrencyUsd',
+                    },
+                    is_virtual: 0,
+                    is_disabled: 0,
+                    loginid: 'CRW909900',
+                    linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    dtrade_loginid: 'CR123',
+                    balance: 0,
+                },
+            ],
+            has_wallet: true,
+            linked_wallets_accounts: {
+                derivez: [],
+                dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
+                dwallet: [],
+                dxtrade: [],
+                mt5: [],
+            },
+        },
+    };
+
     it('should show "disabled_message" when "is_disabled" property is "true"', () => {
         const mock = mockStore({
+            client: {
+                accounts: {
+                    CRW909900: {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: 0,
+                        is_disabled: 1,
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    },
+                    CR123: {
+                        account_category: 'trading',
+                        currency: 'USD',
+                        is_virtual: 0,
+                        is_disabled: 1,
+                    },
+                },
+                loginid: 'CR123',
+                wallet_list: [
+                    {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: false,
+                        is_disabled: true,
+                        loginid: 'CRW909900',
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                        dtrade_loginid: 'CR123',
+                    },
+                ],
+                has_wallet: true,
+                linked_wallets_accounts: {
+                    derivez: [],
+                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    dwallet: [],
+                    dxtrade: [],
+                    mt5: [],
+                },
+            },
             ui: {
                 account_switcher_disabled_message: 'test disabled message',
-            },
-        });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 1,
-                            is_disabled: 1,
-                            loginid: 'CRW909900',
-                            linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        },
-                        {
-                            account_category: 'trading',
-                            currency: 'USD',
-                            is_virtual: 1,
-                            is_disabled: 1,
-                            loginid: 'CR123',
-                        },
-                    ],
-                    loginid: 'CR123',
-                },
             },
         });
 
@@ -153,33 +114,41 @@ describe('AccountInfoWallets component', () => {
 
     it('should have "acc-info--is-disabled" class when "is_disabled" property is "true"', () => {
         const mock = mockStore({
-            ui: {
-                account_switcher_disabled_message: 'test disabled message',
-            },
-        });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 1,
-                            is_disabled: 1,
-                            loginid: 'CRW909900',
-                            linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        },
-                        {
-                            account_category: 'trading',
-                            currency: 'USD',
-                            is_virtual: 1,
-                            is_disabled: 1,
-                            loginid: 'CR123',
-                        },
-                    ],
-                    loginid: 'CR123',
+            client: {
+                accounts: {
+                    CRW909900: {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: 0,
+                        is_disabled: 1,
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    },
+                    CR123: {
+                        account_category: 'trading',
+                        currency: 'USD',
+                        is_virtual: 0,
+                        is_disabled: 1,
+                    },
+                },
+                loginid: 'CR123',
+                wallet_list: [
+                    {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: false,
+                        is_disabled: true,
+                        loginid: 'CRW909900',
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                        dtrade_loginid: 'CR123',
+                    },
+                ],
+                has_wallet: true,
+                linked_wallets_accounts: {
+                    derivez: [],
+                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    dwallet: [],
+                    dxtrade: [],
+                    mt5: [],
                 },
             },
         });
@@ -192,7 +161,7 @@ describe('AccountInfoWallets component', () => {
     });
 
     it('should not have "acc-info--show" class when "is_dialog_on" property is "false"', () => {
-        const mock = mockStore({});
+        const mock = mockStore(default_mock);
 
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
@@ -203,33 +172,41 @@ describe('AccountInfoWallets component', () => {
 
     it('can not "toggleDialog" when "is_disabled" property is "true"', () => {
         const mock = mockStore({
-            ui: {
-                account_switcher_disabled_message: 'test disabled message',
-            },
-        });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 1,
-                            is_disabled: 1,
-                            loginid: 'CRW909900',
-                            linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        },
-                        {
-                            account_category: 'trading',
-                            currency: 'USD',
-                            is_virtual: 1,
-                            is_disabled: 1,
-                            loginid: 'CR123',
-                        },
-                    ],
-                    loginid: 'CR123',
+            client: {
+                accounts: {
+                    CRW909900: {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: 0,
+                        is_disabled: 1,
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    },
+                    CR123: {
+                        account_category: 'trading',
+                        currency: 'USD',
+                        is_virtual: 0,
+                        is_disabled: 1,
+                    },
+                },
+                loginid: 'CR123',
+                wallet_list: [
+                    {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: false,
+                        is_disabled: true,
+                        loginid: 'CRW909900',
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                        dtrade_loginid: 'CR123',
+                    },
+                ],
+                has_wallet: true,
+                linked_wallets_accounts: {
+                    derivez: [],
+                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    dwallet: [],
+                    dxtrade: [],
+                    mt5: [],
                 },
             },
         });
@@ -243,11 +220,7 @@ describe('AccountInfoWallets component', () => {
     });
 
     it('should render "Options" icon and "WalletIcon"', () => {
-        const mock = mockStore({
-            ui: {
-                is_mobile: false,
-            },
-        });
+        const mock = mockStore(default_mock);
 
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
@@ -258,8 +231,42 @@ describe('AccountInfoWallets component', () => {
 
     it('should render "DEMO" label', () => {
         const mock = mockStore({
-            ui: {
-                is_mobile: false,
+            client: {
+                accounts: {
+                    CRW909900: {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: 1,
+                        is_disabled: 0,
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    },
+                    CR123: {
+                        account_category: 'trading',
+                        currency: 'USD',
+                        is_virtual: 1,
+                        is_disabled: 0,
+                    },
+                },
+                loginid: 'CR123',
+                wallet_list: [
+                    {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: true,
+                        is_disabled: false,
+                        loginid: 'CRW909900',
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                        dtrade_loginid: 'CR123',
+                    },
+                ],
+                has_wallet: true,
+                linked_wallets_accounts: {
+                    derivez: [],
+                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    dwallet: [],
+                    dxtrade: [],
+                    mt5: [],
+                },
             },
         });
 
@@ -270,39 +277,7 @@ describe('AccountInfoWallets component', () => {
     });
 
     it('should NOT render "SVG" label', () => {
-        const mock = mockStore({
-            ui: {
-                is_mobile: false,
-            },
-        });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 0,
-                            loginid: 'CRW909900',
-                            landing_company_name: 'svg',
-                            linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        },
-                        {
-                            account_category: 'trading',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 0,
-                            loginid: 'CR123',
-                            landing_company_name: 'svg',
-                        },
-                    ],
-                    loginid: 'CR123',
-                },
-            },
-        });
+        const mock = mockStore(default_mock);
 
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
@@ -312,35 +287,43 @@ describe('AccountInfoWallets component', () => {
 
     it('should render "MALTA" label', () => {
         const mock = mockStore({
-            ui: {
-                is_mobile: false,
-            },
-        });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 0,
-                            loginid: 'CRW909900',
-                            landing_company_name: 'maltainvest',
-                            linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        },
-                        {
-                            account_category: 'trading',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 0,
-                            loginid: 'CR123',
-                            landing_company_name: 'maltainvest',
-                        },
-                    ],
-                    loginid: 'CR123',
+            client: {
+                accounts: {
+                    CRW909900: {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: 0,
+                        is_disabled: 0,
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    },
+                    CR123: {
+                        account_category: 'trading',
+                        currency: 'USD',
+                        is_virtual: 0,
+                        is_disabled: 0,
+                    },
+                },
+                loginid: 'CR123',
+                wallet_list: [
+                    {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: false,
+                        is_disabled: false,
+                        loginid: 'CRW909900',
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                        dtrade_loginid: 'CR123',
+                        is_malta_wallet: true,
+                        landing_company_name: 'malta',
+                    },
+                ],
+                has_wallet: true,
+                linked_wallets_accounts: {
+                    derivez: [],
+                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    dwallet: [],
+                    dxtrade: [],
+                    mt5: [],
                 },
             },
         });
@@ -353,35 +336,43 @@ describe('AccountInfoWallets component', () => {
 
     it('should render "IcLock" icon when "is_disabled" property is "true"', () => {
         const mock = mockStore({
-            ui: {
-                is_mobile: false,
-            },
-        });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 1,
-                            loginid: 'CRW909900',
-                            landing_company_name: 'svg',
-                            linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        },
-                        {
-                            account_category: 'trading',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 1,
-                            loginid: 'CR123',
-                            landing_company_name: 'svg',
-                        },
-                    ],
-                    loginid: 'CR123',
+            client: {
+                accounts: {
+                    CRW909900: {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: 0,
+                        is_disabled: 1,
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    },
+                    CR123: {
+                        account_category: 'trading',
+                        currency: 'USD',
+                        is_virtual: 0,
+                        is_disabled: 1,
+                    },
+                },
+                loginid: 'CR123',
+                wallet_list: [
+                    {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: false,
+                        is_disabled: true,
+                        loginid: 'CRW909900',
+                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
+                        dtrade_loginid: 'CR123',
+                        is_malta_wallet: true,
+                        landing_company_name: 'malta',
+                    },
+                ],
+                has_wallet: true,
+                linked_wallets_accounts: {
+                    derivez: [],
+                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
+                    dwallet: [],
+                    dxtrade: [],
+                    mt5: [],
                 },
             },
         });
@@ -394,39 +385,7 @@ describe('AccountInfoWallets component', () => {
     });
 
     it('should render "IcChevronDownBold" icon when "is_disabled" property is "false"', () => {
-        const mock = mockStore({
-            ui: {
-                is_mobile: false,
-            },
-        });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 0,
-                            loginid: 'CRW909900',
-                            landing_company_name: 'svg',
-                            linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        },
-                        {
-                            account_category: 'trading',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 0,
-                            loginid: 'CR123',
-                            landing_company_name: 'svg',
-                        },
-                    ],
-                    loginid: 'CR123',
-                },
-            },
-        });
+        const mock = mockStore(default_mock);
 
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
@@ -436,39 +395,7 @@ describe('AccountInfoWallets component', () => {
     });
 
     it('should render balance section when currency exists', () => {
-        const mock = mockStore({
-            ui: {
-                is_mobile: false,
-            },
-        });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 0,
-                            loginid: 'CRW909900',
-                            landing_company_name: 'svg',
-                            linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        },
-                        {
-                            account_category: 'trading',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 0,
-                            loginid: 'CR123',
-                            landing_company_name: 'svg',
-                        },
-                    ],
-                    loginid: 'CR123',
-                },
-            },
-        });
+        const mock = mockStore(default_mock);
 
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
@@ -478,58 +405,7 @@ describe('AccountInfoWallets component', () => {
     });
 
     it('should have "1.234.56 USD" text', () => {
-        const mock = mockStore({
-            ui: {
-                is_mobile: false,
-            },
-        });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 0,
-                            loginid: 'CRW909900',
-                            landing_company_name: 'svg',
-                            linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        },
-                        {
-                            account_category: 'trading',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            is_disabled: 0,
-                            loginid: 'CR123',
-                            landing_company_name: 'svg',
-                        },
-                    ],
-                    loginid: 'CR123',
-                },
-                balance: {
-                    accounts: {
-                        CRW909900: {
-                            balance: 0,
-                        },
-                        CR123: {
-                            balance: 1234.56,
-                        },
-                    },
-                },
-                website_status: {
-                    currencies_config: {
-                        AUD: { type: 'fiat', display_code: 'AUD' },
-                        BTC: { type: 'crypto', display_code: 'BTC' },
-                        ETH: { type: 'crypto', display_code: 'ETH' },
-                        UST: { type: 'crypto', display_code: 'UST' },
-                        USD: { type: 'fiat', display_code: 'USD' },
-                    },
-                },
-            },
-        });
+        const mock = mockStore(default_mock);
 
         const toggleDialog = jest.fn();
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });

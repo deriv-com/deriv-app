@@ -37,12 +37,6 @@
             transform: translateY(0);
         }
     }
-    &__container {
-        &--has-scroll {
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-    }
     &__content {
         margin-top: 0.4rem;
         box-sizing: border-box;
@@ -75,6 +69,40 @@
         transition: all 0.2s ease-out;
         transition-delay: 0.2s;
         border-bottom: 1px solid var(--border-disabled);
+    }
+    &__container {
+        &--has-scroll {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        &--has-info-banner {
+            .dc-mobile-dialog {
+                &__header {
+                    position: relative;
+                    top: unset;
+                    z-index: unset;
+                    background: unset;
+
+                    &-wrapper {
+                        position: sticky;
+                        top: 0;
+                        z-index: 4;
+                        background: var(--fill-normal);
+                        width: 100%;
+                        // transparent border ensures children's margins contribute to height:
+                        border-bottom: 0.01rem solid transparent;
+
+                        .inline-message__information {
+                            margin: 1.6rem 0.8rem;
+                        }
+                    }
+                }
+                &__content {
+                    margin-top: unset;
+                    padding-top: unset;
+                }
+            }
+        }
     }
     &__footer {
         position: fixed;

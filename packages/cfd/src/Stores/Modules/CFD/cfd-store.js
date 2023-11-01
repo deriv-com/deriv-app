@@ -365,7 +365,7 @@ export default class CFDStore extends BaseStore {
                 this.account_type.type === 'dxtrade' || this.account_type.type === 'cTrader'
                     ? 'all'
                     : this.account_type.type,
-            company: '',
+            company: values.company,
         });
     }
 

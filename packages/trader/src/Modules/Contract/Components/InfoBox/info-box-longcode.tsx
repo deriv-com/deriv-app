@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import { TContractInfo } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
-export type TInfoBoxLongcode = { contract_info: TContractInfo };
+type TInfoBoxLongcode = { contract_info: TContractInfo };
 
 const InfoBoxLongcode = observer(({ contract_info }: TInfoBoxLongcode) => {
     const {

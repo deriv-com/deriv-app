@@ -58,7 +58,7 @@ const Success: React.FC<TSuccessProps> = ({
                     platform={platform}
                 />
                 <WalletText size='2xs'>
-                    {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
+                    MT5 {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
                 </WalletText>
                 <WalletText color='primary' size='2xs'>
                     {data?.currency} Wallet

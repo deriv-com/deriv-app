@@ -203,7 +203,7 @@ export default class SendbirdStore extends BaseStore {
 
         const is_inclusive_of_timestamp = false;
         const reverse_results = this.chat_messages.length > 0;
-        const custom_type = ['', 'admin'];
+        const custom_type = [''];
         const result_size = 50;
 
         const messages_timestamp =

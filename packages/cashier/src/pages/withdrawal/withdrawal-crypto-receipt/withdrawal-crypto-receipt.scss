@@ -50,6 +50,10 @@
     &__crypto {
         min-width: 36rem;
         margin: 1.6rem 0;
+        @include mobile {
+            width: 100%;
+            min-width: auto;
+        }
     }
     &__account-info {
         padding: 1rem 0;

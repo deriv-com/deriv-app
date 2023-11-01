@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, Formik, FormikHandlers, FormikProps, FormikState } from 'formik';
+import { Field, Formik, FormikHandlers, FormikState } from 'formik';
 import { WebsiteStatus } from '@deriv/api-types';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields } from '@deriv/shared';
@@ -37,7 +37,6 @@ type TCurrencySelectorExtend = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    selected_step_ref?: React.RefObject<FormikProps<TCurrencySelectorFormProps>>;
     set_currency: boolean;
     validate: (values: TCurrencySelectorFormProps) => TCurrencySelectorFormProps;
     value: TCurrencySelectorFormProps;
@@ -58,7 +57,6 @@ type TCurrencySelector = React.HTMLAttributes<HTMLInputElement | HTMLLabelElemen
  * @param onCancel - To handle click on cancel button
  * @param onSave - To handle click on save button
  * @param onSubmit - To handle click on submit button
- * @param selected_step_ref - Ref of the selected step
  * @param set_currency - Is current set
  * @param alidate - To validate the form
  * @param alue - Value of the form
@@ -76,7 +74,6 @@ const CurrencySelector = observer(
         set_currency,
         validate,
         has_cancel = false,
-        selected_step_ref,
         has_wallet_account,
         value,
     }: TCurrencySelector) => {
@@ -113,10 +110,6 @@ const CurrencySelector = observer(
         const should_disable_fiat = !!Object.values(accounts).filter(
             item => item.landing_company_shortcode === real_account_signup_target
         ).length;
-
-        const isSubmitDisabled = (values: TCurrencySelectorFormProps) => {
-            return selected_step_ref?.current?.isSubmitting || !values.currency;
-        };
 
         const handleCancel = (values: TCurrencySelectorFormProps) => {
             const current_step = getCurrentStep() - 1;
@@ -196,7 +189,6 @@ const CurrencySelector = observer(
 
         return (
             <Formik
-                innerRef={selected_step_ref}
                 initialValues={value}
                 onSubmit={(values, actions) => {
                     onSubmit(getCurrentStep ? getCurrentStep() - 1 : null, values, actions.setSubmitting, goToNextStep);
@@ -288,7 +280,7 @@ const CurrencySelector = observer(
                                                 ? 'currency-selector--set-currency'
                                                 : 'currency-selector--deriv-account'
                                         }
-                                        is_disabled={isSubmitDisabled(values)}
+                                        is_disabled={!values.currency}
                                         is_center={false}
                                         is_absolute={set_currency}
                                         label={getSubmitLabel()}

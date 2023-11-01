@@ -1,28 +1,17 @@
 import React from 'react';
 import { Money } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { getExpiryType, getDurationMinMaxValues, getLocalizedBasis } from '@deriv/shared';
 import { MultiplierAmountWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
 import TradeParamsModal from '../../Containers/trade-params-mobile';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
+const MobileWidget = observer(() => {
     const { ui } = useStore();
     const { onChangeUiStore } = ui;
     const trade_store = useTraderStore();
-    const {
-        amount,
-        basis,
-        currency,
-        duration,
-        duration_min_max,
-        duration_unit,
-        form_components,
-        is_multiplier,
-        last_digit,
-        onChange,
-    } = trade_store;
+    const { amount, basis, currency, duration, duration_min_max, duration_unit, is_multiplier, onChange } = trade_store;
 
     const [is_open, setIsOpen] = React.useState(false);
     const [tab_index, setTabIndex] = React.useState(0);
@@ -71,10 +60,6 @@ const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
         }
     };
 
-    const isVisible = component => {
-        return form_components.includes(component);
-    };
-
     const localized_basis = getLocalizedBasis();
 
     const stakeOrPayout = () => {
@@ -97,22 +82,15 @@ const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
                     <div className='mobile-widget__duration' onClick={() => toggleWidget(0)}>
                         {getHumanReadableDuration()}
                     </div>
-                    <div className='mobile-widget__amount--container' onClick={() => toggleWidget(1)}>
-                        <div className='mobile-widget__amount'>
-                            <Money amount={amount} currency={currency} show_currency />
-                        </div>
-                        <div className='mobile-widget__type'>{stakeOrPayout()}</div>
+                    <div className='mobile-widget__amount' onClick={() => toggleWidget(1)}>
+                        <Money amount={amount} currency={currency} show_currency />
+                    </div>
+                    <div className='mobile-widget__type' onClick={() => toggleWidget(1)}>
+                        {stakeOrPayout()}
                     </div>
                 </div>
             )}
             <TradeParamsModal is_open={is_open} toggleModal={() => toggleWidget(tab_index)} tab_index={tab_index} />
-            {isVisible('last_digit') && is_collapsed && (
-                <div className='mobile-widget' onClick={toggleDigitsWidget}>
-                    <div className='mobile-widget__amount'>
-                        <Localize i18n_default_text='Digit: {{last_digit}} ' values={{ last_digit }} />
-                    </div>
-                </div>
-            )}
         </div>
     );
 });

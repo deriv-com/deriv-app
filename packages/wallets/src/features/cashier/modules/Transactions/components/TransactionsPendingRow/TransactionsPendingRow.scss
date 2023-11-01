@@ -1,26 +1,26 @@
 .wallets-transactions-pending-row {
     width: 100%;
-    height: 78px;
+    height: 7.8rem;
     display: grid;
     grid-template-columns: 1.8fr repeat(4, 1fr) repeat(2, 2fr);
-    gap: 16px;
+    gap: 1.6rem;
     align-items: center;
-    border-top: 1px solid var(--system-light-3-border, #e5e5e5);
-    padding-inline: 16px;
+    border-top: 0.1rem solid var(--system-light-3-border, #e5e5e5);
+    padding-inline: 1.6rem;
 
     &-details {
         display: flex;
         width: max-content;
-        gap: 8px;
+        gap: 0.8rem;
 
         &__wallet-name {
             color: var(--system-light-1-prominent-text, #333);
 
             /* desktop/small/S - bold */
-            font-size: 12px;
+            font-size: 1.2rem;
             font-style: normal;
             font-weight: 700;
-            line-height: 18px; /* 150% */
+            line-height: 1.8rem; /* 150% */
         }
     }
 
@@ -28,16 +28,16 @@
         color: var(--system-light-3-less-prominent-text, #999);
 
         /* desktop/small/S - regular */
-        font-size: 12px;
+        font-size: 1.2rem;
         font-style: normal;
         font-weight: 400;
-        line-height: 18px; /* 150% */
+        line-height: 1.8rem; /* 150% */
         text-transform: capitalize;
     }
 
     &__transaction {
         &-address {
-            width: 70px;
+            width: 7rem;
         }
 
         &-amount {
@@ -45,10 +45,10 @@
             text-align: right;
 
             /* desktop/paragraph/P2 - bold */
-            font-size: 14px;
+            font-size: 1.4rem;
             font-style: normal;
             font-weight: 700;
-            line-height: 20px; /* 142.857% */
+            line-height: 2rem; /* 142.857% */
 
             &__deposit {
                 color: var(--status-light-success, #4bb4b3);
@@ -56,7 +56,7 @@
         }
 
         &-hash {
-            width: 98px;
+            width: 9.8rem;
         }
 
         &-status {
@@ -70,10 +70,10 @@
             color: var(--brand-coral, #ff444f);
 
             /* desktop/small/S - bold */
-            font-size: 12px;
+            font-size: 1.2rem;
             font-style: normal;
             font-weight: 700;
-            line-height: 18px; /* 150% */
+            line-height: 1.8rem; /* 150% */
 
             &--center {
                 text-align: center;

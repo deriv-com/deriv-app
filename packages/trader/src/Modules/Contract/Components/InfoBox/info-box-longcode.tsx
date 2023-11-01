@@ -14,8 +14,7 @@ const InfoBoxLongcode = observer(({ contract_info }: TInfoBoxLongcode) => {
     const max_longcode_length = is_mobile ? 47 : 150;
     const [is_collapsed, setIsCollapsed] = React.useState(true);
 
-    const handleToggle = (ev: React.MouseEvent<HTMLElement>) => {
-        ev.preventDefault();
+    const handleToggle = () => {
         setIsCollapsed(!is_collapsed);
     };
 
@@ -46,7 +45,9 @@ const InfoBoxLongcode = observer(({ contract_info }: TInfoBoxLongcode) => {
                     is_open={is_mobile && !is_collapsed}
                     title={<Localize i18n_default_text='Trade info' />}
                     has_close_icon={false}
+                    should_close_on_click_outside
                     small
+                    toggleModal={handleToggle}
                 >
                     <Modal.Body>
                         <Text size='xs'>{contract_info.longcode}</Text>

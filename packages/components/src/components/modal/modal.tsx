@@ -32,10 +32,11 @@ type TModalElement = {
     onUnmount?: () => void;
     portalId?: string;
     renderTitle?: () => React.ReactNode;
+    should_close_on_click_outside?: boolean;
     should_header_stick_body?: boolean;
     small?: boolean;
     title?: string | React.ReactNode;
-    toggleModal?: (e?: React.MouseEvent<HTMLElement>) => void;
+    toggleModal?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     width?: string;
 };
 
@@ -60,6 +61,7 @@ const ModalElement = ({
     onUnmount,
     portalId,
     renderTitle,
+    should_close_on_click_outside = false,
     should_header_stick_body = true,
     small,
     title,
@@ -85,6 +87,7 @@ const ModalElement = ({
         const is_absolute_modal_visible = document.getElementById('popup_root')?.hasChildNodes();
         const path = e.path ?? e.composedPath?.();
         return (
+            should_close_on_click_outside ||
             has_close_icon &&
             !isPortalElementVisible() &&
             is_open &&
@@ -236,6 +239,7 @@ const Modal = ({
     onUnmount,
     portalId,
     renderTitle,
+    should_close_on_click_outside = false,
     should_header_stick_body = true,
     small,
     title,
@@ -279,6 +283,7 @@ const Modal = ({
             onUnmount={onUnmount}
             portalId={portalId}
             renderTitle={renderTitle}
+            should_close_on_click_outside={should_close_on_click_outside}
             small={small}
             width={width}
             elements_to_ignore={elements_to_ignore}

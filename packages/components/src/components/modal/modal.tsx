@@ -36,7 +36,7 @@ type TModalElement = {
     should_header_stick_body?: boolean;
     small?: boolean;
     title?: string | React.ReactNode;
-    toggleModal?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    toggleModal?: (e?: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     width?: string;
 };
 

@@ -9,19 +9,16 @@ export const MarketDetails = {
         description:
             'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs',
         icon: <SwapFreeMT5Icon />,
-
         title: 'Swap-Free',
     },
     financial: {
         description: 'This account offers CFDs on financial instruments.',
         icon: <FinancialMT5Icon />,
-
         title: 'Financial',
     },
     synthetic: {
         description: 'This account offers CFDs on derived instruments.',
         icon: <DerivedMT5Icon />,
-
         title: 'Derived',
     },
 } as const;

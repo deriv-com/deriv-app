@@ -110,7 +110,7 @@ WelcomeColumn.propTypes = {
     title: PropTypes.string,
 };
 
-const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_allowed }) => {
+const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed }) => {
     const [hovered, setHovered] = React.useState(null);
     const [column_width, setColumnWidth] = React.useState(320);
     const carouselRef = React.useRef(null);
@@ -140,19 +140,6 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_
             },
         ];
 
-        if (is_dxtrade_allowed) {
-            platforms.push({
-                icon: getPlatformSettings('dxtrade').icon,
-                title: localize('{{platform_name_dxtrade}}', {
-                    platform_name_dxtrade: getPlatformSettings('dxtrade').name,
-                }),
-                description: localize('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
-                onButtonClick: () => switchPlatform(routes.dxtrade),
-                button_text: localize('Trade on {{platform_name_dxtrade}}', {
-                    platform_name_dxtrade: getPlatformSettings('dxtrade').name,
-                }),
-            });
-        }
         return platforms;
     };
 

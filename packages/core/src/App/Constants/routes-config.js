@@ -5,7 +5,6 @@ import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Redirect from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
-import CFDCompareAccounts from '@deriv/cfd/src/Containers/cfd-compare-accounts';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -22,12 +21,12 @@ const Reports = React.lazy(() => {
     return import(/* webpackChunkName: "reports" */ '@deriv/reports');
 });
 
-const CFD = React.lazy(() =>
+const CFDCompareAccounts = React.lazy(() => {
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
-    })
-);
+        return import(/* webpackChunkName: "cfd-compare-account" */ '@deriv/cfd/src/Containers/cfd-compare-accounts');
+    });
+});
 
 const Account = React.lazy(() =>
     moduleLoader(() => {
@@ -108,19 +107,9 @@ const getModules = () => {
             ],
         },
         {
-            path: routes.dxtrade,
-            component: props => <CFD {...props} platform='dxtrade' />,
-            getTitle: () => localize('Deriv X'),
-        },
-        {
             path: routes.compare_cfds,
             component: CFDCompareAccounts,
-            getTitle: () => localize('Compare CFD accounts'),
-        },
-        {
-            path: routes.mt5,
-            component: props => <CFD {...props} platform='mt5' />,
-            getTitle: () => localize('MT5'),
+            getTitle: () => localize('Compare CFD Accounts'),
         },
         {
             path: routes.account_closed,

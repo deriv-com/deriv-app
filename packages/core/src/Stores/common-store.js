@@ -310,9 +310,7 @@ export default class CommonStore extends BaseStore {
                 }
 
                 const parent_path = history_item.pathname.split('/')[1];
-                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade, routes.dxtrade].map(
-                    i => i.split('/')[1]
-                ); // map full path to just base path (`/mt5/abc` -> `mt5`)
+                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade].map(i => i.split('/')[1]); // map full path to just base path (`/mt5/abc` -> `mt5`)
 
                 if (
                     platform_parent_paths.includes(parent_path) ||

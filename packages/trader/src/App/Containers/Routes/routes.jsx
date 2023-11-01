@@ -60,8 +60,8 @@ const Routes = observer(({ history, passthrough }) => {
                                     }
                                     return [route.path];
                                 })
-                                .filter(path => path && path !== routes.mt5 && path !== routes.dxtrade),
-                            to: [routes.mt5, routes.dxtrade],
+                                .filter(path => path && path !== routes.mt5),
+                            to: [routes.mt5],
                         },
                     ],
                     action,

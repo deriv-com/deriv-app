@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import IcDropdown from '../../public/images/ic-dropdown.svg';
+import { THooks } from '../../types';
 import './WalletsAccordion.scss';
 
 type TProps = {
-    isDemo?: boolean;
-    isOpen?: boolean;
+    isDemo?: THooks.WalletAccountsList['is_virtual'];
+    isOpen?: THooks.WalletAccountsList['is_active'];
     onToggle?: () => void;
     renderHeader: () => React.ReactNode;
 };

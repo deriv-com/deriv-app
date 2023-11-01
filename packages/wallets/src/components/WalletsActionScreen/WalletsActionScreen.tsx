@@ -1,14 +1,15 @@
-import React, { ComponentProps, PropsWithChildren, ReactNode } from 'react';
+import React, { ComponentProps, PropsWithChildren, ReactNode, isValidElement } from 'react';
 import classNames from 'classnames';
 import WalletButton from '../Base/WalletButton/WalletButton';
 import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
 
 type TProps = {
-    actionText?: string;
+    actionText?: ReactNode;
     actionVariant?: ComponentProps<typeof WalletButton>['variant'];
     description: ReactNode;
-    icon: ReactNode;
+    disabled?: boolean;
+    icon?: ReactNode;
     onAction?: () => void;
     title?: string;
     type?: 'modal' | 'page';
@@ -30,6 +31,7 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     actionText,
     actionVariant = 'contained',
     description,
+    disabled = false,
     icon,
     onAction,
     title,
@@ -48,12 +50,23 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
                         {title}
                     </WalletText>
                 )}
-                <WalletText align='center' size='md'>
-                    {description}
-                </WalletText>
+                {isValidElement(description) ? (
+                    description
+                ) : (
+                    <WalletText align='center' size='md'>
+                        {description}
+                    </WalletText>
+                )}
             </div>
             {actionText && (
-                <WalletButton color='primary' onClick={onAction} size='lg' text={actionText} variant={actionVariant} />
+                <WalletButton
+                    color='primary'
+                    disabled={disabled}
+                    onClick={onAction}
+                    size='lg'
+                    text={actionText}
+                    variant={actionVariant}
+                />
             )}
         </div>
     );

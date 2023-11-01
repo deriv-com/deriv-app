@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import { THooks } from '../../types';
 import { WalletText } from '../Base';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
@@ -7,7 +7,7 @@ import { WalletListCardBadge } from '../WalletListCardBadge';
 import './WalletCard.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    account: THooks.WalletAccountsList;
 };
 
 const WalletCard: React.FC<TProps> = ({ account }) => {

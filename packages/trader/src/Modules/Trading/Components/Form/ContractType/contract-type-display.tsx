@@ -15,8 +15,8 @@ type TDisplay = {
 
 const Display = ({ is_open, name, list, onClick, value }: TDisplay) => {
     const getDisplayText = () =>
-        findContractCategory(list as unknown as TList[], { value })?.contract_types?.find(
-            (item: TContractType) => item.value === value
+        findContractCategory(list as unknown as TList[], { value })?.contract_types?.find((item: TContractType) =>
+            item.value.includes(value)
         )?.text;
 
     return (

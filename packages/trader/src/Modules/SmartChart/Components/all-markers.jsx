@@ -14,7 +14,7 @@ import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS from './icons';
 
 const is_firefox = navigator.userAgent.search('Firefox') > 0;
-const GRADIENT_HIGHT = 96;
+const GRADIENT_HEIGHT = 96;
 
 const RawMarkerMaker = draw_callback => {
     const Marker = ({ epoch_array, price_array, ...rest }) => (
@@ -413,8 +413,8 @@ const TickContract = RawMarkerMaker(
                 ctx,
                 stroke_color: '#999999',
                 start_left: start.left,
-                top: is_reset_call_contract ? barrier_gradient - GRADIENT_HIGHT : barrier_gradient,
-                bottom: is_reset_call_contract ? barrier_gradient : barrier_gradient + GRADIENT_HIGHT,
+                top: is_reset_call_contract ? barrier_gradient - GRADIENT_HEIGHT : barrier_gradient,
+                bottom: is_reset_call_contract ? barrier_gradient : barrier_gradient + GRADIENT_HEIGHT,
                 barrier_gradient,
                 reset_barrier: barrier_2,
                 scale,
@@ -689,8 +689,8 @@ const NonTickContract = RawMarkerMaker(
                 ctx,
                 stroke_color: '#999999',
                 start_left: start.left,
-                top: is_reset_call_contract ? barrier_gradient - GRADIENT_HIGHT : barrier_gradient,
-                bottom: is_reset_call_contract ? barrier_gradient : barrier_gradient + GRADIENT_HIGHT,
+                top: is_reset_call_contract ? barrier_gradient - GRADIENT_HEIGHT : barrier_gradient,
+                bottom: is_reset_call_contract ? barrier_gradient : barrier_gradient + GRADIENT_HEIGHT,
                 barrier_gradient,
                 reset_barrier: entry_tick_top,
                 scale,

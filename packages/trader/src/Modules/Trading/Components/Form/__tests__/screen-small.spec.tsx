@@ -123,6 +123,7 @@ describe('<ScreenSmall />', () => {
         expect(screen.getByText(/AccumulatorsAmountMobile/i)).toBeInTheDocument();
     });
     it('should render all specific for Multipliers components inside CollapsibleTradeParams if is_multiplier === true', () => {
+        default_mock_store.modules.trade.is_accumulator = false;
         default_mock_store.modules.trade.is_multiplier = true;
         render(mockScreenSmall(mockStore(default_mock_store), default_mock_props));
 
@@ -130,10 +131,11 @@ describe('<ScreenSmall />', () => {
         expect(screen.getByText(/RiskManagementInfo/i)).toBeInTheDocument();
     });
     it('should render all specific for Turbos components inside CollapsibleTradeParams if is_turbos === true', () => {
+        default_mock_store.modules.trade.is_multiplier = false;
         default_mock_store.modules.trade.is_turbos = true;
         render(mockScreenSmall(mockStore(default_mock_store), default_mock_props));
 
-        expect(screen.getByText(/RiskManagementInfo/i)).toBeInTheDocument();
+        expect(screen.getByText(/TakeProfit/i)).toBeInTheDocument();
         expect(screen.getByText(/PayoutPerPointMobile/i)).toBeInTheDocument();
     });
     it('should render all specific components inside CollapsibleTradeParams if isVisible returns true for current trade type', () => {
@@ -154,6 +156,7 @@ describe('<ScreenSmall />', () => {
         expect(screen.getByText(/Strike/i)).toBeInTheDocument();
     });
     it('should render specific for allow_equals component inside CollapsibleTradeParams', () => {
+        default_mock_store.modules.trade.is_turbos = false;
         default_mock_store.modules.trade.is_equal = true;
         default_mock_store.modules.trade.contract_type = 'rise_fall_equal';
         default_mock_store.modules.trade.contract_types_list = {

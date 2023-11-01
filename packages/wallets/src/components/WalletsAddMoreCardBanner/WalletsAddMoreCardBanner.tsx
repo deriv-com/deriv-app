@@ -34,7 +34,7 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                 <WalletButton onClick={() => history.push('wallets/cashier/deposit')} text='Deposit now' />
             </div>
         ),
-        [history, modal]
+        [history] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     useEffect(() => {
@@ -88,7 +88,7 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                 </React.Fragment>
             );
         }
-    }, [status]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [data?.currency, data?.landing_company_shortcode, error?.error.message, isMobile, renderButtons, status]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className='wallets-add-more__banner'>

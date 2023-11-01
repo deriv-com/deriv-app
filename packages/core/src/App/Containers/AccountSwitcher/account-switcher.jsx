@@ -24,7 +24,7 @@ import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 import { BinaryLink } from 'App/Components/Routes';
 import { useHasSetCurrency } from '@deriv/hooks';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 
 const AccountSwitcher = ({
     available_crypto_currencies,
@@ -122,7 +122,7 @@ const AccountSwitcher = ({
         closeAccountsDialog();
         if (account_loginid === loginid) return;
         await switchAccount(loginid);
-        RudderStack.setAccountType(loginid.substring(0, 2));
+        Analytics.setAttributes({ account_type: loginid.substring(0, 2) });
     };
 
     const resetBalance = async () => {

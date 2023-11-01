@@ -47,7 +47,7 @@ const CUSTOM_KEY = 'custom';
 
 type TCompositeCalendarMobile = {
     input_date_range?: TInputDateRange;
-    current_focus?: string;
+    current_focus?: string | null;
     duration_list?: Array<TInputDateRange>;
     onChange: (
         value: { from?: moment.Moment; to?: moment.Moment; is_batch?: boolean },

@@ -19,6 +19,8 @@ const mock = {
     },
 };
 
+const handleDisclaimerTimeout = jest.fn();
+
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     useModalManagerContext: () => mock_modal_manager_context,
 }));
@@ -45,25 +47,27 @@ describe('DisclaimerModal', () => {
     );
 
     it('should render the modal with the correct title and content', () => {
-        render(<DisclaimerModal />, { wrapper });
+        render(<DisclaimerModal handleDisclaimerTimeout={handleDisclaimerTimeout} />, { wrapper });
         expect(screen.getByText('For your safety:')).toBeInTheDocument();
     });
 
     it('should disable button when checkbox is not clicked', () => {
-        render(<DisclaimerModal />, { wrapper });
+        render(<DisclaimerModal handleDisclaimerTimeout={handleDisclaimerTimeout} />, { wrapper });
         expect(screen.getByRole('button', { name: 'Confirm' })).toBeDisabled();
     });
 
     it('should enable button when checkbox is clicked', () => {
-        render(<DisclaimerModal />, { wrapper });
+        render(<DisclaimerModal handleDisclaimerTimeout={handleDisclaimerTimeout} />, { wrapper });
         userEvent.click(screen.getByRole('checkbox', { name: 'I’ve read and understood the above reminder.' }));
         expect(screen.getByRole('button', { name: 'Confirm' })).toBeEnabled();
     });
 
     it('should set value in local storage when confirm button is clicked', () => {
-        render(<DisclaimerModal />, { wrapper });
+        render(<DisclaimerModal handleDisclaimerTimeout={handleDisclaimerTimeout} />, { wrapper });
         userEvent.click(screen.getByRole('checkbox', { name: 'I’ve read and understood the above reminder.' }));
         userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
         expect(localStorage.setItem).toHaveBeenCalledWith('MX12345_disclaimer_shown', expect.any(String));
+        expect(handleDisclaimerTimeout).toHaveBeenCalledWith(0);
+        expect(mock_modal_manager_context.hideModal).toHaveBeenCalled();
     });
 });

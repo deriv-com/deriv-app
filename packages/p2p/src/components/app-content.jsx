@@ -30,6 +30,7 @@ const AppContent = ({ order_id }) => {
     const handleDisclaimerTimeout = time_lapsed => {
         timeout = setTimeout(() => {
             showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
+            // Display the disclaimer modal again after 24 hours
         }, (24 - time_lapsed) * 3600000);
     };
 

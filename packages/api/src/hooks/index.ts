@@ -16,6 +16,7 @@ export { default as useCancelCryptoTransaction } from './useCancelCryptoTransact
 export { default as useCashierFiatAddress } from './useCashierFiatAddress';
 export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateMT5Account } from './useCreateMT5Account';
+export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';
 export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';
 export { default as useCryptoTransactions } from './useCryptoTransactions';
 export { default as useCryptoWithdrawal } from './useCryptoWithdrawal';

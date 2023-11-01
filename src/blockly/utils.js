@@ -556,7 +556,7 @@ export const importFile = xml =>
 
 export const saveBeforeUnload = () => {
     window.onbeforeunload = () => {
-        if (Blockly?.mainWorkspace && Blockly?.Xml) {
+        if (Blockly?.mainWorkspace && Blockly?.Xml && Blockly?.mainWorkspace?.getAllBlocks().length) {
             const currentDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
             localStorage.setItem('previousStrat', Blockly.Xml.domToPrettyText(currentDom));
         }

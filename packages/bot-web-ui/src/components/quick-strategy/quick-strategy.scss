@@ -200,9 +200,12 @@
 
             @include mobile() {
                 width: 100%;
+
                 &.no-top-spacing {
                     padding-top: 0;
+                }
 
+                &.no-border-top {
                     .dc-input__container {
                         border-top-left-radius: 0;
                         border-top-right-radius: 0;
@@ -221,10 +224,43 @@
                         border-bottom-right-radius: 0;
                     }
                 }
+                &.no-bottom-spacing {
+                    padding-bottom: 0;
+                }
+                &.no-bottom-border-radius {
+                    .dc-input__container {
+                        border-bottom-left-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+                }
+            }
+            &__list {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                &__item {
+                    flex: 1;
+                    height: var(--input-height);
+                    background: var(--general-main-1);
+                    line-height: var(--input-height);
+                    text-align: center;
+                    font-size: 12px;
+                    &:first-child {
+                        border-bottom-left-radius: 4px;
+                    }
+                    &:last-child {
+                        border-bottom-right-radius: 4px;
+                    }
+                    &--active {
+                        font-weight: bold;
+                        background: var(--general-active);
+                    }
+                }
             }
         }
     }
     &__autocomplete {
+        caret-color: transparent;
         .dc-input {
             &__container {
                 border: none;
@@ -264,6 +300,7 @@
     }
 
     &__select {
+        caret-color: transparent;
         .dc-input {
             &__container {
                 border: none;

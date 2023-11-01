@@ -20,7 +20,7 @@ type TFormikWrapper = {
 const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const { quick_strategy } = useDBotStore();
     const [duration, setDuration] = React.useState<TDurationItemRaw | null>(null);
-    const { selected_strategy, form_data, onSubmit } = quick_strategy;
+    const { selected_strategy, form_data, onSubmit, setValue } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
 
     const initial_value: TFormData = {
@@ -42,6 +42,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         const data = JSON.parse(localStorage.getItem('qs-fields') || '{}');
         Object.keys(data).forEach(key => {
             initial_value[key as keyof TFormData] = data[key];
+            setValue(key, data[key]);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -54,6 +55,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             setDuration(d);
         };
         getDurations();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form_data.symbol, form_data.tradetype, form_data.durationtype]);
 
     const getErrors = () => {

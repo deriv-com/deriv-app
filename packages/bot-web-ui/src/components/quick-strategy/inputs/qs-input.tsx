@@ -35,6 +35,7 @@ const QSInput: React.FC<TQSInput> = observer(
                             className={classNames('qs__form__field', {
                                 'full-width': fullwidth,
                                 'no-top-spacing': attached,
+                                'no-border-top': attached,
                             })}
                         >
                             <div onMouseEnter={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>

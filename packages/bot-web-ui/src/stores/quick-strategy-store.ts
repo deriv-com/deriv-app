@@ -40,16 +40,16 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
-            is_open: observable,
-            selected_strategy: observable,
             form_data: observable,
+            is_contract_dialog_open: observable,
+            is_open: observable,
+            is_stop_bot_dialog_open: observable,
+            selected_strategy: observable,
+            onSubmit: action,
             setFormVisibility: action,
             setSelectedStrategy: action,
-            onSubmit: action,
-            is_contract_dialog_open: observable,
-            is_stop_bot_dialog_open: observable,
-            toggleStopBotDialog: action,
             setValue: action,
+            toggleStopBotDialog: action,
         });
         this.root_store = root_store;
         reaction(

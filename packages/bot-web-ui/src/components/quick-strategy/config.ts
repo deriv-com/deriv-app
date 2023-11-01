@@ -34,7 +34,7 @@ const TRADETYPE: TConfigItem = {
 
 const CONTRACT_TYPE: TConfigItem = {
     type: 'contract_type',
-    name: 'contract_type',
+    name: 'type',
     dependencies: ['symbol', 'tradetype'],
 };
 

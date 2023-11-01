@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { AccountStatus } from '@deriv/shared';
+import { Link } from 'react-router-dom';
 
 const getStatusBadgeConfig = (
     account_status: string,
@@ -46,11 +47,15 @@ const getStatusBadgeConfig = (
                         i18n_default_text='<0>Needs verification.</0><1>Verify now</1>'
                         components={[
                             <Text key={0} weight='bold' size='xxxs' color='var(--status-info)' />,
-                            <Text
-                                key={1}
-                                className='link-need-verification'
-                                onClick={() => setIsVerificationModalVisible?.(true)}
-                            />,
+                            setIsVerificationModalVisible ? (
+                                <Text
+                                    key={1}
+                                    className='link-need-verification'
+                                    onClick={() => setIsVerificationModalVisible?.(true)}
+                                />
+                            ) : (
+                                <Link key={1} className='link-need-verification' to='/account/proof-of-identity' />
+                            ),
                         ]}
                     />
                 ),

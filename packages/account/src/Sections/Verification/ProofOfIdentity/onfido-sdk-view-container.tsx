@@ -193,12 +193,6 @@ const OnfidoSdkViewContainer = ({
         const fetchServiceToken = () => {
             if (onfido_init.current) return;
             getOnfidoServiceToken().then(response_token => {
-                initOnfido(
-                    'eyJhbGciOiJFUzUxMiJ9.eyJleHAiOjE2OTg4MTc2MDYsInBheWxvYWQiOnsiYXBwIjoiZmNlNTIwZGUtNmE1Yy00NDVjLWEzYTktMGE3ZmJkNGY2OTc4IiwiY2xpZW50X3V1aWQiOiI1NmY2ZGE1YS02NDc5LTRjNDMtOWI2OS0xMzcwMTA4NTdlMzciLCJpc19zYW5kYm94Ijp0cnVlLCJpc19zZWxmX3NlcnZpY2VfdHJpYWwiOmZhbHNlLCJpc190cmlhbCI6dHJ1ZSwicmVmIjoiaHR0cHM6Ly8qLmRlcml2LmNvbS8qIiwic2FyZGluZV9zZXNzaW9uIjoiN2ZiOGQxODAtNDNlMi00M2M3LWFmMmUtMjIxOTZjZGFhM2ZhIiwiaGFzX3VzYWdlX3BsYW4iOnRydWV9LCJ1dWlkIjoicGxhdGZvcm1fc3RhdGljX2FwaV90b2tlbl91dWlkIiwidXJscyI6eyJkZXRlY3RfZG9jdW1lbnRfdXJsIjoiaHR0cHM6Ly9zZGsub25maWRvLmNvbSIsInN5bmNfdXJsIjoiaHR0cHM6Ly9zeW5jLm9uZmlkby5jb20iLCJob3N0ZWRfc2RrX3VybCI6Imh0dHBzOi8vaWQub25maWRvLmNvbSIsImF1dGhfdXJsIjoiaHR0cHM6Ly9hcGkub25maWRvLmNvbSIsIm9uZmlkb19hcGlfdXJsIjoiaHR0cHM6Ly9hcGkub25maWRvLmNvbSIsInRlbGVwaG9ueV91cmwiOiJodHRwczovL2FwaS5vbmZpZG8uY29tIn19.MIGIAkIAiT_Ls89JTYQRHw1nNAadTRWW1I8F9L_fw5yoAQfX4gmsljT8hjJweBav02K24Ns3c16ZAA4vs6QgQtXQ-FOHZBQCQgGNVltCZ_eWETxI1vSeaiYIIbbfg-ZyP_Ri90JL_SEMyRHuqlXWpzdQDiF1-yR0B8PiVHwvj1_CKkn-t3PV4aUszA'
-                ).then(() => {
-                    setStatusLoading(false);
-                });
-                return;
                 if (typeof response_token !== 'string' && response_token?.error) {
                     handleError(response_token.error);
                     setStatusLoading(false);

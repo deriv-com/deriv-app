@@ -118,14 +118,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     };
 
     return (
-        <Formik
-            initialValues={initial_value}
-            validationSchema={getErrors()}
-            onSubmit={handleSubmit}
-            validateOnBlur
-            validateOnChange
-            validateOnMount
-        >
+        <Formik initialValues={initial_value} validationSchema={getErrors()} onSubmit={handleSubmit} validateOnBlur>
             {children}
         </Formik>
     );

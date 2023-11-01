@@ -31,10 +31,10 @@ const WalletActionModal: React.FC<TWalletActionModal> = ({
                     {description}
                 </WalletText>
                 <div className='wallets-action-modal__buttons-container'>
-                    {actionButtonsOptions.map((action, index) => (
+                    {actionButtonsOptions.map(action => (
                         <WalletButton
                             color={action.isPrimary ? 'primary' : 'transparent'}
-                            key={index}
+                            key={action.text}
                             onClick={action.onClick}
                             size='lg'
                             text={action.text}

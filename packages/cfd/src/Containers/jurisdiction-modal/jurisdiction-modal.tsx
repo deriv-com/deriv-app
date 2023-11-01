@@ -8,7 +8,7 @@ import { DynamicLeverageContext } from '../dynamic-leverage/dynamic-leverage-con
 import DynamicLeverageModalContent from '../dynamic-leverage/dynamic-leverage-modal-content';
 import JurisdictionModalContentWrapper from './jurisdiction-modal-content-wrapper';
 import JurisdictionModalTitle from './jurisdiction-modal-title';
-import { MARKET_TYPE } from 'src/Helpers/cfd-config';
+import { MARKET_TYPE } from '../../Helpers/cfd-config';
 
 const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalProps) => {
     const { traders_hub, ui, common, client } = useStore();

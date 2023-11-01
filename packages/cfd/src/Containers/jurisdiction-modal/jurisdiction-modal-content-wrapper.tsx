@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { getAuthenticationStatusInfo, is_mobile } from '@deriv/shared';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
@@ -12,9 +12,10 @@ import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { MARKET_TYPE, JURISDICTION } from '../../Helpers/cfd-config';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
-    const { client, traders_hub } = useStore();
+    const { client, traders_hub, ui } = useStore();
 
     const { show_eu_related_content } = traders_hub;
+    const { is_mobile } = ui;
 
     const {
         trading_platform_available_accounts,

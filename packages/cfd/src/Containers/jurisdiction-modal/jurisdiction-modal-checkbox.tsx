@@ -1,6 +1,7 @@
 import React from 'react';
 import { Checkbox, StaticUrl, Text } from '@deriv/components';
-import { is_mobile, Jurisdiction } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+import { Jurisdiction } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TJurisdictionCheckBoxProps } from '../props.types';
 
@@ -12,6 +13,9 @@ const JurisdictionCheckBox = ({
     should_restrict_bvi_account_creation,
     should_restrict_vanuatu_account_creation,
 }: TJurisdictionCheckBoxProps) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+
     const shouldShowCheckBox = () => {
         if (
             !jurisdiction_selected_shortcode ||

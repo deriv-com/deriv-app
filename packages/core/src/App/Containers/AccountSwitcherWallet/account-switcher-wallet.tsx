@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Button, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
+import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
 import { observer, useStore } from '@deriv/stores';
 import './account-switcher-wallet.scss';
@@ -58,14 +58,17 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
                     })}
                 </div>
             </ThemedScrollbars>
-            <Button
-                className='account-switcher-wallet__button'
-                has_effect
-                text={localize('Looking for CFDs? Go to Trader’s hub')}
-                onClick={handleTradersHubRedirect}
-                secondary
-                small
-            />
+            <div className='account-switcher-wallet__looking-for-cfds'>
+                <Text size='xs' line_height='xl'>
+                    <Localize i18n_default_text='Looking for CFDs? Go to Trader’s hub' />
+                </Text>
+                <Icon
+                    data_testid='dt_select_arrow'
+                    icon='IcChevronDownBold'
+                    className='account-switcher-wallet__arrow'
+                    onClick={handleTradersHubRedirect}
+                />
+            </div>
         </div>
     );
 });

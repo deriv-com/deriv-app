@@ -12,7 +12,15 @@
         border-bottom: 1px solid var(--general-hover);
     }
 
-    &__button {
-        margin: 1.6rem;
+    &__looking-for-cfds {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.6rem;
+    }
+
+    &__arrow {
+        transform: rotate(-90deg);
+        cursor: pointer;
     }
 }

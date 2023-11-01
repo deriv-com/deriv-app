@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { AppLinkedWithWalletIcon, Text } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import { Localize } from '@deriv/translations';
@@ -70,11 +70,16 @@ export const AccountSwitcherWalletItem = observer(
                         {is_virtual ? (
                             <Localize i18n_default_text='Demo Wallet' />
                         ) : (
-                            <Localize i18n_default_text='{{currency}} Wallet' values={{ currency }} />
+                            <Localize
+                                i18n_default_text='{{currency}} Wallet'
+                                values={{ currency: getCurrencyDisplayCode(currency) }}
+                            />
                         )}
                     </Text>
                     <Text size='xs' weight='bold'>
-                        {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${currency}`}
+                        {`${formatMoney(currency || '', dtrade_balance || 0, true)} ${getCurrencyDisplayCode(
+                            currency
+                        )}`}
                     </Text>
                 </div>
                 {show_badge && <WalletBadge is_demo={Boolean(is_virtual)} label={landing_company_name} />}

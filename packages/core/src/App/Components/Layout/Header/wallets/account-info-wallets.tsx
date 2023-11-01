@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, WalletIcon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import { AccountSwitcherWallet } from 'App/Containers/AccountSwitcherWallet';
@@ -96,7 +96,7 @@ const DesktopInfoIcons = observer(({ wallet_account, active_account, show_badge 
                 balance={active_account?.balance}
                 currency={active_account?.currency}
                 is_virtual={Boolean(active_account?.is_virtual)}
-                display_code={active_account?.currency}
+                display_code={getCurrencyDisplayCode(active_account?.currency)}
             />
             {show_badge && (
                 <WalletBadge

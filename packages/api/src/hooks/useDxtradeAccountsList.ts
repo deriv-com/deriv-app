@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
 import useDxtradeServiceToken from './useDxtradeServiceToken';
-import { displayBalanceFormat } from '../utils';
+import { formatMoney } from '../utils';
 
 /** A custom hook that gets the list of created Deriv X accounts. */
 const useDxtradeAccountsList = () => {
@@ -20,7 +20,7 @@ const useDxtradeAccountsList = () => {
             dxtrade_accounts?.trading_platform_accounts?.map(account => ({
                 ...account,
                 /** The balance of the account in currency format. */
-                display_balance: displayBalanceFormat(account?.balance || 0, account?.currency || 'USD', {
+                display_balance: formatMoney(account?.balance || 0, account?.currency || 'USD', {
                     preferred_language: authorize_data?.preferred_language,
                 }),
                 /** The token of the Deriv X account */

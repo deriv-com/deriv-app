@@ -202,7 +202,6 @@ const PersonalDetails = ({
                                             account_opening_reason_list={account_opening_reason_list}
                                             should_close_tooltip={should_close_tooltip}
                                             setShouldCloseTooltip={setShouldCloseTooltip}
-                                            should_hide_helper_image={false}
                                             no_confirmation_needed={no_confirmation_needed}
                                         />
                                     </div>

@@ -6,7 +6,7 @@ import useCtraderServiceToken from './useCtraderServiceToken';
 /** A custom hook that gets the list of created cTrader accounts. */
 const useCtraderAccountsList = () => {
     const { isSuccess } = useAuthorize();
-    const { data: ctrader_accounts } = useQuery('trading_platform_accounts', {
+    const { data: ctrader_accounts, ...rest } = useQuery('trading_platform_accounts', {
         payload: { platform: 'ctrader' },
         options: { enabled: isSuccess },
     });
@@ -28,6 +28,7 @@ const useCtraderAccountsList = () => {
     return {
         /** List of all created cTrader accounts */
         data: modified_ctrader_accounts,
+        ...rest,
     };
 };
 

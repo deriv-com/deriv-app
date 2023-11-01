@@ -23,6 +23,7 @@ const Summary = observer(({ is_drawer_open }: TSummary) => {
                 'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
                 'run-panel-tab__content--summary-tab': (!is_mobile && is_drawer_open) || active_tour,
             })}
+            data-testid='mock-summary'
         >
             <ThemedScrollbars
                 className={classnames({

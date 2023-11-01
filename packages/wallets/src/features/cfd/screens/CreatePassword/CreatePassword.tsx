@@ -29,7 +29,7 @@ const CreatePassword: React.FC<TProps> = ({
     const title = PlatformToTitleMapper[platform];
     return (
         <div className='wallets-create-password'>
-            {icon}
+            {!isMobile && icon}
             <div className='wallets-create-password-title'>Create a {title} password</div>
             <span className='wallets-create-password-subtitle'>
                 You can use this password for all your {title} accounts.

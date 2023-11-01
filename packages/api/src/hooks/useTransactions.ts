@@ -11,7 +11,7 @@ const useTransactions = () => {
     const { isFetching, isSuccess } = useAuthorize();
     const [filter, setFilter] = useState<TFilter>();
     const invalidate = useInvalidateQuery();
-    const { data, fetchNextPage, ...rest } = useInfiniteQuery('statement', {
+    const { data, fetchNextPage, remove, ...rest } = useInfiniteQuery('statement', {
         options: {
             enabled: !isFetching && isSuccess,
             getNextPageParam: (lastPage, pages) => {
@@ -28,6 +28,12 @@ const useTransactions = () => {
     useEffect(() => {
         invalidate('statement');
     }, [filter, invalidate]);
+
+    useEffect(() => {
+        return () => {
+            remove();
+        };
+    }, [remove]);
 
     // Flatten the data array.
     const flatten_data = useMemo(() => {

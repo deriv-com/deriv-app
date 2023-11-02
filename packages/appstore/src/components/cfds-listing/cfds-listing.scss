@@ -43,12 +43,9 @@
     }
     &__wrapper {
         @include desktop {
-            height: 69rem;
+            height: 76rem;
             perspective: 100rem;
             overflow: scroll;
-            &:has(.jurisdiction-modal__scrollable-content .cfd-jurisdiction-card--financial__wrapper) {
-                height: 76rem;
-            }
         }
     }
 

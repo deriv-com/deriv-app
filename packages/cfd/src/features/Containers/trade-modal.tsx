@@ -4,12 +4,12 @@ import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } f
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../Helpers/config';
-import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../Helpers/constants';
-import { CFD_PLATFORMS, MOBILE_PLATFORMS } from '../Helpers/cfd-config';
-import SpecBox from '../Components/specbox';
-import PasswordBox from '../Components/passwordbox';
-import { TCFDPasswordReset } from './props.types';
+import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../../Helpers/config';
+import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../../Helpers/constants';
+import { CFD_PLATFORMS, MOBILE_PLATFORMS } from '../../Helpers/cfd-config';
+import SpecBox from '../../Components/specbox';
+import PasswordBox from '../../Components/passwordbox';
+import { TCFDPasswordReset } from '../../Containers/props.types';
 
 type TTradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -77,7 +77,7 @@ const TradeModal = ({
     is_mobile,
 }: TTradeModalProps) => {
     const CTraderAndDerivEZDescription = () => {
-        const platform_name = platform === 'derivez' ? 'Deriv EZ' : 'cTrader';
+        const platform_name = platform === CFD_PLATFORMS.DERIVEZ ? 'Deriv EZ' : 'cTrader';
         return (
             <div className='cfd-trade-modal__login-specs-item'>
                 <Text className='cfd-trade-modal--paragraph'>
@@ -134,13 +134,13 @@ const TradeModal = ({
 
     const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
         let app_title = '';
-        if (platform_type === 'dxtrade') {
+        if (platform_type === CFD_PLATFORMS.DXTRADE) {
             app_title = localize('Run Deriv X on your browser');
-        } else if (platform_type === 'derivez') {
+        } else if (platform_type === CFD_PLATFORMS.DERIVEZ) {
             app_title = localize('Run Deriv EZ on your browser');
-        } else if (platform_type === 'ctrader' && !is_mobile) {
+        } else if (platform_type === CFD_PLATFORMS.CTRADER && !is_mobile) {
             app_title = localize('Run cTrader on your browser');
-        } else if (platform_type === 'ctrader' && is_mobile) {
+        } else if (platform_type === CFD_PLATFORMS.CTRADER && is_mobile) {
             return null;
         } else {
             return null;

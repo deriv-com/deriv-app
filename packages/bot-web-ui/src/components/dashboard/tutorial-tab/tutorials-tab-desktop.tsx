@@ -4,6 +4,7 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TContent } from './config';
+import throttle from 'lodash.throttle'; // Import throttle
 
 type TTutorialsTabDesktop = {
     tutorial_tabs: TContent;
@@ -16,7 +17,10 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs }: TTutorialsTabDesktop) =
     const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
     const search = faq_search_value?.toLowerCase();
 
-    const onSearch = event => setFAQSearchValue(event.target.value);
+    const onSearch = throttle(event => {
+        setFAQSearchValue(event.target.value);
+    }, 300);
+
     const onFocusSearch = () => {
         setActiveTabTutorial(2);
         input_ref?.current?.focus();

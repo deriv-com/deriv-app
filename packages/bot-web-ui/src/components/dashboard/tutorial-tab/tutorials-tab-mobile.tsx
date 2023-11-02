@@ -5,6 +5,7 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TContent } from './config';
+import throttle from 'lodash.throttle';
 
 type TTutorialsTabMobile = {
     tutorial_tabs: TContent;
@@ -28,7 +29,15 @@ const TutorialsTabMobile = observer(({ tutorial_tabs }: TTutorialsTabMobile) => 
         setSelectedTab(tutorial_tabs[active_tab_tutorials] || {});
     }, [active_tab_tutorials, active_tab, faq_search_value, selectedTab]);
 
-    const onSearch = event => setFAQSearchValue(event.target.value);
+    const throttledSearch = throttle(value => {
+        setFAQSearchValue(value);
+    }, 300);
+
+    const onSearch = event => {
+        const value = event.target.value;
+        throttledSearch(value);
+    };
+
     const onFocusSearch = () => setActiveTabTutorial(2);
 
     const onChangeHandle = React.useCallback(

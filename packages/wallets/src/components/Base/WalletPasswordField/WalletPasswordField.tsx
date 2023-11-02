@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { zxcvbn } from '@zxcvbn-ts/core';
 import { WalletTextField } from '../WalletTextField';
 import './WalletPasswordField.scss';
@@ -16,34 +16,25 @@ const WalletPasswordField: FC<WalletPasswordFieldProps> = ({ label = 'Password',
     const hasMessage = !!messageObj;
     const hasMaxLength = !!maxLength;
 
-    const getPasswordStrength = () => {
-        const result = zxcvbn(password);
-        return result.score;
-    };
+    const passwordStrength = zxcvbn(password).score;
 
-    const strength = getPasswordStrength();
+    const strengthColors = [
+        'wallets-password__meter--initial',
+        'wallets-password__meter--weak',
+        'wallets-password__meter--moderate',
+        'wallets-password__meter--strong',
+        'wallets-password__meter--complete',
+    ];
 
-    const getProgressColor = () => {
-        const strengthColors = [
-            'wallets-password__meter--initial',
-            'wallets-password__meter--weak',
-            'wallets-password__meter--moderate',
-            'wallets-password__meter--strong',
-            'wallets-password__meter--complete',
-        ];
-
-        return strengthColors[strength];
-    };
-
-    const getProgressText = (messageObj: StrengthMessage) => {
-        if (!messageObj) return '';
-        return messageObj[strength as keyof StrengthMessage];
-    };
+    const progressText = useMemo(
+        () => (messageObj ? messageObj[passwordStrength as keyof StrengthMessage] : ''),
+        [messageObj, passwordStrength]
+    );
 
     return (
         <div className='wallets-password'>
             <WalletTextField
-                helperMessage={getProgressText(messageObj as StrengthMessage)}
+                helperMessage={progressText}
                 label={label}
                 maxLength={maxLength}
                 onChange={e => setPassword(e.target.value)}
@@ -51,7 +42,7 @@ const WalletPasswordField: FC<WalletPasswordFieldProps> = ({ label = 'Password',
                 type='password'
             />
             <div className='wallets-password__meter'>
-                <div className={getProgressColor()} />
+                <div className={strengthColors[passwordStrength]} />
             </div>
         </div>
     );

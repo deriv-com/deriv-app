@@ -46,6 +46,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     React.useEffect(() => {
         const { active_symbols } = ApiHelpers.instance;
         const symbols = active_symbols.getSymbolsForBot();
+
         setActiveSymbols(symbols);
 
         if (values?.symbol) {
@@ -67,12 +68,22 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
         [active_symbols]
     );
 
+    React.useEffect(() => {
+        const selected_symbol = symbols.find(symbol => symbol.value === values.symbol);
+        if (selected_symbol) {
+            setInputValue(selected_symbol.text);
+        }
+    }, [symbols, values.symbol, setInputValue]);
+
     const handleFocus = () => {
-        if (!is_input_started) {
+        if (is_desktop && !is_input_started) {
             setIsInputStarted(true);
-            setFieldValue('symbol', '');
             setInputValue('');
         }
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(e.target.value);
     };
 
     const handleItemSelection = (item: TItem) => {
@@ -84,36 +95,38 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
         }
     };
 
+    const handleHideDropdownList = () => {
+        if (is_desktop) {
+            const selectedSymbol = symbols.find(symbol => symbol.value === values.symbol);
+            if (selectedSymbol && selectedSymbol.text !== input_value) {
+                setInputValue(selectedSymbol.text);
+                setIsInputStarted(false);
+            }
+        }
+    };
+
     return (
         <div className={classNames('qs__form__field', { 'full-width': fullWidth })}>
             <Field name='symbol' key='asset' id='asset'>
-                {({ field: { value, ...rest_field } }: FieldProps) => {
-                    const selected_symbol = symbols.find(symbol => symbol.value === value);
-                    setInputValue(selected_symbol?.text as string);
-
-                    return (
-                        <>
-                            <Autocomplete
-                                {...rest_field}
-                                readOnly={is_mobile}
-                                inputMode='none'
-                                data-testid='qs_autocomplete_symbol'
-                                autoComplete='off'
-                                className='qs__autocomplete'
-                                value={selected_symbol?.text || input_value}
-                                list_items={symbols}
-                                onItemSelection={handleItemSelection}
-                                onChange={
-                                    is_desktop
-                                        ? (e: React.ChangeEvent<HTMLSelectElement>) => setInputValue(e.target.value)
-                                        : false
-                                }
-                                onFocus={is_desktop ? handleFocus : false}
-                                leading_icon={<Icon icon={`IcUnderlying${selected_symbol?.value}`} size={24} />}
-                            />
-                        </>
-                    );
-                }}
+                {({ field: { value, ...rest_field } }: FieldProps) => (
+                    <>
+                        <Autocomplete
+                            {...rest_field}
+                            readOnly={is_mobile}
+                            inputMode='none'
+                            data-testid='qs_autocomplete_symbol'
+                            autoComplete='off'
+                            className='qs__autocomplete'
+                            value={input_value}
+                            list_items={symbols}
+                            onItemSelection={handleItemSelection}
+                            onChange={handleInputChange}
+                            onFocus={handleFocus}
+                            onHideDropdownList={handleHideDropdownList}
+                            leading_icon={<Icon icon={`IcUnderlying${value}`} size={24} />}
+                        />
+                    </>
+                )}
             </Field>
         </div>
     );

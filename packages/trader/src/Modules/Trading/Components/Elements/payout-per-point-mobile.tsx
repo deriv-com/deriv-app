@@ -1,9 +1,9 @@
 import React from 'react';
 import { Icon, Money, Text, Popover } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset';
 import { observer } from '@deriv/stores';
-import { getContractSubtype, getLocalizedBasis } from '@deriv/shared';
+import { getLocalizedBasis } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TProposalTypeInfo } from 'Types';
 
@@ -19,10 +19,9 @@ const PayoutPerPointMobile = observer(() => {
         (proposal_info as TProposalInfo)?.[contract_key] || {};
     const { text: label, value: payout_per_point } = obj_contract_basis || {};
     const has_error_or_not_loaded = has_error || !id;
-    const turbos_titles = {
-        Long: localize('For Long:'),
-        Short: localize('For Short:'),
-    };
+    const turbos_payout_message = (
+        <Localize i18n_default_text='This is the amount you’ll receive at expiry for every point of change in the underlying price, if the spot price never touches or breaches the barrier throughout the contract duration.' />
+    );
     const vanilla_payout_message = is_vanilla_fx ? (
         <Localize
             i18n_default_text='The payout at expiry is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
@@ -31,18 +30,7 @@ const PayoutPerPointMobile = observer(() => {
     ) : (
         <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.' />
     );
-    const tooltip_text = is_vanilla ? (
-        vanilla_payout_message
-    ) : (
-        <Localize
-            i18n_default_text='<0>{{title}}</0> {{message}}'
-            components={[<Text key={0} weight='bold' size='xxs' />]}
-            values={{
-                title: turbos_titles[getContractSubtype(contract_key) as keyof typeof turbos_titles],
-                message,
-            }}
-        />
-    );
+    const tooltip_text = is_vanilla ? vanilla_payout_message : turbos_payout_message;
     if (!payout_per_point) return <Fieldset className='payout-per-point' />;
     return (
         <Fieldset className='payout-per-point'>

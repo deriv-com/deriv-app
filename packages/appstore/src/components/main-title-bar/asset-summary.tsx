@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
@@ -7,17 +7,15 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
-import { useExchangeRates2 } from '@deriv/api';
+import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts, useGlobalData } from '@deriv/hooks';
+// import { useExchangeRates2 } from '@deriv/api';
 
 type TRate = {
-    [key: string]: {
-        rate: number;
-    };
+    [k: string]: number;
 };
 
 const AssetSummary = observer(() => {
-    const [rates, setRates] = React.useState<TRate>({});
+    // const [rates, setRates] = React.useState<TRate>({});
     const { traders_hub, client, common } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { is_logging_in, is_switching, default_currency, currency } = client;
@@ -38,47 +36,45 @@ const AssetSummary = observer(() => {
     const cfd_target_currency = cfd_real_accounts?.[0]?.currency || undefined;
     const platform_target_currency = currency;
     const base = platform_real_balance.currency;
+    const { handleSubscription, conversion_rates } = useGlobalData();
 
-    const { data, subscribe, unsubscribe } = useExchangeRates2();
-    data?.exchange_rates;
+    // const { data, subscribe, unsubscribe } = useExchangeRates2();
 
-    React.useEffect(() => {
-        if (data) {
-            setRates(prev_rates => {
-                const new_rates = { ...prev_rates, ...(data?.exchange_rates?.rates || {}) };
-                return new_rates;
-            });
-        }
-    }, [data]);
+    // React.useEffect(() => {
+    //     if (data) {
+    //         setRates(prev_rates => {
+    //             const new_rates = { ...prev_rates, ...(data?.exchange_rates?.rates || {}) };
+    //             return new_rates;
+    //         });
+    //     }
+    // }, [data]);
 
-    // if (Object.keys(rates).length) console.log('rates', rates);
+    // console.log('response_data', response_data?.exchange_rates?.rates);
+    console.log('conversion_rates', conversion_rates);
+    // if (Object.keys(rates).length) console.log('response', data?.exchange_rates?.rates);
 
     React.useEffect(() => {
         if (!((is_switching || is_logging_in) && (eu_account || cr_account))) {
+            // console.log('useEffect triggered');
             if (base && base !== platform_target_currency) {
-                subscribe({
-                    payload: {
-                        base_currency: base,
-                        target_currency: platform_target_currency,
-                    },
-                });
+                handleSubscription(base, platform_target_currency);
             }
 
             if (base && cfd_target_currency !== undefined && base !== cfd_target_currency) {
-                subscribe({
-                    payload: {
-                        base_currency: base,
-                        target_currency: cfd_target_currency,
-                    },
-                });
+                handleSubscription(base, cfd_target_currency);
             }
         }
+
+        // return () => {
+        //     if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
+        //         unsubscribe();
+        //     }
+        // };
     }, [
         is_switching,
         is_logging_in,
         eu_account,
         cr_account,
-        subscribe,
         default_currency,
         currency,
         platform_real_balance.currency,
@@ -86,13 +82,8 @@ const AssetSummary = observer(() => {
         base,
         platform_target_currency,
         cfd_target_currency,
+        handleSubscription,
     ]);
-
-    React.useEffect(() => {
-        if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
-            unsubscribe();
-        }
-    }, [is_switching, is_logging_in, eu_account, cr_account, unsubscribe]);
 
     //dont show loader if user has no respective regional account
     if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
@@ -105,16 +96,8 @@ const AssetSummary = observer(() => {
         );
     }
 
-    // console.log('exchange_rates', data);
-    // console.log('====================================');
-
     return (
         <div className='asset-summary'>
-            {/* <ul>
-                {currencies.map(cur => (
-                    <li key={cur}>{cur}</li>
-                ))}
-            </ul> */}
             {has_active_related_deriv_account || selected_account_type === 'demo' ? (
                 <React.Fragment>
                     {!isMobile() ? (

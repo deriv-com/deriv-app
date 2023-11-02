@@ -32,6 +32,13 @@ const TRADETYPE: TConfigItem = {
     dependencies: ['symbol'],
 };
 
+const TRADETYPE_FULL_WIDTH: TConfigItem = {
+    type: 'tradetype',
+    name: 'tradetype',
+    dependencies: ['symbol'],
+    fullWidth: true,
+};
+
 const CONTRACT_TYPE: TConfigItem = {
     type: 'contract_type',
     name: 'type',
@@ -172,7 +179,7 @@ export const STRATEGIES: TStrategies = {
             "The D'Alembert strategy increases the stake after a losing trade and reduces the stake after a successful trade by the number of units that traders decide. One unit is equal to the amount of the initial stake. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
         ),
         fields: [
-            [SYMBOL, TRADETYPE, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
+            [SYMBOL, TRADETYPE_FULL_WIDTH, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_DALEMBERT_UNIT, UNIT],
         ],
     },
@@ -183,7 +190,7 @@ export const STRATEGIES: TStrategies = {
             "The Oscar's Grind strategy aims to potentially make one unit of profit per session. A new session starts when the target profit is reached. If a losing trade is followed by a successful one, the stake increases by one unit. In every other scenario, the stake for the next trade will be the same as the previous one. If the stake for the next trade exceeds the gap between the target profit and current loss of the session, it adjusts to the gap size. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
         ),
         fields: [
-            [SYMBOL, TRADETYPE, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
+            [SYMBOL, TRADETYPE_FULL_WIDTH, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_OSCARS_GRIND_UNIT, UNIT],
         ],
     },

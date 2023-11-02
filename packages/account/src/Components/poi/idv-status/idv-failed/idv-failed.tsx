@@ -209,6 +209,8 @@ const IdvFailed = ({
             if (form_data.date_of_birth) {
                 form_data.date_of_birth = toMoment(form_data.date_of_birth).format('YYYY-MM-DD');
             }
+            // Remove the checkbox value as it is used only for moving cursor to the error field
+            form_data.confirmation_checkbox = false;
             let initial_form_values = form_data;
             if (is_document_upload_required) {
                 initial_form_values = {
@@ -255,6 +257,7 @@ const IdvFailed = ({
         values: TIdvFailedForm,
         { setStatus, setSubmitting, status }: FormikHelpers<TIdvFailedForm> & FormikState<TIdvDocumentSubmitForm>
     ) => {
+        delete values.confirmation_checkbox;
         setSubmitting(true);
         setStatus({ ...status, error_msg: null });
         const { document_number, document_type } = values;
@@ -330,10 +333,15 @@ const IdvFailed = ({
             errors.last_name = validateName(values.last_name);
         }
 
+        if (!values.confirmation_checkbox) {
+            errors.confirmation_checkbox = 'error';
+        }
+
         setRestState(prev_state => ({
             ...prev_state,
             errors: !isEmptyObject(removeEmptyPropertiesFromObject(errors)),
         }));
+
         return removeEmptyPropertiesFromObject(errors);
     };
 
@@ -356,15 +364,11 @@ const IdvFailed = ({
     return (
         <Formik
             initialValues={rest_state?.form_initial_values ?? {}}
-            initialStatus={{
-                is_confirmed: false,
-            }}
-            enableReinitialize
             onSubmit={onSubmit}
             validate={validateFields}
             className='proof-of-identity__container'
         >
-            {({ isSubmitting, isValid, dirty, status }) => (
+            {({ isSubmitting, isValid, dirty, status, values, errors }) => (
                 <Form
                     className={classNames('proof-of-identity__mismatch-container', {
                         'upload-layout': is_document_upload_required,
@@ -398,7 +402,7 @@ const IdvFailed = ({
                         )}
                         <PersonalDetailsForm
                             class_name='account-form__poi-confirm-example_container'
-                            editable_fields={status?.is_confirmed ? [] : rest_state?.changeable_fields}
+                            editable_fields={values.confirmation_checkbox ? [] : rest_state?.changeable_fields}
                             is_rendered_for_idv
                             side_note={idv_failure?.side_note_image}
                             inline_note_text={idv_failure?.inline_note_text}
@@ -410,7 +414,7 @@ const IdvFailed = ({
                                     className='proof-of-identity__submit-button'
                                     type='submit'
                                     has_effect
-                                    is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
+                                    is_disabled={!dirty || isSubmitting || !isValid}
                                     text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
                                     large
                                     primary
@@ -423,7 +427,7 @@ const IdvFailed = ({
                             <Button
                                 type='submit'
                                 has_effect
-                                is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
+                                is_disabled={!dirty || isSubmitting || !isValid}
                                 text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
                                 large
                                 primary

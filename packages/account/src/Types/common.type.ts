@@ -125,6 +125,7 @@ export type TPersonalDetailsForm = {
     first_name: string;
     last_name: string;
     date_of_birth: string;
+    confirmation_checkbox?: boolean;
 };
 
 export type TInputFieldValues = Record<string, string>;

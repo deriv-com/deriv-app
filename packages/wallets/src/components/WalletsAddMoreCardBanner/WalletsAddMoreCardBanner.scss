@@ -52,4 +52,15 @@
             text-transform: uppercase;
         }
     }
+
+    &__success-footer {
+        display: flex;
+        gap: 0.8rem;
+
+        @include mobile {
+            flex-direction: column;
+            padding-block: 1.6rem;
+            width: 100%;
+        }
+    }
 }

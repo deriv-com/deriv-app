@@ -1,11 +1,14 @@
 import React from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
+import { useCryptoTransactions } from '@deriv/hooks';
+import { TModifiedTransaction } from '@deriv/hooks/src/useCryptoTransactions';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { useCashierStore } from '../../../stores/useCashierStores';
-import { TAccount } from '../../../types';
-import { getAccountText } from '../../../utils/utility';
+import { useCashierStore } from 'Stores/useCashierStores';
+import { TAccount } from 'Types';
+import { getAccountText } from 'Utils/utility';
+import { cryptoTransactionMapper } from '../../../modules/transactions-crypto/helpers';
 import './withdrawal-crypto-receipt.scss';
 
 type TWalletInformationProps = {
@@ -13,16 +16,40 @@ type TWalletInformationProps = {
     blockchain_address: string;
 };
 
-const Status = () => {
+type TStatusProps = {
+    last_transaction:
+        | (TModifiedTransaction & {
+              is_deposit: boolean;
+              is_withdrawal: boolean;
+          })
+        | undefined;
+};
+
+const Status = ({ last_transaction }: TStatusProps) => {
+    const [status, setStatus] = React.useState({ status_color: 'warning', status_name: 'In review' });
+
+    const colorMap: { [key: string]: string } = {
+        warning: 'orange',
+        unsuccessful: 'red',
+        default: 'green',
+    };
+
+    React.useEffect(() => {
+        if (last_transaction) {
+            const { status_color, status_name } = cryptoTransactionMapper(last_transaction);
+            setStatus({ status_color, status_name });
+        }
+    }, [last_transaction]);
+
     return (
         <Text as='p' color='prominent' weight='bold' align='center' className='withdrawal-crypto-receipt__status'>
             <Icon
                 icon='IcCircleDynamicColor'
-                color='orange'
+                color={colorMap[status.status_color] || colorMap.default}
                 size={8}
                 className='withdrawal-crypto-receipt__status-icon'
             />
-            <Localize i18n_default_text='In review' />
+            {status.status_name}
         </Text>
     );
 };
@@ -106,6 +133,8 @@ const WithdrawalCryptoReceipt = observer(() => {
 
     const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
 
+    const { last_transaction } = useCryptoTransactions();
+
     React.useEffect(() => {
         return () => {
             setIsWithdrawConfirmed(false);
@@ -126,7 +155,7 @@ const WithdrawalCryptoReceipt = observer(() => {
                 <Localize i18n_default_text='Your withdrawal will be processed within 24 hours' />
             </Text>
             <div className='withdrawal-crypto-receipt__detail'>
-                {!isMobile() && <Status />}
+                {!isMobile() && <Status last_transaction={last_transaction} />}
                 <Text
                     as='p'
                     color='profit-success'
@@ -143,7 +172,7 @@ const WithdrawalCryptoReceipt = observer(() => {
                         }}
                     />
                 </Text>
-                {isMobile() && <Status />}
+                {isMobile() && <Status last_transaction={last_transaction} />}
                 <AccountInformation account={account} />
                 <Icon className='withdrawal-crypto-receipt__icon' icon='IcArrowDown' size={30} />
                 <WalletInformation account={account} blockchain_address={blockchain_address} />

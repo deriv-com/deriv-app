@@ -10,7 +10,7 @@ import MacOSIcon from '../../../../../public/images/ic-macos-logo.svg';
 import MT5Icon from '../../../../../public/images/ic-mt5.svg';
 import WindowsIcon from '../../../../../public/images/ic-windows-logo.svg';
 import { THooks, TPlatforms } from '../../../../../types';
-import { PlatformToTitleMapper } from '../../../constants';
+import { PlatformDetails } from '../../../constants';
 import './MT5TradeLink.scss';
 
 const AppToContentMapper = {
@@ -96,7 +96,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                 )}
                 {platform !== 'mt5' && app !== 'ctrader' && (
                     <WalletText size='sm'>
-                        Run {PlatformToTitleMapper[platform || 'derivez']} on your browser
+                        Run {PlatformDetails[platform || 'derivez'].title} on your browser
                     </WalletText>
                 )}
             </div>

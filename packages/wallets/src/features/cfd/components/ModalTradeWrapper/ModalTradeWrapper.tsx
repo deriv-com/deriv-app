@@ -8,7 +8,7 @@ import { WalletText } from '../../../../components/Base';
 import QRCode from 'qrcode.react';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformToTitleMapper } from '../../constants';
+import { PlatformDetails } from '../../constants';
 
 const LinksMapper: Record<
     TPlatforms.All,
@@ -80,7 +80,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                 <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
                                     <QRCode size={80} value={PlatformToLinkMapper[platform]} />
                                     <WalletText align='center' size='xs'>
-                                        Scan the QR code to download Deriv {PlatformToTitleMapper[platform]}
+                                        Scan the QR code to download Deriv {PlatformDetails[platform].title}
                                     </WalletText>
                                 </div>
                             )}

@@ -7,12 +7,7 @@ import useDevice from '../../../../hooks/useDevice';
 import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
 import { useModal } from '../../../../components/ModalProvider';
-import {
-    MarketTypeToIconMapper,
-    MarketTypeToTitleMapper,
-    PlatformToIconMapper,
-    PlatformToTitleMapper,
-} from '../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import { useActiveWalletAccount, useMT5AccountsList } from '@deriv/api';
 
 const MT5TradeScreen = () => {
@@ -33,14 +28,14 @@ const MT5TradeScreen = () => {
                 <div className='wallets-mt5-trade-screen__details-description'>
                     <div className='wallets-mt5-trade-screen__details-description--left'>
                         {platform === 'mt5'
-                            ? MarketTypeToIconMapper[marketType || 'all']
-                            : PlatformToIconMapper[platform || 'dxtrade']}
+                            ? MarketTypeDetails[marketType || 'all'].icon
+                            : PlatformDetails[platform || 'dxtrade'].icon}
                         <div className='wallets-mt5-trade-screen__label'>
                             <div className='wallets-mt5-trade-screen__title'>
                                 <WalletText lineHeight='3xs' size='sm'>
                                     {platform === 'mt5'
-                                        ? MarketTypeToTitleMapper[marketType || 'all']
-                                        : PlatformToTitleMapper[platform || 'dxtrade']}{' '}
+                                        ? MarketTypeDetails[marketType || 'all'].title
+                                        : PlatformDetails[platform || 'dxtrade'].title}{' '}
                                     {details?.landing_company_short?.toUpperCase()}
                                 </WalletText>
                                 {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}

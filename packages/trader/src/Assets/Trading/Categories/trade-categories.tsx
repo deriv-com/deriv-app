@@ -11,10 +11,12 @@ import MultiplierTradeDescription from './Description/multiplier-trade-descripti
 const TradeCategories = ({
     category,
     onClick,
+    is_vanilla_fx = false,
     is_multiplier_fx = false,
 }: {
     category?: string;
     onClick: () => void;
+    is_vanilla_fx?: boolean;
     is_multiplier_fx?: boolean;
 }) => {
     let TradeTypeTemplate;
@@ -410,28 +412,55 @@ const TradeCategories = ({
                             />
                         </Text>
                         <Text as='p'>
-                            <Localize
-                                i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
-                                components={[
-                                    <span
-                                        className='contract-type-info__content-definition'
-                                        onClick={onClick}
-                                        key={0}
-                                    />,
-                                ]}
-                            />
+                            {is_vanilla_fx ? (
+                                <Localize
+                                    i18n_default_text='Your payout is equal to the <0>payout per pip</0> multiplied by the difference, <1>in pips</1>, between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
+                                    components={[
+                                        <span
+                                            className='contract-type-info__content-definition'
+                                            onClick={onClick}
+                                            key={0}
+                                        />,
+                                        <strong key={0} />,
+                                    ]}
+                                />
+                            ) : (
+                                <Localize
+                                    i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
+                                    components={[
+                                        <span
+                                            className='contract-type-info__content-definition'
+                                            onClick={onClick}
+                                            key={0}
+                                        />,
+                                    ]}
+                                />
+                            )}
                         </Text>
                         <Text as='p'>
-                            <Localize
-                                i18n_default_text='You may sell the contract up until 60 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
-                                components={[
-                                    <span
-                                        className='contract-type-info__content-definition'
-                                        onClick={onClick}
-                                        key={0}
-                                    />,
-                                ]}
-                            />
+                            {is_vanilla_fx ? (
+                                <Localize
+                                    i18n_default_text='You may sell the contract up to 24 hours before expiry. If you do, we’ll pay you the <0>contract value</0>.'
+                                    components={[
+                                        <span
+                                            className='contract-type-info__content-definition'
+                                            onClick={onClick}
+                                            key={0}
+                                        />,
+                                    ]}
+                                />
+                            ) : (
+                                <Localize
+                                    i18n_default_text='You may sell the contract up until 60 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
+                                    components={[
+                                        <span
+                                            className='contract-type-info__content-definition'
+                                            onClick={onClick}
+                                            key={0}
+                                        />,
+                                    ]}
+                                />
+                            )}
                         </Text>
                     </React.Fragment>
                 );

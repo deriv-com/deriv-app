@@ -1,14 +1,14 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import './DepositCryptoCurrencyDetails.scss';
+import { WalletText } from '../../../../../../components';
 
 const DepositCryptoCurrencyDetails = () => {
     const { data } = useActiveWalletAccount();
 
     return (
-        <p className='wallets-deposit-crypto-currency-details'>
-            Send only {data?.currency_config?.name} ({data?.currency_config?.display_code}) to this address.
-        </p>
+        <WalletText align='center' size='md' weight='bold'>
+            Send only {data?.currency_config?.name} ({data?.currency_config?.display_code}) to this address
+        </WalletText>
     );
 };
 

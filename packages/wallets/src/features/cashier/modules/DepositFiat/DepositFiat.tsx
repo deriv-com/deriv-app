@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useAuthorize, useDepositFiatAddress } from '@deriv/api';
+import { useAuthorize, useCashierFiatAddress } from '@deriv/api';
+import { Loader, WalletsErrorScreen } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
-import { WalletsErrorScreen } from '../../../../components';
 import './DepositFiat.scss';
 
 const DepositFiat = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: iframeUrl, error: depositError, isError, mutate } = useDepositFiatAddress();
+    const { data: iframeUrl, error: depositError, isError, mutate } = useCashierFiatAddress();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -15,18 +15,16 @@ const DepositFiat = () => {
 
     useEffect(() => {
         if (isAuthorizeSuccess) {
-            mutate();
+            mutate('deposit');
         }
     }, [isAuthorizeSuccess, mutate]);
 
-    //@ts-expect-error need to come up with a way to type an error in ReactQuery
     if (isError && isServerError(depositError.error))
-        //@ts-expect-error need to come up with a way to type an error in ReactQuery
         return <WalletsErrorScreen message={depositError.error.message} />;
 
     return (
         <React.Fragment>
-            {isLoading && <p>Loading...</p>}
+            {isLoading && <Loader />}
             {iframeUrl && (
                 <iframe
                     className='wallets-deposit-fiat__iframe'

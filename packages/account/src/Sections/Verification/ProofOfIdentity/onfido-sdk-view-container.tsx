@@ -83,7 +83,7 @@ const OnfidoSdkViewContainer = ({
 
     const onComplete = React.useCallback(
         (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {
-            onfido_init?.current?.tearDown();
+            // onfido_init?.current?.tearDown();
             const document_ids = Object.keys(data).map(key => data[key as keyof SdkResponse]?.id);
             WS.notificationEvent({
                 notification_event: 1,

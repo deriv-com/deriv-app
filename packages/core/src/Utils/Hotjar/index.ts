@@ -13,7 +13,7 @@ const initHotjar = (client: TCoreStores['client']) => {
                 (h.hj.q = h.hj.q || []).push(arguments);
             };
         /* eslint-enable */
-        h._hjSettings = { hjid: 3050531, hjsv: 6 };
+        h._hjSettings = { hjid: 3719523, hjsv: 6 };
         const a = o.getElementsByTagName('head')[0];
         const r = o.createElement('script');
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

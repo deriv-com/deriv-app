@@ -3,7 +3,7 @@ import { useAuthorize } from '../hooks';
 type TCurrency = NonNullable<ReturnType<typeof useAuthorize>['data']['currency']>;
 type TPreferredLanguage = ReturnType<typeof useAuthorize>['data']['preferred_language'];
 
-export const formatMoney = (
+export const displayMoney = (
     balance: number,
     currency: TCurrency,
     options?: {

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import useAuthorize from './useAuthorize';
 import useBalance from './useBalance';
 import useCurrencyConfig from './useCurrencyConfig';
-import { formatMoney } from '../utils';
+import { displayMoney } from '../utils';
 
 /** A custom hook that returns the list of accounts for the current user. */
 const useAccountsList = () => {
@@ -48,7 +48,7 @@ const useAccountsList = () => {
                     /** The balance of the account. */
                     balance,
                     /** The balance of the account in currency format. */
-                    display_balance: formatMoney(balance, account.currency_config?.display_code || 'USD', {
+                    display_balance: displayMoney(balance, account.currency_config?.display_code || 'USD', {
                         fractional_digits: account.currency_config?.fractional_digits,
                         preferred_language: authorize_data?.preferred_language,
                     }),

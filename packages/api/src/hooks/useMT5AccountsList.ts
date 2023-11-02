@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import useQuery from '../useQuery';
 import useActiveWalletAccount from './useActiveWalletAccount';
 import useAuthorize from './useAuthorize';
-import { formatMoney } from '../utils';
+import { displayMoney } from '../utils';
 
 /** A custom hook that gets the list created MT5 accounts of the user. */
 const useMT5AccountsList = () => {
@@ -35,7 +35,7 @@ const useMT5AccountsList = () => {
             /** The platform of the account */
             platform: 'mt5',
             /** The balance of the account in currency format. */
-            display_balance: formatMoney(account.balance || 0, account.currency || 'USD', {
+            display_balance: displayMoney(account.balance || 0, account.currency || 'USD', {
                 preferred_language: authorize_data?.preferred_language,
             }),
         }));

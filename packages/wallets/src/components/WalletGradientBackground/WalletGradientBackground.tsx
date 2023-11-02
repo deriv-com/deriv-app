@@ -32,7 +32,7 @@ const WalletGradientBackground: React.FC<TProps> = ({
     return (
         <div className={`wallets-gradient ${bodyClassName} ${getClassName()}`}>
             {hasShine && !isDemo && <span className='wallets-gradient__shine' />}
-            {children}
+            <div className='wallets-gradient__content'>{children}</div>
         </div>
     );
 };

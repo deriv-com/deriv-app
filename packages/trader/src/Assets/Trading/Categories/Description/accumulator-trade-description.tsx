@@ -29,7 +29,7 @@ const AccumulatorTradeDescription = ({ onClick }: { onClick: () => void }) => {
             </Text>
             <Text as='p'>
                 <Localize
-                    i18n_default_text={'You can close your trade anytime. However, be aware of <0>slippage risk<0/>.'}
+                    i18n_default_text={'You can close your trade anytime. However, be aware of <0>slippage risk</0>.'}
                     components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
                 />
             </Text>

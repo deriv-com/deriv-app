@@ -2,7 +2,8 @@ import { ALPHA_3_TO_ALPHA_2 } from '../constants';
 import useQuery from '../useQuery';
 import useSettings from './useSettings';
 
-/** A custom hook that get Service Token for CTrader Platform. */
+// TODO: Merge service token hooks into a single service token hook call
+/** A custom hook that get Service Token for Onfido. */
 const useOnfidoServiceToken = () => {
     const { data: settings, isSuccess } = useSettings();
     const { data: onfido_token_data, ...rest } = useQuery('service_token', {

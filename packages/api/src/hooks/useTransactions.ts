@@ -4,6 +4,7 @@ import { TSocketRequestPayload } from '../../types';
 import useAuthorize from './useAuthorize';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useActiveAccount from './useActiveAccount';
+import { displayMoney } from '../utils';
 
 type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['action_type'];
 
@@ -59,17 +60,15 @@ const useTransactions = () => {
         return flatten_data?.map(transaction => ({
             ...transaction,
             /** The transaction amount in currency format. */
-            display_amount: `${Intl.NumberFormat(preferred_language || 'en-US', {
-                minimumFractionDigits: fractional_digits,
-                maximumFractionDigits: fractional_digits,
-                minimumIntegerDigits: 1,
-            }).format(transaction?.amount || 0)} ${display_code}`,
+            display_amount: displayMoney(transaction?.amount || 0, display_code, {
+                fractional_digits,
+                preferred_language,
+            }),
             /** The balance of account after the transaction in currency format. */
-            display_balance_after: `${Intl.NumberFormat(preferred_language || 'en-US', {
-                minimumFractionDigits: fractional_digits,
-                maximumFractionDigits: fractional_digits,
-                minimumIntegerDigits: 1,
-            }).format(transaction?.balance_after || 0)} ${display_code}`,
+            display_balance_after: displayMoney(transaction?.balance_after || 0, display_code, {
+                fractional_digits,
+                preferred_language,
+            }),
         }));
     }, [flatten_data, preferred_language, fractional_digits, display_code]);
 

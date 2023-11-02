@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { getTruncatedString } from '@deriv/utils';
 import useSubscription from '../useSubscription';
 import useActiveAccount from './useActiveAccount';
 import useAuthorize from './useAuthorize';
-import { getTruncatedString } from '@deriv/utils';
+import { displayMoney } from '../utils';
 
 type TTransaction = NonNullable<
     NonNullable<ReturnType<typeof useSubscription<'cashier_payments'>>['data']>['cashier_payments']
@@ -109,11 +110,10 @@ const useCryptoTransactions = () => {
         return transactions.map(transaction => ({
             ...transaction,
             /** Formatted amount */
-            formatted_amount: `${Intl.NumberFormat(preferred_language || 'en-US', {
-                minimumFractionDigits: fractional_digits,
-                maximumFractionDigits: fractional_digits,
-                minimumIntegerDigits: 1,
-            }).format(transaction.amount || 0)} ${display_code}`,
+            formatted_amount: displayMoney(transaction.amount || 0, display_code, {
+                fractional_digits,
+                preferred_language,
+            }),
             /** Formatted transaction hash */
             formatted_transaction_hash: transaction.transaction_hash
                 ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })

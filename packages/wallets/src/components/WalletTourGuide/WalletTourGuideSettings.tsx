@@ -1,5 +1,6 @@
 import React from 'react';
 import { Step, TooltipRenderProps } from '@deriv/react-joyride';
+import CloseIcon from '../../public/images/close-icon.svg';
 import { WalletButton, WalletText } from '../Base';
 import './WalletTourGuide.scss';
 
@@ -158,7 +159,7 @@ export const tourStepConfig = (
     },
 ];
 
-export const TooltipComponent: React.FC<TooltipRenderProps> = ({
+export const TooltipComponent = ({
     backProps,
     closeProps,
     continuous,
@@ -167,10 +168,15 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = ({
     primaryProps,
     step,
     tooltipProps,
-}) => {
+}: TooltipRenderProps) => {
     return (
         <div {...tooltipProps} className='wallets-tour-guide__container'>
-            <div className='wallets-tour-guide__header'>{step?.title as React.ReactNode}</div>
+            <div className='wallets-tour-guide__header'>
+                {step?.title as React.ReactNode}
+                <span className='wallets-tour-guide__close-icon' onClick={closeProps.onClick}>
+                    <CloseIcon />
+                </span>
+            </div>
             {<div className='wallets-tour-guide__content'>{step.content as React.ReactNode}</div>}
             <div className='wallets-tour-guide__footer'>
                 {index > 0 && <WalletButton {...backProps} color='white' text='Back' variant='outlined' />}

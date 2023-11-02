@@ -11,6 +11,7 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
 import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
@@ -40,6 +41,7 @@ type TFinancialDetails = {
     onCancel: (current_step: number, props: () => void) => void;
     validate: (values: TFinancialDetailsFormValues) => object;
     value: TFinancialDetailsFormValues;
+    employment_status: string;
 };
 
 /**
@@ -104,13 +106,19 @@ const FinancialDetails = (props: TFinancialDetails) => {
                                                 'financial-assessment__form'
                                             )}
                                         >
-                                            <FinancialInformation />
+                                            <FinancialInformation employment_status={props.employment_status} />
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
                                 <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
-                                        is_disabled={isSubmitting}
+                                        is_disabled={
+                                            isSubmitting ||
+                                            !!(
+                                                props.employment_status === EMPLOYMENT_VALUES.EMPLOYED &&
+                                                values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
+                                            )
+                                        }
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         has_cancel

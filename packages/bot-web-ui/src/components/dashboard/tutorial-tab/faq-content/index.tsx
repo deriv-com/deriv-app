@@ -60,11 +60,8 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
         }, 5);
     };
 
-    const handleKeyboardEvent = e => {
-        const enterKeyCodes = ['Enter', 'Return', 13];
-        if (enterKeyCodes.includes(e.key) || enterKeyCodes.includes(e.keyCode)) {
-            handleAccordionClick();
-        }
+    const handleKeyboardEvent = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') handleAccordionClick();
     };
 
     React.useEffect(() => {
@@ -96,7 +93,7 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
     return (
         <div data-testid='id-faq__wrapper'>
             <div className='faq__wrapper' ref={faq_wrapper_element}>
-                {faq_list && faq_list?.length > 0 && (
+                {faq_list?.length > 0 && (
                     <>
                         {!hide_header && (
                             <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import FAQContent from '../faq-content';
+import FAQContent from '..';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
@@ -60,6 +61,6 @@ describe('<FAQContent />', () => {
 
     it('should show content', () => {
         const acc = screen.getByTestId('id-accordion-test');
-        fireEvent.click(acc);
+        userEvent.click(acc);
     });
 });

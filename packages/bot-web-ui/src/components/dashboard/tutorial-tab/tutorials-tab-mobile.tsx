@@ -1,38 +1,23 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, SelectNative } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { useFilterTutorialsTab } from './hook/useFilterForTutorials';
-import { generateTutorialTabs } from './common/common-tabs';
+import { TContent } from './config';
 
-const TutorialsTabMobile = observer(() => {
+type TTutorialsTabMobile = {
+    tutorial_tabs: TContent;
+};
+
+const TutorialsTabMobile = observer(({ tutorial_tabs }: TTutorialsTabMobile) => {
     const { dashboard } = useDBotStore();
-    const { ui } = useStore();
-    const { is_mobile } = ui;
     const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue, active_tab } = dashboard;
 
     const search = faq_search_value?.toLowerCase();
     const initialSelectedTab = { label: '', content: '' };
     const [selectedTab, setSelectedTab] = React.useState(initialSelectedTab);
     const [showSearchBar, setShowSearchBar] = React.useState(false);
-
-    const { guide_tab_content, faq_tab_content, filtered_tab_list } = useFilterTutorialsTab(
-        search,
-        active_tab,
-        active_tab_tutorials
-    );
-
-    const tutorial_tabs = generateTutorialTabs(
-        {
-            guide_tab_content,
-            faq_tab_content,
-            filtered_tab_list,
-        },
-        is_mobile,
-        search
-    );
 
     React.useEffect(() => {
         if (!search) {
@@ -41,7 +26,7 @@ const TutorialsTabMobile = observer(() => {
             setShowSearchBar(true);
         }
         setSelectedTab(tutorial_tabs[active_tab_tutorials] || {});
-    }, [active_tab_tutorials, active_tab, faq_search_value]);
+    }, [active_tab_tutorials, active_tab, faq_search_value, selectedTab]);
 
     const onSearch = event => setFAQSearchValue(event.target.value);
     const onFocusSearch = () => setActiveTabTutorial(2);

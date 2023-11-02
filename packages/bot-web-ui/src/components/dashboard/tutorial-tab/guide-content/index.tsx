@@ -50,11 +50,8 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
         }
     };
 
-    const handleKeyboardEvent = e => {
-        const enterKeyCodes = ['Enter', 'Return', 13];
-        if (enterKeyCodes.includes(e.key) || enterKeyCodes.includes(e.keyCode)) {
-            triggerTour('OnBoard');
-        }
+    const handleKeyboardEvent = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') triggerTour('OnBoard');
     };
 
     return React.useMemo(

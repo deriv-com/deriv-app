@@ -1,7 +1,7 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import TutorialsTabDesktop from '../tutorials-tab-desktop';
@@ -11,6 +11,41 @@ import userEvent from '@testing-library/user-event';
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
+
+const userGuideContent = [
+    {
+        id: 1,
+        type: 'Tour',
+        subtype: 'OnBoard',
+        content: 'Get started on Deriv Bot',
+        src: 'dbot-onboard-tour.png',
+        tab_id: 0,
+    },
+];
+
+const guideContent = [
+    {
+        id: 1,
+        type: 'DBotVideo',
+        content: 'Deriv Bot - your automated trading partner',
+        url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
+        src: 'video_dbot.webp',
+        tab_id: 0,
+    },
+];
+
+const faqContent = [
+    {
+        title: 'What is Deriv Bot?',
+        description: [
+            {
+                type: 'text',
+                content: 'eriv Bot is a web-based strategy builder for trading digital options',
+            },
+        ],
+        tab_id: 2,
+    },
+];
 
 describe('<TutorialsTabDesktop />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
@@ -34,7 +69,7 @@ describe('<TutorialsTabDesktop />', () => {
         );
         render(
             <BrowserRouter>
-                <TutorialsTabDesktop />
+                <TutorialsTabDesktop tutorial_tabs={[...userGuideContent, ...guideContent, ...faqContent]} />
             </BrowserRouter>,
             {
                 wrapper,
@@ -50,27 +85,22 @@ describe('<TutorialsTabDesktop />', () => {
     it('should call onFocusSearch when input is focused', () => {
         const inputElement = screen.getByTestId('id-test-input-search');
         expect(inputElement).not.toHaveFocus();
-
-        fireEvent.focus(inputElement);
-
+        userEvent.tab();
         expect(inputElement).toHaveFocus();
     });
 
     it('should call onSearch when input value changes', () => {
         const inputElement = screen.getByTestId('id-test-input-search');
         const inputValue = 'Test search query';
-
-        fireEvent.change(inputElement, { target: { value: inputValue } });
-
-        expect(inputElement.value).toBe(inputValue);
+        userEvent.type(inputElement, inputValue);
+        expect(inputElement).toHaveDisplayValue(inputValue);
     });
 
     it('should clear Search on input when clicked on close', () => {
         const inputElement = screen.getByTestId('id-test-input-search');
         const inputValue = 'Test search query';
         const checkinputValue = '';
-
-        fireEvent.change(inputElement, { target: { value: inputValue } });
+        userEvent.type(inputElement, inputValue);
 
         const closeIcon = screen.getByTestId('id-test-close');
         userEvent.click(closeIcon);

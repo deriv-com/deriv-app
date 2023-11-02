@@ -1,32 +1,20 @@
 import React from 'react';
 import { Icon, Tabs } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { generateTutorialTabs } from './common/common-tabs';
-import { useFilterTutorialsTab } from './hook/useFilterForTutorials';
+import { TContent } from './config';
 
-const TutorialsTabDesktop = observer(() => {
+type TTutorialsTabDesktop = {
+    tutorial_tabs: TContent;
+};
+
+const TutorialsTabDesktop = observer(({ tutorial_tabs }: TTutorialsTabDesktop) => {
     const input_ref = React.useRef(null);
     const { dashboard } = useDBotStore();
-    const { ui } = useStore();
-    const { is_mobile } = ui;
-    const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue, active_tab } = dashboard;
+
+    const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
     const search = faq_search_value?.toLowerCase();
-    const { guide_tab_content, faq_tab_content, filtered_tab_list } = useFilterTutorialsTab(
-        search,
-        active_tab,
-        active_tab_tutorials
-    );
-    const tutorial_tabs = generateTutorialTabs(
-        {
-            guide_tab_content,
-            faq_tab_content,
-            filtered_tab_list,
-        },
-        is_mobile,
-        search
-    );
 
     const onSearch = event => setFAQSearchValue(event.target.value);
     const onFocusSearch = () => {

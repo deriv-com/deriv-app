@@ -35,7 +35,7 @@ const AppContent = ({ order_id }) => {
     };
 
     React.useEffect(() => {
-        const time_lapsed = getHoursDifference(localStorage.getItem(`${loginid}_disclaimer_shown`));
+        const time_lapsed = getHoursDifference(localStorage.getItem(`p2p_${loginid}_disclaimer_shown`));
         if (time_lapsed === undefined || time_lapsed > 24) {
             showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
         } else {

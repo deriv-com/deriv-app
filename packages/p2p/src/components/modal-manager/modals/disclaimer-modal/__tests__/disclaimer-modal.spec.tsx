@@ -66,7 +66,7 @@ describe('DisclaimerModal', () => {
         render(<DisclaimerModal handleDisclaimerTimeout={handleDisclaimerTimeout} />, { wrapper });
         userEvent.click(screen.getByRole('checkbox', { name: 'I’ve read and understood the above reminder.' }));
         userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
-        expect(localStorage.setItem).toHaveBeenCalledWith('MX12345_disclaimer_shown', expect.any(String));
+        expect(localStorage.setItem).toHaveBeenCalledWith('p2p_MX12345_disclaimer_shown', expect.any(String));
         expect(handleDisclaimerTimeout).toHaveBeenCalledWith(0);
         expect(mock_modal_manager_context.hideModal).toHaveBeenCalled();
     });

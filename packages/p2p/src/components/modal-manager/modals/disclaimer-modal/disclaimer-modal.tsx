@@ -52,7 +52,7 @@ const DisclaimerModal = ({ handleDisclaimerTimeout }: TDisclaimerModalProps) => 
 
     const onClickConfirm = () => {
         const current_date = new Date().toISOString();
-        localStorage.setItem(`${loginid}_disclaimer_shown`, current_date);
+        localStorage.setItem(`p2p_${loginid}_disclaimer_shown`, current_date);
         hideModal();
         handleDisclaimerTimeout(0);
     };

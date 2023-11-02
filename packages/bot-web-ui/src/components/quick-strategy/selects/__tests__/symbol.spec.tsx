@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 
@@ -119,8 +119,8 @@ describe('<SymbolSelect />', () => {
         });
 
         const autocomplete_element = screen.getByTestId('qs_autocomplete_symbol');
-
         userEvent.hover(autocomplete_element);
+
         expect((autocomplete_element as HTMLInputElement).value).toBe('');
     });
 });

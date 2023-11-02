@@ -1,28 +1,30 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
-import { TProposalTypeInfo } from 'Types';
+import { TProposalTypeInfo, TTradeStore } from 'Types';
 
 type TPurchaseFieldset = {
     basis: string;
-    buy_info: { error?: string };
+    buy_info: TTradeStore['purchase_info'];
     currency: string;
     growth_rate: number;
     has_cancellation: boolean;
     index: number;
     info: TProposalTypeInfo;
     is_accumulator: boolean;
+    is_beta_chart: boolean;
     is_disabled: boolean;
     is_high_low: boolean;
     is_loading: boolean;
-    is_market_closed: boolean;
+    is_market_closed?: boolean;
     is_multiplier: boolean;
     is_proposal_empty: boolean;
     is_proposal_error: boolean;
+    is_vanilla_fx?: boolean;
     is_vanilla: boolean;
     is_turbos: boolean;
     onClickPurchase: (proposal_id: string, price: string | number, type: string) => void;
@@ -38,21 +40,23 @@ const PurchaseFieldset = ({
     currency,
     growth_rate,
     has_cancellation,
-    info,
     index,
+    info,
     is_accumulator,
+    is_beta_chart,
     is_disabled,
     is_high_low,
     is_loading,
     is_market_closed,
     is_multiplier,
-    is_vanilla,
     is_proposal_empty,
     is_proposal_error,
     is_turbos,
-    purchased_states_arr,
+    is_vanilla_fx,
+    is_vanilla,
     onClickPurchase,
     onHoverPurchase,
+    purchased_states_arr,
     setPurchaseState,
     type,
 }: TPurchaseFieldset) => {
@@ -64,6 +68,11 @@ const PurchaseFieldset = ({
 
     const purchase_button = (
         <React.Fragment>
+            {is_multiplier && has_cancellation && (
+                <MobileWrapper>
+                    <CancelDealInfo proposal_info={info} />
+                </MobileWrapper>
+            )}
             <PurchaseButton
                 buy_info={buy_info}
                 currency={currency}
@@ -77,6 +86,7 @@ const PurchaseFieldset = ({
                 is_loading={is_loading}
                 is_multiplier={is_multiplier}
                 is_vanilla={is_vanilla}
+                is_vanilla_fx={is_vanilla_fx}
                 is_proposal_empty={is_proposal_empty}
                 is_turbos={is_turbos}
                 purchased_states_arr={purchased_states_arr}
@@ -86,11 +96,6 @@ const PurchaseFieldset = ({
                 type={type}
                 basis={basis} // mobile-only
             />
-            {is_multiplier && has_cancellation && (
-                <MobileWrapper>
-                    <CancelDealInfo proposal_info={info} />
-                </MobileWrapper>
-            )}
         </React.Fragment>
     );
 
@@ -111,14 +116,17 @@ const PurchaseFieldset = ({
                         <ContractInfo
                             basis={basis}
                             currency={currency}
-                            proposal_info={info}
                             has_increased={info.has_increased}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             is_turbos={is_turbos}
                             is_vanilla={is_vanilla}
+                            is_vanilla_fx={is_vanilla_fx}
+                            proposal_info={info}
                             should_fade={should_fade}
                             type={type}
+                            is_accumulator={is_accumulator}
+                            growth_rate={growth_rate}
                         />
                     )}
                     <div
@@ -132,6 +140,11 @@ const PurchaseFieldset = ({
                         }}
                         onMouseLeave={() => {
                             if (!is_disabled) {
+                                onHoverPurchase(false, type);
+                            }
+                        }}
+                        onClick={() => {
+                            if (!is_disabled && is_beta_chart) {
                                 onHoverPurchase(false, type);
                             }
                         }}

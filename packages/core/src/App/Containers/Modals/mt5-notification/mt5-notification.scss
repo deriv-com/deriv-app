@@ -16,17 +16,16 @@
     }
 }
 .mt5-notification-list {
-    list-style: none;
+    list-style: disc;
+    margin-top: 0.4rem;
     &-container {
-        list-style: auto;
-        padding: 1.5rem;
+        padding-left: 1.5rem;
         font-size: 1.6rem;
         color: var(--text-general);
-        &-item {
-            list-style: decimal;
-        }
     }
-    &-contact {
-        margin-top: 1rem;
+    &__link {
+        color: var(--text-red);
+        cursor: pointer;
+        text-decoration: underline;
     }
 }

@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
-import { getContractTypeDisplay, getGrowthRatePercentage } from '@deriv/shared';
-import { TProposalTypeInfo } from 'Types';
+import { getContractTypeDisplay } from '@deriv/shared';
+import { TProposalTypeInfo, TTradeStore } from 'Types';
 
 type TPurchaseButton = {
     basis: string;
-    buy_info: { error?: string };
+    buy_info: TTradeStore['purchase_info'];
     currency: string;
     growth_rate: number;
     has_deal_cancellation: boolean;
@@ -19,6 +19,7 @@ type TPurchaseButton = {
     is_loading: boolean;
     is_multiplier: boolean;
     is_proposal_empty: boolean;
+    is_vanilla_fx?: boolean;
     is_vanilla: boolean;
     is_turbos: boolean;
     onClickPurchase: (proposal_id: string, price: string | number, type: string) => void;
@@ -53,8 +54,8 @@ const IconComponentWrapper = ({ type }: { type: string }) => (
 );
 
 const PurchaseButton = ({
-    buy_info,
     basis, // mobile-only
+    buy_info,
     currency,
     growth_rate,
     has_deal_cancellation,
@@ -65,13 +66,14 @@ const PurchaseButton = ({
     is_high_low,
     is_loading,
     is_multiplier,
-    is_vanilla,
     is_proposal_empty,
     is_turbos,
+    is_vanilla_fx,
+    is_vanilla,
+    onClickPurchase,
     purchased_states_arr,
     setPurchaseState,
     should_fade,
-    onClickPurchase,
     type,
 }: TPurchaseButton) => {
     const getIconType = () => {
@@ -80,8 +82,6 @@ const PurchaseButton = ({
     };
     const { has_increased } = info;
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
-    const non_multiplier_info_right =
-        is_accumulator && info.growth_rate ? `${getGrowthRatePercentage(info.growth_rate)}%` : info.returns;
 
     let button_value;
 
@@ -91,10 +91,10 @@ const PurchaseButton = ({
                 <Money amount={info.stake} currency={currency} show_currency />
             </Text>
         );
-    } else if (!is_vanilla && !is_turbos) {
+    } else if (!is_vanilla && !is_turbos && !is_accumulator) {
         button_value = (
             <Text size='xs' weight='bold' color='colored-background'>
-                {!(is_loading || is_disabled) ? non_multiplier_info_right : ''}
+                {!(is_loading || is_disabled) ? info.returns : ''}
             </Text>
         );
     }
@@ -155,7 +155,7 @@ const PurchaseButton = ({
                         is_high_low={is_high_low}
                     />
                 </div>
-                {!is_turbos && !is_vanilla && (
+                {!is_turbos && !is_vanilla && !is_accumulator && (
                     <div className='btn-purchase__bottom'>
                         <ContractInfo
                             basis={basis}
@@ -166,6 +166,8 @@ const PurchaseButton = ({
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             is_turbos={is_turbos}
+                            is_vanilla_fx={is_vanilla_fx}
+                            is_vanilla={is_vanilla}
                             should_fade={should_fade}
                             proposal_info={info}
                             type={type}

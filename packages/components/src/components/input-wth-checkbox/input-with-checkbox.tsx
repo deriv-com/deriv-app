@@ -11,11 +11,12 @@ type TInputWithCheckbox = {
     removeToast: (e: string) => void;
     checkbox_tooltip_label?: boolean;
     className?: string;
+    classNameBubble?: string;
     classNameInlinePrefix?: string;
     classNameInput?: string;
     classNamePrefix?: string;
     currency: string;
-    current_focus?: string;
+    current_focus?: string | null;
     defaultChecked: boolean;
     error_messages?: string[];
     is_negative_disabled: boolean;
@@ -37,6 +38,7 @@ type TInputWithCheckbox = {
 const InputWithCheckbox = ({
     addToast,
     checkbox_tooltip_label,
+    classNameBubble,
     classNameInlinePrefix,
     classNameInput,
     className,
@@ -182,6 +184,7 @@ const InputWithCheckbox = ({
                 {tooltip_label && (
                     <Popover
                         alignment={tooltip_alignment || 'left'}
+                        classNameBubble={classNameBubble}
                         icon='info'
                         id={`dc_${name}-checkbox__tooltip`}
                         is_bubble_hover_enabled

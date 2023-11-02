@@ -16,11 +16,10 @@ type TPageErrorProps = {
     header: React.ReactNode;
     image_url?: string;
     messages: Array<TMessageObject | React.ReactNode>;
-    redirect_labels: string[];
+    redirect_labels: Array<JSX.Element | string>;
     redirect_urls?: string[];
     setError?: (has_error: boolean, error: React.ReactNode) => void;
     should_clear_error_on_click?: boolean;
-    has_malta_account?: boolean;
     should_redirect?: boolean;
 };
 
@@ -28,7 +27,6 @@ const PageError = ({
     buttonOnClick,
     buttonSize = 'large',
     classNameImage,
-    has_malta_account,
     header,
     image_url,
     messages,
@@ -77,7 +75,6 @@ const PageError = ({
             <div
                 className={classNames('dc-page-error__box', {
                     'dc-page-error__box--left': !!image_url,
-                    'dc-page-error__box--malta': has_malta_account,
                 })}
             >
                 <Text

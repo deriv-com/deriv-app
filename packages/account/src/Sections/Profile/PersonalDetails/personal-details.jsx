@@ -861,6 +861,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                     onBlur={handleBlur}
                                                     required
                                                     error={errors.phone}
+                                                    disabled={!isChangeableField('phone')}
                                                     data-testid='dt_phone'
                                                 />
                                             </fieldset>

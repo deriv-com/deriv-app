@@ -45,11 +45,11 @@ const ICONS: IconTypes = {
     IcWalletLiteCoinDark,
     IcWalletLiteCoinLight,
     IcWalletOptionsDark,
+    IcWalletOptionsLight,
     IcWalletTetherDark,
     IcWalletTetherLight,
     IcWalletUsdCoinDark,
     IcWalletUsdCoinLight,
-    IcWalletOptionsLight,
 } as const;
 
 type TWalletIconProps = {

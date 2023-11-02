@@ -48,8 +48,7 @@ $border-radius-map: (
     }
 
     &:disabled {
-        opacity: 0.32;
-        cursor: not-allowed;
+        display: none;
     }
 
     &__border-radius {

@@ -87,7 +87,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
                             value={selected_trade_type?.text || ''}
                             list_items={trade_type_dropdown_options}
                             onItemSelection={(item: TItem) => {
-                                if (item?.value) {
+                                if ((item as TTradeType)?.value) {
                                     setFieldValue?.('tradetype', (item as TTradeType)?.value as string);
                                     setValue('tradetype', (item as TTradeType)?.value as string);
                                 }

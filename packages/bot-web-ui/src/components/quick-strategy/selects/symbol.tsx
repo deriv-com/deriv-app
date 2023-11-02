@@ -77,7 +77,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
                                 value={selected_symbol?.text || ''}
                                 list_items={symbols}
                                 onItemSelection={(item: TItem) => {
-                                    if (item?.value) {
+                                    if ((item as TSymbol)?.value) {
                                         setFieldValue?.('symbol', (item as TSymbol)?.value as string);
                                         setValue('symbol', (item as TSymbol)?.value as string);
                                     }

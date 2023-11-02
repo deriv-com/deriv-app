@@ -46,6 +46,10 @@ const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) 
                         validateForm();
                     });
                     setValue('durationtype', durations?.[0]?.unit);
+                } else {
+                    const duration = duration_units?.find((duration: TDurationUnitItem) => duration.value === selected);
+                    setFieldValue?.('duration', duration?.min);
+                    setValue('duration', duration?.min);
                 }
             };
             getDurationUnits();
@@ -73,9 +77,11 @@ const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) 
                             value={selected_item?.text || ''}
                             list_items={list}
                             onItemSelection={(item: TItem) => {
-                                if (item?.value) {
+                                if ((item as TDurationUnitItem)?.value) {
                                     setFieldValue?.('durationtype', (item as TDurationUnitItem)?.value as string);
                                     setValue('durationtype', (item as TDurationUnitItem)?.value as string);
+                                    setFieldValue?.('duration', (item as TDurationUnitItem)?.min);
+                                    setValue('duration', (item as TDurationUnitItem)?.min);
                                 }
                             }}
                         />

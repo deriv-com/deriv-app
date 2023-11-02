@@ -97,7 +97,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
                             value={selected_item?.text || ''}
                             list_items={list}
                             onItemSelection={(item: TItem) => {
-                                if (item?.value) {
+                                if ((item as TContractTypesItem)?.value) {
                                     handleChange((item as TContractTypesItem)?.value as string);
                                 }
                             }}

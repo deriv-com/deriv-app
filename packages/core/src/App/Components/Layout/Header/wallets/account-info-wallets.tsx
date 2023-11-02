@@ -148,6 +148,8 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                         'acc-info--is-disabled': active_account?.is_disabled,
                     })}
                     onClick={active_account?.is_disabled ? undefined : () => toggleDialog()}
+                    // SonarLint offers to add handler for onKeyDown event if we have onClick event handler
+                    onKeyDown={active_account?.is_disabled ? undefined : () => toggleDialog()}
                 >
                     {is_mobile ? (
                         <MobileInfoIcon

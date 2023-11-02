@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
-import { routes, PlatformContext } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { LoginButton } from '../login-button.jsx';
@@ -11,8 +11,6 @@ import AccountInfoWallets from './account-info-wallets';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountActionsWallets = observer(() => {
-    const { is_appstore } = React.useContext(PlatformContext);
-
     const { client, ui, notifications } = useStore();
     const { is_logged_in, accounts, loginid } = client;
     const { openRealAccountSignup, toggleAccountsDialog, is_mobile, is_accounts_switcher_on } = ui;
@@ -88,7 +86,7 @@ const AccountActionsWallets = observer(() => {
     return (
         <React.Fragment>
             <LoginButton className='acc-info__button' />
-            <SignupButton className='acc-info__button' is_appstore={is_appstore} />
+            <SignupButton className='acc-info__button' />
         </React.Fragment>
     );
 });

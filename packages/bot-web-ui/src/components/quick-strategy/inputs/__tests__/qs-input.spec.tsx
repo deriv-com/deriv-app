@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, useFormikContext } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -11,9 +11,7 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import QSInput from '../qs-input';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 describe('<QSInput />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;

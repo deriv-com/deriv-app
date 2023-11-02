@@ -9,9 +9,7 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import QSInputLabel from '../qs-input-label';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 describe('<QSInputLabel />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;

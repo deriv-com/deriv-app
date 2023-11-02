@@ -1,16 +1,14 @@
 import { useMemo } from 'react';
 import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
-import useCtraderServiceToken from './useCtraderServiceToken';
 
 /** A custom hook that gets the list of created cTrader accounts. */
 const useCtraderAccountsList = () => {
     const { isSuccess } = useAuthorize();
-    const { data: ctrader_accounts } = useQuery('trading_platform_accounts', {
+    const { data: ctrader_accounts, ...rest } = useQuery('trading_platform_accounts', {
         payload: { platform: 'ctrader' },
         options: { enabled: isSuccess },
     });
-    const { data: token } = useCtraderServiceToken();
 
     /** Adding neccesary properties to cTrader accounts */
     const modified_ctrader_accounts = useMemo(
@@ -19,15 +17,14 @@ const useCtraderAccountsList = () => {
                 ...account,
                 /** The id of the cTrader account */
                 id: account.account_id,
-                /** The token of the cTrader account */
-                token,
             })),
-        [ctrader_accounts?.trading_platform_accounts, token]
+        [ctrader_accounts?.trading_platform_accounts]
     );
 
     return {
         /** List of all created cTrader accounts */
         data: modified_ctrader_accounts,
+        ...rest,
     };
 };
 

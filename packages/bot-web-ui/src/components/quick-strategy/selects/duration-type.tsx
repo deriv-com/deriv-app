@@ -70,7 +70,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                     return (
                         <Autocomplete
                             {...field}
-                            inputmode='none'
+                            inputMode='none'
                             data-testid='qs_autocomplete_durationtype'
                             autoComplete='off'
                             className='qs__select'

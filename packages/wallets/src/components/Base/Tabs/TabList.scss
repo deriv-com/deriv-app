@@ -6,7 +6,7 @@
         background-color: #f2f3f4;
         height: 5rem;
         margin-top: 1rem;
-        border-radius: 7px;
+        border-radius: 0.7rem;
 
         &-item {
             grid-row: 1;
@@ -20,7 +20,7 @@
                 font-weight: bold;
                 background-color: #ffffff;
                 margin: 0.6rem;
-                border-radius: 5px;
+                border-radius: 0.5rem;
             }
 
             &--disabled {

@@ -1,4 +1,4 @@
-import { TJurisdictionCardItems, TJurisdictionCardParams } from 'Components/props.types';
+import { TJurisdictionCardItems, TJurisdictionCardParams } from 'Types/components.types';
 import { getJurisdictionBviContents } from './jurisdiction-bvi-contents';
 import { getJurisdictionLabuanContents } from './jurisdiction-labuan-contents';
 import { getJurisdictionSvgContents } from './jurisdiction-svg-contents';

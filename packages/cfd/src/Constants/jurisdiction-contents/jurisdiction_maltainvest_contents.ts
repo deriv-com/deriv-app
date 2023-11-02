@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { TJurisdictionCardItems } from 'Components/props.types';
+import { TJurisdictionCardItems } from 'Types/components.types';
 
 export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => ({
     is_over_header_available: false,

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { TDynamicLeverageMarketCardProps } from 'Containers/props.types';
+import { Table, Text } from '@deriv/components';
+import { TDynamicLeverageMarketCardProps } from 'Types/containers.types';
 import { DynamicLeverageTableColumnHeader } from './dynamic-leverage-table-column-header';
 
 export const DynamicLeverageMarketCard = ({ title, description, leverage, data }: TDynamicLeverageMarketCardProps) => (

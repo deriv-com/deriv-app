@@ -1,8 +1,8 @@
 import React from 'react';
-import { Checkbox, StaticUrl, Text } from '@deriv/components';
-import { isMobile, Jurisdiction } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TJurisdictionCheckBoxProps } from '../props.types';
+import { isMobile, Jurisdiction } from '@deriv/shared';
+import { Checkbox, StaticUrl, Text } from '@deriv/components';
+import { TJurisdictionCheckBoxProps } from 'Types/containers.types';
 
 const JurisdictionCheckBox = ({
     class_name,

@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
-import { TTradingPlatformAvailableAccount } from 'Components/props.types';
-import { TJurisdictionModalProps } from '../../props.types';
+import { TTradingPlatformAvailableAccount } from 'Types/components.types';
+import { TJurisdictionModalProps } from 'Types/containers.types';
 import JurisdictionModal from '../jurisdiction-modal';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({

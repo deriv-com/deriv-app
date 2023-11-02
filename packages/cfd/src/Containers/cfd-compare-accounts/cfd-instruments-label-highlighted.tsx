@@ -1,8 +1,8 @@
 import React from 'react';
-import InstrumentsIconWithLabel from './instruments-icon-with-label';
-import { TInstrumentsIcon, TCompareAccountsCard } from 'Components/props.types';
-import { getHighlightedIconLabel } from '../../Helpers/compare-accounts-config';
 import { useStore } from '@deriv/stores';
+import InstrumentsIconWithLabel from './instruments-icon-with-label';
+import { TInstrumentsIcon, TCompareAccountsCard } from 'Types/containers.types';
+import { getHighlightedIconLabel } from '../../Helpers/compare-accounts-config';
 
 const CFDInstrumentsLabelHighlighted = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const { traders_hub } = useStore();

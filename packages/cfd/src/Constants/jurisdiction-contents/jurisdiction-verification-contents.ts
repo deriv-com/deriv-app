@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { TJurisdictionVerificationItems, TJurisdictionVerificationStatus } from 'Components/props.types';
+import { TJurisdictionVerificationItems, TJurisdictionVerificationStatus } from 'Types/components.types';
 
 type TJurisdictionVerificationContents = {
     short_description: string;

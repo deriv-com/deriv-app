@@ -2,12 +2,12 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { TCompareAccountsCard } from 'Components/props.types';
-import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
-import CFDCompareAccountsDescription from './cfd-compare-accounts-description';
-import CFDCompareAccountsTitleIcon from './cfd-compare-accounts-title-icon';
-import CFDCompareAccountsPlatformLabel from './cfd-compare-accounts-platform-label';
+import { TCompareAccountsCard } from 'Types/containers.types';
 import CFDCompareAccountsButton from './cfd-compare-accounts-button';
+import CFDCompareAccountsTitleIcon from './cfd-compare-accounts-title-icon';
+import CFDCompareAccountsDescription from './cfd-compare-accounts-description';
+import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
+import CFDCompareAccountsPlatformLabel from './cfd-compare-accounts-platform-label';
 
 const CFDCompareAccountsCard = ({ trading_platforms, is_eu_user, is_demo }: TCompareAccountsCard) => {
     return (

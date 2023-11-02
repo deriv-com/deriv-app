@@ -2,7 +2,7 @@ import React from 'react';
 import { Clipboard } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import { TCFDAccountCopy } from './props.types';
+import { TCFDAccountCopy } from 'Types/components.types';
 
 const CFDAccountCopy = ({ text, className }: TCFDAccountCopy) => {
     return (

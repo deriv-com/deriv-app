@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
-import { TJurisdictionModalProps } from '../props.types';
 import { observer, useStore } from '@deriv/stores';
+import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
+import { MARKET_TYPE } from '../../Helpers/cfd-config';
+import JurisdictionModalTitle from './jurisdiction-modal-title';
+import { TJurisdictionModalProps } from 'Types/containers.types';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import JurisdictionModalContentWrapper from './jurisdiction-modal-content-wrapper';
 import { DynamicLeverageContext } from '../dynamic-leverage/dynamic-leverage-context';
 import DynamicLeverageModalContent from '../dynamic-leverage/dynamic-leverage-modal-content';
-import JurisdictionModalContentWrapper from './jurisdiction-modal-content-wrapper';
-import JurisdictionModalTitle from './jurisdiction-modal-title';
-import { MARKET_TYPE } from '../../Helpers/cfd-config';
 
 const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalProps) => {
     const { traders_hub, ui, common, client } = useStore();

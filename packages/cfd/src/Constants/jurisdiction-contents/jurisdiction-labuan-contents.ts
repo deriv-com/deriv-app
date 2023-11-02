@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { TJurisdictionCardItems } from 'Components/props.types';
+import { TJurisdictionCardItems } from 'Types/components.types';
 
 export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
     over_header: localize('Straight-through processing'),

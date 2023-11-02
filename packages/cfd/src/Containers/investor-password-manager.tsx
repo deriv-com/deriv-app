@@ -1,10 +1,13 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Form, Formik, FieldProps } from 'formik';
-import { PasswordInput, PasswordMeter, Text, Button, Icon } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
 import { getErrorMessages } from '@deriv/shared';
-import { TCFDPasswordSuccessMessage, TInvestorPasswordManager, TPasswordManagerModalFormValues } from './props.types';
+import { localize, Localize } from '@deriv/translations';
+import { PasswordInput, PasswordMeter, Text, Button, Icon } from '@deriv/components';
+import {
+    TCFDPasswordSuccessMessage,
+    TInvestorPasswordManager,
+    TPasswordManagerModalFormValues,
+} from 'Types/containers.types';
 
 const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }: TCFDPasswordSuccessMessage) => (
     <div className='cfd-password-manager__success'>
@@ -133,16 +136,6 @@ const InvestorPasswordManager = ({
             </Formik>
         </div>
     );
-};
-
-InvestorPasswordManager.propTypes = {
-    error_message_investor: PropTypes.string,
-    is_submit_success_investor: PropTypes.bool,
-    multi_step_ref: PropTypes.object,
-    onSubmit: PropTypes.func,
-    setPasswordType: PropTypes.func,
-    toggleModal: PropTypes.func,
-    validatePassword: PropTypes.func,
 };
 
 export default InvestorPasswordManager;

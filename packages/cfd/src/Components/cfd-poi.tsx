@@ -2,27 +2,7 @@
 import ProofOfIdentityContainerForMt5 from '@deriv/account/src/Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5.jsx';
 import React from 'react';
 import { useStore, observer } from '@deriv/stores';
-import type { TCoreStores } from '@deriv/stores/types';
-
-type TCFDValue = {
-    poi_state: string;
-};
-
-type TFormValues = {
-    poi_state?: string;
-};
-
-export type TCFDPOIProps = {
-    index: number;
-    onSubmit: (index: number, value: TCFDValue) => void;
-    value: TCFDValue;
-    addNotificationMessageByKey: TCoreStores['notifications']['addNotificationMessageByKey'];
-    height: string;
-    onSave: (index: number, values: TFormValues) => void;
-    removeNotificationByKey: TCoreStores['notifications']['removeNotificationByKey'];
-    removeNotificationMessage: TCoreStores['notifications']['removeNotificationMessage'];
-    jurisdiction_selected_shortcode: string;
-};
+import { TCFDPOIProps } from 'Types/components.types';
 
 const CFDPOI = observer(({ index, onSave, onSubmit, ...props }: TCFDPOIProps) => {
     const { client } = useStore();

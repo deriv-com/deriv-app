@@ -1,6 +1,6 @@
 import { OSDetect, getPlatformFromUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
+import { TCFDsPlatformType, TMobilePlatforms } from 'Types/types';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
 
 const platformsText = (platform: TCFDsPlatformType) => {

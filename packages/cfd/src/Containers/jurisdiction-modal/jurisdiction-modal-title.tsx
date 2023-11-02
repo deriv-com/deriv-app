@@ -2,9 +2,9 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { getMT5Title, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { useDynamicLeverage } from '../dynamic-leverage/dynamic-leverage-context';
-import { TJurisdictionModalTitleProps } from '../props.types';
 import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
+import { TJurisdictionModalTitleProps } from 'Types/containers.types';
+import { useDynamicLeverage } from '../dynamic-leverage/dynamic-leverage-context';
 
 export const JurisdictionModalTitle = ({
     show_eu_related_content,

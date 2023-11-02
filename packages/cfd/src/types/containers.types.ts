@@ -7,18 +7,20 @@ import {
     VerifyEmailResponse,
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
-import { TCFDPasswordFormValues } from './cfd-password-modal';
 import {
     TTradingPlatformAvailableAccount,
     TExistingData,
     TJurisdictionCardSection,
-    TJurisdictionCardSectionTitleIndicators,
     TClickableDescription,
     TJurisdictionCardItems,
     TJurisdictionCardItemVerification,
-    TCFDsPlatformType,
-} from '../Components/props.types';
+    TJurisdictionCardSectionTitleIndicators,
+    TModifiedTradingPlatformAvailableAccount,
+} from './components.types';
+import { TCFDsPlatformType } from './types';
 import RootStore from '../Stores/index';
+
+type TCFDPasswordFormValues = { password: string };
 
 export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
@@ -355,4 +357,28 @@ export type TDynamicLeverageMarketCardProps = {
 export type TDynamicLeverageTableColumnHeader = {
     title: string;
     subtitle: string;
+};
+
+export type TInstrumentsIcon = {
+    icon:
+        | 'DerivedFX'
+        | 'Synthetics'
+        | 'Baskets'
+        | 'Stocks'
+        | 'StockIndices'
+        | 'Commodities'
+        | 'Forex'
+        | 'Cryptocurrencies'
+        | 'ETF';
+    text: string;
+    highlighted: boolean;
+    className?: string;
+    is_asterisk?: boolean;
+};
+
+// cfd-compare-accounts-button
+export type TCompareAccountsCard = {
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
+    is_eu_user?: boolean;
+    is_demo?: boolean;
 };

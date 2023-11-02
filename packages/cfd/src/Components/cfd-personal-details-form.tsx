@@ -1,6 +1,5 @@
-import { Field, FieldProps, Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
+import { Field, FieldProps, Formik, FormikProps, FormikHelpers as FormikActions } from 'formik';
 import React from 'react';
-import { ResidenceList } from '@deriv/api-types';
 import {
     Autocomplete,
     AutoHeightWrapper,
@@ -17,71 +16,18 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
+import {
+    TFormValues,
+    TSubmitForm,
+    TCFDInputFieldProps,
+    TAccountOpeningReasonList,
+    TCFDPersonalDetailsFormProps,
+    TValidatePersonalDetailsParams,
+    TFindDefaultValuesInResidenceList,
+} from 'Types/components.types';
+import { ResidenceList } from '@deriv/api-types';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
-type TCFDPersonalDetailsFormProps = {
-    changeable_fields?: string[];
-    form_error?: string;
-    index: number;
-    is_loading: boolean;
-    onSubmit: TOnSubmit;
-    residence_list: ResidenceList;
-    initial_values: TFormValues;
-};
-
-type TValidatePersonalDetailsParams = {
-    values: TFormValues;
-    residence_list: ResidenceList;
-    account_opening_reason: TAccountOpeningReasonList;
-};
-
-type TFindDefaultValuesInResidenceList = (params: {
-    residence_list: ResidenceList;
-    citizen_text: string;
-    tax_residence_text: string;
-    place_of_birth_text?: string;
-}) => {
-    citizen?: ResidenceList[0];
-    place_of_birth?: ResidenceList[0];
-    tax_residence?: ResidenceList[0];
-};
-
-type TCFDInputFieldProps = {
-    id?: string;
-    value?: string;
-    name: string;
-    maxLength?: number;
-    label: string;
-    optional?: boolean;
-    required?: boolean;
-    placeholder: string;
-    disabled?: boolean;
-    onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
-};
-
-type TFormValues = { [key: string]: string };
-
-type TOnSubmit = (
-    index: number,
-    value: TFormValues,
-    setSubmitting: (isSubmitting: boolean) => void,
-    is_dirty?: boolean
-) => void;
-
-type TSubmitForm = (
-    values: TFormValues,
-    actions: FormikActions<TFormValues>,
-    idx: number,
-    onSubmitFn: TOnSubmit,
-    is_dirty: boolean,
-    residence_list: ResidenceList
-) => void;
-
-type TAccountOpeningReasonList = {
-    text: string;
-    value: string;
-}[];
 
 const getAccountOpeningReasonList = (): TAccountOpeningReasonList => [
     {

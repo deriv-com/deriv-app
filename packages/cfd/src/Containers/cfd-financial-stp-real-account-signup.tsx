@@ -1,14 +1,14 @@
 import React from 'react';
+import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer } from '@deriv/components';
+import type { TCoreStores } from '@deriv/stores/types';
 import { useIsAccountStatusPresent } from '@deriv/hooks';
 import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-import type { TCoreStores } from '@deriv/stores/types';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
-import CFDPersonalDetailsContainer from './cfd-personal-details-container';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { JURISDICTION } from '../Helpers/cfd-config';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 
 type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;

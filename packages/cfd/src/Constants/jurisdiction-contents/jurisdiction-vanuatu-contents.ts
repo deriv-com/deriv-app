@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { TJurisdictionCardItems, TJurisdictionCardParams } from 'Components/props.types';
+import { TJurisdictionCardItems, TJurisdictionCardParams } from 'Types/components.types';
 
 export const getJurisdictionVanuatuContents = ({
     toggleDynamicLeverage,

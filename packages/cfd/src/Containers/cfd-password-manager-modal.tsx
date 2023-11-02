@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormikErrors } from 'formik';
 import {
     Icon,
     Modal,
@@ -13,9 +14,9 @@ import {
     UILoader,
     Text,
 } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile, validLength, validPassword, getErrorMessages, getCFDPlatformLabel } from '@deriv/shared';
-import { FormikErrors } from 'formik';
 import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
 import InvestorPasswordManager from './investor-password-manager';
@@ -27,10 +28,9 @@ import {
     TCFDPasswordManagerModal,
     TFormValues,
     TPasswordManagerModalFormValues,
-} from './props.types';
-import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+} from 'Types/containers.types';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);

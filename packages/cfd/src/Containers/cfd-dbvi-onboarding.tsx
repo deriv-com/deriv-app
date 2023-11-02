@@ -13,11 +13,11 @@ import {
     UILoader,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
-import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
 import { JURISDICTION } from '../Helpers/cfd-config';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 
 const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (
     <div className='da-icon-with-message'>

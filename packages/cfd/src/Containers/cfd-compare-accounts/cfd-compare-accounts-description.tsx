@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
-import { TCompareAccountsCard } from 'Components/props.types';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { getJuridisctionDescription, getMarketType } from '../../Helpers/compare-accounts-config';
 import { REGION } from '../../Helpers/cfd-config';
+import { TCompareAccountsCard } from 'Types/containers.types';
+import { getJuridisctionDescription, getMarketType } from '../../Helpers/compare-accounts-config';
 
 const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const market_type = getMarketType(trading_platforms);

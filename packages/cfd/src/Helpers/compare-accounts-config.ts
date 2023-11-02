@@ -1,9 +1,6 @@
 import { localize } from '@deriv/translations';
-import {
-    TInstrumentsIcon,
-    TModifiedTradingPlatformAvailableAccount,
-    TDetailsOfEachMT5Loginid,
-} from '../Components/props.types';
+import { TModifiedTradingPlatformAvailableAccount, TDetailsOfEachMT5Loginid } from 'Types/components.types';
+import { TInstrumentsIcon } from 'Types/containers.types';
 import { CFD_PLATFORMS, MARKET_TYPE, CATEGORY, JURISDICTION, REGION, MARKET_TYPE_SHORTCODE } from './cfd-config';
 
 // Map the accounts according to the market type

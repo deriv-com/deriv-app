@@ -1,8 +1,8 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
+import { TJurisdictionCardBackProps } from 'Types/containers.types';
 import { jurisdictionVerificationContents } from '../../Constants/jurisdiction-contents/jurisdiction-verification-contents';
-import { TJurisdictionCardBackProps } from 'Containers/props.types';
 
 const JurisdictionCardBack = ({
     card_classname,

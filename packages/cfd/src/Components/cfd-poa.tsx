@@ -1,12 +1,7 @@
 import React from 'react';
 import { FormikValues } from 'formik/dist/types';
+import { TCFDPOA } from 'Types/components.types';
 import ProofOfAddressForm from '@deriv/account/src/Sections/Verification/ProofOfAddress/proof-of-address-form';
-
-type TCFDPOA = {
-    index: number;
-    onSave: (index: number, values: FormikValues) => void;
-    onSubmit: (index: number, values: FormikValues) => void;
-};
 
 const CFDPOA = ({ index, onSave, onSubmit }: TCFDPOA) => {
     const onSubmitForCFDModal = (index: number, values: FormikValues) => {

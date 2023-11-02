@@ -1,15 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Text } from '@deriv/components';
-
 import { CFDAccountCopy } from './cfd-account-copy';
-
-export type TSpecBoxProps = {
-    value?: string;
-    is_bold?: boolean;
-    is_broker?: boolean;
-};
+import { TSpecBoxProps } from 'Types/components.types';
 
 const SpecBox = ({ value, is_bold, is_broker }: TSpecBoxProps) => (
     <div className='cfd-trade-modal__spec-box '>

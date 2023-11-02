@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
-import { TCompareAccountsCard } from 'Components/props.types';
+import { TCompareAccountsCard } from 'Types/containers.types';
 import { getPlatformLabel, getHeaderColor, platfromsHeaderLabel } from '../../Helpers/compare-accounts-config';
 
 const CFDCompareAccountsPlatformLabel = ({ trading_platforms }: TCompareAccountsCard) => {

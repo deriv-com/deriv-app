@@ -10,6 +10,7 @@
             "Modules/*": ["./src/Modules/*"],
             "Sass/*": ["./src/sass/*"],
             "Stores/*": ["./src/Stores/*"],
+            "Types/*": ["./src/types/*"],
             "Utils/*": ["./src/Utils/*"],
             "@deriv/*": ["../*/src"]
         },

@@ -1,6 +1,6 @@
 import React from 'react';
-import { TJurisdictionModalContentProps } from '../props.types';
 import JurisdictionCard from './jurisdiction-card';
+import { TJurisdictionModalContentProps } from 'Types/containers.types';
 import { MARKET_TYPE, JURISDICTION } from '../../Helpers/cfd-config';
 
 const JurisdictionModalContent = ({

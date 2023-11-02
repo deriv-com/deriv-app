@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
 import { getCFDPlatformLabel, WS } from '@deriv/shared';
-import ChangePasswordConfirmation from './cfd-change-password-confirmation';
-import { TChangePassword, TPasswordResetAndTradingPasswordManager } from './props.types';
+import { localize, Localize } from '@deriv/translations';
+import { Text, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
 import { CATEGORY, CFD_PLATFORMS } from '../Helpers/cfd-config';
+import ChangePasswordConfirmation from './cfd-change-password-confirmation';
+import { TChangePassword, TPasswordResetAndTradingPasswordManager } from 'Types/containers.types';
 
 const ChangePassword = ({ platform, onConfirm }: TChangePassword) => (
     <div className='cfd-change-password'>

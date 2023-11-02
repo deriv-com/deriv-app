@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { Text, Popover } from '@deriv/components';
+import { TCompareAccountsCard } from 'Types/containers.types';
 import TradigPlatformIconProps from '../../Assets/svgs/trading-platform';
-import { TCompareAccountsCard } from 'Components/props.types';
-import { getAccountCardTitle, getMarketType, getAccountIcon } from '../../Helpers/compare-accounts-config';
 import { CFD_PLATFORMS, MARKET_TYPE_SHORTCODE } from '../../Helpers/cfd-config';
+import { getAccountCardTitle, getMarketType, getAccountIcon } from '../../Helpers/compare-accounts-config';
 
 const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }: TCompareAccountsCard) => {
     const market_type = !is_eu_user ? getMarketType(trading_platforms) : 'CFDs';

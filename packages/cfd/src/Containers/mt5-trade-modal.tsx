@@ -1,10 +1,10 @@
 import React from 'react';
-import { DesktopWrapper, Div100vhContainer, Modal, MobileWrapper, PageOverlay, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { DesktopWrapper, Div100vhContainer, Modal, MobileWrapper, PageOverlay, UILoader } from '@deriv/components';
 import TradeModal from './trade-modal';
 import DMT5TradeModal from './dmt5-trade-modal';
-import { TCFDPasswordReset } from './props.types';
+import { TCFDPasswordReset } from 'Types/containers.types';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TMT5TradeModalProps = {

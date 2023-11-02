@@ -1,7 +1,8 @@
 import React from 'react';
-import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
+import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { SentEmailModal } from '@deriv/account';
+import { observer, useStore } from '@deriv/stores';
 import {
     getDxCompanies,
     getMtCompanies,
@@ -35,13 +36,12 @@ import {
     WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from '../Components/success-dialog.jsx';
-import '../sass/cfd.scss';
-import ChangePasswordConfirmation from './cfd-change-password-confirmation';
+import SuccessDialog from '../Components/success-dialog';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
-import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS, JURISDICTION } from '../Helpers/cfd-config';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import ChangePasswordConfirmation from './cfd-change-password-confirmation';
+import '../sass/cfd.scss';
 
 export type TCFDPasswordFormValues = { password: string };
 

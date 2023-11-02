@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { TInstrumentsIcon } from 'Components/props.types';
+import { TInstrumentsIcon } from 'Types/containers.types';
 import TradingInstrumentsIcon from '../../Assets/svgs/trading-instruments';
 
 const InstrumentsIconWithLabel = ({ icon, text, highlighted, className, is_asterisk }: TInstrumentsIcon) => {

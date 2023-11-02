@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { routes, getAuthenticationStatusInfo, WS } from '@deriv/shared';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { routes, getAuthenticationStatusInfo, WS } from '@deriv/shared';
 import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
-import { TCompareAccountsCard } from 'Components/props.types';
+import { TCompareAccountsCard } from 'Types/containers.types';
 import {
     getMarketType,
     getAccountVerficationStatus,

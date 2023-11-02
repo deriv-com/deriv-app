@@ -2,7 +2,7 @@ import React from 'react';
 import { Jurisdiction } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import JurisdictionCard from '../jurisdiction-card';
-import { TTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TTradingPlatformAvailableAccount } from 'Types/components.types';
 
 describe('JurisdictionCard', () => {
     type TMockProps = {

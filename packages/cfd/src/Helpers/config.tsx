@@ -1,6 +1,5 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
-import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import {
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,
@@ -14,8 +13,9 @@ import {
 import { isMobile } from '@deriv/shared';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TCFDDashboardContainer } from 'Containers/props.types';
 import { CATEGORY, CFD_PLATFORMS } from './cfd-config';
+import { TCFDDashboardContainer } from 'Types/containers.types';
+import { TCFDsPlatformType, TMobilePlatforms } from 'Types/types';
 
 export const mobileDownloadLink = (platform: TCFDsPlatformType, type: TMobilePlatforms) => {
     switch (platform) {

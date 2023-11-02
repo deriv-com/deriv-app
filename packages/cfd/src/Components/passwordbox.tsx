@@ -1,7 +1,7 @@
 import React from 'react';
 import { getCFDPlatformLabel } from '@deriv/shared';
 import { Text, Button, Icon, Popover } from '@deriv/components';
-import { TPasswordBoxProps } from './props.types';
+import { TPasswordBoxProps } from 'Types/components.types';
 import { localize } from '@deriv/translations';
 
 const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (

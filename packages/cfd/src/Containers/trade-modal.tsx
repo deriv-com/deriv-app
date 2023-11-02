@@ -1,15 +1,16 @@
 import React from 'react';
 import { Text, Icon, Money } from '@deriv/components';
-import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from 'Components/props.types';
+import { localize, Localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../Helpers/config';
-import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../Helpers/constants';
-import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 import SpecBox from '../Components/specbox';
+import { TCFDsPlatformType } from 'Types/types';
 import PasswordBox from '../Components/passwordbox';
-import { TCFDPasswordReset } from './props.types';
+import { CFD_PLATFORMS } from '../Helpers/cfd-config';
+import { TCFDPasswordReset } from 'Types/containers.types';
+import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../Helpers/constants';
+import { TTradingPlatformAccounts, TCFDDashboardContainer } from 'Types/components.types';
+import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../Helpers/config';
 
 type TTradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;

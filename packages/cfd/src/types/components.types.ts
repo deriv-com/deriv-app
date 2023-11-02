@@ -1,16 +1,140 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TCFDPasswordReset } from '../Containers/props.types';
+import { FormikHelpers as FormikActions, FormikValues } from 'formik';
+import { TCFDPasswordReset } from './containers.types';
+import { TCoreStores } from '@deriv/stores/types';
+import { ResidenceList } from '@deriv/api-types';
+import { TCFDPlatform } from './types';
+import { ReactElement } from 'react';
 
-export type TMobilePlatforms = 'ios' | 'android' | 'huawei';
+type TOnSubmit = (
+    index: number,
+    value: TFormValues,
+    setSubmitting: (isSubmitting: boolean) => void,
+    is_dirty?: boolean
+) => void;
 
-export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader' | 'derivez';
-
-export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
-
+// cfd-account-copy
 export type TCFDAccountCopy = {
     text: string | undefined;
     className: string;
 };
+
+// cfd-personal-details-form
+export type TCFDPersonalDetailsFormProps = {
+    changeable_fields?: string[];
+    form_error?: string;
+    index: number;
+    is_loading: boolean;
+    onSubmit: TOnSubmit;
+    residence_list: ResidenceList;
+    initial_values: TFormValues;
+};
+
+export type TValidatePersonalDetailsParams = {
+    values: TFormValues;
+    residence_list: ResidenceList;
+    account_opening_reason: TAccountOpeningReasonList;
+};
+
+export type TFindDefaultValuesInResidenceList = (params: {
+    residence_list: ResidenceList;
+    citizen_text: string;
+    tax_residence_text: string;
+    place_of_birth_text?: string;
+}) => {
+    citizen?: ResidenceList[0];
+    place_of_birth?: ResidenceList[0];
+    tax_residence?: ResidenceList[0];
+};
+
+export type TCFDInputFieldProps = {
+    id?: string;
+    value?: string;
+    name: string;
+    maxLength?: number;
+    label: string;
+    optional?: boolean;
+    required?: boolean;
+    placeholder: string;
+    disabled?: boolean;
+    onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+};
+
+export type TFormValues = { [key: string]: string };
+
+// cfd-poa
+export type TCFDPOA = {
+    index: number;
+    onSave: (index: number, values: FormikValues) => void;
+    onSubmit: (index: number, values: FormikValues) => void;
+};
+
+// cfd-poi
+type TCFDValue = {
+    poi_state: string;
+};
+
+type TPOIFormValues = {
+    poi_state?: string;
+};
+
+export type TCFDPOIProps = {
+    index: number;
+    onSubmit: (index: number, value: TCFDValue) => void;
+    value: TCFDValue;
+    addNotificationMessageByKey: TCoreStores['notifications']['addNotificationMessageByKey'];
+    height: string;
+    onSave: (index: number, values: TPOIFormValues) => void;
+    removeNotificationByKey: TCoreStores['notifications']['removeNotificationByKey'];
+    removeNotificationMessage: TCoreStores['notifications']['removeNotificationMessage'];
+    jurisdiction_selected_shortcode: string;
+};
+
+// specbox
+export type TSpecBoxProps = {
+    value?: string;
+    is_bold?: boolean;
+    is_broker?: boolean;
+};
+
+// success-dialog
+export type TCheckmark = {
+    className: string;
+};
+
+export type TSuccessDialog = {
+    classNameMessage?: string;
+    has_cancel: boolean;
+    has_submit: boolean;
+    icon: ReactElement;
+    message: ReactElement | string;
+    onCancel?: () => void;
+    onSubmit?: () => void;
+    heading?: ReactElement | string;
+    icon_size: string;
+    text_submit?: string;
+    text_cancel?: string;
+    is_open: boolean;
+    toggleModal: () => void;
+    title?: string;
+    has_close_icon: boolean;
+    width: string;
+    is_medium_button?: boolean;
+};
+
+export type TSubmitForm = (
+    values: TFormValues,
+    actions: FormikActions<TFormValues>,
+    idx: number,
+    onSubmitFn: TOnSubmit,
+    is_dirty: boolean,
+    residence_list: ResidenceList
+) => void;
+
+export type TAccountOpeningReasonList = {
+    text: string;
+    value: string;
+}[];
 
 export type TDxtradeDesktopDownloadProps = {
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
@@ -18,11 +142,6 @@ export type TDxtradeDesktopDownloadProps = {
 };
 
 export type TAccountIconValues = { [key: string]: string };
-
-export type TSpecBoxProps = {
-    value: string | undefined;
-    is_bold?: boolean;
-};
 
 export type TPasswordBoxProps = {
     platform: string;
@@ -248,29 +367,6 @@ export type TTradingPlatformAccounts = {
      * Name of trading platform.
      */
     platform?: 'dxtrade' | string;
-};
-
-export type TInstrumentsIcon = {
-    icon:
-        | 'DerivedFX'
-        | 'Synthetics'
-        | 'Baskets'
-        | 'Stocks'
-        | 'StockIndices'
-        | 'Commodities'
-        | 'Forex'
-        | 'Cryptocurrencies'
-        | 'ETF';
-    text: string;
-    highlighted: boolean;
-    className?: string;
-    is_asterisk?: boolean;
-};
-
-export type TCompareAccountsCard = {
-    trading_platforms: TModifiedTradingPlatformAvailableAccount;
-    is_eu_user?: boolean;
-    is_demo?: boolean;
 };
 
 export type TJurisdictionData = {

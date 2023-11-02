@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { WalletText } from '../../../../../components/Base/WalletText';
+import { WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
+import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
 import JurisdictionCardBack from './JurisdictionCardBack';
@@ -30,7 +31,17 @@ const verificationIconsMapper: Record<string, JSX.Element> = {
 const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisdiction, onSelect }) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
+    const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { modalState } = useModal();
+
+    const descriptionClickHandler = (tag?: string) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        event.stopPropagation();
+        if (tag === 'dynamicLeverage') {
+            toggleDynamicLeverage();
+        } else {
+            setIsFlipped(true);
+        }
+    };
 
     const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = useMemo<TJurisdictionCardItems>(
         () => getJurisdictionContents()[jurisdiction],
@@ -46,11 +57,8 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                     return (
                         <a
                             className='wallets-jurisdiction-card__link'
-                            key={description?.text}
-                            onClick={e => {
-                                e.stopPropagation();
-                                setIsFlipped(true);
-                            }}
+                            key={description.text}
+                            onClick={descriptionClickHandler(description.tag)}
                         >
                             {description.text}{' '}
                         </a>

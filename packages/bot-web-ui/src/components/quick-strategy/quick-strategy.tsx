@@ -17,10 +17,24 @@ type TFormikWrapper = {
     children: React.ReactNode;
 };
 
+const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') => {
+    const errors: { [key: string]: { MIN: string; MAX: string } } = {
+        DURATION: {
+            MIN: localize('Minimum duration: {{ value }}', { value }),
+            MAX: localize('Maximum duration: {{ value }}', { value }),
+        },
+        DEFAULT: {
+            MIN: localize('The value must be equal or greater than {{ value }}', { value }),
+            MAX: localize('The value must be equal or less than {{ value }}', { value }),
+        },
+    };
+    return errors[type][dir];
+};
+
 const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const { quick_strategy } = useDBotStore();
     const [duration, setDuration] = React.useState<TDurationItemRaw | null>(null);
-    const { selected_strategy, form_data, onSubmit } = quick_strategy;
+    const { selected_strategy, form_data, onSubmit, setValue } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
 
     const initial_value: TFormData = {
@@ -34,12 +48,15 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         duration: '1',
         unit: String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
         action: 'RUN',
+        max_stake: 10,
+        boolean_max_stake: false,
     };
 
     React.useEffect(() => {
         const data = JSON.parse(localStorage.getItem('qs-fields') || '{}');
         Object.keys(data).forEach(key => {
             initial_value[key as keyof TFormData] = data[key];
+            setValue(key, data[key]);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -52,6 +69,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             setDuration(d);
         };
         getDurations();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form_data.symbol, form_data.tradetype, form_data.durationtype]);
 
     const getErrors = () => {
@@ -64,9 +82,17 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                         let schema: Record<string, any> = Yup.number().typeError(localize('Must be a number'));
                         let min = 0;
                         let max = 10;
+                        let min_error = getErrorMessage('MIN', min);
+                        let max_error = getErrorMessage('MAX', max);
                         if (field.name === 'duration' && duration) {
                             min = duration.min;
                             max = duration.max;
+                            min_error = getErrorMessage('MIN', min, 'DURATION');
+                            max_error = getErrorMessage('MAX', max, 'DURATION');
+                        }
+                        if (field.name === 'max_stake') {
+                            min = +form_data?.stake;
+                            min_error = getErrorMessage('MIN', min);
                         }
                         field.validation.forEach(validation => {
                             if (typeof validation === 'string') {
@@ -75,16 +101,10 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                                         schema = schema.required(localize('Field cannot be empty'));
                                         break;
                                     case 'min':
-                                        schema = schema.min(
-                                            min,
-                                            localize('Minimum duration: {{ value }}', { value: min })
-                                        );
+                                        schema = schema.min(min, min_error);
                                         break;
                                     case 'max':
-                                        schema = schema.max(
-                                            max,
-                                            localize('Maximum duration: {{ value }}', { value: max })
-                                        );
+                                        schema = schema.max(max, max_error);
                                         break;
                                     case 'ceil':
                                         schema = schema.round('ceil');

@@ -3,14 +3,16 @@ import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
 import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
 import useDevice from '../../hooks/useDevice';
+// import { useTabs } from '../Base/Tabs/Tabs';
 import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
 
-const WalletTourGuide = () => {
+const WalletMobileTourGuide = () => {
     const key = 'walletsOnboarding';
     const startValue = 'started';
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
     const { isMobile } = useDevice();
+    // const { activeTabIndex, setActiveTabIndex } = useTabs();
 
     const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
@@ -46,7 +48,7 @@ const WalletTourGuide = () => {
     const hasDerivAppsTradingAccount = Boolean(activeWallet?.dtrade_loginid);
     const isAllWalletsAlreadyAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));
 
-    if (isMobile) return null;
+    if (!isMobile) return null;
 
     return (
         <Joyride
@@ -56,10 +58,10 @@ const WalletTourGuide = () => {
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
             run={walletsOnboarding === startValue && !isLoading && !isFetching && isSuccess}
-            scrollOffset={150}
+            scrollOffset={300}
             scrollToFirstStep
             steps={tourStepConfig(
-                false,
+                true,
                 isDemoWallet,
                 hasMT5Account,
                 hasDerivAppsTradingAccount,
@@ -70,4 +72,4 @@ const WalletTourGuide = () => {
     );
 };
 
-export default WalletTourGuide;
+export default WalletMobileTourGuide;

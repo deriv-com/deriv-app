@@ -3,6 +3,7 @@ import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
 import { TabList, TabPanel, TabPanels, Tabs } from '../Base';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
+import { WalletMobileTourGuide } from '../WalletTourGuide';
 import './AccountsList.scss';
 
 const AccountsList = () => {
@@ -21,6 +22,7 @@ const AccountsList = () => {
                         <OptionsAndMultipliersListing />
                     </TabPanel>
                 </TabPanels>
+                <WalletMobileTourGuide />
             </Tabs>
         );
     }

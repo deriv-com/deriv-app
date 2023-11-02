@@ -15,11 +15,11 @@
 
     &__header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         gap: 2rem;
         align-self: stretch;
         padding-bottom: 2.4rem;
+        justify-content: space-between;
 
         &-title {
             display: flex;

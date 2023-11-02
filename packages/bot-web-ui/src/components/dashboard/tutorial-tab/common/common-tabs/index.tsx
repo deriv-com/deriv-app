@@ -21,14 +21,14 @@ const FAQTab = React.memo(
 FAQTab.displayName = 'FAQTab';
 
 const SearchTab = React.memo(
-    ({ filteredList, guideList, faqList, isMobile }) =>
+    ({ filteredList, guideList, faqList, isMobile, search }) =>
         filteredList.length > 0 ? (
             <>
                 <GuideTab guideList={guideList} />
                 <FAQTab faqList={faqList} isMobile={isMobile} />
             </>
         ) : (
-            <NoSearchResult />
+            <>{search ? <NoSearchResult /> : null}</>
         ),
     (prevProps, nextProps) => {
         return prevProps.filteredList === nextProps.filteredList;
@@ -44,12 +44,13 @@ export const generateTutorialTabs = (sidebar_content, is_mobile, search) => {
         { label: localize('FAQ'), content: <FAQTab faqList={faq_tab_content} isMobile={is_mobile} /> },
         {
             label: localize('Search'),
-            content: search && (
+            content: (
                 <SearchTab
                     filteredList={filtered_tab_list}
                     guideList={guide_tab_content}
                     faqList={faq_tab_content}
                     isMobile={is_mobile}
+                    search={search}
                 />
             ),
         },

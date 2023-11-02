@@ -134,8 +134,6 @@
 
 .faq {
     &__wrapper {
-        overflow: auto;
-        height: calc(100vh - 180px);
         padding-bottom: 18px;
 
         @include mobile {
@@ -292,6 +290,12 @@
                 &__content {
                     margin: -6.5rem 2.4rem;
                     width: 100%;
+                    max-height: calc(100vh - 20rem);
+                    overflow: auto;
+
+                    .tutorials-wrap {
+                        margin-bottom: 3rem;
+                    }
                     &--no-result {
                         display: flex;
                         flex-direction: column;

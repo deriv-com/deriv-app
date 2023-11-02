@@ -35,8 +35,7 @@ const TutorialsTabDesktop = observer(() => {
     };
     const onCloseHandleSearch = () => {
         setFAQSearchValue('');
-        setActiveTabTutorial(2);
-        onFocusSearch();
+        setActiveTabTutorial(0);
     };
 
     return (
@@ -59,14 +58,16 @@ const TutorialsTabDesktop = observer(() => {
                     onFocus={onFocusSearch}
                     value={faq_search_value}
                 />
-                <Icon
-                    className='close-icon'
-                    data_testid='id-test-close'
-                    width='1.6rem'
-                    height='1.6rem'
-                    icon='IcDbotClose'
-                    onClick={onCloseHandleSearch}
-                />
+                {search && (
+                    <Icon
+                        className='close-icon'
+                        data_testid='id-test-close'
+                        width='1.6rem'
+                        height='1.6rem'
+                        icon='IcDbotClose'
+                        onClick={onCloseHandleSearch}
+                    />
+                )}
             </div>
             <Tabs className='tutorials' active_index={active_tab_tutorials} onTabItemClick={setActiveTabTutorial} top>
                 {tutorial_tabs.map(({ label, content }) => (

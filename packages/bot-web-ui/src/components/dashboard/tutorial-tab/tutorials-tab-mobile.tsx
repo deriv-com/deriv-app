@@ -53,14 +53,18 @@ const TutorialsTabMobile = observer(() => {
 
     const onHandleChangeMobile = () => {
         setShowSearchBar(!showSearchBar);
-        onFocusSearch();
-        if (showSearchBar) setActiveTabTutorial(0);
+    };
+
+    const onClickBackButton = () => {
+        setFAQSearchValue('');
+        setActiveTabTutorial(0);
+        setShowSearchBar(!showSearchBar);
     };
 
     const onCloseHandleSearch = () => {
+        onFocusSearch();
         setFAQSearchValue('');
         setActiveTabTutorial(2);
-        onFocusSearch();
     };
 
     return (
@@ -73,11 +77,12 @@ const TutorialsTabMobile = observer(() => {
                 data-testid={showSearchBar ? 'id-search-visible' : 'id-search-hidden'}
             >
                 <Icon
-                    onClick={onHandleChangeMobile}
+                    onClick={onClickBackButton}
                     data_testid='id-arrow-left-bold'
                     className='arrow-left-bold'
                     icon='IcArrowLeftBold'
                 />
+
                 <input
                     type='text'
                     placeholder={localize('Search')}
@@ -87,15 +92,18 @@ const TutorialsTabMobile = observer(() => {
                     onFocus={onFocusSearch}
                     value={faq_search_value}
                 />
-                <Icon
-                    data_testid='id-close-icon'
-                    className='close-icon'
-                    data-testid='id-test-search'
-                    width='1.6rem'
-                    height='1.6rem'
-                    icon='IcDbotClose'
-                    onClick={onCloseHandleSearch}
-                />
+                {search && (
+                    <Icon
+                        data_testid='id-close-icon'
+                        className='close-icon'
+                        data-testid='id-test-search'
+                        width='1.6rem'
+                        height='1.6rem'
+                        icon='IcDbotClose'
+                        onClick={onCloseHandleSearch}
+                    />
+                )}
+
                 <SelectNative
                     data_testid='id-tutorials-select'
                     className='dc-tabs__wrapper__group__search-input--active'

@@ -17,7 +17,7 @@ const useActiveLinkedToTradingAccount = () => {
     }, [account_list_data, matchingTradingAccount, wallet_account_data]);
 
     return {
-        /** The list of trading accounts for the current user. */
+        /** The active linked trading account for the current user. */
         data: modified_accounts,
     };
 };

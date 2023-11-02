@@ -14,7 +14,7 @@ type TShowError = {
     should_show_refresh: boolean;
     redirect_to: string;
     should_clear_error_on_click: boolean;
-    should_redirect: boolean;
+    should_redirect?: boolean;
 };
 
 type TAccounts = {
@@ -26,7 +26,7 @@ export const showDigitalOptionsUnavailableError = (
     showError: (t: TShowError) => void,
     message: TMessage,
     redirectOnClick?: (() => void) | null,
-    should_redirect = false,
+    should_redirect?: boolean,
     should_clear_error_on_click = true
 ) => {
     const { title, text, link } = message;

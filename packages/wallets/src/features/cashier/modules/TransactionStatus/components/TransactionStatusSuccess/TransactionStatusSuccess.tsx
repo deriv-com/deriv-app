@@ -41,7 +41,6 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
                     ))}
                     {filteredTransactions.length > 3 && (
                         <WalletButton
-                            color='transparent'
                             isFullWidth={true}
                             onClick={() => {
                                 // should navigate to transactions page with "Pending transactions" toggle on and filter set to `transactionType`

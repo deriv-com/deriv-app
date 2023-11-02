@@ -1,7 +1,7 @@
 import React from 'react';
 import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 import { Button, Loading } from '@deriv/components';
-import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { WS, getPlatformRedirect, platforms, AUTH_STATUS_CODES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import Expired from '../../../Components/poa/status/expired';
@@ -12,7 +12,6 @@ import Submitted from '../../../Components/poa/status/submitted';
 import Unverified from '../../../Components/poa/status/unverified';
 import Verified from '../../../Components/poa/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification.js';
-import { AUTH_STATUS_CODES } from '../../../Constants/auth-status-codes';
 
 type TAuthenticationStatus = Record<
     | 'allow_document_upload'
@@ -147,16 +146,16 @@ const ProofOfAddressContainer = observer(() => {
     }
 
     switch (document_status) {
-        case AUTH_STATUS_CODES.none:
+        case AUTH_STATUS_CODES.NONE:
             return <ProofOfAddressForm onSubmit={onSubmit} />;
-        case AUTH_STATUS_CODES.pending:
+        case AUTH_STATUS_CODES.PENDING:
             return <NeedsReview needs_poi={needs_poi} redirect_button={redirect_button} />;
-        case AUTH_STATUS_CODES.verified:
+        case AUTH_STATUS_CODES.VERIFIED:
             return <Verified needs_poi={needs_poi} redirect_button={redirect_button} />;
-        case AUTH_STATUS_CODES.expired:
+        case AUTH_STATUS_CODES.EXPIRED:
             return <Expired onClick={handleResubmit} />;
-        case AUTH_STATUS_CODES.rejected:
-        case AUTH_STATUS_CODES.suspected:
+        case AUTH_STATUS_CODES.REJECTED:
+        case AUTH_STATUS_CODES.SUSPECTED:
             return <Unverified onClick={handleResubmit} />;
         default:
             return null;

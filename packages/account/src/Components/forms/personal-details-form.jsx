@@ -48,6 +48,8 @@ const PersonalDetailsForm = props => {
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
+    // need to put this check related to DIEL clients
+    const is_svg_only = is_svg && !is_mf;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
@@ -75,7 +77,7 @@ const PersonalDetailsForm = props => {
     };
 
     const getFieldHint = field_name =>
-        (is_svg && !is_mf) || is_rendered_for_onfido ? (
+        is_svg_only || is_rendered_for_onfido ? (
             <Localize
                 i18n_default_text={'Your {{ field_name }} as in your identity document'}
                 values={{ field_name }}
@@ -112,9 +114,6 @@ const PersonalDetailsForm = props => {
     const poa_clarification_message = (
         <Localize i18n_default_text='For faster verification, input the same address here as in your proof of address document (see section below)' />
     );
-
-    // need to put this check related to DIEL clients
-    const is_svg_only = is_svg && !is_mf;
 
     // need to disable the checkbox if the user has not filled in the name and dob fields initially
     const is_confirmation_checkbox_disabled = ['first_name', 'last_name', 'date_of_birth'].some(

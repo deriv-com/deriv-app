@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { Divider, WalletText } from '../../../../components/Base';
-import { Loader } from '../../../../components/Loader';
+import { WalletsTransactionStatusLoader } from '../../../../components';
 import Warning from '../../../../public/images/warning.svg';
 import { THooks } from '../../../../types';
 import { TransactionStatusError } from './components/TransactionStatusError';
@@ -50,7 +50,7 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
             </div>
             <Divider color='#d6dadb' /> {/* --color-grey-5 */}
             <div className='wallets-transaction-status__body'>
-                {!isError && isLoading && <Loader color='#85acb0' />}
+                {!isError && isLoading && <WalletsTransactionStatusLoader />}
                 {isError && <TransactionStatusError refresh={refresh} />}
                 {!isLoading && !isError && wallet && (
                     <TransactionStatusSuccess

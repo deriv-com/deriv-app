@@ -124,7 +124,7 @@ const PageError = ({
                         )}
                     </Text>
                 </div>
-                <div className='dc-page-error__btn-wrapper'>
+                <div className='dc-page-error__btn-wrapper' data-testid='dc-page-error__btn-wrapper'>
                     {should_redirect &&
                         redirect_labels.length !== 0 &&
                         redirect_urls?.map?.((url, index) => (

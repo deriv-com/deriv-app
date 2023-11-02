@@ -1,5 +1,5 @@
 import React from 'react';
-import { Collapsible } from '@deriv/components';
+import { Collapsible, Text } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals';
 import {
@@ -28,6 +28,7 @@ import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { Localize } from '@deriv/translations';
 
 type TCollapsibleTradeParams = Pick<
     ReturnType<typeof useTraderStore>,
@@ -42,6 +43,7 @@ type TCollapsibleTradeParams = Pick<
     | 'onChange'
     | 'take_profit'
     | 'setIsTradeParamsExpanded'
+    | 'last_digit'
 > & {
     has_allow_equals: boolean;
     is_allow_equal: boolean;
@@ -61,6 +63,7 @@ const CollapsibleTradeParams = ({
     onChange,
     take_profit,
     setIsTradeParamsExpanded,
+    last_digit,
 }: TCollapsibleTradeParams) => {
     React.useEffect(() => {
         if (previous_symbol && is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
@@ -87,6 +90,19 @@ const CollapsibleTradeParams = ({
                 {is_multiplier && <MultiplierOptionsWidget />}
                 {isVisible('trade_type_tabs') && <TradeTypeTabs />}
                 {is_accumulator && <AccumulatorOptionsWidget />}
+                {isVisible('last_digit') && is_collapsed && (
+                    <Text
+                        as='p'
+                        size='xxs'
+                        color='prominent'
+                        line_height='s'
+                        weight='bold'
+                        className='mobile-widget__digit'
+                        onClick={toggleDigitsWidget}
+                    >
+                        <Localize i18n_default_text='Digit: {{last_digit}} ' values={{ last_digit }} />
+                    </Text>
+                )}
             </div>
             {isVisible('last_digit') && (
                 <div data-collapsible='true'>
@@ -108,9 +124,7 @@ const CollapsibleTradeParams = ({
                     <Strike />
                 </div>
             )}
-            {/* 
-            // @ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected */}
-            {!is_accumulator && <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />}
+            {!is_accumulator && <MobileWidget />}
             {has_allow_equals && (
                 <div data-collapsible='true'>
                     <AllowEqualsMobile />
@@ -183,6 +197,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
         is_trade_params_expanded,
         setIsTradeParamsExpanded,
         take_profit,
+        last_digit,
     } = trade_store;
     const is_allow_equal = !!trade_store.is_equal;
 
@@ -199,6 +214,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
         setIsTradeParamsExpanded,
         take_profit,
         is_allow_equal,
+        last_digit,
     };
 
     const has_callputequal_duration = hasDurationForCallPutEqual(

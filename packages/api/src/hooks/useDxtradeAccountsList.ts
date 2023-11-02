@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
-import useDxtradeServiceToken from './useDxtradeServiceToken';
 import { displayMoney } from '../utils';
 
 /** A custom hook that gets the list of created Deriv X accounts. */
@@ -12,8 +11,6 @@ const useDxtradeAccountsList = () => {
         options: { enabled: isSuccess },
     });
 
-    const { data: token } = useDxtradeServiceToken();
-
     /** Adding necessary properties to Deriv X accounts */
     const modified_dxtrade_accounts = useMemo(
         () =>
@@ -23,10 +20,8 @@ const useDxtradeAccountsList = () => {
                 display_balance: displayMoney(account?.balance || 0, account?.currency || 'USD', {
                     preferred_language: authorize_data?.preferred_language,
                 }),
-                /** The token of the Deriv X account */
-                token,
             })),
-        [authorize_data?.preferred_language, dxtrade_accounts?.trading_platform_accounts, token]
+        [authorize_data?.preferred_language, dxtrade_accounts?.trading_platform_accounts]
     );
 
     return {

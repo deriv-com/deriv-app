@@ -27,4 +27,9 @@
         flex-direction: column;
         gap: 0.8rem;
     }
+
+    @include mobile {
+        width: 100%;
+        position: relative;
+    }
 }

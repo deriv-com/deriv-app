@@ -1,6 +1,10 @@
 .wallets-gradient {
     position: relative;
 
+    &__content {
+        position: relative;
+    }
+
     &__shine {
         position: absolute;
         inset: 0;

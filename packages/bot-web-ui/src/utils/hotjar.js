@@ -1,6 +1,6 @@
 import { epochToMoment, toMoment } from '@deriv/shared';
 
-const hotjar = client => {
+const hotjar = (client, total_transactions) => {
     /**
      * Inject: External Script Hotjar - for DBot only
      */
@@ -29,6 +29,8 @@ const hotjar = client => {
             'Account type': account_type,
             'User country': client.clients_country,
         });
+
+        window.hj('event', 'Total Transactions', { total_transactions: total_transactions?.length });
     })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
 };
 export default hotjar;

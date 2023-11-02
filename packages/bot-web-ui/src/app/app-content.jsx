@@ -30,6 +30,7 @@ const AppContent = observer(() => {
     const { recovered_transactions, recoverPendingContracts } = transactions;
     const is_subscribed_to_msg_listener = React.useRef(false);
     const msg_listener = React.useRef(null);
+    const [total_transactions, setTotalTransactions] = React.useState([]);
 
     const handleMessage = ({ data }) => {
         if (data?.msg_type === 'proposal_open_contract' && !data?.error) {
@@ -42,6 +43,30 @@ const AppContent = observer(() => {
             }
         }
     };
+
+    React.useEffect(() => {
+        const saved_transactions = JSON.parse(localStorage.getItem('total_transactions'));
+        if (saved_transactions) {
+            setTotalTransactions(saved_transactions);
+        }
+
+        api_base.api?.onMessage()?.subscribe(({ data }) => {
+            if (data.msg_type === 'transaction' && data.transaction.action === 'buy') {
+                const transaction_id = data.transaction.transaction_id;
+
+                setTotalTransactions(prevTotalTransactions => {
+                    const updated_transactions = [...prevTotalTransactions, transaction_id];
+                    localStorage.setItem('total_transactions', JSON.stringify(updated_transactions));
+
+                    return updated_transactions;
+                });
+            }
+        });
+
+        hotjar(client, total_transactions);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [api_base?.api]);
 
     React.useEffect(() => {
         // Listen for proposal open contract messages to check
@@ -63,10 +88,6 @@ const AppContent = observer(() => {
     React.useEffect(() => {
         setColors(is_dark_mode_on);
     }, [is_dark_mode_on]);
-
-    React.useEffect(() => {
-        hotjar(client);
-    }, []);
 
     React.useEffect(() => {
         showDigitalOptionsMaltainvestError(client, common);

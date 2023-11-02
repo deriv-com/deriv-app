@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik } from 'formik';
+import { Formik, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -17,7 +17,7 @@ jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 describe('<QSInput />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
-
+    const onChange = jest.fn();
     beforeEach(() => {
         const mock_store = mockStore({
             ui: {
@@ -48,41 +48,39 @@ describe('<QSInput />', () => {
     });
 
     it('should render QSInput', () => {
-        const { container } = render(<QSInput name='duration' />, {
+        const { container } = render(<QSInput onChange={onChange} name='duration' />, {
             wrapper,
         });
         expect(container).toBeInTheDocument();
     });
 
     it('should increase the value on click of + button', () => {
-        render(<QSInput name='duration' type='number' />, {
+        render(<QSInput name='duration' type='number' onChange={onChange} />, {
             wrapper,
         });
 
         const increase_button = screen.getByTestId('qs-input-increase');
         userEvent.click(increase_button);
-        const input = screen.getByTestId('qs-input');
-        expect(input).toHaveDisplayValue('2');
+        expect(onChange).toBeCalledWith('duration', '2');
     });
 
     it('should decrease the value on click of - button', () => {
-        render(<QSInput name='duration' type='number' />, {
+        render(<QSInput name='duration' type='number' onChange={onChange} />, {
             wrapper,
         });
 
         const decrease_button = screen.getByTestId('qs-input-decrease');
         userEvent.click(decrease_button);
-        const input = screen.getByTestId('qs-input');
-        expect(input).toHaveDisplayValue('0');
+        expect(onChange).toBeCalledWith('duration', '0');
     });
 
     it('should update the value', () => {
-        render(<QSInput name='duration' type='number' />, {
+        render(<QSInput name='duration' type='number' onChange={onChange} />, {
             wrapper,
         });
 
         const input = screen.getByTestId('qs-input');
         userEvent.type(input, '5');
-        expect(input).toHaveDisplayValue('15');
+        expect(onChange).toBeCalledWith('duration', 15);
     });
 });

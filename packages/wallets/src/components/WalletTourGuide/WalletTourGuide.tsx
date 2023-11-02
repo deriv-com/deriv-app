@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
 import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
-import { WalletText } from '../Base';
 import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
 
@@ -40,9 +39,7 @@ const WalletTourGuide = () => {
         }
     }, [activeWalletLoginId, fiatWalletLoginId, switchAccount, walletsOnboarding]);
 
-    if (!activeWallet) return <WalletText>...Loading</WalletText>;
-
-    const isDemoWallet = activeWallet?.is_virtual;
+    const isDemoWallet = Boolean(activeWallet?.is_virtual);
     const hasMT5Account = Boolean(activeWallet?.linked_to?.some(account => account.platform === 'mt5'));
     const hasDerivAppsTradingAccount = Boolean(activeWallet?.dtrade_loginid);
     const isAllWalletsAlreadyAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));

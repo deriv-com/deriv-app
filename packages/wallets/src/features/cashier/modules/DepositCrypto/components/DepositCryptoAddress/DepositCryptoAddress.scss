@@ -2,31 +2,50 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
-    min-height: 60px;
+    gap: 2.4rem;
+    min-height: 6rem;
+
+    &__loader {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     &__hash {
-        color: #000;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 700;
-        padding: 0.8rem 1rem;
-        border-radius: 4px 0px 0px 4px;
-        border: 1px solid #e6e9e9;
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 0.1rem solid #e6e6e6;
+        border-radius: 0.4rem;
 
         @include mobile {
-            font-size: 12px;
+            width: 100%;
+            max-width: 32.8rem;
+        }
+
+        &-text {
+            overflow-x: hidden;
+            padding: 0.8rem;
             text-overflow: ellipsis;
         }
 
-        &-container {
+        &-clipboard {
             display: flex;
             align-items: center;
-        }
-    }
+            height: 100%;
+            gap: 0.8rem;
 
-    &__loader {
-        position: relative;
-        height: 60px;
+            & .wallets-clipboard {
+                padding: 0.8rem 0.8rem 0.8rem 0;
+            }
+        }
+
+        &-divider {
+            width: 1px;
+            height: 100%;
+            background: #e6e6e6;
+        }
     }
 }

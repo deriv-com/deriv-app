@@ -1,5 +1,6 @@
 import React from 'react';
-import { Step, TooltipRenderProps } from 'react-joyride';
+import { Step, TooltipRenderProps } from '@deriv/react-joyride';
+import CloseIcon from '../../public/images/close-icon.svg';
 import { WalletButton, WalletText } from '../Base';
 import './WalletTourGuide.scss';
 
@@ -311,6 +312,7 @@ const getDesktopSteps = (
         content: <WalletText size='sm'>Click Add on each card for more Wallets.</WalletText>,
         disableBeacon: true,
         disableOverlayClose: true,
+        floaterProps: { disableAnimation: false },
         placement: 'right',
         styles: { spotlight: { borderRadius: '1.6rem' } },
         target: isAllWalletsAlreadyAdded ? 'null' : '.wallets-add-more__card', // skip this if all wallets already added
@@ -349,7 +351,13 @@ export const TooltipComponent = ({
 }: TooltipRenderProps) => {
     return (
         <div {...tooltipProps} className='wallets-tour-guide__container'>
-            <div className='wallets-tour-guide__header'>{step?.title as React.ReactNode}</div>
+            <div className='wallets-tour-guide__header'>
+                {step?.title as React.ReactNode}
+                <CloseIcon
+                    className='wallets-tour-guide__close-icon'
+                    onClick={closeProps.onClick as unknown as React.MouseEventHandler<SVGElement>}
+                />
+            </div>
             {<div className='wallets-tour-guide__content'>{step.content as React.ReactNode}</div>}
             <div className='wallets-tour-guide__footer'>
                 {index > 0 && <WalletButton {...backProps} color='white' text='Back' variant='outlined' />}

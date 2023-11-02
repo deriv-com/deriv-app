@@ -1,11 +1,20 @@
+@import '../../components/SkeletonLoader/SkeletonLoader.scss';
+
 .wallets-card {
     display: flex;
     flex-direction: column;
     align-items: center;
 
+    &--balance-loader {
+        padding: 0.7rem;
+        width: 8rem;
+        background-color: #f8f5f542;
+        border-radius: 0.5rem;
+    }
+
     &__details {
         display: flex;
-        padding: 8px;
+        padding: 0.8rem;
         min-width: 44.44vw;
         flex-direction: column;
         justify-content: space-between;

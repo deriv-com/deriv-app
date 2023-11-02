@@ -30,27 +30,26 @@ interface IconTypes {
 }
 
 const ICONS: IconTypes = {
-    IcWalletOptionsLight,
-    IcWalletOptionsDark,
-    IcWalletDerivP2PLight,
-    IcWalletDerivP2PDark,
-
-    IcWalletDerivDemoLight,
-    IcWalletDerivDemoDark,
-    IcWalletCurrencyUsd,
-    IcWalletCurrencyEur,
-    IcWalletCurrencyAud,
-    IcWalletCurrencyGbp,
-    IcWalletBitcoinLight,
     IcWalletBitcoinDark,
-    IcWalletEthereumLight,
+    IcWalletBitcoinLight,
+    IcWalletCurrencyAud,
+    IcWalletCurrencyEur,
+    IcWalletCurrencyGbp,
+    IcWalletCurrencyUsd,
+    IcWalletDerivDemoDark,
+    IcWalletDerivDemoLight,
+    IcWalletDerivP2PDark,
+    IcWalletDerivP2PLight,
     IcWalletEthereumDark,
-    IcWalletLiteCoinLight,
+    IcWalletEthereumLight,
     IcWalletLiteCoinDark,
-    IcWalletUsdCoinLight,
-    IcWalletUsdCoinDark,
+    IcWalletLiteCoinLight,
+    IcWalletOptionsDark,
     IcWalletTetherDark,
     IcWalletTetherLight,
+    IcWalletUsdCoinDark,
+    IcWalletUsdCoinLight,
+    IcWalletOptionsLight,
 } as const;
 
 type TWalletIconProps = {

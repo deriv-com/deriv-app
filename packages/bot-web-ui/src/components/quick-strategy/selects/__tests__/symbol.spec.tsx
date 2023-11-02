@@ -98,7 +98,7 @@ describe('<SymbolSelect />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('Should select item from list', async () => {
+    it('Should select item from the list', async () => {
         render(<SymbolSelect key='RDBULL' />, {
             wrapper,
         });
@@ -110,5 +110,17 @@ describe('<SymbolSelect />', () => {
         userEvent.click(option_element);
 
         expect(autocomplete_element).toHaveDisplayValue([/Bear Market Index/i]);
+    });
+
+    it('Should input to be empty when the user clicks to type something', () => {
+        mockStore({ ui: { is_mobile: false, is_desktop: true } });
+        render(<SymbolSelect />, {
+            wrapper,
+        });
+
+        const autocomplete_element = screen.getByTestId('qs_autocomplete_symbol');
+
+        userEvent.hover(autocomplete_element);
+        expect((autocomplete_element as HTMLInputElement).value).toBe('');
     });
 });

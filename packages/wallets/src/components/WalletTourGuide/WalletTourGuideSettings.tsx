@@ -1,5 +1,5 @@
 import React from 'react';
-import { Step, TooltipRenderProps } from 'react-joyride-scrollparent';
+import { Step, TooltipRenderProps } from '@deriv/react-joyride';
 import { WalletButton, WalletText } from '../Base';
 import './WalletTourGuide.scss';
 

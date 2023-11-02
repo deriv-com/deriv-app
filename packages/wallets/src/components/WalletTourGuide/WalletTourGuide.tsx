@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import Joyride, { ACTIONS, CallBackProps } from 'react-joyride-scrollparent';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
+import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
 import { WalletText } from '../Base';
 import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';

@@ -234,7 +234,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                     <Button
                         disabled={isNextButtonDisabled()}
                         primary
-                        style={{ width: is_mobile ? '100%' : 'unset' }}
+                        style={{ width: is_mobile ? '100%' : 'unset', height: '3.8rem' }}
                         onClick={() => {
                             toggleJurisdictionModal();
                             onSelectRealAccount();

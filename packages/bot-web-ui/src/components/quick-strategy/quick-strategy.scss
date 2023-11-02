@@ -335,8 +335,7 @@
             }
         }
         &__option {
-            display: flex;
-            align-items: center;
+            @extend .x-center;
 
             &__text {
                 margin-left: 3rem;
@@ -353,14 +352,13 @@
         }
     }
     .seddle-actions {
+        @extend .x-center;
+        justify-content: center;
         position: absolute;
         background: transparent;
         border: none;
         font-size: 20px;
         line-height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         width: var(--input-action-width);
         height: var(--input-action-height);
         border-radius: 2px;
@@ -432,12 +430,11 @@
         }
     }
     &__input-label {
+        @extend .x-center;
+        justify-content: space-between;
         height: var(--input-height);
         background: var(--general-main-1);
         border-radius: 0.4rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         padding: 0 2.4rem;
         &__wrapper {
             margin-right: 2rem;
@@ -452,11 +449,9 @@
         height: var(--input-height);
         background: var(--general-main-1);
         border-radius: 0.4rem;
-        display: flex;
-        align-items: center;
+        @extend .x-center;
         &__container {
-            display: flex;
-            align-items: center;
+            @extend .x-center;
             justify-content: space-between;
             height: calc(var(--input-height) - 0.5rem);
             width: 100%;

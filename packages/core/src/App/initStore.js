@@ -2,6 +2,7 @@ import { configure } from 'mobx';
 import NetworkMonitor from 'Services/network-monitor';
 // import OutdatedBrowser      from 'Services/outdated-browser';
 import RootStore from 'Stores';
+import initHotjar from '../Utils/Hotjar';
 
 configure({ enforceActions: 'observed' });
 
@@ -64,6 +65,8 @@ const initStore = notification_messages => {
     root_store.client.init();
     root_store.common.init();
     root_store.ui.init(notification_messages);
+
+    initHotjar(root_store.client);
 
     return root_store;
 };

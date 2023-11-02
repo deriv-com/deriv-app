@@ -508,6 +508,7 @@ type TClientStore = {
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
     prev_account_type: string;
+    account_open_date: number | undefined;
     is_beta_chart: boolean;
 };
 

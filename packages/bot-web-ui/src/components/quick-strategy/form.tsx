@@ -17,10 +17,10 @@ import { useFormikContext } from 'formik';
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
     const { quick_strategy } = useDBotStore();
-    const { selected_strategy } = quick_strategy;
+    const { selected_strategy, setValue } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
-    const { values } = useFormikContext<TFormData>();
+    const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
@@ -28,6 +28,12 @@ const QuickStrategyForm = observer(() => {
             window.removeEventListener('keydown', handleEnter);
         };
     }, []);
+
+    const onChange = async (key: string, value: string | number | boolean) => {
+        setValue(key, value);
+        await setFieldTouched(key, true, true);
+        await setFieldValue(key, value);
+    };
 
     const handleEnter = (event: KeyboardEvent) => {
         if (event?.key && event.key == 'Enter') {
@@ -68,10 +74,11 @@ const QuickStrategyForm = observer(() => {
                                             key={key}
                                             name={field.name as string}
                                             disabled={!should_enable}
+                                            onChange={onChange}
                                         />
                                     );
                                 }
-                                return <QSInput {...field} key={key} name={field.name as string} />;
+                                return <QSInput {...field} onChange={onChange} key={key} name={field.name as string} />;
                             }
 
                             case 'label':
@@ -96,7 +103,7 @@ const QuickStrategyForm = observer(() => {
                             case 'durationtype':
                                 return <DurationTypeSelect {...field} key={key} />;
                             case 'contract_type':
-                                return <ContractTypeSelect {...field} key={key} />;
+                                return <ContractTypeSelect {...field} key={key} name={field.name as string} />;
                             default:
                                 return null;
                         }

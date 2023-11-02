@@ -70,7 +70,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         this.selected_strategy = strategy;
     };
 
-    setValue = (name: string, value: string) => {
+    setValue = (name: string, value: string | number | boolean) => {
         this.form_data[name as keyof TFormData] = value;
     };
 

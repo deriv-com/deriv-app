@@ -155,7 +155,7 @@ const CHECKBOX_MAX_STAKE: TConfigItem = {
 const MAX_STAKE: TConfigItem = {
     type: 'number',
     name: 'max_stake',
-    validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION],
+    validation: ['number', 'required', 'ceil', 'min'],
     should_have: [{ key: 'boolean_max_stake', value: true }],
     attached: true,
 };

@@ -1,12 +1,12 @@
 import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
-import { Field, FieldProps, useFormikContext } from 'formik';
+import { Field, FieldProps } from 'formik';
 import { Input, Popover } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
-import { TFormData } from '../types';
+import { observer } from '@deriv/stores';
 
 type TQSInput = {
     name: string;
+    onChange: (key: string, value: string | number | boolean) => void;
     type?: string;
     fullwidth?: boolean;
     attached?: boolean;
@@ -15,15 +15,13 @@ type TQSInput = {
 };
 
 const QSInput: React.FC<TQSInput> = observer(
-    ({ type = 'text', fullwidth = false, attached = false, name, disabled = false }) => {
+    ({ name, onChange, type = 'text', fullwidth = false, attached = false, disabled = false }) => {
         const [has_focus, setFocus] = React.useState(false);
-        const { setFieldValue, setFieldTouched } = useFormikContext<TFormData>();
         const is_number = type === 'number';
 
         const handleChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
-            setFieldTouched(name, true, true);
-            setFieldValue(name, value);
+            onChange(name, value);
         };
         return (
             <Field name={name} key={name} id={name}>
@@ -53,7 +51,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         className={classNames('qs__input', { error: has_error })}
                                         type={type}
                                         leading_icon={
-                                            is_number && (
+                                            is_number ? (
                                                 <button
                                                     data-testid='qs-input-decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
@@ -64,10 +62,10 @@ const QSInput: React.FC<TQSInput> = observer(
                                                 >
                                                     -
                                                 </button>
-                                            )
+                                            ) : null
                                         }
                                         trailing_icon={
-                                            is_number && (
+                                            is_number ? (
                                                 <button
                                                     data-testid='qs-input-increase'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
@@ -78,10 +76,14 @@ const QSInput: React.FC<TQSInput> = observer(
                                                 >
                                                     +
                                                 </button>
-                                            )
+                                            ) : null
                                         }
                                         disabled={disabled}
                                         {...field}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            const value = is_number ? Number(e.target.value) : e.target.value;
+                                            onChange(name, value);
+                                        }}
                                     />
                                 </Popover>
                             </div>

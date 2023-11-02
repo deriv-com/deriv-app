@@ -11,14 +11,14 @@ const useActiveLinkedToTradingAccount = () => {
 
     const matchingTradingAccount = account_list_data?.filter(account => account.loginid === linkedLoginid)[0];
 
-    const modified_accounts = useMemo(() => {
+    const modified_account = useMemo(() => {
         if (!account_list_data || !wallet_account_data) return undefined;
         return { ...matchingTradingAccount };
     }, [account_list_data, matchingTradingAccount, wallet_account_data]);
 
     return {
         /** The active linked trading account for the current user. */
-        data: modified_accounts,
+        data: modified_account,
     };
 };
 

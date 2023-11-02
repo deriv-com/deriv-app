@@ -14,6 +14,10 @@ import Unverified from '../../../Components/poa/status/unverified';
 import Verified from '../../../Components/poa/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification.js';
 
+type TProofOfAddressContainer = {
+    onSubmit: () => void;
+};
+
 type TAuthenticationStatus = Record<
     | 'allow_document_upload'
     | 'allow_poi_resubmission'
@@ -28,7 +32,7 @@ type TAuthenticationStatus = Record<
     boolean
 > & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
 
-const ProofOfAddressContainer = observer(props => {
+const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = React.useState<TAuthenticationStatus>({
         allow_document_upload: false,
@@ -90,13 +94,13 @@ const ProofOfAddressContainer = observer(props => {
         setAuthenticationStatus(authentication_status => ({ ...authentication_status, ...{ resubmit_poa: true } }));
     };
 
-    const onSubmit = (needs_poi: boolean) => {
+    const onSubmitDocument = (needs_poi: boolean) => {
         setAuthenticationStatus(authentication_status => ({
             ...authentication_status,
             ...{ has_submitted_poa: true, needs_poi },
         }));
         if (is_verification_modal_visible) {
-            props.onSubmit();
+            onSubmit();
         }
     };
 
@@ -147,12 +151,12 @@ const ProofOfAddressContainer = observer(props => {
             ['expired', 'rejected', 'suspected'].includes(document_status)) ||
         poa_address_mismatch
     ) {
-        return <ProofOfAddressForm is_resubmit onSubmit={onSubmit} />;
+        return <ProofOfAddressForm is_resubmit onSubmit={onSubmitDocument} />;
     }
 
     switch (document_status) {
         case PoaStatusCodes.none:
-            return <ProofOfAddressForm onSubmit={onSubmit} />;
+            return <ProofOfAddressForm onSubmit={onSubmitDocument} />;
         case PoaStatusCodes.pending:
             return <NeedsReview needs_poi={needs_poi} redirect_button={redirect_button} />;
         case PoaStatusCodes.verified:

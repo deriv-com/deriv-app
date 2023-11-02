@@ -5,7 +5,7 @@ import { AccountStatus } from '@deriv/shared';
 import { Link } from 'react-router-dom';
 
 const getStatusBadgeConfig = (
-    account_status: string,
+    account_status: typeof AccountStatus[keyof typeof AccountStatus],
     openFailedVerificationModal: (selected_account_type: string) => void,
     selected_account_type: string,
     setIsVerificationModalVisible?: (value: boolean) => void

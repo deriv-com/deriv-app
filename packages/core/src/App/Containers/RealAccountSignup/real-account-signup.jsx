@@ -87,6 +87,7 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
 
 const RealAccountSignup = ({
     available_crypto_currencies,
+    account_status,
     closeRealAccountSignup,
     content_flag,
     country_standpoint,
@@ -498,7 +499,9 @@ const RealAccountSignup = ({
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
             setShouldShowAppropriatenessWarningModal(false);
             if (real_account_signup_target === 'maltainvest') {
-                showStatusDialog(response.new_account_maltainvest.currency.toLowerCase());
+                account_status.status.includes('cashier_locked')
+                    ? showStatusDialog(response.new_account_maltainvest.currency.toLowerCase())
+                    : closeModalthenOpenDepositModal();
             }
         } catch (sign_up_error) {
             // TODO: Handle Error
@@ -692,6 +695,7 @@ const RealAccountSignup = ({
 
 export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
+    account_status: client.account_status,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     content_flag: traders_hub.content_flag,

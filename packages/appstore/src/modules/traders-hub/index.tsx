@@ -53,7 +53,16 @@ const TradersHub = observer(() => {
             openRealAccountSignup('maltainvest');
             setIsFromSignupAccount(false);
         }
-    }, []);
+    }, [
+        content_flag,
+        has_active_real_account,
+        is_eu_user,
+        is_from_signup_account,
+        is_logged_in,
+        openRealAccountSignup,
+        setIsFromSignupAccount,
+        setTogglePlatformType,
+    ]);
 
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');

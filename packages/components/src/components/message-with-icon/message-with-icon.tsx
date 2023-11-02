@@ -10,7 +10,7 @@ type TMessageWithIcon = {
     full_width?: boolean;
     icon?: string;
     message: React.ReactNode;
-    text?: string | React.ReactElement;
+    text?: React.ReactNode;
 };
 
 const MessageWithIcon = ({

@@ -173,9 +173,10 @@ export const TooltipComponent = ({
         <div {...tooltipProps} className='wallets-tour-guide__container'>
             <div className='wallets-tour-guide__header'>
                 {step?.title as React.ReactNode}
-                <span className='wallets-tour-guide__close-icon' onClick={closeProps.onClick}>
-                    <CloseIcon />
-                </span>
+                <CloseIcon
+                    className='wallets-tour-guide__close-icon'
+                    onClick={closeProps.onClick as unknown as React.MouseEventHandler<SVGElement>}
+                />
             </div>
             {<div className='wallets-tour-guide__content'>{step.content as React.ReactNode}</div>}
             <div className='wallets-tour-guide__footer'>

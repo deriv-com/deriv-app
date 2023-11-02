@@ -30,6 +30,10 @@
     &__top-left-info {
         display: flex;
         flex-direction: column;
+
+        @include mobile {
+            gap: 0.4rem;
+        }
     }
 
     &__details {

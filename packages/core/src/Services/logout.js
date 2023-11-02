@@ -12,6 +12,7 @@ const doLogout = response => {
     if (response.logout !== 1) return undefined;
     removeCookies('affiliate_token', 'affiliate_tracking', 'onfido_token');
     SocketCache.clear();
+    localStorage.removeItem('launchModalShown');
     sessionStorage.clear();
     endChat();
     return response;

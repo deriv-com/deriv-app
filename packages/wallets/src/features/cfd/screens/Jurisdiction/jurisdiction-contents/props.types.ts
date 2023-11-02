@@ -1,7 +1,8 @@
-import { THooks } from '../../../types';
+import { THooks } from '../../../../../types';
 
 export type TClickableDescription = {
     onClick?: React.MouseEventHandler<HTMLSpanElement>;
+    tag?: string;
     text: string;
     type: 'link' | 'text';
 };

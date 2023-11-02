@@ -49,7 +49,7 @@ const ContractTypeDialog = ({
             <MobileWrapper>
                 <span className='contract-type-widget__select-arrow' />
                 <MobileDialog
-                    info_banner={info_banner}
+                    info_banner={is_info_dialog_open ? '' : info_banner}
                     portal_element_id='modal_root'
                     title={current_mobile_title}
                     header_classname='contract-type-widget__header'

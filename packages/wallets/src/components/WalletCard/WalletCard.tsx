@@ -1,5 +1,6 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import { useBalance } from '@deriv/api';
+import { THooks } from '../../types';
 import { WalletText } from '../Base';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
@@ -7,10 +8,11 @@ import { WalletListCardBadge } from '../WalletListCardBadge';
 import './WalletCard.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    account: THooks.WalletAccountsList;
 };
 
 const WalletCard: React.FC<TProps> = ({ account }) => {
+    const { isLoading } = useBalance();
     return (
         <div className='wallets-card'>
             <WalletGradientBackground
@@ -33,19 +35,16 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
                         </div>
                     </div>
                     <div className='wallets-card__details__bottom'>
-                        <WalletText color={account?.is_virtual ? 'white' : 'black'} lineHeight='xs' size='xs'>
+                        <WalletText color={account?.is_virtual ? 'white' : 'black'} size='2xs'>
                             {account?.currency} Wallet
                         </WalletText>
-                        <p className='wallets-card__details__bottom__balance'>
-                            <WalletText
-                                color={account?.is_virtual ? 'white' : 'black'}
-                                lineHeight='xs'
-                                size='xs'
-                                weight='bold'
-                            >
+                        {isLoading ? (
+                            <div className='wallets-skeleton wallets-card--balance-loader' />
+                        ) : (
+                            <WalletText color={account?.is_virtual ? 'white' : 'black'} size='sm' weight='bold'>
                                 {account?.display_balance}
                             </WalletText>
-                        </p>
+                        )}
                     </div>
                 </div>
             </WalletGradientBackground>

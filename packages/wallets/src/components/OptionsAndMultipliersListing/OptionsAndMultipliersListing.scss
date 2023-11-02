@@ -1,23 +1,25 @@
 .wallets-options-and-multipliers-listing {
     width: 100%;
     height: 100%;
-    padding-top: 24px;
+    padding-top: 2.4rem;
 
     @include mobile {
         padding-top: unset;
     }
 
-    @include desktop {
-        border-top: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
+    &--border {
+        @include desktop {
+            border-top: 0.2rem solid var(--system-light-7-secondary-background, #f2f3f4);
+        }
     }
 
     &__header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 4.8rem;
+        gap: 2rem;
         align-self: stretch;
-        padding-bottom: 24px;
+        padding-bottom: 2.4rem;
 
         &-title {
             display: flex;
@@ -29,12 +31,12 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin: auto 1.8rem;
+            padding-top: 1.5rem;
         }
 
         &-subtitle {
-            font-size: 16px;
-            line-height: 24px;
+            font-size: 1.6rem;
+            line-height: 2.4rem;
 
             &__link {
                 color: var(--brand-coral, #ff444f);
@@ -46,6 +48,11 @@
         display: grid;
         gap: 1.6rem 4.8rem;
         grid-template-columns: repeat(3, 1fr);
+        user-select: none;
+
+        &__icon {
+            cursor: pointer;
+        }
 
         @include mobile {
             margin: auto 2rem;

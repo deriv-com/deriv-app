@@ -158,7 +158,7 @@ export const tourStepConfig = (
     },
 ];
 
-export const TooltipComponent = ({
+export const TooltipComponent: React.FC<TooltipRenderProps> = ({
     backProps,
     closeProps,
     continuous,
@@ -167,7 +167,7 @@ export const TooltipComponent = ({
     primaryProps,
     step,
     tooltipProps,
-}: TooltipRenderProps) => {
+}) => {
     return (
         <div {...tooltipProps} className='wallets-tour-guide__container'>
             <div className='wallets-tour-guide__header'>{step?.title as React.ReactNode}</div>

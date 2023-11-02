@@ -16,6 +16,7 @@
         "@deriv/utils": "^1.0.0",
         "@tanstack/react-table": "^8.10.3",
         "classnames": "^2.2.6",
+        "downshift": "^8.2.2",
         "embla-carousel-react": "^8.0.0-rc12",
         "formik": "^2.1.4",
         "moment": "^2.29.2",
@@ -24,6 +25,7 @@
         "react-dom": "^17.0.2",
         "react-joyride-scrollparent": "^2.6.2",
         "react-router-dom": "^5.2.0",
+        "react-transition-group": "4.4.2",
         "usehooks-ts": "^2.7.0"
     },
     "devDependencies": {

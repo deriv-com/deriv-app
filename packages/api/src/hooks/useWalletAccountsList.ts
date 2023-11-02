@@ -27,6 +27,8 @@ const useWalletAccountsList = () => {
                 is_malta_wallet: wallet.landing_company_name === 'maltainvest',
                 /** The DTrade account ID of this wallet */
                 dtrade_loginid,
+                /** Returns if the wallet is a crypto wallet. */
+                is_crypto: wallet.currency_config?.is_crypto,
             } as const;
         });
     }, [filtered_accounts]);

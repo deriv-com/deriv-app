@@ -1,0 +1,12 @@
+.wallets-available-ctrader-accounts {
+    &__details {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.wallets-error-screen {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 2rem;
+}

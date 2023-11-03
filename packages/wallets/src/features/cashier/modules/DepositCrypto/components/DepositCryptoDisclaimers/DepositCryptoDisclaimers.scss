@@ -12,6 +12,18 @@
         line-height: 1.4rem;
     }
 
+    &__points {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 1.6rem;
+
+        & > span:before {
+            content: '•';
+            margin-right: 6px;
+        }
+    }
+
     &__note {
         font-size: 1.2rem;
         line-height: 1.8rem;

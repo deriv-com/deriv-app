@@ -109,7 +109,7 @@
         &:hover {
             background: 0 !important;
 
-            .dc-result__caption {
+            .dc-result__content {
                 opacity: 0;
             }
         }
@@ -565,7 +565,7 @@
         }
     }
     &__no-resale-msg {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     .contract-audit {
         &__wrapper {

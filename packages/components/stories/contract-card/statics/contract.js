@@ -20,8 +20,6 @@ export const getCardLabels = () => ({
     POTENTIAL_PAYOUT: 'Payout limit:',
     TICK: 'Tick ',
     TICKS: 'Ticks',
-    WON: 'Won',
-    LOST: 'Lost',
     DAYS: 'Days',
     DAY: 'Day',
     SELL: 'Sell',
@@ -126,14 +124,6 @@ export const getUnsupportedContracts = () => ({
     },
     TICKLOW: {
         name: 'Low Tick',
-        position: 'bottom',
-    },
-    ASIANU: {
-        name: 'Asian Up',
-        position: 'top',
-    },
-    ASIAND: {
-        name: 'Asian Down',
         position: 'bottom',
     },
     LBFLOATCALL: {
@@ -252,6 +242,14 @@ export const getSupportedContracts = is_high_low => ({
     },
     UPORDOWN: {
         name: 'Goes Outside',
+        position: 'bottom',
+    },
+    ASIANU: {
+        name: 'Asian Up',
+        position: 'top',
+    },
+    ASIAND: {
+        name: 'Asian Down',
         position: 'bottom',
     },
 });

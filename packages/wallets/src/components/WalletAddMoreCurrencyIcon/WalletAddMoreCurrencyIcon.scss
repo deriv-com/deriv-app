@@ -1,0 +1,13 @@
+.wallets-add-more-currency-icon {
+    width: 7rem;
+    height: fit-content;
+
+    & > svg {
+        width: auto;
+        height: 3.5rem;
+
+        @include mobile {
+            height: 3rem;
+        }
+    }
+}

@@ -1,7 +1,7 @@
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
 import { contractStatus, info, log } from '../utils/broadcast';
-import { getUUID, recoverFromError, doUntilDone } from '../utils/helpers';
+import { getUUID, recoverFromError, doUntilDone, tradeOptionToBuy } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 import { api_base } from '../../api/api-base';
 
@@ -16,11 +16,8 @@ export default Engine =>
                 return Promise.resolve();
             }
 
-            const { id, askPrice } = this.selectProposal(contract_type);
-
             const onSuccess = response => {
                 // Don't unnecessarily send a forget request for a purchased contract.
-                this.data.proposals = this.data.proposals.filter(p => p.id !== response.echo_req.buy);
                 const { buy } = response;
 
                 contractStatus({
@@ -31,7 +28,11 @@ export default Engine =>
 
                 this.contractId = buy.contract_id;
                 this.store.dispatch(purchaseSuccessful());
-                this.renewProposalsOnPurchase();
+
+                if (this.is_proposal_subscription_required) {
+                    this.renewProposalsOnPurchase();
+                }
+
                 delayIndex = 0;
                 log(log_types.PURCHASE, { longcode: buy.longcode, transaction_id: buy.transaction_id });
                 info({
@@ -42,29 +43,68 @@ export default Engine =>
                     buy_price: buy.buy_price,
                 });
             };
-            const action = () => api_base.api.send({ buy: id, price: askPrice });
+
+            if (this.is_proposal_subscription_required) {
+                const { id, askPrice } = this.selectProposal(contract_type);
+
+                const action = () => api_base.api.send({ buy: id, price: askPrice });
+
+                this.isSold = false;
+
+                contractStatus({
+                    id: 'contract.purchase_sent',
+                    data: askPrice,
+                });
+
+                if (!this.options.timeMachineEnabled) {
+                    return doUntilDone(action).then(onSuccess);
+                }
+
+                return recoverFromError(
+                    action,
+                    (errorCode, makeDelay) => {
+                        // if disconnected no need to resubscription (handled by live-api)
+                        if (errorCode !== 'DisconnectError') {
+                            this.renewProposalsOnPurchase();
+                        } else {
+                            this.clearProposals();
+                        }
+
+                        const unsubscribe = this.store.subscribe(() => {
+                            const { scope, proposalsReady } = this.store.getState();
+                            if (scope === BEFORE_PURCHASE && proposalsReady) {
+                                makeDelay().then(() => this.observer.emit('REVERT', 'before'));
+                                unsubscribe();
+                            }
+                        });
+                    },
+                    ['PriceMoved', 'InvalidContractProposal'],
+                    delayIndex++
+                ).then(onSuccess);
+            }
+            const trade_option = tradeOptionToBuy(contract_type, this.tradeOptions);
+            const action = () => api_base.api.send(trade_option);
+
             this.isSold = false;
+
             contractStatus({
                 id: 'contract.purchase_sent',
-                data: askPrice,
+                data: this.tradeOptions.amount,
             });
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);
             }
+
             return recoverFromError(
                 action,
                 (errorCode, makeDelay) => {
-                    // if disconnected no need to resubscription (handled by live-api)
-                    if (errorCode !== 'DisconnectError') {
-                        this.renewProposalsOnPurchase();
-                    } else {
+                    if (errorCode === 'DisconnectError') {
                         this.clearProposals();
                     }
-
                     const unsubscribe = this.store.subscribe(() => {
-                        const { scope, proposalsReady } = this.store.getState();
-                        if (scope === BEFORE_PURCHASE && proposalsReady) {
+                        const { scope } = this.store.getState();
+                        if (scope === BEFORE_PURCHASE) {
                             makeDelay().then(() => this.observer.emit('REVERT', 'before'));
                             unsubscribe();
                         }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import PageReturn from 'Components/page-return/page-return.jsx';
+import PageReturn from 'Components/page-return';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import PropTypes from 'prop-types';
 

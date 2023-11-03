@@ -1,23 +1,16 @@
 import React from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { loginUrl, routes, redirectToLogin, PlatformContext } from '@deriv/shared';
+import { loginUrl, routes, redirectToLogin, SessionStore, PlatformContext } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
+import { Analytics } from '@deriv/analytics';
 
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
 
-    const {
-        currency,
-        hasAnyRealAccount,
-        is_logged_in,
-        is_logging_in,
-        setNewEmail,
-        setVerificationCode,
-        verification_code,
-    } = client;
+    const { currency, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } = client;
 
     const {
         openRealAccountSignup,
@@ -26,34 +19,39 @@ const Redirect = observer(() => {
         toggleResetPasswordModal,
         toggleResetEmailModal,
         toggleUpdateEmailModal,
+        is_mobile,
     } = ui;
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
+    const ext_platform_url = url_params.get('ext_platform_url');
+    const { is_appstore } = React.useContext(PlatformContext);
 
+    const redirectToExternalPlatform = url => {
+        history.push(`${routes.root}?ext_platform_url=${url}`);
+        redirected_to_route = true;
+    };
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
 
     switch (action_param) {
         case 'signup': {
-            if (is_appstore) {
-                // TODO: redirect
-                // history.push({
-                //     pathname: routes.dashboard,
-                //     search: url_query_string,
-                // });
-                // redirected_to_route = true;
-            } else {
-                history.push({
-                    pathname: routes.onboarding,
-                    search: url_query_string,
+            if (!is_appstore) {
+                Analytics.trackEvent('ce_virtual_signup_form', {
+                    action: 'email_confirmed',
+                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    email: url_params.get('email'),
                 });
             }
-            sessionStorage.removeItem('redirect_url');
+            SessionStore.set('signup_query_param', url_query_string);
+            history.push({
+                pathname: routes.onboarding,
+                search: url_query_string,
+            });
+            SessionStore.remove('redirect_url');
             redirected_to_route = true;
             toggleAccountSignupModal(true);
             break;
@@ -142,14 +140,9 @@ const Redirect = observer(() => {
         case 'add_account': {
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
-                if (hasAnyRealAccount()) return openRealAccountSignup('manage');
                 return openRealAccountSignup('svg');
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'add_account_multiplier': {
@@ -157,11 +150,14 @@ const Redirect = observer(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
                 return openRealAccountSignup('maltainvest');
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
+            break;
+        }
+        case 'manage_account': {
+            WS.wait('get_account_status').then(() => {
+                return openRealAccountSignup('manage');
+            });
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'verification': {

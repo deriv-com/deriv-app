@@ -16,7 +16,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
 
     if (error) {
         return (
-            <>
+            <div className='deposit-crypto-wallet-address__error'>
                 <InlineMessage
                     type='warning'
                     message={localize(
@@ -24,7 +24,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
                     )}
                 />
                 <Button text={localize('Refresh')} onClick={() => resend()} secondary small />
-            </>
+            </div>
         );
     }
 

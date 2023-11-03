@@ -1,22 +1,22 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Text, StaticUrl } from '@deriv/components';
+import { ContentFlag } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
-import { BrandConfig } from 'Constants/platform-config';
-import TradingAppCard from 'Components/containers/trading-app-card';
-import { useStores } from 'Stores/index';
-import { isMobile, ContentFlag } from '@deriv/shared';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
+import TradingAppCard from 'Components/containers/trading-app-card';
+import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
 
-const OptionsAndMultipliersListing = () => {
-    const { traders_hub, client, ui } = useStores();
+const OptionsAndMultipliersListing = observer(() => {
+    const { traders_hub, client, ui } = useStore();
     const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo, content_flag } =
         traders_hub;
     const { is_landing_company_loaded, is_eu, has_maltainvest_account, real_account_creation_unlock_date } = client;
 
-    const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
+    const { setShouldShowCooldownModal, openRealAccountSignup, is_mobile } = ui;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -27,15 +27,16 @@ const OptionsAndMultipliersListing = () => {
     const cr_demo = content_flag === ContentFlag.CR_DEMO;
 
     const OptionsTitle = () => {
-        if ((low_risk_cr_non_eu || high_risk_cr || cr_demo) && !isMobile()) {
+        if (is_mobile) return null;
+        if (low_risk_cr_non_eu || high_risk_cr || cr_demo) {
             return (
-                <Text size='sm' line_height='m' weight='bold'>
+                <Text size='sm' weight='bold'>
                     <Localize i18n_default_text='Options & Multipliers' />
                 </Text>
             );
-        } else if ((low_risk_cr_eu || is_eu) && !isMobile()) {
+        } else if (low_risk_cr_eu || is_eu) {
             return (
-                <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                <Text size='sm' weight='bold' color='prominent'>
                     <Localize i18n_default_text='Multipliers' />
                 </Text>
             );
@@ -50,7 +51,7 @@ const OptionsAndMultipliersListing = () => {
                 low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
-                            i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the
+                            i18n_default_text='Earn a range of payouts by correctly predicting market movements with <0>options</0>, or get the
                     upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
                             components={[
                                 <StaticUrl key={0} className='options' href='trade-types/options/' />,
@@ -113,6 +114,6 @@ const OptionsAndMultipliersListing = () => {
             )}
         </ListingContainer>
     );
-};
+});
 
-export default observer(OptionsAndMultipliersListing);
+export default OptionsAndMultipliersListing;

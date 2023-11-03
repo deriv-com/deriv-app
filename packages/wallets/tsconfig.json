@@ -1,0 +1,12 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "paths": {
+            "@deriv/*": ["../*/src"],
+        }
+    },
+    "include": ["src", "./declarations.d.ts", "../../utils.d.ts"],
+    "exclude": ["../shared/**/*"]
+}

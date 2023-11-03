@@ -9,7 +9,7 @@ const TradersHubOnboarding = observer(() => {
     const history = useHistory();
     const { traders_hub, ui } = useStore();
     const { setIsOnboardingVisited } = traders_hub;
-    const { is_dark_mode_on } = ui;
+    const { is_dark_mode_on, is_mobile } = ui;
 
     return (
         <div data-testid='dt_traders_hub_onboarding'>
@@ -17,7 +17,7 @@ const TradersHubOnboarding = observer(() => {
                 <Popover
                     classNameBubble='account-settings-toggle__tooltip'
                     alignment='bottom'
-                    message={<Localize i18n_default_text='View onboarding' />}
+                    message={!is_mobile && <Localize i18n_default_text='View onboarding' />}
                     should_disable_pointer_events
                     zIndex='9999'
                 >

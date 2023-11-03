@@ -3,7 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useHover } from 'usehooks-ts';
 import { useAvailableWallets } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
-import { WalletText } from '../Base';
+import { IconButton, WalletText } from '../Base';
 import { WalletsAddMoreLoader } from '../SkeletonLoader';
 import WalletsAddMoreCard from '../WalletsAddMoreCard';
 import './WalletsAddMoreCarousel.scss';
@@ -41,6 +41,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
                         <WalletsAddMoreCard
                             currency={wallet.currency}
                             is_added={wallet.is_added}
+                            is_crypto={wallet.is_crypto}
                             key={`wallets_add_more_${wallet.currency}-${wallet.landing_company_name}`}
                             landing_company_name={wallet.landing_company_name}
                         />
@@ -48,20 +49,24 @@ const WalletsAddMoreCarousel: React.FC = () => {
                 </div>
                 {isDesktop && isHover && (
                     <React.Fragment>
-                        <button
+                        <IconButton
                             className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--prev'
+                            color='white'
                             disabled={!walletsAddMoreEmblaAPI?.canScrollPrev()}
+                            icon='&lt;'
+                            isRound
                             onClick={() => walletsAddMoreEmblaAPI?.scrollPrev()}
-                        >
-                            &lt;
-                        </button>
-                        <button
+                            size='lg'
+                        />
+                        <IconButton
                             className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--next'
+                            color='white'
                             disabled={!walletsAddMoreEmblaAPI?.canScrollNext()}
+                            icon='&gt;'
+                            isRound
                             onClick={() => walletsAddMoreEmblaAPI?.scrollNext()}
-                        >
-                            &gt;
-                        </button>
+                            size='lg'
+                        />
                     </React.Fragment>
                 )}
             </div>

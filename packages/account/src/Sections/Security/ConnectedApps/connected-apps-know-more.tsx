@@ -1,6 +1,6 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
-import AccountArticle from 'Components/article';
+import { Localize } from '@deriv/translations';
+import Article from 'Components/article';
 
 const openAPIManagingWebsite = () => {
     window.open(
@@ -10,10 +10,9 @@ const openAPIManagingWebsite = () => {
     );
 };
 
-const ConnectedAppsArticle = () => (
-    <AccountArticle
-        className='connected-apps__article'
-        title={localize('Want to know more about APIs?')}
+const ConnectedAppsKnowMore = () => (
+    <Article
+        title={<Localize i18n_default_text='Want to know more about APIs?' />}
         descriptions={[
             <Localize
                 key={0}
@@ -24,4 +23,4 @@ const ConnectedAppsArticle = () => (
     />
 );
 
-export default ConnectedAppsArticle;
+export default ConnectedAppsKnowMore;

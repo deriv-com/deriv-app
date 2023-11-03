@@ -44,7 +44,7 @@ const LaunchModal = observer(() => {
                 <Modal
                     has_close_icon={false}
                     is_open={is_logged_in && open && !is_already_shown}
-                    className='launch-modal'
+                    className='launch_modal_root'
                     height='464px'
                     portalId='modal_root'
                     header={'  '}
@@ -58,7 +58,7 @@ const LaunchModal = observer(() => {
             <MobileWrapper>
                 <PageOverlay
                     is_open={is_logged_in && open && !is_already_shown}
-                    portal_id='modal_root'
+                    portal_id='launch_modal_root'
                     onClickClose={handleOpen}
                 >
                     <div className='launch-modal'>

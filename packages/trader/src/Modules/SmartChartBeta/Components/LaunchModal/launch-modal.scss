@@ -1,4 +1,4 @@
-.dc-modal__container_launch-modal,
+.dc-modal__container_launch_modal_root,
 .launch-modal {
     text-align: center;
 
@@ -25,8 +25,13 @@
     }
 }
 
+.launch-modal-root {
+    @include mobile {
+        background: transparent;
+    }
+}
 // For web version
-.dc-modal__container_launch-modal {
+.dc-modal__container_launch_modal_root {
     min-width: 432px !important;
     .dc-modal-header {
         border-bottom: 2px solid var(--general-section-5);

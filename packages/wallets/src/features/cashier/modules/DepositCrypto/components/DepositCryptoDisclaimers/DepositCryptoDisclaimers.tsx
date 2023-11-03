@@ -25,23 +25,23 @@ const DepositCryptoDisclaimers = () => {
                     <WalletText size='2xs' weight='bold'>
                         To avoid loss of funds:
                     </WalletText>
-                    <div className='wallets-deposit-crypto-disclaimers__points'>
+                    <ul className='wallets-deposit-crypto-disclaimers__points'>
                         {data?.currency_config?.minimum_deposit && (
                             <>
-                                <span>
+                                <li>
                                     A minimum deposit value of {data?.currency_config?.minimum_deposit} {currency} is
                                     required. Otherwise, the funds will be lost and cannot be recovered.
-                                </span>
+                                </li>
                             </>
                         )}
-                        <span>Do not send other cryptocurrencies to this address.</span>
-                        <span>Make sure to copy your Deriv account address correctly into your crypto wallet.</span>
-                        <span>
+                        <li>Do not send other cryptocurrencies to this address.</li>
+                        <li>Make sure to copy your Deriv account address correctly into your crypto wallet.</li>
+                        <li>
                             In your cryptocurrency wallet, make sure to select{' '}
                             <strong>{currency && cryptoCurrencyToNetworkMapper[currency]} network</strong> when you
                             transfer funds to Deriv.
-                        </span>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
             </InlineMessage>
             <div className='wallets-deposit-crypto-disclaimers__note'>

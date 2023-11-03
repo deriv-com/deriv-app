@@ -18,7 +18,7 @@ type TUserAgent =
     | undefined;
 
 /** Format API login_history value to a better ones */
-const getLoginHistoryFormattedData = (login_history: LoginHistory) => {
+export const getLoginHistoryFormattedData = (login_history: LoginHistory) => {
     const data: TData = [];
     const fetch_limit = Math.min(50, login_history.length);
     const data_object = {

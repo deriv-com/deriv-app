@@ -1,6 +1,6 @@
 .wallets-dropdown {
     min-width: 12rem;
-    max-width: 28rem;
+    max-width: 19.5rem;
     position: relative;
 
     &__button {
@@ -32,6 +32,7 @@
     }
 
     &__field {
+        min-width: 0; /* this is required to reset input's default width */
         font-family: inherit;
         outline: 0;
         font-size: 1.4rem;

@@ -591,7 +591,6 @@ export default class TradersHubStore extends BaseStore {
         } else {
             await createCFDAccount({ ...account_type, platform });
         }
-        createCFDAccount({ ...account_type, platform });
     }
 
     async openRealAccount(account_type, platform) {

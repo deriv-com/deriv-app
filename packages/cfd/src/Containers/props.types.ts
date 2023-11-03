@@ -20,7 +20,7 @@ import {
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
 
-export type TCFDPersonalDetailsContainerProps = {
+export type TPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Div100vhContainer, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { TCFDPersonalDetailsContainerProps } from './props.types';
+import { TPersonalDetailsContainerProps } from './props.types';
 import PersonalDetailsForm from '../Components/personal-details-form';
 import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
@@ -10,7 +10,7 @@ import { observer, useStore } from '@deriv/stores';
 type TFormValues = { [key: string]: string };
 type TSetSubmitting = (isSubmitting: boolean) => void;
 
-const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsContainerProps) => {
+const PersonalDetailsContainer = observer(({ onSubmit }: TPersonalDetailsContainerProps) => {
     const { client } = useStore();
 
     const { account_settings, getChangeableFields, residence_list, setAccountSettings } = client;
@@ -121,4 +121,4 @@ const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsC
     );
 });
 
-export default CFDPersonalDetailsContainer;
+export default PersonalDetailsContainer;

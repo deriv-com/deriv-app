@@ -71,7 +71,7 @@ export const getProposalInfo = (
 
     const is_stake = contract_basis?.value === 'stake';
 
-    const price = is_stake ? stake : proposal[contract_basis?.value as keyof Proposal];
+    const price = is_stake ? stake : (proposal[contract_basis?.value as keyof Proposal] as string | number);
     let has_increased = false;
 
     if (price !== undefined && price !== null) {

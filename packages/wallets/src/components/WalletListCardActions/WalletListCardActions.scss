@@ -2,7 +2,7 @@
     &__actions {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 0.8rem;
 
         &-label {
             font-weight: 700;
@@ -22,13 +22,13 @@
     &__button {
         display: flex;
         cursor: pointer;
-        height: 32px;
-        padding: 6px 16px;
+        height: 3.2rem;
+        padding: 0.6rem 1.6rem;
         justify-content: center;
         align-items: center;
-        gap: 8px;
-        border-radius: 64px;
-        border: 1px solid var(--system-light-3-less-prominent-text, #999);
+        gap: 0.8rem;
+        border-radius: 6.4rem;
+        border: 0.1rem solid var(--system-light-3-less-prominent-text, #999);
         background: none;
     }
 
@@ -62,31 +62,13 @@
 
     &-content {
         display: flex;
-        width: 7rem;
+        width: 8rem;
         flex-direction: column;
         align-items: center;
         gap: 0.4rem;
 
         &-icon {
-            display: flex;
-            width: 3.5rem;
-            height: 3.5rem;
-            padding: 0.8rem;
-            justify-content: center;
-            align-items: center;
-            border-radius: 16px;
-            border: 1px solid var(--system-light-5-active-background, #d6dadb);
-        }
-
-        &-text {
-            color: var(--system-light-1-prominent-text, #333);
-            text-align: center;
-
-            /* mobile/extra small/XS - regular */
-            font-size: 1rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1.2rem; /* 150% */
+            border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
         }
     }
 }

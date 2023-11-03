@@ -61,7 +61,31 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                 );
             }
             case log_types.WELCOME_BACK: {
+                const { current_currency } = extra;
+                if (current_currency)
+                    return (
+                        <Localize
+                            i18n_default_text='Welcome back! Your messages have been restored. You are using your {{current_currency}} account.'
+                            values={{
+                                current_currency,
+                            }}
+                        />
+                    );
                 return <Localize i18n_default_text='Welcome back! Your messages have been restored.' />;
+            }
+
+            case log_types.WELCOME: {
+                const { current_currency } = extra;
+                if (current_currency)
+                    return (
+                        <Localize
+                            i18n_default_text='You are using your {{current_currency}} account.'
+                            values={{
+                                current_currency,
+                            }}
+                        />
+                    );
+                break;
             }
             default:
                 return null;

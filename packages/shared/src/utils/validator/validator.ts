@@ -1,15 +1,18 @@
-import { TOptions, getPreBuildDVRs, TInitPreBuildDVRs } from '../validation/declarative-validation-rules';
+import { getPreBuildDVRs, TInitPreBuildDVRs, TOptions } from '../validation/declarative-validation-rules';
+
 import Error from './errors';
 
 type TRuleOptions = {
     func: (value: string | number, options?: TOptions, store?: unknown, inputs?: unknown) => boolean;
     condition: (store: unknown) => boolean;
     message: string;
+    name1: string;
+    name2: string;
 } & TOptions;
 
 type TRule = string | Array<string | TRuleOptions>;
 
-const template = (string: string, content: string | Array<string>) => {
+export const template = (string: string, content: string | Array<string>) => {
     let to_replace = content;
     if (content && !Array.isArray(content)) {
         to_replace = [content];
@@ -52,6 +55,8 @@ class Validator {
             ]);
         } else if (rule.name === 'min') {
             message = template(message, [rule.options.min!.toString()]);
+        } else if (rule.name === 'not_equal') {
+            message = template(message, [rule.options.name1, rule.options.name2]);
         }
         this.errors.add(attribute, message);
         this.error_count++;
@@ -86,8 +91,8 @@ class Validator {
                 const result = ruleObject.validator(this.input[attribute], ruleObject.options, this.store, this.input);
                 if (typeof result === 'boolean' && !result) {
                     this.addFailure(attribute, ruleObject);
-                } else {
-                    const { is_ok, message } = result as { is_ok: boolean; message: string };
+                } else if (typeof result === 'object') {
+                    const { is_ok, message } = result;
                     if (!is_ok) {
                         this.addFailure(attribute, ruleObject, message);
                     }

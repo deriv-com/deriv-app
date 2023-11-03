@@ -26,7 +26,7 @@ const TourSteps = observer(
                     )}
                     <div className='onboard__steps'>
                         <div className='onboard__label'>
-                            <Text as='h' line_height='l' weight='bold'>
+                            <Text as='p' line_height='l' weight='bold'>
                                 {label}
                             </Text>
                         </div>
@@ -52,7 +52,7 @@ const TourSteps = observer(
                                         content_data
                                     ) : (
                                         <div className='onboard__content__block' key={`onboard--${getUUID()}`}>
-                                            <Text align='left' as='h' size='xs' line_height='l'>
+                                            <Text align='left' as='p' size='xs' line_height='l'>
                                                 {content_data}
                                             </Text>
                                         </div>

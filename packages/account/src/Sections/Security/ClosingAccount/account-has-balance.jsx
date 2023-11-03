@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Money, ThemedScrollbars, Text } from '@deriv/components';
-import { formatMoney, getCFDAccount, getCFDAccountDisplay, CFD_PLATFORMS } from '@deriv/shared';
+import { formatMoney, getCFDAccount, getCFDAccountDisplay, CFD_PLATFORMS, getMT5Icon } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const getDerivAccount = (client_accounts, login_id) =>
@@ -161,10 +161,8 @@ const AccountHasPendingConditions = ({
                         {mt5_open_positions.map(account => (
                             <Content
                                 key={account.login}
-                                currency_icon={`IcMt5-${getCFDAccount({
+                                currency_icon={`IcMt5-${getMT5Icon({
                                     market_type: account.market_type,
-                                    sub_account_type: account.sub_account_type,
-                                    platform: CFD_PLATFORMS.MT5,
                                     is_eu,
                                 })}`}
                                 loginid={account.display_login}
@@ -172,6 +170,7 @@ const AccountHasPendingConditions = ({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.MT5,
+                                    shortcode: account.landing_company_short,
                                     is_eu,
                                 })}
                                 value={
@@ -189,10 +188,8 @@ const AccountHasPendingConditions = ({
                         {mt5_balance.map(account => (
                             <Content
                                 key={account.login}
-                                currency_icon={`IcMt5-${getCFDAccount({
+                                currency_icon={`IcMt5-${getMT5Icon({
                                     market_type: account.market_type,
-                                    sub_account_type: account.sub_account_type,
-                                    platform: CFD_PLATFORMS.MT5,
                                     is_eu,
                                 })}`}
                                 loginid={account.display_login}
@@ -200,6 +197,7 @@ const AccountHasPendingConditions = ({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.MT5,
+                                    shortcode: account.landing_company_short,
                                     is_eu,
                                 })}
                                 value={

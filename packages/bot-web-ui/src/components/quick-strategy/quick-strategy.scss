@@ -257,6 +257,11 @@
                     }
                 }
             }
+            .contract-type {
+                .dc-input__field {
+                    font-weight: normal;
+                }
+            }
         }
     }
     &__autocomplete {
@@ -310,6 +315,7 @@
             }
 
             &__field {
+                font-weight: bold;
                 color: var(--text-general);
                 @include mobile {
                     text-align: center;

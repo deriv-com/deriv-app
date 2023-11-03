@@ -93,7 +93,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
                             inputMode='none'
                             data-testid='qs_autocomplete_contract_type'
                             autoComplete='off'
-                            className='qs__select'
+                            className='qs__select contract-type'
                             value={selected_item?.text || ''}
                             list_items={list}
                             onItemSelection={(item: TItem) => {

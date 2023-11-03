@@ -8,7 +8,7 @@ type TCFDPOA = {
     onSubmit: (index: number, values: FormikValues) => void;
 };
 
-const CFDPOA = ({ index, onSave, onSubmit }: TCFDPOA) => {
+const ProofOfAddress = ({ index, onSave, onSubmit }: TCFDPOA) => {
     const onSubmitForCFDModal = (index: number, values: FormikValues) => {
         onSave(index, values);
         onSubmit(index, values);
@@ -21,4 +21,4 @@ const CFDPOA = ({ index, onSave, onSubmit }: TCFDPOA) => {
     );
 };
 
-export default CFDPOA;
+export default ProofOfAddress;

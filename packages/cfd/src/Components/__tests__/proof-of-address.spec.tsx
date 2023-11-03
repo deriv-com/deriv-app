@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
-import CFDPOA from '../cfd-poa';
+import ProofOfAddress from '../proof-of-address';
 import CFDProviders from '../../cfd-providers';
 
 jest.mock('@deriv/account/src/Components/forms/personal-details-form.jsx', () =>
@@ -60,8 +60,8 @@ jest.mock('@deriv/hooks', () => ({
     })),
 }));
 
-describe('<CFDPOA />', () => {
-    const mock_props: React.ComponentProps<typeof CFDPOA> = {
+describe('<ProofOfAddress />', () => {
+    const mock_props: React.ComponentProps<typeof ProofOfAddress> = {
         index: 0,
         onSave: jest.fn(),
         onSubmit: jest.fn(),
@@ -80,11 +80,11 @@ describe('<CFDPOA />', () => {
         },
     });
 
-    it('should render CFDPOA and trigger buttons', async () => {
+    it('should render ProofOfAddress and trigger buttons', async () => {
         render(
             <BrowserRouter>
                 <CFDProviders store={mock_store}>
-                    <CFDPOA {...mock_props} />
+                    <ProofOfAddress {...mock_props} />
                 </CFDProviders>
             </BrowserRouter>
         );

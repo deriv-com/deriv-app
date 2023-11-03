@@ -4,7 +4,7 @@ import { useIsAccountStatusPresent } from '@deriv/hooks';
 import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
-import CFDPOA from '../Components/cfd-poa';
+import ProofOfAddress from '../Components/proof-of-address';
 import ProofOfIdentity from '../Components/proof-of-identity';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
@@ -36,7 +36,7 @@ type TItem = {
 };
 
 type TItemsState<T extends TItem> = {
-    body: typeof ProofOfIdentity | typeof CFDPOA | typeof CFDPersonalDetailsContainer;
+    body: typeof ProofOfIdentity | typeof ProofOfAddress | typeof CFDPersonalDetailsContainer;
     form_value: { [key: string]: string | undefined };
     forwarded_props: Array<Partial<keyof T>>;
 };
@@ -105,7 +105,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     };
 
     const poa_config: TItemsState<typeof passthroughProps> = {
-        body: CFDPOA,
+        body: ProofOfAddress,
         form_value: {},
         forwarded_props: [],
     };
@@ -191,7 +191,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     };
 
     const BodyComponent = getCurrent('body') as typeof ProofOfIdentity &
-        typeof CFDPOA &
+        typeof ProofOfAddress &
         typeof CFDPersonalDetailsContainer;
 
     const form_value = getCurrent('form_value');

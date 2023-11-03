@@ -1,0 +1,101 @@
+import React, { ReactNode } from 'react';
+import classNames from 'classnames';
+import { useActiveWalletAccount } from '@deriv/api';
+import { WalletSuccess, WalletText } from '../../../../components';
+import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
+import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
+import useDevice from '../../../../hooks/useDevice';
+import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
+import { MarketTypeDetails, PlatformToTitleMapper } from '../../constants';
+import './CFDSuccess.scss';
+
+type TSuccessProps = {
+    description: string;
+    displayBalance:
+        | TDisplayBalance.CtraderAccountsList
+        | TDisplayBalance.DxtradeAccountsList
+        | TDisplayBalance.MT5AccountsList;
+    marketType?: TMarketTypes.SortedMT5Accounts;
+    platform?: TPlatforms.All;
+    renderButton: () => ReactNode;
+    title: string;
+};
+
+const CFDSuccess: React.FC<TSuccessProps> = ({
+    description,
+    displayBalance,
+    marketType,
+    platform,
+    renderButton,
+    title,
+}) => {
+    const { data } = useActiveWalletAccount();
+    const { isDesktop } = useDevice();
+    const isDemo = data?.is_virtual;
+    const landingCompanyName = data?.landing_company_name?.toUpperCase();
+
+    const isMarketTypeAll = marketType === 'all';
+
+    let marketTypeTitle = 'Deriv Apps';
+
+    if (marketType && platform) {
+        const isPlatformValid = Object.keys(PlatformToTitleMapper).includes(platform);
+        if (isMarketTypeAll && isPlatformValid) {
+            marketTypeTitle = PlatformToTitleMapper[platform];
+        } else {
+            marketTypeTitle = MarketTypeDetails[marketType].title;
+        }
+    }
+
+    const platformTitlePrefix = platform === 'mt5' ? PlatformToTitleMapper.mt5 : '';
+
+    return (
+        <WalletSuccess
+            description={description}
+            renderButton={isDesktop ? renderButton : undefined}
+            renderIcon={() => (
+                <WalletGradientBackground
+                    bodyClassName='wallets-cfd-success__gradient'
+                    currency={data?.currency || 'USD'}
+                    hasShine
+                    theme='grey'
+                >
+                    <div className='wallets-cfd-success'>
+                        <div className='wallets-cfd-success__icon'>
+                            <div
+                                className={classNames(
+                                    'wallets-cfd-success__badge',
+                                    `wallets-cfd-success__badge--${isDemo ? 'demo' : 'real'}`
+                                )}
+                            >
+                                <WalletText color='white' size='2xs' weight='bold'>
+                                    {isDemo ? 'Demo' : 'Real'}
+                                </WalletText>
+                            </div>
+                            <WalletMarketCurrencyIcon
+                                currency={data?.currency || 'USD'}
+                                isDemo={isDemo || false}
+                                marketType={marketType}
+                                platform={platform}
+                            />
+                            <div className='wallets-cfd-success__info'>
+                                <WalletText size='2xs'>
+                                    {platformTitlePrefix} {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
+                                </WalletText>
+                                <WalletText color='primary' size='2xs'>
+                                    {data?.currency} Wallet
+                                </WalletText>
+                                <WalletText size='sm' weight='bold'>
+                                    {displayBalance}
+                                </WalletText>
+                            </div>
+                        </div>
+                    </div>
+                </WalletGradientBackground>
+            )}
+            title={title}
+        />
+    );
+};
+
+export default CFDSuccess;

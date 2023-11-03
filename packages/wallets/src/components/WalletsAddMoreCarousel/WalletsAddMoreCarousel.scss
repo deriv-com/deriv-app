@@ -1,12 +1,13 @@
 .wallets-add-more {
     display: flex;
     flex-direction: column;
-    width: 123.2rem;
+    max-width: 123.2rem;
     padding-top: 2.4rem;
 
     @include mobile {
         padding-top: 0;
         gap: 0.8rem;
+        width: 100vw;
     }
 
     &__header {

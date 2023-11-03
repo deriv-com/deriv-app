@@ -7,33 +7,72 @@ import type { SdkHandle, SdkResponse } from '../types/onfido';
 import useOnfidoNotificationEvent from './useOnfidoNotificationEvent';
 import { v4 as uuidv4 } from 'uuid';
 
-/** A custom hook to initialize Onfido SDK  */
+/** A custom hook to initialize Onfido SDK.
+ * To initialize Onfido, ensure that an empty container is present.
+ * Call the hook and use `onfidoContainerId` to mark the empty container where the Onfido UI is to be mounted.
+ * For example:
+ * ```
+ * const { data: { onfidoContainerId } } = useOnfido()
+ * ...
+ * return (
+ *    <>
+ *       ...
+ *       <div id={onfidoContainerId}></div>
+ *       ...
+ *    </>
+ * )
+ * ```
+ */
 const useOnfido = () => {
-    const [documentsIds, setDocumentIds] = useState<string[]>([]);
+    // used to check that we only initialize and load the onfido script once
     const [isOnfidoLoaded, setIsOnfidoLoaded] = useState(false);
+    // use to check that we do not re-attempt to reload the onfido script while its still loading
+    const [isOnfidoLoading, setIsOnfidoLoading] = useState(false);
 
+    /**
+     * A reference to the Onfido SDK
+     */
     const onfidoRef = useRef<SdkHandle | null>(null);
+    /**
+     * A generated ID which should be assigned to a container where the Onfido UI is to be mounted.
+     * For example:
+     * ```
+     * const { data: { onfidoContainerId } } = useOnfido()
+     * ...
+     * return (
+     *    <>
+     *       ...
+     *       <div id={onfidoContainerId}></div>
+     *       ...
+     *    </>
+     * )
+     * ```
+     */
     const onfidoContainerId = useMemo(() => uuidv4(), []);
 
+    // settings for retrieving country code
     const { data: settings } = useSettings();
+    // residence list for retrieving supported documents for onfido for the user's country
     const { data: residenceList } = useResidenceList();
+    // onfido service token to be passed in Onfido SDK
     const {
         data: { token },
     } = useOnfidoServiceToken();
-    useOnfidoNotificationEvent(documentsIds);
+    // notification event for onfido once user submits documents
+    const { mutate: submitDocuments } = useOnfidoNotificationEvent();
 
     const countryCode = useMemo(() => {
         return settings?.country_code || '';
     }, [settings?.country_code]);
 
     const supportedDocuments = useMemo(() => {
-        if (countryCode && residenceList) {
-            const onfidoResidence = residenceList.find(residence => residence?.value === countryCode).identity.services
-                ?.onfido;
-            // if we have onfido enabled for the country
-            if (onfidoResidence && onfidoResidence?.is_country_supported) {
-                return Object.keys(onfidoResidence?.documents_supported || {}).map(
-                    (document: string) => onfidoResidence?.documents_supported[document].display_name
+        if (countryCode && residenceList.length) {
+            const onfidoResidence = residenceList.find(residence => residence?.value === countryCode)?.identity
+                ?.services?.onfido;
+
+            if (onfidoResidence && onfidoResidence.is_country_supported) {
+                return Object.keys(onfidoResidence.documents_supported || {}).map(
+                    (document: string) => onfidoResidence.documents_supported?.[document].display_name
                 );
             }
         }
@@ -42,12 +81,15 @@ const useOnfido = () => {
 
     const onComplete = useCallback((data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {
         const document_ids = Object.keys(data).map(key => data[key as keyof SdkResponse]?.id || '');
+        submitDocuments(document_ids);
         onfidoRef?.current?.safeTearDown();
-        setDocumentIds(document_ids);
     }, []);
 
     const loadOnfidoSdkScript = () => {
-        if (!isOnfidoLoaded) {
+        const onfidoScriptNode = document.getElementById('onfido_sdk');
+        // check if the onfido sdk script has been loaded, and if its still loading the onfido script, don't re-attempt to load the script again
+        if (!onfidoScriptNode || !isOnfidoLoading) {
+            setIsOnfidoLoading(true);
             const scriptNode = document.createElement('script');
             const linkNode = document.createElement('link');
 
@@ -60,9 +102,12 @@ const useOnfido = () => {
             document.body.appendChild(linkNode);
 
             scriptNode.addEventListener('load', () => {
+                setIsOnfidoLoading(false);
                 setIsOnfidoLoaded(true);
                 initOnfido();
             });
+        } else {
+            initOnfido();
         }
     };
 

@@ -5,7 +5,12 @@
     justify-content: center;
 
     @include mobile {
+        height: fit-content;
         flex-direction: column;
+        justify-content: start;
+        gap: 1.6rem;
+        padding-top: 0rem;
+        padding-bottom: 2.4rem;
     }
 
     &__main-content {
@@ -18,12 +23,5 @@
         @include mobile {
             padding: 0;
         }
-    }
-
-    @include mobile {
-        width: 100%;
-        justify-content: start;
-        padding-top: 0rem;
-        gap: 1.6rem;
     }
 }

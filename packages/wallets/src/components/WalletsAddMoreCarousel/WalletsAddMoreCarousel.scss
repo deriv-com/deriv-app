@@ -1,7 +1,8 @@
 .wallets-add-more {
     display: flex;
     flex-direction: column;
-    width: 123.2rem;
+    max-width: 123.2rem;
+    width: 100%;
     padding-top: 2.4rem;
 
     @include mobile {
@@ -43,7 +44,9 @@
             position: absolute;
             top: 45%;
             box-shadow: 0px 24px 24px 0px rgba(0, 0, 0, 0.08), 0px 0px 24px 0px rgba(0, 0, 0, 0.08);
-            border-radius: 50%;
+            &:disabled {
+                display: none;
+            }
 
             &--prev {
                 left: 1.6rem;

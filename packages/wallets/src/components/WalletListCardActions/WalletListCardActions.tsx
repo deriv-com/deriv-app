@@ -7,7 +7,7 @@ import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
 import { THooks } from '../../types';
-import { WalletButton, WalletText } from '../Base';
+import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
@@ -66,15 +66,17 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                 <div className='wallets-mobile-actions'>
                     {getWalletHeaderButtons(isDemo).map(button => (
                         <div className='wallets-mobile-actions-content' key={button.name}>
-                            <button
+                            <IconButton
                                 className='wallets-mobile-actions-content-icon'
+                                color='transparent'
+                                icon={button.icon}
+                                isRound
                                 key={button.name}
                                 onClick={() => {
                                     history.push(`/wallets/cashier/${button.name}`);
                                 }}
-                            >
-                                {button.icon}
-                            </button>
+                                size='lg'
+                            />
                             <WalletText size='sm'>{button.text}</WalletText>
                         </div>
                     ))}

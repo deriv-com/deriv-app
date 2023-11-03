@@ -48,28 +48,26 @@ const WalletsAddMoreCarousel: React.FC = () => {
                     ))}
                 </div>
                 {isDesktop && isHover && (
-                    <React.Fragment>
-                        <div className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--prev'>
-                            <IconButton
-                                color='white'
-                                disabled={!walletsAddMoreEmblaAPI?.canScrollPrev()}
-                                icon='&lt;'
-                                isRound
-                                onClick={() => walletsAddMoreEmblaAPI?.scrollPrev()}
-                                size='lg'
-                            />
-                        </div>
-                        <div className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--next'>
-                            <IconButton
-                                color='white'
-                                disabled={!walletsAddMoreEmblaAPI?.canScrollNext()}
-                                icon='&gt;'
-                                isRound
-                                onClick={() => walletsAddMoreEmblaAPI?.scrollNext()}
-                                size='lg'
-                            />
-                        </div>
-                    </React.Fragment>
+                    <>
+                        <IconButton
+                            className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--prev'
+                            color='white'
+                            disabled={!walletsAddMoreEmblaAPI?.canScrollPrev()}
+                            icon='&lt;'
+                            isRound
+                            onClick={() => walletsAddMoreEmblaAPI?.scrollPrev()}
+                            size='lg'
+                        />
+                        <IconButton
+                            className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--next'
+                            color='white'
+                            disabled={!walletsAddMoreEmblaAPI?.canScrollNext()}
+                            icon='&gt;'
+                            isRound
+                            onClick={() => walletsAddMoreEmblaAPI?.scrollNext()}
+                            size='lg'
+                        />
+                    </>
                 )}
             </div>
         </div>

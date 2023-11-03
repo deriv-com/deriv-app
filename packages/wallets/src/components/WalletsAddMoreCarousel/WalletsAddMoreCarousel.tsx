@@ -41,6 +41,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
                         <WalletsAddMoreCard
                             currency={wallet.currency}
                             is_added={wallet.is_added}
+                            is_crypto={wallet.is_crypto}
                             key={`wallets_add_more_${wallet.currency}-${wallet.landing_company_name}`}
                             landing_company_name={wallet.landing_company_name}
                         />

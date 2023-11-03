@@ -1,17 +1,17 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
+import moment from 'moment';
 import { useCancelCryptoTransaction } from '@deriv/api';
 import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
-import useRecentTransactions from '../../hooks/useRecentTransactions';
 import './CryptoTransaction.scss';
 
 type TCryptoTransaction = {
     currencyDisplayCode: THooks.CurrencyConfig['code'];
-    transaction: NonNullable<ReturnType<typeof useRecentTransactions>['recentTransactions']>[number];
+    transaction: THooks.CryptoTransactions;
 };
 
 const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: currency, transaction }) => {
@@ -40,7 +40,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                         )}
                     />
                     <WalletText lineHeight='2xs' size='2xs'>
-                        {transaction.statusName}
+                        {transaction.status_name}
                     </WalletText>
                     {!!transaction.is_valid_to_cancel && (
                         <button
@@ -76,7 +76,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     {transaction.amount} {currency}
                 </WalletText>
                 <WalletText color='less-prominent' size='2xs'>
-                    {transaction.submitDateDisplay}
+                    {moment.unix(transaction.submit_date).utc().format('MMM D, YYYY')}
                 </WalletText>
             </div>
             <WalletText lineHeight='2xs' size='2xs'>
@@ -95,7 +95,9 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                 <div>
                     <WalletText lineHeight='2xs' size='2xs'>
                         Confirmations:{' '}
-                        <span className='wallets-crypto-transaction__red-text'>{transaction.confirmationDisplay}</span>
+                        <span className='wallets-crypto-transaction__red-text'>
+                            {transaction.formatted_confirmations}
+                        </span>
                     </WalletText>
                 </div>
             )}

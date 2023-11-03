@@ -9,6 +9,7 @@ type TProps = THooks.AvailableWallets;
 const WalletsAddMoreCard: React.FC<TProps> = ({
     currency,
     is_added: isAdded,
+    is_crypto: isCrypto,
     landing_company_name: landingCompanyName,
 }) => {
     return (
@@ -17,6 +18,7 @@ const WalletsAddMoreCard: React.FC<TProps> = ({
                 <WalletsAddMoreCardBanner
                     currency={currency || 'USD'}
                     is_added={isAdded}
+                    is_crypto={isCrypto}
                     landing_company_name={landingCompanyName ?? ''}
                 />
             </WalletGradientBackground>

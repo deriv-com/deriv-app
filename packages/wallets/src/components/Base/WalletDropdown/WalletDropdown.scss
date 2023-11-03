@@ -37,6 +37,7 @@
         font-size: 1.4rem;
         color: var(--system-light-2-general-text, #333);
         transition: border-color 0.2s;
+        cursor: pointer;
     }
 
     &__field::placeholder {

@@ -1,5 +1,5 @@
 import React from 'react';
-import SuccessDialog from '../Components/success-dialog.jsx';
+import SuccessDialog from '../Components/success-dialog';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -19,7 +19,7 @@ type TCFDTopUpDemoModalProps = {
     platform: string;
 };
 
-const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
+const TopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
     const { ui } = useStore();
 
     const {
@@ -206,4 +206,4 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
     );
 });
 
-export default CFDTopUpDemoModal;
+export default TopUpDemoModal;

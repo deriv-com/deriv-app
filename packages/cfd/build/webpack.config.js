@@ -16,7 +16,7 @@ module.exports = function (env) {
             CFDDbviOnBoarding: 'Containers/cfd-dbvi-onboarding.tsx',
             CFDResetPasswordModal: 'Containers/cfd-reset-password-modal.tsx',
             ServerErrorDialog: 'Containers/server-error-dialog.tsx',
-            CFDTopUpDemoModal: 'Containers/cfd-top-up-demo-modal.tsx',
+            TopUpDemoModal: 'Containers/top-up-demo-modal.tsx',
             MT5TradeModal: 'Containers/mt5-trade-modal.tsx',
             TradeModal: 'Containers/trade-modal.tsx',
             CFDPasswordManagerModal: 'Containers/cfd-password-manager-modal.tsx',

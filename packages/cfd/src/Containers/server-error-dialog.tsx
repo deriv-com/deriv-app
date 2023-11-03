@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
-const CFDServerErrorDialog = observer(() => {
+const ServerErrorDialog = observer(() => {
     const { ui } = useStore();
     const { enableApp, disableApp } = ui;
     const { clearCFDError, error_message, error_type, has_cfd_error, is_cfd_success_dialog_enabled } = useCfdStore();
@@ -35,4 +35,4 @@ const CFDServerErrorDialog = observer(() => {
     return null;
 });
 
-export default CFDServerErrorDialog;
+export default ServerErrorDialog;

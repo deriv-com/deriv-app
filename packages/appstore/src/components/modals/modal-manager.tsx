@@ -6,7 +6,7 @@ import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
-import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
+import ServerErrorDialog from '@deriv/cfd/src/Containers/server-error-dialog';
 import JurisdictionModal from '@deriv/cfd/src/Containers/jurisdiction-modal/jurisdiction-modal';
 import CFDPasswordModal from '@deriv/cfd/src/Containers/cfd-password-modal';
 import CFDDbviOnBoarding from '@deriv/cfd/src/Containers/cfd-dbvi-onboarding';
@@ -128,7 +128,7 @@ const ModalManager = () => {
             <CFDPasswordModal platform={platform} />
             <CFDDbviOnBoarding />
             <CFDResetPasswordModal platform={platform} />
-            <CFDServerErrorDialog />
+            <ServerErrorDialog />
             <CFDTopUpDemoModal platform={platform} />
             <MT5TradeModal
                 is_open={is_mt5_trade_modal_visible}

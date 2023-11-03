@@ -175,7 +175,7 @@
 
     &__row {
         padding: 1.6rem;
-        grid-template-columns: 1.7fr repeat(2, 2fr) repeat(2, 2.3fr) 1.5fr;
+        grid-template-columns: repeat(3, 1.6fr) 1.9fr 3fr 1.4fr;
 
         .dc-table__cell:last-child {
             word-break: unset;

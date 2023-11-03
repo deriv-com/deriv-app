@@ -30,7 +30,7 @@ const ShareMyAdsSocials = ({ advert_url, custom_message }: TShareMyAdsSocialsPro
         },
         {
             ShareButton: 'a',
-            href: `https://mail.google.com/mail/?view=cm&fs=1&body=${advert_url}`,
+            href: `https://mail.google.com/mail/?view=cm&fs=1&body=${encodeURIComponent(advert_url)}`,
             icon: 'IcStockGoogle',
             rel: 'noreferrer',
             size: 28,

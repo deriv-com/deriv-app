@@ -34,7 +34,12 @@ const mock_default_store = {
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     InputField: jest.fn(() => <div>{mockedInputField}</div>),
-    Modal: jest.fn(({ children, onClick }) => <div onClick={onClick}>{children}</div>),
+    Modal: jest.fn(({ children, onClick }) => (
+        <div>
+            <button onClick={onClick}>Modal</button>
+            {children}
+        </div>
+    )),
 }));
 
 jest.mock('../../LabeledQuantityInputMobile', () => jest.fn(() => <div>{mockedLabeledQuantityInputMobile}</div>));

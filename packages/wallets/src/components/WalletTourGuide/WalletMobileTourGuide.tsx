@@ -30,7 +30,7 @@ const WalletMobileTourGuide = () => {
             if (activeTabIndex !== idx) setActiveTabIndex(idx);
         };
 
-        if (index === 4 || index === 5) switchTab(1);
+        if (index >= 4) switchTab(1);
         else switchTab(0);
 
         if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {

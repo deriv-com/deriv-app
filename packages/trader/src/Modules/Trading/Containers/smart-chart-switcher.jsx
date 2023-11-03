@@ -7,7 +7,7 @@ const SmartChartSwitcher = ({ is_beta, ...props }) => {
     const Chart = is_beta ? SmartChartBeta : SmartChart;
     return (
         <>
-            <LaunchModal />
+            {is_beta && <LaunchModal />}
             <Chart data-testid='SmartChart' {...props} />{' '}
         </>
     );

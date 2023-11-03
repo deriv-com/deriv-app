@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import React, { RefObject, createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 import { MT5AccountType } from '../../features/cfd/screens';
@@ -9,7 +9,7 @@ type TModalContext = {
     isOpen: boolean;
     modalState?: TModalState;
     setModalState: (newModalState: Partial<TModalState>) => void;
-    show: (ModalContent: React.ReactNode) => void;
+    show: (ModalContent: React.ReactNode, options?: TModalShowOptions) => void;
 };
 
 type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];
@@ -17,6 +17,10 @@ type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketT
 type TModalState = {
     marketType?: TMarketTypes;
     platform?: string;
+};
+
+type TModalShowOptions = {
+    rootRef?: React.RefObject<HTMLElement>;
 };
 
 const ModalContext = createContext<TModalContext | null>(null);
@@ -33,8 +37,9 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const [content, setContent] = useState<React.ReactNode | null>();
     const modalState = useRef<TModalState>();
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
+    const [customRootRef, setCustomRootRef] = useState<RefObject<HTMLElement> | null>(null);
     const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
     const rootResponsiveRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_responsive_root'));
 
@@ -45,8 +50,9 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         };
     };
 
-    const show = (ModalContent: React.ReactNode) => {
+    const show = (ModalContent: React.ReactNode, options?: TModalShowOptions) => {
         setContent(ModalContent);
+        setCustomRootRef(options?.rootRef?.current ? options?.rootRef : null);
     };
 
     useEffect(() => {
@@ -61,19 +67,20 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     useOnClickOutside(modalRef, isDesktop ? hide : () => undefined);
 
+    const modalRootRef = useMemo(() => {
+        if (customRootRef?.current) return customRootRef;
+        if (isDesktop) return rootRef;
+        return rootResponsiveRef;
+    }, [isDesktop, customRootRef]);
+
     return (
         <ModalContext.Provider
             value={{ hide, isOpen: content !== null, modalState: modalState.current, setModalState, show }}
         >
             {children}
-            {isDesktop &&
-                rootRef.current &&
+            {modalRootRef?.current &&
                 content &&
-                createPortal(<div ref={modalRef}>{content}</div>, rootRef.current)}
-            {isMobile &&
-                rootResponsiveRef.current &&
-                content &&
-                createPortal(<div ref={modalRef}>{content}</div>, rootResponsiveRef.current)}
+                createPortal(<div ref={modalRef}>{content}</div>, modalRootRef.current)}
         </ModalContext.Provider>
     );
 };

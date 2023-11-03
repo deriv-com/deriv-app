@@ -8,14 +8,8 @@ import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts, useGlobalData } from '@deriv/hooks';
-// import { useExchangeRates2 } from '@deriv/api';
-
-type TRate = {
-    [k: string]: number;
-};
 
 const AssetSummary = observer(() => {
-    // const [rates, setRates] = React.useState<TRate>({});
     const { traders_hub, client, common } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { is_logging_in, is_switching, default_currency, currency } = client;
@@ -35,41 +29,21 @@ const AssetSummary = observer(() => {
 
     const cfd_target_currency = cfd_real_accounts?.[0]?.currency || undefined;
     const platform_target_currency = currency;
-    const base = platform_real_balance.currency;
-    const { handleSubscription, conversion_rates } = useGlobalData();
-
-    // const { data, subscribe, unsubscribe } = useExchangeRates2();
-
-    // React.useEffect(() => {
-    //     if (data) {
-    //         setRates(prev_rates => {
-    //             const new_rates = { ...prev_rates, ...(data?.exchange_rates?.rates || {}) };
-    //             return new_rates;
-    //         });
-    //     }
-    // }, [data]);
-
-    // console.log('response_data', response_data?.exchange_rates?.rates);
-    console.log('conversion_rates', conversion_rates);
-    // if (Object.keys(rates).length) console.log('response', data?.exchange_rates?.rates);
+    const base = is_eu_user ? currency : platform_real_balance.currency;
+    const { handleSubscription, exchange_rates } = useGlobalData();
 
     React.useEffect(() => {
         if (!((is_switching || is_logging_in) && (eu_account || cr_account))) {
-            // console.log('useEffect triggered');
             if (base && base !== platform_target_currency) {
+                console.log('base', base);
                 handleSubscription(base, platform_target_currency);
             }
 
             if (base && cfd_target_currency !== undefined && base !== cfd_target_currency) {
+                console.log('base', base);
                 handleSubscription(base, cfd_target_currency);
             }
         }
-
-        // return () => {
-        //     if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
-        //         unsubscribe();
-        //     }
-        // };
     }, [
         is_switching,
         is_logging_in,

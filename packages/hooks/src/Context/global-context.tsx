@@ -1,10 +1,13 @@
-import { useSubscription } from '@deriv/api';
 import React, { createContext, ReactNode, useContext } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
+
+import { useSubscription } from '@deriv/api';
+// TODO: Add docs for this file
 
 type TGlobalData = {
     handleSubscription: (base_currency: string, target_currency: string) => void;
-    conversion_rates: TRate;
-    response_data: any;
+    exchange_rates: TRate;
+    rest: Omit<typeof useSubscription, 'subscribe' | 'data'>;
 };
 
 type TRate = {
@@ -18,9 +21,9 @@ type TGlobalDataWrapperProps = {
 };
 
 const GlobalDataWrapper = ({ children }: TGlobalDataWrapperProps) => {
-    const [conversion_rates, setConversionRates] = React.useState<TRate>({});
+    const [exchange_rates, setExchangeRates] = useLocalStorage('exchange_rates', {});
 
-    const { subscribe, unsubscribe, data, ...rest } = useSubscription('exchange_rates');
+    const { subscribe, data, ...rest } = useSubscription('exchange_rates');
 
     const handleSubscription = (base_currency: string, target_currency: string) => {
         subscribe({
@@ -33,17 +36,28 @@ const GlobalDataWrapper = ({ children }: TGlobalDataWrapperProps) => {
 
     React.useEffect(() => {
         if (data) {
-            setConversionRates(prev_rates => {
-                const new_rates = { ...prev_rates, ...(data?.exchange_rates?.rates || {}) };
+            setExchangeRates((prev_rates: any) => {
+                const base_currency = data?.exchange_rates?.base_currency || 'USD';
+
+                // const new_rates = { ...prev_rates, ...(data?.exchange_rates?.rates || {}) };
+
+                // (data?.exchange_rates?.rates || {})
+                const new_rates = {
+                    ...prev_rates,
+                    ...{
+                        [base_currency]: {
+                            ...prev_rates[base_currency],
+                            ...data?.exchange_rates?.rates,
+                        },
+                    },
+                };
                 return new_rates;
             });
         }
-    }, [data]);
+    }, [data, setExchangeRates]);
 
     return (
-        <GlobalContext.Provider value={{ handleSubscription, conversion_rates, response_data: data }}>
-            {children}
-        </GlobalContext.Provider>
+        <GlobalContext.Provider value={{ handleSubscription, exchange_rates, rest }}>{children}</GlobalContext.Provider>
     );
 };
 

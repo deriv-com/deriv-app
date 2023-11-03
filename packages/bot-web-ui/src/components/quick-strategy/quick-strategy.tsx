@@ -92,6 +92,9 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                         }
                         if (field.name === 'max_stake') {
                             min = +form_data?.stake;
+                            if (isNaN(min)) {
+                                min = +initial_value.stake;
+                            }
                             min_error = getErrorMessage('MIN', min);
                         }
                         field.validation.forEach(validation => {

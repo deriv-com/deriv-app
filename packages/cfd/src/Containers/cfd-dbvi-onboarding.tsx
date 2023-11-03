@@ -14,7 +14,7 @@ import {
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
-import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
+import FinancialStpRealAccountSignup from './financial-stp-real-account-signup';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { JURISDICTION } from '../Helpers/cfd-config';
@@ -115,7 +115,7 @@ const CFDDbviOnboarding = observer(() => {
                 openPasswordModal={enableCFDPasswordModal}
             />
         ) : (
-            <CFDFinancialStpRealAccountSignup
+            <FinancialStpRealAccountSignup
                 onFinish={() => {
                     updateMT5Status();
                     if (has_created_account_for_selected_jurisdiction) {

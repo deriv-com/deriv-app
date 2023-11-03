@@ -10,7 +10,7 @@ import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { JURISDICTION } from '../Helpers/cfd-config';
 
-type TCFDFinancialStpRealAccountSignupProps = {
+type TFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
 };
 
@@ -32,7 +32,7 @@ type TItem = {
     account_status: TCoreStores['client']['account_status'];
     jurisdiction_selected_shortcode: TCoreStores['modules']['cfd']['jurisdiction_selected_shortcode'];
     has_submitted_cfd_personal_details: TCoreStores['modules']['cfd']['has_submitted_cfd_personal_details'];
-    onFinish: TCFDFinancialStpRealAccountSignupProps['onFinish'];
+    onFinish: TFinancialStpRealAccountSignupProps['onFinish'];
 };
 
 type TItemsState<T extends TItem> = {
@@ -41,7 +41,7 @@ type TItemsState<T extends TItem> = {
     forwarded_props: Array<Partial<keyof T>>;
 };
 
-const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialStpRealAccountSignupProps) => {
+const FinancialStpRealAccountSignup = observer(({ onFinish }: TFinancialStpRealAccountSignupProps) => {
     const { notifications, client } = useStore();
 
     const { refreshNotifications, removeNotificationMessage, removeNotificationByKey, addNotificationMessageByKey } =
@@ -196,7 +196,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
 
     const form_value = getCurrent('form_value');
 
-    const passthrough: Partial<TCFDFinancialStpRealAccountSignupProps> & {
+    const passthrough: Partial<TFinancialStpRealAccountSignupProps> & {
         is_authenticated_with_idv_photoid?: boolean;
     } = ((getCurrent('forwarded_props') || []) as TItemsState<typeof passthroughProps>['forwarded_props']).reduce(
         (forwarded_prop, item) => {
@@ -239,4 +239,4 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     );
 });
 
-export default CFDFinancialStpRealAccountSignup;
+export default FinancialStpRealAccountSignup;

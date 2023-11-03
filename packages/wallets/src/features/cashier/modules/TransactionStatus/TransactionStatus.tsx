@@ -53,7 +53,9 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
     return (
         <div className='wallets-transaction-status'>
             <div className='wallets-transaction-status__header'>
-                <WalletText weight='bold'>Transaction status</WalletText>
+                <WalletText size='sm' weight='bold'>
+                    Transaction status
+                </WalletText>
                 {isError && <Warning />}
             </div>
             <Divider color='#d6dadb' /> {/* --color-grey-5 */}

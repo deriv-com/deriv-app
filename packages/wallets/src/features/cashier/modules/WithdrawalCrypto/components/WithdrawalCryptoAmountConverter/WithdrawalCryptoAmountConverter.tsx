@@ -15,9 +15,9 @@ const errorMessageMapper = {
 const WithdrawalCryptoAmountConverter = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const [cryptoAmount, setCryptoAmount] = useState<number>();
-    const [convertedAmount, setConvertedAmount] = useState<number | undefined>();
+    const [convertedAmount, setConvertedAmount] = useState<string | undefined>();
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
-    const [arrowPointsLtr, setArrowPointsLtr] = useState(false);
+    const [arrowPointsRtl, setArrowPointsRtl] = useState(false);
 
     useEffect(() => {
         if (activeWallet?.currency)
@@ -29,37 +29,37 @@ const WithdrawalCryptoAmountConverter = () => {
     }, []);
 
     useEffect(() => {
-        if (cryptoAmount && exchangeRate?.rates) setConvertedAmount(cryptoAmount * exchangeRate?.rates.USD);
+        if (cryptoAmount && exchangeRate?.rates)
+            setConvertedAmount((cryptoAmount * exchangeRate?.rates.USD).toString());
+        else setConvertedAmount('');
     }, [cryptoAmount]);
-
-    useEffect(() => {
-        // console.log(convertedAmount);
-    }, [convertedAmount]);
 
     return (
         <div className='wallets-withdrawal-crypto-amount-converter'>
             <WalletTextField
-                helperMessage={activeWallet?.balance < cryptoAmount ? errorMessageMapper.insufficientFunds : ''}
+                helperMessage={
+                    activeWallet && activeWallet?.balance < cryptoAmount ? errorMessageMapper.insufficientFunds : ''
+                }
                 label='Amount (BTC)'
                 onChange={e => {
                     setCryptoAmount(parseFloat(e.target.value));
                 }}
-                onClick={() => setArrowPointsLtr(true)}
+                onClick={() => setArrowPointsRtl(false)}
                 showMessage
             />
-            <div className='wallets-withdrawal-crypto-amount-converter__arrow'>
-                <ArrowBold
-                    className={classNames('wallets-withdrawal-crypto-amount-converter__arrow', {
-                        'wallets-withdrawal-crypto-amount-converter__arrow--ltr': arrowPointsLtr,
-                    })}
-                />
+            <div
+                className={classNames('wallets-withdrawal-crypto-amount-converter__arrow', {
+                    'wallets-withdrawal-crypto-amount-converter__arrow--rtl': arrowPointsRtl,
+                })}
+            >
+                <ArrowBold />
             </div>
             <WalletTextField
-                defaultValue={convertedAmount ? `${convertedAmount}` : ''}
                 helperMessage='Approximate value'
                 label='Amount (USD)'
-                onClick={() => setArrowPointsLtr(false)}
+                onClick={() => setArrowPointsRtl(true)}
                 showMessage
+                value={convertedAmount}
             />
         </div>
     );

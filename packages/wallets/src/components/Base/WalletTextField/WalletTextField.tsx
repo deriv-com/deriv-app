@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ComponentProps, ReactElement, useState } from 'react';
+import React, { ChangeEvent, ComponentProps, ReactElement, useEffect, useState } from 'react';
 import { WalletButton } from '../WalletButton';
 import WalletText from '../WalletText/WalletText';
 import './WalletTextField.scss';
@@ -38,6 +38,10 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
 }) => {
     const [currentValue, setCurrentValue] = useState<WalletTextFieldProps['value']>(value);
 
+    useEffect(() => {
+        setCurrentValue(value);
+    }, [value]);
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
         setCurrentValue(newValue);
@@ -64,14 +68,13 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
     );
 
     return (
-        <div className='wallets-textfield'>
+        <div className='wallets-textfield' onClick={onClick}>
             <div className='wallets-textfield__content'>
                 <input
                     className='wallets-textfield__field'
                     id={id}
                     maxLength={maxLength}
                     onChange={handleChange}
-                    onClick={onClick}
                     placeholder={label}
                     type={type}
                     value={currentValue}

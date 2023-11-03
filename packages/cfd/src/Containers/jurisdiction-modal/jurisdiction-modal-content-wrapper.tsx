@@ -12,9 +12,10 @@ import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { TJurisdictionModalContentWrapperProps } from 'Types/containers.types';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
-    const { client, traders_hub } = useStore();
+    const { client, traders_hub, ui } = useStore();
 
     const { show_eu_related_content } = traders_hub;
+    const { is_mobile } = ui;
 
     const {
         trading_platform_available_accounts,
@@ -233,7 +234,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                     <Button
                         disabled={isNextButtonDisabled()}
                         primary
-                        style={{ width: isMobile() ? '100%' : 'unset' }}
+                        style={{ width: is_mobile ? '100%' : 'unset' }}
                         onClick={() => {
                             toggleJurisdictionModal();
                             onSelectRealAccount();

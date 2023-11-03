@@ -10,7 +10,7 @@ import {
     isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink, getBrokerName } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
 import PasswordBox from '../Components/passwordbox';
 import { TCFDPasswordReset } from 'Types/containers.types';
@@ -99,7 +99,7 @@ const DMT5TradeModal = ({
             <div className='cfd-trade-modal__login-specs'>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                    <SpecBox is_bold is_broker value={'Deriv.com Limited'} />
+                    <SpecBox is_bold is_broker value={getBrokerName()} />
                 </div>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>

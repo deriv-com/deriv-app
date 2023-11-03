@@ -1603,6 +1603,9 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
+            if (this.root_store.client.is_logged_in) {
+                return WS.authorized.activeSymbols('brief');
+            }
             return WS.activeSymbols('brief');
         }
         if ('trading_times' in req) {

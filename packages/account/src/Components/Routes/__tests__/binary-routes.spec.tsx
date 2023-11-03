@@ -2,7 +2,6 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
-import { PlatformContext } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 
@@ -27,11 +26,9 @@ describe('<BinaryRoutes />', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
         render(
-            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <Router history={history}>
-                    <BinaryRoutes is_logged_in is_logging_in={false} />
-                </Router>
-            </PlatformContext.Provider>,
+            <Router history={history}>
+                <BinaryRoutes is_logged_in is_logging_in={false} />
+            </Router>,
             { wrapper }
         );
 

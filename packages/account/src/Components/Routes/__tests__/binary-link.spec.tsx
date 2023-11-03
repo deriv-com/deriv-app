@@ -2,7 +2,6 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { PlatformContext } from '@deriv/shared';
 import { findRouteByPath } from '../helpers';
 import BinaryLink from '../binary-link';
 
@@ -20,11 +19,9 @@ describe('<BinaryLink />', () => {
 
     it('should show and trigger Navlink with path and active className', () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <Router history={history}>
-                    <BinaryLink to='test-link'>Simple test link</BinaryLink>
-                </Router>
-            </PlatformContext.Provider>
+            <Router history={history}>
+                <BinaryLink to='test-link'>Simple test link</BinaryLink>
+            </Router>
         );
 
         expect(screen.getByText('Simple test link')).toBeInTheDocument();
@@ -35,28 +32,21 @@ describe('<BinaryLink />', () => {
 
     it('should show simple link text', () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <Router history={history}>
-                    <BinaryLink>Simple test link without Navlink</BinaryLink>
-                </Router>
-            </PlatformContext.Provider>
+            <Router history={history}>
+                <BinaryLink>Simple test link without Navlink</BinaryLink>
+            </Router>
         );
 
         expect(screen.getByText('Simple test link without Navlink')).toBeInTheDocument();
     });
     it('should thorw error if the path is not found', () => {
         findRouteByPath.mockReturnValue('');
-
-        expect(() =>
+        const renderBinaryLink = () =>
             render(
-                <PlatformContext.Provider
-                    value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}
-                >
-                    <Router history={history}>
-                        <BinaryLink to='test-link'>Simple test link</BinaryLink>
-                    </Router>
-                </PlatformContext.Provider>
-            )
-        ).toThrowError(/route not found: test-link/i);
+                <Router history={history}>
+                    <BinaryLink to='test-link'>Simple test link</BinaryLink>
+                </Router>
+            );
+        expect(renderBinaryLink).toThrowError(/route not found: test-link/i);
     });
 });

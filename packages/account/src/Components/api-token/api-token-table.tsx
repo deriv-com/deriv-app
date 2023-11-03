@@ -108,10 +108,10 @@ const ApiTokenTable = () => {
         <table className='da-api-token__table'>
             <thead>
                 <tr className='da-api-token__table-header-row'>
-                    <ApiTokenTableRowHeader text={localize('Name')} />
-                    <ApiTokenTableRowHeader text={localize('Token')} />
-                    <ApiTokenTableRowHeader text={localize('Scopes')} />
-                    <ApiTokenTableRowHeader text={localize('Last used')} />
+                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Name' />} />
+                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Token' />} />
+                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Scopes' />} />
+                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Last used' />} />
                     <th />
                 </tr>
             </thead>

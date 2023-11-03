@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
 import { isDesktop, useIsMounted } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
 import { TPopoverAlignment, TToken, TApiContext } from 'Types';
 
@@ -11,7 +11,7 @@ type TApiTokenDeleteButton = {
 };
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {
-    const { deleteToken } = React.useContext<TApiContext>(ApiTokenContext);
+    const { deleteToken, isSuccess } = React.useContext<TApiContext>(ApiTokenContext);
     const [is_deleting, setIsDeleting] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
@@ -34,12 +34,11 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
 
     const handleYes = () => {
         setIsLoading(true);
-        deleteToken(token.token).finally(() => {
-            if (isMounted()) {
-                setIsLoading(false);
-                setIsDeleting(false);
-            }
-        });
+        deleteToken(token.token);
+        if (isMounted() && isSuccess) {
+            setIsLoading(false);
+            setIsDeleting(false);
+        }
     };
 
     return (
@@ -47,36 +46,32 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
             <Modal is_open={is_deleting} small>
                 <Modal.Body>
                     <Text as='h1' color='prominent' weight='bold' className='da-api-token__modal-title'>
-                        {localize('Delete token')}
+                        <Localize i18n_default_text='Delete token' />
                     </Text>
                     <Text as='p' color='prominent ' size='xs' line_height='m'>
-                        {localize('Are you sure you want to delete this token?')}
+                        <Localize i18n_default_text='Are you sure you want to delete this token?' />
                     </Text>
                 </Modal.Body>
                 <Modal.Footer className='da-api-token__modal-footer'>
+                    <Button className='dc-dialog__button' has_effect onClick={handleNo} secondary large>
+                        <Localize i18n_default_text='Cancel' />
+                    </Button>
                     <Button
                         className='dc-dialog__button'
                         has_effect
-                        text={localize('Cancel')}
-                        onClick={handleNo}
-                        secondary
-                        large
-                    />
-                    <Button
-                        className='dc-dialog__button'
-                        has_effect
-                        text={localize('Yes, delete')}
                         onClick={handleYes}
                         primary
                         large
                         is_loading={is_loading}
-                    />
+                    >
+                        <Localize i18n_default_text='Yes, delete' />
+                    </Button>
                 </Modal.Footer>
             </Modal>
             <Popover
                 alignment={popover_alignment}
                 classNameBubble='dc-clipboard__popover'
-                message={localize('Delete this token')}
+                message={<Localize i18n_default_text='Delete this token' />}
                 relative_render={false}
                 zIndex='9999'
                 is_open={is_popover_open}

@@ -10,7 +10,7 @@ type TDescriptionsItem = {
 };
 
 export type TArticle = {
-    title: string;
+    title: string | JSX.Element;
     descriptions: Array<TDescriptionsItem | React.ReactElement>;
     onClickLearnMore?: () => void;
     className?: string;

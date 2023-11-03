@@ -22,7 +22,7 @@ export type TInputProps = {
     input_id?: string;
     is_relative_hint?: boolean;
     label_className?: string;
-    label?: React.ReactNode;
+    label?: string;
     leading_icon?: React.ReactElement;
     max_characters?: number;
     maxLength?: number;

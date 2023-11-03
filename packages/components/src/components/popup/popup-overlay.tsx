@@ -4,7 +4,7 @@ import Text from '../text/text';
 import Button from '../button/button';
 
 type TPopupOverlay = {
-    title: string;
+    title: string | JSX.Element;
     descriptions: {
         key: number | string;
         component: React.ReactNode;

@@ -281,36 +281,46 @@ export const faq_content: TFaqContent[] = [
             },
             {
                 type: 'image',
-                src: getImageLocation('loss_control.png'),
+                src: getImageLocation('loss_control_all_block.png'),
                 imageclass: 'loss-control',
             },
             {
                 type: 'text',
-                content: localize('1. Create the following variables:'),
-            },
-            {
-                type: 'text',
                 content: localize(
-                    '- <strong>current profit/loss</strong>: Use this variable to store the cumulative profit or loss while your bot is running. Set the initial value to <strong>0</strong>.'
+                    '<strong>1.</strong> Create the following variables and place them under <strong>Run once at start</strong>:'
                 ),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>current stake</strong>: Use this variable to store the stake amount used in the last contract. You can assign any amount you want, but it must be a positive number.'
+                    '• <strong>Stop loss threshold</strong>: Use this variable to store your loss limit. You can assign any amount you want. Your bot will stop when your losses hits or exceeds this amount.'
                 ),
             },
             {
                 type: 'text',
-                content: localize(
-                    '- <strong>maximum loss</strong>: Use this variable to store your maximum loss limit. You can assign any amount you want, but it must be a positive number.'
-                ),
+                content: localize('Example:'),
+            },
+            {
+                type: 'image',
+                src: getImageLocation('loss_control_set_stop_loss.png'),
             },
             {
                 type: 'text',
                 content: localize(
-                    '- <strong>trade again</strong>: Use this variable to stop trading when your loss limit is reached. Set the initial value to <strong>true</strong>.'
+                    '• <strong>Current stake</strong>: Use this variable to store the stake amount. You can assign any amount you want, but it must be a positive number.'
                 ),
+            },
+            {
+                type: 'text',
+                content: localize('Example:'),
+            },
+            {
+                type: 'image',
+                src: getImageLocation('loss_control_set_current_stake.png'),
+            },
+            {
+                type: 'text',
+                content: localize('This is how your trade parameters, variables, and trade options should look like:'),
             },
             {
                 type: 'image',
@@ -319,7 +329,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '2. Use a logic block to check if <strong>current profit/loss</strong> exceeds <strong>maximum loss</strong>. If it does, set <strong>trade again</strong> to false to prevent the bot from running another cycle.'
+                    '<strong>2.</strong> Set the <strong>Purchase conditions</strong>. In this example, your bot will purchase a <strong>Rise</strong> contract when it starts and after a contract closes.'
                 ),
             },
             {
@@ -329,7 +339,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '3. Update <strong>current profit/loss</strong> with the profit from the last contract. If the last contract was lost, the value of <strong>current profit/loss</strong> will be negative.'
+                    '<strong>3.</strong> Use a logic block to check if <strong>Total profit/loss</strong> is more than the <strong>Stop loss threshold</strong> amount. You can find the <strong>Total profit/loss</strong> variable under <strong>Analysis > Stats</strong> on the <strong>Blocks menu</strong> on the left. Your bot will continue to purchase new contracts until the <strong>Total profit/loss</strong> amount exceeds the <strong>Stop loss threshold</strong> amount.'
                 ),
             },
             {

@@ -1,7 +1,10 @@
 .wallets-percentage-selector {
     display: flex;
-    justify-content: space-around;
-    width: 36rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: fit-content;
+    gap: 4px;
 
     @include mobile {
         width: 100%;
@@ -11,10 +14,10 @@
         cursor: pointer;
         background-color: var(--general-section-1, #f2f3f4);
         height: 2.4rem;
-        width: 8.7rem;
+        width: 100%;
 
         @include mobile {
-            width: 95%;
+            width: 100%;
         }
 
         &__fill {
@@ -27,6 +30,8 @@
         align-items: center;
         display: flex;
         flex-direction: column;
+        width: 100%;
+        gap: 2px;
 
         @include mobile {
             flex: 1;

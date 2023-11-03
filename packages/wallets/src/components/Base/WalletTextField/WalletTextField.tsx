@@ -4,7 +4,6 @@ import WalletText from '../WalletText/WalletText';
 import './WalletTextField.scss';
 
 interface WalletTextFieldProps {
-    defaultValue?: string;
     helperMessage?: string;
     icon?: ReactElement;
     id?: ComponentProps<'input'>['id'];
@@ -12,9 +11,11 @@ interface WalletTextFieldProps {
     leftIcon?: React.ReactNode;
     maxLength?: ComponentProps<'input'>['maxLength'];
     onChange?: ComponentProps<'input'>['onChange'];
+    onClick?: ComponentProps<'input'>['onClick'];
     onClickIcon?: ComponentProps<'button'>['onClick'];
     showMessage?: boolean;
     type?: ComponentProps<'input'>['type'];
+    value?: string;
 }
 
 type MessageContainerProps = {
@@ -23,22 +24,23 @@ type MessageContainerProps = {
 };
 
 const WalletTextField: React.FC<WalletTextFieldProps> = ({
-    defaultValue = '',
     helperMessage,
     icon,
     id = 'wallet-textfield',
     label,
     maxLength,
     onChange,
+    onClick,
     onClickIcon,
     showMessage = false,
     type = 'text',
+    value,
 }) => {
-    const [value, setValue] = useState(defaultValue);
+    const [currentValue, setCurrentValue] = useState<WalletTextFieldProps['value']>(value);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
-        setValue(newValue);
+        setCurrentValue(newValue);
         onChange?.(e);
     };
 
@@ -51,10 +53,10 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
                     </WalletText>
                 </div>
             )}
-            {maxLength && (
+            {maxLength && currentValue && (
                 <div className='wallets-textfield__message-container--maxchar'>
                     <WalletText align='right' color='less-prominent' size='xs'>
-                        {value.length} / {maxLength}
+                        {currentValue.length} / {maxLength}
                     </WalletText>
                 </div>
             )}
@@ -69,9 +71,10 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
                     id={id}
                     maxLength={maxLength}
                     onChange={handleChange}
+                    onClick={onClick}
                     placeholder={label}
                     type={type}
-                    value={value}
+                    value={currentValue}
                 />
                 {label && (
                     <label className='wallets-textfield__label' htmlFor={id}>

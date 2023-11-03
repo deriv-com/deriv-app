@@ -1,9 +1,17 @@
 import React from 'react';
-import { InlineMessage, WalletText, WalletTextField } from '../../../../components';
+import {
+    InlineMessage,
+    WalletButton,
+    WalletsPercentageSelector,
+    WalletText,
+    WalletTextField,
+} from '../../../../components';
 import './WithdrawalCrypto.scss';
-import { WithdrawalCryptoAmountConverter, WithdrawalCryptoPercentageSelector } from './components';
+import { WithdrawalCryptoAmountConverter } from './components';
+import { useActiveWalletAccount } from '@deriv/api';
 
 const WithdrawalCrypto = () => {
+    const { data: activeWallet } = useActiveWalletAccount();
     return (
         <div className='wallets-withdrawal-crypto'>
             <WalletText weight='bold'>Withdraw Bitcoin (BTC) to your wallet</WalletText>
@@ -22,8 +30,15 @@ const WithdrawalCrypto = () => {
             <div className='wallets-withdrawal-crypto-address'>
                 <WalletTextField label='Your BTC Wallet address' />
             </div>
-            <WithdrawalCryptoPercentageSelector />
+            <WalletsPercentageSelector
+                amount={200}
+                balance={activeWallet?.balance}
+                // onChangePercentage={per => console.log(per)}
+            />
             <WithdrawalCryptoAmountConverter />
+            <div className='wallets-withdrawal-crypto__submit'>
+                <WalletButton size='lg' text='Withdraw' />
+            </div>
         </div>
     );
 };

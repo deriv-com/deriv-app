@@ -6,16 +6,32 @@
     justify-content: space-between;
     gap: 2.4rem;
 
+    @include mobile {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
     &__arrow {
         height: 4rem;
+
+        & > svg {
+            transition: rotate 0.2s ease;
+
+            @include mobile {
+                rotate: 90deg;
+            }
+        }
+
+        &--ltr > svg {
+            rotate: 180deg;
+
+            @include mobile {
+                rotate: 270deg;
+            }
+        }
 
         @include mobile {
             height: fit-content;
         }
-    }
-
-    @include mobile {
-        flex-direction: column;
-        gap: 1.6rem;
     }
 }

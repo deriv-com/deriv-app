@@ -9,6 +9,12 @@
         gap: 1.6rem;
     }
 
+    &__submit {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
     & .wallets-textfield {
         width: 100%;
         max-width: none;
@@ -17,9 +23,11 @@
 
 .wallets-withdrawal-crypto-disclaimer {
     width: 100%;
-    height: 5.7rem;
-    line-height: 1.4rem;
-    text-align: justify;
+
+    & li {
+        align-self: stretch;
+        line-height: 1.4rem;
+    }
 
     @include mobile {
         max-width: 100%;
@@ -29,4 +37,5 @@
 
 .wallets-withdrawal-crypto-address {
     width: 100%;
+    height: fit-content;
 }

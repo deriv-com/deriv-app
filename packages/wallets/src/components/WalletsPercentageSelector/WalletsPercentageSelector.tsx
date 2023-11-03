@@ -11,7 +11,7 @@ const percentageSelectorOptions = [...Array(percentageBlockCount).keys()].map(in
 }));
 
 type TWalletsPercentageSelector = {
-    amount: number;
+    amount?: number;
     balance: number;
     onChangePercentage: (percentage: number) => void;
 };

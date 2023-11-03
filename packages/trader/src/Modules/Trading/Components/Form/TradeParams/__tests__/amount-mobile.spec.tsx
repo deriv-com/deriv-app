@@ -33,7 +33,7 @@ const default_mock_store = {
             amount: 10,
             duration_unit: 'm',
             duration: 3,
-            stake_boundary: { [TURBOS.LONG]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
+            stake_boundary: { [TURBOS.LONG.toLocaleUpperCase()]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
                 typeof useTraderStore
             >['stake_boundary'],
         },

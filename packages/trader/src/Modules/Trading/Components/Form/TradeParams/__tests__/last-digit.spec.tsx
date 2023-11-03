@@ -14,7 +14,7 @@ const default_mock_store = {
         },
     },
 };
-const mockedNumberSelector = ' Mocked Number Selector Component';
+const mockedNumberSelector = 'Mocked Number Selector Component';
 const digitPrediction = 'Last Digit Prediction';
 const lastDigit = `Last Digit: ${default_mock_store.modules.trade.last_digit}`;
 

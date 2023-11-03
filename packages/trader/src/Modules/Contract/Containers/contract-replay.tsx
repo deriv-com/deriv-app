@@ -26,7 +26,7 @@ import { useFeatureFlags } from '@deriv/hooks';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
-import { DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
+import { DigitsWidget, InfoBoxWidget } from './contract-replay-widget';
 import ReplayChart from './replay-chart';
 import { observer, useStore } from '@deriv/stores';
 

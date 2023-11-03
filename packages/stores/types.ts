@@ -508,6 +508,7 @@ type TClientStore = {
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
     prev_account_type: string;
+    account_open_date: number | undefined;
     is_beta_chart: boolean;
 };
 
@@ -575,8 +576,8 @@ type TUiStore = {
     is_cashier_visible: boolean;
     is_wallet_modal_visible: boolean;
     is_chart_asset_info_visible?: boolean;
-    is_chart_countdown_visible: boolean;
     is_chart_layout_default: boolean;
+    is_chart_countdown_visible: boolean;
     is_closing_create_real_account_modal: boolean;
     is_kyc_information_submitted_modal_open: boolean;
     is_dark_mode_on: boolean;
@@ -599,6 +600,7 @@ type TUiStore = {
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
     notification_messages_ui: React.ElementType;
+    setChartCountdown: (value: boolean) => void;
     populateFooterExtensions: (
         footer_extensions:
             | [
@@ -622,6 +624,10 @@ type TUiStore = {
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
     sub_section_index: number;
+    setPromptHandler: (
+        condition: boolean,
+        cb?: (() => void) | ((route_to: RouteComponentProps['location'], action: string) => boolean)
+    ) => void;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
     simple_duration_unit: string;
@@ -689,6 +695,7 @@ type TPortfolioStore = {
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onMount: () => void;
+    onUnmount: () => void;
     open_accu_contract: TPortfolioPosition | null;
     positions: TPortfolioPosition[];
     removePositionById: (contract_id?: number) => void;
@@ -764,6 +771,7 @@ type TContractTradeStore = {
     clearError: () => void;
     contracts: TContractStore[];
     error_message: string;
+    filtered_contracts: TPortfolioPosition[];
     getContractById: (contract_id?: number) => TContractStore;
     granularity: null | number;
     has_crossed_accu_barriers: boolean;
@@ -771,17 +779,7 @@ type TContractTradeStore = {
     last_contract: TContractStore | Record<string, never>;
     markers_array: Array<{
         type: string;
-        contract_info: {
-            accu_barriers_difference:
-                | boolean
-                | {
-                      top: string;
-                      bottom: string;
-                      font: string;
-                  };
-            has_crossed_accu_barriers: boolean;
-            is_accumulator_trade_without_contract: boolean;
-        };
+        contract_info: TPortfolioPosition['contract_info'];
         key: string;
         price_array: [string, string];
         epoch_array: [number];
@@ -982,7 +980,7 @@ type TContractReplay = {
             | []
             | Array<{
                   content_config: { className: string };
-                  marker_config: { ContentComponent: unknown; x: string | number; y: string | number };
+                  marker_config: { ContentComponent: 'div'; x: string | number; y: string | number };
                   react_key: string;
                   type: string;
               }>;

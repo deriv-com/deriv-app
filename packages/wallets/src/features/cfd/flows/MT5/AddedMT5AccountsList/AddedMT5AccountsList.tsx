@@ -5,7 +5,7 @@ import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
-import { MarketTypeToIconMapper, MarketTypeToTitleMapper } from '../../../constants';
+import { MarketTypeDetails } from '../../../constants';
 import './AddedMT5AccountsList.scss';
 
 type TProps = {
@@ -25,7 +25,7 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
     };
     return (
         <div className='wallets-added-mt5__icon' onClick={() => IconToLink()}>
-            {MarketTypeToIconMapper[account.market_type || 'all']}
+            {MarketTypeDetails[account.market_type || 'all'].icon}
         </div>
     );
 };
@@ -33,6 +33,8 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
+    const { title } = MarketTypeDetails[account.market_type || 'all'];
+
     return (
         <TradingAccountCard
             leading={() => <MT5AccountIcon account={account} />}
@@ -51,9 +53,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         >
             <div className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
-                    <p className='wallets-added-mt5__details-title-text'>
-                        {MarketTypeToTitleMapper[account.market_type || 'all']}
-                    </p>
+                    <p className='wallets-added-mt5__details-title-text'>{title}</p>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
                             <p className='wallets-added-mt5__details-title-landing-company-text'>

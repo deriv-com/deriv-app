@@ -1,10 +1,16 @@
 import { epochToMoment, toMoment } from '@deriv/shared';
+import { TCoreStores } from '@deriv/stores/types';
 
-const hotjar = client => {
+const isProduction = process.env.NODE_ENV === 'production';
+
+const initHotjar = (client: TCoreStores['client']) => {
+    // To initialize only on licensed domains.
+    if (!isProduction) return;
+
     /**
-     * Inject: External Script Hotjar - for DBot only
+     * Inject: External Script - Hotjar
      */
-    (function (h, o, t, j) {
+    (function (h: any, o, t, j) {
         /* eslint-disable */
         h.hj =
             h.hj ||
@@ -15,20 +21,24 @@ const hotjar = client => {
         h._hjSettings = { hjid: 3050531, hjsv: 6 };
         const a = o.getElementsByTagName('head')[0];
         const r = o.createElement('script');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         r.async = 1;
         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
         a.appendChild(r);
 
         // Hotjar attribution code for user segmentation
-        const user_id = client?.loginid;
+        const user_id = client.loginid;
         const account_type = client.is_virtual ? 'Demo' : 'Real';
-        const account_open_date = epochToMoment(client.account_open_date);
+        const account_open_date = client.account_open_date ? epochToMoment(client.account_open_date) : undefined;
 
-        window.hj('identify', user_id, {
-            'Account created': toMoment(account_open_date).format('YYYY-MM-DD'),
+        (window as any).hj('identify', user_id, {
+            'Account created': account_open_date ? toMoment(account_open_date).format('YYYY-MM-DD') : '',
             'Account type': account_type,
             'User country': client.clients_country,
+            'Beta chart': client.is_beta_chart,
         });
     })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
 };
-export default hotjar;
+
+export default initHotjar;

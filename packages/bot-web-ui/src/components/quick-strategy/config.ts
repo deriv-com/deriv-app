@@ -132,6 +132,12 @@ const LABEL_DALEMBERT_UNIT: TConfigItem = {
     description: localize("The amount that you may add to your stake if you're losing a trade."),
 };
 
+const LABEL_OSCARS_GRIND_UNIT: TConfigItem = {
+    type: 'label',
+    label: localize('Unit'),
+    description: localize('The amount that you may add to your stake after each successful trade.'),
+};
+
 const UNIT: TConfigItem = {
     type: 'number',
     name: 'unit',
@@ -185,7 +191,7 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [SYMBOL, TRADETYPE_FULL_WIDTH, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, UNIT],
+            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_OSCARS_GRIND_UNIT, UNIT],
         ],
     },
 };

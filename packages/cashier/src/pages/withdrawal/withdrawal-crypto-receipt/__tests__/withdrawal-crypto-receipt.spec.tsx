@@ -61,6 +61,10 @@ describe('<WithdrawalCryptoReceipt />', () => {
                     },
                 },
             },
+            ui: {
+                is_desktop: true,
+                is_mobile: false,
+            },
         });
     });
 

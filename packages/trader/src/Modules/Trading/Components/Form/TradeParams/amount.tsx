@@ -127,7 +127,18 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                     value={basis}
                 />
             )}
-            {!is_single_currency ? (
+            {is_single_currency ? (
+                <Input
+                    amount={amount}
+                    currency={currency}
+                    current_focus={current_focus}
+                    error_messages={error_messages}
+                    is_single_currency={is_single_currency}
+                    is_disabled={has_open_accu_contract}
+                    onChange={onChange}
+                    setCurrentFocus={setCurrentFocus}
+                />
+            ) : (
                 <div className='trade-container__currency-options'>
                     <Input
                         amount={amount}
@@ -150,17 +161,6 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                         onChange={onChange}
                     />
                 </div>
-            ) : (
-                <Input
-                    amount={amount}
-                    currency={currency}
-                    current_focus={current_focus}
-                    error_messages={error_messages}
-                    is_single_currency={is_single_currency}
-                    is_disabled={has_open_accu_contract}
-                    onChange={onChange}
-                    setCurrentFocus={setCurrentFocus}
-                />
             )}
             <AllowEquals
                 contract_start_type={contract_start_type}

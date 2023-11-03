@@ -14,11 +14,11 @@ const default_mock_store = {
         },
     },
 };
-const numberSelector = 'Number selector';
+const mockedNumberSelector = ' Mocked Number Selector Component';
 const digitPrediction = 'Last Digit Prediction';
 const lastDigit = `Last Digit: ${default_mock_store.modules.trade.last_digit}`;
 
-jest.mock('App/Components/Form/number-selector', () => jest.fn(() => <div>{numberSelector}</div>));
+jest.mock('App/Components/Form/number-selector', () => jest.fn(() => <div>{mockedNumberSelector}</div>));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isDesktop: jest.fn().mockReturnValue(true),
@@ -37,13 +37,13 @@ describe('<LastDigit />', () => {
         render(mockLastDigit(mockStore(default_mock_store), { is_minimized: true }));
 
         expect(screen.getByText(lastDigit)).toBeInTheDocument();
-        expect(screen.queryByText(numberSelector)).not.toBeInTheDocument();
+        expect(screen.queryByText(mockedNumberSelector)).not.toBeInTheDocument();
         expect(screen.queryByText(digitPrediction)).not.toBeInTheDocument();
     });
     it('should render fieldset and number selector if is_minimizes is false', () => {
         render(mockLastDigit(mockStore(default_mock_store)));
 
-        expect(screen.getByText(numberSelector)).toBeInTheDocument();
+        expect(screen.getByText(mockedNumberSelector)).toBeInTheDocument();
         expect(screen.getByText(digitPrediction)).toBeInTheDocument();
         expect(screen.queryByText(lastDigit)).not.toBeInTheDocument();
     });

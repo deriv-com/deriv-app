@@ -3,11 +3,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
+import { TURBOS } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import TraderProviders from '../../../../../../trader-providers';
 import Amount from '../amount-mobile';
 
-const numpadComponent = 'Numpad';
+const mockedNumpadComponent = 'Mocked Numpad Component';
 const default_props = {
     toggleModal: jest.fn(),
     duration_value: 3,
@@ -32,7 +33,7 @@ const default_mock_store = {
             amount: 10,
             duration_unit: 'm',
             duration: 3,
-            stake_boundary: { TURBOSLONG: { min_stake: 1, max_stake: 10000 } } as ReturnType<
+            stake_boundary: { [TURBOS.LONG]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
                 typeof useTraderStore
             >['stake_boundary'],
         },
@@ -43,7 +44,7 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Numpad: jest.fn(props => (
         <div>
-            <div>{numpadComponent}</div>
+            <div>{mockedNumpadComponent}</div>
             <div>{props.value}</div>
             <button
                 onClick={() => {
@@ -81,14 +82,14 @@ describe('<Amount/>', () => {
     it('should render only one Numpad component with value equal to payout_value if basis_list.length === 1 and basis_list[0].value is payout', () => {
         render(mockAmount(mockStore(default_mock_store), default_props));
 
-        expect(screen.getByText(numpadComponent)).toBeInTheDocument();
+        expect(screen.getByText(mockedNumpadComponent)).toBeInTheDocument();
         expect(screen.getByText(default_props.payout_value)).toBeInTheDocument();
     });
     it('should render only one Numpad component with value equal to stake_value if basis_list.length === 1 and basis_list[0].value is stake', () => {
         default_mock_store.modules.trade.basis_list = [{ text: 'Stake', value: 'stake' }];
         render(mockAmount(mockStore(default_mock_store), default_props));
 
-        expect(screen.getByText(numpadComponent)).toBeInTheDocument();
+        expect(screen.getByText(mockedNumpadComponent)).toBeInTheDocument();
         expect(screen.getByText(default_props.stake_value)).toBeInTheDocument();
     });
     it('should not render extra Numpad except payout and stake', () => {
@@ -99,11 +100,11 @@ describe('<Amount/>', () => {
         ];
         render(mockAmount(mockStore(default_mock_store), default_props));
 
-        expect(screen.getAllByText(numpadComponent)).toHaveLength(2);
+        expect(screen.getAllByText(mockedNumpadComponent)).toHaveLength(2);
     });
     it('should render MinMaxStake info for Turbos', () => {
         default_mock_store.modules.trade.basis_list = [{ text: 'Stake', value: 'stake' }];
-        default_mock_store.modules.trade.contract_type = 'TURBOSLONG';
+        default_mock_store.modules.trade.contract_type = TURBOS.LONG;
         default_mock_store.modules.trade.is_turbos = true;
         render(mockAmount(mockStore(default_mock_store), default_props));
 
@@ -111,7 +112,7 @@ describe('<Amount/>', () => {
         expect(screen.getByText('1.00')).toBeInTheDocument();
         expect(screen.getByText(/max. stake/i)).toBeInTheDocument();
         expect(screen.getByText('10,000.00')).toBeInTheDocument();
-        expect(screen.getByText(numpadComponent)).toBeInTheDocument();
+        expect(screen.getByText(mockedNumpadComponent)).toBeInTheDocument();
         expect(screen.getByText(default_props.stake_value)).toBeInTheDocument();
     });
     it('should pass the validation if user insert correct stake value', () => {

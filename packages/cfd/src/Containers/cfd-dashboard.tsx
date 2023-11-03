@@ -173,6 +173,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
         createCFDAccount,
         current_list,
         dxtrade_tokens,
+        ctrader_tokens,
         derivez_tokens,
     } = useCfdStore();
 
@@ -645,6 +646,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
                             active_index={active_index}
                             is_dark_mode_on={is_dark_mode_on}
                             dxtrade_tokens={dxtrade_tokens}
+                            ctrader_tokens={ctrader_tokens}
                             derivez_tokens={derivez_tokens}
                         />
                         <CFDTopUpDemoModal platform={platform} />

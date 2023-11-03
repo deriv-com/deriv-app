@@ -1,17 +1,15 @@
 import React, { useCallback } from 'react';
 import countries from 'i18n-iso-countries';
-import * as Cookies from 'js-cookie';
-import { init, SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
 import { CSSTransition } from 'react-transition-group';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { cryptoMathRandom, isMobile, WS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import ErrorMessage from 'Components/error-component';
-import getOnfidoPhrases from 'Constants/onfido-phrases';
-import MissingPersonalDetails from 'Components/poi/missing-personal-details';
-import PoiConfirmWithExampleFormContainer from 'Components/poi/poi-confirm-with-example-form-container';
-import OnfidoSdkView from 'Sections/Verification/ProofOfIdentity/onfido-sdk-view';
+import ErrorMessage from '../../../Components/error-component';
+import getOnfidoPhrases from '../../../Constants/onfido-phrases';
+import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';
+import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-confirm-with-example-form-container';
+import OnfidoSdkView from './onfido-sdk-view';
 
 type TAPIError = {
     code?: string;
@@ -35,6 +33,11 @@ type TOnfidoSdkViewContainer = {
     height?: number | string;
     is_default_enabled?: boolean;
 };
+
+// TODO: Update types for this later once bundle and CDN issue with Onfido is resolved
+type SdkHandle = any;
+type SupportedLanguages = any;
+type SdkResponse = any;
 
 const OnfidoSdkViewContainer = ({
     account_settings,
@@ -100,7 +103,7 @@ const OnfidoSdkViewContainer = ({
         async (service_token: string) => {
             if (!service_token) return;
             try {
-                onfido_init.current = await init({
+                onfido_init.current = await window.Onfido.init({
                     containerId: 'onfido',
                     language: {
                         locale: (getLanguage().toLowerCase() as SupportedLanguages) || 'en',
@@ -149,33 +152,20 @@ const OnfidoSdkViewContainer = ({
     const getOnfidoServiceToken = React.useCallback(
         (): Promise<string | { error: TAPIError }> =>
             new Promise(resolve => {
-                const onfido_cookie_name = 'onfido_token';
-                const onfido_cookie = Cookies.get(onfido_cookie_name);
-
-                if (!onfido_cookie) {
-                    WS.serviceToken({
-                        service_token: 1,
-                        service: 'onfido',
-                        country: token_country_code,
-                    }).then((response: TServiceToken) => {
-                        if (response.error) {
-                            resolve({ error: response.error });
-                            return;
-                        }
-                        if (response.service_token?.onfido) {
-                            const { token } = response.service_token.onfido;
-                            const in_90_minutes = 1 / 16;
-                            Cookies.set(onfido_cookie_name, token, {
-                                expires: in_90_minutes,
-                                secure: true,
-                                sameSite: 'strict',
-                            });
-                            resolve(token);
-                        }
-                    });
-                } else {
-                    resolve(onfido_cookie);
-                }
+                WS.serviceToken({
+                    service_token: 1,
+                    service: 'onfido',
+                    country: token_country_code,
+                }).then((response: TServiceToken) => {
+                    if (response.error) {
+                        resolve({ error: response.error });
+                        return;
+                    }
+                    if (response.service_token?.onfido) {
+                        const { token } = response.service_token.onfido;
+                        resolve(token);
+                    }
+                });
             }),
         [token_country_code]
     );

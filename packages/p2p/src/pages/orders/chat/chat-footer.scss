@@ -1,0 +1,81 @@
+.chat-footer {
+    background-color: var(--general-main-1);
+    border-top: 2px solid var(--general-section-1);
+    max-height: 33.333%;
+
+    &--empty {
+        margin-top: auto;
+        padding-bottom: 0.7rem;
+    }
+
+    &--frozen {
+        border-top: 2px solid var(--general-section-1);
+        padding: 1.6rem 2.4rem;
+    }
+
+    &-icon-container {
+        align-items: center;
+        border-radius: $BORDER_RADIUS;
+        cursor: pointer;
+        display: flex;
+        height: 36px;
+        justify-content: center;
+        margin-right: 0.4rem;
+        position: absolute;
+        right: 0;
+        width: 36px;
+
+        @media (hover: hover) {
+            &:hover {
+                background-color: var(--general-hover);
+            }
+        }
+    }
+
+    &-input {
+        position: relative;
+        height: calc(100% - 1.6rem - 2.6rem);
+        margin: 1.6rem 2.4rem 2.8rem;
+    }
+
+    .dc-input {
+        min-height: 4rem;
+        margin-bottom: 0;
+
+        &__container {
+            margin-bottom: 0.2rem;
+        }
+
+        &__wrapper {
+            margin-bottom: unset;
+            height: 100%;
+        }
+
+        &__counter {
+            bottom: -2rem;
+            right: 0;
+            top: unset;
+        }
+
+        &__field[type='textarea'] {
+            overflow-y: auto;
+            height: 25px;
+            max-height: 100%;
+            width: calc(100% - 32px - 0.8rem);
+
+            &::-webkit-scrollbar {
+                width: 5px;
+                height: 5px;
+                background-color: transparent;
+                border-radius: 10px;
+            }
+            &::-webkit-scrollbar-track {
+                background-color: transparent;
+            }
+            &::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                background-color: var(--state-active);
+            }
+        }
+    }
+}

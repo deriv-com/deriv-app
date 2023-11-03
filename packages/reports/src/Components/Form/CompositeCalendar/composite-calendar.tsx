@@ -3,18 +3,15 @@ import Loadable from 'react-loadable';
 import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { daysFromTodayTo, toMoment } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import type { TCoreStores } from '@deriv/stores/types';
 import CompositeCalendarMobile from './composite-calendar-mobile';
 import SideList from './side-list';
 import CalendarIcon from './calendar-icon';
 import TwoMonthPicker from './two-month-picker';
 import moment from 'moment';
+import { observer, useStore } from '@deriv/stores';
 
 type TCompositeCalendar = {
-    current_focus: string;
     onChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
-    setCurrentFocus: () => void;
     to: number;
     from: number;
 };
@@ -34,8 +31,10 @@ const TwoMonthPickerLoadable = Loadable<TTwoMonthPickerLoadable, typeof TwoMonth
     },
 });
 
-const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
-    const { current_focus, onChange, setCurrentFocus, to, from } = props;
+const CompositeCalendar = observer((props: TCompositeCalendar) => {
+    const { ui } = useStore();
+    const { current_focus, setCurrentFocus } = ui;
+    const { onChange, to, from } = props;
 
     const [show_to, setShowTo] = React.useState(false);
     const [show_from, setShowFrom] = React.useState(false);
@@ -111,7 +110,7 @@ const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
 
     useOnClickOutside(
         wrapper_ref,
-        event => {
+        (event: React.MouseEvent) => {
             event?.stopPropagation();
             event?.preventDefault();
             hideCalendar();
@@ -177,17 +176,17 @@ const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
                 )}
             </DesktopWrapper>
             <MobileWrapper>
-                <CompositeCalendarMobile duration_list={list} {...props} />
+                <CompositeCalendarMobile
+                    duration_list={list}
+                    setCurrentFocus={setCurrentFocus}
+                    current_focus={current_focus}
+                    {...props}
+                />
             </MobileWrapper>
         </React.Fragment>
     );
-};
+});
 
 CompositeCalendar.displayName = 'CompositeCalendar';
 
-export default React.memo(
-    connect(({ ui }: TCoreStores) => ({
-        current_focus: ui.current_focus,
-        setCurrentFocus: ui.setCurrentFocus,
-    }))(CompositeCalendar)
-);
+export default React.memo(CompositeCalendar);

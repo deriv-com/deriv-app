@@ -95,7 +95,7 @@ export default function MobileTransactionCards({ transaction }: { transaction: T
                     label={convertDateFormat(
                         transaction?.date_start,
                         'YYYY-M-D HH:mm:ss [GMT]',
-                        'YYYY-MM-DD HH:mm:ss [GMT] ZZ'
+                        'YYYY-MM-DD HH:mm:ss [GMT]'
                     )}
                 />
                 <CardColumn

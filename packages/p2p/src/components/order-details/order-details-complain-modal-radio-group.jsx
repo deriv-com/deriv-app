@@ -3,11 +3,11 @@ import React from 'react';
 import { RadioGroup } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import 'Components/order-details/order-details-complain-modal.scss';
+import 'Components/order-details/order-details-complain-modal-radio-group.scss';
 
 const OrderDetailsComplainModalRadioGroup = ({ dispute_reason, onCheckboxChange, is_buy_order_for_user }) => (
     <RadioGroup
-        className='order-details-complain-modal__radio-group'
+        className='order-details-complain-modal-radio-group'
         name='reason'
         onToggle={event => onCheckboxChange(event.target.value)}
         selected={dispute_reason}
@@ -37,6 +37,11 @@ const OrderDetailsComplainModalRadioGroup = ({ dispute_reason, onCheckboxChange,
                     ? localize('I’ve paid more than the agreed amount.')
                     : localize('I’ve received more than the agreed amount.')
             }
+        />
+        <RadioGroup.Item
+            value='buyer_third_party_payment_method'
+            label={localize('I’ve received payment from 3rd party.')}
+            hidden={is_buy_order_for_user}
         />
     </RadioGroup>
 );

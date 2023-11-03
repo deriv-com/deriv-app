@@ -1,0 +1,33 @@
+.wallets-trading-account-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 88px;
+
+    @include desktop {
+        $columns: 3;
+        $grid-last-row-children: '&:nth-child(#{$columns}n+1):nth-last-child(-n+#{$columns})';
+        #{$grid-last-row-children} > &__content,
+        #{$grid-last-row-children} ~ & > &__content {
+            border-bottom: none;
+        }
+    }
+
+    @include mobile {
+        $columns: 1;
+        $grid-last-row-children: '&:nth-child(#{$columns}n+1):nth-last-child(-n+#{$columns})';
+        #{$grid-last-row-children} > &__content,
+        #{$grid-last-row-children} ~ & > &__content {
+            border-bottom: none;
+        }
+    }
+
+    &__content {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-grow: 1;
+        height: 100%;
+        border-bottom: 1px solid var(--system-light-6-hover-background, #e6e9e9);
+    }
+}

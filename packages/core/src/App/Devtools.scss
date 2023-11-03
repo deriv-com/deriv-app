@@ -1,0 +1,146 @@
+.devtools {
+    &__toggle-button {
+        background: #ff444f;
+        border: 0px;
+        padding: 0px;
+        position: fixed;
+        z-index: 99999;
+        font-size: 1.5em;
+        margin: 0.5em;
+        cursor: pointer;
+        bottom: 0px;
+        right: 0px;
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        padding-bottom: 2px;
+        font-weight: bold;
+        transition: all 0.2s;
+
+        &:hover {
+            scale: 1.1;
+        }
+    }
+
+    &__panel {
+        font-size: clamp(12px, 1.5vw, 14px);
+        font-family: sans-serif;
+        display: flex;
+        background-color: rgb(11, 21, 33);
+        color: #fff;
+        height: 290px;
+        position: fixed;
+        direction: ltr;
+        bottom: 0px;
+        border-top: 1px solid rgb(63, 78, 96);
+        transform-origin: center top;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 20px;
+        z-index: 100000;
+        transition: all 0.2s ease 0s;
+        left: 0px;
+        width: 100%;
+        max-height: 90%;
+
+        &--open {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0px) scale(1);
+        }
+
+        &--close {
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(15px) scale(1.02);
+        }
+    }
+
+    &__panel-left {
+        flex: 1 1 500px;
+        min-height: 40%;
+        max-height: 100%;
+        overflow: auto;
+        border-right: 1px solid rgb(34, 46, 62);
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__panel-right {
+        flex: 1 1 500px;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        height: 100%;
+    }
+
+    &__close-button {
+        appearance: none;
+        font-size: 0.9em;
+        font-weight: bold;
+        background: rgb(63, 78, 96);
+        border: 0px;
+        border-radius: 0.3em;
+        color: #fff;
+        padding: 0.5em;
+        cursor: pointer;
+        position: absolute;
+        z-index: 99999;
+        margin: 0.5em;
+        bottom: 0px;
+        right: 0px;
+    }
+
+    &__panel-title {
+        padding: 0.5em;
+        background: rgb(19, 35, 55);
+        position: sticky;
+        top: 0px;
+        z-index: 1;
+    }
+
+    &__checkbox-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__checkbox {
+        margin: 10px 5px;
+    }
+
+    &__checkbox-label {
+        color: #fff;
+    }
+
+    &__endpoint-container {
+        margin: 10px;
+        gap: 15px;
+        display: flex;
+        flex-direction: column;
+
+        a {
+            color: #ff444f;
+        }
+
+        .dc-input__field {
+            color: #fff;
+        }
+
+        .dc-input__label {
+            background: rgb(11, 21, 33);
+        }
+
+        .dc-input__field ~ label {
+            color: #fff !important;
+        }
+    }
+
+    &__endpoint-actions {
+        display: flex;
+        gap: 15px;
+    }
+}

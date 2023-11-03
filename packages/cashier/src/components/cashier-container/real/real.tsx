@@ -25,7 +25,7 @@ const Real = observer(() => {
     }, [checkIframeLoaded, is_dark_mode_on, setContainerHeight]);
 
     return (
-        <div className='cashier__wrapper real'>
+        <React.Fragment>
             {should_show_loader && <Loading className='real__loader' />}
             {iframe_url && (
                 <iframe
@@ -37,7 +37,7 @@ const Real = observer(() => {
                     data-testid='dt_doughflow_section'
                 />
             )}
-        </div>
+        </React.Fragment>
     );
 });
 

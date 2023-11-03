@@ -20,17 +20,14 @@
         }
 
         img {
-            border-radius: 8px;
-            box-shadow: $launch-modal-chart-shadow;
+            height: 176px;
         }
-    }
-
-    .dc-modal-footer {
-        border-top: 2px solid var(--general-section-5);
     }
 }
 
+// For web version
 .dc-modal__container_launch-modal {
+    min-width: 432px !important;
     .dc-modal-header {
         border-bottom: 2px solid var(--general-section-5);
         padding: 11px 0px;
@@ -42,25 +39,21 @@
         height: 100%;
         flex-direction: column;
     }
-
-    .info {
-        img {
-            margin-bottom: 20px;
-            border: 1px solid $color-grey-4;
-        }
+    .dc-modal-footer {
+        border-top: 2px solid var(--general-section-5);
+        padding: 1.6rem 2.4rem;
     }
-
     &__portal-header {
         padding: 2.5rem 2rem;
     }
 }
 
+// For mobile overlay
 .launch-modal {
     min-width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 10px 16px;
 
     .info {
         height: 100%;
@@ -69,17 +62,14 @@
         flex-direction: column;
 
         img {
-            max-width: 180px;
             margin-left: auto;
             margin-right: auto;
-            margin-bottom: 30px;
-            border: 1px solid var(--state-hover);
         }
     }
 
     .dc-modal-footer {
+        border-top: 2px solid var(--general-section-5);
         margin-bottom: 32px;
-
         button {
             height: 40px;
             width: 100%;

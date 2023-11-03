@@ -7,12 +7,20 @@ import './launch-modal.scss';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 
-const InfoDisplay = () => (
+const ContinueButton: React.FC<{ handleOpen: () => void }> = ({ handleOpen }) => (
+    <Modal.Footer>
+        <Button has_effect onClick={handleOpen} primary large>
+            <Localize i18n_default_text='Continue' />
+        </Button>
+    </Modal.Footer>
+);
+
+const InfoDisplay: React.FC = () => (
     <div className='info' data-testid='launch-modal'>
-        <img src={getUrlBase('/public/images/common/chart-launch.png')} />
+        <img src={getUrlBase('/public/images/common/chart-launch.png')} alt='Chart Image' />
         <h1 className='title'>Deriv Trader Chart v2.0</h1>
         <p className='sub-title'>
-            <Localize i18n_default_text='Smoother charts. Smarter insights' /> .
+            <Localize i18n_default_text='Smoother charts. Smarter insights.' />
         </p>
     </div>
 );
@@ -28,15 +36,7 @@ const LaunchModal = observer(() => {
         localStorage.setItem('launchModalShown', JSON.stringify(true));
     };
 
-    const is_already_shown: false | true = JSON.parse(localStorage.getItem('launchModalShown') || 'false');
-
-    const ContinueButton = () => (
-        <Modal.Footer>
-            <Button has_effect onClick={handleOpen} primary large>
-                <Localize i18n_default_text='Continue' />
-            </Button>
-        </Modal.Footer>
-    );
+    const is_already_shown: boolean = JSON.parse(localStorage.getItem('launchModalShown') || 'false');
 
     return (
         <React.Suspense fallback={<UILoader />}>
@@ -45,7 +45,6 @@ const LaunchModal = observer(() => {
                     has_close_icon={false}
                     is_open={is_logged_in && open && !is_already_shown}
                     className='launch-modal'
-                    width='432px'
                     height='464px'
                     portalId='modal_root'
                     header={'  '}
@@ -53,7 +52,7 @@ const LaunchModal = observer(() => {
                     <Modal.Body>
                         <InfoDisplay />
                     </Modal.Body>
-                    <ContinueButton />
+                    <ContinueButton handleOpen={handleOpen} />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -64,7 +63,7 @@ const LaunchModal = observer(() => {
                 >
                     <div className='launch-modal'>
                         <InfoDisplay />
-                        <ContinueButton />
+                        <ContinueButton handleOpen={handleOpen} />
                     </div>
                 </PageOverlay>
             </MobileWrapper>

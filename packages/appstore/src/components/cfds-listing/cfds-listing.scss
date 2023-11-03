@@ -1346,7 +1346,7 @@
         white-space: nowrap;
     }
 }
-.cfd-personal-details-form-error {
+.personal-details-form-error {
     @include typeface(--paragraph-left-normal-red);
     @include desktop {
         white-space: nowrap;

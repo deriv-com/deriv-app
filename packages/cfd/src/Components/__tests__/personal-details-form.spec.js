@@ -2,14 +2,14 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import { isMobile } from '@deriv/shared';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CFDPersonalDetailsForm from '../cfd-personal-details-form';
+import PersonalDetailsForm from '../personal-details-form';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(),
 }));
 
-describe('<CFDPersonalDetailsForm />', () => {
+describe('<PersonalDetailsForm />', () => {
     beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
     afterAll(() => ReactDOM.createPortal.mockClear());
     beforeEach(() => {
@@ -104,7 +104,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     const opening_reason_required_error = 'Account opening reason is required';
 
     it('should render properly on desktop', async () => {
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<PersonalDetailsForm {...props} />);
 
         expect(screen.getByTestId('dt_cfd_details_form_description')).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /citizenship/i })).toBeInTheDocument();
@@ -116,7 +116,7 @@ describe('<CFDPersonalDetailsForm />', () => {
 
     it('should not render scrollbars or modal footer wrapper on mobile', () => {
         isMobile.mockReturnValue(true);
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<PersonalDetailsForm {...props} />);
 
         expect(screen.queryByTestId('dt_themed_scrollbars')).not.toBeInTheDocument();
         expect(screen.queryByTestId('dt_modal_footer')).not.toBeInTheDocument();
@@ -124,13 +124,13 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it("should show that it's loading when is_loading is true", () => {
-        render(<CFDPersonalDetailsForm {...props} is_loading />);
+        render(<PersonalDetailsForm {...props} is_loading />);
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_cfd_details_form_description')).not.toBeInTheDocument();
     });
 
     it("should show that it's loading when residence_list is still empty", () => {
-        render(<CFDPersonalDetailsForm {...props} residence_list={[]} />);
+        render(<PersonalDetailsForm {...props} residence_list={[]} />);
 
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_cfd_details_form_description')).not.toBeInTheDocument();
@@ -147,7 +147,7 @@ describe('<CFDPersonalDetailsForm />', () => {
 
         const changeable_fields = ['tax_identification_number'];
         render(
-            <CFDPersonalDetailsForm
+            <PersonalDetailsForm
                 {...props}
                 is_fully_authenticated
                 initial_values={initial_values}
@@ -165,7 +165,7 @@ describe('<CFDPersonalDetailsForm />', () => {
 
     it('should show an error message received from server that is passed via props as form_error', async () => {
         const form_error = 'Input validation failed: citizen!';
-        render(<CFDPersonalDetailsForm {...props} form_error={form_error} />);
+        render(<PersonalDetailsForm {...props} form_error={form_error} />);
 
         expect(screen.getByTestId('form_submit_error')).toHaveClass('dc-icon');
         expect(screen.getByText(form_error)).toBeInTheDocument();
@@ -173,7 +173,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should show validation errors in fields', async () => {
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<PersonalDetailsForm {...props} />);
 
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
         const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
@@ -203,7 +203,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should enable the Next button for form submission when all required fields are filled', async () => {
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<PersonalDetailsForm {...props} />);
 
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
         const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
@@ -238,7 +238,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should disable the Next button in case of invalid input in a required field', async () => {
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<PersonalDetailsForm {...props} />);
 
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
 
@@ -250,7 +250,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should disable the Next button in case a required field is empty', async () => {
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<PersonalDetailsForm {...props} />);
 
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
 

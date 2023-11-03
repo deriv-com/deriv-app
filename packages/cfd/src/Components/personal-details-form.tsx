@@ -20,7 +20,7 @@ import {
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
-type TCFDPersonalDetailsFormProps = {
+type TPersonalDetailsFormProps = {
     changeable_fields?: string[];
     form_error?: string;
     index: number;
@@ -207,7 +207,7 @@ const submitForm: TSubmitForm = (values, actions, idx, onSubmit, is_dirty, resid
     onSubmit(idx, payload, actions.setSubmitting, is_dirty);
 };
 
-const CFDPersonalDetailsForm = ({
+const PersonalDetailsForm = ({
     changeable_fields,
     is_loading,
     residence_list,
@@ -215,7 +215,7 @@ const CFDPersonalDetailsForm = ({
     initial_values,
     index,
     form_error,
-}: TCFDPersonalDetailsFormProps) => {
+}: TPersonalDetailsFormProps) => {
     const account_opening_reason = getAccountOpeningReasonList();
 
     const onSubmitForm = (values: TFormValues, actions: FormikActions<TFormValues>) =>
@@ -485,4 +485,4 @@ const CFDPersonalDetailsForm = ({
     );
 };
 
-export default CFDPersonalDetailsForm;
+export default PersonalDetailsForm;

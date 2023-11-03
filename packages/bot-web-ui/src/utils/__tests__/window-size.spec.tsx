@@ -8,12 +8,12 @@ import {
     setInnerHeightToVariable,
 } from '../window-size';
 
-describe('DOM utilities', () => {
+describe('DOM utilities of window-size file', () => {
     beforeEach(() => {
         render(<div className='bot' data-testid='mock-bot' />);
     });
 
-    it('should get main content height', () => {
+    it('Should get main content height', () => {
         const bot_element = screen.getByTestId('mock-bot');
 
         if (!bot_element) {
@@ -24,7 +24,7 @@ describe('DOM utilities', () => {
         expect(getMainContentHeight()).toBe('100px');
     });
 
-    it('should get main content width', () => {
+    it('Should get main content width', () => {
         const bot_element = screen.getByTestId('mock-bot');
 
         if (!bot_element) {
@@ -35,7 +35,7 @@ describe('DOM utilities', () => {
         expect(getMainContentWidth()).toBe('200px');
     });
 
-    it('should set main content width based on is_run_panel_open', () => {
+    it('Should set main content width based on is_run_panel_open', () => {
         const bot_element = screen.getByTestId('mock-bot');
 
         setMainContentWidth(true);
@@ -45,7 +45,7 @@ describe('DOM utilities', () => {
         expect(bot_element).toHaveStyle('--bot-content-width: calc(100vw - 16px)');
     });
 
-    it('should set inner height to --vh variable', () => {
+    it('Should set inner height to --vh variable', () => {
         Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: 768 });
         setInnerHeightToVariable();
 

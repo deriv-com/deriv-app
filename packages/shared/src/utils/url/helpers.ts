@@ -51,6 +51,7 @@ export const getPlatformFromUrl = (domain = window.location.hostname) => {
     return {
         ...resolutions,
         is_staging: resolutions.is_staging_deriv_app,
+        is_test_link: resolutions.is_test_link,
     };
 };
 

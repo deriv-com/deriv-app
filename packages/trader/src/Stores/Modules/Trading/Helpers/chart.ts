@@ -4,7 +4,9 @@ export type TPayload = {
     data: Omit<
         Partial<TEvents['ce_chart_types_form'] & TEvents['ce_market_types_form'] & TEvents['ce_indicators_types_form']>,
         'action'
-    > & { action: string };
+    > & {
+        action: string;
+    };
     event_type: 'ce_chart_types_form' | 'ce_market_types_form' | 'ce_indicators_types_form';
 };
 

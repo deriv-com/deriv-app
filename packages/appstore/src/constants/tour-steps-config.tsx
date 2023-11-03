@@ -93,8 +93,8 @@ export const tour_step_config_high_risk: Step[] = [
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
                     <Localize i18n_default_text="Trader's Hub tour" />
-                    <div className='toggle-account-type__divider' />
                 </Text>
+                <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
         content: (

@@ -1,78 +1,101 @@
-import React, { ButtonHTMLAttributes, ReactElement } from 'react';
+import React, { ComponentProps, CSSProperties, ReactElement } from 'react';
 import classNames from 'classnames';
+import { Loader } from '../../Loader';
 import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
-import styles from './WalletButton.module.css';
+import './WalletButton.scss';
 
-interface WalletButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    color?: 'black' | 'primary-light' | 'primary' | 'white';
+type TVariant = 'contained' | 'ghost' | 'outlined';
+type TColor = 'black' | 'primary-light' | 'primary' | 'white';
+
+interface WalletButtonProps {
+    color?: TColor;
+    disabled?: ComponentProps<'button'>['disabled'];
     icon?: ReactElement;
     isFullWidth?: boolean;
-    isRounded?: boolean;
+    isLoading?: boolean;
+    onClick?: ComponentProps<'button'>['onClick'];
+    rounded?: Extract<TGenericSizes, 'md' | 'sm'>;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
-    variant?: 'contained' | 'ghost' | 'outlined';
+    variant?: TVariant;
 }
 
 const WalletButton: React.FC<WalletButtonProps> = ({
     color = 'primary',
+    disabled = false,
     icon,
     isFullWidth = false,
-    isRounded = false,
+    isLoading = false,
+    onClick,
+    rounded = 'sm',
     size = 'md',
     text,
     variant = 'contained',
-    ...rest
 }) => {
     const isContained = variant === 'contained';
-    const isOutlined = variant === 'outlined';
-    const isGhost = variant === 'ghost';
-    const hasIcon = !!icon;
-    const hasText = !!text;
 
     const buttonClassNames = classNames(
-        styles['wallets-button'],
-        isContained && styles[`wallets-button-color-${color}`],
-        styles[`wallets-button-size-${size}`],
-        styles[`wallets-button-variant-${variant}`],
-        isRounded ? styles['wallets-button-rounded-full'] : styles['wallets-button-rounded-default'],
-        isFullWidth && styles['wallets-button-full-width']
+        'wallets-button',
+        `wallets-button__size--${size}`,
+        `wallets-button__variant--${variant}`,
+        `wallets-button__rounded--${rounded}`,
+        isContained && `wallets-button__color--${color}`,
+        isFullWidth && 'wallets-button__full-width'
     );
 
-    const buttonFontColor = () => {
-        if (isContained) {
-            switch (color) {
-                case 'black':
-                    return 'white';
-                case 'primary-light':
-                    return 'error';
-                case 'primary':
-                    return 'white';
-                case 'white':
-                    return 'general';
-                default:
-                    return 'white';
-            }
-        } else if (isOutlined) {
-            return 'general';
-        } else if (isGhost) {
-            return 'error';
-        }
+    type TButtonFontColor = {
+        [key in TVariant]: {
+            [key in TColor]: string;
+        };
     };
 
-    const buttonFontSizeMapper: Record<Extract<TGenericSizes, 'lg' | 'md' | 'sm'>, TGenericSizes> = {
+    const fontColorMapper: TButtonFontColor = {
+        contained: {
+            black: 'white',
+            primary: 'white',
+            'primary-light': 'error',
+            white: 'general',
+        },
+        ghost: {
+            black: 'error',
+            primary: 'error',
+            'primary-light': 'error',
+            white: 'error',
+        },
+        outlined: {
+            black: 'general',
+            primary: 'general',
+            'primary-light': 'general',
+            white: 'general',
+        },
+    };
+
+    const loaderColorMapper: Record<TColor, CSSProperties['color']> = {
+        black: '#333333',
+        primary: '#FFFFFF',
+        'primary-light': '#EC3F3F',
+        white: '#85ACB0',
+    };
+
+    const buttonFontSizeMapper = {
         lg: 'sm',
         md: 'sm',
-        sm: 'xs' as const,
-    };
+        sm: 'xs',
+    } as const;
 
     return (
-        <button className={buttonClassNames} {...rest}>
-            {hasIcon && icon}
-            {hasText && (
+        <button className={buttonClassNames} disabled={disabled} onClick={onClick}>
+            {isLoading && (
+                <div className='wallets-button__loader'>
+                    <Loader color={isContained ? loaderColorMapper[color] : '#85ACB0'} isFullScreen={false} />
+                </div>
+            )}
+            {icon && !isLoading && icon}
+            {text && !isLoading && (
                 <WalletText
                     align='center'
-                    color={buttonFontColor()}
+                    color={fontColorMapper[variant][color]}
                     size={buttonFontSizeMapper[size] || 'sm'}
                     weight='bold'
                 >

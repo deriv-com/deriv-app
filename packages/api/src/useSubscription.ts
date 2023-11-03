@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import useAPI from './useAPI';
 import type {
     TSocketAcceptableProps,
+    TSocketError,
     TSocketRequestPayload,
     TSocketResponseData,
     TSocketSubscribableEndpointNames,
@@ -10,7 +11,7 @@ import type {
 const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isSubscribed, setSubscribed] = useState(false);
-    const [error, setError] = useState<unknown>();
+    const [error, setError] = useState<TSocketError<T>>();
     const [data, setData] = useState<TSocketResponseData<T>>();
     const subscriber = useRef<{ unsubscribe?: VoidFunction }>();
     const { subscribe: _subscribe } = useAPI();
@@ -35,7 +36,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
                     }
                 );
             } catch (e) {
-                setError(e);
+                setError(e as TSocketError<T>);
             }
         },
         [_subscribe, name]

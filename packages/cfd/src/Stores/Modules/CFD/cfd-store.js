@@ -424,6 +424,7 @@ export default class CFDStore extends BaseStore {
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
                 this.clearCFDError();
                 this.setMT5MigrationError(has_error?.error?.message);
+                this.migrated_mt5_accounts = [];
                 this.root_store.ui.toggleMT5MigrationModal();
             }
         } catch (error) {

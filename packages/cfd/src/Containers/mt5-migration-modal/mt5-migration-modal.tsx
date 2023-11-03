@@ -12,14 +12,13 @@ const MT5MigrationModal = observer(() => {
     const {
         disableApp,
         enableApp,
-        is_mt5_migration_modal_waiting_on_other_modals,
         is_mt5_migration_modal_open,
         is_mobile,
         toggleMT5MigrationModal,
         setMT5MigrationModalEnabled,
     } = ui;
     const { mt5_migration_error } = useCfdStore();
-    const { no_of_svg_accounts_to_migrate, has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
+    const { no_of_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
 
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
 
@@ -30,15 +29,11 @@ const MT5MigrationModal = observer(() => {
     );
 
     React.useEffect(() => {
-        if (has_svg_accounts_to_migrate && !is_mt5_migration_modal_waiting_on_other_modals) {
-            toggleMT5MigrationModal();
+        if (is_mt5_migration_modal_open) {
+            const has_mt5_migration_error = !!mt5_migration_error;
+            setShowModalFrontSide(!has_mt5_migration_error);
         }
-    }, [has_svg_accounts_to_migrate, is_mt5_migration_modal_waiting_on_other_modals, toggleMT5MigrationModal]);
-
-    React.useEffect(() => {
-        const has_mt5_migration_error = !!mt5_migration_error;
-        setShowModalFrontSide(!has_mt5_migration_error);
-    }, [mt5_migration_error, setShowModalFrontSide]);
+    }, [mt5_migration_error, setShowModalFrontSide, is_mt5_migration_modal_open]);
 
     const closeModal = () => {
         setShowModalFrontSide(true);

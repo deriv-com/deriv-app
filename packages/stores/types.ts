@@ -650,7 +650,6 @@ type TUiStore = {
     closeSuccessTopUpModal: () => void;
     closeTopUpModal: () => void;
     is_cfd_reset_password_modal_enabled: boolean;
-    is_mt5_migration_modal_waiting_on_other_modals: boolean;
     is_mt5_migration_modal_enabled: boolean;
     is_mt5_migration_modal_open: boolean;
     setCFDPasswordResetModal: (value: boolean) => void;
@@ -665,7 +664,6 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
-    setMT5MigrationModalWaitingOnOtherModals: (value: boolean) => void;
     setMT5MigrationModalEnabled: (value: boolean) => void;
     toggleMT5MigrationModal: () => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';

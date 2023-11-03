@@ -21,7 +21,7 @@ const WalletSuccess: React.FC<TSuccessProps> = ({ description, renderButton, ren
                     {description}
                 </WalletText>
             </div>
-            {renderButton && renderButton()}
+            {renderButton?.()}
         </div>
     );
 };

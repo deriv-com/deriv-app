@@ -5,7 +5,7 @@ import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import CFDPOA from '../Components/cfd-poa';
-import CFDPOI from '../Components/cfd-poi';
+import ProofOfIdentity from '../Components/proof-of-identity';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { JURISDICTION } from '../Helpers/cfd-config';
@@ -36,7 +36,7 @@ type TItem = {
 };
 
 type TItemsState<T extends TItem> = {
-    body: typeof CFDPOI | typeof CFDPOA | typeof CFDPersonalDetailsContainer;
+    body: typeof ProofOfIdentity | typeof CFDPOA | typeof CFDPersonalDetailsContainer;
     form_value: { [key: string]: string | undefined };
     forwarded_props: Array<Partial<keyof T>>;
 };
@@ -90,7 +90,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     const is_authenticated_with_idv_photoid = useIsAccountStatusPresent('authenticated_with_idv_photoid');
 
     const poi_config: TItemsState<typeof passthroughProps> = {
-        body: CFDPOI,
+        body: ProofOfIdentity,
         form_value: {
             poi_state: 'unknown',
         },
@@ -190,7 +190,9 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         return key ? items[state_index][key] : items[state_index];
     };
 
-    const BodyComponent = getCurrent('body') as typeof CFDPOI & typeof CFDPOA & typeof CFDPersonalDetailsContainer;
+    const BodyComponent = getCurrent('body') as typeof ProofOfIdentity &
+        typeof CFDPOA &
+        typeof CFDPersonalDetailsContainer;
 
     const form_value = getCurrent('form_value');
 

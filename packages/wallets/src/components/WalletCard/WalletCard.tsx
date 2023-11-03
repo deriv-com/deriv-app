@@ -1,4 +1,5 @@
 import React from 'react';
+import { useBalance } from '@deriv/api';
 import { THooks } from '../../types';
 import { WalletText } from '../Base';
 import { WalletCardIcon } from '../WalletCardIcon';
@@ -11,6 +12,7 @@ type TProps = {
 };
 
 const WalletCard: React.FC<TProps> = ({ account }) => {
+    const { isLoading } = useBalance();
     return (
         <div className='wallets-card'>
             <WalletGradientBackground
@@ -36,11 +38,13 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
                         <WalletText color={account?.is_virtual ? 'white' : 'black'} size='2xs'>
                             {account?.currency} Wallet
                         </WalletText>
-                        <p className='wallets-card__details__bottom__balance'>
+                        {isLoading ? (
+                            <div className='wallets-skeleton wallets-card--balance-loader' />
+                        ) : (
                             <WalletText color={account?.is_virtual ? 'white' : 'black'} size='sm' weight='bold'>
                                 {account?.display_balance}
                             </WalletText>
-                        </p>
+                        )}
                     </div>
                 </div>
             </WalletGradientBackground>

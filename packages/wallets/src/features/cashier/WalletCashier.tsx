@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletCashierContent, WalletCashierHeader } from './components';
 import './WalletCashier.scss';
+import { Loader } from '../../components';
 
 const WalletCashier = () => {
     const { isLoading } = useActiveWalletAccount();
@@ -12,7 +13,7 @@ const WalletCashier = () => {
         setIsContentScrolled(target.scrollTop > 0);
     };
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <Loader />;
 
     return (
         <div className='wallets-cashier'>

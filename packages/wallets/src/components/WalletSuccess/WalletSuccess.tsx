@@ -14,7 +14,7 @@ const WalletSuccess: React.FC<TSuccessProps> = ({ description, renderButton, ren
         <div className='wallets-success'>
             {renderIcon()}
             <div className='wallets-success__content'>
-                <WalletText align='center' size='md' weight='bold'>
+                <WalletText align='center' weight='bold'>
                     {title}
                 </WalletText>
                 <WalletText align='center' size='sm'>

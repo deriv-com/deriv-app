@@ -42,12 +42,7 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
                 })}
             >
                 <WalletButtonGroup isFlex>
-                    <WalletButton
-                        color='black'
-                        onClick={onSecondaryButtonClick}
-                        text='Maybe later'
-                        variant='outlined'
-                    />
+                    <WalletButton onClick={onSecondaryButtonClick} text='Maybe later' variant='outlined' />
                     <WalletButton onClick={onPrimaryButtonClick} text='Deposit' />
                 </WalletButtonGroup>
             </div>
@@ -59,7 +54,6 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
             <WalletCard
                 balance={`0.00 ${currency}`}
                 currency={currency || 'USD'}
-                isDemo={false}
                 landingCompanyName={landingCompany}
                 width='24rem'
             />

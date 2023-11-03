@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api';
-import { Divider, WalletText } from '../../../../components/Base';
 import { WalletsTransactionStatusLoader } from '../../../../components';
+import { Divider, WalletText } from '../../../../components/Base';
 import Warning from '../../../../public/images/warning.svg';
 import { THooks } from '../../../../types';
 import { TransactionStatusError } from './components/TransactionStatusError';
@@ -33,15 +33,9 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
         return () => unsubscribe();
     }, [subscribe, transactionType, unsubscribe]);
 
-    const isLoading = useMemo(
-        () => isTransactionsLoading || isActiveWalletAccountLoading,
-        [isTransactionsLoading, isActiveWalletAccountLoading]
-    );
-
-    const isError = useMemo(
-        () => !!activeWalletAccountError || !!recentTransactionsError,
-        [activeWalletAccountError, recentTransactionsError]
-    );
+    const isLoading = isTransactionsLoading || isActiveWalletAccountLoading;
+    const isError = !!activeWalletAccountError || !!recentTransactionsError;
+    const isTransactionStatusSuccessVisible = !isLoading && !isError && wallet;
 
     const refresh = useCallback(() => {
         unsubscribe();
@@ -62,7 +56,7 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
             <div className='wallets-transaction-status__body'>
                 {!isError && isLoading && <WalletsTransactionStatusLoader />}
                 {isError && <TransactionStatusError refresh={refresh} />}
-                {!isLoading && !isError && wallet && (
+                {isTransactionStatusSuccessVisible && (
                     <TransactionStatusSuccess
                         transactionType={transactionType}
                         transactions={transactions || []}

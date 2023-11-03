@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, ComponentProps, CSSProperties, forwardRef } from 'react';
+import React, { ButtonHTMLAttributes, ComponentProps, forwardRef, Ref } from 'react';
 import classNames from 'classnames';
 import { TGenericSizes } from '../types';
 import './IconButton.scss';
@@ -12,7 +12,10 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
-    ({ className, color = 'primary', disabled, icon, isRound, onClick, size = 'sm', ...rest }, ref) => {
+    (
+        { className, color = 'primary', disabled, icon, isRound, onClick, size = 'sm', ...rest },
+        ref: Ref<HTMLButtonElement>
+    ) => {
         const iconButtonClassNames = classNames(
             'wallets-icon-button',
             `wallets-icon-button__size--${size}`,

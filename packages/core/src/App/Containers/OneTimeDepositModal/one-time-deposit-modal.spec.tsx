@@ -14,7 +14,7 @@ jest.mock('@deriv/hooks', () => ({
         data: 'https://www.binary.com',
         isSuccess: true,
     })),
-    useHasMFAccountDeposited: jest.fn(() => false),
+    useHasMFAccountDeposited: jest.fn(),
 }));
 
 describe('<OneTimeDepositModal />', () => {
@@ -46,6 +46,7 @@ describe('<OneTimeDepositModal />', () => {
 
     it('should render one time deposit modal', () => {
         const history = createBrowserHistory();
+        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: false });
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );
@@ -65,6 +66,7 @@ describe('<OneTimeDepositModal />', () => {
 
     it('should render loading component if iframe has not loaded', () => {
         const history = createBrowserHistory();
+        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: false });
         (useDepositFiatAddress as jest.Mock).mockReturnValueOnce({
             data: '',
             isSuccess: false,
@@ -86,7 +88,7 @@ describe('<OneTimeDepositModal />', () => {
 
     it('should close modal if user unable to deposit because they have deposited', () => {
         const history = createBrowserHistory();
-        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce(true);
+        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: true });
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );
@@ -105,6 +107,7 @@ describe('<OneTimeDepositModal />', () => {
 
     it('should close modal after cllicking ESC key', () => {
         const history = createBrowserHistory();
+        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: false });
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );
@@ -123,6 +126,7 @@ describe('<OneTimeDepositModal />', () => {
 
     it('should open live chat widget on click', () => {
         const history = createBrowserHistory();
+        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: false });
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );

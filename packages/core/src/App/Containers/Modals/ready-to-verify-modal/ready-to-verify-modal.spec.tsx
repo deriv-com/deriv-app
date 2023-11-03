@@ -6,7 +6,7 @@ import ReadyToVerifyModal from './ready-to-verify-modal';
 import { useHasMFAccountDeposited } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
-    useHasMFAccountDeposited: jest.fn(() => false),
+    useHasMFAccountDeposited: jest.fn(),
 }));
 
 describe('<ReadyToVerifyModal />', () => {
@@ -28,7 +28,7 @@ describe('<ReadyToVerifyModal />', () => {
                 should_show_account_success_modal: true,
             },
         });
-        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce(true);
+        (useHasMFAccountDeposited as jest.Mock).mockReturnValue({ has_mf_account_deposited: true });
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
@@ -62,7 +62,7 @@ describe('<ReadyToVerifyModal />', () => {
                 should_show_account_success_modal: true,
             },
         });
-
+        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: false });
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

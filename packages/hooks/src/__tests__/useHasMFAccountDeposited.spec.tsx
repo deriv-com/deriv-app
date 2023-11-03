@@ -32,20 +32,20 @@ describe('useHasMFAccountDeposited', () => {
     test('should return false if expected status is not in account_status', () => {
         const { result } = renderHook(() => useHasMFAccountDeposited(), { wrapper });
 
-        expect(result.current).toBe(false);
+        expect(result.current.has_mf_account_deposited).toBe(false);
     });
 
     test('should return true if withdrawal_locked status is in account_status', () => {
         mock_useQuery_return_value.data.get_account_status.status = ['withdrawal_locked'];
         const { result } = renderHook(() => useHasMFAccountDeposited(), { wrapper });
 
-        expect(result.current).toBe(true);
+        expect(result.current.has_mf_account_deposited).toBe(true);
     });
 
     test('should return true if cashier_locked status is in account_status', () => {
         mock_useQuery_return_value.data.get_account_status.status = ['cashier_locked'];
         const { result } = renderHook(() => useHasMFAccountDeposited(), { wrapper });
 
-        expect(result.current).toBe(true);
+        expect(result.current.has_mf_account_deposited).toBe(true);
     });
 });

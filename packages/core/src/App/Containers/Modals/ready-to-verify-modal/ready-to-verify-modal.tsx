@@ -16,7 +16,7 @@ const ReadyToVerifyModal = observer(() => {
         setIsVerificationModalVisible,
         is_mobile,
     } = ui;
-    const has_mf_account_deposited = useHasMFAccountDeposited();
+    const { has_mf_account_deposited } = useHasMFAccountDeposited();
 
     const onConfirmModal = () => {
         toggleAccountSuccessModal();

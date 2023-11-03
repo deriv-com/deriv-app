@@ -25,7 +25,7 @@ const OneTimeDepositModal = observer(() => {
         toggleAccountSuccessModal,
     } = ui;
     const liveChat = useLiveChat(false, loginid);
-    const has_mf_account_deposited = useHasMFAccountDeposited();
+    const { has_mf_account_deposited } = useHasMFAccountDeposited();
 
     React.useEffect(() => {
         if (has_mf_account_deposited) {

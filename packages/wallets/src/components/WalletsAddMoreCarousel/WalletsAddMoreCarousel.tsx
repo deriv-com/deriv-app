@@ -48,7 +48,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
                     ))}
                 </div>
                 {isDesktop && isHover && (
-                    <>
+                    <React.Fragment>
                         <IconButton
                             className='wallets-add-more__carousel-btn wallets-add-more__carousel-btn--prev'
                             color='white'
@@ -67,7 +67,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
                             onClick={() => walletsAddMoreEmblaAPI?.scrollNext()}
                             size='lg'
                         />
-                    </>
+                    </React.Fragment>
                 )}
             </div>
         </div>

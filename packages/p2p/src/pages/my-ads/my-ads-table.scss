@@ -175,10 +175,10 @@
 
     &__row {
         padding: 1.6rem;
-        grid-template-columns: 1.7fr repeat(2, 2fr) 2.3fr 2.65fr 2.5fr;
+        grid-template-columns: repeat(3, 1.6fr) 1.9fr 3fr 1.9fr;
 
         .dc-table__head:nth-last-child(2) {
-            margin-left: 3.2rem;
+            margin-left: 2rem;
         }
 
         .dc-table__cell:last-child {

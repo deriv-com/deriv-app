@@ -14,7 +14,6 @@ import NetworkStatus, {
     ToggleLanguageSettings,
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
@@ -72,7 +71,6 @@ const Footer = ({
             <ServerTime />
             <div className='footer__links'>
                 {footer_extensions_right.map(FooterExtensionRenderer)}
-                <WhatsApp />
                 <LiveChat />
                 <FooterIconSeparator />
                 <GoToDeriv />

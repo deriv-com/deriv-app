@@ -14,7 +14,6 @@ import NetworkStatus, {
     ToggleLanguageSettings,
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 import { routes } from '@deriv/shared';
@@ -87,7 +86,7 @@ const TradingHubFooter = ({
             <FooterIconSeparator />
             <div className='footer__links'>
                 {footer_extensions_right.map(FooterExtensionRenderer)}
-                <WhatsApp />
+
                 <LiveChat />
                 <GoToDeriv />
                 <ResponsibleTrading />
@@ -131,6 +130,7 @@ const TradingHubFooter = ({
 };
 
 TradingHubFooter.propTypes = {
+    current_language: PropTypes.string,
     is_app_disabled: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,

@@ -3,7 +3,7 @@
     max-width: 28rem;
     position: relative;
 
-    &__content {
+    &__box {
         height: 4rem;
         width: 100%;
         border-radius: 0.4rem;
@@ -20,8 +20,12 @@
         }
     }
 
-    &__content:has(&__field:focus) {
+    &__box:has(&__field:focus) {
         border: 1px solid var(--brand-blue, #85acb0);
+    }
+
+    &__box:has(&__field:invalid) {
+        border: 1px solid var(--status-light-danger, #ec3f3f);
     }
 
     &__field {
@@ -44,10 +48,6 @@
         padding: 0;
     }
 
-    &__field:placeholder-shown ~ &__label--with-icon {
-        left: 4.4rem;
-    }
-
     label,
     &__field:focus ~ &__label {
         position: absolute;
@@ -66,6 +66,10 @@
 
     &__field:focus ~ &__label {
         color: var(--brand-blue, #85acb0);
+    }
+
+    &__field:invalid ~ &__label {
+        color: var(--status-light-danger, #ec3f3f);
     }
 
     &__icon {

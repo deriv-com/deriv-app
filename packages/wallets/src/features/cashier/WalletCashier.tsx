@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
+import { Loader } from '../../components';
 import { WalletCashierContent, WalletCashierHeader } from './components';
 import './WalletCashier.scss';
-import { Loader } from '../../components';
 
 const WalletCashier = () => {
     const { isLoading } = useActiveWalletAccount();

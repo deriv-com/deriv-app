@@ -4,6 +4,10 @@
     align-items: center;
     justify-content: center;
 
+    @include mobile {
+        justify-content: flex-start;
+    }
+
     &__form {
         display: flex;
         flex-direction: column;
@@ -22,6 +26,7 @@
 
                 @include mobile {
                     width: 100%;
+                    grid-template-columns: 60% 40%;
                 }
             }
         }

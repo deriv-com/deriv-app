@@ -1,6 +1,14 @@
 import React from 'react';
-import { TransferForm } from './TransferForm';
+import { Loader } from '../../../../components';
+import { TransferForm } from './components';
+import { useWalletTransfer } from './hooks';
 
-const Transfer = () => <TransferForm />;
+const Transfer = () => {
+    const { isLoading } = useWalletTransfer();
+
+    if (isLoading) return <Loader />;
+
+    return <TransferForm />;
+};
 
 export default Transfer;

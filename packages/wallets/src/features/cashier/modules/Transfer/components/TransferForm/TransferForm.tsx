@@ -1,23 +1,21 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Formik } from 'formik';
-import { useActiveWalletAccount, useTransferBetweenAccounts } from '@deriv/api';
-import { TransferFormDropdownModule, TransferFormInputFieldModule } from './components';
+import { useTransferBetweenAccounts } from '@deriv/api';
+import { useWalletTransfer } from '../../hooks';
+import type { TInitialTransferFormValues } from '../../types';
+import { TransferFormDropdownModule } from '../TransferFormDropdown';
+import { TransferFormInputFieldModule } from '../TransferFormInputField';
 import './TransferForm.scss';
 
-type TInitialValues = {
-    amountReceive: number;
-    amountSend: number;
-    fromAccount?: NonNullable<ReturnType<typeof useActiveWalletAccount>['data']>;
-    toAccount?: NonNullable<ReturnType<typeof useActiveWalletAccount>['data']>;
-};
-
 const TransferForm = () => {
-    const { data: activeAccount } = useActiveWalletAccount();
+    const { activeWallet } = useWalletTransfer();
     const { mutate } = useTransferBetweenAccounts();
-    const initialValues: TInitialValues = {
+    const mobileAccountsListRef = useRef<HTMLDivElement | null>(null);
+
+    const initialValues: TInitialTransferFormValues = {
         amountReceive: 0,
         amountSend: 0,
-        fromAccount: activeAccount,
+        fromAccount: activeWallet,
         toAccount: undefined,
     };
 
@@ -41,13 +39,13 @@ const TransferForm = () => {
                                 <TransferFormInputFieldModule
                                     defaultValue={props.values.amountSend}
                                     fieldName='amountSend'
-                                    fractionDigits={props.values.fromAccount?.currency_config?.fractional_digits}
+                                    fractionDigits={props.values.fromAccount?.currencyConfig?.fractional_digits}
                                     label='Amount you send'
                                 />
                                 <TransferFormDropdownModule
                                     fieldName='fromAccount'
-                                    initialAccount={props.initialValues.fromAccount}
                                     label='Transfer from'
+                                    mobileAccountsListRef={mobileAccountsListRef}
                                 />
                             </div>
                             <div style={{ height: '20px' }} />
@@ -55,10 +53,14 @@ const TransferForm = () => {
                                 <TransferFormInputFieldModule
                                     defaultValue={props.values.amountReceive}
                                     fieldName='amountReceive'
-                                    fractionDigits={props.values.toAccount?.currency_config?.fractional_digits}
+                                    fractionDigits={props.values.toAccount?.currencyConfig?.fractional_digits}
                                     label='Estimated amount'
                                 />
-                                <TransferFormDropdownModule fieldName='toAccount' label='Transfer to' />
+                                <TransferFormDropdownModule
+                                    fieldName='toAccount'
+                                    label='Transfer to'
+                                    mobileAccountsListRef={mobileAccountsListRef}
+                                />
                             </div>
                         </div>
                         <button className='wallets-transfer__form__submit-button' type='submit'>
@@ -67,6 +69,8 @@ const TransferForm = () => {
                     </form>
                 )}
             </Formik>
+            {/* Portal for accounts list in mobile view */}
+            <div className='wallets-transfer__mobile-accounts-list' ref={mobileAccountsListRef} />
         </div>
     );
 };

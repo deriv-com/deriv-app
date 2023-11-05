@@ -35,6 +35,7 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, type = 'moda
                         'wallets-transfer-form-account-card__icon--is-modal': isModal,
                     })}
                 >
+                    {/* @ts-expect-error provide proper type for accounts from transfer_between_accounts response */}
                     {account?.account_category === 'wallet' ? (
                         <WalletCurrencyCard
                             currency={account?.currencyConfig?.display_code || 'USD'}
@@ -45,6 +46,7 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, type = 'moda
                         <WalletsAppLinkedWithWalletIcon
                             appIcon={account?.appIcon || ''}
                             currency={activeWallet?.currency || ''}
+                            isDemo={activeWallet?.isVirtual}
                             size='small'
                             walletIcon={activeWallet?.activeWalletIcon || ''}
                         />

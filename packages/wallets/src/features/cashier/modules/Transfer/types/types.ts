@@ -1,6 +1,6 @@
 import { useWalletTransfer } from '../hooks';
 
-export type TAccount = ReturnType<typeof useWalletTransfer>['activeWallet'];
+type TAccount = ReturnType<typeof useWalletTransfer>['activeWallet'];
 
 export type TInitialTransferFormValues = {
     amountReceive: number;

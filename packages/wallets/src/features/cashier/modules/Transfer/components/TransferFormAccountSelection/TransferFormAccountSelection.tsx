@@ -8,21 +8,38 @@ import { useWalletTransfer } from '../../hooks';
 import TransferFormAccountCard from '../TransferFormAccountCard/TransferFormAccountCard';
 import './TransferFormAccountSelection.scss';
 
+type TAccount = ReturnType<typeof useWalletTransfer>['activeWallet'];
+
 type TProps = {
-    fromAccount?: ReturnType<typeof useWalletTransfer>['activeWallet'];
+    fromAccount?: TAccount;
     label: 'Transfer from' | 'Transfer to';
-    onSelect: (value?: ReturnType<typeof useWalletTransfer>['activeWallet']) => void;
-    selectedAccount?: ReturnType<typeof useWalletTransfer>['activeWallet'];
+    onSelect: (value?: TAccount) => void;
+    selectedAccount?: TAccount;
+    toAccount?: TAccount;
 };
 
 const TitleLine = () => <div className='wallets-transfer-form-account-selection__title-line' />;
 
-const TransferFormAccountSelection: React.FC<TProps> = ({ fromAccount, label, onSelect, selectedAccount }) => {
+const TransferFormAccountSelection: React.FC<TProps> = ({
+    fromAccount,
+    label,
+    onSelect,
+    selectedAccount,
+    toAccount,
+}) => {
     const { isMobile } = useDevice();
     const modal = useModal();
     const { activeWallet, fromAccountList, toAccountList } = useWalletTransfer(fromAccount?.loginid);
 
     const transferAccountsList = label === 'Transfer from' ? fromAccountList : toAccountList;
+
+    const transferToHint = useMemo(() => {
+        const isTransferToHintVisible = label === 'Transfer to' && toAccount?.loginid === activeWallet?.loginid;
+
+        return isTransferToHintVisible
+            ? `You can only transfers funds from the ${fromAccount?.accountName} to the linked ${activeWallet?.accountName}.`
+            : '';
+    }, [activeWallet?.accountName, activeWallet?.loginid, fromAccount?.accountName, label, toAccount?.loginid]);
 
     const isSingleAccountsGroup = useMemo(
         () =>
@@ -87,6 +104,13 @@ const TransferFormAccountSelection: React.FC<TProps> = ({ fromAccount, label, on
                     );
                 })}
             </div>
+            {transferToHint && (
+                <div className='wallets-transfer-form-account-selection__transfer-to-hint'>
+                    <WalletText align='center' as='p' color='primary' size='xs'>
+                        {transferToHint}
+                    </WalletText>
+                </div>
+            )}
         </div>
     );
 };

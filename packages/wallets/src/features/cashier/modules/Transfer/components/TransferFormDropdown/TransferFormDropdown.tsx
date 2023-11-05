@@ -37,6 +37,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, label, mobileAccoun
                         label={label}
                         onSelect={handleSelect}
                         selectedAccount={selectedAccount}
+                        toAccount={toAccount}
                     />,
                     {
                         rootRef: isMobile ? mobileAccountsListRef : undefined,

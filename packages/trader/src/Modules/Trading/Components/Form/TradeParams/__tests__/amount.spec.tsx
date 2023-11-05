@@ -25,7 +25,7 @@ const default_mock_store = {
             is_vanilla: false,
             has_equals_only: false,
             has_open_accu_contract: false,
-            stake_boundary: { [TURBOS.LONG.toLocaleUpperCase()]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
+            stake_boundary: { [TURBOS.LONG.toUpperCase()]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
                 typeof useTraderStore
             >['stake_boundary'],
             onChange: jest.fn(),
@@ -88,7 +88,7 @@ describe('<Amount />', () => {
     it('should render only specific for Vanillas components if it is a Vanillas contract type', () => {
         default_mock_store.modules.trade.contract_type = VANILLALONG.CALL;
         default_mock_store.modules.trade.stake_boundary = {
-            [VANILLALONG.CALL.toLocaleUpperCase()]: { min_stake: 1, max_stake: 10000 },
+            [VANILLALONG.CALL.toUpperCase()]: { min_stake: 1, max_stake: 10000 },
         } as ReturnType<typeof useTraderStore>['stake_boundary'];
         default_mock_store.modules.trade.is_turbos = false;
         default_mock_store.modules.trade.is_vanilla = true;
@@ -133,12 +133,13 @@ describe('<Amount />', () => {
         expect(screen.getByText(allowEquals)).toBeInTheDocument();
         expect(screen.getByText(mockedInputField)).toBeInTheDocument();
         expect(screen.getByText(mockedDropDown)).toBeInTheDocument();
+
         expect(screen.queryByText(mockedMultiplier)).not.toBeInTheDocument();
         expect(screen.queryByText(mockedMultiplierInfo)).not.toBeInTheDocument();
         expect(screen.queryByText(stake)).not.toBeInTheDocument();
         expect(screen.queryByText(mockedMinMaxStakeInfo)).not.toBeInTheDocument();
     });
-    it('should render only input without dropdown if it is sing currency contract', () => {
+    it('should render only input without dropdown if it is single currency contract', () => {
         default_mock_store.client.is_single_currency = true;
         render(mockAmount(mockStore(default_mock_store)));
 

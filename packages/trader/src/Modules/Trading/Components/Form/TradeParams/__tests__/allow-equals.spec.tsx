@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { hasCallPutEqual } from 'Stores/Modules/Trading/Helpers/allow-equals';
 import AllowEquals from '../allow-equals';
@@ -22,7 +21,7 @@ jest.mock('Stores/Modules/Trading/Helpers/allow-equals', () => ({
 }));
 
 describe('<AllowEquals />', () => {
-    it('should render component if it not is RiseFallEqual and hasCallPutEqual returns false', () => {
+    it('should render component if it is not RiseFallEqual and hasCallPutEqual returns false', () => {
         (hasCallPutEqual as jest.Mock).mockReturnValueOnce(false);
         const { container } = render(<AllowEquals {...default_props} />);
 

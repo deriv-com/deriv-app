@@ -33,7 +33,7 @@ const default_mock_store = {
             amount: 10,
             duration_unit: 'm',
             duration: 3,
-            stake_boundary: { [TURBOS.LONG.toLocaleUpperCase()]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
+            stake_boundary: { [TURBOS.LONG.toUpperCase()]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
                 typeof useTraderStore
             >['stake_boundary'],
         },
@@ -92,7 +92,7 @@ describe('<Amount/>', () => {
         expect(screen.getByText(mockedNumpadComponent)).toBeInTheDocument();
         expect(screen.getByText(default_props.stake_value)).toBeInTheDocument();
     });
-    it('should not render extra Numpad except payout and stake', () => {
+    it('should not render extra Numpad components except payout and stake', () => {
         default_mock_store.modules.trade.basis_list = [
             { text: 'Payout', value: 'payout' },
             { text: 'Stake', value: 'stake' },
@@ -102,7 +102,7 @@ describe('<Amount/>', () => {
 
         expect(screen.getAllByText(mockedNumpadComponent)).toHaveLength(2);
     });
-    it('should render MinMaxStake info for Turbos', () => {
+    it('should render MinMaxStakeInfo for Turbos', () => {
         default_mock_store.modules.trade.basis_list = [{ text: 'Stake', value: 'stake' }];
         default_mock_store.modules.trade.contract_type = TURBOS.LONG;
         default_mock_store.modules.trade.is_turbos = true;

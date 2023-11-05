@@ -86,7 +86,7 @@ describe('<Barrier />', () => {
         expect(screen.queryByText(barrier_2)).not.toBeInTheDocument();
         expect(screen.queryByText(mockedInputField)).not.toBeInTheDocument();
     });
-    it('should render only both barriers if barrier_count === 2 and is_minimized === true', () => {
+    it('should render both barriers if barrier_count === 2 and is_minimized === true', () => {
         mock_default_store.modules.trade.barrier_count = 2;
         render(mockBarrier(mockStore(mock_default_store), default_props));
 

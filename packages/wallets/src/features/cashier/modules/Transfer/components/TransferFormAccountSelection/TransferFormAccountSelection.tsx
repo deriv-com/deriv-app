@@ -83,23 +83,21 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                                 </WalletText>
                                 {isMobile && <TitleLine />}
                             </div>
-                            <div className='wallets-transfer-form-account-selection__accounts-group-list'>
-                                {Object.values(transferAccountsList[key]).map(account => (
-                                    <div
-                                        className={classNames('wallets-transfer-form-account-selection__account', {
-                                            'wallets-transfer-form-account-selection__account--selected':
-                                                account?.loginid === selectedAccount?.loginid,
-                                        })}
-                                        key={`account-selection-${account?.loginid}`}
-                                        onClick={() => {
-                                            onSelect(account);
-                                            modal.hide();
-                                        }}
-                                    >
-                                        <TransferFormAccountCard account={account} />
-                                    </div>
-                                ))}
-                            </div>
+                            {Object.values(transferAccountsList[key]).map(account => (
+                                <button
+                                    className={classNames('wallets-transfer-form-account-selection__account', {
+                                        'wallets-transfer-form-account-selection__account--selected':
+                                            account?.loginid === selectedAccount?.loginid,
+                                    })}
+                                    key={`account-selection-${account?.loginid}`}
+                                    onClick={() => {
+                                        onSelect(account);
+                                        modal.hide();
+                                    }}
+                                >
+                                    <TransferFormAccountCard account={account} />
+                                </button>
+                            ))}
                         </div>
                     );
                 })}

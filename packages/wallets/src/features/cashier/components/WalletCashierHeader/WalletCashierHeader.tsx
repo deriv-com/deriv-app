@@ -112,7 +112,11 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                     'wallets-cashier-header__currency-icon--hide-currency-icon': hideWalletDetails,
                                 })}
                             >
-                                <WalletCardIcon size='xl' type={activeWallet?.wallet_currency_type} />
+                                <WalletCardIcon
+                                    device={isMobile ? 'mobile' : 'desktop'}
+                                    size='xl'
+                                    type={activeWallet?.wallet_currency_type}
+                                />
                             </div>
                         )}
                         <CloseIcon

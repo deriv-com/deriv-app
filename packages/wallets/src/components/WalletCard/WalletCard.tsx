@@ -1,5 +1,6 @@
 import React from 'react';
 import { useBalance } from '@deriv/api';
+import useDevice from '../../hooks/useDevice';
 import { THooks } from '../../types';
 import { WalletText } from '../Base';
 import { WalletCardIcon } from '../WalletCardIcon';
@@ -13,6 +14,8 @@ type TProps = {
 
 const WalletCard: React.FC<TProps> = ({ account }) => {
     const { isLoading } = useBalance();
+    const { isMobile } = useDevice();
+
     return (
         <div className='wallets-card'>
             <WalletGradientBackground
@@ -24,7 +27,7 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
             >
                 <div className='wallets-card__details'>
                     <div className='wallets-card__details__top'>
-                        <WalletCardIcon type={account?.wallet_currency_type} />
+                        <WalletCardIcon device={isMobile ? 'mobile' : 'desktop'} type={account?.wallet_currency_type} />
                         <div className='wallets-card__details-landing_company'>
                             {account?.landing_company_name && (
                                 <WalletListCardBadge

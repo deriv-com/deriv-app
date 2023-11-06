@@ -123,7 +123,7 @@ export type TCountdownComponent = {
 };
 
 export type TCFDPasswordReset = {
-    sendVerifyEmail: () => Promise<VerifyEmailResponse>;
+    sendVerifyEmail: () => void;
     account_type: string;
     account_group: 'demo' | 'real' | '';
     server: string;

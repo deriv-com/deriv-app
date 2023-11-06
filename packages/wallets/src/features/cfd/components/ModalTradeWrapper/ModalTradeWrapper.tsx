@@ -7,7 +7,7 @@ import './ModalTradeWrapper.scss';
 import { WalletText } from '../../../../components/Base';
 import QRCode from 'qrcode.react';
 import useDevice from '../../../../hooks/useDevice';
-import { TMarketTypes, TPlatforms } from '../../../../types';
+import { TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 
 const LinksMapper: Record<
@@ -46,7 +46,6 @@ const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SV
 };
 
 type TModalTradeWrapper = {
-    marketType?: TMarketTypes.All;
     platform: TPlatforms.MT5 | TPlatforms.OtherAccounts;
 };
 

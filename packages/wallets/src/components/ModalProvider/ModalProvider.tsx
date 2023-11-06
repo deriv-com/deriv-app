@@ -35,7 +35,7 @@ export const useModal = () => {
 const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const [content, setContent] = useState<React.ReactNode | null>();
-    const [modalState, updateModalState] = useState<Map<keyof TModalState, TModalState[keyof TModalState]>>(new Map());
+    const [modalState, setModalState] = useState<Map<keyof TModalState, TModalState[keyof TModalState]>>(new Map());
     const { isDesktop } = useDevice();
 
     const [customRootRef, setCustomRootRef] = useState<RefObject<HTMLElement> | null>(null);
@@ -46,8 +46,8 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         return modalState.get(key) as TModalState[T];
     };
 
-    const setModalState = <T extends keyof TModalState>(key: T, value: TModalState[T]) => {
-        updateModalState(new Map(modalState.set(key, value)));
+    const updateModalState = <T extends keyof TModalState>(key: T, value: TModalState[T]) => {
+        setModalState(new Map(modalState.set(key, value)));
     };
 
     const show = (ModalContent: React.ReactNode, options?: TModalShowOptions) => {
@@ -75,7 +75,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     return (
         <ModalContext.Provider
-            value={{ getModalState, hide, isOpen: content !== null, modalState, setModalState, show }}
+            value={{ getModalState, hide, isOpen: content !== null, modalState, setModalState: updateModalState, show }}
         >
             {children}
             {modalRootRef?.current &&

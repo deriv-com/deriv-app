@@ -1,4 +1,5 @@
 import React from 'react';
+import useDevice from '../../hooks/useDevice';
 import Bitcoin from '../../public/images/bitcoin.svg';
 import Demo from '../../public/images/demo.svg';
 import ETH from '../../public/images/eth.svg';
@@ -47,14 +48,19 @@ type TProps = {
     type: Omit<string, keyof typeof typeToIconMapper> | keyof typeof typeToIconMapper;
 };
 
-const WalletCardIcon: React.FC<TProps> = ({ device = 'desktop', size = 'lg', type }) => {
+const WalletCardIcon: React.FC<TProps> = ({ device, size = 'lg', type }) => {
+    const { isMobile } = useDevice();
+
     let iconType = type as keyof typeof typeToIconMapper;
 
     if (!Object.keys(typeToIconMapper).includes(iconType)) iconType = 'USD';
 
     const Icon = typeToIconMapper[iconType];
     const isRoundedIcon = typesWithRoundedIcon.includes(iconType);
-    const width = typeToWidthMapper[isRoundedIcon ? 'roundedIcon' : 'rectangleIcon'][size][device];
+    const width =
+        typeToWidthMapper[isRoundedIcon ? 'roundedIcon' : 'rectangleIcon'][size][
+            device || isMobile ? 'mobile' : 'desktop'
+        ];
 
     if (!Icon) return null;
 

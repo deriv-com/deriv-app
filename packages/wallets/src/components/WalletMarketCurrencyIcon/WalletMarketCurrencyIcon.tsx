@@ -53,7 +53,7 @@ const WalletMarketCurrencyIcon: React.FC<TWalletMarketCurrencyIconProps> = ({
                 }`}
             >
                 <WalletGradientBackground currency={currency} hasShine isDemo={isDemo} type='card'>
-                    <WalletCardIcon size='lg' type={isDemo ? 'Demo' : currency} />
+                    <WalletCardIcon device='desktop' size='lg' type={isDemo ? 'Demo' : currency} />
                 </WalletGradientBackground>
             </div>
         </div>

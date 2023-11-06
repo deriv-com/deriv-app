@@ -4,7 +4,6 @@ type TDocument = {
     id: string;
     text: string;
     value?: string;
-    sample_image?: string;
     example_format?: string;
     additional?: {
         display_name: string;
@@ -21,6 +20,7 @@ type TIDVFormValues = {
 
 /**
  * Formats the IDV form values to be sent to the API
+ * @name formatIDVFormValues
  * @param idv_form_value - Formik values of the IDV form
  * @param country_code - Country code of the user
  * @returns IDV form values

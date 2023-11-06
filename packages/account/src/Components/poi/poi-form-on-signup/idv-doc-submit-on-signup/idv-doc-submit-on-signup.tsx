@@ -6,12 +6,12 @@ import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
 import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import {
-    validate,
-    validateName,
-    isDocumentTypeValid,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
+    isDocumentTypeValid,
     shouldHideHelperImage,
+    validate,
+    validateName,
 } from '../../../../Helpers/utils';
 import FormSubHeader from '../../../form-sub-header';
 import IDVForm from '../../../forms/idv-form';
@@ -59,6 +59,10 @@ export const IdvDocSubmitOnSignup = ({
             errors.last_name = validateName(values.last_name);
         }
 
+        if (!values.confirmation_checkbox) {
+            errors.confirmation_checkbox = 'error';
+        }
+
         return removeEmptyPropertiesFromObject(errors);
     };
 
@@ -69,7 +73,7 @@ export const IdvDocSubmitOnSignup = ({
         form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
     }
 
-    const changeable_fields = [...getChangeableFields()];
+    const changeable_fields = getChangeableFields();
 
     const initial_values = {
         document_type: {
@@ -77,8 +81,8 @@ export const IdvDocSubmitOnSignup = ({
             text: '',
             value: '',
             example_format: '',
-            sample_image: '',
         },
+        confirmation_checkbox: false,
         document_number: '',
         ...form_initial_values,
     };
@@ -119,7 +123,7 @@ export const IdvDocSubmitOnSignup = ({
                             is_qualified_for_idv
                             is_appstore
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={changeable_fields}
+                            editable_fields={values.confirmation_checkbox ? [] : changeable_fields}
                             residence_list={residence_list}
                         />
                     </section>

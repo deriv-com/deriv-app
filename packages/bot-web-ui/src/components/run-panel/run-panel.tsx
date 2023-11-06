@@ -1,14 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Button, Drawer, Modal, Money, Tabs, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+
 import Journal from 'Components/journal';
 import SelfExclusion from 'Components/self-exclusion';
 import Summary from 'Components/summary';
 import TradeAnimation from 'Components/trade-animation';
 import Transactions from 'Components/transactions';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import { popover_zindex } from 'Constants/z-indexes';
 import { useDBotStore } from 'Stores/useDBotStore';
 
@@ -25,7 +27,6 @@ type TStatisticsSummary = {
     number_of_runs: number;
     total_stake: number;
     total_payout: number;
-    has_started_onboarding_tour: boolean;
     toggleStatisticsInfoModal: () => void;
     total_profit: number;
     won_contracts: number;
@@ -40,7 +41,7 @@ type TDrawerHeader = {
 type TDrawerContent = {
     active_index: number;
     is_drawer_open: boolean;
-    has_started_onboarding_tour: boolean;
+    active_tour: string;
     setActiveTabIndex: () => void;
 };
 
@@ -69,14 +70,12 @@ export const StatisticsSummary = ({
     number_of_runs,
     total_stake,
     total_payout,
-    has_started_onboarding_tour,
     toggleStatisticsInfoModal,
     total_profit,
     won_contracts,
 }: TStatisticsSummary) => (
     <div
         className={classNames('run-panel__stat', {
-            'run-panel__stat--tour-active': has_started_onboarding_tour,
             'run-panel__stat--mobile': is_mobile,
         })}
     >
@@ -125,13 +124,7 @@ const DrawerHeader = ({ is_clear_stat_disabled, is_mobile, is_drawer_open, onCle
         />
     );
 
-const DrawerContent = ({
-    active_index,
-    is_drawer_open,
-    has_started_onboarding_tour,
-    setActiveTabIndex,
-    ...props
-}: TDrawerContent) => {
+const DrawerContent = ({ active_index, is_drawer_open, active_tour, setActiveTabIndex, ...props }: TDrawerContent) => {
     return (
         <>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
@@ -145,9 +138,7 @@ const DrawerContent = ({
                     <Journal />
                 </div>
             </Tabs>
-            {is_drawer_open && active_index !== 2 && (
-                <StatisticsSummary has_started_onboarding_tour={has_started_onboarding_tour} {...props} />
-            )}
+            {((is_drawer_open && active_index !== 2) || active_tour) && <StatisticsSummary {...props} />}
         </>
     );
 };
@@ -237,7 +228,10 @@ const StatisticsInfoModal = ({
 
 const RunPanel = observer(() => {
     const { run_panel, dashboard } = useDBotStore();
-    const { client } = useStore();
+    const {
+        client,
+        ui: { is_mobile },
+    } = useStore();
     const { currency } = client;
     const {
         active_index,
@@ -253,10 +247,9 @@ const RunPanel = observer(() => {
         toggleStatisticsInfoModal,
         statistics,
     } = run_panel;
-    const { has_started_onboarding_tour } = dashboard;
+    const { active_tour, active_tab } = dashboard;
     const { total_payout, total_profit, total_stake, won_contracts, lost_contracts, number_of_runs } = statistics;
-
-    const is_mobile = isMobile();
+    const { BOT_BUILDER, CHART } = DBOT_TABS;
 
     React.useEffect(() => {
         onMount();
@@ -283,7 +276,7 @@ const RunPanel = observer(() => {
             total_profit={total_profit}
             total_stake={total_stake}
             won_contracts={won_contracts}
-            has_started_onboarding_tour={has_started_onboarding_tour}
+            active_tour={active_tour}
         />
     );
 
@@ -298,6 +291,9 @@ const RunPanel = observer(() => {
         />
     );
 
+    const show_run_panel = [BOT_BUILDER, CHART].includes(active_tab) || active_tour;
+    if ((!show_run_panel && !is_mobile) || active_tour === 'bot_builder') return null;
+
     return (
         <>
             <div className={is_mobile && is_drawer_open ? 'run-panel__container--mobile' : 'run-panel'}>
@@ -305,7 +301,7 @@ const RunPanel = observer(() => {
                     anchor='right'
                     className={classNames('run-panel', {
                         'run-panel__container': !is_mobile,
-                        'run-panel__container--tour-active': !is_mobile && has_started_onboarding_tour,
+                        'run-panel__container--tour-active': !is_mobile && active_tour,
                     })}
                     contentClassName='run-panel__content'
                     header={header}

@@ -1,6 +1,7 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
 import { Text, StaticUrl } from '@deriv/components';
+import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
@@ -13,7 +14,6 @@ import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
-import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -153,7 +153,7 @@ const CFDsListing = observer(() => {
             title={
                 !isMobile() && (
                     <div className='cfd-accounts__title'>
-                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                        <Text size='sm' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
                         <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop={!isMobile()} />
@@ -256,19 +256,19 @@ const CFDsListing = observer(() => {
                 <PlatformLoader />
             )}
 
-            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && !is_real && (
+            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>
             )}
 
-            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && !is_real && (
+            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                     <Text weight='bold'>{localize('Deriv cTrader')}</Text>
                 </div>
             )}
 
-            {is_landing_company_loaded && !is_real
+            {is_landing_company_loaded
                 ? available_ctrader_accounts.map((account: AvailableAccount) => {
                       const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                       const has_existing_accounts = existing_accounts.length > 0;
@@ -324,6 +324,7 @@ const CFDsListing = observer(() => {
                                   }
                               }}
                               key={`trading_app_card_${account.name}`}
+                              is_new
                           />
                       );
                   })

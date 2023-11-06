@@ -5,9 +5,6 @@ import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
-import RootStore from './root-store';
-
-const Blockly = window.Blockly;
 
 interface ILoadModalStore {
     active_index: number;
@@ -54,10 +51,10 @@ interface ILoadModalStore {
 }
 
 export default class LoadModalStore implements ILoadModalStore {
-    root_store: RootStore;
+    root_store: any;
     previewed_strategy_id = '';
 
-    constructor(root_store: RootStore) {
+    constructor(root_store: any) {
         makeObservable(this, {
             active_index: observable,
             previewed_strategy_id: observable,

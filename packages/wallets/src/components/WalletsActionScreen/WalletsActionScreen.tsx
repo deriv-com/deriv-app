@@ -33,14 +33,14 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
             {icon}
             <div className='wallets-action-screen__info'>
                 {title && (
-                    <WalletText align='center' size={desciptionSize} weight='bold'>
+                    <WalletText align='center' size={titleSize} weight='bold'>
                         {title}
                     </WalletText>
                 )}
                 {isValidElement(description) ? (
                     description
                 ) : (
-                    <WalletText align='center' size={titleSize}>
+                    <WalletText align='center' size={desciptionSize}>
                         {description}
                     </WalletText>
                 )}

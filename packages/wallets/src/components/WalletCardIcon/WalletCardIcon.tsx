@@ -59,7 +59,7 @@ const WalletCardIcon: React.FC<TProps> = ({ device, size = 'lg', type }) => {
     const isRoundedIcon = typesWithRoundedIcon.includes(iconType);
     const width =
         typeToWidthMapper[isRoundedIcon ? 'roundedIcon' : 'rectangleIcon'][size][
-            device || isMobile ? 'mobile' : 'desktop'
+            device || (isMobile ? 'mobile' : 'desktop')
         ];
 
     if (!Icon) return null;

@@ -24,11 +24,13 @@ const default_mock_store_multipliers = {
     },
 };
 const new_label = 'NEW!';
+const radioGroupOptionsModal = 'RadioGroupOptionsModal';
 
 jest.mock('Modules/Trading/Containers/radio-group-options-modal', () =>
     jest.fn(prop => (
-        <div data-open={prop.is_open} onClick={prop.toggleModal}>
-            RadioGroupOptionsModal component
+        <div data-open={prop.is_open}>
+            {radioGroupOptionsModal}
+            <button onClick={prop.toggleModal}>Open Modal</button>
         </div>
     ))
 );
@@ -55,7 +57,7 @@ describe('AccumulatorOptionsWidget', () => {
         userEvent.click(info_icon);
 
         expect(screen.getByText(/Your stake will grow/i)).toBeInTheDocument();
-        expect(screen.getByText(/RadioGroupOptionsModal/i)).toHaveAttribute('data-open', 'false');
+        expect(screen.getByText(radioGroupOptionsModal)).toHaveAttribute('data-open', 'false');
     });
     it('if Accum contract is not open, user is able to open RadioGroupOptionsModal', () => {
         const new_mock_store = { ...default_mock_store_accumulators };
@@ -66,10 +68,9 @@ describe('AccumulatorOptionsWidget', () => {
         };
         render(mockAccumulatorOptionsWidget(mockStore(new_mock_store)));
 
-        const toggle_button = screen.getByText(/RadioGroupOptionsModal/i);
-        userEvent.click(toggle_button);
+        userEvent.click(screen.getByText('Open Modal'));
 
-        expect(screen.getByText(/RadioGroupOptionsModal/i)).toHaveAttribute('data-open', 'true');
+        expect(screen.getByText(radioGroupOptionsModal)).toHaveAttribute('data-open', 'true');
     });
 });
 
@@ -100,12 +101,12 @@ describe('MultiplierOptionsWidget', () => {
 
         expect(screen.getByText(new_label)).toBeInTheDocument();
     });
-    it('shoul open RadioGroupOptionsModal if user clicked on Multiplier mobile widget', () => {
+    it('should open RadioGroupOptionsModal if user clicked on Multiplier mobile widget', () => {
         render(mockMultiplierOptionsWidget(mockStore(default_mock_store_multipliers)));
 
-        expect(screen.getByText(/RadioGroupOptionsModal/i)).toHaveAttribute('data-open', 'false');
+        expect(screen.getByText(radioGroupOptionsModal)).toHaveAttribute('data-open', 'false');
         userEvent.click(screen.getByText(/x10/i));
 
-        expect(screen.getByText(/RadioGroupOptionsModal/i)).toHaveAttribute('data-open', 'true');
+        expect(screen.getByText(radioGroupOptionsModal)).toHaveAttribute('data-open', 'true');
     });
 });

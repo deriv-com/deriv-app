@@ -7,6 +7,7 @@ import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
 import './AddedMT5AccountsList.scss';
+import { getJurisdictionContents } from '../../../screens/Jurisdiction/jurisdiction-contents/jurisdiction-contents';
 
 type TProps = {
     account: THooks.MT5AccountsList;
@@ -36,7 +37,23 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: authenticationStatus } = useAuthentication();
     const { title } = MarketTypeDetails[account.market_type || 'all'];
 
-    console.log('added account', account, authenticationStatus);
+    const verificationDocs = getJurisdictionContents()['bvi']?.verificationDocs;
+    const shouldRequireDocuments = verificationDocs?.[account.market_type || 'financial'].some(doc =>
+        ['documentNumber', 'identityDocument'].includes(doc)
+    );
+    const shouldRequireNameAndAddress = verificationDocs?.[account.market_type || 'financial'].some(
+        doc => doc === 'nameAndAddress'
+    );
+
+    console.log(account.landing_company_short, verificationDocs, shouldRequireDocuments, shouldRequireNameAndAddress);
+
+    const hasDocumentsSubmitted = () => {
+        if (shouldRequireDocuments && shouldRequireNameAndAddress)
+            return !(authenticationStatus?.is_poa_not_submitted && authenticationStatus?.is_poi_not_submitted);
+        if (shouldRequireDocuments) return !authenticationStatus?.is_poi_not_submitted;
+        if (shouldRequireNameAndAddress) return !authenticationStatus?.is_poa_not_submitted;
+        return true;
+    };
 
     return (
         <TradingAccountCard
@@ -69,7 +86,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <p className='wallets-added-mt5__details-balance'>{account.display_balance}</p>
                 )}
                 <p className='wallets-added-mt5__details-loginid'>{account.display_login}</p>
-                {authenticationStatus?.is_poa_not_submitted && authenticationStatus?.is_poi_not_submitted && (
+                {!hasDocumentsSubmitted() && (
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage type='error' variant='outlined' size='xs'>
                             <WalletText size='2xs' weight='bold' color='error'>

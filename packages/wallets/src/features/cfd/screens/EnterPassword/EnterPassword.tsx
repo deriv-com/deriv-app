@@ -45,6 +45,7 @@ const EnterPassword: React.FC<TProps> = ({
                     <WalletButton onClick={onSecondaryClick} size='lg' text='Forgot password?' variant='outlined' />
                     <WalletButton
                         disabled={!password || isLoading}
+                        isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'
                         text='Add account'

@@ -1,9 +1,9 @@
 import React from 'react';
-import { WithdrawalCryptoModule, WithdrawalVerificationModule } from '../../modules';
+import { WithdrawalFiatModule } from '../../modules';
 
 const WalletWithdrawal = () => {
-    return <WithdrawalCryptoModule />;
-    return <WithdrawalVerificationModule />;
+    //TODO: add withdrawal crypto module
+    return <WithdrawalFiatModule />;
 };
 
 export default WalletWithdrawal;

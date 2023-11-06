@@ -1,96 +1,69 @@
-import React, { ChangeEvent, ComponentProps, ReactElement, useEffect, useState } from 'react';
-import { WalletButton } from '../WalletButton';
-import WalletText from '../WalletText/WalletText';
+import React, { ChangeEvent, forwardRef, InputHTMLAttributes, useState } from 'react';
+import classNames from 'classnames';
+import MessageContainer, { MessageContainerProps } from './HelperMessage';
 import './WalletTextField.scss';
 
-interface WalletTextFieldProps {
-    helperMessage?: string;
-    icon?: ReactElement;
-    id?: ComponentProps<'input'>['id'];
+interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, MessageContainerProps {
+    defaultValue?: string;
+    inputClassName?: string;
     label?: string;
-    leftIcon?: React.ReactNode;
-    maxLength?: ComponentProps<'input'>['maxLength'];
-    onChange?: ComponentProps<'input'>['onChange'];
-    onClick?: ComponentProps<'input'>['onClick'];
-    onClickIcon?: ComponentProps<'button'>['onClick'];
+    renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
-    type?: ComponentProps<'input'>['type'];
-    value?: string;
 }
 
-type MessageContainerProps = {
-    helperMessage?: WalletTextFieldProps['helperMessage'];
-    maxLength?: WalletTextFieldProps['maxLength'];
-};
+const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
+    (
+        {
+            defaultValue = '',
+            helperMessage,
+            inputClassName,
+            label,
+            maxLength,
+            name = 'wallet-textfield',
+            onChange,
+            renderRightIcon,
+            showMessage = false,
+            ...rest
+        },
+        ref
+    ) => {
+        const [value, setValue] = useState(defaultValue);
 
-const WalletTextField: React.FC<WalletTextFieldProps> = ({
-    helperMessage,
-    icon,
-    id = 'wallet-textfield',
-    label,
-    maxLength,
-    onChange,
-    onClick,
-    onClickIcon,
-    showMessage = false,
-    type = 'text',
-    value,
-}) => {
-    const [currentValue, setCurrentValue] = useState<WalletTextFieldProps['value']>(value);
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+            const newValue = e.target.value;
+            setValue(newValue);
+            onChange?.(e);
+        };
 
-    useEffect(() => {
-        setCurrentValue(value);
-    }, [value]);
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value;
-        setCurrentValue(newValue);
-        onChange?.(e);
-    };
-
-    const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, maxLength }) => (
-        <>
-            {helperMessage && (
-                <div className='wallets-textfield__message-container--msg'>
-                    <WalletText color='less-prominent' size='xs'>
-                        {helperMessage}
-                    </WalletText>
+        return (
+            <div className='wallets-textfield'>
+                <div className={classNames('wallets-textfield__box', inputClassName)}>
+                    <input
+                        className='wallets-textfield__field'
+                        id={name}
+                        maxLength={maxLength}
+                        onChange={handleChange}
+                        placeholder={label}
+                        value={value}
+                        {...rest}
+                        ref={ref}
+                    />
+                    {label && (
+                        <label className='wallets-textfield__label' htmlFor={name}>
+                            {label}
+                        </label>
+                    )}
+                    <div className='wallets-textfield__icon'>{renderRightIcon?.()}</div>
                 </div>
-            )}
-            {maxLength && currentValue && (
-                <div className='wallets-textfield__message-container--maxchar'>
-                    <WalletText align='right' color='less-prominent' size='xs'>
-                        {currentValue.length} / {maxLength}
-                    </WalletText>
+                <div className='wallets-textfield__message-container'>
+                    {showMessage && (
+                        <MessageContainer helperMessage={helperMessage} inputValue={value} maxLength={maxLength} />
+                    )}
                 </div>
-            )}
-        </>
-    );
-
-    return (
-        <div className='wallets-textfield' onClick={onClick}>
-            <div className='wallets-textfield__content'>
-                <input
-                    className='wallets-textfield__field'
-                    id={id}
-                    maxLength={maxLength}
-                    onChange={handleChange}
-                    placeholder={label}
-                    type={type}
-                    value={currentValue}
-                />
-                {label && (
-                    <label className='wallets-textfield__label' htmlFor={id}>
-                        {label}
-                    </label>
-                )}
-                {icon && <WalletButton icon={icon} onClick={onClickIcon} rounded='md' size='sm' variant='ghost' />}
             </div>
-            <div className='wallets-textfield__message-container'>
-                {showMessage && <MessageContainer helperMessage={helperMessage} maxLength={maxLength} />}
-            </div>
-        </div>
-    );
-};
+        );
+    }
+);
 
+WalletTextField.displayName = 'WalletTextField';
 export default WalletTextField;

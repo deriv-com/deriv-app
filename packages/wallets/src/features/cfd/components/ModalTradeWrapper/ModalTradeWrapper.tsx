@@ -39,13 +39,6 @@ const LinksMapper: Record<
     },
 };
 
-const PlatformToLinkMapper: Record<TPlatforms.All, string> = {
-    ctrader: 'https://onelink.to/hyqpv7',
-    derivez: 'https://onelink.to/bkdwkd',
-    dxtrade: 'https://onelink.to/grmtyx',
-    mt5: 'https://onelink.to/grmtyx',
-};
-
 const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SVGElement>>> = {
     android: InstallationGoogleIcon,
     huawei: InstallationHuaweiIcon,
@@ -78,7 +71,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                             </div>
                             {isDesktop && (
                                 <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
-                                    <QRCode size={80} value={PlatformToLinkMapper[platform]} />
+                                    <QRCode size={80} value={PlatformDetails[platform].link} />
                                     <WalletText align='center' size='xs'>
                                         Scan the QR code to download Deriv {PlatformDetails[platform].title}
                                     </WalletText>

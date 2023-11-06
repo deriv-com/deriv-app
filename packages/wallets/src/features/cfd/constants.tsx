@@ -28,18 +28,22 @@ export const MarketTypeDetails = {
 export const PlatformDetails = {
     ctrader: {
         icon: <CTraderIcon />,
+        link: 'https://onelink.to/hyqpv7',
         title: 'Deriv cTrader',
     },
     derivez: {
         icon: <DerivEZIcon />,
+        link: 'https://onelink.to/bkdwkd',
         title: 'Deriv EZ',
     },
     dxtrade: {
         icon: <DerivXIcon />,
+        link: 'https://onelink.to/grmtyx',
         title: 'Deriv X',
     },
     mt5: {
         icon: <DerivedMT5Icon />,
+        link: 'https://onelink.to/grmtyx',
         title: 'Deriv MT5',
     },
 };

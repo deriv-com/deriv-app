@@ -21,7 +21,7 @@ import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useStore } from '@deriv/stores';
-import { useLandingCompanyDetails } from '@deriv/api';
+import { useLandingCompanyDetails } from '@deriv/hooks';
 
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];
@@ -244,7 +244,6 @@ const CFDPersonalDetailsForm = ({
 
     const isFieldDisabled = (field: string) => !!initial_values[field] && !changeable_fields?.includes(field);
 
-    // using data instead of isLoading to prevent flickering of form
     if (is_landing_company_details_loading || is_loading || residence_list.length === 0)
         return <Loading is_fullscreen={false} />;
     const { tax_identification_number, ...rest } = initial_values;

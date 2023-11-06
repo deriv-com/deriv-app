@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-import useLandingCompanyDetails from '../hooks/useLandingCompanyDetails'; // Import your hook
-import useQuery from '../useQuery';
+import useLandingCompanyDetails from '../useLandingCompanyDetails'; // Import your hook
+import { useQuery } from '@deriv/api';
 
-jest.mock('../useQuery', () => ({
-    ...jest.requireActual('../useQuery'),
-    __esModule: true,
-    default: jest.fn(() => {
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useQuery: jest.fn(() => {
         return {
             data: {
                 landing_company_details: {

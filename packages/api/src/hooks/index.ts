@@ -48,4 +48,3 @@ export { default as useWalletAccountsList } from './useWalletAccountsList';
 export { default as useWalletMigration } from './useWalletMigration';
 export { default as useDxtradeServiceToken } from './useDxtradeServiceToken';
 export { default as useActiveLinkedToTradingAccount } from './useActiveLinkedToTradingAccount';
-export { default as useLandingCompanyDetails } from './useLandingCompanyDetails';

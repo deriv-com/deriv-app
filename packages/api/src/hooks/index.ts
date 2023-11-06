@@ -37,6 +37,7 @@ export { default as usePOI } from './usePOI';
 export { default as useResidenceList } from './useResidenceList';
 export { default as useSettings } from './useSettings';
 export { default as useSortedMT5Accounts } from './useSortedMT5Accounts';
+export { default as useSubscribedBalance } from './useSubscribedBalance';
 export { default as useTradingAccountsList } from './useTradingAccountsList';
 export { default as useTradingPlatformInvestorPasswordChange } from './useTradingPlatformInvestorPasswordChange';
 export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';

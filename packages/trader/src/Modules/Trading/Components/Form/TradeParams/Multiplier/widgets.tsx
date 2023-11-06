@@ -116,7 +116,11 @@ const RadioGroupOptionsWidget = ({
                     <span className='mobile-widget__item-value'>{displayed_trade_param}</span>
                 </div>
                 {!!tooltip_message && (
-                    <span className='mobile-widget__item-tooltip' onClick={e => e.stopPropagation()}>
+                    <span
+                        className='mobile-widget__item-tooltip'
+                        onClick={e => e.stopPropagation()}
+                        onKeyDown={e => e.stopPropagation()}
+                    >
                         <Popover
                             alignment='left'
                             classNameBubble='mobile-widget__item-popover'

@@ -3,28 +3,30 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import QSInput from '../qs-input';
+import QSCheckbox from '../qs-checkbox';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
-describe('<QSInput />', () => {
+describe('<QSCheckbox />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
-    const onChange = jest.fn();
+
     beforeEach(() => {
         const mock_store = mockStore({
             ui: {
-                is_mobile: true,
+                is_mobile: false,
             },
         });
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const mock_onSubmit = jest.fn();
         const initial_value = {
+            symbol: 'R_100',
+            boolean_max_stake: false,
             duration: 1,
         };
 
@@ -34,7 +36,7 @@ describe('<QSInput />', () => {
                     <Formik
                         initialValues={initial_value}
                         validationSchema={Yup.object().shape({
-                            duration: Yup.number().min(1, 'Minimum value should be more than 0'),
+                            duration_value: Yup.number().min(1, 'Minimum value should be more than 0'),
                         })}
                         onSubmit={mock_onSubmit}
                     >
@@ -45,40 +47,32 @@ describe('<QSInput />', () => {
         );
     });
 
-    it('should render QSInput', () => {
-        const { container } = render(<QSInput onChange={onChange} name='duration' />, {
+    it('should render QSCheckbox', () => {
+        const { container } = render(<QSCheckbox name='max-stake' label='Max Stake' />, {
             wrapper,
         });
+
         expect(container).toBeInTheDocument();
     });
 
-    it('should increase the value on click of + button', () => {
-        render(<QSInput name='duration' type='number' onChange={onChange} />, {
+    it('should render description', () => {
+        render(<QSCheckbox name='max-stake' label='Max Stake' description='Max stake field mock description' />, {
             wrapper,
         });
-
-        const increase_button = screen.getByTestId('qs-input-increase');
-        userEvent.click(increase_button);
-        expect(onChange).toBeCalledWith('duration', '2');
+        userEvent.click(screen.getByTestId('dt_popover_wrapper'));
+        act(() => {
+            userEvent.hover(screen.getByText('Max Stake'));
+        });
+        expect(screen.getByText('Max stake field mock description')).toBeInTheDocument();
     });
 
-    it('should decrease the value on click of - button', () => {
-        render(<QSInput name='duration' type='number' onChange={onChange} />, {
+    it('should change value', () => {
+        render(<QSCheckbox name='boolean_max_stake' label='Max Stake' />, {
             wrapper,
         });
-
-        const decrease_button = screen.getByTestId('qs-input-decrease');
-        userEvent.click(decrease_button);
-        expect(onChange).toBeCalledWith('duration', '0');
-    });
-
-    it('should update the value', () => {
-        render(<QSInput name='duration' type='number' onChange={onChange} />, {
-            wrapper,
-        });
-
-        const input = screen.getByTestId('qs-input');
-        userEvent.type(input, '5');
-        expect(onChange).toBeCalledWith('duration', 15);
+        const checkbox = screen.getByTestId('qs-checkbox');
+        userEvent.click(checkbox);
+        expect(checkbox).toBeChecked();
+        expect(screen.getByText('Max Stake')).toBeInTheDocument();
     });
 });

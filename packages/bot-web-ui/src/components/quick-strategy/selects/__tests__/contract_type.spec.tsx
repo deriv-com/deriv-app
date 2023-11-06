@@ -9,7 +9,7 @@ import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import DurationUnit from '../duration-type';
+import ContractType from '../contract-type';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
@@ -37,6 +37,16 @@ jest.mock('@deriv/bot-skeleton', () => ({
                 getMarketBySymbol: jest.fn(),
                 getSubmarketBySymbol: jest.fn(),
                 getTradeTypeCategoryByTradeType: jest.fn(),
+                getContractTypes: () => [
+                    {
+                        text: 'RISE',
+                        value: 'CALL',
+                    },
+                    {
+                        text: 'FALL',
+                        value: 'PUT',
+                    },
+                ],
             },
         },
     },
@@ -49,13 +59,73 @@ window.Blockly = {
     },
 };
 
-describe('<DurationUnit />', () => {
+describe('<ContractType /> Responsive', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
     beforeEach(() => {
         const mock_store = mockStore({
             ui: {
                 is_mobile: true,
+            },
+        });
+        mock_DBot_store = mockDBotStore(mock_store, mock_ws);
+        const mock_onSubmit = jest.fn();
+        const initial_value = {
+            durationtype: 1,
+            symbol: 'R_100',
+            tradetype: 'callput',
+            type: '',
+        };
+
+        wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock_store}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
+                    <Formik
+                        initialValues={initial_value}
+                        validationSchema={Yup.object().shape({
+                            duration_value: Yup.number().min(1, 'Minimum value should be more than 0'),
+                        })}
+                        onSubmit={mock_onSubmit}
+                    >
+                        {children}
+                    </Formik>
+                </DBotStoreProvider>
+            </StoreProvider>
+        );
+    });
+
+    it('should render ContractTypes', async () => {
+        const { container } = render(<ContractType name='type' />, {
+            wrapper,
+        });
+        await waitFor(() => {
+            expect(container).toBeInTheDocument();
+        });
+    });
+
+    it('should select item from tabs', async () => {
+        render(<ContractType name='type' />, {
+            wrapper,
+        });
+        const tabs = screen.getByTestId('dt-qs-contract-types');
+        userEvent.click(tabs);
+        await waitFor(() => {
+            const option_element = screen.getByText('RISE');
+            userEvent.click(option_element);
+        });
+        // eslint-disable-next-line testing-library/no-node-access
+        const active = screen.getByText('RISE')?.parentElement;
+        expect(active).toHaveClass('qs__form__field__list__item--active');
+    });
+});
+
+describe('<ContractType /> Desktop', () => {
+    let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+
+    beforeEach(() => {
+        const mock_store = mockStore({
+            ui: {
+                is_mobile: false,
             },
         });
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
@@ -83,8 +153,8 @@ describe('<DurationUnit />', () => {
         );
     });
 
-    it('should render DurationUnit', async () => {
-        const { container } = render(<DurationUnit />, {
+    it('should render ContractType', async () => {
+        const { container } = render(<ContractType name='type' />, {
             wrapper,
         });
         await waitFor(() => {
@@ -93,15 +163,15 @@ describe('<DurationUnit />', () => {
     });
 
     it('should select item from list', async () => {
-        render(<DurationUnit />, {
+        render(<ContractType name='type' />, {
             wrapper,
         });
-        const autocomplete_element = screen.getByTestId('qs_autocomplete_durationtype');
+        const autocomplete_element = screen.getByTestId('qs_autocomplete_contract_type');
         userEvent.click(autocomplete_element);
         await waitFor(() => {
-            const option_element = screen.getByText('sample');
+            const option_element = screen.getByText('RISE');
             userEvent.click(option_element);
         });
-        expect(autocomplete_element).toHaveDisplayValue('sample');
+        expect(autocomplete_element).toHaveDisplayValue('RISE');
     });
 });

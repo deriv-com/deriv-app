@@ -1,7 +1,7 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { WalletButton, WalletText } from '../../../../../components';
 import './FiatOnRampProviderCard.scss';
-import { useHistory } from 'react-router-dom';
 
 type TFiatOnRampProvider = {
     description: string;

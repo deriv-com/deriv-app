@@ -62,6 +62,12 @@
 
         &-badge {
             width: fit-content;
+
+            & a {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+
             & > .wallets-inline-message {
                 padding: 0.5rem 0.8rem;
             }

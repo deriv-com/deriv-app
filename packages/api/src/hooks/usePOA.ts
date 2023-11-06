@@ -16,6 +16,7 @@ const usePOA = () => {
             is_expired: authentication_data?.document.status === 'expired',
             is_suspected: authentication_data?.document.status === 'suspected',
             is_verified: authentication_data?.document.status === 'verified',
+            is_need_submission: !['pending', 'verified'].includes(authentication_data?.document.status || ''),
         };
     }, [authentication_data]);
 

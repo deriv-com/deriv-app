@@ -1,13 +1,15 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuthentication, useAuthorize } from '@deriv/api';
+import { useAuthorize, usePOA } from '@deriv/api';
 import { InlineMessage, WalletButton, WalletText } from '../../../../../components/Base';
+import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
 import './AddedMT5AccountsList.scss';
 import { getJurisdictionContents } from '../../../screens/Jurisdiction/jurisdiction-contents/jurisdiction-contents';
+import { VerificationFailedModal } from '../../../modals';
 
 type TProps = {
     account: THooks.MT5AccountsList;
@@ -34,25 +36,24 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
-    const { data: authenticationStatus } = useAuthentication();
+    const { data: poaStatus } = usePOA();
     const { title } = MarketTypeDetails[account.market_type || 'all'];
+    const { show } = useModal();
 
-    const verificationDocs = getJurisdictionContents()['bvi']?.verificationDocs;
-    const shouldRequireDocuments = verificationDocs?.[account.market_type || 'financial'].some(doc =>
-        ['documentNumber', 'identityDocument'].includes(doc)
-    );
-    const shouldRequireNameAndAddress = verificationDocs?.[account.market_type || 'financial'].some(
-        doc => doc === 'nameAndAddress'
-    );
+    const verificationDocs = getJurisdictionContents()[account?.landing_company_short || 'svg']?.verificationDocs;
+    const shouldRequireNameAndAddress =
+        verificationDocs && account?.market_type !== 'all'
+            ? verificationDocs?.[account.market_type || 'financial']?.some(doc => doc === 'nameAndAddress')
+            : false;
 
-    console.log(account.landing_company_short, verificationDocs, shouldRequireDocuments, shouldRequireNameAndAddress);
+    const isFailedAuthentication = () => {
+        if (shouldRequireNameAndAddress) return poaStatus?.is_need_submission;
+        return false;
+    };
 
-    const hasDocumentsSubmitted = () => {
-        if (shouldRequireDocuments && shouldRequireNameAndAddress)
-            return !(authenticationStatus?.is_poa_not_submitted && authenticationStatus?.is_poi_not_submitted);
-        if (shouldRequireDocuments) return !authenticationStatus?.is_poi_not_submitted;
-        if (shouldRequireNameAndAddress) return !authenticationStatus?.is_poa_not_submitted;
-        return true;
+    const isPendingAuthentication = () => {
+        if (shouldRequireNameAndAddress) return poaStatus?.is_pending;
+        return false;
     };
 
     return (
@@ -61,13 +62,14 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             trailing={() => (
                 <div className='wallets-added-mt5__actions'>
                     <WalletButton
+                        disabled={isFailedAuthentication() || isPendingAuthentication()}
                         onClick={() => {
                             history.push('/wallets/cashier/transfer');
                         }}
                         text='Transfer'
                         variant='outlined'
                     />
-                    <WalletButton text='Open' />
+                    <WalletButton disabled={isFailedAuthentication() || isPendingAuthentication()} text='Open' />
                 </div>
             )}
         >
@@ -82,15 +84,33 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         </div>
                     )}
                 </div>
-                {!(authenticationStatus?.is_poa_not_submitted && authenticationStatus?.is_poi_not_submitted) && (
+                {!(isPendingAuthentication() || isFailedAuthentication()) && (
                     <p className='wallets-added-mt5__details-balance'>{account.display_balance}</p>
                 )}
                 <p className='wallets-added-mt5__details-loginid'>{account.display_login}</p>
-                {!hasDocumentsSubmitted() && (
+                {isPendingAuthentication() && (
                     <div className='wallets-added-mt5__details-badge'>
-                        <InlineMessage type='error' variant='outlined' size='xs'>
-                            <WalletText size='2xs' weight='bold' color='error'>
-                                Verification failed. Why?
+                        <InlineMessage size='xs' type='warning' variant='outlined'>
+                            <WalletText color='warning' size='2xs' weight='bold'>
+                                Pending verification
+                            </WalletText>
+                        </InlineMessage>
+                    </div>
+                )}
+                {isFailedAuthentication() && (
+                    <div className='wallets-added-mt5__details-badge'>
+                        <InlineMessage size='xs' type='error' variant='outlined'>
+                            <WalletText color='error' size='2xs' weight='bold'>
+                                Verification failed.{' '}
+                                <a
+                                    onClick={() =>
+                                        show(<VerificationFailedModal verificationType='poi' />, {
+                                            defaultRootId: 'wallets_modal_root',
+                                        })
+                                    }
+                                >
+                                    Why?
+                                </a>
                             </WalletText>
                         </InlineMessage>
                     </div>

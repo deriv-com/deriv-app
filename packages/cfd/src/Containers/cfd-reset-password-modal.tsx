@@ -148,7 +148,6 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
     return (
         <Modal
             className='cfd-reset-password-modal'
-            // is_open={is_cfd_reset_password_modal_enabled && !is_invalid_investor_token}
             is_open={is_cfd_reset_password_modal_enabled && !is_invalid_investor_token}
             toggleModal={() => setCFDPasswordResetModal(false)}
             title={

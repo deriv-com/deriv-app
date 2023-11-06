@@ -14,12 +14,12 @@ const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
     const [isDynamicLeverageVisible, setIsDynamicLeverageVisible] = useState(false);
 
-    const { modalState, show } = useModal();
+    const { getModalState, show } = useModal();
     const { isLoading } = useAvailableMT5Accounts();
     const { isMobile } = useDevice();
 
-    const marketType = modalState?.marketType || 'all';
-    const platform = modalState?.platform || 'mt5';
+    const marketType = getModalState('marketType') || 'all';
+    const platform = getModalState('platform') || 'mt5';
 
     const { title } = MarketTypeDetails[marketType];
 

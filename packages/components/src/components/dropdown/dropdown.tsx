@@ -26,6 +26,7 @@ type TDropdown = {
     };
     has_symbol?: boolean;
     hint?: string;
+    id?: string;
     initial_offset?: number;
     initial_height_offset?: number;
     is_align_text_left?: boolean;
@@ -508,7 +509,13 @@ const Dropdown = ({
                         value={value}
                     />
                     {should_show_new_label && (
-                        <Text className='dc-dropdown__label--new' weight='bold' size='xxxs' line_height='s'>
+                        <Text
+                            className='dc-dropdown__label--new'
+                            weight='bold'
+                            size='xxxs'
+                            line_height='s'
+                            color='colored-background'
+                        >
                             <Localize i18n_default_text='NEW!' />
                         </Text>
                     )}

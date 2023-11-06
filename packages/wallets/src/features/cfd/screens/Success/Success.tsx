@@ -3,16 +3,19 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
-import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
 import useDevice from '../../../../hooks/useDevice';
-import { MarketTypeToTitleMapper, PlatformToTitleMapper } from '../../constants';
+import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
+import { MarketTypeDetails, PlatformToTitleMapper } from '../../constants';
 import './Success.scss';
 
 type TSuccessProps = {
     description: string;
-    displayBalance: TDisplayBalance;
-    marketType: TMarketTypes.SortedMT5Accounts;
-    platform: TPlatforms.All;
+    displayBalance:
+        | TDisplayBalance.CtraderAccountsList
+        | TDisplayBalance.DxtradeAccountsList
+        | TDisplayBalance.MT5AccountsList;
+    marketType?: TMarketTypes.SortedMT5Accounts;
+    platform?: TPlatforms.All;
     renderButton: () => ReactNode;
     title: string;
 };
@@ -30,10 +33,20 @@ const Success: React.FC<TSuccessProps> = ({
     const isDemo = data?.is_virtual;
     const landingCompanyName = data?.landing_company_name?.toUpperCase();
 
-    const marketTypeTitle =
-        marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
-            ? PlatformToTitleMapper[platform]
-            : MarketTypeToTitleMapper[marketType];
+    const isMarketTypeAll = marketType === 'all';
+
+    let marketTypeTitle = 'Deriv Apps';
+
+    if (marketType && platform) {
+        const isPlatformValid = Object.keys(PlatformToTitleMapper).includes(platform);
+        if (isMarketTypeAll && isPlatformValid) {
+            marketTypeTitle = PlatformToTitleMapper[platform];
+        } else {
+            marketTypeTitle = MarketTypeDetails[marketType].title;
+        }
+    }
+
+    const platformTitlePrefix = platform === 'mt5' ? PlatformToTitleMapper.mt5 : '';
 
     return (
         <div className='wallets-success'>
@@ -55,7 +68,7 @@ const Success: React.FC<TSuccessProps> = ({
                     platform={platform}
                 />
                 <WalletText size='2xs'>
-                    {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
+                    {platformTitlePrefix} {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
                 </WalletText>
                 <WalletText color='primary' size='2xs'>
                     {data?.currency} Wallet

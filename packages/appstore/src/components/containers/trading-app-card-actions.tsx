@@ -16,6 +16,7 @@ export type Actions = {
     is_buttons_disabled?: boolean;
     is_account_being_created?: boolean;
     is_real?: boolean;
+    is_new?: boolean;
 };
 
 const TradingAppCardActions = ({

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { InlineMessage } from '../../../../../../components/Base';
-import useDevice from '../../../../../../hooks/useDevice';
+import { InlineMessage, WalletText } from '../../../../../../components/Base';
 import './DepositCryptoDisclaimers.scss';
 
 // Check with BE to see if we can get the network name from the API.
@@ -17,14 +16,15 @@ const cryptoCurrencyToNetworkMapper: Record<string, string> = {
 
 const DepositCryptoDisclaimers = () => {
     const { data } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
     const { currency } = data || {};
 
     return (
         <div className='wallets-deposit-crypto-disclaimers'>
             <InlineMessage>
                 <div className='wallets-deposit-crypto-disclaimers__content'>
-                    <p>To avoid loss of funds:</p>
+                    <WalletText size='2xs' weight='bold'>
+                        To avoid loss of funds:
+                    </WalletText>
                     <br />
                     {data?.currency_config?.minimum_deposit && (
                         <li>
@@ -32,7 +32,7 @@ const DepositCryptoDisclaimers = () => {
                             Otherwise, the funds will be lost and cannot be recovered.
                         </li>
                     )}
-                    <li>Do not send other currencies to this address.</li>
+                    <li>Do not send other cryptocurrencies to this address.</li>
                     <li>Make sure to copy your Deriv account address correctly into your crypto wallet.</li>
                     <li>
                         In your cryptocurrency wallet, make sure to select{' '}
@@ -41,9 +41,14 @@ const DepositCryptoDisclaimers = () => {
                     </li>
                 </div>
             </InlineMessage>
-            <p className='wallets-deposit-crypto-disclaimers__note' style={{ fontSize: isMobile ? ' 1rem' : '1.2rem' }}>
-                <strong>Note:</strong> You’ll receive an email when your deposit start being processed.
-            </p>
+            <div className='wallets-deposit-crypto-disclaimers__note'>
+                <WalletText size='xs' weight='bold'>
+                    Note:
+                </WalletText>
+                <WalletText size='xs'>
+                    &nbsp;You’ll receive an email when your deposit start being processed.
+                </WalletText>
+            </div>
         </div>
     );
 };

@@ -34,6 +34,11 @@
         }
         &-definition {
             color: var(--brand-red-coral);
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            outline: inherit;
 
             &:hover {
                 text-decoration: underline;

@@ -1,12 +1,12 @@
 import React from 'react';
 import DocumentsUpload from './documents-upload';
 import SelfieUpload from './selfie-upload';
-import { SELFIE_DOCUMENT } from '../constants';
+import { SELFIE_DOCUMENT, getDocumentIndex } from '../constants';
 import './card-details.scss';
 import { FormikValues } from 'formik';
 
 type TCardDetails = {
-    data: FormikValues;
+    data: ReturnType<typeof getDocumentIndex>[number]['details'];
     onComplete: (e: object) => void;
     goToCards: () => void;
     is_from_external?: boolean;

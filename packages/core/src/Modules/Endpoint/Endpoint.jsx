@@ -14,10 +14,12 @@ import { observer, useStore } from '@deriv/stores';
 
 const FeatureFlagsSection = observer(() => {
     const { feature_flags } = useStore();
+    const HIDDEN_FEATURE_FLAGS = ['wallet'];
+
     const visible_feature_flags = Object.entries(feature_flags.data ?? {})?.reduce(
         (flags, [key, value]) => {
             const is_production = location.hostname === website_domain;
-            if (!is_production || !TRADE_FEATURE_FLAGS.includes(key)) {
+            if ((!is_production || !TRADE_FEATURE_FLAGS.includes(key)) && !HIDDEN_FEATURE_FLAGS.includes(key)) {
                 flags[key] = value;
             }
             return flags;
@@ -113,7 +115,7 @@ const Endpoint = () => {
                         </Text>
                     </div>
 
-                    <InputField name='server' label='Server' hint='e.g. frontend.binaryws.com' />
+                    <InputField name='server' label='Server' hint='e.g. frontend.derivws.com' />
                     <InputField
                         name='app_id'
                         label='OAuth App ID'

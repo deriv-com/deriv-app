@@ -110,7 +110,7 @@ export default class ContractStore extends BaseStore {
     // ---- Normal properties ---
     is_ongoing_contract = false;
 
-    populateConfig(contract_info, is_last_contract) {
+    populateConfig(contract_info, is_last_contract = false) {
         const prev_contract_info = this.contract_info;
         this.contract_info = contract_info;
         this.end_time = getEndTime(this.contract_info);
@@ -120,11 +120,10 @@ export default class ContractStore extends BaseStore {
         // TODO: don't update the barriers & markers if they are not changed
         this.updateBarriersArray(contract_info, this.root_store.ui.is_dark_mode_on);
         this.markers_array = createChartMarkers(this.contract_info);
-        this.marker = calculateMarker(this.contract_info, this.root_store.ui.is_dark_mode_on, is_last_contract, {
-            accu_high_barrier,
-            accu_low_barrier,
-        });
-
+        this.marker =  calculateMarker(this.contract_info, this.root_store.ui.is_dark_mode_on, is_last_contract, {
+                  accu_high_barrier,
+                  accu_low_barrier,
+              })
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
@@ -211,11 +210,11 @@ export default class ContractStore extends BaseStore {
                     },
                     is_dark_mode
                 );
-
                 this.marker = calculateMarker(this.contract_info, this.root_store.ui.is_dark_mode_on, false, {
-                    accu_high_barrier: this.accu_high_barrier,
-                    accu_low_barrier: this.accu_low_barrier,
-                }); // this.marker is rendered as DelayedAccuBarriersMarker component
+                          accu_high_barrier: this.accu_high_barrier,
+                          accu_low_barrier: this.accu_low_barrier,
+                      })
+                    // this.marker is rendered as DelayedAccuBarriersMarker component
                 return;
             }
             setTimeout(
@@ -227,7 +226,10 @@ export default class ContractStore extends BaseStore {
                                 main_barrier?.updateBarriers(this.accu_high_barrier, this.accu_low_barrier);
                             }
                             // this.markers_array contains tick markers & start/end vertical lines in C.Details page
-                            this.markers_array = createChartMarkers(contract_info, true);
+                            this.markers_array = createChartMarkers(
+                                contract_info,
+                                true,
+                            );
                             // this observable controls the update of DelayedAccuBarriersMarker in C.Details page
                             this.accumulator_previous_spot_time = current_spot_time;
                         }

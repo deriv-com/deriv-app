@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useDxtradeAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../../components';
 import { WalletButton } from '../../../../../../components/Base';
+import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/derivx.svg';
 import './AddedDxtradeAccountsList.scss';
 
@@ -13,7 +14,12 @@ const AddedDxtradeAccountsList: React.FC = () => {
     return (
         <TradingAccountCard
             leading={() => (
-                <div className='wallets-available-derivx__icon'>
+                <div
+                    className='wallets-available-derivx__icon'
+                    onClick={() => {
+                        window.open(getStaticUrl('/derivx'));
+                    }}
+                >
                     <DerivX />
                 </div>
             )}
@@ -34,9 +40,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                 {data?.map(account => (
                     <React.Fragment key={account?.account_id}>
                         <p className='wallets-available-derivx__details-title'>Deriv X</p>
-                        <p className='wallets-available-derivx__details-balance'>
-                            {account?.display_balance} {account?.currency}
-                        </p>
+                        <p className='wallets-available-derivx__details-balance'>{account?.display_balance}</p>
                         <p className='wallets-available-derivx__details-loginid'>{account.login}</p>
                     </React.Fragment>
                 ))}

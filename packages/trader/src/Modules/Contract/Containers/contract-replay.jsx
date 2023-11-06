@@ -33,9 +33,9 @@ import { useFeatureFlags } from '@deriv/hooks';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
-import { SmartChart } from 'Modules/SmartChart';
-import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
-import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
+import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget';
+import SmartChartSwitcher from '../../Trading/Containers/smart-chart-switcher.jsx';
+import ChartMarkerBeta from 'Modules/SmartChartBeta/Components/Markers/marker.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -216,7 +216,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const trade = useTraderStore();
     const { contract_replay, common, ui } = useStore();
     const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
-    const { contract_config, is_digit_contract, barriers_array, markers_array, contract_info, getContractsArray } =
+    const { contract_config, is_digit_contract, barriers_array, getContractsArray, markers_array, contract_info } =
         contract_store;
     const { underlying: symbol, audit_details } = contract_info;
     const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
@@ -265,7 +265,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const has_ended = !!getEndTime(contract_info);
 
     return (
-        <SmartChart
+        <SmartChartSwitcher
             id={'replay'}
             barriers={barriers_array}
             bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : null}
@@ -309,14 +309,14 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             startWithDataFitMode={true}
         >
             {markers_array.map(({ content_config, marker_config, react_key }) => (
-                <ChartMarker
+                <ChartMarkerBeta
                     key={react_key}
                     marker_config={marker_config}
                     marker_content_props={content_config}
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
-        </SmartChart>
+        </SmartChartSwitcher>
     );
 });
 

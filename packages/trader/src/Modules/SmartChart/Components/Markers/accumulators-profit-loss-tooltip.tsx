@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { FastMarker } from 'Modules/SmartChart';
+import { FastMarkerBeta } from 'Modules/SmartChartBeta';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
 import { ProposalOpenContract } from '@deriv/api-types';
 import { isMobile } from '@deriv/shared';
@@ -97,8 +97,10 @@ const AccumulatorsProfitLossTooltip = ({
                 profit={profit}
             />
         );
+
+    const FastMarkerComponent = FastMarkerBeta;
     return is_sold && exit_tick_time ? (
-        <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
+        <FastMarkerComponent markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
             <span
                 className={`${className}__spot-circle`}
                 onMouseEnter={() => setIsTooltipOpen(true)}
@@ -124,7 +126,7 @@ const AccumulatorsProfitLossTooltip = ({
                     </Text>
                 </div>
             </CSSTransition>
-        </FastMarker>
+        </FastMarkerComponent>
     ) : null;
 };
 

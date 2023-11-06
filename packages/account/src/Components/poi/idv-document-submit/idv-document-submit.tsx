@@ -58,6 +58,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
             example_format: '',
         },
         document_number: '',
+        confirmation_checkbox: false,
         ...form_initial_values,
     };
 
@@ -103,6 +104,10 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
             errors.last_name = validateName(values.last_name);
         }
 
+        if (!values.confirmation_checkbox) {
+            errors.confirmation_checkbox = 'error';
+        }
+
         return removeEmptyPropertiesFromObject(errors);
     };
 
@@ -143,14 +148,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
     };
 
     return (
-        <Formik
-            initialValues={{ ...initial_values }}
-            validate={validateFields}
-            initialStatus={{
-                is_confirmed: false,
-            }}
-            onSubmit={submitHandler}
-        >
+        <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
             {({
                 dirty,
                 errors,
@@ -162,7 +160,6 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
                 setFieldValue,
                 touched,
                 values,
-                status,
             }) => (
                 <div className='proof-of-identity__container proof-of-identity__container--reset'>
                     <section className='form-body'>
@@ -188,7 +185,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
                             })}
                             is_qualified_for_idv
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={status?.is_confirmed ? [] : changeable_fields}
+                            editable_fields={values.confirmation_checkbox ? [] : changeable_fields}
                         />
                     </section>
                     <FormFooter className='proof-of-identity__footer account-form__footer--reset'>
@@ -202,7 +199,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
                             type='submit'
                             onClick={handleSubmit}
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
+                            is_disabled={!dirty || isSubmitting || !isValid}
                             text={localize('Verify')}
                             large
                             primary

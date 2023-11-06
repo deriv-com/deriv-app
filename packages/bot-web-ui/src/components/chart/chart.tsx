@@ -1,13 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-// TODO Remove this after smartcharts is replaced
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from './toolbar-widgets';
+import { ChartTitleBeta, SmartChartBeta } from './v2';
 
 const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) => {
     const barriers: [] = [];
@@ -45,7 +42,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 'dashboard__chart-wrapper--expanded': is_drawer_open && !isMobile(),
             })}
         >
-            <SmartChart
+            <SmartChartBeta
                 id='dbot'
                 barriers={barriers}
                 showLastDigitStats={show_digits_stats}
@@ -65,7 +62,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 requestSubscribe={wsSubscribe}
                 settings={settings}
                 symbol={symbol}
-                topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
+                topWidgets={() => <ChartTitleBeta onChange={onSymbolChange} />}
                 isConnectionOpened={is_socket_opened}
                 getMarketsOrder={getMarketsOrder}
                 isLive={true}

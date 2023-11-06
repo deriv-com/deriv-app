@@ -30,19 +30,21 @@
     &__top-left-info {
         display: flex;
         flex-direction: column;
-        gap: 0.6rem;
+
+        @include mobile {
+            gap: 0.4rem;
+        }
     }
 
     &__details {
         display: flex;
-        gap: 2.4rem;
+        gap: 0.8rem;
         align-items: center;
 
         @include mobile {
             opacity: 1;
             max-height: 2rem;
             transition: opacity 0.25s ease, max-height 0.25s ease;
-            gap: 0.8rem;
 
             &--hide-details {
                 max-height: 0;

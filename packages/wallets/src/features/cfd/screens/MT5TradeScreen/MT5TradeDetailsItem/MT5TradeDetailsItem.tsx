@@ -20,7 +20,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
             })}
         >
             {variant !== 'info' && (
-                <>
+                <React.Fragment>
                     <WalletText color='less-prominent' size='sm'>
                         {label}
                     </WalletText>
@@ -36,7 +36,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
                             <EditIcon className='wallets-mt5-trade-details-item__edit' onClick={() => undefined} />
                         )}
                     </div>
-                </>
+                </React.Fragment>
             )}
             {variant === 'info' && (
                 <WalletText color='less-prominent' size={isDesktop ? 'sm' : 'md'}>

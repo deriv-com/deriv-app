@@ -38,7 +38,7 @@ const LaunchModal = () => {
         LocalStore.set('launchModalShown', JSON.stringify(true));
     };
 
-    const is_already_shown: boolean = JSON.parse(LocalStore.get('launchModalShown') || 'false');
+    const is_already_shown: boolean = JSON.parse(LocalStore.get('launchModalShown') ?? 'false');
 
     return (
         <React.Suspense fallback={<UILoader />}>

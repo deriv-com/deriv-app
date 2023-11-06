@@ -6,7 +6,7 @@ import ContractTypeDescriptionVideo from '../contract-type-description-video';
 import { TCoreStores } from '@deriv/stores/types';
 
 const default_mocked_props = {
-    selected_contract_type: 'vanilla',
+    selected_contract_type: 'vanillalongcall',
     data_testid: 'dt_description_video',
 };
 
@@ -22,16 +22,32 @@ describe('<ContractTypeDescriptionVideo />', () => {
         );
     };
     it('should render the component with video if selected_contract_type does support video', () => {
-        const mock_root_store = mockStore({});
-        render(mockContractTypeDescriptionVideo(mock_root_store, default_mocked_props));
-        const video = screen.getByTestId(/description_video/i);
+        render(mockContractTypeDescriptionVideo(mockStore({}), default_mocked_props));
 
-        expect(video).toBeInTheDocument();
+        expect(screen.getByTestId(/description_video/i)).toBeInTheDocument();
     });
+
     it('should be able to find a proper video and render the component if is_dark_mode_on is true', () => {
         const mock_root_store = mockStore({ ui: { is_dark_mode_on: true } });
         render(mockContractTypeDescriptionVideo(mock_root_store, default_mocked_props));
 
         expect(screen.getByTestId(/description_video/i)).toBeInTheDocument();
+    });
+
+    it('should return null if selected_contract_type is falsy', () => {
+        const new_mocked_props = { ...default_mocked_props, selected_contract_type: '' };
+        const { container } = render(mockContractTypeDescriptionVideo(mockStore({}), new_mocked_props));
+
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    it('should render the component with video of proper width and height if it is mobile', () => {
+        const mock_root_store = mockStore({ ui: { is_mobile: true } });
+        render(mockContractTypeDescriptionVideo(mock_root_store, default_mocked_props));
+        const video = screen.getByTestId(/description_video/i);
+
+        expect(video).toBeInTheDocument();
+        expect(video).toHaveAttribute('width', '328');
+        expect(video).toHaveAttribute('height', '184.5');
     });
 });

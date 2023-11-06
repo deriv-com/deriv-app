@@ -15,6 +15,7 @@ import {
     dxtrade_data,
     ctrader_data,
 } from '../../Helpers/compare-accounts-config';
+import { REGION } from '../../Helpers/cfd-config';
 
 const CompareCFDs = observer(() => {
     const history = useHistory();
@@ -76,7 +77,7 @@ const CompareCFDs = observer(() => {
                 <Text size='m' weight='bold' color='prominent'>
                     <Localize
                         i18n_default_text={
-                            selected_region === 'EU'
+                            selected_region === REGION.EU
                                 ? 'Deriv MT5 CFDs {{real_title}} account'
                                 : 'Compare CFDs {{demo_title}} accounts'
                         }

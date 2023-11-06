@@ -1,9 +1,11 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores.js';
 
 type TFormLayout = {
-    is_market_closed: boolean;
+    is_market_closed: ReturnType<typeof useTraderStore>['is_market_closed'];
     is_trade_enabled: boolean;
 };
 
@@ -19,10 +21,14 @@ const Screen = Loadable({
     },
 });
 
-const FormLayout = ({ is_market_closed, is_trade_enabled }: TFormLayout) => (
-    <React.Fragment>
-        <Screen is_trade_enabled={is_trade_enabled} is_market_closed={isMobile() ? undefined : is_market_closed} />
-    </React.Fragment>
-);
+const FormLayout = observer(({ is_market_closed, is_trade_enabled }: TFormLayout) => {
+    const { common } = useStore();
+    const { current_language } = common;
+    return (
+        <React.Fragment key={current_language}>
+            <Screen is_trade_enabled={is_trade_enabled} is_market_closed={isMobile() ? undefined : is_market_closed} />
+        </React.Fragment>
+    );
+});
 
 export default React.memo(FormLayout);

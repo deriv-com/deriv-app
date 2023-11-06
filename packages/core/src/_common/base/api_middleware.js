@@ -1,7 +1,14 @@
 class APIMiddleware {
-    constructor(config) {
+    session_id;
+
+    constructor(config, session_id = '') {
         this.config = config;
         this.debounced_calls = {};
+        this.session_id = session_id;
+    }
+
+    requestDataTransformer(request) {
+        return this.session_id ? { ...request, session_id: this.session_id } : request;
     }
 
     sendWillBeCalled({ args: [request] }) {

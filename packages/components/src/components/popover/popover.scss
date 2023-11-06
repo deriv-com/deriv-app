@@ -64,6 +64,11 @@
             background-color: var(--status-danger);
         }
     }
+    &__trade-params {
+        @include mobile {
+            max-width: calc(100vw - 6.7rem);
+        }
+    }
 }
 
 .mobile-widget__item-popover,

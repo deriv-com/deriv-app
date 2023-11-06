@@ -1,8 +1,8 @@
 import React from 'react';
 import Loadable from 'react-loadable';
-import Routes from 'App/Containers/Routes/routes.jsx';
+import Routes from 'App/Containers/Routes/routes';
 import TradeHeaderExtensions from 'App/Containers/trade-header-extensions';
-import TradeFooterExtensions from 'App/Containers/trade-footer-extensions.jsx';
+import TradeFooterExtensions from 'App/Containers/trade-footer-extensions';
 import TradeSettingsExtensions from 'App/Containers/trade-settings-extensions';
 import { NetworkStatusToastErrorPopup } from 'Modules/Trading/Containers/toast-popup';
 import initStore from './init-store';

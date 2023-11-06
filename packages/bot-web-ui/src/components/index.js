@@ -4,7 +4,6 @@ export { default as Chart } from './chart';
 export { default as ContractCardLoader } from './contract-card-loading';
 export { default as ContractResultOverlay } from './contract-result-overlay';
 export { default as Dashboard } from './dashboard';
-export { default as QuickStrategy } from './dashboard/quick-strategy';
 export { default as Download } from './download';
 export { default as Flyout } from './flyout';
 export { default as Journal } from './journal';

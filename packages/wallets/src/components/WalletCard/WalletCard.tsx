@@ -1,18 +1,18 @@
 import React from 'react';
-
-import { useWalletAccountsList } from '@deriv/api';
-
+import { useBalance } from '@deriv/api';
+import { THooks } from '../../types';
+import { WalletText } from '../Base';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
-
 import './WalletCard.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    account: THooks.WalletAccountsList;
 };
 
 const WalletCard: React.FC<TProps> = ({ account }) => {
+    const { isLoading } = useBalance();
     return (
         <div className='wallets-card'>
             <WalletGradientBackground
@@ -34,9 +34,17 @@ const WalletCard: React.FC<TProps> = ({ account }) => {
                             )}
                         </div>
                     </div>
-                    <div className={`wallets-card__details__bottom${account?.is_virtual ? '--virtual' : ''}`}>
-                        <p className='wallets-card__details__bottom__currency'>{account?.currency} Wallet</p>
-                        <p className='wallets-card__details__bottom__balance'>{account?.display_balance}</p>
+                    <div className='wallets-card__details__bottom'>
+                        <WalletText color={account?.is_virtual ? 'white' : 'black'} size='2xs'>
+                            {account?.currency} Wallet
+                        </WalletText>
+                        {isLoading ? (
+                            <div className='wallets-skeleton wallets-card--balance-loader' />
+                        ) : (
+                            <WalletText color={account?.is_virtual ? 'white' : 'black'} size='sm' weight='bold'>
+                                {account?.display_balance}
+                            </WalletText>
+                        )}
                     </div>
                 </div>
             </WalletGradientBackground>

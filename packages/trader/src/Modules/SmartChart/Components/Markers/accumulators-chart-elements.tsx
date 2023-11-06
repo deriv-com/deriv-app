@@ -1,8 +1,9 @@
-import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper.js';
+import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper';
 import React from 'react';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip';
 import { ProposalOpenContract } from '@deriv/api-types';
-import ChartMarker from './marker.jsx';
+import ChartMarkerBeta from 'Modules/SmartChartBeta/Components/Markers/marker.jsx';
+import ChartMarker from './marker';
 
 type TPositions = {
     contract_info: Omit<
@@ -14,11 +15,12 @@ type TPositions = {
 
 type TAccumulatorsChartElements = {
     all_positions: TPositions[];
-    current_spot?: number | null;
+    current_spot: number;
     current_spot_time: number;
     has_crossed_accu_barriers: boolean;
     should_show_profit_text: React.ComponentProps<typeof AccumulatorsProfitLossTooltip>['should_show_profit_text'];
     symbol: string;
+    is_beta_chart?: boolean;
 };
 
 const AccumulatorsChartElements = ({
@@ -28,11 +30,14 @@ const AccumulatorsChartElements = ({
     has_crossed_accu_barriers,
     should_show_profit_text,
     symbol,
+    is_beta_chart,
 }: TAccumulatorsChartElements) => {
     const accumulators_positions = all_positions.filter(
         ({ contract_info }) =>
             contract_info && symbol === contract_info.underlying && filterByContractType(contract_info, 'accumulator')
     );
+
+    const ChartMarkerComponent = is_beta_chart ? ChartMarkerBeta : ChartMarker;
 
     return (
         <React.Fragment>
@@ -42,10 +47,11 @@ const AccumulatorsChartElements = ({
                         key={contract_info.contract_id}
                         {...contract_info}
                         should_show_profit_text={should_show_profit_text}
+                        is_beta_chart={is_beta_chart}
                     />
                 ))}
             {has_crossed_accu_barriers && !!current_spot_time && (
-                <ChartMarker
+                <ChartMarkerComponent
                     marker_config={{
                         ContentComponent: 'div',
                         x: current_spot_time,

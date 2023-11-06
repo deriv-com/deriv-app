@@ -81,7 +81,8 @@ type TRoutes =
     | '/complaints-policy'
     | '/appstore'
     | '/appstore/traders-hub'
-    | '/appstore/onboarding';
+    | '/appstore/onboarding'
+    | '/wallets';
 
 type TPopulateSettingsExtensionsMenuItem = {
     icon: string;
@@ -506,6 +507,9 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    prev_account_type: string;
+    account_open_date: number | undefined;
+    is_beta_chart: boolean;
 };
 
 type TCommonStoreError = {
@@ -519,6 +523,7 @@ type TCommonStoreError = {
     should_show_refresh?: boolean;
     type?: string;
 };
+
 type TCommonStoreServicesError = {
     code?: string;
     message?: string;
@@ -563,12 +568,15 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
     is_account_settings_visible: boolean;
+    is_additional_kyc_info_modal_open: boolean;
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;
     is_wallet_modal_visible: boolean;
     is_chart_asset_info_visible?: boolean;
     is_chart_layout_default: boolean;
+    is_chart_countdown_visible: boolean;
     is_closing_create_real_account_modal: boolean;
+    is_kyc_information_submitted_modal_open: boolean;
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
@@ -587,7 +595,9 @@ type TUiStore = {
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
+    onChangeUiStore: ({ name, value }: { name: string; value: number | null }) => void;
     notification_messages_ui: React.ElementType;
+    setChartCountdown: (value: boolean) => void;
     populateFooterExtensions: (
         footer_extensions:
             | [
@@ -611,6 +621,10 @@ type TUiStore = {
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
     sub_section_index: number;
+    setPromptHandler: (
+        condition: boolean,
+        cb?: (() => void) | ((route_to: RouteComponentProps['location'], action: string) => boolean)
+    ) => void;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
     toggleAccountsDialog: () => void;
@@ -656,6 +670,8 @@ type TUiStore = {
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
+    toggleAdditionalKycInfoModal: () => void;
+    toggleKycInformationSubmittedModal: () => void;
 };
 
 type TPortfolioStore = {
@@ -670,12 +686,14 @@ type TPortfolioStore = {
     is_accumulator: boolean;
     is_turbos: boolean;
     onBuyResponse: (contract_info: { contract_id: number; longcode: string; contract_type: string }) => void;
+    onHoverPosition: (is_over: boolean, position: TPortfolioPosition, underlying: string) => void;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onMount: () => void;
+    onUnmount: () => void;
     open_accu_contract: TPortfolioPosition | null;
     positions: TPortfolioPosition[];
-    removePositionById: (id: number) => void;
+    removePositionById: (contract_id?: number) => void;
     setContractType: (contract_type: string) => void;
 };
 
@@ -748,6 +766,7 @@ type TContractTradeStore = {
     clearError: () => void;
     contracts: TContractStore[];
     error_message: string;
+    filtered_contracts: TPortfolioPosition[];
     getContractById: (contract_id?: number) => TContractStore;
     granularity: null | number;
     has_crossed_accu_barriers: boolean;
@@ -755,17 +774,7 @@ type TContractTradeStore = {
     last_contract: TContractStore | Record<string, never>;
     markers_array: Array<{
         type: string;
-        contract_info: {
-            accu_barriers_difference:
-                | boolean
-                | {
-                      top: string;
-                      bottom: string;
-                      font: string;
-                  };
-            has_crossed_accu_barriers: boolean;
-            is_accumulator_trade_without_contract: boolean;
-        };
+        contract_info: TPortfolioPosition['contract_info'];
         key: string;
         price_array: [string, string];
         epoch_array: [number];
@@ -929,6 +938,8 @@ type TContractReplay = {
         is_digit_contract: boolean;
         is_ended: boolean;
     };
+    removeErrorMessage: () => void;
+    error_message: string;
 };
 type TGtmStore = {
     is_gtm_applicable: boolean;

@@ -4,7 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import Download from 'Components/download';
 import { TJournalToolsProps } from '../journal.types';
-import { FilterDialog } from '.';
+import FilterDialog from './filter-dialog';
 
 const JournalTools = ({
     checked_filters,

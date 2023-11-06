@@ -19,7 +19,8 @@ type TModalState = {
     platform?: string;
 };
 
-type TModalShowOptions = {
+type TModalOptions = {
+    defaultRootId?: 'wallets_modal_responsive_root' | 'wallets_modal_root';
     rootRef?: React.RefObject<HTMLElement>;
 };
 
@@ -37,9 +38,9 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const [content, setContent] = useState<React.ReactNode | null>();
     const modalState = useRef<TModalState>();
+    const [modalOptions, setModalOptions] = useState<TModalOptions>();
     const { isDesktop } = useDevice();
 
-    const [customRootRef, setCustomRootRef] = useState<RefObject<HTMLElement> | null>(null);
     const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
     const rootResponsiveRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_responsive_root'));
 
@@ -50,9 +51,12 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         };
     };
 
-    const show = (ModalContent: React.ReactNode, options?: TModalShowOptions) => {
+    const show = (ModalContent: React.ReactNode, options?: Partial<TModalOptions>) => {
         setContent(ModalContent);
-        setCustomRootRef(options?.rootRef?.current ? options?.rootRef : null);
+        setModalOptions({
+            ...modalOptions,
+            ...options,
+        });
     };
 
     useEffect(() => {
@@ -68,10 +72,10 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     useOnClickOutside(modalRef, isDesktop ? hide : () => undefined);
 
     const modalRootRef = useMemo(() => {
-        if (customRootRef?.current) return customRootRef;
-        if (isDesktop) return rootRef;
+        if (modalOptions?.rootRef?.current) return modalOptions?.rootRef;
+        if (isDesktop || modalOptions?.defaultRootId === 'wallets_modal_root') return rootRef;
         return rootResponsiveRef;
-    }, [isDesktop, customRootRef]);
+    }, [isDesktop, modalOptions?.rootRef]);
 
     return (
         <ModalContext.Provider

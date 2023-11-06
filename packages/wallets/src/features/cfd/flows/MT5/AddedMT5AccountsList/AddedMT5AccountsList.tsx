@@ -7,6 +7,8 @@ import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
 import './AddedMT5AccountsList.scss';
+import { useModal } from '../../../../../components/ModalProvider';
+import { MT5TradeModal } from '../../../modals';
 
 type TProps = {
     account: THooks.MT5AccountsList;
@@ -33,6 +35,7 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
+    const { show } = useModal();
     const { title } = MarketTypeDetails[account.market_type || 'all'];
 
     return (
@@ -47,7 +50,10 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         text='Transfer'
                         variant='outlined'
                     />
-                    <WalletButton text='Open' />
+                    <WalletButton
+                        onClick={() => show(<MT5TradeModal marketType={account.market_type || 'all'} platform='mt5' />)}
+                        text='Open'
+                    />
                 </div>
             )}
         >

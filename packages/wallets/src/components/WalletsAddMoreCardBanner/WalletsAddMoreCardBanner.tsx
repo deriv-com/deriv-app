@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAccountsList, useCreateWallet } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
@@ -6,74 +6,13 @@ import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageCl
 import CheckIcon from '../../public/images/check.svg';
 import PlusIcon from '../../public/images/plus.svg';
 import { THooks } from '../../types';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup, WalletText } from '../Base';
+import { WalletButton, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
+import { WalletAddedSuccess } from '../WalletAddedSuccess';
 import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
-import { WalletCard } from '../WalletCard';
 import { WalletError } from '../WalletError';
-import { WalletSuccess } from '../WalletSuccess';
 
 type TProps = THooks.AvailableWallets;
-type TWalletAddedSuccessProps = {
-    currency: THooks.CreateWallet['currency'];
-    landingCompany: THooks.CreateWallet['landing_company_shortcode'];
-    onPrimaryButtonClick: () => void;
-    onSecondaryButtonClick: () => void;
-};
-
-const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
-    currency,
-    landingCompany,
-    onPrimaryButtonClick,
-    onSecondaryButtonClick,
-}) => {
-    const { isMobile } = useDevice();
-    const description = 'Make a deposit into your new Wallet.';
-    const title = useMemo(
-        () => `Your ${currency} wallet (${landingCompany?.toUpperCase()}) is ready`,
-        [currency, landingCompany]
-    );
-    const renderFooter = useCallback(
-        () => (
-            <div className='wallets-add-more__success-footer'>
-                <WalletButtonGroup isFlex>
-                    <WalletButton onClick={onSecondaryButtonClick} text='Maybe later' variant='outlined' />
-                    <WalletButton onClick={onPrimaryButtonClick} text='Deposit' />
-                </WalletButtonGroup>
-            </div>
-        ),
-        [onPrimaryButtonClick, onSecondaryButtonClick]
-    );
-    const renderIcon = useCallback(
-        () => (
-            <WalletCard
-                balance={`0.00 ${currency}`}
-                currency={currency || 'USD'}
-                landingCompanyName={landingCompany}
-                width='24rem'
-            />
-        ),
-        [currency, landingCompany]
-    );
-
-    if (isMobile)
-        return (
-            <ModalStepWrapper renderFooter={renderFooter} title=''>
-                <WalletSuccess description={description} renderIcon={renderIcon} title={title} />
-            </ModalStepWrapper>
-        );
-
-    return (
-        <ModalWrapper hideCloseButton>
-            <WalletSuccess
-                description={description}
-                renderButtons={renderFooter}
-                renderIcon={renderIcon}
-                title={title}
-            />
-        </ModalWrapper>
-    );
-};
 
 const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     currency,

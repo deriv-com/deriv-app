@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const trading_assessment_questions = () => [
+export const getTradingAssessmentQuestions = () => [
     {
         question_text: localize(
             'Do you understand that you could potentially lose 100% of the money you use to trade?'

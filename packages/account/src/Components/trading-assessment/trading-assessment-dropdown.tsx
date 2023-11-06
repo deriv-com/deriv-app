@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { localize, getLanguage } from '@deriv/translations';
-import classNames from 'classnames';
+import { localize } from '@deriv/translations';
 import { TFormData, TQuestion } from 'Types';
+import { MAX_QUESTION_TEXT_LENGTH } from 'Constants/trading-assessment';
 
 type TTradingAssessmentDropdown = {
     disabled_items: string[];
@@ -17,6 +17,18 @@ type TTradingAssessmentDropdown = {
     values: TFormData;
     setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void;
     setEnableNextSection: (enable: boolean) => void;
+};
+
+type TField = {
+    field: {
+        name: string;
+        value: string;
+        onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    };
+    meta: {
+        error: string;
+        touched: string;
+    };
 };
 
 const TradingAssessmentDropdown = ({
@@ -48,7 +60,7 @@ const TradingAssessmentDropdown = ({
         <div className='trading-assessment__wrapper__dropdown'>
             {item_list.map(question => (
                 <Field name={question.form_control} key={question.form_control}>
-                    {({ field, meta }) => {
+                    {({ field, meta }: TField) => {
                         const should_extend_trading_frequency_field =
                             question.form_control === 'trading_frequency_financial_instruments' &&
                             question?.question_text.length > MAX_QUESTION_TEXT_LENGTH;

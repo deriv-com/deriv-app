@@ -2,8 +2,7 @@ import React from 'react';
 import { GetFinancialAssessment, GetSettings } from '@deriv/api-types';
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { GetFinancialAssessment, GetSettings } from '@deriv/api-types';
-import { trading_assessment_questions } from 'Constants/trading-assessment-questions';
+import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
 
 type TTradingAssessmentConfig = {
     account_settings: GetSettings;
@@ -83,7 +82,7 @@ const tradingAssessmentConfig = (
             disabled_items: account_settings?.immutable_fields,
             setSubSectionIndex,
         },
-        sub_step_count: trading_assessment_questions().length,
+        sub_step_count: getTradingAssessmentQuestions().length,
     };
 };
 

@@ -2,12 +2,15 @@ import classNames from 'classnames';
 import React from 'react';
 import { Formik, Form } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { localize, Localize, getLanguage } from '@deriv/translations';
+import { isEmptyObject } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdown from './trading-assessment-dropdown';
-import { trading_assessment_questions } from 'Constants/trading-assessment-questions';
+import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
 import { TFormData, TQuestion } from 'Types';
+import ScrollToFieldWithError from 'Components/forms/scroll-to-field-with-error';
+import { MAX_QUESTION_TEXT_LENGTH } from 'Constants/trading-assessment';
+import { useStore } from '@deriv/stores';
 
 type TTradingAssessmentForm = {
     class_name?: string;
@@ -30,14 +33,16 @@ const TradingAssessmentForm = ({
     setSubSectionIndex,
     is_independent_section,
 }: TTradingAssessmentForm) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+    const assessment_questions = getTradingAssessmentQuestions();
+    const stored_items = parseInt(localStorage.getItem('current_question_index') || '0');
     const [is_section_filled, setIsSectionFilled] = React.useState(false);
     const [current_question_details, setCurrentQuestionDetails] = React.useState({
         current_question_index: 0,
         current_question: assessment_questions[stored_items],
     });
-    const [form_data, setFormData] = React.useState({});
-
-    const stored_items = parseInt(localStorage.getItem('current_question_index') || '0');
+    const [form_data, setFormData] = React.useState({ ...form_value });
     const last_question_index = assessment_questions.length - 1;
     const should_display_previous_button = is_independent_section
         ? current_question_details.current_question_index !== 0
@@ -121,15 +126,17 @@ const TradingAssessmentForm = ({
     const isAssessmentCompleted = (answers: TFormData) => Object.values(answers).every(answer => Boolean(answer));
 
     const nextButtonHandler = (values: TFormData) => {
-        verifyIfAllFieldsFilled();
         if (is_section_filled) {
             if (isAssessmentCompleted(values) && stored_items === last_question_index) onSubmit(values);
             else displayNextPage();
         }
     };
 
-    const handleValidate = values => {
-        const errors = {};
+    const handleValidate = (values: { [x: string]: string; risk_tolerance: string; source_of_experience: string }) => {
+        const errors = {
+            risk_tolerance: '',
+            source_of_experience: '',
+        };
 
         if (!values.risk_tolerance && current_question_details.current_question.section === 'risk_tolerance') {
             errors.risk_tolerance = 'error';
@@ -207,7 +214,7 @@ const TradingAssessmentForm = ({
                                     >
                                         {questions?.length ? (
                                             <TradingAssessmentDropdown
-                                                item_list={questions}
+                                                item_list={questions as TQuestion[]}
                                                 onChange={handleValueSelection}
                                                 values={values}
                                                 setFieldValue={setFieldValue}
@@ -222,7 +229,7 @@ const TradingAssessmentForm = ({
                                                     handleValueSelection(e, form_control, setFieldValue, values);
                                                 }}
                                                 values={values}
-                                                form_control={form_control}
+                                                form_control={form_control as keyof TFormData}
                                                 setEnableNextSection={setIsSectionFilled}
                                                 disabled_items={disabled_items ?? []}
                                             />
@@ -230,7 +237,7 @@ const TradingAssessmentForm = ({
                                     </div>
                                     <Modal.Footer
                                         has_separator
-                                        is_bypassed={isMobile()}
+                                        is_bypassed={is_mobile}
                                         className='trading-assessment__existing_btn '
                                     >
                                         <Button.Group className='trading-assessment__btn-group'>

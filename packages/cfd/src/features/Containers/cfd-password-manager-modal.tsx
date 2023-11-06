@@ -14,6 +14,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { VerifyEmailResponse } from '@deriv/api-types';
 import { isMobile, validLength, validPassword, getErrorMessages, getCFDPlatformLabel } from '@deriv/shared';
 import { FormikErrors } from 'formik';
 import CFDStore from '../../Stores/Modules/CFD/cfd-store';
@@ -31,6 +32,9 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { useVerifyEmail } from '@deriv/api';
 import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
+
+// Temporary type because of build failing. Confirm with Accounts team
+type TSendVerifyEmail = () => Promise<VerifyEmailResponse>;
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);
@@ -347,7 +351,7 @@ const CFDPasswordManagerModal = observer(
                 component: (
                     <CFDPasswordReset
                         server={selected_server}
-                        sendVerifyEmail={sendVerifyEmail}
+                        sendVerifyEmail={sendVerifyEmail as unknown as TSendVerifyEmail}
                         account_type={selected_account_type}
                         account_group={selected_account_group}
                         password_type={password_type}

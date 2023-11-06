@@ -40,11 +40,12 @@ const WithdrawalCryptoAmountConverter = () => {
                 helperMessage={
                     activeWallet && activeWallet?.balance < cryptoAmount ? errorMessageMapper.insufficientFunds : ''
                 }
-                label='Amount (BTC)'
+                label={`Amount (${activeWallet?.currency})`}
+                name='wallets-withdrawal-crypto-cryptocurrency-textfield'
                 onChange={e => {
                     setCryptoAmount(parseFloat(e.target.value));
                 }}
-                onClick={() => setArrowPointsRtl(false)}
+                onFocus={() => setArrowPointsRtl(false)}
                 showMessage
             />
             <div
@@ -57,7 +58,8 @@ const WithdrawalCryptoAmountConverter = () => {
             <WalletTextField
                 helperMessage='Approximate value'
                 label='Amount (USD)'
-                onClick={() => setArrowPointsRtl(true)}
+                name='wallets-withdrawal-crypto-usd-textfield'
+                onFocus={() => setArrowPointsRtl(true)}
                 showMessage
                 value={convertedAmount}
             />

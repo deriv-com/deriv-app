@@ -33,6 +33,11 @@
         max-width: 100%;
         max-height: 10.6rem;
     }
+
+    &__items {
+        list-style: disc;
+        margin-left: 8px;
+    }
 }
 
 .wallets-withdrawal-crypto-address {

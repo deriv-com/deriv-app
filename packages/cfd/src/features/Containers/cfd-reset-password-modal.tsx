@@ -70,6 +70,8 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
         changed_password_type: '',
     });
 
+    const [password, setPassword] = React.useState('');
+
     const renderErrorBox = (error: TError) => {
         setState({
             ...state,
@@ -87,7 +89,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
             setState({
                 ...state,
                 is_finished: true,
-                changed_password_type: 'trading_platform_investor_password_reset',
+                changed_password_type: password,
             });
             clearAddressBar();
         }
@@ -130,6 +132,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
     ) => {
         const { setSubmitting } = actions;
         setSubmitting(true);
+        setPassword(password_type);
         const request = {
             account_id: login,
             platform: CFD_PLATFORMS.MT5,

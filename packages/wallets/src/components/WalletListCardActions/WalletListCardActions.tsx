@@ -7,7 +7,7 @@ import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
 import { THooks } from '../../types';
-import { WalletButton, WalletText } from '../Base';
+import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
@@ -37,7 +37,13 @@ const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
     // Filter out the "Withdraw" button when is_demo is true
     const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdraw') : buttons;
 
-    return filteredButtons.map(button => ({
+    const orderForDemo = ['transfer', 'transactions', 'reset-balance'];
+
+    const sortedButtons = isDemo
+        ? [...filteredButtons].sort((a, b) => orderForDemo.indexOf(a.name) - orderForDemo.indexOf(b.name))
+        : filteredButtons;
+
+    return sortedButtons.map(button => ({
         ...button,
         action: () => handleAction?.(),
     }));
@@ -60,15 +66,17 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                 <div className='wallets-mobile-actions'>
                     {getWalletHeaderButtons(isDemo).map(button => (
                         <div className='wallets-mobile-actions-content' key={button.name}>
-                            <button
+                            <IconButton
                                 className='wallets-mobile-actions-content-icon'
-                                key={button.name}
+                                color='transparent'
+                                icon={button.icon}
+                                isRound
                                 onClick={() => {
+                                    switchAccount(loginid);
                                     history.push(`/wallets/cashier/${button.name}`);
                                 }}
-                            >
-                                {button.icon}
-                            </button>
+                                size='lg'
+                            />
                             <WalletText size='sm'>{button.text}</WalletText>
                         </div>
                     ))}

@@ -1,9 +1,7 @@
 import React from 'react';
-
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Money, Text } from '@deriv/components';
 import {
-    CFD_PLATFORMS,
     getCFDAccountDisplay,
     getCFDAccountKey,
     getCFDPlatformLabel,
@@ -12,13 +10,14 @@ import {
     isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink, getBrokerName } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
 import PasswordBox from '../Components/passwordbox';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
+import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid & {
@@ -48,10 +47,10 @@ const DMT5TradeModal = ({
 }: TMT5TradeModalProps) => {
     const getCompanyShortcode = () => {
         if (
-            (mt5_trade_account.account_type === 'demo' &&
-                mt5_trade_account.market_type === 'financial' &&
-                mt5_trade_account.landing_company_short === 'labuan') ||
-            mt5_trade_account.account_type === 'real'
+            (mt5_trade_account.account_type === CATEGORY.DEMO &&
+                mt5_trade_account.market_type === MARKET_TYPE.FINANCIAL &&
+                mt5_trade_account.landing_company_short === JURISDICTION.LABUAN) ||
+            mt5_trade_account.account_type === CATEGORY.REAL
         ) {
             return mt5_trade_account.landing_company_short;
         }
@@ -69,8 +68,8 @@ const DMT5TradeModal = ({
         });
     const getAccountTitle = () => {
         if (show_eu_related_content) return 'CFDs';
-        else if (mt5_trade_account.market_type === 'synthetic') return 'Derived';
-        else if (mt5_trade_account.market_type === 'all') return 'SwapFree';
+        else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Derived';
+        else if (mt5_trade_account.market_type === MARKET_TYPE.ALL) return 'SwapFree';
         return 'Financial';
     };
     return (
@@ -101,7 +100,7 @@ const DMT5TradeModal = ({
             <div className='cfd-trade-modal__login-specs'>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                    <SpecBox is_bold is_broker value={'Deriv.com Limited'} />
+                    <SpecBox is_bold is_broker value={getBrokerName()} />
                 </div>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>

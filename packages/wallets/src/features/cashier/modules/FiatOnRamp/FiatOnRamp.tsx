@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { WalletButton, WalletText } from '../../../../components';
 import BackArrow from '../../../../public/images/ic-back-arrow.svg';
-import { fiatOnRampProvider } from './FiatOnRamp.constants';
+import { fiatOnRampProvider } from './constants';
 import OnRampProviderCard from './FiatOnRampProviderCard/FiatOnRampProviderCard';
 import './FiatOnRamp.scss';
 

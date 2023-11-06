@@ -53,6 +53,13 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
 
     const { current_list } = useCfdStore();
 
+    React.useEffect(() => {
+        if (!/reset-password/.test(location.hash)) {
+            return;
+        }
+        setCFDPasswordResetModal(true);
+    }, [setCFDPasswordResetModal]);
+
     const [state, setState] = React.useState<{
         error_code: string | number | undefined;
         has_error: boolean;
@@ -141,6 +148,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
     return (
         <Modal
             className='cfd-reset-password-modal'
+            // is_open={is_cfd_reset_password_modal_enabled && !is_invalid_investor_token}
             is_open={is_cfd_reset_password_modal_enabled && !is_invalid_investor_token}
             toggleModal={() => setCFDPasswordResetModal(false)}
             title={

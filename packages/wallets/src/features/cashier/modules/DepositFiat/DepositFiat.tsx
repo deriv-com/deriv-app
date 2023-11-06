@@ -19,8 +19,8 @@ const DepositFiat = () => {
         }
     }, [isAuthorizeSuccess, mutate]);
 
-    if (isError && isServerError(depositError.error))
-        return <WalletsErrorScreen message={depositError.error.message} />;
+    // if (isError && isServerError(depositError.error))
+    //     return <WalletsErrorScreen message={depositError.error.message} />;
 
     return (
         <React.Fragment>

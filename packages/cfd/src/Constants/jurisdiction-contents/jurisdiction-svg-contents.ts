@@ -94,7 +94,9 @@ export const getJurisdictionSvgContents = ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Synthetics, Forex, Stocks, Stock Indices, Cryptocurrencies, and ETFs'),
+            description: localize(
+                'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices'
+            ),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('40+'),

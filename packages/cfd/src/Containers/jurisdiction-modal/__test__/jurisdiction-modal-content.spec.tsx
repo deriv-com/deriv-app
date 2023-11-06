@@ -371,7 +371,9 @@ describe('JurisdictionModalContent', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='all' />);
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(
-            screen.getByText('Synthetics, Forex, Stocks, Stock Indices, Cryptocurrencies, and ETFs')
+            screen.getByText(
+                'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices'
+            )
         ).toBeInTheDocument();
         expect(screen.getByText('40+')).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();

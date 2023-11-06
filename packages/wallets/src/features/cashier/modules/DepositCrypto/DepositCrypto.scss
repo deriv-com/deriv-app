@@ -33,15 +33,4 @@
         padding-top: 0rem;
         gap: 1.6rem;
     }
-
-    &__transaction-status {
-        position: absolute;
-        top: 0;
-        right: 0;
-
-        @include mobile {
-            width: 100%;
-            position: relative;
-        }
-    }
 }

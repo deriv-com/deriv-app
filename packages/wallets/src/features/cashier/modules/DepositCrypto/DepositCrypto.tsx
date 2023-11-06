@@ -17,9 +17,7 @@ const DepositCrypto = () => {
                 <Divider />
                 <DepositCryptoTryFiatOnRamp />
             </div>
-            <div className='wallets-deposit-crypto__transaction-status'>
-                <TransactionStatus transactionType='deposit' />
-            </div>
+            <TransactionStatus transactionType='deposit' />
         </div>
     );
 };

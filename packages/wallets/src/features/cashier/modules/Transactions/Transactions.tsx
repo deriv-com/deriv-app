@@ -67,11 +67,7 @@ const Transactions = () => {
                 'wallets-transactions--crypto-mobile': wallet?.is_crypto && isMobile,
             })}
         >
-            <div
-                className={classNames('wallets-transactions__header', {
-                    'wallets-transactions__header--crypto-mobile': wallet?.is_crypto && isMobile,
-                })}
-            >
+            <div className='wallets-transactions__header'>
                 {wallet?.currency_config?.is_crypto && (
                     <div className='wallets-transactions__toggle'>
                         <WalletText size='sm'>Pending Transactions</WalletText>

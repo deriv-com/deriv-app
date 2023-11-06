@@ -9,6 +9,7 @@ import GBP from '../../public/images/gbp.svg';
 import LTC from '../../public/images/ltc.svg';
 import USD from '../../public/images/usd.svg';
 import USDC from '../../public/images/usdc.svg';
+import { TGenericSizes } from '../../types';
 
 const typeToIconMapper = {
     BTC: Bitcoin,
@@ -35,14 +36,14 @@ const typeToWidthMapper = {
         lg: { desktop: 48, mobile: 32 },
         md: { desktop: 24, mobile: 24 },
         sm: { desktop: 16, mobile: 16 },
-        xl: { desktop: 56, mobile: 48 },
+        xl: { desktop: 64, mobile: 48 },
     },
 };
 
 const typesWithRoundedIcon = ['EUR', 'GBP', 'USD'];
 
 type TProps = {
-    size?: 'lg' | 'md' | 'sm' | 'xl';
+    size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm' | 'xl'>;
     type: Omit<string, keyof typeof typeToIconMapper> | keyof typeof typeToIconMapper;
 };
 

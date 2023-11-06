@@ -1,0 +1,12 @@
+.wallets-added-ctrader-accounts {
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+    }
+}

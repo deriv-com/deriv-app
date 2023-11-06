@@ -1,0 +1,39 @@
+@import '../SkeletonLoader.scss';
+
+.wallets-trading-app-card-loader {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 1rem 0rem;
+
+    &__content {
+        display: flex;
+        flex-direction: row;
+        gap: 14px;
+        align-items: center;
+
+        &__icon {
+            height: 50px;
+            border-radius: 10px;
+            width: 50px;
+        }
+
+        &__details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            &--title {
+                height: 14px;
+                border-radius: 2px;
+                width: 60px;
+            }
+
+            &--description {
+                height: 24px;
+                border-radius: 2px;
+                width: 200px;
+            }
+        }
+    }
+}

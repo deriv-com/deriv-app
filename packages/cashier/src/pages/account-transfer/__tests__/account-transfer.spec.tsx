@@ -19,7 +19,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 }));
 
 jest.mock('../account-transfer-form', () => jest.fn(() => 'mockedAccountTransferForm'));
-jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'mockedCryptoTransactionsHistory'));
+jest.mock('Components/transactions-crypto-history', () => jest.fn(() => 'mockedTransactionsCryptoHistory'));
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
 jest.mock('../account-transfer-no-account', () => jest.fn(() => 'mockedAccountTransferNoAccount'));
 jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
@@ -45,7 +45,7 @@ const cashier_mock = {
     },
     crypto_fiat_converter: {},
     transaction_history: {
-        is_crypto_transactions_visible: false,
+        is_transactions_crypto_visible: false,
     },
 };
 

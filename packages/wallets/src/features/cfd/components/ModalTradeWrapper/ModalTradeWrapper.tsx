@@ -63,10 +63,10 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                         </WalletText>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
-                                {Object.keys(LinksMapper[platform]).map((app, i) => {
+                                {Object.keys(LinksMapper[platform]).map(app => {
                                     const AppIcon = AppToIconMapper[app];
                                     const appLink = LinksMapper[platform][app as 'android' | 'huawei' | 'ios'];
-                                    return <AppIcon key={`${app}-${i}`} onClick={() => window.open(appLink)} />;
+                                    return <AppIcon key={app} onClick={() => window.open(appLink)} />;
                                 })}
                             </div>
                             {isDesktop && (

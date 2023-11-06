@@ -1,39 +1,29 @@
 import React from 'react';
 import { MobileFullPageModal, Modal, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { tabs_title } from 'Constants/load-modal';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/root-store';
+import { useDBotStore } from 'Stores/useDBotStore';
 import GoogleDrive from '../dashboard/dashboard-component/load-bot-preview/google-drive';
 import Local from './local';
 import LocalFooter from './local-footer';
 import Recent from './recent';
 import RecentFooter from './recent-footer';
 
-type TLoadModalProps = {
-    active_index: number;
-    is_load_modal_open: boolean;
-    loaded_local_file: string;
-    onEntered: () => void;
-    recent_strategies: any[];
-    setActiveTabIndex: () => void;
-    setPreviewOnPopup: (show: boolean) => void;
-    tab_name: string;
-    toggleLoadModal: () => void;
-};
-
-const LoadModal = ({
-    active_index,
-    is_load_modal_open,
-    loaded_local_file,
-    onEntered,
-    recent_strategies,
-    setActiveTabIndex,
-    setPreviewOnPopup,
-    tab_name,
-    toggleLoadModal,
-}: TLoadModalProps) => {
+const LoadModal = observer(() => {
+    const { load_modal, dashboard } = useDBotStore();
+    const {
+        active_index,
+        is_load_modal_open,
+        loaded_local_file,
+        onEntered,
+        recent_strategies,
+        setActiveTabIndex,
+        toggleLoadModal,
+        tab_name,
+    } = load_modal;
+    const { setPreviewOnPopup } = dashboard;
     const header_text = localize('Load strategy');
 
     if (isMobile()) {
@@ -100,16 +90,6 @@ const LoadModal = ({
             )}
         </Modal>
     );
-};
+});
 
-export default connect(({ load_modal, dashboard }: RootStore) => ({
-    active_index: load_modal.active_index,
-    is_load_modal_open: load_modal.is_load_modal_open,
-    loaded_local_file: load_modal.loaded_local_file,
-    onEntered: load_modal.onEntered,
-    recent_strategies: load_modal.recent_strategies,
-    setActiveTabIndex: load_modal.setActiveTabIndex,
-    tab_name: load_modal.tab_name,
-    toggleLoadModal: load_modal.toggleLoadModal,
-    setPreviewOnPopup: dashboard.setPreviewOnPopup,
-}))(LoadModal);
+export default LoadModal;

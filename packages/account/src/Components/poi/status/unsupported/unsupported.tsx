@@ -3,15 +3,15 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { identity_status_codes } from 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
+import { identity_status_codes } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
 import UploadComplete from '../upload-complete';
 import { FormikValues } from 'formik';
-import Verified from 'Components/poi/status/verified';
-import Limited from 'Components/poi/status/limited';
-import Expired from 'Components/poi/status/expired';
+import Verified from '../verified';
+import Limited from '../limited';
+import Expired from '../expired';
 
 const checkNimcStep = (documents: FormikValues) => {
     let has_nimc = false;

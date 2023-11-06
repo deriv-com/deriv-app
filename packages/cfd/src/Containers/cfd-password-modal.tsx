@@ -1,5 +1,5 @@
-import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import React from 'react';
+import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import {
@@ -22,14 +22,13 @@ import {
     MultiStep,
 } from '@deriv/components';
 import {
-    CFD_PLATFORMS,
+    getCFDPlatformNames,
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
     getErrorMessages,
     getLegalEntityName,
     isDesktop,
     isMobile,
-    Jurisdiction,
     routes,
     validLength,
     validPassword,
@@ -42,6 +41,7 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { CFD_PLATFORMS, JURISDICTION } from '../Helpers/cfd-config';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -169,12 +169,18 @@ const ReviewMessageForMT5 = ({
         return (
             <Localize i18n_default_text='To start trading, top-up funds from your Deriv account into this account.' />
         );
-    } else if ([Jurisdiction.BVI, Jurisdiction.VANUATU].includes(jurisdiction_selected_shortcode)) {
+    } else if (
+        jurisdiction_selected_shortcode === JURISDICTION.BVI ||
+        jurisdiction_selected_shortcode === JURISDICTION.VANUATU
+    ) {
         if (manual_status === 'pending') {
             return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
         }
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 5 minutes.' />;
-    } else if ([Jurisdiction.LABUAN, Jurisdiction.MALTA_INVEST].includes(jurisdiction_selected_shortcode)) {
+    } else if (
+        jurisdiction_selected_shortcode === JURISDICTION.LABUAN ||
+        jurisdiction_selected_shortcode === JURISDICTION.MALTA_INVEST
+    ) {
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
     }
     return null;
@@ -187,6 +193,9 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
     } else if (platform === CFD_PLATFORMS.DERIVEZ) {
         return <Icon icon='IcBrandDerivEz' size={128} />;
     } else if (traders_hub) {
+        if (platform === CFD_PLATFORMS.CTRADER) {
+            return <TradingPlatformIcon icon='CTrader' size={128} />;
+        }
         switch (type) {
             case 'synthetic':
                 return <TradingPlatformIcon icon='Derived' size={128} />;
@@ -279,7 +288,12 @@ const CreatePassword = ({
                             width='122'
                             height='108'
                         />
-                        <Text size='s' weight='bold' className='cfd-password-modal__create-password-title'>
+                        <Text
+                            size='s'
+                            align='center'
+                            weight='bold'
+                            className='cfd-password-modal__create-password-title'
+                        >
                             <Localize
                                 i18n_default_text='Create a {{platform}} password'
                                 values={{
@@ -472,6 +486,18 @@ const CFDPasswordForm = ({
         );
     }
 
+    const accountTitle = (category: string) => {
+        switch (platform) {
+            case 'ctrader':
+            case 'derivez':
+                return 'CFD';
+            case 'dxtrade':
+                return category === 'real' ? 'Real' : '';
+            default:
+                return account_title;
+        }
+    };
+
     const showJuristiction = () => {
         if (platform === CFD_PLATFORMS.DXTRADE) {
             return '';
@@ -510,11 +536,9 @@ const CFDPasswordForm = ({
                                         i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
-                                            // account: !show_eu_related_content ? account_title : '',
-                                            platform_name:
-                                                platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
+                                            platform_name: getCFDPlatformNames(platform),
                                             account: !show_eu_related_content
-                                                ? getAccountTitle(platform, account_type, account_title)
+                                                ? accountTitle(account_type.category)
                                                 : '',
                                             jurisdiction_shortcode: showJuristiction(),
                                         }}
@@ -525,10 +549,8 @@ const CFDPasswordForm = ({
                                         i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
-                                            // account: account_title,
-                                            platform_name:
-                                                platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
-                                            account: getAccountTitle(platform, account_type, account_title),
+                                            platform_name: getCFDPlatformNames(platform),
+                                            account: accountTitle(account_type.category),
                                         }}
                                     />
                                 )}
@@ -638,27 +660,25 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const is_password_reset = error_type === 'PasswordReset';
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
-    const { poi_verified_for_bvi_labuan, poi_verified_for_vanuatu_maltainvest, poa_verified, manual_status } =
+    const { poi_verified_for_bvi_labuan_vanuatu, poi_verified_for_maltainvest, poa_verified, manual_status } =
         getAuthenticationStatusInfo(account_status);
 
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
 
     const getVerificationStatus = () => {
         switch (jurisdiction_selected_shortcode) {
-            case Jurisdiction.SVG:
+            case JURISDICTION.SVG:
                 setIsSelectedMT5Verified(true);
                 break;
-            case Jurisdiction.BVI:
-                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan);
+            case JURISDICTION.BVI:
+            case JURISDICTION.VANUATU:
+                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_vanuatu);
                 break;
-            case Jurisdiction.VANUATU:
-                setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest);
+            case JURISDICTION.LABUAN:
+                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_vanuatu && poa_verified);
                 break;
-            case Jurisdiction.LABUAN:
-                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan && poa_verified);
-                break;
-            case Jurisdiction.MALTA_INVEST:
-                setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest && poa_verified);
+            case JURISDICTION.MALTA_INVEST:
+                setIsSelectedMT5Verified(poi_verified_for_maltainvest && poa_verified);
                 break;
             default:
         }
@@ -821,7 +841,16 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
+        const mt5_platform_label = jurisdiction_selected_shortcode !== JURISDICTION.MALTA_INVEST ? 'Deriv MT5' : '';
+
+        const accountTypes = () => {
+            if (platform === 'dxtrade' && type_label === 'Derived') {
+                return 'Synthetic';
+            } else if (platform === 'derivez' || platform === 'ctrader') {
+                return 'CFDs';
+            }
+            return type_label;
+        };
 
         if (category === 'real') {
             let platformName = '';
@@ -842,7 +871,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     <Localize
                         i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
-                            type: type_label,
+                            // TODO: remove below condition once deriv x changes are completed
+                            type: accountTypes(),
                             platform:
                                 platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
                             category: category_label,
@@ -851,7 +881,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         }}
                         components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
                     />
-                    {platform === CFD_PLATFORMS.DXTRADE ? (
+                    {platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
                     ) : (
                         <ReviewMessageForMT5
@@ -868,8 +898,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             <Localize
                 i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. '
                 values={{
-                    type: type_label,
-                    platform: getCFDPlatformLabel(platform),
+                    type: accountTypes(),
+                    platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
                 components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}

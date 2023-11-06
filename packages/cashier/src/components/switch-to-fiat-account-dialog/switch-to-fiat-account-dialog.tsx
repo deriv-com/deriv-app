@@ -14,8 +14,8 @@ const SwitchToFiatAccountDialog: React.FC<TProps> = observer(({ is_visible = fal
     const { client } = useStore();
     const { switchAccount } = client;
     const fiat_account_list = useFiatAccountList();
-    const fiat_account_loginid = fiat_account_list?.[0].loginid;
-    const fiat_account_currency = fiat_account_list?.[0].title;
+    const fiat_account_loginid = fiat_account_list?.[0]?.loginid;
+    const fiat_account_currency = fiat_account_list?.[0]?.title;
 
     const onConfirm = async () => {
         await switchAccount(fiat_account_loginid);

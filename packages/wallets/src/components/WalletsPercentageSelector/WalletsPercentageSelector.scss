@@ -1,0 +1,39 @@
+.wallets-percentage-selector {
+    display: flex;
+    justify-content: space-around;
+    width: 36rem;
+
+    @include mobile {
+        width: 100%;
+    }
+
+    &-block {
+        cursor: pointer;
+        background-color: var(--general-section-1, #f2f3f4);
+        height: 2.4rem;
+        width: 8.7rem;
+
+        @include mobile {
+            width: 95%;
+        }
+
+        &__fill {
+            background-color: var(--status-success, #4bb4b3);
+            height: 100%;
+        }
+    }
+
+    &-block-container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+
+        @include mobile {
+            flex: 1;
+        }
+    }
+
+    &__text {
+        margin-top: 0.4rem;
+    }
+}

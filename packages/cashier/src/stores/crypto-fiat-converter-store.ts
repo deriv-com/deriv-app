@@ -57,7 +57,7 @@ export default class CryptoFiatConverterStore {
     validateFromAmount() {
         const { account_transfer, general_store, withdraw } = this.root_store.modules.cashier;
 
-        if (general_store.active_container === account_transfer.container) {
+        if (general_store.active_container === 'account_transfer') {
             account_transfer.validateTransferFromAmount();
         } else {
             withdraw.validateWithdrawFromAmount();
@@ -67,7 +67,7 @@ export default class CryptoFiatConverterStore {
     validateToAmount() {
         const { account_transfer, general_store, withdraw } = this.root_store.modules.cashier;
 
-        if (general_store.active_container === account_transfer.container) {
+        if (general_store.active_container === 'account_transfer') {
             account_transfer.validateTransferToAmount();
         } else {
             withdraw.validateWithdrawToAmount();

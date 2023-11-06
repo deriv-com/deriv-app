@@ -10,7 +10,7 @@ type TSelectNative = {
     classNameHint?: string;
     error?: string;
     hint?: string;
-    label: string;
+    label?: string;
     placeholder?: string;
     should_show_empty_option?: boolean;
     suffix_icon?: string;

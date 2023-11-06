@@ -14,7 +14,7 @@ const MT5TradeModal: FC<TMT5TradeModal> = ({ marketType, platform }) => {
     useEffect(() => {
         setModalState('marketType', marketType);
         setModalState('platform', platform);
-    }, [marketType, platform, setModalState]);
+    }, []);
 
     return (
         <ModalTradeWrapper marketType={marketType} platform={platform}>

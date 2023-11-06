@@ -1,20 +1,23 @@
 .wallets-available-dxtrade {
+    &__icon {
+        cursor: pointer;
+    }
     &__text {
         color: var(--brand-coral, #ff444f);
         text-align: center;
 
         /* desktop/paragraph/P2 - bold */
-        font-size: 14px;
+        font-size: 1.4rem;
         font-style: normal;
         font-weight: 700;
-        line-height: 20px; /* 142.857% */
+        line-height: 2rem; /* 142.857% */
     }
 
     &__details {
         flex-grow: 1;
 
         &-title {
-            padding-bottom: 5px;
+            padding-bottom: 0.5rem;
         }
     }
 }

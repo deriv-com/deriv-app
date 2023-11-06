@@ -18,6 +18,7 @@ import {
     isMarketClosed,
     isMobile,
     isTurbosContract,
+    isVanillaFxContract,
     isVanillaContract,
     pickDefaultSymbol,
     resetEndTimeOnVolatilityIndices,
@@ -29,7 +30,7 @@ import {
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
 } from '@deriv/shared';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import type { TEvents } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -196,6 +197,7 @@ export default class TradeStore extends BaseStore {
     contract_start_type = '';
     contract_type = '';
     contract_types_list: TContractTypesList = {};
+    non_available_contract_types_list: TContractTypesList = {};
     trade_types: { [key: string]: string } = {};
 
     // Amount
@@ -278,6 +280,7 @@ export default class TradeStore extends BaseStore {
     hovered_contract_type?: string | null;
     cancellation_duration = '60m';
     cancellation_range_list: Array<TTextValueStrings> = [];
+    cached_multiplier_cancellation_list: Array<TTextValueStrings> = [];
 
     // Turbos trade params
     long_barriers: TBarriersData = {};
@@ -298,6 +301,7 @@ export default class TradeStore extends BaseStore {
 
     initial_barriers?: { barrier_1: string; barrier_2: string };
     is_initial_barrier_applied = false;
+    is_digits_widget_active = false;
 
     should_skip_prepost_lifecycle = false;
 
@@ -353,6 +357,7 @@ export default class TradeStore extends BaseStore {
             cancellation_duration: observable,
             cancellation_price: observable,
             cancellation_range_list: observable,
+            cached_multiplier_cancellation_list: observable,
             commission: observable,
             contract_expiry_type: observable,
             contract_start_type: observable,
@@ -379,6 +384,7 @@ export default class TradeStore extends BaseStore {
             hovered_contract_type: observable,
             is_accumulator: computed,
             is_chart_loading: observable,
+            is_digits_widget_active: observable,
             is_equal: observable,
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
@@ -396,6 +402,7 @@ export default class TradeStore extends BaseStore {
             maximum_ticks: observable,
             multiplier_range_list: observable,
             multiplier: observable,
+            non_available_contract_types_list: observable,
             previous_symbol: observable,
             proposal_info: observable.ref,
             purchase_info: observable.ref,
@@ -438,6 +445,7 @@ export default class TradeStore extends BaseStore {
             is_symbol_in_active_symbols: computed,
             is_synthetics_available: computed,
             is_vanilla: computed,
+            is_vanilla_fx: computed,
             loadActiveSymbols: action.bound,
             logoutListener: action.bound,
             main_barrier_flattened: computed,
@@ -467,6 +475,7 @@ export default class TradeStore extends BaseStore {
             setContractTypes: action.bound,
             setDefaultSymbol: action.bound,
             setIsTradeParamsExpanded: action.bound,
+            setIsDigitsWidgetActive: action.bound,
             setMarketStatus: action.bound,
             setMobileDigitView: action.bound,
             setPreviousSymbol: action.bound,
@@ -1031,7 +1040,7 @@ export default class TradeStore extends BaseStore {
         if (obj_new_values.contract_type === 'accumulator') {
             savePreviousChartMode(chart_type, granularity);
             updateGranularity(0);
-            updateChartType('mountain');
+            updateChartType(this.root_store.client.is_beta_chart ? 'line' : 'mountain');
         } else if (
             (obj_new_values.contract_type || obj_new_values.symbol) &&
             prev_chart_type &&
@@ -1315,6 +1324,7 @@ export default class TradeStore extends BaseStore {
             // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
             if ((this.is_turbos || this.is_vanilla) && response.error.details?.barrier_choices) {
                 const { barrier_choices, max_stake, min_stake } = response.error.details;
+
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
                 this.setBarrierChoices(barrier_choices as string[]);
                 if (!this.barrier_choices.includes(this.barrier_1)) {
@@ -1593,6 +1603,9 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
+            if (this.root_store.client.is_logged_in) {
+                return WS.authorized.activeSymbols('brief');
+            }
             return WS.activeSymbols('brief');
         }
         if ('trading_times' in req) {
@@ -1612,11 +1625,12 @@ export default class TradeStore extends BaseStore {
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {
-            RudderStack.track(event_type, {
+            Analytics.trackEvent(event_type, {
                 ...data,
+                action: data.action as TEvents['ce_indicators_types_form']['action'],
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 form_name: 'default',
-            } as TEvents['ce_chart_types_form']);
+            });
         }
     }
 
@@ -1638,6 +1652,10 @@ export default class TradeStore extends BaseStore {
 
     get is_vanilla() {
         return isVanillaContract(this.contract_type);
+    }
+
+    get is_vanilla_fx() {
+        return isVanillaFxContract(this.contract_type, this.symbol);
     }
 
     setContractPurchaseToastbox(response: Buy) {
@@ -1688,5 +1706,9 @@ export default class TradeStore extends BaseStore {
         if (this.is_vanilla) {
             this.strike_price_choices = { barrier: this.barrier_1, barrier_choices };
         }
+    }
+
+    setIsDigitsWidgetActive(is_active: boolean) {
+        this.is_digits_widget_active = is_active;
     }
 }

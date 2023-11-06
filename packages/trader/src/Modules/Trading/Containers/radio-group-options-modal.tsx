@@ -9,7 +9,7 @@ import { observer } from '@deriv/stores';
 
 type TRadioGroupOptionsModal = {
     is_open: boolean;
-    modal_title: string;
+    modal_title: React.ReactNode;
     toggleModal: () => void;
 };
 
@@ -25,7 +25,7 @@ const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }: 
         <React.Fragment>
             <Modal
                 id='dt_trade_parameters_mobile'
-                className='trade-params'
+                className='trade-params dc-modal-header--title-bar'
                 is_open={is_open}
                 is_title_centered
                 should_header_stick_body={false}

@@ -52,7 +52,7 @@ describe('CFDDownloadContainer', () => {
         render(<CFDDownloadContainer {...mock_props} />);
         expect(screen.getByText(/IcInstallationWindows/i).closest('a')).toHaveAttribute(
             'href',
-            'https://download.mql5.com/cdn/web/deriv.holdings.guernsey/mt5/deriv5setup.exe'
+            'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe'
         );
         expect(screen.getByText(/IcInstallationMacos/i).closest('a')).toHaveAttribute(
             'href',

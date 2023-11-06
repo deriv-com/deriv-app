@@ -23,6 +23,7 @@ import {
     TURBOS,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
+import { Analytics } from '@deriv/analytics';
 import { ChartBarrierStore } from './chart-barrier-store';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
@@ -345,6 +346,12 @@ export default class PortfolioStore extends BaseStore {
             this.root_store.notifications.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );
+
+            Analytics.trackEvent('ce_reports_form', {
+                action: 'close_contract',
+                form_name: 'default',
+                subform_name: 'open_positions_form',
+            });
         }
     }
 

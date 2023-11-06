@@ -6,6 +6,7 @@ import {
     getContractConfig,
     getContractTypeDisplay,
     getContractTypePosition,
+    getCleanedUpCategories,
 } from '../contract';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
@@ -24,6 +25,13 @@ const supported_non_high_low_contract = {
     position: 'top',
 };
 
+jest.mock('../../storage', () => ({
+    ...jest.requireActual('../../storage'),
+    LocalStore: {
+        getObject: jest.fn(() => ({ data: { sharkfin: false } })),
+    },
+}));
+
 describe('getCardLabels', () => {
     it('should return an object with card labels, e.g. such as Apply', () => {
         expect(getCardLabels().APPLY).toEqual(card_label);
@@ -31,8 +39,15 @@ describe('getCardLabels', () => {
 });
 
 describe('getMarketNamesMap', () => {
-    it('should return an object with markets names, e.g. such as AUD/CAD', () => {
-        expect(getMarketNamesMap().FRXAUDCAD).toEqual(markets_name);
+    const symbols_translation_object = getMarketNamesMap();
+
+    it('should return an object with symbols, e.g. such as AUD/CAD', () => {
+        expect(symbols_translation_object.FRXAUDCAD).toEqual(markets_name);
+    });
+    it('should return an object with symbols, including Volatility 25 (1s) Index, Volatility 50 (1s) Index and Volatility 75 (1s) Index', () => {
+        expect(symbols_translation_object['1HZ25V']).toEqual('Volatility 25 (1s) Index');
+        expect(symbols_translation_object['1HZ50V']).toEqual('Volatility 50 (1s) Index');
+        expect(symbols_translation_object['1HZ75V']).toEqual('Volatility 75 (1s) Index');
     });
 });
 
@@ -86,5 +101,80 @@ describe('getContractTypePosition', () => {
     });
     it('should return a top position if such type does not exist', () => {
         expect(getContractTypePosition('TEST' as TGetSupportedContractsKey)).toBe('top');
+    });
+});
+
+describe('getCleanedUpCategories', () => {
+    it('should return only those trade categories that are objects containing value & text', () => {
+        const initial_categories = {
+            'Ups & Downs': {
+                name: 'Ups & Downs',
+                categories: [
+                    {
+                        value: 'rise_fall',
+                        text: 'Rise/Fall',
+                    },
+                    'rise_fall_equal',
+                    'run_high_low',
+                    'reset',
+                    'asian',
+                    'callputspread',
+                ],
+            },
+            Vanillas: {
+                name: 'Vanillas',
+                categories: ['vanillalongcall', 'vanillalongput'],
+            },
+        };
+        const resulting_categories = {
+            'Ups & Downs': {
+                name: 'Ups & Downs',
+                categories: [
+                    {
+                        value: 'rise_fall',
+                        text: 'Rise/Fall',
+                    },
+                ],
+            },
+        };
+        expect(getCleanedUpCategories(initial_categories)).toEqual(resulting_categories);
+    });
+    it('should return only those trade categories that do not have disabled feature flag', () => {
+        const initial_categories = {
+            Sharkfin: {
+                name: 'Sharkfin',
+                categories: [
+                    {
+                        value: 'sharkfincall',
+                        text: 'Call/Put',
+                    },
+                    {
+                        value: 'sharkfinput',
+                        text: 'Call/Put',
+                    },
+                ],
+            },
+            Multipliers: {
+                name: 'Multipliers',
+                categories: [
+                    {
+                        value: 'multiplier',
+                        text: 'Multipliers',
+                    },
+                ],
+            },
+        };
+        const resulting_categories = {
+            Multipliers: {
+                name: 'Multipliers',
+                categories: [
+                    {
+                        value: 'multiplier',
+                        text: 'Multipliers',
+                    },
+                ],
+            },
+        };
+        expect(getCleanedUpCategories(initial_categories)).toEqual(resulting_categories);
     });
 });

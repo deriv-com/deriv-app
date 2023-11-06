@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuthorize } from '@deriv/api';
-import { WalletButton } from '../../../../../components/Base';
+import { useAuthentication, useAuthorize } from '@deriv/api';
+import { InlineMessage, WalletButton, WalletText } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
@@ -33,7 +33,10 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
+    const { data: authenticationStatus } = useAuthentication();
     const { title } = MarketTypeDetails[account.market_type || 'all'];
+
+    console.log('added account', account, authenticationStatus);
 
     return (
         <TradingAccountCard
@@ -62,8 +65,19 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         </div>
                     )}
                 </div>
-                <p className='wallets-added-mt5__details-balance'>{account.display_balance}</p>
+                {!(authenticationStatus?.is_poa_not_submitted && authenticationStatus?.is_poi_not_submitted) && (
+                    <p className='wallets-added-mt5__details-balance'>{account.display_balance}</p>
+                )}
                 <p className='wallets-added-mt5__details-loginid'>{account.display_login}</p>
+                {authenticationStatus?.is_poa_not_submitted && authenticationStatus?.is_poi_not_submitted && (
+                    <div className='wallets-added-mt5__details-badge'>
+                        <InlineMessage type='error' variant='outlined' size='xs'>
+                            <WalletText size='2xs' weight='bold' color='error'>
+                                Verification failed. Why?
+                            </WalletText>
+                        </InlineMessage>
+                    </div>
+                )}
             </div>
         </TradingAccountCard>
     );

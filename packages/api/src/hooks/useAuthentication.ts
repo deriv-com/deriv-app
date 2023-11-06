@@ -11,6 +11,33 @@ const useAuthentication = () => {
         const needs_verification = new Set(get_account_status_data.authentication?.needs_verification);
         const account_status = new Set(get_account_status_data?.status);
 
+        const poa_status: string = get_account_status_data?.authentication?.document?.status || '';
+        const poi_status: string = get_account_status_data?.authentication?.identity?.status || '';
+
+        // const services = account_status?.authentication?.identity?.services ?? {};
+        // const {
+        //     idv: { status: idv_status } = {},
+        //     onfido: { status: onfido_status } = {},
+        //     manual: { status: manual_status } = {},
+        // } = services;
+
+        // const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
+        // const is_idv_revoked = account_status?.status?.includes('idv_revoked');
+
+        const acknowledged_status: string[] = ['pending', 'verified'];
+        const failed_cases: string[] = ['rejected', 'expired', 'suspected'];
+
+        // const poa_not_submitted: boolean = poa_status === 'none';
+        // const need_poa_submission = !acknowledged_status.includes(poa_status);
+        // const need_poa_resubmission: boolean = failed_cases.includes(poa_status);
+        // const poa_verified: boolean = poa_status === 'verified';
+        // const poa_pending: boolean = poa_status === 'pending';
+        // const poa_acknowledged: boolean = acknowledged_status.includes(poa_status);
+
+        // const poi_not_submitted: boolean = poi_status === 'none';
+        // const poi_or_poa_not_submitted: boolean = poa_not_submitted || poi_not_submitted;
+        // const poi_and_poa_not_submitted: boolean = poa_not_submitted && poi_not_submitted;
+
         return {
             ...get_account_status_data.authentication,
             /** client is required to verify their document (proof of address) */
@@ -39,6 +66,13 @@ const useAuthentication = () => {
             poi_status: get_account_status_data?.authentication?.identity?.status,
             /** client's poa verification status */
             poa_status: get_account_status_data?.authentication?.document?.status,
+            is_poa_not_submitted: poa_status === 'none',
+            is_need_poa_submission: !acknowledged_status.includes(poa_status),
+            is_need_poa_resubmission: failed_cases.includes(poa_status),
+            is_poa_verified: poa_status === 'verified',
+            is_poa_pending: poa_status === 'pending',
+            is_poa_acknowledged: acknowledged_status.includes(poa_status),
+            is_poi_not_submitted: poi_status === 'none',
         };
     }, [get_account_status_data]);
 

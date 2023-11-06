@@ -60,6 +60,13 @@
             line-height: 1.8rem; /* 150% */
         }
 
+        &-badge {
+            width: fit-content;
+            & > .wallets-inline-message {
+                padding: 0.5rem 0.8rem;
+            }
+        }
+
         &-balance {
             color: var(--system-light-1-prominent-text, #333);
 

@@ -12,7 +12,7 @@ type TFiatOnRampProvider = {
 
 const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({ description, getPaymentIcons, icon, name }) => {
     const history = useHistory();
-    const payment_icons = getPaymentIcons();
+    const paymentIcons = getPaymentIcons();
 
     return (
         <div className='wallets-fiat-onramp-provider'>
@@ -23,14 +23,14 @@ const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({ description, ge
                 </WalletText>
                 <WalletText size='sm'>{description}</WalletText>
                 <div className='wallets-fiat-onramp-provider__icons'>
-                    {payment_icons.map((payment_icon, index) => (
-                        <div key={index}>{payment_icon}</div>
+                    {paymentIcons.map((paymentIcon, index) => (
+                        <div key={index}>{paymentIcon}</div>
                     ))}
                 </div>
             </div>
             <div className='wallets-fiat-onramp-provider__mobile-icons'>
-                {payment_icons.map((payment_icon, index) => (
-                    <div key={index}>{payment_icon}</div>
+                {paymentIcons.map((paymentIcon, index) => (
+                    <div key={index}>{paymentIcon}</div>
                 ))}
             </div>
             {/* TODO: Add OnClick event to redirect user to disclaimer screen */}

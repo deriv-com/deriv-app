@@ -2,12 +2,11 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { WalletButton, WalletText } from '../../../../components';
 import BackArrow from '../../../../public/images/ic-back-arrow.svg';
-import FiatOnRampProvider from './FiatOnRampProvider/FiatOnRampProvider';
+import { fiatOnRampProvider } from './FiatOnRamp.constants';
 import OnRampProviderCard from './FiatOnRampProviderCard/FiatOnRampProviderCard';
 import './FiatOnRamp.scss';
 
 const FiatOnRamp = () => {
-    const fiatOnRampProvider = FiatOnRampProvider();
     const history = useHistory();
 
     return (

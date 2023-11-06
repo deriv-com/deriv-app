@@ -8,13 +8,13 @@ const WalletFiatOnRamp = () => {
     const history = useHistory();
     const isCrypto = useMemo(() => {
         return data?.currency_config ? data.currency_config.is_crypto : true;
-    }, [data?.currency_config?.is_crypto]);
+    }, [data?.currency_config]);
 
     useEffect(() => {
         if (!isCrypto) {
             history.push('/wallets/cashier/deposit');
         }
-    }, [isCrypto]);
+    }, [history, isCrypto]);
 
     return <FiatOnRampModule />;
 };

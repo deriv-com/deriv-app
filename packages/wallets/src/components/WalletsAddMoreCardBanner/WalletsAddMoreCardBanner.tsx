@@ -44,25 +44,38 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
         }
     }, [data, isMutateSuccess, switchAccount, syncLocalStorageClientAccounts]);
 
-    useEffect(() => {
-        if (status === 'error') {
-            modal.show(
-                <WalletError buttonText='Close' errorMessage={error.error.message} onClick={() => modal.hide()} />
-            );
-        } else if (status === 'success') {
-            modal.show(
-                <WalletAddedSuccess
-                    currency={data?.currency}
-                    landingCompany={data?.landing_company_shortcode}
-                    onPrimaryButtonClick={() => {
-                        history.push('wallets/cashier/deposit');
-                        modal.hide();
-                    }}
-                    onSecondaryButtonClick={() => modal.hide()}
-                />
-            );
-        }
-    }, [data?.currency, data?.landing_company_shortcode, error?.error.message, isMobile, renderButtons, status]); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(
+        () => {
+            if (status === 'error') {
+                modal.show(
+                    <WalletError buttonText='Close' errorMessage={error.error.message} onClick={() => modal.hide()} />
+                );
+            } else if (status === 'success') {
+                modal.show(
+                    <WalletAddedSuccess
+                        currency={data?.currency}
+                        displayBalance={data?.display_balance ?? `0.00 ${data?.currency}`}
+                        landingCompany={data?.landing_company_shortcode}
+                        onPrimaryButtonClick={() => {
+                            history.push('wallets/cashier/deposit');
+                            modal.hide();
+                        }}
+                        onSecondaryButtonClick={() => modal.hide()}
+                    />
+                );
+            }
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [
+            data?.currency,
+            data?.display_balance,
+            data?.landing_company_shortcode,
+            error?.error.message,
+            isMobile,
+            renderButtons,
+            status,
+        ]
+    );
 
     return (
         <div className='wallets-add-more__banner'>

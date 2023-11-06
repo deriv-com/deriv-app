@@ -36,8 +36,7 @@
     }
 
     @include mobile {
-        width: 90%;
-        margin-inline: 5%;
+        width: 90vw;
     }
 
     &-wrapper {
@@ -80,7 +79,7 @@
                 overflow-y: scroll;
                 overflow-x: hidden;
 
-                @media (max-height: 580px) {
+                @media (max-height: 680px) {
                     height: 38vh;
                 }
             }

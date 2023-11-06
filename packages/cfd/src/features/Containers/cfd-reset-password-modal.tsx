@@ -134,7 +134,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
             account_id: login,
             platform: CFD_PLATFORMS.MT5,
             new_password: values.new_password,
-            verification_code: localStorage.getItem('cfd_reset_password_code') || '',
+            verification_code: localStorage.getItem('cfd_reset_password_code') ?? '',
         };
 
         mutate(request);

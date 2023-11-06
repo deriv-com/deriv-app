@@ -66,7 +66,7 @@ const CFDPasswordReset = ({
     server,
     password_type,
 }: TCFDPasswordReset) => {
-    const [is_resend_verification_requested, setIsResendVerification] = React.useState<boolean>(false);
+    const [is_resend_verification_requested, setIsResendVerificationRequested] = React.useState<boolean>(false);
     const [is_resend_verification_sent, setIsResendVerificationSent] = React.useState<boolean>(false);
 
     React.useEffect(() => {
@@ -77,7 +77,7 @@ const CFDPasswordReset = ({
     }, []);
 
     const onClickVerification = () => {
-        setIsResendVerification(true);
+        setIsResendVerificationRequested(true);
     };
 
     const resendVerification = () => {
@@ -156,7 +156,7 @@ const CFDPasswordManagerTabContent = ({
 }: TCFDPasswordManagerTabContent) => {
     const [active_tab_index, setActiveTabIndex] = React.useState<number>(0);
     const [error_message_investor, setErrorMessageInvestor] = React.useState<string>('');
-    const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState<boolean>(false);
+    const [is_submit_success_investor, setIsSubmitSuccessInvestor] = React.useState<boolean>(false);
 
     // view height - margin top and bottom of modal - modal title - modal content margin top and bottom - table title
     const container_height = 'calc(100vh - 84px - 5.6rem - 8.8rem - 4rem)';
@@ -191,7 +191,7 @@ const CFDPasswordManagerTabContent = ({
 
     const hideError = () => {
         setErrorMessageInvestor('');
-        setSubmitSuccessInvestor(true);
+        setIsSubmitSuccessInvestor(true);
     };
 
     const onSubmit = React.useCallback(
@@ -214,7 +214,7 @@ const CFDPasswordManagerTabContent = ({
         setActiveTabIndex(index);
         onChangeActiveTabIndex(index);
         setErrorMessageInvestor('');
-        setSubmitSuccessInvestor(false);
+        setIsSubmitSuccessInvestor(false);
     };
 
     const trading_password_manager = (

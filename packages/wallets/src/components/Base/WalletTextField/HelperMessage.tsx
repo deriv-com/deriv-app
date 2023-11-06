@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import WalletText from '../WalletText/WalletText';
 
 export type MessageContainerProps = {
     helperMessage?: string;
-    inputValue?: string;
-    maxLength?: number;
+    inputValue?: InputHTMLAttributes<HTMLInputElement>['value'];
+    maxLength?: InputHTMLAttributes<HTMLInputElement>['maxLength'];
 };
 
 const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, inputValue, maxLength }) => (
@@ -19,7 +19,7 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, inpu
         {maxLength && (
             <div className='wallets-textfield__message-container--maxchar'>
                 <WalletText align='right' color='less-prominent' size='xs'>
-                    {inputValue?.length} / {maxLength}
+                    {inputValue?.toString().length} / {maxLength}
                 </WalletText>
             </div>
         )}

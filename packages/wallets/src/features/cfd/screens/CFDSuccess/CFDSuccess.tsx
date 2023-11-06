@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletSuccess, WalletText } from '../../../../components';
@@ -17,7 +17,7 @@ type TSuccessProps = {
         | TDisplayBalance.MT5AccountsList;
     marketType?: TMarketTypes.SortedMT5Accounts;
     platform?: TPlatforms.All;
-    renderButton: () => ReactNode;
+    renderButton: ComponentProps<typeof WalletSuccess>['renderButtons'];
     title: string;
 };
 
@@ -52,7 +52,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     return (
         <WalletSuccess
             description={description}
-            renderButton={isDesktop ? renderButton : undefined}
+            renderButtons={isDesktop ? renderButton : undefined}
             renderIcon={() => (
                 <WalletGradientBackground
                     bodyClassName='wallets-cfd-success__gradient'

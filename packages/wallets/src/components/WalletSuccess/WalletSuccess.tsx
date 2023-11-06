@@ -1,27 +1,24 @@
-import React, { ReactNode } from 'react';
-import { WalletText } from '../Base';
+import React, { ComponentProps, ReactNode } from 'react';
+import WalletsActionScreen from '../WalletsActionScreen/WalletsActionScreen';
 import './WalletSuccess.scss';
 
 type TSuccessProps = {
     description: string;
-    renderButton?: () => ReactNode;
+    renderButtons?: ComponentProps<typeof WalletsActionScreen>['renderButtons'];
     renderIcon: () => ReactNode;
     title: string;
 };
 
-const WalletSuccess: React.FC<TSuccessProps> = ({ description, renderButton, renderIcon, title }) => {
+const WalletSuccess: React.FC<TSuccessProps> = ({ description, renderButtons, renderIcon, title }) => {
     return (
         <div className='wallets-success'>
-            {renderIcon()}
-            <div className='wallets-success__content'>
-                <WalletText align='center' weight='bold'>
-                    {title}
-                </WalletText>
-                <WalletText align='center' size='sm'>
-                    {description}
-                </WalletText>
-            </div>
-            {renderButton?.()}
+            <WalletsActionScreen
+                desciptionSize='sm'
+                description={description}
+                icon={renderIcon()}
+                renderButtons={renderButtons}
+                title={title}
+            />
         </div>
     );
 };

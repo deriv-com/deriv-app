@@ -53,9 +53,11 @@
         }
     }
 
-    &__success-buttons {
-        &--desktop {
-            width: 24rem;
+    &__success-footer {
+        width: 24rem;
+
+        @include mobile {
+            width: 100%;
         }
     }
 }

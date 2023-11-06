@@ -4,7 +4,6 @@
     justify-content: center;
     align-items: center;
     padding: 2.4rem;
-    gap: 2.4rem;
     width: 39.2rem;
     border-radius: 1rem;
     text-align: center;
@@ -13,11 +12,5 @@
     @include mobile {
         width: 100%;
         height: calc(100% - 8.5rem);
-    }
-
-    &__content {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
     }
 }

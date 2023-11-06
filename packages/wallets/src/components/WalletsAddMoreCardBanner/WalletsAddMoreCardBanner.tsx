@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useAccountsList, useCreateWallet } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
@@ -28,7 +27,7 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     onPrimaryButtonClick,
     onSecondaryButtonClick,
 }) => {
-    const { isDesktop, isMobile } = useDevice();
+    const { isMobile } = useDevice();
     const description = 'Make a deposit into your new Wallet.';
     const title = useMemo(
         () => `Your ${currency} wallet (${landingCompany?.toUpperCase()}) is ready`,
@@ -36,18 +35,14 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     );
     const renderFooter = useCallback(
         () => (
-            <div
-                className={classNames({
-                    'wallets-add-more__success-footer--desktop': isDesktop,
-                })}
-            >
+            <div className='wallets-add-more__success-footer'>
                 <WalletButtonGroup isFlex>
                     <WalletButton onClick={onSecondaryButtonClick} text='Maybe later' variant='outlined' />
                     <WalletButton onClick={onPrimaryButtonClick} text='Deposit' />
                 </WalletButtonGroup>
             </div>
         ),
-        [isDesktop, onPrimaryButtonClick, onSecondaryButtonClick]
+        [onPrimaryButtonClick, onSecondaryButtonClick]
     );
     const renderIcon = useCallback(
         () => (
@@ -72,7 +67,7 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
         <ModalWrapper hideCloseButton>
             <WalletSuccess
                 description={description}
-                renderButton={renderFooter}
+                renderButtons={renderFooter}
                 renderIcon={renderIcon}
                 title={title}
             />
@@ -113,12 +108,7 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     useEffect(() => {
         if (status === 'error') {
             modal.show(
-                <WalletError
-                    buttonText='Close'
-                    errorMessage={error.error.message}
-                    onClick={() => modal.hide()}
-                    type='modal'
-                />
+                <WalletError buttonText='Close' errorMessage={error.error.message} onClick={() => modal.hide()} />
             );
         } else if (status === 'success') {
             modal.show(

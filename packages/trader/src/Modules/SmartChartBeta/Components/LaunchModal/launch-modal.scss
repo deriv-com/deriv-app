@@ -1,7 +1,7 @@
 // Common styles for web modal and mobile page overlay
 .launch-modal-styles {
     text-align: center;
-    .info {
+    .modal-content {
         @include mobile {
             height: 100%;
             justify-content: center;
@@ -23,7 +23,6 @@
         }
         img {
             height: 176px;
-
             @include mobile {
                 height: 180px;
                 width: 200px;
@@ -65,7 +64,6 @@
 // Mobile page Overlay styles
 .dc-page-overlay__content {
     @extend .launch-modal-styles;
-    background: transparent;
     min-width: 100%;
     display: flex;
     flex-direction: column;

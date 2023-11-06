@@ -16,9 +16,11 @@ const ContinueButton: React.FC<{ handleOpen: () => void }> = ({ handleOpen }) =>
 );
 
 const InfoDisplay: React.FC = () => (
-    <div className='info' data-testid='launch-modal'>
+    <div className='modal-content' data-testid='launch-modal'>
         <img src={getUrlBase('/public/images/common/chart-launch.png')} alt='Chart Image' />
-        <h1 className='title'>Deriv Trader Chart v2.0</h1>
+        <h1 className='title'>
+            <Localize i18n_default_text='Deriv Trader Chart v2.0.' />
+        </h1>
         <p className='sub-title'>
             <Localize i18n_default_text='Smoother charts. Smarter insights.' />
         </p>

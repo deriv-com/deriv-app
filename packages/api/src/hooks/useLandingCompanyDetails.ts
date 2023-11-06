@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useQuery } from '@deriv/api';
+import useQuery from '../useQuery';
 
 type TUseLandingCompanyDetailsPayload = Parameters<typeof useQuery<'landing_company_details'>>['1']['payload'];
 

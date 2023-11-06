@@ -5,10 +5,10 @@ import ReactDOM from 'react-dom';
 import CFDPersonalDetailsForm from '../cfd-personal-details-form';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { CFDStoreProvider } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
-import { useLandingCompanyDetails } from '@deriv/hooks';
+import { useLandingCompanyDetails } from '@deriv/api';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
     useLandingCompanyDetails: jest.fn(() => ({
         data: {
             tin_not_mandatory: 0,

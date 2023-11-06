@@ -31,9 +31,6 @@ const OpenPositionsSVGModal = ({
 
     const is_migrated_with_position = status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
 
-    const onClick = () => {
-        setModalOpen(false);
-    };
     return (
         <Modal
             is_open={is_modal_open}
@@ -78,7 +75,7 @@ const OpenPositionsSVGModal = ({
                 </Text>
             </Modal.Body>
             <Modal.Footer className='open-positions-svg__modal-footer'>
-                <Button has_effect onClick={onClick} secondary large>
+                <Button has_effect onClick={() => setModalOpen(false)} secondary large>
                     <Localize i18n_default_text='OK' />
                 </Button>
             </Modal.Footer>

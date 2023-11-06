@@ -35,16 +35,21 @@ const CFDPasswordModalTitle = observer(({ platform }: TCFDPasswordModalTitleProp
         return 'CFDs';
     };
 
-    return (
-        <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-            {is_mt5_migration_modal_enabled && (
+    if (is_mt5_migration_modal_enabled) {
+        return (
+            <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
                 <Localize
                     i18n_default_text='Enter your {{platform}} password to move your account(s).'
                     values={{
                         platform: getCFDPlatformLabel(platform),
                     }}
                 />
-            )}
+            </Text>
+        );
+    }
+
+    return (
+        <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
             {account_type.category === CATEGORY.REAL && (
                 <Localize
                     i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'

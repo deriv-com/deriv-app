@@ -168,7 +168,6 @@ export default class UIStore extends BaseStore {
     is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
-    is_mt5_migration_modal_waiting_on_other_modals = false;
     is_mt5_migration_modal_enabled = false;
     sub_section_index = 0;
 
@@ -280,7 +279,6 @@ export default class UIStore extends BaseStore {
             is_trading_assessment_for_new_user_enabled: observable,
             is_welcome_modal_visible: observable,
             is_mt5_migration_modal_open: observable,
-            is_mt5_migration_modal_waiting_on_other_modals: observable,
             is_mt5_migration_modal_enabled: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
@@ -383,7 +381,6 @@ export default class UIStore extends BaseStore {
             setShouldShowWarningModal: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
-            setMT5MigrationModalWaitingOnOtherModals: action.bound,
             setMT5MigrationModalEnabled: action.bound,
             setMobileLanguageMenuOpen: action.bound,
             toggleAccountsDialog: action.bound,
@@ -943,10 +940,6 @@ export default class UIStore extends BaseStore {
 
     toggleKycInformationSubmittedModal() {
         this.is_kyc_information_submitted_modal_open = !this.is_kyc_information_submitted_modal_open;
-    }
-
-    setMT5MigrationModalWaitingOnOtherModals(value) {
-        this.is_mt5_migration_modal_waiting_on_other_modals = value;
     }
 
     setMT5MigrationModalEnabled(value) {

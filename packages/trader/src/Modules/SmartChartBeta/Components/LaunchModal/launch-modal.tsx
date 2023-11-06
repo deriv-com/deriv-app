@@ -1,5 +1,5 @@
 import { Button, DesktopWrapper, MobileWrapper, Modal, PageOverlay, UILoader } from '@deriv/components';
-import { getUrlBase } from '@deriv/shared';
+import { LocalStore, getUrlBase } from '@deriv/shared';
 
 import { Localize } from '@deriv/translations';
 import React, { useState } from 'react';
@@ -25,7 +25,7 @@ const InfoDisplay: React.FC = () => (
     </div>
 );
 
-const LaunchModal = observer(() => {
+const LaunchModal = () => {
     const [open, setOpen] = useState(true);
     const {
         client: { is_logged_in },
@@ -33,10 +33,10 @@ const LaunchModal = observer(() => {
 
     const handleOpen = () => {
         setOpen(!open);
-        localStorage.setItem('launchModalShown', JSON.stringify(true));
+        LocalStore.set('launchModalShown', JSON.stringify(true));
     };
 
-    const is_already_shown: boolean = JSON.parse(localStorage.getItem('launchModalShown') || 'false');
+    const is_already_shown: boolean = JSON.parse(LocalStore.get('launchModalShown') || 'false');
 
     return (
         <React.Suspense fallback={<UILoader />}>
@@ -61,14 +61,12 @@ const LaunchModal = observer(() => {
                     portal_id='launch_modal_root'
                     onClickClose={handleOpen}
                 >
-                    <div className='launch-modal'>
-                        <InfoDisplay />
-                        <ContinueButton handleOpen={handleOpen} />
-                    </div>
+                    <InfoDisplay />
+                    <ContinueButton handleOpen={handleOpen} />
                 </PageOverlay>
             </MobileWrapper>
         </React.Suspense>
     );
-});
+};
 
-export default LaunchModal;
+export default observer(LaunchModal);

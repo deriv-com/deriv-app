@@ -1,11 +1,15 @@
-.dc-modal__container_launch_modal_root,
-.launch-modal {
+// Common styles for web modal and mobile page overlay
+.launch-modal-styles {
     text-align: center;
-
     .info {
+        @include mobile {
+            height: 100%;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+        }
         h1 {
             font-size: 2rem;
-            font-style: normal;
             font-weight: 700;
             line-height: 3rem;
         }
@@ -14,70 +18,56 @@
             font-size: 16px;
             font-weight: 400;
             line-height: 24px;
-            letter-spacing: 0em;
             text-align: center;
             color: var(--text-general);
         }
-
         img {
             height: 176px;
+
+            @include mobile {
+                height: 180px;
+                width: 200px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    }
+
+    .dc-modal-footer {
+        border-top: 2px solid var(--general-section-5);
+        padding: 1.6rem 2.4rem;
+        @include mobile {
+            margin-bottom: 38px;
+            button {
+                height: 40px;
+                width: 100%;
+            }
         }
     }
 }
 
-.launch-modal-root {
-    @include mobile {
-        background: transparent;
-    }
-}
-// For web version
+// Web modal specific styles
 .dc-modal__container_launch_modal_root {
+    @extend .launch-modal-styles;
     min-width: 432px !important;
     .dc-modal-header {
         border-bottom: 2px solid var(--general-section-5);
-        padding: 11px 0px;
+        padding: 1.2rem 0;
     }
-
     .dc-modal-body {
         justify-content: center;
         display: flex;
         height: 100%;
         flex-direction: column;
     }
-    .dc-modal-footer {
-        border-top: 2px solid var(--general-section-5);
-        padding: 1.6rem 2.4rem;
-    }
-    &__portal-header {
-        padding: 2.5rem 2rem;
-    }
 }
 
-// For mobile overlay
-.launch-modal {
+// Mobile page Overlay styles
+.dc-page-overlay__content {
+    @extend .launch-modal-styles;
+    background: transparent;
     min-width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    .info {
-        height: 100%;
-        justify-content: center;
-        display: flex;
-        flex-direction: column;
-
-        img {
-            margin-left: auto;
-            margin-right: auto;
-        }
-    }
-
-    .dc-modal-footer {
-        border-top: 2px solid var(--general-section-5);
-        margin-bottom: 32px;
-        button {
-            height: 40px;
-            width: 100%;
-        }
-    }
 }

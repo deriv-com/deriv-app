@@ -1,4 +1,4 @@
-import React, { RefObject, createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 import { MT5AccountType } from '../../features/cfd/screens';

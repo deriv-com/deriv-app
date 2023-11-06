@@ -66,8 +66,8 @@ const CFDPasswordReset = ({
     server,
     password_type,
 }: TCFDPasswordReset) => {
-    const [is_resend_verification_requested, setResendVerification] = React.useState<boolean>(false);
-    const [is_resend_verification_sent, setResendVerificationSent] = React.useState<boolean>(false);
+    const [is_resend_verification_requested, setIsResendVerification] = React.useState<boolean>(false);
+    const [is_resend_verification_sent, setIsResendVerificationSent] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         localStorage.setItem('cfd_reset_password_intent', [server, account_group, account_type].join('.'));
@@ -77,12 +77,12 @@ const CFDPasswordReset = ({
     }, []);
 
     const onClickVerification = () => {
-        setResendVerification(true);
+        setIsResendVerification(true);
     };
 
     const resendVerification = () => {
         sendVerifyEmail();
-        setResendVerificationSent(true);
+        setIsResendVerificationSent(true);
     };
 
     return (
@@ -122,18 +122,16 @@ const CFDPasswordReset = ({
                     >
                         {!is_resend_verification_sent && <Localize i18n_default_text='Resend email' />}
                         {is_resend_verification_sent && (
-                            <>
-                                <Localize
-                                    i18n_default_text='Resend in <0 /> seconds'
-                                    components={[
-                                        <CountdownComponent
-                                            key={0}
-                                            onTimeout={() => setResendVerificationSent(false)}
-                                            count_from={60}
-                                        />,
-                                    ]}
-                                />
-                            </>
+                            <Localize
+                                i18n_default_text='Resend in <0 /> seconds'
+                                components={[
+                                    <CountdownComponent
+                                        key={0}
+                                        onTimeout={() => setIsResendVerificationSent(false)}
+                                        count_from={60}
+                                    />,
+                                ]}
+                            />
                         )}
                     </Button>
                 </>

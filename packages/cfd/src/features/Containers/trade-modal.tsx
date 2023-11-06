@@ -147,20 +147,18 @@ const TradeModal = ({
         }
 
         return (
-            <React.Fragment>
-                <div className='cfd-trade-modal__download-center-app--option'>
-                    <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                        {app_title}
-                    </Text>
-                    <PlatformsDesktopDownload
-                        platform={platform}
-                        is_demo={is_demo}
-                        dxtrade_tokens={dxtrade_tokens}
-                        derivez_tokens={derivez_tokens}
-                        ctrader_tokens={ctrader_tokens}
-                    />
-                </div>
-            </React.Fragment>
+            <div className='cfd-trade-modal__download-center-app--option'>
+                <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
+                    {app_title}
+                </Text>
+                <PlatformsDesktopDownload
+                    platform={platform}
+                    is_demo={is_demo}
+                    dxtrade_tokens={dxtrade_tokens}
+                    derivez_tokens={derivez_tokens}
+                    ctrader_tokens={ctrader_tokens}
+                />
+            </div>
         );
     };
 
@@ -209,7 +207,7 @@ const TradeModal = ({
                                             getTitle(mt5_trade_account.market_type, is_eu_user),
                                             mt5_trade_account.account_type,
                                             account_type,
-                                            (mt5_trade_account as DetailsOfEachMT5Loginid)?.server
+                                            mt5_trade_account?.server
                                         );
                                         toggleModal();
                                     }}

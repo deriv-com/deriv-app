@@ -13,7 +13,9 @@ type TParams = Omit<
 /** A custom hook to get the deposit and withdrawal fiat address. */
 const useCashierFiatAddress = () => {
     const { data, mutate: _mutate, ...rest } = useMutation('cashier');
-    const iframe_url = typeof data?.cashier === 'string' ? data?.cashier : undefined;
+    const iframe_url =
+        'https://doughflow-test.4x.my/cashier/login.asp?Sportsbook=Test (SVG) LLC USD&PIN=CR90000008&Lang=en&Password=8d03355e934323f231abc478d20d66e282fa7cca&Secret=9ce4b0224c4c202f6c3961ff0ab7fdf1&Action=DEPOSIT&udef1=EN&udef2=deriv&DarkMode=off';
+    typeof data?.cashier === 'string' ? data?.cashier : undefined;
 
     const mutate = useCallback(
         (cashier: TCashierParam, payload?: TParams) =>

@@ -1,4 +1,4 @@
-import React, { ComponentProps, useEffect, useState } from 'react';
+import React, { ComponentProps, useEffect, useMemo, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletDropdown } from '../../../../components';
 import FilterIcon from '../../../../public/images/filter.svg';
@@ -24,15 +24,30 @@ const filtersMapper: Record<string, Record<string, TFilterValue>> = {
 };
 
 const Transactions = () => {
-    const { data } = useActiveWalletAccount();
+    const { data: wallet } = useActiveWalletAccount();
     const [isPendingActive, setIsPendingActive] = useState(false);
     const [filterValue, setFilterValue] = useState('all');
 
+    const filterOptionsList = useMemo(
+        () =>
+            Object.keys(filtersMapper[isPendingActive ? 'pending' : 'completed'])
+                // Filtering out withdrawal option for demo wallets
+                .filter(key => !wallet?.is_virtual || key !== 'withdrawal')
+                .map(key => ({
+                    text:
+                        key === 'deposit' && wallet?.is_virtual
+                            ? 'Reset balance'
+                            : key.replace(/^\w/, c => c.toUpperCase()),
+                    value: key,
+                })),
+        [isPendingActive, wallet?.is_virtual]
+    );
+
     useEffect(() => {
-        if (!data?.currency_config?.is_crypto && isPendingActive) {
+        if (!wallet?.currency_config?.is_crypto && isPendingActive) {
             setIsPendingActive(false);
         }
-    }, [data?.currency_config?.is_crypto, isPendingActive]);
+    }, [wallet?.currency_config?.is_crypto, isPendingActive]);
 
     useEffect(() => {
         if (isPendingActive && !Object.keys(filtersMapper.pending).includes(filterValue)) {
@@ -46,7 +61,7 @@ const Transactions = () => {
     return (
         <div className='wallets-transactions'>
             <div className='wallets-transactions__header'>
-                {data?.currency_config?.is_crypto && (
+                {wallet?.currency_config?.is_crypto && (
                     <div className='wallets-transactions__toggle'>
                         <p>Pending Transactions</p>
                         <input
@@ -64,10 +79,7 @@ const Transactions = () => {
                 <WalletDropdown
                     icon={<FilterIcon />}
                     label='Filter'
-                    list={Object.keys(filtersMapper[isPendingActive ? 'pending' : 'completed']).map(key => ({
-                        text: key.replace(/^\w/, c => c.toUpperCase()),
-                        value: key,
-                    }))}
+                    list={filterOptionsList}
                     onSelect={value => setFilterValue(value)}
                     value={filterValue}
                 />

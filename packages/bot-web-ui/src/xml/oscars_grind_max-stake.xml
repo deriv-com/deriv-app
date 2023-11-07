@@ -1114,7 +1114,7 @@
                                                     </statement>
                                                     <next>
                                                       <block type="notify" id="_Zy2R63Ux5]b8{GpjGO4">
-                                                        <field name="NOTIFICATION_TYPE">success</field>
+                                                        <field name="NOTIFICATION_TYPE">error</field>
                                                         <field name="NOTIFICATION_SOUND">silent</field>
                                                         <value name="MESSAGE">
                                                           <shadow type="text" id="^C`7.MBDL`20Fc0,O%!X">

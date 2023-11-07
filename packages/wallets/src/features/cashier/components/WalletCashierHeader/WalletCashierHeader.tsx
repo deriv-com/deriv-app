@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';
@@ -61,6 +62,7 @@ const virtualAccountTabs = [
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
+    const { t } = useTranslation();
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
@@ -155,7 +157,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                     size='sm'
                                     weight={isActiveTab ? 'bold' : 'normal'}
                                 >
-                                    {tab.text}
+                                    {t(tab.text)}
                                 </WalletText>
                             </button>
                         );

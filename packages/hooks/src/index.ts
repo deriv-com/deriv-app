@@ -52,6 +52,7 @@ export { default as usePlatformDemoAccount } from './usePlatformDemoAccount';
 export { default as usePlatformRealAccounts } from './usePlatformRealAccounts';
 export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
+export { default as useTotalAccountBalance2 } from './useTotalAccountBalance2';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletMigration } from './useWalletMigration';

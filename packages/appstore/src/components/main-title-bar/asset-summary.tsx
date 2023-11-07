@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
@@ -7,57 +6,34 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts, useGlobalData } from '@deriv/hooks';
+import { useTotalAccountBalance, useTotalAccountBalance2, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
     const { traders_hub, client, common } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
-    const { is_logging_in, is_switching, default_currency, currency } = client;
+    const { is_logging_in, is_switching, default_currency } = client;
     const { current_language } = common;
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
+
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
+
+    const platform_real_balance2 = useTotalAccountBalance2(platform_real_accounts);
+    const cfd_real_balance2 = useTotalAccountBalance2(cfd_real_accounts);
+    const cfd_demo_balance2 = useTotalAccountBalance2(cfd_demo_accounts);
+
     const is_real = selected_account_type === 'real';
     const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance;
     const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance;
 
+    const real_total_balance2 = platform_real_balance2.balance + cfd_real_balance2.balance;
+    const demo_total_balance2 = (platform_demo_account?.balance || 0) + cfd_demo_balance2.balance;
+
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
     const eu_account = is_eu_user && !no_MF_account;
     const cr_account = !is_eu_user && !no_CR_account;
-
-    const cfd_target_currency = cfd_real_accounts?.[0]?.currency || undefined;
-    const platform_target_currency = currency;
-    const base = is_eu_user ? currency : platform_real_balance.currency;
-    const { handleSubscription, exchange_rates } = useGlobalData();
-
-    React.useEffect(() => {
-        if (!((is_switching || is_logging_in) && (eu_account || cr_account))) {
-            if (base && base !== platform_target_currency) {
-                console.log('base', base);
-                handleSubscription(base, platform_target_currency);
-            }
-
-            if (base && cfd_target_currency !== undefined && base !== cfd_target_currency) {
-                console.log('base', base);
-                handleSubscription(base, cfd_target_currency);
-            }
-        }
-    }, [
-        is_switching,
-        is_logging_in,
-        eu_account,
-        cr_account,
-        default_currency,
-        currency,
-        platform_real_balance.currency,
-        cfd_real_balance.currency,
-        base,
-        platform_target_currency,
-        cfd_target_currency,
-        handleSubscription,
-    ]);
 
     //dont show loader if user has no respective regional account
     if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
@@ -85,6 +61,17 @@ const AssetSummary = observer(() => {
                         zIndex={9999}
                         is_bubble_hover_enabled
                     >
+                        <h1>new</h1>
+                        <BalanceText
+                            currency={
+                                is_real
+                                    ? platform_real_balance2.currency || ''
+                                    : platform_demo_account?.currency || default_currency
+                            }
+                            balance={is_real ? real_total_balance2 : demo_total_balance2}
+                            underline_style='dotted'
+                        />
+                        <h1>old</h1>
                         <BalanceText
                             currency={
                                 is_real

@@ -484,8 +484,6 @@ export default class TradeStore extends BaseStore {
             setStakeBoundary: action.bound,
             setTradeStatus: action.bound,
             show_digits_stats: computed,
-            themeChangeListener: action.bound,
-            updateBarrierColor: action.bound,
             updateStore: action.bound,
             updateSymbol: action.bound,
         });
@@ -802,12 +800,6 @@ export default class TradeStore extends BaseStore {
         });
     }
 
-    updateBarrierColor(is_dark_mode: boolean) {
-        if (this.main_barrier) {
-            this.main_barrier.updateBarrierColor(is_dark_mode);
-        }
-    }
-
     onHoverPurchase(is_over: boolean, contract_type?: string) {
         if (this.is_accumulator) return;
         if (this.is_purchase_enabled && this.main_barrier && !this.is_multiplier) {
@@ -853,20 +845,17 @@ export default class TradeStore extends BaseStore {
         }
         const { contract_type, barrier, barrier2 } = proposal_info;
         if (isBarrierSupported(contract_type)) {
-            const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
-
             // create barrier only when it's available in response
             this.main_barrier = new ChartBarrierStore(
                 this.hovered_barrier || barrier,
                 barrier2,
                 this.onChartBarrierChange,
                 {
-                    color: this.hovered_barrier ? getHoveredColor(contract_type) : color,
+                    color: this.hovered_barrier ? getHoveredColor(contract_type) : BARRIER_COLORS.BLUE,
                     line_style: this.hovered_barrier && BARRIER_LINE_STYLES.DASHED,
                     not_draggable: this.is_turbos || this.is_vanilla,
                 }
             );
-            // this.main_barrier.updateBarrierShade(true, contract_type);
         } else {
             this.main_barrier = null;
         }
@@ -1450,10 +1439,6 @@ export default class TradeStore extends BaseStore {
         this.setTradeStatus(is_online);
     }
 
-    themeChangeListener(is_dark_mode_on: boolean) {
-        this.updateBarrierColor(is_dark_mode_on);
-    }
-
     resetErrorServices() {
         this.root_store.ui.toggleServicesErrorModal(false);
     }
@@ -1469,7 +1454,6 @@ export default class TradeStore extends BaseStore {
         this.onLogout(this.logoutListener);
         this.onClientInit(this.clientInitListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
-        this.onThemeChange(this.themeChangeListener);
         this.setChartStatus(true);
         runInAction(async () => {
             this.is_trade_component_mounted = true;

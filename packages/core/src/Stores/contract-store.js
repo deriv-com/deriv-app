@@ -12,7 +12,6 @@ import {
     WS,
     getContractUpdateConfig,
     getContractValidationRules,
-    BARRIER_COLORS,
     BARRIER_LINE_STYLES,
     DEFAULT_SHADES,
     isBarrierSupported,
@@ -259,7 +258,6 @@ export default class ContractStore extends BaseStore {
         if (contract_info) {
             if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
                 main_barrier?.updateBarriers(barrier || high_barrier, low_barrier);
-                main_barrier?.updateBarrierColor(is_dark_mode);
             }
             if (
                 contract_info.contract_id &&
@@ -275,7 +273,7 @@ export default class ContractStore extends BaseStore {
         }
     }
 
-    createBarriersArray = (contract_info, is_dark_mode) => {
+    createBarriersArray = contract_info => {
         let barriers = [];
         if (contract_info) {
             const { contract_type, barrier, entry_spot, high_barrier: high, low_barrier } = contract_info;
@@ -290,7 +288,6 @@ export default class ContractStore extends BaseStore {
                     this.accu_low_barrier || low_barrier,
                     null,
                     {
-                        color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
                         line_style: !isAccumulatorContract(contract_type) && BARRIER_LINE_STYLES.SOLID,
                         not_draggable: true,
                         hideBarrierLine: isAccumulatorContract(contract_type),

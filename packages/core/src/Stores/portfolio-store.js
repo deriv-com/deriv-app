@@ -89,7 +89,6 @@ export default class PortfolioStore extends BaseStore {
             active_positions_count: computed,
             is_empty: computed,
             setPurchaseSpotBarrier: action,
-            updateBarrierColor: action,
             updateLimitOrderBarriers: action,
             setContractType: action,
             is_accumulator: computed,
@@ -569,16 +568,7 @@ export default class PortfolioStore extends BaseStore {
             purchase_spot_barrier.draggable = false;
             purchase_spot_barrier.hideOffscreenBarrier = true;
             purchase_spot_barrier.isSingleBarrier = true;
-            purchase_spot_barrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
             this.barriers.push(purchase_spot_barrier);
-        }
-    }
-
-    updateBarrierColor(is_dark_mode) {
-        const { main_barrier } = JSON.parse(localStorage.getItem('trade_store')) || {};
-        this.main_barrier = main_barrier;
-        if (this.main_barrier) {
-            this.main_barrier.updateBarrierColor(is_dark_mode);
         }
     }
 

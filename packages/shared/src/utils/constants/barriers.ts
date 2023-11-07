@@ -31,8 +31,7 @@ export const BARRIER_COLORS = {
     GREEN: '#4bb4b3',
     RED: '#ec3f3f',
     ORANGE: '#ff6444',
-    GRAY: '#999999',
-    DARK_GRAY: '#6E6E6E',
+    BLUE: '#377cfc',
 };
 
 export const BARRIER_LINE_STYLES = {

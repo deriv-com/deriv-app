@@ -7,6 +7,6 @@ export const getHoveredColor = (type: string): string => {
         case 'TURBOSLONG':
             return BARRIER_COLORS.GREEN;
         default:
-            return BARRIER_COLORS.GRAY;
+            return BARRIER_COLORS.BLUE;
     }
 };

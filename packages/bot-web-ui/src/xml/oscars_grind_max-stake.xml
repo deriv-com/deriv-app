@@ -60,7 +60,7 @@
     <statement name="INITIALIZATION">
       <block type="variables_set" id="3s/+?7f?ok8vfj^5UMs9">
         <field name="VAR" id="4P#YDIym2gdl^b*Ex,Mw" variabletype="">setMaxStake?</field>
-        <value name="VALUE">
+        <value name="VALUE" strategy_value="boolean_max_stake">
           <block type="logic_boolean" id="|4YHu4b.ZMN._VmK_I^0">
             <field name="BOOL">TRUE</field>
           </block>
@@ -68,7 +68,7 @@
         <next>
           <block type="variables_set" id="ARnV}MF~p133Kavisb5g">
             <field name="VAR" id="I#w}5`{h8JW_OPEo!t2J" variabletype="">maxStake</field>
-            <value name="VALUE">
+            <value name="VALUE" strategy_value="max_stake">
               <block type="math_number" id="J{.h4k=Boz5QRwL_aJJF">
                 <field name="NUM">250</field>
               </block>
@@ -81,7 +81,7 @@
       <block type="trade_definition_tradeoptions" id="ZpUp_-/i=,1arU4#Y^)f">
         <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
         <field name="DURATIONTYPE_LIST">t</field>
-        <value name="DURATION">
+        <value name="DURATION" strategy_value="duration">
           <shadow type="math_number" id="1$O7tC`{XK}Hc$S1fPr|">
             <field name="NUM">1</field>
           </shadow>
@@ -98,7 +98,7 @@
       </block>
     </statement>
   </block>
-  <block type="after_purchase" id="Ui+uU/7GT4gqsv%!K1q-" x="652" y="0">
+  <block type="after_purchase" id="Ui+uU/7GT4gqsv%!K1q-" x="824" y="0">
     <statement name="AFTERPURCHASE_STACK">
       <block type="controls_if" id="TXcNV|G4Fy/#h+_?Z9r(">
         <value name="IF0">
@@ -126,7 +126,14 @@
       </block>
     </statement>
   </block>
-  <block type="procedures_defnoreturn" id="64Sq`B7By0;-Y+$q$B70" x="801" y="310">
+  <block type="before_purchase" id="*v%y[=?rCL/ooa5`1q[O" deletable="false" x="0" y="648">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="purchase" id="D;n(rizeW,x;BKmi!v%k">
+        <field name="PURCHASE_LIST">CALL</field>
+      </block>
+    </statement>
+  </block>
+  <block type="procedures_defnoreturn" id="64Sq`B7By0;-Y+$q$B70" collapsed="true" x="0" y="832">
     <mutation>
       <arg name="oscarsGrind:resultIsWin" varid="O!nu[t{pavCUx.Zf[n63"></arg>
     </mutation>
@@ -407,7 +414,7 @@
                                           <block type="text_join" id="Z%JZ~+Pc-.Y0[K-Z-p8_">
                                             <field name="VARIABLE" id="h3t%aqX.o*7!*3{[.*0p" variabletype="">Notification:stakeAdjust</field>
                                             <statement name="STACK">
-                                              <block type="text_statement" id="-)D|3ucUech{v7R(~1qM" movable="false">
+                                              <block type="text_statement" id="-)D|3ucUech{v7R(~1qM">
                                                 <value name="TEXT">
                                                   <shadow type="text" id="NOw7M^);vBg5s}@;b5@=">
                                                     <field name="TEXT">Stake adjust to meet target profit: 0.5-1.5 x initial stake</field>
@@ -645,14 +652,7 @@
       </block>
     </statement>
   </block>
-  <block type="before_purchase" id="*v%y[=?rCL/ooa5`1q[O" deletable="false" x="0" y="576">
-    <statement name="BEFOREPURCHASE_STACK">
-      <block type="purchase" id="D;n(rizeW,x;BKmi!v%k">
-        <field name="PURCHASE_LIST">CALL</field>
-      </block>
-    </statement>
-  </block>
-  <block type="procedures_defreturn" id="aDP;P7cYa2u)$OfbN0*-" x="4" y="742">
+  <block type="procedures_defreturn" id="aDP;P7cYa2u)$OfbN0*-" collapsed="true" x="0" y="928">
     <field name="NAME">Oscar's Grind Trade Amount</field>
     <statement name="STACK">
       <block type="controls_if" id="|DM=BKZ:S+$v/3jeXNS]">
@@ -672,7 +672,7 @@
         <statement name="DO0">
           <block type="variables_set" id="za68V.=r];6v1ZVCl9V3">
             <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:profitThreshold</field>
-            <value name="VALUE">
+            <value name="VALUE" strategy_value="profit">
               <shadow type="math_number" id="{wdMI.v{UNLIEm603?0|">
                 <field name="NUM">5000</field>
               </shadow>
@@ -697,7 +697,7 @@
             <statement name="DO0">
               <block type="variables_set" id="}nd^[K,g#_9_{ZbuY?}I">
                 <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:lossThreshold</field>
-                <value name="VALUE">
+                <value name="VALUE" strategy_value="loss">
                   <shadow type="math_number" id="zho+zM2QQ7M4YEwWLHFZ">
                     <field name="NUM">3000</field>
                   </shadow>
@@ -722,7 +722,7 @@
                 <statement name="DO0">
                   <block type="variables_set" id="K$RfuYH6fHK~K1@fM4FQ">
                     <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:initialStake</field>
-                    <value name="VALUE">
+                    <value name="VALUE" strategy_value="stake">
                       <shadow type="math_number" id="Q=d$b2.fxe6uJRVty3C]">
                         <field name="NUM">100</field>
                       </shadow>
@@ -772,7 +772,7 @@
                         <statement name="DO0">
                           <block type="variables_set" id="MJ[9tY-n2r.NbytTFK.L">
                             <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:units</field>
-                            <value name="VALUE">
+                            <value name="VALUE" strategy_value="oscar_unit">
                               <shadow type="math_number" id="t7Jp*7S8l+DYrk$TdeQv">
                                 <field name="NUM">0</field>
                               </shadow>
@@ -865,7 +865,7 @@
       </block>
     </value>
   </block>
-  <block type="procedures_defreturn" id="Ab9aZ##k}}$H?G:?W6OZ" x="4" y="1895">
+  <block type="procedures_defreturn" id="Ab9aZ##k}}$H?G:?W6OZ" collapsed="true" x="0" y="1024">
     <mutation>
       <arg name="oscarsGrind:profit" varid="1@e2~}K[2)6@n$|llW$s"></arg>
       <arg name="oscarsGrind:resultIsWin" varid="O!nu[t{pavCUx.Zf[n63"></arg>

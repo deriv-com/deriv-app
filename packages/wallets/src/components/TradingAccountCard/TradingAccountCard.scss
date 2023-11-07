@@ -1,8 +1,8 @@
 .wallets-trading-account-card {
     display: flex;
     align-items: center;
-    gap: 16px;
-    height: 88px;
+    gap: 1.6rem;
+    height: 8.8rem;
 
     @include desktop {
         $columns: 3;
@@ -24,10 +24,10 @@
 
     &__content {
         display: flex;
-        gap: 16px;
+        gap: 1.6rem;
         align-items: center;
         flex-grow: 1;
         height: 100%;
-        border-bottom: 1px solid var(--system-light-6-hover-background, #e6e9e9);
+        border-bottom: 0.1rem solid var(--system-light-6-hover-background, #e6e9e9);
     }
 }

@@ -11,8 +11,9 @@
 .wallets-cashier-content {
     padding-top: 2.4rem;
     display: flex;
-    gap: 2.4rem;
+    align-items: center;
     justify-content: center;
+    gap: 2.4rem;
     flex: 1;
     background-color: #ffffff;
     overflow: scroll;

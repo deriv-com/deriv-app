@@ -10,7 +10,6 @@ export const IDENTIFIER_TYPES = Object.freeze({
 
 export const POO_STATUSES = {
     NONE: 'none',
-    OWNER_SHIP: 'ownership',
     PENDING: 'pending',
     REJECTED: 'rejected',
     VERIFIED: 'verified',

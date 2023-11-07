@@ -22,11 +22,6 @@ const LinksMapper: Record<
         android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
         ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
     },
-    derivez: {
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1',
-        huawei: 'https://appgallery.huawei.com/#/app/C103801913',
-        ios: 'https://apps.apple.com/my/app/deriv-go/id1550561298',
-    },
     dxtrade: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',
         huawei: 'https://appgallery.huawei.com/app/C104633219',

@@ -80,7 +80,7 @@ const PersonalDetailsForm = props => {
     const is_rendered_for_idv_or_onfido = is_rendered_for_idv || is_rendered_for_onfido;
 
     const getFieldHint = field_name =>
-        is_svg_only || is_rendered_for_onfido ? (
+        is_svg_only || is_rendered_for_onfido || is_qualified_for_idv ? (
             <Localize
                 i18n_default_text={'Your {{ field_name }} as in your identity document'}
                 values={{ field_name }}

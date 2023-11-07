@@ -5,6 +5,15 @@ const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ?? '';
 const isProduction = process.env.NODE_ENV === 'production';
 const isStaging = process.env.NODE_ENV === 'staging';
 
+function getAcct1Value(url: string) {
+    const start = url.indexOf('acct1=') + 6; // 6 is the length of 'acct1='
+    const end = url.indexOf('&', start); // Find the end of the parameter value
+    if (end === -1) {
+        return url.substring(start); // If there's no '&' after acct1, get the substring from start to the end
+    }
+    return url.substring(start, end); // Get the substring between 'acct1=' and the '&'
+}
+
 let dataDogSessionSampleRate = 0;
 let dataDogSessionReplaySampleRate = 0;
 let dataDogVersion = '';
@@ -24,7 +33,6 @@ if (isProduction) {
     dataDogSessionSampleRate = 100;
     dataDogEnv = 'staging';
 }
-
 // we do it in order avoid error "application id is not configured, no RUM data will be collected"
 // for test-links where application ID has not been configured and therefore RUM data will not be collected
 if (isProduction || isStaging) {
@@ -43,7 +51,23 @@ if (isProduction || isStaging) {
         version: dataDogVersion,
         trackFrustrations: true,
         enableExperimentalFeatures: ['clickmap'],
-        excludedActivityUrls: [/^https:\/\/api.telegram.org.*$/],
+        beforeSend: event => {
+            if (event.type === 'resource') {
+                event.resource.url = event.resource.url.replace(
+                    /^https:\/\/api.telegram.org.*$/,
+                    'telegram token=REDACTED'
+                );
+
+                if (event.resource.url.match(/^ https:\/\/eu.deriv.com\/ctrader-login.*$/)) {
+                    const url = event.resource.url;
+                    const accnt = getAcct1Value(url);
+                    event.resource.url = event.resource.url.replace(
+                        /^ https:\/\/eu.deriv.com\/ctrader-login.*$/,
+                        `https://eu.deriv.com/ctrader-login?acct1=${accnt}&token1=redacted`
+                    );
+                }
+            }
+        },
     });
 
     datadogRum.startSessionReplayRecording();

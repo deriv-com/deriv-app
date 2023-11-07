@@ -160,7 +160,7 @@ Notification.propTypes = {
         className: PropTypes.string,
         closeOnClick: PropTypes.func,
         delay: PropTypes.number,
-        header: PropTypes.string,
+        header: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
         header_popup: PropTypes.string,
         img_alt: PropTypes.string,
         img_src: PropTypes.string,

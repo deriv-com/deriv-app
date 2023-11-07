@@ -15,7 +15,6 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ history: {} }),
     useLocation: () => ({ pathname: '/wallets' }),
-    useStreamedBalance: () => ({ displayBalance: 'UNIT 42' }),
 }));
 
 describe('<WalletCashierHeader/>', () => {

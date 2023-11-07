@@ -59,5 +59,9 @@ export default defineConfig({
             name: 'integration',
             testDir: './packages/integration/integration-tests',
         },
+        {
+            name: 'wallets',
+            testDir: './packages/wallets/integration-tests',
+        },
     ],
 });

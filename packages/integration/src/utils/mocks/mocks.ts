@@ -556,6 +556,7 @@ async function setupMocks({ baseURL, page, mocks }: SetupMocksOptions) {
 
     await page.evaluate(server_url => {
         window.localStorage.setItem('config.server_url', server_url);
+        window.localStorage.setItem('FeatureFlagStore', `{"data":{"wallet":false,"next_wallet":true,"sharkfin":false}}`)
     }, mockServer.url);
 
     await page.goto(

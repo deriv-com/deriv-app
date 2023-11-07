@@ -1,10 +1,12 @@
 import React, { FC, useMemo } from 'react';
+import classNames from 'classnames';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
+import { THooks } from '../../../../types';
+import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import { JurisdictionCard } from './JurisdictionCard';
 import './JurisdictionScreen.scss';
-import { THooks } from '../../../../types';
 
 type TJurisdictionScreenProps = {
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
@@ -12,19 +14,23 @@ type TJurisdictionScreenProps = {
 };
 
 const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction, setSelectedJurisdiction }) => {
-    const { modalState } = useModal();
+    const { getModalState } = useModal();
     const { data, isLoading } = useAvailableMT5Accounts();
+    const marketType = getModalState('marketType');
+    const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
     const jurisdictions = useMemo(
-        () =>
-            data?.filter(account => account.market_type === modalState?.marketType).map(account => account.shortcode) ||
-            [],
-        [data, modalState?.marketType]
+        () => data?.filter(account => account.market_type === marketType).map(account => account.shortcode) || [],
+        [data, marketType]
     );
 
     if (isLoading) return <WalletText>Loading...</WalletText>;
 
     return (
-        <div className='wallets-jurisdiction-screen'>
+        <div
+            className={classNames('wallets-jurisdiction-screen', {
+                'wallets-jurisdiction-screen--flip': isDynamicLeverageVisible,
+            })}
+        >
             <div className='wallets-jurisdiction-screen__cards'>
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard

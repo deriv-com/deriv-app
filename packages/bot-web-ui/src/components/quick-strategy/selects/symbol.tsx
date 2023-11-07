@@ -70,14 +70,14 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
                         <>
                             <Autocomplete
                                 {...rest_field}
-                                inputmode='none'
+                                inputMode='none'
                                 data-testid='qs_autocomplete_symbol'
                                 autoComplete='off'
                                 className='qs__autocomplete'
                                 value={selected_symbol?.text || ''}
                                 list_items={symbols}
                                 onItemSelection={(item: TItem) => {
-                                    if (item?.value) {
+                                    if ((item as TSymbol)?.value) {
                                         setFieldValue?.('symbol', (item as TSymbol)?.value as string);
                                         setValue('symbol', (item as TSymbol)?.value as string);
                                     }

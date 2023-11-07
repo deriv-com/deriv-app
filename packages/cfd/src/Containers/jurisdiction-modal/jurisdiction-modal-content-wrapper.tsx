@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
@@ -9,11 +9,13 @@ import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { MARKET_TYPE, JURISDICTION } from '../../Helpers/cfd-config';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
-    const { client, traders_hub } = useStore();
+    const { client, traders_hub, ui } = useStore();
 
     const { show_eu_related_content } = traders_hub;
+    const { is_mobile } = ui;
 
     const {
         trading_platform_available_accounts,
@@ -70,29 +72,29 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
 
     const financial_available_accounts = trading_platform_available_accounts.filter(
         available_account =>
-            available_account.market_type === 'financial' &&
+            available_account.market_type === MARKET_TYPE.FINANCIAL &&
             (show_eu_related_content
-                ? available_account.shortcode === 'maltainvest'
-                : available_account.shortcode !== 'maltainvest')
+                ? available_account.shortcode === JURISDICTION.MALTA_INVEST
+                : available_account.shortcode !== JURISDICTION.MALTA_INVEST)
     );
 
     const synthetic_available_accounts = trading_platform_available_accounts.filter(
         available_account =>
-            available_account.market_type === 'gaming' &&
+            available_account.market_type === MARKET_TYPE.GAMING &&
             (show_eu_related_content
-                ? available_account.shortcode === 'maltainvest'
-                : available_account.shortcode !== 'maltainvest')
+                ? available_account.shortcode === JURISDICTION.MALTA_INVEST
+                : available_account.shortcode !== JURISDICTION.MALTA_INVEST)
     );
 
     const all_market_type_available_accounts = trading_platform_available_accounts?.filter(
-        available_account => available_account.market_type === 'all'
+        available_account => available_account.market_type === MARKET_TYPE.ALL
     );
 
-    const is_svg_selected = jurisdiction_selected_shortcode === Jurisdiction.SVG;
-    const is_bvi_selected = jurisdiction_selected_shortcode === Jurisdiction.BVI;
-    const is_vanuatu_selected = jurisdiction_selected_shortcode === Jurisdiction.VANUATU;
-    const is_labuan_selected = jurisdiction_selected_shortcode === Jurisdiction.LABUAN;
-    const is_maltainvest_selected = jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST;
+    const is_svg_selected = jurisdiction_selected_shortcode === JURISDICTION.SVG;
+    const is_bvi_selected = jurisdiction_selected_shortcode === JURISDICTION.BVI;
+    const is_vanuatu_selected = jurisdiction_selected_shortcode === JURISDICTION.VANUATU;
+    const is_labuan_selected = jurisdiction_selected_shortcode === JURISDICTION.LABUAN;
+    const is_maltainvest_selected = jurisdiction_selected_shortcode === JURISDICTION.MALTA_INVEST;
 
     const is_idv_country =
         residence_list.find(elem => elem?.value === residence)?.identity?.services?.idv?.is_country_supported === 1;
@@ -101,20 +103,20 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
 
     const swapfree_available_accounts = trading_platform_available_accounts.filter(
         available_account =>
-            available_account.market_type === 'all' &&
+            available_account.market_type === MARKET_TYPE.ALL &&
             (show_eu_related_content
-                ? available_account.shortcode === 'maltainvest'
-                : available_account.shortcode !== 'maltainvest')
+                ? available_account.shortcode === JURISDICTION.MALTA_INVEST
+                : available_account.shortcode !== JURISDICTION.MALTA_INVEST)
     );
 
     const isNextButtonDisabled = () => {
         if (jurisdiction_selected_shortcode) {
             let is_account_created;
-            if (account_type.type === 'synthetic') {
+            if (account_type.type === MARKET_TYPE.SYNTHETIC) {
                 is_account_created = real_synthetic_accounts_existing_data?.some(
                     account => account.landing_company_short === jurisdiction_selected_shortcode
                 );
-            } else if (account_type.type === 'all') {
+            } else if (account_type.type === MARKET_TYPE.ALL) {
                 is_account_created = real_swapfree_accounts_existing_data?.some(
                     account => account.landing_company_short === jurisdiction_selected_shortcode
                 );
@@ -208,45 +210,40 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                     synthetic_available_accounts={synthetic_available_accounts}
                     all_market_type_available_accounts={all_market_type_available_accounts}
                 />
-                <div
-                    className={classNames(
-                        'jurisdiction-modal__footer-content',
-                        `cfd-jurisdiction-card--${account_type.type}__footer-wrapper`
-                    )}
-                >
-                    <div className={`cfd-jurisdiction-card--${account_type.type}__footnotes-container`}>
-                        <JurisdictionModalFootNote
-                            account_status={account_status}
-                            account_type={account_type.type}
-                            card_classname={`cfd-jurisdiction-card--${account_type.type}`}
-                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                            should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
-                            should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
-                        />
-                        <JurisdictionCheckBox
-                            is_checked={checked}
-                            onCheck={() => setChecked(!checked)}
-                            class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
-                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                            should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
-                            should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
-                        />
-                    </div>
-                </div>
             </div>
-            <Modal.Footer className='jurisdiction-modal__footer-button' has_separator>
-                <Button
-                    disabled={isNextButtonDisabled()}
-                    primary
-                    style={{ width: isMobile() ? '100%' : 'unset' }}
-                    onClick={() => {
-                        toggleJurisdictionModal();
-                        onSelectRealAccount();
-                    }}
-                >
-                    {localize('Next')}
-                </Button>
-            </Modal.Footer>
+            <div className={classNames('jurisdiction-modal__footer-content', `cfd-jurisdiction-card__footer-wrapper`)}>
+                <div className={`cfd-jurisdiction-card--${account_type.type}__footnotes-container`}>
+                    <JurisdictionModalFootNote
+                        account_status={account_status}
+                        account_type={account_type.type}
+                        card_classname={`cfd-jurisdiction-card--${account_type.type}`}
+                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                        should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
+                    />
+                    <JurisdictionCheckBox
+                        is_checked={checked}
+                        onCheck={() => setChecked(!checked)}
+                        class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
+                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                        should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
+                    />
+                </div>
+                <Modal.Footer className='jurisdiction-modal__footer-button' has_separator>
+                    <Button
+                        disabled={isNextButtonDisabled()}
+                        primary
+                        style={{ width: is_mobile ? '100%' : 'unset' }}
+                        onClick={() => {
+                            toggleJurisdictionModal();
+                            onSelectRealAccount();
+                        }}
+                    >
+                        {localize('Next')}
+                    </Button>
+                </Modal.Footer>
+            </div>
         </div>
     );
 });

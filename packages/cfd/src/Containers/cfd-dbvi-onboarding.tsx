@@ -13,10 +13,11 @@ import {
     UILoader,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getAuthenticationStatusInfo, isMobile, WS, Jurisdiction } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { JURISDICTION } from '../Helpers/cfd-config';
 
 const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (
     <div className='da-icon-with-message'>
@@ -66,9 +67,9 @@ const CFDDbviOnboarding = observer(() => {
                     poa_resubmit_for_labuan,
                     need_poa_submission,
                 } = getAuthenticationStatusInfo(get_account_status);
-                if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
+                if (jurisdiction_selected_shortcode === JURISDICTION.MALTA_INVEST) {
                     setShowSubmittedModal(poi_acknowledged_for_maltainvest && poa_acknowledged);
-                } else if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN) {
+                } else if (jurisdiction_selected_shortcode === JURISDICTION.LABUAN) {
                     /* When verified with IDV+ Photo ID, POA is auto verified */
                     const is_poa_submitted = poa_resubmit_for_labuan ? false : !need_poa_submission;
                     setShowSubmittedModal(

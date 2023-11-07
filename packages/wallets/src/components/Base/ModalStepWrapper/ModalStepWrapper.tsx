@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 import CloseIcon from '../../../public/images/close-icon.svg';
 import { useModal } from '../../ModalProvider';
@@ -6,7 +6,7 @@ import { WalletText } from '../WalletText';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
-    renderFooter?: () => React.ReactNode;
+    renderFooter?: () => ReactNode;
     shouldFixedFooter?: boolean;
     shouldHideHeader?: boolean;
     title?: string;
@@ -21,16 +21,19 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
 }) => {
     const { hide } = useModal();
     const hasRenderFooter = typeof renderFooter === 'function';
+    const fixedFooter = shouldFixedFooter && hasRenderFooter;
 
     return (
         <div
             className={classNames('wallets-modal-step-wrapper', {
-                'wallets-modal-step-wrapper--fixed': shouldFixedFooter,
+                'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
+                'wallets-modal-step-wrapper--no-header': shouldHideHeader && !fixedFooter,
+                'wallets-modal-step-wrapper--no-header--fixed-footer': shouldHideHeader && fixedFooter,
             })}
         >
             {!shouldHideHeader && (
                 <div className='wallets-modal-step-wrapper__header'>
-                    {title && <WalletText weight='bold'>{title}</WalletText>}
+                    <WalletText weight='bold'>{title}</WalletText>
                     <CloseIcon className='wallets-modal-step-wrapper__header-close-icon' onClick={hide} />
                 </div>
             )}

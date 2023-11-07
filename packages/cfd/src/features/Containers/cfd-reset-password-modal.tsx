@@ -70,7 +70,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
         changed_password_type: '',
     });
 
-    const [password, setPassword] = React.useState('');
+    const [password_type, setPasswordType] = React.useState('');
 
     const renderErrorBox = (error: TError) => {
         setState({
@@ -89,7 +89,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
             setState({
                 ...state,
                 is_finished: true,
-                changed_password_type: password,
+                changed_password_type: password_type,
             });
             clearAddressBar();
         }
@@ -132,7 +132,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
     ) => {
         const { setSubmitting } = actions;
         setSubmitting(true);
-        setPassword(password_type);
+        setPasswordType(password_type);
         const request = {
             account_id: login,
             platform: CFD_PLATFORMS.MT5,

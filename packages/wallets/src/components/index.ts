@@ -23,4 +23,5 @@ export * from './WalletsAddMoreCarousel';
 export * from './WalletsCarousel';
 export * from './WalletsCarouselContent';
 export * from './WalletsErrorScreen';
+export * from './WalletSuccess';
 export * from './WalletTourGuide';

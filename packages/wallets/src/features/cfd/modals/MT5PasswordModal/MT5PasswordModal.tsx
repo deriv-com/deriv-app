@@ -13,7 +13,7 @@ import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
-import { CreatePassword, EnterPassword, Success } from '../../screens';
+import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -111,7 +111,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         return (
             <ModalStepWrapper renderFooter={renderFooter} title={renderTitle()}>
                 {isSuccess && (
-                    <Success
+                    <CFDSuccess
                         description={`You can now start practicing trading with your ${marketTypeTitle} ${
                             isDemo ? ' demo' : 'real'
                         } account.`}
@@ -149,7 +149,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
             {isSuccess && (
-                <Success
+                <CFDSuccess
                     description={`You can now start practicing trading with your ${marketTypeTitle} ${
                         isDemo ? ' demo' : 'real'
                     } account.`}

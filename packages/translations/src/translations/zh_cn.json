@@ -2229,6 +2229,8 @@
     "-2116332353": "请将以下 Deriv 账户平仓：",
     "-2048005267": "{{number_of_positions}} 头寸",
     "-1923892687": "请从以下 Deriv X 账户取款：",
+    "-1867232538": "Please close your positions in the following {{platform}} account(s):",
+    "-1306447670": "Please withdraw your funds from the following {{platform}} account(s):",
     "-1629894615": "我还有其他财务优先事项。",
     "-844051272": "我不想再继续交易。",
     "-1113965495": "我对交易不再感兴趣。",

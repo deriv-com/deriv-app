@@ -24,16 +24,18 @@
             &-icons {
                 display: flex;
                 flex-direction: column;
+                justify-content: center;
                 gap: 0.8rem;
 
                 svg {
                     width: 13.7rem;
                     height: 4rem;
+                    cursor: pointer;
                 }
             }
 
             &-qr {
-                border: 1px solid #e6e9e9;
+                border: 0.1rem solid #e6e9e9;
                 border-radius: 0.4rem;
                 display: flex;
                 flex-direction: column;

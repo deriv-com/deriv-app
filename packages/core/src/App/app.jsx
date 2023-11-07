@@ -22,6 +22,7 @@ import AppContent from './AppContent';
 import 'Sass/app.scss';
 import { Analytics } from '@deriv/analytics';
 import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
+import initHotjar from '../Utils/Hotjar';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -74,6 +75,10 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.common.setPlatform();
         loadSmartchartsStyles();
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        initHotjar(root_store.client);
     }, []);
 
     const platform_passthrough = {

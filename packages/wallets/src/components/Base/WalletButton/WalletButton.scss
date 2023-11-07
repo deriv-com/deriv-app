@@ -66,7 +66,7 @@ $size-map: (
             border: none;
         }
         &--outlined {
-            border: 1px solid var(--system-light-3-less-prominent-text, #999);
+            border: 0.1rem solid var(--system-light-3-less-prominent-text, #999);
             background: none;
             &:hover {
                 background: #00000014;
@@ -95,5 +95,17 @@ $size-map: (
 
     &__full-width {
         width: 100%;
+    }
+
+    &__loader {
+        .wallets-loader {
+            width: 2rem;
+            height: 1.2rem;
+
+            &__element {
+                width: 0.3rem;
+                height: 1.2rem;
+            }
+        }
     }
 }

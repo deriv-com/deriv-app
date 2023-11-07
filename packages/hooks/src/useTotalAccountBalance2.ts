@@ -1,5 +1,5 @@
 import useRealTotalAssetCurrency from './useTotalAssetCurrency';
-import { useGlobalData } from './Context/global-context';
+import { useExchangeRate2 } from './useExchangeRate2';
 /**
  * we can use this hook to get the total balance of the given accounts list.
  * it loops through the accounts list and adds the balance of each account
@@ -14,7 +14,7 @@ type TUseTotalAccountBalance = {
 
 const useTotalAccountBalance2 = (accounts: TUseTotalAccountBalance[]) => {
     const total_assets_real_currency = useRealTotalAssetCurrency();
-    const { handleSubscription, exchange_rates } = useGlobalData();
+    const { handleSubscription, exchange_rates } = useExchangeRate2();
 
     if (!accounts.length) return { balance: 0, currency: total_assets_real_currency };
 

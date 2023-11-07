@@ -1,27 +1,23 @@
-import React, { createContext, ReactNode, useContext } from 'react';
+import React, { createContext, ReactNode } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
 import { useSubscription } from '@deriv/api';
-// TODO: Add docs for this file
 
-type TGlobalData = {
+type TExchangeRatesContext = {
     handleSubscription: (base_currency: string, target_currency: string) => void;
     exchange_rates: TRate;
     rest: Omit<typeof useSubscription, 'subscribe' | 'data'>;
 };
 
-// type TRate = {
-//     [k: string]: [string, number]];
-// };
 type TRate = Record<string, Record<string, number | number>>;
 
-const GlobalContext = createContext<TGlobalData | null>(null);
+export const ExchangeRatesContext = createContext<TExchangeRatesContext | null>(null);
 
-type TGlobalDataWrapperProps = {
+type TExchangeRatesProvider = {
     children: ReactNode;
 };
 
-const GlobalDataWrapper = ({ children }: TGlobalDataWrapperProps) => {
+const ExchangeRatesProvider = ({ children }: TExchangeRatesProvider) => {
     const [exchange_rates, setExchangeRates] = useLocalStorage<TRate>('exchange_rates', {});
 
     const { subscribe, data, ...rest } = useSubscription('exchange_rates');
@@ -52,17 +48,10 @@ const GlobalDataWrapper = ({ children }: TGlobalDataWrapperProps) => {
     }, [data, setExchangeRates]);
 
     return (
-        <GlobalContext.Provider value={{ handleSubscription, exchange_rates, rest }}>{children}</GlobalContext.Provider>
+        <ExchangeRatesContext.Provider value={{ handleSubscription, exchange_rates, rest }}>
+            {children}
+        </ExchangeRatesContext.Provider>
     );
 };
 
-export const useGlobalData = () => {
-    const context = useContext(GlobalContext);
-
-    if (!context) {
-        throw new Error('useGlobalData must be used within a GlobalDataWrapper');
-    }
-    return context;
-};
-
-export default GlobalDataWrapper;
+export default ExchangeRatesProvider;

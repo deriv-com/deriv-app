@@ -17,6 +17,7 @@ export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useExchangeRate } from './useExchangeRate';
+export { default as useExchangeRate2 } from './useExchangeRate2';
 export { default as useExistingCFDAccounts } from './useExistingCFDAccounts';
 export { default as useFeatureFlags } from './useFeatureFlags';
 export { default as useFiatAccountList } from './useFiatAccountList';

@@ -21,7 +21,7 @@ import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
 import 'Sass/app.scss';
 import { Analytics } from '@deriv/analytics';
-import GlobalDataWrapper from '@deriv/hooks/src/Context/global-context';
+import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -90,9 +90,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                     <MobxContentProvider store={root_store}>
                         <APIProvider>
                             <StoreProvider store={root_store}>
-                                <GlobalDataWrapper>
+                                <ExchangeRatesProvider>
                                     <AppContent passthrough={platform_passthrough} />
-                                </GlobalDataWrapper>
+                                </ExchangeRatesProvider>
                             </StoreProvider>
                         </APIProvider>
                     </MobxContentProvider>

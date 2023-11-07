@@ -600,6 +600,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitCFDPassword,
         new_account_response,
         migrated_mt5_accounts,
+        setMigratedMT5Accounts,
     } = useCfdStore();
 
     const history = useHistory();
@@ -676,6 +677,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const closeDialogs = () => {
         setCFDSuccessDialog(false);
         if (is_mt5_migration_modal_enabled) setMT5MigrationModalEnabled(false);
+        setMigratedMT5Accounts([]);
         setError(false);
     };
 

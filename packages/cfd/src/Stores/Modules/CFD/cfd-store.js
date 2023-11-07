@@ -112,6 +112,7 @@ export default class CFDStore extends BaseStore {
             setCFDNewAccount: action.bound,
             setCFDSuccessDialog: action.bound,
             setMT5MigrationError: action.bound,
+            setMigratedMT5Accounts: action.bound,
             getAccountStatus: action.bound,
             creatMT5Password: action.bound,
             submitMt5Password: action.bound,
@@ -397,10 +398,10 @@ export default class CFDStore extends BaseStore {
                 category: 'real',
                 type,
             };
-            this.migrated_mt5_accounts = [
+            this.setMigratedMT5Accounts([
                 ...this.migrated_mt5_accounts,
                 { login_id: account.login, to_account: { ...(eligible_to_migrate ?? {}) } },
-            ];
+            ]);
             return this.requestMigrateAccount(values, shortcode, account_type);
         });
 
@@ -424,7 +425,7 @@ export default class CFDStore extends BaseStore {
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
                 this.clearCFDError();
                 this.setMT5MigrationError(has_error?.error?.message);
-                this.migrated_mt5_accounts = [];
+                this.setMigratedMT5Accounts([]);
                 this.root_store.ui.toggleMT5MigrationModal();
             }
         } catch (error) {
@@ -899,5 +900,9 @@ export default class CFDStore extends BaseStore {
 
     toggleCFDVerificationModal() {
         this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
+    }
+
+    setMigratedMT5Accounts(accounts) {
+        this.migrated_mt5_accounts = accounts;
     }
 }

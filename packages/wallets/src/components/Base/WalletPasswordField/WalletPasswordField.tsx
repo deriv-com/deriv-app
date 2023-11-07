@@ -1,11 +1,11 @@
 import React from 'react';
 import { zxcvbn } from '@zxcvbn-ts/core';
+import PasswordHide from '../../../public/images/ic-password-hide.svg';
+import PasswordShow from '../../../public/images/ic-password-show.svg';
+import { IconButton } from '../IconButton';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
-import { IconButton } from '../IconButton';
 import PasswordMeter, { PasswordMeterProps } from './PasswordMeter';
-import PasswordShow from '../../../public/images/ic-password-show.svg';
-import PasswordHide from '../../../public/images/ic-password-hide.svg';
 import './WalletPasswordField.scss';
 
 type StrengthMessage = Record<1 | 2 | 3 | 4, string>;

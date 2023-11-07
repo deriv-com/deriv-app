@@ -2,16 +2,16 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding: 8px;
-    gap: 8px;
-    border-radius: 4px;
+    padding: 0.8rem;
+    gap: 0.8rem;
+    border-radius: 0.4rem;
     height: min-content;
 
     &--lg {
         @include tablet-up {
-            padding: 16px;
-            gap: 16px;
-            border-radius: 4px * 2;
+            padding: 1.6rem;
+            gap: 1.6rem;
+            border-radius: 0.4rem * 2;
         }
     }
 
@@ -33,7 +33,7 @@
 
     &__icon {
         &--sm {
-            margin-top: 1px;
+            margin-top: 0.1rem;
 
             @include mobile {
                 margin-top: 0;
@@ -41,16 +41,16 @@
         }
 
         &--md {
-            margin-top: 2px;
+            margin-top: 0.2rem;
 
             @include mobile {
-                margin-top: 1px;
+                margin-top: 0.1rem;
             }
         }
 
         &--lg {
             @include mobile {
-                margin-top: 1px;
+                margin-top: 0.1rem;
             }
         }
     }
@@ -62,23 +62,23 @@
         flex: 1;
 
         &--xs {
-            margin-top: 1px;
+            margin-top: 0.1rem;
 
             @include mobile {
-                margin-top: 2px;
+                margin-top: 0.2rem;
             }
         }
 
         &--sm {
             @include mobile {
-                margin-top: 1px;
+                margin-top: 0.1rem;
             }
         }
     }
 
     &--outlined {
         background-color: transparent;
-        border: 1px solid;
+        border: 0.1rem solid;
     }
 
     &--outlined#{&}--warning {

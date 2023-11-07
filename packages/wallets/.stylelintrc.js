@@ -11,6 +11,5 @@ module.exports = {
                 message: 'Expected selector to match BEM CSS pattern and to be prefixed with "wallets-"',
             },
         ],
-        'unit-allowed-list': ['%', 'deg', 'em', 'fr', 'ms', 'rem', 's', 'svh', 'vh', 'vw'],
     },
 };

@@ -114,10 +114,8 @@ const AccumulatorsProfitLossText = ({
         }
     };
 
-    const FastMarkerComponent = FastMarkerBeta;
-
     return (
-        <FastMarkerComponent
+        <FastMarkerBeta
             markerRef={onRef}
             className={classNames(className, won ? 'won' : 'lost')}
             overlap_y_axis={false}
@@ -138,7 +136,7 @@ const AccumulatorsProfitLossText = ({
             <Text size={isMobile() ? 'xxxs' : 'xxs'} as='div' className={`${className}__currency`}>
                 {getCurrencyDisplayCode(currency)}
             </Text>
-        </FastMarkerComponent>
+        </FastMarkerBeta>
     );
 };
 

@@ -48,7 +48,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 showLastDigitStats={show_digits_stats}
                 chartControlsWidgets={null}
                 enabledChartFooter={false}
-                chartStatusListener={v => setChartStatus(!v)}
+                chartStatusListener={(v: boolean) => setChartStatus(!v)}
                 toolbarWidget={() => (
                     <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
                 )}

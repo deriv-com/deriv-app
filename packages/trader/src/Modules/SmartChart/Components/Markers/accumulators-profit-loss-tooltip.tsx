@@ -98,9 +98,8 @@ const AccumulatorsProfitLossTooltip = ({
             />
         );
 
-    const FastMarkerComponent = FastMarkerBeta;
     return is_sold && exit_tick_time ? (
-        <FastMarkerComponent markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
+        <FastMarkerBeta markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
             <span
                 className={`${className}__spot-circle`}
                 onMouseEnter={() => setIsTooltipOpen(true)}
@@ -126,7 +125,7 @@ const AccumulatorsProfitLossTooltip = ({
                     </Text>
                 </div>
             </CSSTransition>
-        </FastMarkerComponent>
+        </FastMarkerBeta>
     ) : null;
 };
 

@@ -34,10 +34,10 @@ import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget';
-import SmartChartSwitcher from '../../Trading/Containers/smart-chart-switcher.jsx';
 import ChartMarkerBeta from 'Modules/SmartChartBeta/Components/Markers/marker.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { SmartChartBeta } from 'Modules/SmartChartBeta';
 
 const ContractReplay = observer(({ contract_id }) => {
     const { common, contract_replay, ui } = useStore();
@@ -265,7 +265,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const has_ended = !!getEndTime(contract_info);
 
     return (
-        <SmartChartSwitcher
+        <SmartChartBeta
             id={'replay'}
             barriers={barriers_array}
             bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : null}
@@ -316,7 +316,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
-        </SmartChartSwitcher>
+        </SmartChartBeta>
     );
 });
 

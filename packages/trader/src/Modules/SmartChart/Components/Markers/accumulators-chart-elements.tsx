@@ -34,8 +34,6 @@ const AccumulatorsChartElements = ({
             contract_info && symbol === contract_info.underlying && filterByContractType(contract_info, 'accumulator')
     );
 
-    const ChartMarkerComponent = ChartMarkerBeta;
-
     return (
         <React.Fragment>
             {!!accumulators_positions.length &&
@@ -47,7 +45,7 @@ const AccumulatorsChartElements = ({
                     />
                 ))}
             {has_crossed_accu_barriers && !!current_spot_time && (
-                <ChartMarkerComponent
+                <ChartMarkerBeta
                     marker_config={{
                         ContentComponent: 'div',
                         x: current_spot_time,

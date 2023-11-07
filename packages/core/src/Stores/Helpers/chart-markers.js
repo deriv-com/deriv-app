@@ -27,7 +27,7 @@ import { localize } from '@deriv/translations';
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 import { getChartType } from './logic';
 
-export const createChartMarkers = (contract_info) => {
+export const createChartMarkers = (contract_info, is_delayed_markers_update) => {
     const { tick_stream } = contract_info;
     const should_show_10_last_ticks = isAccumulatorContractOpen(contract_info) && tick_stream.length === 10;
 
@@ -37,7 +37,7 @@ export const createChartMarkers = (contract_info) => {
         const chart_type = getChartType(contract_info.date_start, end_time);
 
         if (contract_info.tick_count) {
-            const tick_markers = createTickMarkers(contract_info);
+            const tick_markers = createTickMarkers(contract_info, is_delayed_markers_update);
             markers.push(...tick_markers);
         } else if (chart_type !== 'candle') {
             const spot_markers = Object.keys(marker_spots).map(type => marker_spots[type](contract_info));
@@ -81,7 +81,7 @@ const addLabelAlignment = (tick, idx, arr) => {
     return tick;
 };
 
-export const createTickMarkers = (contract_info) => {
+export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_smarttrader_contract = isSmartTraderContract(contract_info.contract_type);
     const is_accu_contract_closed = is_accumulator && !isOpen(contract_info);
@@ -136,7 +136,7 @@ export const createTickMarkers = (contract_info) => {
             if ((is_accu_current_last_spot || is_exit_spot) && !is_accu_contract_closed) return;
             if (marker_config && (is_middle_spot || is_exit_spot)) {
                 const should_highlight_previous_spot =
-                    is_accu_preexit_spot &&is_accu_contract_closed;
+                    is_accu_preexit_spot && (!is_delayed_markers_update || is_accu_contract_closed);
                 const spot_className = marker_config.content_config.spot_className;
                 marker_config.content_config.spot_className = `${spot_className} ${spot_className}--accumulator${
                     is_exit_spot ? '-exit' : `-middle${should_highlight_previous_spot ? '--preexit' : ''}`

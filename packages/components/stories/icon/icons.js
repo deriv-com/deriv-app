@@ -542,6 +542,7 @@ export const icons =
         'IcPooSubmitted',
         'IcPooVerified',
         'IcPortfolio',
+        'IcPositionClosed',
         'IcPreviewIcon',
         'IcPreview',
         'IcProfile',
@@ -645,6 +646,9 @@ export const icons =
         'IcContractStrike',
         'IcContractTarget',
     ],
+    'ctrader': [
+        'IcCtrader',
+    ],
     'currency': [
         'IcCurrencyAud',
         'IcCurrencyBch',
@@ -701,6 +705,7 @@ export const icons =
         'IcFlagPt',
         'IcFlagRu',
         'IcFlagTh',
+        'IcFlagTr',
         'IcFlagUk',
         'IcFlagVi',
         'IcFlagZhCn',

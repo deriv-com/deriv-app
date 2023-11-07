@@ -6,6 +6,7 @@ import { Authorize, GetAccountStatus, IdentityVerificationAddDocumentResponse, R
 import { Platforms } from '@deriv/shared';
 import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
 import getPaymentMethodsConfig from '../Configs/payment-method-config';
+import { VERIFICATION_STATUS } from '../Constants/verification-status-codes';
 
 export type TToken = {
     display_name: string;
@@ -138,10 +139,6 @@ export type TInputFieldValues = Record<string, string>;
 
 export type TIDVVerificationResponse = IdentityVerificationAddDocumentResponse & { error: { message: string } };
 
-export type TVerificationStatus = Readonly<
-    Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
->;
-
 export type TDocument = {
     id: string;
     text: string;
@@ -204,3 +201,5 @@ export type TProofOfOwnershipData = {
     files: Array<TFile>;
     payment_method_identifier: TPaymentMethod | '';
 };
+
+export type TVerificationStatus = typeof VERIFICATION_STATUS[keyof typeof VERIFICATION_STATUS];

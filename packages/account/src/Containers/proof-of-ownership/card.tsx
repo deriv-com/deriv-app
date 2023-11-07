@@ -45,12 +45,9 @@ const Card = ({ details, index }: TCardProps) => {
             role='card-item'
         >
             <div className='proof-of-ownership__card-item' onClick={onClickHandler}>
-                <Icon
-                    icon={details?.icon || ''}
-                    className='proof-of-ownership__card-item-logo'
-                    width={68}
-                    height={58}
-                />
+                {details?.icon && (
+                    <Icon icon={details?.icon} className='proof-of-ownership__card-item-logo' width={68} height={58} />
+                )}
                 <Text className='proof-of-ownership__card-item-text' as='p' color='general' size='s' weight='bold'>
                     {details?.payment_method}
                 </Text>

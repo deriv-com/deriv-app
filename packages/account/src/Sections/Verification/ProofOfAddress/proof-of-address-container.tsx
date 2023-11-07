@@ -7,7 +7,7 @@ import { Localize } from '@deriv/translations';
 import Expired from '../../../Components/poa/status/expired';
 import NeedsReview from '../../../Components/poa/status/needs-review';
 import NotRequired from '../../../Components/poa/status/not-required';
-import PoaStatusCodes from '../../../Components/poa/status/status-codes';
+import { VERIFICATION_STATUS } from '../../../Constants/verification-status-codes';
 import ProofOfAddressForm from './proof-of-address-form';
 import Submitted from '../../../Components/poa/status/submitted';
 import Unverified from '../../../Components/poa/status/unverified';
@@ -147,16 +147,16 @@ const ProofOfAddressContainer = observer(() => {
     }
 
     switch (document_status) {
-        case PoaStatusCodes.none:
+        case VERIFICATION_STATUS.NONE:
             return <ProofOfAddressForm onSubmit={onSubmit} />;
-        case PoaStatusCodes.pending:
+        case VERIFICATION_STATUS.PENDING:
             return <NeedsReview needs_poi={needs_poi} redirect_button={redirect_button} />;
-        case PoaStatusCodes.verified:
+        case VERIFICATION_STATUS.VERIFIED:
             return <Verified needs_poi={needs_poi} redirect_button={redirect_button} />;
-        case PoaStatusCodes.expired:
+        case VERIFICATION_STATUS.EXPIRED:
             return <Expired onClick={handleResubmit} />;
-        case PoaStatusCodes.rejected:
-        case PoaStatusCodes.suspected:
+        case VERIFICATION_STATUS.REJECTED:
+        case VERIFICATION_STATUS.SUSPECTED:
             return <Unverified onClick={handleResubmit} />;
         default:
             return null;

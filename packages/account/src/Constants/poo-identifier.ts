@@ -8,13 +8,6 @@ export const IDENTIFIER_TYPES = Object.freeze({
     USER_ID: 'user_id',
 });
 
-export const POO_STATUSES = {
-    NONE: 'none',
-    PENDING: 'pending',
-    REJECTED: 'rejected',
-    VERIFIED: 'verified',
-};
-
 export const CARD_NUMBER = {
     MAX_LENGTH: 19,
     MIN_LENGTH: 16,

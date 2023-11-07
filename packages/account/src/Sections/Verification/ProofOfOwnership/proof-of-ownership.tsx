@@ -4,10 +4,10 @@ import { GetAccountStatus } from '@deriv/api-types';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import ProofOfOwnershipForm from './proof-of-ownership-form';
-import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from 'Components/poo/statuses';
-import { POO_STATUSES } from 'Constants/poo-identifier';
+import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from '../../../Components/poo/statuses';
+import { VERIFICATION_STATUS } from '../../../Constants/verification-status-codes';
 import getPaymentMethodsConfig from '../../../Configs/payment-method-config';
-import { TPaymentMethod, TPaymentMethodIdentifier, TPaymentMethodInfo } from 'Types';
+import { TPaymentMethod, TPaymentMethodIdentifier, TPaymentMethodInfo, TVerificationStatus } from '../../../Types';
 
 type TPaymentData = DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
 
@@ -17,7 +17,7 @@ export const ProofOfOwnership = observer(() => {
     const { is_dark_mode_on: is_dark_mode, is_mobile } = ui;
     const { refreshNotifications } = notifications;
     const cards = account_status?.authentication?.ownership?.requests;
-    const [status, setStatus] = useState(POO_STATUSES.NONE);
+    const [status, setStatus] = useState<TVerificationStatus>(VERIFICATION_STATUS.NONE);
 
     const grouped_payment_method_data = React.useMemo(() => {
         const groups: Partial<Record<TPaymentMethod, TPaymentMethodInfo>> = {};
@@ -45,13 +45,16 @@ export const ProofOfOwnership = observer(() => {
         return { groups };
     }, [cards, is_dark_mode]);
     useEffect(() => {
-        setStatus(account_status?.authentication?.ownership?.status?.toLowerCase() ?? '');
+        setStatus(
+            (account_status?.authentication?.ownership?.status?.toLowerCase() as TVerificationStatus) ??
+                VERIFICATION_STATUS.NONE
+        );
     }, [account_status]);
     const onTryAgain = () => {
-        setStatus(POO_STATUSES.NONE);
+        setStatus(VERIFICATION_STATUS.NONE);
     };
 
-    if (cards?.length && status !== POO_STATUSES.REJECTED) {
+    if (cards?.length && status !== VERIFICATION_STATUS.REJECTED) {
         return (
             <ProofOfOwnershipForm
                 client_email={client_email}
@@ -62,10 +65,10 @@ export const ProofOfOwnership = observer(() => {
             />
         );
     }
-    if (status === POO_STATUSES.VERIFIED) return <POOVerified />;
-    if (status === POO_STATUSES.PENDING) return <POOSubmitted />;
-    if (status === POO_STATUSES.NONE) return <POONotRequired />;
-    if (status === POO_STATUSES.REJECTED) return <POORejetced onTryAgain={onTryAgain} />;
+    if (status === VERIFICATION_STATUS.VERIFIED) return <POOVerified />;
+    if (status === VERIFICATION_STATUS.PENDING) return <POOSubmitted />;
+    if (status === VERIFICATION_STATUS.NONE) return <POONotRequired />;
+    if (status === VERIFICATION_STATUS.REJECTED) return <POORejetced onTryAgain={onTryAgain} />;
     return <Loading is_fullscreen={false} className='account__initial-loader' />;
 });
 

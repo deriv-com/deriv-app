@@ -10,9 +10,10 @@ type TGlobalData = {
     rest: Omit<typeof useSubscription, 'subscribe' | 'data'>;
 };
 
-type TRate = {
-    [k: string]: number;
-};
+// type TRate = {
+//     [k: string]: [string, number]];
+// };
+type TRate = Record<string, Record<string, number | number>>;
 
 const GlobalContext = createContext<TGlobalData | null>(null);
 
@@ -21,7 +22,7 @@ type TGlobalDataWrapperProps = {
 };
 
 const GlobalDataWrapper = ({ children }: TGlobalDataWrapperProps) => {
-    const [exchange_rates, setExchangeRates] = useLocalStorage('exchange_rates', {});
+    const [exchange_rates, setExchangeRates] = useLocalStorage<TRate>('exchange_rates', {});
 
     const { subscribe, data, ...rest } = useSubscription('exchange_rates');
 
@@ -36,19 +37,13 @@ const GlobalDataWrapper = ({ children }: TGlobalDataWrapperProps) => {
 
     React.useEffect(() => {
         if (data) {
-            setExchangeRates((prev_rates: any) => {
+            setExchangeRates(prev_rates => {
                 const base_currency = data?.exchange_rates?.base_currency || 'USD';
-
-                // const new_rates = { ...prev_rates, ...(data?.exchange_rates?.rates || {}) };
-
-                // (data?.exchange_rates?.rates || {})
                 const new_rates = {
                     ...prev_rates,
-                    ...{
-                        [base_currency]: {
-                            ...prev_rates[base_currency],
-                            ...data?.exchange_rates?.rates,
-                        },
+                    [base_currency]: {
+                        ...prev_rates[base_currency],
+                        ...data?.exchange_rates?.rates,
                     },
                 };
                 return new_rates;

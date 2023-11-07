@@ -56,6 +56,13 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
 
     const { mutate, error, status } = useTradingPlatformInvestorPasswordReset();
 
+    React.useEffect(() => {
+        if (!/reset-password/.test(location.hash)) {
+            return;
+        }
+        setCFDPasswordResetModal(true);
+    }, [setCFDPasswordResetModal]);
+
     const [state, setState] = React.useState<{
         error_code: string | number | undefined;
         has_error: boolean;

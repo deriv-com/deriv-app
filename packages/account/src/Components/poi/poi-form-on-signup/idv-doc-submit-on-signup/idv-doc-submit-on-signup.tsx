@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
-import classNames from 'classnames';
 import { Localize, localize } from '@deriv/translations';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';

@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Form, Formik, FormikErrors, FormikHelpers, FormikState } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Text } from '@deriv/components';

@@ -1,42 +1,51 @@
-import React, { FC } from 'react';
+import React from 'react';
+import { zxcvbn } from '@zxcvbn-ts/core';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
+import { IconButton } from '../IconButton';
+import PasswordMeter, { PasswordMeterProps } from './PasswordMeter';
 import PasswordShow from '../../../public/images/ic-password-show.svg';
 import PasswordHide from '../../../public/images/ic-password-hide.svg';
 import './WalletPasswordField.scss';
-import { IconButton } from '../IconButton';
 
-type WalletPasswordFieldProps = WalletTextFieldProps;
+type StrengthMessage = Record<1 | 2 | 3 | 4, string>;
 
-const WalletPasswordField: FC<WalletPasswordFieldProps> = () => {
+interface WalletPasswordFieldProps extends WalletTextFieldProps, PasswordMeterProps {
+    messageObj?: StrengthMessage;
+}
+
+const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({ messageObj }) => {
+    const [password, setPassword] = useState('');
     const [viewPassword, setViewPassword] = useState(false);
-    const toggleView = () => setViewPassword(!viewPassword);
+    const toggleView = () => setViewPassword(prevViewPassword => !prevViewPassword);
+    const hasMessage = !!messageObj;
 
-    const strengthColors = {
-        0: 'wallets-password__meter--initial',
-        1: 'wallets-password__meter--weak',
-        2: 'wallets-password__meter--moderate',
-        3: 'wallets-password__meter--strong',
-        4: 'wallets-password__meter--complete',
-    };
+    const passwordStrength = zxcvbn(password).score;
+    const progressText = useMemo(
+        () => (messageObj ? messageObj[passwordStrength as keyof StrengthMessage] : ''),
+        [messageObj, passwordStrength]
+    );
+
+    const PasswordViewerIcon = (
+        <IconButton
+            color='transparent'
+            icon={viewPassword ? <PasswordShow /> : <PasswordHide />}
+            isRound
+            onClick={toggleView}
+            size='sm'
+        />
+    );
 
     return (
         <div className='wallets-password'>
             <WalletTextField
-                renderRightIcon={() => (
-                    <IconButton
-                        color='transparent'
-                        icon={viewPassword ? <PasswordShow /> : <PasswordHide />}
-                        isRound
-                        onClick={toggleView}
-                        size='sm'
-                    />
-                )}
+                helperMessage={progressText}
+                onChange={e => setPassword(e.target.value)}
+                renderRightIcon={() => PasswordViewerIcon}
+                showMessage={hasMessage}
                 type={viewPassword ? 'text' : 'password'}
             />
-            <div className='wallets-password__meter'>
-                <div className={strengthColors[0]} />
-            </div>
+            <PasswordMeter strength={passwordStrength} />
         </div>
     );
 };

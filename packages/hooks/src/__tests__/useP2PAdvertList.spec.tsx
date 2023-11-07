@@ -90,6 +90,7 @@ describe('useP2PAdvertList', () => {
                                     remaining_amount: 49.9,
                                     remaining_amount_display: '49.90',
                                     type: 'sell',
+                                    order_expiry_period: 3600,
                                 },
                             ],
                         },

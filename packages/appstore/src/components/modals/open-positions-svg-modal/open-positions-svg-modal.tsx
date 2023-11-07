@@ -1,33 +1,31 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { Jurisdiction, MT5_ACCOUNT_STATUS, getMT5AccountTitle } from '@deriv/shared';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { TTradingPlatformAvailableAccount } from '../account-type-modal/types';
 import { TMarketType } from '../../../types/common.types';
 
 type TOpenPositionsSVGModal = {
-    loginId: DetailsOfEachMT5Loginid['login'];
     market_type: NonNullable<TTradingPlatformAvailableAccount['market_type']> | TMarketType;
     status: string;
     is_modal_open: boolean;
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const OpenPositionsSVGModal = ({
-    loginId,
-    market_type,
-    status,
-    is_modal_open,
-    setModalOpen,
-}: TOpenPositionsSVGModal) => {
-    const {
-        modules: { cfd },
-    } = useStore();
-    const { migrated_mt5_accounts } = cfd;
-    const eligible_account = migrated_mt5_accounts?.filter(account => account?.loginId === loginId);
-    const eligible_account_to_migrate_label = Object.values(eligible_account[0]?.to_account ?? {})?.[0];
+const OpenPositionsSVGModal = ({ market_type, status, is_modal_open, setModalOpen }: TOpenPositionsSVGModal) => {
+    const { client } = useStore();
+    const { mt5_login_list } = client;
+    const eligible_accounts = mt5_login_list?.filter(
+        account => account?.market_type === market_type && account.landing_company_short !== Jurisdiction.SVG
+    );
+
+    const eligible_accounts_label = eligible_accounts.map(account =>
+        getMT5AccountTitle({
+            account_type: market_type,
+            jurisdiction: account.landing_company_short,
+        })
+    );
 
     const is_migrated_with_position = status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
 
@@ -55,10 +53,7 @@ const OpenPositionsSVGModal = ({
                                     account_type: market_type,
                                     jurisdiction: Jurisdiction.SVG,
                                 }),
-                                to_account: getMT5AccountTitle({
-                                    account_type: market_type,
-                                    jurisdiction: eligible_account_to_migrate_label,
-                                }),
+                                to_account: eligible_accounts_label.join(localize(' or ')),
                             }}
                         />
                     ) : (

@@ -6,7 +6,7 @@ import { WalletGradientBackground } from '../../../../components/WalletGradientB
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import useDevice from '../../../../hooks/useDevice';
 import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
-import { MarketTypeDetails, PlatformToTitleMapper } from '../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import './CFDSuccess.scss';
 
 type TSuccessProps = {
@@ -39,15 +39,15 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     let marketTypeTitle = 'Deriv Apps';
 
     if (marketType && platform) {
-        const isPlatformValid = Object.keys(PlatformToTitleMapper).includes(platform);
+        const isPlatformValid = Object.keys(PlatformDetails).includes(platform);
         if (isMarketTypeAll && isPlatformValid) {
-            marketTypeTitle = PlatformToTitleMapper[platform];
+            marketTypeTitle = PlatformDetails[platform].title;
         } else {
             marketTypeTitle = MarketTypeDetails[marketType].title;
         }
     }
 
-    const platformTitlePrefix = platform === 'mt5' ? PlatformToTitleMapper.mt5 : '';
+    const platformTitlePrefix = platform === 'mt5' ? PlatformDetails.mt5.title : '';
 
     return (
         <WalletSuccess

@@ -42,7 +42,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
                         description={`Transfer your virtual funds from your ${accountType} wallet to your ${ctraderMapper[0].title} ${accountType} account to practice trading.`}
                         displayBalance={cTraderAccounts?.find(account => account.login)?.display_balance}
                         marketType='all'
-                        platform='cTrader'
+                        platform='ctrader'
                         renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
                         title={`Your ${ctraderMapper[0].title} ${accountType} account is ready`}
                     />

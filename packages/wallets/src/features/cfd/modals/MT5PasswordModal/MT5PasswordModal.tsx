@@ -12,7 +12,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { MarketTypeDetails, PlatformToTitleMapper } from '../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 
 type TProps = {
@@ -35,8 +35,8 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeWallet?.is_virtual;
     const marketTypeTitle =
-        marketType === 'all' && Object.keys(PlatformToTitleMapper).includes(platform)
-            ? PlatformToTitleMapper[platform]
+        marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
+            ? PlatformDetails[platform].title
             : MarketTypeDetails[marketType].title;
 
     const onSubmit = async () => {
@@ -76,9 +76,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             return ' ';
         }
         if (hasMT5Account) {
-            return `Add a ${isDemo ? 'demo' : 'real'} ${PlatformToTitleMapper.mt5} account`;
+            return `Add a ${isDemo ? 'demo' : 'real'} ${PlatformDetails.mt5.title} account`;
         }
-        return `Create a ${isDemo ? 'demo' : 'real'} ${PlatformToTitleMapper.mt5} account`;
+        return `Create a ${isDemo ? 'demo' : 'real'} ${PlatformDetails.mt5.title} account`;
     };
 
     const renderFooter = () => {

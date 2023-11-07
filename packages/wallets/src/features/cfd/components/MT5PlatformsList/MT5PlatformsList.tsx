@@ -28,8 +28,8 @@ const MT5PlatformsList: React.FC = () => {
                     <h1>Deriv MT5</h1>
                 </div>
             </section>
+            {!isFetchedAfterMount && <TradingAppCardLoader />}
             <div className='wallets-mt5-list__content'>
-                {!isFetchedAfterMount && <TradingAppCardLoader />}
                 {isFetchedAfterMount &&
                     data?.map((account, index) => {
                         if (account.is_added)

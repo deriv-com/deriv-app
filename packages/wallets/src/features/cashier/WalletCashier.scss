@@ -11,13 +11,14 @@
 .wallets-cashier-content {
     padding-top: 2.4rem;
     display: flex;
-    gap: 2.4rem;
+    align-items: center;
     justify-content: center;
+    gap: 2.4rem;
     flex: 1;
     background-color: #ffffff;
     overflow: scroll;
 
     @include mobile {
-        padding: 1.6rem;
+        padding: 2.4rem 1.6rem 0;
     }
 }

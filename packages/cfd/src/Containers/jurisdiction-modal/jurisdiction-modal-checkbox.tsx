@@ -1,9 +1,10 @@
 import React from 'react';
 import { Checkbox, StaticUrl, Text } from '@deriv/components';
-import { Jurisdiction, DBVI_COMPANY_NAMES } from '@deriv/shared';
+import { DBVI_COMPANY_NAMES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { TJurisdictionCheckBoxProps } from '../props.types';
+import { JURISDICTION } from '../../Helpers/cfd-config';
 
 const JurisdictionCheckBox = observer(
     ({
@@ -20,9 +21,9 @@ const JurisdictionCheckBox = observer(
         const shouldShowCheckBox = () => {
             if (
                 !jurisdiction_selected_shortcode ||
-                jurisdiction_selected_shortcode === Jurisdiction.SVG ||
-                (jurisdiction_selected_shortcode === Jurisdiction.BVI && should_restrict_bvi_account_creation) ||
-                (jurisdiction_selected_shortcode === Jurisdiction.VANUATU && should_restrict_vanuatu_account_creation)
+                jurisdiction_selected_shortcode === JURISDICTION.SVG ||
+                (jurisdiction_selected_shortcode === JURISDICTION.BVI && should_restrict_bvi_account_creation) ||
+                (jurisdiction_selected_shortcode === JURISDICTION.VANUATU && should_restrict_vanuatu_account_creation)
             ) {
                 return false;
             }
@@ -44,6 +45,7 @@ const JurisdictionCheckBox = observer(
                 />
             </Text>
         );
+
         return (
             <React.Fragment>
                 {shouldShowCheckBox() && (

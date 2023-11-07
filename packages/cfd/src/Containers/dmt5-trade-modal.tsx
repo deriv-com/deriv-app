@@ -11,7 +11,7 @@ import {
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink, getBrokerName } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
 import PasswordBox from '../Components/passwordbox';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
@@ -118,7 +118,7 @@ const DMT5TradeModal = observer(
                 <div className='cfd-trade-modal__login-specs'>
                     <div className='cfd-trade-modal__login-specs-item'>
                         <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                        <SpecBox is_bold is_broker value={'Deriv.com Limited'} />
+                        <SpecBox is_bold is_broker value={getBrokerName()} />
                     </div>
                     <div className='cfd-trade-modal__login-specs-item'>
                         <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>
@@ -145,8 +145,8 @@ const DMT5TradeModal = observer(
                                     });
                                     onPasswordManager(
                                         mt5_trade_account?.login,
-                                        getTitle(mt5_trade_account.market_type || '', show_eu_related_content),
-                                        mt5_trade_account.account_type || '',
+                                        getTitle(mt5_trade_account.market_type ?? '', show_eu_related_content),
+                                        mt5_trade_account.account_type ?? '',
                                         account_type,
                                         (mt5_trade_account as DetailsOfEachMT5Loginid)?.server
                                     );

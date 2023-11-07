@@ -186,21 +186,26 @@
             @include mobile() {
                 margin-bottom: 0;
                 padding-bottom: 1.6rem;
+                max-height: calc(100vh - 12.2rem) !important;
             }
         }
         &__field {
             padding: 0.5rem;
             width: 50%;
             display: inline-block;
+            vertical-align: middle;
             &.full-width {
                 width: 100%;
             }
 
             @include mobile() {
                 width: 100%;
+
                 &.no-top-spacing {
                     padding-top: 0;
+                }
 
+                &.no-border-top {
                     .dc-input__container {
                         border-top-left-radius: 0;
                         border-top-right-radius: 0;
@@ -213,10 +218,54 @@
                         border-bottom-right-radius: 0;
                     }
                 }
+                &.no-border-bottom-radius {
+                    .qs__checkbox {
+                        border-bottom-left-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+                }
+                &.no-bottom-spacing {
+                    padding-bottom: 0;
+                }
+                &.no-bottom-border-radius {
+                    .dc-input__container {
+                        border-bottom-left-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+                }
+            }
+            &__list {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                &__item {
+                    flex: 1;
+                    height: var(--input-height);
+                    background: var(--general-main-1);
+                    line-height: var(--input-height);
+                    text-align: center;
+                    font-size: 12px;
+                    &:first-child {
+                        border-bottom-left-radius: 4px;
+                    }
+                    &:last-child {
+                        border-bottom-right-radius: 4px;
+                    }
+                    &--active {
+                        font-weight: bold;
+                        background: var(--general-active);
+                    }
+                }
+            }
+            .contract-type {
+                .dc-input__field {
+                    font-weight: normal;
+                }
             }
         }
     }
     &__autocomplete {
+        caret-color: transparent;
         .dc-input {
             &__container {
                 border: none;
@@ -256,6 +305,7 @@
     }
 
     &__select {
+        caret-color: transparent;
         .dc-input {
             &__container {
                 border: none;
@@ -290,8 +340,7 @@
             }
         }
         &__option {
-            display: flex;
-            align-items: center;
+            @extend .x-center;
 
             &__text {
                 margin-left: 3rem;
@@ -308,14 +357,13 @@
         }
     }
     .seddle-actions {
+        @extend .x-center;
+        justify-content: center;
         position: absolute;
         background: transparent;
         border: none;
         font-size: 20px;
         line-height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         width: var(--input-action-width);
         height: var(--input-action-height);
         border-radius: 2px;
@@ -350,6 +398,10 @@
                 &:hover {
                     background-color: var(--state-hover);
                 }
+                &:disabled {
+                    opacity: 0.32;
+                    pointer-events: none;
+                }
             }
 
             &__trailing-icon {
@@ -361,6 +413,10 @@
                 }
                 &:hover {
                     background-color: var(--state-hover);
+                }
+                &:disabled {
+                    opacity: 0.32;
+                    pointer-events: none;
                 }
             }
 
@@ -379,12 +435,11 @@
         }
     }
     &__input-label {
+        @extend .x-center;
+        justify-content: space-between;
         height: var(--input-height);
         background: var(--general-main-1);
         border-radius: 0.4rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         padding: 0 2.4rem;
         &__wrapper {
             margin-right: 2rem;
@@ -393,6 +448,24 @@
             background: transparent;
             margin-bottom: -1rem;
             justify-content: center;
+        }
+    }
+    &__checkbox {
+        height: var(--input-height);
+        background: var(--general-main-1);
+        border-radius: 0.4rem;
+        @extend .x-center;
+        &__container {
+            @extend .x-center;
+            justify-content: space-between;
+            height: calc(var(--input-height) - 0.5rem);
+            width: 100%;
+            padding: 0 2.4rem 0 1.6rem;
+            .dc-checkbox {
+                .dc-text {
+                    font-weight: bold;
+                }
+            }
         }
     }
 }

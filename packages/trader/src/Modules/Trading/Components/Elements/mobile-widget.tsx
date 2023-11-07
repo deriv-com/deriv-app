@@ -80,13 +80,13 @@ const MobileWidget = observer(() => {
                 <MultiplierAmountWidget />
             ) : (
                 <div id='duration_amount_selector' className='mobile-widget duration_amount_selector'>
-                    <button className='mobile-widget__duration' onClick={() => toggleWidget(0)}>
+                    <button className='mobile-widget__duration mobile-widget__button' onClick={() => toggleWidget(0)}>
                         {getHumanReadableDuration()}
                     </button>
-                    <button className='mobile-widget__amount' onClick={() => toggleWidget(1)}>
+                    <button className='mobile-widget__amount mobile-widget__button' onClick={() => toggleWidget(1)}>
                         <Money amount={amount} currency={currency} show_currency />
                     </button>
-                    <button className='mobile-widget__type' onClick={() => toggleWidget(1)}>
+                    <button className='mobile-widget__type mobile-widget__button' onClick={() => toggleWidget(1)}>
                         {stakeOrPayout()}
                     </button>
                 </div>

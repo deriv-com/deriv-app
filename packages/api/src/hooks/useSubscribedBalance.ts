@@ -8,7 +8,7 @@ import useActiveWalletAccount from './useActiveWalletAccount';
  * Hook to display live, subscribed balance.
  * Use when you have only one wallet on screen.
  */
-const useStreamedBalance = () => {
+const useSubscribedBalance = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: account } = useAuthorize();
 
@@ -33,4 +33,4 @@ const useStreamedBalance = () => {
     };
 };
 
-export default useStreamedBalance;
+export default useSubscribedBalance;

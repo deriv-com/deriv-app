@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { WalletText } from '../../../../components/Base';
+import { InlineMessage, WalletText } from '../../../../components/Base';
 import { WalletListCardBadge } from '../../../../components';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
@@ -69,12 +69,9 @@ const MT5TradeScreen = () => {
                         {!activeWalletData?.is_virtual &&
                             details?.landing_company_short === 'svg' &&
                             ['synthetic', 'financial'].includes(marketType || '') && (
-                                <div className='wallets-mt5-trade-screen__badge'>
-                                    <ImportantIcon />
-                                    <WalletText color='warning' size='xs' weight='bold'>
-                                        No new positions
-                                    </WalletText>
-                                </div>
+                                <InlineMessage type='warning' variant='outlined'>
+                                    No new positions
+                                </InlineMessage>
                             )}
                     </div>
                 </div>

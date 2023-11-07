@@ -22,21 +22,24 @@ const MT5TradeScreen = () => {
     const marketType = getModalState('marketType');
     const platform = getModalState('platform');
 
-    const details = useMemo(() => {
-        const platformToAccountsList = {
+    const platformToAccountsListMapper = useMemo(
+        () => ({
             ctrader: ctraderAccountsList,
             dxtrade: dxtradeAccountsList,
             mt5: mt5AccountsList,
-        };
+        }),
+        [ctraderAccountsList, dxtradeAccountsList, mt5AccountsList]
+    );
 
+    const details = useMemo(() => {
         return platform === 'mt5'
-            ? platformToAccountsList.mt5?.filter(account => account.market_type === marketType)[0]
-            : platformToAccountsList.dxtrade?.[0];
-    }, [platform, marketType]);
+            ? platformToAccountsListMapper.mt5?.filter(account => account.market_type === marketType)[0]
+            : platformToAccountsListMapper.dxtrade?.[0];
+    }, [platform, marketType, platformToAccountsListMapper]);
 
     const loginId = useMemo(() => {
         return platform === 'mt5' ? (details as THooks.MT5AccountsList)?.loginid : details?.login;
-    }, [details]);
+    }, [details, platform]);
 
     return (
         <div className='wallets-mt5-trade-screen'>

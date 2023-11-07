@@ -3,7 +3,7 @@ import React from 'react';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip';
 import { ProposalOpenContract } from '@deriv/api-types';
 import ChartMarkerBeta from 'Modules/SmartChartBeta/Components/Markers/marker.jsx';
-import ChartMarker from './marker.jsx';
+import ChartMarker from './marker';
 
 type TPositions = {
     contract_info: Omit<
@@ -15,7 +15,7 @@ type TPositions = {
 
 type TAccumulatorsChartElements = {
     all_positions: TPositions[];
-    current_spot?: number | null;
+    current_spot: number;
     current_spot_time: number;
     has_crossed_accu_barriers: boolean;
     should_show_profit_text: React.ComponentProps<typeof AccumulatorsProfitLossTooltip>['should_show_profit_text'];

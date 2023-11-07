@@ -13,8 +13,8 @@ import {
 } from '@deriv/components';
 import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { isDocumentNumberValid, shouldHideHelperImage, shouldShowIdentityInformation } from '../../Helpers/utils';
 import FormSubHeader from '../form-sub-header';
+import { isDocumentNumberValid, shouldShowIdentityInformation } from 'Helpers/utils';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
@@ -186,14 +186,13 @@ const PersonalDetails = observer(
                                                         hide_hint={true}
                                                         can_skip_document_verification={true}
                                                     />
-                                                    <FormSubHeader title={localize('Details')} />
                                                 </React.Fragment>
                                             )}
+                                            {is_svg && !is_eu_user && <FormSubHeader title={localize('Details')} />}
                                             <PersonalDetailsForm
                                                 class_name={classNames({
                                                     'account-form__poi-confirm-example_container':
-                                                        is_qualified_for_idv &&
-                                                        !shouldHideHelperImage(values?.document_type?.id),
+                                                        is_svg && !is_eu_user,
                                                 })}
                                                 is_virtual={is_virtual}
                                                 is_svg={is_svg}
@@ -211,9 +210,6 @@ const PersonalDetails = observer(
                                                 account_opening_reason_list={account_opening_reason_list}
                                                 should_close_tooltip={should_close_tooltip}
                                                 setShouldCloseTooltip={setShouldCloseTooltip}
-                                                should_hide_helper_image={shouldHideHelperImage(
-                                                    values?.document_type?.id
-                                                )}
                                                 no_confirmation_needed={no_confirmation_needed}
                                             />
                                         </div>

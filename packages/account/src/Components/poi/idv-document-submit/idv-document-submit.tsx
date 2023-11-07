@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Button } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
@@ -178,13 +177,8 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
 
                         <FormSubHeader title={localize('Details')} />
                         <PersonalDetailsForm
-                            class_name={classNames({
-                                'account-form__poi-confirm-example_container': !shouldHideHelperImage(
-                                    values?.document_type?.id
-                                ),
-                            })}
+                            class_name='account-form__poi-confirm-example_container'
                             is_qualified_for_idv
-                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                             editable_fields={values.confirmation_checkbox ? [] : changeable_fields}
                         />
                     </section>

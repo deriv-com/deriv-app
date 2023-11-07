@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { flow } from 'mobx';
-import { State, getActivePlatform, getPropertyValue, routes, getActionFromUrl } from '@deriv/shared';
+import { State, getSocketURL, getActivePlatform, getPropertyValue, routes, getActionFromUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -22,7 +22,10 @@ const BinarySocketGeneral = (() => {
             const error = new Error('deriv-api: no message received after 30s');
             error.userId = client_store?.loginid;
             /* eslint-disable no-console */
-            console.error(error);
+            window.TrackJS?.console?.error({
+                message: error.message,
+                websocketUrl: getSocketURL(),
+            });
         }, 30000);
 
         if (is_ready) {

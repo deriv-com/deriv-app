@@ -3,36 +3,36 @@
 .wallets-trading-app-card-loader {
     display: flex;
     flex-direction: column;
-    gap: 2.4rem;
+    gap: 24px;
     padding: 1rem 0rem;
 
     &__content {
         display: flex;
         flex-direction: row;
-        gap: 1.4rem;
+        gap: 14px;
         align-items: center;
 
         &__icon {
-            height: 5rem;
-            border-radius: 1rem;
-            width: 5rem;
+            height: 50px;
+            border-radius: 10px;
+            width: 50px;
         }
 
         &__details {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 10px;
 
             &--title {
-                height: 1.4rem;
-                border-radius: 0.2rem;
-                width: 6rem;
+                height: 14px;
+                border-radius: 2px;
+                width: 60px;
             }
 
             &--description {
-                height: 2.4rem;
-                border-radius: 0.2rem;
-                width: 20rem;
+                height: 24px;
+                border-radius: 2px;
+                width: 200px;
             }
         }
     }

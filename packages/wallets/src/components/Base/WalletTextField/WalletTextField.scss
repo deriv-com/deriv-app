@@ -8,7 +8,7 @@
         width: 100%;
         border-radius: 0.4rem;
         padding: 1rem 1.6rem;
-        border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
+        border: 1px solid var(--system-light-5-active-background, #d6dadb);
         background: var(--system-light-8-primary-background, #fff);
         display: inline-flex;
         align-items: center;
@@ -20,11 +20,11 @@
     }
 
     &__box:has(&__field:focus) {
-        border: 0.1rem solid var(--brand-blue, #85acb0);
+        border: 1px solid var(--brand-blue, #85acb0);
     }
 
     &__box:has(&__field:invalid) {
-        border: 0.1rem solid var(--status-light-danger, #ec3f3f);
+        border: 1px solid var(--status-light-danger, #ec3f3f);
     }
 
     &__field {

@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { isMobile } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Sidebar from '../sidebar';
+
 import UserGuide from '../user-guide';
 
 jest.mock('@deriv/components', () => {
@@ -49,7 +50,6 @@ export const mocked_props = {
     is_dialog_open: true,
     onOkButtonClick: jest.fn(),
     setActiveTab: jest.fn(() => 3),
-    setHasTourEnded: jest.fn(),
     setOnBoardTourRunState: jest.fn(),
     setTourActiv: jest.fn(),
     setTourDialogVisibility: jest.fn(),
@@ -59,25 +59,11 @@ export const mocked_props = {
 };
 
 describe('<Dashboard />', () => {
-    it('should render PopoverComponent if isMobile is false', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        //render(<DashboardComponent {...mocked_props} />);
-        //expect(screen.getByText(/Import a bot/i)).toBeInTheDocument();
-    });
-
     it('user guide button click should be enabled', () => {
         render(<UserGuide {...mocked_props} />);
         const use_guide_button = screen.getByTestId('btn-user-guide');
         userEvent.click(use_guide_button);
         expect(screen.getByTestId('btn-user-guide')).toBeInTheDocument();
         expect(use_guide_button).toBeEnabled();
-    });
-
-    it('on user guide button click it should render the tutorials tab', () => {
-        render(<UserGuide {...mocked_props} />);
-        const use_guide_button = screen.getByTestId('btn-user-guide');
-        userEvent.click(use_guide_button);
-        render(<Sidebar {...mocked_props} />);
-        expect(mocked_props.setActiveTab).toHaveBeenCalledWith(3);
     });
 });

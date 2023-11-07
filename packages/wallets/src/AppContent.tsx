@@ -1,16 +1,12 @@
 import React from 'react';
-import WalletsAddMore from './components/WalletsAddMoreCarousel';
-import useDevice from './hooks/useDevice';
-import { DesktopWalletsList, WalletsCarousel } from './components';
+import { Router } from './routes';
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
-    const { is_mobile } = useDevice();
-
     return (
         <div className='wallets-app'>
-            <div className='wallets-app__content'>{is_mobile ? <WalletsCarousel /> : <DesktopWalletsList />}</div>\
-            <WalletsAddMore />
+            <div className='wallets-modal-responsive-root' id='wallets_modal_responsive_root' />
+            <Router />
         </div>
     );
 };

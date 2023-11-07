@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, ExpansionPanel, Icon } from '@deriv/components';
 
-const getIcon = type => {
+export const getIcon = type => {
     switch (type) {
         case 'error':
             return 'IcAlertDanger';

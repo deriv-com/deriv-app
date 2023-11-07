@@ -33,10 +33,16 @@
             border-width: 4px;
             border-color: var(--brand-red-coral);
         }
+        &--error {
+            border-color: var(--text-less-prominent);
+        }
     }
     &__label {
         &--disabled {
             color: var(--text-disabled);
+        }
+        &--error {
+            color: var(--text-loss-danger);
         }
     }
 }

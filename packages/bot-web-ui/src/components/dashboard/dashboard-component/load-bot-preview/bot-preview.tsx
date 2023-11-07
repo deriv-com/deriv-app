@@ -1,8 +1,8 @@
-import React from 'react';
-import WorkspaceControl from './workspace-control';
+import React, { RefObject } from 'react';
+import WorkspaceControl from '../../../load-modal/workspace-control';
 
 type TBotPreview = {
-    id_ref: HTMLElement | React.ReactNode | null;
+    id_ref: RefObject<HTMLDivElement>;
 };
 
 const BotPreview = ({ id_ref }: TBotPreview) => {

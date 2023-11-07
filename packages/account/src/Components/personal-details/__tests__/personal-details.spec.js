@@ -5,6 +5,8 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
+import userEvent from '@testing-library/user-event';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -59,17 +61,25 @@ const runCommonFormfieldsTests = is_svg => {
     expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
     expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
 
-    expect(
-        screen.getByText(/Please enter your first name as in your official identity documents./i)
-    ).toBeInTheDocument();
+    if (is_svg) {
+        expect(screen.getByText(/your first name as in your identity document/i)).toBeInTheDocument();
 
-    expect(
-        screen.getByText(/Please enter your last name as in your official identity documents./i)
-    ).toBeInTheDocument();
+        expect(screen.getByText(/your last name as in your identity document/i)).toBeInTheDocument();
 
-    expect(
-        screen.getByText(/Please enter your date of birth as in your official identity documents./i)
-    ).toBeInTheDocument();
+        expect(screen.getByText(/your date of birth as in your identity document/i)).toBeInTheDocument();
+    } else {
+        expect(
+            screen.getByText(/Please enter your first name as in your official identity documents./i)
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByText(/Please enter your last name as in your official identity documents./i)
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByText(/Please enter your date of birth as in your official identity documents./i)
+        ).toBeInTheDocument();
+    }
 
     const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');
     expect(tax_residence_pop_over).toBeInTheDocument();
@@ -235,7 +245,12 @@ describe('<PersonalDetails/>', () => {
     afterAll(() => ReactDOM.createPortal.mockClear());
 
     const renderwithRouter = component => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
+        const mock_store = mockStore({});
+        render(
+            <StoreProvider store={mock_store}>
+                <BrowserRouter>{component}</BrowserRouter>
+            </StoreProvider>
+        );
     };
 
     it('should autopopulate tax_residence for MF clients', () => {
@@ -288,7 +303,7 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should show title and Name label when salutation is passed', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter(<PersonalDetails {...props} is_mf />);
 
         expect(
             screen.getByRole('heading', {
@@ -301,7 +316,7 @@ describe('<PersonalDetails/>', () => {
         const newprops = { ...props, value: {} };
         renderwithRouter(<PersonalDetails {...newprops} />);
 
-        expect(screen.getByRole('heading', { name: /name/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /details/i })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: /title and name/i })).not.toBeInTheDocument();
     });
 
@@ -334,27 +349,25 @@ describe('<PersonalDetails/>', () => {
     it('should display the correct field details when is_svg is true ', () => {
         renderwithRouter(<PersonalDetails {...props} />);
 
-        expect(screen.getByRole('heading', { name: /title and name/i })).toBeInTheDocument();
-        expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('heading', { name: 'Details' })).toBeInTheDocument();
         expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/last name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
         runCommonFormfieldsTests(props.is_svg);
     });
 
     it('should display the correct field details when is_svg is false ', () => {
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} is_mf />);
 
         expect(screen.getByRole('heading', { name: 'Title and name' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
         expect(screen.getByRole('heading', { name: /other details/i })).toBeInTheDocument();
-        expect(screen.getByText('First name')).toBeInTheDocument();
-        expect(screen.getByText('Last name')).toBeInTheDocument();
-        expect(screen.getByText('Date of birth')).toBeInTheDocument();
-        expect(screen.getByText('Phone number*')).toBeInTheDocument();
+        expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/last name\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByLabelText('Phone number*')).toBeInTheDocument();
 
         runCommonFormfieldsTests(false);
@@ -528,6 +541,12 @@ describe('<PersonalDetails/>', () => {
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         const next_btn = screen.getByRole('button', { name: /next/i });
+
+        const checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(checkbox).not.toBeInTheDocument();
+
         expect(previous_btn).toBeEnabled();
         expect(next_btn).toBeEnabled();
         fireEvent.click(next_btn);
@@ -572,6 +591,11 @@ describe('<PersonalDetails/>', () => {
         const tax_identification_number = screen.getByTestId('tax_identification_number');
         const tax_identification_confirm = screen.getByTestId('tax_identification_confirm');
         const account_opening_reason_mobile = screen.getByTestId('account_opening_reason_mobile');
+
+        const checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(checkbox).not.toBeInTheDocument();
 
         fireEvent.click(mr_radio_btn);
         fireEvent.change(first_name, { target: { value: 'test firstname' } });
@@ -700,5 +724,78 @@ describe('<PersonalDetails/>', () => {
         };
         renderwithRouter(<PersonalDetails {...new_props} />);
         expect(screen.getByTestId('tax_residence')).toBeDisabled();
+    });
+
+    it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
+        const new_props = {
+            ...props,
+            is_mf: false,
+            is_svg: true,
+            value: {
+                first_name: '',
+                last_name: '',
+                date_of_birth: '',
+                place_of_birth: '',
+                phone: '+34',
+                tax_residence: '',
+                tax_identification_number: '',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+        const date_of_birth = screen.getByTestId('date_of_birth');
+        const phone = screen.getByTestId('phone');
+
+        userEvent.type(first_name, 'test firstname');
+        userEvent.type(last_name, 'test lastname');
+        userEvent.type(date_of_birth, '2000-12-12');
+        userEvent.type(phone, '+49123456789012');
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+    });
+
+    it('should not display confirmation checkbox if opt-out of IDV', async () => {
+        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        const new_props = {
+            ...props,
+            value: {
+                first_name: '',
+                last_name: '',
+                date_of_birth: '',
+                phone: '+93',
+                account_opening_reason: '',
+                place_of_birth: '',
+                document_type: 'none',
+            },
+        };
+
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+        const date_of_birth = screen.getByTestId('date_of_birth');
+        const phone = screen.getByTestId('phone');
+
+        userEvent.type(first_name, 'test firstname');
+        userEvent.type(last_name, 'test lastname');
+        userEvent.type(date_of_birth, '2000-12-12');
+        userEvent.type(phone, '+49123456789012');
+
+        const previous_btn = screen.getByRole('button', { name: /previous/i });
+        const next_btn = screen.getByRole('button', { name: /next/i });
+
+        const confirmation_checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(confirmation_checkbox).not.toBeInTheDocument();
+
+        expect(previous_btn).toBeEnabled();
+        expect(next_btn).toBeEnabled();
+        userEvent.click(next_btn);
+
+        await waitFor(() => {
+            expect(new_props.onSubmit).toBeCalled();
+        });
     });
 });

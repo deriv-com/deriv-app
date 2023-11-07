@@ -1,36 +1,38 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
-import WalletGradientBackground from '../WalletGradientBackground/WalletGradientBackground';
+import { THooks } from '../../types';
+import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import WalletListCardIBalance from '../WalletListCardIBalance/WalletListCardIBalance';
-import WalletListCardIcon from '../WalletListCardIcon/WalletListCardIcon';
 import WalletListCardIDetails from '../WalletListCardIDetails/WalletListCardIDetails';
 import './WalletListCard.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    badge?: THooks.WalletAccountsList['landing_company_name'];
+    balance: THooks.WalletAccountsList['display_balance'];
+    currency: THooks.WalletAccountsList['wallet_currency_type'];
+    isActive: THooks.WalletAccountsList['is_active'];
+    isDemo: THooks.WalletAccountsList['is_virtual'];
+    loginid: THooks.WalletAccountsList['loginid'];
+    title: Exclude<THooks.WalletAccountsList['currency'], undefined>;
 };
 
-const WalletListCard: React.FC<TProps> = ({ account }) => {
-    return (
-        <div className='wallets-list-header__card_container'>
-            <div className='wallets-list-header__content'>
-                <div className='wallets-list-header__details-container'>
-                    <WalletGradientBackground
-                        is_demo={account.is_virtual}
-                        currency={account?.currency_config?.display_code || 'USD'}
-                        type='card'
-                    >
-                        <div className='wallets-list-header__details-container-icon'>
-                            <WalletListCardIcon type={account?.wallet_currency_type} />
-                        </div>
-                    </WalletGradientBackground>
+const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isActive, isDemo, loginid, title }) => (
+    <div className='wallets-list-header__card_container'>
+        <div className='wallets-list-header__content'>
+            <div className='wallets-list-header__details-container'>
+                <WalletCurrencyCard currency={currency} isDemo={isDemo} />
 
-                    <WalletListCardIDetails account={account} />
-                </div>
-                <WalletListCardIBalance account={account} />
+                <WalletListCardIDetails
+                    badge={badge}
+                    currency={currency}
+                    isActive={isActive}
+                    isDemo={isDemo}
+                    loginid={loginid}
+                    title={title}
+                />
             </div>
+            <WalletListCardIBalance balance={balance} />
         </div>
-    );
-};
+    </div>
+);
 
 export default WalletListCard;

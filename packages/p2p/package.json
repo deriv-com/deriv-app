@@ -38,6 +38,7 @@
         "@deriv/translations": "^1.0.0",
         "@deriv/api-types": "^1.0.118",
         "@testing-library/react": "^12.0.0",
+        "@testing-library/user-event": "^13.5.0",
         "classnames": "^2.2.6",
         "commander": "^3.0.2",
         "crc-32": "^1.2.0",

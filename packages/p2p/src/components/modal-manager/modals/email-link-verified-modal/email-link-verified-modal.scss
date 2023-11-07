@@ -3,11 +3,11 @@
     display: flex;
     flex-direction: column;
 
-    &--footer {
+    &__footer {
         align-self: center;
     }
 
-    &--text {
+    &__text {
         margin: 2.4rem 0;
     }
 }

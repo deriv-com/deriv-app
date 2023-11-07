@@ -1,3 +1,5 @@
+@import '../../components/SkeletonLoader/SkeletonLoader.scss';
+
 .wallets-balance {
     &__container {
         display: flex;
@@ -5,27 +7,9 @@
         align-items: flex-end;
     }
 
-    &__title {
-        color: var(--system-light-3-less-prominent-text, #999);
-        text-align: right;
-
-        /* desktop/small/S - regular */
-        font-family: 'IBM Plex Sans';
-        font-size: 12px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 18px; /* 150% */
-    }
-
-    &__value {
-        color: var(--system-light-1-prominent-text, #333);
-        text-align: right;
-
-        /* desktop/subtitle/Sub 1 - bold */
-        font-family: 'IBM Plex Sans';
-        font-size: 24px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 36px; /* 150% */
+    &--loader {
+        padding: 1rem;
+        width: 12rem;
+        height: 3rem;
     }
 }

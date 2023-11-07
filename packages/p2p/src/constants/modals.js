@@ -113,6 +113,9 @@ export const modals = {
             /* webpackChunkName: "my-ads-floating-rate-switch-modal" */ 'Components/modal-manager/modals/my-ads-floating-rate-switch-modal'
         )
     ),
+    NicknameModal: React.lazy(() =>
+        import(/* webpackChunkName: "nickname-modal" */ 'Components/modal-manager/modals/nickname-modal')
+    ),
     OrderDetailsCancelModal: React.lazy(() =>
         import(
             /* webpackChunkName: "order-details-cancel-modal" */ 'Components/modal-manager/modals/order-details-cancel-modal'

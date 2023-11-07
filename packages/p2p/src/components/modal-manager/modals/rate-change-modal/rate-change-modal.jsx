@@ -15,12 +15,12 @@ const RateChangeModal = ({ currency }) => {
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
-        <Modal is_open={is_modal_open} toggleModal={hideModal} small className='rate-changed-modal'>
+        <Modal is_open={is_modal_open} toggleModal={hideModal} small className='rate-change-modal'>
             <Modal.Body>
                 <Text
                     as='p'
                     align='left'
-                    className='rate-changed-modal__message'
+                    className='rate-change-modal__message'
                     size={isMobile() ? 'xxs' : 'xs'}
                     line_height='s'
                 >
@@ -30,7 +30,7 @@ const RateChangeModal = ({ currency }) => {
                     />
                 </Text>
             </Modal.Body>
-            <Modal.Footer className='rate-changed-modal__button'>
+            <Modal.Footer className='rate-change-modal__button'>
                 <Button onClick={hideModal} text={localize('Try again')} primary large />
             </Modal.Footer>
         </Modal>

@@ -10,8 +10,8 @@ type TApiTokenTableRowTokenCell = {
 
 const HiddenPasswordDots = () => (
     <div className='da-api-token__pass-dot-container'>
-        {[...Array(15)].map((el, index) => (
-            <div key={index} className='da-api-token__pass-dot' />
+        {[...Array(15).keys()].map(el => (
+            <div key={el} className='da-api-token__pass-dot' />
         ))}
     </div>
 );

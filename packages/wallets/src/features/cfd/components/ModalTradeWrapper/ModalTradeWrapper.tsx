@@ -11,7 +11,7 @@ import { TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 
 const LinksMapper: Record<
-    TPlatforms.All,
+    Exclude<TPlatforms.All, 'derivez'>,
     {
         android: string;
         huawei?: string;
@@ -21,11 +21,6 @@ const LinksMapper: Record<
     ctrader: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
         ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
-    },
-    derivez: {
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1',
-        huawei: 'https://appgallery.huawei.com/#/app/C103801913',
-        ios: 'https://apps.apple.com/my/app/deriv-go/id1550561298',
     },
     dxtrade: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',
@@ -46,7 +41,7 @@ const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SV
 };
 
 type TModalTradeWrapper = {
-    platform: TPlatforms.MT5 | TPlatforms.OtherAccounts;
+    platform: Exclude<TPlatforms.OtherAccounts, 'derivez'> | TPlatforms.MT5;
 };
 
 const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children, platform }) => {

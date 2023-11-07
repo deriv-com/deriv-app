@@ -39,8 +39,10 @@ export namespace THooks {
 export namespace TPlatforms {
     export type All = MT5 | OtherAccounts | SortedMT5Accounts;
     export type MT5 = THooks.AvailableMT5Accounts['platform'];
-    export type OtherAccounts =
-        | Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'];
+    export type OtherAccounts = Exclude<
+        Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'],
+        'derivez'
+    >;
     export type SortedMT5Accounts = THooks.SortedMT5Accounts['platform'];
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace

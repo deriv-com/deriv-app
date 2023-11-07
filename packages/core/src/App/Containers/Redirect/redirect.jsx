@@ -74,10 +74,19 @@ const Redirect = observer(() => {
         }
         case 'trading_platform_mt5_password_reset':
         case 'trading_platform_dxtrade_password_reset': {
+            const reset_code_key = `${action_param}_code`;
             if (!is_logging_in && !is_logged_in) {
+                if (verification_code[action_param]) {
+                    sessionStorage.setItem(reset_code_key, verification_code[action_param]);
+                }
                 redirectToLogin(is_logged_in, getLanguage());
                 redirected_to_route = true;
                 break;
+            }
+            if (!verification_code[action_param]) {
+                const reset_code = sessionStorage.getItem(reset_code_key);
+                setVerificationCode(reset_code, action_param);
+                sessionStorage.removeItem(reset_code_key);
             }
             const redirect_to = url_params.get('redirect_to');
 

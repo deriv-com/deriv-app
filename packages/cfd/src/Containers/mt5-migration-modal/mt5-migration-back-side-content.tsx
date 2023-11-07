@@ -58,7 +58,10 @@ const MT5MigrationBackSideContent = observer(() => {
                                         {item.title}
                                     </Text>
                                     {item.description.map(({ id, text }) => (
-                                        <div key={id}>
+                                        <div
+                                            key={id}
+                                            className='mt5-migration-modal__existing-accounts-card-content__message'
+                                        >
                                             <Icon icon='IcGreenArrowCheck' />
                                             <Text size={content_size}>{text}</Text>
                                         </div>

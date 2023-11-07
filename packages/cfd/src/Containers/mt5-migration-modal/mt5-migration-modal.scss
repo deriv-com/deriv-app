@@ -69,8 +69,9 @@
                 flex-direction: column;
                 gap: 1.6rem;
                 &__message {
-                    display: flex;
-                    gap: 0.5rem;
+                    display: grid;
+                    grid-template-columns: 0.2fr auto;
+                    grid-gap: 0.4rem;
                 }
             }
             @include mobile {

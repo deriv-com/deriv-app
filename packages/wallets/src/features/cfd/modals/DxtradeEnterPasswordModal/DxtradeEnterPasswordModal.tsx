@@ -4,7 +4,7 @@ import { useActiveWalletAccount, useCreateOtherCFDAccount, useDxtradeAccountsLis
 import { ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
-import { CreatePassword, Success } from '../../screens';
+import { CFDSuccess, CreatePassword } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
@@ -37,7 +37,7 @@ const DxtradeEnterPasswordModal = () => {
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
             {isSuccess && dxtradeAccountListSuccess && (
-                <Success
+                <CFDSuccess
                     description={successDescription}
                     displayBalance={dxtradeBalance || ''}
                     marketType='all'

@@ -1,9 +1,9 @@
 .wallets-textfield {
     min-width: 12rem;
-    max-width: 28rem;
+    width: 100%;
     position: relative;
 
-    &__content {
+    &__box {
         height: 4rem;
         width: 100%;
         border-radius: 0.4rem;
@@ -11,7 +11,6 @@
         border: 1px solid var(--system-light-5-active-background, #d6dadb);
         background: var(--system-light-8-primary-background, #fff);
         display: inline-flex;
-        gap: 1.6rem;
         align-items: center;
         transition: border-color 0.2s;
 
@@ -20,8 +19,12 @@
         }
     }
 
-    &__content:has(&__field:focus) {
+    &__box:has(&__field:focus) {
         border: 1px solid var(--brand-blue, #85acb0);
+    }
+
+    &__box:has(&__field:invalid) {
+        border: 1px solid var(--status-light-danger, #ec3f3f);
     }
 
     &__field {
@@ -44,10 +47,6 @@
         padding: 0;
     }
 
-    &__field:placeholder-shown ~ &__label--with-icon {
-        left: 4.4rem;
-    }
-
     label,
     &__field:focus ~ &__label {
         position: absolute;
@@ -68,10 +67,12 @@
         color: var(--brand-blue, #85acb0);
     }
 
+    &__field:invalid ~ &__label {
+        color: var(--status-light-danger, #ec3f3f);
+    }
+
     &__icon {
-        margin: auto;
-        width: 1.6rem;
-        height: 1.6rem;
+        margin-left: 1.6rem;
     }
 
     &__message-container {

@@ -9,7 +9,7 @@ import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
 import './AddedMT5AccountsList.scss';
 import { getJurisdictionContents } from '../../../screens/Jurisdiction/jurisdiction-contents/jurisdiction-contents';
-import { VerificationFailedModal } from '../../../modals';
+import { VerificationFailedModal, MT5TradeModal } from '../../../modals';
 
 type TProps = {
     account: THooks.MT5AccountsList;
@@ -69,7 +69,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         text='Transfer'
                         variant='outlined'
                     />
-                    <WalletButton disabled={isFailedAuthentication() || isPendingAuthentication()} text='Open' />
+                    <WalletButton
+                        disabled={isFailedAuthentication() || isPendingAuthentication()}
+                        onClick={() => show(<MT5TradeModal marketType={account.market_type || 'all'} platform='mt5' />)}
+                        text='Open'
+                    />
                 </div>
             )}
         >
@@ -104,7 +108,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                 Verification failed.{' '}
                                 <a
                                     onClick={() =>
-                                        show(<VerificationFailedModal verificationType='poi' />, {
+                                        show(<VerificationFailedModal />, {
                                             defaultRootId: 'wallets_modal_root',
                                         })
                                     }

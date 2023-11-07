@@ -32,7 +32,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
     const [isFlipped, setIsFlipped] = useState(false);
 
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
-    const { modalState } = useModal();
+    const { getModalState } = useModal();
 
     const descriptionClickHandler = (tag?: string) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.stopPropagation();
@@ -47,7 +47,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
         () => getJurisdictionContents()[jurisdiction],
         [jurisdiction]
     );
-    const marketType = modalState?.marketType || 'all';
+    const marketType = getModalState('marketType') || 'all';
     const rows = contents[marketType] || [];
 
     const parseDescription = (row: TJurisdictionCardSection) => {

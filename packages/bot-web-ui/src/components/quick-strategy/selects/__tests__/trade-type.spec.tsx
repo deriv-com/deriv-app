@@ -1,16 +1,13 @@
 import React from 'react';
 import { Formik } from 'formik';
-
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
-
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { mock_ws } from 'Utils/mock';
-
 import TradeType from '../trade-type';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -65,6 +62,8 @@ describe('<TradeType />', () => {
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const mock_onSubmit = jest.fn();
         const initial_value = {
+            durationtype: 1,
+            symbol: 'R_100',
             tradetype: 'callput',
         };
 
@@ -86,7 +85,7 @@ describe('<TradeType />', () => {
     });
 
     it('should select item from list', async () => {
-        render(<TradeType key='callputequal' symbol='1HZ100V' />, {
+        render(<TradeType key='callputequal' />, {
             wrapper,
         });
 

@@ -66,7 +66,7 @@ $size-map: (
             border: none;
         }
         &--outlined {
-            border: 0.1rem solid var(--system-light-3-less-prominent-text, #999);
+            border: 1px solid var(--system-light-3-less-prominent-text, #999);
             background: none;
             &:hover {
                 background: #00000014;

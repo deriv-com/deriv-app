@@ -1,5 +1,5 @@
 import { Formik, FormikHelpers } from 'formik';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
 import { validLength, validPassword, getErrorMessages, redirectToLogin } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
@@ -56,13 +56,6 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
 
     const { mutate, error, status } = useTradingPlatformInvestorPasswordReset();
 
-    React.useEffect(() => {
-        if (!/reset-password/.test(location.hash)) {
-            return;
-        }
-        setCFDPasswordResetModal(true);
-    }, [setCFDPasswordResetModal]);
-
     const [state, setState] = React.useState<{
         error_code: string | number | undefined;
         has_error: boolean;
@@ -88,7 +81,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
         });
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (status === 'error' && error) {
             renderErrorBox(error as unknown as TError);
         }
@@ -102,6 +95,13 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error, status]);
+
+    React.useEffect(() => {
+        if (!/reset-password/.test(location.hash)) {
+            return;
+        }
+        setCFDPasswordResetModal(true);
+    }, [setCFDPasswordResetModal]);
 
     const clearAddressBar = () => {
         localStorage.removeItem('cfd_reset_password_intent');

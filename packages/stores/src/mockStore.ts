@@ -573,6 +573,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 enableCFDPasswordModal: jest.fn(),
                 setJurisdictionSelectedShortcode: jest.fn(),
                 setAccountType: jest.fn(),
+                setMigratedMT5Accounts: jest.fn(),
             },
         },
         exchange_rates: {

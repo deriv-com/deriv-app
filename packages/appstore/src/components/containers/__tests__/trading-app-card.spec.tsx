@@ -37,7 +37,6 @@ describe('<TradingAppCard/>', () => {
             jurisdiction: 'svg',
         },
         openFailedVerificationModal: jest.fn(),
-        login: 'MT5YFHU',
         market_type: 'synthetic',
     };
 
@@ -51,17 +50,17 @@ describe('<TradingAppCard/>', () => {
             content_flag: 'low_risk_cr_non_eu',
             is_real: true,
         },
-        modules: {
-            cfd: {
-                migrated_mt5_accounts: [
-                    {
-                        loginId: 'MT5YFHU',
-                        to_account: {
-                            synthetic: 'bvi',
-                        },
-                    },
-                ],
-            },
+        client: {
+            mt5_login_list: [
+                {
+                    market_type: 'synthetic',
+                    landing_company_short: 'bvi',
+                },
+                {
+                    market_type: 'synthetic',
+                    landing_company_short: 'svg',
+                },
+            ],
         },
     });
 

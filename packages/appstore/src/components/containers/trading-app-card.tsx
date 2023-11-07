@@ -47,7 +47,6 @@ const TradingAppCard = ({
     openFailedVerificationModal,
     market_type,
     wallet_account,
-    login,
     is_new = false,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
     const {
@@ -184,7 +183,6 @@ const TradingAppCard = ({
                         />
                     )}
                     <OpenPositionsSVGModal
-                        loginId={login ?? ''}
                         market_type={market_type}
                         status={mt5_acc_auth_status ?? ''}
                         is_modal_open={is_open_position_svg_modal_open}

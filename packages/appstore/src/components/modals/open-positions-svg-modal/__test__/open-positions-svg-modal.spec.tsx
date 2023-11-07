@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import OpenPositionsSVGModal from '../open-positions-svg-modal';
+import { TStores } from '@deriv/stores/types';
 
 describe('<OpenPositionsSVGModal/>', () => {
     let modal_root_el: HTMLDivElement;
@@ -17,7 +18,6 @@ describe('<OpenPositionsSVGModal/>', () => {
     });
 
     const mock_props: React.ComponentProps<typeof OpenPositionsSVGModal> = {
-        loginId: 'MT5YFHU',
         market_type: 'financial',
         status: 'migrated_with_position',
         is_modal_open: true,
@@ -25,17 +25,17 @@ describe('<OpenPositionsSVGModal/>', () => {
     };
 
     const store_config = mockStore({
-        modules: {
-            cfd: {
-                migrated_mt5_accounts: [
-                    {
-                        loginId: 'MT5YFHU',
-                        to_account: {
-                            synthetic: 'bvi',
-                        },
-                    },
-                ],
-            },
+        client: {
+            mt5_login_list: [
+                {
+                    market_type: 'financial',
+                    landing_company_short: 'bvi',
+                },
+                {
+                    market_type: 'financial',
+                    landing_company_short: 'svg',
+                },
+            ],
         },
     });
 
@@ -80,22 +80,28 @@ describe('<OpenPositionsSVGModal/>', () => {
     });
 
     it('should render modal content correctly when status is migrated_with_position and user migrates to Vanuatu', () => {
-        const new_store_config = {
+        const new_store: TStores = {
             ...store_config,
-            modules: {
-                cfd: {
-                    migrated_mt5_accounts: [
-                        {
-                            loginId: 'MT5YFHU',
-                            to_account: {
-                                financial: 'vanuatu',
-                            },
-                        },
-                    ],
-                },
+            client: {
+                ...store_config.client,
+                mt5_login_list: [
+                    {
+                        market_type: 'financial',
+                        landing_company_short: 'vanuatu',
+                    },
+                    {
+                        market_type: 'financial',
+                        landing_company_short: 'svg',
+                    },
+                ],
             },
         };
-        renderComponent({ props: mock_props, store: new_store_config });
+
+        const new_mock_props: React.ComponentProps<typeof OpenPositionsSVGModal> = {
+            ...mock_props,
+            market_type: 'financial',
+        };
+        renderComponent({ props: new_mock_props, store: new_store });
         const modal_content_vanuatu = screen.getByText(
             /You can no longer open new positions with your MT5 Financial SVG account. Please use your MT5 Financial Vanuatu account to open new positions./
         );
@@ -103,14 +109,38 @@ describe('<OpenPositionsSVGModal/>', () => {
     });
 
     it('should render modal content correctly when status is migrated_with_position and market_type is derived', () => {
-        const mock_props_derived = {
-            ...mock_props,
-            market_type: 'derived',
+        const new_store: TStores = {
+            ...store_config,
+            client: {
+                ...store_config.client,
+                mt5_login_list: [
+                    {
+                        market_type: 'synthetic',
+                        landing_company_short: 'vanuatu',
+                    },
+                    {
+                        market_type: 'synthetic',
+                        landing_company_short: 'bvi',
+                    },
+                    {
+                        market_type: 'financial',
+                        landing_company_short: 'svg',
+                    },
+                    {
+                        market_type: 'synthetic',
+                        landing_company_short: 'svg',
+                    },
+                ],
+            },
         };
-        renderComponent({ props: mock_props_derived });
+        const mock_props_derived: React.ComponentProps<typeof OpenPositionsSVGModal> = {
+            ...mock_props,
+            market_type: 'synthetic',
+        };
+        renderComponent({ props: mock_props_derived, store: new_store });
 
         const modal_content_derived = screen.getByText(
-            /You can no longer open new positions with your MT5 Derived SVG account. Please use your MT5 Derived BVI account to open new positions./
+            /You can no longer open new positions with your MT5 Derived SVG account. Please use your MT5 Derived Vanuatu or MT5 Derived BVI account to open new positions./
         );
         expect(modal_content_derived).toBeInTheDocument();
     });
@@ -118,7 +148,7 @@ describe('<OpenPositionsSVGModal/>', () => {
     it('should render modal content correctly when status is migrated_without_position and market_type is derived', () => {
         const new_mock_props: React.ComponentProps<typeof OpenPositionsSVGModal> = {
             ...mock_props,
-            market_type: 'derived',
+            market_type: 'synthetic',
             status: 'migrated_without_position',
         };
         renderComponent({ props: new_mock_props });

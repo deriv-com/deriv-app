@@ -600,6 +600,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitCFDPassword,
         new_account_response,
         migrated_mt5_accounts,
+        setMigratedMT5Accounts,
     } = useCfdStore();
 
     const history = useHistory();
@@ -676,6 +677,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const closeDialogs = () => {
         setCFDSuccessDialog(false);
         if (is_mt5_migration_modal_enabled) setMT5MigrationModalEnabled(false);
+        setMigratedMT5Accounts([]);
         setError(false);
     };
 
@@ -894,7 +896,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     <Localize
                         i18n_default_text='Use your <0>{{migrated_accounts}}</0> new login ID and MT5 password to start trading.'
                         values={{
-                            migrated_accounts: list.join(' and '), // [MT5 Derived Vanuatu and MT5 Financial Vanuatu]
+                            migrated_accounts: list.join(localize(' and ')), // [MT5 Derived Vanuatu and MT5 Financial Vanuatu]
                         }}
                         components={[<strong key={0} />]}
                     />

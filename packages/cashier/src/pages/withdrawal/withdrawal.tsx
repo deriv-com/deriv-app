@@ -4,14 +4,14 @@ import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { PageContainer } from 'Components/page-container';
-import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
+import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import { DepositCryptoSideNotes } from '../../modules/deposit-crypto/components';
 import { useCashierStore } from '../../stores/useCashierStores';
-import CryptoWithdrawForm from './crypto-withdraw-form';
-import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
-import Withdraw from './withdraw';
+import WithdrawalCryptoForm from './withdrawal-crypto-form';
+import WithdrawalCryptoReceipt from './withdrawal-crypto-receipt';
+import WithdrawalFiat from './withdrawal-fiat';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
 
@@ -50,13 +50,32 @@ const WithdrawalPageContent = observer(() => {
     const { is_withdraw_confirmed } = withdraw;
     const currency_config = useCurrentCurrencyConfig();
 
-    if (!currency_config.is_crypto && (verification_code || iframe_url)) return <Withdraw />;
+    if (!currency_config.is_crypto && (verification_code || iframe_url))
+        return (
+            <PageContainer hide_breadcrumb>
+                <WithdrawalFiat />
+            </PageContainer>
+        );
 
-    if (verification_code && currency_config.is_crypto && !is_withdraw_confirmed) return <CryptoWithdrawForm />;
+    if (verification_code && currency_config.is_crypto && !is_withdraw_confirmed)
+        return (
+            <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
+                <WithdrawalCryptoForm />
+            </PageContainer>
+        );
 
-    if (is_withdraw_confirmed) return <CryptoWithdrawReceipt />;
+    if (is_withdraw_confirmed)
+        return (
+            <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
+                <WithdrawalCryptoReceipt />
+            </PageContainer>
+        );
 
-    return <WithdrawalVerificationEmail />;
+    return (
+        <PageContainer hide_breadcrumb right={currency_config.is_crypto ? <WithdrawalSideNotes /> : undefined}>
+            <WithdrawalVerificationEmail />
+        </PageContainer>
+    );
 });
 
 const Withdrawal = observer(() => {
@@ -65,9 +84,10 @@ const Withdrawal = observer(() => {
         balance,
         is_switching,
         verification_code: { payment_withdraw: verification_code },
+        setVerificationCode,
     } = client;
     const { withdraw, transaction_history } = useCashierStore();
-    const { is_crypto_transactions_visible } = transaction_history;
+    const { is_transactions_crypto_visible } = transaction_history;
 
     const {
         check10kLimit,
@@ -87,6 +107,10 @@ const Withdrawal = observer(() => {
     React.useEffect(() => {
         check10kLimit();
     }, [check10kLimit]);
+
+    React.useEffect(() => {
+        return () => setVerificationCode('', 'payment_withdraw');
+    }, [setVerificationCode]);
 
     React.useEffect(() => {
         return () => willMountWithdraw(verification_code);
@@ -116,13 +140,9 @@ const Withdrawal = observer(() => {
             </PageContainer>
         );
 
-    if (is_crypto_transactions_visible) return <CryptoTransactionsHistory />;
+    if (is_transactions_crypto_visible) return <TransactionsCryptoHistory />;
 
-    return (
-        <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
-            <WithdrawalPageContent />
-        </PageContainer>
-    );
+    return <WithdrawalPageContent />;
 });
 
 export default Withdrawal;

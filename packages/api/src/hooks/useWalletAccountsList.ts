@@ -15,6 +15,7 @@ const useWalletAccountsList = () => {
     const modified_accounts = useMemo(() => {
         return filtered_accounts?.map(wallet => {
             const wallet_currency_type = wallet.is_virtual ? 'Demo' : wallet.currency || '';
+            const dtrade_loginid = wallet.linked_to?.find(account => account.platform === 'dtrade')?.loginid;
 
             return {
                 ...wallet,
@@ -24,13 +25,32 @@ const useWalletAccountsList = () => {
                 landing_company_name: wallet.landing_company_name?.replace('maltainvest', 'malta'),
                 /** Indicating whether the wallet is a maltainvest wallet. */
                 is_malta_wallet: wallet.landing_company_name === 'malta',
+                /** The DTrade account ID of this wallet */
+                dtrade_loginid,
+                /** Returns if the wallet is a crypto wallet. */
+                is_crypto: wallet.currency_config?.is_crypto,
             } as const;
         });
     }, [filtered_accounts]);
 
+    // Sort wallet accounts alphabetically by fiat, crypto, then virtual.
+    const sorted_accounts = useMemo(() => {
+        if (!modified_accounts) return;
+
+        return [...modified_accounts].sort((a, b) => {
+            if (a.is_virtual !== b.is_virtual) {
+                return a.is_virtual ? 1 : -1;
+            } else if (a.currency_config?.is_crypto !== b.currency_config?.is_crypto) {
+                return a.currency_config?.is_crypto ? 1 : -1;
+            }
+
+            return (a.currency || 'USD').localeCompare(b.currency || 'USD');
+        });
+    }, [modified_accounts]);
+
     return {
-        /** List of all wallet accounts for the current user. */
-        data: modified_accounts,
+        /** The list of wallet accounts for the current user. */
+        data: sorted_accounts,
         ...rest,
     };
 };

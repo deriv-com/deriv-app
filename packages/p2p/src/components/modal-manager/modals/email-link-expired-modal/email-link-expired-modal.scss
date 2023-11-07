@@ -1,17 +1,17 @@
 .email-link-expired-modal {
-    &--body {
+    &__body {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    &--footer {
+    &__footer {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    &--text {
+    &__text {
         margin-top: 2.4rem;
     }
 }

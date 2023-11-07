@@ -45,6 +45,11 @@ export const modals = {
             /* webpackChunkName: "create-ad-add-payment-method-modal" */ 'Components/modal-manager/modals/create-ad-add-payment-method-modal'
         )
     ),
+    DeletePaymentMethodConfirmationModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "delete-payment-method-confirmation-modal" */ 'Components/modal-manager/modals/delete-payment-method-confirmation-modal'
+        )
+    ),
     DeletePaymentMethodErrorModal: React.lazy(() =>
         import(
             /* webpackChunkName: "delete-payment-method-error-modal" */ 'Components/modal-manager/modals/delete-payment-method-error-modal'
@@ -107,6 +112,9 @@ export const modals = {
         import(
             /* webpackChunkName: "my-ads-floating-rate-switch-modal" */ 'Components/modal-manager/modals/my-ads-floating-rate-switch-modal'
         )
+    ),
+    NicknameModal: React.lazy(() =>
+        import(/* webpackChunkName: "nickname-modal" */ 'Components/modal-manager/modals/nickname-modal')
     ),
     OrderDetailsCancelModal: React.lazy(() =>
         import(

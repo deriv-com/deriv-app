@@ -1,17 +1,17 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext } from '@deriv/shared';
+import { loginUrl, routes, SessionStore, PlatformContext } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
+import { Analytics } from '@deriv/analytics';
 
 const Redirect = ({
     history,
     currency,
     setVerificationCode,
     verification_code,
-    hasAnyRealAccount,
     openRealAccountSignup,
     setResetTradingPasswordModalOpen,
     toggleAccountSignupModal,
@@ -19,33 +19,40 @@ const Redirect = ({
     setNewEmail,
     toggleResetEmailModal,
     toggleUpdateEmailModal,
+    is_mobile,
 }) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
+    sessionStorage.verification_code = code_param;
+    const ext_platform_url = url_params.get('ext_platform_url');
+    const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
+    const { is_appstore } = React.useContext(PlatformContext);
 
+    const redirectToExternalPlatform = url => {
+        history.push(`${routes.root}?ext_platform_url=${url}`);
+        redirected_to_route = true;
+    };
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
 
     switch (action_param) {
         case 'signup': {
-            if (is_appstore) {
-                // TODO: redirect
-                // history.push({
-                //     pathname: routes.dashboard,
-                //     search: url_query_string,
-                // });
-                // redirected_to_route = true;
-            } else {
-                history.push({
-                    pathname: routes.onboarding,
-                    search: url_query_string,
+            if (!is_appstore) {
+                Analytics.trackEvent('ce_virtual_signup_form', {
+                    action: 'email_confirmed',
+                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    email: url_params.get('email'),
                 });
             }
-            sessionStorage.removeItem('redirect_url');
+            SessionStore.set('signup_query_param', url_query_string);
+            history.push({
+                pathname: routes.onboarding,
+                search: url_query_string,
+            });
+            SessionStore.remove('redirect_url');
             redirected_to_route = true;
             toggleAccountSignupModal(true);
             break;
@@ -117,7 +124,7 @@ const Redirect = ({
             break;
         }
         case 'payment_withdraw': {
-            history.push(routes.cashier_withdrawal);
+            is_next_wallet ? history.push(routes.wallets_withdrawal) : history.push(routes.cashier_withdrawal);
             redirected_to_route = true;
             break;
         }
@@ -129,14 +136,9 @@ const Redirect = ({
         case 'add_account': {
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
-                if (hasAnyRealAccount()) return openRealAccountSignup('manage');
                 return openRealAccountSignup('svg');
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'add_account_multiplier': {
@@ -144,11 +146,14 @@ const Redirect = ({
                 if (!currency) return openRealAccountSignup('set_currency');
                 return openRealAccountSignup('maltainvest');
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
+            break;
+        }
+        case 'manage_account': {
+            WS.wait('get_account_status').then(() => {
+                return openRealAccountSignup('manage');
+            });
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'verification': {
@@ -194,7 +199,6 @@ Redirect.propTypes = {
     currency: PropTypes.string,
     loginid: PropTypes.string,
     getServerTime: PropTypes.object,
-    hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
     setResetTradingPasswordModalOpen: PropTypes.func,
@@ -205,6 +209,7 @@ Redirect.propTypes = {
     toggleResetEmailModal: PropTypes.func,
     toggleUpdateEmailModal: PropTypes.func,
     verification_code: PropTypes.object,
+    is_mobile: PropTypes.bool,
 };
 
 export default withRouter(
@@ -214,7 +219,6 @@ export default withRouter(
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,
-        hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,
         setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
@@ -222,5 +226,6 @@ export default withRouter(
         setNewEmail: client.setNewEmail,
         toggleResetEmailModal: ui.toggleResetEmailModal,
         toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
+        is_mobile: ui.is_mobile,
     }))(Redirect)
 );

@@ -1,0 +1,69 @@
+.wallets-fiat-onramp-provider {
+    align-items: center;
+    background: var(--system-light-8-primary-background, #fff);
+    border-radius: 0.8rem;
+    box-shadow: 0 1.6rem 2rem 0 rgba(0, 0, 0, 0.05), 0 0 2rem 0 rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: row;
+    gap: 1.6rem;
+    max-width: 79.2rem;
+    padding: 1.6rem 3.2rem 1.6rem 1.6rem;
+
+    @include mobile {
+        align-items: flex-start;
+        display: grid;
+        grid-gap: 0.8rem;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, auto);
+        padding: 1.6rem;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        @include mobile {
+            grid-column: 2 / 5;
+            grid-row-start: 1;
+        }
+    }
+
+    &__icons {
+        display: flex;
+        flex-direction: row;
+        padding-top: 0.8rem;
+
+        @include mobile {
+            display: none;
+        }
+    }
+
+    &__logo {
+        height: 8rem;
+        width: 12.8rem;
+        * {
+            height: inherit;
+            width: inherit;
+        }
+
+        @include mobile {
+            grid-column: 1 / 2;
+            grid-row-start: 1;
+            height: 4.5rem;
+            width: 7.2rem;
+        }
+    }
+
+    &__mobile-icons {
+        display: none;
+
+        @include mobile {
+            display: flex;
+            flex-direction: row;
+            grid-column: 1 / 4;
+            grid-row-start: 2;
+            justify-content: space-evenly;
+        }
+    }
+}

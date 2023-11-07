@@ -5,25 +5,57 @@ import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const DeleteDialog = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
-    const { is_delete_modal_open, onToggleDeleteDialog, selected_strategy_id, setDashboardStrategies } = load_modal;
+    const {
+        is_delete_modal_open,
+        onToggleDeleteDialog,
+        selected_strategy_id,
+        setDashboardStrategies,
+        setSelectedStrategyId,
+        loadStrategyToBuilder,
+        previewed_strategy_id,
+        setPreviewedStrategyId,
+        refreshStrategiesTheme,
+        resetBotBuilderStrategy,
+    } = load_modal;
     const { setOpenSettings } = dashboard;
+
+    const resetStrategiesAfterDelete = async (deleted_strategy_id: string, updated_workspaces: Array<TStrategy>) => {
+        if (updated_workspaces.length) {
+            const current_previewed_strategy = updated_workspaces?.filter(
+                (strategy: TStrategy) => strategy.id === previewed_strategy_id
+            );
+            if (selected_strategy_id === deleted_strategy_id) {
+                setSelectedStrategyId(updated_workspaces?.[0]?.id);
+                // Change bot builder strategy to the first strategy in the list
+                await loadStrategyToBuilder(updated_workspaces?.[0]);
+            }
+            if (current_previewed_strategy.length) {
+                setPreviewedStrategyId(previewed_strategy_id);
+                setSelectedStrategyId(previewed_strategy_id);
+            } else {
+                setPreviewedStrategyId(updated_workspaces?.[0]?.id);
+            }
+            // Change preview strategy to the one that was previously previewed
+            await refreshStrategiesTheme();
+        } else {
+            resetBotBuilderStrategy();
+        }
+    };
 
     const removeBotStrategy = async (strategy_id: string) => {
         const workspaces = await getSavedWorkspaces();
-        workspaces.map((strategy_from_workspace: string[] | { [key: string]: string }, index: number) => {
-            if (strategy_from_workspace.id === strategy_id) {
-                if (index > -1) {
-                    workspaces.splice(index, 1);
-                }
-                setDashboardStrategies(workspaces);
-                localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
-                onToggleDeleteDialog(false);
-            }
-        });
+        const updated_workspaces = workspaces.filter(
+            (strategy_from_workspace: TStrategy) => strategy_from_workspace.id !== strategy_id
+        );
+        setDashboardStrategies(updated_workspaces);
+        localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(updated_workspaces)));
+        await resetStrategiesAfterDelete(strategy_id, updated_workspaces);
+        onToggleDeleteDialog(false);
     };
 
     const onHandleChange = (type: string, param: boolean) => {

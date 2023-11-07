@@ -6,7 +6,6 @@ import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import { Virtual } from '../../components/cashier-container';
 import CashierLocked from '../../components/cashier-locked';
-import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
@@ -29,7 +28,6 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
         error,
         has_no_account,
         has_no_accounts_balance,
-        is_transfer_confirm,
         is_transfer_locked,
         onMountAccountTransfer: onMount,
         setAccountTransferAmount,
@@ -84,12 +82,10 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     if (has_no_accounts_balance) {
         return <NoBalance onClickDeposit={onClickDeposit} />;
     }
-    if (is_transfer_confirm) {
-        return <AccountTransferReceipt onClose={onClose} />;
-    }
 
     return (
         <AccountTransferForm
+            onClose={onClose}
             error={error}
             setSideNotes={setSideNotes}
             onClickDeposit={onClickDeposit}

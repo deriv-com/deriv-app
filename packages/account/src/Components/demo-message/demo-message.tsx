@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import IconWithMessage from 'Components/icon-with-message';
+import IconWithMessage from '../icon-with-message';
 
 type TDemoMessage = {
     has_demo_icon?: boolean;

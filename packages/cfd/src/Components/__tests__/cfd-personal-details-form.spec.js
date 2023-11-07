@@ -88,7 +88,7 @@ describe('<CFDPersonalDetailsForm />', () => {
                 value: 'ax',
             },
         ],
-        value: {
+        initial_values: {
             citizen: '',
             tax_residence: '',
             tax_identification_number: '',
@@ -137,7 +137,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should disable Citizenship and Tax residence fields if they were submitted earlier & immutable from BE', async () => {
-        const values = {
+        const initial_values = {
             citizen: 'Indonesia',
             tax_residence: 'Indonesia',
             tax_identification_number: '',
@@ -150,7 +150,7 @@ describe('<CFDPersonalDetailsForm />', () => {
             <CFDPersonalDetailsForm
                 {...props}
                 is_fully_authenticated
-                value={values}
+                initial_values={initial_values}
                 changeable_fields={changeable_fields}
             />
         );

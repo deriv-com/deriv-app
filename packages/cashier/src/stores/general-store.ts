@@ -48,8 +48,13 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container: 'account_transfer' | 'deposit' | 'payment_agent' | 'payment_agent_transfer' | 'withdraw' =
-        'deposit';
+    active_container:
+        | 'account_transfer'
+        | 'deposit'
+        | 'payment_agent'
+        | 'payment_agent_transfer'
+        | 'withdraw'
+        | 'onramp' = 'deposit';
     cashier_route_tab_index = 0;
     deposit_target: '/cashier/deposit' | '/cashier/on-ramp' | '/cashier/p2p' | '/cashier/payment-agent' | '' = '';
     is_cashier_onboarding = true;
@@ -177,11 +182,11 @@ export default class GeneralStore extends BaseStore {
             }
 
             if (
-                !transaction_history.is_crypto_transactions_visible &&
-                window.location.pathname.endsWith(routes.cashier_crypto_transactions)
+                !transaction_history.is_transactions_crypto_visible &&
+                window.location.pathname.endsWith(routes.cashier_transactions_crypto)
             ) {
                 routeTo(routes.cashier_deposit);
-                transaction_history.setIsCryptoTransactionsVisible(true);
+                transaction_history.setIsTransactionsCryptoVisible(true);
             }
         }
     }

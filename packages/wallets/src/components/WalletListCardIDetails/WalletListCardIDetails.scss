@@ -1,0 +1,17 @@
+.wallets-list-details {
+    &__action-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 0.8rem;
+        flex: 1 0 0;
+    }
+
+    &__elements {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        align-self: stretch;
+    }
+}

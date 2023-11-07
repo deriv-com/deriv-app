@@ -21,7 +21,7 @@ jest.mock('../transaction-details-mobile', () => ({
     __esModule: true,
     default: () => <div>Mobile Details</div>,
 }));
-jest.mock('@deriv/deriv-charts', () => ({
+jest.mock('@deriv/deriv-charts-beta', () => ({
     setSmartChartsPublicPath: jest.fn(),
 }));
 

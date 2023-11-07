@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
-jest.mock('@deriv/deriv-charts', () => ({
+jest.mock('@deriv/deriv-charts-beta', () => ({
     setSmartChartsPublicPath: jest.fn(),
 }));
 

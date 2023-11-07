@@ -45,7 +45,6 @@ const HOISTED_PACKAGES = {
     '@deriv/shared': path.resolve(__dirname, '../node_modules/@deriv/shared'),
     '@deriv/components': path.resolve(__dirname, '../node_modules/@deriv/components'),
     '@deriv/translations': path.resolve(__dirname, '../node_modules/@deriv/translations'),
-    '@deriv/deriv-charts': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts'),
     '@deriv/deriv-charts-beta': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta'),
 };
 

@@ -11,7 +11,7 @@ import { TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 
 const LinksMapper: Record<
-    Exclude<TPlatforms.All, 'derivez'>,
+    TPlatforms.All,
     {
         android: string;
         huawei?: string;
@@ -41,7 +41,7 @@ const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SV
 };
 
 type TModalTradeWrapper = {
-    platform: Exclude<TPlatforms.OtherAccounts, 'derivez'> | TPlatforms.MT5;
+    platform: TPlatforms.MT5 | TPlatforms.OtherAccounts;
 };
 
 const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children, platform }) => {

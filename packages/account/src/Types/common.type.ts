@@ -3,10 +3,9 @@ import React from 'react';
 import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Redirect } from 'react-router-dom';
 import { Authorize, GetAccountStatus, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
-import { Platforms } from '@deriv/shared';
+import { AUTH_STATUS_CODES, Platforms } from '@deriv/shared';
 import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
 import getPaymentMethodsConfig from '../Configs/payment-method-config';
-import { VERIFICATION_STATUS } from '../Constants/verification-status-codes';
 
 export type TToken = {
     display_name: string;
@@ -202,4 +201,4 @@ export type TProofOfOwnershipData = {
     payment_method_identifier: TPaymentMethod | '';
 };
 
-export type TVerificationStatus = typeof VERIFICATION_STATUS[keyof typeof VERIFICATION_STATUS];
+export type TVerificationStatus = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];

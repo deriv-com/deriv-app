@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Icon, Popover } from '@deriv/components';
+import { Button, Icon } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
@@ -24,17 +24,9 @@ const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLin
             <div className='traders-hub-header__menu-right--items--notifications'>
                 <ShowNotifications />
             </div>
-            <Popover
-                alignment='bottom'
-                classNameBubble='account-settings-toggle__tooltip'
-                message={<Localize i18n_default_text='Manage account settings' />}
-                should_disable_pointer_events
-                zIndex='9999'
-            >
-                <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
-                    <Icon icon='IcUserOutline' size={20} />
-                </BinaryLink>
-            </Popover>
+            <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
+                <Icon icon='IcUserOutline' size={20} />
+            </BinaryLink>
             {!is_next_wallet_enabled && (
                 <div className='traders-hub-header__cashier-button'>
                     <Button primary small onClick={handleClickCashier}>

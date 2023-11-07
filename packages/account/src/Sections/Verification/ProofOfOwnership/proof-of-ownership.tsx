@@ -3,9 +3,9 @@ import { withRouter } from 'react-router-dom';
 import { GetAccountStatus } from '@deriv/api-types';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { AUTH_STATUS_CODES } from '@deriv/shared';
 import ProofOfOwnershipForm from './proof-of-ownership-form';
 import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from '../../../Components/poo/statuses';
-import { VERIFICATION_STATUS } from '../../../Constants/verification-status-codes';
 import getPaymentMethodsConfig from '../../../Configs/payment-method-config';
 import { TPaymentMethod, TPaymentMethodIdentifier, TPaymentMethodInfo, TVerificationStatus } from '../../../Types';
 
@@ -17,7 +17,7 @@ export const ProofOfOwnership = observer(() => {
     const { is_dark_mode_on: is_dark_mode, is_mobile } = ui;
     const { refreshNotifications } = notifications;
     const cards = account_status?.authentication?.ownership?.requests;
-    const [status, setStatus] = useState<TVerificationStatus>(VERIFICATION_STATUS.NONE);
+    const [status, setStatus] = useState<TVerificationStatus>(AUTH_STATUS_CODES.NONE);
 
     const grouped_payment_method_data = React.useMemo(() => {
         const groups: Partial<Record<TPaymentMethod, TPaymentMethodInfo>> = {};
@@ -47,14 +47,14 @@ export const ProofOfOwnership = observer(() => {
     useEffect(() => {
         setStatus(
             (account_status?.authentication?.ownership?.status?.toLowerCase() as TVerificationStatus) ??
-                VERIFICATION_STATUS.NONE
+                AUTH_STATUS_CODES.NONE
         );
     }, [account_status]);
     const onTryAgain = () => {
-        setStatus(VERIFICATION_STATUS.NONE);
+        setStatus(AUTH_STATUS_CODES.NONE);
     };
 
-    if (cards?.length && status !== VERIFICATION_STATUS.REJECTED) {
+    if (cards?.length && status !== AUTH_STATUS_CODES.REJECTED) {
         return (
             <ProofOfOwnershipForm
                 client_email={client_email}
@@ -65,10 +65,10 @@ export const ProofOfOwnership = observer(() => {
             />
         );
     }
-    if (status === VERIFICATION_STATUS.VERIFIED) return <POOVerified />;
-    if (status === VERIFICATION_STATUS.PENDING) return <POOSubmitted />;
-    if (status === VERIFICATION_STATUS.NONE) return <POONotRequired />;
-    if (status === VERIFICATION_STATUS.REJECTED) return <POORejetced onTryAgain={onTryAgain} />;
+    if (status === AUTH_STATUS_CODES.VERIFIED) return <POOVerified />;
+    if (status === AUTH_STATUS_CODES.PENDING) return <POOSubmitted />;
+    if (status === AUTH_STATUS_CODES.NONE) return <POONotRequired />;
+    if (status === AUTH_STATUS_CODES.REJECTED) return <POORejetced onTryAgain={onTryAgain} />;
     return <Loading is_fullscreen={false} className='account__initial-loader' />;
 });
 

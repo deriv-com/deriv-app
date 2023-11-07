@@ -58,7 +58,7 @@ if (isProduction || isStaging) {
                     'telegram token=REDACTED'
                 );
 
-                if (event.resource.url.match(/^ https:\/\/eu.deriv.com\/\/ctrader-login.*$/)) {
+                if (event.resource.url.match(/^ https:\/\/eu.deriv.com\/ctrader-login.*$/)) {
                     const url = event.resource.url;
                     const accnt = getAcct1Value(url);
                     event.resource.url = event.resource.url.replace(

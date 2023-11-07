@@ -1,6 +1,6 @@
 .wallets-no-wallet-found-state {
     width: 100%;
-    height: calc(100vh - 84px);
+    height: calc(100vh - 8.4rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8,7 +8,7 @@
     background: var(--system-light-8-primary-background, #fff);
 
     @include mobile {
-        height: calc(100vh - 44px);
+        height: calc(100vh - 4.4rem);
         flex-direction: column;
     }
 

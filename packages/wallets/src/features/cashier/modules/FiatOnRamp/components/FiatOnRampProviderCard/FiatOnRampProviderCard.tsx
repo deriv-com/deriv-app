@@ -1,17 +1,22 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { WalletButton, WalletText } from '../../../../../components';
+import React, { MouseEventHandler } from 'react';
+import { WalletButton, WalletText } from '../../../../../../components';
 import './FiatOnRampProviderCard.scss';
 
 type TFiatOnRampProvider = {
     description: string;
     getPaymentIcons: () => React.ReactNode[];
+    handleDisclaimer: MouseEventHandler<HTMLButtonElement>;
     icon: React.ReactNode;
     name: string;
 };
 
-const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({ description, getPaymentIcons, icon, name }) => {
-    const history = useHistory();
+const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({
+    description,
+    getPaymentIcons,
+    handleDisclaimer,
+    icon,
+    name,
+}) => {
     const paymentIcons = getPaymentIcons();
 
     return (
@@ -33,8 +38,7 @@ const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({ description, ge
                     <div key={`payment-method-icon-${index}`}>{paymentIcon}</div>
                 ))}
             </div>
-            {/* TODO: Add OnClick event to redirect user to disclaimer screen */}
-            <WalletButton onClick={() => history.push('/wallets/cashier/on-ramp')} size='md' text={'Select'} />
+            <WalletButton onClick={handleDisclaimer} size='md' text={'Select'} />
         </div>
     );
 };

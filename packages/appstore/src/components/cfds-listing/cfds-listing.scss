@@ -185,7 +185,7 @@
     &__footnotes-container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+
         gap: 1rem;
         margin: 1rem;
         @include desktop {
@@ -233,6 +233,16 @@
         & > p {
             font-size: 16px;
             text-align: center;
+        }
+    }
+}
+
+.cfd-jurisdiction-card--financial {
+    &__footnotes-container {
+        @include desktop {
+            gap: 1rem;
+            min-height: 7.6rem;
+            margin: 1rem;
         }
     }
 }

@@ -106,13 +106,8 @@ export const IdvDocSubmitOnSignup = ({
                         <IDVForm hide_hint={false} selected_country={citizen_data} class_name='idv-layout' />
                         <FormSubHeader title={localize('Identity verification')} />
                         <PersonalDetailsForm
-                            class_name={classNames({
-                                'account-form__poi-confirm-example_container': !shouldHideHelperImage(
-                                    values?.document_type?.id
-                                ),
-                            })}
+                            class_name='account-form__poi-confirm-example_container'
                             is_rendered_for_idv
-                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                             editable_fields={values.confirmation_checkbox ? [] : changeable_fields}
                             side_note={side_note_image}
                             inline_note_text={

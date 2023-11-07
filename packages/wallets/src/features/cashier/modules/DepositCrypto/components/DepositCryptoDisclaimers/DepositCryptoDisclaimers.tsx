@@ -32,7 +32,7 @@ const DepositCryptoDisclaimers = () => {
                             Otherwise, the funds will be lost and cannot be recovered.
                         </li>
                     )}
-                    <li>Do not send other currencies to this address.</li>
+                    <li>Do not send other cryptocurrencies to this address.</li>
                     <li>Make sure to copy your Deriv account address correctly into your crypto wallet.</li>
                     <li>
                         In your cryptocurrency wallet, make sure to select{' '}

@@ -6,3 +6,4 @@ export * from './jurisdictions-config';
 export * from './signup_fields';
 export * from './error';
 export * from './idv-failure-codes';
+export * from './auth-status-codes';

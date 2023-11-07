@@ -221,13 +221,13 @@ const RealAccountSignup = ({
                 />
             ),
             title: local_props => {
-                if (local_props.real_account_signup_target === 'add_crypto') {
+                if (local_props?.real_account_signup_target === 'add_crypto') {
                     return localize('Create a cryptocurrency account');
-                } else if (local_props.real_account_signup_target === 'add_fiat') {
+                } else if (local_props?.real_account_signup_target === 'add_fiat') {
                     return localize('Add a Deriv real account');
-                } else if (local_props.real_account_signup_target === 'add_currency') {
+                } else if (local_props?.real_account_signup_target === 'add_currency') {
                     return localize('Create a new account');
-                } else if (local_props.has_fiat && local_props.available_crypto_currencies?.length === 0) {
+                } else if (local_props?.has_fiat && local_props?.available_crypto_currencies?.length === 0) {
                     return localize('Manage account');
                 }
                 return localize('Add or manage account');

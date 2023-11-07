@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { zxcvbn } from '@zxcvbn-ts/core';
 import PasswordHide from '../../../public/images/ic-password-hide.svg';
 import PasswordShow from '../../../public/images/ic-password-show.svg';

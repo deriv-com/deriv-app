@@ -1,34 +1,35 @@
 import React from 'react';
-import { useAvailableMT5Accounts, useCreateOtherCFDAccount } from '@deriv/api';
+import { WalletButton } from '../../../../components/Base';
+import useDevice from '../../../../hooks/useDevice';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
+import { TPlatforms } from '../../../../types';
+import { PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
 
-type TPlatformMT5 = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number]['platform'];
-
-type TPlatformOtherAccounts =
-    | Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'];
-
-type TPlatform = TPlatformMT5 | TPlatformOtherAccounts;
-
-const platformToTitleMapper: Record<TPlatform, string> = {
-    ctrader: 'cTrader',
-    derivez: 'Deriv EZ',
-    dxtrade: 'Deriv X',
-    mt5: 'Deriv MT5',
-};
-
+// TODO: Refactor the unnecessary props out once FlowProvider is integrated
 type TProps = {
     icon: React.ReactNode;
+    isLoading?: boolean;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick: () => void;
-    platform: TPlatform;
+    password: string;
+    platform: TPlatforms.All;
 };
 
-const CreatePassword: React.FC<TProps> = ({ icon, onPasswordChange, onPrimaryClick, platform }) => {
-    const title = platformToTitleMapper[platform];
+const CreatePassword: React.FC<TProps> = ({
+    icon,
+    isLoading,
+    onPasswordChange,
+    onPrimaryClick,
+    password,
+    platform,
+}) => {
+    const { isMobile } = useDevice();
+
+    const title = PlatformDetails[platform].title;
     return (
         <div className='wallets-create-password'>
-            {icon}
+            {!isMobile && icon}
             <div className='wallets-create-password-title'>Create a {title} password</div>
             <span className='wallets-create-password-subtitle'>
                 You can use this password for all your {title} accounts.
@@ -37,9 +38,14 @@ const CreatePassword: React.FC<TProps> = ({ icon, onPasswordChange, onPrimaryCli
                 <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
                 <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
             </div>
-            <button className='wallets-create-password-button' onClick={onPrimaryClick}>
-                Create {title} password
-            </button>
+            {!isMobile && (
+                <WalletButton
+                    disabled={!password || isLoading}
+                    onClick={onPrimaryClick}
+                    size='lg'
+                    text={`Create ${title} password`}
+                />
+            )}
         </div>
     );
 };

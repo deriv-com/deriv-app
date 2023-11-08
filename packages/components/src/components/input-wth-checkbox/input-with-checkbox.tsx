@@ -29,11 +29,11 @@ type TInputWithCheckbox = {
         e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: number | string | boolean } }
     ) => void;
     setCurrentFocus: (name: string | null) => void;
-    tooltip_label?: string;
+    tooltip_label?: React.ReactNode;
     tooltip_alignment?: TPosition;
     error_message_alignment: string;
     value: number | string;
-    is_disabled: boolean;
+    is_disabled?: boolean;
 };
 const InputWithCheckbox = ({
     addToast,

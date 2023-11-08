@@ -14,6 +14,7 @@ const Contract = observer(() => {
         contract_type,
         contract_types_list,
         is_mobile_digit_view_selected: is_digit_view,
+        non_available_contract_types_list,
         onChange,
         symbol,
     } = useTraderStore();
@@ -25,6 +26,10 @@ const Contract = observer(() => {
         contract_types_list as unknown as Parameters<typeof getAvailableContractTypes>[0],
         unsupported_contract_types_list
     );
+    const unavailable_trade_types_list = getAvailableContractTypes(
+        non_available_contract_types_list,
+        unsupported_contract_types_list
+    ).map(item => ({ ...item, is_unavailable: true }));
     const prev_lang = usePrevious(current_language);
     return (
         <React.Fragment>
@@ -49,6 +54,7 @@ const Contract = observer(() => {
                 onChange={onChange}
                 value={contract_type}
                 languageChanged={!!(prev_lang && prev_lang !== current_language)}
+                unavailable_trade_types_list={unavailable_trade_types_list}
             />
         </React.Fragment>
     );

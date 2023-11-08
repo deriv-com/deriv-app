@@ -545,6 +545,9 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
+            if (client && this.root_store.client.mt5_login_list.length > 0) {
+                this.addNotificationMessage(this.client_notifications.mt5_notification);
+            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
@@ -654,10 +657,10 @@ export default class NotificationStore extends BaseStore {
     resetVirtualBalanceNotification(loginid) {
         const { accounts, is_logged_in } = this.root_store.client;
         if (!is_logged_in) return;
-        if (!accounts[loginid].is_virtual) return;
+        if (!accounts[loginid]?.is_virtual) return;
         const min_reset_limit = 1000;
         const max_reset_limit = 999000;
-        const balance = parseInt(accounts[loginid].balance);
+        const balance = parseInt(accounts[loginid]?.balance);
 
         // Display notification message to user with virtual account to reset their balance
         // if the balance is less than equals to 1000 or more than equals to 999000
@@ -1430,7 +1433,7 @@ export default class NotificationStore extends BaseStore {
             },
             mt5_notification: {
                 key: 'mt5_notification',
-                header: localize('Trouble accessing Deriv MT5 on your mobile?'),
+                header: localize('Deriv MT5: Your action is needed'),
                 message: localize('Follow these simple instructions to fix it.'),
                 action: {
                     text: localize('Learn more'),

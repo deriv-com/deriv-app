@@ -465,14 +465,15 @@
     flex-direction: column;
     align-items: center;
     position: fixed;
+
     left: 0;
     bottom: 0;
-    z-index: 1000;
-    background-color: var(--general-section-1);
     width: 100%;
-    border-top: solid 1px var(--border-normal);
     height: 100vh;
     padding: 1.6rem;
+    border-top: solid 1px var(--border-normal);
+    z-index: 1000;
+    background-color: var(--general-main-1);
 
     &--tour-position {
         top: 0;
@@ -484,6 +485,7 @@
 
     &--active {
         height: auto;
+        min-height: 17rem;
     }
 
     &__navbar {
@@ -512,10 +514,9 @@
     &__media {
         background: var(--general-section-1);
         text-align: center;
-        padding: 0.8rem;
         width: 100%;
-        height: 50%;
-        margin-bottom: 0.8rem;
+        height: 55%;
+        margin-bottom: 1.6rem;
     }
 
     img {
@@ -523,8 +524,8 @@
     }
 
     video {
-        width: 65%;
         height: 100%;
+        width: 65%;
     }
 
     &__progress-bar {
@@ -533,7 +534,8 @@
 
     &__status {
         width: 100%;
-        margin-bottom: 1.6rem;
+        position: fixed;
+        bottom: 1.6rem;
     }
 
     &__button-group {
@@ -567,7 +569,7 @@
     }
 
     &__bot-builder-tour {
-        height: unset;
+        height: 17rem;
         background: var(--general-section-1);
 
         .dbot-slider {
@@ -600,7 +602,6 @@
             }
 
             &__status {
-                height: 5rem;
                 display: flex;
                 @extend .position-center;
                 justify-content: flex-start;
@@ -612,6 +613,7 @@
                 @extend .position-center;
                 align-items: center;
                 justify-content: flex-start;
+                margin-left: 1rem;
 
                 .progress-bar-circle {
                     opacity: 0.16;

@@ -59,6 +59,10 @@ export const IdvDocSubmitOnSignup = ({
             errors.last_name = validateName(values.last_name);
         }
 
+        if (!values.confirmation_checkbox) {
+            errors.confirmation_checkbox = 'error';
+        }
+
         return removeEmptyPropertiesFromObject(errors);
     };
 
@@ -78,6 +82,7 @@ export const IdvDocSubmitOnSignup = ({
             value: '',
             example_format: '',
         },
+        confirmation_checkbox: false,
         document_number: '',
         ...form_initial_values,
     };
@@ -92,22 +97,8 @@ export const IdvDocSubmitOnSignup = ({
             validateOnMount
             validateOnChange
             validateOnBlur
-            initialStatus={{
-                is_confirmed: false,
-            }}
         >
-            {({
-                errors,
-                handleBlur,
-                handleChange,
-                isSubmitting,
-                isValid,
-                setFieldValue,
-                touched,
-                dirty,
-                values,
-                status,
-            }) => (
+            {({ errors, handleBlur, handleChange, isSubmitting, isValid, setFieldValue, touched, dirty, values }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
                     <section className='mt5-layout__container'>
                         <FormSubHeader title={localize('Identity verification')} />
@@ -132,7 +123,7 @@ export const IdvDocSubmitOnSignup = ({
                             is_qualified_for_idv
                             is_appstore
                             should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={status?.is_confirmed ? [] : changeable_fields}
+                            editable_fields={values.confirmation_checkbox ? [] : changeable_fields}
                             residence_list={residence_list}
                         />
                     </section>
@@ -141,7 +132,7 @@ export const IdvDocSubmitOnSignup = ({
                             className='proof-of-identity__submit-button'
                             type='submit'
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
+                            is_disabled={!dirty || isSubmitting || !isValid}
                             text={localize('Next')}
                             large
                             primary

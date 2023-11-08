@@ -3,14 +3,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ThemedScrollbars, Icon } from '@deriv/components';
 import { formatMilliseconds } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
+import { Localize } from 'Components/i18next';
 import ChatMessageReceipt from 'Pages/orders/chat/chat-message-receipt.jsx';
 import ChatMessageText from 'Pages/orders/chat/chat-message-text.jsx';
 import { useStores } from 'Stores';
-import ChatMessage from 'Utils/chat-message';
+import ChatMessage, { admin_message } from 'Utils/chat-message';
 import { convertToMB, isImageType, isPDFType } from 'Utils/file-uploader';
 import './chat-messages.scss';
 
+const AdminMessage = () => (
+    <div className='chat-messages-item chat-messages-item--admin'>
+        <ChatMessageText color='general' type='admin'>
+            <Localize i18n_default_text={admin_message} />
+        </ChatMessageText>
+    </div>
+);
 const ChatMessages = observer(() => {
     const { sendbird_store } = useStores();
     const scroll_ref = React.useRef(null);
@@ -73,63 +81,63 @@ const ChatMessages = observer(() => {
                 refSetter={scroll_ref}
                 onScroll={event => sendbird_store.onMessagesScroll(event)}
             >
-                {sendbird_store.chat_messages.map(chat_message => {
-                    const is_admin_message = chat_message.custom_type === ChatMessage.TYPE_ADMIN;
-                    const is_my_message =
-                        chat_message.sender_user_id === sendbird_store.chat_info.user_id && !is_admin_message;
-                    const message_date = formatMilliseconds(chat_message.created_at, 'MMMM D, YYYY');
-                    const message_color = is_my_message ? 'colored-background' : 'general';
-                    const should_render_date =
-                        current_date !== message_date && Boolean(!is_admin_message && (current_date = message_date));
+                <React.Fragment>
+                    <AdminMessage />
+                    {sendbird_store.chat_messages.map(chat_message => {
+                        const is_my_message = chat_message.sender_user_id === sendbird_store.chat_info.user_id;
+                        const message_date = formatMilliseconds(chat_message.created_at, 'MMMM D, YYYY');
+                        const message_color = is_my_message ? 'colored-background' : 'general';
+                        const should_render_date =
+                            current_date !== message_date && Boolean((current_date = message_date));
 
-                    return (
-                        <React.Fragment key={chat_message.id}>
-                            {should_render_date && (
-                                <div className='chat-messages-date'>
-                                    <Text align='center' color='less-prominent' lh='m' size='xs' weight='bold'>
-                                        {message_date}
-                                    </Text>
-                                </div>
-                            )}
-                            <div
-                                className={classNames(
-                                    'chat-messages-item',
-                                    `chat-messages-item--${
-                                        is_admin_message ? 'admin' : is_my_message ? 'outgoing' : 'incoming'
-                                    }`
+                        return (
+                            <React.Fragment key={chat_message.id}>
+                                {should_render_date && (
+                                    <div className='chat-messages-date'>
+                                        <Text align='center' color='less-prominent' lh='m' size='xs' weight='bold'>
+                                            {message_date}
+                                        </Text>
+                                    </div>
                                 )}
-                                data-testid='dt_chat_message'
-                            >
-                                {chat_message.message_type === ChatMessage.TYPE_USER && (
-                                    <ChatMessageText color={message_color} type={chat_message.custom_type}>
-                                        {chat_message.message}
-                                    </ChatMessageText>
-                                )}
-                                {chat_message.message_type === ChatMessage.TYPE_FILE &&
-                                    getMessageFormat(chat_message, message_color)}
-                                <div className={`order-chat__messages-item-timestamp`}>
-                                    {!is_admin_message && (
+                                <div
+                                    className={classNames(
+                                        'chat-messages-item',
+                                        `chat-messages-item--${is_my_message ? 'outgoing' : 'incoming'}`
+                                    )}
+                                >
+                                    {chat_message.message_type === ChatMessage.TYPE_USER && (
+                                        <ChatMessageText color={message_color} type={chat_message.custom_type}>
+                                            {chat_message.message}
+                                        </ChatMessageText>
+                                    )}
+                                    {chat_message.message_type === ChatMessage.TYPE_FILE &&
+                                        getMessageFormat(chat_message, message_color)}
+                                    <div className={`order-chat__messages-item-timestamp`}>
                                         <Text color='less-prominent' line_height='s' size='xxxs'>
                                             {formatMilliseconds(chat_message.created_at, 'HH:mm', true)}
                                         </Text>
-                                    )}
-                                    {is_my_message && (
-                                        <ChatMessageReceipt
-                                            message={chat_message}
-                                            chat_channel={sendbird_store.active_chat_channel}
-                                            sendbird_user_id={sendbird_store.chat_info.user_id}
-                                        />
-                                    )}
+                                        {is_my_message && (
+                                            <ChatMessageReceipt
+                                                message={chat_message}
+                                                chat_channel={sendbird_store.active_chat_channel}
+                                                sendbird_user_id={sendbird_store.chat_info.user_id}
+                                            />
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        </React.Fragment>
-                    );
-                })}
+                            </React.Fragment>
+                        );
+                    })}
+                </React.Fragment>
             </ThemedScrollbars>
         );
     }
 
-    return <div className='chat-messages' />;
+    return (
+        <div className='chat-messages'>
+            <AdminMessage />
+        </div>
+    );
 });
 
 ChatMessages.displayName = 'ChatMessages';

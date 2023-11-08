@@ -29,12 +29,13 @@ const Dashboard = observer(() => {
         setActiveTab,
         setWebSocketState,
         setActiveTour,
+        setTourDialogVisibility,
     } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
     const { cancel_button_text, ok_button_text, title, message } = dialog_options as { [key: string]: string };
-    const { is_strategy_modal_open } = quick_strategy;
+    const { is_open } = quick_strategy;
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const is_mobile = isMobile();
@@ -67,6 +68,10 @@ const Dashboard = observer(() => {
     }, []);
 
     React.useEffect(() => {
+        if (is_open) {
+            setTourDialogVisibility(false);
+        }
+
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
             if (is_mobile) handleTabChange(Number(active_hash_tab));
@@ -170,7 +175,7 @@ const Dashboard = observer(() => {
                     <RunPanel />
                 </div>
             </DesktopWrapper>
-            <MobileWrapper>{!is_strategy_modal_open && <RunPanel />}</MobileWrapper>
+            <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog
                 cancel_button_text={cancel_button_text || <Localize i18n_default_text='Cancel' />}
                 className={'dc-dialog__wrapper--fixed'}

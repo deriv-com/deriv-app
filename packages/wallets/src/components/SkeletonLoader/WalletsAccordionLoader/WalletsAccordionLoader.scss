@@ -3,11 +3,11 @@
 .wallets-accordion-loader {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 2.4rem;
 
     &__item {
-        height: 120px;
-        border-radius: 16px;
+        height: 12rem;
+        border-radius: 1.6rem;
         width: 100%;
 
         &-expanded {

@@ -31,9 +31,7 @@ const AccountActionsWallets = observer(() => {
                     toggleDialog={toggleNotificationsModal}
                     tooltip_message={undefined}
                 />
-                <React.Suspense fallback={<div />}>
-                    <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
-                </React.Suspense>
+                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
             </React.Fragment>
         ) : (
             <React.Fragment>
@@ -55,9 +53,7 @@ const AccountActionsWallets = observer(() => {
                         <Icon icon='IcUserOutline' />
                     </BinaryLink>
                 </Popover>
-                <React.Suspense fallback={<div />}>
-                    <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
-                </React.Suspense>
+                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
                 {!is_virtual && !currency && (
                     <div className='set-currency'>
                         <Button

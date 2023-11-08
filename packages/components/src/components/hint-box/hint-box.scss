@@ -38,3 +38,9 @@
         color: var(--text-prominent);
     }
 }
+
+.hint-box-layout {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: flex-start;
+}

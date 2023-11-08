@@ -1,7 +1,7 @@
 import { screen, render } from '@testing-library/react';
 import * as ContractUtils from '../contract';
 import { TContractInfo, TContractStore, TDigitsInfo, TTickItem } from '../contract-types';
-import { TRADE_TYPES } from '../contract';
+import { CONTRACT_TYPES } from '../contract';
 
 describe('getFinalPrice', () => {
     it("should return sell_price as final price when it's available", () => {
@@ -621,12 +621,12 @@ describe('getLocalizedTurbosSubtype', () => {
         expect(screen.queryByText('Short')).not.toBeInTheDocument();
         expect(ContractUtils.getLocalizedTurbosSubtype('CALL')).toBe('');
     });
-    it('should render "Long" for TRADE_TYPES.TURBOS.LONG contract', () => {
-        render(ContractUtils.getLocalizedTurbosSubtype(TRADE_TYPES.TURBOS.LONG.toUpperCase()) as JSX.Element);
+    it('should render "Long" for CONTRACT_TYPES.TURBOS.LONG contract', () => {
+        render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.TURBOS.LONG) as JSX.Element);
         expect(screen.getByText('Long')).toBeInTheDocument();
     });
-    it('should render "Short" for TRADE_TYPES.TURBOS.SHORT contract', () => {
-        render(ContractUtils.getLocalizedTurbosSubtype(TRADE_TYPES.TURBOS.SHORT.toUpperCase()) as JSX.Element);
+    it('should render "Short" for CONTRACT_TYPES.TURBOS.SHORT contract', () => {
+        render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.TURBOS.SHORT) as JSX.Element);
         expect(screen.getByText('Short')).toBeInTheDocument();
     });
 });

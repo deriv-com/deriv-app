@@ -29,7 +29,19 @@ export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
 
+export const CONTRACT_TYPES = {
+    ACCU: 'ACCU',
+    TURBOS: {
+        LONG: 'TURBOSLONG',
+        SHORT: 'TURBOSSHORT',
+    },
+    VANILLA: {
+        CALL: 'VANILLALONGCALL',
+        PUT: 'VANILLALONGPUT',
+    },
+} as const;
 export const TRADE_TYPES = {
+    ACCUMULATOR: 'accumulator',
     TURBOS: {
         LONG: 'turboslong',
         SHORT: 'turbosshort',

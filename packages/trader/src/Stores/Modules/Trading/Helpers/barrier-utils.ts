@@ -1,10 +1,10 @@
-import { BARRIER_COLORS, TRADE_TYPES } from '@deriv/shared';
+import { BARRIER_COLORS, CONTRACT_TYPES } from '@deriv/shared';
 
 export const getHoveredColor = (type: string): string => {
     switch (type) {
-        case TRADE_TYPES.TURBOS.SHORT.toUpperCase():
+        case CONTRACT_TYPES.TURBOS.SHORT:
             return BARRIER_COLORS.RED;
-        case TRADE_TYPES.TURBOS.LONG.toUpperCase():
+        case CONTRACT_TYPES.TURBOS.LONG:
             return BARRIER_COLORS.GREEN;
         default:
             return BARRIER_COLORS.GRAY;

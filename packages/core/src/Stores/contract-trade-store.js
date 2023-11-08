@@ -16,7 +16,7 @@ import {
     LocalStore,
     switch_to_tick_chart,
     getLastContractMarkerIndex,
-    TRADE_TYPES,
+    CONTRACT_TYPES,
 } from '@deriv/shared';
 
 import BaseStore from './base-store';
@@ -246,10 +246,10 @@ export default class ContractTradeStore extends BaseStore {
             trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
         } else if (isTurbosContract(trade_type)) {
             //to show both Long and Short recent contracts on DTrader chart
-            trade_types = [TRADE_TYPES.TURBOS.LONG.toUpperCase(), TRADE_TYPES.TURBOS.SHORT.toUpperCase()];
+            trade_types = [CONTRACT_TYPES.TURBOS.LONG, CONTRACT_TYPES.TURBOS.SHORT];
         } else if (isVanillaContract(trade_type)) {
             //to show both Call and Put recent contracts on DTrader chart
-            trade_types = [TRADE_TYPES.VANILLA.CALL.toUpperCase(), TRADE_TYPES.VANILLA.PUT.toUpperCase()];
+            trade_types = [CONTRACT_TYPES.VANILLA.CALL, CONTRACT_TYPES.VANILLA.PUT];
         }
 
         return this.contracts

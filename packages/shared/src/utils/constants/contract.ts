@@ -2,7 +2,7 @@ import React from 'react';
 
 import { localize } from '@deriv/translations';
 
-import { shouldShowCancellation, shouldShowExpiration, TRADE_TYPES } from '../contract';
+import { shouldShowCancellation, shouldShowExpiration, CONTRACT_TYPES, TRADE_TYPES } from '../contract';
 import { cloneObject } from '../object';
 import { LocalStore } from '../storage';
 
@@ -167,28 +167,28 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     }, // hide Duration for Multiplier contracts for now
     [TRADE_TYPES.TURBOS.LONG]: {
         title: localize('Long/Short'),
-        trade_types: [TRADE_TYPES.TURBOS.LONG.toUpperCase()],
+        trade_types: [CONTRACT_TYPES.TURBOS.LONG],
         basis: ['stake'],
         barrier_count: 1,
         components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
     },
     [TRADE_TYPES.TURBOS.SHORT]: {
         title: localize('Long/Short'),
-        trade_types: [TRADE_TYPES.TURBOS.SHORT.toUpperCase()],
+        trade_types: [CONTRACT_TYPES.TURBOS.SHORT],
         basis: ['stake'],
         barrier_count: 1,
         components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
     },
     [TRADE_TYPES.VANILLA.CALL]: {
         title: localize('Call/Put'),
-        trade_types: [TRADE_TYPES.VANILLA.CALL.toUpperCase()],
+        trade_types: [CONTRACT_TYPES.VANILLA.CALL],
         basis: ['stake'],
         components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
         barrier_count: 1,
     },
     [TRADE_TYPES.VANILLA.PUT]: {
         title: localize('Call/Put'),
-        trade_types: [TRADE_TYPES.VANILLA.PUT.toUpperCase()],
+        trade_types: [CONTRACT_TYPES.VANILLA.PUT],
         basis: ['stake'],
         components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
         barrier_count: 1,

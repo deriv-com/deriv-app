@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import PayoutPerPointMobile from '../payout-per-point-mobile';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { TRADE_TYPES } from '@deriv/shared';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 import userEvent from '@testing-library/user-event';
 import TraderProviders from '../../../../../trader-providers';
 
@@ -14,7 +14,7 @@ const mocked_root_store = {
             contract_type: TRADE_TYPES.TURBOS.LONG,
             currency: 'EUR',
             proposal_info: {
-                [TRADE_TYPES.TURBOS.LONG.toUpperCase()]: {
+                [CONTRACT_TYPES.TURBOS.LONG]: {
                     obj_contract_basis: { text: 'Payout per point', value: 0.987654321 },
                     message: 'test',
                 },

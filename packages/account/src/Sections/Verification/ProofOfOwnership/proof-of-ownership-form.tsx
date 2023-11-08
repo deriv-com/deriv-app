@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Form, Formik, FormikHelpers } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button } from '@deriv/components';
@@ -176,8 +175,8 @@ const ProofOfOwnershipForm = ({
                         await promise;
                         const response = await uploader.upload(processed_file);
                         const upload_error = [];
-                        if (response.warning) {
-                            if (response?.warning.trim() === 'DuplicateUpload' && response?.message) {
+                        if (response?.warning) {
+                            if (response?.warning?.trim() === 'DuplicateUpload' && response?.message) {
                                 upload_error[index] = response?.message;
                                 setFieldError(card_key, { files: upload_error });
                             }

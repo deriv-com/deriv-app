@@ -35,7 +35,6 @@ describe('Card', () => {
     it('should render expanded card when clicked', () => {
         render(<Card {...mock_props} />);
 
-        // userEvent.click(screen.getByTestId('dt_proof-of-ownership-button'));
         userEvent.click(screen.getByRole('button'));
         expect(screen.getByText('Expanded Card')).toBeInTheDocument();
     });
@@ -43,12 +42,10 @@ describe('Card', () => {
     it('should close the rendered expanded card when clicked', () => {
         render(<Card {...mock_props} />);
 
-        // userEvent.click(screen.getByTestId('dt_proof-of-ownership-button'));
         userEvent.click(screen.getByRole('button'));
 
         expect(screen.getByText('Expanded Card')).toBeInTheDocument();
 
-        // userEvent.click(screen.getByTestId('dt_proof-of-ownership-button'));
         userEvent.click(screen.getByRole('button'));
 
         expect(screen.queryByText('Expanded Card')).not.toBeInTheDocument();

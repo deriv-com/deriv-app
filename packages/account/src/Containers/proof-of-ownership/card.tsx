@@ -42,9 +42,8 @@ const Card = ({ details, index }: TCardProps) => {
         <div
             className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}
             data-testid={details?.payment_method}
-            role='card-item'
         >
-            <div className='proof-of-ownership__card-item' onClick={onClickHandler}>
+            <div className='proof-of-ownership__card-item' onClick={onClickHandler} onKeyDown={onClickHandler}>
                 {details?.icon && (
                     <Icon icon={details?.icon} className='proof-of-ownership__card-item-logo' width={68} height={58} />
                 )}

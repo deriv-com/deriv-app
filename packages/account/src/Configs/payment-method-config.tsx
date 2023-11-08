@@ -28,6 +28,7 @@ const getPaymentMethodsConfig = () => ({
                         target='_blank'
                         rel='noreferrer'
                         href='https://app.astropay.com/profile'
+                        aria-label='Read more on AstroPay'
                     />,
                 ]}
             />,
@@ -132,6 +133,7 @@ const getPaymentMethodsConfig = () => ({
                         target='_blank'
                         rel='noreferrer'
                         href='https://onlinenaira.com/members/index.htm'
+                        aria-label='Read more on OnlineNaira'
                     />,
                 ]}
             />,
@@ -145,6 +147,7 @@ const getPaymentMethodsConfig = () => ({
                         target='_blank'
                         rel='noreferrer'
                         href='https://onlinenaira.com/members/bank.htm'
+                        aria-label='Read more on OnlineNaira'
                     />,
                 ]}
             />,

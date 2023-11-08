@@ -733,6 +733,9 @@
     }
     &__new-password {
         margin-bottom: 8.6rem;
+        .dc-input__hint {
+            margin: 0 0 -5.3rem 1.3rem;
+        }
     }
     &__actions {
         align-items: center;

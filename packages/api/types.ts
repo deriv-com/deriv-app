@@ -1574,9 +1574,13 @@ type TPrivateSocketEndpoints = {
              * [Optional] Used to map request to response.
              */
             req_id?: number;
+            [k: string]: unknown;
         };
         response: {
-            notification_event?: 0 | 1;
+            /**
+             * `1`: all actions finished successfully, `0`: at least one or more actions failed.
+             */
+            notification_event: 0 | 1;
             /**
              * Echo of the request made.
              */
@@ -1588,10 +1592,9 @@ type TPrivateSocketEndpoints = {
              */
             msg_type: 'notification_event';
             /**
-             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             * [Optional] Used to map request to response.
              */
             req_id?: number;
-            [k: string]: unknown;
         };
     };
 };

@@ -18,23 +18,24 @@ interface WalletPasswordFieldProps extends WalletTextFieldProps, PasswordMeterPr
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({ messageObj, showPasswordMeter = true }) => {
     const [password, setPassword] = useState('');
     const [viewPassword, setViewPassword] = useState(false);
-    const toggleView = () => setViewPassword(prevViewPassword => !prevViewPassword);
     const hasMessage = !!messageObj;
 
     const passwordStrength = zxcvbn(password).score;
-    const progressText = useMemo(
-        () => (messageObj ? messageObj[passwordStrength as keyof StrengthMessage] : ''),
-        [messageObj, passwordStrength]
-    );
+    const progressText = useMemo(() => {
+        return messageObj ? messageObj[passwordStrength as keyof StrengthMessage] : '';
+    }, [messageObj, passwordStrength]);
 
-    const PasswordViewerIcon = (
-        <IconButton
-            color='transparent'
-            icon={viewPassword ? <PasswordShow /> : <PasswordHide />}
-            isRound
-            onClick={toggleView}
-            size='sm'
-        />
+    const PasswordViewerIcon = useMemo(
+        () => (
+            <IconButton
+                color='transparent'
+                icon={viewPassword ? <PasswordShow /> : <PasswordHide />}
+                isRound
+                onClick={() => setViewPassword(prevViewPassword => !prevViewPassword)}
+                size='sm'
+            />
+        ),
+        [viewPassword]
     );
 
     return (

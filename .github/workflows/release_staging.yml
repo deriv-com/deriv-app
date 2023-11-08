@@ -39,3 +39,16 @@ jobs:
       with:       
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+    - name: Build Docker image and push to Docker hub and K8S
+      uses: "./.github/actions/build_and_push_docker_image"
+      with:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE }}
+        K8S_SERVICE: deriv-app-staging
+        KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
+        SERVICE_ACCOUNT_TOKEN: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
+        CA: ${{ secrets.CA }}
+        CA_CRT: ${{ secrets.CA_CRT }}
+        APP_VERSION: latest-staging

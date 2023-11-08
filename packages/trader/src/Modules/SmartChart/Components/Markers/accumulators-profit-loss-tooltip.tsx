@@ -99,35 +99,33 @@ const AccumulatorsProfitLossTooltip = ({
         );
 
     return is_sold && exit_tick_time ? (
-        <>
-            <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
-                <span
-                    className={`${className}__spot-circle`}
-                    onMouseEnter={() => setIsTooltipOpen(true)}
-                    onMouseLeave={onHoverOrTapHandler}
-                    onTouchStart={() => setIsTooltipOpen(true)}
-                    onTouchEnd={onHoverOrTapHandler}
-                    data-testid='dt_accumulator_tooltip_spot'
-                />
-                <CSSTransition
-                    in={is_tooltip_open}
-                    timeout={{
-                        exit: 500,
-                    }}
-                    unmountOnExit
-                    classNames={`${className}__content`}
-                >
-                    <div className={classNames(`${className}__content`, `arrow-${opposite_arrow_position}`)}>
-                        <Text size={isMobile() ? 'xxxxs' : 'xxs'} className={`${className}__text`}>
-                            {localize('Total profit/loss:')}
-                        </Text>
-                        <Text size={isMobile() ? 'xxxs' : 'xs'} className={`${className}__text`} weight='bold'>
-                            <Money amount={profit} currency={currency} has_sign show_currency />
-                        </Text>
-                    </div>
-                </CSSTransition>
-            </FastMarker>
-        </>
+        <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
+            <span
+                className={`${className}__spot-circle`}
+                onMouseEnter={() => setIsTooltipOpen(true)}
+                onMouseLeave={onHoverOrTapHandler}
+                onTouchStart={() => setIsTooltipOpen(true)}
+                onTouchEnd={onHoverOrTapHandler}
+                data-testid='dt_accumulator_tooltip_spot'
+            />
+            <CSSTransition
+                in={is_tooltip_open}
+                timeout={{
+                    exit: 500,
+                }}
+                unmountOnExit
+                classNames={`${className}__content`}
+            >
+                <div className={classNames(`${className}__content`, `arrow-${opposite_arrow_position}`)}>
+                    <Text size={isMobile() ? 'xxxxs' : 'xxs'} className={`${className}__text`}>
+                        {localize('Total profit/loss:')}
+                    </Text>
+                    <Text size={isMobile() ? 'xxxs' : 'xs'} className={`${className}__text`} weight='bold'>
+                        <Money amount={profit} currency={currency} has_sign show_currency />
+                    </Text>
+                </div>
+            </CSSTransition>
+        </FastMarker>
     ) : null;
 };
 

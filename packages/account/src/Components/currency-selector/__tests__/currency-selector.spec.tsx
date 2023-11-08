@@ -340,7 +340,7 @@ describe('<CurrencySelector/>', () => {
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(mt5_cfd_msg);
+        runCommonTests(mt5_eu);
     });
 
     it('should render Fiat currencies when is_mt5_allowed is true', () => {

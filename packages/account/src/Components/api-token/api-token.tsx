@@ -279,7 +279,7 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                                                             message={localize(
                                                                 'To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.'
                                                             )}
-                                                            title={localize('Note')}
+                                                            title={localize('Note:')}
                                                         />
                                                     </ApiTokenCard>
                                                 </div>

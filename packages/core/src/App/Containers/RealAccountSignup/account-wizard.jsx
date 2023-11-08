@@ -316,6 +316,9 @@ const AccountWizard = props => {
                     } else {
                         props.setShouldShowAppropriatenessWarningModal(true);
                     }
+                } else if (error.code === 'IncompleteFinancialAssessment' && form_data?.risk_tolerance === 'No') {
+                    props.fetchAccountSettings();
+                    props.setShouldShowRiskWarningModal(true);
                 } else {
                     props.onError(error, state_items);
                 }

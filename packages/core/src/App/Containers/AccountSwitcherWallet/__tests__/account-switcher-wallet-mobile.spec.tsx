@@ -50,7 +50,13 @@ describe('AccountSwitcherWalletMobile', () => {
     it('should render the component', () => {
         const store = mockStore({
             client: {
-                wallet_list: [{ loginid: 'CR007', dtrade_loginid: 'CR008' }],
+                accounts: {
+                    CR007: {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        linked_to: [{ loginid: 'CR008', platform: 'dtrade' }],
+                    },
+                },
             },
         });
         render(<AccountSwitcherWalletMobile {...props} />, { wrapper: wrapper(store) });
@@ -63,11 +69,23 @@ describe('AccountSwitcherWalletMobile', () => {
     it('should render list wallets', () => {
         const store = mockStore({
             client: {
-                wallet_list: [
-                    { loginid: 'CR007', dtrade_loginid: 'CR008' },
-                    { loginid: 'CR009', dtrade_loginid: 'CR010' },
-                    { loginid: 'CR011', dtrade_loginid: 'CR012' },
-                ],
+                accounts: {
+                    CR007: {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        linked_to: [{ loginid: 'CR008', platform: 'dtrade' }],
+                    },
+                    CR009: {
+                        account_category: 'wallet',
+                        currency: 'BTC',
+                        linked_to: [{ loginid: 'CR010', platform: 'dtrade' }],
+                    },
+                    CR011: {
+                        account_category: 'wallet',
+                        currency: 'ETH',
+                        linked_to: [{ loginid: 'CR012', platform: 'dtrade' }],
+                    },
+                },
             },
         });
 
@@ -78,7 +96,13 @@ describe('AccountSwitcherWalletMobile', () => {
     it('should toggle the switcher on footer click', () => {
         const store = mockStore({
             client: {
-                wallet_list: [{ loginid: 'CR007', dtrade_loginid: 'CR008' }],
+                accounts: {
+                    CR007: {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        linked_to: [{ loginid: 'CR008', platform: 'dtrade' }],
+                    },
+                },
             },
         });
         render(<AccountSwitcherWalletMobile {...props} />, { wrapper: wrapper(store) });

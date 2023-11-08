@@ -4,7 +4,8 @@ import { Button, Icon, MobileDialog, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
-import { observer, useStore } from '@deriv/stores';
+import { useStoreWalletAccountsList } from '@deriv/hooks';
+import { observer } from '@deriv/stores';
 import './account-switcher-wallet-mobile.scss';
 
 type TAccountSwitcherWalletMobile = {
@@ -13,9 +14,9 @@ type TAccountSwitcherWalletMobile = {
 };
 
 export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAccountSwitcherWalletMobile) => {
-    const { client } = useStore();
-    const { wallet_list } = client;
     const history = useHistory();
+    const { data: wallet_list } = useStoreWalletAccountsList();
+
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
     const closeAccountsDialog = React.useCallback(() => {

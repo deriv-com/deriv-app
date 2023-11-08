@@ -200,11 +200,19 @@ $MIN_HEIGHT_FLOATING: calc(
         overflow: hidden;
     }
 
-
     &-form {
         overflow: hidden;
         height: 100%;
         width: 100%;
+
+        @include desktop {
+            &__financial-assessment {
+                .account-form__fieldset {
+                    margin-top: 0.8rem;
+                    margin-bottom: 2rem;
+                }
+            }
+        }
 
         &__header {
             font-size: var(--text-size-xs);

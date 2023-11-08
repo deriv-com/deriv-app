@@ -7,6 +7,7 @@ import Header from '../header';
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('react-router-dom'),
     useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
+    useStoreWalletAccountsList: jest.fn(() => ({ data: [], has_wallet: false })),
 }));
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

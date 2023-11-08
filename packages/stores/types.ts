@@ -173,33 +173,6 @@ type TCtraderAccountsList = DetailsOfEachMT5Loginid & {
     platform?: string;
 };
 
-type TWalletList = {
-    accepted_bch?: number;
-    account_category?: 'wallet' | 'trading';
-    account_type?: string;
-    balance?: number;
-    country?: string;
-    created_at?: number;
-    currency?: string;
-    dtrade_loginid?: string;
-    dtrade_balance?: number;
-    email?: string;
-    excluded_until?: string;
-    gradients?: Record<'card' | 'header', Record<'light' | 'dark', string>>;
-    icons?: Record<'light' | 'dark', string>;
-    icon_type?: 'demo' | 'fiat' | 'crypto';
-    is_virtual?: boolean;
-    is_disabled?: boolean;
-    is_malta_wallet?: boolean;
-    loginid?: string;
-    landing_company_name?: string;
-    landing_company_shortcode?: string;
-    linked_to?: { loginid: string; platform: string }[];
-    residence?: string;
-    session_start?: number;
-    token?: string;
-}[];
-
 type TAccountsList = {
     account?: {
         balance?: string | number;
@@ -364,15 +337,6 @@ type TCountryStandpoint = {
     is_united_kingdom: boolean;
 };
 
-type TLinkedAccount = {
-    loginid?: string;
-    platform?: 'derivez' | 'dtrade' | 'dwallet' | 'dxtrade' | 'mt5';
-};
-
-type TLinkedWalletsAccounts = {
-    [key in Exclude<TLinkedAccount['platform'], undefined>]: TLinkedAccount[];
-};
-
 type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
     account_type: string;
@@ -385,9 +349,6 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
-    wallet_list: TWalletList;
-    linked_wallets_accounts: TLinkedWalletsAccounts;
-    has_wallet: boolean;
     account_status: GetAccountStatus;
     available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
     balance?: string | number;
@@ -546,6 +507,8 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    setIsAlreadyAttempted: (value: boolean) => void;
+    is_already_attempted: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
     is_beta_chart: boolean;

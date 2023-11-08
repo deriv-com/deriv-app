@@ -13,7 +13,7 @@ export const tourStepConfig: Step[] = [
         ),
         disableBeacon: true,
         disableOverlayClose: true,
-        target: '.wallets-accordion__header:has(+ .wallets-accordion__content--visible)',
+        target: '.wallets-accordion__header',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallets
@@ -24,7 +24,7 @@ export const tourStepConfig: Step[] = [
         content: <WalletText size='sm'>Step 2</WalletText>,
         disableBeacon: true,
         disableOverlayClose: true,
-        target: '.wallets-accordion__header:has(+ .wallets-accordion__content--visible)',
+        target: '.wallets-accordion__header',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallets

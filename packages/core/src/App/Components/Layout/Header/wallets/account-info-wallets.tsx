@@ -6,6 +6,7 @@ import { Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
+import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv/hooks';
 import { AccountSwitcherWallet, AccountSwitcherWalletMobile } from 'App/Containers/AccountSwitcherWallet';
 import { AccountsInfoLoader } from '../Components/Preloader';
 import AccountInfoWrapper from '../account-info-wrapper';
@@ -28,11 +29,11 @@ type TBalanceLabel = {
 };
 
 type TMobileInfoIcon = {
-    wallet_account: TStores['client']['wallet_list'][number];
+    wallet_account: ReturnType<typeof useStoreWalletAccountsList>['data'][number];
 };
 
 type TDesktopInfoIcons = {
-    wallet_account: TStores['client']['wallet_list'][number];
+    wallet_account: ReturnType<typeof useStoreWalletAccountsList>['data'][number];
 };
 
 const DropdownArrow = ({ is_disabled = false }: TDropdownArrow) =>
@@ -109,8 +110,10 @@ const DesktopInfoIcons = observer(({ wallet_account }: TDesktopInfoIcons) => {
 
 const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInfoWallets) => {
     const { client, ui } = useStore();
-    const { switchAccount, is_logged_in, loginid, accounts, wallet_list, linked_wallets_accounts } = client;
+    const { switchAccount, is_logged_in, loginid, accounts } = client;
     const { is_mobile, account_switcher_disabled_message } = ui;
+    const { data: wallet_list } = useStoreWalletAccountsList();
+    const linked_wallets_accounts = useStoreLinkedWalletsAccounts();
 
     const active_account = accounts?.[loginid ?? ''];
     const active_wallet = wallet_list?.find(wallet => wallet.loginid === loginid);

@@ -6,7 +6,7 @@ import { APIProvider } from '@deriv/api';
 const DISPLAY_BALANCE = 'RM42';
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useSubscribedBalance: jest.fn().mockReturnValue({
+    useActiveWalletBalance: jest.fn().mockReturnValue({
         displayBalance: DISPLAY_BALANCE,
     }),
 }));

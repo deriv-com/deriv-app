@@ -2,12 +2,12 @@ import React from 'react';
 import { useWS } from '@deriv/shared';
 import { act, renderHook } from '@testing-library/react-hooks';
 import APIProvider from '../APIProvider';
-import useSubscribedBalance from '../hooks/useSubscribedBalance';
+import useActiveWalletBalance from '../hooks/useActiveWalletBalance';
 
 jest.mock('@deriv/shared');
 
 const mockUseWS = useWS as jest.MockedFunction<typeof useWS>;
-describe('useSubscribedBalance', () => {
+describe('useActiveWalletBalance', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element,
         renderResult: any,
         onData: (response: unknown) => void;
@@ -26,7 +26,7 @@ describe('useSubscribedBalance', () => {
         });
 
         wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
-        renderResult = renderHook(() => useSubscribedBalance(), { wrapper });
+        renderResult = renderHook(() => useActiveWalletBalance(), { wrapper });
     });
 
     test('returns correct displayBalance', async () => {

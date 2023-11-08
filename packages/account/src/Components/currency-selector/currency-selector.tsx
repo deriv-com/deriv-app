@@ -281,7 +281,7 @@ const CurrencySelector = observer(
                                         )}
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer is_bypassed={is_mobile}>
+                                <Modal.Footer has_separator is_bypassed={is_mobile}>
                                     <FormSubmitButton
                                         className={
                                             set_currency

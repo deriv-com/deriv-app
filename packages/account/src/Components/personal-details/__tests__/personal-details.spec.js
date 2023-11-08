@@ -8,6 +8,7 @@ import { splitValidationResultTypes } from '../../real-account-signup/helpers/ut
 import PersonalDetails from '../personal-details';
 import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from 'Helpers/utils';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -289,7 +290,9 @@ describe('<PersonalDetails/>', () => {
         const mock_store = mockStore({});
         render(
             <StoreProvider store={mock_store}>
-                <BrowserRouter>{component}</BrowserRouter>
+                <ExchangeRatesProvider>
+                    <BrowserRouter>{component}</BrowserRouter>
+                </ExchangeRatesProvider>
             </StoreProvider>
         );
     };

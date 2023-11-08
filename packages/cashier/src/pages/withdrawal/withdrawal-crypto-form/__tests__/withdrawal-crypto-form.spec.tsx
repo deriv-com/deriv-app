@@ -5,6 +5,7 @@ import { useCurrentAccountDetails } from '@deriv/hooks';
 import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -48,7 +49,9 @@ describe('<WithdrawalCryptoForm />', () => {
     const renderWithdrawalCryptoForm = () => {
         return render(
             <CashierProviders store={mockRootStore}>
-                <WithdrawalCryptoForm />
+                <ExchangeRatesProvider>
+                    <WithdrawalCryptoForm />
+                </ExchangeRatesProvider>
             </CashierProviders>
         );
     };
@@ -105,6 +108,13 @@ describe('<WithdrawalCryptoForm />', () => {
     });
 
     it("requestWithdraw func should be called if value provided from 'converter_from_amount' input and withdraw button is clicked", async () => {
+        const mockJson = {
+            BTC: {
+                USD: 2.2,
+            },
+        };
+        window.localStorage.setItem('exchange_rates', JSON.stringify(mockJson));
+
         renderWithdrawalCryptoForm();
 
         const address_field = screen.getByTestId('dt_address_input');
@@ -125,6 +135,13 @@ describe('<WithdrawalCryptoForm />', () => {
     });
 
     it("requestWithdraw func should be called if value provided from 'converter_to_amount' input and withdraw button is clicked", async () => {
+        const mockJson = {
+            BTC: {
+                USD: 2.2,
+            },
+        };
+        window.localStorage.setItem('exchange_rates', JSON.stringify(mockJson));
+
         renderWithdrawalCryptoForm();
 
         const address_field = screen.getByTestId('dt_address_input');

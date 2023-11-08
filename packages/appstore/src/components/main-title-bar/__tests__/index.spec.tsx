@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider /*useFetch*/ } from '@deriv/api';
 import MainTitleBar from '..';
+import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
 
 //TODO: Uncomment once useWalletMigration hook is optimized for production release.
 // jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
@@ -58,7 +59,9 @@ describe('MainTitleBar', () => {
         const mock_store = mockStore({ feature_flags: { data: { wallet: false } } });
         const wrapper = ({ children }: React.PropsWithChildren) => (
             <APIProvider>
-                <StoreProvider store={mock_store_override ?? mock_store}>{children}</StoreProvider>
+                <StoreProvider store={mock_store_override ?? mock_store}>
+                    <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+                </StoreProvider>
             </APIProvider>
         );
 

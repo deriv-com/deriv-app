@@ -1,11 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { zxcvbn } from '@zxcvbn-ts/core';
-import PasswordHide from '../../../public/images/ic-password-hide.svg';
-import PasswordShow from '../../../public/images/ic-password-show.svg';
-import { IconButton } from '../IconButton';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import PasswordMeter, { PasswordMeterProps } from './PasswordMeter';
+import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
 type StrengthMessage = Record<1 | 2 | 3 | 4, string>;
@@ -25,25 +23,14 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({ messageObj, s
         return messageObj ? messageObj[passwordStrength as keyof StrengthMessage] : '';
     }, [messageObj, passwordStrength]);
 
-    const PasswordViewerIcon = useMemo(
-        () => (
-            <IconButton
-                color='transparent'
-                icon={viewPassword ? <PasswordShow /> : <PasswordHide />}
-                isRound
-                onClick={() => setViewPassword(prevViewPassword => !prevViewPassword)}
-                size='sm'
-            />
-        ),
-        [viewPassword]
-    );
-
     return (
         <div className='wallets-password'>
             <WalletTextField
                 helperMessage={progressText}
                 onChange={e => setPassword(e.target.value)}
-                renderRightIcon={() => PasswordViewerIcon}
+                renderRightIcon={() => (
+                    <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />
+                )}
                 showMessage={hasMessage}
                 type={viewPassword ? 'text' : 'password'}
             />

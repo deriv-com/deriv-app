@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 import { InputField, Text } from '@deriv/components';
-import { useExchangeRate, useP2PConfig } from '@deriv/hooks';
+import { useExchangeRate, useExchangeRate2, useP2PConfig } from '@deriv/hooks';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
@@ -36,10 +36,17 @@ const FloatingRate = ({
         ui: { current_focus, setCurrentFocus },
     } = useStore();
 
+    const { handleSubscription, exchange_rates } = useExchangeRate2();
+
+    React.useEffect(() => {
+        handleSubscription('USD', local_currency);
+    }, [local_currency, handleSubscription]);
+
+    const exchange_rate = exchange_rates.USD[local_currency] || 1;
+
     const { data: p2p_config } = useP2PConfig();
-    const { getRate } = useExchangeRate();
     const override_exchange_rate = p2p_config?.override_exchange_rate;
-    const market_rate = override_exchange_rate ? Number(override_exchange_rate) : getRate(local_currency);
+    const market_rate = override_exchange_rate ? Number(override_exchange_rate) : exchange_rate;
     const os = mobileOSDetect();
     const market_feed = value ? percentOf(market_rate, value) : market_rate;
     const decimal_place = setDecimalPlaces(market_feed, 6);

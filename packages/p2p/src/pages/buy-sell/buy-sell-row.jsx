@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { Button, Icon, Table, Text } from '@deriv/components';
-import { useExchangeRate } from '@deriv/hooks';
+import { useExchangeRate2 } from '@deriv/hooks';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -24,7 +24,13 @@ const BuySellRow = ({ row: advert }) => {
         client: { currency },
     } = useStore();
     const history = useHistory();
-    const { getRate } = useExchangeRate();
+    const { handleSubscription, exchange_rates } = useExchangeRate2();
+
+    React.useEffect(() => {
+        handleSubscription('USD', local_currency);
+    }, [local_currency, handleSubscription]);
+
+    const exchange_rate = exchange_rates.USD[local_currency] || 1;
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -67,7 +73,7 @@ const BuySellRow = ({ row: advert }) => {
         rate_type,
         rate,
         local_currency,
-        exchange_rate: getRate(local_currency),
+        exchange_rate,
         market_rate: effective_rate,
     });
     const onClickRow = () => {

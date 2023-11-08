@@ -13,7 +13,7 @@ import {
 } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useExchangeRate } from '@deriv/hooks';
+import { useExchangeRate2 } from '@deriv/hooks';
 import { reaction } from 'mobx';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
@@ -43,7 +43,14 @@ const CreateAdForm = () => {
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { useRegisterModalProps } = useModalManagerContext();
-    const { getRate } = useExchangeRate();
+    const { handleSubscription, exchange_rates } = useExchangeRate2();
+    const local_currency = local_currency_config.currency;
+
+    React.useEffect(() => {
+        handleSubscription('USD', local_currency);
+    }, [handleSubscription, local_currency]);
+
+    const exchange_rate = exchange_rates.USD[local_currency] || 1;
 
     // eslint-disable-next-line no-shadow
     const handleSelectPaymentMethods = selected_methods => {
@@ -191,7 +198,7 @@ const CreateAdForm = () => {
                                             <CreateAdSummary
                                                 market_feed={
                                                     floating_rate_store.rate_type === ad_type.FLOAT
-                                                        ? getRate(local_currency_config.currency)
+                                                        ? exchange_rate
                                                         : null
                                                 }
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
@@ -255,7 +262,7 @@ const CreateAdForm = () => {
                                                                 data_testid='float_rate_type'
                                                                 error_messages={errors.rate_type}
                                                                 fiat_currency={currency}
-                                                                local_currency={local_currency_config.currency}
+                                                                local_currency={local_currency}
                                                                 onChange={handleChange}
                                                                 offset={{
                                                                     upper_limit: parseInt(
@@ -290,7 +297,7 @@ const CreateAdForm = () => {
                                                                         }
                                                                         size={isDesktop() ? 'xxs' : 's'}
                                                                     >
-                                                                        {local_currency_config.currency}
+                                                                        {local_currency}
                                                                     </Text>
                                                                 }
                                                                 onChange={e => {

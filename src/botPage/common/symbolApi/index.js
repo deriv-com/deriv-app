@@ -23,7 +23,7 @@ const parseAssetIndex = asset_index => {
 const getAllowedConditionsOrCategoriesForSymbol = symbol => {
     let conditions = [];
     const categories = [];
-    const index = parsed_asset_index[symbol.toLowerCase()];
+    const index = parsed_asset_index?.[symbol.toLowerCase()];
     if (index) {
         Object.keys(config.conditionsCategory).forEach(conditionName => {
             if (conditionName in index) {
@@ -43,41 +43,47 @@ const getCategoryForCondition = condition =>
 export default class _Symbol {
     constructor() {
         this.initPromise = new Promise(resolve => {
-            const getActiveSymbolsLogic = () => {
-                api_base.api
-                    .send({ active_symbols: 'brief' })
-                    .then(r => {
-                        this.activeSymbols = new ActiveSymbols(r.active_symbols);
-                        api_base.api
-                            .send({ asset_index: 1 })
-                            .then(({ asset_index }) => {
-                                parsed_asset_index = parseAssetIndex(asset_index);
-                                resolve();
-                            })
-                            .catch(error => {
-                                globalObserver.emit('Error', error);
-                            });
-                    })
-                    .catch(error => {
-                        globalObserver.emit('Error', error);
-                    });
+            const getActiveSymbolsLogic = async () => {
+                this.activeSymbols = new ActiveSymbols(api_base.active_symbols);
+                try {
+                    const { asset_index } = await api_base.api.send({ asset_index: 1 });
+                    parsed_asset_index = parseAssetIndex(asset_index);
+                    resolve();
+                } catch (error) {
+                    globalObserver.emit('Error', error);
+                }
             };
 
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
             const accounts = getClientAccounts();
             const loginid = getActiveLoginId();
-
-            if (loginid && accounts && accounts?.[loginid]?.token) {
+            const initialize = (account_token = accounts?.[loginid]?.token) => {
                 api_base
-                    .authorize(accounts?.[loginid]?.token)
+                    .authorize(account_token)
                     .then(() => getActiveSymbolsLogic())
                     .catch(e => {
                         globalObserver.emit('Error', e);
                         removeAllTokens();
                         getActiveSymbolsLogic();
                     });
+            };
+
+            if (loginid && accounts && accounts?.[loginid]?.token) {
+                initialize();
             } else {
-                getActiveSymbolsLogic();
+                const url = window.location.href;
+                const urlObject = new URL(url);
+                const queryParams = urlObject.searchParams;
+                const tokens_from_url = Array.from(queryParams.values());
+
+                if (tokens_from_url.length === 0) {
+                    // Used when the user logs out
+                    api_base.getActiveSymbols();
+                    getActiveSymbolsLogic();
+                } else {
+                    // Used when we have a token in the query param
+                    initialize(tokens_from_url[1]);
+                }
             }
         });
     }

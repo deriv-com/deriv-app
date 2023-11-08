@@ -18,9 +18,10 @@ import { checkSwitcherType, isEuByAccount } from '../../common/footer-checks';
 import './header.scss';
 
 const AccountSwitcher = () => {
+    const dispatch = useDispatch();
     const { account_switcher_loader } = useSelector(state => state.ui);
     const { is_logged } = useSelector(state => state.client);
-
+    if (!is_logged) dispatch(setAccountSwitcherLoader(false));
     if (account_switcher_loader) {
         return (
             <div className='header__menu-right-loader'>

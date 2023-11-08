@@ -6,6 +6,7 @@ import { translate } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
 import config from '@currency-config';
 import _Symbol from '../../botPage/common/symbolApi';
+import ActiveSymbols from '../../botPage/common/symbolApi/activeSymbols';
 
 export const symbolApi = new _Symbol();
 
@@ -94,8 +95,14 @@ const getActiveMarket = markets =>
         {}
     );
 
+const getSymbolAndMarkets = api_base_symbols => {
+    const symbol = new ActiveSymbols(api_base_symbols);
+    const markets = getActiveMarket(symbol.getMarkets());
+    return { symbol, markets };
+};
+
 fieldGeneratorMapping.MARKET_LIST = () => {
-    const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
+    const { markets } = getSymbolAndMarkets(api_base.active_symbols);
 
     if (Object.keys(markets).length === 0) {
         return [[translate('Not available'), 'na']];
@@ -104,7 +111,7 @@ fieldGeneratorMapping.MARKET_LIST = () => {
 };
 
 fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
-    const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
+    const { markets } = getSymbolAndMarkets(api_base.active_symbols);
     const marketName = block.getFieldValue('MARKET_LIST');
     const submarketOptions = [];
 
@@ -131,7 +138,7 @@ fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
 };
 
 fieldGeneratorMapping.SYMBOL_LIST = block => () => {
-    const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
+    const { markets } = getSymbolAndMarkets(api_base.active_symbols);
     const submarketName = block.getFieldValue('SUBMARKET_LIST');
     const symbolOptions = [];
 
@@ -143,13 +150,13 @@ fieldGeneratorMapping.SYMBOL_LIST = block => () => {
             const { submarkets } = marketObj;
 
             if (Object.keys(submarkets).length > 0 && submarkets[submarketName]) {
-                const symbols = getActiveSymbols(submarkets[submarketName].symbols);
+                const submarket_symbols = getActiveSymbols(submarkets[submarketName].symbols);
 
                 symbolOptions.push(
-                    ...Object.keys(symbols)
-                        .map(e => [symbols[e].display, symbols[e].symbol])
+                    ...Object.keys(submarket_symbols)
+                        .map(e => [submarket_symbols[e].display, submarket_symbols[e].symbol])
                         // Filter out symbols we don't have contracts for (these symbols have only forward-starting)
-                        .filter(symbol => !['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK'].includes(symbol[1]))
+                        .filter(symbols => !['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK'].includes(symbols[1]))
                 );
             }
         }

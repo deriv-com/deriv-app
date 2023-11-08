@@ -4,7 +4,13 @@ import { Button, Money, ThemedScrollbars } from '@deriv/components';
 import { CFD_PLATFORMS, formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { TAccounts, TDetailsOfDerivAccount, TDetailsOfDerivXAccount, TDetailsOfMT5Account } from 'Types';
+import {
+    TAccounts,
+    TDetailsOfDerivAccount,
+    TDetailsOfDerivXAccount,
+    TDetailsOfMT5Account,
+    TDetailsOfCtraderAccount,
+} from 'Types';
 import ClosingAccountPendingContent from './closing-account-pending-content';
 import ClosingAccountPendingWrapper from './closing-account-pending-wrapper';
 import ClosingAccountPendingBalance from './closing-account-pending-balance';
@@ -30,10 +36,13 @@ const getCurrentMT5Account = (mt5_login_list: DetailsOfEachMT5Loginid[], login_i
 const getCurrentDxtradeAccount = (dxtrade_accounts_list: TDetailsOfDerivXAccount[], login_id: string) =>
     dxtrade_accounts_list.find(account_obj => account_obj.account_id === login_id);
 
+const getCurrentCtraderAccount = (ctrader_accounts_list: TDetailsOfCtraderAccount[], login_id: string) =>
+    ctrader_accounts_list.find(account_obj => account_obj.account_id === login_id);
+
 const ClosingAccountHasPendingConditions = observer(
     ({ details, onConfirm }: TClosingAccountHasPendingConditionsProps) => {
         const { client } = useStore();
-        const { dxtrade_accounts_list, mt5_login_list, account_list } = client;
+        const { dxtrade_accounts_list, mt5_login_list, account_list, ctrader_accounts_list } = client;
 
         let deriv_open_positions: TDetailsOfDerivAccount[] = [];
         let deriv_balance: TDetailsOfDerivAccount[] = [];
@@ -44,6 +53,9 @@ const ClosingAccountHasPendingConditions = observer(
 
         let dxtrade_open_positions: TDetailsOfDerivXAccount[] = [];
         let dxtrade_balance: TDetailsOfDerivXAccount[] = [];
+
+        let ctrader_open_positions: TDetailsOfCtraderAccount[] = [];
+        let ctrader_balance: TDetailsOfCtraderAccount[] = [];
 
         if (details?.pending_withdrawals) {
             Object.keys(details.pending_withdrawals).forEach(login_id => {
@@ -75,6 +87,11 @@ const ClosingAccountHasPendingConditions = observer(
                     if (dxtrade_account) {
                         dxtrade_open_positions = [...dxtrade_open_positions, { ...dxtrade_account, ...info }];
                     }
+
+                    const ctrader_account = getCurrentCtraderAccount(ctrader_accounts_list, login_id);
+                    if (ctrader_account) {
+                        ctrader_open_positions = [...ctrader_open_positions, { ...ctrader_account, ...info }];
+                    }
                 }
             });
         }
@@ -97,6 +114,11 @@ const ClosingAccountHasPendingConditions = observer(
                     const dxtrade_account = getCurrentDxtradeAccount(dxtrade_accounts_list, login_id);
                     if (dxtrade_account) {
                         dxtrade_balance = [...dxtrade_balance, { ...dxtrade_account, ...info }];
+                    }
+
+                    const ctrader_account = getCurrentCtraderAccount(ctrader_accounts_list, login_id);
+                    if (ctrader_account) {
+                        ctrader_balance = [...ctrader_balance, { ...ctrader_account, ...info }];
                     }
                 }
             });
@@ -172,6 +194,18 @@ const ClosingAccountHasPendingConditions = observer(
                         <ClosingAccountPendingBalance
                             platform={CFD_PLATFORMS.DXTRADE}
                             account_balance={dxtrade_balance}
+                        />
+                    )}
+                    {!!ctrader_open_positions.length && (
+                        <ClosingAccountPendingPositions
+                            platform={CFD_PLATFORMS.CTRADER}
+                            open_positions={ctrader_open_positions}
+                        />
+                    )}
+                    {!!ctrader_balance.length && (
+                        <ClosingAccountPendingBalance
+                            platform={CFD_PLATFORMS.CTRADER}
+                            account_balance={ctrader_balance}
                         />
                     )}
                     {!!account_pending_withdrawals.length && (

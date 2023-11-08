@@ -33,6 +33,9 @@ export { default as useGetAccountStatus } from './useGetAccountStatus';
 export { default as useLandingCompany } from './useLandingCompany';
 export { default as useLoginHistory } from './useLoginHistory';
 export { default as useMT5AccountsList } from './useMT5AccountsList';
+export { default as useOnfido } from './useOnfido';
+export { default as useOnfidoNotificationEvent } from './useOnfidoNotificationEvent';
+export { default as useOnfidoServiceToken } from './useOnfidoServiceToken';
 export { default as usePOI } from './usePOI';
 export { default as useResidenceList } from './useResidenceList';
 export { default as useSettings } from './useSettings';
@@ -49,6 +52,5 @@ export { default as useTransferBetweenAccounts } from './useTransferBetweenAccou
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
 export { default as useWalletMigration } from './useWalletMigration';
-export { useGetTwoFa, useGetSecretKey, useSendUserOTP } from './useAccountSecurity';
 export { default as useDxtradeServiceToken } from './useDxtradeServiceToken';
 export { default as useActiveLinkedToTradingAccount } from './useActiveLinkedToTradingAccount';

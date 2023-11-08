@@ -1,7 +1,5 @@
 import { api_base } from '@api-base';
-import { observer } from '@utilities/observer';
 import { roundBalance } from '../helpers';
-import { doUntilDone } from '../tools';
 import { contractStatus, contractSettled, contract as broadcastContract } from '../broadcast';
 import { sell, openContractReceived } from './state/actions';
 
@@ -59,20 +57,7 @@ export default Engine =>
         }
 
         subscribeToOpenContract(contract_id = this.contractId) {
-            if (this.contractId !== contract_id) {
-                this.resetSubscriptionTimeout();
-            }
             this.contractId = contract_id;
-
-            doUntilDone(() =>
-                api_base.api.send({
-                    proposal_open_contract: 1,
-                    contract_id,
-                })
-            ).catch(error => {
-                observer.emit('reset_animation');
-                observer.emit('Error', error);
-            });
         }
 
         resetSubscriptionTimeout(timeout = this.getContractDuration() + AFTER_FINISH_TIMEOUT) {

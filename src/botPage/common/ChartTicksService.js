@@ -44,7 +44,7 @@ export default class ChartTicksService extends TicksService {
             style,
         };
 
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             doUntilDone(() => api_base.api.send(request_object))
                 .then(r => {
                     if (style === 'ticks') {

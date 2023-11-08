@@ -52,6 +52,7 @@ class APIBase {
         this.getLandingCompanyDetails();
         this.getLandingCompany();
         this.getAccountStatus();
+        this.api.send({ proposal_open_contract: 1, subscribe: 1 });
         if (!this.balance_subscription_id) {
             this.getAllBalances();
         }

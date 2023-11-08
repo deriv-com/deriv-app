@@ -35,23 +35,23 @@ const default_mock_store = {
     client: { is_single_currency: false },
 };
 const stake = 'Stake';
-const allowEquals = 'Allow equals';
-const mockedInputField = 'Mocked InputField Component';
-const mockedDropDown = 'Mocked DropDown Component';
-const mockedButtonToggle = 'Mocked Button Toggle Component';
-const mockedMultiplier = 'Mocked Multiplier Component';
-const mockedMultiplierInfo = 'Mocked Multiplier Info Component';
-const mockedMinMaxStakeInfo = 'Mocked Min Max Stake Info Component';
+const allow_equals = 'Allow equals';
+const mocked_input_field = 'Mocked InputField Component';
+const mocked_dropdown = 'Mocked DropDown Component';
+const mocked_button_toggle = 'Mocked Button Toggle Component';
+const mocked_multiplier = 'Mocked Multiplier Component';
+const mocked_multiplier_info = 'Mocked Multiplier Info Component';
+const mocked_min_max_stake_info = 'Mocked Min Max Stake Info Component';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    InputField: jest.fn(() => <div>{mockedInputField}</div>),
-    Dropdown: jest.fn(() => <div>{mockedDropDown}</div>),
-    ButtonToggle: jest.fn(() => <div>{mockedButtonToggle}</div>),
+    InputField: jest.fn(() => <div>{mocked_input_field}</div>),
+    Dropdown: jest.fn(() => <div>{mocked_dropdown}</div>),
+    ButtonToggle: jest.fn(() => <div>{mocked_button_toggle}</div>),
 }));
-jest.mock('../Multiplier/multiplier', () => jest.fn(() => <div>{mockedMultiplier}</div>));
-jest.mock('../Multiplier/info', () => jest.fn(() => <div>{mockedMultiplierInfo}</div>));
-jest.mock('../min-max-stake-info', () => jest.fn(() => <div>{mockedMinMaxStakeInfo}</div>));
+jest.mock('../Multiplier/multiplier', () => jest.fn(() => <div>{mocked_multiplier}</div>));
+jest.mock('../Multiplier/info', () => jest.fn(() => <div>{mocked_multiplier_info}</div>));
+jest.mock('../min-max-stake-info', () => jest.fn(() => <div>{mocked_min_max_stake_info}</div>));
 jest.mock('Stores/Modules/Trading/Helpers/allow-equals', () => ({
     ...jest.requireActual('Stores/Modules/Trading/Helpers/allow-equals'),
     hasCallPutEqual: jest.fn().mockReturnValue(true),
@@ -76,14 +76,14 @@ describe('<Amount />', () => {
         render(mockAmount(mockStore(default_mock_store)));
 
         expect(screen.getByText(stake)).toBeInTheDocument();
-        expect(screen.getByText(mockedInputField)).toBeInTheDocument();
-        expect(screen.getByText(mockedDropDown)).toBeInTheDocument();
-        expect(screen.getByText(mockedMinMaxStakeInfo)).toBeInTheDocument();
+        expect(screen.getByText(mocked_input_field)).toBeInTheDocument();
+        expect(screen.getByText(mocked_dropdown)).toBeInTheDocument();
+        expect(screen.getByText(mocked_min_max_stake_info)).toBeInTheDocument();
 
-        expect(screen.queryByText(allowEquals)).not.toBeInTheDocument();
-        expect(screen.queryByText(mockedMultiplier)).not.toBeInTheDocument();
-        expect(screen.queryByText(mockedMultiplierInfo)).not.toBeInTheDocument();
-        expect(screen.queryByText(mockedButtonToggle)).not.toBeInTheDocument();
+        expect(screen.queryByText(allow_equals)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_multiplier)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_multiplier_info)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_button_toggle)).not.toBeInTheDocument();
     });
     it('should render only specific for Vanillas components if it is a Vanillas contract type', () => {
         default_mock_store.modules.trade.contract_type = VANILLALONG.CALL;
@@ -95,14 +95,14 @@ describe('<Amount />', () => {
         render(mockAmount(mockStore(default_mock_store)));
 
         expect(screen.getByText(stake)).toBeInTheDocument();
-        expect(screen.getByText(mockedInputField)).toBeInTheDocument();
-        expect(screen.getByText(mockedDropDown)).toBeInTheDocument();
-        expect(screen.getByText(mockedMinMaxStakeInfo)).toBeInTheDocument();
+        expect(screen.getByText(mocked_input_field)).toBeInTheDocument();
+        expect(screen.getByText(mocked_dropdown)).toBeInTheDocument();
+        expect(screen.getByText(mocked_min_max_stake_info)).toBeInTheDocument();
 
-        expect(screen.queryByText(allowEquals)).not.toBeInTheDocument();
-        expect(screen.queryByText(mockedMultiplier)).not.toBeInTheDocument();
-        expect(screen.queryByText(mockedMultiplierInfo)).not.toBeInTheDocument();
-        expect(screen.queryByText(mockedButtonToggle)).not.toBeInTheDocument();
+        expect(screen.queryByText(allow_equals)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_multiplier)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_multiplier_info)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_button_toggle)).not.toBeInTheDocument();
     });
     it('should render only specific for Multipliers components if it is a Multiplier contract type', () => {
         default_mock_store.modules.trade.contract_type = 'multiplier';
@@ -111,14 +111,14 @@ describe('<Amount />', () => {
         render(mockAmount(mockStore(default_mock_store)));
 
         expect(screen.getByText(stake)).toBeInTheDocument();
-        expect(screen.getByText(mockedInputField)).toBeInTheDocument();
-        expect(screen.getByText(mockedDropDown)).toBeInTheDocument();
-        expect(screen.getByText(mockedMultiplier)).toBeInTheDocument();
-        expect(screen.getByText(mockedMultiplierInfo)).toBeInTheDocument();
+        expect(screen.getByText(mocked_input_field)).toBeInTheDocument();
+        expect(screen.getByText(mocked_dropdown)).toBeInTheDocument();
+        expect(screen.getByText(mocked_multiplier)).toBeInTheDocument();
+        expect(screen.getByText(mocked_multiplier_info)).toBeInTheDocument();
 
-        expect(screen.queryByText(mockedMinMaxStakeInfo)).not.toBeInTheDocument();
-        expect(screen.queryByText(allowEquals)).not.toBeInTheDocument();
-        expect(screen.queryByText(mockedButtonToggle)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_min_max_stake_info)).not.toBeInTheDocument();
+        expect(screen.queryByText(allow_equals)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_button_toggle)).not.toBeInTheDocument();
     });
     it('should render only specific for RiseFallEquals components if it is a RiseFallEquals contract type', () => {
         default_mock_store.modules.trade.contract_type = 'rise_fall_equal';
@@ -129,21 +129,21 @@ describe('<Amount />', () => {
         ];
         render(mockAmount(mockStore(default_mock_store)));
 
-        expect(screen.getByText(mockedButtonToggle)).toBeInTheDocument();
-        expect(screen.getByText(allowEquals)).toBeInTheDocument();
-        expect(screen.getByText(mockedInputField)).toBeInTheDocument();
-        expect(screen.getByText(mockedDropDown)).toBeInTheDocument();
+        expect(screen.getByText(mocked_button_toggle)).toBeInTheDocument();
+        expect(screen.getByText(allow_equals)).toBeInTheDocument();
+        expect(screen.getByText(mocked_input_field)).toBeInTheDocument();
+        expect(screen.getByText(mocked_dropdown)).toBeInTheDocument();
 
-        expect(screen.queryByText(mockedMultiplier)).not.toBeInTheDocument();
-        expect(screen.queryByText(mockedMultiplierInfo)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_multiplier)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_multiplier_info)).not.toBeInTheDocument();
         expect(screen.queryByText(stake)).not.toBeInTheDocument();
-        expect(screen.queryByText(mockedMinMaxStakeInfo)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_min_max_stake_info)).not.toBeInTheDocument();
     });
     it('should render only input without dropdown if it is single currency contract', () => {
         default_mock_store.client.is_single_currency = true;
         render(mockAmount(mockStore(default_mock_store)));
 
-        expect(screen.getByText(mockedInputField)).toBeInTheDocument();
-        expect(screen.queryByText(mockedDropDown)).not.toBeInTheDocument();
+        expect(screen.getByText(mocked_input_field)).toBeInTheDocument();
+        expect(screen.queryByText(mocked_dropdown)).not.toBeInTheDocument();
     });
 });

@@ -8,7 +8,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import TraderProviders from '../../../../../../trader-providers';
 import Amount from '../amount-mobile';
 
-const mockedNumpadComponent = 'Mocked Numpad Component';
+const mocked_numpad_component = 'Mocked Numpad Component';
 const default_props = {
     toggleModal: jest.fn(),
     duration_value: 3,
@@ -44,7 +44,7 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Numpad: jest.fn(props => (
         <div>
-            <div>{mockedNumpadComponent}</div>
+            <div>{mocked_numpad_component}</div>
             <div>{props.value}</div>
             <button
                 onClick={() => {
@@ -82,14 +82,14 @@ describe('<Amount/>', () => {
     it('should render only one Numpad component with value equal to payout_value if basis_list.length === 1 and basis_list[0].value is payout', () => {
         render(mockAmount(mockStore(default_mock_store), default_props));
 
-        expect(screen.getByText(mockedNumpadComponent)).toBeInTheDocument();
+        expect(screen.getByText(mocked_numpad_component)).toBeInTheDocument();
         expect(screen.getByText(default_props.payout_value)).toBeInTheDocument();
     });
     it('should render only one Numpad component with value equal to stake_value if basis_list.length === 1 and basis_list[0].value is stake', () => {
         default_mock_store.modules.trade.basis_list = [{ text: 'Stake', value: 'stake' }];
         render(mockAmount(mockStore(default_mock_store), default_props));
 
-        expect(screen.getByText(mockedNumpadComponent)).toBeInTheDocument();
+        expect(screen.getByText(mocked_numpad_component)).toBeInTheDocument();
         expect(screen.getByText(default_props.stake_value)).toBeInTheDocument();
     });
     it('should not render extra Numpad components except payout and stake', () => {
@@ -100,7 +100,7 @@ describe('<Amount/>', () => {
         ];
         render(mockAmount(mockStore(default_mock_store), default_props));
 
-        expect(screen.getAllByText(mockedNumpadComponent)).toHaveLength(2);
+        expect(screen.getAllByText(mocked_numpad_component)).toHaveLength(2);
     });
     it('should render MinMaxStakeInfo for Turbos', () => {
         default_mock_store.modules.trade.basis_list = [{ text: 'Stake', value: 'stake' }];
@@ -112,7 +112,7 @@ describe('<Amount/>', () => {
         expect(screen.getByText('1.00')).toBeInTheDocument();
         expect(screen.getByText(/max. stake/i)).toBeInTheDocument();
         expect(screen.getByText('10,000.00')).toBeInTheDocument();
-        expect(screen.getByText(mockedNumpadComponent)).toBeInTheDocument();
+        expect(screen.getByText(mocked_numpad_component)).toBeInTheDocument();
         expect(screen.getByText(default_props.stake_value)).toBeInTheDocument();
     });
     it('should pass the validation if user insert correct stake value', () => {

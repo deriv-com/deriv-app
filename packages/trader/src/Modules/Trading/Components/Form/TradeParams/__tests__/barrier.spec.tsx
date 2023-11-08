@@ -9,9 +9,9 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import Barrier from '../barrier';
 
-const mockedInputField = 'Mocked Input Field Component';
-const mockedLabeledQuantityInputMobile = 'Mocked Labeled Quantity Input Mobile Component';
-const mockedValueMovement = 'Mocked Value Movement Component';
+const mocked_input_field = 'Mocked Input Field Component';
+const mocked_labeled_quantity_input_mobile = 'Mocked Labeled Quantity Input Mobile Component';
+const mocked_value_movement = 'Mocked Value Movement Component';
 const barrier_1 = '1020';
 const barrier_2 = '1025';
 const default_props = {
@@ -38,7 +38,7 @@ const mock_default_store = {
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    InputField: jest.fn(() => <div>{mockedInputField}</div>),
+    InputField: jest.fn(() => <div>{mocked_input_field}</div>),
 }));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -54,12 +54,12 @@ jest.mock('../../LabeledQuantityInputMobile', () =>
                     props.format(barrier_1);
                 }}
             >
-                {mockedLabeledQuantityInputMobile}
+                {mocked_labeled_quantity_input_mobile}
             </button>
         </div>
     ))
 );
-jest.mock('../../Purchase/value-movement', () => jest.fn(() => <div>{mockedValueMovement}</div>));
+jest.mock('../../Purchase/value-movement', () => jest.fn(() => <div>{mocked_value_movement}</div>));
 
 describe('<Barrier />', () => {
     const mockBarrier = (mocked_store: TCoreStores, mocked_props: React.ComponentProps<typeof Barrier>) => {
@@ -84,7 +84,7 @@ describe('<Barrier />', () => {
 
         expect(screen.getByText(barrier_1)).toBeInTheDocument();
         expect(screen.queryByText(barrier_2)).not.toBeInTheDocument();
-        expect(screen.queryByText(mockedInputField)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_input_field)).not.toBeInTheDocument();
     });
     it('should render both barriers if barrier_count === 2 and is_minimized === true', () => {
         mock_default_store.modules.trade.barrier_count = 2;
@@ -92,21 +92,21 @@ describe('<Barrier />', () => {
 
         expect(screen.getByText(barrier_1)).toBeInTheDocument();
         expect(screen.getByText(barrier_2)).toBeInTheDocument();
-        expect(screen.queryByText(mockedInputField)).not.toBeInTheDocument();
+        expect(screen.queryByText(mocked_input_field)).not.toBeInTheDocument();
     });
     it('should render both InputField components with barriers if barrier_count === 2 and is_minimized === false', () => {
         default_props.is_minimized = false;
         render(mockBarrier(mockStore(mock_default_store), default_props));
 
         expect(screen.getByText('Barriers')).toBeInTheDocument();
-        expect(screen.getAllByText(mockedInputField)).toHaveLength(2);
+        expect(screen.getAllByText(mocked_input_field)).toHaveLength(2);
     });
     it('should render both InputField components with barriers if barrier_count === 2 and is_minimized === false', () => {
         default_props.is_minimized = false;
         render(mockBarrier(mockStore(mock_default_store), default_props));
 
         expect(screen.getByText('Barriers')).toBeInTheDocument();
-        expect(screen.getAllByText(mockedInputField)).toHaveLength(2);
+        expect(screen.getAllByText(mocked_input_field)).toHaveLength(2);
     });
 
     it('should render Modal for mobile devices after user clicked on LabeledQuantityInputMobile', () => {
@@ -115,10 +115,10 @@ describe('<Barrier />', () => {
         render(mockBarrier(mockStore(mock_default_store), default_props));
 
         expect(screen.queryByText(/Current Price/i)).not.toBeInTheDocument();
-        userEvent.click(screen.getAllByText(mockedLabeledQuantityInputMobile)[0]);
+        userEvent.click(screen.getAllByText(mocked_labeled_quantity_input_mobile)[0]);
 
         expect(screen.getByText(/Current Price/i)).toBeInTheDocument();
-        expect(screen.getByText(mockedValueMovement)).toBeInTheDocument();
+        expect(screen.getByText(mocked_value_movement)).toBeInTheDocument();
         expect(screen.getByText(/Barrier Price:/i)).toBeInTheDocument();
     });
 });

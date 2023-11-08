@@ -60,19 +60,6 @@ const DxtradeEnterPasswordModal = () => {
                         displayBalance={dxtradeBalance || ''}
                         marketType='all'
                         platform='dxtrade'
-                        renderButton={() => (
-                            <div className='wallets-dxtrade-enter-password__button'>
-                                <WalletButton onClick={hide} size='lg' text='Maybe later' variant='outlined' />
-                                <WalletButton
-                                    onClick={() => {
-                                        hide();
-                                        history.push('/wallets/cashier/transfer');
-                                    }}
-                                    size='lg'
-                                    text='Transfer funds'
-                                />
-                            </div>
-                        )}
                         title={`Your Deriv X${accountType === 'demo' ? ` ${accountType}` : ''} account is ready`}
                     />
                 )}

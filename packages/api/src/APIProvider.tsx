@@ -81,7 +81,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TProps>
         let interval_id: NodeJS.Timer;
 
         if (standalone) {
-            interval_id = setInterval(() => active_connection.send({ time: 1 }), 30000);
+            interval_id = setInterval(() => active_connection.send({ ping: 1 }), 10000);
         }
 
         return () => clearInterval(interval_id);

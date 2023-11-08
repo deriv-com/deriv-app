@@ -6,6 +6,9 @@ import userEvent from '@testing-library/user-event';
 import DurationWrapper from '../duration-wrapper';
 import TraderProviders from '../../../../../../../trader-providers';
 
+jest.mock('../../../DatePicker', () => jest.fn(() => <div>TradingDatePicker</div>));
+jest.mock('../../../TimePicker', () => jest.fn(() => <div>TradingTimePicker</div>));
+
 describe('<DurationWrapper />', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
     beforeEach(() => {
@@ -59,6 +62,7 @@ describe('<DurationWrapper />', () => {
                     onChange: jest.fn(),
                     onChangeMultiple: jest.fn(),
                     start_date: 0,
+                    market_close_times: [],
                     market_open_times: [],
                     validation_errors: { duration: [] },
                 },
@@ -81,7 +85,7 @@ describe('<DurationWrapper />', () => {
             </TraderProviders>
         );
     };
-    it('should render Duration, End time, and 3 Minutes duration', () => {
+    it('should render advanced duration with Duration & End time toggle, and 3 Minutes', () => {
         render(mockDurationWrapper(default_mock_store));
         expect(screen.getByText(/Duration/i)).toBeInTheDocument();
         expect(screen.getByText(/End time/i)).toBeInTheDocument();
@@ -97,7 +101,7 @@ describe('<DurationWrapper />', () => {
         expect(screen.getByText(/Seconds/i)).toBeInTheDocument();
         expect(screen.getByDisplayValue(/15/i)).toBeInTheDocument();
     });
-    it('should execute onChange & onChangeUiStore when a user types a new value', () => {
+    it('should execute onChange & onChangeUiStore when a user is typing a new value', () => {
         default_mock_store.modules.trade.duration = 2;
         default_mock_store.ui.getDurationFromUnit = jest.fn(() => 2);
         render(mockDurationWrapper(default_mock_store));
@@ -108,5 +112,30 @@ describe('<DurationWrapper />', () => {
         });
         expect(default_mock_store.ui.onChangeUiStore).toHaveBeenCalledWith({ name: 'duration_m', value: 25 });
         expect(default_mock_store.modules.trade.onChangeMultiple).toHaveBeenCalledTimes(0);
+    });
+    it('should render simple duration with Ticks & Minutes toggle, and 3 Minutes', () => {
+        default_mock_store.ui.is_advanced_duration = false;
+        default_mock_store.ui.simple_duration_unit = 'm';
+        render(mockDurationWrapper(default_mock_store));
+        expect(screen.getByText(/Ticks/i)).toBeInTheDocument();
+        expect(screen.getByText(/Minutes/i)).toBeInTheDocument();
+        expect(screen.getByDisplayValue(/3/i)).toBeInTheDocument();
+    });
+    it('should render advanced Duration & End time toggle with date & time pickers when expiry_type is endtime', () => {
+        default_mock_store.modules.trade.expiry_type = 'endtime';
+        render(mockDurationWrapper(default_mock_store));
+        expect(screen.getByText(/Duration/i)).toBeInTheDocument();
+        expect(screen.getByText(/End time/i)).toBeInTheDocument();
+        expect(screen.getByText(/TradingDatePicker/i)).toBeInTheDocument();
+        expect(screen.getByText(/TradingTimePicker/i)).toBeInTheDocument();
+    });
+    it('should render simple Duration & End time toggle with date & time pickers when expiry_type is intraday', () => {
+        default_mock_store.ui.is_advanced_duration = false;
+        default_mock_store.modules.trade.expiry_type = 'intraday';
+        render(mockDurationWrapper(default_mock_store));
+        expect(screen.getByText(/Ticks/i)).toBeInTheDocument();
+        expect(screen.getByText(/Minutes/i)).toBeInTheDocument();
+        expect(screen.queryByText(/TradingDatePicker/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/TradingTimePicker/i)).not.toBeInTheDocument();
     });
 });

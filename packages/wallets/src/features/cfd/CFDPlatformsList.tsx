@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletPasswordField, WalletText } from '../../components/Base';
+import { WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
 import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from './components';
@@ -12,7 +12,6 @@ const CFDPlatformsList = () => {
 
     return (
         <div className='wallets-cfd-list'>
-            <WalletPasswordField />
             <section className='wallets-cfd-list__header'>
                 {!isMobile && (
                     <WalletText size='xl' weight='bold'>

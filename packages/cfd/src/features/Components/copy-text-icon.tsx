@@ -2,9 +2,13 @@ import React from 'react';
 import { Clipboard } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import { TCFDAccountCopy } from '../../Components/props.types';
 
-const CopyTextIcon = ({ text, className }: TCFDAccountCopy) => {
+type TCopyTextIcon = {
+    text: string | undefined;
+    className: string;
+};
+
+const CopyTextIcon = ({ text, className }: TCopyTextIcon) => {
     return (
         <div className={className} data-testid='cfd_account_copy_main_div'>
             <Clipboard

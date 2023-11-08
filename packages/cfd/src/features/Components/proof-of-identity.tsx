@@ -12,7 +12,7 @@ type TFormValues = {
     poi_state?: string;
 };
 
-export type TCFDPOIProps = {
+export type TProofOfIdentity = {
     index: number;
     onSubmit: (index: number, value: TCFDValue) => void;
     value: TCFDValue;
@@ -24,7 +24,7 @@ export type TCFDPOIProps = {
     jurisdiction_selected_shortcode: string;
 };
 
-const CFDPOI = observer(({ index, onSave, onSubmit, ...props }: TCFDPOIProps) => {
+const CFDPOI = observer(({ index, onSave, onSubmit, ...props }: TProofOfIdentity) => {
     const { client } = useStore();
     const { account_settings, residence_list } = client;
 

@@ -177,8 +177,8 @@ const ProofOfOwnershipForm = ({
                         const response = await uploader.upload(processed_file);
                         const upload_error = [];
                         if (response.warning) {
-                            if (response.warning.trim() === 'DuplicateUpload' && response.message) {
-                                upload_error[index] = response.message;
+                            if (response?.warning.trim() === 'DuplicateUpload' && response?.message) {
+                                upload_error[index] = response?.message;
                                 setFieldError(card_key, { files: upload_error });
                             }
                         } else {
@@ -188,8 +188,9 @@ const ProofOfOwnershipForm = ({
                     }, Promise.resolve());
                 }
             }, Promise.resolve());
-            setStatus({ is_btn_loading: false });
         } catch (err) {
+            console.warn(err); // eslint-disable-line no-console
+        } finally {
             setStatus({ is_btn_loading: false });
         }
     };
@@ -237,9 +238,8 @@ const ProofOfOwnershipForm = ({
                     <FormFooter>
                         <Button
                             type='submit'
-                            className={classNames('account-form__footer-btn')}
+                            className='account-form__footer-btn'
                             is_disabled={!dirty || !isValid}
-                            data-testid={'submit-button'}
                             has_effect
                             large
                             primary

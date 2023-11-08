@@ -12,6 +12,7 @@ describe('Card', () => {
             payment_method: 'visa',
             items: [
                 {
+                    creation_time: '1699433416524',
                     id: 4,
                     payment_method: 'visa',
                     documents_required: 1,
@@ -34,17 +35,22 @@ describe('Card', () => {
     it('should render expanded card when clicked', () => {
         render(<Card {...mock_props} />);
 
-        userEvent.click(screen.getByTestId('dt_proof-of-ownership-button'));
+        // userEvent.click(screen.getByTestId('dt_proof-of-ownership-button'));
+        userEvent.click(screen.getByRole('button'));
         expect(screen.getByText('Expanded Card')).toBeInTheDocument();
     });
 
     it('should close the rendered expanded card when clicked', () => {
         render(<Card {...mock_props} />);
 
-        userEvent.click(screen.getByTestId('dt_proof-of-ownership-button'));
+        // userEvent.click(screen.getByTestId('dt_proof-of-ownership-button'));
+        userEvent.click(screen.getByRole('button'));
+
         expect(screen.getByText('Expanded Card')).toBeInTheDocument();
 
-        userEvent.click(screen.getByTestId('dt_proof-of-ownership-button'));
+        // userEvent.click(screen.getByTestId('dt_proof-of-ownership-button'));
+        userEvent.click(screen.getByRole('button'));
+
         expect(screen.queryByText('Expanded Card')).not.toBeInTheDocument();
     });
 });

@@ -13,13 +13,14 @@ import './JurisdictionModal.scss';
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
     const [isDynamicLeverageVisible, setIsDynamicLeverageVisible] = useState(false);
+    const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
 
-    const { modalState, show } = useModal();
+    const { getModalState, show } = useModal();
     const { isLoading } = useAvailableMT5Accounts();
     const { isMobile } = useDevice();
 
-    const marketType = modalState?.marketType || 'all';
-    const platform = modalState?.platform || 'mt5';
+    const marketType = getModalState('marketType') || 'all';
+    const platform = getModalState('platform') || 'mt5';
 
     const { title } = MarketTypeDetails[marketType];
 
@@ -33,7 +34,7 @@ const JurisdictionModal = () => {
         ? undefined
         : () => (
               <WalletButton
-                  disabled={!selectedJurisdiction}
+                  disabled={!selectedJurisdiction || !isCheckBoxChecked}
                   isFullWidth={isMobile}
                   onClick={() => show(<MT5PasswordModal marketType={marketType} platform={platform} />)}
                   text='Next'
@@ -52,7 +53,9 @@ const JurisdictionModal = () => {
                 {isDynamicLeverageVisible && <DynamicLeverageTitle />}
                 <div className='wallets-jurisdiction-modal'>
                     <JurisdictionScreen
+                        isCheckBoxChecked={isCheckBoxChecked}
                         selectedJurisdiction={selectedJurisdiction}
+                        setIsCheckBoxChecked={setIsCheckBoxChecked}
                         setSelectedJurisdiction={setSelectedJurisdiction}
                     />
                     <DynamicLeverageScreen />

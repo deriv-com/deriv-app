@@ -1,34 +1,31 @@
 import React from 'react';
 import { Icon, Tabs } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TContent } from './config';
-import throttle from 'lodash.throttle'; // Import throttle
+import classNames from 'classnames';
+import SearchInput from './common/search-input';
 
 type TTutorialsTabDesktop = {
     tutorial_tabs: TContent;
+    prev_active_tutorials: number;
 };
 
-const TutorialsTabDesktop = observer(({ tutorial_tabs }: TTutorialsTabDesktop) => {
+const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: TTutorialsTabDesktop) => {
     const input_ref = React.useRef(null);
     const { dashboard } = useDBotStore();
 
     const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
     const search = faq_search_value?.toLowerCase();
 
-    const onSearch = throttle(event => {
-        setFAQSearchValue(event.target.value);
-    }, 300);
-
-    const onFocusSearch = () => {
-        setActiveTabTutorial(2);
-        input_ref?.current?.focus();
-    };
     const onCloseHandleSearch = () => {
         setFAQSearchValue('');
-        setActiveTabTutorial(0);
+        setActiveTabTutorial(prev_active_tutorials);
     };
+
+    React.useEffect(() => {
+        setFAQSearchValue('');
+    }, [active_tab_tutorials]);
 
     return (
         <div className='dc-tabs__wrapper'>
@@ -40,16 +37,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs }: TTutorialsTabDesktop) =
                     height='1.6rem'
                     icon='IcSearch'
                 />
-                <input
-                    ref={input_ref}
-                    data-testid='id-test-input-search'
-                    type='text'
-                    placeholder={localize('Search')}
-                    className='dc-tabs__wrapper__group__search-input'
-                    onChange={onSearch}
-                    onFocus={onFocusSearch}
-                    value={faq_search_value}
-                />
+                <SearchInput ref={input_ref} faq_value={faq_search_value} setFaqSearchContent={setFAQSearchValue} />
                 {search && (
                     <Icon
                         className='close-icon'
@@ -61,12 +49,23 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs }: TTutorialsTabDesktop) =
                     />
                 )}
             </div>
-            <Tabs className='tutorials' active_index={active_tab_tutorials} onTabItemClick={setActiveTabTutorial} top>
-                {tutorial_tabs.map(({ label, content }) => (
-                    <div label={label} key={label}>
-                        {content}
-                    </div>
-                ))}
+            <Tabs
+                className={classNames('tutorials', {
+                    'tutorials-guide': prev_active_tutorials === 0,
+                    'tutorials-faq': prev_active_tutorials === 1,
+                })}
+                active_index={active_tab_tutorials}
+                onTabItemClick={setActiveTabTutorial}
+                top
+            >
+                {tutorial_tabs.map(
+                    ({ label, content }) =>
+                        content && (
+                            <div label={label} key={label}>
+                                {content}
+                            </div>
+                        )
+                )}
             </Tabs>
         </div>
     );

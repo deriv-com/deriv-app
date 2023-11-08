@@ -4,37 +4,21 @@ import FAQContent from '../../faq-content';
 import GuideContent from '../../guide-content';
 import NoSearchResult from '../no-search-result-found';
 
-const GuideTab = React.memo(
-    ({ guideList }) => <GuideContent guide_list={guideList} />,
-    (prevProps, nextProps) => {
-        return prevProps.guideList === nextProps.guideList;
-    }
-);
-GuideTab.displayName = 'GuideTab';
+export const GuideTab = ({ guideList }) => <GuideContent guide_list={guideList} />;
 
-const FAQTab = React.memo(
-    ({ faqList, isMobile }) => <FAQContent faq_list={faqList} hide_header={isMobile} />,
-    (prevProps, nextProps) => {
-        return prevProps.faqList === nextProps.faqList;
-    }
-);
-FAQTab.displayName = 'FAQTab';
+export const FAQTab = ({ faqList, isMobile }) => <FAQContent faq_list={faqList} hide_header={isMobile} />;
 
-const SearchTab = React.memo(
-    ({ filteredList, guideList, faqList, isMobile, search }) =>
-        filteredList.length > 0 ? (
-            <>
-                <GuideTab guideList={guideList} />
-                <FAQTab faqList={faqList} isMobile={isMobile} />
-            </>
-        ) : (
-            <>{search ? <NoSearchResult /> : null}</>
-        ),
-    (prevProps, nextProps) => {
-        return prevProps.filteredList === nextProps.filteredList;
-    }
-);
-SearchTab.displayName = 'SearchTab';
+export const SearchTab = ({ filteredList, guideList, faqList, isMobile, search }) =>
+    filteredList.length > 0 ? (
+        <>
+            {guideList.length > 0 && <GuideTab guideList={guideList} />}
+            {faqList.length > 0 && <FAQTab faqList={faqList} isMobile={isMobile} />}
+        </>
+    ) : (
+        <>
+            <NoSearchResult />
+        </>
+    );
 
 export const generateTutorialTabs = (sidebar_content, is_mobile, search) => {
     const { guide_tab_content, faq_tab_content, filtered_tab_list } = sidebar_content;

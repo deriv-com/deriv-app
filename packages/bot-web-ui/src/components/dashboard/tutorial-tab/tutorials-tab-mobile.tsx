@@ -5,13 +5,13 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TContent } from './config';
-import throttle from 'lodash.throttle';
+import SearchInput from './common/search-input';
 
 type TTutorialsTabMobile = {
     tutorial_tabs: TContent;
 };
 
-const TutorialsTabMobile = observer(({ tutorial_tabs }: TTutorialsTabMobile) => {
+const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: TTutorialsTabMobile) => {
     const { dashboard } = useDBotStore();
     const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue, active_tab } = dashboard;
 
@@ -21,22 +21,9 @@ const TutorialsTabMobile = observer(({ tutorial_tabs }: TTutorialsTabMobile) => 
     const [showSearchBar, setShowSearchBar] = React.useState(false);
 
     React.useEffect(() => {
-        if (!search) {
-            setSelectedTab(tutorial_tabs[active_tab_tutorials] || {});
-        } else {
-            setShowSearchBar(true);
-        }
+        if (search) setShowSearchBar(true);
         setSelectedTab(tutorial_tabs[active_tab_tutorials] || {});
-    }, [active_tab_tutorials, active_tab, faq_search_value, selectedTab]);
-
-    const throttledSearch = throttle(value => {
-        setFAQSearchValue(value);
-    }, 300);
-
-    const onSearch = event => {
-        const value = event.target.value;
-        throttledSearch(value);
-    };
+    }, [tutorial_tabs]);
 
     const onFocusSearch = () => setActiveTabTutorial(2);
 
@@ -51,8 +38,9 @@ const TutorialsTabMobile = observer(({ tutorial_tabs }: TTutorialsTabMobile) => 
 
     const onClickBackButton = () => {
         setFAQSearchValue('');
-        setActiveTabTutorial(0);
         setShowSearchBar(!showSearchBar);
+        setActiveTabTutorial(prev_active_tutorials);
+        setSelectedTab(tutorial_tabs[prev_active_tutorials] || {});
     };
 
     const onCloseHandleSearch = () => {
@@ -76,16 +64,7 @@ const TutorialsTabMobile = observer(({ tutorial_tabs }: TTutorialsTabMobile) => 
                     className='arrow-left-bold'
                     icon='IcArrowLeftBold'
                 />
-
-                <input
-                    type='text'
-                    placeholder={localize('Search')}
-                    className='dc-tabs__wrapper__group__search-input'
-                    data-testid='id-test-input-search'
-                    onChange={onSearch}
-                    onFocus={onFocusSearch}
-                    value={faq_search_value}
-                />
+                <SearchInput faq_value={faq_search_value} setFaqSearchContent={setFAQSearchValue} />
                 {search && (
                     <Icon
                         data_testid='id-close-icon'

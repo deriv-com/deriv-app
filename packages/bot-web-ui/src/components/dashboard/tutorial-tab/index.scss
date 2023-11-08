@@ -338,6 +338,14 @@
                         &:first-child {
                             margin-top: -7.2rem;
                         }
+                        .tutorials-guide:nth-child(1),
+                        .tutorials-faq:nth-child(2) {
+                            background-color: var(--sidebar-tab);
+                            border-radius: 0.4rem 0.4rem 0 0;
+                            transition: all 0.6s;
+                            font-weight: bold;
+                            pointer-events: none;
+                        }
                     }
                 }
 

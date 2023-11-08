@@ -10,6 +10,7 @@ declare global {
     interface Window {
         ReactQueryClient?: QueryClient;
         DerivAPI?: Record<string, DerivAPIBasic>;
+        WSConnections?: Record<string, WebSocket>;
     }
 }
 
@@ -23,24 +24,44 @@ const getSharedQueryClientContext = (): QueryClient => {
     return window.ReactQueryClient;
 };
 
+/**
+ * Handles reconnection logic by reinitializing the WebSocket instance if it is in
+ * closing or closed state.
+ * @param wss_url WebSocket URL
+ * @returns
+ */
+const handleReconnection = (wss_url: string) => {
+    if (!window.WSConnections) return;
+    const currentWebsocket = window.WSConnections[wss_url];
+    if (currentWebsocket instanceof WebSocket && [2, 3].includes(currentWebsocket.readyState)) {
+        initializeDerivWS();
+    }
+};
+
 // This is a temporary workaround to share a single `DerivAPIBasic` instance for every unique URL.
 // Later once we have each package separated we won't need this anymore and can remove this.
-const getDerivAPIInstance = (): DerivAPIBasic => {
+const initializeDerivWS = (): DerivAPIBasic => {
+    if (!window.WSConnections) {
+        window.WSConnections = {};
+    }
+
     const endpoint = getSocketURL();
     const app_id = getAppId();
     const language = 'EN'; // Need to use the language from the app context.
     const brand = 'deriv';
-    const wss = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
+    const wss_url = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
+    window.WSConnections[wss_url] = new WebSocket(wss_url);
+    window.WSConnections[wss_url].addEventListener('close', () => handleReconnection(wss_url));
 
     if (!window.DerivAPI) {
         window.DerivAPI = {};
     }
 
-    if (!window.DerivAPI?.[wss]) {
-        window.DerivAPI[wss] = new DerivAPIBasic({ connection: new WebSocket(wss) });
+    if (!window.DerivAPI?.[wss_url]) {
+        window.DerivAPI[wss_url] = new DerivAPIBasic({ connection: window.WSConnections[wss_url] });
     }
 
-    return window.DerivAPI?.[wss];
+    return window.DerivAPI?.[wss_url];
 };
 
 const queryClient = getSharedQueryClientContext();
@@ -54,7 +75,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TProps>
     const WS = useWS();
     // Use the new API instance if the `standalone` prop is set to true,
     // else use the legacy socket connection.
-    const active_connection = standalone ? getDerivAPIInstance() : WS;
+    const active_connection = standalone ? initializeDerivWS() : WS;
 
     return (
         <APIContext.Provider value={active_connection}>

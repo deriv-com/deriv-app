@@ -16,4 +16,4 @@ const isFileSupported = files => files.filter(each_file => getPotSupportedFiles(
 export const getErrorMessage = files =>
     isFileTooLarge(files) && isFileSupported(files)
         ? localize('Cannot upload a file over 5MB')
-        : localize('File uploaded is not supported');
+        : localize('The file you uploaded is not supported. Upload another.');

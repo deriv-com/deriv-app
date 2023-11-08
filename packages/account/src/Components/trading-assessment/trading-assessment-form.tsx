@@ -12,7 +12,7 @@ import ScrollToFieldWithError from 'Components/forms/scroll-to-field-with-error'
 import { MAX_QUESTION_TEXT_LENGTH } from 'Constants/trading-assessment';
 import { useStore } from '@deriv/stores';
 
-type TTradingAssessmentForm = {
+type TradingAssessmentFormProps = {
     class_name?: string;
     disabled_items: string[];
     form_value: TFormData;
@@ -32,7 +32,7 @@ const TradingAssessmentForm = ({
     should_move_to_next,
     setSubSectionIndex,
     is_independent_section,
-}: TTradingAssessmentForm) => {
+}: TradingAssessmentFormProps) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const assessment_questions = getTradingAssessmentQuestions();

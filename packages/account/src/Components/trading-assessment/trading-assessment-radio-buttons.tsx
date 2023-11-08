@@ -3,7 +3,7 @@ import { Field } from 'formik';
 import { Text, RadioGroup } from '@deriv/components';
 import { TFormData } from 'Types';
 
-type TTradingAssessmentRadioButton = {
+type TradingAssessmentRadioButtonProps = {
     disabled_items: string[];
     text?: string;
     list: { text: string; value: string }[];
@@ -21,7 +21,7 @@ const TradingAssessmentRadioButton = ({
     values,
     form_control,
     setEnableNextSection,
-}: TTradingAssessmentRadioButton) => {
+}: TradingAssessmentRadioButtonProps) => {
     React.useEffect(() => {
         setEnableNextSection(!!values[form_control]);
     }, [form_control, setEnableNextSection, values]);

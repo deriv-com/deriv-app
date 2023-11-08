@@ -2,7 +2,7 @@ import React from 'react';
 import { TFormData } from 'Types';
 import TradingAssessmentForm from './trading-assessment-form';
 
-type TTradingAssessmentNewUser = {
+type TradingAssessmentNewUserProps = {
     disabled_items: string[];
     goToNextStep: () => void;
     goToPreviousStep: () => void;
@@ -30,7 +30,7 @@ const TradingAssessmentNewUser = ({
     getCurrentStep,
     value,
     setSubSectionIndex,
-}: TTradingAssessmentNewUser) => {
+}: TradingAssessmentNewUserProps) => {
     const handleCancel = (values: TFormData) => {
         const current_step = getCurrentStep() - 1;
         onSave(current_step, values);

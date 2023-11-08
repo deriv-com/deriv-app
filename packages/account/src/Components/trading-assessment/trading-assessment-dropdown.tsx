@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { TFormData, TQuestion } from 'Types';
 import { MAX_QUESTION_TEXT_LENGTH } from 'Constants/trading-assessment';
 
-type TTradingAssessmentDropdown = {
+type TradingAssessmentDropdownProps = {
     disabled_items: string[];
     item_list: TQuestion[];
     onChange: (
@@ -38,7 +38,7 @@ const TradingAssessmentDropdown = ({
     values,
     setFieldValue,
     setEnableNextSection,
-}: TTradingAssessmentDropdown) => {
+}: TradingAssessmentDropdownProps) => {
     React.useEffect(() => {
         checkIfAllFieldsFilled();
     }, [values]);

@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react';
 import { useCashierFiatAddress } from '@deriv/api';
-import { Loader } from '../../../../components';
-import { WithdrawalVerificationModule } from '../WithdrawalVerification';
+import { Loader, WalletsErrorScreen } from '../../../../components';
+import { isServerError } from '../../../../utils/utils';
+
 import './WithdrawalFiat.scss';
 
 const WithdrawalFiat = () => {
     const verificationCode = sessionStorage.getItem('verification_code');
-    const { data: iframeUrl, isLoading, mutate } = useCashierFiatAddress();
+    const { data: iframeUrl, error: withdrawalFiatError, isError, isLoading, mutate } = useCashierFiatAddress();
+
+    useEffect(() => {
+        return () => sessionStorage.removeItem('verification_code');
+    }, []);
 
     useEffect(() => {
         if (iframeUrl) sessionStorage.removeItem('verification_code');
@@ -19,22 +24,25 @@ const WithdrawalFiat = () => {
             });
     }, [mutate, verificationCode]);
 
-    if (verificationCode || iframeUrl) {
-        return (
-            <React.Fragment>
-                {isLoading && <Loader />}
-                {iframeUrl && (
-                    <iframe
-                        className='wallets-withdrawal-fiat__iframe'
-                        key={iframeUrl}
-                        src={iframeUrl}
-                        style={{ display: isLoading ? 'none' : 'block' }}
-                    />
-                )}
-            </React.Fragment>
-        );
+    if (isError && isServerError(withdrawalFiatError.error)) {
+        sessionStorage.removeItem('verification_code');
+        return <WalletsErrorScreen message={withdrawalFiatError.error.message} />;
     }
-    return <WithdrawalVerificationModule />;
+
+    return (
+        <React.Fragment>
+            {isLoading && <Loader />}
+            {iframeUrl && (
+                <iframe
+                    className='wallets-withdrawal-fiat__iframe'
+                    key={iframeUrl}
+                    src={iframeUrl}
+                    style={{ display: isLoading ? 'none' : 'block' }}
+                />
+            )}
+        </React.Fragment>
+    );
+    // return null;
 };
 
 export default WithdrawalFiat;

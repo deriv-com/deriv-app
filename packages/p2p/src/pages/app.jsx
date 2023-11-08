@@ -5,6 +5,7 @@ import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
+import { ExchangeRatesProvider } from '@deriv/stores/src/providers';
 import ServerTime from 'Utils/server-time';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
@@ -245,11 +246,13 @@ const App = () => {
     return (
         <>
             <main className='p2p'>
-                <ModalManagerContextProvider>
-                    <ModalManager />
-                    <AppContent order_id={order_id} />
-                    <Routes />
-                </ModalManagerContextProvider>
+                <ExchangeRatesProvider>
+                    <ModalManagerContextProvider>
+                        <ModalManager />
+                        <AppContent order_id={order_id} />
+                        <Routes />
+                    </ModalManagerContextProvider>
+                </ExchangeRatesProvider>
             </main>
         </>
     );

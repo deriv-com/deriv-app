@@ -274,7 +274,7 @@ export default class AccountTransferStore {
         }
 
         if (!is_from_derivgo && transfer_between_accounts && Array.isArray(transfer_between_accounts.accounts)) {
-            return;
+            transfer_between_accounts.accounts = transfer_between_accounts.accounts || [];
         }
 
         const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;

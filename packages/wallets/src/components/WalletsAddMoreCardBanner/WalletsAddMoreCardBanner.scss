@@ -52,4 +52,12 @@
             text-transform: uppercase;
         }
     }
+
+    &__success-footer {
+        width: 24rem;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
 }

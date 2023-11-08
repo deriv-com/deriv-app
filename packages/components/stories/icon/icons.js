@@ -256,7 +256,6 @@ export const icons =
         'IcAccountTick',
         'IcAccountTransferColored',
         'IcAccountTransfer',
-        'IcAccountTrashCanDashboard',
         'IcAccountTrashCan',
         'IcAccountWebsite',
         'IcAddAccount',

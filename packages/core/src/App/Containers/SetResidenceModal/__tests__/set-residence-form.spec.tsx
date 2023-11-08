@@ -32,7 +32,7 @@ describe('SetResidenceForm', () => {
                 <SetResidenceForm {...{ ...mock_props, errors: { residence: ['error1'] } }} />
             </Formik>
         );
-        expect(screen.queryByText('Country of residence is where you currently live.')).not.toBeInTheDocument();
+        expect(screen.queryByText('Select the country where you currently live.')).not.toBeInTheDocument();
     });
 
     it('should display the hint text if there are no errors', () => {
@@ -41,6 +41,6 @@ describe('SetResidenceForm', () => {
                 <SetResidenceForm {...mock_props} />
             </Formik>
         );
-        expect(screen.getByText('Country of residence is where you currently live.')).toBeInTheDocument();
+        expect(screen.getByText('Select the country where you currently live.')).toBeInTheDocument();
     });
 });

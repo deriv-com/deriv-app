@@ -13,6 +13,7 @@ type TAccumulatorsProfitLossText = Pick<ProposalOpenContract, 'current_spot' | '
     TProposalOpenContractProfit & {
         className?: string;
         is_beta_chart?: boolean;
+        is_crypto: boolean;
     };
 
 const ACTIONS = {
@@ -28,10 +29,11 @@ const AccumulatorsProfitLossText = ({
     className = 'sc-accumulators-profit-loss-text',
     profit,
     is_beta_chart,
+    is_crypto,
 }: TAccumulatorsProfitLossText) => {
     const [is_fading_in, setIsFadingIn] = React.useState(false);
     const [is_sliding, setIsSliding] = React.useState(false);
-    const formatted_profit = formatMoney(currency ?? '', profit, true, 0, 0);
+    const formatted_profit = is_crypto ? profit.toFixed(2) : formatMoney(currency ?? '', profit, true, 0, 0);
     const prev_profit = React.useRef(formatted_profit);
     const prev_profit_tenth = +prev_profit.current?.split('.')[1][0];
     const [current_profit_tenth, setCurrentProfitTenth] = React.useState(prev_profit_tenth);
@@ -139,7 +141,7 @@ const AccumulatorsProfitLossText = ({
                 {`${profit_hundredths}`}
             </Text>
             <Text size={isMobile() ? 'xxxs' : 'xxs'} as='div' className={`${className}__currency`}>
-                {getCurrencyDisplayCode(currency)}
+                {is_crypto ? '%' : getCurrencyDisplayCode(currency)}
             </Text>
         </FastMarkerComponent>
     );

@@ -11,6 +11,7 @@ describe('AccumulatorsProfitLossText', () => {
     const props = {
         className: 'profit-loss-text',
         currency: 'USD',
+        is_crypto: false,
         profit: +0.35,
     };
     it('should render AccumulatorsProfitLossText', () => {

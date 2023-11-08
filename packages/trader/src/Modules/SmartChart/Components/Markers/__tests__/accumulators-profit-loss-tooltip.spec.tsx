@@ -19,6 +19,8 @@ describe('AccumulatorsProfitLossTooltip', () => {
         profit: +0.15,
         alignment: 'right',
         should_show_profit_text: true,
+        is_beta_chart: false,
+        underlying: 'R_100',
     };
     const profit_text = 'Total profit/loss:';
 

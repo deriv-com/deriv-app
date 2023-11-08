@@ -14,10 +14,10 @@ type TMultipliersInfo = {
     commission_text_size?: string;
     commission?: number | null;
     is_tooltip_relative?: boolean;
+    multiplier?: number;
     should_show_tooltip?: boolean;
     stop_out_text_size?: string;
     stop_out?: number | null;
-    multiplier?: number;
 };
 
 type TPopoverPosition = React.ComponentProps<typeof Popover>['alignment'];

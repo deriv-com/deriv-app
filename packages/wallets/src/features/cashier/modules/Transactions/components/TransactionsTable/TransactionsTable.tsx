@@ -28,7 +28,7 @@ const TransactionsTable = <T,>({ columns, data, fetchMore, groupBy, rowGroupRend
             ref={tableContainerRef}
         >
             {table.getRowModel().rows.map(rowGroup => (
-                <div className='wallets-transactions-table-row' key={rowGroup.id}>
+                <div className='wallets-transactions-table__row' key={rowGroup.id}>
                     {rowGroupRender(rowGroup.original)}
                     {rowGroup.subRows.map(row => (
                         <div key={row.id}>{rowRender(row.original)}</div>

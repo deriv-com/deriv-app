@@ -6,18 +6,22 @@ import type {
     useAvailableMT5Accounts,
     useAvailableWallets,
     useCreateOtherCFDAccount,
+    useCreateWallet,
     useCryptoTransactions,
     useCtraderAccountsList,
     useCurrencyConfig,
     useDxtradeAccountsList,
+    useDynamicLeverage,
     useMT5AccountsList,
     useSortedMT5Accounts,
+    useTransactions,
     useWalletAccountsList,
 } from '@deriv/api';
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
     export type AvailableMT5Accounts = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number];
+    export type CreateWallet = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];
     export type MT5AccountsList = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
@@ -28,15 +32,19 @@ export namespace THooks {
     export type ActiveTradingAccount = NonNullable<ReturnType<typeof useActiveTradingAccount>['data']>;
     export type ActiveAccount = NonNullable<ReturnType<typeof useActiveAccount>['data']>;
     export type AvailableWallets = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[number];
+    export type DynamicLeverage = NonNullable<ReturnType<typeof useDynamicLeverage>['data']>[number];
     export type CryptoTransactions = NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];
+    export type Transactions = NonNullable<ReturnType<typeof useTransactions>['data']>[number];
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace TPlatforms {
     export type All = MT5 | OtherAccounts | SortedMT5Accounts;
     export type MT5 = THooks.AvailableMT5Accounts['platform'];
-    export type OtherAccounts =
-        | Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'];
+    export type OtherAccounts = Exclude<
+        Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'],
+        'derivez'
+    >;
     export type SortedMT5Accounts = THooks.SortedMT5Accounts['platform'];
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace

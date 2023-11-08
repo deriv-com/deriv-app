@@ -1,127 +1,146 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import classNames from 'classnames';
 import moment from 'moment';
-import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api';
+import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api';
+import { WalletText } from '../../../../../../components/Base';
+import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
+import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
+import { THooks } from '../../../../../../types';
+import { WalletActionModal } from '../../../../components/WalletActionModal';
 import './TransactionsPendingRow.scss';
 
-const statusCodeMapper = {
-    deposit: {
-        CONFIRMED: {
-            description: 'Your deposit is successful.',
-            name: 'Successful',
-        },
-        ERROR: {
-            description:
-                'Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.',
-            name: 'Unsuccessful',
-        },
-        PENDING: {
-            description: 'We’ve received your request and are waiting for more blockchain confirmations.',
-            name: 'In process',
-        },
-    },
-    withdrawal: {
-        CANCELLED: {
-            description: 'You’ve cancelled your withdrawal request.',
-            name: 'Cancelled',
-        },
-        ERROR: {
-            description:
-                'Your withdrawal is unsuccessful due to an error on the blockchain. Please contact us via live chat for more info.',
-            name: 'Unsuccessful',
-        },
-        LOCKED: {
-            description:
-                "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
-            name: 'In review',
-        },
-        PERFORMING_BLOCKCHAIN_TXN: {
-            description: 'We’re sending your request to the blockchain.',
-            name: 'In process',
-        },
-        PROCESSING: {
-            description: 'We’re awaiting confirmation from the blockchain.',
-            name: 'In process',
-        },
-        REJECTED: {
-            description: "Your withdrawal is unsuccessful. We've sent you an email with more information.",
-            name: 'Unsuccessful',
-        },
-        REVERTED: {
-            description: "Your withdrawal is unsuccessful. We've sent you an email with more information.",
-            name: 'Unsuccessful',
-        },
-        REVERTING: {
-            description: "We're processing your withdrawal.",
-            name: 'In process',
-        },
-        SENT: {
-            description: 'Your withdrawal is successful.',
-            name: 'Successful',
-        },
-        VERIFIED: {
-            description: 'We’re processing your withdrawal.',
-            name: 'In process',
-        },
-    },
-};
-
 type TProps = {
-    transaction: NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
+    transaction: THooks.CryptoTransactions;
 };
 
 const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     const { data } = useActiveWalletAccount();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
-    const formattedStatus = useMemo(() => {
-        if (transaction.transaction_type === 'deposit') {
-            return statusCodeMapper.deposit[transaction.status_code];
-        } else if (transaction.transaction_type === 'withdrawal') {
-            return statusCodeMapper.withdrawal[transaction.status_code];
-        }
-    }, [transaction]);
+    const { hide, show } = useModal();
+
+    const { mutate } = useCancelCryptoTransaction();
+
+    const cancelTransaction = useCallback(() => {
+        mutate({ payload: { id: transaction.id } });
+        hide();
+    }, [hide, mutate, transaction.id]);
 
     return (
         <div className='wallets-transactions-pending-row'>
-            <div className='wallets-transactions-pending-row-details'>
+            <div className='wallets-transactions-pending-row__details'>
                 <WalletCurrencyCard currency={data?.currency || 'USD'} isDemo={data?.is_virtual} size='md' />
-                <div>
-                    <p className='wallets-transactions-pending-row__title'>{transaction.transaction_type}</p>
-                    <p className='wallets-transactions-pending-row-details__wallet-name'>{displayCode} Wallet</p>
+                <div className='wallets-transactions-pending-row__column'>
+                    <WalletText color='primary' size='xs'>
+                        {transaction.transaction_type.charAt(0).toUpperCase() + transaction.transaction_type.slice(1)}
+                    </WalletText>
+                    <WalletText color='general' size='xs' weight='bold'>
+                        {displayCode} Wallet
+                    </WalletText>
                 </div>
             </div>
-            <div className='wallets-transactions-pending-row__transaction-hash'>
-                <p className='wallets-transactions-pending-row__title'>Transaction hash</p>
-                <p className='wallets-transactions-pending-row__transaction-value'>
+            <div
+                className={classNames(
+                    'wallets-transactions-pending-row__column',
+                    'wallets-transactions-pending-row__transaction-hash'
+                )}
+            >
+                <WalletText color='primary' size='xs'>
+                    Transaction hash
+                </WalletText>
+                <WalletText color='red' size='xs' weight='bold'>
                     {transaction.formatted_transaction_hash}
-                </p>
-            </div>
-            <div className='wallets-transactions-pending-row__transaction-address'>
-                <p className='wallets-transactions-pending-row__title'>Address</p>
-                <p className='wallets-transactions-pending-row__transaction-value'>
-                    {transaction.formatted_address_hash}
-                </p>
-            </div>
-            <div>
-                <p className='wallets-transactions-pending-row__title'>Confirmations</p>
-                <p className='wallets-transactions-pending-row__transaction-value wallets-transactions-pending-row__transaction-value--center'>
-                    {transaction.formatted_confirmations}
-                </p>
-            </div>
-            <div>
-                <p className='wallets-transactions-pending-row__title'>Time</p>
-                <p>{moment.unix(transaction.submit_date).toLocaleString()}</p>
+                </WalletText>
             </div>
             <div
-                className={`wallets-transactions-pending-row__transaction-amount ${
-                    transaction.is_deposit ? 'wallets-transactions-pending-row__transaction-amount__deposit' : ''
-                }`}
+                className={classNames(
+                    'wallets-transactions-pending-row__column',
+                    'wallets-transactions-pending-row__transaction-address'
+                )}
             >
-                {transaction.is_deposit ? '+' : '-'}
-                {transaction.amount} {displayCode}
+                <WalletText color='primary' size='xs'>
+                    Address
+                </WalletText>
+                <WalletText color='red' size='xs' weight='bold'>
+                    {transaction.formatted_address_hash}
+                </WalletText>
             </div>
-            <div className='wallets-transactions-pending-row__transaction-status'>
-                <span>{formattedStatus?.name}</span>
+            <div
+                className={classNames(
+                    'wallets-transactions-pending-row__column',
+                    'wallets-transactions-pending-row__transaction-confirmations'
+                )}
+            >
+                <WalletText color='primary' size='xs'>
+                    Confirmations
+                </WalletText>
+                <WalletText align='center' color='red' size='xs' weight='bold'>
+                    {transaction.formatted_confirmations}
+                </WalletText>
+            </div>
+            <div
+                className={classNames(
+                    'wallets-transactions-pending-row__column',
+                    'wallets-transactions-pending-row__transaction-time'
+                )}
+            >
+                <WalletText color='primary' size='xs'>
+                    Time
+                </WalletText>
+                <WalletText color='general' size='2xs'>
+                    {moment.unix(transaction.submit_date).format('DD MMM YYYY HH:mm:ss [GMT]')}
+                </WalletText>
+            </div>
+            <div
+                className={classNames(
+                    'wallets-transactions-pending-row__column',
+                    'wallets-transactions-pending-row__transaction-amount'
+                )}
+            >
+                <WalletText align='right' color={transaction.is_deposit ? 'success' : 'red'} size='sm' weight='bold'>
+                    {transaction.is_deposit ? '+' : '-'}
+                    {transaction.formatted_amount}
+                </WalletText>
+            </div>
+            <div className={classNames('wallets-transactions-pending-row__transaction-status')}>
+                <div
+                    className={classNames(
+                        'wallets-transactions-pending-row__transaction-status-dot',
+                        `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
+                            .toLowerCase()
+                            .replace('_', '-')}`
+                    )}
+                />
+                <WalletText color='general' size='sm'>
+                    {transaction.status_name}
+                </WalletText>
+                {transaction.is_valid_to_cancel && (
+                    <button
+                        className='wallets-transactions-pending-row__transaction-cancel-button'
+                        onClick={() =>
+                            show(
+                                <WalletActionModal
+                                    actionButtonsOptions={[
+                                        {
+                                            onClick: hide,
+                                            text: "No, don't cancel",
+                                        },
+                                        {
+                                            isPrimary: true,
+                                            onClick: cancelTransaction,
+                                            text: 'Yes, cancel',
+                                        },
+                                    ]}
+                                    description='Are you sure you want to cancel this transaction?'
+                                    hideCloseButton={true}
+                                    title='Cancel transaction'
+                                />
+                            )
+                        }
+                    >
+                        <IcCrossLight />
+                    </button>
+                )}
             </div>
         </div>
     );

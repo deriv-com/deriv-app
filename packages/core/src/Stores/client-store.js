@@ -153,6 +153,7 @@ export default class ClientStore extends BaseStore {
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
     external_url_params = {};
+    is_already_attempted = false;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -224,6 +225,7 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             p2p_advertiser_info: observable,
             prev_account_type: observable,
+            is_already_attempted: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -406,6 +408,7 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
+            setIsAlreadyAttempted: action.bound,
             is_beta_chart: observable,
             setIsBetaChart: action.bound,
         });
@@ -1679,11 +1682,11 @@ export default class ClientStore extends BaseStore {
                 Analytics.setAttributes({
                     app_id: getAppId(),
                 });
-                tracking.identifyEvent(user_id, {
+                tracking?.identifyEvent(user_id, {
                     language: getLanguage().toLowerCase(),
                 });
                 const current_page = window.location.hostname + window.location.pathname;
-                Analytics.pageView(current_page);
+                Analytics?.pageView(current_page);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1757,7 +1760,7 @@ export default class ClientStore extends BaseStore {
             if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
             this.loginid !== 'null' && Analytics.setAttributes({ account_type: this.loginid.substring(0, 2) });
             if (this.user_id) {
-                tracking.identifyEvent(this.user_id, {
+                tracking?.identifyEvent(this.user_id, {
                     language: getLanguage().toLowerCase(),
                 });
             }
@@ -2785,6 +2788,10 @@ export default class ClientStore extends BaseStore {
     setPrevAccountType = acc_type => {
         this.prev_account_type = acc_type;
     };
+
+    setIsAlreadyAttempted(status) {
+        this.is_already_attempted = status;
+    }
 
     /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
      *

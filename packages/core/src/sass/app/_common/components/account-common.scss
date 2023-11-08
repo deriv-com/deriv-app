@@ -4,9 +4,9 @@
     align-items: center;
     gap: 1.6rem;
 
-        &__hidden {
-                display: none;
-            }
+    &__hidden {
+        display: none;
+    }
 
     &-view_wrapper {
         position: relative;
@@ -26,67 +26,68 @@
     @include mobile {
         padding: 1.6rem;
 
-    & .onfido-sdk-ui-PageTitle {
+        & .onfido-sdk-ui-PageTitle {
             &-titleWrapper {
                 margin: 2.4rem 0 0;
             }
-    
+
             &-title {
                 font-size: 2rem;
                 text-align: center;
             }
-        &-titleSpan {
-            font-size: 2rem;
-        }
-    }
-
-    .onfido-sdk-ui-Camera-webcamContainer {
-        left: auto;
-        width: -webkit-fill-available;
-    }
-
-    &__disabled {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-
-   &__info-message {
-       position: absolute;
-       display: flex;
-       width: 100%;
-       margin-top: 2.4rem;
-       justify-content: center;
-       z-index: 1;
-
-       @include mobile {
-           margin-top: 1.6rem;
-       }
-
-       .dc-hint-box {
-           margin-inline: 0.8rem;
-       }
-   }
-
-    &__status-message {
-        background-color: var(--transparent-correct-message);
-        justify-content: flex-start;
-        transition: transform 0.35s ease, opacity 0.35s linear;
-        transform-origin: top;
-        opacity: 1;
-        width: 98%;
-
-        &--exit {
-            transform: scale(1, 0);
-            opacity: 0;
+            &-titleSpan {
+                font-size: 2rem;
+            }
         }
 
-        &_container {
+        .onfido-sdk-ui-Camera-webcamContainer {
+            left: auto;
+            width: -webkit-fill-available;
+        }
+
+        &__disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        &__info-message {
             position: absolute;
-            top: 0.4rem;
-            min-height: 3.4rem;
-            text-align: center;
-            z-index: 1;
+            display: flex;
             width: 100%;
+            margin-top: 2.4rem;
+            justify-content: center;
+            z-index: 1;
+
+            @include mobile {
+                margin-top: 1.6rem;
+            }
+
+            .dc-hint-box {
+                margin-inline: 0.8rem;
+            }
+        }
+
+        &__status-message {
+            background-color: var(--transparent-correct-message);
+            justify-content: flex-start;
+            transition: transform 0.35s ease, opacity 0.35s linear;
+            transform-origin: top;
+            opacity: 1;
+            width: 98%;
+
+            &--exit {
+                transform: scale(1, 0);
+                opacity: 0;
+            }
+
+            &_container {
+                position: absolute;
+                top: 0.4rem;
+                min-height: 3.4rem;
+                text-align: center;
+                z-index: 1;
+                width: 100%;
+            }
         }
     }
 }

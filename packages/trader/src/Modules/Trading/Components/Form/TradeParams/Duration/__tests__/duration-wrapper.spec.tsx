@@ -72,7 +72,7 @@ describe('<DurationWrapper />', () => {
                 onChangeUiStore: jest.fn(),
                 simple_duration_unit: 't',
             },
-        };
+        } as unknown as ReturnType<typeof mockStore>;
     });
     const mockDurationWrapper = (mocked_store: TCoreStores) => {
         return (

@@ -30,9 +30,9 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
         if (!is_deleting && isDesktop()) setIsPopoverOpen(false);
     };
 
-    const handleNo = () => setIsDeleting(false);
+    const onCancel = () => setIsDeleting(false);
 
-    const handleYes = () => {
+    const onSubmit = () => {
         setIsLoading(true);
         deleteToken(token.token);
         if (isMounted() && isSuccess) {
@@ -53,13 +53,13 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
                     </Text>
                 </Modal.Body>
                 <Modal.Footer className='da-api-token__modal-footer'>
-                    <Button className='dc-dialog__button' has_effect onClick={handleNo} secondary large>
+                    <Button className='dc-dialog__button' has_effect onClick={onCancel} secondary large>
                         <Localize i18n_default_text='Cancel' />
                     </Button>
                     <Button
                         className='dc-dialog__button'
                         has_effect
-                        onClick={handleYes}
+                        onClick={onSubmit}
                         primary
                         large
                         is_loading={is_loading}

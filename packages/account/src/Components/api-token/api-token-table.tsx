@@ -104,14 +104,15 @@ const ApiTokenTable = () => {
         );
     }
 
+    const api_token_table_header_title = ['Name', 'Token', 'Scopes', 'Last used'];
+
     return (
         <table className='da-api-token__table'>
             <thead>
                 <tr className='da-api-token__table-header-row'>
-                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Name' />} />
-                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Token' />} />
-                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Scopes' />} />
-                    <ApiTokenTableRowHeader text={<Localize i18n_default_text='Last used' />} />
+                    {api_token_table_header_title.map(title => (
+                        <ApiTokenTableRowHeader key={title} text={<Localize i18n_default_text={title} />} />
+                    ))}
                     <th />
                 </tr>
             </thead>

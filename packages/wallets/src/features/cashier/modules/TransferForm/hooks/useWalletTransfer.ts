@@ -11,10 +11,10 @@ const useWalletTransfer = (fromAccountLoginId?: string) => {
     const { data: authorizeData, isLoading: isAuthorizeLoading } = useAuthorize();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
     const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
-    const { data, isLoading: isTransferAccountsLoaded, mutate } = useTransferBetweenAccounts();
+    const { data, isSuccess: isTransferAccountsLoaded, mutate } = useTransferBetweenAccounts();
 
     const isLoading =
-        isAuthorizeLoading || isCurrencyConfigLoading || isActiveWalletLoading || isTransferAccountsLoaded;
+        isAuthorizeLoading || isCurrencyConfigLoading || isActiveWalletLoading || !isTransferAccountsLoaded;
 
     useEffect(() => {
         if (!data?.accounts) mutate({ accounts: 'all' });
@@ -93,6 +93,7 @@ const useWalletTransfer = (fromAccountLoginId?: string) => {
         activeWallet: modifiedActiveWallet,
         fromAccountList: modifiedTransferAccounts,
         isLoading,
+        mutate,
         toAccountList,
     };
 };

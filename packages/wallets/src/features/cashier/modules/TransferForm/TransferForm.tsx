@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
-import { useTransferBetweenAccounts } from '@deriv/api';
 import { Loader } from '../../../../components';
 import { TransferFormDropdown } from './components/TransferFormDropdown';
 import { TransferFormInputField } from './components/TransferFormInputField';
@@ -9,8 +8,7 @@ import type { TInitialTransferFormValues } from './types';
 import './TransferForm.scss';
 
 const TransferForm = () => {
-    const { activeWallet, isLoading } = useWalletTransfer();
-    const { mutate } = useTransferBetweenAccounts();
+    const { activeWallet, isLoading, mutate } = useWalletTransfer();
     const mobileAccountsListRef = useRef<HTMLDivElement | null>(null);
 
     const initialValues: TInitialTransferFormValues = {
@@ -20,21 +18,23 @@ const TransferForm = () => {
         toAccount: undefined,
     };
 
+    const onSubmit = useCallback(
+        (values: TInitialTransferFormValues) => {
+            mutate({
+                account_from: values.fromAccount?.loginid,
+                account_to: values.toAccount?.loginid,
+                amount: Number(values.amountSend),
+                currency: values.fromAccount?.currency,
+            });
+        },
+        [mutate]
+    );
+
     if (isLoading) return <Loader />;
 
     return (
         <div className='wallets-transfer'>
-            <Formik
-                initialValues={initialValues}
-                onSubmit={values => {
-                    mutate({
-                        account_from: values.fromAccount?.loginid,
-                        account_to: values.toAccount?.loginid,
-                        amount: Number(values.amountSend),
-                        currency: values.fromAccount?.currency,
-                    });
-                }}
-            >
+            <Formik initialValues={initialValues} onSubmit={onSubmit}>
                 {props => (
                     <form className='wallets-transfer__form' onSubmit={props.handleSubmit}>
                         <div className='wallets-transfer__form__fields'>

@@ -42,7 +42,6 @@ const WithdrawalFiat = () => {
             )}
         </React.Fragment>
     );
-    // return null;
 };
 
 export default WithdrawalFiat;

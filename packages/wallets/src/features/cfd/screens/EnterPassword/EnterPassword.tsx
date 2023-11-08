@@ -3,7 +3,7 @@ import { WalletButton } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformToTitleMapper } from '../../constants';
+import { PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
 // TODO: Refactor the unnecessary props out once FlowProvider is integrated
@@ -27,7 +27,7 @@ const EnterPassword: React.FC<TProps> = ({
     platform,
 }) => {
     const { isDesktop } = useDevice();
-    const title = PlatformToTitleMapper[platform];
+    const title = PlatformDetails[platform].title;
     return (
         <div className='wallets-enter-password'>
             <div className='wallets-enter-password--container'>
@@ -45,6 +45,7 @@ const EnterPassword: React.FC<TProps> = ({
                     <WalletButton onClick={onSecondaryClick} size='lg' text='Forgot password?' variant='outlined' />
                     <WalletButton
                         disabled={!password || isLoading}
+                        isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'
                         text='Add account'

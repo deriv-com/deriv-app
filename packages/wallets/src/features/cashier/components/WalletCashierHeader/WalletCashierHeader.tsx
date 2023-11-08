@@ -125,7 +125,10 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                 </section>
                 <section className='wallets-cashier-header__tabs'>
                     {tabs.map(tab => {
-                        const isActiveTab = location.pathname === `/wallets/cashier/${tab.path}`;
+                        const isActiveTab =
+                            location.pathname === `/wallets/cashier/on-ramp`
+                                ? tab.path === 'deposit'
+                                : location.pathname === `/wallets/cashier/${tab.path}`;
                         return (
                             <button
                                 className={`wallets-cashier-header__tab ${

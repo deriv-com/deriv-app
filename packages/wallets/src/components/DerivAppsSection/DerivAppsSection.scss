@@ -1,3 +1,5 @@
+@import '../SkeletonLoader/SkeletonLoader.scss';
+
 .wallets-deriv-apps-section {
     display: flex;
     min-width: 35.2rem;
@@ -22,4 +24,9 @@
         flex: 1 0 0;
         user-select: none;
     }
+}
+
+.wallets-deriv-apps-balance-loader {
+    padding: 0.7rem;
+    width: 8rem;
 }

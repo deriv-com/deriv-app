@@ -8,6 +8,7 @@ import {
     Checkbox,
     DesktopWrapper,
     Dropdown,
+    InlineMessage,
     MobileWrapper,
     Popover,
     RadioGroup,
@@ -30,7 +31,6 @@ const PersonalDetailsForm = props => {
         is_mf,
         is_svg,
         is_rendered_for_idv,
-        should_hide_helper_image,
         editable_fields = [],
         has_real_account,
         residence_list,
@@ -49,6 +49,8 @@ const PersonalDetailsForm = props => {
         mismatch_status,
     } = props;
     const autocomplete_value = 'none';
+    // need to put this check related to DIEL clients
+    const is_svg_only = is_svg && !is_mf;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
@@ -78,7 +80,7 @@ const PersonalDetailsForm = props => {
     const is_rendered_for_idv_or_onfido = is_rendered_for_idv || is_rendered_for_onfido;
 
     const getFieldHint = field_name =>
-        is_rendered_for_idv_or_onfido ? (
+        is_svg_only || is_rendered_for_idv_or_onfido ? (
             <Localize
                 i18n_default_text={'Your {{ field_name }} as in your identity document'}
                 values={{ field_name }}
@@ -109,9 +111,6 @@ const PersonalDetailsForm = props => {
         <Localize i18n_default_text='For faster verification, input the same address here as in your proof of address document (see section below)' />
     );
 
-    // need to put this check related to DIEL clients
-    const is_svg_only = is_svg && !is_mf;
-
     // need to disable the checkbox if the user has not filled in the name and dob fields initially
     const is_confirmation_checkbox_disabled = verifyFields(mismatch_status).some(
         field => !values[field] || errors[field]
@@ -124,12 +123,10 @@ const PersonalDetailsForm = props => {
                     'account-form__poi-confirm-example': is_rendered_for_idv,
                 })}
             >
-                {is_rendered_for_idv_or_onfido && !should_hide_helper_image && (
-                    <InlineNoteWithIcon
-                        message={inline_note_text}
-                        font_size={isMobile() ? 'xxxs' : 'xs'}
-                        icon='IcAlertWarning'
-                    />
+                {(is_svg_only || is_rendered_for_idv_or_onfido) && (
+                    <div className='account-form__poi-inline-message'>
+                        <InlineMessage message={inline_note_text} size='md' />
+                    </div>
                 )}
                 {is_qualified_for_poa && (
                     <InlineNoteWithIcon
@@ -139,7 +136,7 @@ const PersonalDetailsForm = props => {
                     />
                 )}
                 <FormBodySection
-                    has_side_note={is_rendered_for_idv_or_onfido && !should_hide_helper_image}
+                    has_side_note={is_rendered_for_idv_or_onfido || is_svg_only}
                     side_note={side_note}
                     side_note_position='right'
                     type='image'
@@ -168,7 +165,7 @@ const PersonalDetailsForm = props => {
                                 </Text>
                             </div>
                         )}
-                        {!is_rendered_for_idv_or_onfido && !is_qualified_for_poa && (
+                        {is_mf && !is_rendered_for_onfido && !is_qualified_for_poa && (
                             <FormSubHeader
                                 title={'salutation' in values ? localize('Title and name') : localize('Name')}
                             />
@@ -227,9 +224,7 @@ const PersonalDetailsForm = props => {
                                 data-testid='last_name'
                             />
                         )}
-                        {!is_rendered_for_idv_or_onfido && !is_qualified_for_poa && (
-                            <FormSubHeader title={localize('Other details')} />
-                        )}
+                        {is_mf && !is_qualified_for_poa && <FormSubHeader title={localize('Other details')} />}
                         {'date_of_birth' in values && (
                             <DateOfBirthField
                                 name='date_of_birth'

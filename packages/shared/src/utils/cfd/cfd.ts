@@ -11,7 +11,6 @@ export const CFD_text: { [key: string]: string } = {
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
     ctrader: 'Deriv cTrader',
-    derivez: 'DerivEz',
     synthetic: 'Derived',
     synthetic_demo: 'Derived Demo',
     synthetic_bvi: 'Derived BVI',

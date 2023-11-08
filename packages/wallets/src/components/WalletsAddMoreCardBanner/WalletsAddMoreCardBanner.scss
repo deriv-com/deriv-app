@@ -22,7 +22,7 @@
         &-button {
             background-color: #ffffff;
             border: none;
-            border-radius: 5px;
+            border-radius: 0.5rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -50,6 +50,14 @@
             border-radius: 0.2rem;
             padding: 0 0.4rem;
             text-transform: uppercase;
+        }
+    }
+
+    &__success-footer {
+        width: 24rem;
+
+        @include mobile {
+            width: 100%;
         }
     }
 }

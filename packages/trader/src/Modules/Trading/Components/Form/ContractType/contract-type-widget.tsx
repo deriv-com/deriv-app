@@ -2,7 +2,7 @@ import React from 'react';
 import { InlineMessage } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import ContractType from './contract-type';
 import {
     findContractCategory,
@@ -61,7 +61,7 @@ const ContractTypeWidget = observer(
 
         React.useEffect(() => {
             if (typeof is_dialog_open === 'boolean') {
-                RudderStack.track('ce_trade_types_form', {
+                Analytics.trackEvent('ce_trade_types_form', {
                     action: is_dialog_open ? 'open' : 'close',
                     form_source: 'contract_set_up_form',
                     form_name: 'default',
@@ -91,7 +91,7 @@ const ContractTypeWidget = observer(
                 onChange({ target: { name, value: clicked_item.value } });
 
                 if (subform_name === 'trade_type') {
-                    RudderStack.track('ce_trade_types_form', {
+                    Analytics.trackEvent('ce_trade_types_form', {
                         action: 'choose_trade_type',
                         subform_name,
                         tab_name: selected_category,
@@ -99,7 +99,7 @@ const ContractTypeWidget = observer(
                         form_name: 'default',
                     });
                 } else {
-                    RudderStack.track('ce_trade_types_form', {
+                    Analytics.trackEvent('ce_trade_types_form', {
                         action: 'choose_trade_type',
                         subform_name,
                         trade_type_name: clicked_item?.text,
@@ -113,7 +113,7 @@ const ContractTypeWidget = observer(
             setInfoDialogVisibility(!is_info_dialog_open);
             setItem(clicked_item);
 
-            RudderStack.track('ce_trade_types_form', {
+            Analytics.trackEvent('ce_trade_types_form', {
                 action: 'info_open',
                 tab_name: selected_category,
                 trade_type_name: clicked_item?.text,
@@ -126,7 +126,7 @@ const ContractTypeWidget = observer(
 
         const onSearchBlur = () => {
             if (search_query) {
-                RudderStack.track('ce_trade_types_form', {
+                Analytics.trackEvent('ce_trade_types_form', {
                     action: 'search',
                     search_string: search_query,
                 });

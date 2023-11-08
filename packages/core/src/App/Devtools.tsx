@@ -46,7 +46,7 @@ const EndpointSection = observer(() => {
                 maxLength={30}
                 error={formik.touched.server ? formik.errors.server : undefined}
                 label='Server'
-                hint='e.g. frontend.binaryws.com'
+                hint='e.g. frontend.derivws.com'
                 {...formik.getFieldProps('server')}
             />
             <Input

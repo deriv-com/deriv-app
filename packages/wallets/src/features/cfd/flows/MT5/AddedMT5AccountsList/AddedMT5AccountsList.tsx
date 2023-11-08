@@ -1,37 +1,46 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuthorize, useMT5AccountsList } from '@deriv/api';
+import { useAuthorize } from '@deriv/api';
 import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
-import DerivedMT5 from '../../../../../public/images/mt5-derived.svg';
-import FinancialMT5 from '../../../../../public/images/mt5-financial.svg';
-import SwapFreeMT5 from '../../../../../public/images/mt5-swap-free.svg';
+import { getStaticUrl } from '../../../../../helpers/urls';
+import { THooks } from '../../../../../types';
+import { MarketTypeDetails } from '../../../constants';
 import './AddedMT5AccountsList.scss';
-
-const marketTypeToNameMapper = {
-    all: 'Swap-Free',
-    financial: 'Financial',
-    synthetic: 'Derived',
-};
-
-const marketTypeToIconMapper = {
-    all: <SwapFreeMT5 />,
-    financial: <FinancialMT5 />,
-    synthetic: <DerivedMT5 />,
-};
+import { useModal } from '../../../../../components/ModalProvider';
+import { MT5TradeModal } from '../../../modals';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
+    account: THooks.MT5AccountsList;
+};
+
+const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
+    const IconToLink = () => {
+        switch (account.market_type) {
+            case 'financial':
+            case 'synthetic':
+            case 'all':
+                return window.open(getStaticUrl('/dmt5'));
+            default:
+                return window.open(getStaticUrl('/dmt5'));
+        }
+    };
+    return (
+        <div className='wallets-added-mt5__icon' onClick={() => IconToLink()}>
+            {MarketTypeDetails[account.market_type || 'all'].icon}
+        </div>
+    );
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
+    const { show } = useModal();
+    const { title } = MarketTypeDetails[account.market_type || 'all'];
+
     return (
         <TradingAccountCard
-            leading={() => (
-                <div className='wallets-added-mt5__icon'>{marketTypeToIconMapper[account.market_type || 'all']}</div>
-            )}
+            leading={() => <MT5AccountIcon account={account} />}
             trailing={() => (
                 <div className='wallets-added-mt5__actions'>
                     <WalletButton
@@ -41,15 +50,16 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         text='Transfer'
                         variant='outlined'
                     />
-                    <WalletButton text='Open' />
+                    <WalletButton
+                        onClick={() => show(<MT5TradeModal marketType={account.market_type || 'all'} platform='mt5' />)}
+                        text='Open'
+                    />
                 </div>
             )}
         >
             <div className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
-                    <p className='wallets-added-mt5__details-title-text'>
-                        {marketTypeToNameMapper[account.market_type || 'all']}
-                    </p>
+                    <p className='wallets-added-mt5__details-title-text'>{title}</p>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
                             <p className='wallets-added-mt5__details-title-landing-company-text'>
@@ -58,9 +68,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         </div>
                     )}
                 </div>
-                <p className='wallets-added-mt5__details-balance'>
-                    {account.display_balance} {account.currency}
-                </p>
+                <p className='wallets-added-mt5__details-balance'>{account.display_balance}</p>
                 <p className='wallets-added-mt5__details-loginid'>{account.display_login}</p>
             </div>
         </TradingAccountCard>

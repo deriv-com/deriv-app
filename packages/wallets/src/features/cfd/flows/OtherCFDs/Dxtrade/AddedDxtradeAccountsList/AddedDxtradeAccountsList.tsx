@@ -1,19 +1,28 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDxtradeAccountsList } from '@deriv/api';
+import { MT5TradeModal } from '../../../../modals';
 import { TradingAccountCard } from '../../../../../../components';
+import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletButton } from '../../../../../../components/Base';
+import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/derivx.svg';
 import './AddedDxtradeAccountsList.scss';
 
 const AddedDxtradeAccountsList: React.FC = () => {
     const history = useHistory();
     const { data } = useDxtradeAccountsList();
+    const { show } = useModal();
 
     return (
         <TradingAccountCard
             leading={() => (
-                <div className='wallets-available-derivx__icon'>
+                <div
+                    className='wallets-available-derivx__icon'
+                    onClick={() => {
+                        window.open(getStaticUrl('/derivx'));
+                    }}
+                >
                     <DerivX />
                 </div>
             )}
@@ -26,7 +35,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                         text='Transfer'
                         variant='outlined'
                     />
-                    <WalletButton text='Open' />
+                    <WalletButton onClick={() => show(<MT5TradeModal platform='dxtrade' />)} text='Open' />
                 </div>
             )}
         >
@@ -34,9 +43,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                 {data?.map(account => (
                     <React.Fragment key={account?.account_id}>
                         <p className='wallets-available-derivx__details-title'>Deriv X</p>
-                        <p className='wallets-available-derivx__details-balance'>
-                            {account?.display_balance} {account?.currency}
-                        </p>
+                        <p className='wallets-available-derivx__details-balance'>{account?.display_balance}</p>
                         <p className='wallets-available-derivx__details-loginid'>{account.login}</p>
                     </React.Fragment>
                 ))}

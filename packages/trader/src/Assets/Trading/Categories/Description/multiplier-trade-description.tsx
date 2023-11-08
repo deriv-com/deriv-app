@@ -29,28 +29,40 @@ const MultiplierTradeDescription = ({
             components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
             key='4'
         />,
-        <Localize
-            i18n_default_text={
-                is_multiplier_fx
-                    ? 'Additional features are available to manage your positions: “<0>Take profit</0>” and “<0>Stop loss</0>” allow you to adjust your level of risk aversion.'
-                    : 'Additional features are available to manage your positions: “<0>Take profit</0>”, “<0>Stop loss</0>” and “<0>Deal cancellation</0>” allow you to adjust your level of risk aversion.'
-            }
-            components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
-            key='5'
-        />,
+        {
+            content: is_multiplier_fx ? (
+                <Localize
+                    i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>” and “<0>Stop loss</0>” allow you to adjust your level of risk aversion.'
+                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+                    key='5'
+                />
+            ) : (
+                <Localize
+                    i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>”, “<0>Stop loss</0>” and “<0>Deal cancellation</0>” allow you to adjust your level of risk aversion.'
+                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+                    key='5'
+                />
+            ),
+        },
         <Localize
             i18n_default_text='You can close your trade anytime. However, be aware of <0>slippage risk</0>.'
             components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
             key='6'
         />,
-    ];
+    ] as Array<JSX.Element & { content: JSX.Element }>;
     return (
         <React.Fragment>
-            {content.map(paragraph => (
-                <Text as='p' key={paragraph.props.i18n_default_text}>
-                    {paragraph}
-                </Text>
-            ))}
+            {content.map(paragraph => {
+                const key = paragraph.props
+                    ? paragraph.props.i18n_default_text
+                    : paragraph.content?.props.i18n_default_text;
+                const text = paragraph.content ?? paragraph;
+                return (
+                    <Text as='p' key={key}>
+                        {text}
+                    </Text>
+                );
+            })}
         </React.Fragment>
     );
 };

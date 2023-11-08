@@ -2,7 +2,6 @@ import React from 'react';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
-
 import {
     AutoHeightWrapper,
     Div100vhContainer,
@@ -13,8 +12,9 @@ import {
 } from '@deriv/components';
 import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { isDocumentNumberValid, shouldShowIdentityInformation } from '../../Helpers/utils';
+import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../form-sub-header';
-import { isDocumentNumberValid, shouldShowIdentityInformation } from 'Helpers/utils';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
@@ -48,6 +48,7 @@ const PersonalDetails = observer(
         const { account_status, account_settings, residence, real_account_signup_target } = props;
         const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
         const [no_confirmation_needed, setNoConfirmationNeeded] = React.useState(false);
+        const PoiNameDobExampleIcon = PoiNameDobExample;
 
         const handleCancel = values => {
             const current_step = getCurrentStep() - 1;
@@ -56,6 +57,7 @@ const PersonalDetails = observer(
         };
         const citizen = residence || account_settings?.citizen;
 
+        //is_rendered_for_idv is used for configuring the components when they are used in idv page
         const is_qualified_for_idv = shouldShowIdentityInformation({
             account_status,
             citizen,
@@ -197,6 +199,7 @@ const PersonalDetails = observer(
                                                 is_virtual={is_virtual}
                                                 is_svg={is_svg}
                                                 is_eu_user={is_eu_user}
+                                                side_note={<PoiNameDobExampleIcon />}
                                                 is_qualified_for_idv={is_qualified_for_idv}
                                                 editable_fields={getEditableFields(
                                                     values.confirmation_checkbox,
@@ -210,6 +213,12 @@ const PersonalDetails = observer(
                                                 account_opening_reason_list={account_opening_reason_list}
                                                 should_close_tooltip={should_close_tooltip}
                                                 setShouldCloseTooltip={setShouldCloseTooltip}
+                                                inline_note_text={
+                                                    <Localize
+                                                        i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                                        components={[<strong key={0} />]}
+                                                    />
+                                                }
                                                 no_confirmation_needed={no_confirmation_needed}
                                             />
                                         </div>

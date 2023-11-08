@@ -19,7 +19,16 @@ import { populateVerificationStatus } from '../Helpers/verification';
 import { useHistory } from 'react-router';
 
 const ProofOfIdentityContainer = observer(
-    ({ height, is_from_external, index = 0, setIsCfdPoiCompleted, onSubmit, onSave }) => {
+    ({
+        height,
+        is_from_external,
+        index = 0,
+        setIsCfdPoiCompleted,
+        onSubmit,
+        onSave,
+        getChangeableFields,
+        updateAccountStatus,
+    }) => {
         const history = useHistory();
         const [poi_state, setPOIState] = React.useState(identity_status_codes.none);
         const [api_error, setAPIError] = React.useState();
@@ -57,6 +66,7 @@ const ProofOfIdentityContainer = observer(
         };
 
         const loadResidenceList = React.useCallback(() => {
+            setAPIError(null);
             setStatusLoading(true);
             fetchResidenceList().then(response_residence_list => {
                 if (response_residence_list.error) {
@@ -77,6 +87,7 @@ const ProofOfIdentityContainer = observer(
         React.useEffect(() => {
             // only re-mount logic when switching is done
             if (!is_switching) {
+                setAPIError(null);
                 WS.authorized.getAccountStatus().then(response_account_status => {
                     if (response_account_status.error) {
                         setAPIError(response_account_status.error);
@@ -86,15 +97,14 @@ const ProofOfIdentityContainer = observer(
                     loadResidenceList();
                 });
             }
-        }, [is_switching, loadResidenceList]);
+        }, [loadResidenceList, is_switching]);
 
         if (api_error) {
             return <ErrorMessage error_message={api_error?.message || api_error} />;
-        }
-        /**
-         * Display loader while waiting for the account status and residence list to be populated
-         */
-        if (is_status_loading || is_switching || isEmptyObject(account_status) || residence_list.length === 0) {
+        } else if (is_status_loading || is_switching || isEmptyObject(account_status) || residence_list.length === 0) {
+            /**
+             * Display loader while waiting for the account status and residence list to be populated
+             */
             return <Loading is_fullscreen={false} />;
         } else if (is_virtual) {
             return <DemoMessage />;
@@ -144,22 +154,38 @@ const ProofOfIdentityContainer = observer(
             </Button>
         );
 
-        if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission) {
+        const should_show_mismatch_form =
+            idv.submissions_left > 0 &&
+            [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].includes(
+                idv.status
+            );
+        if (
+            identity_status === identity_status_codes.none ||
+            has_require_submission ||
+            allow_poi_resubmission ||
+            should_show_mismatch_form
+        ) {
             return (
                 <POISubmission
+                    account_settings={account_settings}
                     allow_poi_resubmission={allow_poi_resubmission}
                     has_require_submission={has_require_submission}
                     height={height ?? null}
+                    getChangeableFields={getChangeableFields}
                     identity_last_attempt={identity_last_attempt}
                     idv={idv}
                     is_from_external={!!is_from_external}
                     is_idv_disallowed={is_idv_disallowed || should_ignore_idv}
+                    manual={manual}
                     needs_poa={needs_poa}
                     onfido={onfido}
-                    onStateChange={status => onStateChange(status)}
+                    onStateChange={onStateChange}
                     redirect_button={redirect_button}
+                    refreshNotifications={refreshNotifications}
                     residence_list={residence_list}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                    updateAccountStatus={updateAccountStatus}
+                    should_show_mismatch_form={should_show_mismatch_form}
                 />
             );
         } else if (
@@ -205,11 +231,14 @@ const ProofOfIdentityContainer = observer(
             case service_code.idv:
                 return (
                     <IdvContainer
+                        account_settings={account_settings}
                         handleRequireSubmission={handleRequireSubmission}
+                        getChangeableFields={getChangeableFields}
                         idv={idv}
                         is_from_external={!!is_from_external}
                         needs_poa={needs_poa}
                         redirect_button={redirect_button}
+                        residence_list={residence_list}
                     />
                 );
             case service_code.onfido:

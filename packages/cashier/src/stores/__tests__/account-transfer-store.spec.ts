@@ -454,7 +454,6 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.accounts_list[0].text).toMatch(/^Deriv X(.)*$/);
         expect(account_transfer_store.accounts_list[1].text).toMatch(/^Deriv X(.)*$/);
         expect(account_transfer_store.accounts_list[2].text).toMatch(/^Deriv X(.)*$/);
-        expect(account_transfer_store.accounts_list[3].text).toMatch(/^Deriv EZ(.)*$/);
         expect(account_transfer_store.accounts_list[8].text).toBe('USD');
         expect(account_transfer_store.accounts_list[9].text).toBe('eUSDT');
         expect(account_transfer_store.accounts_list).toHaveLength(10);

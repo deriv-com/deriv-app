@@ -77,7 +77,7 @@ const PersonalDetailsForm = props => {
     };
 
     const getFieldHint = field_name =>
-        is_svg_only || is_rendered_for_onfido ? (
+        is_svg_only || is_rendered_for_onfido || is_qualified_for_idv ? (
             <Localize
                 i18n_default_text={'Your {{ field_name }} as in your identity document'}
                 values={{ field_name }}
@@ -127,7 +127,7 @@ const PersonalDetailsForm = props => {
                     'account-form__poi-confirm-example': is_qualified_for_idv,
                 })}
             >
-                {(is_svg_only || is_rendered_for_onfido) && (
+                {(is_svg_only || is_rendered_for_onfido || is_qualified_for_idv) && (
                     <div className='account-form__poi-inline-message'>
                         <InlineMessage message={name_dob_clarification_message} size='md' />
                     </div>

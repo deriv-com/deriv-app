@@ -1,5 +1,5 @@
-import React from 'react';
-import { Field, FieldProps, Formik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletTextField } from '../../../../../../components/Base';
 import { WalletsPercentageSelector } from '../../../../../../components/WalletsPercentageSelector';
@@ -8,6 +8,13 @@ import './WithdrawalCryptoForm.scss';
 
 const MIN_ADDRESS_LENGTH = 25;
 const MAX_ADDRESS_LENGTH = 64;
+
+type TForm = {
+    cryptoAddress: string;
+    cryptoAmount: string;
+    fiatAmount: string;
+    withdrawAmount?: number;
+};
 
 const validateCryptoAddress = (address: string) => {
     if (!address) return 'This field is required.';
@@ -21,35 +28,56 @@ const validateCryptoAddress = (address: string) => {
 
 const WithdrawalCryptoForm = () => {
     const { data: activeWallet } = useActiveWalletAccount();
+    const [cryptoAddress, setCryptoAddress] = useState<string>();
 
     return (
         <Formik
             initialValues={{
-                address: '',
+                cryptoAddress: '',
+                cryptoAmount: '',
+                fiatAmount: '',
             }}
+            // onSubmit={values => console.log(values)}
         >
-            <form action='' autoComplete='off' className='wallets-withdrawal-crypto-form'>
-                <div className='wallets-withdrawal-crypto-address'>
-                    <Field name='crypto-address' validate={validateCryptoAddress}>
-                        {({ field }: FieldProps<string>) => (
-                            <WalletTextField
-                                {...field}
-                                label='Your BTC Wallet address'
-                                name='wallets-withdrawal-crypto-address-textfield'
-                            />
-                        )}
-                    </Field>
-                </div>
-                <WalletsPercentageSelector
-                    amount={200}
-                    balance={activeWallet?.balance}
-                    // onChangePercentage={per => console.log(per)}
-                />
-                <WithdrawalCryptoAmountConverter />
-                <div className='wallets-withdrawal-crypto__submit'>
-                    <WalletButton size='lg' text='Withdraw' type='submit' />
-                </div>
-            </form>
+            {({
+                errors,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+                setFieldTouched,
+                touched,
+                values,
+            }: FormikProps<TForm>) => {
+                return (
+                    <form autoComplete='off' className='wallets-withdrawal-crypto-form' onSubmit={handleSubmit}>
+                        <div className='wallets-withdrawal-crypto-address'>
+                            <Field name='cryptoAddress' validate={validateCryptoAddress}>
+                                {({ field }: FieldProps<string>) => (
+                                    <WalletTextField
+                                        {...field}
+                                        label='Your BTC Wallet address'
+                                        // name='wallets-withdrawal-crypto-address-textfield'
+                                        onChange={e => {
+                                            handleChange(e);
+                                            setCryptoAddress(e.target.value);
+                                            // setFieldTouched('cryptoAddress', true, false);
+                                        }}
+                                    />
+                                )}
+                            </Field>
+                        </div>
+                        <WalletsPercentageSelector
+                            amount={200}
+                            balance={activeWallet?.balance}
+                            // onChangePercentage={per => console.log(per)}
+                        />
+                        <WithdrawalCryptoAmountConverter />
+                        <div className='wallets-withdrawal-crypto__submit'>
+                            <WalletButton size='lg' text='Withdraw' type='submit' />
+                        </div>
+                    </form>
+                );
+            }}
         </Formik>
     );
 };

@@ -1541,6 +1541,59 @@ type TPrivateSocketEndpoints = {
         req_id?: number;
         [k: string]: unknown;
     };
+    notification_event: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            notification_event: 1;
+            args: {
+                /**
+                 * (Optional- for `poi_documents_uploaded` only) An array of onfido document ids intended to be included in the poi check.
+                 */
+                documents?: string[];
+            };
+            /**
+             * The category or nature of the event.
+             */
+            category: 'authentication';
+            /**
+             * The name of the event.
+             */
+            event: 'poi_documents_uploaded';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+        response: {
+            /**
+             * `1`: all actions finished successfully, `0`: at least one or more actions failed.
+             */
+            notification_event: 0 | 1;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'notification_event';
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+    };
 };
 
 type TSocketEndpoints = {

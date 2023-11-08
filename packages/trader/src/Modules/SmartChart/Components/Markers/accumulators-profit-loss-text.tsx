@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv/shared';
-import { FastMarkerBeta } from 'Modules/SmartChartBeta';
+import { FastMarker } from 'Modules/SmartChart';
 import classNames from 'classnames';
 import { TRef } from './accumulators-profit-loss-tooltip';
 import { ProposalOpenContract } from '@deriv/api-types';
@@ -115,11 +115,7 @@ const AccumulatorsProfitLossText = ({
     };
 
     return (
-        <FastMarkerBeta
-            markerRef={onRef}
-            className={classNames(className, won ? 'won' : 'lost')}
-            overlap_y_axis={false}
-        >
+        <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')} overlap_y_axis={false}>
             <Text
                 weight='bold'
                 size={isMobile() ? 's' : 'sm'}
@@ -136,7 +132,7 @@ const AccumulatorsProfitLossText = ({
             <Text size={isMobile() ? 'xxxs' : 'xxs'} as='div' className={`${className}__currency`}>
                 {getCurrencyDisplayCode(currency)}
             </Text>
-        </FastMarkerBeta>
+        </FastMarker>
     );
 };
 

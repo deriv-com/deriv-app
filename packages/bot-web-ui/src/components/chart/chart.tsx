@@ -4,7 +4,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from './toolbar-widgets';
-import { ChartTitleBeta, SmartChartBeta } from './v2';
+import { ChartTitle, SmartChart } from './v2';
 
 const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) => {
     const barriers: [] = [];
@@ -42,7 +42,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 'dashboard__chart-wrapper--expanded': is_drawer_open && !isMobile(),
             })}
         >
-            <SmartChartBeta
+            <SmartChart
                 id='dbot'
                 barriers={barriers}
                 showLastDigitStats={show_digits_stats}
@@ -62,7 +62,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 requestSubscribe={wsSubscribe}
                 settings={settings}
                 symbol={symbol}
-                topWidgets={() => <ChartTitleBeta onChange={onSymbolChange} />}
+                topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
                 isConnectionOpened={is_socket_opened}
                 getMarketsOrder={getMarketsOrder}
                 isLive={true}

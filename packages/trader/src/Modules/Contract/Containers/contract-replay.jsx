@@ -34,10 +34,10 @@ import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget';
-import ChartMarkerBeta from 'Modules/SmartChartBeta/Components/Markers/marker.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { SmartChartBeta } from 'Modules/SmartChartBeta';
+import { SmartChart } from 'Modules/SmartChart';
+import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
 
 const ContractReplay = observer(({ contract_id }) => {
     const { common, contract_replay, ui } = useStore();
@@ -265,7 +265,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const has_ended = !!getEndTime(contract_info);
 
     return (
-        <SmartChartBeta
+        <SmartChart
             id={'replay'}
             barriers={barriers_array}
             bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : null}
@@ -309,14 +309,14 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             startWithDataFitMode={true}
         >
             {markers_array.map(({ content_config, marker_config, react_key }) => (
-                <ChartMarkerBeta
+                <ChartMarker
                     key={react_key}
                     marker_config={marker_config}
                     marker_content_props={content_config}
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
-        </SmartChartBeta>
+        </SmartChart>
     );
 });
 

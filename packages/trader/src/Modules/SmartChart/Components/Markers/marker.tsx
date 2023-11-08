@@ -1,6 +1,6 @@
+import { FastMarker } from 'Modules/SmartChart';
 import { toJS } from 'mobx';
 import React from 'react';
-import { FastMarker } from 'Modules/SmartChart';
 
 type TChartMarker = {
     is_bottom_widget_visible?: boolean;

@@ -9,7 +9,7 @@ import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets';
 import FormLayout from '../Components/Form/form-layout';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';
-import ToolbarWidgetsBeta from '../../SmartChartBeta/Components/toolbar-widgets.jsx';
+import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.tsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
@@ -245,9 +245,9 @@ export default Trade;
 // CHART (ChartTrade)--------------------------------------------------------
 
 /* eslint-disable */
-import { SmartChartBeta } from 'Modules/SmartChartBeta/index.js';
+import { SmartChart } from 'Modules/SmartChart/index.js';
 
-const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChartBeta innerRef={ref} {...props} />);
+const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
 const ChartTrade = observer(props => {
     const { is_accumulator, end_epoch, topWidgets, charts_ref } = props;
@@ -368,7 +368,7 @@ const ChartTrade = observer(props => {
             isConnectionOpened={is_socket_opened}
             clearChart={false}
             toolbarWidget={() => {
-                return <ToolbarWidgetsBeta updateChartType={updateChartType} updateGranularity={updateGranularity} />;
+                return <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />;
             }}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}

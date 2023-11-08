@@ -9,7 +9,7 @@ const init = () => {
     });
 
     module.then(({ setSmartChartsPublicPath }) => {
-        setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
+        setSmartChartsPublicPath(getUrlBase('/js/smartchartsbeta/'));
     });
 };
 

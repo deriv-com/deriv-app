@@ -27,8 +27,8 @@ const load = (component_name: string) => () => {
     });
 };
 
-export const SmartChartBeta = React.lazy(load('SmartChart'));
-export const ChartTitleBeta = React.lazy(load('ChartTitle'));
+export const SmartChart = React.lazy(load('SmartChart'));
+export const ChartTitle = React.lazy(load('ChartTitle'));
 
 export const ChartSizeBeta = React.lazy(load('ChartSize'));
 export const ChartModeBeta = React.lazy(load('ChartMode'));

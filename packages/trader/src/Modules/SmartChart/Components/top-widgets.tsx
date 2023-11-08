@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isAccumulatorContract, isDigitContract } from '@deriv/shared';
-import { ChartTitleBeta } from 'Modules/SmartChartBeta';
+import { ChartTitle } from 'Modules/SmartChart';
 import BuyToastNotification from './buy-toast-notification';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -58,9 +58,8 @@ const TopWidgets = ({
     open,
     is_digits_widget_active,
 }: TTopWidgets) => {
-    const ChartTitleComponent = ChartTitleBeta;
     const ChartTitleLocal = (
-        <ChartTitleComponent
+        <ChartTitle
             open_market={open_market}
             open={open}
             enabled={is_title_enabled}

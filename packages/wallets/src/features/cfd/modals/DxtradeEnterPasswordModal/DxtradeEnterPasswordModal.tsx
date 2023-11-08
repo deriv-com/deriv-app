@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCreateOtherCFDAccount, useDxtradeAccountsList } from '@deriv/api';
-import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
+import { useAccountStatus, useActiveWalletAccount, useCreateOtherCFDAccount, useDxtradeAccountsList } from '@deriv/api';
+import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
-import { CFDSuccess, CreatePassword } from '../../screens';
+import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
     const history = useHistory();
     const { isMobile } = useDevice();
     const [password, setPassword] = useState('');
+    const { data: getAccountStatus, isSuccess: accountStatusSuccess } = useAccountStatus();
     const { isLoading, isSuccess, mutate } = useCreateOtherCFDAccount();
     const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { hide } = useModal();
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
-    const onSubmit = () => {
+    const isDxtradePasswordNotSet = getAccountStatus?.is_dxtrade_password_not_set;
+
+    const onSubmit = useCallback(() => {
         mutate({
             payload: {
                 account_type: accountType,
@@ -27,17 +30,34 @@ const DxtradeEnterPasswordModal = () => {
                 platform: 'dxtrade',
             },
         });
-    };
+    }, [mutate, accountType, password]);
 
-    const successDescription =
-        accountType === 'demo'
+    const successDescription = useMemo(() => {
+        return accountType === 'demo'
             ? 'Transfer virtual funds from your Demo Wallet to your Deriv X Demo account to practise trading.'
             : `Transfer funds from your ${activeWallet?.currency} Wallet to your Deriv X account to start trading.`;
+    }, [accountType, activeWallet]);
 
-    const dxtradeBalance = dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
+    const dxtradeBalance = useMemo(() => {
+        return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
+    }, [dxtradeAccount]);
 
-    const renderFooter = () => {
-        if (isSuccess) return <WalletButton isFullWidth onClick={() => hide()} size='lg' text='Continue' />;
+    const renderFooter = useMemo(() => {
+        if (isSuccess) {
+            return (
+                <WalletButtonGroup isFlex>
+                    <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
+                    <WalletButton
+                        onClick={() => {
+                            hide();
+                            history.push('/wallets/cashier/transfer');
+                        }}
+                        size='lg'
+                        text='Transfer funds'
+                    />
+                </WalletButtonGroup>
+            );
+        }
 
         return (
             <WalletButton
@@ -49,68 +69,51 @@ const DxtradeEnterPasswordModal = () => {
                 text='Create Deriv MT5 password'
             />
         );
-    };
+    }, [hide, history, isLoading, isSuccess, onSubmit, password]);
 
-    if (isMobile) {
-        return (
-            <ModalStepWrapper renderFooter={renderFooter} title={' '}>
-                {isSuccess && dxtradeAccountListSuccess && (
-                    <CFDSuccess
-                        description={successDescription}
-                        displayBalance={dxtradeBalance || ''}
-                        marketType='all'
-                        platform='dxtrade'
-                        title={`Your Deriv X${accountType === 'demo' ? ` ${accountType}` : ''} account is ready`}
-                    />
-                )}
-                {!isSuccess && (
-                    <CreatePassword
-                        icon={<DxTradePasswordIcon />}
-                        isLoading={isLoading}
-                        onPasswordChange={e => setPassword(e.target.value)}
-                        onPrimaryClick={onSubmit}
-                        password={password}
-                        platform='dxtrade'
-                    />
-                )}
-            </ModalStepWrapper>
-        );
-    }
+    const successComponent = isSuccess && dxtradeAccountListSuccess && (
+        <CFDSuccess
+            description={successDescription}
+            displayBalance={dxtradeBalance || ''}
+            marketType='all'
+            platform='dxtrade'
+            renderButton={() => renderFooter}
+            title={`Your Deriv X${accountType === 'demo' ? ` ${accountType}` : ''} account is ready`}
+        />
+    );
 
-    return (
+    const passwordComponent =
+        !isSuccess &&
+        accountStatusSuccess &&
+        (isDxtradePasswordNotSet ? (
+            <CreatePassword
+                icon={<DxTradePasswordIcon />}
+                isLoading={isLoading}
+                onPasswordChange={e => setPassword(e.target.value)}
+                onPrimaryClick={onSubmit}
+                password={password}
+                platform='dxtrade'
+            />
+        ) : (
+            <EnterPassword
+                isLoading={isLoading}
+                marketType='all'
+                onPasswordChange={e => setPassword(e.target.value)}
+                onPrimaryClick={onSubmit}
+                password={password}
+                platform='dxtrade'
+            />
+        ));
+
+    return isMobile ? (
+        <ModalStepWrapper renderFooter={() => renderFooter} title={' '}>
+            {successComponent}
+            {passwordComponent}
+        </ModalStepWrapper>
+    ) : (
         <ModalWrapper hideCloseButton={isSuccess}>
-            {isSuccess && dxtradeAccountListSuccess && (
-                <CFDSuccess
-                    description={successDescription}
-                    displayBalance={dxtradeBalance || ''}
-                    marketType='all'
-                    platform='dxtrade'
-                    renderButton={() => (
-                        <div className='wallets-dxtrade-enter-password__button'>
-                            <WalletButton onClick={hide} size='lg' text='Maybe later' variant='outlined' />
-                            <WalletButton
-                                onClick={() => {
-                                    hide();
-                                    history.push('/wallets/cashier/transfer');
-                                }}
-                                size='lg'
-                                text='Transfer funds'
-                            />
-                        </div>
-                    )}
-                    title={`Your Deriv X${accountType === 'demo' ? ` ${accountType}` : ''} account is ready`}
-                />
-            )}
-            {!isSuccess && (
-                <CreatePassword
-                    icon={<DxTradePasswordIcon />}
-                    isLoading={isLoading}
-                    onPasswordChange={e => setPassword(e.target.value)}
-                    onPrimaryClick={onSubmit}
-                    password={password}
-                    platform='dxtrade'
-                />
-            )}
+            {successComponent}
+            {passwordComponent}
         </ModalWrapper>
     );
 };

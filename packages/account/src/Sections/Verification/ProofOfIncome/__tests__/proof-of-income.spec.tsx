@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { WS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
+import { income_status_codes } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 
 const mocked_get_account_status = {
     authentication: {
@@ -16,7 +17,7 @@ const mocked_get_account_status = {
             services: { idv: {}, onfido: {}, manual: {} },
         },
         income: {
-            status: 'none',
+            status: income_status_codes.NONE,
         },
         needs_verification: [],
     },
@@ -53,10 +54,10 @@ describe('ProofOfIncome', () => {
     const upload_warning = 'Remember, selfies, pictures of houses, or non-related images will be rejected.';
     const file_type_requirements = 'Supported formats: JPEG, JPG, PNG, PDF, and GIF only';
 
-    let mock_tore: ReturnType<typeof mockStore>;
+    let mock_store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
-        mock_tore = mockStore({});
+        mock_store = mockStore({});
     });
 
     const componentTestRender = (mock_store: ReturnType<typeof mockStore>) => {
@@ -66,14 +67,14 @@ describe('ProofOfIncome', () => {
     };
 
     it('Should not render ProofOfIncome for demo account', () => {
-        mock_tore.client.is_virtual = true;
-        componentTestRender(mock_tore);
+        mock_store.client.is_virtual = true;
+        componentTestRender(mock_store);
 
         expect(screen.getByText('MockedDemoMessage')).toBeInTheDocument();
     });
 
     it('Should redirect if ProofOfIncome is not required ', async () => {
-        componentTestRender(mock_tore);
+        componentTestRender(mock_store);
         expect(await screen.findByText('Redirect')).toBeInTheDocument();
     });
 
@@ -89,7 +90,7 @@ describe('ProofOfIncome', () => {
                     services: { idv: {}, onfido: {}, manual: {} },
                 },
                 income: {
-                    status: 'none',
+                    status: income_status_codes.NONE,
                 },
                 needs_verification: ['income'],
             },
@@ -101,7 +102,7 @@ describe('ProofOfIncome', () => {
             },
         });
 
-        componentTestRender(mock_tore);
+        componentTestRender(mock_store);
         expect(await screen.findByText(files_descriptions_title)).toBeInTheDocument();
         files_descriptions.forEach(description => {
             expect(screen.getByText(description)).toBeInTheDocument();
@@ -131,7 +132,7 @@ describe('ProofOfIncome', () => {
                     services: { idv: {}, onfido: {}, manual: {} },
                 },
                 income: {
-                    status: 'none',
+                    status: income_status_codes.NONE,
                 },
                 needs_verification: ['income'],
             },
@@ -143,7 +144,7 @@ describe('ProofOfIncome', () => {
             },
         });
 
-        componentTestRender(mock_tore);
+        componentTestRender(mock_store);
         const dropdown_input = (await screen.findByPlaceholderText('Select your document*')) as HTMLInputElement;
         expect(dropdown_input).toBeVisible();
         expect(dropdown_input.value).toBe('');

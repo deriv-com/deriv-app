@@ -5,7 +5,7 @@ export const useExchangeRate2 = () => {
     const context = useContext(ExchangeRatesContext);
 
     if (!context) {
-        throw new Error('useExchangeRate2 must be used within a ExchangeRatesDataWrapper');
+        throw new Error('useExchangeRate2 must be used within a ExchangeRatesProvider');
     }
     return context;
 };

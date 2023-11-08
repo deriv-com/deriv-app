@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 // @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
@@ -76,6 +76,16 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TProps>
     // Use the new API instance if the `standalone` prop is set to true,
     // else use the legacy socket connection.
     const active_connection = standalone ? initializeDerivWS() : WS;
+
+    useEffect(() => {
+        let interval_id: NodeJS.Timer;
+
+        if (standalone) {
+            interval_id = setInterval(() => active_connection.send({ time: 1 }), 30000);
+        }
+
+        return () => clearInterval(interval_id);
+    }, [active_connection, standalone]);
 
     return (
         <APIContext.Provider value={active_connection}>

@@ -2,6 +2,8 @@ import React from 'react';
 
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
+import { TRADE_TYPES } from '@deriv/shared';
+
 import { render, screen } from '@testing-library/react';
 
 import TraderProviders from '../../../../trader-providers';
@@ -27,7 +29,7 @@ const default_mock_store = {
             purchase_info: {},
             symbol: 'test_symbol',
             validation_errors: {},
-            vanilla_trade_type: 'VANILLALONGCALL',
+            vanilla_trade_type: TRADE_TYPES.VANILLA.CALL.toUpperCase(),
             trade_types: { CALL: 'Higher', PUT: 'Lower' } as { [key: string]: string },
             is_trade_enabled: true,
         },

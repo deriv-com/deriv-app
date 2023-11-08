@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { VANILLALONG, TURBOS } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import AccumulatorTradeDescription from './Description/accumulator-trade-description';
 import AsianTradeDescription from './Description/asian-trade-description';
@@ -94,12 +94,12 @@ const TradeCategories = ({
                     <MultiplierTradeDescription is_multiplier_fx={is_multiplier_fx} onClick={onClick} />
                 );
                 break;
-            case TURBOS.LONG:
-            case TURBOS.SHORT:
+            case TRADE_TYPES.TURBOS.LONG:
+            case TRADE_TYPES.TURBOS.SHORT:
                 TradeTypeTemplate = <TurbosTradeDescription onClick={onClick} />;
                 break;
-            case VANILLALONG.CALL:
-            case VANILLALONG.PUT:
+            case TRADE_TYPES.VANILLA.CALL:
+            case TRADE_TYPES.VANILLA.PUT:
                 TradeTypeTemplate = <VanillaTradeDescription is_vanilla_fx={is_vanilla_fx} onClick={onClick} />;
                 break;
             default:

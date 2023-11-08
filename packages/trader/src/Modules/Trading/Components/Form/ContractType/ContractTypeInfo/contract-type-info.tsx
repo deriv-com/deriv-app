@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { TURBOS, VANILLALONG } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
@@ -40,7 +40,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const [selected_tab, setSelectedTab] = React.useState<TSelectedTab>(TABS.DESCRIPTION);
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
-            i.value !== 'rise_fall_equal' && i.value !== TURBOS.SHORT && i.value !== VANILLALONG.PUT
+            i.value !== 'rise_fall_equal' && i.value !== TRADE_TYPES.TURBOS.SHORT && i.value !== TRADE_TYPES.VANILLA.PUT
     );
     const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(item.value);
     const should_show_video = /accumulator|vanilla/i.test(item.value);

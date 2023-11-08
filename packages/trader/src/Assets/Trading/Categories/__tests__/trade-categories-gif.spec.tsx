@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { TRADE_TYPES } from '@deriv/shared';
 
 describe('<TradeCategoriesGIF />', () => {
     afterEach(() => {
@@ -320,7 +321,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='vanillalongcall' selected_contract_type='vanillalongcall' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.VANILLA.CALL}
+                            selected_contract_type={TRADE_TYPES.VANILLA.CALL}
+                        />
+                    );
                     expect(screen.getByText(/videovanilla/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -328,7 +334,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageTurbos to be rendered when trade category is turboslong', async () => {
+    it('expect ImageTurbos to be rendered when trade category is TRADE_TYPES.TURBOS.LONG', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/turboslong.svg', () => ({
                 __esModule: true,
@@ -337,7 +343,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='turboslong' selected_contract_type='turboslong' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.TURBOS.LONG}
+                            selected_contract_type={TRADE_TYPES.TURBOS.LONG}
+                        />
+                    );
                     expect(screen.getByText(/imageturbos/i)).toBeInTheDocument();
                 })
                 .catch(error => {

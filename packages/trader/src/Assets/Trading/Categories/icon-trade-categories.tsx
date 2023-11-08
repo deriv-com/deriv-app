@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { VANILLALONG, TURBOS } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 
 type TIconTradeCategory = {
     category: string;
@@ -220,8 +220,8 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </div>
                 );
                 break;
-            case TURBOS.LONG:
-            case TURBOS.SHORT:
+            case TRADE_TYPES.TURBOS.LONG:
+            case TRADE_TYPES.TURBOS.SHORT:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -233,8 +233,8 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case VANILLALONG.CALL:
-            case VANILLALONG.PUT:
+            case TRADE_TYPES.VANILLA.CALL:
+            case TRADE_TYPES.VANILLA.PUT:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>

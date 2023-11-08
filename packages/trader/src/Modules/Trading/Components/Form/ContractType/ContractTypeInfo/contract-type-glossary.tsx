@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { VANILLALONG, TURBOS } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const ContractTypeGlossary = ({
@@ -16,7 +16,7 @@ const ContractTypeGlossary = ({
 }) => {
     let content;
     let trade_category = category;
-    if (trade_category === 'vanillalongcall' && is_vanilla_fx) trade_category = VANILLALONG.FX;
+    if (trade_category === TRADE_TYPES.VANILLA.CALL && is_vanilla_fx) trade_category = TRADE_TYPES.VANILLA.FX;
     if (category) {
         switch (trade_category) {
             case 'accumulator':
@@ -54,8 +54,8 @@ const ContractTypeGlossary = ({
                     },
                 ];
                 break;
-            case TURBOS.LONG:
-            case TURBOS.SHORT:
+            case TRADE_TYPES.TURBOS.LONG:
+            case TRADE_TYPES.TURBOS.SHORT:
                 content = [
                     { type: 'heading', text: <Localize i18n_default_text='Payout' /> },
                     {
@@ -111,8 +111,8 @@ const ContractTypeGlossary = ({
                     },
                 ];
                 break;
-            case VANILLALONG.CALL:
-            case VANILLALONG.PUT:
+            case TRADE_TYPES.VANILLA.CALL:
+            case TRADE_TYPES.VANILLA.PUT:
                 content = [
                     { type: 'heading', text: <Localize i18n_default_text='Payout' /> },
                     {
@@ -250,7 +250,7 @@ const ContractTypeGlossary = ({
                     },
                 ];
                 break;
-            case VANILLALONG.FX:
+            case TRADE_TYPES.VANILLA.FX:
                 content = [
                     { type: 'heading', text: <Localize i18n_default_text='Strike price' /> },
                     {

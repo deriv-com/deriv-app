@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { isMobile, isDesktop } from '@deriv/shared';
+import { isMobile, isDesktop, TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import Strike from '../strike';
 
@@ -15,7 +15,7 @@ const default_mock_store = {
             validation_errors: {},
             expiry_type: 'endtime',
             expiry_date: null,
-            vanilla_trade_type: 'VANILLALONGCALL',
+            vanilla_trade_type: TRADE_TYPES.VANILLA.CALL.toUpperCase(),
         },
     },
 };
@@ -55,7 +55,7 @@ describe('<Strike />', () => {
                 validation_errors: {},
                 expiry_type: 'endtime',
                 expiry_date: null,
-                vanilla_trade_type: 'VANILLALONGCALL',
+                vanilla_trade_type: TRADE_TYPES.VANILLA.CALL.toUpperCase(),
             },
         };
         const mock_root_store = mockStore(new_mock_store);

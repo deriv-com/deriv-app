@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { TRADE_TYPES } from '@deriv/shared';
 import TradeCategories from '../trade-categories';
 
 jest.mock('../Description/accumulator-trade-description', () => jest.fn(() => 'mockedAccumulatorTradeDescription'));
@@ -98,15 +99,15 @@ describe('<TradeCategories />', () => {
         render(<TradeCategories category='touch' onClick={jest.fn()} />);
         expect(screen.getByText(/mockedTouchTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedTurbosTradeDescription is rendered correctly when trade category is "turbosshort"', () => {
-        render(<TradeCategories category='turbosshort' onClick={jest.fn()} />);
+    it('Ensure mockedTurbosTradeDescription is rendered correctly when trade category is "TRADE_TYPES.TURBOS.SHORT"', () => {
+        render(<TradeCategories category={TRADE_TYPES.TURBOS.SHORT} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedTurbosTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedVanillaTradeDescription is rendered correctly when trade category is "vanillalongcall"', () => {
-        render(<TradeCategories category='vanillalongcall' onClick={jest.fn()} />);
+    it('Ensure mockedVanillaTradeDescription is rendered correctly when trade category is "TRADE_TYPES.VANILLA.CALL"', () => {
+        render(<TradeCategories category={TRADE_TYPES.VANILLA.CALL} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedVanillaTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure description is not found is rendered when trade category doesnt exist', () => {
+    it('Ensure description is not found is rendered when trade category does not exist', () => {
         render(<TradeCategories category='some_trade_type' onClick={jest.fn()} />);
         expect(screen.getByText(/Description not found./i)).toBeInTheDocument();
     });

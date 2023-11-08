@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { ButtonToggle } from '@deriv/components';
-import { isTurbosContract, isVanillaContract, TURBOS, VANILLALONG } from '@deriv/shared';
+import { isTurbosContract, isVanillaContract, TRADE_TYPES } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -16,10 +16,10 @@ const TradeTypeTabs = observer(({ className }: TTradeTypeTabs) => {
     const is_turbos = isTurbosContract(contract_type);
     const is_vanilla = isVanillaContract(contract_type);
     const tab_list = [
-        { text: localize('Long'), value: TURBOS.LONG, is_displayed: is_turbos },
-        { text: localize('Short'), value: TURBOS.SHORT, is_displayed: is_turbos },
-        { text: localize('Call'), value: VANILLALONG.CALL, is_displayed: is_vanilla },
-        { text: localize('Put'), value: VANILLALONG.PUT, is_displayed: is_vanilla },
+        { text: localize('Long'), value: TRADE_TYPES.TURBOS.LONG, is_displayed: is_turbos },
+        { text: localize('Short'), value: TRADE_TYPES.TURBOS.SHORT, is_displayed: is_turbos },
+        { text: localize('Call'), value: TRADE_TYPES.VANILLA.CALL, is_displayed: is_vanilla },
+        { text: localize('Put'), value: TRADE_TYPES.VANILLA.PUT, is_displayed: is_vanilla },
     ];
 
     if (!is_turbos && !is_vanilla) return null;

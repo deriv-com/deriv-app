@@ -3,6 +3,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import Info from '../ContractTypeInfo/contract-type-info';
+import { TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 
 jest.mock('Assets/Trading/Categories/trade-categories-gif', () => jest.fn(() => 'TradeCategoriesGif'));
@@ -86,7 +87,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Call/Put',
-                            value: 'vanillalongcall',
+                            value: TRADE_TYPES.VANILLA.CALL,
                         },
                     ],
                     icon: 'IcVanilla',
@@ -129,7 +130,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Call/Put',
-                    value: 'vanillalongcall',
+                    value: TRADE_TYPES.VANILLA.CALL,
                 },
             ],
             icon: 'IcCatAll',
@@ -215,7 +216,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Call/Put',
-                            value: 'vanillalongcall',
+                            value: TRADE_TYPES.VANILLA.CALL,
                         },
                     ],
                     icon: 'IcVanilla',
@@ -254,7 +255,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Call/Put',
-                    value: 'vanillalongcall',
+                    value: TRADE_TYPES.VANILLA.CALL,
                 },
             ],
             icon: 'IcCatOptions',
@@ -305,7 +306,7 @@ describe('<Info />', () => {
     });
     it('Should render toggle buttons if vanilla info page is open', () => {
         mocked_props.item.text = 'Call/Put';
-        mocked_props.item.value = 'vanillalongcall';
+        mocked_props.item.value = TRADE_TYPES.VANILLA.CALL;
         render(mockInfoProvider());
 
         expect(screen.getByText(description)).toBeInTheDocument();

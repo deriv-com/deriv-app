@@ -8,6 +8,7 @@ import {
     getContractTypePosition,
     getCleanedUpCategories,
 } from '../contract';
+import { TRADE_TYPES } from '../../contract';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
 const card_label = 'Apply';
@@ -123,7 +124,7 @@ describe('getCleanedUpCategories', () => {
             },
             Vanillas: {
                 name: 'Vanillas',
-                categories: ['vanillalongcall', 'vanillalongput'],
+                categories: [TRADE_TYPES.VANILLA.CALL, TRADE_TYPES.VANILLA.PUT],
             },
         };
         const resulting_categories = {

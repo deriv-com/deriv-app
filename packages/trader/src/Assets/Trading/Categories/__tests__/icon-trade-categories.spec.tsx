@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { TRADE_TYPES } from '@deriv/shared';
 import IconTradeCategory from '../icon-trade-categories';
 
 jest.mock('@deriv/components', () => ({
@@ -175,8 +176,8 @@ describe('<IconTradeCatgory />', () => {
         expect(mocked_icon_text).toBeInTheDocument();
         expect(mocked_icon_text).toHaveClass('category-wrapper');
     });
-    it('Expect two MockedIcons to be rendered when category is vanillalongcall', () => {
-        render(<IconTradeCategory category='vanillalongcall' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.VANILLA.CALL', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.VANILLA.CALL} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -184,8 +185,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is turboslong', () => {
-        render(<IconTradeCategory category='turboslong' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.TURBOS.LONG', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.TURBOS.LONG} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {

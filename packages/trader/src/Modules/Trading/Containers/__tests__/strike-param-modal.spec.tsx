@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { screen, render } from '@testing-library/react';
+import { TRADE_TYPES } from '@deriv/shared';
 import StrikeParamModal from '../strike-param-modal';
 import userEvent from '@testing-library/user-event';
 
@@ -39,7 +40,7 @@ jest.mock('@deriv/components', () => {
 
 describe('<StrikeParamModal />', () => {
     const props = {
-        contract_type: 'vanillalongcall',
+        contract_type: TRADE_TYPES.VANILLA.CALL,
         is_open: true,
         name: 'barrier_1',
         onChange: jest.fn(),

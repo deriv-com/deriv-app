@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { TRADE_TYPES } from '@deriv/shared';
 import ContractTypeGlossary from '../ContractTypeInfo/contract-type-glossary';
 
 const deal_cancellation = 'Deal cancellation';
@@ -14,7 +15,7 @@ describe('<ContractTypeGlossary />', () => {
         ).toBeInTheDocument();
     });
     it('Ensure vanilla glossary is rendered properly', () => {
-        render(<ContractTypeGlossary category='vanillalongcall' />);
+        render(<ContractTypeGlossary category={TRADE_TYPES.VANILLA.CALL} />);
 
         expect(
             screen.getByText(
@@ -23,7 +24,7 @@ describe('<ContractTypeGlossary />', () => {
         ).toBeInTheDocument();
     });
     it('Ensure turbos glossary is rendered properly', () => {
-        render(<ContractTypeGlossary category='turboslong' />);
+        render(<ContractTypeGlossary category={TRADE_TYPES.TURBOS.LONG} />);
 
         expect(
             screen.getByText(

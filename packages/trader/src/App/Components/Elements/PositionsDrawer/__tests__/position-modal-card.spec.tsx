@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { VANILLALONG, TURBOS } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 import { ActiveSymbols } from '@deriv/api-types';
 import PositionsModalCard from '../positions-modal-card';
 import TraderProviders from '../../../../../trader-providers';
@@ -10,7 +10,7 @@ import TraderProviders from '../../../../../trader-providers';
 const default_mock_props = {
     className: 'test_className',
     contract_info: {
-        contract_type: VANILLALONG.CALL,
+        contract_type: TRADE_TYPES.VANILLA.CALL,
         underlying: '',
         contract_id: 123386875,
         currency: 'USD',
@@ -129,7 +129,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/35.68/i)).toBeInTheDocument();
     });
     it('should render specific contract card for Turbos', () => {
-        default_mock_props.contract_info.contract_type = TURBOS.LONG;
+        default_mock_props.contract_info.contract_type = TRADE_TYPES.TURBOS.LONG;
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.queryByText(PositionsCardLoader)).not.toBeInTheDocument();

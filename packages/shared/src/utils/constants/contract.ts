@@ -2,7 +2,7 @@ import React from 'react';
 
 import { localize } from '@deriv/translations';
 
-import { shouldShowCancellation, shouldShowExpiration, TURBOS, VANILLALONG } from '../contract';
+import { shouldShowCancellation, shouldShowExpiration, TRADE_TYPES } from '../contract';
 import { cloneObject } from '../object';
 import { LocalStore } from '../storage';
 
@@ -165,30 +165,30 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         ],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
-    turboslong: {
+    [TRADE_TYPES.TURBOS.LONG]: {
         title: localize('Long/Short'),
-        trade_types: ['TURBOSLONG'],
+        trade_types: [TRADE_TYPES.TURBOS.LONG.toUpperCase()],
         basis: ['stake'],
         barrier_count: 1,
         components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
     },
-    turbosshort: {
+    [TRADE_TYPES.TURBOS.SHORT]: {
         title: localize('Long/Short'),
-        trade_types: ['TURBOSSHORT'],
+        trade_types: [TRADE_TYPES.TURBOS.SHORT.toUpperCase()],
         basis: ['stake'],
         barrier_count: 1,
         components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
     },
-    vanillalongcall: {
+    [TRADE_TYPES.VANILLA.CALL]: {
         title: localize('Call/Put'),
-        trade_types: ['VANILLALONGCALL'],
+        trade_types: [TRADE_TYPES.VANILLA.CALL.toUpperCase()],
         basis: ['stake'],
         components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
         barrier_count: 1,
     },
-    vanillalongput: {
+    [TRADE_TYPES.VANILLA.PUT]: {
         title: localize('Call/Put'),
-        trade_types: ['VANILLALONGPUT'],
+        trade_types: [TRADE_TYPES.VANILLA.PUT.toUpperCase()],
         basis: ['stake'],
         components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
         barrier_count: 1,
@@ -198,7 +198,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
 // Config for rendering trade options
 export const getContractCategoriesConfig = () =>
     ({
-        Turbos: { name: localize('Turbos'), categories: [TURBOS.LONG, TURBOS.SHORT] },
+        Turbos: { name: localize('Turbos'), categories: [TRADE_TYPES.TURBOS.LONG, TRADE_TYPES.TURBOS.SHORT] },
         Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
         'Ups & Downs': {
             name: localize('Ups & Downs'),
@@ -208,7 +208,7 @@ export const getContractCategoriesConfig = () =>
         'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
         'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
         Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
-        Vanillas: { name: localize('Vanillas'), categories: [VANILLALONG.CALL, VANILLALONG.PUT] },
+        Vanillas: { name: localize('Vanillas'), categories: [TRADE_TYPES.VANILLA.CALL, TRADE_TYPES.VANILLA.PUT] },
         Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
     } as const);
 

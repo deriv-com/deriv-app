@@ -15,9 +15,6 @@ describe('DOM utilities of window-size file', () => {
     it('Should get main content height', () => {
         const bot_element = screen.getByTestId('mock-bot');
 
-        if (!bot_element) {
-            throw new Error("Element with class '.bot' was not found");
-        }
         bot_element.style.setProperty('--bot-content-height', '100px');
 
         expect(getMainContentHeight()).toBe('100px');
@@ -26,9 +23,6 @@ describe('DOM utilities of window-size file', () => {
     it('Should get main content width', () => {
         const bot_element = screen.getByTestId('mock-bot');
 
-        if (!bot_element) {
-            throw new Error("Element with class '.bot' was not found");
-        }
         bot_element.style.setProperty('--bot-content-width', '200px');
 
         expect(getMainContentWidth()).toBe('200px');

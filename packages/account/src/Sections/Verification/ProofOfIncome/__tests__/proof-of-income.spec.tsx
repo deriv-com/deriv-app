@@ -6,7 +6,7 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
 import { income_status_codes } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 
-const mocked_get_account_status = {
+const mocked_account_status = {
     authentication: {
         attempts: { latest: { service: '' }, history: [] },
         document: {
@@ -32,7 +32,7 @@ jest.mock('@deriv/shared', () => ({
         authorized: {
             getAccountStatus: jest.fn(() =>
                 Promise.resolve({
-                    get_account_status: { ...mocked_get_account_status },
+                    get_account_status: { ...mocked_account_status },
                 })
             ),
         },
@@ -79,26 +79,16 @@ describe('ProofOfIncome', () => {
     });
 
     it('Should render ProofOfIncome form when it is required', async () => {
-        const mocked_get_account_status_for_poinc_required = {
+        const mocked_account_status_for_poinc_required = {
             authentication: {
-                attempts: { latest: { service: '' }, history: [] },
-                document: {
-                    status: 'none',
-                },
-                identity: {
-                    status: 'none',
-                    services: { idv: {}, onfido: {}, manual: {} },
-                },
-                income: {
-                    status: income_status_codes.NONE,
-                },
+                ...mocked_account_status.authentication,
                 needs_verification: ['income'],
             },
             status: ['allow_document_upload', 'age_verification'],
         };
         (WS.authorized.getAccountStatus as jest.Mock).mockResolvedValue({
             get_account_status: {
-                ...mocked_get_account_status_for_poinc_required,
+                ...mocked_account_status_for_poinc_required,
             },
         });
 
@@ -121,26 +111,16 @@ describe('ProofOfIncome', () => {
     });
 
     it('Should render ProofOfIncome and upload the document successfully', async () => {
-        const mocked_get_account_status_for_poinc_required = {
+        const mocked_account_status_for_poinc_required = {
             authentication: {
-                attempts: { latest: { service: '' }, history: [] },
-                document: {
-                    status: 'none',
-                },
-                identity: {
-                    status: 'none',
-                    services: { idv: {}, onfido: {}, manual: {} },
-                },
-                income: {
-                    status: income_status_codes.NONE,
-                },
+                ...mocked_account_status.authentication,
                 needs_verification: ['income'],
             },
             status: ['allow_document_upload', 'age_verification'],
         };
         (WS.authorized.getAccountStatus as jest.Mock).mockResolvedValue({
             get_account_status: {
-                ...mocked_get_account_status_for_poinc_required,
+                ...mocked_account_status_for_poinc_required,
             },
         });
 

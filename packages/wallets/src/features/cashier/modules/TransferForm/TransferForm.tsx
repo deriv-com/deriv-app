@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { Formik } from 'formik';
 import { useTransferBetweenAccounts } from '@deriv/api';
-import { Loader } from '../../../../../../components';
-import { useWalletTransfer } from '../../hooks';
-import type { TInitialTransferFormValues } from '../../types';
-import { TransferFormDropdown } from '../TransferFormDropdown';
-import { TransferFormInputField } from '../TransferFormInputField';
+import { Loader } from '../../../../components';
+import { TransferFormDropdown } from './components/TransferFormDropdown';
+import { TransferFormInputField } from './components/TransferFormInputField';
+import { useWalletTransfer } from './hooks';
+import type { TInitialTransferFormValues } from './types';
 import './TransferForm.scss';
 
 const TransferForm = () => {

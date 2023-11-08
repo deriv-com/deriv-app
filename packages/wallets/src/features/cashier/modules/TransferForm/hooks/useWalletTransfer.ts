@@ -112,7 +112,7 @@ const activeWalletIconMapper = {
     },
     BTC: {
         dark: 'IcWalletBitcoinDark',
-        light: 'IcWalletEthereumLight',
+        light: 'IcWalletBitcoinLight',
     },
     Demo: {
         dark: 'IcWalletDerivDemoDark',
@@ -120,7 +120,7 @@ const activeWalletIconMapper = {
     },
     ETH: {
         dark: 'IcWalletEthereumDark',
-        light: 'IcWalletBitcoinLight',
+        light: 'IcWalletEthereumLight',
     },
     EUR: {
         dark: 'IcWalletCurrencyEur',

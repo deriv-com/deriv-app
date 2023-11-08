@@ -1,8 +1,8 @@
 import React from 'react';
-import { TransferModule } from '../../modules';
+import { TransferForm } from '../../modules';
 
 const WalletTransfer = () => {
-    return <TransferModule />;
+    return <TransferForm />;
 };
 
 export default WalletTransfer;

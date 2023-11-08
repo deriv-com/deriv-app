@@ -7,10 +7,8 @@ import {
     WalletText,
 } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
-import { useWalletTransfer } from '../../hooks';
+import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
-
-type TAccount = ReturnType<typeof useWalletTransfer>['activeWallet'];
 
 type TProps = {
     account?: TAccount;

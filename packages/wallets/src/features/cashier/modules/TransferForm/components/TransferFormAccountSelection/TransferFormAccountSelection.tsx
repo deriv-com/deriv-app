@@ -5,10 +5,9 @@ import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
 import CloseIcon from '../../../../../../public/images/close-icon.svg';
 import { useWalletTransfer } from '../../hooks';
+import type { TAccount } from '../../types';
 import { TransferFormAccountCard } from '../TransferFormAccountCard';
 import './TransferFormAccountSelection.scss';
-
-type TAccount = ReturnType<typeof useWalletTransfer>['activeWallet'];
 
 type TProps = {
     fromAccount?: TAccount;

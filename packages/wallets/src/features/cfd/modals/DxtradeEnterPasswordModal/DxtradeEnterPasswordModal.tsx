@@ -36,7 +36,7 @@ const DxtradeEnterPasswordModal = () => {
         return accountType === 'demo'
             ? 'Transfer virtual funds from your Demo Wallet to your Deriv X Demo account to practise trading.'
             : `Transfer funds from your ${activeWallet?.currency} Wallet to your Deriv X account to start trading.`;
-    }, [accountType, activeWallet]);
+    }, [accountType, activeWallet?.currency]);
 
     const dxtradeBalance = useMemo(() => {
         return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;

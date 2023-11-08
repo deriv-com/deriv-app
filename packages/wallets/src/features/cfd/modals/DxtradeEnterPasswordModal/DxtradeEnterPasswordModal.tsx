@@ -71,39 +71,44 @@ const DxtradeEnterPasswordModal = () => {
         );
     }, [hide, history, isLoading, isSuccess, onSubmit, password]);
 
-    const successComponent = isSuccess && dxtradeAccountListSuccess && (
-        <CFDSuccess
-            description={successDescription}
-            displayBalance={dxtradeBalance || ''}
-            marketType='all'
-            platform='dxtrade'
-            renderButton={() => renderFooter}
-            title={`Your Deriv X${accountType === 'demo' ? ` ${accountType}` : ''} account is ready`}
-        />
-    );
+    const successComponent = useMemo(() => {
+        if (isSuccess && dxtradeAccountListSuccess) {
+            return (
+                <CFDSuccess
+                    description={successDescription}
+                    displayBalance={dxtradeBalance || ''}
+                    marketType='all'
+                    platform='dxtrade'
+                    renderButton={() => renderFooter}
+                    title={`Your Deriv X${accountType === 'demo' ? ` ${accountType}` : ''} account is ready`}
+                />
+            );
+        }
+    }, [isSuccess, dxtradeAccountListSuccess, successDescription, dxtradeBalance, renderFooter, accountType]);
 
-    const passwordComponent =
-        !isSuccess &&
-        accountStatusSuccess &&
-        (isDxtradePasswordNotSet ? (
-            <CreatePassword
-                icon={<DxTradePasswordIcon />}
-                isLoading={isLoading}
-                onPasswordChange={e => setPassword(e.target.value)}
-                onPrimaryClick={onSubmit}
-                password={password}
-                platform='dxtrade'
-            />
-        ) : (
-            <EnterPassword
-                isLoading={isLoading}
-                marketType='all'
-                onPasswordChange={e => setPassword(e.target.value)}
-                onPrimaryClick={onSubmit}
-                password={password}
-                platform='dxtrade'
-            />
-        ));
+    const passwordComponent = useMemo(() => {
+        if (!isSuccess && accountStatusSuccess) {
+            return isDxtradePasswordNotSet ? (
+                <CreatePassword
+                    icon={<DxTradePasswordIcon />}
+                    isLoading={isLoading}
+                    onPasswordChange={e => setPassword(e.target.value)}
+                    onPrimaryClick={onSubmit}
+                    password={password}
+                    platform='dxtrade'
+                />
+            ) : (
+                <EnterPassword
+                    isLoading={isLoading}
+                    marketType='all'
+                    onPasswordChange={e => setPassword(e.target.value)}
+                    onPrimaryClick={onSubmit}
+                    password={password}
+                    platform='dxtrade'
+                />
+            );
+        }
+    }, [isSuccess, accountStatusSuccess, isDxtradePasswordNotSet, isLoading, onSubmit, password]);
 
     return isMobile ? (
         <ModalStepWrapper renderFooter={() => renderFooter} title={' '}>

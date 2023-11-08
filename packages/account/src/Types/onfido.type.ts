@@ -68,7 +68,6 @@ export declare type SupportedLanguages =
     | 'lv_LV'
     | 'ms'
     | 'nl_NL'
-    | 'no'
     | 'pl_PL'
     | 'pt_BR'
     | 'pt_PT'

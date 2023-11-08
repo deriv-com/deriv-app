@@ -10,14 +10,16 @@ import useDevice from '../../../../../../hooks/useDevice';
 import { useWalletTransfer } from '../../hooks';
 import './TransferFormAccountCard.scss';
 
+type TAccount = ReturnType<typeof useWalletTransfer>['activeWallet'];
+
 type TProps = {
-    account?: ReturnType<typeof useWalletTransfer>['activeWallet'];
+    account?: TAccount;
+    activeWallet?: TAccount;
     type?: 'input' | 'modal';
 };
 
-const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
+const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet, type = 'modal' }) => {
     const { isMobile } = useDevice();
-    const { activeWallet } = useWalletTransfer();
     const isInput = type === 'input';
     const isModal = type === 'modal';
 
@@ -29,12 +31,7 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, type = 'moda
             })}
         >
             <div className='wallets-transfer-form-account-card__icon-with-badge'>
-                <div
-                    className={classNames('wallets-transfer-form-account-card__icon', {
-                        'wallets-transfer-form-account-card__icon--is-input': isInput,
-                        'wallets-transfer-form-account-card__icon--is-modal': isModal,
-                    })}
-                >
+                <div className='wallets-transfer-form-account-card__icon'>
                     {/* @ts-expect-error provide proper type for accounts from transfer_between_accounts response */}
                     {account?.account_category === 'wallet' ? (
                         <WalletCurrencyCard

@@ -1,21 +1,24 @@
-import { useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useTransferAccounts } from '@deriv/api';
+import { useEffect, useMemo } from 'react';
+import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useTransferBetweenAccounts } from '@deriv/api';
 import { displayMoney } from '@deriv/api/src/utils/display-money';
+import { THooks } from '../../../../../types';
 import { getAccountName } from '../helpers';
 
-type TAccountType = NonNullable<
-    NonNullable<ReturnType<typeof useTransferAccounts>['data']>['accounts']
->[number]['account_type'];
+type TAccountType = THooks.TransferAccount['account_type'];
 type TMt5MarketType = ReturnType<typeof getMarketType>;
 
 const useWalletTransfer = (fromAccountLoginId?: string) => {
     const { data: authorizeData, isLoading: isAuthorizeLoading } = useAuthorize();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
     const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
-    const { data, isFetchedAfterMount: isTransferAccountsLoading } = useTransferAccounts();
+    const { data, isLoading: isTransferAccountsLoaded, mutate } = useTransferBetweenAccounts();
 
     const isLoading =
-        isAuthorizeLoading || !isTransferAccountsLoading || isCurrencyConfigLoading || isActiveWalletLoading;
+        isAuthorizeLoading || isCurrencyConfigLoading || isActiveWalletLoading || isTransferAccountsLoaded;
+
+    useEffect(() => {
+        if (!data?.accounts) mutate({ accounts: 'all' });
+    }, [data, mutate]);
 
     const modifiedTransferAccounts = useMemo(() => {
         //populating transfer accounts with new/extra fields
@@ -41,8 +44,8 @@ const useWalletTransfer = (fromAccountLoginId?: string) => {
                         : '',
                 currencyConfig,
                 displayBalance: displayMoney(Number(account.balance) || 0, currencyConfig?.display_code || 'USD', {
-                    fractional_digits: currencyConfig?.fractional_digits || 2,
-                    preferred_language: authorizeData?.preferred_language || 'en-US',
+                    fractional_digits: currencyConfig?.fractional_digits,
+                    preferred_language: authorizeData?.preferred_language,
                 }),
                 isVirtual: Boolean(account.demo_account),
                 landingCompanyName: activeWallet?.landing_company_name,

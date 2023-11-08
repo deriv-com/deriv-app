@@ -4,9 +4,10 @@ import { WalletListCardBadge, WalletText } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
 import IcDropdown from '../../../../../../public/images/ic-dropdown.svg';
+import { useWalletTransfer } from '../../hooks';
 import { TInitialTransferFormValues } from '../../types';
-import TransferFormAccountCard from '../TransferFormAccountCard/TransferFormAccountCard';
-import TransferFormAccountSelection from '../TransferFormAccountSelection/TransferFormAccountSelection';
+import { TransferFormAccountCard } from '../TransferFormAccountCard';
+import { TransferFormAccountSelection } from '../TransferFormAccountSelection';
 import './TransferFormDropdown.scss';
 
 type TProps = {
@@ -17,6 +18,7 @@ type TProps = {
 
 const TransferFormDropdown: React.FC<TProps> = ({ fieldName, label, mobileAccountsListRef }) => {
     const { setFieldValue, values } = useFormikContext<TInitialTransferFormValues>();
+    const { activeWallet } = useWalletTransfer();
     const { fromAccount, toAccount } = values;
     const { isMobile } = useDevice();
     const modal = useModal();
@@ -53,7 +55,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, label, mobileAccoun
                 </div>
 
                 {selectedAccount ? (
-                    <TransferFormAccountCard account={selectedAccount} type='input' />
+                    <TransferFormAccountCard account={selectedAccount} activeWallet={activeWallet} type='input' />
                 ) : (
                     <WalletText size='sm' weight='bold'>
                         Select a trading account or a Wallet

@@ -1,1 +1,1 @@
-export { default as TransferFormDropdownModule } from './TransferFormDropdown';
+export { default as TransferFormDropdown } from './TransferFormDropdown';

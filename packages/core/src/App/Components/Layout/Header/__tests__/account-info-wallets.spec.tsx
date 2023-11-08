@@ -32,30 +32,6 @@ describe('AccountInfoWallets component', () => {
                 },
             },
             loginid: 'CR123',
-            wallet_list: [
-                {
-                    account_category: 'wallet',
-                    currency: 'USD',
-                    icons: {
-                        dark: 'IcWalletCurrencyUsd',
-                        light: 'IcWalletCurrencyUsd',
-                    },
-                    is_virtual: 0,
-                    is_disabled: 0,
-                    loginid: 'CRW909900',
-                    linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                    dtrade_loginid: 'CR123',
-                    balance: 0,
-                },
-            ],
-            has_wallet: true,
-            linked_wallets_accounts: {
-                derivez: [],
-                dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
-                dwallet: [],
-                dxtrade: [],
-                mt5: [],
-            },
         },
     };
 
@@ -78,25 +54,6 @@ describe('AccountInfoWallets component', () => {
                     },
                 },
                 loginid: 'CR123',
-                wallet_list: [
-                    {
-                        account_category: 'wallet',
-                        currency: 'USD',
-                        is_virtual: false,
-                        is_disabled: true,
-                        loginid: 'CRW909900',
-                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        dtrade_loginid: 'CR123',
-                    },
-                ],
-                has_wallet: true,
-                linked_wallets_accounts: {
-                    derivez: [],
-                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
-                    dwallet: [],
-                    dxtrade: [],
-                    mt5: [],
-                },
             },
             ui: {
                 account_switcher_disabled_message: 'test disabled message',
@@ -131,25 +88,6 @@ describe('AccountInfoWallets component', () => {
                     },
                 },
                 loginid: 'CR123',
-                wallet_list: [
-                    {
-                        account_category: 'wallet',
-                        currency: 'USD',
-                        is_virtual: false,
-                        is_disabled: true,
-                        loginid: 'CRW909900',
-                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        dtrade_loginid: 'CR123',
-                    },
-                ],
-                has_wallet: true,
-                linked_wallets_accounts: {
-                    derivez: [],
-                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
-                    dwallet: [],
-                    dxtrade: [],
-                    mt5: [],
-                },
             },
         });
 
@@ -189,25 +127,6 @@ describe('AccountInfoWallets component', () => {
                     },
                 },
                 loginid: 'CR123',
-                wallet_list: [
-                    {
-                        account_category: 'wallet',
-                        currency: 'USD',
-                        is_virtual: false,
-                        is_disabled: true,
-                        loginid: 'CRW909900',
-                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        dtrade_loginid: 'CR123',
-                    },
-                ],
-                has_wallet: true,
-                linked_wallets_accounts: {
-                    derivez: [],
-                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
-                    dwallet: [],
-                    dxtrade: [],
-                    mt5: [],
-                },
             },
         });
 
@@ -248,25 +167,6 @@ describe('AccountInfoWallets component', () => {
                     },
                 },
                 loginid: 'CR123',
-                wallet_list: [
-                    {
-                        account_category: 'wallet',
-                        currency: 'USD',
-                        is_virtual: true,
-                        is_disabled: false,
-                        loginid: 'CRW909900',
-                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        dtrade_loginid: 'CR123',
-                    },
-                ],
-                has_wallet: true,
-                linked_wallets_accounts: {
-                    derivez: [],
-                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
-                    dwallet: [],
-                    dxtrade: [],
-                    mt5: [],
-                },
             },
         });
 
@@ -294,6 +194,7 @@ describe('AccountInfoWallets component', () => {
                         currency: 'USD',
                         is_virtual: 0,
                         is_disabled: 0,
+                        landing_company_name: 'maltainvest',
                         linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
                     },
                     CR123: {
@@ -304,27 +205,6 @@ describe('AccountInfoWallets component', () => {
                     },
                 },
                 loginid: 'CR123',
-                wallet_list: [
-                    {
-                        account_category: 'wallet',
-                        currency: 'USD',
-                        is_virtual: false,
-                        is_disabled: false,
-                        loginid: 'CRW909900',
-                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        dtrade_loginid: 'CR123',
-                        is_malta_wallet: true,
-                        landing_company_name: 'malta',
-                    },
-                ],
-                has_wallet: true,
-                linked_wallets_accounts: {
-                    derivez: [],
-                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
-                    dwallet: [],
-                    dxtrade: [],
-                    mt5: [],
-                },
             },
         });
 
@@ -353,27 +233,6 @@ describe('AccountInfoWallets component', () => {
                     },
                 },
                 loginid: 'CR123',
-                wallet_list: [
-                    {
-                        account_category: 'wallet',
-                        currency: 'USD',
-                        is_virtual: false,
-                        is_disabled: true,
-                        loginid: 'CRW909900',
-                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                        dtrade_loginid: 'CR123',
-                        is_malta_wallet: true,
-                        landing_company_name: 'malta',
-                    },
-                ],
-                has_wallet: true,
-                linked_wallets_accounts: {
-                    derivez: [],
-                    dtrade: [{ loginid: 'CR123', platform: 'dtrade' }],
-                    dwallet: [],
-                    dxtrade: [],
-                    mt5: [],
-                },
             },
         });
 

@@ -3,8 +3,9 @@ import { useHistory } from 'react-router';
 import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import './account-switcher-wallet.scss';
 
 type TAccountSwitcherWalletProps = {
@@ -13,8 +14,7 @@ type TAccountSwitcherWalletProps = {
 };
 
 export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountSwitcherWalletProps) => {
-    const { client } = useStore();
-    const { wallet_list } = client;
+    const { data: wallet_list } = useStoreWalletAccountsList();
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
     const history = useHistory();

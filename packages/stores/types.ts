@@ -364,15 +364,6 @@ type TCountryStandpoint = {
     is_united_kingdom: boolean;
 };
 
-type TLinkedAccount = {
-    loginid?: string;
-    platform?: 'derivez' | 'dtrade' | 'dwallet' | 'dxtrade' | 'mt5';
-};
-
-type TLinkedWalletsAccounts = {
-    [key in Exclude<TLinkedAccount['platform'], undefined>]: TLinkedAccount[];
-};
-
 type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
     account_type: string;
@@ -385,9 +376,6 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
-    wallet_list: TWalletList;
-    linked_wallets_accounts: TLinkedWalletsAccounts;
-    has_wallet: boolean;
     account_status: GetAccountStatus;
     available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
     balance?: string | number;

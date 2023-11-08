@@ -243,9 +243,6 @@ export default class ClientStore extends BaseStore {
             current_fiat_currency: computed,
             current_landing_company: computed,
             account_list: computed,
-            wallet_list: computed,
-            linked_wallets_accounts: computed,
-            has_wallet: computed,
             has_real_mt5_login: computed,
             has_real_dxtrade_login: computed,
             has_account_error_in_mt5_real_list: computed,
@@ -616,129 +613,6 @@ export default class ClientStore extends BaseStore {
 
     get account_list() {
         return this.all_loginids.map(id => this.getAccountInfo(id)).filter(account => account);
-    }
-
-    get wallet_list() {
-        const currency_to_icon_mapper = {
-            Demo: {
-                dark: 'IcWalletDerivDemoDark',
-                light: 'IcWalletDerivDemoLight',
-            },
-            USD: {
-                dark: 'IcWalletCurrencyUsd',
-                light: 'IcWalletCurrencyUsd',
-            },
-            EUR: {
-                dark: 'IcWalletCurrencyEur',
-                light: 'IcWalletCurrencyEur',
-            },
-            AUD: {
-                dark: 'IcWalletCurrencyAud',
-                light: 'IcWalletCurrencyAud',
-            },
-            GBP: {
-                dark: 'IcWalletCurrencyGbp',
-                light: 'IcWalletCurrencyGbp',
-            },
-            BTC: {
-                dark: 'IcWalletBitcoinDark',
-                light: 'IcWalletBitcoinLight',
-            },
-            ETH: {
-                dark: 'IcWalletEthereumDark',
-                light: 'IcWalletEthereumLight',
-            },
-            USDT: {
-                dark: 'IcWalletTetherDark',
-                light: 'IcWalletTetherLight',
-            },
-            eUSDT: {
-                dark: 'IcWalletTetherDark',
-                light: 'IcWalletTetherLight',
-            },
-            tUSDT: {
-                dark: 'IcWalletTetherDark',
-                light: 'IcWalletTetherLight',
-            },
-            UST: {
-                dark: 'IcWalletTetherDark',
-                light: 'IcWalletTetherLight',
-            },
-            LTC: {
-                dark: 'IcWalletLiteCoinDark',
-                light: 'IcWalletLiteCoinLight',
-            },
-            USDC: {
-                dark: 'IcWalletUsdCoinDark',
-                light: 'IcWalletUsdCoinLight',
-            },
-        };
-
-        return this.all_loginids
-            .filter(id => this.getAccount(id)?.account_category === 'wallet')
-            .map(id => {
-                const account = this.getAccount(id);
-                const loginid = id;
-                const currency = account.currency;
-                const is_disabled = Boolean(account.is_disabled);
-                const is_virtual = Boolean(account.is_virtual);
-
-                const fiat_or_crypto = this.is_crypto(currency) ? 'crypto' : 'fiat';
-                const icon_type = is_virtual ? 'demo' : fiat_or_crypto;
-                const landing_company_name = account.landing_company_name?.replace('maltainvest', 'malta');
-                const is_malta_wallet = landing_company_name === 'malta';
-                const dtrade_loginid = account?.linked_to?.find(account => account?.platform === 'dtrade')?.loginid;
-                const dtrade_balance = this.accounts?.[dtrade_loginid]?.balance;
-
-                const wallet_currency_type = is_virtual ? 'Demo' : currency || '';
-                const icons = currency_to_icon_mapper[wallet_currency_type];
-
-                const gradients = {
-                    /** The gradient class name for the wallet header background. */
-                    header: {
-                        dark: `wallet-header__${wallet_currency_type.toLowerCase()}-bg--dark`,
-                        light: `wallet-header__${wallet_currency_type.toLowerCase()}-bg`,
-                    },
-                    /** The gradient class name for the wallet card background. */
-                    card: {
-                        dark: `wallet-card__${wallet_currency_type.toLowerCase()}-bg--dark`,
-                        light: `wallet-card__${wallet_currency_type.toLowerCase()}-bg`,
-                    },
-                };
-
-                return {
-                    ...account,
-                    dtrade_loginid,
-                    dtrade_balance,
-                    icons,
-                    icon_type,
-                    is_disabled,
-                    is_virtual,
-                    is_malta_wallet,
-                    landing_company_name,
-                    loginid,
-                    gradients,
-                };
-            });
-    }
-
-    get has_wallet() {
-        return this.all_loginids.some(id => this.getAccount(id)?.account_category === 'wallet');
-    }
-
-    get linked_wallets_accounts() {
-        const linked_accounts = { derivez: [], dtrade: [], dwallet: [], dxtrade: [], mt5: [] };
-
-        this.wallet_list?.forEach(account => {
-            const linked = account.linked_to;
-
-            linked?.forEach(linked_to_account => {
-                if (linked_to_account?.platform && linked_to_account?.loginid)
-                    linked_accounts[linked_to_account.platform].push(linked_to_account);
-            });
-        });
-
-        return linked_accounts;
     }
 
     get has_real_mt5_login() {

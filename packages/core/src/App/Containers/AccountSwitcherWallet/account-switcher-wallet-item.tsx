@@ -3,13 +3,13 @@ import classNames from 'classnames';
 import { AppLinkedWithWalletIcon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { TStores } from '@deriv/stores/types';
+import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
 import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
 import './account-switcher-wallet-item.scss';
 
 type TAccountSwitcherWalletItemProps = {
-    account: TStores['client']['wallet_list'][number];
+    account: ReturnType<typeof useStoreWalletAccountsList>['data'][number];
     closeAccountsDialog: () => void;
     show_badge?: boolean;
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import FinancialStpRealAccountSignup from '../financial-stp-real-account-signup';
-import CFDProviders from '../../cfd-providers';
+import CFDProviders from '../../../cfd-providers';
 import { mockStore } from '@deriv/stores';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
 
@@ -17,7 +17,7 @@ const MockComponent = ({ prevStep, nextStep }) => (
     </div>
 );
 
-jest.mock('../../Components/cfd-poa', () =>
+jest.mock('../../Components/proof-of-address', () =>
     jest.fn(({ onCancel, onSubmit }) => (
         <div>
             CFDPOA
@@ -26,7 +26,7 @@ jest.mock('../../Components/cfd-poa', () =>
     ))
 );
 
-jest.mock('../../Components/cfd-poi', () =>
+jest.mock('../../Components/proof-of-identity', () =>
     jest.fn(({ onCancel, onSubmit }) => (
         <div>
             CFDPOI

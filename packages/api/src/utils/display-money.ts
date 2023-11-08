@@ -4,7 +4,7 @@ type TCurrency = NonNullable<ReturnType<typeof useAuthorize>['data']['currency']
 type TPreferredLanguage = ReturnType<typeof useAuthorize>['data']['preferred_language'];
 
 export const displayMoney = (
-    balance: number,
+    amount: number,
     currency: TCurrency,
     options?: {
         fractional_digits?: number;
@@ -16,8 +16,8 @@ export const displayMoney = (
             minimumFractionDigits: options?.fractional_digits || 2,
             maximumFractionDigits: options?.fractional_digits || 2,
             minimumIntegerDigits: 1,
-        }).format(balance)} ${currency}`;
+        }).format(amount)} ${currency}`;
     } catch (error) {
-        return `${balance} ${currency}`;
+        return `${amount} ${currency}`;
     }
 };

@@ -96,8 +96,6 @@ const ContractCardHeader = ({
         <React.Fragment>
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
-                    'dc-contract-card__grid-underlying-trade--mobile':
-                        is_mobile && !multiplier && !is_accumulator && !is_turbos,
                     'dc-contract-card__grid-underlying-trade--trader': !is_pathname_bot,
                     'dc-contract-card__grid-underlying-trade--trader--accumulator': !is_mobile && is_accumulator,
                     [`dc-contract-card__grid-underlying-trade--trader--${

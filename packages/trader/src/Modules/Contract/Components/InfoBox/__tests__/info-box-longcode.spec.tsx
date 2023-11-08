@@ -90,7 +90,7 @@ describe('InfoBoxLongcode', () => {
 
         expect(screen.getByText(view_more_text)).toBeInTheDocument();
         expect(screen.getByText(/Trade info/i)).toBeInTheDocument();
-        expect(screen.getByText(/Ok/i)).toBeInTheDocument();
+        expect(screen.getByText(/OK/i)).toBeInTheDocument();
 
         document.body.removeChild(modal_root_el);
     });

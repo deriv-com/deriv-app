@@ -19,7 +19,7 @@ const InfoBoxLongcode = observer(({ contract_info }: TInfoBoxLongcode) => {
     };
 
     return (
-        <div className='info-box-longcode'>
+        <div className='info-box-longcode' onClick={is_mobile ? handleToggle : undefined}>
             <Icon icon='IcContractFlag' className='info-box-longcode-icon' size={24} />
             <div className='info-box-longcode-wrapper'>
                 <Text
@@ -54,7 +54,7 @@ const InfoBoxLongcode = observer(({ contract_info }: TInfoBoxLongcode) => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button className='info-box-longcode--modal-button' primary large onClick={handleToggle}>
-                            <Localize i18n_default_text='Ok' />
+                            <Localize i18n_default_text='OK' />
                         </Button>
                     </Modal.Footer>
                 </Modal>

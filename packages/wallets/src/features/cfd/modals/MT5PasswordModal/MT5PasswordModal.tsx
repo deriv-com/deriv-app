@@ -88,7 +88,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 <WalletButtonGroup>
                     <WalletButton isFullWidth size='lg' text='Forgot password?' variant='outlined' />
                     <WalletButton
-                        disabled={!password}
+                        disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
                         isFullWidth
                         isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                         onClick={onSubmit}
@@ -99,7 +99,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             );
         return (
             <WalletButton
-                disabled={!password}
+                disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
                 isFullWidth
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 onClick={onSubmit}
@@ -129,6 +129,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 {!isSuccess &&
                     (hasMT5Account ? (
                         <EnterPassword
+                            isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                             marketType={marketType}
                             onPasswordChange={e => setPassword(e.target.value)}
                             onPrimaryClick={onSubmit}
@@ -138,6 +139,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     ) : (
                         <CreatePassword
                             icon={<MT5PasswordIcon />}
+                            isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                             onPasswordChange={e => setPassword(e.target.value)}
                             onPrimaryClick={onSubmit}
                             password={password}

@@ -39,55 +39,56 @@
                 font-size: 2rem;
             }
         }
+    }
 
-        .onfido-sdk-ui-Camera-webcamContainer {
-            left: auto;
-            width: -webkit-fill-available;
+    .onfido-sdk-ui-Camera-webcamContainer {
+        left: auto;
+        width: -webkit-fill-available;
+    }
+
+    &__disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    &__info-message {
+        position: absolute;
+        top: 1.6rem;
+        left: 50%;
+        z-index: 1;
+        transform: translate(-50%);
+        max-width: max-content;
+        width: 100% !important;
+
+        @include mobile {
+            margin-top: 1.6rem;
         }
 
-        &__disabled {
-            opacity: 0.5;
-            pointer-events: none;
+        .dc-hint-box {
+            margin-inline: 0.8rem;
+        }
+    }
+
+    &__status-message {
+        background-color: var(--transparent-correct-message);
+        justify-content: flex-start;
+        transition: transform 0.35s ease, opacity 0.35s linear;
+        transform-origin: top;
+        opacity: 1;
+        width: 98%;
+
+        &--exit {
+            transform: scale(1, 0);
+            opacity: 0;
         }
 
-        &__info-message {
+        &_container {
             position: absolute;
-            display: flex;
-            width: 100%;
-            margin-top: 2.4rem;
-            justify-content: center;
+            top: 0.4rem;
+            min-height: 3.4rem;
+            text-align: center;
             z-index: 1;
-
-            @include mobile {
-                margin-top: 1.6rem;
-            }
-
-            .dc-hint-box {
-                margin-inline: 0.8rem;
-            }
-        }
-
-        &__status-message {
-            background-color: var(--transparent-correct-message);
-            justify-content: flex-start;
-            transition: transform 0.35s ease, opacity 0.35s linear;
-            transform-origin: top;
-            opacity: 1;
-            width: 98%;
-
-            &--exit {
-                transform: scale(1, 0);
-                opacity: 0;
-            }
-
-            &_container {
-                position: absolute;
-                top: 0.4rem;
-                min-height: 3.4rem;
-                text-align: center;
-                z-index: 1;
-                width: 100%;
-            }
+            width: 100%;
         }
     }
 }

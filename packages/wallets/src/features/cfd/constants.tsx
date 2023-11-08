@@ -2,7 +2,8 @@ import React from 'react';
 import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
 import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
-import { TPlatforms } from '../../types';
+import DerivXIcon from '../../public/images/derivx.svg';
+import CTraderIcon from '../../public/images/ctrader.svg';
 
 export const MarketTypeDetails = {
     all: {
@@ -23,9 +24,20 @@ export const MarketTypeDetails = {
     },
 } as const;
 
-export const PlatformToTitleMapper: Record<TPlatforms.All, string> = {
-    ctrader: 'Deriv cTrader',
-    derivez: 'Deriv EZ',
-    dxtrade: 'Deriv X',
-    mt5: 'Deriv MT5',
+export const PlatformDetails = {
+    ctrader: {
+        icon: <CTraderIcon />,
+        link: 'https://onelink.to/hyqpv7',
+        title: 'Deriv cTrader',
+    },
+    dxtrade: {
+        icon: <DerivXIcon />,
+        link: 'https://onelink.to/grmtyx',
+        title: 'Deriv X',
+    },
+    mt5: {
+        icon: <DerivedMT5Icon />,
+        link: 'https://onelink.to/grmtyx',
+        title: 'Deriv MT5',
+    },
 };

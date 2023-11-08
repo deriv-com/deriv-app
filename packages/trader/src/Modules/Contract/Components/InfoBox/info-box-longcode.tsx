@@ -19,7 +19,7 @@ const InfoBoxLongcode = observer(({ contract_info }: TInfoBoxLongcode) => {
     };
 
     return (
-        <div className='info-box-longcode' onClick={is_mobile ? handleToggle : undefined}>
+        <div className='info-box-longcode' onClick={is_mobile ? handleToggle : undefined} onKeyDown={handleToggle}>
             <Icon icon='IcContractFlag' className='info-box-longcode-icon' size={24} />
             <div className='info-box-longcode-wrapper'>
                 <Text

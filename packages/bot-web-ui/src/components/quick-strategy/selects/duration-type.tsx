@@ -5,7 +5,7 @@ import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { TDurationItemRaw } from '../types';
+import { TDurationItemRaw, TFormData } from '../types';
 
 type TDurationUnitItem = {
     text: string;
@@ -15,21 +15,17 @@ type TDurationUnitItem = {
 };
 
 type TDurationUnit = {
-    selected?: string;
-    data: {
-        symbol?: string;
-        tradetype?: string;
-    };
     fullWidth?: boolean;
     attached?: boolean;
 };
 
-const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = false, attached }) => {
+const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) => {
     const [list, setList] = React.useState<TDurationUnitItem[]>([]);
-    const { symbol, tradetype } = data;
     const { quick_strategy } = useDBotStore();
     const { setValue } = quick_strategy;
-    const { setFieldValue, validateForm } = useFormikContext();
+    const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
+    const { symbol, tradetype } = values;
+    const selected = values?.durationtype;
 
     React.useEffect(() => {
         if (tradetype && symbol) {
@@ -50,6 +46,10 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                         validateForm();
                     });
                     setValue('durationtype', durations?.[0]?.unit);
+                } else {
+                    const duration = duration_units?.find((duration: TDurationUnitItem) => duration.value === selected);
+                    setFieldValue?.('duration', duration?.min);
+                    setValue('duration', duration?.min);
                 }
             };
             getDurationUnits();
@@ -77,9 +77,11 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                             value={selected_item?.text || ''}
                             list_items={list}
                             onItemSelection={(item: TItem) => {
-                                if (item?.value) {
+                                if ((item as TDurationUnitItem)?.value) {
                                     setFieldValue?.('durationtype', (item as TDurationUnitItem)?.value as string);
                                     setValue('durationtype', (item as TDurationUnitItem)?.value as string);
+                                    setFieldValue?.('duration', (item as TDurationUnitItem)?.min);
+                                    setValue('duration', (item as TDurationUnitItem)?.min);
                                 }
                             }}
                         />

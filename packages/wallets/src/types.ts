@@ -6,6 +6,7 @@ import type {
     useAvailableMT5Accounts,
     useAvailableWallets,
     useCreateOtherCFDAccount,
+    useCreateWallet,
     useCryptoTransactions,
     useCtraderAccountsList,
     useCurrencyConfig,
@@ -21,6 +22,7 @@ import type {
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
     export type AvailableMT5Accounts = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number];
+    export type CreateWallet = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];
     export type MT5AccountsList = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
@@ -43,8 +45,10 @@ export namespace THooks {
 export namespace TPlatforms {
     export type All = MT5 | OtherAccounts | SortedMT5Accounts;
     export type MT5 = THooks.AvailableMT5Accounts['platform'];
-    export type OtherAccounts =
-        | Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'];
+    export type OtherAccounts = Exclude<
+        Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'],
+        'derivez'
+    >;
     export type SortedMT5Accounts = THooks.SortedMT5Accounts['platform'];
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace

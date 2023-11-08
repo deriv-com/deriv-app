@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
-import { useExchangeRate2, useP2PConfig } from '@deriv/hooks';
+import { useP2PConfig } from '@deriv/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
+import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 import { useStores } from 'Stores';
 import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-value';
 import './edit-ad-summary.scss';
@@ -15,14 +16,8 @@ const EditAdSummary = ({ offer_amount, price_rate, type }) => {
     const {
         client: { currency, local_currency_config },
     } = useStore();
-    const { handleSubscription, exchange_rates } = useExchangeRate2();
     const local_currency = local_currency_config.currency;
-
-    React.useEffect(() => {
-        handleSubscription('USD', local_currency);
-    }, [handleSubscription, local_currency]);
-
-    const exchange_rate = exchange_rates.USD[local_currency] || 1;
+    const exchange_rate = useP2PExchangeRate(local_currency);
 
     const { my_ads_store } = useStores();
     const { data: p2p_config } = useP2PConfig();

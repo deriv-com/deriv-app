@@ -2,10 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 import { InputField, Text } from '@deriv/components';
-import { useExchangeRate2, useP2PConfig } from '@deriv/hooks';
+import { useP2PConfig } from '@deriv/hooks';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
+import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 
 type TFloatingRate = {
     change_handler?: () => void;
@@ -35,14 +36,7 @@ const FloatingRate = ({
     const {
         ui: { current_focus, setCurrentFocus },
     } = useStore();
-
-    const { handleSubscription, exchange_rates } = useExchangeRate2();
-
-    React.useEffect(() => {
-        handleSubscription('USD', local_currency);
-    }, [local_currency, handleSubscription]);
-
-    const exchange_rate = exchange_rates.USD[local_currency] || 1;
+    const exchange_rate = useP2PExchangeRate(local_currency);
 
     const { data: p2p_config } = useP2PConfig();
     const override_exchange_rate = p2p_config?.override_exchange_rate;

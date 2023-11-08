@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { Button, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useExchangeRate2 } from '@deriv/hooks';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { generateEffectiveRate } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 import './advertiser-page-row.scss';
 
 const AdvertiserPageRow = ({ row: advert }) => {
@@ -30,14 +30,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
-
-    const { handleSubscription, exchange_rates } = useExchangeRate2();
-
-    React.useEffect(() => {
-        handleSubscription('USD', local_currency);
-    }, [handleSubscription, local_currency]);
-
-    const exchange_rate = exchange_rates.USD[local_currency] || 1;
+    const exchange_rate = useP2PExchangeRate(local_currency);
 
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,

@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { Button, Icon, Table, Text } from '@deriv/components';
-import { useExchangeRate2 } from '@deriv/hooks';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -13,6 +12,7 @@ import { OnlineStatusAvatar } from 'Components/online-status';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
 import { buy_sell } from 'Constants/buy-sell';
+import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 
@@ -24,13 +24,7 @@ const BuySellRow = ({ row: advert }) => {
         client: { currency },
     } = useStore();
     const history = useHistory();
-    const { handleSubscription, exchange_rates } = useExchangeRate2();
-
-    React.useEffect(() => {
-        handleSubscription('USD', local_currency);
-    }, [local_currency, handleSubscription]);
-
-    const exchange_rate = exchange_rates.USD[local_currency] || 1;
+    const exchange_rate = useP2PExchangeRate(local_currency);
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes

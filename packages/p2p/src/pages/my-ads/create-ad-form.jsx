@@ -13,12 +13,12 @@ import {
 } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useExchangeRate2 } from '@deriv/hooks';
 import { reaction } from 'mobx';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
+import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
@@ -43,14 +43,8 @@ const CreateAdForm = () => {
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { useRegisterModalProps } = useModalManagerContext();
-    const { handleSubscription, exchange_rates } = useExchangeRate2();
     const local_currency = local_currency_config.currency;
-
-    React.useEffect(() => {
-        handleSubscription('USD', local_currency);
-    }, [handleSubscription, local_currency]);
-
-    const exchange_rate = exchange_rates.USD[local_currency] || 1;
+    const exchange_rate = useP2PExchangeRate(local_currency);
 
     // eslint-disable-next-line no-shadow
     const handleSelectPaymentMethods = selected_methods => {

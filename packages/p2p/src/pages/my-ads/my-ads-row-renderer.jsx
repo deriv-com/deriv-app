@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { HorizontalSwipe, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
-import { useExchangeRate2 } from '@deriv/hooks';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import AdStatus from 'Pages/my-ads/ad-status.jsx';
+import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 import AdType from './ad-type.jsx';
@@ -42,13 +42,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
     const advert_type = is_buy_advert ? <Localize i18n_default_text='Buy' /> : <Localize i18n_default_text='Sell' />;
-    const { handleSubscription, exchange_rates } = useExchangeRate2();
-
-    React.useEffect(() => {
-        handleSubscription('USD', local_currency);
-    }, [local_currency, handleSubscription]);
-
-    const exchange_rate = exchange_rates.USD[local_currency] || 1;
+    const exchange_rate = useP2PExchangeRate(local_currency);
 
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,

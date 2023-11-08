@@ -173,33 +173,6 @@ type TCtraderAccountsList = DetailsOfEachMT5Loginid & {
     platform?: string;
 };
 
-type TWalletList = {
-    accepted_bch?: number;
-    account_category?: 'wallet' | 'trading';
-    account_type?: string;
-    balance?: number;
-    country?: string;
-    created_at?: number;
-    currency?: string;
-    dtrade_loginid?: string;
-    dtrade_balance?: number;
-    email?: string;
-    excluded_until?: string;
-    gradients?: Record<'card' | 'header', Record<'light' | 'dark', string>>;
-    icons?: Record<'light' | 'dark', string>;
-    icon_type?: 'demo' | 'fiat' | 'crypto';
-    is_virtual?: boolean;
-    is_disabled?: boolean;
-    is_malta_wallet?: boolean;
-    loginid?: string;
-    landing_company_name?: string;
-    landing_company_shortcode?: string;
-    linked_to?: { loginid: string; platform: string }[];
-    residence?: string;
-    session_start?: number;
-    token?: string;
-}[];
-
 type TAccountsList = {
     account?: {
         balance?: string | number;

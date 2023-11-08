@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { HintBox, Input, Text } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods, useExchangeRate } from '@deriv/hooks';
+import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
@@ -17,6 +17,7 @@ import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodIcon from 'Components/payment-method-icon';
+import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 import './buy-sell-form.scss';
 
 const BuySellForm = props => {
@@ -42,9 +43,7 @@ const BuySellForm = props => {
         rate_type,
     } = buy_sell_store?.advert || {};
 
-    const { getRate } = useExchangeRate();
-    const exchange_rate = getRate(local_currency);
-
+    const exchange_rate = useP2PExchangeRate(local_currency);
     const [previous_rate, setPreviousRate] = React.useState(exchange_rate);
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 

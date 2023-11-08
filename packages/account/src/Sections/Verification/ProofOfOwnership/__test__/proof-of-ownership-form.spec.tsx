@@ -18,9 +18,10 @@ describe('proof-of-ownership-form.jsx', () => {
                 citizen='id'
             />
         );
-        const cardItems = screen.getByRole('card-item');
+        const cardItems = screen.getByTestId('beyonic');
         expect(cardItems).toBeInTheDocument();
     });
+
     it('should render multiple card items inside the form', () => {
         render(
             <ProofOfOwnershipForm
@@ -32,9 +33,12 @@ describe('proof-of-ownership-form.jsx', () => {
                 citizen='id'
             />
         );
-        const cardItems = screen.getAllByRole('card-item');
-        expect(cardItems).toHaveLength(Object.keys(grouped_payment_method_data).length);
+        Object.keys(grouped_payment_method_data).forEach(key => {
+            const cardItem = screen.getByTestId(key);
+            expect(cardItem).toBeInTheDocument();
+        });
     });
+
     it('should format identifier', async () => {
         render(
             <ProofOfOwnershipForm

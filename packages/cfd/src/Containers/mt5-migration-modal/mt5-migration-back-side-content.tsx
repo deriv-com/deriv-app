@@ -19,7 +19,6 @@ const MT5MigrationBackSideContent = observer(() => {
     const [is_checked, setIsChecked] = React.useState(false);
 
     const content = getMigrationModalDetails(eligible_account_to_migrate_label);
-    const header_size = is_mobile ? 'xs' : 's';
     const checkbox_text_size = is_mobile ? 'xxs' : 'xs';
     const content_size = is_mobile ? 'xxxs' : 'xs';
 
@@ -45,7 +44,7 @@ const MT5MigrationBackSideContent = observer(() => {
             )}
             <div>
                 <div className='mt5-migration-modal__description'>
-                    <Text as='p' size={header_size} align='center' weight='bold'>
+                    <Text as='p' size={content_size} align='center' weight='bold'>
                         <Localize i18n_default_text='What will happen to the funds in my existing account(s)?' />
                     </Text>
                 </div>
@@ -54,7 +53,7 @@ const MT5MigrationBackSideContent = observer(() => {
                         <React.Fragment key={item.key}>
                             <div className='mt5-migration-modal__existing-accounts-card'>
                                 <div className='mt5-migration-modal__existing-accounts-card-content'>
-                                    <Text as='div' size={header_size} weight='bold'>
+                                    <Text as='div' size={content_size} weight='bold'>
                                         {item.title}
                                     </Text>
                                     {item.description.map(({ id, text }) => (

@@ -46,6 +46,7 @@ const JurisdictionModal = () => {
     return (
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
             <ModalStepWrapper
+                closeOnEscape={true}
                 renderFooter={modalFooter}
                 shouldHideHeader={isDynamicLeverageVisible}
                 title={jurisdictionTitle}

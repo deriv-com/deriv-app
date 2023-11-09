@@ -151,7 +151,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     }
 
     return (
-        <ModalWrapper hideCloseButton={isSuccess}>
+        <ModalWrapper closeOnEscape={true} hideCloseButton={isSuccess}>
             {isSuccess && (
                 <CFDSuccess
                     description={`You can now start practicing trading with your ${marketTypeTitle} ${

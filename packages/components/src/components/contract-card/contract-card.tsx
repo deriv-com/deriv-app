@@ -10,6 +10,7 @@ import ResultOverlay from './result-overlay';
 import DesktopWrapper from '../desktop-wrapper';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TGetContractPath } from '../types';
+import { getTotalProfit } from '@deriv/shared';
 
 type TContractCardProps = {
     contract_info: TContractInfo;
@@ -54,7 +55,7 @@ const ContractCard = ({
                         is_visible={!!contract_info.is_sold}
                         onClickRemove={onClickRemove}
                         onClick={() => toggleUnsupportedContractModal?.(true)}
-                        payout_info={profit_loss}
+                        payout_info={getTotalProfit(contract_info)}
                         result={result || fallback_result}
                         is_positions={is_positions}
                     />

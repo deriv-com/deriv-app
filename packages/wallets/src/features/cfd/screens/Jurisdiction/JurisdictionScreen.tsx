@@ -1,27 +1,40 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
+import { MarketTypeDetails } from '../../constants';
 import { JurisdictionCard } from './JurisdictionCard';
+import { JurisdictionFootNoteTitle } from './JurisdictionFootNoteTitle';
 import './JurisdictionScreen.scss';
 
 type TJurisdictionScreenProps = {
+    isCheckBoxChecked: boolean;
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
+    setIsCheckBoxChecked: React.Dispatch<React.SetStateAction<boolean>>;
     setSelectedJurisdiction: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction, setSelectedJurisdiction }) => {
+const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
+    isCheckBoxChecked,
+    selectedJurisdiction,
+    setIsCheckBoxChecked,
+    setSelectedJurisdiction,
+}) => {
     const { getModalState } = useModal();
     const { data, isLoading } = useAvailableMT5Accounts();
-    const marketType = getModalState('marketType');
+    const marketType = getModalState('marketType') as keyof typeof MarketTypeDetails;
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
     const jurisdictions = useMemo(
         () => data?.filter(account => account.market_type === marketType).map(account => account.shortcode) || [],
         [data, marketType]
     );
+
+    useEffect(() => {
+        setIsCheckBoxChecked(false);
+    }, [selectedJurisdiction, setIsCheckBoxChecked]);
 
     if (isLoading) return <WalletText>Loading...</WalletText>;
 
@@ -50,17 +63,24 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({ selectedJurisdiction
             </div>
 
             <div className='wallets-jurisdiction-screen__tnc'>
+                {selectedJurisdiction && (
+                    <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
+                )}
                 {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
-                    <>
-                        Add Your Deriv MT5 Financial account under Deriv (V) Ltd, regulated by the Vanuatu Financial
-                        Services Commission.
-                        <div className='wallets-jurisdiction-screen__tnc-checkbox'>
-                            <input id='tnc-checkbox' type='checkbox' />
-                            <label htmlFor='tnc-checkbox' style={{ cursor: 'pointer' }}>
-                                <WalletText>I confirm and accept Deriv (V) Ltd&lsquo;s Terms and Conditions</WalletText>
-                            </label>
-                        </div>
-                    </>
+                    <div className='wallets-jurisdiction-screen__tnc-checkbox'>
+                        <input
+                            checked={isCheckBoxChecked}
+                            className='wallets-jurisdiction-screen__tnc-checkbox-input'
+                            id='tnc-checkbox'
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                setIsCheckBoxChecked(event.target.checked)
+                            }
+                            type='checkbox'
+                        />
+                        <label className='wallets-jurisdiction-screen__tnc-checkbox-label' htmlFor='tnc-checkbox'>
+                            <WalletText>I confirm and accept Deriv (V) Ltd&lsquo;s Terms and Conditions</WalletText>
+                        </label>
+                    </div>
                 )}
             </div>
         </div>

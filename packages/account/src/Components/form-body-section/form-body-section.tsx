@@ -60,7 +60,7 @@ const FormBodySection = ({
                     ) : (
                         <React.Fragment>
                             <Text as='p' size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
-                                <Localize i18n_default_text='Example' />
+                                <Localize i18n_default_text='Example :' />
                             </Text>
                             <div className='account-form__section-side-note__example-image'>{side_note}</div>
                         </React.Fragment>

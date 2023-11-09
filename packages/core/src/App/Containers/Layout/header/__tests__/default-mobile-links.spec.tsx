@@ -3,22 +3,15 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DefaultMobileLinks from '../default-mobile-links';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
-    return {
-        ...original_module,
-        Popover: () => <div>mockedPopover</div>,
-    };
-});
-
-// eslint-disable-next-line react/display-name
-jest.mock('App/Components/Routes', () => () => <div data-testid='dt_binary_link'>MockedBinaryLink</div>);
-// eslint-disable-next-line react/display-name
-jest.mock('../show-notifications', () => () => <div data-testid='dt_show_notifications'>MockedShowNotifications</div>);
-// eslint-disable-next-line react/display-name
-jest.mock('../traders-hub-onboarding', () => () => (
-    <div data-testid='dt_traders_hub_onboarding'>MockedTradersHubOnboarding</div>
-));
+jest.mock('App/Components/Routes', () => ({
+    BinaryLink: jest.fn(() => <div data-testid='dt_binary_link'>MockedBinaryLink to Account Settings</div>),
+}));
+jest.mock('../show-notifications', () =>
+    jest.fn(() => <div data-testid='dt_show_notifications'>MockedShowNotifications</div>)
+);
+jest.mock('../traders-hub-onboarding', () =>
+    jest.fn(() => <div data-testid='dt_traders_hub_onboarding'>MockedTradersHubOnboarding</div>)
+);
 
 jest.mock('@deriv/hooks', () => ({
     useFeatureFlags: () => ({
@@ -31,10 +24,12 @@ describe('DefaultMobileLinks', () => {
         handleClickCashier: jest.fn(),
     };
 
-    it('should render and display the "DefaultMobileLinks" component on screen', () => {
+    it('should render "DefaultMobileLinks" with Onboarding, Notifications & link to Account Settings', () => {
         render(<DefaultMobileLinks {...mock_props} />);
         expect(screen.getByTestId('dt_traders_hub_onboarding')).toBeInTheDocument();
         expect(screen.getByText('MockedTradersHubOnboarding')).toBeInTheDocument();
+        expect(screen.getByText('MockedShowNotifications')).toBeInTheDocument();
+        expect(screen.getByText('MockedBinaryLink to Account Settings')).toBeInTheDocument();
     });
 
     it('should display the cashier button', () => {

@@ -1,63 +1,62 @@
 .wallets-loader {
-    position: absolute;
     display: flex;
-    aspect-ratio: 2/1;
+    width: 7.2rem;
+    height: 3.2rem;
     transition: all 0.4s ease;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 2rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+
+    &--fullscreen {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 
     &__element {
-        $loader: loader 1.2s ease infinite both;
+        $loader: loader 1.5s ease-in infinite both;
         display: block;
-        align-items: flex-end;
-        width: 0.5rem;
-        height: 25%;
+        width: 0.8rem;
+        height: 3.2rem;
         animation: $loader;
-        border-radius: 0.5rem;
-        bottom: 0;
+        border-radius: 1rem;
 
-        &:nth-child(2) {
-            animation-delay: 0.4s;
-        }
-
-        &:nth-child(3) {
-            animation-delay: 0.8s;
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                animation-delay: calc(#{$i} * 0.1s);
+            }
         }
 
         @keyframes loader {
             0% {
-                height: 25%;
                 bottom: 0;
-                opacity: 1;
+                height: 50%;
+            }
+
+            12.5% {
+                bottom: 0;
+                height: 75%;
             }
 
             25% {
-                opacity: 0.3;
+                bottom: 75%;
+                height: 100%;
+            }
+
+            37.5% {
                 bottom: 0;
                 height: 75%;
             }
 
             50% {
-                opacity: 1;
-                height: 25%;
-                bottom: 75%;
-            }
-
-            75% {
-                opacity: 0.3;
-                height: 75%;
                 bottom: 0;
+                height: 50%;
             }
 
             100% {
-                opacity: 1;
-                height: 25%;
                 bottom: 0;
+                height: 50%;
             }
         }
     }

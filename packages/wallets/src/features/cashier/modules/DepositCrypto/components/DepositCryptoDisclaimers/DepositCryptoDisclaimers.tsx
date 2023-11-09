@@ -22,21 +22,26 @@ const DepositCryptoDisclaimers = () => {
         <div className='wallets-deposit-crypto-disclaimers'>
             <InlineMessage>
                 <div className='wallets-deposit-crypto-disclaimers__content'>
-                    <p>To avoid loss of funds:</p>
-                    <br />
-                    {data?.currency_config?.minimum_deposit && (
+                    <WalletText size='2xs' weight='bold'>
+                        To avoid loss of funds:
+                    </WalletText>
+                    <ul className='wallets-deposit-crypto-disclaimers__points'>
+                        {data?.currency_config?.minimum_deposit && (
+                            <>
+                                <li>
+                                    A minimum deposit value of {data?.currency_config?.minimum_deposit} {currency} is
+                                    required. Otherwise, the funds will be lost and cannot be recovered.
+                                </li>
+                            </>
+                        )}
+                        <li>Do not send other cryptocurrencies to this address.</li>
+                        <li>Make sure to copy your Deriv account address correctly into your crypto wallet.</li>
                         <li>
-                            A minimum deposit value of {data?.currency_config?.minimum_deposit} {currency} is required.
-                            Otherwise, the funds will be lost and cannot be recovered.
+                            In your cryptocurrency wallet, make sure to select{' '}
+                            <strong>{currency && cryptoCurrencyToNetworkMapper[currency]} network</strong> when you
+                            transfer funds to Deriv.
                         </li>
-                    )}
-                    <li>Do not send other currencies to this address.</li>
-                    <li>Make sure to copy your Deriv account address correctly into your crypto wallet.</li>
-                    <li>
-                        In your cryptocurrency wallet, make sure to select{' '}
-                        <strong>{currency && cryptoCurrencyToNetworkMapper[currency]} network</strong> when you transfer
-                        funds to Deriv.
-                    </li>
+                    </ul>
                 </div>
             </InlineMessage>
             <div className='wallets-deposit-crypto-disclaimers__note'>

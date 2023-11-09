@@ -1,72 +1,88 @@
 .wallets-cashier-header {
+    width: 100%;
+    max-width: 128rem;
     height: 16rem;
+    margin: 0 auto;
     padding-top: 2.4rem;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 1.6rem;
 
     @include mobile {
-        padding-top: 1.6rem;
-        height: 12.2rem;
-    }
-
-    &__close-button {
-        all: unset;
-        cursor: pointer;
+        padding-top: 0;
+        height: fit-content;
     }
 
     &__info {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-inline: 2.4rem;
+        padding-inline: 4rem;
 
         @include mobile {
-            padding-inline: 1.6rem;
+            padding: 1.6rem 1.6rem 0rem;
         }
+    }
 
-        &__top-left {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
+    &__top-left-info {
+        display: flex;
+        flex-direction: column;
 
-            &__details {
-                display: flex;
-                gap: 2.4rem;
-                align-items: center;
+        @include mobile {
+            gap: 0.4rem;
+        }
+    }
 
-                @include mobile {
-                    gap: 0.8rem;
-                }
+    &__details {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
 
-                &__title {
-                    font-size: 1.6rem;
+        @include mobile {
+            opacity: 1;
+            max-height: 2rem;
+            transition: opacity 0.25s ease, max-height 0.25s ease;
 
-                    @include mobile {
-                        font-size: 1.4rem;
-                    }
-                }
-            }
-
-            &__balance {
-                font-size: 3.2rem;
-                font-weight: 700;
-
-                @include mobile {
-                    font-size: 1.8rem;
-                }
+            &--hide-details {
+                max-height: 0;
+                opacity: 0;
             }
         }
+    }
 
-        &__top-right {
-            display: flex;
-            gap: 1.6rem;
-            align-items: start;
+    &__top-right-info {
+        display: flex;
+        gap: 1.6rem;
+        align-items: start;
 
-            @include mobile {
-                gap: 0.8rem;
+        @include mobile {
+            gap: 0.8rem;
+        }
+    }
+
+    &__currency-icon {
+        @include mobile {
+            & > :first-child {
+                max-height: 4.8rem;
+                transition: opacity 0.2s ease, max-height 0.2s ease;
+            }
+
+            &--hide-currency-icon > :first-child {
+                max-height: 0;
+                opacity: 0;
+            }
+        }
+    }
+
+    &__close-icon {
+        cursor: pointer;
+
+        &--white {
+            path {
+                fill: var(--light-8-primary-background, #fff);
             }
         }
     }
@@ -74,7 +90,7 @@
     &__tabs {
         display: flex;
         overflow-x: scroll;
-        padding-inline: 2.4rem;
+        padding-inline: 4rem;
         -ms-overflow-style: none;
         scrollbar-width: none;
 
@@ -85,31 +101,36 @@
         @include mobile {
             padding-inline: 1.6rem;
         }
+    }
 
-        &__tab {
-            all: unset;
-            display: flex;
-            width: 14.4rem;
-            height: 4.8rem;
-            padding: 0rem 1.6rem;
-            justify-content: center;
-            align-items: center;
-            gap: 0.8rem;
-            flex-shrink: 0;
-            font-size: 1.8rem;
-            text-transform: capitalize;
-            cursor: pointer;
+    &__tab {
+        all: unset;
+        display: flex;
+        min-width: 11.2rem;
+        height: 4.8rem;
+        padding-inline: 1.6rem;
+        justify-content: center;
+        align-items: center;
+        gap: 0.8rem;
+        flex-shrink: 0;
+        cursor: pointer;
 
-            @include mobile {
-                height: 4rem;
-                font-size: 1.2rem;
-                width: 8rem;
-            }
+        @include mobile {
+            height: 4rem;
+            min-width: 7.2rem;
+            padding-inline: 2.4rem;
+        }
 
-            &--active {
-                border-radius: 1.6rem 1.6rem 0rem 0rem;
-                background-color: #ffffff;
-                font-weight: 700;
+        &--active {
+            border-radius: 1.6rem 1.6rem 0rem 0rem;
+            background: var(--light-8-primary-background, #fff);
+        }
+    }
+
+    &__tab-icon {
+        &--system-dark-2-general-text {
+            path {
+                fill: var(--system-dark-2-general-text, #c2c2c2);
             }
         }
     }

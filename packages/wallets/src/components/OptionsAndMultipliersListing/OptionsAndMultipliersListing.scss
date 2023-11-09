@@ -7,8 +7,10 @@
         padding-top: unset;
     }
 
-    @include desktop {
-        border-top: 0.2rem solid var(--system-light-7-secondary-background, #f2f3f4);
+    &--border {
+        @include desktop {
+            border-top: 0.2rem solid var(--system-light-7-secondary-background, #f2f3f4);
+        }
     }
 
     &__header {
@@ -17,6 +19,7 @@
         gap: 2rem;
         align-self: stretch;
         padding-bottom: 2.4rem;
+        justify-content: space-between;
 
         &-title {
             display: flex;
@@ -45,6 +48,11 @@
         display: grid;
         gap: 1.6rem 4.8rem;
         grid-template-columns: repeat(3, 1fr);
+        user-select: none;
+
+        &__icon {
+            cursor: pointer;
+        }
 
         @include mobile {
             margin: auto 2rem;

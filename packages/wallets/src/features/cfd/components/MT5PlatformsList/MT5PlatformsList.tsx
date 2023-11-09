@@ -5,7 +5,7 @@ import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5'
 import { GetMoreMT5Accounts } from '../../screens';
 import './MT5PlatformsList.scss';
 
-const MT5PlatformsList = forwardRef<HTMLDivElement>((_, ref) => {
+const MT5PlatformsList: React.FC<React.RefAttributes<HTMLDivElement>> = forwardRef((_, ref) => {
     const { isFetching } = useAuthorize();
     const { data, isFetchedAfterMount } = useSortedMT5Accounts();
     const { data: activeWallet } = useActiveWalletAccount();

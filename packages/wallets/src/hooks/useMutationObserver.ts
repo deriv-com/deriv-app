@@ -3,12 +3,10 @@ import { RefObject, useEffect } from 'react';
 /** A custom hook to observe DOM elements */
 const useMutationObserver = (
     ref: RefObject<HTMLElement>,
-    callback: () => void,
+    callback: MutationCallback,
     options: MutationObserverInit = {
-        attributeOldValue: true,
         attributes: true,
         characterData: true,
-        characterDataOldValue: true,
         childList: true,
         subtree: true,
     }

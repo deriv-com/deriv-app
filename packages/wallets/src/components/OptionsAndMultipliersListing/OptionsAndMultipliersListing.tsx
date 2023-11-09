@@ -65,7 +65,7 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     return null;
 };
 
-const OptionsAndMultipliersListing = forwardRef<HTMLDivElement>((_, ref) => {
+const OptionsAndMultipliersListing: React.FC<React.RefAttributes<HTMLDivElement>> = forwardRef((_, ref) => {
     const { isMobile } = useDevice();
     const { data } = useActiveWalletAccount();
 
@@ -74,6 +74,7 @@ const OptionsAndMultipliersListing = forwardRef<HTMLDivElement>((_, ref) => {
             className={classNames('wallets-options-and-multipliers-listing', {
                 'wallets-options-and-multipliers-listing--border': data?.is_crypto,
             })}
+            ref={ref}
         >
             <section className='wallets-options-and-multipliers-listing__header' ref={ref}>
                 <div className='wallets-options-and-multipliers-listing__header-title'>

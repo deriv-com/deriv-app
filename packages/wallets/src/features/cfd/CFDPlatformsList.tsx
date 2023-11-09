@@ -6,12 +6,12 @@ import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from './components';
 import './CFDPlatformsList.scss';
 
-const CFDPlatformsList = forwardRef<HTMLDivElement>((_, ref) => {
+const CFDPlatformsList: React.FC<React.RefAttributes<HTMLDivElement>> = forwardRef((_, ref) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
 
     return (
-        <div className='wallets-cfd-list'>
+        <div className='wallets-cfd-list' ref={ref}>
             <section className='wallets-cfd-list__header'>
                 {!isMobile && (
                     <WalletText size='xl' weight='bold'>

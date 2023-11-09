@@ -39,7 +39,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { title } = MarketTypeDetails[account.market_type || 'all'];
     const { data: verification_status } = useJurisdictionStatus(account);
 
-    const { poa_status: poaStatus, poi_status: poiStatus } = verification_status?.verification_status || {};
+    const { poa_status: poaStatus, poi_status: poiStatus } = verification_status || {};
 
     return (
         <TradingAccountCard

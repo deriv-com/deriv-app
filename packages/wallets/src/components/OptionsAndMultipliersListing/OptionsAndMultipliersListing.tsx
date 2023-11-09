@@ -65,7 +65,7 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     return null;
 };
 
-const OptionsAndMultipliersListing: React.FC<React.RefAttributes<HTMLDivElement>> = forwardRef((_, ref) => {
+const OptionsAndMultipliersListing = forwardRef<HTMLDivElement>((_, ref) => {
     const { isMobile } = useDevice();
     const { data } = useActiveWalletAccount();
 

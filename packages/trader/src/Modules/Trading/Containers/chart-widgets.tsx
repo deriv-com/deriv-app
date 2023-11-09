@@ -19,13 +19,14 @@ type TChartBottomWidgets = {
 };
 
 export const DigitsWidget = observer(({ digits, tick }: { digits: TDigits['digits_array']; tick: TDigits['tick'] }) => {
-    const { contract_trade } = useStore();
+    const { contract_trade, ui } = useStore();
     const {
         onChange: onDigitChange,
         symbol: underlying,
         contract_type: trade_type,
         last_digit: selected_digit,
     } = useTraderStore();
+    const { is_mobile } = ui;
     const { last_contract } = contract_trade;
     const { contract_info = {}, digits_info = {}, display_status, is_digit_contract, is_ended } = last_contract;
     return (
@@ -36,6 +37,7 @@ export const DigitsWidget = observer(({ digits, tick }: { digits: TDigits['digit
             display_status={display_status}
             is_digit_contract={is_digit_contract}
             is_ended={is_ended}
+            is_mobile={is_mobile}
             onDigitChange={onDigitChange}
             is_trade_page
             tick={tick}

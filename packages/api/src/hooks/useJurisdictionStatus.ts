@@ -10,16 +10,25 @@ type TServices = NonNullable<NonNullable<ReturnType<typeof usePOI>['data']>['ser
 type TServiceStatus = NonNullable<NonNullable<ReturnType<typeof usePOI>['data']>['status']>;
 type TJurisdictionStatuses = 'failed' | 'pending' | 'verified' | 'not_applicable';
 
-// @param account - this is coming from useMT5AccountsList, one of the items
-const useJurisdictionStatus = (account: TAccount) => {
+/**
+ * Hook that returns the verification status for a landing company/jurisdiction
+ *
+ * @param jurisdiction - the jurisdiction/landing company, i.e. 'svg', 'bvi', 'labuan', 'vanuatu'
+ * @param mt5_account_status - the status of the MT5 account, usually retrieved from MT5 accounts list item
+ * @returns One of the following statuses: failed, pending, verified, and not_applicable. not_applicable is only applied for SVG jurisdiction.
+ */
+const useJurisdictionStatus = (
+    jurisdiction: TAccount['landing_company_short'],
+    mt5_account_status: TAccount['status']
+) => {
     const { data: authenticationStatus, isSuccess: isSuccessAuthenticationStatus } = useAuthentication();
     const { data: accountStatus, isSuccess: isSuccessAccountStatus } = useAccountStatus();
     const { data: poiStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOA } = usePOA();
 
     const isSuccess = useMemo(() => {
-        return isSuccessAccountStatus && isSuccessPOA && poiStatus?.next?.service;
-    }, [isSuccessAccountStatus, poiStatus?.next?.service, isSuccessPOA]);
+        return isSuccessAuthenticationStatus && isSuccessAccountStatus && isSuccessPOA && poiStatus?.next?.service;
+    }, [isSuccessAuthenticationStatus, isSuccessAccountStatus, poiStatus?.next?.service, isSuccessPOA]);
 
     const verification_status = useMemo(() => {
         const isServiceStatus = (...statuses: TServiceStatus[]) => {
@@ -33,54 +42,52 @@ const useJurisdictionStatus = (account: TAccount) => {
         const is_poa_failed = poaStatus?.is_rejected || poaStatus?.is_suspected || poaStatus?.is_expired;
 
         let status: TJurisdictionStatuses;
-        if (account?.landing_company_short) {
-            switch (account.landing_company_short) {
-                case 'bvi':
-                    if (
-                        isServiceStatus('expired', 'none', 'rejected', 'suspected') ||
-                        account.status === 'proof_failed'
-                    ) {
-                        status = 'failed';
-                    } else if (isServiceStatus('pending') || account.status === 'verification_pending') {
-                        status = 'pending';
-                    } else {
-                        status = 'verified';
-                    }
-                    break;
-                case 'labuan':
-                    // for labuan we check POA
-                    // for labuan we just need to check for is_authenticated_with_idv_photoid status for failed case
-                    if (
-                        is_poa_failed ||
-                        isServiceStatus('expired', 'none', 'rejected', 'suspected') ||
-                        authenticationStatus?.is_authenticated_with_idv_photoid ||
-                        account.status === 'proof_failed'
-                    ) {
-                        status = 'failed';
-                    } else if (isServiceStatus('pending') || account.status === 'verification_pending') {
-                        status = 'pending';
-                    } else {
-                        status = 'verified';
-                    }
-                    break;
-                case 'svg':
-                    status = 'not_applicable';
-                    break;
-                default:
-                    // MT5 account status already checks for POA status in BE
-                    if (account.status === 'proof_failed') {
-                        status = 'failed';
-                    } else if (account.status === 'verification_pending') {
-                        status = 'pending';
-                    } else {
-                        status = 'verified';
-                    }
-            }
-
-            return {
-                status,
-            };
+        switch (jurisdiction) {
+            case 'bvi':
+                if (
+                    isServiceStatus('expired', 'none', 'rejected', 'suspected') ||
+                    mt5_account_status === 'proof_failed'
+                ) {
+                    status = 'failed';
+                } else if (isServiceStatus('pending') || mt5_account_status === 'verification_pending') {
+                    status = 'pending';
+                } else {
+                    status = 'verified';
+                }
+                break;
+            case 'labuan':
+                // for labuan we check POA
+                // for labuan we just need to check for is_authenticated_with_idv_photoid status for failed case
+                if (
+                    is_poa_failed ||
+                    isServiceStatus('expired', 'none', 'rejected', 'suspected') ||
+                    authenticationStatus?.is_authenticated_with_idv_photoid ||
+                    mt5_account_status === 'proof_failed'
+                ) {
+                    status = 'failed';
+                } else if (isServiceStatus('pending') || mt5_account_status === 'verification_pending') {
+                    status = 'pending';
+                } else {
+                    status = 'verified';
+                }
+                break;
+            case 'svg':
+                status = 'not_applicable';
+                break;
+            default:
+                // MT5 account status already checks for POA status in BE
+                if (mt5_account_status === 'proof_failed') {
+                    status = 'failed';
+                } else if (mt5_account_status === 'verification_pending') {
+                    status = 'pending';
+                } else {
+                    status = 'verified';
+                }
         }
+
+        return {
+            status,
+        };
     }, [
         poaStatus?.is_rejected,
         poaStatus?.is_suspected,
@@ -88,8 +95,8 @@ const useJurisdictionStatus = (account: TAccount) => {
         poiStatus?.services,
         poiStatus?.next?.service,
         accountStatus?.status,
-        account?.status,
-        account?.landing_company_short,
+        mt5_account_status,
+        jurisdiction,
     ]);
 
     return {

@@ -84,13 +84,8 @@ const CryptoFiatConverter = observer(
         const { crypto_fiat_converter } = useCashierStore();
         const { exchange_rates } = useExchangeRate2();
 
-        const {
-            converter_from_amount,
-            converter_from_error,
-            converter_to_error,
-            converter_to_amount,
-            is_timer_visible,
-        } = crypto_fiat_converter;
+        const { converter_from_amount, converter_from_error, converter_to_error, converter_to_amount } =
+            crypto_fiat_converter;
 
         const { handleChange } = useFormikContext();
         const [arrow_icon_direction, setArrowIconDirection] = React.useState<string>('right');
@@ -105,6 +100,8 @@ const CryptoFiatConverter = observer(
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [from_currency]);
 
+        const rate = exchange_rates[from_currency][to_currency];
+
         return (
             <div className='crypto-fiat-converter'>
                 <Field name='converter_from_amount' validate={validateFromAmount}>
@@ -115,7 +112,6 @@ const CryptoFiatConverter = observer(
                                 setArrowIconDirection('right');
                             }}
                             onChange={(e: TReactChangeEvent) => {
-                                const rate = exchange_rates[from_currency][to_currency];
                                 const converted_amount = Number(e.target.value) * rate;
                                 onChangeConverterFromAmount(e, from_currency, to_currency, converted_amount);
                                 handleChange(e);
@@ -153,7 +149,6 @@ const CryptoFiatConverter = observer(
                                     setArrowIconDirection('left');
                                 }}
                                 onChange={(e: TReactChangeEvent) => {
-                                    const rate = exchange_rates[from_currency][to_currency];
                                     const converted_amount = Number(e.target.value) * rate;
                                     onChangeConverterToAmount(e, to_currency, from_currency, converted_amount);
                                     handleChange(e);

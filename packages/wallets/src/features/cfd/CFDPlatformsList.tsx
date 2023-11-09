@@ -11,7 +11,7 @@ const CFDPlatformsList: React.FC<React.RefAttributes<HTMLDivElement>> = forwardR
     const { isMobile } = useDevice();
 
     return (
-        <div className='wallets-cfd-list' ref={ref}>
+        <div className='wallets-cfd-list'>
             <section className='wallets-cfd-list__header'>
                 {!isMobile && (
                     <WalletText size='xl' weight='bold'>

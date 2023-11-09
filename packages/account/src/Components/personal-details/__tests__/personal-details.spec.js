@@ -69,17 +69,25 @@ const runCommonFormfieldsTests = is_svg => {
     expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
     expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
 
-    expect(
-        screen.getByText(/Please enter your first name as in your official identity documents./i)
-    ).toBeInTheDocument();
+    if (is_svg) {
+        expect(screen.getByText(/your first name as in your identity document/i)).toBeInTheDocument();
 
-    expect(
-        screen.getByText(/Please enter your last name as in your official identity documents./i)
-    ).toBeInTheDocument();
+        expect(screen.getByText(/your last name as in your identity document/i)).toBeInTheDocument();
 
-    expect(
-        screen.getByText(/Please enter your date of birth as in your official identity documents./i)
-    ).toBeInTheDocument();
+        expect(screen.getByText(/your date of birth as in your identity document/i)).toBeInTheDocument();
+    } else {
+        expect(
+            screen.getByText(/Please enter your first name as in your official identity documents./i)
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByText(/Please enter your last name as in your official identity documents./i)
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByText(/Please enter your date of birth as in your official identity documents./i)
+        ).toBeInTheDocument();
+    }
 
     const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');
     expect(tax_residence_pop_over).toBeInTheDocument();
@@ -465,7 +473,7 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should show title and Name label when salutation is passed', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter(<PersonalDetails {...props} is_mf />);
 
         expect(
             screen.getByRole('heading', {
@@ -478,7 +486,7 @@ describe('<PersonalDetails/>', () => {
         const newprops = { ...props, value: {} };
         renderwithRouter(<PersonalDetails {...newprops} />);
 
-        expect(screen.getByRole('heading', { name: /name/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /details/i })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: /title and name/i })).not.toBeInTheDocument();
     });
 
@@ -511,27 +519,25 @@ describe('<PersonalDetails/>', () => {
     it('should display the correct field details when is_svg is true ', () => {
         renderwithRouter(<PersonalDetails {...props} />);
 
-        expect(screen.getByRole('heading', { name: /title and name/i })).toBeInTheDocument();
-        expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('heading', { name: 'Details' })).toBeInTheDocument();
         expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/last name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
         runCommonFormfieldsTests(props.is_svg);
     });
 
     it('should display the correct field details when is_svg is false ', () => {
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} is_mf />);
 
         expect(screen.getByRole('heading', { name: 'Title and name' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
         expect(screen.getByRole('heading', { name: /other details/i })).toBeInTheDocument();
-        expect(screen.getByText('First name')).toBeInTheDocument();
-        expect(screen.getByText('Last name')).toBeInTheDocument();
-        expect(screen.getByText('Date of birth')).toBeInTheDocument();
-        expect(screen.getByText('Phone number*')).toBeInTheDocument();
+        expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/last name\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByLabelText('Phone number*')).toBeInTheDocument();
 
         runCommonFormfieldsTests(false);

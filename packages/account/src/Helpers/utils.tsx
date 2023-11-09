@@ -9,6 +9,7 @@ import {
     validName,
     getIDVNotApplicableOption,
     IDV_ERROR_STATUS,
+    AUTH_STATUS_CODES,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { getIDVDocuments } from '../Constants/idv-document-config';
@@ -58,7 +59,11 @@ export const shouldShowIdentityInformation = ({
 }: TIDVSupportCheck) => {
     const country = residence_list.find(item => item.value === citizen);
     const maltainvest = real_account_signup_target === 'maltainvest';
-    const should_skip_idv = account_status?.status?.some((status: string) => status === 'skip_idv'); //status added by BE when idv should be skipped for the user
+    const identity = account_status?.authentication?.identity;
+
+    const is_identity_verified = identity?.status === AUTH_STATUS_CODES.VERIFIED;
+    const should_skip_idv =
+        is_identity_verified || account_status?.status?.some((status: string) => status === 'skip_idv'); //status added by BE when idv should be skipped for the user
     return Boolean(
         !maltainvest && citizen && country?.identity?.services?.idv?.is_country_supported && !should_skip_idv
     );

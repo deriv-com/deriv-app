@@ -68,13 +68,6 @@
         gap: 0.4rem;
 
         &-icon {
-            display: flex;
-            width: 3.5rem;
-            height: 3.5rem;
-            padding: 0.8rem;
-            justify-content: center;
-            align-items: center;
-            border-radius: 1.6rem;
             border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
         }
     }

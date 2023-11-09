@@ -16,7 +16,6 @@ import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
     isDocumentTypeValid,
-    shouldHideHelperImage,
     shouldShowIdentityInformation,
 } from 'Helpers/utils';
 import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
@@ -179,14 +178,12 @@ const PersonalDetails = ({
                                                     hide_hint={true}
                                                     can_skip_document_verification={true}
                                                 />
-                                                <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>
                                         )}
+                                        {is_svg && !is_mf && <FormSubHeader title={localize('Details')} />}
                                         <PersonalDetailsForm
                                             class_name={classNames({
-                                                'account-form__poi-confirm-example_container':
-                                                    is_rendered_for_idv &&
-                                                    !shouldHideHelperImage(values?.document_type?.id),
+                                                'account-form__poi-confirm-example_container': is_svg && !is_mf,
                                             })}
                                             is_virtual={is_virtual}
                                             is_svg={is_svg}
@@ -205,7 +202,6 @@ const PersonalDetails = ({
                                             account_opening_reason_list={account_opening_reason_list}
                                             should_close_tooltip={should_close_tooltip}
                                             setShouldCloseTooltip={setShouldCloseTooltip}
-                                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                             inline_note_text={
                                                 <Localize
                                                     i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'

@@ -45,8 +45,8 @@ export { default as useTradingPlatformInvestorPasswordChange } from './useTradin
 export { default as useCreateMT5Account } from './useCreateMT5Account';
 export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';
 export { default as useApiToken } from './useApiToken';
-export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';
 export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';
+export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';
 export { default as useTransactions } from './useTransactions';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useVerifyEmail } from './useVerifyEmail';

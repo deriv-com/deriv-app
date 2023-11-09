@@ -8,7 +8,7 @@ modal_root_el.setAttribute('id', 'modal_root');
 document.body.appendChild(modal_root_el);
 
 describe('ApiTokenClipboard', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ApiTokenClipboard> = {
         scopes: ['read', 'trade', 'Admin'],
         text_copy: 'Text Copy',
         info_message: 'Copy this token',

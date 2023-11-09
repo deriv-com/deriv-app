@@ -11,7 +11,7 @@ type TApiTokenDeleteButton = {
 };
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {
-    const { deleteToken, isSuccess } = React.useContext<TApiContext>(ApiTokenContext);
+    const { deleteToken } = React.useContext<TApiContext>(ApiTokenContext);
     const [is_deleting, setIsDeleting] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
@@ -35,10 +35,12 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
     const onSubmit = () => {
         setIsLoading(true);
         deleteToken(token.token);
-        if (isMounted() && isSuccess) {
-            setIsLoading(false);
-            setIsDeleting(false);
-        }
+        deleteToken(token.token).finally(() => {
+            if (isMounted()) {
+                setIsLoading(false);
+                setIsDeleting(false);
+            }
+        });
     };
 
     return (

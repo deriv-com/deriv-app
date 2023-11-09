@@ -1,6 +1,7 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { TApiContext, TToken } from 'Types';
 import ApiTokenContext from '../api-token-context';
 import ApiTokenDeleteButton from '../api-token-delete-button';
 
@@ -9,7 +10,7 @@ modal_root_el.setAttribute('id', 'modal_root');
 document.body.appendChild(modal_root_el);
 
 describe('ApiTokenDeleteButton', () => {
-    const mock_props = {
+    const mock_props: TApiContext = {
         api_tokens: [
             {
                 display_name: '',
@@ -19,11 +20,8 @@ describe('ApiTokenDeleteButton', () => {
             },
         ],
         deleteToken: jest.fn(() => Promise.resolve()),
-        footer_ref: document.createElement('div'),
-        overlay_ref: document.createElement('div'),
-        toggleOverlay: jest.fn(),
     };
-    const mock_token = {
+    const mock_token: { token: TToken } = {
         token: {
             display_name: 'Token 1',
             last_used: '12/31/2022',

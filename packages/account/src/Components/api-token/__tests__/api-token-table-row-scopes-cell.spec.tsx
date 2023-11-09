@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import ApiTokenTableRowScopesCell from '../api-token-table-row-scopes-cell';
 
 describe('ApiTokenTableRowScopeCell', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ApiTokenTableRowScopesCell> = {
         scopes: ['api scope 1', 'api scope 2'],
     };
 

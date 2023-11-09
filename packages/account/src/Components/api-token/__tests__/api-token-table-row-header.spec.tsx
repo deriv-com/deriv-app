@@ -3,8 +3,8 @@ import { screen, render } from '@testing-library/react';
 import ApiTokenTableRowHeader from '../api-token-table-row-header';
 
 describe('ApiTokenTableRowHeader', () => {
-    const mock_props = {
-        text: 'Api Token Table Row Header',
+    const mock_props: React.ComponentProps<typeof ApiTokenTableRowHeader> = {
+        text: <>Api Token Table Row Header</>,
     };
 
     it('should render ApiTokenTableRowHeader', () => {

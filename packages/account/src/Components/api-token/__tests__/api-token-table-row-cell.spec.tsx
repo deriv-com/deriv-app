@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import ApiTokenTableRowCell from '../api-token-table-row-cell';
 
 describe('ApiTokenTableRowCell', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ApiTokenTableRowCell> = {
         className: 'api_token_table_row_cell',
         should_bypass_text: false,
     };

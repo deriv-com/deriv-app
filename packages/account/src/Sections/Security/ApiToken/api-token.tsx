@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Formik, Form, Field, FormikErrors, FieldProps, FormikHelpers } from 'formik';
 import { ApiToken as TApitoken, APITokenResponse as TAPITokenResponse } from '@deriv/api-types';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
-import { getPropertyValue, useIsMounted, WS } from '@deriv/shared';
+import { getPropertyValue, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { TToken } from 'Types';
@@ -19,7 +19,6 @@ type AptTokenState = {
     is_success: boolean;
     error_message: string;
     show_delete: boolean;
-    dispose_token: string;
     is_delete_loading: boolean;
     is_delete_success: boolean;
 };
@@ -37,7 +36,6 @@ const ApiToken = observer(() => {
     const { client, ui } = useStore();
     const { is_switching } = client;
     const { is_desktop, is_mobile } = ui;
-    const isMounted = useIsMounted();
     const prev_is_switching = React.useRef(is_switching);
 
     const [state, setState] = React.useReducer(
@@ -51,19 +49,17 @@ const ApiToken = observer(() => {
             is_success: false,
             error_message: '',
             show_delete: false,
-            dispose_token: '',
             is_delete_loading: false,
             is_delete_success: false,
         }
     );
 
-    const timeout_ref = React.useRef<NodeJS.Timeout | undefined>(); //?
+    const timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
 
     React.useEffect(() => {
         getApiTokens();
 
         return () => {
-            setState({ dispose_token: '' });
             clearTimeout(timeout_ref.current);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,13 +121,13 @@ const ApiToken = observer(() => {
         });
         if (token_response.error) {
             setFieldError('token_name', token_response.error.message);
-        } else if (isMounted()) {
+        } else {
             setState({
                 is_success: true,
                 api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
             });
             setTimeout(() => {
-                if (isMounted()) setState({ is_success: false });
+                setState({ is_success: false });
             }, 500);
         }
         resetForm();
@@ -139,7 +135,6 @@ const ApiToken = observer(() => {
     };
 
     const populateTokenResponse = (response: TAPITokenResponse) => {
-        if (!isMounted()) return;
         if (response.error) {
             setState({
                 is_loading: false,
@@ -166,10 +161,10 @@ const ApiToken = observer(() => {
 
         populateTokenResponse(token_response);
 
-        if (isMounted()) setState({ is_delete_loading: false, is_delete_success: true });
+        setState({ is_delete_loading: false, is_delete_success: true });
 
         timeout_ref.current = setTimeout(() => {
-            if (isMounted()) setState({ is_delete_success: false });
+            setState({ is_delete_success: false });
         }, 500);
     };
 

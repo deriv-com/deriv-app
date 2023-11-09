@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { isMobile, formatDate } from '@deriv/shared';
+import { formatDate } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
 import ApiTokenDeleteButton from './api-token-delete-button';
@@ -9,9 +9,12 @@ import ApiTokenTableRowHeader from './api-token-table-row-header';
 import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell';
 import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
 import { TApiContext, TToken } from 'Types';
+import { useStore } from '@deriv/stores';
 
 const ApiTokenTable = () => {
     const { api_tokens } = React.useContext<TApiContext>(ApiTokenContext);
+    const { ui } = useStore();
+    const { is_mobile } = ui;
 
     const formatTokenScopes = (str: string) => {
         const replace_filter = str.replace(/[-_]/g, ' ');
@@ -47,7 +50,7 @@ const ApiTokenTable = () => {
             token: token.token,
         };
     };
-    if (isMobile()) {
+    if (is_mobile) {
         return (
             <React.Fragment>
                 {api_tokens?.map((token_data: TToken) => {

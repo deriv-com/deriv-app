@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import ApiTokenTableRowTokenCell from '../api-token-table-row-token-cell';
 
 describe('ApiTokenTableRowTokenCell', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ApiTokenTableRowTokenCell> = {
         token: '1234567',
         scopes: ['api scope 1', 'api scope 2'],
     };

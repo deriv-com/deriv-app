@@ -10,11 +10,16 @@ type StrengthMessage = Record<1 | 2 | 3 | 4, string>;
 
 interface WalletPasswordFieldProps extends WalletTextFieldProps, PasswordMeterProps {
     messageObj?: StrengthMessage;
+    password: string;
     showPasswordMeter?: boolean;
 }
 
-const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({ messageObj, showPasswordMeter = true }) => {
-    const [password, setPassword] = useState('');
+const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
+    messageObj,
+    password,
+    showPasswordMeter = true,
+    ...rest
+}) => {
     const [viewPassword, setViewPassword] = useState(false);
     const hasMessage = !!messageObj;
 
@@ -27,12 +32,14 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({ messageObj, s
         <div className='wallets-password'>
             <WalletTextField
                 helperMessage={progressText}
-                onChange={e => setPassword(e.target.value)}
+                inputClassName='wallets-password__input'
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />
                 )}
                 showMessage={hasMessage}
                 type={viewPassword ? 'text' : 'password'}
+                value={password}
+                {...rest}
             />
             {showPasswordMeter && <PasswordMeter strength={passwordStrength} />}
         </div>

@@ -122,7 +122,7 @@ export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
         } else if (is_middle_spot) {
             marker_config = createMarkerSpotMiddle(contract_info, tick, idx);
         } else if (is_exit_spot && !is_accu_current_last_spot) {
-            tick.align_label = 'top'; // force exit spot label to be 'top' to avoid overlapping
+            tick.align_label = 'top'; // Do force exit spot label to be 'top' to avoid overlapping
             marker_config = createMarkerSpotExit(contract_info, tick, idx);
         }
         if (is_smarttrader_contract && is_middle_spot) {

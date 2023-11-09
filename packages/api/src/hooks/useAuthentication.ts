@@ -13,8 +13,9 @@ const useAuthentication = () => {
 
         return {
             ...get_account_status_data.authentication,
-            /** client is required to verify their document (proof of address) */
+            /** client has been authenticated with IDV photo ID feature */
             is_authenticated_with_idv_photoid: needs_verification.has('is_authenticated_with_idv_photoid'),
+            /** client is required to verify their document (proof of address) */
             is_poa_needed: needs_verification.has('document'),
             /** client is required to verify their identity */
             is_poi_needed: needs_verification.has('identity'),

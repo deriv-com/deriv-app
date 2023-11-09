@@ -1,9 +1,7 @@
 import React from 'react';
-
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Money, Text } from '@deriv/components';
 import {
-    CFD_PLATFORMS,
     getCFDAccountDisplay,
     getCFDAccountKey,
     getCFDPlatformLabel,
@@ -12,17 +10,19 @@ import {
     isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
-import PasswordBox from '../Components/passwordbox';
-import { TTradingPlatformAccounts } from '../Components/props.types';
+import { getPlatformMt5DownloadLink, getBrokerName } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
-import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import PasswordBox from '../Components/passwordbox';
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
+import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid;
+    mt5_trade_account: DetailsOfEachMT5Loginid & {
+        webtrader_url?: string;
+    };
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,
@@ -47,10 +47,10 @@ const DMT5TradeModal = ({
 }: TMT5TradeModalProps) => {
     const getCompanyShortcode = () => {
         if (
-            (mt5_trade_account.account_type === 'demo' &&
-                mt5_trade_account.market_type === 'financial' &&
-                mt5_trade_account.landing_company_short === 'labuan') ||
-            mt5_trade_account.account_type === 'real'
+            (mt5_trade_account.account_type === CATEGORY.DEMO &&
+                mt5_trade_account.market_type === MARKET_TYPE.FINANCIAL &&
+                mt5_trade_account.landing_company_short === JURISDICTION.LABUAN) ||
+            mt5_trade_account.account_type === CATEGORY.REAL
         ) {
             return mt5_trade_account.landing_company_short;
         }
@@ -68,8 +68,8 @@ const DMT5TradeModal = ({
         });
     const getAccountTitle = () => {
         if (show_eu_related_content) return 'CFDs';
-        else if (mt5_trade_account.market_type === 'synthetic') return 'Derived';
-        else if (mt5_trade_account.market_type === 'all') return 'SwapFree';
+        else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Derived';
+        else if (mt5_trade_account.market_type === MARKET_TYPE.ALL) return 'SwapFree';
         return 'Financial';
     };
     return (
@@ -100,7 +100,7 @@ const DMT5TradeModal = ({
             <div className='cfd-trade-modal__login-specs'>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                    <SpecBox is_bold is_broker value={'Deriv Holdings (Guernsey) Limited'} />
+                    <SpecBox is_bold is_broker value={getBrokerName()} />
                 </div>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>
@@ -154,11 +154,7 @@ const DMT5TradeModal = ({
                     <a
                         className='dc-btn cfd-trade-modal__download-center-app--option-link'
                         type='button'
-                        href={getMT5WebTerminalLink({
-                            category: mt5_trade_account.account_type,
-                            loginid: (mt5_trade_account as TTradingPlatformAccounts).display_login,
-                            server_name: (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment,
-                        })}
+                        href={mt5_trade_account.webtrader_url}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

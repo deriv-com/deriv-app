@@ -10,6 +10,7 @@ import {
     isFieldImmutable,
     preventEmptyClipboardPaste,
     shouldShowIdentityInformation,
+    verifyFields,
 } from '../utils';
 
 describe('generatePlaceholderText', () => {
@@ -45,10 +46,7 @@ describe('shouldShowIdentityInformation', () => {
         account_status: {
             status: ['skip_idv'],
         },
-        account_settings: {
-            citizen: 'test',
-        },
-        residence: 'test',
+        citizen: 'test',
         residence_list: [
             {
                 value: 'test',
@@ -119,7 +117,6 @@ describe('getDocumentData', () => {
         expect(getDocumentData('zw', 'national_id')).toEqual({
             new_display_name: 'National ID',
             example_format: '081234567F53',
-            sample_image: '/public/images/common/zw_national_identity_card.png',
         });
     });
 });
@@ -230,5 +227,19 @@ describe('isDocumentNumberValid', () => {
         };
         const errorMessage = isDocumentNumberValid('08123456F753', mock_document_type);
         expect(errorMessage).toBeUndefined();
+    });
+});
+
+describe('verifyFields', () => {
+    it('should return date field in the list when the error is date of birth', () => {
+        expect(verifyFields('POI_DOB_MISMATCH')).toEqual(['date_of_birth']);
+    });
+
+    it('should return first and last name in the list when the error is name', () => {
+        expect(verifyFields('POI_NAME_MISMATCH')).toEqual(['first_name', 'last_name']);
+    });
+
+    it('should return first name, last name and dob in the list when the the error is regarding rejection', () => {
+        expect(verifyFields('POI_FAILED')).toEqual(['first_name', 'last_name', 'date_of_birth']);
     });
 });

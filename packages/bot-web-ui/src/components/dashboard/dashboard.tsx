@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
@@ -9,13 +8,10 @@ import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import RunPanel from '../run-panel';
-
 import RunStrategy from './dashboard-component/run-strategy';
 import { tour_list } from './dbot-tours/utils';
 import DashboardComponent from './dashboard-component';
@@ -24,11 +20,12 @@ import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
-    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour } = dashboard;
+    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour, setTourDialogVisibility } =
+        dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
-    const { is_strategy_modal_open } = quick_strategy;
+    const { is_open } = quick_strategy;
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const is_mobile = isMobile();
@@ -61,6 +58,10 @@ const Dashboard = observer(() => {
     }, []);
 
     React.useEffect(() => {
+        if (is_open) {
+            setTourDialogVisibility(false);
+        }
+
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
             if (is_mobile) handleTabChange(Number(active_hash_tab));
@@ -152,7 +153,7 @@ const Dashboard = observer(() => {
                     <RunPanel />
                 </div>
             </DesktopWrapper>
-            <MobileWrapper>{!is_strategy_modal_open && <RunPanel />}</MobileWrapper>
+            <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog
                 cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
                 className={'dc-dialog__wrapper--fixed'}

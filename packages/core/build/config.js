@@ -24,6 +24,22 @@ const copyConfig = base => {
             to: 'js/smartcharts/',
         },
         {
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist'),
+            to: 'js/smartchartsbeta/',
+        },
+        {
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            to: 'assets',
+        },
+        {
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            to: 'contract/assets',
+        },
+        {
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            to: 'bot/assets',
+        },
+        {
             from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/js/'),
             to: 'account/js',
         },
@@ -74,6 +90,10 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/appstore/dist/appstore'),
             to: 'appstore',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/wallets/dist/wallets'),
+            to: 'wallets',
         },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
         {
@@ -147,7 +167,7 @@ const copyConfig = base => {
     };
 };
 
-const generateSWConfig = is_release => ({
+const generateSWConfig = () => ({
     cleanupOutdatedCaches: true,
     exclude: [/\**/],
     runtimeCaching: [
@@ -163,7 +183,7 @@ const generateSWConfig = is_release => ({
         },
         {
             urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/);
+                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts|smartchartsbeta))).*$/);
             },
             handler: 'CacheFirst',
             options: {
@@ -175,7 +195,7 @@ const generateSWConfig = is_release => ({
         },
         {
             urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/smartcharts\//);
+                return url.pathname.match(/^\/js\/(smartcharts|smartchartsbeta)\//);
             },
             handler: 'CacheFirst',
             options: {
@@ -210,9 +230,6 @@ const generateSWConfig = is_release => ({
     ],
     skipWaiting: true,
     clientsClaim: true,
-    ...(is_release && {
-        importScripts: [`https://cdn.pushwoosh.com/webpush/v3/pushwoosh-service-worker.js`],
-    }),
 });
 
 const htmlOutputConfig = is_release => ({

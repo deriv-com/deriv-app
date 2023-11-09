@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form,Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
@@ -8,6 +8,7 @@ import { localize } from '@deriv/translations';
 
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
+import { Analytics } from '@deriv/analytics';
 
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
@@ -49,6 +50,16 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
             }
             setIsLoading(false);
         });
+
+        Analytics.trackEvent('ce_virtual_signup_form', {
+            action: 'signup_confirmed',
+            form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+        });
+
+        Analytics.trackEvent('ce_virtual_signup_form', {
+            action: 'country_selection_screen_opened',
+            form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+        });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
@@ -72,10 +83,21 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
     const onSignupComplete = error => {
         if (error) {
             setApiError(error);
+
+            Analytics.trackEvent('ce_virtual_signup_form', {
+                action: 'signup_flow_error',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                error_message: error,
+            });
         } else {
             isModalVisible(false);
             SessionStore.remove('signup_query_param');
             enableApp();
+
+            Analytics.trackEvent('ce_virtual_signup_form', {
+                action: 'signup_done',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            });
         }
     };
 

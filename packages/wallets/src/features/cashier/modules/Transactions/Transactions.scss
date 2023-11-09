@@ -26,7 +26,7 @@
         display: flex;
         gap: 1.6rem;
         justify-content: flex-end;
-        z-index: 9999;
+        z-index: 10;
         background-color: var(--system-light-8-primary-background, #fff);
 
         @include mobile {

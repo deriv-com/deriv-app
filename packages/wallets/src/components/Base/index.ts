@@ -1,4 +1,5 @@
 export * from './Divider';
+export * from './IconButton';
 export * from './InlineMessage';
 export * from './ModalStepWrapper';
 export * from './ModalWrapper';
@@ -10,5 +11,6 @@ export * from './WalletButton';
 export * from './WalletButtonGroup';
 export * from './WalletClipboard';
 export * from './WalletDropdown';
+export * from './WalletPasswordField';
 export * from './WalletText';
 export * from './WalletTextField';

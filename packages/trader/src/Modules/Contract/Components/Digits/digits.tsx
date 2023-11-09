@@ -39,7 +39,7 @@ type TDigits = Pick<TContractStore, 'contract_info' | 'digits_info'> & {
     selected_digit?: TTraderStore['last_digit'];
     trade_type?: TTraderStore['contract_type'];
     tick?: TTickSpotData;
-    underlying: TTraderStore['symbol'];
+    underlying?: TTraderStore['symbol'];
 };
 type TTickStream = NonNullable<TContractStore['contract_info']['tick_stream']>[number];
 type TTickData =

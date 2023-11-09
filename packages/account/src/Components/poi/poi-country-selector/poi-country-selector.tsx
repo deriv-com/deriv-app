@@ -4,7 +4,7 @@ import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik
 import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { idv_error_statuses, isMobile, TIDVErrorStatus } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import FormFooter from 'Components/form-footer';
+import FormFooter from '../../form-footer';
 import { POIContext } from '../../../Helpers/poi-context';
 import { useResidenceList } from '@deriv/api';
 

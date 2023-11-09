@@ -37,27 +37,6 @@
                 border-radius: 0.4rem;
                 background: var(--system-light-7-secondary-background, #f2f3f4);
             }
-
-            &-landing-company-text {
-                color: var(--system-light-1-prominent-text, #333);
-
-                /* desktop/extra small/XS - bold */
-                font-size: 1rem;
-                font-style: normal;
-                font-weight: 700;
-                line-height: 1.4rem; /* 140% */
-                text-transform: uppercase;
-            }
-        }
-
-        &-loginid {
-            color: var(--system-light-3-less-prominent-text, #999);
-
-            /* desktop/small/S - bold */
-            font-size: 1.2rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1.8rem; /* 150% */
         }
 
         &-badge {
@@ -71,16 +50,6 @@
             & > .wallets-inline-message {
                 padding: 0.5rem 0.8rem;
             }
-        }
-
-        &-balance {
-            color: var(--system-light-1-prominent-text, #333);
-
-            /* desktop/paragraph/P2 - bold */
-            font-size: 1.4rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 2rem; /* 142.857% */
         }
 
         &-description {

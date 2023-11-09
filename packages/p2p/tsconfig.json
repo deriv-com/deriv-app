@@ -6,7 +6,6 @@
             "Assets/*": ["src/assets/*"],
             "Components/*": ["src/components/*"],
             "Constants/*": ["src/constants/*"],
-            "Hooks/*": ["src/hooks/*"],
             "Pages/*": ["src/pages/*"],
             "Stores/*": ["src/stores/*"],
             "Translations/*": ["src/translations/*"],

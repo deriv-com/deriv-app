@@ -30,13 +30,13 @@ const load = (component_name: string) => () => {
 export const SmartChart = React.lazy(load('SmartChart'));
 export const ChartTitle = React.lazy(load('ChartTitle'));
 
-export const ChartSizeBeta = React.lazy(load('ChartSize'));
-export const ChartModeBeta = React.lazy(load('ChartMode'));
-export const DrawToolsBeta = React.lazy(load('DrawTools'));
-export const ShareBeta = React.lazy(load('Share'));
-export const StudyLegendBeta = React.lazy(load('StudyLegend'));
-export const ViewsBeta = React.lazy(load('Views'));
-export const ToolbarWidgetBeta = React.lazy(load('ToolbarWidget'));
+export const ChartSize = React.lazy(load('ChartSize'));
+export const ChartMode = React.lazy(load('ChartMode'));
+export const DrawTools = React.lazy(load('DrawTools'));
+export const Share = React.lazy(load('Share'));
+export const StudyLegend = React.lazy(load('StudyLegend'));
+export const Views = React.lazy(load('Views'));
+export const ToolbarWidget = React.lazy(load('ToolbarWidget'));
 
-export const FastMarkerBeta = React.lazy(load('FastMarker'));
-export const RawMarkerBeta = React.lazy(load('RawMarker'));
+export const FastMarker = React.lazy(load('FastMarker'));
+export const RawMarker = React.lazy(load('RawMarker'));

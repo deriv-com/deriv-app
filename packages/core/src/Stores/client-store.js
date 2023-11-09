@@ -406,6 +406,7 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
+            setIsAlreadyAttempted: action.bound,
         });
 
         reaction(
@@ -2799,5 +2800,4 @@ export default class ClientStore extends BaseStore {
 
         return is_p2p_visible;
     }
-
 }

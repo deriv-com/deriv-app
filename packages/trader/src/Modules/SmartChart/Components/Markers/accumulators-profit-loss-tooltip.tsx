@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { FastMarker } from 'Modules/SmartChart';
 import { FastMarkerBeta } from 'Modules/SmartChartBeta';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
-import { isCryptoContract, isMobile } from '@deriv/shared';
+import { getDecimalPlaces, isMobile } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
 type TContractInfo = ReturnType<typeof useStore>['portfolio']['all_positions'][number]['contract_info'];
@@ -95,9 +95,9 @@ const AccumulatorsProfitLossTooltip = ({
                 currency={currency}
                 current_spot={current_spot}
                 current_spot_time={current_spot_time}
-                profit={isCryptoContract(underlying) && profit_percentage ? profit_percentage : profit}
+                profit={getDecimalPlaces(currency) > 2 && profit_percentage ? profit_percentage : profit}
                 is_beta_chart={is_beta_chart}
-                is_crypto={isCryptoContract(underlying)}
+                is_crypto={getDecimalPlaces(currency) > 2}
             />
         );
 

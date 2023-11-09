@@ -61,7 +61,7 @@ const ModalElement = ({
     onUnmount,
     portalId,
     renderTitle,
-    should_close_on_click_outside = false,
+    should_close_on_click_outside,
     should_header_stick_body = true,
     small,
     title,

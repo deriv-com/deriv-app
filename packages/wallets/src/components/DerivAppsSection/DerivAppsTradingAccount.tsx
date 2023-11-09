@@ -1,12 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveLinkedToTradingAccount, useActiveWalletAccount } from '@deriv/api';
+import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useBalance } from '@deriv/api';
 import DerivApps from '../../public/images/deriv-apps.svg';
 import { WalletButton, WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 
 const DerivAppsTradingAccount: React.FC = () => {
     const history = useHistory();
+    const { isLoading } = useBalance();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
@@ -18,9 +19,13 @@ const DerivAppsTradingAccount: React.FC = () => {
                     <WalletText size='sm'>Deriv Apps</WalletText>
                     <WalletListCardBadge isDemo={activeWallet?.is_virtual} label={activeWallet?.landing_company_name} />
                 </div>
-                <WalletText size='sm' weight='bold'>
-                    {activeLinkedToTradingAccount?.display_balance}
-                </WalletText>
+                {isLoading ? (
+                    <div className='wallets-skeleton wallets-deriv-apps-balance-loader' />
+                ) : (
+                    <WalletText size='sm' weight='bold'>
+                        {activeLinkedToTradingAccount?.display_balance}
+                    </WalletText>
+                )}
                 <WalletText color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
                     {activeLinkedToTradingAccount?.loginid}
                 </WalletText>

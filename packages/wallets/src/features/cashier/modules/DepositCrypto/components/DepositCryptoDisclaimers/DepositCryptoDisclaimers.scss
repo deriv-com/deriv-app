@@ -9,7 +9,15 @@
     }
 
     &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
         line-height: 1.4rem;
+    }
+
+    &__points {
+        list-style: disc;
+        margin-left: 0.8rem;
     }
 
     &__note {

@@ -16,6 +16,7 @@ type TProps = {
 
 const WalletCard: React.FC<TProps> = ({ balance, currency, isDemo, landingCompanyName, width }) => {
     const { isLoading } = useBalance();
+
     return (
         <div className='wallets-card'>
             <WalletGradientBackground

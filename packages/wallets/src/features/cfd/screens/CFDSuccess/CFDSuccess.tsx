@@ -17,7 +17,7 @@ type TSuccessProps = {
         | TDisplayBalance.MT5AccountsList;
     marketType?: TMarketTypes.SortedMT5Accounts;
     platform?: TPlatforms.All;
-    renderButton: ComponentProps<typeof WalletSuccess>['renderButtons'];
+    renderButton?: ComponentProps<typeof WalletSuccess>['renderButtons'];
     title: string;
 };
 

@@ -866,7 +866,7 @@ type TTradersHubStore = {
             name: string;
             landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
             platform?: TPlatform;
-            availability?: 'Non-EU' | 'EU' | 'All';
+            availability?: TRegionAvailability;
             description?: string;
             market_type?: 'all' | 'financial' | 'synthetic';
         }[];

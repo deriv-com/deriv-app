@@ -121,27 +121,27 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     lb_call: { title: localize('Close-to-Low'), trade_types: ['LBFLOATCALL'], basis: ['multiplier'], components: [] },
     lb_put: { title: localize('High-to-Close'), trade_types: ['LBFLOATPUT'], basis: ['multiplier'], components: [] },
     lb_high_low: { title: localize('High-to-Low'), trade_types: ['LBHIGHLOW'], basis: ['multiplier'], components: [] },
-    tick_high_low: {
+    [TRADE_TYPES.TICKHIGHLOW]: {
         title: localize('High Tick/Low Tick'),
-        trade_types: ['TICKHIGH', 'TICKLOW'],
+        trade_types: [CONTRACT_TYPES.TICKHIGHLOW.HIGH, CONTRACT_TYPES.TICKHIGHLOW.LOW],
         basis: [],
         components: [],
     },
-    run_high_low: {
+    [TRADE_TYPES.RUNHIGHLOW]: {
         title: localize('Only Ups/Only Downs'),
-        trade_types: ['RUNHIGH', 'RUNLOW'],
+        trade_types: [CONTRACT_TYPES.RUNHIGHLOW.HIGH, CONTRACT_TYPES.RUNHIGHLOW.LOW],
         basis: [],
         components: [],
     },
-    reset: {
+    [TRADE_TYPES.RESET]: {
         title: localize('Reset Up/Reset Down'),
-        trade_types: ['RESETCALL', 'RESETPUT'],
+        trade_types: [CONTRACT_TYPES.RESET.CALL, CONTRACT_TYPES.RESET.PUT],
         basis: [],
         components: [],
     },
-    callputspread: {
+    [TRADE_TYPES.CALLPUTSPREAD]: {
         title: localize('Spread Up/Spread Down'),
-        trade_types: ['CALLSPREAD', 'PUTSPREAD'],
+        trade_types: [CONTRACT_TYPES.CALLPUTSPREAD.CALL, CONTRACT_TYPES.CALLPUTSPREAD.PUT],
         basis: [],
         components: [],
     },
@@ -202,9 +202,16 @@ export const getContractCategoriesConfig = () =>
         Multipliers: { name: localize('Multipliers'), categories: [TRADE_TYPES.MULTIPLIER] },
         'Ups & Downs': {
             name: localize('Ups & Downs'),
-            categories: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
+            categories: [
+                'rise_fall',
+                'rise_fall_equal',
+                TRADE_TYPES.RUNHIGHLOW,
+                TRADE_TYPES.RESET,
+                'asian',
+                TRADE_TYPES.CALLPUTSPREAD,
+            ],
         },
-        'Highs & Lows': { name: localize('Highs & Lows'), categories: ['high_low', 'touch', 'tick_high_low'] },
+        'Highs & Lows': { name: localize('Highs & Lows'), categories: ['high_low', 'touch', TRADE_TYPES.TICKHIGHLOW] },
         'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
         'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
         Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
@@ -214,11 +221,11 @@ export const getContractCategoriesConfig = () =>
 
 export const unsupported_contract_types_list = [
     // TODO: remove these once all contract types are supported
-    'callputspread',
-    'run_high_low',
-    'reset',
+    TRADE_TYPES.CALLPUTSPREAD,
+    TRADE_TYPES.RUNHIGHLOW,
+    TRADE_TYPES.RESET,
     'asian',
-    'tick_high_low',
+    TRADE_TYPES.TICKHIGHLOW,
     'end',
     'stay',
     'lb_call',

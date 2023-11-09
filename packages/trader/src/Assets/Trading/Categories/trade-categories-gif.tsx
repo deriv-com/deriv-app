@@ -31,7 +31,7 @@ const TradeCategoriesGIF = ({
     switch (category) {
         case 'asian':
             return <ImageAsianUpDown />;
-        case 'callputspread':
+        case TRADE_TYPES.CALLPUTSPREAD:
             return <ImageSpread />;
         case 'end':
             return <ImageEndsInOut />;
@@ -55,13 +55,13 @@ const TradeCategoriesGIF = ({
             return <ImageMultiplier />;
         case 'over_under':
             return <ImageOverUnder />;
-        case 'reset':
+        case TRADE_TYPES.RESET:
             return <ImageReset />;
-        case 'run_high_low':
+        case TRADE_TYPES.RUNHIGHLOW:
             return <ImageRunHighLow />;
         case TRADE_TYPES.ACCUMULATOR:
             return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
-        case 'tick_high_low':
+        case TRADE_TYPES.TICKHIGHLOW:
             return <ImageTickHighLow />;
         case 'touch':
             return <ImageTouch />;

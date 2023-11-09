@@ -116,10 +116,10 @@ describe('getCleanedUpCategories', () => {
                         text: 'Rise/Fall',
                     },
                     'rise_fall_equal',
-                    'run_high_low',
-                    'reset',
+                    TRADE_TYPES.RUNHIGHLOW,
+                    TRADE_TYPES.RESET,
                     'asian',
-                    'callputspread',
+                    TRADE_TYPES.CALLPUTSPREAD,
                 ],
             },
             Vanillas: {

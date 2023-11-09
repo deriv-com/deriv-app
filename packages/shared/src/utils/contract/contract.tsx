@@ -31,6 +31,14 @@ export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
 
 export const CONTRACT_TYPES = {
     ACCU: 'ACCU',
+    CALLPUTSPREAD: { CALL: 'CALLSPREAD', PUT: 'PUTSPREAD' },
+    MULTIPLIER: {
+        UP: 'MULTUP',
+        DOWN: 'MULTDOWN',
+    },
+    RESET: { CALL: 'RESETCALL', PUT: 'RESETPUT' },
+    RUNHIGHLOW: { HIGH: 'RUNHIGH', LOW: 'RUNLOW' },
+    TICKHIGHLOW: { HIGH: 'TICKHIGH', LOW: 'TICKLOW' },
     TURBOS: {
         LONG: 'TURBOSLONG',
         SHORT: 'TURBOSSHORT',
@@ -39,13 +47,14 @@ export const CONTRACT_TYPES = {
         CALL: 'VANILLALONGCALL',
         PUT: 'VANILLALONGPUT',
     },
-    MULTIPLIER: {
-        UP: 'MULTUP',
-        DOWN: 'MULTDOWN',
-    },
 } as const;
 export const TRADE_TYPES = {
     ACCUMULATOR: 'accumulator',
+    CALLPUTSPREAD: 'callputspread',
+    MULTIPLIER: 'multiplier',
+    RESET: 'reset',
+    RUNHIGHLOW: 'run_high_low',
+    TICKHIGHLOW: 'tick_high_low',
     TURBOS: {
         LONG: 'turboslong',
         SHORT: 'turbosshort',
@@ -55,7 +64,6 @@ export const TRADE_TYPES = {
         PUT: 'vanillalongput',
         FX: 'vanilla_fx',
     },
-    MULTIPLIER: 'multiplier',
 } as const;
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {

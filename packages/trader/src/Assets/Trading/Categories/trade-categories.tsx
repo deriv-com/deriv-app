@@ -68,16 +68,16 @@ const TradeCategories = ({
             case 'asian':
                 TradeTypeTemplate = <AsianTradeDescription />;
                 break;
-            case 'run_high_low':
+            case TRADE_TYPES.RUNHIGHLOW:
                 TradeTypeTemplate = <RunHighLowTradeDescription />;
                 break;
-            case 'reset':
+            case TRADE_TYPES.RESET:
                 TradeTypeTemplate = <ResetTradeDescription />;
                 break;
-            case 'callputspread':
+            case TRADE_TYPES.CALLPUTSPREAD:
                 TradeTypeTemplate = <CallPutSpreadTradeDescription />;
                 break;
-            case 'tick_high_low':
+            case TRADE_TYPES.TICKHIGHLOW:
                 TradeTypeTemplate = <TickHighLowTradeDescription />;
                 break;
             case 'lb_high_low':

@@ -125,8 +125,8 @@ describe('<IconTradeCatgory />', () => {
         expect(mocked_icon_text).toBeInTheDocument();
         expect(mocked_icon_text).toHaveClass('category-wrapper');
     });
-    it('Expect two MockedIcons to be rendered when category is run_high_low', () => {
-        render(<IconTradeCategory category='run_high_low' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.RUNHIGHLOW', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.RUNHIGHLOW} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -134,8 +134,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is reset', () => {
-        render(<IconTradeCategory category='reset' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.RESET', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.RESET} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -143,8 +143,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is tick_high_low', () => {
-        render(<IconTradeCategory category='tick_high_low' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.TICKHIGHLOW', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.TICKHIGHLOW} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -152,8 +152,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is callputspread', () => {
-        render(<IconTradeCategory category='callputspread' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.CALLPUTSPREAD', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.CALLPUTSPREAD} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {

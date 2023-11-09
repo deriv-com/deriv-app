@@ -23,7 +23,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageSpread to be rendered when trade category is callputspread', async () => {
+    it('expect ImageSpread to be rendered when trade category is TRADE_TYPES.CALLPUTSPREAD', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-spread.svg', () => ({
                 __esModule: true,
@@ -32,7 +32,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='callputspread' selected_contract_type='callputspread' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.CALLPUTSPREAD}
+                            selected_contract_type={TRADE_TYPES.CALLPUTSPREAD}
+                        />
+                    );
                     expect(screen.getByText('ImageSpread')).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -232,7 +237,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageReset to be rendered when trade category is reset', async () => {
+    it('expect ImageReset to be rendered when trade category is TRADE_TYPES.RESET', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-reset.svg', () => ({
                 __esModule: true,
@@ -241,7 +246,9 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='reset' selected_contract_type='reset' />);
+                    render(
+                        <moduleName.default category={TRADE_TYPES.RESET} selected_contract_type={TRADE_TYPES.RESET} />
+                    );
                     expect(screen.getByText(/imagereset/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -249,7 +256,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageRunHighLow to be rendered when trade category is run_high_low', async () => {
+    it('expect ImageRunHighLow to be rendered when trade category is TRADE_TYPES.RUNHIGHLOW', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-run-high-low.svg', () => ({
                 __esModule: true,
@@ -258,7 +265,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='run_high_low' selected_contract_type='run_high_low' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.RUNHIGHLOW}
+                            selected_contract_type={TRADE_TYPES.RUNHIGHLOW}
+                        />
+                    );
                     expect(screen.getByText(/imagerunhighlow/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -288,7 +300,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageTickHighLow to be rendered when trade category is tick_high_low', async () => {
+    it('expect ImageTickHighLow to be rendered when trade category is TRADE_TYPES.TICKHIGHLOW', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-tick-high-low.svg', () => ({
                 __esModule: true,
@@ -297,7 +309,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='tick_high_low' selected_contract_type='tick_high_low' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.TICKHIGHLOW}
+                            selected_contract_type={TRADE_TYPES.TICKHIGHLOW}
+                        />
+                    );
                     expect(screen.getByText(/imagetickhighlow/i)).toBeInTheDocument();
                 })
                 .catch(error => {

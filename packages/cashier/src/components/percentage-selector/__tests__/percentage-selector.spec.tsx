@@ -4,6 +4,7 @@ import PercentageSelector from '../percentage-selector';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 import CryptoFiatConverter from '../../crypto-fiat-converter';
+import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
 
 describe('<PercentageSelector />', () => {
     const getCalculatedAmount = jest.fn();
@@ -34,7 +35,9 @@ describe('<PercentageSelector />', () => {
     it('should render the component', () => {
         render(
             <CashierProviders store={mockRootStore}>
-                <PercentageSelector {...percentage_selector_props} />
+                <ExchangeRatesProvider>
+                    <PercentageSelector {...percentage_selector_props} />
+                </ExchangeRatesProvider>
             </CashierProviders>
         );
 
@@ -44,7 +47,9 @@ describe('<PercentageSelector />', () => {
     it('should calculate the percentage amount on click of percentage block', () => {
         render(
             <CashierProviders store={mockRootStore}>
-                <PercentageSelector {...percentage_selector_props} />
+                <ExchangeRatesProvider>
+                    <PercentageSelector {...percentage_selector_props} />
+                </ExchangeRatesProvider>
             </CashierProviders>
         );
 
@@ -64,7 +69,9 @@ describe('<PercentageSelector />', () => {
     it('should reset the percentage block upon clicking twice', () => {
         render(
             <CashierProviders store={mockRootStore}>
-                <PercentageSelector {...percentage_selector_props} />
+                <ExchangeRatesProvider>
+                    <PercentageSelector {...percentage_selector_props} />
+                </ExchangeRatesProvider>
             </CashierProviders>
         );
 
@@ -92,7 +99,9 @@ describe('<PercentageSelector />', () => {
     it('should reset the percentage', () => {
         render(
             <CashierProviders store={mockRootStore}>
-                <PercentageSelector {...percentage_selector_props} should_percentage_reset />
+                <ExchangeRatesProvider>
+                    <PercentageSelector {...percentage_selector_props} should_percentage_reset />
+                </ExchangeRatesProvider>
             </CashierProviders>
         );
 

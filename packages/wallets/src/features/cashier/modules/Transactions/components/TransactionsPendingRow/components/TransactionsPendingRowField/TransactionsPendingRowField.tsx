@@ -51,11 +51,7 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
                 {name}
             </WalletText>
             {hint ? (
-                <Tooltip
-                    alignment={hint.tooltipAlignment}
-                    isVisible={!isMobile && isFieldHovered}
-                    message={hint.text || ''}
-                >
+                <Tooltip alignment={hint.tooltipAlignment} isVisible={!isMobile && isFieldHovered} message={hint.text}>
                     <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...valueTextProps }}>
                         {isMobile ? (
                             <button

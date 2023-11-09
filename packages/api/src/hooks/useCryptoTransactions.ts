@@ -72,7 +72,7 @@ const getStatusDescription = (
         case 'CANCELLED':
             return "You've cancelled your withdrawal request.";
         case 'LOCKED':
-            return "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.";
+            return "We're reviewing your withdrawal request. You may still cancel this transaction if you wish.\nOnce we start processing, you won't be able to cancel.";
         case 'PERFORMING_BLOCKCHAIN_TXN':
             return "We're sending your request to the blockchain.";
         case 'PROCESSING':

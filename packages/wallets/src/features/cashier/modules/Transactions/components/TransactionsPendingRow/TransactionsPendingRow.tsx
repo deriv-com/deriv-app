@@ -145,7 +145,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     </div>
                 )}
             </div>
-            <div
+            <button
                 className='wallets-transactions-pending-row__transaction-status'
                 onClick={
                     isMobile
@@ -168,7 +168,6 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                         : undefined
                 }
                 ref={statusRef}
-                role={isMobile ? 'button' : 'generic'}
             >
                 <Tooltip alignment='left' isVisible={!isMobile && isStatusHovered} message={transaction.description}>
                     <div
@@ -191,7 +190,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                         <IcCrossLight />
                     </button>
                 )}
-            </div>
+            </button>
 
             {isMobile && transaction.is_valid_to_cancel && (
                 <WalletButton

@@ -1,9 +1,9 @@
 import React, { ChangeEvent, forwardRef, InputHTMLAttributes, useState } from 'react';
 import classNames from 'classnames';
-import MessageContainer, { MessageContainerProps } from './HelperMessage';
+import HelperMessage, { HelperMessageProps } from './HelperMessage';
 import './WalletTextField.scss';
 
-export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, MessageContainerProps {
+export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, HelperMessageProps {
     defaultValue?: string;
     inputClassName?: string;
     label?: string;
@@ -57,7 +57,7 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
                 </div>
                 <div className='wallets-textfield__message-container'>
                     {showMessage && (
-                        <MessageContainer helperMessage={helperMessage} inputValue={value} maxLength={maxLength} />
+                        <HelperMessage helperMessage={helperMessage} inputValue={value} maxLength={maxLength} />
                     )}
                 </div>
             </div>

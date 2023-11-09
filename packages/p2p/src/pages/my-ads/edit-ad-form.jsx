@@ -37,6 +37,7 @@ const EditAdForm = () => {
         local_currency,
         max_order_amount_display,
         min_order_amount_display,
+        order_expiry_period,
         payment_method_names,
         payment_method_details,
         rate_display,
@@ -150,8 +151,7 @@ const EditAdForm = () => {
                             max_transaction: max_order_amount_display,
                             min_transaction: min_order_amount_display,
                             offer_amount: amount_display,
-                            //TODO: Uncomment when order completion time is implemented
-                            //order_completion_time: order_completion_time,
+                            order_completion_time: order_expiry_period,
                             rate_type: setInitialAdRate(),
                             type,
                             is_active:

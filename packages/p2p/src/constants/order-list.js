@@ -5,30 +5,21 @@ export const order_list = {
     INACTIVE: 'inactive',
 };
 
-//TODO: to be finalized.
 export const time_list = [
     {
         text: localize('1 hour'),
-        value: '60',
-    },
-    {
-        text: localize('1.5 hours'),
-        value: '90',
-    },
-    {
-        text: localize('2 hours'),
-        value: '120',
+        value: 3600,
     },
     {
         text: localize('45 minutes'),
-        value: '45',
+        value: 2700,
     },
     {
         text: localize('30 minutes'),
-        value: '30',
+        value: 1800,
     },
     {
         text: localize('15 minutes'),
-        value: '15',
+        value: 900,
     },
 ];

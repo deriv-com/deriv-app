@@ -36,6 +36,7 @@ const BuySellForm = props => {
         max_order_amount_limit_display,
         min_order_amount_limit,
         min_order_amount_limit_display,
+        order_expiry_period,
         payment_method_names,
         price,
         rate,
@@ -44,6 +45,7 @@ const BuySellForm = props => {
 
     const { getRate } = useExchangeRate();
     const exchange_rate = getRate(local_currency);
+    const order_completion_time = order_expiry_period / 60;
 
     const [previous_rate, setPreviousRate] = React.useState(exchange_rate);
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
@@ -251,18 +253,23 @@ const BuySellForm = props => {
                                             ))}
                                     </div>
                                 </div>
-                                {/* TODO: Uncomment when BE is done */}
-                                {/* <div className='buy-sell__modal-field-wrapper'>
-                                    <div className='buy-sell__modal-field'>
+                                <div className='buy-sell-form__field-wrapper'>
+                                    <div className='buy-sell-form-field'>
                                         <Text as='p' color='less-prominent' size='xxs'>
-                                                <Localize i18n_default_text="Order Completion time" />
+                                            <Localize i18n_default_text='Order Completion time' />
                                         </Text>
                                         <Text as='p' color='general' size='xs'>
-                                            <Localize i18n_default_text='{{minutes}} minutes' values={{ minutes: 30 }} />
+                                            {order_completion_time === 60 ? (
+                                                <Localize i18n_default_text='1 hour' />
+                                            ) : (
+                                                <Localize
+                                                    i18n_default_text='{{minutes}} minutes'
+                                                    values={{ minutes: order_completion_time }}
+                                                />
+                                            )}
                                         </Text>
-                                        
                                     </div>
-                                </div> */}
+                                </div>
                                 <div className='buy-sell-form-line' />
                                 {buy_sell_store.is_sell_advert && payment_method_names && (
                                     <React.Fragment>

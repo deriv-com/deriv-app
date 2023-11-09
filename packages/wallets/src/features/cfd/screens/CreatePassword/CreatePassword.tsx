@@ -1,4 +1,5 @@
 import React from 'react';
+import { zxcvbn } from '@zxcvbn-ts/core';
 import { WalletButton, WalletPasswordField } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
@@ -26,6 +27,8 @@ const CreatePassword: React.FC<TProps> = ({
     const { isMobile } = useDevice();
 
     const title = PlatformDetails[platform].title;
+
+    const passwordStrength = zxcvbn(password).score;
     return (
         <div className='wallets-create-password'>
             {!isMobile && icon}
@@ -34,12 +37,15 @@ const CreatePassword: React.FC<TProps> = ({
                 You can use this password for all your {title} accounts.
             </span>
             <div className='wallets-create-password-input'>
-                {/* <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' /> */}
-                <WalletPasswordField onChange={onPasswordChange} placeholder={`${title} password`} />
+                <WalletPasswordField
+                    onChange={onPasswordChange}
+                    password={password}
+                    placeholder={`${title} password`}
+                />
             </div>
             {!isMobile && (
                 <WalletButton
-                    disabled={!password || isLoading}
+                    disabled={!password || isLoading || passwordStrength < 2}
                     isLoading={isLoading}
                     onClick={onPrimaryClick}
                     size='lg'

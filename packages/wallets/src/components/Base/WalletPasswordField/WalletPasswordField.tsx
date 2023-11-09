@@ -4,41 +4,38 @@ import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import PasswordMeter, { PasswordMeterProps } from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
+import { StrengthMessages } from './ValidationMessages';
 import './WalletPasswordField.scss';
 
-type StrengthMessage = Record<1 | 2 | 3 | 4, string>;
-
 interface WalletPasswordFieldProps extends WalletTextFieldProps, PasswordMeterProps {
-    messageObj?: StrengthMessage;
-    placeholder?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    password?: string;
     showPasswordMeter?: boolean;
 }
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
-    messageObj,
-    placeholder,
+    password = '',
     showPasswordMeter = true,
+    ...rest
 }) => {
-    const [password, setPassword] = useState('');
     const [viewPassword, setViewPassword] = useState(false);
-    const hasMessage = !!messageObj;
 
     const passwordStrength = zxcvbn(password).score;
     const progressText = useMemo(() => {
-        return messageObj ? messageObj[passwordStrength as keyof StrengthMessage] : '';
-    }, [messageObj, passwordStrength]);
+        return StrengthMessages[passwordStrength] ?? '';
+    }, [passwordStrength]);
 
     return (
         <div className='wallets-password'>
             <WalletTextField
                 helperMessage={progressText}
-                label={placeholder}
-                onChange={e => setPassword(e.target.value)}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />
                 )}
-                showMessage={hasMessage}
+                showMessage
                 type={viewPassword ? 'text' : 'password'}
+                value={password}
+                {...rest}
             />
             {showPasswordMeter && <PasswordMeter strength={passwordStrength} />}
         </div>

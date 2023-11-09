@@ -19,21 +19,21 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     const { data } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
-    const { hide, show } = useModal();
+    const modal = useModal();
 
     const { mutate } = useCancelCryptoTransaction();
 
     const cancelTransaction = useCallback(() => {
         mutate({ payload: { id: transaction.id } });
-        hide();
-    }, [hide, mutate, transaction.id]);
+        modal.hide();
+    }, [modal, mutate, transaction.id]);
 
     const onCancelButtonClick = useCallback(() => {
-        show(
+        modal.show(
             <WalletActionModal
                 actionButtonsOptions={[
                     {
-                        onClick: hide,
+                        onClick: modal.hide,
                         text: "No, don't cancel",
                     },
                     {
@@ -47,7 +47,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 title='Cancel transaction'
             />
         );
-    }, [cancelTransaction, hide, show]);
+    }, [cancelTransaction, modal]);
 
     const transactionFields: {
         class?: classNames.ArgumentArray[number];
@@ -61,24 +61,42 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 class: { 'wallets-transactions-pending-row__transaction-hash': !isMobile },
                 name: 'Transaction hash',
                 onInteraction: () =>
-                    show(
-                        <WalletActionModal
-                            actionButtonsOptions={[
-                                {
-                                    isPrimary: true,
-                                    onClick: () => {},
-                                    text: 'View',
-                                },
-                            ]}
-                            description='View transaction hash on Blockchain.'
-                            title='Transaction details'
-                        />
-                    ),
+                    transaction.transaction_url
+                        ? modal.show(
+                              <WalletActionModal
+                                  actionButtonsOptions={[
+                                      {
+                                          isPrimary: true,
+                                          onClick: () => window.open(transaction.transaction_url),
+                                          text: 'View',
+                                      },
+                                  ]}
+                                  description='View transaction hash on Blockchain.'
+                                  title='Transaction details'
+                              />
+                          )
+                        : null,
                 value: transaction.formatted_transaction_hash,
             },
             {
                 class: { 'wallets-transactions-pending-row__transaction-address': !isMobile },
                 name: 'Address',
+                onInteraction: () =>
+                    transaction.address_url
+                        ? modal.show(
+                              <WalletActionModal
+                                  actionButtonsOptions={[
+                                      {
+                                          isPrimary: true,
+                                          onClick: () => window.open(transaction.address_url),
+                                          text: 'View',
+                                      },
+                                  ]}
+                                  description='View address on Blockchain.'
+                                  title='Transaction details'
+                              />
+                          )
+                        : null,
                 value: transaction.formatted_address_hash,
             },
             {
@@ -120,13 +138,15 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
         ],
         [
             isMobile,
-            show,
+            modal,
+            transaction.address_url,
             transaction.formatted_address_hash,
             transaction.formatted_amount,
             transaction.formatted_confirmations,
             transaction.formatted_transaction_hash,
             transaction.is_deposit,
             transaction.submit_date,
+            transaction.transaction_url,
         ]
     );
 
@@ -153,9 +173,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                             {field.name}
                         </WalletText>
                         <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...field.valueTextProps }}>
-                            <span onClick={field.onInteraction} role='button'>
-                                {field.value}
-                            </span>
+                            <span onClick={isMobile ? field.onInteraction : undefined}>{field.value}</span>
                         </WalletText>
                     </div>
                 ))}
@@ -178,7 +196,28 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     </div>
                 )}
             </div>
-            <div className='wallets-transactions-pending-row__transaction-status'>
+            <div
+                className='wallets-transactions-pending-row__transaction-status'
+                onClick={
+                    isMobile
+                        ? () =>
+                              modal.show(
+                                  <WalletActionModal
+                                      actionButtonsOptions={[
+                                          {
+                                              isPrimary: true,
+                                              onClick: modal.hide,
+                                              text: 'Ok',
+                                          },
+                                      ]}
+                                      description={transaction.description}
+                                      hideCloseButton
+                                      title='Transaction details'
+                                  />
+                              )
+                        : undefined
+                }
+            >
                 <div
                     className={classNames(
                         'wallets-transactions-pending-row__transaction-status-dot',

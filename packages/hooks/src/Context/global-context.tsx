@@ -9,7 +9,7 @@ type TExchangeRatesContext = {
     rest: Omit<typeof useSubscription, 'subscribe' | 'data'>;
 };
 
-type TRate = Record<string, Record<string, number | number>>;
+type TRate = Record<string, Record<string, number>>;
 
 export const ExchangeRatesContext = createContext<TExchangeRatesContext | null>(null);
 

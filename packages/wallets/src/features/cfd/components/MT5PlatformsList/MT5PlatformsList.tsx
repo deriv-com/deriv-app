@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { forwardRef, useEffect, useMemo } from 'react';
 import { useActiveWalletAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5';
@@ -52,5 +52,7 @@ const MT5PlatformsList: React.FC<React.RefAttributes<HTMLDivElement>> = forwardR
         </React.Fragment>
     );
 });
+
+MT5PlatformsList.displayName = 'MT5PlatformsList';
 
 export default MT5PlatformsList;

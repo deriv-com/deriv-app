@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
@@ -65,7 +65,7 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     return null;
 };
 
-const OptionsAndMultipliersListing = forwardRef<HTMLDivElement>((_, ref) => {
+const OptionsAndMultipliersListing: React.FC<React.RefAttributes<HTMLDivElement>> = forwardRef((_, ref) => {
     const { isMobile } = useDevice();
     const { data } = useActiveWalletAccount();
 
@@ -136,5 +136,7 @@ const OptionsAndMultipliersListing = forwardRef<HTMLDivElement>((_, ref) => {
         </div>
     );
 });
+
+OptionsAndMultipliersListing.displayName = 'OptionsAndMultipliersListing';
 
 export default OptionsAndMultipliersListing;

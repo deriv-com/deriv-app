@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
@@ -44,5 +44,7 @@ const CFDPlatformsList: React.FC<React.RefAttributes<HTMLDivElement>> = forwardR
         </div>
     );
 });
+
+CFDPlatformsList.displayName = 'CFDPlatformsList';
 
 export default CFDPlatformsList;

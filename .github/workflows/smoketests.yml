@@ -14,7 +14,7 @@ on:
         
 jobs:
   cypress-run:
-    runs-on: Runner_16cores_Deriv-app
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false 
       matrix:

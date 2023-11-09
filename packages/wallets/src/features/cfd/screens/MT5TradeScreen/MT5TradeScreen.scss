@@ -9,15 +9,6 @@
         height: auto;
     }
 
-    &__badge {
-        display: flex;
-        gap: 0.8rem;
-        align-items: center;
-        padding: 0.5rem 0.8rem;
-        border-radius: 0.4rem;
-        border: 0.1rem solid #ffad3a;
-    }
-
     &__label {
         display: flex;
         flex-direction: column;

@@ -411,7 +411,7 @@
                     <statement name="DO0">
                       <block type="variables_set" id="ZwPpNMsK]IT,,eM_`vn)">
                         <field name="VAR" id="nGC!N,V4~gxge3//ZqMs" variabletype="">dalembert:changeInUnit</field>
-                        <value name="VALUE">
+                        <value name="VALUE" strategy_value="alembert_unit">
                           <shadow type="math_number" id="p[LNf|7[5av$)xK[t~e;">
                             <field name="NUM">1</field>
                           </shadow>
@@ -436,7 +436,7 @@
                         <statement name="DO0">
                           <block type="variables_set" id="iX^w=Jc(b/VlAIdNMduh">
                             <field name="VAR" id="o((rBg*rL/qm;RU%PM7_" variabletype="">dalembert:alembert_unit</field>
-                            <value name="VALUE" strategy_value="alembert_unit">
+                            <value name="VALUE">
                               <shadow type="math_number" id="d#8t+7WO$h2wHp|@8_eA">
                                 <field name="NUM">1</field>
                               </shadow>

@@ -58,7 +58,7 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
                 >
                     <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...valueTextProps }}>
                         {isMobile ? (
-                            <span onClick={onValueClick} ref={fieldRef}>
+                            <span onClick={onValueClick} ref={fieldRef} role='button'>
                                 {value}
                             </span>
                         ) : (

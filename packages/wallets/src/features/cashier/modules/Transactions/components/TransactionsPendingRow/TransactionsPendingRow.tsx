@@ -168,6 +168,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                         : undefined
                 }
                 ref={statusRef}
+                role={isMobile ? 'button' : 'generic'}
             >
                 <Tooltip alignment='left' isVisible={!isMobile && isStatusHovered} message={transaction.description}>
                     <div

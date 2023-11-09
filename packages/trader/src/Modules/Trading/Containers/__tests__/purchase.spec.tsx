@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { TRADE_TYPES } from '@deriv/shared';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 
 import { render, screen } from '@testing-library/react';
 
@@ -29,7 +29,7 @@ const default_mock_store = {
             purchase_info: {},
             symbol: 'test_symbol',
             validation_errors: {},
-            vanilla_trade_type: TRADE_TYPES.VANILLA.CALL.toUpperCase(),
+            vanilla_trade_type: CONTRACT_TYPES.VANILLA.CALL,
             trade_types: { CALL: 'Higher', PUT: 'Lower' } as { [key: string]: string },
             is_trade_enabled: true,
         },
@@ -82,11 +82,11 @@ describe('<Purchase />', () => {
         expect(screen.getByText(/accu sell button/i)).toBeInTheDocument();
     });
 
-    it('should render only one PurchaseField component if it is vanilla trade type', () => {
+    it('should render only one PurchaseField component if it is TRADE_TYPES.VANILLA.CALL trade type', () => {
         const new_mocked_store = { ...default_mock_store };
         new_mocked_store.modules.trade.is_accumulator = false;
         new_mocked_store.modules.trade.is_vanilla = true;
-        new_mocked_store.modules.trade.contract_type = 'vanilla';
+        new_mocked_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
         new_mocked_store.modules.trade.trade_types = {
             VANILLA: 'Vanilla Long Call',
         };

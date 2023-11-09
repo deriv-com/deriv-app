@@ -59,7 +59,7 @@ describe('<PayoutPerPointMobile/>', () => {
                             currency: 'USD',
                             is_vanilla: true,
                             proposal_info: {
-                                [TRADE_TYPES.VANILLA.CALL.toUpperCase()]: {
+                                [CONTRACT_TYPES.VANILLA.CALL]: {
                                     obj_contract_basis: { text: 'Payout per point', value: 0.123456789 },
                                     message: 'test',
                                 },

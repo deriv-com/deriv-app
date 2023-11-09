@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { isDesktop, isMobile, CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
+import { isDesktop, isMobile, CONTRACT_TYPES } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -32,7 +32,7 @@ const default_mocked_props = {
     purchased_states_arr: [true, false],
     should_fade: false,
     setPurchaseState: jest.fn(),
-    type: TRADE_TYPES.VANILLA.CALL.toUpperCase(),
+    type: CONTRACT_TYPES.VANILLA.CALL,
 } as unknown as React.ComponentProps<typeof PurchaseButton>;
 
 jest.mock('@deriv/shared', () => ({

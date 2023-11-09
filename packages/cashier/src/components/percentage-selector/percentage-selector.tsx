@@ -55,7 +55,7 @@ const PercentageSelector = ({
         if (is_percentage_selected) new_percentage -= 25;
 
         setSelectedPercentage(new_percentage || 0);
-        const rate = exchange_rates[from_currency][to_currency];
+        const rate = exchange_rates?.[from_currency]?.[to_currency] ?? 1;
         const converted_amount = amount * (new_percentage / 100) * rate;
 
         getCalculatedAmount(

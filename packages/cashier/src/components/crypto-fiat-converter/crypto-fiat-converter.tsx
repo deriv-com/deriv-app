@@ -100,7 +100,7 @@ const CryptoFiatConverter = observer(
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [from_currency]);
 
-        const rate = exchange_rates[from_currency][to_currency];
+        const rate = exchange_rates?.[from_currency]?.[to_currency] ?? 1;
 
         return (
             <div className='crypto-fiat-converter'>

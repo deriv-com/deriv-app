@@ -42,7 +42,7 @@
 
     &__label {
         &--error {
-            color: var(--text-loss-danger);
+            color: var(--text-loss-danger) !important;
         }
     }
 }

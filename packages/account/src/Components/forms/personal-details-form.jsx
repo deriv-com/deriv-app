@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
-
 import {
     Autocomplete,
     Checkbox,

@@ -159,7 +159,6 @@ const ProofOfIdentityContainer = observer(
             [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].includes(
                 idv.status
             );
-
         if (
             identity_status === identity_status_codes.none ||
             has_require_submission ||

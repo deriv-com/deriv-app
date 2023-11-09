@@ -1,8 +1,8 @@
 import React from 'react';
 import { formatIDVError } from '@deriv/shared';
-import IdvLimited from 'Components/poi/idv-status/idv-limited';
-import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
-import IdvVerified from 'Components/poi/idv-status/idv-verified';
+import IdvLimited from '../../../Components/poi/idv-status/idv-limited';
+import IdvSubmitComplete from '../../../Components/poi/idv-status/idv-submit-complete';
+import IdvVerified from '../../../Components/poi/idv-status/idv-verified';
 import { identity_status_codes } from './proof-of-identity-utils';
 
 const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redirect_button }) => {

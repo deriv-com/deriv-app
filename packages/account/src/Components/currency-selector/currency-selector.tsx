@@ -167,15 +167,14 @@ const CurrencySelector = observer(
             const dmt5_label = is_eu_user ? localize('CFDs') : localize('Deriv MT5');
             const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
-            if (is_dxtrade_allowed && is_mt5_allowed) {
-                if (is_eu_user) {
-                    return (
-                        <Localize
-                            i18n_default_text="Enjoy a seamless trading experience with the selected fiat account. Please note that once you've made your first deposit or created a real {{dmt5_label}} account, your account currency cannot be changed."
-                            values={{ dmt5_label }}
-                        />
-                    );
-                }
+            if (is_eu_user && is_mt5_allowed) {
+                return (
+                    <Localize
+                        i18n_default_text="Enjoy a seamless trading experience with the selected fiat account. Please note that once you've made your first deposit or created a real {{dmt5_label}} account, your account currency cannot be changed."
+                        values={{ dmt5_label }}
+                    />
+                );
+            } else if (is_dxtrade_allowed && is_mt5_allowed) {
                 return (
                     <Localize
                         i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or {{platform_name_dxtrade}} account.'
@@ -282,7 +281,7 @@ const CurrencySelector = observer(
                                         )}
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer is_bypassed={is_mobile}>
+                                <Modal.Footer has_separator is_bypassed={is_mobile}>
                                     <FormSubmitButton
                                         className={
                                             set_currency

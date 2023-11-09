@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
+import { ContinueTradingButton } from '../../../poa/continue-trading-button/continue-trading-button';
 import IdvDocumentVerified from '../../../../Assets/ic-idv-verified.svg';
 import PoaButton from '../../../poa/poa-button/poa-button';
 

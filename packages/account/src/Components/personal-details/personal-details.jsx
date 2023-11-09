@@ -2,7 +2,6 @@ import React from 'react';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
-
 import {
     AutoHeightWrapper,
     Div100vhContainer,
@@ -13,7 +12,7 @@ import {
 } from '@deriv/components';
 import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { isDocumentNumberValid, shouldShowIdentityInformation } from 'Helpers/utils';
+import { isDocumentNumberValid, shouldShowIdentityInformation } from '../../Helpers/utils';
 import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';

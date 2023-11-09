@@ -46,7 +46,7 @@ const AdVisibilityErrorModal = ({ error_code }: TAdVisibilityErrorModalProps) =>
                             components={[
                                 <Text key={0} size='xs' weight='bold' />,
                                 <br key={1} />,
-                                <span
+                                <a
                                     key={2}
                                     className='link link--orange'
                                     onClick={() => window.LC_API.open_chat_window()}

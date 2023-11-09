@@ -279,6 +279,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             init: jest.fn(),
             setLoginId: jest.fn(),
             resetLocalStorageValues: jest.fn(),
+            setIsAlreadyAttempted: jest.fn(),
+            is_already_attempted: false,
             account_open_date: undefined,
         },
         common: {

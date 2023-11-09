@@ -24,11 +24,13 @@
             &-icons {
                 display: flex;
                 flex-direction: column;
+                justify-content: center;
                 gap: 0.8rem;
 
                 svg {
                     width: 13.7rem;
                     height: 4rem;
+                    cursor: pointer;
                 }
             }
 

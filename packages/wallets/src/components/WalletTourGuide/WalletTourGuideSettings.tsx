@@ -1,5 +1,5 @@
 import React from 'react';
-import { TooltipRenderProps } from '@deriv/react-joyride';
+import { Step, TooltipRenderProps } from '@deriv/react-joyride';
 import CloseIcon from '../../public/images/close-icon.svg';
 import { WalletButton, WalletText } from '../Base';
 import './WalletTourGuide.scss';
@@ -9,8 +9,7 @@ export const tourStepConfig = (
     hasMT5Account: boolean,
     hasDerivAppsTradingAccount: boolean,
     isAllWalletsAlreadyAdded: boolean
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any[] => [
+): Step[] => [
     // Wallet header
     {
         content: (

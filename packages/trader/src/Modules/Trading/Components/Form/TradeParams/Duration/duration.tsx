@@ -131,7 +131,7 @@ const Duration = ({
             });
         }
 
-        const new_trade_store_values: Record<string, string> = {};
+        const new_trade_store_values: Record<string, string | number> = {};
 
         // simple only has expiry type of duration
         if (!is_advanced && expiry_type !== 'duration') {

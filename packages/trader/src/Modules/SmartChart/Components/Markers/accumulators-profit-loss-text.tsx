@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv/shared';
+import { addComma, formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv/shared';
 import { FastMarker } from 'Modules/SmartChart';
 import { FastMarkerBeta } from 'Modules/SmartChartBeta';
 import classNames from 'classnames';
@@ -32,7 +32,7 @@ const AccumulatorsProfitLossText = ({
     const [is_fading_in, setIsFadingIn] = React.useState(false);
     const [is_sliding, setIsSliding] = React.useState(false);
     const formatted_profit = should_show_profit_percentage
-        ? displayed_profit_value.toFixed(2)
+        ? addComma(displayed_profit_value, 2)
         : formatMoney(currency ?? '', displayed_profit_value, true, 0, 0);
     const prev_profit = React.useRef(formatted_profit);
     const prev_profit_tenth = +prev_profit.current?.split('.')[1][0];

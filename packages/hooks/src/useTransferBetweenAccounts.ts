@@ -1,10 +1,14 @@
 import { useMemo } from 'react';
 import { useStore } from '@deriv/stores';
-import { useFetch } from '@deriv/api';
+import { useFetch, useQuery } from '@deriv/api';
 import useActiveWallet from './useActiveWallet';
 import useCurrencyConfig from './useCurrencyConfig';
 import useExistingCFDAccounts from './useExistingCFDAccounts';
 import useWalletsList from './useWalletsList';
+
+type TAccount = NonNullable<
+    NonNullable<ReturnType<typeof useQuery<'transfer_between_accounts'>>['data']>['accounts']
+>[number] & { account_category: 'wallet' | 'trading' };
 
 const useTransferBetweenAccounts = () => {
     const { ui } = useStore();
@@ -36,7 +40,7 @@ const useTransferBetweenAccounts = () => {
             return getConfig(currency || '')?.is_crypto ? 'crypto' : 'fiat';
         };
 
-        const accounts = data?.accounts?.map(account => {
+        const accounts = (data?.accounts as TAccount[])?.map(account => {
             return {
                 ...account,
                 active_wallet_icon: active_wallet?.icon,
@@ -54,7 +58,6 @@ const useTransferBetweenAccounts = () => {
             trading_accounts:
                 accounts?.reduce(
                     (trading_accounts, account) => {
-                        //@ts-expect-error provide proper type for transfer account from API
                         if (account.account_category === 'wallet') return trading_accounts;
                         if (!account.loginid) return trading_accounts;
 
@@ -65,7 +68,6 @@ const useTransferBetweenAccounts = () => {
                         trading_accounts[account.loginid] = {
                             ...account,
                             gradient_class: active_wallet?.gradient_card_class,
-                            //@ts-expect-error provide proper type for transfer account from API
                             icon: account.account_category === 'trading' ? trading_apps_icon : cfd_icon,
                             ...(account.account_type === 'mt5' && {
                                 mt5_market_type: mt5_accounts?.find(
@@ -90,7 +92,6 @@ const useTransferBetweenAccounts = () => {
             wallet_accounts:
                 accounts?.reduce(
                     (wallet_accounts, wallet) => {
-                        //@ts-expect-error provide proper type for transfer account from API
                         if (wallet.account_category !== 'wallet') return wallet_accounts;
                         if (!wallet.loginid) return wallet_accounts;
 

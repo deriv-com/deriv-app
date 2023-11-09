@@ -6,7 +6,7 @@ import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from './components';
 import './CFDPlatformsList.scss';
 
-const CFDPlatformsList = () => {
+const CFDPlatformsList = forwardRef<HTMLDivElement>((_, ref) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
 
@@ -36,13 +36,13 @@ const CFDPlatformsList = () => {
                 <CFDPlatformsListEmptyState />
             ) : (
                 <React.Fragment>
-                    <MT5PlatformsList />
+                    <MT5PlatformsList ref={ref} />
                     {activeWallet?.is_virtual && <CTraderList />}
                     <OtherCFDPlatformsList />
                 </React.Fragment>
             )}
         </div>
     );
-};
+});
 
 export default CFDPlatformsList;

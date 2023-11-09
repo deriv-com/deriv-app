@@ -65,7 +65,7 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     return null;
 };
 
-const OptionsAndMultipliersListing: React.FC = () => {
+const OptionsAndMultipliersListing = forwardRef<HTMLDivElement>((_, ref) => {
     const { isMobile } = useDevice();
     const { data } = useActiveWalletAccount();
 
@@ -75,7 +75,7 @@ const OptionsAndMultipliersListing: React.FC = () => {
                 'wallets-options-and-multipliers-listing--border': data?.is_crypto,
             })}
         >
-            <section className='wallets-options-and-multipliers-listing__header'>
+            <section className='wallets-options-and-multipliers-listing__header' ref={ref}>
                 <div className='wallets-options-and-multipliers-listing__header-title'>
                     {!isMobile && (
                         <WalletText align='center' size='xl' weight='bold'>
@@ -135,6 +135,6 @@ const OptionsAndMultipliersListing: React.FC = () => {
             </div>
         </div>
     );
-};
+});
 
 export default OptionsAndMultipliersListing;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
 import { TabList, TabPanel, TabPanels, Tabs } from '../Base';
@@ -8,6 +8,8 @@ import './AccountsList.scss';
 
 const AccountsList = () => {
     const { isMobile } = useDevice();
+    const cfdRef = useRef<HTMLDivElement>(null);
+    const optionsRef = useRef<HTMLDivElement>(null);
 
     if (isMobile) {
         return (
@@ -16,13 +18,13 @@ const AccountsList = () => {
                 <TabList list={['CFDs', 'Options & multipliers']} />
                 <TabPanels>
                     <TabPanel>
-                        <CFDPlatformsList />
+                        <CFDPlatformsList ref={cfdRef} />
                     </TabPanel>
                     <TabPanel>
-                        <OptionsAndMultipliersListing />
+                        <OptionsAndMultipliersListing ref={optionsRef} />
                     </TabPanel>
                 </TabPanels>
-                <WalletMobileTourGuide />
+                <WalletMobileTourGuide cfdRef={cfdRef} optionsRef={optionsRef} />
             </Tabs>
         );
     }

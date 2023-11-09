@@ -110,12 +110,15 @@ const DxtradeEnterPasswordModal = () => {
         }
     }, [isSuccess, accountStatusSuccess, isDxtradePasswordNotSet, isLoading, onSubmit, password]);
 
-    return isMobile ? (
-        <ModalStepWrapper renderFooter={() => renderFooter} title={' '}>
-            {successComponent}
-            {passwordComponent}
-        </ModalStepWrapper>
-    ) : (
+    if (isMobile) {
+        return (
+            <ModalStepWrapper renderFooter={() => renderFooter} title={' '}>
+                {successComponent}
+                {passwordComponent}
+            </ModalStepWrapper>
+        );
+    }
+    return (
         <ModalWrapper hideCloseButton={isSuccess}>
             {successComponent}
             {passwordComponent}

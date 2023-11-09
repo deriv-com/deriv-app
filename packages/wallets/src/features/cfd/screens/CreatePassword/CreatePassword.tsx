@@ -41,6 +41,7 @@ const CreatePassword: React.FC<TProps> = ({
             {!isMobile && (
                 <WalletButton
                     disabled={!password || isLoading}
+                    isLoading={isLoading}
                     onClick={onPrimaryClick}
                     size='lg'
                     text={`Create ${title} password`}

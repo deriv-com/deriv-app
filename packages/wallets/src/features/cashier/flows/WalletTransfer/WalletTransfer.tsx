@@ -1,8 +1,13 @@
 import React from 'react';
 import { TransferForm } from '../../modules';
+import { TransferProvider } from '../../modules/TransferForm/provider';
 
 const WalletTransfer = () => {
-    return <TransferForm />;
+    return (
+        <TransferProvider>
+            <TransferForm />
+        </TransferProvider>
+    );
 };
 
 export default WalletTransfer;

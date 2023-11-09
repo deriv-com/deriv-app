@@ -3,12 +3,12 @@ import { Formik } from 'formik';
 import { Loader } from '../../../../components';
 import { TransferFormDropdown } from './components/TransferFormDropdown';
 import { TransferFormInputField } from './components/TransferFormInputField';
-import { useWalletTransfer } from './hooks';
+import { useTransfer } from './provider';
 import type { TInitialTransferFormValues } from './types';
 import './TransferForm.scss';
 
 const TransferForm = () => {
-    const { activeWallet, isLoading, mutate } = useWalletTransfer();
+    const { activeWallet, isLoading, mutate } = useTransfer();
     const mobileAccountsListRef = useRef<HTMLDivElement | null>(null);
 
     const initialValues: TInitialTransferFormValues = {

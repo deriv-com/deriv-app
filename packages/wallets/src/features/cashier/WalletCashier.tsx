@@ -5,7 +5,7 @@ import { WalletCashierContent, WalletCashierHeader } from './components';
 import './WalletCashier.scss';
 
 const WalletCashier = () => {
-    const { isLoading } = useActiveWalletAccount();
+    const { isFetchedAfterMount, isLoading } = useActiveWalletAccount();
     const [isContentScrolled, setIsContentScrolled] = useState(false);
 
     const onContentScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
@@ -13,7 +13,7 @@ const WalletCashier = () => {
         setIsContentScrolled(target.scrollTop > 0);
     };
 
-    if (isLoading) return <Loader />;
+    if (isLoading || !isFetchedAfterMount) return <Loader />;
 
     return (
         <div className='wallets-cashier'>

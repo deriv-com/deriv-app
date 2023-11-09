@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletTextField } from '../../../../../../components/Base';
@@ -28,7 +28,6 @@ const validateCryptoAddress = (address: string) => {
 
 const WithdrawalCryptoForm = () => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const [cryptoAddress, setCryptoAddress] = useState<string>();
 
     return (
         <Formik
@@ -37,7 +36,7 @@ const WithdrawalCryptoForm = () => {
                 cryptoAmount: '',
                 fiatAmount: '',
             }}
-            // onSubmit={values => console.log(values)}
+            onSubmit={values => ''}
         >
             {({
                 errors,
@@ -55,25 +54,18 @@ const WithdrawalCryptoForm = () => {
                                 {({ field }: FieldProps<string>) => (
                                     <WalletTextField
                                         {...field}
+                                        helperMessage={errors.cryptoAddress}
                                         label='Your BTC Wallet address'
+                                        showMessage
                                         // name='wallets-withdrawal-crypto-address-textfield'
-                                        onChange={e => {
-                                            handleChange(e);
-                                            setCryptoAddress(e.target.value);
-                                            // setFieldTouched('cryptoAddress', true, false);
-                                        }}
                                     />
                                 )}
                             </Field>
                         </div>
-                        <WalletsPercentageSelector
-                            amount={200}
-                            balance={activeWallet?.balance}
-                            // onChangePercentage={per => console.log(per)}
-                        />
+                        <WalletsPercentageSelector amount={200} balance={activeWallet?.balance} />
                         <WithdrawalCryptoAmountConverter />
                         <div className='wallets-withdrawal-crypto__submit'>
-                            <WalletButton size='lg' text='Withdraw' type='submit' />
+                            <WalletButton disabled={!!errors || isSubmitting} size='lg' text='Withdraw' type='submit' />
                         </div>
                     </form>
                 );

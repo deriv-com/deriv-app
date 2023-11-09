@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api';
-import { WalletText } from '../../../../../../components/Base';
+import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useDevice from '../../../../../../hooks/useDevice';
@@ -49,6 +49,71 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
         );
     }, [cancelTransaction, hide, show]);
 
+    const transactionFields: {
+        class?: classNames.ArgumentArray[number];
+        name: string;
+        value: number | string;
+        valueTextProps?: Omit<React.ComponentProps<typeof WalletText>, 'children'>;
+    }[] = useMemo(
+        () => [
+            {
+                class: { 'wallets-transactions-pending-row__transaction-hash': !isMobile },
+                name: 'Transaction hash',
+                value: transaction.formatted_transaction_hash,
+            },
+            {
+                class: { 'wallets-transactions-pending-row__transaction-address': !isMobile },
+                name: 'Address',
+                value: transaction.formatted_address_hash,
+            },
+            {
+                class: { 'wallets-transactions-pending-row__transaction-confirmations': !isMobile },
+                name: 'Confirmations',
+                value: transaction.formatted_confirmations,
+                valueTextProps: {
+                    align: isMobile ? 'start' : 'center',
+                },
+            },
+            ...(isMobile
+                ? ([
+                      {
+                          name: 'Amount',
+                          value: `${transaction.is_deposit ? '+' : '-'}${transaction.formatted_amount}`,
+                          valueTextProps: {
+                              color: transaction.is_deposit ? 'success' : 'red',
+                          },
+                      },
+                      {
+                          name: 'Date',
+                          value: moment.unix(transaction.submit_date).format('DD MMM YYYY'),
+                          valueTextProps: { color: 'general' },
+                      },
+                  ] as const)
+                : []),
+            {
+                class: { 'wallets-transactions-pending-row__transaction-time': !isMobile },
+                name: 'Time',
+                value: moment
+                    .unix(transaction.submit_date)
+                    .format(isMobile ? 'HH:mm:ss [GMT]' : 'DD MMM YYYY HH:mm:ss [GMT]'),
+                valueTextProps: {
+                    color: 'general',
+                    size: isMobile ? 'xs' : '2xs',
+                    weight: isMobile ? 'bold' : 'regular',
+                },
+            },
+        ],
+        [
+            isMobile,
+            transaction.formatted_address_hash,
+            transaction.formatted_amount,
+            transaction.formatted_confirmations,
+            transaction.formatted_transaction_hash,
+            transaction.is_deposit,
+            transaction.submit_date,
+        ]
+    );
+
     return (
         <div className='wallets-transactions-pending-row'>
             <div className='wallets-transactions-pending-row__wallet-info'>
@@ -63,80 +128,19 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 </div>
             </div>
             <div className='wallets-transactions-pending-row__fields-container'>
-                <div
-                    className={classNames(
-                        'wallets-transactions-pending-row__column',
-                        'wallets-transactions-pending-row__transaction-hash'
-                    )}
-                >
-                    <WalletText color='primary' size='xs'>
-                        Transaction hash
-                    </WalletText>
-                    <WalletText color='red' size='xs' weight='bold'>
-                        {transaction.formatted_transaction_hash}
-                    </WalletText>
-                </div>
-                <div
-                    className={classNames(
-                        'wallets-transactions-pending-row__column',
-                        'wallets-transactions-pending-row__transaction-address'
-                    )}
-                >
-                    <WalletText color='primary' size='xs'>
-                        Address
-                    </WalletText>
-                    <WalletText color='red' size='xs' weight='bold'>
-                        {transaction.formatted_address_hash}
-                    </WalletText>
-                </div>
-                <div
-                    className={classNames('wallets-transactions-pending-row__column', {
-                        'wallets-transactions-pending-row__transaction-confirmations': !isMobile,
-                    })}
-                >
-                    <WalletText color='primary' size='xs'>
-                        Confirmations
-                    </WalletText>
-                    <WalletText align={isMobile ? 'start' : 'center'} color='red' size='xs' weight='bold'>
-                        {transaction.formatted_confirmations}
-                    </WalletText>
-                </div>
-                {isMobile && (
-                    <React.Fragment>
-                        <div className='wallets-transactions-pending-row__column'>
-                            <WalletText color='primary' size='xs'>
-                                Amount
-                            </WalletText>
-                            <WalletText color='red' size='xs' weight='bold'>
-                                {transaction.is_deposit ? '+' : '-'}
-                                {transaction.formatted_amount}
-                            </WalletText>
-                        </div>
-                        <div className='wallets-transactions-pending-row__column'>
-                            <WalletText color='primary' size='xs'>
-                                Date
-                            </WalletText>
-                            <WalletText size='xs' weight='bold'>
-                                {moment.unix(transaction.submit_date).format('DD MMM YYYY')}
-                            </WalletText>
-                        </div>
-                    </React.Fragment>
-                )}
-                <div
-                    className={classNames(
-                        'wallets-transactions-pending-row__column',
-                        'wallets-transactions-pending-row__transaction-time'
-                    )}
-                >
-                    <WalletText color='primary' size='xs'>
-                        Time
-                    </WalletText>
-                    <WalletText color='general' size={isMobile ? 'xs' : '2xs'} weight={isMobile ? 'bold' : 'regular'}>
-                        {moment
-                            .unix(transaction.submit_date)
-                            .format(isMobile ? 'HH:mm:ss [GMT]' : 'DD MMM YYYY HH:mm:ss [GMT]')}
-                    </WalletText>
-                </div>
+                {transactionFields.map(field => (
+                    <div
+                        className={classNames('wallets-transactions-pending-row__column', field.class)}
+                        key={field.name}
+                    >
+                        <WalletText color='primary' size='xs'>
+                            {field.name}
+                        </WalletText>
+                        <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...field.valueTextProps }}>
+                            {field.value}
+                        </WalletText>
+                    </div>
+                ))}
                 {!isMobile && (
                     <div
                         className={classNames(
@@ -156,7 +160,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     </div>
                 )}
             </div>
-            <div className={classNames('wallets-transactions-pending-row__transaction-status')}>
+            <div className='wallets-transactions-pending-row__transaction-status'>
                 <div
                     className={classNames(
                         'wallets-transactions-pending-row__transaction-status-dot',
@@ -177,6 +181,15 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     </button>
                 )}
             </div>
+            {isMobile && transaction.is_valid_to_cancel && (
+                <WalletButton
+                    isFullWidth={true}
+                    onClick={onCancelButtonClick}
+                    size='sm'
+                    text='Cancel transaction'
+                    variant='outlined'
+                />
+            )}
         </div>
     );
 };

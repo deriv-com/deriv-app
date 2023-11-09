@@ -1,6 +1,7 @@
 .wallets-textfield {
     min-width: 12rem;
     width: 100%;
+    max-width: 33rem;
     position: relative;
 
     &__box {
@@ -9,7 +10,6 @@
         border-radius: 0.4rem;
         padding: 1rem 1.6rem;
         border: 1px solid var(--system-light-5-active-background, #d6dadb);
-        background: var(--system-light-8-primary-background, #fff);
         display: inline-flex;
         align-items: center;
         transition: border-color 0.2s;

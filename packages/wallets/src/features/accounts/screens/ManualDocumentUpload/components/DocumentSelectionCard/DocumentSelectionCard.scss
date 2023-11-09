@@ -16,13 +16,13 @@
     &__content {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 1.6rem;
     }
 
     &__text-content {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
+        gap: 0.8rem;
     }
 }

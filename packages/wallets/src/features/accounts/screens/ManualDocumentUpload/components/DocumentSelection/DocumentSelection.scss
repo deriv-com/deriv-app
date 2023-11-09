@@ -1,13 +1,13 @@
 .wallets-document-selection {
     display: flex;
-    padding-top: 32px;
+    padding-top: 3.2rem;
     flex-direction: column;
     align-items: self-start;
     justify-content: center;
-    gap: 19px;
-    width: 675px;
+    gap: 1.9rem;
+    width: 67.5rem;
 
     @include mobile {
-        width: 328px;
+        width: 32.8rem;
     }
 }

@@ -3,7 +3,6 @@ import useAuthentication from './useAuthentication';
 import usePOA from './usePOA';
 import usePOI from './usePOI';
 import useAccountStatus from './useAccountStatus';
-import useGetAccountStatus from './useGetAccountStatus';
 import useMT5AccountsList from './useMT5AccountsList';
 
 type TAccount = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
@@ -13,87 +12,73 @@ type TJurisdictionStatuses = 'failed' | 'pending' | 'verified' | 'not_applicable
 
 // @param account - this is coming from useMT5AccountsList, one of the items
 const useJurisdictionStatus = (account: TAccount) => {
-    const { data: authentication_data, isSuccess: isSuccessAuthentication } = useAuthentication();
+    const { data: authenticationStatus, isSuccess: isSuccessAuthenticationStatus } = useAuthentication();
     const { data: accountStatus, isSuccess: isSuccessAccountStatus } = useAccountStatus();
     const { data: poiStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOA } = usePOA();
 
     const isSuccess = useMemo(() => {
-        return isSuccessAccountStatus && isSuccessAuthentication && isSuccessPOA && poiStatus?.next?.service;
-    }, [isSuccessAccountStatus, isSuccessAuthentication, poiStatus?.next?.service, isSuccessPOA]);
+        return isSuccessAccountStatus && isSuccessPOA && poiStatus?.next?.service;
+    }, [isSuccessAccountStatus, poiStatus?.next?.service, isSuccessPOA]);
 
     const verification_status = useMemo(() => {
         const isServiceStatus = (...statuses: TServiceStatus[]) => {
             const next_service = poiStatus?.next?.service as keyof TServices;
             const service = poiStatus?.services?.[next_service];
             if (service?.status) {
-                console.log(
-                    `checked service for ${account?.landing_company_short} ${account?.loginid}`,
-                    service.status
-                );
                 return statuses.includes(service.status);
             }
         };
 
-        let poi_status: TJurisdictionStatuses;
+        const is_poa_failed = poaStatus?.is_rejected || poaStatus?.is_suspected || poaStatus?.is_expired;
+
+        let status: TJurisdictionStatuses;
         if (account?.landing_company_short) {
             switch (account.landing_company_short) {
                 case 'bvi':
-                    const is_poi_failed_for_bvi =
+                    if (
                         isServiceStatus('expired', 'none', 'rejected', 'suspected') ||
-                        account.status === 'proof_failed';
-                    if (is_poi_failed_for_bvi) {
-                        poi_status = 'failed';
+                        account.status === 'proof_failed'
+                    ) {
+                        status = 'failed';
                     } else if (isServiceStatus('pending') || account.status === 'verification_pending') {
-                        poi_status = 'pending';
+                        status = 'pending';
                     } else {
-                        poi_status = 'verified';
+                        status = 'verified';
                     }
                     break;
                 case 'labuan':
+                    // for labuan we check POA
                     // for labuan we just need to check for is_authenticated_with_idv_photoid status for failed case
-                    const is_poi_failed_for_labuan =
+                    if (
+                        is_poa_failed ||
                         isServiceStatus('expired', 'none', 'rejected', 'suspected') ||
-                        ['proof_failed', 'is_authenticated_with_idv_photoid'].includes(account.status || '');
-                    if (is_poi_failed_for_labuan) {
-                        poi_status = 'failed';
+                        authenticationStatus?.is_authenticated_with_idv_photoid ||
+                        account.status === 'proof_failed'
+                    ) {
+                        status = 'failed';
                     } else if (isServiceStatus('pending') || account.status === 'verification_pending') {
-                        poi_status = 'pending';
+                        status = 'pending';
                     } else {
-                        poi_status = 'verified';
+                        status = 'verified';
                     }
                     break;
                 case 'svg':
-                    poi_status = 'not_applicable';
+                    status = 'not_applicable';
                     break;
                 default:
+                    // MT5 account status already checks for POA status in BE
                     if (account.status === 'proof_failed') {
-                        poi_status = 'failed';
+                        status = 'failed';
                     } else if (account.status === 'verification_pending') {
-                        poi_status = 'pending';
+                        status = 'pending';
                     } else {
-                        poi_status = 'verified';
+                        status = 'verified';
                     }
             }
 
-            let poa_status: TJurisdictionStatuses;
-            // should we check poaStatus?.has_attempted_poa to see if user has already attempted POA
-            const is_poa_failed = poaStatus?.is_rejected || poaStatus?.is_suspected || poaStatus?.is_expired;
-            if (account.landing_company_short === 'svg') {
-                poa_status = 'not_applicable';
-            } else {
-                if (is_poa_failed) {
-                    poa_status = 'failed';
-                } else if (poaStatus?.is_pending) {
-                    poa_status = 'pending';
-                } else {
-                    poa_status = 'verified';
-                }
-            }
-
             return {
-                poa_status,
-                poi_status,
+                status,
             };
         }
     }, [

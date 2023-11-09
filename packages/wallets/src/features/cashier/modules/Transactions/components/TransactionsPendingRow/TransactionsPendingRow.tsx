@@ -52,6 +52,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     const transactionFields: {
         class?: classNames.ArgumentArray[number];
         name: string;
+        onInteraction?: VoidFunction;
         value: number | string;
         valueTextProps?: Omit<React.ComponentProps<typeof WalletText>, 'children'>;
     }[] = useMemo(
@@ -59,6 +60,20 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
             {
                 class: { 'wallets-transactions-pending-row__transaction-hash': !isMobile },
                 name: 'Transaction hash',
+                onInteraction: () =>
+                    show(
+                        <WalletActionModal
+                            actionButtonsOptions={[
+                                {
+                                    isPrimary: true,
+                                    onClick: () => {},
+                                    text: 'View',
+                                },
+                            ]}
+                            description='View transaction hash on Blockchain.'
+                            title='Transaction details'
+                        />
+                    ),
                 value: transaction.formatted_transaction_hash,
             },
             {
@@ -105,6 +120,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
         ],
         [
             isMobile,
+            show,
             transaction.formatted_address_hash,
             transaction.formatted_amount,
             transaction.formatted_confirmations,
@@ -137,7 +153,9 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                             {field.name}
                         </WalletText>
                         <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...field.valueTextProps }}>
-                            {field.value}
+                            <span onClick={field.onInteraction} role='button'>
+                                {field.value}
+                            </span>
                         </WalletText>
                     </div>
                 ))}

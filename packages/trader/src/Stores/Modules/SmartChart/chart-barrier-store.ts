@@ -1,5 +1,5 @@
 import { action, computed, observable, makeObservable } from 'mobx';
-import { BARRIER_COLORS, BARRIER_LINE_STYLES, CONTRACT_SHADES, DEFAULT_SHADES } from '@deriv/shared';
+import { BARRIER_LINE_STYLES, CONTRACT_SHADES, DEFAULT_SHADES } from '@deriv/shared';
 import { barriersToString } from './Helpers/barriers';
 
 type TOnChartBarrierChange = null | ((barrier_1: string, barrier_2?: string) => void);

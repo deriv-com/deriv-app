@@ -176,7 +176,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/Payout limit:/i)).toBeInTheDocument();
     });
     it('should render the contract card for Multipliers', () => {
-        default_mock_props.contract_info.contract_type = 'multiplier';
+        default_mock_props.contract_info.contract_type = TRADE_TYPES.MULTIPLIER;
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.queryByText(PositionsCardLoader)).not.toBeInTheDocument();

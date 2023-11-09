@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { getDecimalPlaces, isDesktop } from '@deriv/shared';
+import { getDecimalPlaces, isDesktop, TRADE_TYPES } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
@@ -112,7 +112,7 @@ const Trade = observer(() => {
         const selectMultipliers = async () => {
             await setContractTypes();
 
-            onChange({ target: { name: 'contract_type', value: 'multiplier' } });
+            onChange({ target: { name: 'contract_type', value: TRADE_TYPES.MULTIPLIER } });
         };
         if (should_show_multipliers_onboarding && !is_chart_loading && (is_synthetics_available || !is_market_closed)) {
             selectMultipliers();

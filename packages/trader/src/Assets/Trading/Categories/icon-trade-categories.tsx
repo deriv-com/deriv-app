@@ -201,7 +201,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'multiplier':
+            case TRADE_TYPES.MULTIPLIER:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>

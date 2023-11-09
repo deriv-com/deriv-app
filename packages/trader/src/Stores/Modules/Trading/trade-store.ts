@@ -1529,7 +1529,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_crypto_multiplier() {
-        return this.contract_type === 'multiplier' && this.symbol.startsWith('cry');
+        return this.contract_type === TRADE_TYPES.MULTIPLIER && this.symbol.startsWith('cry');
     }
 
     exportLayout(layout: TChartLayout) {
@@ -1644,7 +1644,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_multiplier() {
-        return this.contract_type === 'multiplier';
+        return this.contract_type === TRADE_TYPES.MULTIPLIER;
     }
 
     get is_turbos() {

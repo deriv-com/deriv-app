@@ -39,6 +39,10 @@ export const CONTRACT_TYPES = {
         CALL: 'VANILLALONGCALL',
         PUT: 'VANILLALONGPUT',
     },
+    MULTIPLIER: {
+        UP: 'MULTUP',
+        DOWN: 'MULTDOWN',
+    },
 } as const;
 export const TRADE_TYPES = {
     ACCUMULATOR: 'accumulator',
@@ -51,6 +55,7 @@ export const TRADE_TYPES = {
         PUT: 'vanillalongput',
         FX: 'vanilla_fx',
     },
+    MULTIPLIER: 'multiplier',
 } as const;
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {

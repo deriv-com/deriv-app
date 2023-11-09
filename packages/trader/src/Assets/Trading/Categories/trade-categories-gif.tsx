@@ -51,7 +51,7 @@ const TradeCategoriesGIF = ({
             return <ImageRiseFall />;
         case 'match_diff':
             return <ImageMatchDiff />;
-        case 'multiplier':
+        case TRADE_TYPES.MULTIPLIER:
             return <ImageMultiplier />;
         case 'over_under':
             return <ImageOverUnder />;

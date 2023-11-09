@@ -18,7 +18,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
     handleSelect: jest.fn(),
     item: {
         text: 'Multipliers',
-        value: 'multiplier',
+        value: TRADE_TYPES.MULTIPLIER,
     },
     list: [
         {
@@ -27,7 +27,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Multipliers',
-                            value: 'multiplier',
+                            value: TRADE_TYPES.MULTIPLIER,
                         },
                     ],
                     icon: 'IcMultiplier',
@@ -98,7 +98,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
                 {
                     text: 'Rise/Fall',
@@ -143,7 +143,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Multipliers',
-                            value: 'multiplier',
+                            value: TRADE_TYPES.MULTIPLIER,
                         },
                     ],
                     icon: 'IcMultiplier',
@@ -154,7 +154,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
             ],
             icon: 'IcCatMultiplier',
@@ -304,7 +304,7 @@ describe('<Info />', () => {
         expect(trade_type_button).toBeInTheDocument();
         expect(mocked_props.handleSelect).toHaveBeenCalled();
     });
-    it('Should render toggle buttons if vanilla info page is open', () => {
+    it('Should render toggle buttons if TRADE_TYPES.VANILLA.CALL info page is open', () => {
         mocked_props.item.text = 'Call/Put';
         mocked_props.item.value = TRADE_TYPES.VANILLA.CALL;
         render(mockInfoProvider());
@@ -313,9 +313,9 @@ describe('<Info />', () => {
         expect(screen.getByText(glossary)).toBeInTheDocument();
         expect(screen.getByText('Choose Call/Put')).toBeInTheDocument();
     });
-    it('Should render toggle buttons if multiplier info page is open', () => {
+    it('Should render toggle buttons if TRADE_TYPES.MULTIPLIER info page is open', () => {
         mocked_props.item.text = 'Multipliers';
-        mocked_props.item.value = 'multiplier';
+        mocked_props.item.value = TRADE_TYPES.MULTIPLIER;
         render(mockInfoProvider());
 
         expect(screen.getByText(description)).toBeInTheDocument();

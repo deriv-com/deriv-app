@@ -1,5 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
+import { TRADE_TYPES } from '@deriv/shared';
 import Display from '../contract-type-display';
 
 jest.mock('@deriv/components', () => ({
@@ -14,7 +15,7 @@ const list = [
         contract_types: [
             {
                 text: 'Multipliers',
-                value: 'multiplier',
+                value: TRADE_TYPES.MULTIPLIER,
             },
         ],
         icon: 'IcMultiplier',

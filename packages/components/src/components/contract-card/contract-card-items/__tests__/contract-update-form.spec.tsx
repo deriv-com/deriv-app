@@ -38,7 +38,7 @@ const contract = {
 const el_modal = document.createElement('div');
 
 describe('ContractUpdateForm', () => {
-    const mock_props: React.ComponentProps<typeof ContractUpdateForm> = {
+    const mock_props = {
         addToast: jest.fn(),
         contract,
         current_focus: null,
@@ -50,7 +50,7 @@ describe('ContractUpdateForm', () => {
         setCurrentFocus: jest.fn(),
         status: 'profit',
         toggleDialog: jest.fn(),
-    };
+    } as unknown as React.ComponentProps<typeof ContractUpdateForm>;
     beforeAll(() => {
         el_modal.setAttribute('id', 'modal_root');
         document.body.appendChild(el_modal);
@@ -91,7 +91,7 @@ describe('ContractUpdateForm', () => {
                     },
                 },
             },
-        };
+        } as unknown as React.ComponentProps<typeof ContractUpdateForm>;
         render(<ContractUpdateForm {...new_props} />);
         const take_profit_checkbox = screen.getByRole('checkbox', { name: mockCardLabels().TAKE_PROFIT });
         const take_profit_input = screen.getByRole('textbox');
@@ -109,7 +109,7 @@ describe('ContractUpdateForm', () => {
                 ...contract,
                 has_contract_update_take_profit: true,
             },
-        };
+        } as unknown as React.ComponentProps<typeof ContractUpdateForm>;
         render(<ContractUpdateForm {...new_props} />);
         const take_profit_checkbox = screen.getByRole('checkbox', { name: mockCardLabels().TAKE_PROFIT });
         const apply_button = screen.getByRole('button', { name: mockCardLabels().APPLY });
@@ -127,7 +127,7 @@ describe('ContractUpdateForm', () => {
                 contract_update_take_profit: '56',
                 has_contract_update_take_profit: true,
             },
-        };
+        } as unknown as React.ComponentProps<typeof ContractUpdateForm>;
         render(<ContractUpdateForm {...new_props} />);
         const take_profit_checkbox = screen.getByRole('checkbox', { name: mockCardLabels().TAKE_PROFIT });
         const take_profit_input = screen.getByRole('textbox');
@@ -157,7 +157,7 @@ describe('ContractUpdateForm', () => {
                     contract_update_stop_loss: [],
                 },
             },
-        };
+        } as unknown as React.ComponentProps<typeof ContractUpdateForm>;
         render(<ContractUpdateForm {...new_props} />);
         const take_profit_checkbox = screen.getByRole('checkbox', { name: mockCardLabels().TAKE_PROFIT });
         const take_profit_input = screen.getByRole('textbox');
@@ -180,11 +180,11 @@ describe('ContractUpdateForm', () => {
                 ...contract,
                 contract_info: {
                     ...contract_info,
-                    contract_type: 'MULTDOWN',
+                    contract_type: CONTRACT_TYPES.MULTIPLIER.DOWN,
                 },
             },
             is_accumulator: false,
-        };
+        } as unknown as React.ComponentProps<typeof ContractUpdateForm>;
         render(<ContractUpdateForm {...new_props} />);
         const stop_loss_checkbox = screen.getByRole('checkbox', { name: mockCardLabels().STOP_LOSS });
         const take_profit_checkbox = screen.queryByRole('checkbox', { name: mockCardLabels().TAKE_PROFIT });

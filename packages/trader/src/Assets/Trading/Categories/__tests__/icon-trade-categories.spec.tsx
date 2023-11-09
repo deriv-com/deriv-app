@@ -161,8 +161,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is multiplier', () => {
-        render(<IconTradeCategory category='multiplier' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.MULTIPLIER', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.MULTIPLIER} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {

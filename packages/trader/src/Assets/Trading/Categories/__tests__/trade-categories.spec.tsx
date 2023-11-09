@@ -67,8 +67,8 @@ describe('<TradeCategories />', () => {
         render(<TradeCategories category='match_diff' onClick={jest.fn()} />);
         expect(screen.getByText(/mockedMatchDiffTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedMultiplierTradeDescription is rendered correctly when trade category is "multiplier"', () => {
-        render(<TradeCategories category='multiplier' onClick={jest.fn()} />);
+    it('Ensure mockedMultiplierTradeDescription is rendered correctly when trade category is "TRADE_TYPES.MULTIPLIER"', () => {
+        render(<TradeCategories category={TRADE_TYPES.MULTIPLIER} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedMultiplierTradeDescription/i)).toBeInTheDocument();
     });
     it('Ensure mockedOverUnderTradeDescription is rendered correctly when trade category is "over_under"', () => {

@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ContractTypeMenu from '../ContractTypeMenu';
 import ContractTypeWidget from '../contract-type-widget';
 import { mockStore } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import { ActiveSymbols } from '@deriv/api-types';
 
@@ -43,7 +44,7 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Multipliers',
-                            value: 'multiplier',
+                            value: TRADE_TYPES.MULTIPLIER,
                         },
                     ],
                     icon: 'IcMultiplier',
@@ -103,7 +104,7 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
                 {
                     text: 'Rise/Fall',
@@ -144,7 +145,7 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Multipliers',
-                            value: 'multiplier',
+                            value: TRADE_TYPES.MULTIPLIER,
                         },
                     ],
                     icon: 'IcMultiplier',
@@ -155,7 +156,7 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
             ],
             icon: 'IcCatMultiplier',
@@ -255,7 +256,7 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
             ],
             icon: 'IcMultiplier',
@@ -332,7 +333,7 @@ describe('ContractTypeMenu', () => {
 
     const item = {
         text: 'Multipliers',
-        value: 'multiplier',
+        value: TRADE_TYPES.MULTIPLIER,
     };
 
     it('should not show <ContractTypeMenu /> component when it is closed', () => {

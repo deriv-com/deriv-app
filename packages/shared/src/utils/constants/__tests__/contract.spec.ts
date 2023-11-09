@@ -86,7 +86,7 @@ describe('getContractTypeDisplay', () => {
         expect(getContractTypeDisplay(CONTRACT_TYPES.ACCU)).toEqual('Accumulators');
     });
     it('should return a specific contract name if show_button_name === true but contract_config has no button_name field', () => {
-        expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual('Down');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.MULTIPLIER.DOWN, true, true)).toEqual('Down');
     });
     it('should return an empty string if show_button_name === false and contract_config has no name field', () => {
         expect(getContractTypeDisplay('TEST', true, false)).toBe('');
@@ -159,7 +159,7 @@ describe('getCleanedUpCategories', () => {
                 name: 'Multipliers',
                 categories: [
                     {
-                        value: 'multiplier',
+                        value: TRADE_TYPES.MULTIPLIER,
                         text: 'Multipliers',
                     },
                 ],
@@ -170,7 +170,7 @@ describe('getCleanedUpCategories', () => {
                 name: 'Multipliers',
                 categories: [
                     {
-                        value: 'multiplier',
+                        value: TRADE_TYPES.MULTIPLIER,
                         text: 'Multipliers',
                     },
                 ],

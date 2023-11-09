@@ -75,7 +75,7 @@ describe('<PurchaseButton />', () => {
     });
 
     it('should render the button with <Money /> component inside for multipliers contract', () => {
-        render(<PurchaseButton {...default_mocked_props} is_multiplier type='MULTUP' />);
+        render(<PurchaseButton {...default_mocked_props} is_multiplier type={CONTRACT_TYPES.MULTIPLIER.UP} />);
 
         expect(screen.getByText(/UP/i)).toBeInTheDocument();
         expect(screen.getByText(/MoneyComponent/i)).toBeInTheDocument();
@@ -97,7 +97,7 @@ describe('<PurchaseButton />', () => {
     it('should render ContractInfo for mobile if contract type is not accumulators, turbos or vanillas', () => {
         (isMobile as jest.Mock).mockReturnValueOnce(true);
         (isDesktop as jest.Mock).mockReturnValueOnce(false);
-        render(<PurchaseButton {...default_mocked_props} is_multiplier type='MULTUP' />);
+        render(<PurchaseButton {...default_mocked_props} is_multiplier type={CONTRACT_TYPES.MULTIPLIER.UP} />);
 
         expect(screen.getByText(/ContractInfo/i)).toBeInTheDocument();
     });

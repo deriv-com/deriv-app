@@ -153,9 +153,9 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         barrier_count: 2,
         config: { hide_duration: true },
     },
-    multiplier: {
+    [TRADE_TYPES.MULTIPLIER]: {
         title: localize('Multipliers'),
-        trade_types: ['MULTUP', 'MULTDOWN'],
+        trade_types: [CONTRACT_TYPES.MULTIPLIER.UP, CONTRACT_TYPES.MULTIPLIER.DOWN],
         basis: ['stake'],
         components: [
             'take_profit',
@@ -199,7 +199,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
 export const getContractCategoriesConfig = () =>
     ({
         Turbos: { name: localize('Turbos'), categories: [TRADE_TYPES.TURBOS.LONG, TRADE_TYPES.TURBOS.SHORT] },
-        Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
+        Multipliers: { name: localize('Multipliers'), categories: [TRADE_TYPES.MULTIPLIER] },
         'Ups & Downs': {
             name: localize('Ups & Downs'),
             categories: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],

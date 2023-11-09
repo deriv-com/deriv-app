@@ -192,7 +192,7 @@ const ContractTypeGlossary = ({
                     },
                 ];
                 break;
-            case 'multiplier':
+            case TRADE_TYPES.MULTIPLIER:
                 content = [
                     { type: 'heading', text: <Localize i18n_default_text='Stop out' /> },
                     {

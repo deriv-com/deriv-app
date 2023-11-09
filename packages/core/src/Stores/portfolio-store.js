@@ -602,7 +602,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     get is_multiplier() {
-        return this.contract_type === 'multiplier';
+        return this.contract_type === TRADE_TYPES.MULTIPLIER;
     }
 
     get is_turbos() {

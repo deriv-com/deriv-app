@@ -6,7 +6,7 @@ import ContractDetails from '../contract-details';
 
 const contract_types = {
     test_contract_type: 'test_contract_type',
-    multiplier: 'multiplier',
+    multiplier: TRADE_TYPES.MULTIPLIER,
     vanilla: TRADE_TYPES.VANILLA.CALL,
     digit: 'digit',
     expiry: 'expiry',

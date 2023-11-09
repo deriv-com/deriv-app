@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ContractTypeWidget from '../contract-type-widget';
 import { mockStore } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 
 const mock_connect_props = {
@@ -20,7 +21,7 @@ describe('<ContractTypeWidget />', () => {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
             ],
             icon: 'IcMultiplier',
@@ -87,7 +88,7 @@ describe('<ContractTypeWidget />', () => {
             label: 'Vanillas',
         },
         {
-            contract_types: [{ text: 'Accumulators', value: 'accumulator' }],
+            contract_types: [{ text: 'Accumulators', value: TRADE_TYPES.ACCUMULATOR }],
             icon: 'IcAccumulators',
             is_unavailable: true,
             key: 'Accumulators',
@@ -97,7 +98,7 @@ describe('<ContractTypeWidget />', () => {
 
     const item = {
         text: 'Multipliers',
-        value: 'multiplier',
+        value: TRADE_TYPES.MULTIPLIER,
     };
 
     it('should render <ContractTypeMenu /> component when click on ', () => {

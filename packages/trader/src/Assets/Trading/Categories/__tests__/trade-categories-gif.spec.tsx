@@ -193,7 +193,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageMultiplier to be rendered when trade category is multiplier', async () => {
+    it('expect ImageMultiplier to be rendered when trade category is TRADE_TYPES.MULTIPLIER', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-multiplier.svg', () => ({
                 __esModule: true,
@@ -202,7 +202,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='multiplier' selected_contract_type='multiplier' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.MULTIPLIER}
+                            selected_contract_type={TRADE_TYPES.MULTIPLIER}
+                        />
+                    );
                     expect(screen.getByText(/imagemultiplier/i)).toBeInTheDocument();
                 })
                 .catch(error => {

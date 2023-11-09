@@ -164,7 +164,7 @@ const createProposalRequestForContract = (store: TTradeStore, type_of_contract: 
         obj_expiry.date_expiry = convertToUnix(expiry_date.unix(), store.expiry_time);
     }
 
-    if (store.contract_type === 'multiplier') {
+    if (store.contract_type === TRADE_TYPES.MULTIPLIER) {
         setProposalMultiplier(store, obj_multiplier);
     }
 

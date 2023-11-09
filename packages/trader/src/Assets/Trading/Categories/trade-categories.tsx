@@ -89,7 +89,7 @@ const TradeCategories = ({
             case 'lb_call':
                 TradeTypeTemplate = <LbCallTradeDescription />;
                 break;
-            case 'multiplier':
+            case TRADE_TYPES.MULTIPLIER:
                 TradeTypeTemplate = (
                     <MultiplierTradeDescription is_multiplier_fx={is_multiplier_fx} onClick={onClick} />
                 );

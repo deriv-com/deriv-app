@@ -74,7 +74,6 @@ const OptionsAndMultipliersListing = forwardRef<HTMLDivElement>((_, ref) => {
             className={classNames('wallets-options-and-multipliers-listing', {
                 'wallets-options-and-multipliers-listing--border': data?.is_crypto,
             })}
-            ref={ref}
         >
             <section className='wallets-options-and-multipliers-listing__header' ref={ref}>
                 <div className='wallets-options-and-multipliers-listing__header-title'>

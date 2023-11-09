@@ -3,8 +3,8 @@ import type {
     useActiveAccount,
     useActiveTradingAccount,
     useActiveWalletAccount,
+    useAllWalletAccounts,
     useAvailableMT5Accounts,
-    useAvailableWallets,
     useCreateOtherCFDAccount,
     useCreateWallet,
     useCryptoTransactions,
@@ -31,7 +31,7 @@ export namespace THooks {
     export type AccountsList = NonNullable<ReturnType<typeof useAccountsList>['data']>[number];
     export type ActiveTradingAccount = NonNullable<ReturnType<typeof useActiveTradingAccount>['data']>;
     export type ActiveAccount = NonNullable<ReturnType<typeof useActiveAccount>['data']>;
-    export type AvailableWallets = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[number];
+    export type AllWalletAccounts = NonNullable<ReturnType<typeof useAllWalletAccounts>['data']>[number];
     export type DynamicLeverage = NonNullable<ReturnType<typeof useDynamicLeverage>['data']>[number];
     export type CryptoTransactions = NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];

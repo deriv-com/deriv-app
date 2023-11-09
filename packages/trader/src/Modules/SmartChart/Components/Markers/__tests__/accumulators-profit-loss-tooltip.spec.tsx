@@ -16,7 +16,6 @@ describe('AccumulatorsProfitLossTooltip', () => {
         current_spot: 6468.95,
         current_spot_time: 1666091856,
         high_barrier: '6469.10',
-        is_beta_chart: false,
         is_sold: 0,
         profit: 0.15,
         should_show_profit_text: true,

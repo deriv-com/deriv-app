@@ -16,9 +16,7 @@ const MT5AccountTypeModal = () => {
                 <WalletButton
                     disabled={!selectedMarketType}
                     onClick={() => {
-                        setModalState({
-                            marketType: selectedMarketType,
-                        });
+                        setModalState('marketType', selectedMarketType);
                         show(<JurisdictionModal />);
                     }}
                     text='Next'

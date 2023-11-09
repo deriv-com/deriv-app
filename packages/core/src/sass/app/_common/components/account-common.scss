@@ -4,9 +4,9 @@
     align-items: center;
     gap: 1.6rem;
 
-        &__hidden {
-                display: none;
-            }
+    &__hidden {
+        display: none;
+    }
 
     &-view_wrapper {
         position: relative;
@@ -26,14 +26,17 @@
     @include mobile {
         padding: 1.6rem;
 
-    & .onfido-sdk-ui-PageTitle {
+        & .onfido-sdk-ui-PageTitle {
             &-titleWrapper {
                 margin: 2.4rem 0 0;
             }
-    
+
             &-title {
                 font-size: 2rem;
                 text-align: center;
+            }
+            &-titleSpan {
+                font-size: 2rem;
             }
         }
     }
@@ -48,22 +51,23 @@
         pointer-events: none;
     }
 
-   &__info-message {
-       position: absolute;
-       display: flex;
-       width: 100%;
-       margin-top: 2.4rem;
-       justify-content: center;
-       z-index: 1;
+    &__info-message {
+        position: absolute;
+        top: 1.6rem;
+        left: 50%;
+        z-index: 1;
+        transform: translate(-50%);
+        max-width: max-content;
+        width: 100% !important;
 
-       @include mobile {
-           margin-top: 1.6rem;
-       }
+        @include mobile {
+            margin-top: 1.6rem;
+        }
 
-       .dc-hint-box {
-           margin-inline: 0.8rem;
-       }
-   }
+        .dc-hint-box {
+            margin-inline: 0.8rem;
+        }
+    }
 
     &__status-message {
         background-color: var(--transparent-correct-message);
@@ -96,11 +100,15 @@
             .dc-select-native {
                 margin-bottom: 3.2rem;
             }
-            @include mobile{
-                &--email-consent{
+            @include mobile {
+                &--email-consent {
                     margin-bottom: 1.6rem;
                 }
             }
+        }
+
+        &__poi-inline-message {
+            margin-bottom: 1.6rem;
         }
 
         &__poi-confirm-example {
@@ -355,7 +363,6 @@
                 }
 
                 @include mobile {
-
                     &--has-bottom-margin {
                         margin-bottom: 1.6rem;
                     }
@@ -462,7 +469,7 @@
 
             &__fieldset {
                 margin-bottom: 2rem;
-                @include mobile{
+                @include mobile {
                     margin-bottom: 1.6rem;
                 }
                 &-input {
@@ -652,10 +659,10 @@
             justify-content: center;
             padding: 0 1.6rem;
 
-            &--status{
-                    height: 100%;
-                    width: 100%;
-                    position: absolute;
+            &--status {
+                height: 100%;
+                width: 100%;
+                position: absolute;
             }
         }
 
@@ -690,7 +697,7 @@
             height: 128px;
             margin-bottom: 2.6rem;
 
-            @include desktop{
+            @include desktop {
                 margin-top: 5.2rem;
             }
 
@@ -783,7 +790,6 @@
         margin-right: auto;
     }
 
-
     &__fieldset {
         width: 39.5rem;
 
@@ -870,8 +876,8 @@
 
     &__mismatch-container {
         .idv-form {
-            @include desktop{
-            margin-bottom: 1.6rem;
+            @include desktop {
+                margin-bottom: 1.6rem;
             }
         }
 
@@ -898,7 +904,7 @@
             }
         }
 
-        .account-form__header.details{
+        .account-form__header.details {
             margin-top: unset;
         }
     }

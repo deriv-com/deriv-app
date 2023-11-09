@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
+import { useHover } from 'usehooks-ts';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api';
-import { WalletButton, WalletText } from '../../../../../../components/Base';
+import { Tooltip, WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useDevice from '../../../../../../hooks/useDevice';
@@ -20,6 +21,13 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     const { isMobile } = useDevice();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
     const modal = useModal();
+
+    const transactionHashRef = useRef(null);
+    const isTransactionHashHovered = useHover(transactionHashRef);
+    const addressHashRef = useRef(null);
+    const isAddressHashHovered = useHover(addressHashRef);
+    const statusRef = useRef(null);
+    const isStatusHovered = useHover(statusRef);
 
     const { mutate } = useCancelCryptoTransaction();
 
@@ -52,14 +60,18 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
 
     const transactionFields: {
         class?: classNames.ArgumentArray[number];
+        hoverMessage?: string;
         name: string;
         onInteraction?: VoidFunction;
+        ref?: ReturnType<typeof useRef>;
+        shouldShouldHoverMessage?: boolean;
         value: number | string;
         valueTextProps?: Omit<React.ComponentProps<typeof WalletText>, 'children'>;
     }[] = useMemo(
         () => [
             {
                 class: { 'wallets-transactions-pending-row__transaction-hash': !isMobile },
+                hoverMessage: 'View transaction hash on Blockchain',
                 name: 'Transaction hash',
                 onInteraction: () =>
                     transaction.transaction_url
@@ -78,10 +90,13 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                               { defaultRootId: 'wallets_modal_root' }
                           )
                         : null,
+                ref: transactionHashRef,
+                shouldShouldHoverMessage: isTransactionHashHovered,
                 value: transaction.formatted_transaction_hash,
             },
             {
                 class: { 'wallets-transactions-pending-row__transaction-address': !isMobile },
+                hoverMessage: 'View address on Blockchain',
                 name: 'Address',
                 onInteraction: () =>
                     transaction.address_url
@@ -100,6 +115,8 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                               { defaultRootId: 'wallets_modal_root' }
                           )
                         : null,
+                ref: addressHashRef,
+                shouldShouldHoverMessage: isAddressHashHovered,
                 value: transaction.formatted_address_hash,
             },
             {
@@ -140,7 +157,9 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
             },
         ],
         [
+            isAddressHashHovered,
             isMobile,
+            isTransactionHashHovered,
             modal,
             transaction.address_url,
             transaction.formatted_address_hash,
@@ -175,9 +194,17 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                         <WalletText color='primary' size='xs'>
                             {field.name}
                         </WalletText>
-                        <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...field.valueTextProps }}>
-                            <span onClick={isMobile ? field.onInteraction : undefined}>{field.value}</span>
-                        </WalletText>
+                        <Tooltip
+                            alignment='right'
+                            isVisible={!isMobile && !!field.shouldShouldHoverMessage}
+                            message={field.hoverMessage || ''}
+                        >
+                            <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...field.valueTextProps }}>
+                                <span onClick={isMobile ? field.onInteraction : undefined} ref={field.ref}>
+                                    {field.value}
+                                </span>
+                            </WalletText>
+                        </Tooltip>
                     </div>
                 ))}
                 {!isMobile && (
@@ -221,15 +248,18 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                               )
                         : undefined
                 }
+                ref={statusRef}
             >
-                <div
-                    className={classNames(
-                        'wallets-transactions-pending-row__transaction-status-dot',
-                        `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
-                            .toLowerCase()
-                            .replace('_', '-')}`
-                    )}
-                />
+                <Tooltip alignment='left' isVisible={!isMobile && isStatusHovered} message={transaction.description}>
+                    <div
+                        className={classNames(
+                            'wallets-transactions-pending-row__transaction-status-dot',
+                            `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
+                                .toLowerCase()
+                                .replace('_', '-')}`
+                        )}
+                    />
+                </Tooltip>
                 <WalletText color='general' size='sm'>
                     {transaction.status_name}
                 </WalletText>
@@ -242,6 +272,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     </button>
                 )}
             </div>
+
             {isMobile && transaction.is_valid_to_cancel && (
                 <WalletButton
                     isFullWidth={true}

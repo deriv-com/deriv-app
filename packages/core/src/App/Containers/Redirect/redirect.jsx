@@ -28,7 +28,7 @@ const Redirect = ({
     const code_param = url_params.get('code') || verification_code[action_param];
     sessionStorage.verification_code = code_param;
     const ext_platform_url = url_params.get('ext_platform_url');
-    const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data.next_wallet;
+    const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
     const { is_appstore } = React.useContext(PlatformContext);
 
     const redirectToExternalPlatform = url => {

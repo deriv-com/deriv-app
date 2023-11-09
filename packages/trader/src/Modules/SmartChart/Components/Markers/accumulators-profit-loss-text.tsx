@@ -11,7 +11,7 @@ type TAccumulatorsProfitLossText = Pick<ProposalOpenContract, 'current_spot' | '
     className?: string;
     displayed_profit_value: number;
     is_beta_chart?: boolean;
-    should_show_profit_percentage: boolean;
+    should_show_profit_percentage?: boolean;
 };
 
 const ACTIONS = {

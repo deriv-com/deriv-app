@@ -16,7 +16,6 @@ type TAccumulatorsProfitLossTooltip = {
     className?: string;
     should_show_profit_text?: boolean;
     is_beta_chart?: boolean;
-    is_mobile?: boolean;
 } & TContractInfo;
 
 export type TRef = {

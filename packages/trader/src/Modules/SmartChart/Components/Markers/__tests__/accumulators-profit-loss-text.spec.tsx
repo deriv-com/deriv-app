@@ -26,4 +26,25 @@ describe('AccumulatorsProfitLossText', () => {
         const whole_number = screen.getByText(/\+1,040./i);
         expect(whole_number).toBeInTheDocument();
     });
+    it('should render AccumulatorsProfitLossText with a profit percentage value', () => {
+        render(<AccumulatorsProfitLossText {...props} displayed_profit_value={3.14} should_show_profit_percentage />);
+        expect(screen.getByText(/\+3./i)).toBeInTheDocument();
+        expect(screen.getByText('1')).toHaveClass('profit-loss-text__sliding-tenth');
+        expect(screen.getByText('%')).toBeInTheDocument();
+        expect(screen.queryByText('USD')).not.toBeInTheDocument();
+    });
+    it('should render AccumulatorsProfitLossText with a profit percentage value of >= 1K', () => {
+        render(<AccumulatorsProfitLossText {...props} displayed_profit_value={1040} should_show_profit_percentage />);
+        expect(screen.getByText(/\+1,040./i)).toBeInTheDocument();
+        expect(screen.getByText('0')).toHaveClass('profit-loss-text__sliding-tenth');
+        expect(screen.getByText('%')).toBeInTheDocument();
+        expect(screen.queryByText('USD')).not.toBeInTheDocument();
+    });
+    it('should render AccumulatorsProfitLossText with a negative profit percentage value', () => {
+        render(<AccumulatorsProfitLossText {...props} displayed_profit_value={-100} should_show_profit_percentage />);
+        expect(screen.getByText(/-100./i)).toBeInTheDocument();
+        expect(screen.getByText('0')).toHaveClass('profit-loss-text__sliding-tenth');
+        expect(screen.getByText('%')).toBeInTheDocument();
+        expect(screen.queryByText('USD')).not.toBeInTheDocument();
+    });
 });

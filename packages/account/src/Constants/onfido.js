@@ -1,7 +1,8 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 
-const getOnfidoPhrases = () => ({
+//TODO: Check if these phrases are required;
+export const getOnfidoPhrases = () => ({
     country_select: {
         alert_dropdown: {
             country_not_found: <Localize i18n_default_text='Country not found' />,
@@ -341,4 +342,7 @@ const getOnfidoPhrases = () => ({
     },
 });
 
-export default getOnfidoPhrases;
+export const LANGUAGE_CODES = {
+    ID: 'id_ID',
+    EN: 'en_US',
+};

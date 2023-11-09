@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 import { Button, Icon, Table, Text } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useP2PExchangeRate } from '@deriv/hooks';
 
 import { Localize, localize } from 'Components/i18next';
 import { OnlineStatusAvatar } from 'Components/online-status';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
 import { buy_sell } from 'Constants/buy-sell';
-import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 

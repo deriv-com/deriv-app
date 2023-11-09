@@ -13,12 +13,12 @@ import {
 } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useP2PExchangeRate } from '@deriv/hooks';
 import { reaction } from 'mobx';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
-import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';

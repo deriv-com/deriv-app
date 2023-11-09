@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { HintBox, Input, Text } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
+import { useP2PAdvertiserPaymentMethods, useP2PExchangeRate } from '@deriv/hooks';
 import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
@@ -17,7 +17,6 @@ import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodIcon from 'Components/payment-method-icon';
-import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 import './buy-sell-form.scss';
 
 const BuySellForm = props => {

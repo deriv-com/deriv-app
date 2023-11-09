@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { Button, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useP2PExchangeRate } from '@deriv/hooks';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { generateEffectiveRate } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import useP2PExchangeRate from 'Hooks/useP2PExchangeRate';
 import './advertiser-page-row.scss';
 
 const AdvertiserPageRow = ({ row: advert }) => {

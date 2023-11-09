@@ -24,6 +24,7 @@ const getSharedQueryClientContext = (): QueryClient => {
     return window.ReactQueryClient;
 };
 
+let timer_id: NodeJS.Timer;
 /**
  * Handles reconnection logic by reinitializing the WebSocket instance if it is in
  * closing or closed state.
@@ -34,7 +35,10 @@ const handleReconnection = (wss_url: string) => {
     if (!window.WSConnections) return;
     const currentWebsocket = window.WSConnections[wss_url];
     if (currentWebsocket instanceof WebSocket && [2, 3].includes(currentWebsocket.readyState)) {
-        initializeDerivWS();
+        clearTimeout(timer_id);
+        timer_id = setTimeout(() => {
+            initializeDerivWS();
+        }, 500);
     }
 };
 
@@ -66,12 +70,12 @@ const initializeDerivWS = (): DerivAPIBasic => {
 
 const queryClient = getSharedQueryClientContext();
 
-type TProps = {
+type TAPIProviderProps = {
     /** If set to true, the APIProvider will instantiate it's own socket connection. */
     standalone?: boolean;
 };
 
-const APIProvider = ({ children, standalone = false }: PropsWithChildren<TProps>) => {
+const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
     const WS = useWS();
     // Use the new API instance if the `standalone` prop is set to true,
     // else use the legacy socket connection.

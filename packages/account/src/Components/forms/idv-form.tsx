@@ -228,34 +228,44 @@ const IDVForm = ({
                                         {values.document_type.additional?.display_name && (
                                             <fieldset className='additional-field'>
                                                 <Field name='document_additional'>
-                                                    {({ field }: FieldProps) => (
-                                                        <Input
-                                                            {...field}
-                                                            name='document_additional'
-                                                            bottom_label={
-                                                                values.document_type.additional &&
-                                                                getExampleFormat(
-                                                                    values.document_type.additional?.example_format
-                                                                )
+                                                    {({ field }: FieldProps) => {
+                                                        const additional_document_placeholder = localize(
+                                                            'Enter your {{document_name}}',
+                                                            {
+                                                                document_name:
+                                                                    values.document_type?.additional?.display_name?.toLowerCase() ??
+                                                                    localize('additional document number'),
                                                             }
-                                                            disabled={!values.document_type.id}
-                                                            error={
-                                                                (touched.document_additional &&
-                                                                    errors.document_additional) ||
-                                                                errors.error_message
-                                                            }
-                                                            autoComplete='off'
-                                                            placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
-                                                            value={values.document_additional}
-                                                            onPaste={preventEmptyClipboardPaste}
-                                                            onBlur={handleBlur}
-                                                            onChange={handleChange}
-                                                            onKeyUp={(e: { target: HTMLInputElement }) =>
-                                                                onKeyUp(e, 'document_additional')
-                                                            }
-                                                            required
-                                                        />
-                                                    )}
+                                                        );
+                                                        return (
+                                                            <Input
+                                                                {...field}
+                                                                name='document_additional'
+                                                                bottom_label={
+                                                                    values.document_type.additional &&
+                                                                    getExampleFormat(
+                                                                        values.document_type.additional?.example_format
+                                                                    )
+                                                                }
+                                                                disabled={!values.document_type.id}
+                                                                error={
+                                                                    (touched.document_additional &&
+                                                                        errors.document_additional) ||
+                                                                    errors.error_message
+                                                                }
+                                                                autoComplete='off'
+                                                                placeholder={additional_document_placeholder}
+                                                                value={values.document_additional}
+                                                                onPaste={preventEmptyClipboardPaste}
+                                                                onBlur={handleBlur}
+                                                                onChange={handleChange}
+                                                                onKeyUp={(e: { target: HTMLInputElement }) =>
+                                                                    onKeyUp(e, 'document_additional')
+                                                                }
+                                                                required
+                                                            />
+                                                        );
+                                                    }}
                                                 </Field>
                                             </fieldset>
                                         )}

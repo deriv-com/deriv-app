@@ -1,12 +1,14 @@
-import React, { ComponentProps, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletDropdown } from '../../../../components';
+import { WalletDropdown, WalletText } from '../../../../components';
+import useDevice from '../../../../hooks/useDevice';
 import FilterIcon from '../../../../public/images/filter.svg';
 import { TransactionsCompleted, TransactionsPending } from './components';
 import './Transactions.scss';
 
-type TTransactionsPendingFilter = ComponentProps<typeof TransactionsPending>['filter'];
-type TTransactionCompletedFilter = ComponentProps<typeof TransactionsCompleted>['filter'];
+type TTransactionsPendingFilter = React.ComponentProps<typeof TransactionsPending>['filter'];
+type TTransactionCompletedFilter = React.ComponentProps<typeof TransactionsCompleted>['filter'];
 type TFilterValue = TTransactionCompletedFilter | TTransactionsPendingFilter;
 
 const filtersMapper: Record<string, Record<string, TFilterValue>> = {
@@ -25,6 +27,7 @@ const filtersMapper: Record<string, Record<string, TFilterValue>> = {
 
 const Transactions = () => {
     const { data: wallet } = useActiveWalletAccount();
+    const { isMobile } = useDevice();
     const [isPendingActive, setIsPendingActive] = useState(false);
     const [filterValue, setFilterValue] = useState('all');
 
@@ -59,11 +62,15 @@ const Transactions = () => {
     }, [filterValue, isPendingActive]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <div className='wallets-transactions'>
+        <div
+            className={classNames('wallets-transactions', {
+                'wallets-transactions--crypto-mobile': wallet?.is_crypto && isMobile,
+            })}
+        >
             <div className='wallets-transactions__header'>
                 {wallet?.currency_config?.is_crypto && (
                     <div className='wallets-transactions__toggle'>
-                        <p>Pending Transactions</p>
+                        <WalletText size='sm'>Pending Transactions</WalletText>
                         <input
                             checked={isPendingActive}
                             className='wallets-transactions__toggle-switch'

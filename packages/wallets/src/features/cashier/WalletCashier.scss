@@ -9,7 +9,6 @@
 }
 
 .wallets-cashier-content {
-    padding-top: 2.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -18,7 +17,7 @@
     background-color: #ffffff;
     overflow: scroll;
 
-    @include mobile {
-        padding: 2.4rem 1.6rem 0;
+    &::-webkit-scrollbar {
+        display: none;
     }
 }

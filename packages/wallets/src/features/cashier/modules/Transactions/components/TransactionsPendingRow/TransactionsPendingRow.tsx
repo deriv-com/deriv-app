@@ -10,6 +10,7 @@ import useDevice from '../../../../../../hooks/useDevice';
 import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
+import { TransactionsPendingRowField } from './components/TransactionsPendingRowField';
 import './TransactionsPendingRow.scss';
 
 type TProps = {
@@ -22,10 +23,6 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
     const modal = useModal();
 
-    const transactionHashRef = useRef(null);
-    const isTransactionHashHovered = useHover(transactionHashRef);
-    const addressHashRef = useRef(null);
-    const isAddressHashHovered = useHover(addressHashRef);
     const statusRef = useRef(null);
     const isStatusHovered = useHover(statusRef);
 
@@ -58,120 +55,6 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
         );
     }, [cancelTransaction, modal]);
 
-    const transactionFields: {
-        class?: classNames.ArgumentArray[number];
-        hoverMessage?: string;
-        name: string;
-        onInteraction?: VoidFunction;
-        ref?: ReturnType<typeof useRef>;
-        shouldShouldHoverMessage?: boolean;
-        value: number | string;
-        valueTextProps?: Omit<React.ComponentProps<typeof WalletText>, 'children'>;
-    }[] = useMemo(
-        () => [
-            {
-                class: { 'wallets-transactions-pending-row__transaction-hash': !isMobile },
-                hoverMessage: 'View transaction hash on Blockchain',
-                name: 'Transaction hash',
-                onInteraction: () =>
-                    transaction.transaction_url
-                        ? modal.show(
-                              <WalletActionModal
-                                  actionButtonsOptions={[
-                                      {
-                                          isPrimary: true,
-                                          onClick: () => window.open(transaction.transaction_url),
-                                          text: 'View',
-                                      },
-                                  ]}
-                                  description='View transaction hash on Blockchain.'
-                                  title='Transaction details'
-                              />,
-                              { defaultRootId: 'wallets_modal_root' }
-                          )
-                        : null,
-                ref: transactionHashRef,
-                shouldShouldHoverMessage: isTransactionHashHovered,
-                value: transaction.formatted_transaction_hash,
-            },
-            {
-                class: { 'wallets-transactions-pending-row__transaction-address': !isMobile },
-                hoverMessage: 'View address on Blockchain',
-                name: 'Address',
-                onInteraction: () =>
-                    transaction.address_url
-                        ? modal.show(
-                              <WalletActionModal
-                                  actionButtonsOptions={[
-                                      {
-                                          isPrimary: true,
-                                          onClick: () => window.open(transaction.address_url),
-                                          text: 'View',
-                                      },
-                                  ]}
-                                  description='View address on Blockchain.'
-                                  title='Transaction details'
-                              />,
-                              { defaultRootId: 'wallets_modal_root' }
-                          )
-                        : null,
-                ref: addressHashRef,
-                shouldShouldHoverMessage: isAddressHashHovered,
-                value: transaction.formatted_address_hash,
-            },
-            {
-                class: { 'wallets-transactions-pending-row__transaction-confirmations': !isMobile },
-                name: 'Confirmations',
-                value: transaction.formatted_confirmations,
-                valueTextProps: {
-                    align: isMobile ? 'start' : 'center',
-                },
-            },
-            ...(isMobile
-                ? ([
-                      {
-                          name: 'Amount',
-                          value: `${transaction.is_deposit ? '+' : '-'}${transaction.formatted_amount}`,
-                          valueTextProps: {
-                              color: transaction.is_deposit ? 'success' : 'red',
-                          },
-                      },
-                      {
-                          name: 'Date',
-                          value: moment.unix(transaction.submit_date).format('DD MMM YYYY'),
-                          valueTextProps: { color: 'general' },
-                      },
-                  ] as const)
-                : []),
-            {
-                class: { 'wallets-transactions-pending-row__transaction-time': !isMobile },
-                name: 'Time',
-                value: moment
-                    .unix(transaction.submit_date)
-                    .format(isMobile ? 'HH:mm:ss [GMT]' : 'DD MMM YYYY HH:mm:ss [GMT]'),
-                valueTextProps: {
-                    color: 'general',
-                    size: isMobile ? 'xs' : '2xs',
-                    weight: isMobile ? 'bold' : 'regular',
-                },
-            },
-        ],
-        [
-            isAddressHashHovered,
-            isMobile,
-            isTransactionHashHovered,
-            modal,
-            transaction.address_url,
-            transaction.formatted_address_hash,
-            transaction.formatted_amount,
-            transaction.formatted_confirmations,
-            transaction.formatted_transaction_hash,
-            transaction.is_deposit,
-            transaction.submit_date,
-            transaction.transaction_url,
-        ]
-    );
-
     return (
         <div className='wallets-transactions-pending-row'>
             <div className='wallets-transactions-pending-row__wallet-info'>
@@ -186,34 +69,70 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 </div>
             </div>
             <div className='wallets-transactions-pending-row__fields-container'>
-                {transactionFields.map(field => (
-                    <div
-                        className={classNames('wallets-transactions-pending-row__column', field.class)}
-                        key={field.name}
-                    >
-                        <WalletText color='primary' size='xs'>
-                            {field.name}
-                        </WalletText>
-                        <Tooltip
-                            alignment='right'
-                            isVisible={!isMobile && !!field.shouldShouldHoverMessage}
-                            message={field.hoverMessage || ''}
-                        >
-                            <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...field.valueTextProps }}>
-                                <span onClick={isMobile ? field.onInteraction : undefined} ref={field.ref}>
-                                    {field.value}
-                                </span>
-                            </WalletText>
-                        </Tooltip>
-                    </div>
-                ))}
+                <TransactionsPendingRowField
+                    className={{ 'wallets-transactions-pending-row__transaction-hash': !isMobile }}
+                    hint={
+                        transaction.transaction_url
+                            ? {
+                                  link: transaction.transaction_url,
+                                  text: 'View transaction hash on Blockchain',
+                                  tooltipAlignment: 'right',
+                              }
+                            : undefined
+                    }
+                    name='Transaction hash'
+                    value={transaction.formatted_transaction_hash}
+                />
+                <TransactionsPendingRowField
+                    className={{ 'wallets-transactions-pending-row__transaction-address': !isMobile }}
+                    hint={{
+                        link: transaction.address_url,
+                        text: 'View address on Blockchain',
+                        tooltipAlignment: 'right',
+                    }}
+                    name='Address'
+                    value={transaction.formatted_address_hash}
+                />
+                <TransactionsPendingRowField
+                    className={{ 'wallets-transactions-pending-row__transaction-confirmations': !isMobile }}
+                    name='Confirmations'
+                    value={transaction.formatted_confirmations.toString()}
+                    valueTextProps={{
+                        align: isMobile ? 'start' : 'center',
+                    }}
+                />
+                {isMobile && (
+                    <React.Fragment>
+                        <TransactionsPendingRowField
+                            name='Amount'
+                            value={`${transaction.is_deposit ? '+' : '-'}${transaction.formatted_amount}`}
+                            valueTextProps={{
+                                color: transaction.is_deposit ? 'success' : 'red',
+                            }}
+                        />
+                        <TransactionsPendingRowField
+                            name='Date'
+                            value={moment.unix(transaction.submit_date).format('DD MMM YYYY')}
+                            valueTextProps={{
+                                color: 'general',
+                            }}
+                        />
+                    </React.Fragment>
+                )}
+                <TransactionsPendingRowField
+                    className={{ 'wallets-transactions-pending-row__transaction-time': !isMobile }}
+                    name='Time'
+                    value={moment
+                        .unix(transaction.submit_date)
+                        .format(isMobile ? 'HH:mm:ss [GMT]' : 'DD MMM YYYY HH:mm:ss [GMT]')}
+                    valueTextProps={{
+                        color: 'general',
+                        size: isMobile ? 'xs' : '2xs',
+                        weight: isMobile ? 'bold' : 'regular',
+                    }}
+                />
                 {!isMobile && (
-                    <div
-                        className={classNames(
-                            'wallets-transactions-pending-row__column',
-                            'wallets-transactions-pending-row__transaction-amount'
-                        )}
-                    >
+                    <div className='wallets-transactions-pending-row__transaction-amount'>
                         <WalletText
                             align='right'
                             color={transaction.is_deposit ? 'success' : 'red'}

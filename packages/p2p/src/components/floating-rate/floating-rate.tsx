@@ -89,7 +89,7 @@ const FloatingRate = ({
                     required={required}
                     setCurrentFocus={setCurrentFocus}
                     type={isMobile() && os !== 'iOS' ? 'tel' : 'number'}
-                    value={value || ''}
+                    value={value ?? ''}
                 />
                 <div className='floating-rate__mkt-rate'>
                     <Text

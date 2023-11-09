@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, ReactNode, useEffect } from 'react';
+import React, { FC, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 import { useEventListener } from 'usehooks-ts';
 import CloseIcon from '../../../public/images/close-icon.svg';

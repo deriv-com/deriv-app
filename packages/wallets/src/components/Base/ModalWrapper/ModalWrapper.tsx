@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import CloseIcon from '../../../public/images/ic-close-dark.svg';
 import { useModal } from '../../ModalProvider';

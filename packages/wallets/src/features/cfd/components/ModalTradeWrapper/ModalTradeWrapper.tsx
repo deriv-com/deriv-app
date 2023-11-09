@@ -49,7 +49,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
 
     return (
         <ModalStepWrapper
-            closeOnEscape={true}
+            closeOnEscape
             renderFooter={() => {
                 return (
                     <div className='wallets-modal-trade-wrapper__footer'>

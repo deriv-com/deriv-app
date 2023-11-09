@@ -12,7 +12,7 @@ const MT5AccountTypeModal = () => {
 
     return (
         <ModalStepWrapper
-            closeOnEscape={true}
+            closeOnEscape
             renderFooter={() => (
                 <WalletButton
                     disabled={!selectedMarketType}

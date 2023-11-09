@@ -82,6 +82,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
         setIsVisible(false);
         const is_from_table_row = !isEmptyObject(state) ? state.from_table_row : false;
         return is_from_table_row ? history.goBack() : routeBackInApp(history);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, routeBackInApp]);
 
     React.useEffect(() => {

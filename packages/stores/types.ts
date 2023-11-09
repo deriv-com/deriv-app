@@ -258,6 +258,20 @@ type TActionProps = TButtonProps & {
     route?: string;
 };
 
+type TChartStateChangeOption = {
+    indicator_type_name?: string;
+    indicators_category_name?: string;
+    isClosed?: boolean;
+    is_favorite?: boolean;
+    is_info_open?: boolean;
+    is_open?: boolean;
+    chart_type_name?: string;
+    search_string?: string;
+    symbol?: string;
+    symbol_category?: string;
+    time_interval_name?: string;
+};
+
 type TNotificationMessage = {
     action?: TActionProps;
     className?: string;
@@ -461,6 +475,7 @@ type TClientStore = {
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
+    should_show_eu_content: boolean;
     updateMT5Status: () => Promise<void>;
     fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;
@@ -646,6 +661,7 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
+    should_show_multipliers_onboarding: boolean;
     toggleCancellationWarning: (state_change?: boolean) => void;
     toggleUnsupportedContractModal: (state_change: boolean) => void;
     toggleReports: (is_visible: boolean) => void;
@@ -803,7 +819,7 @@ type TContractTradeStore = {
         underlying,
     }: Partial<TAccumulatorContractBarriersData & { underlying: string }>) => void;
     updateChartType: (type: string) => void;
-    updateGranularity: (granularity: number) => void;
+    updateGranularity: (granularity: number | null) => void;
     updateProposal: (response: ProposalOpenContract) => void;
 };
 
@@ -986,7 +1002,7 @@ type TContractReplay = {
               }>;
     };
     chart_state: string;
-    chartStateChange: (state: string, option: Record<string, unknown>) => void;
+    chartStateChange: (state: string, option?: TChartStateChangeOption) => void;
     error_code?: string;
     error_message?: string;
     has_error: boolean;
@@ -1041,7 +1057,7 @@ export type TCoreStores = {
     gtm: TGtmStore;
     pushwoosh: Record<string, unknown>;
     contract_replay: TContractReplay;
-    chart_barrier_store: Record<string, unknown>;
+    chart_barrier_store: TBarriers[number];
     active_symbols: TActiveSymbolsStore;
 };
 

@@ -2,14 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { toJS } from 'mobx';
 import { DesktopWrapper, MobileWrapper, Popover, Text } from '@deriv/components';
-import {
-    getMarketNamesMap,
-    isMobile,
-    useIsMounted,
-    isContractElapsed,
-    TContractStore,
-    TTickSpotData,
-} from '@deriv/shared';
+import { TickSpotData } from '@deriv/api-types';
+import { getMarketNamesMap, isMobile, useIsMounted, isContractElapsed, TContractStore } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
@@ -38,12 +32,12 @@ type TDigits = Pick<TContractStore, 'contract_info' | 'digits_info'> & {
     onDigitChange?: TTraderStore['onChange'];
     selected_digit?: TTraderStore['last_digit'];
     trade_type?: TTraderStore['contract_type'];
-    tick?: TTickSpotData;
+    tick?: TickSpotData | null;
     underlying?: TTraderStore['symbol'];
 };
 type TTickStream = NonNullable<TContractStore['contract_info']['tick_stream']>[number];
 type TTickData =
-    | TTickSpotData
+    | TickSpotData
     | null
     | undefined
     | {

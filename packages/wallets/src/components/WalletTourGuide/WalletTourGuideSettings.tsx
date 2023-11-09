@@ -361,7 +361,7 @@ export const TooltipComponent = ({
             {<div className='wallets-tour-guide__content'>{step.content as React.ReactNode}</div>}
             <div className='wallets-tour-guide__footer'>
                 {index > 0 && <WalletButton {...backProps} color='white' text='Back' variant='outlined' />}
-                {continuous && <WalletButton {...primaryProps} text={`${isLastStep ? 'Done' : 'Next'}`} />}
+                {continuous && <WalletButton {...primaryProps} text={isLastStep ? 'Done' : 'Next'} />}
                 {!continuous && <WalletButton {...closeProps} text='Close' />}
             </div>
         </div>

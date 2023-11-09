@@ -8,7 +8,7 @@ import {
     getContractTypePosition,
     getCleanedUpCategories,
 } from '../contract';
-import { TRADE_TYPES } from '../../contract';
+import { CONTRACT_TYPES, TRADE_TYPES } from '../../contract';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
 const card_label = 'Apply';
@@ -80,10 +80,10 @@ describe('getContractConfig', () => {
 
 describe('getContractTypeDisplay', () => {
     it('should return a specific button name if show_button_name === true and contract_config has a button_name field', () => {
-        expect(getContractTypeDisplay('ACCU', false, true)).toEqual('Buy');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.ACCU, false, true)).toEqual('Buy');
     });
     it('should return a specific contract name if show_button_name === false but contract_config has a button_name field', () => {
-        expect(getContractTypeDisplay('ACCU')).toEqual('Accumulators');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.ACCU)).toEqual('Accumulators');
     });
     it('should return a specific contract name if show_button_name === true but contract_config has no button_name field', () => {
         expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual('Down');

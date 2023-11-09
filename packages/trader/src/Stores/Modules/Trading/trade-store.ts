@@ -29,6 +29,7 @@ import {
     unsupported_contract_types_list,
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
+    TRADE_TYPES,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
 import type { TEvents } from '@deriv/analytics';
@@ -1037,7 +1038,7 @@ export default class TradeStore extends BaseStore {
             updateChartType,
             updateGranularity,
         } = this.root_store.contract_trade || {};
-        if (obj_new_values.contract_type === 'accumulator') {
+        if (obj_new_values.contract_type === TRADE_TYPES.ACCUMULATOR) {
             savePreviousChartMode(chart_type, granularity);
             updateGranularity(0);
             updateChartType(this.root_store.client.is_beta_chart ? 'line' : 'mountain');
@@ -1639,7 +1640,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_accumulator() {
-        return this.contract_type === 'accumulator';
+        return this.contract_type === TRADE_TYPES.ACCUMULATOR;
     }
 
     get is_multiplier() {

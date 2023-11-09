@@ -270,7 +270,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='accumulator' selected_contract_type='accumulator' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.ACCUMULATOR}
+                            selected_contract_type={TRADE_TYPES.ACCUMULATOR}
+                        />
+                    );
                     expect(screen.getByText(/videoaccumulator/i)).toBeInTheDocument();
                 })
                 .catch(error => {

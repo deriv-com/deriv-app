@@ -8,7 +8,7 @@ const stop_out = 'Stop out';
 
 describe('<ContractTypeGlossary />', () => {
     it('Ensure accumulator glossary is rendered properly', () => {
-        render(<ContractTypeGlossary category='accumulator' />);
+        render(<ContractTypeGlossary category={TRADE_TYPES.ACCUMULATOR} />);
 
         expect(
             screen.getByText(/You can choose a growth rate with values of 1%, 2%, 3%, 4%, and 5%./i)

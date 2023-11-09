@@ -37,7 +37,7 @@ const TradeCategories = ({
     let TradeTypeTemplate;
     if (category) {
         switch (category) {
-            case 'accumulator':
+            case TRADE_TYPES.ACCUMULATOR:
                 TradeTypeTemplate = <AccumulatorTradeDescription onClick={onClick} />;
                 break;
             case 'rise_fall':

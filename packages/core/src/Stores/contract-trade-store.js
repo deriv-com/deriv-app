@@ -17,6 +17,7 @@ import {
     switch_to_tick_chart,
     getLastContractMarkerIndex,
     CONTRACT_TYPES,
+    TRADE_TYPES,
 } from '@deriv/shared';
 
 import BaseStore from './base-store';
@@ -336,7 +337,7 @@ export default class ContractTradeStore extends BaseStore {
                 this.accumulator_contract_barriers_data) ||
             this.accumulator_barriers_data ||
             {};
-        if (trade_type === 'accumulator' && proposal_prev_spot_time && accumulators_high_barrier) {
+        if (trade_type === TRADE_TYPES.ACCUMULATOR && proposal_prev_spot_time && accumulators_high_barrier) {
             if (this.root_store.client.is_beta_chart) {
                 const is_open = isAccumulatorContractOpen(this.last_contract.contract_info);
                 markers.push(

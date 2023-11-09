@@ -59,7 +59,7 @@ const TradeCategoriesGIF = ({
             return <ImageReset />;
         case 'run_high_low':
             return <ImageRunHighLow />;
-        case 'accumulator':
+        case TRADE_TYPES.ACCUMULATOR:
             return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case 'tick_high_low':
             return <ImageTickHighLow />;

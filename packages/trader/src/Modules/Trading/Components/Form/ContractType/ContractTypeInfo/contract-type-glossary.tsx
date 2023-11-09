@@ -19,7 +19,7 @@ const ContractTypeGlossary = ({
     if (trade_category === TRADE_TYPES.VANILLA.CALL && is_vanilla_fx) trade_category = TRADE_TYPES.VANILLA.FX;
     if (category) {
         switch (trade_category) {
-            case 'accumulator':
+            case TRADE_TYPES.ACCUMULATOR:
                 content = [
                     { type: 'heading', text: <Localize i18n_default_text='Growth rate' /> },
                     {

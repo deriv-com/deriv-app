@@ -1,7 +1,7 @@
 import React from 'react';
 import { configure, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TContractInfo } from '@deriv/shared';
+import { TContractInfo, CONTRACT_TYPES } from '@deriv/shared';
 import ContractUpdateForm from '../contract-update-form';
 import { TGetCardLables } from '../../../types';
 
@@ -16,7 +16,7 @@ const mockCardLabels = () => ({
 
 const contract_info: TContractInfo = {
     contract_id: 1,
-    contract_type: 'ACCU',
+    contract_type: CONTRACT_TYPES.ACCU,
     is_sold: 0,
     is_valid_to_cancel: 1,
     profit: 50,
@@ -100,7 +100,7 @@ describe('ContractUpdateForm', () => {
         expect(take_profit_input).toHaveDisplayValue('56');
         expect(apply_button).toBeEnabled();
     });
-    it(`should render checked Take profit input with checkbox and diabled Apply button
+    it(`should render checked Take profit input with checkbox and disabled Apply button
         when take profit is selected, but not entered`, () => {
         const new_props = {
             ...mock_props,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { isDesktop, isMobile, TRADE_TYPES } from '@deriv/shared';
+import { isDesktop, isMobile, CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -82,7 +82,7 @@ describe('<PurchaseButton />', () => {
     });
 
     it('should render the button for accumulators', () => {
-        render(<PurchaseButton {...default_mocked_props} is_accumulator type='ACCU' />);
+        render(<PurchaseButton {...default_mocked_props} is_accumulator type={CONTRACT_TYPES.ACCU} />);
 
         expect(screen.getByText(/Buy/i)).toBeInTheDocument();
     });

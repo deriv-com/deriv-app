@@ -7,6 +7,7 @@ import {
     isAccumulatorContract,
     isTurbosContract,
     toMoment,
+    TRADE_TYPES,
 } from '@deriv/shared';
 import { TError, TTradeStore } from 'Types';
 
@@ -167,7 +168,7 @@ const createProposalRequestForContract = (store: TTradeStore, type_of_contract: 
         setProposalMultiplier(store, obj_multiplier);
     }
 
-    if (store.contract_type === 'accumulator') {
+    if (store.contract_type === TRADE_TYPES.ACCUMULATOR) {
         setProposalAccumulator(store, obj_accumulator);
     }
 

@@ -2,6 +2,7 @@ import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/he
 import React from 'react';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip';
 import { ProposalOpenContract } from '@deriv/api-types';
+import { TRADE_TYPES } from '@deriv/shared';
 import ChartMarkerBeta from 'Modules/SmartChartBeta/Components/Markers/marker.jsx';
 import ChartMarker from './marker';
 
@@ -34,7 +35,9 @@ const AccumulatorsChartElements = ({
 }: TAccumulatorsChartElements) => {
     const accumulators_positions = all_positions.filter(
         ({ contract_info }) =>
-            contract_info && symbol === contract_info.underlying && filterByContractType(contract_info, 'accumulator')
+            contract_info &&
+            symbol === contract_info.underlying &&
+            filterByContractType(contract_info, TRADE_TYPES.ACCUMULATOR)
     );
 
     const ChartMarkerComponent = is_beta_chart ? ChartMarkerBeta : ChartMarker;

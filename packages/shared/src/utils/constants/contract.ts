@@ -145,11 +145,11 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         basis: [],
         components: [],
     },
-    accumulator: {
+    [TRADE_TYPES.ACCUMULATOR]: {
         title: localize('Accumulators'),
-        trade_types: ['ACCU'],
+        trade_types: [CONTRACT_TYPES.ACCU],
         basis: ['stake'],
-        components: ['take_profit', 'accumulator', 'accu_info_display'],
+        components: ['take_profit', TRADE_TYPES.ACCUMULATOR, 'accu_info_display'],
         barrier_count: 2,
         config: { hide_duration: true },
     },
@@ -209,7 +209,7 @@ export const getContractCategoriesConfig = () =>
         'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
         Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
         Vanillas: { name: localize('Vanillas'), categories: [TRADE_TYPES.VANILLA.CALL, TRADE_TYPES.VANILLA.PUT] },
-        Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
+        Accumulators: { name: localize('Accumulators'), categories: [TRADE_TYPES.ACCUMULATOR] },
     } as const);
 
 export const unsupported_contract_types_list = [

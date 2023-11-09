@@ -13,7 +13,7 @@ const default_mock_store = {
     modules: {
         trade: {
             basis: '',
-            contract_type: 'accumulator',
+            contract_type: TRADE_TYPES.ACCUMULATOR as string,
             currency: '',
             is_accumulator: false,
             is_multiplier: false,
@@ -69,7 +69,7 @@ describe('<Purchase />', () => {
         const new_mocked_store: TNewMockedProps = {
             ...default_mock_store,
             portfolio: {
-                active_positions: [{ contract_info: { underlying: 'test_symbol' }, type: 'accumulator' }],
+                active_positions: [{ contract_info: { underlying: 'test_symbol' }, type: TRADE_TYPES.ACCUMULATOR }],
             },
         };
         new_mocked_store.modules.trade.trade_types = { ACCU: 'Accumulator Up' };

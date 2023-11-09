@@ -170,8 +170,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect MockedIcon to be rendered when category is accumulator', () => {
-        render(<IconTradeCategory category='accumulator' />);
+    it('Expect MockedIcon to be rendered when category is TRADE_TYPES.ACCUMULATOR', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.ACCUMULATOR} />);
         const mocked_icon_text = screen.getByText(mocked_icon);
         expect(mocked_icon_text).toBeInTheDocument();
         expect(mocked_icon_text).toHaveClass('category-wrapper');

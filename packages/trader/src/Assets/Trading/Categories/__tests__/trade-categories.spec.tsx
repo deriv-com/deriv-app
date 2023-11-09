@@ -27,8 +27,8 @@ jest.mock('../Description/turbos-trade-description', () => jest.fn(() => 'mocked
 jest.mock('../Description/vanilla-trade-description', () => jest.fn(() => 'mockedVanillaTradeDescription'));
 
 describe('<TradeCategories />', () => {
-    it('Ensure AccumulatorTradeDescription is rendered correctly when trade category is "accumulator"', () => {
-        render(<TradeCategories category='accumulator' onClick={jest.fn()} />);
+    it('Ensure AccumulatorTradeDescription is rendered correctly when trade category is "TRADE_TYPES.ACCUMULATOR"', () => {
+        render(<TradeCategories category={TRADE_TYPES.ACCUMULATOR} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedaccumulatortradedescription/i)).toBeInTheDocument();
     });
     it('Ensure mockedAsianTradeDescription is rendered correctly when trade category is "asian"', () => {

@@ -31,7 +31,7 @@ const MigrationBanner = observer(() => {
                     {has_derived_and_financial_mt5 ? (
                         <Text size={size}>
                             <Localize
-                                i18n_default_text='We’re upgrading your <0>{{account_1}}</0> and <0>{{account_2}} </0> account.'
+                                i18n_default_text='We’re upgrading your <0>{{account_1}}</0> and <0>{{account_2}} </0> accounts.'
                                 values={{
                                     account_1: getMT5AccountTitle({
                                         account_type: JURISDICTION_MARKET_TYPES.DERIVED,

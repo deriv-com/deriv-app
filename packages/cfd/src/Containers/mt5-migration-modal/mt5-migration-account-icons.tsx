@@ -39,11 +39,11 @@ const MT5MigrationAccountIcons = observer(({ to, type }: TMT5MigrationAccountIco
     };
 
     return (
-        <React.Fragment>
+        <div className='mt5-migration-modal__migration_content-items__list'>
             <Icon icon={getFromAccountIcon()} size={96} data_testid={`dt_migrate_from_svg_${type}`} />
             <Icon icon={is_mobile ? 'IcLongArrowDown' : 'IcLongArrowRight'} size={24} />
             <Icon icon={getToAccountIcon()} size={96} data_testid={`dt_migrate_to_${to}_${type}`} />
-        </React.Fragment>
+        </div>
     );
 });
 

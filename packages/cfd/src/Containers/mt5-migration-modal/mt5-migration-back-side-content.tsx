@@ -20,7 +20,8 @@ const MT5MigrationBackSideContent = observer(() => {
 
     const content = getMigrationModalDetails(eligible_account_to_migrate_label);
     const checkbox_text_size = is_mobile ? 'xxs' : 'xs';
-    const content_size = is_mobile ? 'xxxs' : 'xs';
+    const header_size = is_mobile ? 'xs' : 's';
+    const content_size = is_mobile ? 'xxs' : 'xs';
 
     const onConfirmMigration = () => {
         setAppstorePlatform(CFD_PLATFORMS.MT5);
@@ -44,7 +45,7 @@ const MT5MigrationBackSideContent = observer(() => {
             )}
             <div>
                 <div className='mt5-migration-modal__description'>
-                    <Text as='p' size={content_size} align='center' weight='bold'>
+                    <Text as='p' size={header_size} align='center' weight='bold'>
                         <Localize i18n_default_text='What will happen to the funds in my existing account(s)?' />
                     </Text>
                 </div>

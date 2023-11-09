@@ -28,15 +28,23 @@
         grid-template-columns: 1fr;
         grid-gap: 1.6rem;
         &-items {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-gap: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
             justify-items: center;
             align-items: center;
 
             @include mobile {
+                flex-direction: row;
+            }
+            &__list {
                 display: flex;
-                flex-direction: column;
+                align-items: center;
+                gap: 3.6rem;
+                @include mobile {
+                    flex-direction: column;
+                    gap: 1.6rem;
+                }
             }
         }
         @include mobile {

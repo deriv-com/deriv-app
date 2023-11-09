@@ -49,7 +49,7 @@ describe('MigrationBanner', () => {
         response.eligible_svg_to_bvi_derived_accounts = true;
         response.eligible_svg_to_bvi_financial_accounts = true;
         renderComponent();
-        const texts = [/We’re upgrading your/i, /MT5 Derived SVG/i, /MT5 Financial SVG/i, /and/i, /account./i];
+        const texts = [/We’re upgrading your/i, /MT5 Derived SVG/i, /MT5 Financial SVG/i, /and/i, /accounts./i];
         texts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });

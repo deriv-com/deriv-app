@@ -22,6 +22,7 @@ export declare type SupportedLanguages =
     | 'ko'
     | 'lv'
     | 'lt'
+    | 'no'
     | 'no_NO'
     | 'nb'
     | 'fa'

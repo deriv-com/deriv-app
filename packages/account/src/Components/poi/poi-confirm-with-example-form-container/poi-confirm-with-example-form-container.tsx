@@ -12,11 +12,14 @@ import {
     toMoment,
     WS,
 } from '@deriv/shared';
+import PoiNameDobExample from '../../../Assets/ic-poi-name-dob-example.svg';
 import FormBody from '../../form-body';
 import LoadErrorMessage from '../../load-error-message';
 import PersonalDetailsForm from '../../forms/personal-details-form.jsx';
+import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from '../../../Configs/poi-error-config';
+import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
 import { makeSettingsRequest, validate, validateName } from '../../../Helpers/utils';
-import { TInputFieldValues } from 'Types';
+import { TInputFieldValues } from '../../../Types';
 
 type TRestState = {
     api_error: string;
@@ -45,6 +48,8 @@ const PoiConfirmWithExampleFormContainer = ({
         changeable_fields: [],
         api_error: '',
     });
+
+    const side_note_image = <PoiNameDobExample />;
 
     React.useEffect(() => {
         const initializeFormValues = () => {
@@ -81,12 +86,16 @@ const PoiConfirmWithExampleFormContainer = ({
         );
         const data = await WS.setSettings(request);
 
-        if (data.error) {
-            setStatus({ error_msg: data.error.message });
+        if (data?.error) {
+            const response_error =
+                data.error?.code === API_ERROR_CODES.DUPLICATE_ACCOUNT
+                    ? DUPLICATE_ACCOUNT_ERROR_MESSAGE
+                    : GENERIC_ERROR_MESSAGE;
+            setStatus({ error_msg: response_error });
             setSubmitting(false);
         } else {
             const response = await WS.authorized.storage.getSettings();
-            if (response.error) {
+            if (response?.error) {
                 setRestState({ ...rest_state, api_error: response.error.message });
                 return;
             }
@@ -140,7 +149,17 @@ const PoiConfirmWithExampleFormContainer = ({
             {({ errors, handleSubmit, isSubmitting, status }) => (
                 <Form className='account-form__poi-confirm-example' onSubmit={handleSubmit}>
                     <FormBody>
-                        <PersonalDetailsForm editable_fields={rest_state.changeable_fields} is_rendered_for_onfido />
+                        <PersonalDetailsForm
+                            editable_fields={rest_state.changeable_fields}
+                            is_rendered_for_onfido
+                            side_note={side_note_image}
+                            inline_note_text={
+                                <Localize
+                                    i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                    components={[<strong key={0} />]}
+                                />
+                            }
+                        />
                         <button
                             type='submit'
                             className={classNames('account-form__poi-confirm-example--button', {
@@ -164,14 +183,13 @@ const PoiConfirmWithExampleFormContainer = ({
                             <div className='account-form__poi-confirm-example--status-message'>
                                 <HintBox
                                     icon='IcAlertDanger'
-                                    icon_height={16}
-                                    icon_width={16}
                                     message={
                                         <Text as='p' size='xxxs'>
-                                            <Localize i18n_default_text='Sorry, an internal error occurred. Hit the above checkbox to try again.' />
+                                            {status?.error_msg}
                                         </Text>
                                     }
                                     is_danger
+                                    className='hint-box-layout'
                                 />
                             </div>
                         )}

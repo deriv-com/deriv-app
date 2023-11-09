@@ -45,7 +45,8 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 description='Are you sure you want to cancel this transaction?'
                 hideCloseButton={true}
                 title='Cancel transaction'
-            />
+            />,
+            { defaultRootId: 'wallets_modal_root' }
         );
     }, [cancelTransaction, modal]);
 
@@ -73,7 +74,8 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                                   ]}
                                   description='View transaction hash on Blockchain.'
                                   title='Transaction details'
-                              />
+                              />,
+                              { defaultRootId: 'wallets_modal_root' }
                           )
                         : null,
                 value: transaction.formatted_transaction_hash,
@@ -94,7 +96,8 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                                   ]}
                                   description='View address on Blockchain.'
                                   title='Transaction details'
-                              />
+                              />,
+                              { defaultRootId: 'wallets_modal_root' }
                           )
                         : null,
                 value: transaction.formatted_address_hash,
@@ -213,7 +216,8 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                                       description={transaction.description}
                                       hideCloseButton
                                       title='Transaction details'
-                                  />
+                                  />,
+                                  { defaultRootId: 'wallets_modal_root' }
                               )
                         : undefined
                 }

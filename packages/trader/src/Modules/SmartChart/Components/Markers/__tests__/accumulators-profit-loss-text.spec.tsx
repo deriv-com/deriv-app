@@ -11,8 +11,8 @@ describe('AccumulatorsProfitLossText', () => {
     const props = {
         className: 'profit-loss-text',
         currency: 'USD',
-        is_crypto: false,
-        profit: +0.35,
+        displayed_profit_value: 0.35,
+        should_show_profit_percentage: false,
     };
     it('should render AccumulatorsProfitLossText', () => {
         render(<AccumulatorsProfitLossText {...props} />);
@@ -22,7 +22,7 @@ describe('AccumulatorsProfitLossText', () => {
         expect(screen.getByText('USD')).toHaveClass('profit-loss-text__currency');
     });
     it('should render AccumulatorsProfitLossText with a value of >= 1K correctly', () => {
-        render(<AccumulatorsProfitLossText {...props} profit={1040} />);
+        render(<AccumulatorsProfitLossText {...props} displayed_profit_value={1040} />);
         const whole_number = screen.getByText(/\+1,040./i);
         expect(whole_number).toBeInTheDocument();
     });

@@ -10,17 +10,16 @@ jest.mock('../accumulators-profit-loss-text', () => () => 'AccumulatorsProfitLos
 
 describe('AccumulatorsProfitLossTooltip', () => {
     const props: React.ComponentProps<typeof AccumulatorsProfitLossTooltip> = {
+        alignment: 'right',
         className: 'profit-loss-tooltip',
         currency: 'USD',
         current_spot: 6468.95,
         current_spot_time: 1666091856,
+        profit: 0.15,
         high_barrier: '6469.10',
-        is_sold: 0,
-        profit: +0.15,
-        alignment: 'right',
-        should_show_profit_text: true,
         is_beta_chart: false,
-        underlying: 'R_100',
+        is_sold: 0,
+        should_show_profit_text: true,
     };
     const profit_text = 'Total profit/loss:';
 

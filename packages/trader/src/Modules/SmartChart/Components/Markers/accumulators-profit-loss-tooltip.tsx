@@ -37,7 +37,6 @@ const AccumulatorsProfitLossTooltip = ({
     profit_percentage,
     should_show_profit_text,
     is_beta_chart,
-    underlying,
 }: TAccumulatorsProfitLossTooltip) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = Number(profit) >= 0;
@@ -95,9 +94,11 @@ const AccumulatorsProfitLossTooltip = ({
                 currency={currency}
                 current_spot={current_spot}
                 current_spot_time={current_spot_time}
-                profit={getDecimalPlaces(currency) > 2 && profit_percentage ? profit_percentage : profit}
+                displayed_profit_value={
+                    getDecimalPlaces(currency) > 2 && profit_percentage ? profit_percentage : profit
+                }
                 is_beta_chart={is_beta_chart}
-                is_crypto={getDecimalPlaces(currency) > 2}
+                should_show_profit_percentage={getDecimalPlaces(currency) > 2}
             />
         );
 

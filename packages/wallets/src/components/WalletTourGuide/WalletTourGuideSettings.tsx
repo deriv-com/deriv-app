@@ -10,7 +10,8 @@ export const tourStepConfig = (
     hasMT5Account: boolean,
     hasDerivAppsTradingAccount: boolean,
     isAllWalletsAlreadyAdded: boolean
-): Step[] =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): any[] =>
     isMobile
         ? getMobileSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded)
         : getDesktopSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded);
@@ -20,7 +21,8 @@ const getMobileSteps = (
     hasMT5Account: boolean,
     hasDerivAppsTradingAccount: boolean,
     isAllWalletsAlreadyAdded: boolean
-): Step[] => [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): any[] => [
     // Wallet card
     {
         content: (
@@ -189,7 +191,7 @@ const getDesktopSteps = (
     hasMT5Account: boolean,
     hasDerivAppsTradingAccount: boolean,
     isAllWalletsAlreadyAdded: boolean
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any[] => [
     // Wallet header
     {

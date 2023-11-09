@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ONFIDO_ERROR_STATUS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { RejectedReasons } from '../rejected-reasons';
 

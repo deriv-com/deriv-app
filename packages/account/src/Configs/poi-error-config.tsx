@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetAccountStatus, ResidenceList } from '@deriv/api-types';
-import { IDV_ERROR_STATUS, TIDVErrorStatus, getIDVError } from '@deriv/shared';
+import { IDV_ERROR_STATUS, getIDVError } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import PoiNameDobExample from '../Assets/ic-poi-name-dob-example.svg';
 import PoiNameExample from '../Assets/ic-poi-name-example.svg';

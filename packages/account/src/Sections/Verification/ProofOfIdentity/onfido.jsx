@@ -31,7 +31,7 @@ const Onfido = ({
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
         case identity_status_codes.expired: {
-            const submission_errors = formatOnfidoError(rejected_reasons, status);
+            const submission_errors = formatOnfidoError(status, rejected_reasons);
             if (Number(submissions_left) < 1) {
                 return (
                     <Unsupported

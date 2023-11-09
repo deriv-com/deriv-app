@@ -74,7 +74,7 @@ const IdvFailed = ({
     residence_list,
     account_settings,
     handleSubmit,
-    mismatch_status = IDV_ERROR_STATUS.Failed.code as TIDVErrorStatus,
+    mismatch_status = IDV_ERROR_STATUS.Failed.code,
     latest_status,
     selected_country,
 }: TIdvFailed) => {

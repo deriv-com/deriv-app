@@ -132,12 +132,6 @@ const LABEL_DALEMBERT_UNIT: TConfigItem = {
     description: localize("The amount that you may add to your stake if you're losing a trade."),
 };
 
-const LABEL_OSCARS_GRIND_UNIT: TConfigItem = {
-    type: 'label',
-    label: localize('Unit'),
-    description: localize('The amount that you may add to your stake after each successful trade.'),
-};
-
 const UNIT: TConfigItem = {
     type: 'number',
     name: 'unit',
@@ -184,14 +178,14 @@ export const STRATEGIES: TStrategies = {
         ],
     },
     OSCARS_GRIND: {
-        name: 'oscars_grind',
+        name: 'oscars_grind_max-stake',
         label: localize('Oscar’s Grind'),
         description: localize(
             "The Oscar's Grind strategy aims to potentially make one unit of profit per session. A new session starts when the target profit is reached. If a losing trade is followed by a successful one, the stake increases by one unit. In every other scenario, the stake for the next trade will be the same as the previous one. If the stake for the next trade exceeds the gap between the target profit and current loss of the session, it adjusts to the gap size. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
         ),
         fields: [
-            [SYMBOL, TRADETYPE_FULL_WIDTH, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_OSCARS_GRIND_UNIT, UNIT],
+            [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
+            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },
 };

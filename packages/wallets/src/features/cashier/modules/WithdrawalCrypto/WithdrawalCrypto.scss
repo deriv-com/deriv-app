@@ -21,25 +21,6 @@
     }
 }
 
-.wallets-withdrawal-crypto-disclaimer {
-    width: 100%;
-
-    & li {
-        align-self: stretch;
-        line-height: 1.4rem;
-    }
-
-    @include mobile {
-        max-width: 100%;
-        max-height: 10.6rem;
-    }
-
-    &__items {
-        list-style: disc;
-        margin-left: 8px;
-    }
-}
-
 .wallets-withdrawal-crypto-address {
     width: 100%;
     height: fit-content;

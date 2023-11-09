@@ -31,6 +31,7 @@ export { default as useDxtradeAccountsList } from './useDxtradeAccountsList';
 export { default as useDynamicLeverage } from './useDynamicLeverage';
 export { default as useExchangeRate } from './useExchangeRate';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
+export { default as useJurisdictionStatus } from './useJurisdictionStatus';
 export { default as useLandingCompany } from './useLandingCompany';
 export { default as useMT5AccountsList } from './useMT5AccountsList';
 export { default as usePOI } from './usePOI';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuthorize } from '@deriv/api';
+import { useAuthorize, useJurisdictionStatus } from '@deriv/api';
 import { WalletButton } from '../../../../../components/Base';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
@@ -37,6 +37,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const history = useHistory();
     const { show } = useModal();
     const { title } = MarketTypeDetails[account.market_type || 'all'];
+    const { data: verification_status } = useJurisdictionStatus(account);
+
+    const { poa_status: poaStatus, poi_status: poiStatus } = verification_status?.verification_status || {};
 
     return (
         <TradingAccountCard
@@ -70,6 +73,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 </div>
                 <p className='wallets-added-mt5__details-balance'>{account.display_balance}</p>
                 <p className='wallets-added-mt5__details-loginid'>{account.display_login}</p>
+                {poiStatus === 'failed' && poaStatus === 'failed' && <h1>Failed</h1>}
+                {(poaStatus === 'pending' || poiStatus === 'pending') && <h1>Pending</h1>}
             </div>
         </TradingAccountCard>
     );

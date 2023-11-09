@@ -10,6 +10,7 @@ import {
     isFieldImmutable,
     preventEmptyClipboardPaste,
     shouldShowIdentityInformation,
+    getOnfidoSupportedLocaleCode,
     verifyFields,
 } from '../utils';
 
@@ -227,6 +228,20 @@ describe('isDocumentNumberValid', () => {
         };
         const errorMessage = isDocumentNumberValid('08123456F753', mock_document_type);
         expect(errorMessage).toBeUndefined();
+    });
+});
+
+describe('getOnfidoSupportedLocaleCode', () => {
+    it('should return the correct language tag for German', () => {
+        expect(getOnfidoSupportedLocaleCode('DE')).toEqual('de');
+    });
+
+    it('should return the correct language tag for Indonesian', () => {
+        expect(getOnfidoSupportedLocaleCode('ID')).toEqual('id_ID');
+    });
+
+    it('should return the correct language tag for Chinese', () => {
+        expect(getOnfidoSupportedLocaleCode('Zh_CN')).toEqual('zh_CN');
     });
 });
 

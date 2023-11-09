@@ -1,4 +1,5 @@
 import React from 'react';
+import countries from 'i18n-iso-countries';
 import { Localize, localize } from '@deriv/translations';
 import {
     filterObjProperties,
@@ -7,11 +8,13 @@ import {
     validName,
     getIDVNotApplicableOption,
     idv_error_statuses,
+    AUTH_STATUS_CODES,
 } from '@deriv/shared';
 import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';
 import { getIDVDocuments } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
+import { LANGUAGE_CODES } from '../Constants/onfido';
 
 export const documentAdditionalError = (
     document_additional: string | undefined,
@@ -56,7 +59,11 @@ export const shouldShowIdentityInformation = ({
 }: TIDVSupportCheck) => {
     const country = residence_list.find(item => item.value === citizen);
     const maltainvest = real_account_signup_target === 'maltainvest';
-    const should_skip_idv = account_status?.status?.some((status: string) => status === 'skip_idv'); //status added by BE when idv should be skipped for the user
+    const identity = account_status?.authentication?.identity;
+
+    const is_identity_verified = identity?.status === AUTH_STATUS_CODES.VERIFIED;
+    const should_skip_idv =
+        is_identity_verified || account_status?.status?.some((status: string) => status === 'skip_idv'); //status added by BE when idv should be skipped for the user
     return Boolean(
         !maltainvest && citizen && country?.identity?.services?.idv?.is_country_supported && !should_skip_idv
     );
@@ -189,6 +196,43 @@ export const flatten = <T extends Array<unknown>>(arr: T) => [].concat(...arr);
 
 export const isServerError = (error: unknown): error is TServerError =>
     typeof error === 'object' && error !== null && 'code' in error;
+
+/**
+ *  Returns the alpha 3 code for a given country code
+ * @name convertAlpha2toAlpha3
+ * @param country_code  - country code
+ * @returns alpha 3 code
+ */
+export const convertAlpha2toAlpha3 = (country_code: string) =>
+    country_code.length !== 3 ? countries.alpha2ToAlpha3(country_code.toUpperCase()) : country_code;
+
+/**
+ * Returns the alpha 2 code for a given country code
+ * @name convertAlpha3toAlpha2
+ * @param country_code - country code
+ * @returns alpha 2 code
+ */
+
+export const convertAlpha3toAlpha2 = (country_code: string) =>
+    country_code.length !== 2 ? countries.alpha3ToAlpha2(country_code.toUpperCase()) : country_code;
+
+/**
+ * Generates a language code supported by Onfido
+ * @name getOnfidoSupportedLocaleCode
+ * @param language_code
+ * @returns language code supported by Onfido
+ */
+export const getOnfidoSupportedLocaleCode = (language_code: string) => {
+    try {
+        const code = language_code.toLowerCase().split('_');
+        if (code[0] === 'id') {
+            return LANGUAGE_CODES.ID;
+        }
+        return code.length > 1 ? `${code[0]}_${code[1].toUpperCase()}` : code[0];
+    } catch (e) {
+        return LANGUAGE_CODES.EN;
+    }
+};
 
 export const getIDVDocumentType = (
     idv_latest_attempt: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'],

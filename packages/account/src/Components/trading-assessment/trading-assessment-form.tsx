@@ -226,7 +226,7 @@ const TradingAssessmentForm = ({
                                                 text={question_text}
                                                 list={answer_options ?? []}
                                                 onChange={e => {
-                                                    handleValueSelection(e, form_control, setFieldValue, values);
+                                                    handleValueSelection(e, form_control, setFieldValue);
                                                 }}
                                                 values={values}
                                                 form_control={form_control as keyof TFormData}

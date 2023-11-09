@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import TradingAssessmentNewUser from '../trading-assessment-new-user';
@@ -37,10 +37,6 @@ describe('TradingAssessmentNewUser', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-    });
-
-    it('should render without crashing', () => {
-        render(<TradingAssessmentNewUser {...baseProps} />);
     });
 
     it('should handle the cancel event correctly', () => {

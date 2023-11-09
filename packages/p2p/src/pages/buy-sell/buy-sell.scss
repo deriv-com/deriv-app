@@ -50,7 +50,8 @@
 
     &__table-row {
         padding: 1.6rem;
-        grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1fr;
+        height: max-content;
+        grid-template-columns: 2fr 1.4fr 1fr 1.8fr 0.8fr;
 
         &:hover {
             background-color: var(--general-hover);
@@ -82,7 +83,7 @@
 
     &__button {
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
     }
 }

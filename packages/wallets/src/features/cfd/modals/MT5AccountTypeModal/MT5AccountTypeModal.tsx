@@ -12,13 +12,12 @@ const MT5AccountTypeModal = () => {
 
     return (
         <ModalStepWrapper
+            closeOnEscape
             renderFooter={() => (
                 <WalletButton
                     disabled={!selectedMarketType}
                     onClick={() => {
-                        setModalState({
-                            marketType: selectedMarketType,
-                        });
+                        setModalState('marketType', selectedMarketType);
                         show(<JurisdictionModal />);
                     }}
                     text='Next'

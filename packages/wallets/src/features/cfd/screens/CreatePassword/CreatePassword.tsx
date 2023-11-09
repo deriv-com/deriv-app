@@ -1,7 +1,6 @@
 import React from 'react';
-import { WalletButton } from '../../../../components/Base';
+import { WalletButton, WalletPasswordField } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
-import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import { TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
@@ -35,8 +34,8 @@ const CreatePassword: React.FC<TProps> = ({
                 You can use this password for all your {title} accounts.
             </span>
             <div className='wallets-create-password-input'>
-                <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
-                <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
+                {/* <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' /> */}
+                <WalletPasswordField onChange={onPasswordChange} placeholder={`${title} password`} />
             </div>
             {!isMobile && (
                 <WalletButton

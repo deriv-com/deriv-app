@@ -1,7 +1,10 @@
 .wallets-dropdown {
-    min-width: 12rem;
-    max-width: 19.5rem;
+    width: 19.5rem;
     position: relative;
+
+    @include mobile {
+        width: 100%;
+    }
 
     &__button {
         all: unset;
@@ -33,6 +36,8 @@
 
     &__field {
         min-width: 0; /* this is required to reset input's default width */
+        display: flex;
+        flex-grow: 1;
         font-family: inherit;
         outline: 0;
         font-size: 1.4rem;

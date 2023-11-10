@@ -68,15 +68,15 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Matches/Differs',
-                            value: 'match_diff',
+                            value: TRADE_TYPES.MATCH_DIFF,
                         },
                         {
                             text: 'Even/Odd',
-                            value: 'even_odd',
+                            value: TRADE_TYPES.EVEN_ODD,
                         },
                         {
                             text: 'Over/Under',
-                            value: 'over_under',
+                            value: TRADE_TYPES.OVER_UNDER,
                         },
                     ],
                     icon: 'IcDigits',
@@ -118,15 +118,15 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Matches/Differs',
-                    value: 'match_diff',
+                    value: TRADE_TYPES.MATCH_DIFF,
                 },
                 {
                     text: 'Even/Odd',
-                    value: 'even_odd',
+                    value: TRADE_TYPES.EVEN_ODD,
                 },
                 {
                     text: 'Over/Under',
-                    value: 'over_under',
+                    value: TRADE_TYPES.OVER_UNDER,
                 },
                 {
                     text: 'Call/Put',
@@ -197,15 +197,15 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Matches/Differs',
-                            value: 'match_diff',
+                            value: TRADE_TYPES.MATCH_DIFF,
                         },
                         {
                             text: 'Even/Odd',
-                            value: 'even_odd',
+                            value: TRADE_TYPES.EVEN_ODD,
                         },
                         {
                             text: 'Over/Under',
-                            value: 'over_under',
+                            value: TRADE_TYPES.OVER_UNDER,
                         },
                     ],
                     icon: 'IcDigits',
@@ -243,15 +243,15 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Matches/Differs',
-                    value: 'match_diff',
+                    value: TRADE_TYPES.MATCH_DIFF,
                 },
                 {
                     text: 'Even/Odd',
-                    value: 'even_odd',
+                    value: TRADE_TYPES.EVEN_ODD,
                 },
                 {
                     text: 'Over/Under',
-                    value: 'over_under',
+                    value: TRADE_TYPES.OVER_UNDER,
                 },
                 {
                     text: 'Call/Put',

@@ -43,36 +43,36 @@ describe('<TradeCategories />', () => {
         render(<TradeCategories category='end' onClick={jest.fn()} />);
         expect(screen.getByText(/mockedEndTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedEvenOddTradeDescription is rendered correctly when trade category is "even_odd"', () => {
-        render(<TradeCategories category='even_odd' onClick={jest.fn()} />);
+    it('Ensure mockedEvenOddTradeDescription is rendered correctly when trade category is "TRADE_TYPES.EVEN_ODD"', () => {
+        render(<TradeCategories category={TRADE_TYPES.EVEN_ODD} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedEvenOddTradeDescription/i)).toBeInTheDocument();
     });
     it('Ensure mockedHighLowTradeDescription is rendered correctly when trade category is "high_low"', () => {
         render(<TradeCategories category='high_low' onClick={jest.fn()} />);
         expect(screen.getByText(/mockedHighLowTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedLbCallTradeDescription is rendered correctly when trade category is "TRADE_TYPES.LBCALL"', () => {
-        render(<TradeCategories category={TRADE_TYPES.LBCALL} onClick={jest.fn()} />);
+    it('Ensure mockedLbCallTradeDescription is rendered correctly when trade category is "TRADE_TYPES.LB_CALL"', () => {
+        render(<TradeCategories category={TRADE_TYPES.LB_CALL} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedLbCallTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedLbHighLowTradeDescription is rendered correctly when trade category is TRADE_TYPES.LBHIGHLOW', () => {
-        render(<TradeCategories category={TRADE_TYPES.LBHIGHLOW} onClick={jest.fn()} />);
+    it('Ensure mockedLbHighLowTradeDescription is rendered correctly when trade category is TRADE_TYPES.LB_HIGH_LOW', () => {
+        render(<TradeCategories category={TRADE_TYPES.LB_HIGH_LOW} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedLbHighLowTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedLbPutTradeDescription is rendered correctly when trade category is "TRADE_TYPES.LBPUT"', () => {
-        render(<TradeCategories category={TRADE_TYPES.LBPUT} onClick={jest.fn()} />);
+    it('Ensure mockedLbPutTradeDescription is rendered correctly when trade category is "TRADE_TYPES.LB_PUT"', () => {
+        render(<TradeCategories category={TRADE_TYPES.LB_PUT} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedLbPutTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedMatchDiffTradeDescription is rendered correctly when trade category is "match_diff"', () => {
-        render(<TradeCategories category='match_diff' onClick={jest.fn()} />);
+    it('Ensure mockedMatchDiffTradeDescription is rendered correctly when trade category is "TRADE_TYPES.MATCH_DIFF"', () => {
+        render(<TradeCategories category={TRADE_TYPES.MATCH_DIFF} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedMatchDiffTradeDescription/i)).toBeInTheDocument();
     });
     it('Ensure mockedMultiplierTradeDescription is rendered correctly when trade category is "TRADE_TYPES.MULTIPLIER"', () => {
         render(<TradeCategories category={TRADE_TYPES.MULTIPLIER} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedMultiplierTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedOverUnderTradeDescription is rendered correctly when trade category is "over_under"', () => {
-        render(<TradeCategories category='over_under' onClick={jest.fn()} />);
+    it('Ensure mockedOverUnderTradeDescription is rendered correctly when trade category is "TRADE_TYPES.OVER_UNDER"', () => {
+        render(<TradeCategories category={TRADE_TYPES.OVER_UNDER} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedOverUnderTradeDescription/i)).toBeInTheDocument();
     });
     it('Ensure mockedResetTradeDescription is rendered correctly when trade category is "TRADE_TYPES.RESET"', () => {
@@ -83,16 +83,16 @@ describe('<TradeCategories />', () => {
         render(<TradeCategories category='rise_fall' onClick={jest.fn()} />);
         expect(screen.getByText(/mockedRiseFallTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedRunHighLowTradeDescription is rendered correctly when trade category is "TRADE_TYPES.RUNHIGHLOW"', () => {
-        render(<TradeCategories category={TRADE_TYPES.RUNHIGHLOW} onClick={jest.fn()} />);
+    it('Ensure mockedRunHighLowTradeDescription is rendered correctly when trade category is "TRADE_TYPES.RUN_HIGH_LOW"', () => {
+        render(<TradeCategories category={TRADE_TYPES.RUN_HIGH_LOW} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedRunHighLowTradeDescription/i)).toBeInTheDocument();
     });
     it('Ensure mockedStayTradeDescription is rendered correctly when trade category is "stay"', () => {
         render(<TradeCategories category='stay' onClick={jest.fn()} />);
         expect(screen.getByText(/mockedStayTradeDescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedTickHighLowTradeDescription is rendered correctly when trade category is "TRADE_TYPES.TICKHIGHLOW"', () => {
-        render(<TradeCategories category={TRADE_TYPES.TICKHIGHLOW} onClick={jest.fn()} />);
+    it('Ensure mockedTickHighLowTradeDescription is rendered correctly when trade category is "TRADE_TYPES.TICK_HIGH_LOW"', () => {
+        render(<TradeCategories category={TRADE_TYPES.TICK_HIGH_LOW} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedTickHighLowTradeDescription/i)).toBeInTheDocument();
     });
     it('Ensure mockedTouchTradeDescription is rendered correctly when trade category is "touch"', () => {

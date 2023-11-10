@@ -99,52 +99,51 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         basis: ['stake', 'payout'],
         components: [],
     },
-    match_diff: {
+    [TRADE_TYPES.MATCH_DIFF]: {
         title: localize('Matches/Differs'),
-        trade_types: ['DIGITMATCH', 'DIGITDIFF'],
+        trade_types: [CONTRACT_TYPES.MATCH_DIFF.MATCH, CONTRACT_TYPES.MATCH_DIFF.DIFF],
         basis: ['stake', 'payout'],
         components: ['last_digit'],
     },
-    even_odd: {
+    [TRADE_TYPES.EVEN_ODD]: {
         title: localize('Even/Odd'),
-        trade_types: ['DIGITODD', 'DIGITEVEN'],
+        trade_types: [CONTRACT_TYPES.EVEN_ODD.ODD, CONTRACT_TYPES.EVEN_ODD.EVEN],
         basis: ['stake', 'payout'],
         components: [],
     },
-    over_under: {
+    [TRADE_TYPES.OVER_UNDER]: {
         title: localize('Over/Under'),
-        trade_types: ['DIGITOVER', 'DIGITUNDER'],
+        trade_types: [CONTRACT_TYPES.OVER_UNDER.OVER, CONTRACT_TYPES.OVER_UNDER.UNDER],
         basis: ['stake', 'payout'],
         components: ['last_digit'],
     },
-    // TODO: update the rest of these contracts config
-    [TRADE_TYPES.LBCALL]: {
+    [TRADE_TYPES.LB_CALL]: {
         title: localize('Close-to-Low'),
-        trade_types: [CONTRACT_TYPES.LBCALL],
+        trade_types: [CONTRACT_TYPES.LB_CALL],
         basis: ['multiplier'],
         components: [],
     },
-    [TRADE_TYPES.LBPUT]: {
+    [TRADE_TYPES.LB_PUT]: {
         title: localize('High-to-Close'),
-        trade_types: [CONTRACT_TYPES.LBPUT],
+        trade_types: [CONTRACT_TYPES.LB_PUT],
         basis: ['multiplier'],
         components: [],
     },
-    [TRADE_TYPES.LBHIGHLOW]: {
+    [TRADE_TYPES.LB_HIGH_LOW]: {
         title: localize('High-to-Low'),
-        trade_types: [CONTRACT_TYPES.LBHIGHLOW],
+        trade_types: [CONTRACT_TYPES.LB_HIGH_LOW],
         basis: ['multiplier'],
         components: [],
     },
-    [TRADE_TYPES.TICKHIGHLOW]: {
+    [TRADE_TYPES.TICK_HIGH_LOW]: {
         title: localize('High Tick/Low Tick'),
-        trade_types: [CONTRACT_TYPES.TICKHIGHLOW.HIGH, CONTRACT_TYPES.TICKHIGHLOW.LOW],
+        trade_types: [CONTRACT_TYPES.TICK_HIGH_LOW.HIGH, CONTRACT_TYPES.TICK_HIGH_LOW.LOW],
         basis: [],
         components: [],
     },
-    [TRADE_TYPES.RUNHIGHLOW]: {
+    [TRADE_TYPES.RUN_HIGH_LOW]: {
         title: localize('Only Ups/Only Downs'),
-        trade_types: [CONTRACT_TYPES.RUNHIGHLOW.HIGH, CONTRACT_TYPES.RUNHIGHLOW.LOW],
+        trade_types: [CONTRACT_TYPES.RUN_HIGH_LOW.HIGH, CONTRACT_TYPES.RUN_HIGH_LOW.LOW],
         basis: [],
         components: [],
     },
@@ -220,19 +219,25 @@ export const getContractCategoriesConfig = () =>
             categories: [
                 'rise_fall',
                 'rise_fall_equal',
-                TRADE_TYPES.RUNHIGHLOW,
+                TRADE_TYPES.RUN_HIGH_LOW,
                 TRADE_TYPES.RESET,
                 'asian',
                 TRADE_TYPES.CALLPUTSPREAD,
             ],
         },
-        'Highs & Lows': { name: localize('Highs & Lows'), categories: ['high_low', 'touch', TRADE_TYPES.TICKHIGHLOW] },
+        'Highs & Lows': {
+            name: localize('Highs & Lows'),
+            categories: ['high_low', 'touch', TRADE_TYPES.TICK_HIGH_LOW],
+        },
         'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
         'Look Backs': {
             name: localize('Look Backs'),
-            categories: [TRADE_TYPES.LBHIGHLOW, TRADE_TYPES.LBPUT, TRADE_TYPES.LBCALL],
+            categories: [TRADE_TYPES.LB_HIGH_LOW, TRADE_TYPES.LB_PUT, TRADE_TYPES.LB_CALL],
         },
-        Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
+        Digits: {
+            name: localize('Digits'),
+            categories: [TRADE_TYPES.MATCH_DIFF, TRADE_TYPES.EVEN_ODD, TRADE_TYPES.OVER_UNDER],
+        },
         Vanillas: { name: localize('Vanillas'), categories: [TRADE_TYPES.VANILLA.CALL, TRADE_TYPES.VANILLA.PUT] },
         Accumulators: { name: localize('Accumulators'), categories: [TRADE_TYPES.ACCUMULATOR] },
     } as const);
@@ -240,15 +245,15 @@ export const getContractCategoriesConfig = () =>
 export const unsupported_contract_types_list = [
     // TODO: remove these once all contract types are supported
     TRADE_TYPES.CALLPUTSPREAD,
-    TRADE_TYPES.RUNHIGHLOW,
+    TRADE_TYPES.RUN_HIGH_LOW,
     TRADE_TYPES.RESET,
     'asian',
-    TRADE_TYPES.TICKHIGHLOW,
+    TRADE_TYPES.TICK_HIGH_LOW,
     'end',
     'stay',
-    TRADE_TYPES.LBCALL,
-    TRADE_TYPES.LBPUT,
-    TRADE_TYPES.LBHIGHLOW,
+    TRADE_TYPES.LB_CALL,
+    TRADE_TYPES.LB_PUT,
+    TRADE_TYPES.LB_HIGH_LOW,
 ];
 
 export const getCardLabels = () =>

@@ -1,5 +1,12 @@
 import { localize } from '@deriv/translations';
-import { isHighLow, getContractTypesConfig, isCallPut, isVanillaContract, TContractInfo } from '@deriv/shared';
+import {
+    isHighLow,
+    getContractTypesConfig,
+    isCallPut,
+    isVanillaContract,
+    TContractInfo,
+    CONTRACT_TYPES,
+} from '@deriv/shared';
 
 export const addCommaToNumber = (
     num: number | null | undefined,
@@ -34,12 +41,12 @@ export const isDigitType = (contract_type: TContractInfo['contract_type']) =>
     contract_type && /digit/.test(contract_type.toLowerCase());
 
 const digitTypeMap = (contract_info: TContractInfo) => ({
-    DIGITDIFF: localize('Not {{barrier}}', { barrier: contract_info.barrier }),
-    DIGITEVEN: localize('Even'),
-    DIGITMATCH: localize('Equals {{barrier}}', { barrier: contract_info.barrier }),
-    DIGITODD: localize('Odd'),
-    DIGITOVER: localize('Over {{barrier}}', { barrier: contract_info.barrier }),
-    DIGITUNDER: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
+    [CONTRACT_TYPES.MATCH_DIFF.DIFF]: localize('Not {{barrier}}', { barrier: contract_info.barrier }),
+    [CONTRACT_TYPES.EVEN_ODD.EVEN]: localize('Even'),
+    [CONTRACT_TYPES.MATCH_DIFF.MATCH]: localize('Equals {{barrier}}', { barrier: contract_info.barrier }),
+    [CONTRACT_TYPES.EVEN_ODD.ODD]: localize('Odd'),
+    [CONTRACT_TYPES.OVER_UNDER.OVER]: localize('Over {{barrier}}', { barrier: contract_info.barrier }),
+    [CONTRACT_TYPES.OVER_UNDER.UNDER]: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
 });
 
 export const filterByContractType = (

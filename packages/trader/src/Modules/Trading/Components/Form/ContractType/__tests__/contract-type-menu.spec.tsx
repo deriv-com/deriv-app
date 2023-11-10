@@ -85,15 +85,15 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Matches/Differs',
-                            value: 'match_diff',
+                            value: TRADE_TYPES.MATCH_DIFF,
                         },
                         {
                             text: 'Even/Odd',
-                            value: 'even_odd',
+                            value: TRADE_TYPES.EVEN_ODD,
                         },
                         {
                             text: 'Over/Under',
-                            value: 'over_under',
+                            value: TRADE_TYPES.OVER_UNDER,
                         },
                     ],
                     icon: 'IcDigits',
@@ -124,15 +124,15 @@ describe('ContractTypeMenu', () => {
                 },
                 {
                     text: 'Matches/Differs',
-                    value: 'match_diff',
+                    value: TRADE_TYPES.MATCH_DIFF,
                 },
                 {
                     text: 'Even/Odd',
-                    value: 'even_odd',
+                    value: TRADE_TYPES.EVEN_ODD,
                 },
                 {
                     text: 'Over/Under',
-                    value: 'over_under',
+                    value: TRADE_TYPES.OVER_UNDER,
                 },
             ],
             icon: 'IcCatAll',
@@ -199,15 +199,15 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Matches/Differs',
-                            value: 'match_diff',
+                            value: TRADE_TYPES.MATCH_DIFF,
                         },
                         {
                             text: 'Even/Odd',
-                            value: 'even_odd',
+                            value: TRADE_TYPES.EVEN_ODD,
                         },
                         {
                             text: 'Over/Under',
-                            value: 'over_under',
+                            value: TRADE_TYPES.OVER_UNDER,
                         },
                     ],
                     icon: 'IcDigits',
@@ -234,15 +234,15 @@ describe('ContractTypeMenu', () => {
                 },
                 {
                     text: 'Matches/Differs',
-                    value: 'match_diff',
+                    value: TRADE_TYPES.MATCH_DIFF,
                 },
                 {
                     text: 'Even/Odd',
-                    value: 'even_odd',
+                    value: TRADE_TYPES.EVEN_ODD,
                 },
                 {
                     text: 'Over/Under',
-                    value: 'over_under',
+                    value: TRADE_TYPES.OVER_UNDER,
                 },
             ],
             icon: 'IcCatOptions',
@@ -297,15 +297,15 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Matches/Differs',
-                    value: 'match_diff',
+                    value: TRADE_TYPES.MATCH_DIFF,
                 },
                 {
                     text: 'Even/Odd',
-                    value: 'even_odd',
+                    value: TRADE_TYPES.EVEN_ODD,
                 },
                 {
                     text: 'Over/Under',
-                    value: 'over_under',
+                    value: TRADE_TYPES.OVER_UNDER,
                 },
             ],
             icon: 'IcDigits',

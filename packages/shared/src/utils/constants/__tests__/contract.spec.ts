@@ -116,7 +116,7 @@ describe('getCleanedUpCategories', () => {
                         text: 'Rise/Fall',
                     },
                     'rise_fall_equal',
-                    TRADE_TYPES.RUNHIGHLOW,
+                    TRADE_TYPES.RUN_HIGH_LOW,
                     TRADE_TYPES.RESET,
                     'asian',
                     TRADE_TYPES.CALLPUTSPREAD,

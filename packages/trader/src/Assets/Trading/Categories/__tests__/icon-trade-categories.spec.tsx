@@ -62,8 +62,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is match_diff', () => {
-        render(<IconTradeCategory category='match_diff' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.MATCH_DIFF', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.MATCH_DIFF} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -71,8 +71,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is even_odd', () => {
-        render(<IconTradeCategory category='even_odd' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.EVEN_ODD', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.EVEN_ODD} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -80,8 +80,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is over_under', () => {
-        render(<IconTradeCategory category='over_under' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.OVER_UNDER', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.OVER_UNDER} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -107,26 +107,26 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect MockedIcon to be rendered when category is TRADE_TYPES.LBCALL', () => {
-        render(<IconTradeCategory category={TRADE_TYPES.LBCALL} />);
+    it('Expect MockedIcon to be rendered when category is TRADE_TYPES.LB_CALL', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.LB_CALL} />);
         const mocked_icon_text = screen.getByText(mocked_icon);
         expect(mocked_icon_text).toBeInTheDocument();
         expect(mocked_icon_text).toHaveClass('category-wrapper');
     });
-    it('Expect MockedIcon to be rendered when category is TRADE_TYPES.LBPUT', () => {
-        render(<IconTradeCategory category={TRADE_TYPES.LBPUT} />);
+    it('Expect MockedIcon to be rendered when category is TRADE_TYPES.LB_PUT', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.LB_PUT} />);
         const mocked_icon_text = screen.getByText(mocked_icon);
         expect(mocked_icon_text).toBeInTheDocument();
         expect(mocked_icon_text).toHaveClass('category-wrapper');
     });
-    it('Expect MockedIcon to be rendered when category is TRADE_TYPES.LBHIGHLOW', () => {
-        render(<IconTradeCategory category={TRADE_TYPES.LBHIGHLOW} />);
+    it('Expect MockedIcon to be rendered when category is TRADE_TYPES.LB_HIGH_LOW', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.LB_HIGH_LOW} />);
         const mocked_icon_text = screen.getByText(mocked_icon);
         expect(mocked_icon_text).toBeInTheDocument();
         expect(mocked_icon_text).toHaveClass('category-wrapper');
     });
-    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.RUNHIGHLOW', () => {
-        render(<IconTradeCategory category={TRADE_TYPES.RUNHIGHLOW} />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.RUN_HIGH_LOW', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.RUN_HIGH_LOW} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -143,8 +143,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.TICKHIGHLOW', () => {
-        render(<IconTradeCategory category={TRADE_TYPES.TICKHIGHLOW} />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.TICK_HIGH_LOW', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.TICK_HIGH_LOW} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {

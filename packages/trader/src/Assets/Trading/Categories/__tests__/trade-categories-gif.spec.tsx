@@ -62,7 +62,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageEvenOdd to be rendered when trade category is even_odd', async () => {
+    it('expect ImageEvenOdd to be rendered when trade category is TRADE_TYPES.EVEN_ODD', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-even-odd.svg', () => ({
                 __esModule: true,
@@ -71,7 +71,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='even_odd' selected_contract_type='even_odd' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.EVEN_ODD}
+                            selected_contract_type={TRADE_TYPES.EVEN_ODD}
+                        />
+                    );
                     expect(screen.getByText(/imageevenodd/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -96,7 +101,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageCloseToLow to be rendered when trade category is TRADE_TYPES.LBCALL', async () => {
+    it('expect ImageCloseToLow to be rendered when trade category is TRADE_TYPES.LB_CALL', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-close-to-low.svg', () => ({
                 __esModule: true,
@@ -106,7 +111,10 @@ describe('<TradeCategoriesGIF />', () => {
             import('../trade-categories-gif')
                 .then(moduleName => {
                     render(
-                        <moduleName.default category={TRADE_TYPES.LBCALL} selected_contract_type={TRADE_TYPES.LBCALL} />
+                        <moduleName.default
+                            category={TRADE_TYPES.LB_CALL}
+                            selected_contract_type={TRADE_TYPES.LB_CALL}
+                        />
                     );
                     expect(screen.getByText(/imageclosetolow/i)).toBeInTheDocument();
                 })
@@ -115,7 +123,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageHighToClose to be rendered when trade category is TRADE_TYPES.LBPUT', async () => {
+    it('expect ImageHighToClose to be rendered when trade category is TRADE_TYPES.LB_PUT', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-high-to-close.svg', () => ({
                 __esModule: true,
@@ -125,7 +133,7 @@ describe('<TradeCategoriesGIF />', () => {
             import('../trade-categories-gif')
                 .then(moduleName => {
                     render(
-                        <moduleName.default category={TRADE_TYPES.LBPUT} selected_contract_type={TRADE_TYPES.LBPUT} />
+                        <moduleName.default category={TRADE_TYPES.LB_PUT} selected_contract_type={TRADE_TYPES.LB_PUT} />
                     );
                     expect(screen.getByText(/imagehightoclose/i)).toBeInTheDocument();
                 })
@@ -134,7 +142,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageHighToLow to be rendered when trade category is TRADE_TYPES.LBHIGHLOW', async () => {
+    it('expect ImageHighToLow to be rendered when trade category is TRADE_TYPES.LB_HIGH_LOW', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-high-to-low.svg', () => ({
                 __esModule: true,
@@ -145,8 +153,8 @@ describe('<TradeCategoriesGIF />', () => {
                 .then(moduleName => {
                     render(
                         <moduleName.default
-                            category={TRADE_TYPES.LBHIGHLOW}
-                            selected_contract_type={TRADE_TYPES.LBHIGHLOW}
+                            category={TRADE_TYPES.LB_HIGH_LOW}
+                            selected_contract_type={TRADE_TYPES.LB_HIGH_LOW}
                         />
                     );
                     expect(screen.getByText(/imagehightolow/i)).toBeInTheDocument();
@@ -190,7 +198,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageMatchDiff to be rendered when trade category is match_diff', async () => {
+    it('expect ImageMatchDiff to be rendered when trade category is TRADE_TYPES.MATCH_DIFF', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-match-diff.svg', () => ({
                 __esModule: true,
@@ -199,7 +207,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='match_diff' selected_contract_type='match_diff' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.MATCH_DIFF}
+                            selected_contract_type={TRADE_TYPES.MATCH_DIFF}
+                        />
+                    );
                     expect(screen.getByText(/imagematchdiff/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -229,7 +242,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageOverUnder to be rendered when trade category is over_under', async () => {
+    it('expect ImageOverUnder to be rendered when trade category is TRADE_TYPES.OVER_UNDER', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-over-under.svg', () => ({
                 __esModule: true,
@@ -238,7 +251,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='over_under' selected_contract_type='over_under' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.OVER_UNDER}
+                            selected_contract_type={TRADE_TYPES.OVER_UNDER}
+                        />
+                    );
                     expect(screen.getByText(/imageoverunder/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -265,7 +283,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageRunHighLow to be rendered when trade category is TRADE_TYPES.RUNHIGHLOW', async () => {
+    it('expect ImageRunHighLow to be rendered when trade category is TRADE_TYPES.RUN_HIGH_LOW', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-run-high-low.svg', () => ({
                 __esModule: true,
@@ -276,8 +294,8 @@ describe('<TradeCategoriesGIF />', () => {
                 .then(moduleName => {
                     render(
                         <moduleName.default
-                            category={TRADE_TYPES.RUNHIGHLOW}
-                            selected_contract_type={TRADE_TYPES.RUNHIGHLOW}
+                            category={TRADE_TYPES.RUN_HIGH_LOW}
+                            selected_contract_type={TRADE_TYPES.RUN_HIGH_LOW}
                         />
                     );
                     expect(screen.getByText(/imagerunhighlow/i)).toBeInTheDocument();
@@ -309,7 +327,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageTickHighLow to be rendered when trade category is TRADE_TYPES.TICKHIGHLOW', async () => {
+    it('expect ImageTickHighLow to be rendered when trade category is TRADE_TYPES.TICK_HIGH_LOW', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-tick-high-low.svg', () => ({
                 __esModule: true,
@@ -320,8 +338,8 @@ describe('<TradeCategoriesGIF />', () => {
                 .then(moduleName => {
                     render(
                         <moduleName.default
-                            category={TRADE_TYPES.TICKHIGHLOW}
-                            selected_contract_type={TRADE_TYPES.TICKHIGHLOW}
+                            category={TRADE_TYPES.TICK_HIGH_LOW}
+                            selected_contract_type={TRADE_TYPES.TICK_HIGH_LOW}
                         />
                     );
                     expect(screen.getByText(/imagetickhighlow/i)).toBeInTheDocument();

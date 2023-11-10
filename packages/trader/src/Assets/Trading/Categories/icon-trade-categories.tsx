@@ -61,7 +61,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'match_diff':
+            case TRADE_TYPES.MATCH_DIFF:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -73,7 +73,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'even_odd':
+            case TRADE_TYPES.EVEN_ODD:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -85,7 +85,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'over_under':
+            case TRADE_TYPES.OVER_UNDER:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -121,28 +121,28 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case TRADE_TYPES.LBCALL:
+            case TRADE_TYPES.LB_CALL:
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon icon='IcTradetypeLbcall' className='category-type' color='brand' />
                     </div>
                 );
                 break;
-            case TRADE_TYPES.LBPUT:
+            case TRADE_TYPES.LB_PUT:
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon icon='IcTradetypeLbput' className='category-type' color='brand' />
                     </div>
                 );
                 break;
-            case TRADE_TYPES.LBHIGHLOW:
+            case TRADE_TYPES.LB_HIGH_LOW:
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon icon='IcTradetypeLbhighlow' className='category-type' color='brand' />
                     </div>
                 );
                 break;
-            case TRADE_TYPES.RUNHIGHLOW:
+            case TRADE_TYPES.RUN_HIGH_LOW:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -166,7 +166,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case TRADE_TYPES.TICKHIGHLOW:
+            case TRADE_TYPES.TICK_HIGH_LOW:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>

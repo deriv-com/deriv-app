@@ -47,7 +47,7 @@ const IconTradeTypes = ({ type, className, ...props }: TIconTradeTypes) => {
             return <Icon icon='IcTradetypeLbcall' className={className} color='brand' {...props} />;
         case 'lbfloatput':
             return <Icon icon='IcTradetypeLbput' className={className} color='brand' {...props} />;
-        case TRADE_TYPES.LBHIGHLOW:
+        case TRADE_TYPES.LB_HIGH_LOW:
             return <Icon icon='IcTradetypeLbhighlow' className={className} color='brand' {...props} />;
         case 'multdown':
             return <Icon icon='IcTradetypeMultdown' className={className} color='brand' {...props} />;

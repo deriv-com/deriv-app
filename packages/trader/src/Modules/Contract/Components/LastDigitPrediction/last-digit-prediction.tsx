@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import React from 'react';
-import { isMobile } from '@deriv/shared';
+import { isMobile, TRADE_TYPES } from '@deriv/shared';
 import DigitDisplay from './digit-display';
 import LastDigitPointer from './last-digit-pointer';
 import { ProposalOpenContract, TicksStreamResponse } from '@deriv/api-types';
@@ -91,7 +91,7 @@ const LastDigitPrediction = ({
 
     const getOffset = () => (isMobile() ? digit_offset_mobile : digit_offset);
 
-    const isSelectableDigitType = () => (isMobile() ? trade_type !== 'even_odd' : false);
+    const isSelectableDigitType = () => (isMobile() ? trade_type !== TRADE_TYPES.EVEN_ODD : false);
     const digits_array = Object.keys(digits_info)
         .sort((a, b) => +a - +b)
         .map(spot_time => digits_info[+spot_time]);

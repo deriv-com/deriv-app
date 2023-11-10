@@ -187,7 +187,7 @@ describe('getLastTickFromTickStream', () => {
 
 describe('isDigitContract', () => {
     it('should return true if contract is digits', () => {
-        expect(ContractUtils.isDigitContract('DIGITMATCH')).toEqual(true);
+        expect(ContractUtils.isDigitContract(CONTRACT_TYPES.MATCH_DIFF.MATCH)).toEqual(true);
     });
 
     it('should return false if contract is not digits', () => {
@@ -197,7 +197,7 @@ describe('isDigitContract', () => {
 
 describe('isTurbosContract', () => {
     it('should return true if contract_type includes TURBOS', () => {
-        expect(ContractUtils.isTurbosContract('TURBOS')).toEqual(true);
+        expect(ContractUtils.isTurbosContract(CONTRACT_TYPES.TURBOS.LONG)).toEqual(true);
     });
     it('should return false if contract_type does not include TURBOS', () => {
         expect(ContractUtils.isTurbosContract('CALL')).toEqual(false);
@@ -216,7 +216,7 @@ describe('getDigitInfo', () => {
             current_spot_time: 10000000,
             current_spot: 456.99,
             exit_tick_time: 10000001,
-            contract_type: 'DIGITMATCH',
+            contract_type: CONTRACT_TYPES.MATCH_DIFF.MATCH,
             barrier: '9',
             tick_stream: [
                 {

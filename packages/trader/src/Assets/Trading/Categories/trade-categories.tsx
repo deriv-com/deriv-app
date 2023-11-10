@@ -53,13 +53,13 @@ const TradeCategories = ({
             case 'stay':
                 TradeTypeTemplate = <StayTradeDescription />;
                 break;
-            case 'match_diff':
+            case TRADE_TYPES.MATCH_DIFF:
                 TradeTypeTemplate = <MatchDiffTradeDescription />;
                 break;
-            case 'even_odd':
+            case TRADE_TYPES.EVEN_ODD:
                 TradeTypeTemplate = <EvenOddTradeDescription />;
                 break;
-            case 'over_under':
+            case TRADE_TYPES.OVER_UNDER:
                 TradeTypeTemplate = <OverUnderTradeDescription />;
                 break;
             case 'touch':
@@ -68,7 +68,7 @@ const TradeCategories = ({
             case 'asian':
                 TradeTypeTemplate = <AsianTradeDescription />;
                 break;
-            case TRADE_TYPES.RUNHIGHLOW:
+            case TRADE_TYPES.RUN_HIGH_LOW:
                 TradeTypeTemplate = <RunHighLowTradeDescription />;
                 break;
             case TRADE_TYPES.RESET:
@@ -77,16 +77,16 @@ const TradeCategories = ({
             case TRADE_TYPES.CALLPUTSPREAD:
                 TradeTypeTemplate = <CallPutSpreadTradeDescription />;
                 break;
-            case TRADE_TYPES.TICKHIGHLOW:
+            case TRADE_TYPES.TICK_HIGH_LOW:
                 TradeTypeTemplate = <TickHighLowTradeDescription />;
                 break;
-            case TRADE_TYPES.LBHIGHLOW:
+            case TRADE_TYPES.LB_HIGH_LOW:
                 TradeTypeTemplate = <LbHighLowTradeDescription />;
                 break;
-            case TRADE_TYPES.LBPUT:
+            case TRADE_TYPES.LB_PUT:
                 TradeTypeTemplate = <LbPutTradeDescription />;
                 break;
-            case TRADE_TYPES.LBCALL:
+            case TRADE_TYPES.LB_CALL:
                 TradeTypeTemplate = <LbCallTradeDescription />;
                 break;
             case TRADE_TYPES.MULTIPLIER:

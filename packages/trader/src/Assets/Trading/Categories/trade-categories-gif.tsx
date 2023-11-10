@@ -35,32 +35,32 @@ const TradeCategoriesGIF = ({
             return <ImageSpread />;
         case 'end':
             return <ImageEndsInOut />;
-        case 'even_odd':
+        case TRADE_TYPES.EVEN_ODD:
             return <ImageEvenOdd />;
         case 'high_low':
             return <ImageHighLow />;
-        case TRADE_TYPES.LBCALL:
+        case TRADE_TYPES.LB_CALL:
             return <ImageCloseToLow />;
-        case TRADE_TYPES.LBPUT:
+        case TRADE_TYPES.LB_PUT:
             return <ImageHighToClose />;
-        case TRADE_TYPES.LBHIGHLOW:
+        case TRADE_TYPES.LB_HIGH_LOW:
             return <ImageHighToLow />;
         case 'rise_fall':
         case 'rise_fall_equal':
             return <ImageRiseFall />;
-        case 'match_diff':
+        case TRADE_TYPES.MATCH_DIFF:
             return <ImageMatchDiff />;
         case TRADE_TYPES.MULTIPLIER:
             return <ImageMultiplier />;
-        case 'over_under':
+        case TRADE_TYPES.OVER_UNDER:
             return <ImageOverUnder />;
         case TRADE_TYPES.RESET:
             return <ImageReset />;
-        case TRADE_TYPES.RUNHIGHLOW:
+        case TRADE_TYPES.RUN_HIGH_LOW:
             return <ImageRunHighLow />;
         case TRADE_TYPES.ACCUMULATOR:
             return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
-        case TRADE_TYPES.TICKHIGHLOW:
+        case TRADE_TYPES.TICK_HIGH_LOW:
             return <ImageTickHighLow />;
         case 'touch':
             return <ImageTouch />;

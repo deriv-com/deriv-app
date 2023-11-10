@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../trader-providers';
 import Contract from '../contract-type';
 
@@ -8,7 +9,7 @@ const default_mock_store = {
     modules: {
         trade: {
             is_equal: 0,
-            contract_type: 'even_odd',
+            contract_type: TRADE_TYPES.EVEN_ODD,
             contract_types_list: {},
             cancellation_range_list: [],
             is_mobile_digit_view_selected: false,

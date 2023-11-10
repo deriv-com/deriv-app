@@ -100,7 +100,7 @@ describe('createTickMarkers', () => {
         contract_info.contract_type = CONTRACT_TYPES.ACCU;
         expect(getMarkerContractType(contract_info)).toBe('AccumulatorContract');
 
-        contract_info.contract_type = 'DIGITMATCH';
+        contract_info.contract_type = CONTRACT_TYPES.MATCH_DIFF.MATCH;
         expect(getMarkerContractType(contract_info)).toBe('DigitContract');
 
         contract_info.contract_type = 'CALL';

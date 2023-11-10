@@ -8,6 +8,7 @@
     &__type-and-wallet-name {
         display: flex;
         flex-direction: column;
+        justify-content: center;
     }
 
     &__account-details {
@@ -20,5 +21,6 @@
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+        gap: 0.4rem;
     }
 }

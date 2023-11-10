@@ -9,13 +9,14 @@ import {
     usePaymentAgentTransferVisible,
     useFeatureFlags,
 } from '@deriv/hooks';
-import { routes, PlatformContext, getStaticUrl } from '@deriv/shared';
+import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import getRoutesConfig from 'App/Constants/routes-config';
 import LiveChat from 'App/Components/Elements/LiveChat';
+import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
 import MenuLink from './menu-link';
 import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
@@ -36,6 +37,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_logged_in,
         is_logging_in,
         is_virtual,
+        loginid,
         logout: logoutClient,
         should_allow_authentication,
         landing_company_shortcode: active_account_landing_company,
@@ -51,6 +53,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
+
+    const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
@@ -79,7 +83,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 ];
             } else if (location === routes.traders_hub || is_trading_hub_category) {
                 primary_routes = [routes.account, routes.cashier];
-            } else if (location === routes.wallets) {
+            } else if (location === routes.wallets || is_next_wallet_enabled) {
                 primary_routes = [routes.reports, routes.account];
             } else {
                 primary_routes = [routes.reports, routes.account, routes.cashier];
@@ -92,7 +96,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         return () => clearTimeout(timeout);
-    }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category]);
+    }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
 
     const toggleDrawer = React.useCallback(() => {
         if (is_mobile_language_menu_open) setMobileLanguageMenuOpen(false);
@@ -368,6 +372,20 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             />
                                         </MobileDrawer.Item>
                                     </React.Fragment>
+                                )}
+                                {liveChat.isReady && (
+                                    <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
+                                        <Icon icon='IcWhatsApp' className='drawer-icon' />
+                                        <a
+                                            className='header__menu-mobile-whatsapp-link'
+                                            href={whatsapp_url}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            onClick={toggleDrawer}
+                                        >
+                                            {localize('WhatsApp')}
+                                        </a>
+                                    </MobileDrawer.Item>
                                 )}
                                 <MobileDrawer.Item className='header__menu-mobile-livechat'>
                                     {is_appstore ? null : <LiveChat is_mobile_drawer />}

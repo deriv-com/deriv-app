@@ -96,7 +96,6 @@
         }
         /* Not empty fields */
         &:focus,
-        &:disabled,
         &:not(:focus):not([value='']) {
             outline: none;
 
@@ -111,7 +110,7 @@
             color: var(--text-less-prominent);
 
             & ~ label {
-                color: var(--text-general) !important;
+                color: var(--text-less-prominent) !important;
             }
             & ~ svg {
                 .color1-fill {

@@ -3,7 +3,7 @@ import { WalletButton } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import { TPlatforms } from '../../../../types';
-import { PlatformToTitleMapper } from '../../constants';
+import { PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
 
 // TODO: Refactor the unnecessary props out once FlowProvider is integrated
@@ -26,10 +26,10 @@ const CreatePassword: React.FC<TProps> = ({
 }) => {
     const { isMobile } = useDevice();
 
-    const title = PlatformToTitleMapper[platform];
+    const title = PlatformDetails[platform].title;
     return (
         <div className='wallets-create-password'>
-            {icon}
+            {!isMobile && icon}
             <div className='wallets-create-password-title'>Create a {title} password</div>
             <span className='wallets-create-password-subtitle'>
                 You can use this password for all your {title} accounts.
@@ -41,6 +41,7 @@ const CreatePassword: React.FC<TProps> = ({
             {!isMobile && (
                 <WalletButton
                     disabled={!password || isLoading}
+                    isLoading={isLoading}
                     onClick={onPrimaryClick}
                     size='lg'
                     text={`Create ${title} password`}

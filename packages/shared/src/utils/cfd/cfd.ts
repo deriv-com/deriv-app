@@ -9,7 +9,7 @@ export const CFD_text: { [key: string]: string } = {
     mt5: 'MT5',
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
-    ctrader: 'cTrader',
+    ctrader: 'Deriv cTrader',
     derivez: 'DerivEz',
     synthetic: 'Derived',
     synthetic_demo: 'Derived Demo',

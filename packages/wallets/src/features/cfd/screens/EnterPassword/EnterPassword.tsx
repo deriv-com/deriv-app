@@ -1,8 +1,9 @@
 import React from 'react';
+import { WalletButton } from '../../../../components/Base';
+import useDevice from '../../../../hooks/useDevice';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformToTitleMapper } from '../../constants';
-import useDevice from '../../../../hooks/useDevice';
+import { PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
 // TODO: Refactor the unnecessary props out once FlowProvider is integrated
@@ -17,7 +18,7 @@ type TProps = {
 };
 
 const EnterPassword: React.FC<TProps> = ({
-    isLoading = false,
+    isLoading,
     marketType,
     onPasswordChange,
     onPrimaryClick,
@@ -26,7 +27,7 @@ const EnterPassword: React.FC<TProps> = ({
     platform,
 }) => {
     const { isDesktop } = useDevice();
-    const title = PlatformToTitleMapper[platform];
+    const title = PlatformDetails[platform].title;
     return (
         <div className='wallets-enter-password'>
             <div className='wallets-enter-password--container'>
@@ -41,16 +42,14 @@ const EnterPassword: React.FC<TProps> = ({
             </div>
             {isDesktop && (
                 <div className='wallets-enter-password-buttons'>
-                    <button className='wallets-enter-password-forgot-password-button' onClick={onSecondaryClick}>
-                        Forgot password?
-                    </button>
-                    <button
-                        className='wallets-enter-password-add-button'
-                        disabled={isLoading || !password}
+                    <WalletButton onClick={onSecondaryClick} size='lg' text='Forgot password?' variant='outlined' />
+                    <WalletButton
+                        disabled={!password || isLoading}
+                        isLoading={isLoading}
                         onClick={onPrimaryClick}
-                    >
-                        Add account
-                    </button>
+                        size='lg'
+                        text='Add account'
+                    />
                 </div>
             )}
         </div>

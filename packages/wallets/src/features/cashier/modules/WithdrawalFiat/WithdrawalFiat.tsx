@@ -1,29 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { ButtonHTMLAttributes, ComponentProps, useEffect } from 'react';
 import { useCashierFiatAddress } from '@deriv/api';
 import { Loader, WalletsErrorScreen } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
-import { useLocation, useHistory } from 'react-router-dom';
 
 import './WithdrawalFiat.scss';
 
-const WithdrawalFiat = () => {
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const verificationCode = queryParams.get('verification');
-    const history = useHistory();
+interface WithdrawalFiatProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    verificationCode?: string;
+}
 
+const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => {
     const { data: iframeUrl, error: withdrawalFiatError, isError, isLoading, mutate } = useCashierFiatAddress();
 
     useEffect(() => {
         if (verificationCode) {
             mutate('withdraw', {
                 verification_code: verificationCode,
-            });
-
-            queryParams.delete('verification');
-            history.replace({
-                pathname: location.pathname,
-                search: queryParams.toString(), // Updates the URL without the 'verification_code'
             });
         }
     }, [mutate, verificationCode]);

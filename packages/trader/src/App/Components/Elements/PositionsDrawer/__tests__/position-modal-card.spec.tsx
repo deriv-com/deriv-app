@@ -148,7 +148,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/2,650/i)).toBeInTheDocument();
     });
     it('should render contract card for Rise/Fall', () => {
-        default_mock_props.contract_info.contract_type = 'rise_fall';
+        default_mock_props.contract_info.contract_type = TRADE_TYPES.RISE_FALL;
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.queryByText(PositionsCardLoader)).not.toBeInTheDocument();

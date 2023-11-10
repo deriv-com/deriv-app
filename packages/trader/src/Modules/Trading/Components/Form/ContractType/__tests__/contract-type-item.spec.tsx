@@ -1,13 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { TRADE_TYPES } from '@deriv/shared';
 import ContractTypeItem from '../contract-type-item';
 
 const contract_types = [
-    { value: 'rise_fall', text: 'Rise/Fall' },
-    { value: 'high_low', text: 'Higher/Lower' },
+    { value: TRADE_TYPES.RISE_FALL, text: 'Rise/Fall' },
+    { value: TRADE_TYPES.HIGH_LOW, text: 'Higher/Lower' },
 ];
 
-const MockContractTypeItem = () => <ContractTypeItem contract_types={contract_types} value='rise_fall' />;
+const MockContractTypeItem = () => <ContractTypeItem contract_types={contract_types} value={TRADE_TYPES.RISE_FALL} />;
 
 describe('ContractTypeItem Component', () => {
     it('should render the text', () => {

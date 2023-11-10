@@ -120,8 +120,8 @@ describe('<Amount />', () => {
         expect(screen.queryByText(allow_equals)).not.toBeInTheDocument();
         expect(screen.queryByText(mocked_button_toggle)).not.toBeInTheDocument();
     });
-    it('should render only specific for RiseFallEquals components if it is a RiseFallEquals contract type', () => {
-        default_mock_store.modules.trade.contract_type = 'rise_fall_equal';
+    it('should render only specific for RiseFallEquals components if it is a TRADE_TYPES.RISE_FALL_EQUAL contract type', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.RISE_FALL_EQUAL;
         default_mock_store.modules.trade.is_multiplier = false;
         default_mock_store.modules.trade.basis_list = [
             { text: 'Stake', value: 'stake' },

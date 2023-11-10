@@ -1,4 +1,4 @@
-import { isEmptyObject, getPropertyValue } from '@deriv/shared';
+import { isEmptyObject, getPropertyValue, TRADE_TYPES } from '@deriv/shared';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { TTradeStore } from 'Types';
 
@@ -13,7 +13,7 @@ export const hasCallPutEqual = (contract_type_list: THasDurationForCallPutEqual[
 
     return !!getPropertyValue(contract_type_list, 'Ups & Downs')?.categories?.some(
         (contract: THasDurationForCallPutEqual['contract_type_list']['Ups & Downs']['categories'][0]) =>
-            contract.value === 'rise_fall_equal'
+            contract.value === TRADE_TYPES.RISE_FALL_EQUAL
     );
 };
 

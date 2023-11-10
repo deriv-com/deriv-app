@@ -37,7 +37,7 @@ const TradeCategoriesGIF = ({
             return <ImageEndsInOut />;
         case TRADE_TYPES.EVEN_ODD:
             return <ImageEvenOdd />;
-        case 'high_low':
+        case TRADE_TYPES.HIGH_LOW:
             return <ImageHighLow />;
         case TRADE_TYPES.LB_CALL:
             return <ImageCloseToLow />;
@@ -45,8 +45,8 @@ const TradeCategoriesGIF = ({
             return <ImageHighToClose />;
         case TRADE_TYPES.LB_HIGH_LOW:
             return <ImageHighToLow />;
-        case 'rise_fall':
-        case 'rise_fall_equal':
+        case TRADE_TYPES.RISE_FALL:
+        case TRADE_TYPES.RISE_FALL_EQUAL:
             return <ImageRiseFall />;
         case TRADE_TYPES.MATCH_DIFF:
             return <ImageMatchDiff />;

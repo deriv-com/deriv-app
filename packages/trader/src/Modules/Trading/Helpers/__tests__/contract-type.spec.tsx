@@ -13,11 +13,13 @@ const contract_types_test_list = {
     Digits: { name: 'Digits', categories: [{ value: TRADE_TYPES.MATCH_DIFF, text: 'Matches/Differs' }] },
     'Ins & Outs': { name: 'Ins & Outs', categories: [{ value: TRADE_TYPES.END, text: 'Ends In/Ends Out' }] },
 };
-const unsupported_test_list = [TRADE_TYPES.END, TRADE_TYPES.STAY];
-const unsupported_short_test_list = [TRADE_TYPES.STAY];
+const unsupported_test_list = [TRADE_TYPES.END, TRADE_TYPES.STAY] as unknown as Parameters<
+    typeof getAvailableContractTypes
+>[1];
+const unsupported_short_test_list = [TRADE_TYPES.STAY] as unknown as Parameters<typeof getAvailableContractTypes>[1];
 const contract_type_array = [
     { value: TRADE_TYPES.ACCUMULATOR, text: 'Accumulators' },
-    { value: 'rise_fall', text: 'Rise/Fall' },
+    { value: TRADE_TYPES.RISE_FALL, text: 'Rise/Fall' },
 ];
 const contract_category_list = [
     {
@@ -91,7 +93,7 @@ describe('getAvailableContractTypes', () => {
 
 describe('getContractCategoryKey', () => {
     it('should return key (contract category) if passed item has the same value as some of the passed list', () => {
-        expect(getContractCategoryKey(contract_category_list, { value: 'rise_fall' })).toEqual('All');
+        expect(getContractCategoryKey(contract_category_list, { value: TRADE_TYPES.RISE_FALL })).toEqual('All');
     });
     it('should return undefined (contract category) if passed item has not the same value as some of the passed list', () => {
         expect(getContractCategoryKey(contract_category_list, { value: TRADE_TYPES.MATCH_DIFF })).toEqual(undefined);
@@ -100,7 +102,7 @@ describe('getContractCategoryKey', () => {
 
 describe('getContractTypes', () => {
     it('should return an array with contract types if passed item has the same value as some of the passed list', () => {
-        expect(getContractTypes(contract_category_list, { value: 'rise_fall' })).toEqual(contract_type_array);
+        expect(getContractTypes(contract_category_list, { value: TRADE_TYPES.RISE_FALL })).toEqual(contract_type_array);
     });
     it('should return undefined if passed item has not the same value as some of the passed list', () => {
         expect(getContractTypes(contract_category_list, { value: TRADE_TYPES.MATCH_DIFF })).toEqual(undefined);

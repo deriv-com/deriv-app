@@ -86,7 +86,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageHighLow to be rendered when trade category is high_low', async () => {
+    it('expect ImageHighLow to be rendered when trade category is TRADE_TYPES.HIGH_LOW', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-high-low.svg', () => ({
                 __esModule: true,
@@ -95,7 +95,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='high_low' selected_contract_type='high_low' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.HIGH_LOW}
+                            selected_contract_type={TRADE_TYPES.HIGH_LOW}
+                        />
+                    );
                     expect(screen.getByText(/imagehighlow/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -166,7 +171,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageRiseFall to be rendered when trade category is rise_fall', async () => {
+    it('expect ImageRiseFall to be rendered when trade category is TRADE_TYPES.RISE_FALL', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-rise-fall.svg', () => ({
                 __esModule: true,
@@ -175,7 +180,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='rise_fall' selected_contract_type='rise_fall' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.RISE_FALL}
+                            selected_contract_type={TRADE_TYPES.RISE_FALL}
+                        />
+                    );
                     expect(screen.getByText(/imagerisefall/i)).toBeInTheDocument();
                 })
                 .catch(error => {
@@ -183,7 +193,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageRiseFall to be rendered when trade category is rise_fall_equal', async () => {
+    it('expect ImageRiseFall to be rendered when trade category is TRADE_TYPES.RISE_FALL_EQUAL', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-rise-fall.svg', () => ({
                 __esModule: true,
@@ -192,7 +202,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='rise_fall_equal' selected_contract_type='rise_fall_equal' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.RISE_FALL_EQUAL}
+                            selected_contract_type={TRADE_TYPES.RISE_FALL_EQUAL}
+                        />
+                    );
                     expect(screen.getByText(/imagerisefall/i)).toBeInTheDocument();
                 })
                 .catch(error => {

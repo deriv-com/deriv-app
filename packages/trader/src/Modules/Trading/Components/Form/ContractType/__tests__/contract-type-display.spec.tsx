@@ -26,11 +26,11 @@ const list = [
         contract_types: [
             {
                 text: 'Rise/Fall',
-                value: 'rise_fall',
+                value: TRADE_TYPES.RISE_FALL,
             },
             {
                 text: 'Rise/Fall',
-                value: 'rise_fall_equal',
+                value: TRADE_TYPES.RISE_FALL_EQUAL,
             },
         ],
         icon: 'IcUpsDowns',
@@ -41,7 +41,7 @@ const list = [
         contract_types: [
             {
                 text: 'Higher/Lower',
-                value: 'high_low',
+                value: TRADE_TYPES.HIGH_LOW,
             },
             {
                 text: 'Touch/No Touch',
@@ -75,7 +75,7 @@ const list = [
 
 const mocked_props = {
     onClick: jest.fn(),
-    value: 'rise_fall',
+    value: TRADE_TYPES.RISE_FALL as string,
     is_open: false,
 };
 

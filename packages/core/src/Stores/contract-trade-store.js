@@ -244,7 +244,12 @@ export default class ContractTradeStore extends BaseStore {
         const is_call_put = isCallPut(trade_type);
         if (is_call_put) {
             // treat CALLE/PUTE and CALL/PUT the same
-            trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
+            trade_types = [
+                CONTRACT_TYPES.RISE_FALL_EQUAL.CALLE,
+                CONTRACT_TYPES.RISE_FALL_EQUAL.PUTE,
+                CONTRACT_TYPES.RISE_FALL.CALL,
+                CONTRACT_TYPES.RISE_FALL.PUT,
+            ];
         } else if (isTurbosContract(trade_type)) {
             //to show both Long and Short recent contracts on DTrader chart
             trade_types = [CONTRACT_TYPES.TURBOS.LONG, CONTRACT_TYPES.TURBOS.SHORT];
@@ -270,9 +275,9 @@ export default class ContractTradeStore extends BaseStore {
                 // entry_spot=barrier means it is rise_fall contract (blame the api)
                 if (trade_type_is_supported && is_call_put && ((info.barrier && info.entry_tick) || info.shortcode)) {
                     if (`${+info.entry_tick}` === `${+info.barrier}` && !isHighLow(info)) {
-                        return trade_type === 'rise_fall' || trade_type === 'rise_fall_equal';
+                        return trade_type === TRADE_TYPES.RISE_FALL || trade_type === TRADE_TYPES.RISE_FALL_EQUAL;
                     }
-                    return trade_type === 'high_low';
+                    return trade_type === TRADE_TYPES.HIGH_LOW;
                 }
                 return trade_type_is_supported;
             });

@@ -40,7 +40,9 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const [selected_tab, setSelectedTab] = React.useState<TSelectedTab>(TABS.DESCRIPTION);
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
-            i.value !== 'rise_fall_equal' && i.value !== TRADE_TYPES.TURBOS.SHORT && i.value !== TRADE_TYPES.VANILLA.PUT
+            i.value !== TRADE_TYPES.RISE_FALL_EQUAL &&
+            i.value !== TRADE_TYPES.TURBOS.SHORT &&
+            i.value !== TRADE_TYPES.VANILLA.PUT
     );
     const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(item.value);
     const should_show_video = /accumulator|vanilla/i.test(item.value);

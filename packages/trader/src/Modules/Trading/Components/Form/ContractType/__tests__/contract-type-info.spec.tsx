@@ -38,11 +38,11 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall',
+                            value: TRADE_TYPES.RISE_FALL,
                         },
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall_equal',
+                            value: TRADE_TYPES.RISE_FALL_EQUAL,
                         },
                     ],
                     icon: 'IcUpsDowns',
@@ -53,7 +53,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Higher/Lower',
-                            value: 'high_low',
+                            value: TRADE_TYPES.HIGH_LOW,
                         },
                         {
                             text: 'Touch/No Touch',
@@ -102,15 +102,15 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall',
+                    value: TRADE_TYPES.RISE_FALL,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall_equal',
+                    value: TRADE_TYPES.RISE_FALL_EQUAL,
                 },
                 {
                     text: 'Higher/Lower',
-                    value: 'high_low',
+                    value: TRADE_TYPES.HIGH_LOW,
                 },
                 {
                     text: 'Touch/No Touch',
@@ -167,11 +167,11 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall',
+                            value: TRADE_TYPES.RISE_FALL,
                         },
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall_equal',
+                            value: TRADE_TYPES.RISE_FALL_EQUAL,
                         },
                     ],
                     icon: 'IcUpsDowns',
@@ -182,7 +182,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Higher/Lower',
-                            value: 'high_low',
+                            value: TRADE_TYPES.HIGH_LOW,
                         },
                         {
                             text: 'Touch/No Touch',
@@ -227,15 +227,15 @@ const mocked_props: React.ComponentProps<typeof Info> = {
             contract_types: [
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall',
+                    value: TRADE_TYPES.RISE_FALL,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall_equal',
+                    value: TRADE_TYPES.RISE_FALL_EQUAL,
                 },
                 {
                     text: 'Higher/Lower',
-                    value: 'high_low',
+                    value: TRADE_TYPES.HIGH_LOW,
                 },
                 {
                     text: 'Touch/No Touch',

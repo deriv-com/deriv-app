@@ -88,7 +88,16 @@ describe('<PurchaseButton />', () => {
     });
 
     it('should render icon with specific type if is_high_low === true', () => {
-        render(<PurchaseButton {...default_mocked_props} is_disabled is_loading is_high_low should_fade type='CALL' />);
+        render(
+            <PurchaseButton
+                {...default_mocked_props}
+                is_disabled
+                is_loading
+                is_high_low
+                should_fade
+                type={CONTRACT_TYPES.HIGH_LOW.CALL}
+            />
+        );
 
         expect(screen.getByText(/Higher/i)).toBeInTheDocument();
         expect(screen.getByTestId(/call_barrier/i)).toBeInTheDocument();

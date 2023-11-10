@@ -54,23 +54,23 @@ export type TTradeTypesCategories = {
 };
 
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
-    rise_fall: {
+    [TRADE_TYPES.RISE_FALL]: {
         title: localize('Rise/Fall'),
-        trade_types: ['CALL', 'PUT'],
+        trade_types: [CONTRACT_TYPES.RISE_FALL.CALL, CONTRACT_TYPES.RISE_FALL.PUT],
         basis: ['stake', 'payout'],
         components: ['start_date'],
         barrier_count: 0,
     },
-    rise_fall_equal: {
+    [TRADE_TYPES.RISE_FALL_EQUAL]: {
         title: localize('Rise/Fall'),
-        trade_types: ['CALLE', 'PUTE'],
+        trade_types: [CONTRACT_TYPES.RISE_FALL_EQUAL.CALLE, CONTRACT_TYPES.RISE_FALL_EQUAL.PUTE],
         basis: ['stake', 'payout'],
         components: ['start_date'],
         barrier_count: 0,
     },
-    high_low: {
+    [TRADE_TYPES.HIGH_LOW]: {
         title: localize('Higher/Lower'),
-        trade_types: ['CALL', 'PUT'],
+        trade_types: [CONTRACT_TYPES.HIGH_LOW.CALL, CONTRACT_TYPES.HIGH_LOW.PUT],
         basis: ['stake', 'payout'],
         components: ['barrier'],
         barrier_count: 1,
@@ -217,8 +217,8 @@ export const getContractCategoriesConfig = () =>
         'Ups & Downs': {
             name: localize('Ups & Downs'),
             categories: [
-                'rise_fall',
-                'rise_fall_equal',
+                TRADE_TYPES.RISE_FALL,
+                TRADE_TYPES.RISE_FALL_EQUAL,
                 TRADE_TYPES.RUN_HIGH_LOW,
                 TRADE_TYPES.RESET,
                 TRADE_TYPES.ASIAN,
@@ -227,7 +227,7 @@ export const getContractCategoriesConfig = () =>
         },
         'Highs & Lows': {
             name: localize('Highs & Lows'),
-            categories: ['high_low', TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
+            categories: [TRADE_TYPES.HIGH_LOW, TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
         },
         'Ins & Outs': { name: localize('Ins & Outs'), categories: [TRADE_TYPES.END, TRADE_TYPES.STAY] },
         'Look Backs': {
@@ -614,4 +614,6 @@ export const getContractTypePosition = (type: TGetSupportedContracts, is_high_lo
     getContractConfig(is_high_low)?.[type]?.position || 'top';
 
 export const isCallPut = (trade_type: 'rise_fall' | 'rise_fall_equal' | 'high_low'): boolean =>
-    trade_type === 'rise_fall' || trade_type === 'rise_fall_equal' || trade_type === 'high_low';
+    trade_type === TRADE_TYPES.RISE_FALL ||
+    trade_type === TRADE_TYPES.RISE_FALL_EQUAL ||
+    trade_type === TRADE_TYPES.HIGH_LOW;

@@ -40,11 +40,11 @@ const TradeCategories = ({
             case TRADE_TYPES.ACCUMULATOR:
                 TradeTypeTemplate = <AccumulatorTradeDescription onClick={onClick} />;
                 break;
-            case 'rise_fall':
-            case 'rise_fall_equal':
+            case TRADE_TYPES.RISE_FALL:
+            case TRADE_TYPES.RISE_FALL_EQUAL:
                 TradeTypeTemplate = <RiseFallTradeDescription />;
                 break;
-            case 'high_low':
+            case TRADE_TYPES.HIGH_LOW:
                 TradeTypeTemplate = <HighLowTradeDescription />;
                 break;
             case TRADE_TYPES.END:

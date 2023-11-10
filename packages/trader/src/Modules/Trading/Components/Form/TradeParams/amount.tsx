@@ -1,4 +1,4 @@
-import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces } from '@deriv/shared';
+import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, TRADE_TYPES } from '@deriv/shared';
 import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import AllowEquals from './allow-equals';
@@ -111,7 +111,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
         <Fieldset
             className='trade-container__fieldset center-text'
             header={
-                contract_type === 'high_low' || is_multiplier || is_accumulator || is_vanilla || is_turbos
+                contract_type === TRADE_TYPES.HIGH_LOW || is_multiplier || is_accumulator || is_vanilla || is_turbos
                     ? localize('Stake')
                     : undefined
             }

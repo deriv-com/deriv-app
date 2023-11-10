@@ -112,10 +112,10 @@ describe('getCleanedUpCategories', () => {
                 name: 'Ups & Downs',
                 categories: [
                     {
-                        value: 'rise_fall',
+                        value: TRADE_TYPES.RISE_FALL,
                         text: 'Rise/Fall',
                     },
-                    'rise_fall_equal',
+                    TRADE_TYPES.RISE_FALL_EQUAL,
                     TRADE_TYPES.RUN_HIGH_LOW,
                     TRADE_TYPES.RESET,
                     TRADE_TYPES.ASIAN,
@@ -132,7 +132,7 @@ describe('getCleanedUpCategories', () => {
                 name: 'Ups & Downs',
                 categories: [
                     {
-                        value: 'rise_fall',
+                        value: TRADE_TYPES.RISE_FALL,
                         text: 'Rise/Fall',
                     },
                 ],

@@ -55,11 +55,11 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall',
+                            value: TRADE_TYPES.RISE_FALL,
                         },
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall_equal',
+                            value: TRADE_TYPES.RISE_FALL_EQUAL,
                         },
                     ],
                     icon: 'IcUpsDowns',
@@ -70,7 +70,7 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Higher/Lower',
-                            value: 'high_low',
+                            value: TRADE_TYPES.HIGH_LOW,
                         },
                         {
                             text: 'Touch/No Touch',
@@ -108,15 +108,15 @@ describe('ContractTypeMenu', () => {
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall',
+                    value: TRADE_TYPES.RISE_FALL,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall_equal',
+                    value: TRADE_TYPES.RISE_FALL_EQUAL,
                 },
                 {
                     text: 'Higher/Lower',
-                    value: 'high_low',
+                    value: TRADE_TYPES.HIGH_LOW,
                 },
                 {
                     text: 'Touch/No Touch',
@@ -169,11 +169,11 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall',
+                            value: TRADE_TYPES.RISE_FALL,
                         },
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall_equal',
+                            value: TRADE_TYPES.RISE_FALL_EQUAL,
                         },
                     ],
                     icon: 'IcUpsDowns',
@@ -184,7 +184,7 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Higher/Lower',
-                            value: 'high_low',
+                            value: TRADE_TYPES.HIGH_LOW,
                         },
                         {
                             text: 'Touch/No Touch',
@@ -218,15 +218,15 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall',
+                    value: TRADE_TYPES.RISE_FALL,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall_equal',
+                    value: TRADE_TYPES.RISE_FALL_EQUAL,
                 },
                 {
                     text: 'Higher/Lower',
-                    value: 'high_low',
+                    value: TRADE_TYPES.HIGH_LOW,
                 },
                 {
                     text: 'Touch/No Touch',
@@ -267,11 +267,11 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall',
+                    value: TRADE_TYPES.RISE_FALL,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall_equal',
+                    value: TRADE_TYPES.RISE_FALL_EQUAL,
                 },
             ],
             icon: 'IcUpsDowns',
@@ -282,7 +282,7 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Higher/Lower',
-                    value: 'high_low',
+                    value: TRADE_TYPES.HIGH_LOW,
                 },
                 {
                     text: 'Touch/No Touch',

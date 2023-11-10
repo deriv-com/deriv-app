@@ -17,8 +17,8 @@ describe('<IconTradeCatgory />', () => {
         expect(categories_container).toHaveClass('categories-container');
         expect(categories_container).toHaveTextContent('');
     });
-    it('Expect MockedIcon to be rendered when category is rise_fall', () => {
-        render(<IconTradeCategory category='rise_fall' />);
+    it('Expect MockedIcon to be rendered when category is TRADE_TYPES.RISE_FALL', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.RISE_FALL} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -26,8 +26,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is rise_fall_equal', () => {
-        render(<IconTradeCategory category='rise_fall_equal' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.RISE_FALL_EQUAL', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.RISE_FALL_EQUAL} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -35,8 +35,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is high_low', () => {
-        render(<IconTradeCategory category='high_low' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.HIGH_LOW', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.HIGH_LOW} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {

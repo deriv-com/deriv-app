@@ -12,8 +12,8 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
     let IconCategory;
     if (category) {
         switch (category) {
-            case 'rise_fall':
-            case 'rise_fall_equal':
+            case TRADE_TYPES.RISE_FALL:
+            case TRADE_TYPES.RISE_FALL_EQUAL:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -25,7 +25,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'high_low':
+            case TRADE_TYPES.HIGH_LOW:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>

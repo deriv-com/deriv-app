@@ -1037,8 +1037,8 @@ export default class TradeStore extends BaseStore {
     ) {
         // To switch to rise_fall_equal contract type when allow equal is checked on first page refresh or
         // when switch back to Rise/Fall from another contract type i.e.
-        if (obj_new_values.contract_type && obj_new_values.contract_type === 'rise_fall' && !!this.is_equal) {
-            obj_new_values.contract_type = 'rise_fall_equal';
+        if (obj_new_values.contract_type && obj_new_values.contract_type === TRADE_TYPES.RISE_FALL && !!this.is_equal) {
+            obj_new_values.contract_type = TRADE_TYPES.RISE_FALL_EQUAL;
         }
         // when accumulator is selected, we need to change chart type to mountain and granularity to 0
         // and we need to restore previous chart type and granularity when accumulator is unselected
@@ -1373,7 +1373,10 @@ export default class TradeStore extends BaseStore {
     }
 
     onAllowEqualsChange() {
-        this.processNewValuesAsync({ contract_type: this.is_equal ? 'rise_fall_equal' : 'rise_fall' }, true);
+        this.processNewValuesAsync(
+            { contract_type: this.is_equal ? TRADE_TYPES.RISE_FALL_EQUAL : TRADE_TYPES.RISE_FALL },
+            true
+        );
     }
 
     updateSymbol(underlying: string) {

@@ -24,7 +24,7 @@ const useTotalAccountBalance2 = (accounts: TUseTotalAccountBalance[]) => {
 
         let new_rate = 1;
         if (new_base === '' || new_target === '') new_rate = 1;
-        else if (new_base !== new_target && !exchange_rates[new_target]) handleSubscription(new_base, new_target);
+        else if (new_base !== new_target) handleSubscription(new_base, new_target);
 
         if (exchange_rates && exchange_rates[new_base]) new_rate = exchange_rates[new_base][new_target] || 1;
 

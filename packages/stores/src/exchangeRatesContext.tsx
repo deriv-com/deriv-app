@@ -1,5 +1,4 @@
-import React, { createContext, ReactNode } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+import React, { createContext } from 'react';
 
 import { useSubscription } from '@deriv/api';
 

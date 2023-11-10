@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const NoSearchResult = observer(() => {
@@ -14,9 +14,9 @@ const NoSearchResult = observer(() => {
                 <Localize i18n_default_text='No results found' />
             </Text>
             <Text className='dc-tabs__content--no-result__content' line_height='xxs'>
-                {localize('We couldn’t find anything matching "{{ faq_search_value }}".Try another term.', {
-                    faq_search_value,
-                })}
+                <Localize
+                    i18n_default_text={`We couldn’t find anything matching "${faq_search_value}". Try another term.`}
+                />
             </Text>
         </div>
     );

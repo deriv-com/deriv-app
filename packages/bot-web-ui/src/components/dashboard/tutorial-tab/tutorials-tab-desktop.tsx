@@ -24,7 +24,10 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
     };
 
     React.useEffect(() => {
-        setFAQSearchValue('');
+        if (faq_search_value) {
+            setActiveTabTutorial(2);
+            input_ref?.current?.focus();
+        }
     }, [active_tab_tutorials]);
 
     return (

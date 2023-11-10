@@ -5,7 +5,7 @@ import React from 'react';
 
 const SearchInput = observer(({ input_ref, faq_value, setFaqSearchContent }) => {
     const { dashboard } = useDBotStore();
-    const { setActiveTabTutorial } = dashboard;
+    const { setActiveTabTutorial, active_tab_tutorials, setFAQSearchValue, faq_search_value } = dashboard;
 
     const onSearch = event => {
         setFaqSearchContent(event.target.value);
@@ -15,6 +15,10 @@ const SearchInput = observer(({ input_ref, faq_value, setFaqSearchContent }) => 
         setActiveTabTutorial(2);
         input_ref?.current?.focus();
     };
+
+    React.useEffect(() => {
+        input_ref?.current?.focus();
+    }, [active_tab_tutorials]);
 
     return (
         <>

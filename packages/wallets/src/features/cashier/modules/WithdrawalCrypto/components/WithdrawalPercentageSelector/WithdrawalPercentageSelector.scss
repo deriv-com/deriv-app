@@ -29,6 +29,11 @@
             width: 100%;
             height: 2.4rem;
             background-color: #f2f3f4;
+            cursor: pointer;
+
+            &--active {
+                background-color: #4bb4b3;
+            }
         }
     }
 }

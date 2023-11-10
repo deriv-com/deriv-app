@@ -1,4 +1,5 @@
 import React from 'react';
+import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
@@ -28,12 +29,16 @@ const EnterPassword: React.FC<TProps> = ({
 }) => {
     const { isDesktop } = useDevice();
     const title = PlatformDetails[platform].title;
+    const { data } = useActiveWalletAccount();
+    const accountType = data?.is_virtual ? 'Demo' : 'Real';
+    const marketTypeTitle = platform === 'dxtrade' ? accountType : marketType;
+
     return (
         <div className='wallets-enter-password'>
             <div className='wallets-enter-password--container'>
                 {isDesktop && <div className='wallets-enter-password-title'>Enter your {title} password</div>}
                 <span className='wallets-enter-password-subtitle'>
-                    Enter your {title} password to add a {title} {marketType} account.
+                    Enter your {title} password to add a {title} {marketTypeTitle} account.
                 </span>
                 <div className='wallets-enter-password-input'>
                     <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />

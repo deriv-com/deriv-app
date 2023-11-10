@@ -1,11 +1,17 @@
 .wallets-transactions {
     $root: &;
-    width: 100%;
+    width: 100vw;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 7.2rem; // accounting for the list header
+
+    // accounting for CashierContent padding
+    margin: -4.8rem -1.6rem 0;
+    @include mobile {
+        margin: -2.4rem -1.6rem 0;
+    }
 
     &--crypto-mobile {
         @include mobile {

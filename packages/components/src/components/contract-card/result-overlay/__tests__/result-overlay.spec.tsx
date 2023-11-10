@@ -5,11 +5,7 @@ import ResultOverlay from '../result-overlay';
 const default_mocked_props = {
     currency: 'USD',
     contract_id: 1987232323,
-    getCardLabels: () => {
-        return {
-            CLOSED: 'Closed',
-        };
-    },
+    getCardLabels: () => ({ CLOSED: 'Closed' }),
     getContractPath: jest.fn(),
     is_positions: true,
     is_unsupported: false,

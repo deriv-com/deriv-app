@@ -49,6 +49,7 @@ const DefaultHeader = ({
     is_landing_company_loaded,
     is_switching,
     setTogglePlatformType,
+    is_real_acc_signup_on,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -154,7 +155,7 @@ const DefaultHeader = ({
                 Prevent the modals that are part of Real Account signup to get triggered when the corresponding store value changes by
                 removing the parent element from DOM
             */}
-            {!is_trading_assessment_for_existing_user_enabled && <RealAccountSignup />}
+            {!is_trading_assessment_for_existing_user_enabled && is_real_acc_signup_on && <RealAccountSignup />}
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
         </header>
@@ -196,6 +197,7 @@ DefaultHeader.propTypes = {
     is_landing_company_loaded: PropTypes.bool,
     is_switching: PropTypes.bool,
     setTogglePlatformType: PropTypes.func,
+    is_real_acc_signup_on: PropTypes.bool,
 };
 
 export default connect(({ client, common, ui, notifications, traders_hub }) => ({
@@ -233,4 +235,5 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     is_landing_company_loaded: client.is_landing_company_loaded,
     is_switching: client.is_switching,
     setTogglePlatformType: traders_hub.setTogglePlatformType,
+    is_real_acc_signup_on: ui.is_real_acc_signup_on,
 }))(withRouter(DefaultHeader));

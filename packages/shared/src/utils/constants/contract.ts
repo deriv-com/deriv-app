@@ -75,9 +75,9 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         components: ['barrier'],
         barrier_count: 1,
     },
-    touch: {
+    [TRADE_TYPES.TOUCH]: {
         title: localize('Touch/No Touch'),
-        trade_types: ['ONETOUCH', 'NOTOUCH'],
+        trade_types: [CONTRACT_TYPES.TOUCH.ONE_TOUCH, CONTRACT_TYPES.TOUCH.NO_TOUCH],
         basis: ['stake', 'payout'],
         components: ['barrier'],
     },
@@ -153,9 +153,9 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         basis: [],
         components: [],
     },
-    [TRADE_TYPES.CALLPUTSPREAD]: {
+    [TRADE_TYPES.CALL_PUT_SPREAD]: {
         title: localize('Spread Up/Spread Down'),
-        trade_types: [CONTRACT_TYPES.CALLPUTSPREAD.CALL, CONTRACT_TYPES.CALLPUTSPREAD.PUT],
+        trade_types: [CONTRACT_TYPES.CALL_PUT_SPREAD.CALL, CONTRACT_TYPES.CALL_PUT_SPREAD.PUT],
         basis: [],
         components: [],
     },
@@ -222,12 +222,12 @@ export const getContractCategoriesConfig = () =>
                 TRADE_TYPES.RUN_HIGH_LOW,
                 TRADE_TYPES.RESET,
                 TRADE_TYPES.ASIAN,
-                TRADE_TYPES.CALLPUTSPREAD,
+                TRADE_TYPES.CALL_PUT_SPREAD,
             ],
         },
         'Highs & Lows': {
             name: localize('Highs & Lows'),
-            categories: ['high_low', 'touch', TRADE_TYPES.TICK_HIGH_LOW],
+            categories: ['high_low', TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
         },
         'Ins & Outs': { name: localize('Ins & Outs'), categories: [TRADE_TYPES.END, TRADE_TYPES.STAY] },
         'Look Backs': {
@@ -244,7 +244,7 @@ export const getContractCategoriesConfig = () =>
 
 export const unsupported_contract_types_list = [
     // TODO: remove these once all contract types are supported
-    TRADE_TYPES.CALLPUTSPREAD,
+    TRADE_TYPES.CALL_PUT_SPREAD,
     TRADE_TYPES.RUN_HIGH_LOW,
     TRADE_TYPES.RESET,
     TRADE_TYPES.ASIAN,

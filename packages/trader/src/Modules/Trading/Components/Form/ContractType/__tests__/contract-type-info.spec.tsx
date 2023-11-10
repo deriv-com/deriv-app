@@ -57,7 +57,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                         },
                         {
                             text: 'Touch/No Touch',
-                            value: 'touch',
+                            value: TRADE_TYPES.TOUCH,
                         },
                     ],
                     icon: 'IcHighsLows',
@@ -114,7 +114,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
                 {
                     text: 'Matches/Differs',
@@ -186,7 +186,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                         },
                         {
                             text: 'Touch/No Touch',
-                            value: 'touch',
+                            value: TRADE_TYPES.TOUCH,
                         },
                     ],
                     icon: 'IcHighsLows',
@@ -239,7 +239,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
                 {
                     text: 'Matches/Differs',

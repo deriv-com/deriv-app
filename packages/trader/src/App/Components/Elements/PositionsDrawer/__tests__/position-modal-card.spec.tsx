@@ -162,7 +162,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/Payout limit:/i)).toBeInTheDocument();
     });
     it('should render the same contract card for Touch/No Touch as for Rise/Fall', () => {
-        default_mock_props.contract_info.contract_type = 'touch';
+        default_mock_props.contract_info.contract_type = TRADE_TYPES.TOUCH;
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.queryByText(PositionsCardLoader)).not.toBeInTheDocument();

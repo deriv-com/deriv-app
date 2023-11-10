@@ -98,7 +98,7 @@ describe('getContractTypeDisplay', () => {
 
 describe('getContractTypePosition', () => {
     it('should return a specific button position if such type exist', () => {
-        expect(getContractTypePosition('NOTOUCH')).toBe('bottom');
+        expect(getContractTypePosition(CONTRACT_TYPES.TOUCH.NO_TOUCH)).toBe('bottom');
     });
     it('should return a top position if such type does not exist', () => {
         expect(getContractTypePosition('TEST' as TGetSupportedContractsKey)).toBe('top');
@@ -119,7 +119,7 @@ describe('getCleanedUpCategories', () => {
                     TRADE_TYPES.RUN_HIGH_LOW,
                     TRADE_TYPES.RESET,
                     TRADE_TYPES.ASIAN,
-                    TRADE_TYPES.CALLPUTSPREAD,
+                    TRADE_TYPES.CALL_PUT_SPREAD,
                 ],
             },
             Vanillas: {

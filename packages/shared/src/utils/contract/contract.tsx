@@ -32,7 +32,7 @@ export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
 export const CONTRACT_TYPES = {
     ACCUMULATOR: 'ACCU',
     ASIAN: { UP: 'ASIANU', DOWN: 'ASIAND' },
-    CALLPUTSPREAD: { CALL: 'CALLSPREAD', PUT: 'PUTSPREAD' },
+    CALL_PUT_SPREAD: { CALL: 'CALLSPREAD', PUT: 'PUTSPREAD' },
     END: { IN: 'EXPIRYRANGE', OUT: 'EXPIRYMISS' },
     EVEN_ODD: { ODD: 'DIGITODD', EVEN: 'DIGITEVEN' },
     LB_HIGH_LOW: 'LBHIGHLOW',
@@ -48,6 +48,7 @@ export const CONTRACT_TYPES = {
     RUN_HIGH_LOW: { HIGH: 'RUNHIGH', LOW: 'RUNLOW' },
     STAY: { IN: 'RANGE', OUT: 'UPORDOWN' },
     TICK_HIGH_LOW: { HIGH: 'TICKHIGH', LOW: 'TICKLOW' },
+    TOUCH: { ONE_TOUCH: 'ONETOUCH', NO_TOUCH: 'NOTOUCH' },
     TURBOS: {
         LONG: 'TURBOSLONG',
         SHORT: 'TURBOSSHORT',
@@ -60,7 +61,7 @@ export const CONTRACT_TYPES = {
 export const TRADE_TYPES = {
     ACCUMULATOR: 'accumulator',
     ASIAN: 'asian',
-    CALLPUTSPREAD: 'callputspread',
+    CALL_PUT_SPREAD: 'callputspread',
     END: 'end',
     EVEN_ODD: 'even_odd',
     LB_HIGH_LOW: 'lb_high_low',
@@ -73,6 +74,7 @@ export const TRADE_TYPES = {
     RUN_HIGH_LOW: 'run_high_low',
     STAY: 'stay',
     TICK_HIGH_LOW: 'tick_high_low',
+    TOUCH: 'touch',
     TURBOS: {
         LONG: 'turboslong',
         SHORT: 'turbosshort',

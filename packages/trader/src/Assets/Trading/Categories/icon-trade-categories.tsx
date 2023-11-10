@@ -97,7 +97,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'touch':
+            case TRADE_TYPES.TOUCH:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -178,7 +178,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case TRADE_TYPES.CALLPUTSPREAD:
+            case TRADE_TYPES.CALL_PUT_SPREAD:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>

@@ -31,7 +31,7 @@ const TradeCategoriesGIF = ({
     switch (category) {
         case TRADE_TYPES.ASIAN:
             return <ImageAsianUpDown />;
-        case TRADE_TYPES.CALLPUTSPREAD:
+        case TRADE_TYPES.CALL_PUT_SPREAD:
             return <ImageSpread />;
         case TRADE_TYPES.END:
             return <ImageEndsInOut />;
@@ -62,7 +62,7 @@ const TradeCategoriesGIF = ({
             return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
         case TRADE_TYPES.TICK_HIGH_LOW:
             return <ImageTickHighLow />;
-        case 'touch':
+        case TRADE_TYPES.TOUCH:
             return <ImageTouch />;
         case TRADE_TYPES.TURBOS.LONG:
         case TRADE_TYPES.TURBOS.SHORT:

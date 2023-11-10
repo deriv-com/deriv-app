@@ -54,10 +54,6 @@ declare global {
     type RequireAtLeastOne<T> = {
         [K in keyof T]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>;
     }[keyof T];
-
-    type ArrayElementType<T extends readonly unknown[]> = T extends readonly (infer ElementType)[]
-        ? ElementType
-        : never;
 }
 
 export {};

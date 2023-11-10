@@ -62,7 +62,7 @@ const TradeCategories = ({
             case TRADE_TYPES.OVER_UNDER:
                 TradeTypeTemplate = <OverUnderTradeDescription />;
                 break;
-            case 'touch':
+            case TRADE_TYPES.TOUCH:
                 TradeTypeTemplate = <TouchTradeDescription />;
                 break;
             case TRADE_TYPES.ASIAN:
@@ -74,7 +74,7 @@ const TradeCategories = ({
             case TRADE_TYPES.RESET:
                 TradeTypeTemplate = <ResetTradeDescription />;
                 break;
-            case TRADE_TYPES.CALLPUTSPREAD:
+            case TRADE_TYPES.CALL_PUT_SPREAD:
                 TradeTypeTemplate = <CallPutSpreadTradeDescription />;
                 break;
             case TRADE_TYPES.TICK_HIGH_LOW:

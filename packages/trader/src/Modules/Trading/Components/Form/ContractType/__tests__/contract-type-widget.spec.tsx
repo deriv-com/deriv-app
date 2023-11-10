@@ -51,7 +51,7 @@ describe('<ContractTypeWidget />', () => {
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
             ],
             icon: 'IcHighsLows',

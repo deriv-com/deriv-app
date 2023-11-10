@@ -25,7 +25,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageSpread to be rendered when trade category is TRADE_TYPES.CALLPUTSPREAD', async () => {
+    it('expect ImageSpread to be rendered when trade category is TRADE_TYPES.CALL_PUT_SPREAD', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-spread.svg', () => ({
                 __esModule: true,
@@ -36,8 +36,8 @@ describe('<TradeCategoriesGIF />', () => {
                 .then(moduleName => {
                     render(
                         <moduleName.default
-                            category={TRADE_TYPES.CALLPUTSPREAD}
-                            selected_contract_type={TRADE_TYPES.CALLPUTSPREAD}
+                            category={TRADE_TYPES.CALL_PUT_SPREAD}
+                            selected_contract_type={TRADE_TYPES.CALL_PUT_SPREAD}
                         />
                     );
                     expect(screen.getByText('ImageSpread')).toBeInTheDocument();
@@ -351,7 +351,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageTouch to be rendered when trade category is touch', async () => {
+    it('expect ImageTouch to be rendered when trade category is TRADE_TYPES.TOUCH', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-touch.svg', () => ({
                 __esModule: true,
@@ -360,7 +360,9 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='touch' selected_contract_type='touch' />);
+                    render(
+                        <moduleName.default category={TRADE_TYPES.TOUCH} selected_contract_type={TRADE_TYPES.TOUCH} />
+                    );
                     expect(screen.getByText(/imagetouch/i)).toBeInTheDocument();
                 })
                 .catch(error => {

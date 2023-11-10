@@ -74,7 +74,7 @@ describe('ContractTypeMenu', () => {
                         },
                         {
                             text: 'Touch/No Touch',
-                            value: 'touch',
+                            value: TRADE_TYPES.TOUCH,
                         },
                     ],
                     icon: 'IcHighsLows',
@@ -120,7 +120,7 @@ describe('ContractTypeMenu', () => {
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
                 {
                     text: 'Matches/Differs',
@@ -188,7 +188,7 @@ describe('ContractTypeMenu', () => {
                         },
                         {
                             text: 'Touch/No Touch',
-                            value: 'touch',
+                            value: TRADE_TYPES.TOUCH,
                         },
                     ],
                     icon: 'IcHighsLows',
@@ -230,7 +230,7 @@ describe('ContractTypeMenu', () => {
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
                 {
                     text: 'Matches/Differs',
@@ -286,7 +286,7 @@ describe('ContractTypeMenu', () => {
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
             ],
             icon: 'IcHighsLows',

@@ -9,7 +9,7 @@ export const CFD_text: { [key: string]: string } = {
     mt5: 'MT5',
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
-    ctrader: 'cTrader',
+    ctrader: 'Deriv cTrader',
     derivez: 'DerivEz',
     synthetic: 'Derived',
     synthetic_demo: 'Derived Demo',
@@ -462,3 +462,6 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         is_idv_revoked,
     };
 };
+
+export const mt5_community_url =
+    'https://community.deriv.com/t/log-in-using-mt5-pc-or-mobile-app-application-guideline/49622';

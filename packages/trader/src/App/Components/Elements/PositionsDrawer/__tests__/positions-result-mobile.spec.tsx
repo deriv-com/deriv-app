@@ -8,13 +8,13 @@ describe('PositionsResultMobile', () => {
         expect(screen.getByTestId('result_mobile')).toBeInTheDocument();
     });
 
-    it('should PositionsResultMobile render LOST if result is won ', () => {
+    it('should PositionsResultMobile render CLOSED if result is won ', () => {
         render(<PositionsResultMobile is_visible={true} result='won' />);
-        expect(screen.getByText('Won')).toBeInTheDocument();
+        expect(screen.getByText('Closed')).toBeInTheDocument();
     });
 
-    it('should PositionsResultMobile render LOST if result is not won ', () => {
+    it('should PositionsResultMobile render CLOSED if result is lost', () => {
         render(<PositionsResultMobile is_visible={true} result='lost' />);
-        expect(screen.getByText('Lost')).toBeInTheDocument();
+        expect(screen.getByText('Closed')).toBeInTheDocument();
     });
 });

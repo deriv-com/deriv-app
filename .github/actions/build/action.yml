@@ -1,10 +1,14 @@
 name: build
 description: Build all packages
 inputs:
+  REF_NAME:
+    description: 'Git ref name'
+    required: true
+    default: 'test'
   NODE_ENV:
     description: 'Node environment'
     required: false
-    default: 'staging'
+    default: 'test'
   DATADOG_CLIENT_TOKEN:
     description: 'Datadog client token'
     required: false
@@ -59,6 +63,6 @@ runs:
       GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}
       RUDDERSTACK_STAGING_KEY: ${{ inputs.RUDDERSTACK_STAGING_KEY }}
       RUDDERSTACK_URL: ${{ inputs.RUDDERSTACK_URL }}
-
-    run: npm run build:prod
+      REF_NAME: ${{ inputs.REF_NAME }}
+    run: npm run build:all
     shell: bash

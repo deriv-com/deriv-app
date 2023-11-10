@@ -3,7 +3,7 @@ import { FormikHandlers, FormikValues, useFormikContext } from 'formik';
 import { Dropdown, Icon, Popover, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { time_list } from 'Constants/order-list';
+import { order_completion_time_list } from 'Constants/order-list';
 import { useStore } from '@deriv/stores';
 
 type TFormikContext = {
@@ -41,7 +41,7 @@ const OrderTimeSelection = ({ ...field }: FormikValues) => {
                 {...field}
                 className='order-time-selection__time-dropdown'
                 is_align_text_left
-                list={time_list}
+                list={order_completion_time_list}
                 onChange={handleChange}
                 value={values.order_completion_time}
             />

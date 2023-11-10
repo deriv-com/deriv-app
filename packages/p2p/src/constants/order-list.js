@@ -5,7 +5,7 @@ export const order_list = {
     INACTIVE: 'inactive',
 };
 
-export const time_list = [
+export const order_completion_time_list = [
     {
         text: localize('1 hour'),
         value: 3600,

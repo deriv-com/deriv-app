@@ -2,9 +2,10 @@ import React from 'react';
 import { WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
 
 const WalletWithdrawal = () => {
-    //TODO: add withdrawal crypto module
+    const queryParams = new URLSearchParams(location.search);
+    const verificationCode = queryParams.get('verification');
 
-    if (sessionStorage.getItem('verification_code')) return <WithdrawalFiatModule />;
+    if (verificationCode) return <WithdrawalFiatModule />;
 
     return <WithdrawalVerificationModule />;
 };

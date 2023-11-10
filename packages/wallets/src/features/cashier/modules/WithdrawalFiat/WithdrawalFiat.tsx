@@ -2,30 +2,33 @@ import React, { useEffect } from 'react';
 import { useCashierFiatAddress } from '@deriv/api';
 import { Loader, WalletsErrorScreen } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
+import { useLocation, useHistory } from 'react-router-dom';
 
 import './WithdrawalFiat.scss';
 
 const WithdrawalFiat = () => {
-    const verificationCode = sessionStorage.getItem('verification_code');
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const verificationCode = queryParams.get('verification');
+    const history = useHistory();
+
     const { data: iframeUrl, error: withdrawalFiatError, isError, isLoading, mutate } = useCashierFiatAddress();
 
     useEffect(() => {
-        return () => sessionStorage.removeItem('verification_code');
-    }, []);
-
-    useEffect(() => {
-        if (iframeUrl) sessionStorage.removeItem('verification_code');
-    }, [iframeUrl, isLoading]);
-
-    useEffect(() => {
-        if (verificationCode)
+        if (verificationCode) {
             mutate('withdraw', {
                 verification_code: verificationCode,
             });
+
+            queryParams.delete('verification');
+            history.replace({
+                pathname: location.pathname,
+                search: queryParams.toString(), // Updates the URL without the 'verification_code'
+            });
+        }
     }, [mutate, verificationCode]);
 
     if (isError && isServerError(withdrawalFiatError.error)) {
-        sessionStorage.removeItem('verification_code');
         return <WalletsErrorScreen message={withdrawalFiatError.error.message} />;
     }
 

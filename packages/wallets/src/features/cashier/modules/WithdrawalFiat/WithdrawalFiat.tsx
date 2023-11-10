@@ -17,7 +17,7 @@ const WithdrawalFiat = () => {
             mutate('withdraw', {
                 verification_code: verificationCode,
             });
-    }, [mutate]);
+    }, [mutate, verificationCode]);
 
     if (verificationCode || iframeUrl) {
         return (

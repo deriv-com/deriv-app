@@ -43,11 +43,12 @@ const typeToWidthMapper = {
 const typesWithRoundedIcon = ['EUR', 'GBP', 'USD'];
 
 type TProps = {
+    device?: 'desktop' | 'mobile';
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm' | 'xl'>;
     type: Omit<string, keyof typeof typeToIconMapper> | keyof typeof typeToIconMapper;
 };
 
-const WalletCardIcon: React.FC<TProps> = ({ size = 'lg', type }) => {
+const WalletCardIcon: React.FC<TProps> = ({ device, size = 'lg', type }) => {
     const { isMobile } = useDevice();
 
     let iconType = type as keyof typeof typeToIconMapper;
@@ -57,7 +58,9 @@ const WalletCardIcon: React.FC<TProps> = ({ size = 'lg', type }) => {
     const Icon = typeToIconMapper[iconType];
     const isRoundedIcon = typesWithRoundedIcon.includes(iconType);
     const width =
-        typeToWidthMapper[isRoundedIcon ? 'roundedIcon' : 'rectangleIcon'][size][isMobile ? 'mobile' : 'desktop'];
+        typeToWidthMapper[isRoundedIcon ? 'roundedIcon' : 'rectangleIcon'][size][
+            device || (isMobile ? 'mobile' : 'desktop')
+        ];
 
     if (!Icon) return null;
 

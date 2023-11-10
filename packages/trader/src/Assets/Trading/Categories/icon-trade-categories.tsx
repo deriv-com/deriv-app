@@ -13,17 +13,6 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
     if (category) {
         switch (category) {
             case 'rise_fall':
-                IconCategory = (
-                    <React.Fragment>
-                        <div className='category-wrapper'>
-                            <Icon icon='IcTradetypeCall' className='category-type' color='brand' />
-                        </div>
-                        <div className='category-wrapper'>
-                            <Icon icon='IcTradetypePut' className='category-type' color='brand' />
-                        </div>
-                    </React.Fragment>
-                );
-                break;
             case 'rise_fall_equal':
                 IconCategory = (
                     <React.Fragment>
@@ -132,14 +121,14 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'lb_call':
+            case TRADE_TYPES.LBCALL:
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon icon='IcTradetypeLbcall' className='category-type' color='brand' />
                     </div>
                 );
                 break;
-            case 'lb_put':
+            case TRADE_TYPES.LBPUT:
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon icon='IcTradetypeLbput' className='category-type' color='brand' />

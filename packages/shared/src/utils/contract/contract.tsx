@@ -33,6 +33,8 @@ export const CONTRACT_TYPES = {
     ACCU: 'ACCU',
     CALLPUTSPREAD: { CALL: 'CALLSPREAD', PUT: 'PUTSPREAD' },
     LBHIGHLOW: 'LBHIGHLOW',
+    LBCALL: 'LBFLOATCALL',
+    LBPUT: 'LBFLOATPUT',
     MULTIPLIER: {
         UP: 'MULTUP',
         DOWN: 'MULTDOWN',
@@ -53,6 +55,8 @@ export const TRADE_TYPES = {
     ACCUMULATOR: 'accumulator',
     CALLPUTSPREAD: 'callputspread',
     LBHIGHLOW: 'lb_high_low',
+    LBCALL: 'lb_call',
+    LBPUT: 'lb_put',
     MULTIPLIER: 'multiplier',
     RESET: 'reset',
     RUNHIGHLOW: 'run_high_low',

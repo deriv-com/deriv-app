@@ -107,14 +107,14 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect MockedIcon to be rendered when category is lb_call', () => {
-        render(<IconTradeCategory category='lb_call' />);
+    it('Expect MockedIcon to be rendered when category is TRADE_TYPES.LBCALL', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.LBCALL} />);
         const mocked_icon_text = screen.getByText(mocked_icon);
         expect(mocked_icon_text).toBeInTheDocument();
         expect(mocked_icon_text).toHaveClass('category-wrapper');
     });
-    it('Expect MockedIcon to be rendered when category is lb_put', () => {
-        render(<IconTradeCategory category='lb_put' />);
+    it('Expect MockedIcon to be rendered when category is TRADE_TYPES.LBPUT', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.LBPUT} />);
         const mocked_icon_text = screen.getByText(mocked_icon);
         expect(mocked_icon_text).toBeInTheDocument();
         expect(mocked_icon_text).toHaveClass('category-wrapper');

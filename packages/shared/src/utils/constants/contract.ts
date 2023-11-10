@@ -118,8 +118,18 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         components: ['last_digit'],
     },
     // TODO: update the rest of these contracts config
-    lb_call: { title: localize('Close-to-Low'), trade_types: ['LBFLOATCALL'], basis: ['multiplier'], components: [] },
-    lb_put: { title: localize('High-to-Close'), trade_types: ['LBFLOATPUT'], basis: ['multiplier'], components: [] },
+    [TRADE_TYPES.LBCALL]: {
+        title: localize('Close-to-Low'),
+        trade_types: [CONTRACT_TYPES.LBCALL],
+        basis: ['multiplier'],
+        components: [],
+    },
+    [TRADE_TYPES.LBPUT]: {
+        title: localize('High-to-Close'),
+        trade_types: [CONTRACT_TYPES.LBPUT],
+        basis: ['multiplier'],
+        components: [],
+    },
     [TRADE_TYPES.LBHIGHLOW]: {
         title: localize('High-to-Low'),
         trade_types: [CONTRACT_TYPES.LBHIGHLOW],
@@ -218,7 +228,10 @@ export const getContractCategoriesConfig = () =>
         },
         'Highs & Lows': { name: localize('Highs & Lows'), categories: ['high_low', 'touch', TRADE_TYPES.TICKHIGHLOW] },
         'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
-        'Look Backs': { name: localize('Look Backs'), categories: [TRADE_TYPES.LBHIGHLOW, 'lb_put', 'lb_call'] },
+        'Look Backs': {
+            name: localize('Look Backs'),
+            categories: [TRADE_TYPES.LBHIGHLOW, TRADE_TYPES.LBPUT, TRADE_TYPES.LBCALL],
+        },
         Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
         Vanillas: { name: localize('Vanillas'), categories: [TRADE_TYPES.VANILLA.CALL, TRADE_TYPES.VANILLA.PUT] },
         Accumulators: { name: localize('Accumulators'), categories: [TRADE_TYPES.ACCUMULATOR] },
@@ -233,8 +246,8 @@ export const unsupported_contract_types_list = [
     TRADE_TYPES.TICKHIGHLOW,
     'end',
     'stay',
-    'lb_call',
-    'lb_put',
+    TRADE_TYPES.LBCALL,
+    TRADE_TYPES.LBPUT,
     TRADE_TYPES.LBHIGHLOW,
 ];
 

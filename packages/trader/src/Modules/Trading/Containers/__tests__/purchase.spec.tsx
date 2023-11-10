@@ -88,7 +88,7 @@ describe('<Purchase />', () => {
         new_mocked_store.modules.trade.is_vanilla = true;
         new_mocked_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
         new_mocked_store.modules.trade.trade_types = {
-            VANILLA: 'Vanilla Long Call',
+            [CONTRACT_TYPES.VANILLA.CALL]: TRADE_TYPES.VANILLA.CALL,
         };
         const mock_root_store = mockStore(new_mocked_store);
         render(mockPurchaseModal(mock_root_store));

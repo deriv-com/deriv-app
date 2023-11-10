@@ -83,10 +83,10 @@ const TradeCategories = ({
             case TRADE_TYPES.LBHIGHLOW:
                 TradeTypeTemplate = <LbHighLowTradeDescription />;
                 break;
-            case 'lb_put':
+            case TRADE_TYPES.LBPUT:
                 TradeTypeTemplate = <LbPutTradeDescription />;
                 break;
-            case 'lb_call':
+            case TRADE_TYPES.LBCALL:
                 TradeTypeTemplate = <LbCallTradeDescription />;
                 break;
             case TRADE_TYPES.MULTIPLIER:

@@ -36,7 +36,7 @@ type TModalElement = {
     should_header_stick_body?: boolean;
     small?: boolean;
     title?: string | React.ReactNode;
-    toggleModal?: (e?: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    toggleModal?: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
     width?: string;
 };
 
@@ -88,11 +88,11 @@ const ModalElement = ({
         const path = e.path ?? e.composedPath?.();
         return (
             should_close_on_click_outside ||
-            has_close_icon &&
-            !isPortalElementVisible() &&
-            is_open &&
-            !is_absolute_modal_visible &&
-            !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el as HTMLElement)))
+            (has_close_icon &&
+                !isPortalElementVisible() &&
+                is_open &&
+                !is_absolute_modal_visible &&
+                !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el as HTMLElement))))
         );
     };
 

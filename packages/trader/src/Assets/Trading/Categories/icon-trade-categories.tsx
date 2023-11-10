@@ -37,7 +37,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'end':
+            case TRADE_TYPES.END:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -49,7 +49,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'stay':
+            case TRADE_TYPES.STAY:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>

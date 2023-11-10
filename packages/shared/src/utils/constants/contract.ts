@@ -81,15 +81,15 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         basis: ['stake', 'payout'],
         components: ['barrier'],
     },
-    end: {
+    [TRADE_TYPES.END]: {
         title: localize('Ends In/Ends Out'),
-        trade_types: ['EXPIRYMISS', 'EXPIRYRANGE'],
+        trade_types: [CONTRACT_TYPES.END.IN, CONTRACT_TYPES.END.OUT],
         basis: ['stake', 'payout'],
         components: ['barrier'],
     },
-    stay: {
+    [TRADE_TYPES.STAY]: {
         title: localize('Stays In/Goes Out'),
-        trade_types: ['RANGE', 'UPORDOWN'],
+        trade_types: [CONTRACT_TYPES.STAY.IN, CONTRACT_TYPES.STAY.OUT],
         basis: ['stake', 'payout'],
         components: ['barrier'],
     },
@@ -229,7 +229,7 @@ export const getContractCategoriesConfig = () =>
             name: localize('Highs & Lows'),
             categories: ['high_low', 'touch', TRADE_TYPES.TICK_HIGH_LOW],
         },
-        'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
+        'Ins & Outs': { name: localize('Ins & Outs'), categories: [TRADE_TYPES.END, TRADE_TYPES.STAY] },
         'Look Backs': {
             name: localize('Look Backs'),
             categories: [TRADE_TYPES.LB_HIGH_LOW, TRADE_TYPES.LB_PUT, TRADE_TYPES.LB_CALL],
@@ -249,8 +249,8 @@ export const unsupported_contract_types_list = [
     TRADE_TYPES.RESET,
     TRADE_TYPES.ASIAN,
     TRADE_TYPES.TICK_HIGH_LOW,
-    'end',
-    'stay',
+    TRADE_TYPES.END,
+    TRADE_TYPES.STAY,
     TRADE_TYPES.LB_CALL,
     TRADE_TYPES.LB_PUT,
     TRADE_TYPES.LB_HIGH_LOW,

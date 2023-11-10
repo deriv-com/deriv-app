@@ -33,7 +33,7 @@ const TradeCategoriesGIF = ({
             return <ImageAsianUpDown />;
         case TRADE_TYPES.CALLPUTSPREAD:
             return <ImageSpread />;
-        case 'end':
+        case TRADE_TYPES.END:
             return <ImageEndsInOut />;
         case TRADE_TYPES.EVEN_ODD:
             return <ImageEvenOdd />;

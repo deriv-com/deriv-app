@@ -47,10 +47,10 @@ const TradeCategories = ({
             case 'high_low':
                 TradeTypeTemplate = <HighLowTradeDescription />;
                 break;
-            case 'end':
+            case TRADE_TYPES.END:
                 TradeTypeTemplate = <EndTradeDescription />;
                 break;
-            case 'stay':
+            case TRADE_TYPES.STAY:
                 TradeTypeTemplate = <StayTradeDescription />;
                 break;
             case TRADE_TYPES.MATCH_DIFF:

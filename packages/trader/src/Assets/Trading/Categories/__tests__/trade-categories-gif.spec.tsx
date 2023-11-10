@@ -47,7 +47,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageEndsInOut to be rendered when trade category is end', async () => {
+    it('expect ImageEndsInOut to be rendered when trade category is TRADE_TYPES.END', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-ends-in-out.svg', () => ({
                 __esModule: true,
@@ -56,7 +56,7 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='end' selected_contract_type='end' />);
+                    render(<moduleName.default category={TRADE_TYPES.END} selected_contract_type={TRADE_TYPES.END} />);
                     expect(screen.getByText(/imageendsinout/i)).toBeInTheDocument();
                 })
                 .catch(error => {

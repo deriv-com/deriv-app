@@ -44,8 +44,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is end', () => {
-        render(<IconTradeCategory category='end' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.END', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.END} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {
@@ -53,8 +53,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is stay', () => {
-        render(<IconTradeCategory category='stay' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.STAY', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.STAY} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {

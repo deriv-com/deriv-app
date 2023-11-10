@@ -11,10 +11,10 @@ import {
 const contract_types_test_list = {
     Accumulators: { name: 'Accumulators', categories: [{ value: TRADE_TYPES.ACCUMULATOR, text: 'Accumulators' }] },
     Digits: { name: 'Digits', categories: [{ value: TRADE_TYPES.MATCH_DIFF, text: 'Matches/Differs' }] },
-    'Ins & Outs': { name: 'Ins & Outs', categories: [{ value: 'end', text: 'Ends In/Ends Out' }] },
+    'Ins & Outs': { name: 'Ins & Outs', categories: [{ value: TRADE_TYPES.END, text: 'Ends In/Ends Out' }] },
 };
-const unsupported_test_list = ['end', 'stay'];
-const unsupported_short_test_list = ['stay'];
+const unsupported_test_list = [TRADE_TYPES.END, TRADE_TYPES.STAY];
+const unsupported_short_test_list = [TRADE_TYPES.STAY];
 const contract_type_array = [
     { value: TRADE_TYPES.ACCUMULATOR, text: 'Accumulators' },
     { value: 'rise_fall', text: 'Rise/Fall' },

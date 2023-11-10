@@ -4,7 +4,6 @@
 
 -   [General Guidelines](#general-guidelines)
 -   [Style Guide](#commenting)
--   [Commenting](#commenting)
 -   [JSX Rules](#jsx-rules)
 
 ## General Guidelines
@@ -24,19 +23,6 @@ In order to improve the clarity, quality and development time it is worth consid
 -   [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript/blob/master/README.md) is being followed in our code base.
 
 -   Code formatting is handled entirely by Prettier. Run `npm run prettify` from the root of the project to format all code. Code is also automatically formatted [pre-commit](https://www.atlassian.com/git/tutorials/git-hooks).
-
----
-
-### Commenting
-
-<a id="commenting-explanations"></a>
-**[Explanations:](#commenting-explanations)** Feel free to add comments to explain any code that is confusing.
-
-<a id="commenting-todo"></a>
-**[To do:](#commenting-todo)** Use `TODO: [search-key] - {explanation}` comments anywhere that needs consideration or attention in the future. Please use a unique key per issue that a TODO addresses so that we can find all TODOs of similar nature by searching for the key.
-
-<a id="commenting-api-requests"></a>
-Code should be written to clearly describe what it is doing. However sometimes comments can help explain why something is done in a certain way, no how.
 
 ---
 

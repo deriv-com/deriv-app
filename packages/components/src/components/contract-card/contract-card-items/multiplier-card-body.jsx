@@ -15,6 +15,8 @@ import ToggleCardDialog from './toggle-card-dialog';
 import Icon from '../../icon';
 import Money from '../../money';
 
+// bla
+
 const MultiplierCardBody = ({
     addToast,
     contract_info,

@@ -1,17 +1,12 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { isMobile } from '@deriv/shared';
 import ApiTokenContext from '../api-token-context';
 import ApiTokenTable from '../api-token-table';
-
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-    isDesktop: jest.fn(() => true),
-}));
+import { StoreProvider, mockStore } from '@deriv/stores';
+import { TApiContext } from 'Types';
 
 describe('ApiTokenTable', () => {
-    const mock_props = {
+    const mock_props: TApiContext = {
         api_tokens: [
             {
                 display_name: 'Token 1',
@@ -21,9 +16,17 @@ describe('ApiTokenTable', () => {
             },
         ],
         deleteToken: jest.fn(),
-        footer_ref: document.createElement('div'),
-        overlay_ref: document.createElement('div'),
-        toggleOverlay: jest.fn(),
+    };
+    const store = mockStore({});
+
+    const renderComponent = ({ props = mock_props, store_config = store }) => {
+        render(
+            <StoreProvider store={store_config}>
+                <ApiTokenContext.Provider value={props}>
+                    <ApiTokenTable />
+                </ApiTokenContext.Provider>
+            </StoreProvider>
+        );
     };
 
     let expectedTexts = [''];
@@ -46,11 +49,7 @@ describe('ApiTokenTable', () => {
 
     it('should render ApiTokenTable', () => {
         expectedTexts.push('Last used');
-        render(
-            <ApiTokenContext.Provider value={mock_props}>
-                <ApiTokenTable />
-            </ApiTokenContext.Provider>
-        );
+        renderComponent({});
         expect(screen.getByText('Token 1')).not.toHaveClass('da-api-token__scope-item--name');
         expectedTexts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
@@ -58,13 +57,13 @@ describe('ApiTokenTable', () => {
     });
 
     it('should render in mobile view', () => {
+        const mock_store = mockStore({
+            ui: {
+                is_mobile: true,
+            },
+        });
         expectedTexts.push('Last Used');
-        (isMobile as jest.Mock).mockImplementationOnce(() => true);
-        render(
-            <ApiTokenContext.Provider value={mock_props}>
-                <ApiTokenTable />
-            </ApiTokenContext.Provider>
-        );
+        renderComponent({ store_config: mock_store });
         expect(screen.getByText('Token 1')).toHaveClass('da-api-token__scope-item--name');
         expectedTexts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
@@ -80,11 +79,7 @@ describe('ApiTokenTable', () => {
                 last_used: '',
             },
         ];
-        render(
-            <ApiTokenContext.Provider value={mock_props}>
-                <ApiTokenTable />
-            </ApiTokenContext.Provider>
-        );
+        renderComponent({});
         expect(screen.getByText('Never')).toBeInTheDocument();
     });
 });

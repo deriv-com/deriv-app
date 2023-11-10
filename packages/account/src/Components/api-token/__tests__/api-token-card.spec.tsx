@@ -4,16 +4,15 @@ import { screen, render } from '@testing-library/react';
 import ApiTokenCard from '../api-token-card';
 
 describe('<ApiTokenCard />', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ApiTokenCard> = {
         name: 'Api_token_card_test_case',
-        value: false,
         display_name: <div>API Token Card</div>,
         description: <div>API Token Description</div>,
     };
 
     const renderComponent = (children?: JSX.Element) => {
         render(
-            <Formik initialValues={{ [mock_props.name]: mock_props.value }} onSubmit={jest.fn()}>
+            <Formik initialValues={{ [mock_props.name]: false }} onSubmit={jest.fn()}>
                 <Form>
                     <ApiTokenCard {...mock_props}>{children}</ApiTokenCard>
                 </Form>

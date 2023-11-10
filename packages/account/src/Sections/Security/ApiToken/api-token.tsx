@@ -1,10 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field, FormikErrors, FieldProps, FormikHelpers } from 'formik';
-import { useApiToken } from '@deriv/api';
-import { ApiToken as TApitoken } from '@deriv/api-types';
+import { ApiToken as TApitoken, APITokenResponse as TAPITokenResponse } from '@deriv/api-types';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
-import { getPropertyValue } from '@deriv/shared';
+import { getPropertyValue, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { TToken } from 'Types';
@@ -16,7 +15,12 @@ import './api-token.scss';
 
 type AptTokenState = {
     api_tokens: NonNullable<TToken[]>;
+    is_loading: boolean;
+    is_success: boolean;
     error_message: string;
+    show_delete: boolean;
+    is_delete_loading: boolean;
+    is_delete_success: boolean;
 };
 
 type TApiTokenForm = {
@@ -32,9 +36,7 @@ const ApiToken = observer(() => {
     const { client, ui } = useStore();
     const { is_switching } = client;
     const { is_desktop, is_mobile } = ui;
-
-    const { api_token_data, getApiToken, createApiToken, deleteApiToken, isSuccess, isLoading, isError, error } =
-        useApiToken();
+    const prev_is_switching = React.useRef(is_switching);
 
     const [state, setState] = React.useReducer(
         (prev_state: Partial<AptTokenState>, value: Partial<AptTokenState>) => ({
@@ -43,31 +45,31 @@ const ApiToken = observer(() => {
         }),
         {
             api_tokens: [],
+            is_loading: true,
+            is_success: false,
             error_message: '',
+            show_delete: false,
+            is_delete_loading: false,
+            is_delete_success: false,
         }
     );
 
-    React.useEffect(() => {
-        /**
-         * Fetch all API tokens
-         */
-        getApiToken();
-    }, [getApiToken]);
+    const timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
 
     React.useEffect(() => {
-        /**
-         * Update API token list when new token is created or a token is deleted
-         */
-        if (isSuccess) {
-            setState({
-                api_tokens: getPropertyValue(api_token_data, ['tokens']),
-            });
-        } else if (isError) {
-            setState({
-                error_message: getPropertyValue(error, ['message']),
-            });
+        getApiTokens();
+
+        return () => {
+            clearTimeout(timeout_ref.current);
+        };
+    }, []);
+
+    React.useEffect(() => {
+        if (prev_is_switching.current !== is_switching) {
+            prev_is_switching.current = is_switching;
+            getApiTokens();
         }
-    }, [isSuccess, api_token_data, isError, error]);
+    }, [is_switching]);
 
     const initial_form: TApiTokenForm = {
         token_name: '',
@@ -106,22 +108,67 @@ const ApiToken = observer(() => {
             item => item !== 'token_name' && Boolean(values[item as keyof TApiTokenForm])
         ) as NonNullable<NonNullable<TApitoken['tokens']>[0]['scopes']>;
 
-    const handleSubmit = (values: TApiTokenForm, { setSubmitting, resetForm }: FormikHelpers<TApiTokenForm>) => {
-        createApiToken({
+    const handleSubmit = async (
+        values: TApiTokenForm,
+        { setSubmitting, setFieldError, resetForm }: FormikHelpers<TApiTokenForm>
+    ) => {
+        const token_response = await WS.apiToken({
+            api_token: 1,
             new_token: values.token_name,
             new_token_scopes: selectedTokenScope(values),
         });
+        if (token_response.error) {
+            setFieldError('token_name', token_response.error.message);
+        } else {
+            setState({
+                is_success: true,
+                api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
+            });
+            setTimeout(() => {
+                setState({ is_success: false });
+            }, 500);
+        }
         resetForm();
         setSubmitting(false);
     };
 
-    const deleteToken = (token: string) => {
-        deleteApiToken(token);
+    const populateTokenResponse = (response: TAPITokenResponse) => {
+        if (response.error) {
+            setState({
+                is_loading: false,
+                error_message: getPropertyValue(response, ['error', 'message']),
+            });
+        } else {
+            setState({
+                is_loading: false,
+                api_tokens: getPropertyValue(response, ['api_token', 'tokens']),
+            });
+        }
     };
 
-    const { api_tokens, error_message } = state;
+    const getApiTokens = async () => {
+        setState({ is_loading: true });
+        const token_response = await WS.authorized.apiToken({ api_token: 1 });
+        populateTokenResponse(token_response);
+    };
 
-    if (is_switching) {
+    const deleteToken = async (token: string) => {
+        setState({ is_delete_loading: true });
+
+        const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
+
+        populateTokenResponse(token_response);
+
+        setState({ is_delete_loading: false, is_delete_success: true });
+
+        timeout_ref.current = setTimeout(() => {
+            setState({ is_delete_success: false });
+        }, 500);
+    };
+
+    const { api_tokens, is_loading, is_success, error_message } = state;
+
+    if (is_loading || is_switching) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -132,7 +179,6 @@ const ApiToken = observer(() => {
     const context_value = {
         api_tokens,
         deleteToken,
-        isSuccess,
     };
 
     const api_token_card_array = getApiTokenCardDetails();
@@ -220,7 +266,7 @@ const ApiToken = observer(() => {
                                                         'dc-btn__button-group',
                                                         'da-api-token__button',
                                                         {
-                                                            'da-api-token__button--success': isSuccess,
+                                                            'da-api-token__button--success': is_success,
                                                         }
                                                     )}
                                                     type='submit'
@@ -232,7 +278,7 @@ const ApiToken = observer(() => {
                                                     }
                                                     has_effect
                                                     is_loading={isSubmitting}
-                                                    is_submit_success={isLoading}
+                                                    is_submit_success={is_success}
                                                     primary
                                                     large
                                                 >

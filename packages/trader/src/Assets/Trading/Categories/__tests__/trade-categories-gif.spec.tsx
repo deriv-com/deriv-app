@@ -130,7 +130,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageHighToLow to be rendered when trade category is lb_high_low', async () => {
+    it('expect ImageHighToLow to be rendered when trade category is TRADE_TYPES.LBHIGHLOW', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-high-to-low.svg', () => ({
                 __esModule: true,
@@ -139,7 +139,12 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='lb_high_low' selected_contract_type='lb_high_low' />);
+                    render(
+                        <moduleName.default
+                            category={TRADE_TYPES.LBHIGHLOW}
+                            selected_contract_type={TRADE_TYPES.LBHIGHLOW}
+                        />
+                    );
                     expect(screen.getByText(/imagehightolow/i)).toBeInTheDocument();
                 })
                 .catch(error => {

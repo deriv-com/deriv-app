@@ -146,7 +146,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </div>
                 );
                 break;
-            case 'lb_high_low':
+            case TRADE_TYPES.LBHIGHLOW:
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon icon='IcTradetypeLbhighlow' className='category-type' color='brand' />

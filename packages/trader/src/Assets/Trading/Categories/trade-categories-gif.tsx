@@ -43,7 +43,7 @@ const TradeCategoriesGIF = ({
             return <ImageCloseToLow />;
         case 'lb_put':
             return <ImageHighToClose />;
-        case 'lb_high_low':
+        case TRADE_TYPES.LBHIGHLOW:
             return <ImageHighToLow />;
         case 'rise_fall':
             return <ImageRiseFall />;

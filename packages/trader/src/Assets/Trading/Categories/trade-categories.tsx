@@ -80,7 +80,7 @@ const TradeCategories = ({
             case TRADE_TYPES.TICKHIGHLOW:
                 TradeTypeTemplate = <TickHighLowTradeDescription />;
                 break;
-            case 'lb_high_low':
+            case TRADE_TYPES.LBHIGHLOW:
                 TradeTypeTemplate = <LbHighLowTradeDescription />;
                 break;
             case 'lb_put':

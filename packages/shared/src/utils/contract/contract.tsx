@@ -32,6 +32,7 @@ export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
 export const CONTRACT_TYPES = {
     ACCU: 'ACCU',
     CALLPUTSPREAD: { CALL: 'CALLSPREAD', PUT: 'PUTSPREAD' },
+    LBHIGHLOW: 'LBHIGHLOW',
     MULTIPLIER: {
         UP: 'MULTUP',
         DOWN: 'MULTDOWN',
@@ -51,6 +52,7 @@ export const CONTRACT_TYPES = {
 export const TRADE_TYPES = {
     ACCUMULATOR: 'accumulator',
     CALLPUTSPREAD: 'callputspread',
+    LBHIGHLOW: 'lb_high_low',
     MULTIPLIER: 'multiplier',
     RESET: 'reset',
     RUNHIGHLOW: 'run_high_low',

@@ -1,7 +1,6 @@
 import { THooks, TMarketTypes } from '../../../../../types';
 
 type TGetAccountNameProps = {
-    //@ts-expect-error provide proper type for accounts from transfer_between_accounts response
     accountCategory: THooks.TransferAccount['account_category'];
     accountType: THooks.TransferAccount['account_type'] | 'standard';
     displayCurrencyCode?: THooks.CurrencyConfig['display_code'];

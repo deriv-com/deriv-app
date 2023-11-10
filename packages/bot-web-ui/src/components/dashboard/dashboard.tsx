@@ -5,13 +5,11 @@ import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-import Draggable from '../draggable';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
 import { tour_list } from './dbot-tours/utils';
@@ -25,7 +23,6 @@ const Dashboard = observer(() => {
         active_tab,
         active_tour,
         is_chart_modal_visible,
-        setChartModalVisibility,
         setActiveTab,
         setWebSocketState,
         setActiveTour,
@@ -38,10 +35,9 @@ const Dashboard = observer(() => {
     const { cancel_button_text, ok_button_text, title, message } = dialog_options as { [key: string]: string };
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
-    const is_mobile = isMobile();
     const init_render = React.useRef(true);
     const { ui } = useStore();
-    const { url_hashed_values } = ui;
+    const { url_hashed_values, is_mobile } = ui;
     const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
 
     let tab_value: number | string = active_tab;
@@ -191,16 +187,7 @@ const Dashboard = observer(() => {
             >
                 {message}
             </Dialog>
-            <Draggable
-                xaxis={window.innerWidth / 2}
-                yaxis={window.innerHeight / 2}
-                is_visible={is_chart_modal_visible}
-                header_title=''
-                onCloseDraggable={setChartModalVisibility}
-                dragHandleClassName={'chart-modal-dialog__header-wrapper'}
-            >
-                <ChartModal setChartModalVisibility={setChartModalVisibility} />
-            </Draggable>
+            <ChartModal />
             <StrategyNotification />
         </React.Fragment>
     );

@@ -1,6 +1,5 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarIcon from './toolbar-icon';
@@ -27,6 +26,9 @@ const WorkspaceGroup = observer(
         toggleLoadModal,
         toggleSaveModal,
     }: TWorkspaceGroup) => {
+        const {
+            ui: { is_desktop },
+        } = useStore();
         const { dashboard } = useDBotStore();
         const { setPreviewOnPopup, setChartModalVisibility } = dashboard;
 
@@ -63,7 +65,7 @@ const WorkspaceGroup = observer(
                     data_testid='dt_toolbar_sort_button'
                     action={onSortClick}
                 />
-                {!isMobile() && (
+                {is_desktop && (
                     <ToolbarIcon
                         popover_message={localize('Charts')}
                         icon='IcChartsTabDbot'

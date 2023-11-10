@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from './toolbar-widgets';
@@ -25,6 +24,9 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         wsSendRequest,
         wsSubscribe,
     } = chart_store;
+    const {
+        ui: { is_mobile, is_desktop },
+    } = useStore();
     const { is_drawer_open } = run_panel;
     const { is_chart_modal_visible } = dashboard;
     const is_socket_opened = common.is_socket_opened;
@@ -40,8 +42,8 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     return (
         <div
             className={classNames('dashboard__chart-wrapper', {
-                'dashboard__chart-wrapper--expanded': is_drawer_open && !isMobile(),
-                'dashboard__chart-wrapper--modal': is_chart_modal_visible && !isMobile(),
+                'dashboard__chart-wrapper--expanded': is_drawer_open && !is_mobile,
+                'dashboard__chart-wrapper--modal': is_chart_modal_visible && !is_mobile,
             })}
         >
             <SmartChart
@@ -55,8 +57,8 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
                 )}
                 chartType={chart_type}
-                isMobile={isMobile()}
-                enabledNavigationWidget={isDesktop()}
+                isMobile={is_mobile}
+                enabledNavigationWidget={is_desktop}
                 granularity={granularity}
                 requestAPI={wsSendRequest}
                 requestForget={wsForget}

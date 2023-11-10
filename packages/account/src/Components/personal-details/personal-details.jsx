@@ -12,7 +12,12 @@ import {
 } from '@deriv/components';
 import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { isDocumentNumberValid, shouldShowIdentityInformation } from '../../Helpers/utils';
+import {
+    isAdditionalDocumentValid,
+    isDocumentNumberValid,
+    isDocumentTypeValid,
+    shouldShowIdentityInformation,
+} from '../../Helpers/utils';
 import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
@@ -69,8 +74,16 @@ const PersonalDetails = observer(
 
         const validateIDV = values => {
             const errors = {};
-            const { document_type, document_number } = values;
+            const { document_type, document_number, document_additional } = values;
             if (document_type.id === IDV_NOT_APPLICABLE_OPTION.id) return errors;
+
+            errors.document_type = isDocumentTypeValid(document_type);
+
+            const needs_additional_document = !!document_type.additional;
+
+            if (needs_additional_document) {
+                errors.document_additional = isAdditionalDocumentValid(document_type, document_additional);
+            }
 
             errors.document_number = isDocumentNumberValid(document_number, document_type);
 

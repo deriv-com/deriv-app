@@ -5,7 +5,12 @@ import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS } from '@deriv/react-jo
 import useDevice from '../../hooks/useDevice';
 import useMutationObserver from '../../hooks/useMutationObserver';
 import { useTabs } from '../Base/Tabs/Tabs';
-import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
+import {
+    TooltipComponent,
+    tourStepConfig,
+    walletsOnboardingLocalStorageKey as key,
+    walletsOnboardingStartValue as startValue,
+} from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
 
 type TProps = {
@@ -14,8 +19,6 @@ type TProps = {
 };
 
 const WalletMobileTourGuide = ({ cfdRef, optionsRef }: TProps) => {
-    const key = 'walletsOnboarding';
-    const startValue = 'started';
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
     const { isMobile } = useDevice();
     const { activeTabIndex, setActiveTabIndex } = useTabs();

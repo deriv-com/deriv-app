@@ -3,12 +3,15 @@ import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
 import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
 import useDevice from '../../hooks/useDevice';
-import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
+import {
+    TooltipComponent,
+    tourStepConfig,
+    walletsOnboardingLocalStorageKey as key,
+    walletsOnboardingStartValue as startValue,
+} from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
 
 const WalletTourGuide = () => {
-    const key = 'walletsOnboarding';
-    const startValue = 'started';
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
     const { isMobile } = useDevice();
 

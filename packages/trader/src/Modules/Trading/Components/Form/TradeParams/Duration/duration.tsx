@@ -85,8 +85,7 @@ const Duration = ({
 
     if (is_minimized) {
         const moment_expiry = toMoment(expiry_date);
-        const chosen_duration_unit = duration_units_list.find(o => o.value === duration_unit);
-        const duration_unit_text = chosen_duration_unit ? chosen_duration_unit.text : '';
+        const duration_unit_text = duration_units_list.find(({ value }) => value === duration_unit)?.text ?? '';
         return (
             <div className='fieldset-minimized fieldset-minimized__duration'>
                 {expiry_type === 'duration'

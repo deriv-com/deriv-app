@@ -122,7 +122,7 @@ const AdvancedDuration = observer(
                                 is_nativepicker={false}
                                 list={duration_units_list}
                                 name='advanced_duration_unit'
-                                no_border={true}
+                                no_border
                                 onChange={changeDurationUnit}
                                 value={advanced_duration_unit}
                             />

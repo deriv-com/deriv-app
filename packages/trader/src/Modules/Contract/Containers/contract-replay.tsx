@@ -21,7 +21,7 @@ import {
     isSmartTraderContract,
     urlFor,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useFeatureFlags } from '@deriv/hooks';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
@@ -145,7 +145,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             />
             <PageOverlay
                 id='dt_contract_replay_container'
-                header={localize('Contract details')}
+                header={<Localize i18n_default_text='details' />}
                 onClickClose={onClickClose}
             >
                 <Div100vhContainer

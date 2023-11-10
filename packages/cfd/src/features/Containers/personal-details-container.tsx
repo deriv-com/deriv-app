@@ -67,8 +67,8 @@ const PersonalDetailsContainer = observer(({ onSubmit }: TPersonalDetailsContain
     }, []);
 
     const transform = (value: unknown) => {
-        const [result] = residence_list?.filter(item => item.value === value);
-        return getPropertyValue(result, ['text']) || value;
+        const [result] = residence_list?.filter(item => item.value === value) || [];
+        return result ? getPropertyValue(result, ['text']) : value;
     };
 
     const saveFormData = (_index: number, value: TFormValues) => {

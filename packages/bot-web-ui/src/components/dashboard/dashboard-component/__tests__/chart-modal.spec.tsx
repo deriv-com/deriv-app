@@ -1,31 +1,67 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, waitFor } from '@testing-library/react';
 import ChartModal from '../chart-modal';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
+import { mock_ws } from 'Utils/mock';
 
-jest.mock('../../../chart/chart.tsx', () => jest.fn(() => <div>SmartChart chart</div>));
+jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
+jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
+    saveRecentWorkspace: jest.fn(),
+    unHighlightAllBlocks: jest.fn(),
+}));
+
+jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
+
+jest.mock('../chart-modal/chart-modal-desktop', () => ({
+    __esModule: true,
+    default: () => <div>Desktop Chart Modal</div>,
+}));
+
+jest.mock('@deriv/deriv-charts', () => ({
+    setSmartChartsPublicPath: jest.fn(),
+}));
 
 describe('ChartModal', () => {
-    const mockSetChartModalVisibility = jest.fn();
-
-    it('Should render the ChartModal component', () => {
-        render(<ChartModal setChartModalVisibility={mockSetChartModalVisibility} />);
-
-        expect(screen.getByText('SmartChart chart')).toBeInTheDocument();
+    beforeEach(() => {
+        jest.resetModules();
     });
 
-    it('should call setChartModalVisibility when close button is clicked', () => {
-        const { container } = render(<ChartModal setChartModalVisibility={mockSetChartModalVisibility} />);
+    const wrapper = (mock_store: ReturnType<typeof mockStore>) => {
+        const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
-        //<ToolbarIcon> is a wrapper around other components and the data-testid is not passed to the final DOM element
-        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-        const button = container.querySelector('#db-toolbar__close-button');
+        const Component = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock_store}>
+                <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
+                    {children}
+                </DBotStoreProvider>
+            </StoreProvider>
+        );
 
-        if (button) {
-            userEvent.click(button);
-            expect(mockSetChartModalVisibility).toHaveBeenCalledTimes(1);
-        } else {
-            throw new Error('Button <ToolbarIcon> with id "db-toolbar__close-button" -  not found');
-        }
+        return Component;
+    };
+
+    it('should render Desktop component based on Desktop', async () => {
+        const mock_store = mockStore({
+            ui: {
+                is_desktop: true,
+            },
+        });
+
+        await waitFor(() => render(<ChartModal />, { wrapper: wrapper(mock_store) }));
+
+        expect(screen.queryByText('Desktop Chart Modal')).toBeInTheDocument();
+    });
+
+    it('should render Mobile version without Chart Modal', async () => {
+        const mock_store = mockStore({
+            ui: {
+                is_desktop: false,
+            },
+        });
+
+        await waitFor(() => render(<ChartModal />, { wrapper: wrapper(mock_store) }));
+
+        expect(screen.queryByText('Desktop Chart Modal')).not.toBeInTheDocument();
     });
 });

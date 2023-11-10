@@ -3,8 +3,8 @@
 **In this document**
 
 -   [General Guidelines](#general-guidelines)
+-   [Style Guide](#commenting)
 -   [Commenting](#commenting)
--   [Import Rules](#import-rules)
 -   [JSX Rules](#jsx-rules)
 
 ## General Guidelines

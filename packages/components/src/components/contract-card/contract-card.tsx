@@ -41,6 +41,7 @@ const ContractCard = ({
     toggleUnsupportedContractModal,
 }: React.PropsWithChildren<TContractCardProps>) => {
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
+    const payout_info = is_multiplier ? getTotalProfit(contract_info) : profit_loss;
     return (
         <React.Fragment>
             {should_show_result_overlay && (
@@ -55,7 +56,7 @@ const ContractCard = ({
                         is_visible={!!contract_info.is_sold}
                         onClickRemove={onClickRemove}
                         onClick={() => toggleUnsupportedContractModal?.(true)}
-                        payout_info={getTotalProfit(contract_info)}
+                        payout_info={payout_info}
                         result={result || fallback_result}
                         is_positions={is_positions}
                     />

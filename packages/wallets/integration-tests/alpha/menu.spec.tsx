@@ -1,104 +1,32 @@
-import { test, expect } from '@playwright/test';
-import { mock_residents_list, mock_states_list, mock_general, mock_loggedIn, setupMocks } from '@deriv/integration';
-import {Context} from "@deriv/integration/src/utils/mocks/mocks";
+import { mock_general, mock_loggedIn, setupMocks } from '@deriv/integration';
+import { expect, test } from '@playwright/test';
+import { mock_balance } from '../mocks/mock_balance';
+import { mock_crypto_config } from '../mocks/mock_crypto_config';
+import { mock_get_account_types } from '../mocks/mock_get_account_types';
+import { mock_proposal_open_contract } from '../mocks/mock_proposal_open_contract';
+import mock_wallets_authorize, { DEFAULT_WALLET_ACCOUNTS } from '../mocks/mock_wallets_authorize';
 
-const mock_account_list = () => [
-    {
-        "account_category": "trading",
-        "account_type": "standard",
-        "created_at": 1699327783,
-        "currency": "BTC",
-        "is_disabled": 0,
-        "is_virtual": 0,
-        "landing_company_name": "svg",
-        "linked_to": [
-            {
-                "loginid": "CRW1004",
-                "platform": "dwallet"
-            }
-        ],
-        "loginid": "CR90000244"
-    },
-    {
-        "account_category": "wallet",
-        "account_type": "crypto",
-        "created_at": 1699327783,
-        "currency": "BTC",
-        "is_disabled": 0,
-        "is_virtual": 0,
-        "landing_company_name": "svg",
-        "linked_to": [
-            {
-                "loginid": "CR90000244",
-                "platform": "dtrade"
-            }
-        ],
-        "loginid": "CRW1004"
-    },
-    {
-        "account_category": "trading",
-        "account_type": "binary",
-        "created_at": 1699327783,
-        "currency": "USD",
-        "is_disabled": 0,
-        "is_virtual": 1,
-        "landing_company_name": "virtual",
-        "linked_to": [
-            {
-                "loginid": "VRW1005",
-                "platform": "dwallet"
-            }
-        ],
-        "loginid": "VRTC90000116"
-    },
-    {
-        "account_category": "wallet",
-        "account_type": "virtual",
-        "created_at": 1699327783,
-        "currency": "USD",
-        "is_disabled": 0,
-        "is_virtual": 1,
-        "landing_company_name": "virtual",
-        "linked_to": [
-            {
-                "loginid": "VRTC90000116",
-                "platform": "dtrade"
-            }
-        ],
-        "loginid": "VRW1005"
-    }
-];
-
-export default function mock_wallets_authorise(context: Context) {
-    if ('authorise' in context.request) {
-        // @ts-ignore
-        context.response.account_list = account_list;
-    }
-}
-
-test.describe('Alpha', () => {
-    test('header renders', async ({ page, baseURL }) => {
+test.describe('Wallets - Traders Hub', () => {
+    test('render header', async ({ baseURL, page }) => {
         await setupMocks({
             baseURL,
+            state: {
+                accounts: DEFAULT_WALLET_ACCOUNTS,
+            },
+            mocks: [
+                mock_general,
+                mock_loggedIn,
+                mock_wallets_authorize,
+                mock_get_account_types,
+                mock_crypto_config,
+                mock_proposal_open_contract,
+                mock_balance,
+            ],
             page,
-            mocks: [mock_general, mock_loggedIn, mock_account_list],
         });
         await page.goto(`${baseURL}/wallets`);
 
-        return new Promise((resolve) => {
-           setTimeout(() => {
-               resolve();
-           }, 50000);
-        });
-        // const personalDetailsLink = await page.getByRole('link', { name: 'Personal details' });
-        // const languagesLink = await page.getByRole('link', { name: 'Languages' });
-        //
-        // expect(await personalDetailsLink.getAttribute('aria-current')).toBe('page');
-        // expect(await languagesLink.getAttribute('aria-current')).not.toBe('page');
-        //
-        // await languagesLink.click();
-        //
-        // expect(await personalDetailsLink.getAttribute('aria-current')).not.toBe('page');
-        // expect(await languagesLink.getAttribute('aria-current')).toBe('page');
+        await expect(page.getByText(`Trader's Hub`)).toBeVisible();
+        await expect(page.getByText(`Cashier`)).toBeVisible();
     });
 });

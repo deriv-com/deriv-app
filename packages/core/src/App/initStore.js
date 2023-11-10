@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { configure } from 'mobx';
 import NetworkMonitor from 'Services/network-monitor';
 // import OutdatedBrowser      from 'Services/outdated-browser';

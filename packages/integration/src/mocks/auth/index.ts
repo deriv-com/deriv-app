@@ -1,5 +1,5 @@
 import mock_account_security from './account_security';
-import mock_authorize from './authorize';
+import mock_authorize, { DEFAULT_ACCOUNTS } from './authorize';
 import mock_balance_all from './balance_all';
 import mock_balance_one from './balance_one';
 import mock_get_account_status from './get_account_status';
@@ -46,3 +46,4 @@ const loggedIn = async (context: Context) => {
 };
 
 export default loggedIn;
+

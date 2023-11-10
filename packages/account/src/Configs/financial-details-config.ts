@@ -1,6 +1,12 @@
 import React from 'react';
 import { GetFinancialAssessment } from '@deriv/api-types';
-import { generateValidationFunction, getDefaultFields, TSchema, EMPLOYMENT_VALUES } from '@deriv/shared';
+import {
+    generateValidationFunction,
+    getDefaultFields,
+    TSchema,
+    EMPLOYMENT_VALUES,
+    shouldHideOccupationField,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TFinancialDetailsConfig = {
@@ -52,9 +58,10 @@ const financial_details_config: (props: { financial_assessment: GetFinancialAsse
                         options: Record<string, unknown>,
                         { employment_status }: { employment_status: string }
                     ) => {
-                        // check if  Employment_status value is available,
-                        // only then ask client to fill in Occupation field
-                        return value ? !!employment_status : true;
+                        /**
+                         * Check for the value of employment_status to determine if occupation field should be required.
+                         */
+                        return shouldHideOccupationField(employment_status) || !!value;
                     },
                     localize('Please select an option'),
                 ],

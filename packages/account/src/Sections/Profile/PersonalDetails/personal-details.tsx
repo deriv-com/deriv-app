@@ -630,7 +630,12 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                 )}
                                 <FormSubHeader title={localize('Email preference')} />
                                 <FormBodySection side_note={localize('Check this box to receive updates via email.')}>
-                                    <fieldset className='account-form__fieldset'>
+                                    <fieldset
+                                        className={classNames(
+                                            'account-form__fieldset',
+                                            'account-form__fieldset--email-consent'
+                                        )}
+                                    >
                                         <Checkbox
                                             name='email_consent'
                                             value={!!values.email_consent}
@@ -649,7 +654,12 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                             <FormFooter>
                                 {isServerError(error) && <FormSubmitErrorMessage message={error.message} />}
                                 {!is_virtual && isError && (
-                                    <Text className='account-form__footer-note' size='xxxs'>
+                                    <Text
+                                        className='account-form__footer-note'
+                                        size='xxs'
+                                        color='prominent'
+                                        align={is_mobile ? 'center' : 'right'}
+                                    >
                                         {localize(
                                             'Please make sure your information is correct or it may affect your trading experience.'
                                         )}

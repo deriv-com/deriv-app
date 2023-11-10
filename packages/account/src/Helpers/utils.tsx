@@ -23,7 +23,7 @@ export const documentAdditionalError = (
     let error_message = null;
     if (!additional_document_value) {
         error_message = localize('Please enter your {{document_name}}. ', {
-            document_name: document_additional_config?.display_name ?? localize('document number'),
+            document_name: document_additional_config?.display_name?.toLowerCase() ?? localize('document number'),
         });
     } else {
         const format_regex = getRegex(document_additional_config?.format);

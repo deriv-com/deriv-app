@@ -136,9 +136,10 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
 const getPlatformLabel = (shortcode?: string) => {
     switch (shortcode) {
         case CFD_PLATFORMS.DXTRADE:
-        case CFD_PLATFORMS.CTRADER:
         case CFD_PLATFORMS.CFDS:
             return localize('Other CFDs Platform');
+        case CFD_PLATFORMS.CTRADER:
+            return localize('Deriv cTrader');
         case CFD_PLATFORMS.MT5:
         default:
             return localize('MT5 Platform');
@@ -146,9 +147,10 @@ const getPlatformLabel = (shortcode?: string) => {
 };
 
 // Object to map the platform label
-const platfromsHeaderLabel = {
+const platformsHeaderLabel = {
     mt5: localize('MT5 Platform'),
     other_cfds: localize('Other CFDs Platform'),
+    ctrader: localize('Deriv cTrader'),
 };
 
 // Get the Account Icons based on the market type
@@ -177,9 +179,11 @@ const getMarketType = (trading_platforms: TModifiedTradingPlatformAvailableAccou
 // Get the color of Header based on the platform
 const getHeaderColor = (shortcode: string) => {
     switch (shortcode) {
-        case platfromsHeaderLabel.other_cfds:
+        case platformsHeaderLabel.other_cfds:
             return 'green';
-        case platfromsHeaderLabel.mt5:
+        case platformsHeaderLabel.ctrader:
+            return 'warning';
+        case platformsHeaderLabel.mt5:
         default:
             return 'blue';
     }
@@ -445,7 +449,7 @@ export {
     dxtrade_data,
     ctrader_data,
     getHeaderColor,
-    platfromsHeaderLabel,
+    platformsHeaderLabel,
     getAccountVerficationStatus,
     isMt5AccountAdded,
     isDxtradeAccountAdded,

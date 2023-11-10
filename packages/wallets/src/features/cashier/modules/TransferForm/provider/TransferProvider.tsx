@@ -38,7 +38,6 @@ const useModifyTransferAccounts = (accounts?: THooks.TransferAccount[]) => {
             return {
                 ...account,
                 accountName: getAccountName({
-                    //@ts-expect-error provide proper type for accounts from transfer_between_accounts response
                     accountCategory: account.account_category,
                     accountType: account.account_type,
                     displayCurrencyCode: currencyConfig?.display_code,
@@ -48,7 +47,6 @@ const useModifyTransferAccounts = (accounts?: THooks.TransferAccount[]) => {
                     ? activeWalletIconMapper.Demo?.light
                     : activeWalletIconMapper[activeWallet?.currency as keyof typeof activeWalletIconMapper]?.light,
                 appIcon:
-                    //@ts-expect-error provide proper type for accounts from transfer_between_accounts response
                     account.account_category === 'trading'
                         ? getAppIcon(account?.account_type, getMarketType(account.mt5_group))
                         : '',
@@ -62,9 +60,7 @@ const useModifyTransferAccounts = (accounts?: THooks.TransferAccount[]) => {
             };
         });
 
-        //@ts-expect-error provide proper type for accounts from transfer_between_accounts response
         const tradingAccounts = updatedAccounts?.filter(account => account.account_category === 'trading') || [];
-        //@ts-expect-error provide proper type for accounts from transfer_between_accounts response
         const walletAccounts = updatedAccounts?.filter(account => account.account_category === 'wallet') || [];
 
         return { tradingAccounts, walletAccounts };

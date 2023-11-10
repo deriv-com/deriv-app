@@ -30,7 +30,6 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet
         >
             <div className='wallets-transfer-form-account-card__icon-with-badge'>
                 <div className='wallets-transfer-form-account-card__icon'>
-                    {/* @ts-expect-error provide proper type for accounts from transfer_between_accounts response */}
                     {account?.account_category === 'wallet' ? (
                         <WalletCurrencyCard
                             currency={account?.currencyConfig?.display_code || 'USD'}

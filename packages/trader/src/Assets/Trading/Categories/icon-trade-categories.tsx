@@ -109,7 +109,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'asian':
+            case TRADE_TYPES.ASIAN:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>

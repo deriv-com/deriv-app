@@ -65,7 +65,7 @@ const TradeCategories = ({
             case 'touch':
                 TradeTypeTemplate = <TouchTradeDescription />;
                 break;
-            case 'asian':
+            case TRADE_TYPES.ASIAN:
                 TradeTypeTemplate = <AsianTradeDescription />;
                 break;
             case TRADE_TYPES.RUN_HIGH_LOW:

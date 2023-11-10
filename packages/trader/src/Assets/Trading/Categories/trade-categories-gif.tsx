@@ -29,7 +29,7 @@ const TradeCategoriesGIF = ({
 }) => {
     if (category !== selected_contract_type) return null;
     switch (category) {
-        case 'asian':
+        case TRADE_TYPES.ASIAN:
             return <ImageAsianUpDown />;
         case TRADE_TYPES.CALLPUTSPREAD:
             return <ImageSpread />;

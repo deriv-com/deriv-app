@@ -6,7 +6,7 @@ describe('<TradeCategoriesGIF />', () => {
     afterEach(() => {
         jest.resetModules();
     });
-    it('expect ImageAsianUpDown to be rendered when trade category is asian', async () => {
+    it('expect ImageAsianUpDown to be rendered when trade category is TRADE_TYPES.ASIAN', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-asian.svg', () => ({
                 __esModule: true,
@@ -15,7 +15,9 @@ describe('<TradeCategoriesGIF />', () => {
 
             import('../trade-categories-gif')
                 .then(moduleName => {
-                    render(<moduleName.default category='asian' selected_contract_type='asian' />);
+                    render(
+                        <moduleName.default category={TRADE_TYPES.ASIAN} selected_contract_type={TRADE_TYPES.ASIAN} />
+                    );
                     expect(screen.getByText(/imageasian/i)).toBeInTheDocument();
                 })
                 .catch(error => {

@@ -30,7 +30,8 @@ export const DELAY_TIME_1S_SYMBOL = 500;
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
 
 export const CONTRACT_TYPES = {
-    ACCU: 'ACCU',
+    ACCUMULATOR: 'ACCU',
+    ASIAN: { UP: 'ASIANU', DOWN: 'ASIAND' },
     CALLPUTSPREAD: { CALL: 'CALLSPREAD', PUT: 'PUTSPREAD' },
     EVEN_ODD: { ODD: 'DIGITODD', EVEN: 'DIGITEVEN' },
     LB_HIGH_LOW: 'LBHIGHLOW',
@@ -56,6 +57,7 @@ export const CONTRACT_TYPES = {
 } as const;
 export const TRADE_TYPES = {
     ACCUMULATOR: 'accumulator',
+    ASIAN: 'asian',
     CALLPUTSPREAD: 'callputspread',
     EVEN_ODD: 'even_odd',
     LB_HIGH_LOW: 'lb_high_low',

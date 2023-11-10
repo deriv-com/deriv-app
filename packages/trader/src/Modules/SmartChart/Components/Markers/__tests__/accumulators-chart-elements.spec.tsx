@@ -15,7 +15,7 @@ describe('AccumulatorsChartElements', () => {
             {
                 contract_info: {
                     underlying: 'test symbol',
-                    contract_type: CONTRACT_TYPES.ACCU,
+                    contract_type: CONTRACT_TYPES.ACCUMULATOR,
                     entry_spot: 9454.1,
                     contract_id: 1,
                     shortcode: 'test',
@@ -25,7 +25,7 @@ describe('AccumulatorsChartElements', () => {
             {
                 contract_info: {
                     underlying: 'test symbol',
-                    contract_type: CONTRACT_TYPES.ACCU,
+                    contract_type: CONTRACT_TYPES.ACCUMULATOR,
                     entry_spot: 9467.78,
                     contract_id: 2,
                     shortcode: 'test',

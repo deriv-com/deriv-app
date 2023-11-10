@@ -93,9 +93,9 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         basis: ['stake', 'payout'],
         components: ['barrier'],
     },
-    asian: {
+    [TRADE_TYPES.ASIAN]: {
         title: localize('Asian Up/Asian Down'),
-        trade_types: ['ASIANU', 'ASIAND'],
+        trade_types: [CONTRACT_TYPES.ASIAN.UP, CONTRACT_TYPES.ASIAN.DOWN],
         basis: ['stake', 'payout'],
         components: [],
     },
@@ -161,7 +161,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     },
     [TRADE_TYPES.ACCUMULATOR]: {
         title: localize('Accumulators'),
-        trade_types: [CONTRACT_TYPES.ACCU],
+        trade_types: [CONTRACT_TYPES.ACCUMULATOR],
         basis: ['stake'],
         components: ['take_profit', TRADE_TYPES.ACCUMULATOR, 'accu_info_display'],
         barrier_count: 2,
@@ -221,7 +221,7 @@ export const getContractCategoriesConfig = () =>
                 'rise_fall_equal',
                 TRADE_TYPES.RUN_HIGH_LOW,
                 TRADE_TYPES.RESET,
-                'asian',
+                TRADE_TYPES.ASIAN,
                 TRADE_TYPES.CALLPUTSPREAD,
             ],
         },
@@ -247,7 +247,7 @@ export const unsupported_contract_types_list = [
     TRADE_TYPES.CALLPUTSPREAD,
     TRADE_TYPES.RUN_HIGH_LOW,
     TRADE_TYPES.RESET,
-    'asian',
+    TRADE_TYPES.ASIAN,
     TRADE_TYPES.TICK_HIGH_LOW,
     'end',
     'stay',

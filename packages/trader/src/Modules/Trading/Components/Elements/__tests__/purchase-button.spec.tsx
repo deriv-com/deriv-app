@@ -82,7 +82,7 @@ describe('<PurchaseButton />', () => {
     });
 
     it('should render the button for accumulators', () => {
-        render(<PurchaseButton {...default_mocked_props} is_accumulator type={CONTRACT_TYPES.ACCU} />);
+        render(<PurchaseButton {...default_mocked_props} is_accumulator type={CONTRACT_TYPES.ACCUMULATOR} />);
 
         expect(screen.getByText(/Buy/i)).toBeInTheDocument();
     });

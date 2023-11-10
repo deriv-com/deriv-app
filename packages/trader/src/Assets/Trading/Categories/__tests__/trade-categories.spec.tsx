@@ -31,8 +31,8 @@ describe('<TradeCategories />', () => {
         render(<TradeCategories category={TRADE_TYPES.ACCUMULATOR} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedaccumulatortradedescription/i)).toBeInTheDocument();
     });
-    it('Ensure mockedAsianTradeDescription is rendered correctly when trade category is "asian"', () => {
-        render(<TradeCategories category='asian' onClick={jest.fn()} />);
+    it('Ensure mockedAsianTradeDescription is rendered correctly when trade category is "TRADE_TYPES.ASIAN"', () => {
+        render(<TradeCategories category={TRADE_TYPES.ASIAN} onClick={jest.fn()} />);
         expect(screen.getByText(/mockedAsianTradeDescription/i)).toBeInTheDocument();
     });
     it('Ensure mockedCallPutSpreadTradeDescription is rendered correctly when trade category is "TRADE_TYPES.CALLPUTSPREAD"', () => {

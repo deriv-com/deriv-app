@@ -80,10 +80,10 @@ describe('getContractConfig', () => {
 
 describe('getContractTypeDisplay', () => {
     it('should return a specific button name if show_button_name === true and contract_config has a button_name field', () => {
-        expect(getContractTypeDisplay(CONTRACT_TYPES.ACCU, false, true)).toEqual('Buy');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.ACCUMULATOR, false, true)).toEqual('Buy');
     });
     it('should return a specific contract name if show_button_name === false but contract_config has a button_name field', () => {
-        expect(getContractTypeDisplay(CONTRACT_TYPES.ACCU)).toEqual('Accumulators');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.ACCUMULATOR)).toEqual('Accumulators');
     });
     it('should return a specific contract name if show_button_name === true but contract_config has no button_name field', () => {
         expect(getContractTypeDisplay(CONTRACT_TYPES.MULTIPLIER.DOWN, true, true)).toEqual('Down');
@@ -118,7 +118,7 @@ describe('getCleanedUpCategories', () => {
                     'rise_fall_equal',
                     TRADE_TYPES.RUN_HIGH_LOW,
                     TRADE_TYPES.RESET,
-                    'asian',
+                    TRADE_TYPES.ASIAN,
                     TRADE_TYPES.CALLPUTSPREAD,
                 ],
             },

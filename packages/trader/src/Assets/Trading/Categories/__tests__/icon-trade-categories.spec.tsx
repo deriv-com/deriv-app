@@ -98,8 +98,8 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
-    it('Expect two MockedIcons to be rendered when category is asian', () => {
-        render(<IconTradeCategory category='asian' />);
+    it('Expect two MockedIcons to be rendered when category is TRADE_TYPES.ASIAN', () => {
+        render(<IconTradeCategory category={TRADE_TYPES.ASIAN} />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {

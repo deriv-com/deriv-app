@@ -32,15 +32,13 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
 
     const onCancel = () => setIsDeleting(false);
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         setIsLoading(true);
-        deleteToken(token.token);
-        deleteToken(token.token).finally(() => {
-            if (isMounted()) {
-                setIsLoading(false);
-                setIsDeleting(false);
-            }
-        });
+        await deleteToken(token.token);
+        if (isMounted()) {
+            setIsLoading(false);
+            setIsDeleting(false);
+        }
     };
 
     return (

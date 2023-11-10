@@ -41,7 +41,6 @@ export { default as useTradingAccountsList } from './useTradingAccountsList';
 export { default as useTradingPlatformInvestorPasswordChange } from './useTradingPlatformInvestorPasswordChange';
 export { default as useCreateMT5Account } from './useCreateMT5Account';
 export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';
-export { default as useApiToken } from './useApiToken';
 export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';
 export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';
 export { default as useTransactions } from './useTransactions';

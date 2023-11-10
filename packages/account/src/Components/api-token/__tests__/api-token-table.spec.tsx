@@ -4,7 +4,6 @@ import ApiTokenContext from '../api-token-context';
 import ApiTokenTable from '../api-token-table';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TApiContext } from 'Types';
-import { TStores } from '@deriv/stores/types';
 
 describe('ApiTokenTable', () => {
     const mock_props: TApiContext = {
@@ -18,11 +17,7 @@ describe('ApiTokenTable', () => {
         ],
         deleteToken: jest.fn(),
     };
-    const store = mockStore({
-        ui: {
-            is_mobile: false,
-        },
-    });
+    const store = mockStore({});
 
     const renderComponent = ({ props = mock_props, store_config = store }) => {
         render(
@@ -62,15 +57,13 @@ describe('ApiTokenTable', () => {
     });
 
     it('should render in mobile view', () => {
-        const new_store_config: TStores = {
-            ...store,
+        const mock_store = mockStore({
             ui: {
-                ...store.ui,
                 is_mobile: true,
             },
-        };
+        });
         expectedTexts.push('Last Used');
-        renderComponent({ store_config: new_store_config });
+        renderComponent({ store_config: mock_store });
         expect(screen.getByText('Token 1')).toHaveClass('da-api-token__scope-item--name');
         expectedTexts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();

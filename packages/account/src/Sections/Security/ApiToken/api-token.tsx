@@ -62,7 +62,6 @@ const ApiToken = observer(() => {
         return () => {
             clearTimeout(timeout_ref.current);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -70,7 +69,6 @@ const ApiToken = observer(() => {
             prev_is_switching.current = is_switching;
             getApiTokens();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
     const initial_form: TApiTokenForm = {

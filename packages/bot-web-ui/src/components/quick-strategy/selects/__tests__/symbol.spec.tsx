@@ -79,6 +79,8 @@ describe('<SymbolSelect />', () => {
         const mock_onSubmit = jest.fn();
         const initial_value = {
             durationtype: 1,
+            symbol: 'R_100',
+            tradetype: 'callput',
         };
 
         wrapper = ({ children }: { children: JSX.Element }) => (

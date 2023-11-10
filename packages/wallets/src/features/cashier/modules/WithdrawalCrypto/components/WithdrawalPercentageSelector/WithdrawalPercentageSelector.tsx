@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import classNames from 'classnames';
 import { WalletText } from '../../../../../../components';
 import './WithdrawalPercentageSelector.scss';
-import classNames from 'classnames';
 
 type TProps = {
     balance: number;
@@ -28,7 +28,7 @@ const getPercentageBlocks = (fraction: number, blockCount: number, onClick: (val
     });
 };
 
-const WithdrawalPercentageSelector: React.FC<TProps> = ({ balance, message, percentageBlockCount = 4 }) => {
+const WithdrawalPercentageSelector: React.FC<TProps> = ({ message, percentageBlockCount = 4 }) => {
     const [fraction, setFraction] = useState(0);
 
     const handleOnClick = (value: number) => {

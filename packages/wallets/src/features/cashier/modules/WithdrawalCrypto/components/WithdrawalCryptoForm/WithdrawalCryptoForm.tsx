@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Field, FieldProps, Formik, FormikProps } from 'formik';
-import { useActiveWalletAccount } from '@deriv/api';
+import React from 'react';
+import { Field, FieldProps, Formik } from 'formik';
 import { WalletButton, WalletTextField } from '../../../../../../components/Base';
-import { WalletsPercentageSelector } from '../../../../../../components/WalletsPercentageSelector';
+import { WithdrawalPercentageSelector } from '../WithdrawalPercentageSelector';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import './WithdrawalCryptoForm.scss';
-import { WithdrawalPercentageSelector } from '../WithdrawalPercentageSelector';
 
 const MIN_ADDRESS_LENGTH = 25;
 const MAX_ADDRESS_LENGTH = 64;
@@ -28,13 +26,6 @@ const validateCryptoAddress = (address: string) => {
 };
 
 const WithdrawalCryptoForm = () => {
-    const { data: activeWallet } = useActiveWalletAccount();
-    const [percentage, setPercentage] = useState(0);
-
-    useEffect(() => {
-        // console.log('percentage', percentage);
-    }, [percentage]);
-
     return (
         <Formik
             initialValues={{
@@ -45,7 +36,7 @@ const WithdrawalCryptoForm = () => {
             }}
             onSubmit={values => ''}
         >
-            {({ errors, handleChange, handleSubmit, isSubmitting, setFieldTouched, touched, values }) => {
+            {({ errors, handleSubmit, isSubmitting }) => {
                 return (
                     <form autoComplete='off' className='wallets-withdrawal-crypto-form' onSubmit={handleSubmit}>
                         <div className='wallets-withdrawal-crypto-address'>
@@ -56,12 +47,10 @@ const WithdrawalCryptoForm = () => {
                                         helperMessage={errors.cryptoAddress}
                                         label='Your BTC Wallet address'
                                         showMessage
-                                        // name='wallets-withdrawal-crypto-address-textfield'
                                     />
                                 )}
                             </Field>
                         </div>
-                        {/* <WalletsPercentageSelector balance={12} onChangePercentage={per => setPercentage(per)} /> */}
                         <WithdrawalPercentageSelector balance={12} message='blah! blah1 yada!' />
                         <WithdrawalCryptoAmountConverter />
                         <div className='wallets-withdrawal-crypto__submit'>

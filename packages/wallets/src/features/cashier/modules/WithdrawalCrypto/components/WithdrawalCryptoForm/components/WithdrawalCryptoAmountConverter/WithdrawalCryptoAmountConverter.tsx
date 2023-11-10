@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Field, FieldProps, useFormikContext, FormikValues } from 'formik';
-import './WithdrawalCryptoAmountConverter.scss';
-import { WalletTextField } from '../../../../../../../../components';
-import ArrowBold from '../../../../../../../../public/images/arrow-bold.svg';
-import { useActiveWalletAccount, useCurrencyConfig, useExchangeRate } from '@deriv/api';
 import classNames from 'classnames';
+import { Field, FieldProps, useFormikContext } from 'formik';
+import { useActiveWalletAccount, useCurrencyConfig, useExchangeRate } from '@deriv/api';
+import ArrowBold from '../../../../../../../../public/images/arrow-bold.svg';
+import { WalletTextField } from '../../../../../../../../components';
 import type { TForm } from '../../WithdrawalCryptoForm';
+import './WithdrawalCryptoAmountConverter.scss';
 
 const helperMessageMapper = {
     invalidInput: 'Should be a valid number.',
@@ -20,7 +20,7 @@ const WithdrawalCryptoAmountConverter = () => {
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
     const { getConfig } = useCurrencyConfig();
     const [isCryptoInputActive, SetIsCryptoInputActive] = useState(false);
-    const { errors, getFieldProps, handleChange, setFieldValue, setValues, values } = useFormikContext<TForm>();
+    const { errors, setValues, values } = useFormikContext<TForm>();
     const FRACTIONAL_DIGITS_CRYPTO = getConfig(activeWallet?.currency)?.fractional_digits;
     const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
 
@@ -34,22 +34,22 @@ const WithdrawalCryptoAmountConverter = () => {
         return () => unsubscribe();
     }, []);
 
-    useEffect(() => {
-        // console.log(values, errors);
-    }, [values]);
-
     const validateCryptoInput = (value: string, balance: number) => {
         if (!value.length) return undefined;
-        if (Number.isNaN(parseFloat(value))) return helperMessageMapper.invalidInput;
-        // console.log('validateCrypto', parseFloat(value));
 
-        if (parseFloat(value) > activeWallet?.balance) return helperMessageMapper.insufficientFunds;
+        if (Number.isNaN(parseFloat(value))) return helperMessageMapper.invalidInput;
+
+        if (activeWallet?.balance && parseFloat(value) > activeWallet?.balance)
+            return helperMessageMapper.insufficientFunds;
+
         return undefined;
     };
 
     const validateFiatInput = (value: string) => {
         if (!value.length) return undefined;
+
         if (Number.isNaN(parseFloat(value))) return helperMessageMapper.invalidInput;
+
         return undefined;
     };
 

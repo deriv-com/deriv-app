@@ -1,14 +1,14 @@
 import React, { FC, PropsWithChildren } from 'react';
+import QRCode from 'qrcode.react';
+import { WalletText } from '../../../../components/Base';
 import { ModalStepWrapper } from '../../../../components/Base/ModalStepWrapper';
+import useDevice from '../../../../hooks/useDevice';
 import InstallationAppleIcon from '../../../../public/images/ic-installation-apple.svg';
 import InstallationGoogleIcon from '../../../../public/images/ic-installation-google.svg';
 import InstallationHuaweiIcon from '../../../../public/images/ic-installation-huawei.svg';
-import './ModalTradeWrapper.scss';
-import { WalletText } from '../../../../components/Base';
-import QRCode from 'qrcode.react';
-import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
+import './ModalTradeWrapper.scss';
 
 const LinksMapper: Record<
     TPlatforms.All,
@@ -49,6 +49,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
 
     return (
         <ModalStepWrapper
+            closeOnEscape
             renderFooter={() => {
                 return (
                     <div className='wallets-modal-trade-wrapper__footer'>

@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { useSubscription } from '@deriv/api';
 import ExchangeRatesContext from './exchangeRatesContext';
@@ -15,7 +15,7 @@ const ExchangeRatesProvider = ({ children }: TExchangeRatesProvider) => {
     const { subscribe, data, ...rest } = useSubscription('exchange_rates');
 
     const handleSubscription = (base_currency: string, target_currency: string) => {
-        if (!base_currency || !target_currency || base_currency === target_currency) return;
+        if (base_currency === '' || target_currency === '' || base_currency === target_currency) return;
         subscribe({
             payload: {
                 base_currency,

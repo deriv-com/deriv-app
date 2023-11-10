@@ -18,20 +18,17 @@ const WithdrawalCryptoAmountConverter = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
     const [isCryptoInputActive, SetIsCryptoInputActive] = useState(false);
-    const { errors, getFieldProps, handleChange, values } = useFormikContext<FormikValues>();
+    const { errors, getFieldProps, handleChange, setFieldValue, values } = useFormikContext<FormikValues>();
 
     useEffect(() => {
-        if (activeWallet?.currency)
+        if (activeWallet)
             subscribe({
                 base_currency: 'USD',
                 target_currency: activeWallet.currency,
+                loginid: activeWallet.loginid,
             });
         return () => unsubscribe();
     }, []);
-
-    useEffect(() => {
-        // console.log(errors, values, values.fiatAmount && !errors.fiatAmount);
-    }, [errors, values]);
 
     const validateCryptoInput = (value: string, balance: number) => {
         if (!value.length) return undefined;
@@ -55,15 +52,17 @@ const WithdrawalCryptoAmountConverter = () => {
                         {...field}
                         helperMessage={errors.cryptoAmount}
                         label={`Amount (${activeWallet?.currency})`}
+                        onChange={e => {
+                            const value = parseFloat(e.target.value);
+                            const convertedValue =
+                                !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
+                                    ? (value / exchangeRate?.rates[activeWallet?.currency]).toFixed(2)
+                                    : '';
+                            setFieldValue('fiatAmount', convertedValue);
+                            return handleChange(e);
+                        }}
                         onFocus={() => SetIsCryptoInputActive(true)}
                         showMessage
-                        value={
-                            !isCryptoInputActive
-                                ? values.fiatAmount && !errors.fiatAmount
-                                    ? (values.fiatAmount * exchangeRate?.rates[activeWallet?.currency]).toFixed(8)
-                                    : ''
-                                : values.cryptoAmount
-                        }
                     />
                 )}
             </Field>
@@ -80,15 +79,17 @@ const WithdrawalCryptoAmountConverter = () => {
                         {...field}
                         helperMessage={errors.fiatAmount ?? 'Approximate value'}
                         label='Amount (USD)'
+                        onChange={e => {
+                            const value = parseFloat(e.target.value);
+                            const convertedValue =
+                                !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
+                                    ? (value * exchangeRate?.rates[activeWallet?.currency]).toFixed(8)
+                                    : '';
+                            setFieldValue('cryptoAmount', convertedValue);
+                            return handleChange(e);
+                        }}
                         onFocus={() => SetIsCryptoInputActive(false)}
                         showMessage
-                        value={
-                            isCryptoInputActive
-                                ? values.cryptoAmount && errors.cryptoAmount === undefined
-                                    ? (values.cryptoAmount / exchangeRate?.rates[activeWallet?.currency]).toFixed(2)
-                                    : ''
-                                : values.fiatAmount
-                        }
                     />
                 )}
             </Field>

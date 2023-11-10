@@ -36,40 +36,53 @@ const ClosingAccountPendingBalance = observer(({ platform, account_balance }: TC
                 />
             }
         >
-            {account_balance.map(account => (
-                <ClosingAccountPendingContent
-                    key={account.login}
-                    currency_icon={`${is_mt5_platform ? 'IcMt5' : 'IcDxtrade'}-${
-                        is_mt5_platform
-                            ? getMT5Icon({ market_type: account.market_type, is_eu: is_eu_user })
-                            : getCFDAccount({
-                                  market_type: account.market_type,
-                                  sub_account_type: account.sub_account_type,
-                                  platform,
-                                  is_eu: is_eu_user,
-                              })
-                    }`}
-                    loginid={account.display_login}
-                    title={
-                        getCFDAccountDisplay({
-                            market_type: account.market_type,
-                            sub_account_type: account.sub_account_type,
-                            platform,
-                            shortcode: is_mt5_platform ? (account.landing_company_short as TShortcode) : undefined,
-                            is_eu: is_eu_user,
-                        }) ?? ''
+            {account_balance.map(account => {
+                const getCurrencyIcon = (platform: TCFDPlatform) => {
+                    switch (platform) {
+                        case 'mt5':
+                            return `IcMt5-${getMT5Icon({
+                                market_type: account.market_type,
+                                is_eu: is_eu_user,
+                            })}`;
+                        case 'dxtrade':
+                            return `IcDxtrade-${getCFDAccount({
+                                market_type: account.market_type,
+                                sub_account_type: account.sub_account_type,
+                                platform,
+                                is_eu: is_eu_user,
+                            })}`;
+                        case 'ctrader':
+                            return `IcCtrader`;
+                        default:
+                            return '';
                     }
-                    value={
-                        account.currency && (
-                            <Money
-                                currency={account.currency}
-                                amount={formatMoney(account.currency, account.balance ?? 0, true)}
-                                should_format={false}
-                            />
-                        )
-                    }
-                />
-            ))}
+                };
+                return (
+                    <ClosingAccountPendingContent
+                        key={account.login}
+                        currency_icon={getCurrencyIcon(platform)}
+                        loginid={account.display_login}
+                        title={
+                            getCFDAccountDisplay({
+                                market_type: account.market_type,
+                                sub_account_type: account.sub_account_type,
+                                platform,
+                                shortcode: is_mt5_platform ? (account.landing_company_short as TShortcode) : undefined,
+                                is_eu: is_eu_user,
+                            }) ?? ''
+                        }
+                        value={
+                            account.currency && (
+                                <Money
+                                    currency={account.currency}
+                                    amount={formatMoney(account.currency, account.balance ?? 0, true)}
+                                    should_format={false}
+                                />
+                            )
+                        }
+                    />
+                );
+            })}
         </ClosingAccountPendingWrapper>
     );
 });

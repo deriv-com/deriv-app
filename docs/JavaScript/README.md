@@ -3,7 +3,7 @@
 **In this document**
 
 -   [General Guidelines](#general-guidelines)
--   [Style Guide](#commenting)
+-   [Style Guide](#style-guide)
 -   [JSX Rules](#jsx-rules)
 
 ## General Guidelines

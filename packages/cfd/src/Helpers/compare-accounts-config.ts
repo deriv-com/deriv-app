@@ -262,7 +262,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 localize('Financial Commission'),
                 localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)'),
                 '',
-                'Up to 1:30'
+                '1:30'
             );
         // Dxtrade
         case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:

@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, ComponentProps, useEffect } from 'react';
+import React, { ButtonHTMLAttributes, useEffect } from 'react';
 import { useCashierFiatAddress } from '@deriv/api';
 import { Loader, WalletsErrorScreen } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';

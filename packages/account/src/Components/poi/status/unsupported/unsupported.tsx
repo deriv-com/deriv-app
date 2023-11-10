@@ -1,8 +1,6 @@
 import React from 'react';
-import classNames from 'classnames';
-import { localize } from '@deriv/translations';
-import { Timeline } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { identity_status_codes } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
@@ -91,19 +89,12 @@ const Unsupported = ({
     }
 
     return (
-        <Timeline
-            className={classNames('manual-poi', {
-                'manual-poi--mobile': isMobile(),
-            })}
-            disabled_items={[2]}
-        >
-            <Timeline.Item item_title={localize('Please upload one of the following documents:')}>
-                <Documents documents={documents} toggleDetail={toggleDetail} />
-            </Timeline.Item>
-            <Timeline.Item item_title={localize('Upload your selfie')}>
-                <div />
-            </Timeline.Item>
-        </Timeline>
+        <div className='manual-poi'>
+            <Text as='h2' color='prominent' size='xs'>
+                <Localize i18n_default_text='Please upload one of the following documents:' />
+            </Text>
+            <Documents documents={documents} toggleDetail={toggleDetail} />
+        </div>
     );
 };
 export default Unsupported;

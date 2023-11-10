@@ -102,7 +102,12 @@ export const IdvDocSubmitOnSignup = ({
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
                     <section className='mt5-layout__container'>
                         <FormSubHeader title={localize('Identity verification')} />
-                        <IDVForm hide_hint={false} selected_country={citizen_data} class_name='idv-layout' />
+                        <IDVForm
+                            hide_hint={false}
+                            selected_country={citizen_data}
+                            class_name='idv-layout'
+                            is_for_new_real_account
+                        />
                         <FormSubHeader title={localize('Identity verification')} />
                         <PersonalDetailsForm
                             class_name='account-form__poi-confirm-example_container'

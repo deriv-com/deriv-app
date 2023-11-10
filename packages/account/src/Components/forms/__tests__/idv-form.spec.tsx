@@ -32,7 +32,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<IDVForm/>', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof IDVForm> = {
         selected_country: {
             value: 'tc',
             identity: {
@@ -97,6 +97,29 @@ describe('<IDVForm/>', () => {
         userEvent.tab();
         await waitFor(() => {
             expect(screen.queryByText('Test document 1 name')).not.toBeInTheDocument();
+        });
+    });
+
+    it("Should hide document number field when 'I dont have any of these is chosen'", async () => {
+        render(<IDVForm {...mock_props} />, {
+            wrapper: ({ children }) => (
+                <Formik initialValues={mock_values} onSubmit={jest.fn()}>
+                    {() => children}
+                </Formik>
+            ),
+        });
+
+        const document_type_input = screen.getByLabelText('Choose the document type');
+        const document_number_input = screen.getByText('Enter your document number');
+
+        expect(document_type_input).toBeVisible();
+        expect(document_number_input).toBeVisible();
+
+        userEvent.click(document_type_input);
+        userEvent.type(document_type_input, "I don't have any of these");
+
+        await waitFor(() => {
+            expect(document_number_input).not.toBeVisible();
         });
     });
 });

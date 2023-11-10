@@ -175,8 +175,8 @@ const PersonalDetails = ({
                                                 <FormSubHeader title={localize('Identity verification')} />
                                                 <IDVForm
                                                     selected_country={selected_country}
-                                                    hide_hint={true}
-                                                    can_skip_document_verification={true}
+                                                    hide_hint
+                                                    is_for_new_real_account
                                                 />
                                             </React.Fragment>
                                         )}

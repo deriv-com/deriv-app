@@ -65,6 +65,8 @@ const FilterModal = () => {
         buy_sell_store.selected_payment_method_text ?? []
     );
     const [has_made_changes, setHasMadeChanges] = useSavedState('has_made_changes', false);
+    // eslint-disable-next-line no-unused-vars
+    const [is_matching, _] = useSavedState('has_made_changes', buy_sell_store.should_use_client_limits);
 
     const diff = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
     // if user has previously already selected some payment methods and clicked Apply
@@ -107,6 +109,7 @@ const FilterModal = () => {
                                 )
                             );
                         }
+                        buy_sell_store.setShouldUseClientLimits(is_matching);
                         setSelectedMethods(buy_sell_store.selected_payment_method_value);
                         setSelectedMethodsText(buy_sell_store.selected_payment_method_text);
                         hideModal({
@@ -155,6 +158,11 @@ const FilterModal = () => {
         buy_sell_store.setSelectedPaymentMethodText(selected_methods_text);
         buy_sell_store.onClickApply(selected_methods, selected_methods_text);
         hideModal();
+    };
+
+    const onToggle = () => {
+        buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits);
+        if (!has_made_changes) setHasMadeChanges(is_matching !== buy_sell_store.should_use_client_limits);
     };
 
     React.useEffect(() => {
@@ -243,12 +251,7 @@ const FilterModal = () => {
                                         id='toggle-filter-modal'
                                         classNameButton='filter-modal__toggle-button'
                                         classNameLabel='filter-modal__toggle-label'
-                                        handleToggle={() => {
-                                            buy_sell_store.setShouldUseClientLimits(
-                                                !buy_sell_store.should_use_client_limits
-                                            );
-                                            setHasMadeChanges(true);
-                                        }}
+                                        handleToggle={onToggle}
                                         is_enabled={buy_sell_store.should_use_client_limits}
                                     />
                                 </div>
@@ -381,12 +384,7 @@ const FilterModal = () => {
                                     id='toggle-filter-modal'
                                     classNameButton='filter-modal__toggle-button'
                                     classNameLabel='filter-modal__toggle-label'
-                                    handleToggle={() => {
-                                        buy_sell_store.setShouldUseClientLimits(
-                                            !buy_sell_store.should_use_client_limits
-                                        );
-                                        setHasMadeChanges(true);
-                                    }}
+                                    handleToggle={onToggle}
                                     is_enabled={buy_sell_store.should_use_client_limits}
                                 />
                             </div>

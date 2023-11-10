@@ -60,7 +60,6 @@ const WalletTourGuide = () => {
             floaterProps={{ disableAnimation: true }}
             run={walletsOnboarding === startValue && !isLoading && !isFetching && isSuccess}
             scrollOffset={150}
-            scrollToFirstStep
             steps={tourStepConfig(
                 false,
                 isDemoWallet,

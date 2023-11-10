@@ -23,14 +23,12 @@ const WalletMobileTourGuide = ({ cfdRef, optionsRef }: TProps) => {
     const { isMobile } = useDevice();
     const { activeTabIndex, setActiveTabIndex } = useTabs();
     const [onboardingStep, setOnboardingStep] = useState(0);
+    const [run, setRun] = useState(true);
 
     const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAvailableWallets();
-
-    const [run, setRun] = useState(false);
-    // const [run, setRun] = useState(walletsOnboarding === startValue && !isLoading && !isFetching && isSuccess);
 
     const fiatWalletLoginId = wallets?.[0]?.loginid;
     const activeWalletLoginId = activeWallet?.loginid;
@@ -39,12 +37,10 @@ const WalletMobileTourGuide = ({ cfdRef, optionsRef }: TProps) => {
         const added = mutationList.some(
             mutation =>
                 mutation.type === 'childList' &&
-                (mutation.addedNodes?.[0] as Element)?.className === 'wallets-trading-account-card'
+                (mutation.addedNodes?.item(0) as Element)?.className === 'wallets-trading-account-card'
         );
 
-        // console.log('CFD! added = ', added, ', added2 = ', added2);
-
-        if (onboardingStep === 0 || onboardingStep === 3) setRun(walletsOnboarding === startValue && added);
+        if ((onboardingStep === 0 || onboardingStep === 3) && !run) setRun(walletsOnboarding === startValue && added);
     };
 
     const onOptionsHandler = (mutationList: MutationRecord[]) => {
@@ -54,31 +50,11 @@ const WalletMobileTourGuide = ({ cfdRef, optionsRef }: TProps) => {
                 (mutation.target as Element)?.className === 'wallets-options-and-multipliers-listing__header-title'
         );
 
-        // console.log('Options! added = ', added, ', added2 = ', added2, ', addedNodes = ', mutationList?.[0]);
-
-        if (onboardingStep === 4) setRun(walletsOnboarding === startValue && added);
+        if (onboardingStep === 4 && !run) setRun(walletsOnboarding === startValue && added);
     };
-
-    // const onRootHandler = useCallback(() => {
-    //     console.log('Root = ', rootRef);
-    //     // console.log('Root.childList = ', rootRef.current?.childList);
-    //     // console.log('Root.childNodes = ', rootRef.current?.childNodes?.[1]?.firstChild?.firstChild);
-
-    //     // wallets-options-and-multipliers-listing ->
-    //     // -> wallets-options-and-multipliers-listing__header (1st child) ->
-    //     // -> wallets-deriv-apps-section (2nd child)
-
-    //     // wallets-cfd-list ->
-    //     // -> wallets-mt5-list__content (3rd child) ->
-    //     // -> wallets-trading-account-card (1st child)
-    // }, []);
 
     useMutationObserver(cfdRef, onCFDHandler);
     useMutationObserver(optionsRef, onOptionsHandler);
-    // useMutationObserver(rootRef, onRootHandler);
-
-    // console.log('cfdRef.current = ', cfdRef.current);
-    // console.log('optionsRef.current = ', optionsRef.current);
 
     const callbackHandle = (data: CallBackProps) => {
         const { action, index, status, type } = data;
@@ -86,21 +62,23 @@ const WalletMobileTourGuide = ({ cfdRef, optionsRef }: TProps) => {
         const switchTab = (idx: number) => {
             if (activeTabIndex !== idx) {
                 setActiveTabIndex(idx);
-                // setRun(false);
             }
         };
 
         if (index >= 4) switchTab(1);
         else switchTab(0);
 
-        if (index === 0) setRun(walletsOnboarding === startValue);
-
-        if ((index === 0 || index === 3 || index === 4) && type === EVENTS.STEP_BEFORE) {
-            // console.log('cfdRef.current = ', cfdRef.current);
-            // setRun(false);
+        // wait for switch
+        if (index === 0) {
+            const exists =
+                (cfdRef.current?.childNodes.item(0) as Element)?.className === 'wallets-trading-account-card';
+            setRun(walletsOnboarding === startValue && exists);
         }
 
-        if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
+        // pause if target was not found
+        if (type === EVENTS.TARGET_NOT_FOUND) setRun(false);
+
+        if (type === EVENTS.STEP_AFTER) {
             // Update step to advance the tour
             setOnboardingStep(index + (action === ACTIONS.PREV ? -1 : 1));
         } else if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
@@ -114,6 +92,7 @@ const WalletMobileTourGuide = ({ cfdRef, optionsRef }: TProps) => {
         const switchToFiatWallet = () => {
             if (fiatWalletLoginId && fiatWalletLoginId !== activeWalletLoginId) {
                 switchAccount(fiatWalletLoginId);
+                setRun(false);
             }
         };
 
@@ -137,10 +116,8 @@ const WalletMobileTourGuide = ({ cfdRef, optionsRef }: TProps) => {
             disableCloseOnEsc
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
-            // run={run}
-            run={walletsOnboarding === startValue && !isLoading && !isFetching && isSuccess}
+            run={walletsOnboarding === startValue && run && !isLoading && !isFetching && isSuccess}
             scrollOffset={300}
-            scrollToFirstStep
             stepIndex={onboardingStep}
             steps={tourStepConfig(
                 true,

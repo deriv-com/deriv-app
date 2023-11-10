@@ -396,716 +396,695 @@ const FinancialAssessment = observer(() => {
         if (is_mf) {
             delete form_data.employment_status;
         }
+        /**
+         * Remove the occupation field if the user is employed and has selected Unemployed or  Self-employed as their employment status
+         */
+        if (shouldHideOccupationField(form_data.employment_status || employment_status)) {
+            delete form_data.occupation;
+        }
         return form_data;
     };
 
     return (
-        <React.Fragment>
-            <Formik
-                initialValues={setInitialFormData()}
-                enableReinitialize
-                validate={validateFields}
-                onSubmit={onSubmit}
-            >
-                {({
-                    values,
-                    errors,
-                    status,
-                    touched,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    isSubmitting,
-                    setFieldTouched,
-                    dirty,
-                    setFieldValue,
-                }) => (
-                    <React.Fragment>
-                        {!is_appstore && isMobile() && is_confirmation_visible && (
-                            <ConfirmationPage toggleModal={toggleConfirmationModal} onSubmit={handleSubmit} />
-                        )}
-                        {(isDesktop() || is_appstore) && (
-                            <ConfirmationModal
-                                is_visible={is_confirmation_visible}
-                                toggleModal={toggleConfirmationModal}
-                                onSubmit={handleSubmit}
-                            />
-                        )}
-                        <LeaveConfirm onDirty={isMobile() ? showForm : () => undefined} />
-                        {is_form_visible && (
-                            <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
-                                {is_mf && is_financial_information_incomplete && !is_submit_success && (
-                                    <div className='financial-banner'>
-                                        <div className='financial-banner__frame'>
-                                            <div className='financial-banner__container'>
-                                                <Icon icon='IcAlertWarning' />
-                                                {isMobile() ? (
-                                                    <Text size='xxxs' line_height='s'>
-                                                        <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
-                                                    </Text>
-                                                ) : (
-                                                    <Text size='xxs' line_height='l'>
-                                                        <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
-                                                    </Text>
-                                                )}
-                                            </div>
+        <Formik initialValues={setInitialFormData()} enableReinitialize validate={validateFields} onSubmit={onSubmit}>
+            {({
+                values,
+                errors,
+                status,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                setFieldTouched,
+                dirty,
+                setFieldValue,
+            }) => (
+                <React.Fragment>
+                    {!is_appstore && isMobile() && is_confirmation_visible && (
+                        <ConfirmationPage toggleModal={toggleConfirmationModal} onSubmit={handleSubmit} />
+                    )}
+                    {(isDesktop() || is_appstore) && (
+                        <ConfirmationModal
+                            is_visible={is_confirmation_visible}
+                            toggleModal={toggleConfirmationModal}
+                            onSubmit={handleSubmit}
+                        />
+                    )}
+                    <LeaveConfirm onDirty={isMobile() ? showForm : () => undefined} />
+                    {is_form_visible && (
+                        <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
+                            {is_mf && is_financial_information_incomplete && !is_submit_success && (
+                                <div className='financial-banner'>
+                                    <div className='financial-banner__frame'>
+                                        <div className='financial-banner__container'>
+                                            <Icon icon='IcAlertWarning' />
+                                            {isMobile() ? (
+                                                <Text size='xxxs' line_height='s'>
+                                                    <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
+                                                </Text>
+                                            ) : (
+                                                <Text size='xxs' line_height='l'>
+                                                    <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
+                                                </Text>
+                                            )}
                                         </div>
                                     </div>
-                                )}
-                                <FormBody scroll_offset={getScrollOffset()}>
-                                    <FormSubHeader
-                                        title={localize('Financial information')}
-                                        subtitle={`(${localize('All fields are required')})`}
-                                    />
-                                    <FormBodySection
-                                        has_side_note={is_appstore}
-                                        side_note={localize(
-                                            'We’re legally obliged to ask for your financial information.'
-                                        )}
-                                    >
+                                </div>
+                            )}
+                            <FormBody scroll_offset={getScrollOffset()}>
+                                <FormSubHeader
+                                    title={localize('Financial information')}
+                                    subtitle={`(${localize('All fields are required')})`}
+                                />
+                                <FormBodySection
+                                    has_side_note={is_appstore}
+                                    side_note={localize('We’re legally obliged to ask for your financial information.')}
+                                >
+                                    <fieldset className='account-form__fieldset'>
+                                        <DesktopWrapper>
+                                            <Dropdown
+                                                placeholder={localize('Source of income')}
+                                                is_align_text_left
+                                                name='income_source'
+                                                list={getIncomeSourceList()}
+                                                value={values.income_source}
+                                                onChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                error={touched.income_source && errors.income_source}
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <SelectNative
+                                                placeholder={localize('Please select')}
+                                                name='income_source'
+                                                label={localize('Source of income')}
+                                                list_items={getIncomeSourceList()}
+                                                value={values.income_source}
+                                                error={touched.income_source ? errors.income_source : undefined}
+                                                onChange={e => {
+                                                    setFieldTouched('income_source', true);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        </MobileWrapper>
+                                    </fieldset>
+                                    {!is_mf && (
                                         <fieldset className='account-form__fieldset'>
                                             <DesktopWrapper>
                                                 <Dropdown
-                                                    placeholder={localize('Source of income')}
+                                                    placeholder={localize('Employment status')}
                                                     is_align_text_left
-                                                    name='income_source'
-                                                    list={getIncomeSourceList()}
-                                                    value={values.income_source}
+                                                    name='employment_status'
+                                                    list={getEmploymentStatusList()}
+                                                    value={values.employment_status}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
-                                                    error={touched.income_source && errors.income_source}
+                                                    error={touched.employment_status && errors.employment_status}
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
                                                     placeholder={localize('Please select')}
-                                                    name='income_source'
-                                                    label={localize('Source of income')}
-                                                    list_items={getIncomeSourceList()}
-                                                    value={values.income_source}
-                                                    error={touched.income_source ? errors.income_source : undefined}
+                                                    name='employment_status'
+                                                    label={localize('Employment status')}
+                                                    list_items={getEmploymentStatusList()}
+                                                    value={values.employment_status}
+                                                    error={
+                                                        touched.employment_status ? errors.employment_status : undefined
+                                                    }
                                                     onChange={e => {
-                                                        setFieldTouched('income_source', true);
+                                                        setFieldTouched('employment_status', true);
                                                         handleChange(e);
                                                     }}
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
-                                        {!is_mf && (
+                                    )}
+                                    <fieldset className='account-form__fieldset'>
+                                        <DesktopWrapper>
+                                            <Dropdown
+                                                placeholder={localize('Industry of employment')}
+                                                is_align_text_left
+                                                name='employment_industry'
+                                                list={getEmploymentIndustryList()}
+                                                value={values.employment_industry}
+                                                onChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                error={touched.employment_industry && errors.employment_industry}
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <SelectNative
+                                                placeholder={localize('Please select')}
+                                                name='employment_industry'
+                                                label={localize('Industry of employment')}
+                                                list_items={getEmploymentIndustryList()}
+                                                value={values.employment_industry}
+                                                error={
+                                                    touched.employment_industry ? errors.employment_industry : undefined
+                                                }
+                                                onChange={e => {
+                                                    setFieldTouched('employment_industry', true);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        </MobileWrapper>
+                                    </fieldset>
+                                    {!shouldHideOccupationField(values.employment_status || employment_status) && (
+                                        <fieldset className='account-form__fieldset'>
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    className='account-form__occupation'
+                                                    placeholder={localize('Occupation')}
+                                                    is_align_text_left
+                                                    name='occupation'
+                                                    list={getFormattedOccupationList(
+                                                        (values.employment_status || employment_status) ?? ''
+                                                    )} // employment_status may come as part of the FA form or Personal details form
+                                                    value={getFormattedOccupationValues(values)}
+                                                    onChange={e => {
+                                                        setFieldValue(
+                                                            'occupation',
+                                                            getFormattedOccupationValues(values),
+                                                            true
+                                                        );
+                                                        handleChange(e);
+                                                    }}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.occupation && errors.occupation}
+                                                    test_id='occupation'
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='occupation'
+                                                    label={localize('Occupation')}
+                                                    list_items={getFormattedOccupationList(
+                                                        values.employment_status ?? ''
+                                                    )}
+                                                    value={getFormattedOccupationValues(values)}
+                                                    error={touched.occupation ? errors.occupation : undefined}
+                                                    onChange={e => {
+                                                        setFieldValue(
+                                                            'occupation',
+                                                            getFormattedOccupationValues(values),
+                                                            true
+                                                        );
+                                                        setFieldTouched('occupation', true);
+                                                        handleChange(e);
+                                                    }}
+                                                    data_testid='occupation'
+                                                />
+                                            </MobileWrapper>
+                                        </fieldset>
+                                    )}
+                                    <fieldset className='account-form__fieldset'>
+                                        <DesktopWrapper>
+                                            <Dropdown
+                                                placeholder={localize('Source of wealth')}
+                                                is_align_text_left
+                                                name='source_of_wealth'
+                                                list={getSourceOfWealthList()}
+                                                value={values.source_of_wealth}
+                                                onChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                error={touched.source_of_wealth && errors.source_of_wealth}
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <SelectNative
+                                                placeholder={localize('Please select')}
+                                                name='source_of_wealth'
+                                                label={localize('Source of wealth')}
+                                                list_items={getSourceOfWealthList()}
+                                                value={values.source_of_wealth}
+                                                error={touched.source_of_wealth ? errors.source_of_wealth : undefined}
+                                                onChange={e => {
+                                                    setFieldTouched('source_of_wealth', true);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        </MobileWrapper>
+                                    </fieldset>
+                                    <fieldset className='account-form__fieldset'>
+                                        <DesktopWrapper>
+                                            <Dropdown
+                                                placeholder={localize('Level of education')}
+                                                is_align_text_left
+                                                name='education_level'
+                                                list={getEducationLevelList()}
+                                                value={values.education_level}
+                                                onChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                error={touched.education_level && errors.education_level}
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <SelectNative
+                                                placeholder={localize('Please select')}
+                                                name='education_level'
+                                                label={localize('Level of education')}
+                                                list_items={getEducationLevelList()}
+                                                value={values.education_level}
+                                                error={touched.education_level ? errors.education_level : undefined}
+                                                onChange={e => {
+                                                    setFieldTouched('education_level', true);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        </MobileWrapper>
+                                    </fieldset>
+                                    <fieldset className='account-form__fieldset'>
+                                        <DesktopWrapper>
+                                            <Dropdown
+                                                placeholder={localize('Net annual income')}
+                                                is_align_text_left
+                                                name='net_income'
+                                                list={getNetIncomeList()}
+                                                value={values.net_income}
+                                                onChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                error={touched.net_income && errors.net_income}
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <SelectNative
+                                                placeholder={localize('Please select')}
+                                                name='net_income'
+                                                label={localize('Net annual income')}
+                                                list_items={getNetIncomeList()}
+                                                value={values.net_income}
+                                                error={touched.net_income ? errors.net_income : undefined}
+                                                onChange={e => {
+                                                    setFieldTouched('net_income', true);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        </MobileWrapper>
+                                    </fieldset>
+                                    <fieldset className='account-form__fieldset'>
+                                        <DesktopWrapper>
+                                            <Dropdown
+                                                placeholder={localize('Estimated net worth')}
+                                                is_alignment_top
+                                                is_align_text_left
+                                                name='estimated_worth'
+                                                list={getEstimatedWorthList()}
+                                                value={values.estimated_worth}
+                                                onChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                error={touched.estimated_worth && errors.estimated_worth}
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <SelectNative
+                                                placeholder={localize('Please select')}
+                                                name='estimated_worth'
+                                                label={localize('Estimated net worth')}
+                                                list_items={getEstimatedWorthList()}
+                                                value={values.estimated_worth}
+                                                error={touched.estimated_worth ? errors.estimated_worth : undefined}
+                                                onChange={e => {
+                                                    setFieldTouched('estimated_worth', true);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        </MobileWrapper>
+                                    </fieldset>
+                                    <fieldset className='account-form__fieldset'>
+                                        <DesktopWrapper>
+                                            <Dropdown
+                                                placeholder={localize('Anticipated account turnover')}
+                                                is_alignment_top
+                                                is_align_text_left
+                                                name='account_turnover'
+                                                list={getAccountTurnoverList()}
+                                                value={values.account_turnover}
+                                                onChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                error={touched.account_turnover && errors.account_turnover}
+                                            />
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <SelectNative
+                                                placeholder={localize('Please select')}
+                                                name='account_turnover'
+                                                label={localize('Anticipated account turnover')}
+                                                list_items={getAccountTurnoverList()}
+                                                value={values.account_turnover}
+                                                error={touched.account_turnover ? errors.account_turnover : undefined}
+                                                onChange={e => {
+                                                    setFieldTouched('account_turnover', true);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        </MobileWrapper>
+                                    </fieldset>
+                                    {/* Trading experience fieldset */}
+                                </FormBodySection>
+                                {has_trading_experience && (
+                                    <>
+                                        <FormSubHeader
+                                            title={localize('Trading experience')}
+                                            subtitle={`(${localize('All fields are required')})`}
+                                        />
+                                        <FormBodySection
+                                            has_side_note={is_appstore}
+                                            side_note={localize('Tell us about your trading experience.')}
+                                        >
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
                                                     <Dropdown
-                                                        placeholder={localize('Employment status')}
+                                                        placeholder={localize('Forex trading experience')}
                                                         is_align_text_left
-                                                        name='employment_status'
-                                                        list={getEmploymentStatusList()}
-                                                        value={values.employment_status}
+                                                        name='forex_trading_experience'
+                                                        list={getForexTradingExperienceList()}
+                                                        value={values.forex_trading_experience}
                                                         onChange={handleChange}
                                                         handleBlur={handleBlur}
-                                                        error={touched.employment_status && errors.employment_status}
+                                                        error={
+                                                            touched.forex_trading_experience &&
+                                                            errors.forex_trading_experience
+                                                        }
                                                     />
                                                 </DesktopWrapper>
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
-                                                        name='employment_status'
-                                                        label={localize('Employment status')}
-                                                        list_items={getEmploymentStatusList()}
-                                                        value={values.employment_status}
+                                                        name='forex_trading_experience'
+                                                        label={localize('Forex trading experience')}
+                                                        list_items={getForexTradingExperienceList()}
+                                                        value={values.forex_trading_experience}
                                                         error={
-                                                            touched.employment_status
-                                                                ? errors.employment_status
+                                                            touched.forex_trading_experience
+                                                                ? errors.forex_trading_experience
                                                                 : undefined
                                                         }
                                                         onChange={e => {
-                                                            setFieldTouched('employment_status', true);
+                                                            setFieldTouched('forex_trading_experience', true);
                                                             handleChange(e);
                                                         }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
-                                        )}
-                                        <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
-                                                <Dropdown
-                                                    placeholder={localize('Industry of employment')}
-                                                    is_align_text_left
-                                                    name='employment_industry'
-                                                    list={getEmploymentIndustryList()}
-                                                    value={values.employment_industry}
-                                                    onChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    error={touched.employment_industry && errors.employment_industry}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    name='employment_industry'
-                                                    label={localize('Industry of employment')}
-                                                    list_items={getEmploymentIndustryList()}
-                                                    value={values.employment_industry}
-                                                    error={
-                                                        touched.employment_industry
-                                                            ? errors.employment_industry
-                                                            : undefined
-                                                    }
-                                                    onChange={e => {
-                                                        setFieldTouched('employment_industry', true);
-                                                        handleChange(e);
-                                                    }}
-                                                />
-                                            </MobileWrapper>
-                                        </fieldset>
-                                        {!shouldHideOccupationField(values.employment_status || employment_status) && (
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
                                                     <Dropdown
-                                                        className='account-form__occupation'
-                                                        placeholder={localize('Occupation')}
+                                                        placeholder={localize('Forex trading frequency')}
                                                         is_align_text_left
-                                                        name='occupation'
-                                                        list={getFormattedOccupationList(
-                                                            (values.employment_status || employment_status) ?? ''
-                                                        )} // employment_status may come as part of the FA form or Personal details form
-                                                        value={getFormattedOccupationValues(values)}
-                                                        onChange={e => {
-                                                            setFieldValue(
-                                                                'occupation',
-                                                                getFormattedOccupationValues(values),
-                                                                true
-                                                            );
-                                                            handleChange(e);
-                                                        }}
+                                                        name='forex_trading_frequency'
+                                                        list={getForexTradingFrequencyList()}
+                                                        value={values.forex_trading_frequency}
+                                                        onChange={handleChange}
                                                         handleBlur={handleBlur}
-                                                        error={touched.occupation && errors.occupation}
-                                                        test_id='occupation'
+                                                        error={
+                                                            touched.forex_trading_frequency &&
+                                                            errors.forex_trading_frequency
+                                                        }
                                                     />
                                                 </DesktopWrapper>
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
-                                                        name='occupation'
-                                                        label={localize('Occupation')}
-                                                        list_items={getFormattedOccupationList(
-                                                            values.employment_status ?? ''
-                                                        )}
-                                                        value={getFormattedOccupationValues(values)}
-                                                        error={touched.occupation ? errors.occupation : undefined}
+                                                        name='forex_trading_frequency'
+                                                        label={localize('Forex trading frequency')}
+                                                        list_items={getForexTradingFrequencyList()}
+                                                        value={values.forex_trading_frequency}
+                                                        error={
+                                                            touched.forex_trading_frequency
+                                                                ? errors.forex_trading_frequency
+                                                                : undefined
+                                                        }
                                                         onChange={e => {
-                                                            setFieldValue(
-                                                                'occupation',
-                                                                getFormattedOccupationValues(values),
-                                                                true
-                                                            );
-                                                            setFieldTouched('occupation', true);
+                                                            setFieldTouched('forex_trading_frequency', true);
                                                             handleChange(e);
                                                         }}
-                                                        data_testid='occupation'
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
-                                        )}
-                                        <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
-                                                <Dropdown
-                                                    placeholder={localize('Source of wealth')}
-                                                    is_align_text_left
-                                                    name='source_of_wealth'
-                                                    list={getSourceOfWealthList()}
-                                                    value={values.source_of_wealth}
-                                                    onChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    error={touched.source_of_wealth && errors.source_of_wealth}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    name='source_of_wealth'
-                                                    label={localize('Source of wealth')}
-                                                    list_items={getSourceOfWealthList()}
-                                                    value={values.source_of_wealth}
-                                                    error={
-                                                        touched.source_of_wealth ? errors.source_of_wealth : undefined
-                                                    }
-                                                    onChange={e => {
-                                                        setFieldTouched('source_of_wealth', true);
-                                                        handleChange(e);
-                                                    }}
-                                                />
-                                            </MobileWrapper>
-                                        </fieldset>
-                                        <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
-                                                <Dropdown
-                                                    placeholder={localize('Level of education')}
-                                                    is_align_text_left
-                                                    name='education_level'
-                                                    list={getEducationLevelList()}
-                                                    value={values.education_level}
-                                                    onChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    error={touched.education_level && errors.education_level}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    name='education_level'
-                                                    label={localize('Level of education')}
-                                                    list_items={getEducationLevelList()}
-                                                    value={values.education_level}
-                                                    error={touched.education_level ? errors.education_level : undefined}
-                                                    onChange={e => {
-                                                        setFieldTouched('education_level', true);
-                                                        handleChange(e);
-                                                    }}
-                                                />
-                                            </MobileWrapper>
-                                        </fieldset>
-                                        <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
-                                                <Dropdown
-                                                    placeholder={localize('Net annual income')}
-                                                    is_align_text_left
-                                                    name='net_income'
-                                                    list={getNetIncomeList()}
-                                                    value={values.net_income}
-                                                    onChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    error={touched.net_income && errors.net_income}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    name='net_income'
-                                                    label={localize('Net annual income')}
-                                                    list_items={getNetIncomeList()}
-                                                    value={values.net_income}
-                                                    error={touched.net_income ? errors.net_income : undefined}
-                                                    onChange={e => {
-                                                        setFieldTouched('net_income', true);
-                                                        handleChange(e);
-                                                    }}
-                                                />
-                                            </MobileWrapper>
-                                        </fieldset>
-                                        <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
-                                                <Dropdown
-                                                    placeholder={localize('Estimated net worth')}
-                                                    is_alignment_top
-                                                    is_align_text_left
-                                                    name='estimated_worth'
-                                                    list={getEstimatedWorthList()}
-                                                    value={values.estimated_worth}
-                                                    onChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    error={touched.estimated_worth && errors.estimated_worth}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    name='estimated_worth'
-                                                    label={localize('Estimated net worth')}
-                                                    list_items={getEstimatedWorthList()}
-                                                    value={values.estimated_worth}
-                                                    error={touched.estimated_worth ? errors.estimated_worth : undefined}
-                                                    onChange={e => {
-                                                        setFieldTouched('estimated_worth', true);
-                                                        handleChange(e);
-                                                    }}
-                                                />
-                                            </MobileWrapper>
-                                        </fieldset>
-                                        <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
-                                                <Dropdown
-                                                    placeholder={localize('Anticipated account turnover')}
-                                                    is_alignment_top
-                                                    is_align_text_left
-                                                    name='account_turnover'
-                                                    list={getAccountTurnoverList()}
-                                                    value={values.account_turnover}
-                                                    onChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    error={touched.account_turnover && errors.account_turnover}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    name='account_turnover'
-                                                    label={localize('Anticipated account turnover')}
-                                                    list_items={getAccountTurnoverList()}
-                                                    value={values.account_turnover}
-                                                    error={
-                                                        touched.account_turnover ? errors.account_turnover : undefined
-                                                    }
-                                                    onChange={e => {
-                                                        setFieldTouched('account_turnover', true);
-                                                        handleChange(e);
-                                                    }}
-                                                />
-                                            </MobileWrapper>
-                                        </fieldset>
-                                        {/* Trading experience fieldset */}
-                                    </FormBodySection>
-                                    {has_trading_experience && (
-                                        <>
-                                            <FormSubHeader
-                                                title={localize('Trading experience')}
-                                                subtitle={`(${localize('All fields are required')})`}
-                                            />
-                                            <FormBodySection
-                                                has_side_note={is_appstore}
-                                                side_note={localize('Tell us about your trading experience.')}
-                                            >
-                                                <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Dropdown
-                                                            placeholder={localize('Forex trading experience')}
-                                                            is_align_text_left
-                                                            name='forex_trading_experience'
-                                                            list={getForexTradingExperienceList()}
-                                                            value={values.forex_trading_experience}
-                                                            onChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            error={
-                                                                touched.forex_trading_experience &&
-                                                                errors.forex_trading_experience
-                                                            }
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            name='forex_trading_experience'
-                                                            label={localize('Forex trading experience')}
-                                                            list_items={getForexTradingExperienceList()}
-                                                            value={values.forex_trading_experience}
-                                                            error={
-                                                                touched.forex_trading_experience
-                                                                    ? errors.forex_trading_experience
-                                                                    : undefined
-                                                            }
-                                                            onChange={e => {
-                                                                setFieldTouched('forex_trading_experience', true);
-                                                                handleChange(e);
-                                                            }}
-                                                        />
-                                                    </MobileWrapper>
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Dropdown
-                                                            placeholder={localize('Forex trading frequency')}
-                                                            is_align_text_left
-                                                            name='forex_trading_frequency'
-                                                            list={getForexTradingFrequencyList()}
-                                                            value={values.forex_trading_frequency}
-                                                            onChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            error={
-                                                                touched.forex_trading_frequency &&
-                                                                errors.forex_trading_frequency
-                                                            }
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            name='forex_trading_frequency'
-                                                            label={localize('Forex trading frequency')}
-                                                            list_items={getForexTradingFrequencyList()}
-                                                            value={values.forex_trading_frequency}
-                                                            error={
-                                                                touched.forex_trading_frequency
-                                                                    ? errors.forex_trading_frequency
-                                                                    : undefined
-                                                            }
-                                                            onChange={e => {
-                                                                setFieldTouched('forex_trading_frequency', true);
-                                                                handleChange(e);
-                                                            }}
-                                                        />
-                                                    </MobileWrapper>
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Dropdown
-                                                            placeholder={localize('Binary options trading experience')}
-                                                            is_align_text_left
-                                                            name='binary_options_trading_experience'
-                                                            list={getBinaryOptionsTradingExperienceList()}
-                                                            value={values.binary_options_trading_experience}
-                                                            onChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            error={
-                                                                touched.binary_options_trading_experience &&
-                                                                errors.binary_options_trading_experience
-                                                            }
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            name='binary_options_trading_experience'
-                                                            label={localize('Binary options trading experience')}
-                                                            list_items={getBinaryOptionsTradingExperienceList()}
-                                                            value={values.binary_options_trading_experience}
-                                                            error={
-                                                                touched.binary_options_trading_experience
-                                                                    ? errors.binary_options_trading_experience
-                                                                    : undefined
-                                                            }
-                                                            onChange={e => {
-                                                                setFieldTouched(
-                                                                    'binary_options_trading_experience',
-                                                                    true
-                                                                );
-                                                                handleChange(e);
-                                                            }}
-                                                        />
-                                                    </MobileWrapper>
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Dropdown
-                                                            placeholder={localize('Binary options trading frequency')}
-                                                            is_align_text_left
-                                                            name='binary_options_trading_frequency'
-                                                            list={getBinaryOptionsTradingFrequencyList()}
-                                                            value={values.binary_options_trading_frequency}
-                                                            onChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            error={
-                                                                touched.binary_options_trading_frequency &&
-                                                                errors.binary_options_trading_frequency
-                                                            }
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            name='binary_options_trading_frequency'
-                                                            label={localize('Binary options trading frequency')}
-                                                            list_items={getBinaryOptionsTradingFrequencyList()}
-                                                            value={values.binary_options_trading_frequency}
-                                                            error={
-                                                                touched.binary_options_trading_frequency
-                                                                    ? errors.binary_options_trading_frequency
-                                                                    : undefined
-                                                            }
-                                                            onChange={e => {
-                                                                setFieldTouched(
-                                                                    'binary_options_trading_frequency',
-                                                                    true
-                                                                );
-                                                                handleChange(e);
-                                                            }}
-                                                        />
-                                                    </MobileWrapper>
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Dropdown
-                                                            placeholder={localize('CFD trading experience')}
-                                                            is_align_text_left
-                                                            name='cfd_trading_experience'
-                                                            list={getCfdTradingExperienceList()}
-                                                            value={values.cfd_trading_experience}
-                                                            onChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            error={
-                                                                touched.cfd_trading_experience &&
-                                                                errors.cfd_trading_experience
-                                                            }
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            name='cfd_trading_experience'
-                                                            label={localize('CFD trading experience')}
-                                                            list_items={getCfdTradingExperienceList()}
-                                                            value={values.cfd_trading_experience}
-                                                            error={
-                                                                touched.cfd_trading_experience
-                                                                    ? errors.cfd_trading_experience
-                                                                    : undefined
-                                                            }
-                                                            onChange={e => {
-                                                                setFieldTouched('cfd_trading_experience', true);
-                                                                handleChange(e);
-                                                            }}
-                                                        />
-                                                    </MobileWrapper>
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Dropdown
-                                                            placeholder={localize('CFD trading frequency')}
-                                                            is_align_text_left
-                                                            name='cfd_trading_frequency'
-                                                            list={getCfdTradingFrequencyList()}
-                                                            value={values.cfd_trading_frequency}
-                                                            onChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            error={
-                                                                touched.cfd_trading_frequency &&
-                                                                errors.cfd_trading_frequency
-                                                            }
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            name='cfd_trading_frequency'
-                                                            label={localize('CFD trading frequency')}
-                                                            list_items={getCfdTradingFrequencyList()}
-                                                            value={values.cfd_trading_frequency}
-                                                            error={
-                                                                touched.cfd_trading_frequency
-                                                                    ? errors.cfd_trading_frequency
-                                                                    : undefined
-                                                            }
-                                                            onChange={e => {
-                                                                setFieldTouched('cfd_trading_frequency', true);
-                                                                handleChange(e);
-                                                            }}
-                                                        />
-                                                    </MobileWrapper>
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Dropdown
-                                                            placeholder={localize(
-                                                                'Other trading instruments experience'
-                                                            )}
-                                                            is_align_text_left
-                                                            name='other_instruments_trading_experience'
-                                                            list={getOtherInstrumentsTradingExperienceList()}
-                                                            value={values.other_instruments_trading_experience}
-                                                            onChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            error={
-                                                                touched.other_instruments_trading_experience &&
-                                                                errors.other_instruments_trading_experience
-                                                            }
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            name='other_instruments_trading_experience'
-                                                            label={localize('Other trading instruments experience')}
-                                                            list_items={getOtherInstrumentsTradingExperienceList()}
-                                                            value={values.other_instruments_trading_experience}
-                                                            error={
-                                                                touched.other_instruments_trading_experience
-                                                                    ? errors.other_instruments_trading_experience
-                                                                    : undefined
-                                                            }
-                                                            onChange={e => {
-                                                                setFieldTouched(
-                                                                    'other_instruments_trading_experience',
-                                                                    true
-                                                                );
-                                                                handleChange(e);
-                                                            }}
-                                                        />
-                                                    </MobileWrapper>
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Dropdown
-                                                            placeholder={localize(
-                                                                'Other trading instruments frequency'
-                                                            )}
-                                                            is_alignment_top
-                                                            is_align_text_left
-                                                            name='other_instruments_trading_frequency'
-                                                            list={getOtherInstrumentsTradingFrequencyList()}
-                                                            value={values.other_instruments_trading_frequency}
-                                                            onChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            error={
-                                                                touched.other_instruments_trading_frequency &&
-                                                                errors.other_instruments_trading_frequency
-                                                            }
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            name='other_instruments_trading_frequency'
-                                                            label={localize('Other trading instruments frequency')}
-                                                            list_items={getOtherInstrumentsTradingFrequencyList()}
-                                                            value={values.other_instruments_trading_frequency}
-                                                            error={
-                                                                touched.other_instruments_trading_frequency
-                                                                    ? errors.other_instruments_trading_frequency
-                                                                    : undefined
-                                                            }
-                                                            onChange={e => {
-                                                                setFieldTouched(
-                                                                    'other_instruments_trading_frequency',
-                                                                    true
-                                                                );
-                                                                handleChange(e);
-                                                            }}
-                                                        />
-                                                    </MobileWrapper>
-                                                </fieldset>
-                                            </FormBodySection>
-                                        </>
-                                    )}
-                                </FormBody>
-                                <FormFooter>
-                                    {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {isMobile() && !is_appstore && !is_mf && (
-                                        <Text
-                                            align='center'
-                                            size='xxs'
-                                            className='account-form__footer-all-fields-required'
-                                        >
-                                            {localize('All fields are required')}
-                                        </Text>
-                                    )}
-                                    <Button
-                                        type='button'
-                                        className={classNames('account-form__footer-btn', {
-                                            'dc-btn--green': is_submit_success,
-                                        })}
-                                        onClick={() => onClickSubmit(handleSubmit)}
-                                        is_disabled={
-                                            isSubmitting ||
-                                            !dirty ||
-                                            is_btn_loading ||
-                                            Object.keys(errors).length > 0 ||
-                                            !!(
-                                                values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED &&
-                                                values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
-                                            )
-                                        }
-                                        has_effect
-                                        is_loading={is_btn_loading}
-                                        is_submit_success={is_submit_success}
-                                        text={is_appstore ? localize('Save') : localize('Submit')}
-                                        large
-                                        primary
-                                    />
-                                </FormFooter>
-                            </form>
-                        )}
-                    </React.Fragment>
-                )}
-            </Formik>
-        </React.Fragment>
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Dropdown
+                                                        placeholder={localize('Binary options trading experience')}
+                                                        is_align_text_left
+                                                        name='binary_options_trading_experience'
+                                                        list={getBinaryOptionsTradingExperienceList()}
+                                                        value={values.binary_options_trading_experience}
+                                                        onChange={handleChange}
+                                                        handleBlur={handleBlur}
+                                                        error={
+                                                            touched.binary_options_trading_experience &&
+                                                            errors.binary_options_trading_experience
+                                                        }
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        name='binary_options_trading_experience'
+                                                        label={localize('Binary options trading experience')}
+                                                        list_items={getBinaryOptionsTradingExperienceList()}
+                                                        value={values.binary_options_trading_experience}
+                                                        error={
+                                                            touched.binary_options_trading_experience
+                                                                ? errors.binary_options_trading_experience
+                                                                : undefined
+                                                        }
+                                                        onChange={e => {
+                                                            setFieldTouched('binary_options_trading_experience', true);
+                                                            handleChange(e);
+                                                        }}
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Dropdown
+                                                        placeholder={localize('Binary options trading frequency')}
+                                                        is_align_text_left
+                                                        name='binary_options_trading_frequency'
+                                                        list={getBinaryOptionsTradingFrequencyList()}
+                                                        value={values.binary_options_trading_frequency}
+                                                        onChange={handleChange}
+                                                        handleBlur={handleBlur}
+                                                        error={
+                                                            touched.binary_options_trading_frequency &&
+                                                            errors.binary_options_trading_frequency
+                                                        }
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        name='binary_options_trading_frequency'
+                                                        label={localize('Binary options trading frequency')}
+                                                        list_items={getBinaryOptionsTradingFrequencyList()}
+                                                        value={values.binary_options_trading_frequency}
+                                                        error={
+                                                            touched.binary_options_trading_frequency
+                                                                ? errors.binary_options_trading_frequency
+                                                                : undefined
+                                                        }
+                                                        onChange={e => {
+                                                            setFieldTouched('binary_options_trading_frequency', true);
+                                                            handleChange(e);
+                                                        }}
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Dropdown
+                                                        placeholder={localize('CFD trading experience')}
+                                                        is_align_text_left
+                                                        name='cfd_trading_experience'
+                                                        list={getCfdTradingExperienceList()}
+                                                        value={values.cfd_trading_experience}
+                                                        onChange={handleChange}
+                                                        handleBlur={handleBlur}
+                                                        error={
+                                                            touched.cfd_trading_experience &&
+                                                            errors.cfd_trading_experience
+                                                        }
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        name='cfd_trading_experience'
+                                                        label={localize('CFD trading experience')}
+                                                        list_items={getCfdTradingExperienceList()}
+                                                        value={values.cfd_trading_experience}
+                                                        error={
+                                                            touched.cfd_trading_experience
+                                                                ? errors.cfd_trading_experience
+                                                                : undefined
+                                                        }
+                                                        onChange={e => {
+                                                            setFieldTouched('cfd_trading_experience', true);
+                                                            handleChange(e);
+                                                        }}
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Dropdown
+                                                        placeholder={localize('CFD trading frequency')}
+                                                        is_align_text_left
+                                                        name='cfd_trading_frequency'
+                                                        list={getCfdTradingFrequencyList()}
+                                                        value={values.cfd_trading_frequency}
+                                                        onChange={handleChange}
+                                                        handleBlur={handleBlur}
+                                                        error={
+                                                            touched.cfd_trading_frequency &&
+                                                            errors.cfd_trading_frequency
+                                                        }
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        name='cfd_trading_frequency'
+                                                        label={localize('CFD trading frequency')}
+                                                        list_items={getCfdTradingFrequencyList()}
+                                                        value={values.cfd_trading_frequency}
+                                                        error={
+                                                            touched.cfd_trading_frequency
+                                                                ? errors.cfd_trading_frequency
+                                                                : undefined
+                                                        }
+                                                        onChange={e => {
+                                                            setFieldTouched('cfd_trading_frequency', true);
+                                                            handleChange(e);
+                                                        }}
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Dropdown
+                                                        placeholder={localize('Other trading instruments experience')}
+                                                        is_align_text_left
+                                                        name='other_instruments_trading_experience'
+                                                        list={getOtherInstrumentsTradingExperienceList()}
+                                                        value={values.other_instruments_trading_experience}
+                                                        onChange={handleChange}
+                                                        handleBlur={handleBlur}
+                                                        error={
+                                                            touched.other_instruments_trading_experience &&
+                                                            errors.other_instruments_trading_experience
+                                                        }
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        name='other_instruments_trading_experience'
+                                                        label={localize('Other trading instruments experience')}
+                                                        list_items={getOtherInstrumentsTradingExperienceList()}
+                                                        value={values.other_instruments_trading_experience}
+                                                        error={
+                                                            touched.other_instruments_trading_experience
+                                                                ? errors.other_instruments_trading_experience
+                                                                : undefined
+                                                        }
+                                                        onChange={e => {
+                                                            setFieldTouched(
+                                                                'other_instruments_trading_experience',
+                                                                true
+                                                            );
+                                                            handleChange(e);
+                                                        }}
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Dropdown
+                                                        placeholder={localize('Other trading instruments frequency')}
+                                                        is_alignment_top
+                                                        is_align_text_left
+                                                        name='other_instruments_trading_frequency'
+                                                        list={getOtherInstrumentsTradingFrequencyList()}
+                                                        value={values.other_instruments_trading_frequency}
+                                                        onChange={handleChange}
+                                                        handleBlur={handleBlur}
+                                                        error={
+                                                            touched.other_instruments_trading_frequency &&
+                                                            errors.other_instruments_trading_frequency
+                                                        }
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        name='other_instruments_trading_frequency'
+                                                        label={localize('Other trading instruments frequency')}
+                                                        list_items={getOtherInstrumentsTradingFrequencyList()}
+                                                        value={values.other_instruments_trading_frequency}
+                                                        error={
+                                                            touched.other_instruments_trading_frequency
+                                                                ? errors.other_instruments_trading_frequency
+                                                                : undefined
+                                                        }
+                                                        onChange={e => {
+                                                            setFieldTouched(
+                                                                'other_instruments_trading_frequency',
+                                                                true
+                                                            );
+                                                            handleChange(e);
+                                                        }}
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                        </FormBodySection>
+                                    </>
+                                )}
+                            </FormBody>
+                            <FormFooter>
+                                {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                {isMobile() && !is_appstore && !is_mf && (
+                                    <Text
+                                        align='center'
+                                        size='xxs'
+                                        className='account-form__footer-all-fields-required'
+                                    >
+                                        {localize('All fields are required')}
+                                    </Text>
+                                )}
+                                <Button
+                                    type='button'
+                                    className={classNames('account-form__footer-btn', {
+                                        'dc-btn--green': is_submit_success,
+                                    })}
+                                    onClick={() => onClickSubmit(handleSubmit)}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        !dirty ||
+                                        is_btn_loading ||
+                                        Object.keys(errors).length > 0 ||
+                                        !!(
+                                            values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED &&
+                                            values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
+                                        )
+                                    }
+                                    has_effect
+                                    is_loading={is_btn_loading}
+                                    is_submit_success={is_submit_success}
+                                    text={is_appstore ? localize('Save') : localize('Submit')}
+                                    large
+                                    primary
+                                />
+                            </FormFooter>
+                        </form>
+                    )}
+                </React.Fragment>
+            )}
+        </Formik>
     );
 });
 

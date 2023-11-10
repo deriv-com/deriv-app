@@ -254,7 +254,7 @@ export const unsupported_contract_types_list = [
     TRADE_TYPES.LB_CALL,
     TRADE_TYPES.LB_PUT,
     TRADE_TYPES.LB_HIGH_LOW,
-];
+] as const;
 
 export const getCardLabels = () =>
     ({

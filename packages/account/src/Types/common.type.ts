@@ -1,6 +1,6 @@
 /** Add types that are shared between components */
 import React from 'react';
-import { Authorize, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { Authorize, IdentityVerificationAddDocumentResponse, SetFinancialAssessmentRequest } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 import { Platforms } from '@deriv/shared';
 
@@ -90,20 +90,6 @@ export type TUpgradeInfo = {
     can_open_multi: boolean;
 };
 
-type TIdentity = {
-    services: {
-        idv: {
-            documents_supported: { [key: string]: { display_name: string } } | Record<string, never>;
-            has_visual_sample: 0 | 1;
-            is_country_supported: 0 | 1;
-        };
-        onfido: {
-            documents_supported: { [key: string]: { display_name: string } };
-            is_country_supported: 0 | 1;
-        };
-    };
-};
-
 export type TFile = {
     path: string;
     lastModified: number;
@@ -162,3 +148,16 @@ export type TServerError = {
     details?: { [key: string]: string };
     fields?: string[];
 };
+
+export type TFinancialInformationForm = Pick<
+    SetFinancialAssessmentRequest,
+    | 'employment_status'
+    | 'income_source'
+    | 'employment_industry'
+    | 'occupation'
+    | 'source_of_wealth'
+    | 'education_level'
+    | 'net_income'
+    | 'estimated_worth'
+    | 'account_turnover'
+>;

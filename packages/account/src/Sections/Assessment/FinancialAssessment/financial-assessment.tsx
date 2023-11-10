@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import { useHistory, withRouter } from 'react-router';
 import {
     FormSubmitErrorMessage,
@@ -14,7 +14,16 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, isMobile, isDesktop, platforms, PlatformContext, WS, EMPLOYMENT_VALUES } from '@deriv/shared';
+import {
+    routes,
+    isMobile,
+    isDesktop,
+    platforms,
+    PlatformContext,
+    WS,
+    EMPLOYMENT_VALUES,
+    shouldHideOccupationField,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -46,7 +55,7 @@ import {
 import type { TCoreStores } from '@deriv/stores/types';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 import { getFormattedOccupationList } from 'Configs/financial-details-config';
-// import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
+import { TFinancialInformationForm } from 'Types';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
@@ -267,10 +276,18 @@ const FinancialAssessment = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onSubmit = async (values: FormikValues, { setSubmitting, setStatus }: FormikHelpers<any>) => {
+    const onSubmit = async (
+        values: TFinancialInformationForm,
+        { setSubmitting, setStatus }: FormikHelpers<TFinancialInformationForm>
+    ) => {
         setStatus({ msg: '' });
         setIsBtnLoading(true);
-        const form_payload: any = {
+
+        if (shouldHideOccupationField(values.employment_status || employment_status)) {
+            delete values?.occupation;
+        }
+
+        const form_payload: { financial_information: TFinancialInformationForm } = {
             financial_information: { ...values },
         };
         const data = await setFinancialAndTradingAssessment(form_payload);
@@ -540,51 +557,55 @@ const FinancialAssessment = observer(() => {
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
-                                        <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
-                                                <Dropdown
-                                                    className='account-form__occupation'
-                                                    placeholder={localize('Occupation')}
-                                                    is_align_text_left
-                                                    name='occupation'
-                                                    list={getFormattedOccupationList(values.employment_status ?? '')}
-                                                    value={getFormattedOccupationValues(values)}
-                                                    onChange={e => {
-                                                        setFieldValue(
-                                                            'occupation',
-                                                            getFormattedOccupationValues(values),
-                                                            true
-                                                        );
-                                                        handleChange(e);
-                                                    }}
-                                                    handleBlur={handleBlur}
-                                                    error={touched.occupation && errors.occupation}
-                                                    test_id='occupation'
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <SelectNative
-                                                    placeholder={localize('Please select')}
-                                                    name='occupation'
-                                                    label={localize('Occupation')}
-                                                    list_items={getFormattedOccupationList(
-                                                        values.employment_status ?? ''
-                                                    )}
-                                                    value={getFormattedOccupationValues(values)}
-                                                    error={touched.occupation ? errors.occupation : undefined}
-                                                    onChange={e => {
-                                                        setFieldValue(
-                                                            'occupation',
-                                                            getFormattedOccupationValues(values),
-                                                            true
-                                                        );
-                                                        setFieldTouched('occupation', true);
-                                                        handleChange(e);
-                                                    }}
-                                                    data_testid='occupation'
-                                                />
-                                            </MobileWrapper>
-                                        </fieldset>
+                                        {!shouldHideOccupationField(values.employment_status || employment_status) && (
+                                            <fieldset className='account-form__fieldset'>
+                                                <DesktopWrapper>
+                                                    <Dropdown
+                                                        className='account-form__occupation'
+                                                        placeholder={localize('Occupation')}
+                                                        is_align_text_left
+                                                        name='occupation'
+                                                        list={getFormattedOccupationList(
+                                                            (values.employment_status || employment_status) ?? ''
+                                                        )} // employment_status may come as part of the FA form or Personal details form
+                                                        value={getFormattedOccupationValues(values)}
+                                                        onChange={e => {
+                                                            setFieldValue(
+                                                                'occupation',
+                                                                getFormattedOccupationValues(values),
+                                                                true
+                                                            );
+                                                            handleChange(e);
+                                                        }}
+                                                        handleBlur={handleBlur}
+                                                        error={touched.occupation && errors.occupation}
+                                                        test_id='occupation'
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        placeholder={localize('Please select')}
+                                                        name='occupation'
+                                                        label={localize('Occupation')}
+                                                        list_items={getFormattedOccupationList(
+                                                            values.employment_status ?? ''
+                                                        )}
+                                                        value={getFormattedOccupationValues(values)}
+                                                        error={touched.occupation ? errors.occupation : undefined}
+                                                        onChange={e => {
+                                                            setFieldValue(
+                                                                'occupation',
+                                                                getFormattedOccupationValues(values),
+                                                                true
+                                                            );
+                                                            setFieldTouched('occupation', true);
+                                                            handleChange(e);
+                                                        }}
+                                                        data_testid='occupation'
+                                                    />
+                                                </MobileWrapper>
+                                            </fieldset>
+                                        )}
                                         <fieldset className='account-form__fieldset'>
                                             <DesktopWrapper>
                                                 <Dropdown

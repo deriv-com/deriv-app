@@ -9,7 +9,7 @@ import { POIContext } from '../../../Helpers/poi-context';
 import { useResidenceList } from '@deriv/api';
 
 type TCountrySelector = {
-    handleSelectionNext: () => void;
+    handleSelectionNext?: () => void;
     is_from_external: boolean;
     mismatch_status?: TIDVErrorStatus;
 };

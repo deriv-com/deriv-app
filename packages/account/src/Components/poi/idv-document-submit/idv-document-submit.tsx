@@ -41,7 +41,7 @@ type TIDVDocumentSubmitProps = {
     handleViewComplete: () => void;
     selected_country: ResidenceList[0];
     getChangeableFields: () => Array<string>;
-    handleSelectionNext: (should_show_manual: boolean) => void;
+    handleSelectionNext?: (should_show_manual: boolean) => void;
 };
 
 type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm & { confirmation_checkbox: boolean };

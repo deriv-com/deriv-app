@@ -9,7 +9,7 @@ const WalletsListingRoute: React.FC = () => {
         <div className='wallets-listing-route'>
             {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}
             <WalletsAddMoreCarousel />
-            <WalletTourGuide />
+            {!isMobile && <WalletTourGuide />}
         </div>
     );
 };

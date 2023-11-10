@@ -1,47 +1,46 @@
-import React, { useMemo, useState } from 'react';
+/* eslint-disable sort-keys */
+import React, { useState } from 'react';
 import { zxcvbn } from '@zxcvbn-ts/core';
+import { Score } from '@zxcvbn-ts/core/dist/types';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import PasswordMeter, { PasswordMeterProps } from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-type StrengthMessage = Record<1 | 2 | 3 | 4, string>;
-
 interface WalletPasswordFieldProps extends WalletTextFieldProps, PasswordMeterProps {
-    messageObj?: StrengthMessage;
     password: string;
     showPasswordMeter?: boolean;
 }
 
-const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
-    messageObj,
-    password,
-    showPasswordMeter = true,
-    ...rest
-}) => {
+const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({ password, showPasswordMeter = true, ...rest }) => {
     const [viewPassword, setViewPassword] = useState(false);
-    const hasMessage = !!messageObj;
 
-    const passwordStrength = zxcvbn(password).score;
-    const progressText = useMemo(() => {
-        return messageObj ? messageObj[passwordStrength as keyof StrengthMessage] : '';
-    }, [messageObj, passwordStrength]);
+    const passwordScore = password ? zxcvbn(password).score : undefined;
+
+    const helperMessage: Partial<Record<Score, string>> = {
+        0: 'You should enter 8 - 25 characters',
+        1: 'Password should have lower and uppercase English letters with numbers.',
+        2: 'This is a very common password',
+        3: '',
+        4: '',
+    };
 
     return (
         <div className='wallets-password'>
             <WalletTextField
-                helperMessage={progressText}
+                helperMessage={helperMessage[passwordScore ?? 0]}
                 inputClassName='wallets-password__input'
+                pattern='^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])[!-~]{8,25}'
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />
                 )}
-                showMessage={hasMessage}
+                showMessage={true}
                 type={viewPassword ? 'text' : 'password'}
                 value={password}
                 {...rest}
             />
-            {showPasswordMeter && <PasswordMeter strength={passwordStrength} />}
+            {showPasswordMeter && <PasswordMeter score={passwordScore} />}
         </div>
     );
 };

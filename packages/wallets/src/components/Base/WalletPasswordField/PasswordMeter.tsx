@@ -1,10 +1,10 @@
 import React from 'react';
 
 export interface PasswordMeterProps {
-    strength?: number;
+    score?: number;
 }
 
-const PasswordMeter: React.FC<PasswordMeterProps> = ({ strength }) => {
+const PasswordMeter: React.FC<PasswordMeterProps> = ({ score }) => {
     const strengthColors: { [key: number]: string } = {
         0: 'wallets-password__meter--initial',
         1: 'wallets-password__meter--weak',
@@ -14,7 +14,7 @@ const PasswordMeter: React.FC<PasswordMeterProps> = ({ strength }) => {
     };
     return (
         <div className='wallets-password__meter'>
-            <div className={strengthColors[strength ?? 0]} />
+            <div className={strengthColors[score ?? 0]} />
         </div>
     );
 };

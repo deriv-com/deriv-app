@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { ExchangeRatesProvider, StoreProvider, mockStore } from '@deriv/stores';
 import { adverts } from 'Components/my-ads/__mocks__/mock-data';
 import MyAdsRowRenderer from '../my-ads-row-renderer';
 
@@ -42,7 +42,9 @@ describe('<MyAdsRowRenderer/>', () => {
     it('should display tooltip for hidden ads', () => {
         render(
             <StoreProvider store={mock_use_store_values}>
-                <MyAdsRowRenderer row={{ ...adverts, visibility_status: ['advert_inactive'] }} />
+                <ExchangeRatesProvider>
+                    <MyAdsRowRenderer row={{ ...adverts, visibility_status: ['advert_inactive'] }} />
+                </ExchangeRatesProvider>
             </StoreProvider>
         );
         const icon = screen.getByTestId('dt_popover_wrapper');
@@ -53,7 +55,9 @@ describe('<MyAdsRowRenderer/>', () => {
     it('should onClick for hidden ads', () => {
         render(
             <StoreProvider store={mock_use_store_values}>
-                <MyAdsRowRenderer row={{ ...adverts, visibility_status: ['advert_inactive'] }} />
+                <ExchangeRatesProvider>
+                    <MyAdsRowRenderer row={{ ...adverts, visibility_status: ['advert_inactive'] }} />
+                </ExchangeRatesProvider>
             </StoreProvider>
         );
         const visibility_status_icon = screen.getByTestId('dt_visibility_alert_icon');

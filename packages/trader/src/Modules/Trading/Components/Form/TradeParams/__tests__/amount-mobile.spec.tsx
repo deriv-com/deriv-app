@@ -26,7 +26,7 @@ const default_mock_store = {
         trade: {
             basis: 'stake',
             basis_list: [{ text: 'Payout', value: 'payout' }],
-            contract_type: TRADE_TYPES.RISE_FALL,
+            contract_type: TRADE_TYPES.RISE_FALL as string,
             is_turbos: false,
             is_vanilla: false,
             onChangeMultiple: jest.fn(),

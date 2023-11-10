@@ -62,5 +62,6 @@ describe('<FAQContent />', () => {
     it('should show content', () => {
         const acc = screen.getByTestId('id-accordion-test');
         userEvent.click(acc);
+        expect(acc).toHaveTextContent('Mocked FAQ Title 1');
     });
 });

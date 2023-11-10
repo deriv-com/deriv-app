@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Dialog, Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { removeKeyValue } from 'Utils/settings';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -59,7 +59,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
             <div className='tutorials-wrap'>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        {localize('Step-by-step guides')}
+                        <Localize i18n_default_text='Step-by-step guides' />
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>
@@ -95,7 +95,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                 </div>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        {localize('Videos on Deriv Bot')}
+                        <Localize i18n_default_text='Videos on Deriv Bot' />
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>

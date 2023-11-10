@@ -2,7 +2,7 @@ import React from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { TDescription } from '../config';
 
 type TFAQContent = {
@@ -97,7 +97,7 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
                     <>
                         {!hide_header && (
                             <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                                {localize('FAQ')}
+                                <Localize i18n_default_text='FAQ' />
                             </Text>
                         )}
                         <div

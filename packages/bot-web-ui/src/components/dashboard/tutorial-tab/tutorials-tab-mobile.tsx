@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon, SelectNative } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TContent } from './config';
 import SearchInput from './common/search-input';

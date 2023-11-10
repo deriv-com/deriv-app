@@ -78,25 +78,6 @@ describe('<ApiToken/>', () => {
             is_mobile: false,
         },
     });
-    //     WS: {
-    //         apiToken: jest.fn(() =>
-    //             Promise.resolve({
-    //                 api_token: {
-    //                     tokens: [],
-    //                 },
-    //             })
-    //         ),
-    //         authorized: {
-    //             apiToken: jest.fn(() =>
-    //                 Promise.resolve({
-    //                     api_token: {
-    //                         tokens: [],
-    //                     },
-    //                 })
-    //             ),
-    //         },
-    //     },
-    // };
 
     const renderComponent = ({ store = mock_store }) =>
         render(

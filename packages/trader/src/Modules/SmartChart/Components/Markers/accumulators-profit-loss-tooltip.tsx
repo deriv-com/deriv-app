@@ -40,6 +40,7 @@ const AccumulatorsProfitLossTooltip = ({
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = Number(profit) >= 0;
     const tooltip_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+    const should_show_profit_percentage = getDecimalPlaces(currency) > 2 && !!profit_percentage;
 
     React.useEffect(() => {
         return () => {
@@ -93,11 +94,9 @@ const AccumulatorsProfitLossTooltip = ({
                 currency={currency}
                 current_spot={current_spot}
                 current_spot_time={current_spot_time}
-                displayed_profit_value={
-                    getDecimalPlaces(currency) > 2 && profit_percentage ? profit_percentage : profit
-                }
                 is_beta_chart={is_beta_chart}
-                should_show_profit_percentage={getDecimalPlaces(currency) > 2}
+                profit_value={should_show_profit_percentage ? profit_percentage : profit}
+                should_show_profit_percentage={should_show_profit_percentage}
             />
         );
 

@@ -9,8 +9,8 @@ import { ProposalOpenContract } from '@deriv/api-types';
 
 type TAccumulatorsProfitLossText = Pick<ProposalOpenContract, 'current_spot' | 'current_spot_time' | 'currency'> & {
     className?: string;
-    displayed_profit_value: number;
     is_beta_chart?: boolean;
+    profit_value: number;
     should_show_profit_percentage?: boolean;
 };
 
@@ -25,15 +25,15 @@ const AccumulatorsProfitLossText = ({
     current_spot_time,
     currency,
     className = 'sc-accumulators-profit-loss-text',
-    displayed_profit_value,
     is_beta_chart,
+    profit_value,
     should_show_profit_percentage,
 }: TAccumulatorsProfitLossText) => {
     const [is_fading_in, setIsFadingIn] = React.useState(false);
     const [is_sliding, setIsSliding] = React.useState(false);
     const formatted_profit = should_show_profit_percentage
-        ? addComma(displayed_profit_value, 2)
-        : formatMoney(currency ?? '', displayed_profit_value, true, 0, 0);
+        ? addComma(profit_value, 2)
+        : formatMoney(currency ?? '', profit_value, true, 0, 0);
     const prev_profit = React.useRef(formatted_profit);
     const prev_profit_tenth = +prev_profit.current?.split('.')[1][0];
     const [current_profit_tenth, setCurrentProfitTenth] = React.useState(prev_profit_tenth);
@@ -45,8 +45,8 @@ const AccumulatorsProfitLossText = ({
     const profit_whole_number = profit_portions_array[0];
     const profit_tenth = +profit_portions_array[1][0];
     const profit_hundredths = +profit_portions_array[1].slice(1);
-    const won = displayed_profit_value >= 0;
-    const sign = displayed_profit_value > 0 ? '+' : '';
+    const won = profit_value >= 0;
+    const sign = profit_value > 0 ? '+' : '';
 
     const runThroughTenthDigit = (
         action: typeof ACTIONS[keyof typeof ACTIONS],
@@ -73,7 +73,7 @@ const AccumulatorsProfitLossText = ({
     };
 
     React.useEffect(() => {
-        if (displayed_profit_value) {
+        if (profit_value) {
             setIsFadingIn(true);
             setIsSliding(true);
             fading_in_timeout_id.current = setTimeout(() => {
@@ -83,7 +83,7 @@ const AccumulatorsProfitLossText = ({
                 setIsSliding(false);
             }, 300);
         }
-        if (displayed_profit_value !== 0) {
+        if (profit_value !== 0) {
             const updateTenth = (start: number, end: number) => {
                 const delta = Math.abs(end - start);
                 profit_tenth_ref.current = start;
@@ -102,7 +102,7 @@ const AccumulatorsProfitLossText = ({
             clearTimeout(sliding_timeout_id.current);
             clearInterval(interval_id_ref.current);
         };
-    }, [displayed_profit_value, prev_profit_tenth, profit_tenth]);
+    }, [profit_value, prev_profit_tenth, profit_tenth]);
 
     const onRef = (ref: TRef | null): void => {
         if (ref) {

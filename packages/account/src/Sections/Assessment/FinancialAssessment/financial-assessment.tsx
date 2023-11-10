@@ -14,7 +14,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, isMobile, isDesktop, platforms, PlatformContext, WS } from '@deriv/shared';
+import { routes, isMobile, isDesktop, platforms, PlatformContext, WS, EMPLOYMENT_VALUES } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -46,7 +46,7 @@ import {
 import type { TCoreStores } from '@deriv/stores/types';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 import { getFormattedOccupationList } from 'Configs/financial-details-config';
-import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
+// import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;

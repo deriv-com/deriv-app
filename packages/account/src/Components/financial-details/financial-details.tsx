@@ -9,9 +9,8 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, EMPLOYMENT_VALUES } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
 import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';

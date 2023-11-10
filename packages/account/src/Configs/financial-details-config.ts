@@ -1,8 +1,7 @@
 import React from 'react';
 import { GetFinancialAssessment } from '@deriv/api-types';
-import { generateValidationFunction, getDefaultFields, TSchema } from '@deriv/shared';
+import { generateValidationFunction, getDefaultFields, TSchema, EMPLOYMENT_VALUES } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
 
 type TFinancialDetailsConfig = {
     real_account_signup_target: string;
@@ -46,7 +45,21 @@ const financial_details_config: (props: { financial_assessment: GetFinancialAsse
         occupation: {
             default_value: financial_assessment?.occupation ?? '',
             supported_in: ['maltainvest'],
-            rules: [['req', localize('Please select an option')]],
+            // rules: [['req', localize('Please select an option')]],
+            rules: [
+                [
+                    (
+                        value: string,
+                        options: Record<string, unknown>,
+                        { employment_status }: { employment_status: string }
+                    ) => {
+                        // check if  TIN value is available,
+                        // only then ask client to fill in tax residence
+                        return value ? !!employment_status : true;
+                    },
+                    localize('Please select an option'),
+                ],
+            ],
         },
         source_of_wealth: {
             default_value: financial_assessment?.source_of_wealth ?? '',

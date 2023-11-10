@@ -1,3 +1,4 @@
+import { EMPLOYMENT_VALUES } from '../constants';
 import { TInitPreBuildDVRs, TOptions, getPreBuildDVRs } from './declarative-validation-rules';
 
 import fromEntries from 'object.fromentries';
@@ -107,3 +108,6 @@ export const getValidationFunction = (rule: string) => {
     return (value: string, options: TOptions, values: Record<string, string | boolean>) =>
         !!func(value, options, values);
 };
+
+export const shouldHideOccupationField = (employment_status: string | undefined) =>
+    [EMPLOYMENT_VALUES.SELF_EMPLOYED, EMPLOYMENT_VALUES.UNEMPLOYED].some(status => status === employment_status);

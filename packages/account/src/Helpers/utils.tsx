@@ -9,6 +9,7 @@ import {
     getIDVNotApplicableOption,
     idv_error_statuses,
     AUTH_STATUS_CODES,
+    EMPLOYMENT_VALUES,
 } from '@deriv/shared';
 import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import { FormikValues } from 'formik';

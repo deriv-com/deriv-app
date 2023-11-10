@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useAllWalletAccounts, useWalletAccountsList } from '@deriv/api';
 import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
 import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
@@ -13,7 +13,7 @@ const WalletTourGuide = () => {
     const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: availableWallets } = useAvailableWallets();
+    const { data: availableWallets } = useAllWalletAccounts();
 
     const fiatWalletLoginId = wallets?.[0]?.loginid;
     const activeWalletLoginId = activeWallet?.loginid;

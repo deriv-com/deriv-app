@@ -61,6 +61,7 @@ const AssetSummary = observer(() => {
                         zIndex={9999}
                         is_bubble_hover_enabled
                     >
+                        {/* TODO: remove this temp component after the QA team os done with the test. also remove all instances of old useExchangeRates()  */}
                         <h1>new</h1>
                         <BalanceText
                             currency={

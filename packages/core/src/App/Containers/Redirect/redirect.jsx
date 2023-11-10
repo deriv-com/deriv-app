@@ -125,7 +125,6 @@ const Redirect = ({
         case 'payment_withdraw': {
             if (is_next_wallet) {
                 // passes verification_code through query param as we do not want to use localstorage/session storage
-                //
                 // though can't use "verification_code" as name param
                 // as there is general logic within client-store
                 // which removes anything which resembles code=XYZ

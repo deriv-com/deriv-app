@@ -434,9 +434,7 @@ const StaticDashboard = observer(
                                         type='synthetic'
                                         platform='mt5'
                                         appname={localize('Derived')}
-                                        description={localize(
-                                            'Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
-                                        )}
+                                        description={localize('This account offers CFDs on derived instruments.')}
                                         loginid={loginid}
                                         currency={currency}
                                         has_account={has_account}
@@ -454,7 +452,7 @@ const StaticDashboard = observer(
                                         platform='mt5'
                                         appname={localize('CFDs')}
                                         description={localize(
-                                            'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+                                            'This MFSA-regulated account offers CFDs on derived and financial instruments.'
                                         )}
                                         loginid={loginid}
                                         currency={is_eu_user ? mf_currency : currency}
@@ -589,7 +587,7 @@ const StaticDashboard = observer(
                                         platform='dxtrade'
                                         appname={localize('Deriv X')}
                                         description={localize(
-                                            'Trade CFDs on Deriv X with financial markets and our Derived indices.'
+                                            'This account offers CFDs on a highly customisable CFD trading platform.'
                                         )}
                                         loginid={loginid}
                                         currency={currency}

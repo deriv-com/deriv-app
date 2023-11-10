@@ -379,10 +379,8 @@ export default class TradersHubStore extends BaseStore {
     getAvailableCFDAccounts() {
         const getAccountDesc = () => {
             return !this.is_eu_user || this.is_demo_low_risk
-                ? localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.')
-                : localize(
-                      'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
-                  );
+                ? localize('This account offers CFDs on financial instruments.')
+                : localize('This MFSA-regulated account offers CFDs on derived and financial instruments.');
         };
         const getSwapFreeAccountDesc = () => {
             return localize(

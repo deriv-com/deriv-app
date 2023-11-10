@@ -1,0 +1,15 @@
+.wallets-document-rule-hint {
+    display: flex;
+    width: 156px;
+    padding: 16px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    @include mobile {
+        width: 100%;
+        padding: 16px 15.59px;
+        flex: 1 0 0;
+    }
+}

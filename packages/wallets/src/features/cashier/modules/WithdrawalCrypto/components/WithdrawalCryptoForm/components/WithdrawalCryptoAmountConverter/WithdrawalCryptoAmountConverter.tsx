@@ -3,8 +3,9 @@ import { Field, FieldProps, useFormikContext, FormikValues } from 'formik';
 import './WithdrawalCryptoAmountConverter.scss';
 import { WalletTextField } from '../../../../../../../../components';
 import ArrowBold from '../../../../../../../../public/images/arrow-bold.svg';
-import { useActiveWalletAccount, useExchangeRate } from '@deriv/api';
+import { useActiveWalletAccount, useCurrencyConfig, useExchangeRate } from '@deriv/api';
 import classNames from 'classnames';
+import type { TForm } from '../../WithdrawalCryptoForm';
 
 const helperMessageMapper = {
     invalidInput: 'Should be a valid number.',
@@ -17,11 +18,14 @@ const helperMessageMapper = {
 const WithdrawalCryptoAmountConverter = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
+    const { getConfig } = useCurrencyConfig();
     const [isCryptoInputActive, SetIsCryptoInputActive] = useState(false);
-    const { errors, getFieldProps, handleChange, setFieldValue, values } = useFormikContext<FormikValues>();
+    const { errors, getFieldProps, handleChange, setFieldValue, setValues, values } = useFormikContext<TForm>();
+    const FRACTIONAL_DIGITS_CRYPTO = getConfig(activeWallet?.currency)?.fractional_digits;
+    const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
 
     useEffect(() => {
-        if (activeWallet)
+        if (activeWallet?.currency)
             subscribe({
                 base_currency: 'USD',
                 target_currency: activeWallet.currency,
@@ -30,9 +34,14 @@ const WithdrawalCryptoAmountConverter = () => {
         return () => unsubscribe();
     }, []);
 
+    useEffect(() => {
+        // console.log(values, errors);
+    }, [values]);
+
     const validateCryptoInput = (value: string, balance: number) => {
         if (!value.length) return undefined;
         if (Number.isNaN(parseFloat(value))) return helperMessageMapper.invalidInput;
+        // console.log('validateCrypto', parseFloat(value));
 
         if (parseFloat(value) > activeWallet?.balance) return helperMessageMapper.insufficientFunds;
         return undefined;
@@ -56,10 +65,15 @@ const WithdrawalCryptoAmountConverter = () => {
                             const value = parseFloat(e.target.value);
                             const convertedValue =
                                 !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
-                                    ? (value / exchangeRate?.rates[activeWallet?.currency]).toFixed(2)
+                                    ? (value / exchangeRate?.rates[activeWallet?.currency]).toFixed(
+                                          FRACTIONAL_DIGITS_FIAT
+                                      )
                                     : '';
-                            setFieldValue('fiatAmount', convertedValue);
-                            return handleChange(e);
+                            setValues({
+                                ...values,
+                                cryptoAmount: e.target.value,
+                                fiatAmount: convertedValue,
+                            });
                         }}
                         onFocus={() => SetIsCryptoInputActive(true)}
                         showMessage
@@ -83,10 +97,16 @@ const WithdrawalCryptoAmountConverter = () => {
                             const value = parseFloat(e.target.value);
                             const convertedValue =
                                 !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
-                                    ? (value * exchangeRate?.rates[activeWallet?.currency]).toFixed(8)
+                                    ? (value * exchangeRate?.rates[activeWallet?.currency]).toFixed(
+                                          FRACTIONAL_DIGITS_CRYPTO
+                                      )
                                     : '';
-                            setFieldValue('cryptoAmount', convertedValue);
-                            return handleChange(e);
+
+                            setValues({
+                                ...values,
+                                cryptoAmount: convertedValue,
+                                fiatAmount: e.target.value,
+                            });
                         }}
                         onFocus={() => SetIsCryptoInputActive(false)}
                         showMessage

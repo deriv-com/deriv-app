@@ -3,20 +3,25 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    align-self: center;
+    transform: translateY(-2.4rem);
+
+    @include mobile {
+        width: 100%;
+        height: fit-content;
+        flex-direction: column;
+        gap: 1.6rem;
+        transform: translateY(-1.2rem);
+    }
 
     &__main-content {
         display: flex;
         flex-direction: column;
-        padding-top: 2.4rem;
-        justify-content: center;
         gap: 2.4rem;
         position: relative;
-    }
 
-    @include mobile {
-        width: 100%;
-        justify-content: start;
-        padding-top: 0rem;
-        gap: 1.6rem;
+        @include mobile {
+            padding: 0;
+        }
     }
 }

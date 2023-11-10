@@ -9,25 +9,30 @@ import { CFD_PLATFORMS, MARKET_TYPE, CATEGORY, JURISDICTION, REGION, MARKET_TYPE
 // Map the accounts according to the market type
 const getHighlightedIconLabel = (
     trading_platforms: TModifiedTradingPlatformAvailableAccount,
-    selected_region?: string,
-    is_demo?: boolean
+    selected_region?: string
 ): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
     const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
-    const forex_label =
-        selected_region === REGION.EU
-            ? localize('Forex')
-            : market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN
-            ? localize('Forex: standard/exotic')
-            : (trading_platforms.platform === CFD_PLATFORMS.MT5 && market_type_shortcode === 'all_svg') ||
-              trading_platforms.platform === CFD_PLATFORMS.CTRADER
-            ? localize('Forex: major/minor')
-            : localize('Forex: standard/micro');
+
+    const getForexLabel = () => {
+        if (selected_region === REGION.EU) {
+            return localize('Forex');
+        } else if (market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
+            return localize('Forex: standard/exotic');
+        } else if (
+            (trading_platforms.platform === CFD_PLATFORMS.MT5 &&
+                market_type_shortcode === MARKET_TYPE_SHORTCODE.ALL_SVG) ||
+            trading_platforms.platform === CFD_PLATFORMS.CTRADER
+        ) {
+            return localize('Forex: major/minor');
+        }
+        return localize('Forex: standard/micro');
+    };
 
     switch (trading_platforms.market_type) {
         case MARKET_TYPE.GAMING:
             return [
-                { icon: 'Forex', text: forex_label, highlighted: false },
+                { icon: 'Forex', text: getForexLabel(), highlighted: false },
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
                 { icon: 'StockIndices', text: localize('Stock indices'), highlighted: false },
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
@@ -41,7 +46,7 @@ const getHighlightedIconLabel = (
             switch (trading_platforms.shortcode) {
                 case JURISDICTION.MALTA_INVEST:
                     return [
-                        { icon: 'Forex', text: forex_label, highlighted: true },
+                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
                         { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                         { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
@@ -55,7 +60,7 @@ const getHighlightedIconLabel = (
                     ];
                 case JURISDICTION.LABUAN:
                     return [
-                        { icon: 'Forex', text: forex_label, highlighted: true },
+                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
                         { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
                         { icon: 'StockIndices', text: localize('Stock indices'), highlighted: false },
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
@@ -67,7 +72,7 @@ const getHighlightedIconLabel = (
                     ];
                 default:
                     return [
-                        { icon: 'Forex', text: forex_label, highlighted: true },
+                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
                         { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                         { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
@@ -82,7 +87,7 @@ const getHighlightedIconLabel = (
         default:
             if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
                 return [
-                    { icon: 'Forex', text: forex_label, highlighted: true },
+                    { icon: 'Forex', text: getForexLabel(), highlighted: true },
                     { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                     { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                     { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
@@ -94,7 +99,7 @@ const getHighlightedIconLabel = (
                 ];
             }
             return [
-                { icon: 'Forex', text: forex_label, highlighted: true },
+                { icon: 'Forex', text: getForexLabel(), highlighted: true },
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                 { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: true },

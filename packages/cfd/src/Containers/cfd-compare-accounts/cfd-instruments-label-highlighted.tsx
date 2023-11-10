@@ -4,11 +4,11 @@ import { TInstrumentsIcon, TCompareAccountsCard } from 'Components/props.types';
 import { getHighlightedIconLabel } from '../../Helpers/compare-accounts-config';
 import { useStore } from '@deriv/stores';
 
-const CFDInstrumentsLabelHighlighted = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
+const CFDInstrumentsLabelHighlighted = ({ trading_platforms }: TCompareAccountsCard) => {
     const { traders_hub } = useStore();
     const selected_region = traders_hub.selected_region;
 
-    const iconData: TInstrumentsIcon[] = [...getHighlightedIconLabel(trading_platforms, selected_region, is_demo)];
+    const iconData: TInstrumentsIcon[] = [...getHighlightedIconLabel(trading_platforms, selected_region)];
 
     return (
         <div className={'compare-cfd-account-outline'} data-testid='dt_compare_cfd_account_outline__container'>

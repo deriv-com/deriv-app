@@ -45,23 +45,28 @@ const useAvailableWallets = () => {
     const sorted_available_wallets = useMemo(() => {
         if (!modified_available_wallets) return;
 
-        // Sort the non-added wallets alphabetically by fiat, crypto, then virtual
+        // Sort wallets by non-added wallets then added wallets
         modified_available_wallets.sort((a, b) => {
-            if (a.is_crypto !== b.is_crypto) return a.currency ? 1 : -1;
+            if (a.is_added !== b.is_added) return a.is_added ? 1 : -1;
+
+            return 0;
+        });
+
+        // Sort the added wallets alphabetically by fiat, crypto, then virtual (if any)
+        modified_available_wallets.sort((a, b) => {
+            if (!a.is_added || !b.is_added) return 0;
+            if (a.is_crypto !== b.is_crypto) return a.is_crypto ? 1 : -1;
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
 
-        // Sort the added wallets alphabetically by fiat, crypto, then virtual (if any)
-        if (Array.isArray(modified_available_wallets)) {
-            modified_available_wallets?.sort((a, b) => {
-                const a_config = a.is_crypto;
-                const b_config = b.is_crypto;
-                if (a_config !== b_config) return a_config ? 1 : -1;
+        // Sort the non-added wallets alphabetically by fiat, crypto, then virtual (if any)
+        modified_available_wallets.sort((a, b) => {
+            if (a.is_added || b.is_added) return 0;
+            if (a.is_crypto !== b.is_crypto) return a.is_crypto ? 1 : -1;
 
-                return (a.currency || 'USD').localeCompare(b.currency || 'USD');
-            });
-        }
+            return (a.currency || 'USD').localeCompare(b.currency || 'USD');
+        });
 
         return [...modified_available_wallets];
     }, [modified_available_wallets]);

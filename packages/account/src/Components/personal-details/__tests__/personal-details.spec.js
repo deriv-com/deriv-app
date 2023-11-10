@@ -7,8 +7,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from 'Helpers/utils';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
+import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 

@@ -19,6 +19,20 @@ import { generateEffectiveRate } from 'Utils/format-value';
 import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert }) => {
+    const {
+        account_currency,
+        advertiser_details,
+        counterparty_type,
+        effective_rate,
+        local_currency,
+        max_order_amount_limit_display,
+        min_order_amount_limit_display,
+        payment_method_names,
+        price_display,
+        rate_type,
+        rate,
+    } = advert;
+
     const { buy_sell_store, general_store } = useStores();
     const {
         client: { currency },
@@ -43,20 +57,6 @@ const BuySellRow = ({ row: advert }) => {
             </div>
         );
     }
-
-    const {
-        account_currency,
-        advertiser_details,
-        counterparty_type,
-        effective_rate,
-        local_currency,
-        max_order_amount_limit_display,
-        min_order_amount_limit_display,
-        payment_method_names,
-        price_display,
-        rate_type,
-        rate,
-    } = advert;
 
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;

@@ -4,8 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useCurrentAccountDetails } from '@deriv/hooks';
 import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
-import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
+import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),

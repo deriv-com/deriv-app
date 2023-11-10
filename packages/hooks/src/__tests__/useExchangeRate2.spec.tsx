@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useExchangeRate from '../useExchangeRate2';
-import ExchangeRatesProvider from '../Context/global-context';
 
 describe('useExchangeRate', () => {
     test('should return undefined if currency is not found', async () => {

@@ -1,10 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import PercentageSelector from '../percentage-selector';
-import { mockStore } from '@deriv/stores';
+import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 import CryptoFiatConverter from '../../crypto-fiat-converter';
-import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
 
 describe('<PercentageSelector />', () => {
     const getCalculatedAmount = jest.fn();

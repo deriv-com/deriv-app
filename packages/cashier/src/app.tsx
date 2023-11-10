@@ -1,7 +1,7 @@
 import React from 'react';
 import AppContent from './app-content';
 import CashierProviders from './cashier-providers';
-import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
+import { ExchangeRatesProvider } from '@deriv/stores';
 
 type TProps = { passthrough: { root_store: React.ComponentProps<typeof CashierProviders>['store'] } };
 

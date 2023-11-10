@@ -18,5 +18,5 @@
         "baseUrl": "./",
         "experimentalDecorators": true
     },
-    "include": ["src", "../hooks/src/Context"]
+    "include": ["src"]
 }

@@ -9,7 +9,7 @@ import {
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
@@ -21,7 +21,6 @@ import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
 import 'Sass/app.scss';
 import { Analytics } from '@deriv/analytics';
-import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
 import initHotjar from '../Utils/Hotjar';
 
 const AppWithoutTranslation = ({ root_store }) => {

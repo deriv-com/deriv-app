@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ExchangeRatesContext } from './Context/global-context';
+import { ExchangeRatesContext } from '@deriv/stores';
 
 export const useExchangeRate2 = () => {
     const context = useContext(ExchangeRatesContext);

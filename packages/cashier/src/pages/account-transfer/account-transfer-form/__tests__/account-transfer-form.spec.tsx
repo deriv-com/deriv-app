@@ -3,9 +3,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
 import { TError } from '../../../../types';
-import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),

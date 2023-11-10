@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useTotalAccountBalance from '../useTotalAccountBalance2';
-import ExchangeRatesProvider from '../Context/global-context';
 
 describe('useTotalAccountBalance', () => {
     test('should return zero when user has no account', async () => {

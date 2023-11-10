@@ -1,9 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
 import { APIProvider /*useFetch*/ } from '@deriv/api';
 import MainTitleBar from '..';
-import ExchangeRatesProvider from '@deriv/hooks/src/Context/global-context';
 
 //TODO: Uncomment once useWalletMigration hook is optimized for production release.
 // jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));

@@ -1,0 +1,67 @@
+.wallets-crypto-transaction {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    &__type-and-status {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    &__amount-and-date {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0.4rem 0;
+    }
+
+    &__status {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+
+        &__dot {
+            width: 0.4rem;
+            height: 0.4rem;
+            border-radius: 0.2rem;
+
+            &--pending,
+            &--locked,
+            &--performing-blockchain-txn,
+            &--processing,
+            &--reverting,
+            &--verified {
+                background: var(--status-warning, #ffad3a);
+            }
+
+            &--confirmed,
+            &--sent {
+                background: var(--status-success, #4bb4b3);
+            }
+
+            &--error,
+            &--cancelled,
+            &--rejected,
+            &--reverted {
+                background: var(--status-danger, #ec3f3f);
+            }
+        }
+    }
+
+    &__cancel-button {
+        margin-left: 0.3rem;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+    }
+
+    &__red-text {
+        color: var(--brand-coral, #ff444f);
+        text-decoration: none;
+    }
+}

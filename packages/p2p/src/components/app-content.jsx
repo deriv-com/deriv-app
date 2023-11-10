@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import classNames from 'classnames';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
@@ -35,11 +34,13 @@ const AppContent = ({ order_id }) => {
     };
 
     React.useEffect(() => {
-        const time_lapsed = getHoursDifference(localStorage.getItem(`p2p_${loginid}_disclaimer_shown`));
-        if (time_lapsed === undefined || time_lapsed > 24) {
-            showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
-        } else {
-            handleDisclaimerTimeout(time_lapsed);
+        if(!general_store.should_show_dp2p_blocked){
+            const time_lapsed = getHoursDifference(localStorage.getItem(`p2p_${loginid}_disclaimer_shown`));
+            if (time_lapsed === undefined || time_lapsed > 24) {
+                showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
+            } else {
+                handleDisclaimerTimeout(time_lapsed);
+            }
         }
 
         return () => {
@@ -85,7 +86,6 @@ const AppContent = ({ order_id }) => {
     return (
         <Tabs
             active_index={general_store.active_index}
-            className={classNames({ p2p__tabs: general_store.active_index === 0 && isMobile() })}
             header_fit_content={!isMobile()}
             is_100vw={isMobile()}
             is_scrollable

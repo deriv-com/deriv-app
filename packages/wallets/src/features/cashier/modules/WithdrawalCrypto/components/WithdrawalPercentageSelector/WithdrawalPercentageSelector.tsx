@@ -6,6 +6,7 @@ import './WithdrawalPercentageSelector.scss';
 type TProps = {
     balance: number;
     message?: string;
+    onPercentageChange: () => void;
     percentageBlockCount?: number;
 };
 

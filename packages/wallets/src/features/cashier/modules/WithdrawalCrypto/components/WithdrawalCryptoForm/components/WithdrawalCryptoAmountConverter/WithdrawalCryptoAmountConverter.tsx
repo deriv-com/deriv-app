@@ -13,15 +13,16 @@ const helperMessageMapper = {
     withdrawalLimit: (min: number, max: number, currency: string) => {
         return `The current allowed withdraw amount is ${min} to ${max} BTC ${currency}.`;
     },
+    decimalPlacesExceeded: (limit: number) => `Up to ${limit} decimal places are allowed.`,
 };
 
 const WithdrawalCryptoAmountConverter = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
-    const { getConfig } = useCurrencyConfig();
+    const { data: currencyConfig, getConfig } = useCurrencyConfig();
     const [isCryptoInputActive, SetIsCryptoInputActive] = useState(false);
     const { errors, setValues, values } = useFormikContext<TForm>();
-    const FRACTIONAL_DIGITS_CRYPTO = getConfig(activeWallet?.currency)?.fractional_digits;
+    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency ? getConfig(activeWallet?.currency)?.fractional_digits : 2;
     const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
 
     useEffect(() => {
@@ -34,13 +35,18 @@ const WithdrawalCryptoAmountConverter = () => {
         return () => unsubscribe();
     }, []);
 
-    const validateCryptoInput = (value: string, balance: number) => {
+    const validateCryptoInput = (value: string) => {
         if (!value.length) return undefined;
 
-        if (Number.isNaN(parseFloat(value))) return helperMessageMapper.invalidInput;
+        const amount = parseFloat(value);
 
-        if (activeWallet?.balance && parseFloat(value) > activeWallet?.balance)
-            return helperMessageMapper.insufficientFunds;
+        if (Number.isNaN(amount)) return helperMessageMapper.invalidInput;
+
+        if (activeWallet?.balance && amount > activeWallet?.balance) return helperMessageMapper.insufficientFunds;
+
+        const fractionalPart = value.split('.');
+        if (FRACTIONAL_DIGITS_CRYPTO && fractionalPart && fractionalPart[1].length > FRACTIONAL_DIGITS_CRYPTO)
+            return helperMessageMapper.decimalPlacesExceeded(FRACTIONAL_DIGITS_CRYPTO);
 
         return undefined;
     };
@@ -49,6 +55,10 @@ const WithdrawalCryptoAmountConverter = () => {
         if (!value.length) return undefined;
 
         if (Number.isNaN(parseFloat(value))) return helperMessageMapper.invalidInput;
+
+        const fractionalPart = value.split('.');
+        if (FRACTIONAL_DIGITS_FIAT && fractionalPart && fractionalPart[1].length > FRACTIONAL_DIGITS_FIAT)
+            return helperMessageMapper.decimalPlacesExceeded(FRACTIONAL_DIGITS_FIAT);
 
         return undefined;
     };
@@ -64,7 +74,10 @@ const WithdrawalCryptoAmountConverter = () => {
                         onChange={e => {
                             const value = parseFloat(e.target.value);
                             const convertedValue =
-                                !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
+                                !Number.isNaN(value) &&
+                                exchangeRate?.rates &&
+                                activeWallet?.currency &&
+                                !errors.cryptoAmount
                                     ? (value / exchangeRate?.rates[activeWallet?.currency]).toFixed(
                                           FRACTIONAL_DIGITS_FIAT
                                       )
@@ -96,7 +109,10 @@ const WithdrawalCryptoAmountConverter = () => {
                         onChange={e => {
                             const value = parseFloat(e.target.value);
                             const convertedValue =
-                                !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
+                                !Number.isNaN(value) &&
+                                exchangeRate?.rates &&
+                                activeWallet?.currency &&
+                                !errors.fiatAmount
                                     ? (value * exchangeRate?.rates[activeWallet?.currency]).toFixed(
                                           FRACTIONAL_DIGITS_CRYPTO
                                       )

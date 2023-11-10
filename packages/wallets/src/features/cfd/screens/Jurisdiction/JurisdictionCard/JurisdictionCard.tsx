@@ -105,8 +105,12 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                                             <div className='wallets-jurisdiction-card-front__tag-icons'>
                                                 {!(marketType in verificationDocs)
                                                     ? verificationIconsMapper.notApplicable
-                                                    : verificationDocs[marketType]?.map(doc => {
-                                                          return verificationIconsMapper[doc];
+                                                    : verificationDocs[marketType]?.map((doc, index) => {
+                                                          return (
+                                                              <div key={`verification-doc-${index}`}>
+                                                                  {verificationIconsMapper[doc]}
+                                                              </div>
+                                                          );
                                                       })}
                                             </div>
                                         );

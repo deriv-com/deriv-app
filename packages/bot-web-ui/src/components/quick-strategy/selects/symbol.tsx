@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { ApiHelpers } from '@deriv/bot-skeleton';
@@ -43,7 +43,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const [input_value, setInputValue] = useState('');
     const { setFieldValue, values } = useFormikContext<TFormData>();
 
-    React.useEffect(() => {
+    useEffect(() => {
         const { active_symbols } = ApiHelpers.instance;
         const symbols = active_symbols.getSymbolsForBot();
 
@@ -59,7 +59,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const symbols = React.useMemo(
+    const symbols = useMemo(
         () =>
             active_symbols.map((symbol: TSymbol) => ({
                 component: <MarketOption key={symbol.text} symbol={symbol} />,
@@ -68,7 +68,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
         [active_symbols]
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
         const selected_symbol = symbols.find(symbol => symbol.value === values.symbol);
         if (selected_symbol) {
             setInputValue(selected_symbol.text);

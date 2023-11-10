@@ -91,14 +91,14 @@ describe('<SymbolSelect />', () => {
             </StoreProvider>
         );
     });
-    it('Should render SymbolSelect', () => {
+    it('should render SymbolSelect', () => {
         const { container } = render(<SymbolSelect key={1} />, {
             wrapper,
         });
         expect(container).toBeInTheDocument();
     });
 
-    it('Should select item from the list', async () => {
+    it('should select item from the list', async () => {
         render(<SymbolSelect key='RDBULL' />, {
             wrapper,
         });
@@ -112,7 +112,7 @@ describe('<SymbolSelect />', () => {
         expect(autocomplete_element).toHaveDisplayValue([/Bear Market Index/i]);
     });
 
-    it('Should input to be empty when the user clicks to type something', () => {
+    it('should input to be empty when the user clicks to type something', () => {
         mockStore({ ui: { is_mobile: false, is_desktop: true } });
         render(<SymbolSelect />, {
             wrapper,

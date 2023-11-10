@@ -580,6 +580,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         is_dxtrade_allowed,
         mt5_login_list,
         updateAccountStatus,
+        updateMT5Status,
     } = client;
     const { show_eu_related_content } = traders_hub;
     const { is_mobile, is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled } = ui;
@@ -682,6 +683,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const closeModal = () => {
+        updateMT5Status();
         closeDialogs();
         disableCFDPasswordModal();
     };

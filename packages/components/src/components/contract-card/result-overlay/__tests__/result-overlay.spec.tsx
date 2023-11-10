@@ -2,13 +2,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ResultOverlay from '../result-overlay';
 
-const closed = 'Closed';
 const default_mocked_props = {
     currency: 'USD',
     contract_id: 1987232323,
     getCardLabels: () => {
         return {
-            CLOSED: closed,
+            CLOSED: 'Closed',
         };
     },
     getContractPath: jest.fn(),
@@ -33,14 +32,14 @@ describe('<ResultOverlay/>', () => {
     it('should render component with plus inside if payout_info is positive', () => {
         render(<ResultOverlay {...default_mocked_props} />);
 
-        expect(screen.getByText(closed)).toBeInTheDocument();
+        expect(screen.getByText(default_mocked_props.getCardLabels().CLOSED)).toBeInTheDocument();
         expect(screen.getByText('+')).toBeInTheDocument();
         expect(screen.getByText('4.05 USD')).toBeInTheDocument();
     });
     it('should render component with minus inside if payout_info is negative', () => {
         render(<ResultOverlay {...default_mocked_props} payout_info={-6} />);
 
-        expect(screen.getByText(closed)).toBeInTheDocument();
+        expect(screen.getByText(default_mocked_props.getCardLabels().CLOSED)).toBeInTheDocument();
         expect(screen.getByText('-')).toBeInTheDocument();
         expect(screen.getByText('6.00 USD')).toBeInTheDocument();
     });

@@ -145,7 +145,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             />
             <PageOverlay
                 id='dt_contract_replay_container'
-                header={<Localize i18n_default_text='details' />}
+                header={<Localize i18n_default_text='Contract details' />}
                 onClickClose={onClickClose}
             >
                 <Div100vhContainer

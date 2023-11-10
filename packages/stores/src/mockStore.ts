@@ -278,6 +278,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             init: jest.fn(),
             setLoginId: jest.fn(),
             resetLocalStorageValues: jest.fn(),
+            setIsAlreadyAttempted: jest.fn(),
+            is_already_attempted: false,
             account_open_date: undefined,
         },
         common: {
@@ -307,11 +309,14 @@ const mock = (): TStores & { is_mock: boolean } => {
         },
         ui: {
             advanced_duration_unit: 't',
+            advanced_expiry_type: 'duration',
             account_switcher_disabled_message: '',
             app_contents_scroll_ref: {
                 current: null,
             },
             current_focus: null,
+            duration_t: 5,
+            getDurationFromUnit: jest.fn(),
             is_account_settings_visible: false,
             is_advanced_duration: false,
             is_loading: false,
@@ -410,6 +415,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             vanilla_trade_type: 'VANILLALONGCALL',
             is_chart_countdown_visible: false,
             is_additional_kyc_info_modal_open: false,
+            simple_duration_unit: 't',
             toggleAdditionalKycInfoModal: jest.fn(),
             is_kyc_information_submitted_modal_open: false,
             toggleKycInformationSubmittedModal: jest.fn(),

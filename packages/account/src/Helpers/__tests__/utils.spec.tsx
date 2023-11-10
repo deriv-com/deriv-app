@@ -39,12 +39,20 @@ describe('generatePlaceholderText', () => {
 });
 
 describe('documentAdditionalError', () => {
+    const config = {
+        format: /^[a-z]+$/,
+        display_name: 'additional doc number',
+    };
     it('should set the correct additional document error when format is incorrect', () => {
-        expect(documentAdditionalError('testdoc', '/[a-z]/')).toEqual('Please enter the correct format. ');
+        expect(documentAdditionalError('test1doc', config)).toEqual('Please enter the correct format. ');
     });
 
     it('should set the correct additional document error when value is not provided', () => {
-        expect(documentAdditionalError('', '/[a-z]+/')).toEqual('Please enter your document number. ');
+        expect(documentAdditionalError('', config)).toEqual('Please enter your additional doc number. ');
+    });
+
+    it('should return no error when input matches the config', () => {
+        expect(documentAdditionalError('testdoc', config)).toBeNull();
     });
 });
 

@@ -65,6 +65,7 @@ const WalletMobileTourGuide = ({ cfdRef, optionsRef }: TProps) => {
             }
         };
 
+        // switch tab to Options & Multipliers after step #4
         if (index >= 4) switchTab(1);
         else switchTab(0);
 

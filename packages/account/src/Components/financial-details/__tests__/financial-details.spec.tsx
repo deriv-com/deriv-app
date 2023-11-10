@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormikValues } from 'formik';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { EMPLOYMENT_VALUES, isDesktop, isMobile } from '@deriv/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FinancialDetails from '../financial-details';
@@ -189,5 +189,25 @@ describe('<FinancialDetails />', () => {
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalled();
         });
+    });
+
+    it('should not show Occupation field if employment status is "Unemployed"', async () => {
+        const new_mock_props = {
+            ...mock_props,
+            employment_status: EMPLOYMENT_VALUES.UNEMPLOYED,
+        };
+        render(<FinancialDetails {...new_mock_props} />);
+
+        expect(screen.queryByText('Occupation')).not.toBeInTheDocument();
+    });
+
+    it('should not show Occupation field if employment status is "Self employed"', async () => {
+        const new_mock_props = {
+            ...mock_props,
+            employment_status: EMPLOYMENT_VALUES.SELF_EMPLOYED,
+        };
+        render(<FinancialDetails {...new_mock_props} />);
+
+        expect(screen.queryByText('Occupation')).not.toBeInTheDocument();
     });
 });

@@ -1,5 +1,5 @@
-import { Field, FormikValues, useFormikContext } from 'formik';
 import React from 'react';
+import { Field, FormikValues, useFormikContext } from 'formik';
 import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
 import { EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv/shared';
 import { localize } from '@deriv/translations';

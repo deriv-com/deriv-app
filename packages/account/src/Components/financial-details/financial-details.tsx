@@ -1,6 +1,6 @@
+import React from 'react';
 import classNames from 'classnames';
 import { Formik } from 'formik';
-import React from 'react';
 import {
     AutoHeightWrapper,
     Div100vhContainer,
@@ -11,35 +11,25 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile, EMPLOYMENT_VALUES } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { TFinancialInformationForm } from 'Types';
 import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
-
-type TFinancialDetailsFormValues = {
-    income_source: string;
-    employment_industry: string;
-    occupation: string;
-    source_of_wealth: string;
-    education_level: string;
-    net_income: string;
-    estimated_worth: string;
-    account_turnover: string;
-};
 
 type TFinancialDetails = {
     goToPreviousStep: () => void;
     goToNextStep: () => void;
     getCurrentStep: () => number;
-    onSave: (current_step: number, values: TFinancialDetailsFormValues) => void;
+    onSave: (current_step: number, values: TFinancialInformationForm) => void;
     onSubmit: (
         current_step: number,
-        values: TFinancialDetailsFormValues,
+        values: TFinancialInformationForm,
         actions: (isSubmitting: boolean) => void,
         props: () => void
     ) => void;
     onCancel: (current_step: number, props: () => void) => void;
-    validate: (values: TFinancialDetailsFormValues) => object;
-    value: TFinancialDetailsFormValues;
+    validate: (values: TFinancialInformationForm) => object;
+    value: TFinancialInformationForm;
     employment_status: string;
 };
 
@@ -50,13 +40,13 @@ type TFinancialDetails = {
  * @returns {React.ReactNode} React component that renders FinancialDetails form.
  */
 const FinancialDetails = (props: TFinancialDetails) => {
-    const handleCancel = (values: TFinancialDetailsFormValues) => {
+    const handleCancel = (values: TFinancialInformationForm) => {
         const current_step = props.getCurrentStep() - 1;
         props.onSave(current_step, values);
         props.onCancel(current_step, props.goToPreviousStep);
     };
 
-    const handleValidate = (values: TFinancialDetailsFormValues) => {
+    const handleValidate = (values: TFinancialInformationForm) => {
         const { errors } = splitValidationResultTypes(props.validate(values));
         return errors;
     };

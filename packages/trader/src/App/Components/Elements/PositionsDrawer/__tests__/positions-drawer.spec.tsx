@@ -125,12 +125,12 @@ describe('<PositionsDrawer />', () => {
 
         expect(screen.getAllByText(position_drawer_card)).toHaveLength(2);
     });
-    it('should call onHoverPosition if user hover on position drawer card and should call it twice if he unhover it', async () => {
+    it('should call onHoverPosition if user hover on position drawer card and should call it twice if he unhover it', () => {
         render(mockPositionsDrawer(mockStore(mocked_store)));
 
         userEvent.hover(screen.getAllByText(position_drawer_card)[0]);
         userEvent.unhover(screen.getAllByText(position_drawer_card)[0]);
 
-        await (() => expect(mocked_store.portfolio.onHoverPosition).toBeCalledTimes(2));
+        expect(mocked_store.portfolio.onHoverPosition).toBeCalledTimes(2);
     });
 });

@@ -163,7 +163,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         title: localize('Accumulators'),
         trade_types: [CONTRACT_TYPES.ACCUMULATOR],
         basis: ['stake'],
-        components: ['take_profit', TRADE_TYPES.ACCUMULATOR, 'accu_info_display'],
+        components: ['take_profit', 'accumulator', 'accu_info_display'],
         barrier_count: 2,
         config: { hide_duration: true },
     },

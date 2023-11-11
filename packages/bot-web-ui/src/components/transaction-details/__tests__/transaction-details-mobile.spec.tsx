@@ -72,7 +72,7 @@ const mock_ws = {
     activeSymbols: jest.fn(),
     send: jest.fn(),
 };
-jest.mock('@deriv/deriv-charts-beta', () => ({
+jest.mock('@deriv/deriv-charts', () => ({
     setSmartChartsPublicPath: jest.fn(),
 }));
 

@@ -1,6 +1,6 @@
 {
     "name": "@deriv/core",
-    "version": "0.1.0",
+    "version": "0.1.0-beta",
     "description": "Deriv Core",
     "main": "index.js",
     "private": true,
@@ -98,7 +98,7 @@
         "@deriv/cfd": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.13",
-        "@deriv/deriv-charts-beta": "npm:@deriv/deriv-charts@^2.0.0-beta.14",
+        "@deriv/deriv-charts": "2.0.0-beta.14",
         "@deriv/hooks": "^1.0.0",
         "@deriv/p2p": "^0.7.3",
         "@deriv/reports": "^1.0.0",

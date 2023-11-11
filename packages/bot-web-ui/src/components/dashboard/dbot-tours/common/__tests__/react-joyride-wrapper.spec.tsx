@@ -16,7 +16,7 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
 }));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 jest.mock('react-joyride', () => jest.fn(() => <div>ReactJoyride</div>));
-jest.mock('@deriv/deriv-charts-beta', () => ({
+jest.mock('@deriv/deriv-charts', () => ({
     setSmartChartsPublicPath: jest.fn(),
 }));
 

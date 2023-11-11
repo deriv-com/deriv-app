@@ -20,19 +20,19 @@ const copyConfig = base => {
             to: 'bot/js/',
         },
         {
-            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist'),
             to: 'js/smartchartsbeta/',
         },
         {
-            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/chart/assets'),
             to: 'assets',
         },
         {
-            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/chart/assets'),
             to: 'contract/assets',
         },
         {
-            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/chart/assets'),
             to: 'bot/assets',
         },
         {

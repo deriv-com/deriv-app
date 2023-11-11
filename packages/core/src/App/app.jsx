@@ -43,7 +43,7 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     React.useEffect(() => {
         const loadSmartchartsStyles = () => {
-            import('@deriv/deriv-charts-beta/dist/smartcharts.css');
+            import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
         initializeTranslations();

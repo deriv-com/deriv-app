@@ -14,7 +14,7 @@ const default_mock_store = {
             basis: 'stake',
             basis_list: [{ text: 'Stake', value: 'stake' }],
             contract_start_type: 'spot',
-            contract_type: TRADE_TYPES.TURBOS.LONG as string,
+            contract_type: TRADE_TYPES.TURBOS.LONG,
             contract_types_list: {} as ReturnType<typeof useTraderStore>['contract_types_list'],
             duration_unit: 'm',
             expiry_type: 'endtime',

@@ -11,7 +11,7 @@ describe('Trade Type Tabs', () => {
     const mock_root_store = {
         modules: {
             trade: {
-                contract_type: TRADE_TYPES.TURBOS.LONG as string,
+                contract_type: TRADE_TYPES.TURBOS.LONG,
                 onChange: jest.fn(() => {
                     if (mock_root_store.modules) {
                         mock_root_store.modules.trade.contract_type = TRADE_TYPES.TURBOS.SHORT;

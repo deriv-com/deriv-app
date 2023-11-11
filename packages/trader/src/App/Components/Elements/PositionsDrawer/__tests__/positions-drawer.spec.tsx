@@ -50,14 +50,14 @@ describe('<PositionsDrawer />', () => {
         );
     };
 
-    it('should render Recent positions with empty portfolio message if there is no positions', () => {
+    it('should render Recent positions with empty portfolio message if there is no open positions', () => {
         render(mockPositionsDrawer(mockStore(mocked_store)));
 
         expect(screen.getByText('Recent positions')).toBeInTheDocument();
         expect(screen.getByText(empty_portfolio_message)).toBeInTheDocument();
         expect(screen.getByText('Go to Reports')).toBeInTheDocument();
     });
-    it('should render Recent positions with empty portfolio message if there is an error in portfolio', () => {
+    it('should render Recent positions with empty portfolio message if there is an error in portfolio even though there is match in open position', () => {
         mocked_store.portfolio.error = 'Some error';
         mocked_store.portfolio.all_positions = [
             {
@@ -81,7 +81,7 @@ describe('<PositionsDrawer />', () => {
         expect(screen.queryByText(empty_portfolio_message)).not.toBeInTheDocument();
         expect(screen.getByText(position_drawer_card)).toBeInTheDocument();
     });
-    it('should render both PositionsDrawerCard if for Turbos Long and Short', () => {
+    it('should render both PositionsDrawerCard for Turbos Long and Short', () => {
         mocked_store.modules.trade.contract_type = TURBOS.LONG;
         mocked_store.portfolio.all_positions = [
             {
@@ -103,7 +103,7 @@ describe('<PositionsDrawer />', () => {
 
         expect(screen.getAllByText(position_drawer_card)).toHaveLength(2);
     });
-    it('should render both PositionsDrawerCard if for Vanilla Call and Put', () => {
+    it('should render both PositionsDrawerCard for Vanilla Call and Put', () => {
         mocked_store.modules.trade.contract_type = VANILLALONG.CALL;
         mocked_store.portfolio.all_positions = [
             {

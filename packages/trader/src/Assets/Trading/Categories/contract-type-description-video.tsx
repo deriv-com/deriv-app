@@ -17,11 +17,22 @@ const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: T
     return (
         <div className='contract-type-info__video' data-testid={data_testid}>
             {/* In order to create a custom player later, please install @cloudflare/stream-react,
-                and use the official Stream component instead of the temporary VideoStream.
+                use the official Stream component, and remove the temporary VideoStream.
                 Official Stream component methods can be used via its streamRef prop, e.g.:
                     const ref = React.useRef<StreamPlayerApi>();
-                    <Stream streamRef={ref} ... />
-                    ref.current.play()
+                    // Call ref.current.play() or other methods when needed
+                    <Stream
+                        autoplay
+                        controls
+                        height={is_mobile ? '184.5px' : '270px'} // applied to iframe
+                        letterboxColor='transparent' // unsets the default black background of the iframe
+                        loop
+                        preload='auto'
+                        responsive={false} // unsets default styles of the iframe
+                        src={getDescriptionVideoId(selected_contract_type, is_dark_theme)}
+                        streamRef={ref}
+                        width='100%' // applied to iframe
+                    />                    
                 More: https://www.npmjs.com/package/@cloudflare/stream-react
                 API: https://developers.cloudflare.com/stream/viewing-videos/using-the-stream-player/using-the-player-api/
                 Please use getDescriptionDownloadUrl helper in order to add a Download feature. */}

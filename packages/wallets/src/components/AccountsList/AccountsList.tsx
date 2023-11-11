@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
 import { TabList, TabPanel, TabPanels, Tabs } from '../Base';
@@ -8,8 +8,8 @@ import './AccountsList.scss';
 
 const AccountsList = () => {
     const { isMobile } = useDevice();
-    const cfdRef = useRef<HTMLDivElement>(null);
-    const optionsRef = useRef<HTMLDivElement>(null);
+    const [isMT5PlatformListLoaded, setIsMT5PlatformListLoaded] = useState(false);
+    const [isOptionsAndMultipliersLoaded, setIsOptionsAndMultipliersLoaded] = useState(false);
 
     if (isMobile) {
         return (
@@ -18,13 +18,18 @@ const AccountsList = () => {
                 <TabList list={['CFDs', 'Options & multipliers']} />
                 <TabPanels>
                     <TabPanel>
-                        <CFDPlatformsList ref={cfdRef} />
+                        <CFDPlatformsList onMT5PlatformListLoaded={setIsMT5PlatformListLoaded} />
                     </TabPanel>
                     <TabPanel>
-                        <OptionsAndMultipliersListing ref={optionsRef} />
+                        <OptionsAndMultipliersListing
+                            onOptionsAndMultipliersLoaded={setIsOptionsAndMultipliersLoaded}
+                        />
                     </TabPanel>
                 </TabPanels>
-                <WalletMobileTourGuide cfdRef={cfdRef} optionsRef={optionsRef} />
+                <WalletMobileTourGuide
+                    isMT5PlatformListLoaded={isMT5PlatformListLoaded}
+                    isOptionsAndMultipliersLoaded={isOptionsAndMultipliersLoaded}
+                />
             </Tabs>
         );
     }

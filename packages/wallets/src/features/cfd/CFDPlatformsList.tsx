@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
@@ -6,7 +6,11 @@ import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from './components';
 import './CFDPlatformsList.scss';
 
-const CFDPlatformsList: React.FC<React.RefAttributes<HTMLDivElement>> = forwardRef((_, ref) => {
+type TProps = {
+    onMT5PlatformListLoaded?: (value: boolean) => void;
+};
+
+const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
 
@@ -36,15 +40,13 @@ const CFDPlatformsList: React.FC<React.RefAttributes<HTMLDivElement>> = forwardR
                 <CFDPlatformsListEmptyState />
             ) : (
                 <React.Fragment>
-                    <MT5PlatformsList ref={ref} />
+                    <MT5PlatformsList onMT5PlatformListLoaded={onMT5PlatformListLoaded} />
                     {activeWallet?.is_virtual && <CTraderList />}
                     <OtherCFDPlatformsList />
                 </React.Fragment>
             )}
         </div>
     );
-});
-
-CFDPlatformsList.displayName = 'CFDPlatformsList';
+};
 
 export default CFDPlatformsList;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-type TVideoStreamProps = React.ComponentProps<'iframe'> & {
+type TVideoStreamProps = Pick<React.ComponentProps<'iframe'>, 'height' | 'width'> & {
     ad_url?: string;
     allow_full_screen?: boolean;
     autoplay?: boolean;
@@ -55,16 +55,14 @@ const VideoStream = ({
 
     return (
         <iframe
-            {...props}
             allow={`accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture${
                 disable_picture_in_picture ? " 'none'" : ' *'
             };`}
             allowFullScreen={allow_full_screen}
             src={`https://iframe.cloudflarestream.com/${src}?${params}`}
+            {...props}
         />
     );
 };
-
-VideoStream.displayName = 'VideoStream';
 
 export default React.memo(VideoStream);

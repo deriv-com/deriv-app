@@ -446,114 +446,114 @@ export const getUnsupportedContracts = () =>
  */
 export const getSupportedContracts = (is_high_low?: boolean) =>
     ({
-        ACCU: {
+        [CONTRACT_TYPES.ACCUMULATOR]: {
             button_name: localize('Buy'),
             name: localize('Accumulators'),
             position: 'top',
         },
-        CALL: {
+        [CONTRACT_TYPES.RISE_FALL.CALL]: {
             name: is_high_low ? localize('Higher') : localize('Rise'),
             position: 'top',
         },
-        PUT: {
+        [CONTRACT_TYPES.RISE_FALL.PUT]: {
             name: is_high_low ? localize('Lower') : localize('Fall'),
             position: 'bottom',
         },
-        CALLE: {
+        [CONTRACT_TYPES.RISE_FALL_EQUAL.CALLE]: {
             name: localize('Rise'),
             position: 'top',
         },
-        PUTE: {
+        [CONTRACT_TYPES.RISE_FALL_EQUAL.PUTE]: {
             name: localize('Fall'),
             position: 'bottom',
         },
-        DIGITMATCH: {
+        [CONTRACT_TYPES.MATCH_DIFF.MATCH]: {
             name: localize('Matches'),
             position: 'top',
         },
-        DIGITDIFF: {
+        [CONTRACT_TYPES.MATCH_DIFF.DIFF]: {
             name: localize('Differs'),
             position: 'bottom',
         },
-        DIGITEVEN: {
+        [CONTRACT_TYPES.EVEN_ODD.EVEN]: {
             name: localize('Even'),
             position: 'top',
         },
-        DIGITODD: {
+        [CONTRACT_TYPES.EVEN_ODD.ODD]: {
             name: localize('Odd'),
             position: 'bottom',
         },
-        DIGITOVER: {
+        [CONTRACT_TYPES.OVER_UNDER.OVER]: {
             name: localize('Over'),
             position: 'top',
         },
-        DIGITUNDER: {
+        [CONTRACT_TYPES.OVER_UNDER.UNDER]: {
             name: localize('Under'),
             position: 'bottom',
         },
-        ONETOUCH: {
+        [CONTRACT_TYPES.TOUCH.ONE_TOUCH]: {
             name: localize('Touch'),
             position: 'top',
         },
-        NOTOUCH: {
+        [CONTRACT_TYPES.TOUCH.NO_TOUCH]: {
             name: localize('No Touch'),
             position: 'bottom',
         },
-        MULTUP: {
+        [CONTRACT_TYPES.MULTIPLIER.UP]: {
             name: localize('Up'),
             position: 'top',
         },
-        MULTDOWN: {
+        [CONTRACT_TYPES.MULTIPLIER.DOWN]: {
             name: localize('Down'),
             position: 'bottom',
         },
-        TURBOSLONG: {
+        [CONTRACT_TYPES.TURBOS.LONG]: {
             name: localize('Turbos'),
             button_name: localize('Long'),
             position: 'top',
         },
-        TURBOSSHORT: {
+        [CONTRACT_TYPES.TURBOS.SHORT]: {
             name: localize('Turbos'),
             button_name: localize('Short'),
             position: 'bottom',
         },
-        VANILLALONGCALL: {
+        [CONTRACT_TYPES.VANILLA.CALL]: {
             name: localize('Call'),
             position: 'top',
         },
-        VANILLALONGPUT: {
+        [CONTRACT_TYPES.VANILLA.PUT]: {
             name: localize('Put'),
             position: 'bottom',
         },
-        RUNHIGH: {
+        [CONTRACT_TYPES.RUN_HIGH_LOW.HIGH]: {
             name: localize('Only Ups'),
             position: 'top',
         },
-        RUNLOW: {
+        [CONTRACT_TYPES.RUN_HIGH_LOW.LOW]: {
             name: localize('Only Downs'),
             position: 'bottom',
         },
-        EXPIRYMISS: {
+        [CONTRACT_TYPES.END.OUT]: {
             name: localize('Ends Outside'),
             position: 'top',
         },
-        EXPIRYRANGE: {
+        [CONTRACT_TYPES.END.IN]: {
             name: localize('Ends Between'),
             position: 'bottom',
         },
-        RANGE: {
+        [CONTRACT_TYPES.STAY.IN]: {
             name: localize('Stays Between'),
             position: 'top',
         },
-        UPORDOWN: {
+        [CONTRACT_TYPES.STAY.OUT]: {
             name: localize('Goes Outside'),
             position: 'bottom',
         },
-        ASIANU: {
+        [CONTRACT_TYPES.ASIAN.UP]: {
             name: localize('Asian Up'),
             position: 'top',
         },
-        ASIAND: {
+        [CONTRACT_TYPES.ASIAN.DOWN]: {
             name: localize('Asian Down'),
             position: 'bottom',
         },

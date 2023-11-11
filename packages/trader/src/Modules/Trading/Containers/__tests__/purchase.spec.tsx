@@ -3,7 +3,6 @@ import React from 'react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
-
 import { render, screen } from '@testing-library/react';
 
 import TraderProviders from '../../../../trader-providers';

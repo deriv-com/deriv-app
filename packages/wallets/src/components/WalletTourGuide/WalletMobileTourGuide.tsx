@@ -51,7 +51,11 @@ const WalletMobileTourGuide = ({ isMT5PlatformListLoaded = true, isOptionsAndMul
         }
 
         // pause if target was not found
-        if (type === EVENTS.TARGET_NOT_FOUND) setRun(false);
+        if (type === EVENTS.TARGET_NOT_FOUND) {
+            // check for "Add more wallets" step
+            if (onboardingStep !== 6) setRun(false);
+            else setOnboardingStep(index + (action === ACTIONS.PREV ? -1 : 1));
+        }
 
         if (type === EVENTS.STEP_AFTER) {
             // Update step to advance the tour
@@ -92,6 +96,7 @@ const WalletMobileTourGuide = ({ isMT5PlatformListLoaded = true, isOptionsAndMul
     const hasMT5Account = Boolean(activeWallet?.linked_to?.some(account => account.platform === 'mt5'));
     const hasDerivAppsTradingAccount = Boolean(activeWallet?.dtrade_loginid);
     const isAllWalletsAlreadyAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));
+    // const isAllWalletsAlreadyAdded = true;
 
     if (!isMobile) return null;
 

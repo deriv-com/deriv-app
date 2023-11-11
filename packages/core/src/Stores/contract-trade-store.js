@@ -244,12 +244,7 @@ export default class ContractTradeStore extends BaseStore {
         const is_call_put = isCallPut(trade_type);
         if (is_call_put) {
             // treat CALLE/PUTE and CALL/PUT the same
-            trade_types = [
-                CONTRACT_TYPES.RISE_FALL_EQUAL.CALLE,
-                CONTRACT_TYPES.RISE_FALL_EQUAL.PUTE,
-                CONTRACT_TYPES.RISE_FALL.CALL,
-                CONTRACT_TYPES.RISE_FALL.PUT,
-            ];
+            trade_types = [CONTRACT_TYPES.CALLE, CONTRACT_TYPES.PUTE, CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT];
         } else if (isTurbosContract(trade_type)) {
             //to show both Long and Short recent contracts on DTrader chart
             trade_types = [CONTRACT_TYPES.TURBOS.LONG, CONTRACT_TYPES.TURBOS.SHORT];

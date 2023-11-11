@@ -58,12 +58,7 @@ export const filterByContractType = (
     const is_high_low = isHighLow({ shortcode });
     const is_vanilla = isVanillaContract(contract_type);
     const trade_types = is_call_put
-        ? [
-              CONTRACT_TYPES.RISE_FALL.CALL,
-              CONTRACT_TYPES.RISE_FALL_EQUAL.CALLE,
-              CONTRACT_TYPES.RISE_FALL.PUT,
-              CONTRACT_TYPES.RISE_FALL_EQUAL.PUTE,
-          ]
+        ? [CONTRACT_TYPES.CALL, CONTRACT_TYPES.CALLE, CONTRACT_TYPES.PUT, CONTRACT_TYPES.PUTE]
         : getContractTypesConfig()[trade_contract_type]?.trade_types;
     const match = trade_types?.includes(contract_type ?? '');
     if (trade_contract_type === TRADE_TYPES.HIGH_LOW) return is_high_low;

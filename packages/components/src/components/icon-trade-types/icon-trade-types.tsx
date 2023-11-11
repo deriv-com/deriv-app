@@ -16,10 +16,10 @@ const IconTradeTypes = ({ type, className, ...props }: TIconTradeTypes) => {
             return <Icon icon='IcTradetypeAsiand' className={className} color='brand' {...props} />;
         case CONTRACT_TYPES.ASIAN.UP:
             return <Icon icon='IcTradetypeAsianu' className={className} color='brand' {...props} />;
-        case 'CALL_BARRIER':
+        case CONTRACT_TYPES.CALL_BARRIER:
             return <Icon icon='IcTradetypeCallBarrier' className={className} color='brand' {...props} />;
-        case CONTRACT_TYPES.RISE_FALL_EQUAL.CALLE:
-        case CONTRACT_TYPES.RISE_FALL.CALL:
+        case CONTRACT_TYPES.CALLE:
+        case CONTRACT_TYPES.CALL:
             return <Icon icon='IcTradetypeCall' className={className} color='brand' {...props} />;
         case CONTRACT_TYPES.CALL_PUT_SPREAD.CALL:
             return <Icon icon='IcTradetypeCallspread' className={className} color='brand' {...props} />;
@@ -39,7 +39,7 @@ const IconTradeTypes = ({ type, className, ...props }: TIconTradeTypes) => {
             return <Icon icon='IcTradetypeDigitunder' className={className} color='brand' {...props} />;
         case CONTRACT_TYPES.END.OUT:
             return <Icon icon='IcTradetypeExpirymiss' className={className} color='brand' {...props} />;
-        case 'EXPIRYRANGEE':
+        case CONTRACT_TYPES.EXPIRYRANGEE:
         case CONTRACT_TYPES.END.IN:
             return <Icon icon='IcTradetypeExpiryrange' className={className} color='brand' {...props} />;
         case CONTRACT_TYPES.LB_CALL:
@@ -56,10 +56,10 @@ const IconTradeTypes = ({ type, className, ...props }: TIconTradeTypes) => {
             return <Icon icon='IcTradetypeNotouch' className={className} color='brand' {...props} />;
         case CONTRACT_TYPES.TOUCH.ONE_TOUCH:
             return <Icon icon='IcTradetypeOnetouch' className={className} color='brand' {...props} />;
-        case 'PUT_BARRIER':
+        case CONTRACT_TYPES.PUT_BARRIER:
             return <Icon icon='IcTradetypePutBarrier' className={className} color='brand' {...props} />;
-        case CONTRACT_TYPES.RISE_FALL_EQUAL.PUTE:
-        case CONTRACT_TYPES.RISE_FALL.PUT:
+        case CONTRACT_TYPES.PUTE:
+        case CONTRACT_TYPES.PUT:
             return <Icon icon='IcTradetypePut' className={className} color='brand' {...props} />;
         case CONTRACT_TYPES.STAY.IN:
             return <Icon icon='IcTradetypeRange' className={className} color='brand' {...props} />;

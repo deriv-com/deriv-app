@@ -200,7 +200,7 @@ describe('isTurbosContract', () => {
         expect(ContractUtils.isTurbosContract(CONTRACT_TYPES.TURBOS.LONG)).toEqual(true);
     });
     it('should return false if contract_type does not include TURBOS', () => {
-        expect(ContractUtils.isTurbosContract('CALL')).toEqual(false);
+        expect(ContractUtils.isTurbosContract(CONTRACT_TYPES.CALL)).toEqual(false);
     });
 });
 
@@ -299,7 +299,7 @@ describe('isAccumulatorContract', () => {
         expect(ContractUtils.isAccumulatorContract(CONTRACT_TYPES.ACCUMULATOR)).toEqual(true);
     });
     it('should return false if contract_type is not CONTRACT_TYPES.ACCUMULATOR', () => {
-        expect(ContractUtils.isAccumulatorContract('CALL')).toEqual(false);
+        expect(ContractUtils.isAccumulatorContract(CONTRACT_TYPES.CALL)).toEqual(false);
     });
 });
 
@@ -316,7 +316,7 @@ describe('isAccumulatorContractOpen', () => {
     });
     it('should return false if contract_type is not CONTRACT_TYPES.ACCUMULATOR', () => {
         const contract_info: TContractInfo = {
-            contract_type: 'CALL',
+            contract_type: CONTRACT_TYPES.CALL,
             current_spot: 1232.44,
             high_barrier: '1232.555',
             low_barrier: '1232.222',
@@ -351,7 +351,7 @@ describe('isOpen', () => {
     it('isOpen returns true for an open contract', () => {
         expect(
             ContractUtils.isOpen({
-                contract_type: 'CALL',
+                contract_type: CONTRACT_TYPES.CALL,
                 exit_tick_time: undefined,
                 profit: undefined,
                 status: 'open',
@@ -361,7 +361,7 @@ describe('isOpen', () => {
     it('isOpen returns false for a closed contract', () => {
         expect(
             ContractUtils.isOpen({
-                contract_type: 'CALL',
+                contract_type: CONTRACT_TYPES.CALL,
                 exit_tick_time: 1608098748,
                 profit: 10,
                 status: 'won',
@@ -539,7 +539,7 @@ describe('getAccuBarriersForContractDetails', () => {
     });
     it('should return an empty object if contract type is not ACCUMULATOR', () => {
         const contract_info: TContractInfo = {
-            contract_type: 'CALL',
+            contract_type: CONTRACT_TYPES.CALL,
             current_spot: 1232.555,
         };
         expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual({});
@@ -550,7 +550,7 @@ describe('getContractStatus', () => {
     it('should return original status for non-accumulator contracts', () => {
         expect(
             ContractUtils.getContractStatus({
-                contract_type: 'CALL',
+                contract_type: CONTRACT_TYPES.CALL,
                 exit_tick_time: 0,
                 profit: 100,
                 status: 'lost',
@@ -616,10 +616,10 @@ describe('getLastContractMarkerIndex', () => {
 
 describe('getLocalizedTurbosSubtype', () => {
     it('should return an empty string for non-turbos contracts', () => {
-        render(ContractUtils.getLocalizedTurbosSubtype('CALL') as JSX.Element);
+        render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.CALL) as JSX.Element);
         expect(screen.queryByText('Long')).not.toBeInTheDocument();
         expect(screen.queryByText('Short')).not.toBeInTheDocument();
-        expect(ContractUtils.getLocalizedTurbosSubtype('CALL')).toBe('');
+        expect(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.CALL)).toBe('');
     });
     it('should render "Long" for CONTRACT_TYPES.TURBOS.LONG contract', () => {
         render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.TURBOS.LONG) as JSX.Element);

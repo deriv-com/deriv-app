@@ -6,7 +6,7 @@ describe('createTickMarkers', () => {
     let contract_info: TContractInfo;
     beforeEach(() => {
         contract_info = {
-            contract_type: 'CALL',
+            contract_type: CONTRACT_TYPES.CALL,
             status: 'open',
             tick_stream: [
                 { epoch: 1, tick: 1.2345, tick_display_value: '1.2345' },
@@ -103,7 +103,7 @@ describe('createTickMarkers', () => {
         contract_info.contract_type = CONTRACT_TYPES.MATCH_DIFF.MATCH;
         expect(getMarkerContractType(contract_info)).toBe('DigitContract');
 
-        contract_info.contract_type = 'CALL';
+        contract_info.contract_type = CONTRACT_TYPES.CALL;
         contract_info.tick_count = 1;
         expect(getMarkerContractType(contract_info)).toBe('TickContract');
     });
@@ -112,7 +112,7 @@ describe('createTickMarkers', () => {
         contract_info.contract_type = CONTRACT_TYPES.ACCUMULATOR;
         contract_info.tick_count = undefined;
         Object.assign(contract_info, {
-            contract_type: 'CALL',
+            contract_type: CONTRACT_TYPES.CALL,
             tick_count: undefined,
             profit: '1',
             barrier: '1000',

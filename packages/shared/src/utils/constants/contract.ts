@@ -56,21 +56,21 @@ export type TTradeTypesCategories = {
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     [TRADE_TYPES.RISE_FALL]: {
         title: localize('Rise/Fall'),
-        trade_types: [CONTRACT_TYPES.RISE_FALL.CALL, CONTRACT_TYPES.RISE_FALL.PUT],
+        trade_types: [CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT],
         basis: ['stake', 'payout'],
         components: ['start_date'],
         barrier_count: 0,
     },
     [TRADE_TYPES.RISE_FALL_EQUAL]: {
         title: localize('Rise/Fall'),
-        trade_types: [CONTRACT_TYPES.RISE_FALL_EQUAL.CALLE, CONTRACT_TYPES.RISE_FALL_EQUAL.PUTE],
+        trade_types: [CONTRACT_TYPES.CALLE, CONTRACT_TYPES.PUTE],
         basis: ['stake', 'payout'],
         components: ['start_date'],
         barrier_count: 0,
     },
     [TRADE_TYPES.HIGH_LOW]: {
         title: localize('Higher/Lower'),
-        trade_types: [CONTRACT_TYPES.HIGH_LOW.CALL, CONTRACT_TYPES.HIGH_LOW.PUT],
+        trade_types: [CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT],
         basis: ['stake', 'payout'],
         components: ['barrier'],
         barrier_count: 1,
@@ -451,19 +451,19 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
             name: localize('Accumulators'),
             position: 'top',
         },
-        [CONTRACT_TYPES.RISE_FALL.CALL]: {
+        [CONTRACT_TYPES.CALL]: {
             name: is_high_low ? localize('Higher') : localize('Rise'),
             position: 'top',
         },
-        [CONTRACT_TYPES.RISE_FALL.PUT]: {
+        [CONTRACT_TYPES.PUT]: {
             name: is_high_low ? localize('Lower') : localize('Fall'),
             position: 'bottom',
         },
-        [CONTRACT_TYPES.RISE_FALL_EQUAL.CALLE]: {
+        [CONTRACT_TYPES.CALLE]: {
             name: localize('Rise'),
             position: 'top',
         },
-        [CONTRACT_TYPES.RISE_FALL_EQUAL.PUTE]: {
+        [CONTRACT_TYPES.PUTE]: {
             name: localize('Fall'),
             position: 'bottom',
         },

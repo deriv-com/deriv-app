@@ -95,7 +95,7 @@ describe('<PurchaseButton />', () => {
                 is_loading
                 is_high_low
                 should_fade
-                type={CONTRACT_TYPES.HIGH_LOW.CALL}
+                type={CONTRACT_TYPES.CALL}
             />
         );
 

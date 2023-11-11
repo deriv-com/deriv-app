@@ -195,36 +195,21 @@
             }
         }
     }
-    &__video {
+    &__video,
+    iframe {
         width: 100%;
         height: 27rem;
         padding: 0 1.5rem;
+        margin-bottom: 1.6rem;
 
         @include mobile {
             padding: 0;
             height: 18.45rem;
+            margin-bottom: 1.8rem;
         }
     }
-    &__video-stream {
-        width: 100%;
-        height: 27rem;
-        // Stream component props don't help override its default styles,
-        // so we have to use !important here:
-        margin: 0 0 1.6rem !important;
-        padding: 0 !important;
-
-        @include mobile {
-            height: 18.45rem;
-        }
-
-        iframe {
-            width: 49.3rem !important;
-            margin: 0 0 0 1.5rem;
-
-            @include mobile {
-                width: 32.8rem !important;
-                margin: 0;
-            }
-        }
+    iframe {
+        padding: 0;
+        margin: 0;
     }
 }

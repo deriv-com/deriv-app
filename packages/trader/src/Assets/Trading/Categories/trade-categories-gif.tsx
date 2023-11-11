@@ -15,7 +15,6 @@ import ImageRunHighLow from 'Assets/SvgComponents/trade_explanations/img-run-hig
 import ImageSpread from 'Assets/SvgComponents/trade_explanations/img-spread.svg';
 import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-high-low.svg';
 import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
-import ImageTurbos from 'Assets/SvgComponents/trade_explanations/img-turbos.svg';
 import ContractTypeDescriptionVideo from './contract-type-description-video';
 import { VANILLALONG, TURBOS } from '@deriv/shared';
 
@@ -67,7 +66,7 @@ const TradeCategoriesGIF = ({
             return <ImageTouch />;
         case TURBOS.LONG:
         case TURBOS.SHORT:
-            return <ImageTurbos />;
+            return <ContractTypeDescriptionVideo selected_contract_type='turbos' />;
         case VANILLALONG.CALL:
         case VANILLALONG.PUT:
             return <ContractTypeDescriptionVideo selected_contract_type='vanilla' />;

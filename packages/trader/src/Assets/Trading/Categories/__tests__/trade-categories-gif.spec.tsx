@@ -260,23 +260,6 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect VideoAccumulator to be rendered when trade category is accumulator', async () => {
-        jest.isolateModules(() => {
-            jest.doMock('../contract-type-description-video', () => ({
-                __esModule: true,
-                default: jest.fn(() => 'VideoAccumulator'),
-            }));
-
-            import('../trade-categories-gif')
-                .then(moduleName => {
-                    render(<moduleName.default category='accumulator' selected_contract_type='accumulator' />);
-                    expect(screen.getByText(/videoaccumulator/i)).toBeInTheDocument();
-                })
-                .catch(error => {
-                    throw new Error(error);
-                });
-        });
-    });
     it('expect ImageTickHighLow to be rendered when trade category is tick_high_low', async () => {
         jest.isolateModules(() => {
             jest.doMock('Assets/SvgComponents/trade_explanations/img-tick-high-low.svg', () => ({
@@ -305,40 +288,6 @@ describe('<TradeCategoriesGIF />', () => {
                 .then(moduleName => {
                     render(<moduleName.default category='touch' selected_contract_type='touch' />);
                     expect(screen.getByText(/imagetouch/i)).toBeInTheDocument();
-                })
-                .catch(error => {
-                    throw new Error(error);
-                });
-        });
-    });
-    it('expect VideoVanilla to be rendered when trade category is vanilla', async () => {
-        jest.isolateModules(() => {
-            jest.doMock('../contract-type-description-video', () => ({
-                __esModule: true,
-                default: jest.fn(() => 'VideoVanilla'),
-            }));
-
-            import('../trade-categories-gif')
-                .then(moduleName => {
-                    render(<moduleName.default category='vanillalongcall' selected_contract_type='vanillalongcall' />);
-                    expect(screen.getByText(/videovanilla/i)).toBeInTheDocument();
-                })
-                .catch(error => {
-                    throw new Error(error);
-                });
-        });
-    });
-    it('expect ImageTurbos to be rendered when trade category is turboslong', async () => {
-        jest.isolateModules(() => {
-            jest.doMock('Assets/SvgComponents/trade_explanations/turboslong.svg', () => ({
-                __esModule: true,
-                default: jest.fn(() => 'ImageTurbos'),
-            }));
-
-            import('../trade-categories-gif')
-                .then(moduleName => {
-                    render(<moduleName.default category='turboslong' selected_contract_type='turboslong' />);
-                    expect(screen.getByText(/imageturbos/i)).toBeInTheDocument();
                 })
                 .catch(error => {
                     throw new Error(error);

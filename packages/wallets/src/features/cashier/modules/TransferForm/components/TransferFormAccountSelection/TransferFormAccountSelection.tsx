@@ -41,9 +41,7 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
     }, [activeWallet?.accountName, activeWallet?.loginid, fromAccount?.accountName, label, toAccount?.loginid]);
 
     const isSingleAccountsGroup = useMemo(
-        () =>
-            (Object.keys(accountsList) as (keyof typeof accountsList)[]).filter(key => accountsList[key].length > 0)
-                .length === 1,
+        () => Object.values(accountsList).filter(accounts => accounts.length > 0).length === 1,
         [accountsList]
     );
 
@@ -58,11 +56,11 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                 </button>
             </div>
             <div className='wallets-transfer-form-account-selection__accounts'>
-                {(Object.keys(accountsList) as (keyof typeof accountsList)[]).map((key, index) => {
-                    if (accountsList[key].length === 0) return null;
+                {Object.entries(accountsList).map(([accountsGroupName, accounts], index) => {
+                    if (accounts.length === 0) return null;
 
                     const groupTitle =
-                        key === 'tradingAccounts'
+                        accountsGroupName === 'tradingAccounts'
                             ? `Trading accounts linked with ${activeWallet?.currencyConfig?.display_code} Wallet`
                             : 'Wallets';
                     const isLastAccountsGroup = index === Object.keys(accountsList).length - 1;
@@ -73,7 +71,7 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                             className={classNames('wallets-transfer-form-account-selection__accounts-group', {
                                 'wallets-transfer-form-account-selection__accounts-group--divider': shouldShowDivider,
                             })}
-                            key={key}
+                            key={accountsGroupName}
                         >
                             <div className='wallets-transfer-form-account-selection__accounts-group-title'>
                                 <WalletText size='sm' weight='bold'>
@@ -81,7 +79,7 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                                 </WalletText>
                                 {isMobile && <TitleLine />}
                             </div>
-                            {Object.values(accountsList[key]).map(account => (
+                            {accounts.map(account => (
                                 <button
                                     className={classNames('wallets-transfer-form-account-selection__account', {
                                         'wallets-transfer-form-account-selection__account--selected':

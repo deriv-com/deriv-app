@@ -1,8 +1,6 @@
 .wallets-withdrawal-crypto-amount-converter {
     width: 100%;
-    height: fit-content;
     display: flex;
-    align-items: center;
     justify-content: space-between;
     gap: 2.4rem;
 
@@ -12,7 +10,14 @@
     }
 
     &__arrow {
-        height: 4rem;
+        margin-top: 1.2rem;
+        height: 100%;
+
+        @include mobile {
+            height: fit-content;
+            margin-top: 0;
+            margin-inline: auto;
+        }
 
         & > svg {
             transition: rotate 0.2s ease;
@@ -31,10 +36,6 @@
                     rotate: 90deg;
                 }
             }
-        }
-
-        @include mobile {
-            height: fit-content;
         }
     }
 }

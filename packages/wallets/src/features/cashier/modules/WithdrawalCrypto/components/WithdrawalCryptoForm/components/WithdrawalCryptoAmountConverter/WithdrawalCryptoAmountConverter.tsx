@@ -8,44 +8,46 @@ import type { TForm } from '../../WithdrawalCryptoForm';
 import './WithdrawalCryptoAmountConverter.scss';
 
 type TProps = {
-    activeWallet: typeof useActiveWalletAccount['data'];
+    activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
+    exchangeRate: ReturnType<typeof useExchangeRate>['data'];
+    getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
 };
 
 const helperMessageMapper = {
-    invalidInput: 'Should be a valid number.',
-    insufficientFunds: 'Insufficient funds',
-    withdrawalLimit: (min: number, max: number, currency: string) => {
-        return `The current allowed withdraw amount is ${min} to ${max} BTC ${currency}.`;
-    },
     decimalPlacesExceeded: (limit: number) => `Up to ${limit} decimal places are allowed.`,
+    insufficientFunds: 'Insufficient funds',
+    invalidInput: 'Should be a valid number.',
+    withdrawalLimitError: (min: string, max: string, currency: string) => {
+        return `The current allowed withdraw amount is ${min} to ${max} ${currency}.`;
+    },
 };
 
-const WithdrawalCryptoAmountConverter = ({ activeWallet }: TProps) => {
-    const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
-    const { data: currencyConfig, getConfig } = useCurrencyConfig();
+const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurrencyConfig }: TProps) => {
     const [isCryptoInputActive, SetIsCryptoInputActive] = useState(false);
-    const { errors, setFieldValue, setValues, values } = useFormikContext<TForm>();
-    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency ? getConfig(activeWallet?.currency)?.fractional_digits : 2;
-    const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
-
-    useEffect(() => {
-        if (activeWallet?.currency)
-            subscribe({
-                base_currency: 'USD',
-                target_currency: activeWallet.currency,
-                loginid: activeWallet.loginid,
-            });
-        return () => unsubscribe();
-    }, []);
+    const { errors, setValues, values } = useFormikContext<TForm>();
+    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency
+        ? getCurrencyConfig(activeWallet?.currency)?.fractional_digits
+        : 2;
+    const FRACTIONAL_DIGITS_FIAT = getCurrencyConfig('USD')?.fractional_digits;
 
     const validateCryptoInput = (value: string) => {
         if (!value.length) return undefined;
 
         const amount = parseFloat(value);
+        const minimumWithdrawal = activeWallet?.currency
+            ? getCurrencyConfig(activeWallet?.currency)?.minimum_withdrawal
+            : 0;
 
         if (Number.isNaN(amount)) return helperMessageMapper.invalidInput;
 
         if (activeWallet?.balance && amount > activeWallet?.balance) return helperMessageMapper.insufficientFunds;
+
+        if (minimumWithdrawal && activeWallet?.balance && activeWallet.currency && amount < minimumWithdrawal)
+            return helperMessageMapper.withdrawalLimitError(
+                minimumWithdrawal.toFixed(FRACTIONAL_DIGITS_CRYPTO),
+                activeWallet?.balance.toFixed(FRACTIONAL_DIGITS_CRYPTO),
+                activeWallet?.currency
+            );
 
         const fractionalPart = value.split('.');
         if (FRACTIONAL_DIGITS_CRYPTO && fractionalPart[1] && fractionalPart[1].length > FRACTIONAL_DIGITS_CRYPTO)

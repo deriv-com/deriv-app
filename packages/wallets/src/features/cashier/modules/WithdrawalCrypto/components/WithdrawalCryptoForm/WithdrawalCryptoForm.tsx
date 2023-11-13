@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
+import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig, useExchangeRate } from '@deriv/api';
 import { WalletButton, WalletTextField } from '../../../../../../components/Base';
 import { WithdrawalPercentageSelector } from '../WithdrawalPercentageSelector';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
-import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig, useExchangeRate } from '@deriv/api';
 import './WithdrawalCryptoForm.scss';
 
 const MIN_ADDRESS_LENGTH = 25;
@@ -28,7 +28,7 @@ const validateCryptoAddress = (address: string) => {
 
 const WithdrawalCryptoForm = () => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: currencyConfig, getConfig } = useCurrencyConfig();
+    const { getConfig } = useCurrencyConfig();
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
     const { mutate } = useCryptoWithdrawal();
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency ? getConfig(activeWallet?.currency)?.fractional_digits : 2;
@@ -104,7 +104,11 @@ const WithdrawalCryptoForm = () => {
                                 });
                             }}
                         />
-                        <WithdrawalCryptoAmountConverter activeWallet={activeWallet} />
+                        <WithdrawalCryptoAmountConverter
+                            activeWallet={activeWallet}
+                            exchangeRate={exchangeRate}
+                            getCurrencyConfig={getConfig}
+                        />
                         <div className='wallets-withdrawal-crypto-form__submit'>
                             <WalletButton disabled={!!errors || isSubmitting} size='lg' text='Withdraw' type='submit' />
                         </div>

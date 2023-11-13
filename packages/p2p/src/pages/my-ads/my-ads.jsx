@@ -17,12 +17,13 @@ const MyAdsState = ({ message }) => (
 );
 
 const MyAds = () => {
-    const { general_store, my_ads_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
 
     React.useEffect(() => {
         my_ads_store.setIsLoading(true);
         my_ads_store.setShowEditAdForm(false);
         my_ads_store.getAccountStatus();
+        my_profile_store.getPaymentMethodsList();
         if (general_store.active_index !== 2) general_store.setActiveIndex(2);
 
         return () => {

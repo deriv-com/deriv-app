@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, RenderResult } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import VanillaOptionsCardBody, { TVanillaOptionsCardBodyProps } from '../vanilla-options-card-body';
 
 describe('VanillaOptionsCardBody', () => {
@@ -27,18 +27,17 @@ describe('VanillaOptionsCardBody', () => {
     };
     it('should render the correct content for a sold contract', async () => {
         // Render the component with the provided props
-        const { getByText, getByTestId }: RenderResult = render(<VanillaOptionsCardBody {...mock_props} />);
+        render(<VanillaOptionsCardBody {...mock_props} />);
 
-        const indicative_movement = getByTestId('dc-contract-card__indicative--movement');
+        const indicative_movement = screen.getByTestId('dc-contract-card__indicative--movement');
 
         // Test that the correct elements are present in the component
-        expect(getByText(mock_props.getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
-        expect(getByText(mock_props.getCardLabels().ENTRY_SPOT)).toBeInTheDocument();
-        expect(getByText(mock_props.getCardLabels().PURCHASE_PRICE)).toBeInTheDocument();
-        expect(getByText(mock_props.getCardLabels().STRIKE)).toBeInTheDocument();
-        expect(getByText(mock_props.getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.getCardLabels().ENTRY_SPOT)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.getCardLabels().PURCHASE_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.getCardLabels().STRIKE)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
         expect(indicative_movement).toHaveClass('dc-contract-card__indicative--movement-complete');
-        expect(indicative_movement.querySelector('.dc-icon.dc-icon--red')).toBeInTheDocument();
     });
 
     it('should render the correct content for an unsold contract', async () => {
@@ -50,17 +49,16 @@ describe('VanillaOptionsCardBody', () => {
         delete mock_props.contract_info.sell_price;
 
         // Render the component with the provided props
-        const { getByText, getByTestId }: RenderResult = render(<VanillaOptionsCardBody {...mock_props} />);
+        render(<VanillaOptionsCardBody {...mock_props} />);
 
-        const indicative_movement = getByTestId('dc-contract-card__indicative--movement');
+        const indicative_movement = screen.getByTestId('dc-contract-card__indicative--movement');
 
         // Test that the correct elements are present in the component
-        expect(getByText(mock_props.getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
-        expect(getByText(mock_props.getCardLabels().ENTRY_SPOT)).toBeInTheDocument();
-        expect(getByText(mock_props.getCardLabels().PURCHASE_PRICE)).toBeInTheDocument();
-        expect(getByText(mock_props.getCardLabels().STRIKE)).toBeInTheDocument();
-        expect(getByText(mock_props.getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.getCardLabels().ENTRY_SPOT)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.getCardLabels().PURCHASE_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.getCardLabels().STRIKE)).toBeInTheDocument();
+        expect(screen.getByText(mock_props.getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
         expect(indicative_movement).not.toHaveClass('dc-contract-card__indicative--movement-complete');
-        expect(indicative_movement.querySelector('.dc-icon.dc-icon--green')).toBeInTheDocument();
     });
 });

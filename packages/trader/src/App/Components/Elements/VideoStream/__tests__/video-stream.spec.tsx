@@ -6,7 +6,6 @@ import { getDescriptionVideoId } from 'Modules/Trading/Helpers/contract-type';
 const video_stream_testid = 'dt_video_stream';
 
 const mocked_props = {
-    autoplay: false,
     height: 270,
     preload: 'auto',
     src: getDescriptionVideoId('vanilla', false),

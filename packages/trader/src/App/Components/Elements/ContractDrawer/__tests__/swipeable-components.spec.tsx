@@ -28,7 +28,7 @@ describe('<SwipeableContractAudit />', () => {
 
         expect(screen.getByText(mocked_children)).toBeInTheDocument();
     });
-    it('should not render anything if id in modal is different then dt_contract_drawer_audit', () => {
+    it('should not render anything if id in modal is different from dt_contract_drawer_audit', () => {
         modal.setAttribute('id', 'modal_root');
         const { container } = render(
             <SwipeableContractAudit {...default_mocked_props}>

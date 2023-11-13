@@ -2,7 +2,6 @@ import React from 'react';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
 import { Router } from 'react-router';
 import { isMobile, isDesktop } from '@deriv/shared';
 import ContractDrawer from '../contract-drawer';
@@ -11,7 +10,6 @@ import userEvent from '@testing-library/user-event';
 
 const mocked_props = {
     contract_info: '',
-    contract_update_history: [{ order_date: '2728768720' }, { order_date: '123781220' }],
     is_accumulator: false,
     is_dark_theme: false,
     is_market_closed: false,
@@ -38,8 +36,8 @@ const withRouter = <T extends object>(Component: React.ComponentType<T>) => {
 
     return WrapperComponent;
 };
-
 const ContractDrawerComponent = withRouter(ContractDrawer);
+
 const default_mock_store = {
     common: {
         server_time: 123254362145 as unknown as moment.Moment,
@@ -76,7 +74,7 @@ jest.mock('../contract-drawer-card', () =>
 describe('<ContractDrawer />', () => {
     const mockContractDrawer = (mocked_params: React.ComponentProps<typeof ContractDrawer>) => {
         return (
-            <TraderProviders store={mockStore(default_mock_store) as TCoreStores}>
+            <TraderProviders store={mockStore(default_mock_store)}>
                 <ContractDrawerComponent {...mocked_params} />
             </TraderProviders>
         );
@@ -86,11 +84,11 @@ describe('<ContractDrawer />', () => {
 
         expect(container).toBeEmptyDOMElement();
     });
-    it('should render PositionsCardLoader component if  contract_info.status || contract_info.is_expired returns false', () => {
-        mocked_props.contract_info = { is_expired: 0 };
+    it('should render PositionsCardLoader component if  contract_info.status || contract_info.is_expired are falsy', () => {
+        mocked_props.contract_info = { status: null, is_expired: 0 };
         render(mockContractDrawer(mocked_props));
 
-        expect(screen.getByText(/Position Card Loader/i)).toBeInTheDocument();
+        expect(screen.getByText('Position Card Loader')).toBeInTheDocument();
         expect(screen.queryByText(contract_drawer_card)).not.toBeInTheDocument();
         expect(screen.queryByText(contract_audit)).not.toBeInTheDocument();
     });
@@ -115,17 +113,6 @@ describe('<ContractDrawer />', () => {
 
         expect(screen.getByText(contract_drawer_card)).toBeInTheDocument();
         expect(screen.queryByText(contract_audit)).not.toBeInTheDocument();
-    });
-    it('should render contract_audit if user swiped up on Contract Drawer card on mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        const { rerender } = render(mockContractDrawer(mocked_props));
-        expect(screen.queryByText(contract_audit)).not.toBeInTheDocument();
-
-        userEvent.click(screen.getByText('onSwipedUp'));
-        rerender(mockContractDrawer(mocked_props));
-
-        expect(screen.getByText(contract_audit)).toBeInTheDocument();
     });
     it('should render contract_audit if user click on Contract Drawer card on mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);

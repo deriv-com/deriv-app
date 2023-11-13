@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
 import { ActiveSymbols } from '@deriv/api-types';
 import { getEndTime, isMobile, isDesktop } from '@deriv/shared';
 import ContractDrawerCard from '../contract-drawer-card';
@@ -39,6 +38,7 @@ const default_mock_store = {
         },
     },
 };
+
 const symbol_display_name = 'Symbol Display Name';
 const market_closed_contract_overlay = 'Market Closed Contract Overlay';
 
@@ -50,23 +50,19 @@ jest.mock('@deriv/shared', () => ({
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
 }));
-
 jest.mock('../market-closed-contract-overlay', () => jest.fn(() => <div>{market_closed_contract_overlay}</div>));
 
 describe('<ContractDrawerCard />', () => {
-    const mockContractDrawerCard = (
-        mocked_store: TCoreStores,
-        mocked_params: React.ComponentProps<typeof ContractDrawerCard>
-    ) => {
+    const mockContractDrawerCard = (mocked_params: React.ComponentProps<typeof ContractDrawerCard>) => {
         return (
-            <TraderProviders store={mocked_store}>
+            <TraderProviders store={mockStore(default_mock_store)}>
                 <ContractDrawerCard {...mocked_params} />
             </TraderProviders>
         );
     };
 
     it('should render contract card with corresponding fields', () => {
-        render(mockContractDrawerCard(mockStore(default_mock_store), mocked_props));
+        render(mockContractDrawerCard(mocked_props));
 
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText(/Profit\/Loss/i)).toBeInTheDocument();
@@ -78,14 +74,14 @@ describe('<ContractDrawerCard />', () => {
         const new_mock_props = { ...mocked_props };
         new_mock_props.is_market_closed = true;
         (getEndTime as jest.Mock).mockReturnValue(false);
-        render(mockContractDrawerCard(mockStore(default_mock_store), new_mock_props));
+        render(mockContractDrawerCard(new_mock_props));
 
         expect(screen.getByText(market_closed_contract_overlay)).toBeInTheDocument();
     });
     it('should render contract card with corresponding fields for mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
-        render(mockContractDrawerCard(mockStore(default_mock_store), mocked_props));
+        render(mockContractDrawerCard(mocked_props));
 
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText(/Potential profit\/loss/i)).toBeInTheDocument();

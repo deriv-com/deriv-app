@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { WalletButton, WalletTextField } from '../../../../../../components/Base';
 import { WithdrawalPercentageSelector } from '../WithdrawalPercentageSelector';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
-import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
+import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig, useExchangeRate } from '@deriv/api';
 import './WithdrawalCryptoForm.scss';
 
 const MIN_ADDRESS_LENGTH = 25;
@@ -29,8 +29,20 @@ const validateCryptoAddress = (address: string) => {
 const WithdrawalCryptoForm = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: currencyConfig, getConfig } = useCurrencyConfig();
+    const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
+    const { mutate } = useCryptoWithdrawal();
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency ? getConfig(activeWallet?.currency)?.fractional_digits : 2;
     const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
+
+    useEffect(() => {
+        if (activeWallet?.currency)
+            subscribe({
+                base_currency: 'USD',
+                target_currency: activeWallet.currency,
+                loginid: activeWallet.loginid,
+            });
+        return () => unsubscribe();
+    }, []);
 
     return (
         <Formik
@@ -40,7 +52,12 @@ const WithdrawalCryptoForm = () => {
                 fiatAmount: '',
                 withdrawAmount: undefined,
             }}
-            onSubmit={values => ''}
+            onSubmit={values =>
+                mutate({
+                    address: values.cryptoAddress,
+                    amount: parseFloat(parseFloat(values.cryptoAmount).toFixed(FRACTIONAL_DIGITS_CRYPTO)),
+                })
+            }
         >
             {({ errors, handleSubmit, isSubmitting, setValues, values }) => {
                 return (
@@ -62,7 +79,7 @@ const WithdrawalCryptoForm = () => {
                             balance={12}
                             message={`${
                                 !Number.isNaN(parseFloat(values.cryptoAmount)) && activeWallet?.balance
-                                    ? (parseFloat(values.cryptoAmount) * 100) / activeWallet?.balance
+                                    ? Math.round((parseFloat(values.cryptoAmount) * 100) / activeWallet?.balance)
                                     : 0
                             }% of available balance (${activeWallet?.balance.toFixed(FRACTIONAL_DIGITS_CRYPTO)} ${
                                 activeWallet?.currency
@@ -73,6 +90,16 @@ const WithdrawalCryptoForm = () => {
                                     cryptoAmount:
                                         !!fraction && activeWallet?.balance
                                             ? (fraction * activeWallet?.balance).toFixed(FRACTIONAL_DIGITS_CRYPTO)
+                                            : '',
+                                    fiatAmount:
+                                        !!fraction &&
+                                        activeWallet?.balance &&
+                                        activeWallet?.currency &&
+                                        exchangeRate?.rates
+                                            ? (
+                                                  (fraction * activeWallet?.balance) /
+                                                  exchangeRate?.rates[activeWallet.currency]
+                                              ).toFixed(FRACTIONAL_DIGITS_FIAT)
                                             : '',
                                 });
                             }}

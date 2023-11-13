@@ -1,6 +1,6 @@
 import React from 'react';
 
-type TVideoStreamProps = Pick<React.ComponentProps<'iframe'>, 'height' | 'width'> & {
+type TVideoStreamProps = Pick<React.ComponentProps<'iframe'>, 'height' | 'width' | 'onLoad'> & {
     ad_url?: string;
     allow_full_screen?: boolean;
     autoplay?: boolean;
@@ -15,6 +15,7 @@ type TVideoStreamProps = Pick<React.ComponentProps<'iframe'>, 'height' | 'width'
     primary_color?: string;
     src: string;
     start_time?: string | number;
+    test_id?: string;
 };
 
 /* TODO [maryia-deriv]: This temporary component was created because the official Stream component
@@ -27,14 +28,17 @@ const VideoStream = ({
     controls,
     default_text_track,
     disable_picture_in_picture,
-    letterbox_color,
+    letterbox_color = 'transparent', // unsets the default black background of the iframe
     loop,
     muted,
     poster,
-    preload,
+    preload = 'auto',
     primary_color,
     src,
     start_time,
+    test_id,
+    width = '100%',
+    height = '100%',
     ...props
 }: TVideoStreamProps) => {
     const params = [
@@ -60,6 +64,9 @@ const VideoStream = ({
             };`}
             allowFullScreen={allow_full_screen}
             src={`https://iframe.cloudflarestream.com/${src}?${params}`}
+            data-testid={test_id}
+            width={width}
+            height={height}
             {...props}
         />
     );

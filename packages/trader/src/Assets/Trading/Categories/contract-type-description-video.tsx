@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
 import { getDescriptionVideoId } from 'Modules/Trading/Helpers/contract-type';
-import VideoStream from './video-stream';
+import VideoStream from 'App/Components/Elements/VideoStream';
 
 type TContractTypeDescriptionVideo = {
     data_testid?: string;
@@ -15,7 +15,7 @@ const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: T
         return null;
     }
     return (
-        <div className='contract-type-info__video' data-testid={data_testid}>
+        <div className='contract-type-info__video'>
             {/* In order to create a custom player later, please install @cloudflare/stream-react,
                 use the official Stream component, and remove the temporary VideoStream.
                 Official Stream component methods can be used via its streamRef prop, e.g.:
@@ -40,12 +40,11 @@ const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: T
                 autoplay
                 controls
                 disable_picture_in_picture
-                height={is_mobile ? '184.5px' : '270px'}
+                height={is_mobile ? 184.5 : 270}
                 letterbox_color='transparent' // unsets the default black background of the iframe
                 loop
-                preload='auto'
                 src={getDescriptionVideoId(selected_contract_type, is_dark_theme)}
-                width='100%'
+                test_id={data_testid}
             />
         </div>
     );

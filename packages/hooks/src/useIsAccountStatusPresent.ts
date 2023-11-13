@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
 
+// TODO: [account-status] Remove `authenticated_with_idv_photoid` check once we have the correct status from API
 const AccountStatusList = [
     'address_verified',
     'age_verification',
@@ -8,6 +9,7 @@ const AccountStatusList = [
     'allow_poa_resubmission',
     'allow_poi_resubmission',
     'authenticated',
+    'authenticated_with_idv',
     'authenticated_with_idv_photoid',
     'cashier_locked',
     'crs_tin_information',

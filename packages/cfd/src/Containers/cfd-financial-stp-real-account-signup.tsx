@@ -86,8 +86,10 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     let is_mounted = React.useRef(true).current;
 
     const { need_poi_for_maltainvest, need_poi_for_bvi_labuan_vanuatu } = getAuthenticationStatusInfo(account_status);
-
-    const is_authenticated_with_idv_photoid = useIsAccountStatusPresent('authenticated_with_idv_photoid');
+    // TODO: [account-status] Remove `authenticated_with_idv_photoid` check once we have the correct status from API
+    const is_authenticated_with_idv =
+        useIsAccountStatusPresent('authenticated_with_idv') ||
+        useIsAccountStatusPresent('authenticated_with_idv_photoid');
 
     const poi_config: TItemsState<typeof passthroughProps> = {
         body: CFDPOI,
@@ -130,7 +132,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     };
 
     const shouldShowPOA = () => {
-        if (JURISDICTION.LABUAN === jurisdiction_selected_shortcode && is_authenticated_with_idv_photoid) {
+        if (JURISDICTION.LABUAN === jurisdiction_selected_shortcode && is_authenticated_with_idv) {
             return true;
         }
         return !['pending', 'verified'].includes(authentication_status.document_status);
@@ -195,7 +197,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     const form_value = getCurrent('form_value');
 
     const passthrough: Partial<TCFDFinancialStpRealAccountSignupProps> & {
-        is_authenticated_with_idv_photoid?: boolean;
+        is_authenticated_with_idv?: boolean;
     } = ((getCurrent('forwarded_props') || []) as TItemsState<typeof passthroughProps>['forwarded_props']).reduce(
         (forwarded_prop, item) => {
             return Object.assign(forwarded_prop, {
@@ -206,7 +208,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     );
 
     if (shouldShowPOA()) {
-        passthrough.is_authenticated_with_idv_photoid = is_authenticated_with_idv_photoid;
+        passthrough.is_authenticated_with_idv = is_authenticated_with_idv;
     }
 
     return (

@@ -43,7 +43,7 @@ export default function mock_authorize(context: Context) {
                 country: 'th',
                 currency: 'USD',
                 email: 'jane.smith@example.com',
-                fullname: ' Jane Smith',
+                fullname: 'Jane Smith',
                 is_virtual: 0,
                 landing_company_fullname: 'Deriv (SVG) LLC',
                 landing_company_name: 'svg',

@@ -9,13 +9,27 @@ import {
 } from '@deriv/integration';
 import { Context } from '@deriv/integration/src/utils/mocks/mocks';
 
-const mock_set_settings = (context: Context) => {
+const mock_set_settings_valid = (context: Context) => {
     if ('set_settings' in context.request) {
         context.response = {
             echo_req: context.request,
             msg_type: 'set_settings',
             req_id: context.req_id,
             set_settings: 1,
+        };
+    }
+};
+
+const mock_set_settings_invalid = (context: Context) => {
+    if ('set_settings' in context.request) {
+        context.response = {
+            echo_req: context.request,
+            msg_type: 'set_settings',
+            req_id: context.req_id,
+            error: {
+                code: 'InvalidPhone',
+                message: 'Please enter a valid phone number, including the country code (e.g. +15417541234).',
+            },
         };
     }
 };
@@ -58,7 +72,7 @@ test.describe('Personal Details', () => {
         await setupMocks({
             baseURL,
             page,
-            mocks: [mock_general, mock_loggedIn, mock_residents_list, mock_states_list, mock_set_settings],
+            mocks: [mock_general, mock_loggedIn, mock_residents_list, mock_states_list, mock_set_settings_valid],
         });
         await page.goto(`${baseURL}/account/personal-details`);
 
@@ -74,8 +88,25 @@ test.describe('Personal Details', () => {
 
         const submitButton = await page.getByRole('button', { name: 'Submit' }).first();
         expect(await submitButton.isEnabled()).toBe(true);
-        submitButton.click();
+        await submitButton.click();
 
         await page.waitForSelector('[data-testid=form-footer-container] button svg');
+    });
+
+    test('submitting the changed form with invalid data', async ({ page, baseURL }) => {
+        await setupMocks({
+            baseURL,
+            page,
+            mocks: [mock_general, mock_loggedIn, mock_residents_list, mock_states_list, mock_set_settings_invalid],
+        });
+        await page.goto(`${baseURL}/account/personal-details`);
+
+        await fillField(page, 'Phone number*', '000000000');
+
+        const submitButton = await page.getByRole('button', { name: 'Submit' }).first();
+        expect(await submitButton.isEnabled()).toBe(true);
+        await submitButton.click();
+
+        await expect(page.getByText('Please enter a valid phone number')).toBeVisible();
     });
 });

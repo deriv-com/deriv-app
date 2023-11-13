@@ -311,23 +311,6 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect VideoTurbos to be rendered when trade category is turboslong', async () => {
-        jest.isolateModules(() => {
-            jest.doMock('../contract-type-description-video', () => ({
-                __esModule: true,
-                default: jest.fn(() => 'VideoTurbos'),
-            }));
-
-            import('../trade-categories-gif')
-                .then(moduleName => {
-                    render(<moduleName.default category='turboslong' selected_contract_type='turboslong' />);
-                    expect(screen.getByText(/videoturbos/i)).toBeInTheDocument();
-                })
-                .catch(error => {
-                    throw new Error(error);
-                });
-        });
-    });
     it('expect VideoVanilla to be rendered when trade category is vanilla', async () => {
         jest.isolateModules(() => {
             jest.doMock('../contract-type-description-video', () => ({
@@ -339,6 +322,23 @@ describe('<TradeCategoriesGIF />', () => {
                 .then(moduleName => {
                     render(<moduleName.default category='vanillalongcall' selected_contract_type='vanillalongcall' />);
                     expect(screen.getByText(/videovanilla/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
+        });
+    });
+    it('expect VideoTurbos to be rendered when trade category is turboslong', async () => {
+        jest.isolateModules(() => {
+            jest.doMock('../contract-type-description-video', () => ({
+                __esModule: true,
+                default: jest.fn(() => 'VideoTurbos'),
+            }));
+
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='turboslong' selected_contract_type='turboslong' />);
+                    expect(screen.getByText(/videoturbos/i)).toBeInTheDocument();
                 })
                 .catch(error => {
                     throw new Error(error);

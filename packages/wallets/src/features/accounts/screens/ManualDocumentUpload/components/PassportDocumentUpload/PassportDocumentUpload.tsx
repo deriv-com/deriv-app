@@ -1,14 +1,14 @@
 import React from 'react';
-import { Divider, WalletText, WalletTextField } from '../../../../../../components/Base';
 import { Dropzone } from '../../../../../../components';
-import { DocumentRuleHint } from '../DocumentRuleHint';
+import { Divider, WalletText, WalletTextField } from '../../../../../../components/Base';
 import useDevice from '../../../../../../hooks/useDevice';
-import Calendar from '../../../../../../public/images/calendar.svg';
 import ClearPhoto from '../../../../../../public/images/accounts/clear-photo.svg';
 import ClockIcon from '../../../../../../public/images/accounts/clock-icon.svg';
 import ImageIcon from '../../../../../../public/images/accounts/image-icon.svg';
 import LessThanEightIcon from '../../../../../../public/images/accounts/less-than-eight-icon.svg';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
+import Calendar from '../../../../../../public/images/calendar.svg';
+import { DocumentRuleHint } from '../DocumentRuleHint';
 import './PassportDocumentUpload.scss';
 
 const documentRules = [
@@ -54,7 +54,7 @@ const PassportDocumentUpload = () => {
                 />
                 <div className='wallets-passport-document-upload__rules'>
                     {documentRules.map((rule, idx) => (
-                        <DocumentRuleHint key={idx} {...rule} />
+                        <DocumentRuleHint key={`document-rule-hint-${idx}`} {...rule} />
                     ))}
                 </div>
             </div>

@@ -1,8 +1,16 @@
-import React, { CSSProperties, ReactNode, RefObject, useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, {
+    CSSProperties,
+    DetailedHTMLProps,
+    InputHTMLAttributes,
+    ReactNode,
+    RefObject,
+    useCallback,
+    useState,
+} from 'react';
 import classNames from 'classnames';
-import { IconButton, WalletButton, WalletText } from '../Base';
+import { useDropzone } from 'react-dropzone';
 import CloseIcon from '../../public/images/close-icon.svg';
+import { IconButton, WalletButton, WalletText } from '../Base';
 import './Dropzone.scss';
 
 type TProps = {
@@ -38,10 +46,10 @@ const Dropzone: React.FC<TProps> = ({
     >([]);
     const [showHoverMessage, setShowHoverMessage] = useState(false);
     const { getInputProps, getRootProps, open, rootRef } = useDropzone({
-        noClick: true,
         accept: fileFormats,
         maxSize,
         multiple: false,
+        noClick: true,
         onDragEnter: () => setShowHoverMessage(true),
         onDragLeave: () => setShowHoverMessage(false),
         onDrop: acceptedFiles => {
@@ -70,8 +78,9 @@ const Dropzone: React.FC<TProps> = ({
             ref={rootRef as RefObject<HTMLDivElement>}
             style={{ height, minHeight, minWidth, width }}
         >
-            {/* @ts-expect-error props types error */}
-            <input {...getInputProps()} />
+            <input
+                {...(getInputProps() as DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>)}
+            />
             <div
                 className={classNames(
                     'wallets-dropzone',

@@ -1,1 +1,1 @@
-export { default as Transfer } from './Transfer';
+export { default as TransferModule } from './Transfer';

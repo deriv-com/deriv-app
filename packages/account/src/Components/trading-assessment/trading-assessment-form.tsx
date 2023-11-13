@@ -1,16 +1,15 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikErrors } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdown from './trading-assessment-dropdown';
-import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
+import { getTradingAssessmentQuestions } from '../../Constants/trading-assessment-questions';
 import { TFormData, TQuestion } from 'Types';
-import ScrollToFieldWithError from 'Components/forms/scroll-to-field-with-error';
-import { MAX_QUESTION_TEXT_LENGTH } from 'Constants/trading-assessment';
-import { useStore } from '@deriv/stores';
+import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
+import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 
 type TradingAssessmentFormProps = {
     class_name?: string;
@@ -21,6 +20,7 @@ type TradingAssessmentFormProps = {
     should_move_to_next: boolean;
     setSubSectionIndex: (index: number) => void;
     is_independent_section: boolean;
+    is_mobile?: boolean;
 };
 
 const TradingAssessmentForm = ({
@@ -32,9 +32,8 @@ const TradingAssessmentForm = ({
     should_move_to_next,
     setSubSectionIndex,
     is_independent_section,
+    is_mobile,
 }: TradingAssessmentFormProps) => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
     const assessment_questions = getTradingAssessmentQuestions();
     const stored_items = parseInt(localStorage.getItem('current_question_index') || '0');
     const [is_section_filled, setIsSectionFilled] = React.useState(false);
@@ -132,11 +131,8 @@ const TradingAssessmentForm = ({
         }
     };
 
-    const handleValidate = (values: { [x: string]: string; risk_tolerance: string; source_of_experience: string }) => {
-        const errors = {
-            risk_tolerance: '',
-            source_of_experience: '',
-        };
+    const handleValidate = (values: TFormData) => {
+        const errors: FormikErrors<TFormData> = {};
 
         if (!values.risk_tolerance && current_question_details.current_question.section === 'risk_tolerance') {
             errors.risk_tolerance = 'error';
@@ -148,7 +144,7 @@ const TradingAssessmentForm = ({
             errors.source_of_experience = 'error';
         }
         if (current_question_details.current_question.section === 'trading_experience') {
-            const trading_experience_required_fields = [
+            const trading_experience_required_fields: (keyof TFormData)[] = [
                 'cfd_experience',
                 'cfd_frequency',
                 'trading_experience_financial_instruments',
@@ -161,7 +157,7 @@ const TradingAssessmentForm = ({
             });
         }
         if (current_question_details.current_question.section === 'trading_knowledge') {
-            const trading_knowledge_required_fields = [
+            const trading_knowledge_required_fields: (keyof TFormData)[] = [
                 'cfd_trading_definition',
                 'leverage_impact_trading',
                 'leverage_trading_high_risk_stop_loss',
@@ -182,7 +178,13 @@ const TradingAssessmentForm = ({
             <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                 <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
             </Text>
-            <Formik initialValues={{ ...form_value }} validate={handleValidate} onSubmit={nextButtonHandler}>
+            <Formik
+                initialValues={{ ...form_value }}
+                validate={handleValidate}
+                onSubmit={values => {
+                    nextButtonHandler(values);
+                }}
+            >
                 {({ errors, setFieldValue, values }) => {
                     const { question_text, form_control, answer_options, questions } =
                         current_question_details.current_question;
@@ -226,7 +228,11 @@ const TradingAssessmentForm = ({
                                                 text={question_text}
                                                 list={answer_options ?? []}
                                                 onChange={e => {
-                                                    handleValueSelection(e, form_control, setFieldValue);
+                                                    handleValueSelection(
+                                                        e as any,
+                                                        form_control as keyof TFormData,
+                                                        setFieldValue
+                                                    );
                                                 }}
                                                 values={values}
                                                 form_control={form_control as keyof TFormData}

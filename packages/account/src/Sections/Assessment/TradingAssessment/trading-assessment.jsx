@@ -3,7 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-assessment';
-import { trading_assessment_questions } from 'Configs/trading-assessment-config';
+import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
 import {
     DesktopWrapper,
     Dropdown,
@@ -169,7 +169,7 @@ const TradingAssessment = observer(() => {
                                 title={localize('Trading Experience')}
                                 subtitle={localize('All fields are required')}
                             />
-                            {trading_assessment_questions().map(item => {
+                            {getTradingAssessmentQuestions().map(item => {
                                 const form_control = item.form_control;
                                 if (item.field_type === 'radio') {
                                     return (

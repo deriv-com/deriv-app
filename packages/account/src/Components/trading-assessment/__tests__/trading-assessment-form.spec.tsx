@@ -6,7 +6,8 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('TradingAssessmentForm', () => {
     const mockOnSubmit = jest.fn();
-    const mockOnCancel = jest.fn();
+    const displayPreviousPage = jest.fn();
+    const mockOnCancel = displayPreviousPage;
     const mockSetSubSectionIndex = jest.fn();
 
     const baseProps = {
@@ -24,10 +25,11 @@ describe('TradingAssessmentForm', () => {
             trading_frequency_financial_instruments: '',
         },
         onSubmit: mockOnSubmit,
-        onCancel: mockOnCancel,
+        onCancel: displayPreviousPage,
         should_move_to_next: false,
         setSubSectionIndex: mockSetSubSectionIndex,
         is_independent_section: false,
+        is_mobile: false,
     };
 
     afterEach(() => {
@@ -50,29 +52,40 @@ describe('TradingAssessmentForm', () => {
         ).toBeInTheDocument();
     });
 
-    it('should render the next page if value of risk tolerance is "yes"', async () => {
+    it('should display the provided options in the form', () => {
         const mock_store = mockStore({
             ui: {
-                is_mobile: true,
+                is_mobile: false,
             },
         });
-        const updatedProps = {
-            ...baseProps,
-            form_value: {
-                ...baseProps.form_value,
-                risk_tolerance: 'Yes',
-            },
-        };
         render(
             <StoreProvider store={mock_store}>
-                <TradingAssessmentForm {...updatedProps} />
+                <TradingAssessmentForm {...baseProps} />
             </StoreProvider>
         );
-        const nextButton = screen.getByRole('button', { name: /Next/i });
-        await waitFor(() => userEvent.click(nextButton));
-        expect(mockOnSubmit).toHaveBeenCalled();
+        expect(screen.getByText('Yes')).toBeInTheDocument();
+        expect(screen.getByText('No')).toBeInTheDocument();
     });
-    it('should call onCancel when displaying the first question and "Previous" is clicked', () => {
+
+    it('should go to the next question on when the checkbox is "yes" and next button is selected', async () => {
+        const mock_store = mockStore({
+            ui: {
+                is_mobile: false,
+            },
+        });
+        render(
+            <StoreProvider store={mock_store}>
+                <TradingAssessmentForm {...baseProps} />
+            </StoreProvider>
+        );
+        userEvent.click(screen.getByText('Yes'));
+        userEvent.click(screen.getByText('Next'));
+        await waitFor(() =>
+            expect(screen.getByText('How much knowledge and experience do you have in relation to online trading?'))
+        );
+    });
+
+    it('should call onCancel when displaying the first question and "Previous" is clicked', async () => {
         const mock_store = mockStore({
             ui: {
                 is_mobile: false,
@@ -86,6 +99,12 @@ describe('TradingAssessmentForm', () => {
         const prevButton = screen.getByRole('button', { name: /Previous/i });
         userEvent.click(prevButton);
 
-        expect(mockOnCancel).toHaveBeenCalled();
+        await waitFor(() =>
+            expect(
+                screen.getByText(
+                    'Do you understand that you could potentially lose 100% of the money you use to trade?'
+                )
+            )
+        );
     });
 });

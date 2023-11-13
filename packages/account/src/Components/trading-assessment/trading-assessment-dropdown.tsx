@@ -4,7 +4,7 @@ import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TFormData, TQuestion } from 'Types';
-import { MAX_QUESTION_TEXT_LENGTH } from 'Constants/trading-assessment';
+import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 
 type TradingAssessmentDropdownProps = {
     disabled_items: string[];

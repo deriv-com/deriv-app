@@ -37,8 +37,8 @@ const WithdrawalCryptoForm = () => {
         if (activeWallet?.currency)
             subscribe({
                 base_currency: 'USD',
-                target_currency: activeWallet.currency,
                 loginid: activeWallet.loginid,
+                target_currency: activeWallet.currency,
             });
         return () => unsubscribe();
     }, []);
@@ -75,7 +75,6 @@ const WithdrawalCryptoForm = () => {
                         </div>
                         <WithdrawalPercentageSelector
                             amount={values.cryptoAmount}
-                            balance={12}
                             message={`${
                                 !Number.isNaN(parseFloat(values.cryptoAmount)) && activeWallet?.balance
                                     ? Math.round((parseFloat(values.cryptoAmount) * 100) / activeWallet?.balance)

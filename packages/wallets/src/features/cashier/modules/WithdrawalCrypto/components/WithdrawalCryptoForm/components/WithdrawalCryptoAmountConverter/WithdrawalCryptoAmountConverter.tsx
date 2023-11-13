@@ -23,7 +23,7 @@ const helperMessageMapper = {
 };
 
 const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurrencyConfig }: TProps) => {
-    const [isCryptoInputActive, SetIsCryptoInputActive] = useState(false);
+    const [isCryptoInputActive, setIsCryptoInputActive] = useState(false);
     const { errors, setValues, values } = useFormikContext<TForm>();
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency
         ? getCurrencyConfig(activeWallet?.currency)?.fractional_digits
@@ -96,7 +96,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                                 fiatAmount: convertedValue,
                             });
                         }}
-                        onFocus={() => SetIsCryptoInputActive(true)}
+                        onFocus={() => setIsCryptoInputActive(true)}
                         showMessage
                     />
                 )}
@@ -129,7 +129,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                                 fiatAmount: e.target.value,
                             });
                         }}
-                        onFocus={() => SetIsCryptoInputActive(false)}
+                        onFocus={() => setIsCryptoInputActive(false)}
                         showMessage
                     />
                 )}

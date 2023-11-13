@@ -18,7 +18,7 @@ interface WalletButtonProps {
     rounded?: Extract<TGenericSizes, 'md' | 'sm'>;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
-    type?: any;
+    type?: ComponentProps<'button'>['type'];
     variant?: TVariant;
 }
 

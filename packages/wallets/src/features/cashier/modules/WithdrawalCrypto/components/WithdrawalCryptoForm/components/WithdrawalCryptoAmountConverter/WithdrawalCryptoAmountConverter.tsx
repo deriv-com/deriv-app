@@ -27,27 +27,33 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
     const { errors, setValues, values } = useFormikContext<TForm>();
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency
         ? getCurrencyConfig(activeWallet?.currency)?.fractional_digits
-        : 2;
+        : 8;
     const FRACTIONAL_DIGITS_FIAT = getCurrencyConfig('USD')?.fractional_digits;
+    const MINIMUM_WITHDRAWAL_AMOUNT = activeWallet?.currency
+        ? getCurrencyConfig(activeWallet?.currency)?.minimum_withdrawal
+        : 0;
 
     const validateCryptoInput = (value: string) => {
         if (!value.length) return undefined;
 
-        const amount = parseFloat(value);
-        const minimumWithdrawal = activeWallet?.currency
-            ? getCurrencyConfig(activeWallet?.currency)?.minimum_withdrawal
-            : 0;
+        const amount = parseFloat(parseFloat(value).toFixed(FRACTIONAL_DIGITS_CRYPTO));
 
         if (Number.isNaN(amount)) return helperMessageMapper.invalidInput;
 
         if (activeWallet?.balance && amount > activeWallet?.balance) return helperMessageMapper.insufficientFunds;
 
-        if (minimumWithdrawal && activeWallet?.balance && activeWallet.currency && amount < minimumWithdrawal)
+        if (
+            MINIMUM_WITHDRAWAL_AMOUNT &&
+            activeWallet?.balance &&
+            activeWallet.currency &&
+            amount < MINIMUM_WITHDRAWAL_AMOUNT
+        ) {
             return helperMessageMapper.withdrawalLimitError(
-                minimumWithdrawal.toFixed(FRACTIONAL_DIGITS_CRYPTO),
+                MINIMUM_WITHDRAWAL_AMOUNT.toFixed(FRACTIONAL_DIGITS_CRYPTO),
                 activeWallet?.balance.toFixed(FRACTIONAL_DIGITS_CRYPTO),
                 activeWallet?.currency
             );
+        }
 
         const fractionalPart = value.split('.');
         if (FRACTIONAL_DIGITS_CRYPTO && fractionalPart[1] && fractionalPart[1].length > FRACTIONAL_DIGITS_CRYPTO)
@@ -79,10 +85,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                         onChange={e => {
                             const value = parseFloat(e.target.value);
                             const convertedValue =
-                                !Number.isNaN(value) &&
-                                exchangeRate?.rates &&
-                                activeWallet?.currency &&
-                                !errors.cryptoAmount
+                                !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
                                     ? (value / exchangeRate?.rates[activeWallet?.currency]).toFixed(
                                           FRACTIONAL_DIGITS_FIAT
                                       )
@@ -114,10 +117,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                         onChange={e => {
                             const value = parseFloat(e.target.value);
                             const convertedValue =
-                                !Number.isNaN(value) &&
-                                exchangeRate?.rates &&
-                                activeWallet?.currency &&
-                                !errors.fiatAmount
+                                !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
                                     ? (value * exchangeRate?.rates[activeWallet?.currency]).toFixed(
                                           FRACTIONAL_DIGITS_CRYPTO
                                       )

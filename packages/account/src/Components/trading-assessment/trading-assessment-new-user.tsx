@@ -9,11 +9,11 @@ type TradingAssessmentNewUserProps = {
     onSave: (current_step: number, values: TFormData) => void;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
     onSubmit: (
-        current_step: number,
-        values: TFormData,
-        goToNextStep: () => void,
-        action: React.ReactNode,
-        should_override: boolean
+        current_step?: number,
+        values?: TFormData,
+        goToNextStep?: () => void,
+        action?: React.ReactNode,
+        should_override?: boolean
     ) => void;
     getCurrentStep: () => number;
     value: TFormData;
@@ -37,7 +37,7 @@ const TradingAssessmentNewUser = ({
         onCancel(current_step, goToPreviousStep);
     };
 
-    const handleSubmit = (values: TFormData, actions: React.ReactNode, should_override: boolean) => {
+    const handleSubmit = (values?: TFormData, actions?: React.ReactNode, should_override?: boolean) => {
         let process_form_values = { ...values };
         if (should_override) {
             // Remove the keys with no values

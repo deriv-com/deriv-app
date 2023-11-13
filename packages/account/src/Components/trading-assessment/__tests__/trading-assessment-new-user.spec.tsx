@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import TradingAssessmentNewUser from '../trading-assessment-new-user';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('TradingAssessmentNewUser', () => {
     const mockgotoNextStep = jest.fn();
@@ -41,7 +42,16 @@ describe('TradingAssessmentNewUser', () => {
 
     it('should handle the cancel event correctly', () => {
         mockGetCurrentStep.mockReturnValue(2);
-        render(<TradingAssessmentNewUser {...baseProps} />);
+        const mock_store = mockStore({
+            ui: {
+                is_mobile: false,
+            },
+        });
+        render(
+            <StoreProvider store={mock_store}>
+                <TradingAssessmentNewUser {...baseProps} />
+            </StoreProvider>
+        );
 
         const cancelButton = screen.getByRole('button', { name: /Previous/i });
         userEvent.click(cancelButton);

@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom/extend-expect';
 import TradingAssessmentForm from '../trading-assessment-form';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('TradingAssessmentForm', () => {
     const mockOnSubmit = jest.fn();
@@ -34,32 +34,55 @@ describe('TradingAssessmentForm', () => {
         jest.clearAllMocks();
     });
 
-    it('should render without crashing', () => {
-        render(<TradingAssessmentForm {...baseProps} />);
-    });
-
     it('should display the provided question', () => {
-        render(<TradingAssessmentForm {...baseProps} />);
+        const mock_store = mockStore({
+            ui: {
+                is_mobile: false,
+            },
+        });
+        render(
+            <StoreProvider store={mock_store}>
+                <TradingAssessmentForm {...baseProps} />
+            </StoreProvider>
+        );
         expect(
             screen.getByText('Do you understand that you could potentially lose 100% of the money you use to trade?')
         ).toBeInTheDocument();
     });
 
-    it('should render risk tolerance modal if value of risk tolerance is "no"', async () => {
+    it('should render the next page if value of risk tolerance is "yes"', async () => {
+        const mock_store = mockStore({
+            ui: {
+                is_mobile: true,
+            },
+        });
         const updatedProps = {
             ...baseProps,
             form_value: {
                 ...baseProps.form_value,
-                risk_tolerance: 'No',
+                risk_tolerance: 'Yes',
             },
         };
-        render(<TradingAssessmentForm {...updatedProps} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <TradingAssessmentForm {...updatedProps} />
+            </StoreProvider>
+        );
         const nextButton = screen.getByRole('button', { name: /Next/i });
-        userEvent.click(nextButton);
+        await waitFor(() => userEvent.click(nextButton));
         expect(mockOnSubmit).toHaveBeenCalled();
     });
     it('should call onCancel when displaying the first question and "Previous" is clicked', () => {
-        render(<TradingAssessmentForm {...baseProps} />);
+        const mock_store = mockStore({
+            ui: {
+                is_mobile: false,
+            },
+        });
+        render(
+            <StoreProvider store={mock_store}>
+                <TradingAssessmentForm {...baseProps} />
+            </StoreProvider>
+        );
         const prevButton = screen.getByRole('button', { name: /Previous/i });
         userEvent.click(prevButton);
 

@@ -646,9 +646,6 @@ export const icons =
         'IcContractStrike',
         'IcContractTarget',
     ],
-    'ctrader': [
-        'IcCtrader',
-    ],
     'currency': [
         'IcCurrencyAud',
         'IcCurrencyBch',

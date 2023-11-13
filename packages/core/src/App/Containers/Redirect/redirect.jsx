@@ -26,7 +26,6 @@ const Redirect = ({
     let redirected_to_route = false;
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
-    sessionStorage.verification_code = code_param;
     const ext_platform_url = url_params.get('ext_platform_url');
     const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
     const { is_appstore } = React.useContext(PlatformContext);
@@ -124,7 +123,15 @@ const Redirect = ({
             break;
         }
         case 'payment_withdraw': {
-            is_next_wallet ? history.push(routes.wallets_withdrawal) : history.push(routes.cashier_withdrawal);
+            if (is_next_wallet) {
+                // passes verification_code through query param as we do not want to use localstorage/session storage
+                // though can't use "verification_code" as name param
+                // as there is general logic within client-store
+                // which removes anything which resembles code=XYZ
+                history.push(`${routes.wallets_withdrawal}?verification=${verification_code?.payment_withdraw}`);
+            } else {
+                history.push(routes.cashier_withdrawal);
+            }
             redirected_to_route = true;
             break;
         }

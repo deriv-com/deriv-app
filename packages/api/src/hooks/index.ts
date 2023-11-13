@@ -5,6 +5,7 @@ export { default as useAccountsList } from './useAccountsList';
 export { default as useActiveAccount } from './useActiveAccount';
 export { default as useActiveTradingAccount } from './useActiveTradingAccount';
 export { default as useActiveWalletAccount } from './useActiveWalletAccount';
+export { default as useActiveWalletBalance } from './useActiveWalletBalance';
 export { default as useAllAvailableAccounts } from './useAllAvailableAccounts';
 export { default as useAuthentication } from './useAuthentication';
 export { default as useAuthorize } from './useAuthorize';

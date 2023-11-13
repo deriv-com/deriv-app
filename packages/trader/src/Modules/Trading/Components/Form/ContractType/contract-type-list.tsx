@@ -22,10 +22,8 @@ const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, va
         {list.map((contract_category, index) => {
             const contract_types = contract_category.contract_types?.filter(contract_type => {
                 const base_contract_type = /^(.*)_equal$/.exec(contract_type.value)?.[1];
-                if (
-                    contract_type.value === TRADE_TYPES.TURBOS.SHORT ||
-                    contract_type.value === TRADE_TYPES.VANILLA.PUT
-                ) {
+                const { TURBOS, VANILLA } = TRADE_TYPES;
+                if (contract_type.value === TURBOS.SHORT || contract_type.value === VANILLA.PUT) {
                     return false;
                 }
                 if (base_contract_type) {

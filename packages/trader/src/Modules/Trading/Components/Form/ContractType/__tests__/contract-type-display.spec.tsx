@@ -75,7 +75,7 @@ const list = [
 
 const mocked_props = {
     onClick: jest.fn(),
-    value: TRADE_TYPES.RISE_FALL as string,
+    value: TRADE_TYPES.RISE_FALL,
     is_open: false,
 };
 
@@ -93,13 +93,11 @@ describe('<Display />', () => {
         expect(screen.getByText('Rise/Fall')).toBeInTheDocument();
     });
     it('should render contract_type that matches text of mocked input value', () => {
-        mocked_props.value = TRADE_TYPES.OVER_UNDER;
-        render(<Display name='contract-type-display' list={list} {...mocked_props} />);
+        render(<Display name='contract-type-display' list={list} {...mocked_props} value={TRADE_TYPES.OVER_UNDER} />);
         expect(screen.getByText('Over/Under')).toBeInTheDocument();
     });
     it('should have contract-type-widget__display--clicked class when is_open is true', () => {
-        mocked_props.is_open = true;
-        render(<Display name='contract-type-display' list={list} {...mocked_props} />);
+        render(<Display name='contract-type-display' list={list} {...mocked_props} is_open />);
         expect(screen.getByTestId('dt_contract_dropdown')).toHaveClass('contract-type-widget__display--clicked');
     });
 });

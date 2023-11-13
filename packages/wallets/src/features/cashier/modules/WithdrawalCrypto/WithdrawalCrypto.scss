@@ -1,4 +1,5 @@
 .wallets-withdrawal-crypto {
+    width: 100%;
     max-width: 58.8rem;
     display: flex;
     flex-direction: column;
@@ -12,6 +13,14 @@
     &-container {
         position: relative;
         display: flex;
+        justify-content: center;
+        width: 100%;
+
+        @include mobile {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
     }
 
     & .wallets-textfield {

@@ -2,13 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ClosingAccountPendingContent from '../closing-account-pending-content';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
-    return {
-        ...original_module,
-        Icon: jest.fn(() => <div>mockedIcon</div>),
-    };
-});
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Icon: jest.fn(() => <div>mockedIcon</div>),
+}));
 
 describe('ClosingAccountPendingContent', () => {
     const mock_props: React.ComponentProps<typeof ClosingAccountPendingContent> = {

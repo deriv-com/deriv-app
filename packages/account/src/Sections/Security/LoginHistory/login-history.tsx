@@ -23,7 +23,7 @@ const LoginHistory = observer(() => {
 
     return (
         <ThemedScrollbars is_bypassed={is_mobile} className='login-history'>
-            {login_history.length && <LoginHistoryContent data={login_history} />}
+            <LoginHistoryContent data={login_history} />
         </ThemedScrollbars>
     );
 });

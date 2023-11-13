@@ -12,6 +12,7 @@ const SelfExclusionArticle = observer(() => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
     const { ui } = useStore();
     const { is_desktop, is_mobile } = ui;
+
     return (
         <AccountArticle
             title={localize('Trading limits and self-exclusion')}

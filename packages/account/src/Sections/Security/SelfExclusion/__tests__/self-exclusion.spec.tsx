@@ -61,7 +61,7 @@ const mock = {
 };
 let store = mockStore(mock);
 describe('<SelfExclusion />', () => {
-    let mock_props = {
+    let mock_props: React.ComponentProps<typeof SelfExclusion> = {
         overlay_ref: document.createElement('div'),
         setIsOverlayShown: jest.fn(),
     };

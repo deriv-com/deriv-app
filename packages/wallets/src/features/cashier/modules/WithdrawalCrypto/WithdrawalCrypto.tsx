@@ -1,10 +1,8 @@
 import React from 'react';
-import { InlineMessage, WalletText } from '../../../../components';
-import './WithdrawalCrypto.scss';
-import { useActiveWalletAccount } from '@deriv/api';
-import { WithdrawalCryptoForm, WithdrawalDisclaimer } from './components';
-import { Formik } from 'formik';
+import { WalletText } from '../../../../components';
 import { TransactionStatus } from '../TransactionStatus';
+import { WithdrawalCryptoForm, WithdrawalDisclaimer } from './components';
+import './WithdrawalCrypto.scss';
 
 const WithdrawalCrypto = () => {
     return (

@@ -13,7 +13,6 @@ export type TForm = {
     cryptoAddress: string;
     cryptoAmount: string;
     fiatAmount: string;
-    withdrawAmount?: number;
 };
 
 const validateCryptoAddress = (address: string) => {
@@ -55,6 +54,7 @@ const WithdrawalCryptoForm = () => {
                 mutate({
                     address: values.cryptoAddress,
                     amount: parseFloat(parseFloat(values.cryptoAmount).toFixed(FRACTIONAL_DIGITS_CRYPTO)),
+                    /* verification_code goes here */
                 })
             }
         >

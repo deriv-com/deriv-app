@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { useActiveWalletAccount, useCurrencyConfig, useExchangeRate } from '@deriv/api';

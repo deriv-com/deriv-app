@@ -60,7 +60,7 @@ const VideoStream = ({
     return (
         <iframe
             allow={`accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture${
-                disable_picture_in_picture ? " 'none'" : ' *'
+                disable_picture_in_picture ? ' "none"' : ' *'
             };`}
             allowFullScreen={allow_full_screen}
             src={`https://iframe.cloudflarestream.com/${src}?${params}`}

@@ -41,7 +41,6 @@ const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: T
                 controls
                 disable_picture_in_picture
                 height={is_mobile ? 184.5 : 270}
-                letterbox_color='transparent' // unsets the default black background of the iframe
                 loop
                 src={getDescriptionVideoId(selected_contract_type, is_dark_theme)}
                 test_id={data_testid}

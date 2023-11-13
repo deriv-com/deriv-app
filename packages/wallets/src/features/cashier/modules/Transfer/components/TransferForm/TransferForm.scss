@@ -3,6 +3,10 @@
     flex-direction: column;
     align-items: center;
 
+    @include mobile {
+        align-self: flex-start;
+    }
+
     &__form {
         display: flex;
         flex-direction: column;
@@ -21,6 +25,7 @@
 
                 @include mobile {
                     width: 100%;
+                    grid-template-columns: 60% 40%;
                 }
             }
         }

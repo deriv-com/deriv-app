@@ -388,6 +388,12 @@
     display: none;
 }
 
+.dc-modal-header {
+    &--cfd-trade-modal {
+        border-bottom: 2px solid var(--general-section-5);
+    }
+}
+
 .cfd-trade-modal-container {
     width: inherit;
     overflow-y: scroll;

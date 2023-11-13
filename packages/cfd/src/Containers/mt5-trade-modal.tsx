@@ -65,7 +65,7 @@ const MT5TradeModal = observer(
                         is_open={is_open}
                         title={localize('Trade')}
                         toggleModal={toggleModal}
-                        should_header_stick_body={false}
+                        className='cfd-trade-modal'
                         width='600px'
                         exit_classname='cfd-modal--custom-exit'
                     >

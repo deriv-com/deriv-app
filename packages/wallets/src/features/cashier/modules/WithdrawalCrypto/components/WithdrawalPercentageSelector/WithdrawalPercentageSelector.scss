@@ -30,6 +30,7 @@
             height: 2.4rem;
             background-color: #f2f3f4;
             cursor: pointer;
+            transition: background-color 0.2s ease;
 
             &--active {
                 background-color: #4bb4b3;

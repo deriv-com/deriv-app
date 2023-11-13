@@ -49,9 +49,10 @@ describe('VideoStream component', () => {
         expect(iframe_src?.includes('autoplay=true')).toBeTruthy();
     });
     it('should render iframe with a video that starts playing from the specified start_time', () => {
-        render(<VideoStream {...mocked_props} start_time='0h00m20s' />);
+        const start_time = '0h00m20s';
+        render(<VideoStream {...mocked_props} start_time={start_time} />);
         const iframe_src = screen.getByTestId('dt_video_stream').getAttribute('src');
-        expect(iframe_src?.includes('startTime=0h00m20s')).toBeTruthy();
+        expect(iframe_src?.includes(`startTime=${start_time}`)).toBeTruthy();
     });
     it('should render iframe with a muted video', () => {
         render(<VideoStream {...mocked_props} muted />);
@@ -59,18 +60,24 @@ describe('VideoStream component', () => {
         expect(iframe_src?.includes('muted=true')).toBeTruthy();
     });
     it('should render iframe with a video that has a poster, an ad, captions, and red primary color', () => {
+        const poster_url = 'test.png';
+        const ad_url = 'test.mp4';
+        const captions_url = 'captions.vtt';
+        const primary_color = 'red';
         render(
             <VideoStream
                 {...mocked_props}
-                poster='test.png'
-                ad_url='test.mp4'
-                default_text_track='captions.vtt'
-                primary_color='red'
+                poster={poster_url}
+                ad_url={ad_url}
+                default_text_track={captions_url}
+                primary_color={primary_color}
             />
         );
         const iframe_src = screen.getByTestId('dt_video_stream').getAttribute('src');
         expect(
-            iframe_src?.includes('poster=test.png&ad-url=test.mp4&defaultTextTrack=captions.vtt&primaryColor=red')
+            iframe_src?.includes(
+                `poster=${poster_url}&ad-url=${ad_url}&defaultTextTrack=${captions_url}&primaryColor=${primary_color}`
+            )
         ).toBeTruthy();
     });
 });

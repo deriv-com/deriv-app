@@ -93,7 +93,7 @@ test.describe('Personal Details', () => {
         await page.waitForSelector('[data-testid=form-footer-container] button svg');
     });
 
-    test('submitting the changed form with invalid data', async ({ page, baseURL }) => {
+    test('should show error message when submitting form with invalid phone number', async ({ page, baseURL }) => {
         await setupMocks({
             baseURL,
             page,

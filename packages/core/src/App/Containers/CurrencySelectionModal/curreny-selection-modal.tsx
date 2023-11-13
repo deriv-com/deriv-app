@@ -50,7 +50,6 @@ const CurrencySelectionModal = ({
 
     const hasSetCurrency = useHasSetCurrency();
     let timeout: ReturnType<typeof setTimeout>;
-
     return (
         <Modal is_open={is_visible} toggleModal={closeModal} width='422px' height='422px'>
             <div className='currency-selection-modal__header'>
@@ -63,11 +62,10 @@ const CurrencySelectionModal = ({
                 {(account_list as AccountListDetail[])
                     .filter(
                         acc =>
-                            !!acc.is_disabled === false &&
-                            ((!acc.is_virtual && selected_region === 'Non-EU' && acc.loginid.startsWith('CR')) ||
-                                (selected_region === 'EU' && acc.loginid.startsWith('MF')))
+                            (!acc.is_virtual && selected_region === 'Non-EU' && acc.loginid.startsWith('CR')) ||
+                            (selected_region === 'EU' && acc.loginid.startsWith('MF'))
                     )
-                    .map(({ icon, loginid }) => {
+                    .map(({ icon, loginid, is_disabled }) => {
                         const { balance, currency } = accounts[loginid];
                         const is_selected = current_loginid === loginid;
                         return (
@@ -75,8 +73,10 @@ const CurrencySelectionModal = ({
                                 key={loginid}
                                 className={classNames('currency-item-card', {
                                     'currency-item-card--active': is_selected,
+                                    'currency-item-card--disabled': is_disabled,
                                 })}
                                 onClick={async () => {
+                                    if (is_disabled) return;
                                     if (loginid !== current_loginid) {
                                         await switchAccount(loginid);
                                     }

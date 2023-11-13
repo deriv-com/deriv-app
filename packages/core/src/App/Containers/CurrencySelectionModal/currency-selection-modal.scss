@@ -35,6 +35,10 @@
             &--active {
                 background: var(--state-active);
             }
+            &--disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
 
             &__icons {
                 margin-right: 1.6rem;

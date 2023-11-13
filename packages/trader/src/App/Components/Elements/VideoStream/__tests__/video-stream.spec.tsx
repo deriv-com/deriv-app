@@ -48,4 +48,29 @@ describe('VideoStream component', () => {
         const iframe_src = screen.getByTestId('dt_video_stream').getAttribute('src');
         expect(iframe_src?.includes('autoplay=true')).toBeTruthy();
     });
+    it('should render iframe with a video that starts playing from the specified start_time', () => {
+        render(<VideoStream {...mocked_props} start_time='0h00m20s' />);
+        const iframe_src = screen.getByTestId('dt_video_stream').getAttribute('src');
+        expect(iframe_src?.includes('startTime=0h00m20s')).toBeTruthy();
+    });
+    it('should render iframe with a muted video', () => {
+        render(<VideoStream {...mocked_props} muted />);
+        const iframe_src = screen.getByTestId('dt_video_stream').getAttribute('src');
+        expect(iframe_src?.includes('muted=true')).toBeTruthy();
+    });
+    it('should render iframe with a video that has a poster, an ad, captions, and red primary color', () => {
+        render(
+            <VideoStream
+                {...mocked_props}
+                poster='test.png'
+                ad_url='test.mp4'
+                default_text_track='captions.vtt'
+                primary_color='red'
+            />
+        );
+        const iframe_src = screen.getByTestId('dt_video_stream').getAttribute('src');
+        expect(
+            iframe_src?.includes('poster=test.png&ad-url=test.mp4&defaultTextTrack=captions.vtt&primaryColor=red')
+        ).toBeTruthy();
+    });
 });

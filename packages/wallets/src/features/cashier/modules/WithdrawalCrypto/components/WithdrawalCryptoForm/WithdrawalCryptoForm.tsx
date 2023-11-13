@@ -105,7 +105,7 @@ const WithdrawalCryptoForm = () => {
                             }}
                         />
                         <WithdrawalCryptoAmountConverter activeWallet={activeWallet} />
-                        <div className='wallets-withdrawal-crypto__submit'>
+                        <div className='wallets-withdrawal-crypto-form__submit'>
                             <WalletButton disabled={!!errors || isSubmitting} size='lg' text='Withdraw' type='submit' />
                         </div>
                     </form>

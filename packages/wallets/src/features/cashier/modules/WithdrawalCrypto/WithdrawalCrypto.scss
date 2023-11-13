@@ -9,10 +9,9 @@
         gap: 1.6rem;
     }
 
-    &__submit {
-        width: 100%;
+    &-container {
+        position: relative;
         display: flex;
-        justify-content: flex-end;
     }
 
     & .wallets-textfield {

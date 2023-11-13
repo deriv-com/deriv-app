@@ -1,10 +1,10 @@
 import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
-import { Loader } from '../../../../components';
-import { TransferFormDropdown } from './components/TransferFormDropdown';
-import { TransferFormInputField } from './components/TransferFormInputField';
-import { useTransfer } from './provider';
-import type { TInitialTransferFormValues } from './types';
+import { Loader } from '../../../../../../components';
+import { useTransfer } from '../../provider';
+import type { TInitialTransferFormValues } from '../../types';
+import { TransferFormDropdown } from '../TransferFormDropdown';
+import { TransferFormInputField } from '../TransferFormInputField';
 import './TransferForm.scss';
 
 const TransferForm = () => {

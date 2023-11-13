@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { WalletText } from '../../../../../../components';
 import './WithdrawalPercentageSelector.scss';
 
 type TProps = {
+    amount?: string;
     balance: number;
     message?: string;
-    onPercentageChange: () => void;
+    onPercentageChange: (per: number) => void;
     percentageBlockCount?: number;
 };
 
@@ -29,11 +30,24 @@ const getPercentageBlocks = (fraction: number, blockCount: number, onClick: (val
     });
 };
 
-const WithdrawalPercentageSelector: React.FC<TProps> = ({ message, percentageBlockCount = 4 }) => {
+const WithdrawalPercentageSelector: React.FC<TProps> = ({
+    amount,
+    message,
+    onPercentageChange,
+    percentageBlockCount = 4,
+}) => {
     const [fraction, setFraction] = useState(0);
 
+    useEffect(() => {
+        onPercentageChange(fraction);
+    }, [fraction]);
+
+    useEffect(() => {
+        if (!amount) setFraction(0);
+    }, [amount]);
+
     const handleOnClick = (value: number) => {
-        setFraction(oldFraction => (oldFraction === value ? oldFraction - 0.25 : value));
+        setFraction(oldFraction => (oldFraction >= value ? value - 0.25 : value));
     };
 
     return (

@@ -7,6 +7,10 @@ import { WalletTextField } from '../../../../../../../../components';
 import type { TForm } from '../../WithdrawalCryptoForm';
 import './WithdrawalCryptoAmountConverter.scss';
 
+type TProps = {
+    activeWallet: typeof useActiveWalletAccount['data'];
+};
+
 const helperMessageMapper = {
     invalidInput: 'Should be a valid number.',
     insufficientFunds: 'Insufficient funds',
@@ -16,12 +20,11 @@ const helperMessageMapper = {
     decimalPlacesExceeded: (limit: number) => `Up to ${limit} decimal places are allowed.`,
 };
 
-const WithdrawalCryptoAmountConverter = () => {
-    const { data: activeWallet } = useActiveWalletAccount();
+const WithdrawalCryptoAmountConverter = ({ activeWallet }: TProps) => {
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
     const { data: currencyConfig, getConfig } = useCurrencyConfig();
     const [isCryptoInputActive, SetIsCryptoInputActive] = useState(false);
-    const { errors, setValues, values } = useFormikContext<TForm>();
+    const { errors, setFieldValue, setValues, values } = useFormikContext<TForm>();
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency ? getConfig(activeWallet?.currency)?.fractional_digits : 2;
     const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
 
@@ -45,7 +48,7 @@ const WithdrawalCryptoAmountConverter = () => {
         if (activeWallet?.balance && amount > activeWallet?.balance) return helperMessageMapper.insufficientFunds;
 
         const fractionalPart = value.split('.');
-        if (FRACTIONAL_DIGITS_CRYPTO && fractionalPart && fractionalPart[1].length > FRACTIONAL_DIGITS_CRYPTO)
+        if (FRACTIONAL_DIGITS_CRYPTO && fractionalPart[1] && fractionalPart[1].length > FRACTIONAL_DIGITS_CRYPTO)
             return helperMessageMapper.decimalPlacesExceeded(FRACTIONAL_DIGITS_CRYPTO);
 
         return undefined;
@@ -57,7 +60,7 @@ const WithdrawalCryptoAmountConverter = () => {
         if (Number.isNaN(parseFloat(value))) return helperMessageMapper.invalidInput;
 
         const fractionalPart = value.split('.');
-        if (FRACTIONAL_DIGITS_FIAT && fractionalPart && fractionalPart[1].length > FRACTIONAL_DIGITS_FIAT)
+        if (FRACTIONAL_DIGITS_FIAT && fractionalPart[1] && fractionalPart[1].length > FRACTIONAL_DIGITS_FIAT)
             return helperMessageMapper.decimalPlacesExceeded(FRACTIONAL_DIGITS_FIAT);
 
         return undefined;

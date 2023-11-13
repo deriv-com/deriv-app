@@ -3,6 +3,7 @@ import { Field, FieldProps, Formik } from 'formik';
 import { WalletButton, WalletTextField } from '../../../../../../components/Base';
 import { WithdrawalPercentageSelector } from '../WithdrawalPercentageSelector';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
 import './WithdrawalCryptoForm.scss';
 
 const MIN_ADDRESS_LENGTH = 25;
@@ -26,6 +27,11 @@ const validateCryptoAddress = (address: string) => {
 };
 
 const WithdrawalCryptoForm = () => {
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { data: currencyConfig, getConfig } = useCurrencyConfig();
+    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency ? getConfig(activeWallet?.currency)?.fractional_digits : 2;
+    const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
+
     return (
         <Formik
             initialValues={{
@@ -51,8 +57,27 @@ const WithdrawalCryptoForm = () => {
                                 )}
                             </Field>
                         </div>
-                        <WithdrawalPercentageSelector balance={12} message='blah! blah1 yada!' />
-                        <WithdrawalCryptoAmountConverter />
+                        <WithdrawalPercentageSelector
+                            amount={values.cryptoAmount}
+                            balance={12}
+                            message={`${
+                                !Number.isNaN(parseFloat(values.cryptoAmount)) && activeWallet?.balance
+                                    ? (parseFloat(values.cryptoAmount) * 100) / activeWallet?.balance
+                                    : 0
+                            }% of available balance (${activeWallet?.balance.toFixed(FRACTIONAL_DIGITS_CRYPTO)} ${
+                                activeWallet?.currency
+                            })`}
+                            onPercentageChange={fraction => {
+                                setValues({
+                                    ...values,
+                                    cryptoAmount:
+                                        !!fraction && activeWallet?.balance
+                                            ? (fraction * activeWallet?.balance).toFixed(FRACTIONAL_DIGITS_CRYPTO)
+                                            : '',
+                                });
+                            }}
+                        />
+                        <WithdrawalCryptoAmountConverter activeWallet={activeWallet} />
                         <div className='wallets-withdrawal-crypto__submit'>
                             <WalletButton disabled={!!errors || isSubmitting} size='lg' text='Withdraw' type='submit' />
                         </div>

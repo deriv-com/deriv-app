@@ -20,7 +20,7 @@ const useLoginHistory = (payload?: TUseLoginHistoryPayload) => {
     const modified_login_history = useMemo(
         () => ({
             ...data?.login_history,
-            formatted_data: getLoginHistoryFormattedData(data?.login_history || []),
+            formatted_data: getLoginHistoryFormattedData(data?.login_history ?? []),
         }),
         [data?.login_history]
     );

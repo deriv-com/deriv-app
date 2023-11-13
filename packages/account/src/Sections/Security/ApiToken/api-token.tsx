@@ -10,7 +10,7 @@ import { TToken } from 'Types';
 import { ApiTokenContext, ApiTokenArticle, ApiTokenCard, ApiTokenTable } from 'Components/api-token';
 import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import LoadErrorMessage from 'Components/load-error-message';
-import { getApiTokenCardDetails, TOKEN_LIMITS } from 'Constants/api-token-card-details';
+import { API_TOKEN_CARD_DETAILS, TOKEN_LIMITS } from 'Constants/api-token-card-details';
 import './api-token.scss';
 
 type AptTokenState = {
@@ -181,8 +181,6 @@ const ApiToken = observer(() => {
         deleteToken,
     };
 
-    const api_token_card_array = getApiTokenCardDetails();
-
     return (
         <ApiTokenContext.Provider value={context_value}>
             <section className='da-api-token'>
@@ -209,7 +207,7 @@ const ApiToken = observer(() => {
                                             }
                                         >
                                             <div className='da-api-token__checkbox-wrapper'>
-                                                {api_token_card_array.map(card => (
+                                                {API_TOKEN_CARD_DETAILS.map(card => (
                                                     <ApiTokenCard
                                                         key={card.name}
                                                         name={card.name}

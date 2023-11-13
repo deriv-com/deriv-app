@@ -27,6 +27,7 @@ export default class MyAdsStore extends BaseStore {
     is_form_loading = false;
     is_table_loading = false;
     is_loading = false;
+    maximum_order_amount = 0;
     p2p_advert_information = {};
     show_ad_form = false;
     selected_ad_id = '';
@@ -60,6 +61,7 @@ export default class MyAdsStore extends BaseStore {
             is_form_loading: observable,
             is_table_loading: observable,
             is_loading: observable,
+            maximum_order_amount: observable,
             p2p_advert_information: observable,
             selected_ad_id: observable,
             should_show_add_payment_method: observable,
@@ -101,6 +103,7 @@ export default class MyAdsStore extends BaseStore {
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
             setIsTableLoading: action.bound,
+            setMaximumOrderAmount: action.bound,
             setP2pAdvertInformation: action.bound,
             setSelectedAdId: action.bound,
             setShouldShowAddPaymentMethod: action.bound,
@@ -529,6 +532,10 @@ export default class MyAdsStore extends BaseStore {
 
     setIsTableLoading(is_table_loading) {
         this.is_table_loading = is_table_loading;
+    }
+
+    setMaximumOrderAmount(maximum_order_amount) {
+        this.maximum_order_amount = maximum_order_amount;
     }
 
     setP2pAdvertInformation(p2p_advert_information) {

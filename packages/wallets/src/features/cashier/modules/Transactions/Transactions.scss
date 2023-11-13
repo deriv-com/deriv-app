@@ -1,7 +1,6 @@
 .wallets-transactions {
     $root: &;
-    position: relative;
-    width: 100%;
+    width: 100vw;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -17,14 +16,19 @@
     &--crypto-mobile {
         @include mobile {
             padding-top: 11.2rem; // accounting for the list header when it's a crypto wallet on mobile
+
+            #{$root}__header {
+                margin-top: -11.2rem; // make absolutely positioned header ignore parent's padding
+            }
         }
     }
 
     &__header {
         position: absolute;
-        top: 0; // make absolutely positioned header ignore parent's padding
+        margin-top: -7.2rem; // make absolutely positioned header ignore parent's padding
         width: 100%;
         max-width: 80rem;
+        padding: 2.4rem 0 0.8rem;
         display: flex;
         gap: 1.6rem;
         justify-content: flex-end;
@@ -32,6 +36,7 @@
         background-color: var(--system-light-8-primary-background, #fff);
 
         @include mobile {
+            padding: 1.6rem;
             flex-direction: column;
         }
     }

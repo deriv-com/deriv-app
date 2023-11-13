@@ -2,7 +2,7 @@ import React from 'react';
 import TransferForm from './components/TransferForm/TransferForm';
 import { TransferProvider } from './provider';
 
-const TransferFormContainer = () => {
+const Transfer = () => {
     return (
         <TransferProvider>
             <TransferForm />
@@ -10,4 +10,4 @@ const TransferFormContainer = () => {
     );
 };
 
-export default TransferFormContainer;
+export default Transfer;

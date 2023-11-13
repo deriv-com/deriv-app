@@ -11,10 +11,12 @@ import { ad_type } from 'Constants/floating-rate';
 import AdStatus from 'Pages/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdType from './ad-type.jsx';
 
 const MyAdsRowRenderer = observer(({ row: advert }) => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     const {
         account_currency,
@@ -33,6 +35,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         remaining_amount,
         remaining_amount_display,
         type,
+        visibility_status = [],
     } = advert;
 
     // Use separate is_advert_active state to ensure value is updated
@@ -65,6 +68,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
             my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
         }
     };
+
     const onClickAdd = () => {
         if (is_advert_listed) {
             my_ads_store.showQuickAddModal(advert);
@@ -84,10 +88,36 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     const handleOnEdit = () =>
         enable_action_point && floating_rate_store.rate_type !== rate_type ? onClickSwitchAd() : onClickEdit();
 
+    const should_show_tooltip_icon =
+        (visibility_status?.length === 1 && visibility_status[0] !== 'advert_inactive') || visibility_status.length > 1;
+
+    const show_warning_icon = enable_action_point || should_show_tooltip_icon || !general_store.is_listed;
+
+    const getErrorCodes = () => {
+        let updated_visibility_status = [...visibility_status];
+        if (!is_advert_listed && !updated_visibility_status.includes('advertiser_ads_paused'))
+            updated_visibility_status = [...updated_visibility_status, 'advertiser_ads_paused'];
+        if (!enable_action_point && updated_visibility_status.includes('advert_inactive'))
+            updated_visibility_status = updated_visibility_status.filter(status => status !== 'advert_inactive');
+        return updated_visibility_status;
+    };
+
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const onClickTooltipIcon = () => {
+        showModal({
+            key: 'AdErrorTooltipModal',
+            props: {
+                visibility_status: getErrorCodes(),
+                account_currency,
+                advert_type: type,
+                remaining_amount,
+            },
+        });
+    };
 
     if (isMobile()) {
         return (
@@ -133,13 +163,17 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             <Text color={ad_pause_color} weight='bold'>
                                 {advert_type} {account_currency}
                             </Text>
-                            {enable_action_point ? (
+                            {show_warning_icon ? (
                                 <div className='my-ads-table__status-warning'>
                                     <div style={{ marginRight: '0.8rem' }}>
                                         <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                                     </div>
-
-                                    <Icon icon='IcAlertWarning' />
+                                    <Icon
+                                        icon='IcAlertWarning'
+                                        onClick={onClickTooltipIcon}
+                                        className={!!is_advert_active && 'my-ads-table__status-warning__icon'}
+                                        data_testid='dt_visibility_alert_icon'
+                                    />
                                 </div>
                             ) : (
                                 <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
@@ -273,10 +307,16 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                     </div>
                 </Table.Cell>
                 <Table.Cell>
-                    {enable_action_point ? (
+                    {show_warning_icon ? (
                         <div className='my-ads-table__status-warning'>
                             <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
-                            <Icon icon='IcAlertWarning' size={isMobile() ? 28 : 16} />
+                            <Popover alignment='top' message={localize('Ad not listed')}>
+                                <Icon
+                                    icon='IcAlertWarning'
+                                    onClick={onClickTooltipIcon}
+                                    data_testid='dt_visibility_alert_icon'
+                                />
+                            </Popover>
                         </div>
                     ) : (
                         <div className='my-ads-table__status'>

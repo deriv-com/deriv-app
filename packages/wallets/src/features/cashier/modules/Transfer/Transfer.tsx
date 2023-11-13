@@ -1,13 +1,6 @@
 import React from 'react';
-import TransferForm from './components/TransferForm/TransferForm';
-import { TransferProvider } from './provider';
+import { TransferForm } from './TransferForm';
 
-const Transfer = () => {
-    return (
-        <TransferProvider>
-            <TransferForm />
-        </TransferProvider>
-    );
-};
+const Transfer = () => <TransferForm />;
 
 export default Transfer;

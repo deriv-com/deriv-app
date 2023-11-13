@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import useInputATMFormatter from '../../../../../../hooks/useInputATMFormatter';
+import useInputATMFormatter from '../../../../../../../hooks/useInputATMFormatter';
 import './TransferFormInputField.scss';
 
 type TProps = {

@@ -50,7 +50,6 @@ const WithdrawalCryptoForm = () => {
                 cryptoAddress: '',
                 cryptoAmount: '',
                 fiatAmount: '',
-                withdrawAmount: undefined,
             }}
             onSubmit={values =>
                 mutate({
@@ -110,7 +109,12 @@ const WithdrawalCryptoForm = () => {
                             getCurrencyConfig={getConfig}
                         />
                         <div className='wallets-withdrawal-crypto-form__submit'>
-                            <WalletButton disabled={!!errors || isSubmitting} size='lg' text='Withdraw' type='submit' />
+                            <WalletButton
+                                disabled={Object.keys(errors).length !== 0 || !values.cryptoAmount || isSubmitting}
+                                size='lg'
+                                text='Withdraw'
+                                type='submit'
+                            />
                         </div>
                     </form>
                 );

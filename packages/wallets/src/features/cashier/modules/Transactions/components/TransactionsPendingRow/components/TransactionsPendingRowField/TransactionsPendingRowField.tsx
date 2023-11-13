@@ -75,7 +75,9 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
                     </WalletText>
                 </Tooltip>
             ) : (
-                <WalletText {...{ color: 'red', size: 'xs', weight: 'bold', ...valueTextProps }}>{value}</WalletText>
+                <WalletText color='red' size='xs' weight='bold' {...valueTextProps}>
+                    {value}
+                </WalletText>
             )}
         </div>
     );

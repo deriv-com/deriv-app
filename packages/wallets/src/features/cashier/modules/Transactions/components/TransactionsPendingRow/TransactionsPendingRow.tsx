@@ -48,7 +48,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     },
                 ]}
                 description='Are you sure you want to cancel this transaction?'
-                hideCloseButton={true}
+                hideCloseButton
                 title='Cancel transaction'
             />,
             { defaultRootId: 'wallets_modal_root' }
@@ -194,7 +194,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
 
             {isMobile && transaction.is_valid_to_cancel && (
                 <WalletButton
-                    isFullWidth={true}
+                    isFullWidth
                     onClick={onCancelButtonClick}
                     size='sm'
                     text='Cancel transaction'

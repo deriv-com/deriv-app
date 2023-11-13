@@ -48,9 +48,7 @@ const usePOI = () => {
     const next_poi = useMemo(() => {
         const user_country_code = get_settings_data?.citizen || get_settings_data?.country_code;
         const matching_residence_data = residence_list_data?.find(r => r.value === user_country_code);
-        const is_idv_supported =
-            matching_residence_data?.identity?.services?.idv?.is_country_supported &&
-            !account_status_data?.is_idv_revoked;
+        const is_idv_supported = matching_residence_data?.identity?.services?.idv?.is_country_supported;
         const is_onfido_supported = matching_residence_data?.identity?.services?.onfido?.documents_supported;
         const services = authentication_data?.identity?.services;
         const idv_submission_left = services?.idv?.submissions_left ?? 0;

@@ -15,6 +15,7 @@ import type {
     useMT5AccountsList,
     useSortedMT5Accounts,
     useTransactions,
+    useTransferBetweenAccounts,
     useWalletAccountsList,
 } from '@deriv/api';
 
@@ -36,6 +37,9 @@ export namespace THooks {
     export type CryptoTransactions = NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];
     export type Transactions = NonNullable<ReturnType<typeof useTransactions>['data']>[number];
+    export type TransferAccount = NonNullable<
+        NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
+    >[number];
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace TPlatforms {

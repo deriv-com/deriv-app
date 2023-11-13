@@ -2,7 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+
+    @include mobile {
+        align-self: flex-start;
+    }
 
     &__form {
         display: flex;
@@ -22,6 +25,7 @@
 
                 @include mobile {
                     width: 100%;
+                    grid-template-columns: 60% 40%;
                 }
             }
         }

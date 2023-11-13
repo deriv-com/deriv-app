@@ -9,7 +9,7 @@ const useAvailableWallets = () => {
         },
     });
 
-    const modified_data = useMemo(() => {
+    const modifiedData = useMemo(() => {
         if (!data?.available_accounts?.wallets) return;
 
         return data.available_accounts.wallets;
@@ -17,7 +17,7 @@ const useAvailableWallets = () => {
 
     return {
         /** List of available wallet accounts to create */
-        data: modified_data,
+        data: modifiedData,
         ...rest,
     };
 };

@@ -1,11 +1,15 @@
-export const handlePasswordScores = (passwordValue: string) => {
-    let score = 0;
+export type Score = 0 | 1 | 2 | 3 | 4;
 
+export const passwordPattern = '^(?=.*[a-z])(?=.*d)(?=.*[A-Z])[!-~]{8,25}';
+
+export const handlePasswordScores = (passwordValue: string) => {
+    const hasMinLength = passwordValue.length >= 8 && passwordValue.length <= 25;
     const hasUpperCase = /[A-Z]/.test(passwordValue);
     const hasLowerCase = /[a-z]/.test(passwordValue);
     const hasDigit = /[0-9]/.test(passwordValue);
     const hasSpecialChar = /[^A-Za-z0-9]/.test(passwordValue);
-    const hasMinLength = passwordValue.length >= 8 && passwordValue.length <= 25;
+
+    let score = 0;
 
     if (!hasMinLength) {
         score++;
@@ -21,7 +25,6 @@ export const handlePasswordScores = (passwordValue: string) => {
 
     return Math.min(score, 3);
 };
-export type Score = 0 | 1 | 2 | 3 | 4;
 
 export const passwordFeedback: Partial<Record<Score, string>> = {
     1: 'You should enter 8 - 25 characters',

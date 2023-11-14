@@ -13,10 +13,10 @@ export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMes
 
 const WalletTextField: FC<WalletTextFieldProps> = ({
     defaultValue = '',
-    helperMessage,
     inputClassName,
     label,
     maxLength,
+    message,
     name = 'wallet-textfield',
     onChange,
     renderRightIcon,
@@ -51,9 +51,7 @@ const WalletTextField: FC<WalletTextFieldProps> = ({
                 <div className='wallets-textfield__icon'>{renderRightIcon?.()}</div>
             </div>
             <div className='wallets-textfield__message-container'>
-                {showMessage && (
-                    <HelperMessage helperMessage={helperMessage} inputValue={value} maxLength={maxLength} />
-                )}
+                {showMessage && <HelperMessage inputValue={value} maxLength={maxLength} message={message} />}
             </div>
         </div>
     );

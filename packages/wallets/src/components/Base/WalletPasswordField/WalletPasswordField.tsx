@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
-import { handlePasswordScores, passwordFeedback, Score } from './PasswordFieldUtils';
-import PasswordMeter, { PasswordMeterProps } from './PasswordMeter';
+import { handlePasswordScores, passwordFeedback, passwordPattern, Score } from './PasswordFieldUtils';
+import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-interface WalletPasswordFieldProps extends WalletTextFieldProps, PasswordMeterProps {
+interface WalletPasswordFieldProps extends WalletTextFieldProps {
     password: string;
     shouldDisablePasswordMeter?: boolean;
 }
@@ -22,8 +22,8 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     return (
         <div className='wallets-password'>
             <WalletTextField
-                helperMessage={passwordFeedback[passwordScore as Score]}
-                pattern='^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])[!-~]{8,25}'
+                message={passwordFeedback[passwordScore as Score]}
+                pattern={passwordPattern}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />
                 )}
@@ -32,7 +32,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 value={password}
                 {...rest}
             />
-            {!shouldDisablePasswordMeter && <PasswordMeter score={passwordScore} />}
+            {!shouldDisablePasswordMeter && <PasswordMeter score={passwordScore as Score} />}
         </div>
     );
 };

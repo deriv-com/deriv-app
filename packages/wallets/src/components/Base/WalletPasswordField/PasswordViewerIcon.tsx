@@ -12,7 +12,7 @@ const PasswordViewerIcon: React.FC<PasswordViewerIconProps> = ({ setViewPassword
     <IconButton
         className='wallets-password__icon'
         color='transparent'
-        icon={viewPassword ? <PasswordHide /> : <PasswordShow />}
+        icon={viewPassword ? <PasswordShow /> : <PasswordHide />}
         isRound
         onClick={() => setViewPassword(!viewPassword)}
         size='sm'

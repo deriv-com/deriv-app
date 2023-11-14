@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
-import { handlePasswordScores, passwordFeedback, passwordPattern, Score } from './PasswordFieldUtils';
+import { passwordChecker, passwordPattern, Score } from './PasswordFieldUtils';
 import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
@@ -17,12 +17,12 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     ...rest
 }) => {
     const [viewPassword, setViewPassword] = useState(false);
-    const passwordScore = password ? handlePasswordScores(password) : 0;
+    const { message, score } = passwordChecker(password);
 
     return (
         <div className='wallets-password'>
             <WalletTextField
-                message={passwordFeedback[passwordScore as Score]}
+                message={message}
                 pattern={passwordPattern}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />
@@ -32,7 +32,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 value={password}
                 {...rest}
             />
-            {!shouldDisablePasswordMeter && <PasswordMeter score={passwordScore as Score} />}
+            {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
         </div>
     );
 };

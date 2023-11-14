@@ -1,0 +1,54 @@
+.wallets-transfer-form-account-card {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 1;
+
+    &--is-input {
+        .wallets-transfer-form-account-card__icon {
+            margin-right: 0.8rem;
+        }
+    }
+
+    &--is-modal {
+        .wallets-transfer-form-account-card__icon {
+            margin-right: 1.6rem;
+        }
+    }
+
+    @include mobile {
+        &--is-input {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.4rem;
+
+            .wallets-transfer-form-account-card__icon {
+                margin-right: 0.4rem;
+            }
+        }
+
+        &--is-modal {
+            flex-direction: row;
+            align-items: center;
+
+            .wallets-transfer-form-account-card__icon {
+                margin-right: 0.8rem;
+            }
+        }
+    }
+
+    &__icon-with-badge {
+        display: flex;
+        align-items: end;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    &__modal-badge {
+        margin-left: 1rem;
+    }
+}

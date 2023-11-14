@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { TURBOS, VANILLALONG } from '@deriv/shared';
+import { clickAndKeyEventHandler, TURBOS, VANILLALONG } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
@@ -49,14 +49,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const width = is_mobile ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
     const onClickGlossary = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-        if (e) {
-            e.preventDefault();
-            if (e.type !== 'keydown' || (e.type === 'keydown' && (e as React.KeyboardEvent).key === 'Enter')) {
-                setSelectedTab(TABS.GLOSSARY);
-            }
-        } else {
-            setSelectedTab(TABS.GLOSSARY);
-        }
+        clickAndKeyEventHandler(() => setSelectedTab(TABS.GLOSSARY), e);
     };
 
     React.useEffect(() => {

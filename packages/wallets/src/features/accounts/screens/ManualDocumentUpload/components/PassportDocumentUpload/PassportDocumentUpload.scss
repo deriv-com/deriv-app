@@ -1,0 +1,36 @@
+.wallets-passport-document-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.4rem;
+    width: fit-content;
+
+    &__document-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.7rem;
+
+        @include mobile {
+            gap: 1.6rem;
+        }
+    }
+
+    &__input-group {
+        display: flex;
+        gap: 2.4rem;
+        padding-bottom: 2rem;
+        width: 100%;
+    }
+
+    &__rules {
+        display: flex;
+
+        @include mobile {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            column-gap: 2.4rem;
+            row-gap: 0.8rem;
+        }
+    }
+}

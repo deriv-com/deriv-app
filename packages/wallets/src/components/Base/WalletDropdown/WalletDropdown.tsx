@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { CSSProperties, useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useCombobox } from 'downshift';
 import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
@@ -7,6 +7,7 @@ import { WalletText } from '../WalletText';
 import './WalletDropdown.scss';
 
 type TProps = {
+    helperMessage?: string;
     icon?: React.ReactNode;
     label?: React.ReactNode;
     list: {
@@ -14,17 +15,22 @@ type TProps = {
         value: string;
     }[];
     listHeight?: 'lg' | 'md' | 'sm';
+    maxWidth?: CSSProperties['maxWidth'];
     onSelect: (value: string) => void;
+    showMessage?: boolean;
     type?: 'comboBox' | 'prompt';
     value: string | undefined;
 };
 
 const WalletDropdown: React.FC<TProps> = ({
+    helperMessage,
     icon,
     label,
     list,
     listHeight = 'md',
+    maxWidth = '19.5rem',
     onSelect,
+    showMessage = false,
     type = 'prompt',
     value,
 }) => {
@@ -66,7 +72,7 @@ const WalletDropdown: React.FC<TProps> = ({
     }, [list]);
 
     return (
-        <div className='wallets-dropdown'>
+        <div className='wallets-dropdown' style={{ maxWidth }}>
             <div className='wallets-dropdown__content'>
                 {icon && <div className='wallets-dropdown__icon'>{icon}</div>}
                 <input
@@ -96,6 +102,15 @@ const WalletDropdown: React.FC<TProps> = ({
                 >
                     <ArrowIcon />
                 </button>
+            </div>
+            <div className='wallets-dropdown__message-container'>
+                {showMessage && (
+                    <div className='wallets-dropdown__message'>
+                        <WalletText color='less-prominent' size='xs'>
+                            {helperMessage}
+                        </WalletText>
+                    </div>
+                )}
             </div>
             <ul className={`wallets-dropdown__items wallets-dropdown__items--${listHeight}`} {...getMenuProps()}>
                 {isOpen &&

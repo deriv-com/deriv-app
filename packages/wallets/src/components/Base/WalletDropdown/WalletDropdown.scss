@@ -1,5 +1,5 @@
 .wallets-dropdown {
-    width: 19.5rem;
+    width: 100%;
     position: relative;
 
     @include mobile {
@@ -23,27 +23,35 @@
         width: 100%;
         border-radius: 0.4rem;
         padding: 1rem 1.6rem;
-        border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
-        background: var(--system-light-8-primary-background, #fff);
-        display: flex;
-        gap: 0.8rem;
+        border: 1px solid var(--system-light-5-active-background, #d6dadb);
+        display: inline-flex;
         align-items: center;
+        transition: border-color 0.2s;
+
+        &:hover {
+            border-color: var(--system-light-3-less-prominent-text, #999);
+        }
     }
 
     &__content:has(&__field:focus) {
-        border: 0.1rem solid var(--brand-blue, #85acb0);
+        border: 1px solid var(--brand-blue, #85acb0);
+    }
+
+    &__content:has(&__field:invalid) {
+        border: 1px solid var(--status-light-danger, #ec3f3f);
     }
 
     &__field {
-        min-width: 0; /* this is required to reset input's default width */
-        display: flex;
-        flex-grow: 1;
         font-family: inherit;
         outline: 0;
         font-size: 1.4rem;
         color: var(--system-light-2-general-text, #333);
         transition: border-color 0.2s;
-        cursor: pointer;
+        flex: 1;
+
+        @include mobile {
+            font-size: 1.2rem;
+        }
     }
 
     &__field::placeholder {
@@ -53,12 +61,8 @@
     &__field:placeholder-shown ~ &__label {
         font-size: 1.4rem;
         cursor: text;
-        top: 30%;
+        top: 20%;
         padding: 0;
-    }
-
-    &__field:placeholder-shown ~ &__label--with-icon {
-        left: 4.4rem;
     }
 
     label,
@@ -72,10 +76,17 @@
         background: var(--system-light-8-primary-background, #fff);
         padding-inline: 0.4rem;
         left: 1.6rem;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
 
     &__field:focus ~ &__label {
         color: var(--brand-blue, #85acb0);
+    }
+
+    &__field:invalid ~ &__label {
+        color: var(--status-light-danger, #ec3f3f);
     }
 
     &__items {
@@ -132,5 +143,15 @@
         &--active {
             background: var(--system-light-5-active-background, #d6dadb);
         }
+    }
+
+    &__message-container {
+        height: 2rem;
+        padding: 0.2rem 0rem 0rem 1.6rem;
+        width: 100%;
+    }
+
+    &__message {
+        float: left;
     }
 }

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, forwardRef, InputHTMLAttributes, useState } from 'react';
+import React, { ChangeEvent, CSSProperties, forwardRef, InputHTMLAttributes, useState } from 'react';
 import classNames from 'classnames';
 import MessageContainer, { MessageContainerProps } from './HelperMessage';
 import './WalletTextField.scss';
@@ -7,6 +7,7 @@ export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputEleme
     defaultValue?: string;
     inputClassName?: string;
     label?: string;
+    maxWidth?: CSSProperties['maxWidth'];
     renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
 }
@@ -19,6 +20,7 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
             inputClassName,
             label,
             maxLength,
+            maxWidth = '33rem',
             name = 'wallet-textfield',
             onChange,
             renderRightIcon,
@@ -36,7 +38,7 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
         };
 
         return (
-            <div className='wallets-textfield'>
+            <div className='wallets-textfield' style={{ maxWidth }}>
                 <div className={classNames('wallets-textfield__box', inputClassName)}>
                     <input
                         className='wallets-textfield__field'

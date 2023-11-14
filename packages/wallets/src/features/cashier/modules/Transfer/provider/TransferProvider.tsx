@@ -164,10 +164,6 @@ const appIconMapper = {
         dark: 'IcWalletCTrader',
         light: 'IcWalletCTrader',
     },
-    derivez: {
-        dark: 'IcWalletDerivEZ',
-        light: 'IcWalletDerivEZ',
-    },
     dxtrade: {
         dark: 'IcWalletDerivX',
         light: 'IcWalletDerivX',

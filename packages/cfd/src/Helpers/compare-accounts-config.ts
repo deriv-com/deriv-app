@@ -90,6 +90,19 @@ const getHighlightedIconLabel = (
                     { icon: 'ETF', text: localize('ETF'), highlighted: true },
                 ];
             }
+            if (trading_platforms.platform === CFD_PLATFORMS.CTRADER) {
+                return [
+                    { icon: 'Forex', text: localize('Forex: major/minor'), highlighted: true },
+                    { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
+                    { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
+                    { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
+                    { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
+                    { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                    { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
+                    { icon: 'Baskets', text: localize('Basket indices'), highlighted: true },
+                    { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
+                ];
+            }
             return [
                 { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true },
                 { icon: 'Baskets', text: localize('Baskets'), highlighted: true },
@@ -191,7 +204,7 @@ const getHeaderColor = (shortcode: string) => {
 
 // Config for different Jurisdictions
 const cfd_config = () => ({
-    leverage: '1:1000',
+    leverage: 'Up to 1:1000',
     leverage_description: localize('Maximum leverage'),
     spread: '0.5 pips',
     spread_description: localize('Spreads from'),

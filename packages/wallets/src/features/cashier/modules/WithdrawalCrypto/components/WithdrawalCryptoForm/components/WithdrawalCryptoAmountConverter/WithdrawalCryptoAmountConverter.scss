@@ -6,7 +6,7 @@
 
     @include mobile {
         flex-direction: column;
-        gap: 0.8rem;
+        gap: 0;
     }
 
     &__arrow {
@@ -24,6 +24,7 @@
 
             @include mobile {
                 rotate: 270deg;
+                margin-bottom: 2.2rem;
             }
         }
 

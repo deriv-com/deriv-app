@@ -28,7 +28,6 @@ inputs:
   APP_VERSION:
     description: 'App version'
     required: true
-
 runs:
   using: composite
   steps:
@@ -43,6 +42,7 @@ runs:
         export CA_CRT=${{ inputs.CA_CRT }}
         export APP_NAME="deriv-app"
         export APP_VERSION=${{ inputs.APP_VERSION }}
+      shell: bash
     - name: Build docker image 🐳
       run: docker build -t ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${APP_VERSION} -t ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }} .
 
@@ -51,15 +51,17 @@ runs:
           set -e
           docker run --rm ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }} nginx -t
           echo "docker image validated successfully"
-
+      shell: bash
     - name: Pushing Image to docker hub 🐳
       run: |
           echo ${{ inputs.DOCKERHUB_PASSWORD }}| docker login -u ${{ inputs.DOCKERHUB_USERNAME }} --password-stdin
           docker push ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${APP_VERSION}
           docker push ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }}
+      shell: bash
      - name: Deploy 🚀
         run: |
             git clone https://github.com/binary-com/devops-ci-scripts
             cd devops-ci-scripts/k8s-build_tools
             echo $CA_CRT | base64 --decode > ca.crt
             ./release.sh ${APP_NAME} ${{ github.ref_name }}
+      shell: bash

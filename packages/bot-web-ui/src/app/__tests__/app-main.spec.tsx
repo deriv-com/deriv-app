@@ -42,7 +42,7 @@ describe('App', () => {
         const { container } = render(
             <App
                 passthrough={{
-                    root_store: root_store as unknown as TStores,
+                    root_store: root_store as TStores,
                     WS: mock_ws,
                 }}
             />

@@ -75,6 +75,7 @@ export const priority_toast_messages = [
     'wallets_failed',
     'notify_financial_assessment',
     'additional_kyc_info',
+    'poa_expired',
     'svg_needs_poi_poa',
     'svg_needs_poa',
     'svg_needs_poi',

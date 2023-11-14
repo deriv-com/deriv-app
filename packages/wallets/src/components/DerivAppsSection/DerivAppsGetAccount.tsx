@@ -22,6 +22,7 @@ const DerivAppsGetAccount: React.FC = () => {
     const openSuccessModal = useCallback(() => {
         show(
             <ModalStepWrapper
+                closeOnEscape
                 renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
                 shouldHideHeader={isDesktop}
             >

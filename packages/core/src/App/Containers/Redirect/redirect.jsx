@@ -82,25 +82,25 @@ const Redirect = ({
                 let hash = '';
                 switch (redirect_to) {
                     case '1':
-                        pathname = routes.mt5;
+                        pathname = routes.traders_hub;
                         break;
                     case '10':
-                        pathname = routes.mt5;
+                        pathname = routes.traders_hub;
                         hash = 'real';
                         break;
                     case '11':
-                        pathname = routes.mt5;
+                        pathname = routes.traders_hub;
                         hash = 'demo';
                         break;
                     case '2':
-                        pathname = routes.dxtrade;
+                        pathname = routes.traders_hub;
                         break;
                     case '20':
-                        pathname = routes.dxtrade;
+                        pathname = routes.traders_hub;
                         hash = 'real';
                         break;
                     case '21':
-                        pathname = routes.dxtrade;
+                        pathname = routes.traders_hub;
                         hash = 'demo';
                         break;
                     case '3':
@@ -178,7 +178,7 @@ const Redirect = ({
         case 'trading_platform_investor_password_reset': {
             localStorage.setItem('cfd_reset_password_code', code_param);
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
-            history.push(`${routes.mt5}#${is_demo ? 'demo' : 'real'}#reset-password`);
+            history.push(`${routes.traders_hub}#${is_demo ? 'demo' : 'real'}#reset-password`);
             redirected_to_route = true;
             break;
         }

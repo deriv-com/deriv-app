@@ -2,6 +2,17 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDCompareAccountsDescription from '../cfd-compare-accounts-description';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { MARKET_TYPES } from '@deriv/shared';
+
+type TKeys = keyof typeof MARKET_TYPES;
+
+type TMockedProps = {
+    trading_platforms: {
+        market_type: typeof MARKET_TYPES[TKeys];
+        shortcode: string;
+    };
+    is_demo: boolean;
+};
 
 describe('<CFDCompareAccountsDescription />', () => {
     const mock = mockStore({
@@ -9,9 +20,9 @@ describe('<CFDCompareAccountsDescription />', () => {
             selected_region: 'Non-EU',
         },
     });
-    const mocked_props = {
+    const mocked_props: TMockedProps = {
         trading_platforms: {
-            market_type: 'gaming',
+            market_type: MARKET_TYPES.UNREGULATED,
             shortcode: 'svg',
         },
         is_demo: false,
@@ -55,7 +66,7 @@ describe('<CFDCompareAccountsDescription />', () => {
     });
 
     it('should render content for all market type with svg shortcode', () => {
-        mocked_props.trading_platforms.market_type = 'all';
+        mocked_props.trading_platforms.market_type = MARKET_TYPES.ALL;
 
         render(<CFDCompareAccountsDescription {...mocked_props} />, { wrapper });
         assertContent('Maximum leverage', '0.5 pips', 'Spreads from', 'Counterparty company', 'Jurisdiction');
@@ -67,7 +78,7 @@ describe('<CFDCompareAccountsDescription />', () => {
     });
 
     it('should render content for financial market type with svg shortcode', () => {
-        mocked_props.trading_platforms.market_type = 'financial';
+        mocked_props.trading_platforms.market_type = MARKET_TYPES.FINANCIAL;
         mocked_props.trading_platforms.shortcode = 'svg';
 
         render(<CFDCompareAccountsDescription {...mocked_props} />, { wrapper });
@@ -80,7 +91,6 @@ describe('<CFDCompareAccountsDescription />', () => {
     });
 
     it('should render content for financial market type with vanuatu shortcode', () => {
-        mocked_props.trading_platforms.market_type = 'financial';
         mocked_props.trading_platforms.shortcode = 'vanuatu';
 
         render(<CFDCompareAccountsDescription {...mocked_props} />, { wrapper });
@@ -93,7 +103,6 @@ describe('<CFDCompareAccountsDescription />', () => {
     });
 
     it('should render content for financial market type with labuan shortcode', () => {
-        mocked_props.trading_platforms.market_type = 'financial';
         mocked_props.trading_platforms.shortcode = 'labuan';
 
         render(<CFDCompareAccountsDescription {...mocked_props} />, { wrapper });
@@ -107,7 +116,6 @@ describe('<CFDCompareAccountsDescription />', () => {
     });
 
     it('should render content for financial market type with maltainvest shortcode ', () => {
-        mocked_props.trading_platforms.market_type = 'financial';
         mocked_props.trading_platforms.shortcode = 'maltainvest';
 
         render(<CFDCompareAccountsDescription {...mocked_props} />, { wrapper });
@@ -122,7 +130,6 @@ describe('<CFDCompareAccountsDescription />', () => {
     });
 
     it('should render demo content for gaming market type with market type svg', () => {
-        mocked_props.trading_platforms.market_type = 'financial';
         mocked_props.trading_platforms.shortcode = 'svg';
         mocked_props.is_demo = true;
 

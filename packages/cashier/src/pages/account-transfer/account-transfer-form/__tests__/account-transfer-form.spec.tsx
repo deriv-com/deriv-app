@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { isMobile } from '@deriv/shared';
+import { MARKET_TYPES, isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
@@ -57,7 +57,7 @@ describe('<AccountTransferForm />', () => {
                                 currency: 'USD',
                                 is_mt: false,
                                 is_dxtrade: false,
-                                market_type: 'gaming',
+                                market_type: MARKET_TYPES.UNREGULATED,
                                 value: 'value',
                             },
                         ],
@@ -140,7 +140,7 @@ describe('<AccountTransferForm />', () => {
                 currency: 'USD',
                 is_mt: false,
                 is_dxtrade: false,
-                market_type: 'gaming',
+                market_type: MARKET_TYPES.UNREGULATED,
                 value: 'value',
             },
         ];

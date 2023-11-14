@@ -1,3 +1,4 @@
+import { MARKET_TYPES } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
 /**
@@ -9,11 +10,11 @@ const useIsClientHighRiskForMT5 = () => {
         client: { trading_platform_available_accounts },
     } = useStore();
     const financial_available_accounts = trading_platform_available_accounts.filter(
-        available_account => available_account.market_type === 'financial'
+        available_account => available_account.market_type === MARKET_TYPES.FINANCIAL
     );
 
     const synthetic_available_accounts = trading_platform_available_accounts.filter(
-        available_account => available_account.market_type === 'gaming'
+        available_account => available_account.market_type === MARKET_TYPES.UNREGULATED
     );
 
     return (

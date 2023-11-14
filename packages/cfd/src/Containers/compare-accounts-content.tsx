@@ -2,7 +2,7 @@ import React from 'react';
 
 import { LandingCompany } from '@deriv/api-types';
 import { Div100vhContainer, Table, Text, ThemedScrollbars } from '@deriv/components';
-import { CFD_PLATFORMS, isDesktop, isLandingCompanyEnabled } from '@deriv/shared';
+import { CFD_PLATFORMS, isDesktop, isLandingCompanyEnabled, MARKET_TYPES } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 type TCFDAttributeDescriberProps = {
@@ -582,13 +582,15 @@ const ModalContent = ({
                                 <Table.Head fixed />
                                 {is_logged_in ? (
                                     <React.Fragment>
-                                        {isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) && (
-                                            <Table.Head>{localize('Derived')}</Table.Head>
-                                        )}
                                         {isLandingCompanyEnabled({
                                             landing_companies,
                                             platform,
-                                            type: 'financial',
+                                            type: MARKET_TYPES.UNREGULATED,
+                                        }) && <Table.Head>{localize('Derived')}</Table.Head>}
+                                        {isLandingCompanyEnabled({
+                                            landing_companies,
+                                            platform,
+                                            type: MARKET_TYPES.FINANCIAL,
                                         }) && (
                                             <Table.Head>
                                                 {financial_account_table_head_text}

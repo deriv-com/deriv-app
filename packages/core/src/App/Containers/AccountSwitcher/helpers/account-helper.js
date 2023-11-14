@@ -1,4 +1,11 @@
-import { isCryptocurrency, getCFDAccountKey, getCFDAccount, getCFDAccountDisplay, CFD_PLATFORMS } from '@deriv/shared';
+import {
+    isCryptocurrency,
+    getCFDAccountKey,
+    getCFDAccount,
+    getCFDAccountDisplay,
+    CFD_PLATFORMS,
+    MARKET_TYPES,
+} from '@deriv/shared';
 
 export const getSortedAccountList = (account_list, accounts) => {
     // sort accounts as follows:
@@ -33,11 +40,11 @@ export const getSortedCFDList = account_list => {
         if (b_is_demo && !a_is_demo) {
             return -1;
         }
-        if (a.market_type === 'gaming' || a.market_type === 'synthetic') {
+        if (a.market_type === MARKET_TYPES.UNREGULATED || a.market_type === MARKET_TYPES.SYNTHETIC) {
             return -1;
         }
-        if (a.sub_account_type === 'financial') {
-            return b.market_type === 'gaming' || b.market_type === 'synthetic' ? 1 : -1;
+        if (a.sub_account_type === MARKET_TYPES.FINANCIAL) {
+            return b.market_type === MARKET_TYPES.UNREGULATED || b.market_type === MARKET_TYPES.SYNTHETIC ? 1 : -1;
         }
         return 1;
     });
@@ -52,7 +59,6 @@ export const getCFDConfig = (
     mt5_trading_servers,
     platform,
     is_eu,
-    trading_platform_available_accounts,
     getIsEligibleForMoreAccounts
 ) => {
     const cfd_config = [];
@@ -60,7 +66,8 @@ export const getCFDConfig = (
     if (landing_company) {
         Object.keys(landing_company).forEach(company => {
             let has_account = existing_cfd_accounts.find(account => {
-                const account_market_type = account.market_type === 'synthetic' ? 'gaming' : account.market_type;
+                const account_market_type =
+                    account.market_type === MARKET_TYPES.SYNTHETIC ? MARKET_TYPES.UNREGULATED : account.market_type;
                 if (platform === CFD_PLATFORMS.DXTRADE) {
                     return account_market_type === market_type;
                 }
@@ -68,7 +75,8 @@ export const getCFDConfig = (
             });
             if (has_account && platform === CFD_PLATFORMS.MT5 && is_eu) {
                 const number_market_type_available = mt5_trading_servers.filter(s => {
-                    const server_market_type = s.market_type === 'synthetic' ? 'gaming' : s.market_type;
+                    const server_market_type =
+                        s.market_type === MARKET_TYPES.SYNTHETIC ? MARKET_TYPES.UNREGULATED : s.market_type;
                     return market_type === server_market_type && !s.disabled;
                 }).length;
                 if (number_market_type_available && has_account.account_type === 'real') {
@@ -94,14 +102,17 @@ export const getCFDConfig = (
     }
     if (!is_eu && platform === CFD_PLATFORMS.MT5) {
         // show remaining Synthetic and/or Financial while a client can still open more real accounts or more demo svg
-        ['synthetic', 'financial'].forEach(account_type => {
-            if ((account_type === 'synthetic' ? 'gaming' : 'financial') === market_type) {
+        [MARKET_TYPES.SYNTHETIC, MARKET_TYPES.FINANCIAL].forEach(account_type => {
+            if (
+                (account_type === MARKET_TYPES.SYNTHETIC ? MARKET_TYPES.UNREGULATED : MARKET_TYPES.FINANCIAL) ===
+                market_type
+            ) {
                 if (getIsEligibleForMoreAccounts(account_type)) {
                     cfd_config.push({
-                        icon: getCFDAccount({ market_type, sub_account_type: 'financial', platform, is_eu }),
+                        icon: getCFDAccount({ market_type, sub_account_type: MARKET_TYPES.FINANCIAL, platform, is_eu }),
                         title: getCFDAccountDisplay({
                             market_type,
-                            sub_account_type: 'financial',
+                            sub_account_type: MARKET_TYPES.FINANCIAL,
                             platform,
                             is_eu,
                         }),

@@ -25,6 +25,7 @@ import {
     toMoment,
     urlForLanguage,
     getAppId,
+    MARKET_TYPES,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
@@ -541,7 +542,10 @@ export default class ClientStore extends BaseStore {
         ) {
             return this.current_landing_company.legal_allowed_currencies;
         }
-        const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
+        const target =
+            this.root_store.ui.real_account_signup_target === 'maltainvest'
+                ? MARKET_TYPES.FINANCIAL
+                : MARKET_TYPES.UNREGULATED;
 
         if (this.landing_companies[`${target}_company`]) {
             return this.landing_companies[`${target}_company`].legal_allowed_currencies;
@@ -796,7 +800,7 @@ export default class ClientStore extends BaseStore {
 
     get is_financial_account() {
         if (!this.landing_companies) return false;
-        return this.account_type === 'financial';
+        return this.account_type === MARKET_TYPES.FINANCIAL;
     }
 
     get is_age_verified() {
@@ -1019,22 +1023,25 @@ export default class ClientStore extends BaseStore {
     };
 
     getIsMarketTypeMatching = (account, market_type) => {
-        if (market_type === 'synthetic') {
-            return account.market_type === market_type || account.market_type === 'gaming';
-        } else if (market_type === 'all') {
-            return account.market_type === 'all';
+        if (market_type === MARKET_TYPES.SYNTHETIC) {
+            return account.market_type === market_type || account.market_type === MARKET_TYPES.UNREGULATED;
+        } else if (market_type === MARKET_TYPES.ALL) {
+            return account.market_type === MARKET_TYPES.ALL;
         }
-        return account.market_type === 'financial';
+        return account.market_type === MARKET_TYPES.FINANCIAL;
     };
 
     isEligibleForMoreDemoMt5Svg(market_type) {
-        const is_synthetic = market_type === 'synthetic';
+        const is_synthetic = market_type === MARKET_TYPES.SYNTHETIC;
         const available_account = getAvailableAccount(market_type);
         const existing_demo_accounts = this.mt5_login_list.filter(
             account => account.account_type === 'demo' && this.getIsMarketTypeMatching(account, market_type)
         );
         const has_matching_account = this.trading_platform_available_accounts.some(account => {
-            return (is_synthetic ? 'gaming' : available_account) === account.market_type && account.shortcode === 'svg';
+            return (
+                (is_synthetic ? MARKET_TYPES.UNREGULATED : available_account) === account.market_type &&
+                account.shortcode === 'svg'
+            );
         });
         const has_no_svg_account = existing_demo_accounts.every(account => {
             return !(account.landing_company_short === 'svg');
@@ -1044,7 +1051,7 @@ export default class ClientStore extends BaseStore {
     }
 
     isEligibleForMoreRealMt5(market_type) {
-        const is_synthetic = market_type === 'synthetic';
+        const is_synthetic = market_type === MARKET_TYPES.SYNTHETIC;
         const available_account = getAvailableAccount(market_type);
         const existing_real_accounts = this.mt5_login_list.filter(
             account => account.account_type === 'real' && this.getIsMarketTypeMatching(account, market_type)
@@ -1052,12 +1059,12 @@ export default class ClientStore extends BaseStore {
         const available_real_accounts_shortcodes = this.trading_platform_available_accounts
             .filter(
                 account =>
-                    (is_synthetic ? 'gaming' : available_account) === account.market_type &&
+                    (is_synthetic ? MARKET_TYPES.UNREGULATED : available_account) === account.market_type &&
                     account.shortcode !== 'maltainvest'
             )
             .map(account => account.shortcode);
         const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode => {
-            if (market_type === 'all') {
+            if (market_type === MARKET_TYPES.ALL) {
                 // as Swapfree only have SVG account for now we need to check if there is any real svg account available
                 return existing_real_accounts.some(account => account.landing_company_short === shortcode);
             }
@@ -1072,7 +1079,7 @@ export default class ClientStore extends BaseStore {
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
-        if (!this.mt5_login_list.some(acc => acc.market_type === 'synthetic')) {
+        if (!this.mt5_login_list.some(acc => acc.market_type === MARKET_TYPES.SYNTHETIC)) {
             if (this.country_standpoint.is_belgium || this.country_standpoint.is_france) return false;
         }
 
@@ -1167,7 +1174,7 @@ export default class ClientStore extends BaseStore {
                 );
             can_upgrade_to = canUpgrade('svg', 'iom', 'malta', 'maltainvest');
             if (can_upgrade_to) {
-                type = can_upgrade_to === 'maltainvest' ? 'financial' : 'real';
+                type = can_upgrade_to === 'maltainvest' ? MARKET_TYPES.FINANCIAL : 'real';
             }
         }
 
@@ -1544,7 +1551,7 @@ export default class ClientStore extends BaseStore {
     };
 
     shouldCompleteTax = () => {
-        if (!this.isAccountOfType('financial')) return false;
+        if (!this.isAccountOfType(MARKET_TYPES.FINANCIAL)) return false;
 
         return !/crs_tin_information/.test((this.account_status || {})?.status);
     };

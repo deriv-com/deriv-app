@@ -2,7 +2,15 @@ import React from 'react';
 import classNames from 'classnames';
 import { Table, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag, Jurisdiction } from '@deriv/shared';
+import {
+    isDesktop,
+    WS,
+    getAuthenticationStatusInfo,
+    CFD_PLATFORMS,
+    ContentFlag,
+    Jurisdiction,
+    MARKET_TYPES,
+} from '@deriv/shared';
 import {
     TDMT5CompareModalContentProps,
     TCompareAccountContentProps,
@@ -211,10 +219,15 @@ const DMT5CompareModalContent = observer(
         const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
         const mt5_platforms = trading_platform_available_accounts.map(
-            account => `${account.market_type === 'gaming' ? 'synthetic' : account.market_type}_${account.shortcode}`
+            account =>
+                `${account.market_type === MARKET_TYPES.UNREGULATED ? MARKET_TYPES.SYNTHETIC : account.market_type}_${
+                    account.shortcode
+                }`
         );
 
-        const has_synthetic = trading_platform_available_accounts.some(account => account.market_type === 'gaming');
+        const has_synthetic = trading_platform_available_accounts.some(
+            account => account.market_type === MARKET_TYPES.UNREGULATED
+        );
         const available_accounts_keys = [...mt5_platforms, ...(should_show_derivx && has_synthetic ? ['derivx'] : [])];
 
         const logged_out_available_accounts_count = show_eu_related_content ? 1 : 6;
@@ -224,11 +237,11 @@ const DMT5CompareModalContent = observer(
         const synthetic_accounts_count =
             !is_logged_in && !show_eu_related_content
                 ? 2
-                : available_accounts_keys.filter(key => key.startsWith('synthetic')).length;
+                : available_accounts_keys.filter(key => key.startsWith(MARKET_TYPES.SYNTHETIC)).length;
         const financial_accounts_count =
             !is_logged_in && !show_eu_related_content
                 ? 4
-                : available_accounts_keys.filter(key => key.startsWith('financial')).length || 1;
+                : available_accounts_keys.filter(key => key.startsWith(MARKET_TYPES.FINANCIAL)).length || 1;
 
         const is_high_risk_for_mt5 = synthetic_accounts_count === 1 && financial_accounts_count === 1;
         const {
@@ -324,7 +337,7 @@ const DMT5CompareModalContent = observer(
         const onSelectRealAccount = (item: TCompareAccountFooterButtonData) => {
             const selected_account_type = () => {
                 if (item.action === 'derivx') return 'all';
-                return item.action.startsWith('financial') ? 'financial' : 'synthetic';
+                return item.action.startsWith(MARKET_TYPES.FINANCIAL) ? MARKET_TYPES.FINANCIAL : MARKET_TYPES.SYNTHETIC;
             };
 
             const type_of_account = {

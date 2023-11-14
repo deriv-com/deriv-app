@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS, isLandingCompanyEnabled, ContentFlag } from '@deriv/shared';
+import { CFD_PLATFORMS, isLandingCompanyEnabled, ContentFlag, MARKET_TYPES } from '@deriv/shared';
 import ModalContent from './compare-accounts-content';
 import DMT5CompareModalContent from './mt5-compare-table-content';
 import CfdDxtradeCompareContent from '../Components/cfd-dxtrade-compare-content';
@@ -109,17 +109,17 @@ const CompareAccountsModal = observer(
             isLandingCompanyEnabled({
                 landing_companies,
                 platform: CFD_PLATFORMS.DXTRADE,
-                type: 'financial',
+                type: MARKET_TYPES.FINANCIAL,
             }) ||
             isLandingCompanyEnabled({
                 landing_companies,
                 platform: CFD_PLATFORMS.DXTRADE,
-                type: 'gaming',
+                type: MARKET_TYPES.UNREGULATED,
             }) ||
             isLandingCompanyEnabled({
                 landing_companies,
                 platform: CFD_PLATFORMS.DXTRADE,
-                type: 'all',
+                type: MARKET_TYPES.ALL,
             });
 
         const should_show_derivx = is_pre_appstore_setting && has_derivx && !show_eu_related_content;

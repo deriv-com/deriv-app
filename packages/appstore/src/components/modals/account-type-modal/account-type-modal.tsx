@@ -7,7 +7,7 @@ import { useStores } from 'Stores/index';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TModalContent, TAccountCard, TTradingPlatformAvailableAccount } from './types';
 import { TIconTypes } from 'Types';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS, MARKET_TYPES } from '@deriv/shared';
 import { getDerivedAccount, getFinancialAccount, getSwapFreeAccount } from '../../../helpers/account-helper';
 import { useHasSwapFreeAccount } from '@deriv/hooks';
 
@@ -100,11 +100,13 @@ const MT5AccountTypeModal = () => {
     }, [is_account_type_modal_visible, selectAccountTypeCard]);
 
     const is_financial_available = trading_platform_available_accounts.some(
-        (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'financial'
+        (available_account: TTradingPlatformAvailableAccount) =>
+            available_account.market_type === MARKET_TYPES.FINANCIAL
     );
 
     const is_synthetic_available = trading_platform_available_accounts.some(
-        (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'gaming'
+        (available_account: TTradingPlatformAvailableAccount) =>
+            available_account.market_type === MARKET_TYPES.UNREGULATED
     );
     const is_swapfree_available = useHasSwapFreeAccount();
 
@@ -113,13 +115,13 @@ const MT5AccountTypeModal = () => {
 
         switch (localizedAccountType) {
             case localize('Derived'):
-                setAccountType({ category: 'real', type: 'synthetic' });
+                setAccountType({ category: 'real', type: MARKET_TYPES.SYNTHETIC });
                 break;
             case localize('Financial'):
-                setAccountType({ category: 'real', type: 'financial' });
+                setAccountType({ category: 'real', type: MARKET_TYPES.FINANCIAL });
                 break;
             default:
-                setAccountType({ category: 'real', type: 'all' });
+                setAccountType({ category: 'real', type: MARKET_TYPES.ALL });
                 break;
         }
     };

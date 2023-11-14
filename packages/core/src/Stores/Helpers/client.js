@@ -1,11 +1,11 @@
 import { localize } from '@deriv/translations';
-import { getPropertyValue } from '@deriv/shared';
+import { getPropertyValue, MARKET_TYPES } from '@deriv/shared';
 
 export const getClientAccountType = loginid => {
     let account_type;
     if (/^VR/.test(loginid)) account_type = 'virtual';
-    else if (/^MF/.test(loginid)) account_type = 'financial';
-    else if (/^MLT|MX/.test(loginid)) account_type = 'gaming';
+    else if (/^MF/.test(loginid)) account_type = MARKET_TYPES.FINANCIAL;
+    else if (/^MLT|MX/.test(loginid)) account_type = MARKET_TYPES.UNREGULATED;
     return account_type;
 };
 
@@ -35,10 +35,10 @@ export const getAccountTitle = loginid => {
 };
 
 export const getAvailableAccount = market_type => {
-    if (market_type === 'all') {
-        return 'all';
+    if (market_type === MARKET_TYPES.ALL) {
+        return MARKET_TYPES.ALL;
     }
-    return 'financial';
+    return MARKET_TYPES.FINANCIAL;
 };
 
 export const getLandingCompanyValue = ({ loginid, landing_company, isAccountOfType }) => {

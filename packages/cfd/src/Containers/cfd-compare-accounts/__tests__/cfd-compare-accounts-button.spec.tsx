@@ -4,6 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import CFDCompareAccountsButton from '../cfd-compare-accounts-button';
+import { MARKET_TYPES } from '@deriv/shared';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -29,7 +30,7 @@ describe('<CFDCompareAccountsButton />', () => {
         trading_platforms: {
             platform: 'mt5',
             shortcode: 'svg',
-            market_type: 'gaming',
+            market_type: MARKET_TYPES.UNREGULATED,
         },
         is_demo: false,
     };
@@ -156,7 +157,7 @@ describe('<CFDCompareAccountsButton />', () => {
                     trading_platforms={{
                         platform: 'mt5',
                         shortcode: 'bvi',
-                        market_type: 'financial',
+                        market_type: MARKET_TYPES.FINANCIAL,
                     }}
                 />
             </MemoryRouter>,
@@ -215,7 +216,7 @@ describe('<CFDCompareAccountsButton />', () => {
                     trading_platforms={{
                         platform: 'dxtrade',
                         shortcode: 'bvi',
-                        market_type: 'financial',
+                        market_type: MARKET_TYPES.FINANCIAL,
                     }}
                 />
             </MemoryRouter>,

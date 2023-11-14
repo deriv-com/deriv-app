@@ -10,6 +10,7 @@ import {
     getPlatformSettings,
     CFD_PLATFORMS,
     isLandingCompanyEnabled,
+    MARKET_TYPES,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { ResetTradingPasswordModal } from '@deriv/account';
@@ -343,8 +344,8 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
     const isDxtradeAllCardVisible = (account_category: string) => {
         const { platform } = props;
 
-        const has_synthetic_account = hasAccount(account_category, 'synthetic');
-        const has_financial_account = hasAccount(account_category, 'financial');
+        const has_synthetic_account = hasAccount(account_category, MARKET_TYPES.SYNTHETIC);
+        const has_financial_account = hasAccount(account_category, MARKET_TYPES.FINANCIAL);
 
         if (has_synthetic_account || has_financial_account) return false;
 
@@ -359,8 +360,8 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
 
     const isSyntheticCardVisible = (account_category: string) => {
         const { platform } = props;
-        const has_synthetic_account = hasAccount(account_category, 'synthetic');
-        const has_financial_account = hasAccount(account_category, 'financial');
+        const has_synthetic_account = hasAccount(account_category, MARKET_TYPES.SYNTHETIC);
+        const has_financial_account = hasAccount(account_category, MARKET_TYPES.FINANCIAL);
 
         // Hiding card for logged out EU users
         if (!is_logged_in && is_eu_country) return false;
@@ -369,14 +370,16 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
 
         if (!has_synthetic_account && !has_financial_account && platform === CFD_PLATFORMS.DXTRADE) return false;
 
-        return isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in;
+        return (
+            isLandingCompanyEnabled({ landing_companies, platform, type: MARKET_TYPES.UNREGULATED }) || !is_logged_in
+        );
     };
 
     const isFinancialCardVisible = () => {
         const { platform } = props;
 
-        const has_synthetic_account = hasAccount('real', 'synthetic');
-        const has_financial_account = hasAccount('real', 'financial');
+        const has_synthetic_account = hasAccount('real', MARKET_TYPES.SYNTHETIC);
+        const has_financial_account = hasAccount('real', MARKET_TYPES.FINANCIAL);
 
         if (!has_synthetic_account && !has_financial_account && platform === CFD_PLATFORMS.DXTRADE) return false;
 
@@ -385,7 +388,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
             isLandingCompanyEnabled({
                 landing_companies,
                 platform,
-                type: 'financial',
+                type: MARKET_TYPES.FINANCIAL,
             })
         );
     };
@@ -398,7 +401,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
             isLandingCompanyEnabled({
                 landing_companies,
                 platform,
-                type: 'all',
+                type: MARKET_TYPES.ALL,
             })
         );
     };
@@ -613,7 +616,8 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
                                 real_account_creation_unlock_date={real_account_creation_unlock_date}
                                 setShouldShowCooldownModal={setShouldShowCooldownModal}
                                 has_unmerged_account={
-                                    hasAccount('real', 'synthetic') || hasAccount('real', 'financial')
+                                    hasAccount('real', MARKET_TYPES.SYNTHETIC) ||
+                                    hasAccount('real', MARKET_TYPES.FINANCIAL)
                                 }
                             />
                             <SwitchToRealAccountModal />

@@ -2,6 +2,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import useIsClientHighRiskForMT5 from '../useIsClientHighRiskForMT5';
+import { MARKET_TYPES } from '@deriv/shared';
 
 describe('useIsClientHighRiskForMT5', () => {
     test('should return false if there are no financial accounts or synthetic accounts', () => {
@@ -25,7 +26,7 @@ describe('useIsClientHighRiskForMT5', () => {
             client: {
                 trading_platform_available_accounts: [
                     {
-                        market_type: 'financial',
+                        market_type: MARKET_TYPES.FINANCIAL,
                         shortcode: 'bvi',
                     },
                 ],
@@ -46,7 +47,7 @@ describe('useIsClientHighRiskForMT5', () => {
             client: {
                 trading_platform_available_accounts: [
                     {
-                        market_type: 'gaming',
+                        market_type: MARKET_TYPES.UNREGULATED,
                         shortcode: 'bvi',
                     },
                 ],
@@ -71,7 +72,7 @@ describe('useIsClientHighRiskForMT5', () => {
                         shortcode: 'svg',
                     },
                     {
-                        market_type: 'gaming',
+                        market_type: MARKET_TYPES.UNREGULATED,
                         shortcode: 'svg',
                     },
                 ],

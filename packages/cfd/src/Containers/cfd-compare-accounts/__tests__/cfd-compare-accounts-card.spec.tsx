@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS, MARKET_TYPES } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import CFDCompareAccountsCard from '../cfd-compare-accounts-card';
 
@@ -30,7 +30,7 @@ describe('<CFDCompareAccountsCard />', () => {
 
     const mocked_props = {
         trading_platforms: {
-            market_type: 'gaming',
+            market_type: MARKET_TYPES.UNREGULATED,
             shortcode: 'svg',
             platform: 'mt5',
         },

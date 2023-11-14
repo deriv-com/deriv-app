@@ -2,6 +2,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import useCFDCanGetMoreMT5Accounts from '../useCFDCanGetMoreMT5Accounts';
+import { MARKET_TYPES } from '@deriv/shared';
 
 describe('useCFDCanGetMoreMT5Accounts', () => {
     test('should return false if not real user', () => {
@@ -69,11 +70,11 @@ describe('useCFDCanGetMoreMT5Accounts', () => {
                 isEligibleForMoreRealMt5: () => true,
                 trading_platform_available_accounts: [
                     {
-                        market_type: 'financial',
+                        market_type: MARKET_TYPES.FINANCIAL,
                         shortcode: 'svg',
                     },
                     {
-                        market_type: 'gaming',
+                        market_type: MARKET_TYPES.UNREGULATED,
                         shortcode: 'svg',
                     },
                 ],

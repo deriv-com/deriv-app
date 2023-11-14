@@ -40,7 +40,6 @@ runs:
         export KUBE_SERVER=${{ inputs.KUBE_SERVER }}
         export SERVICEACCOUNT_TOKEN=${{ inputs.SERVICEACCOUNT_TOKEN }}
         export DOCKERHUB_ORGANISATION=${{ inputs.DOCKERHUB_ORGANISATION }}
-        export CA=${{ inputs.CA }}
         export CA_CRT=${{ inputs.CA_CRT }}
         export APP_NAME="deriv-app"
         export APP_VERSION=${{ inputs.APP_VERSION }}

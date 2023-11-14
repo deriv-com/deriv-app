@@ -18,24 +18,24 @@ const IDVDocumentUploadDetails = () => {
                     <WalletTextField
                         helperMessage='Your first name as in your identity document'
                         label='First name*'
+                        maxWidth='35.9rem'
                         showMessage
                         value='First name'
-                        width={35.9}
                     />
                     <WalletTextField
                         helperMessage='Your last name as in your identity document'
                         label='Last name*'
+                        maxWidth='35.9rem'
                         showMessage
                         value='Last name'
-                        width={35.9}
                     />
                     {/* TODO: Replace with DatePicker component*/}
                     <WalletTextField
                         helperMessage='Your date of birth as in your identity document'
                         label='Date of birth*'
+                        maxWidth='35.9rem'
                         showMessage
                         type='date'
-                        width={35.9}
                     />
                 </div>
                 <div className='wallets-idv-document-upload-details__sidenote'>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { CSSProperties, useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useCombobox } from 'downshift';
 import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
@@ -14,10 +14,10 @@ type TProps = {
         value: string;
     }[];
     listHeight?: 'lg' | 'md' | 'sm';
+    maxWidth?: CSSProperties['maxWidth'];
     onSelect: (value: string) => void;
     type?: 'comboBox' | 'prompt';
     value: string | undefined;
-    width?: number;
 };
 
 const WalletDropdown: React.FC<TProps> = ({
@@ -25,10 +25,10 @@ const WalletDropdown: React.FC<TProps> = ({
     label,
     list,
     listHeight = 'md',
+    maxWidth = '19.5rem',
     onSelect,
     type = 'prompt',
     value,
-    width = 19.5,
 }) => {
     const [items, setItems] = useState(list);
     const [shouldFilterList, setShouldFilterList] = useState(false);
@@ -68,7 +68,7 @@ const WalletDropdown: React.FC<TProps> = ({
     }, [list]);
 
     return (
-        <div className='wallets-dropdown' style={{ maxWidth: `${width}rem` }}>
+        <div className='wallets-dropdown' style={{ maxWidth: `${maxWidth}` }}>
             <div className='wallets-dropdown__content'>
                 {icon && <div className='wallets-dropdown__icon'>{icon}</div>}
                 <input

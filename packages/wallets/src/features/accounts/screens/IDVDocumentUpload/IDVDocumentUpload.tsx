@@ -14,12 +14,12 @@ const IDVDocumentUpload = () => {
                 <WalletDropdown
                     label='Choose the document type'
                     list={[]}
+                    maxWidth='68rem'
                     onSelect={() => null}
                     value={undefined}
-                    width={68}
                 />
             </div>
-            <WalletTextField label='Enter your document number' width={68} />
+            <WalletTextField label='Enter your document number' maxWidth='68rem' />
             <div className='wallets-idv-document-upload__title'>
                 <WalletText weight='bold'>Details</WalletText>
             </div>

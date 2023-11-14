@@ -1,7 +1,7 @@
 import mockAccountSecurity from './accountSecurity';
 import mockAuthorize from './authorize';
-import mockBalance_all from './balanceAll';
-import mockBalance_one from './balanceOne';
+import mockBalanceAll from './balanceAll';
+import mockBalanceOne from './balanceOne';
 import mockGetAccountStatus from './getAccountStatus';
 import mockGetFinancialAssessment from './getFinancialAssessment';
 import mockGetLimits from './getLimits';
@@ -24,8 +24,8 @@ import { Context } from '../../utils/mocks/mocks';
 const loggedIn = async (context: Context) => {
     mockAccountSecurity(context);
     mockAuthorize(context);
-    mockBalance_all(context);
-    mockBalance_one(context);
+    mockBalanceAll(context);
+    mockBalanceOne(context);
     mockGetAccountStatus(context);
     mockGetFinancialAssessment(context);
     mockGetLimits(context);

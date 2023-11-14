@@ -43,38 +43,5 @@
         @include mobile {
             align-self: flex-end;
         }
-
-        &-switch {
-            height: 0;
-            width: 0;
-            visibility: hidden;
-
-            &__label {
-                height: 2.4rem;
-                width: 4.4rem;
-                display: flex;
-                align-items: center;
-                padding-left: 0.3rem;
-                background: var(--general-disabled);
-                border-radius: 4.9rem;
-                transition: background-color 0.25s;
-                cursor: pointer;
-            }
-
-            &__button {
-                width: 1.8rem;
-                height: 1.8rem;
-                border-radius: 1.8rem;
-                transition: transform 0.25s;
-                background: var(--text-colored-background);
-            }
-
-            &:checked + &__label {
-                background: #4bb4b3;
-            }
-            &:checked + &__label &__button {
-                transform: translateX(2rem);
-            }
-        }
     }
 }

@@ -1,14 +1,8 @@
 /** Add types that are shared between components */
 import React from 'react';
-import { FormikHandlers, FormikProps, FormikValues } from 'formik';
 import { Redirect, RouteProps } from 'react-router-dom';
 import { TPage404 } from '../Constants/routes-config';
-import {
-    Authorize,
-    DetailsOfEachMT5Loginid,
-    IdentityVerificationAddDocumentResponse,
-    ResidenceList,
-} from '@deriv/api-types';
+import { Authorize, DetailsOfEachMT5Loginid, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { CFD_PLATFORMS, Platforms } from '@deriv/shared';
 
 export type TToken = {
@@ -226,8 +220,8 @@ export type TDetailsOfDerivAccount = TAccounts & TPendingAccountDetails;
 export type TDetailsOfMT5Account = DetailsOfEachMT5Loginid & TPendingAccountDetails;
 export type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string };
 export type TDetailsOfCtraderAccount = DetailsOfEachMT5Loginid & {
-    display_balance?: string | undefined;
-    platform?: string | undefined;
+    display_balance?: string;
+    platform?: string;
     account_id?: string;
 };
 

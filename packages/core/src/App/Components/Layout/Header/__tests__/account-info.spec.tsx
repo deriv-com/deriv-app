@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AccountInfo from '../account-info.jsx';
-import { MARKET_TYPES } from '@deriv/shared';
 
 describe('AccountInfo component', () => {
     it('should show "disabled_message" when "is_disabled" property is "true"', () => {

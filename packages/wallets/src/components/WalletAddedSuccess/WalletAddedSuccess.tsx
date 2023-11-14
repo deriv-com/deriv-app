@@ -43,6 +43,7 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
                 balance={displayBalance}
                 currency={currency || 'USD'}
                 landingCompanyName={landingCompany}
+                padding='1.6rem'
                 width='24rem'
             />
         ),

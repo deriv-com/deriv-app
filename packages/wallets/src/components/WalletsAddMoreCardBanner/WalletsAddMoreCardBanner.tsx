@@ -6,11 +6,12 @@ import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageCl
 import CheckIcon from '../../public/images/check.svg';
 import PlusIcon from '../../public/images/plus.svg';
 import { THooks } from '../../types';
-import { WalletButton, WalletText } from '../Base';
+import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletAddedSuccess } from '../WalletAddedSuccess';
 import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 import { WalletError } from '../WalletError';
+import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
 
 type TProps = THooks.AvailableWallets;
 
@@ -83,11 +84,7 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                 <span className='wallets-add-more__banner-logo'>
                     <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
                 </span>
-                <div className='wallets-add-more__banner-landing-company'>
-                    <WalletText align='right' size='xs' weight='bold'>
-                        {landingCompanyName}
-                    </WalletText>
-                </div>
+                <WalletListCardBadge label={landingCompanyName} />
             </div>
             <WalletButton
                 color='white'

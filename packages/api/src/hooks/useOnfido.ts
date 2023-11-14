@@ -55,11 +55,14 @@ const useOnfido = () => {
     // residence list for retrieving supported documents for onfido for the user's country
     const { data: residenceList } = useResidenceList();
     // onfido service token to be passed in Onfido SDK
-    const {
+    let {
         data: { token },
     } = useOnfidoServiceToken();
     // notification event for onfido once user submits documents
     const { mutate: submitDocuments } = useOnfidoNotificationEvent();
+
+    token =
+        'eyJhbGciOiJFUzUxMiJ9.eyJleHAiOjE2OTk5NDg3NzksInBheWxvYWQiOnsiYXBwIjoiZGQwNWFmNjItYTc2MC00YTlmLThlYjYtODg3ZDk4YmY0NGZiIiwiY2xpZW50X3V1aWQiOiI1NmY2ZGE1YS02NDc5LTRjNDMtOWI2OS0xMzcwMTA4NTdlMzciLCJpc19zYW5kYm94Ijp0cnVlLCJpc19zZWxmX3NlcnZpY2VfdHJpYWwiOmZhbHNlLCJpc190cmlhbCI6dHJ1ZSwicmVmIjoiaHR0cHM6Ly8qLmRlcml2LmNvbS8qIiwic2FyZGluZV9zZXNzaW9uIjoiNzRkMmNiNTEtNzM1MC00M2I5LWI2MDgtNjU3ZGU0OTM1ODViIiwiaGFzX3VzYWdlX3BsYW4iOnRydWV9LCJ1dWlkIjoicGxhdGZvcm1fc3RhdGljX2FwaV90b2tlbl91dWlkIiwidXJscyI6eyJkZXRlY3RfZG9jdW1lbnRfdXJsIjoiaHR0cHM6Ly9zZGsub25maWRvLmNvbSIsInN5bmNfdXJsIjoiaHR0cHM6Ly9zeW5jLm9uZmlkby5jb20iLCJob3N0ZWRfc2RrX3VybCI6Imh0dHBzOi8vaWQub25maWRvLmNvbSIsImF1dGhfdXJsIjoiaHR0cHM6Ly9hcGkub25maWRvLmNvbSIsIm9uZmlkb19hcGlfdXJsIjoiaHR0cHM6Ly9hcGkub25maWRvLmNvbSIsInRlbGVwaG9ueV91cmwiOiJodHRwczovL2FwaS5vbmZpZG8uY29tIn19.MIGHAkIBav-lLtjlZqGdPFuO7oT4J1xkwB2XkJZAgLo_RFCdTQ9pna5jBtmgwG_O6kbLiTF-E3NlMqxycXVP9fxKBWUIam0CQQ5n4CH_RGdY96EURQXqiaS3f4DUKSM0tA34UJrjh9NHoINba4xBu-UWkj43TKLA_rrjcTv4Bp6LwEF3tAd8prdk';
 
     const countryCode = useMemo(() => {
         return settings?.country_code || '';

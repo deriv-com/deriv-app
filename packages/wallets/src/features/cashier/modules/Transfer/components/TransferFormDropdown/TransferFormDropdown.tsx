@@ -1,4 +1,4 @@
-import React, { RefObject, useMemo } from 'react';
+import React, { RefObject, useCallback, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { WalletListCardBadge, WalletText } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
@@ -37,9 +37,18 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, label, mobileAccoun
     const selectedAccount = label === 'Transfer from' ? fromAccount : toAccount;
     const accountsList = label === 'Transfer from' ? accounts : toAccountList;
 
-    const handleSelect = (value: TInitialTransferFormValues['fromAccount']) => {
-        setFieldValue(fieldName, value);
-    };
+    const handleSelect = useCallback(
+        (account: TInitialTransferFormValues['fromAccount']) => {
+            if (account?.loginid === selectedAccount?.loginid) return;
+            if (label === 'Transfer from') {
+                account?.loginid !== activeWallet?.loginid
+                    ? setFieldValue('toAccount', activeWallet)
+                    : setFieldValue('toAccount', undefined);
+            }
+            setFieldValue(fieldName, account);
+        },
+        [activeWallet, fieldName, label, selectedAccount?.loginid, setFieldValue]
+    );
 
     return (
         <button

@@ -33,7 +33,7 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet
                     {account?.account_category === 'wallet' ? (
                         <WalletCurrencyCard
                             currency={account?.currencyConfig?.display_code || 'USD'}
-                            isDemo={Boolean(account?.isVirtual)}
+                            isDemo={account?.isVirtual}
                             size='sm'
                         />
                     ) : (

@@ -35,14 +35,14 @@ const TransferForm = () => {
     return (
         <div className='wallets-transfer'>
             <Formik initialValues={initialValues} onSubmit={onSubmit}>
-                {props => (
-                    <form className='wallets-transfer__form' onSubmit={props.handleSubmit}>
+                {({ handleSubmit, values }) => (
+                    <form className='wallets-transfer__form' onSubmit={handleSubmit}>
                         <div className='wallets-transfer__form__fields'>
                             <div className='wallets-transfer__form__fields-section'>
                                 <TransferFormInputField
-                                    defaultValue={props.values.amountSend}
+                                    defaultValue={values.amountSend}
                                     fieldName='amountSend'
-                                    fractionDigits={props.values.fromAccount?.currencyConfig?.fractional_digits}
+                                    fractionDigits={values.fromAccount?.currencyConfig?.fractional_digits}
                                     label='Amount you send'
                                 />
                                 <TransferFormDropdown
@@ -54,9 +54,9 @@ const TransferForm = () => {
                             <div style={{ height: '20px' }} />
                             <div className='wallets-transfer__form__fields-section'>
                                 <TransferFormInputField
-                                    defaultValue={props.values.amountReceive}
+                                    defaultValue={values.amountReceive}
                                     fieldName='amountReceive'
-                                    fractionDigits={props.values.toAccount?.currencyConfig?.fractional_digits}
+                                    fractionDigits={values.toAccount?.currencyConfig?.fractional_digits}
                                     label='Estimated amount'
                                 />
                                 <TransferFormDropdown

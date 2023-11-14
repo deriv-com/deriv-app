@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCopyToClipboard, useHover } from 'usehooks-ts';
 import useDevice from '../../../hooks/useDevice';
-import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
 import Clipboard from '../../../public/images/clipboard.svg';
+import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
 import { Tooltip } from '../Tooltip';
 import './WalletClipboard.scss';
 

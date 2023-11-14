@@ -1,3 +1,5 @@
+/* eslint-disable sort-keys */
+
 import { Context } from '@deriv/integration/src/utils/mocks/mocks';
 
 export const DEFAULT_WALLET_ACCOUNTS = [

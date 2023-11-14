@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useCtraderAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../components';
 import { WalletButton, WalletText } from '../../../../../components/Base';
-import CTrader from '../../../../../public/images/ctrader.svg';
 import { useModal } from '../../../../../components/ModalProvider';
+import CTrader from '../../../../../public/images/ctrader.svg';
 import { MT5TradeModal } from '../../../modals';
 import './AddedCTraderAccountsList.scss';
 

@@ -2,7 +2,6 @@ import React, { ButtonHTMLAttributes, useEffect } from 'react';
 import { useCashierFiatAddress } from '@deriv/api';
 import { Loader, WalletsErrorScreen } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
-
 import './WithdrawalFiat.scss';
 
 interface WithdrawalFiatProps extends ButtonHTMLAttributes<HTMLButtonElement> {

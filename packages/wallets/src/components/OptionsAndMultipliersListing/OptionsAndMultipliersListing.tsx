@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
@@ -13,6 +13,10 @@ import './OptionsAndMultipliersListing.scss';
 type TShowButtonProps = Pick<typeof optionsAndMultipliersContent[number], 'isExternal' | 'redirect'>;
 
 type TLinkTitleProps = Pick<typeof optionsAndMultipliersContent[number], 'icon' | 'title'>;
+
+type TOptionsAndMultipliersListingProps = {
+    onOptionsAndMultipliersLoaded?: (value: boolean) => void;
+};
 
 const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
     const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -65,9 +69,16 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     return null;
 };
 
-const OptionsAndMultipliersListing: React.FC = () => {
+const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps> = ({
+    onOptionsAndMultipliersLoaded,
+}) => {
     const { isMobile } = useDevice();
     const { data } = useActiveWalletAccount();
+
+    useEffect(() => {
+        onOptionsAndMultipliersLoaded?.(true);
+        return () => onOptionsAndMultipliersLoaded?.(false);
+    }, [onOptionsAndMultipliersLoaded]);
 
     return (
         <div

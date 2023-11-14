@@ -26,8 +26,8 @@ const WalletsCarouselContent: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const activeWalletIndex = useMemo(
         () =>
-            walletAccountsList?.findIndex(wallet => wallet.loginid === activeWallet?.loginid) ||
-            walletsCarouselEmblaApi?.selectedScrollSnap() ||
+            walletAccountsList?.findIndex(wallet => wallet.loginid === activeWallet?.loginid) ??
+            walletsCarouselEmblaApi?.selectedScrollSnap() ??
             0,
         [activeWallet?.loginid, walletAccountsList, walletsCarouselEmblaApi]
     );
@@ -66,7 +66,14 @@ const WalletsCarouselContent: React.FC = () => {
         <div className='wallets-carousel-content' ref={walletsCarouselEmblaRef}>
             <div className='wallets-carousel-content__container'>
                 {walletAccountsList?.map(account => (
-                    <WalletCard account={account} key={`wallet-card-${account.loginid}`} />
+                    <WalletCard
+                        balance={account.display_balance}
+                        currency={account.currency || 'USD'}
+                        isDemo={account.is_virtual}
+                        key={`wallet-card-${account.loginid}`}
+                        landingCompanyName={account.landing_company_name}
+                        width='45vw'
+                    />
                 ))}
             </div>
             <div className='wallets-carousel-content__progress-bar'>

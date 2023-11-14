@@ -1,0 +1,18 @@
+.wallets-fiat-onramp-disclaimer {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    max-width: 79.2rem;
+
+    @include mobile {
+        justify-content: flex-start;
+    }
+
+    &__buttons {
+        display: flex;
+        gap: 0.8rem;
+        justify-content: flex-end;
+        width: 100%;
+    }
+}

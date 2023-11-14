@@ -1,34 +1,42 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import WalletCashierHeader from "../WalletCashierHeader";
-import {APIProvider} from '@deriv/api';
+import WalletCashierHeader from '../WalletCashierHeader';
+import { APIProvider } from '@deriv/api';
+
+const DISPLAY_BALANCE = 'RM42';
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useSubscribedBalance: jest.fn().mockReturnValue({
-        displayBalance: '42 UNITS OF CURRENCY',
-    })
+    useActiveWalletBalance: jest.fn().mockReturnValue({
+        displayBalance: DISPLAY_BALANCE,
+    }),
 }));
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ history: {} }),
     useLocation: () => ({ pathname: '/wallets' }),
-    useStreamedBalance: () => ({ balance: 42 }),
 }));
 
 describe('<WalletCashierHeader/>', () => {
-    it('render container', () => {
+    it('renders', () => {
         render(
             <APIProvider>
-                <WalletCashierHeader hideWalletDetails={false}/>
+                <WalletCashierHeader hideWalletDetails={false} />
             </APIProvider>
         );
 
-        // const divElement = screen.getByTestId('dt_wallet_icon');
+        const divElement = screen.getByTestId('wallet-gradient-background');
+        expect(divElement).toBeInTheDocument();
+    });
 
-        // eslint-disable-next-line testing-library/no-node-access
-        // const mockedSvgElement = divElement.querySelector('file-mock-stub');
-        // expect(divElement).toBeInTheDocument();
-        // expect(mockedSvgElement).not.toBeNull();
+    it('displays balance', () => {
+        render(
+            <APIProvider>
+                <WalletCashierHeader hideWalletDetails={false} />
+            </APIProvider>
+        );
+
+        const balanceElement = screen.getByText(DISPLAY_BALANCE);
+        expect(balanceElement).toBeInTheDocument();
     });
 });

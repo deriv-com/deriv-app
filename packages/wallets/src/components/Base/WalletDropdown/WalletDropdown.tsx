@@ -17,6 +17,7 @@ type TProps = {
     onSelect: (value: string) => void;
     type?: 'comboBox' | 'prompt';
     value: string | undefined;
+    width?: number;
 };
 
 const WalletDropdown: React.FC<TProps> = ({
@@ -27,6 +28,7 @@ const WalletDropdown: React.FC<TProps> = ({
     onSelect,
     type = 'prompt',
     value,
+    width = 19.5,
 }) => {
     const [items, setItems] = useState(list);
     const [shouldFilterList, setShouldFilterList] = useState(false);
@@ -66,7 +68,7 @@ const WalletDropdown: React.FC<TProps> = ({
     }, [list]);
 
     return (
-        <div className='wallets-dropdown'>
+        <div className='wallets-dropdown' style={{ maxWidth: `${width}rem` }}>
             <div className='wallets-dropdown__content'>
                 {icon && <div className='wallets-dropdown__icon'>{icon}</div>}
                 <input

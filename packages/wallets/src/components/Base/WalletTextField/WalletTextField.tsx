@@ -1,14 +1,13 @@
 import React, { ChangeEvent, forwardRef, InputHTMLAttributes, useState } from 'react';
-import classNames from 'classnames';
 import MessageContainer, { MessageContainerProps } from './HelperMessage';
 import './WalletTextField.scss';
 
 export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, MessageContainerProps {
     defaultValue?: string;
-    inputClassName?: string;
     label?: string;
     renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
+    width?: number;
 }
 
 const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
@@ -16,13 +15,13 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
         {
             defaultValue = '',
             helperMessage,
-            inputClassName,
             label,
             maxLength,
             name = 'wallet-textfield',
             onChange,
             renderRightIcon,
             showMessage = false,
+            width = 33,
             ...rest
         },
         ref
@@ -36,8 +35,8 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
         };
 
         return (
-            <div className='wallets-textfield'>
-                <div className={classNames('wallets-textfield__box', inputClassName)}>
+            <div className='wallets-textfield' style={{ maxWidth: `${width}rem` }}>
+                <div className='wallets-textfield__box'>
                     <input
                         className='wallets-textfield__field'
                         id={name}
@@ -53,7 +52,7 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
                             {label}
                         </label>
                     )}
-                    <div className='wallets-textfield__icon'>{renderRightIcon?.()}</div>
+                    {renderRightIcon && <div className='wallets-textfield__icon'>{renderRightIcon?.()}</div>}
                 </div>
                 <div className='wallets-textfield__message-container'>
                     {showMessage && (

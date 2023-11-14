@@ -2,7 +2,7 @@ import React from 'react';
 import RealAccountSwitcher from '../real-account-switcher';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { AccountStatus } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { useMFAccountStatus } from '@deriv/hooks';
 
 jest.mock('Components/containers/currency-switcher-container', () => ({
@@ -54,7 +54,7 @@ describe('RealAccountSwitcher', () => {
                 is_eu_user: true,
             },
         });
-        (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.PENDING);
+        (useMFAccountStatus as jest.Mock).mockReturnValue(MT5_ACCOUNT_STATUS.PENDING);
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

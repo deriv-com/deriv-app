@@ -6,7 +6,7 @@ import { getStatusBadgeConfig } from '@deriv/account';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { TWalletAccount } from 'Types';
 import WalletHeader from '..';
-import { AccountStatus } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { useMFAccountStatus } from '@deriv/hooks';
 
 const mockedRootStore = mockStore({});
@@ -123,7 +123,7 @@ describe('<WalletHeader />', () => {
 
         it('Should render badge Pending verification', () => {
             getStatusBadgeConfig.mockReturnValue({ icon: '', text: 'Pending verification' });
-            (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.PENDING);
+            (useMFAccountStatus as jest.Mock).mockReturnValue(MT5_ACCOUNT_STATUS.PENDING);
 
             const mocked_props = {
                 ...default_mocked_props,
@@ -151,7 +151,7 @@ describe('<WalletHeader />', () => {
 
         it('Should render badge Verification failed', () => {
             getStatusBadgeConfig.mockReturnValue({ icon: '', text: 'Verification failed' });
-            (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.FAILED);
+            (useMFAccountStatus as jest.Mock).mockReturnValue(MT5_ACCOUNT_STATUS.FAILED);
 
             const mocked_props = {
                 ...default_mocked_props,
@@ -179,7 +179,7 @@ describe('<WalletHeader />', () => {
 
         it('Should render badge Need verification', () => {
             getStatusBadgeConfig.mockReturnValue({ icon: '', text: 'Need verification' });
-            (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.NEEDS_VERIFICATION);
+            (useMFAccountStatus as jest.Mock).mockReturnValue(MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION);
 
             const mocked_props = {
                 ...default_mocked_props,

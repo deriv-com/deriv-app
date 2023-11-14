@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import getStatusBadgeConfig from 'Configs/get-status-badge-config';
-import { AccountStatus } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 
 describe('getStatusBadgeConfig', () => {
     let account_status = '';
@@ -32,7 +32,7 @@ describe('getStatusBadgeConfig', () => {
     };
 
     it('should render pending status', () => {
-        account_status = AccountStatus.PENDING;
+        account_status = MT5_ACCOUNT_STATUS.PENDING;
 
         renderCheck(account_status, openFailedVerificationModal, selected_account_type);
 
@@ -41,7 +41,7 @@ describe('getStatusBadgeConfig', () => {
     });
 
     it('should render failed status and trigger "Why?"', () => {
-        account_status = AccountStatus.FAILED;
+        account_status = MT5_ACCOUNT_STATUS.FAILED;
 
         renderCheck(account_status, openFailedVerificationModal, selected_account_type);
 
@@ -53,7 +53,7 @@ describe('getStatusBadgeConfig', () => {
     });
 
     it('should render needs_verification status and redirect to identity', () => {
-        account_status = AccountStatus.NEEDS_VERIFICATION;
+        account_status = MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
 
         renderCheck(account_status, openFailedVerificationModal, selected_account_type, setIsVerificationModalVisible);
 
@@ -64,5 +64,23 @@ describe('getStatusBadgeConfig', () => {
         expect(btn).toBeInTheDocument();
         userEvent.click(btn);
         expect(setIsVerificationModalVisible).toBeCalled();
+    });
+
+    it('should render migrated_with_position status', () => {
+        account_status = 'migrated_with_position';
+
+        renderCheck(account_status, openFailedVerificationModal, selected_account_type);
+
+        expect(screen.getByText('No new positions')).toBeInTheDocument();
+        expect(screen.getByText('IcAlertWarning')).toBeInTheDocument();
+    });
+
+    it('should render migrated_without_position status', () => {
+        account_status = 'migrated_without_position';
+
+        renderCheck(account_status, openFailedVerificationModal, selected_account_type);
+
+        expect(screen.getByText('Account closed')).toBeInTheDocument();
+        expect(screen.getByText('IcAlertWarning')).toBeInTheDocument();
     });
 });

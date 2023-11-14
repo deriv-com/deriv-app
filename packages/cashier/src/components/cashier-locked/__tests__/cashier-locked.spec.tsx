@@ -8,7 +8,7 @@ import { mockStore } from '@deriv/stores';
 import CashierLocked from '../cashier-locked';
 import CashierProviders from '../../../cashier-providers';
 import { TCoreStores } from '@deriv/stores/types';
-import { AccountStatus } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -266,7 +266,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if eu client`s verification is pending and landed in deposit page', () => {
-        (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.PENDING);
+        (useMFAccountStatus as jest.Mock).mockReturnValue(MT5_ACCOUNT_STATUS.PENDING);
         mock_store.client.current_currency_type = 'fiat';
         mock_store.client.is_eu = true;
         mockUseCashierLocked.mockReturnValue(true);
@@ -285,7 +285,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if eu client`s verification is pending and landed in withdrawal page', () => {
-        (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.PENDING);
+        (useMFAccountStatus as jest.Mock).mockReturnValue(MT5_ACCOUNT_STATUS.PENDING);
         mock_store.client.current_currency_type = 'fiat';
         mock_store.client.is_eu = true;
         mockUseCashierLocked.mockReturnValue(true);
@@ -304,7 +304,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if eu client`s verification is pending and landed in transfer page', () => {
-        (useMFAccountStatus as jest.Mock).mockReturnValue(AccountStatus.PENDING);
+        (useMFAccountStatus as jest.Mock).mockReturnValue(MT5_ACCOUNT_STATUS.PENDING);
         mock_store.client.current_currency_type = 'fiat';
         mock_store.client.is_eu = true;
         mockUseCashierLocked.mockReturnValue(true);

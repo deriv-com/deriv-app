@@ -122,6 +122,7 @@ const CFDsListing = observer(() => {
                     } else if (current_acc_status === 'needs_verification') {
                         return 'needs_verification';
                     }
+                    return current_acc_status;
             }
         }
         return null;
@@ -182,6 +183,7 @@ const CFDsListing = observer(() => {
                     {localize('Deriv MT5')}
                 </Text>
             </div>
+
             {is_landing_company_loaded ? (
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
@@ -193,7 +195,6 @@ const CFDsListing = observer(() => {
                                       existing_account?.landing_company_short
                                   )
                                 : null;
-
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}
@@ -242,6 +243,7 @@ const CFDsListing = observer(() => {
                                     jurisdiction: existing_account.landing_company_short,
                                 }}
                                 openFailedVerificationModal={openFailedVerificationModal}
+                                market_type={existing_account?.market_type}
                             />
                         );
                     })}

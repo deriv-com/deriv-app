@@ -1,17 +1,19 @@
 import React from 'react';
 import { Text } from '@deriv/components';
+import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { AccountStatus } from '@deriv/shared';
 import { Link } from 'react-router-dom';
 
 const getStatusBadgeConfig = (
-    account_status: typeof AccountStatus[keyof typeof AccountStatus],
-    openFailedVerificationModal: (selected_account_type: string) => void,
-    selected_account_type: string,
+    account_status: typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS],
+    openFailedVerificationModal?: (selected_account_type: string) => void,
+    selected_account_type?: string,
     setIsVerificationModalVisible?: (value: boolean) => void
 ) => {
+    const BadgeTextComponent = <Text key={0} weight='bold' size='xxxs' color='warning' />;
+
     switch (account_status) {
-        case AccountStatus.PENDING:
+        case MT5_ACCOUNT_STATUS.PENDING:
             return {
                 text: (
                     <Localize
@@ -21,7 +23,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcAlertWarning',
             };
-        case AccountStatus.FAILED:
+        case MT5_ACCOUNT_STATUS.FAILED:
             return {
                 text: (
                     <Localize
@@ -32,7 +34,7 @@ const getStatusBadgeConfig = (
                                 key={1}
                                 className='link-verification-failed'
                                 onClick={() => {
-                                    openFailedVerificationModal(selected_account_type);
+                                    openFailedVerificationModal?.(selected_account_type ?? '');
                                 }}
                             />,
                         ]}
@@ -40,7 +42,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcRedWarning',
             };
-        case AccountStatus.NEEDS_VERIFICATION:
+        case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION:
             return {
                 text: (
                     <Localize
@@ -60,6 +62,16 @@ const getStatusBadgeConfig = (
                     />
                 ),
                 icon: 'IcAlertInfo',
+            };
+        case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:
+            return {
+                text: <Localize i18n_default_text='<0>No new positions</0>' components={[BadgeTextComponent]} />,
+                icon: 'IcAlertWarning',
+            };
+        case MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION:
+            return {
+                text: <Localize i18n_default_text='<0>Account closed</0>' components={[BadgeTextComponent]} />,
+                icon: 'IcAlertWarning',
             };
         default:
             return {

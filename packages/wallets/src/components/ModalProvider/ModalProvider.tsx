@@ -1,8 +1,8 @@
-import React, { RefObject, createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { createContext, RefObject, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 import useDevice from '../../hooks/useDevice';
-import { TPlatforms, TMarketTypes } from '../../types';
+import { TMarketTypes, TPlatforms } from '../../types';
 
 type TModalState = {
     marketType?: TMarketTypes.All;
@@ -15,7 +15,7 @@ type TModalContext = {
     isOpen: boolean;
     modalState?: Map<keyof TModalState, TModalState[keyof TModalState]>;
     setModalState: <T extends keyof TModalState>(key: T, value: TModalState[T]) => void;
-    show: (ModalContent: React.ReactNode) => void;
+    show: (ModalContent: React.ReactNode, options?: TModalShowOptions) => void;
 };
 
 type TModalShowOptions = {

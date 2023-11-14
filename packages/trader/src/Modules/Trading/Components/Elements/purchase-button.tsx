@@ -3,7 +3,7 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
-import { AccountStatus, getContractTypeDisplay } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS, getContractTypeDisplay } from '@deriv/shared';
 import { TProposalTypeInfo, TTradeStore } from 'Types';
 import { useMFAccountStatus } from '@deriv/hooks';
 
@@ -124,7 +124,7 @@ const PurchaseButton = ({
                 'btn-purchase--2__vanilla-opts': index === 1 && is_vanilla,
             })}
             onClick={() => {
-                if (is_multiplier && mf_account_status === AccountStatus.PENDING) {
+                if (is_multiplier && mf_account_status === MT5_ACCOUNT_STATUS.PENDING) {
                     setIsMFVericationPendingModal(true);
                 } else {
                     setPurchaseState(index);

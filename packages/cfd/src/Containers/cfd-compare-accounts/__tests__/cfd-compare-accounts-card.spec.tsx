@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { CFD_PLATFORMS, MARKET_TYPES } from '@deriv/shared';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import CFDCompareAccountsCard from '../cfd-compare-accounts-card';
+import { MARKET_TYPE } from '../../../Helpers/cfd-config';
 
 jest.mock('../../../Assets/svgs/trading-platform', () => jest.fn(() => <div>Mocked Icon</div>));
 jest.mock('../instruments-icon-with-label', () => jest.fn(() => <div>Mocked Icon With Label</div>));
@@ -30,7 +31,7 @@ describe('<CFDCompareAccountsCard />', () => {
 
     const mocked_props = {
         trading_platforms: {
-            market_type: MARKET_TYPES.UNREGULATED,
+            market_type: MARKET_TYPE.UNREGULATED,
             shortcode: 'svg',
             platform: 'mt5',
         },

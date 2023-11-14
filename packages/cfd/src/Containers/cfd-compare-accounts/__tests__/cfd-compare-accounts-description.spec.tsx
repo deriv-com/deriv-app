@@ -2,13 +2,13 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDCompareAccountsDescription from '../cfd-compare-accounts-description';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { MARKET_TYPES } from '@deriv/shared';
+import { MARKET_TYPE } from '../../../Helpers/cfd-config';
 
-type TKeys = keyof typeof MARKET_TYPES;
+type TKeys = keyof typeof MARKET_TYPE;
 
 type TMockedProps = {
     trading_platforms: {
-        market_type: typeof MARKET_TYPES[TKeys];
+        market_type: typeof MARKET_TYPE[TKeys];
         shortcode: string;
     };
     is_demo: boolean;
@@ -22,7 +22,7 @@ describe('<CFDCompareAccountsDescription />', () => {
     });
     const mocked_props: TMockedProps = {
         trading_platforms: {
-            market_type: MARKET_TYPES.UNREGULATED,
+            market_type: MARKET_TYPE.UNREGULATED,
             shortcode: 'svg',
         },
         is_demo: false,
@@ -66,7 +66,7 @@ describe('<CFDCompareAccountsDescription />', () => {
     });
 
     it('should render content for all market type with svg shortcode', () => {
-        mocked_props.trading_platforms.market_type = MARKET_TYPES.ALL;
+        mocked_props.trading_platforms.market_type = MARKET_TYPE.ALL;
 
         render(<CFDCompareAccountsDescription {...mocked_props} />, { wrapper });
         assertContent('Maximum leverage', '0.5 pips', 'Spreads from', 'Counterparty company', 'Jurisdiction');
@@ -78,7 +78,7 @@ describe('<CFDCompareAccountsDescription />', () => {
     });
 
     it('should render content for financial market type with svg shortcode', () => {
-        mocked_props.trading_platforms.market_type = MARKET_TYPES.FINANCIAL;
+        mocked_props.trading_platforms.market_type = MARKET_TYPE.FINANCIAL;
         mocked_props.trading_platforms.shortcode = 'svg';
 
         render(<CFDCompareAccountsDescription {...mocked_props} />, { wrapper });

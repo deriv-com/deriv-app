@@ -14,7 +14,7 @@ export const CATEGORY = {
 
 export const MARKET_TYPE = {
     SYNTHETIC: 'synthetic',
-    GAMING: 'gaming',
+    UNREGULATED: 'gaming',
     FINANCIAL: 'financial',
     ALL: 'all',
 } as const;
@@ -48,7 +48,7 @@ export const MARKET_TYPE_SHORTCODE = {
     SYNTHETIC_SVG: 'synthetic_svg',
     SYNTHETIC_BVI: 'synthetic_bvi',
     SYNTHETIC_VANUATU: 'synthetic_vanuatu',
-    GAMING: 'gaming',
+    UNREGULATED: 'gaming',
     FINANCIAL_SVG: 'financial_svg',
     FINANCIAL_BVI: 'financial_bvi',
     FINANCIAL_VANUATU: 'financial_vanuatu',

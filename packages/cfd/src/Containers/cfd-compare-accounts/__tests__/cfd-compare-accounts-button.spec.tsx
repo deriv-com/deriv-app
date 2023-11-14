@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import CFDCompareAccountsButton from '../cfd-compare-accounts-button';
-import { MARKET_TYPES } from '@deriv/shared';
+import { MARKET_TYPE } from '../../../Helpers/cfd-config';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -30,7 +30,7 @@ describe('<CFDCompareAccountsButton />', () => {
         trading_platforms: {
             platform: 'mt5',
             shortcode: 'svg',
-            market_type: MARKET_TYPES.UNREGULATED,
+            market_type: MARKET_TYPE.UNREGULATED,
         },
         is_demo: false,
     };

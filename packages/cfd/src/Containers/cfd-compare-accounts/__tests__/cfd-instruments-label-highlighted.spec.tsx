@@ -2,9 +2,19 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDInstrumentsLabelHighlighted from '../cfd-instruments-label-highlighted';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { MARKET_TYPES } from '@deriv/shared';
+import { MARKET_TYPE } from '../../../Helpers/cfd-config';
 
 jest.mock('../instruments-icon-with-label', () => jest.fn(() => <div>Mocked Icon</div>));
+
+type TKeys = keyof typeof MARKET_TYPE;
+
+type TMockedProps = {
+    trading_platforms: {
+        market_type: typeof MARKET_TYPE[TKeys];
+        shortcode: string;
+        platform: string;
+    };
+};
 
 describe('<CFDInstrumentsLabelHighlighted />', () => {
     const mock = mockStore({
@@ -13,10 +23,10 @@ describe('<CFDInstrumentsLabelHighlighted />', () => {
         },
     });
 
-    const mocked_props = {
+    const mocked_props: TMockedProps = {
         trading_platforms: {
             platform: 'mt5',
-            market_type: MARKET_TYPES.UNREGULATED,
+            market_type: MARKET_TYPE.UNREGULATED,
             shortcode: 'svg',
         },
     };
@@ -33,7 +43,7 @@ describe('<CFDInstrumentsLabelHighlighted />', () => {
     });
 
     it('should renders icons for market type all financial', () => {
-        mocked_props.trading_platforms.market_type = MARKET_TYPES.FINANCIAL;
+        mocked_props.trading_platforms.market_type = MARKET_TYPE.FINANCIAL;
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
@@ -44,7 +54,7 @@ describe('<CFDInstrumentsLabelHighlighted />', () => {
     });
 
     it('should renders icons for market type all', () => {
-        mocked_props.trading_platforms.market_type = MARKET_TYPES.FINANCIAL;
+        mocked_props.trading_platforms.market_type = MARKET_TYPE.FINANCIAL;
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

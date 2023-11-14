@@ -27,7 +27,7 @@ const getHighlightedIconLabel = (
             : localize('Forex: standard/micro');
 
     switch (trading_platforms.market_type) {
-        case MARKET_TYPE.GAMING:
+        case MARKET_TYPE.UNREGULATED:
             return [
                 { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true },
                 { icon: 'Baskets', text: localize('Baskets'), highlighted: true },
@@ -171,7 +171,9 @@ const getAccountIcon = (shortcode: string) => {
 
 // Convert the market type from gaming to synthethics
 const getMarketType = (trading_platforms: TModifiedTradingPlatformAvailableAccount) => {
-    return trading_platforms.market_type === MARKET_TYPE.GAMING ? MARKET_TYPE.SYNTHETIC : trading_platforms.market_type;
+    return trading_platforms.market_type === MARKET_TYPE.UNREGULATED
+        ? MARKET_TYPE.SYNTHETIC
+        : trading_platforms.market_type;
 };
 
 // Get the color of Header based on the platform
@@ -275,7 +277,7 @@ const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatf
         .filter(item => item.market_type === MARKET_TYPE.FINANCIAL && item.shortcode !== JURISDICTION.MALTA_INVEST)
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
     const gaming_accounts = available_accounts
-        .filter(item => item.market_type === MARKET_TYPE.GAMING)
+        .filter(item => item.market_type === MARKET_TYPE.UNREGULATED)
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
     return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts];
 };
@@ -421,7 +423,7 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
         item => item.market_type === MARKET_TYPE.FINANCIAL && item.shortcode === JURISDICTION.SVG
     );
     const gaming_demo_accounts = available_accounts.filter(
-        item => item.market_type === MARKET_TYPE.GAMING && item.shortcode === JURISDICTION.SVG
+        item => item.market_type === MARKET_TYPE.UNREGULATED && item.shortcode === JURISDICTION.SVG
     );
     return [...gaming_demo_accounts, ...financial_demo_accounts, ...swap_free_demo_accounts];
 };

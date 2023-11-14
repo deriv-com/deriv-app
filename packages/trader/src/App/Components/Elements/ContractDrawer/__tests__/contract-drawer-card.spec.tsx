@@ -6,7 +6,8 @@ import { getEndTime, isMobile, isDesktop } from '@deriv/shared';
 import ContractDrawerCard from '../contract-drawer-card';
 import TraderProviders from '../../../../../trader-providers';
 
-const mocked_props = {
+const mocked_props: React.ComponentProps<typeof ContractDrawerCard> = {
+    contract_update: undefined,
     contract_info: {
         profit: 8.78,
         validation_error: 'This contract has been sold',
@@ -29,7 +30,7 @@ const mocked_props = {
     result: 'won',
     status: 'won',
     toggleContractAuditDrawer: jest.fn(),
-} as unknown as React.ComponentProps<typeof ContractDrawerCard>;
+};
 
 const default_mock_store = {
     modules: {
@@ -71,8 +72,7 @@ describe('<ContractDrawerCard />', () => {
         expect(screen.getByText(/Payout limit/i)).toBeInTheDocument();
     });
     it('should render Market Closed Contract Overlay if is_market_closed === true and getEndTime returns false', () => {
-        const new_mock_props = { ...mocked_props };
-        new_mock_props.is_market_closed = true;
+        const new_mock_props = { ...mocked_props, is_market_closed: true };
         (getEndTime as jest.Mock).mockReturnValue(false);
         render(mockContractDrawerCard(new_mock_props));
 

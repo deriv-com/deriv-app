@@ -8,8 +8,8 @@ import ContractDrawer from '../contract-drawer';
 import TraderProviders from '../../../../../trader-providers';
 import userEvent from '@testing-library/user-event';
 
-const mocked_props = {
-    contract_info: '',
+const mocked_props: React.ComponentProps<typeof ContractDrawer> = {
+    contract_info: {},
     is_accumulator: false,
     is_dark_theme: false,
     is_market_closed: false,
@@ -21,7 +21,9 @@ const mocked_props = {
     onClickCancel: jest.fn(),
     onClickSell: jest.fn(),
     toggleHistoryTab: jest.fn(),
-} as unknown as React.ComponentProps<typeof ContractDrawer>;
+    contract_update: undefined,
+    contract_update_history: [],
+};
 
 const contract_audit = 'Contract Audit';
 const contract_drawer_card = 'Contract Drawer Card';

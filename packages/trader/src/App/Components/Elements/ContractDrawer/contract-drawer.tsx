@@ -6,6 +6,7 @@ import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/compone
 import {
     isUserSold,
     isMobile,
+    isEmptyObject,
     getDurationPeriod,
     getDurationTime,
     getDurationUnitText,
@@ -90,7 +91,7 @@ const ContractDrawer = observer(
             />
         );
 
-        if (!contract_info) return null;
+        if (isEmptyObject(contract_info)) return null;
 
         // For non-binary contract, the status is always null, so we check for is_expired in contract_info
         const fallback_result = contract_info.status || contract_info.is_expired;

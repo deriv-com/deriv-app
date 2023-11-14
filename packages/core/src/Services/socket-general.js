@@ -67,7 +67,6 @@ const BinarySocketGeneral = (() => {
                         !client_store.is_populating_account_list &&
                         !client_store.is_switching
                     ) {
-                        console.log('shit', response.authorize.loginid, client_store.loginid);
                         client_store.logout();
                     } else if (response.authorize.loginid === client_store.loginid) {
                         // All other cases continue with the loginid and authorize the profile

@@ -18,12 +18,14 @@ const FiatOnRamp = () => {
                 <FiatOnRampDisclaimer handleDisclaimer={handleDisclaimer} />
             ) : (
                 <div className='wallets-fiat-onramp'>
-                    <WalletButton
-                        color='white'
-                        icon={<BackArrow />}
-                        onClick={() => history.push('/wallets/cashier/deposit')}
-                        text='Back'
-                    />
+                    <div className='wallets-fiat-onramp__actions'>
+                        <WalletButton
+                            color='white'
+                            icon={<BackArrow />}
+                            onClick={() => history.push('/wallets/cashier/deposit')}
+                            text='Back'
+                        />
+                    </div>
                     <div className='wallets-fiat-onramp__content'>
                         <div className='wallets-fiat-onramp__description'>
                             <WalletText align='center' color='primary' size='xs'>

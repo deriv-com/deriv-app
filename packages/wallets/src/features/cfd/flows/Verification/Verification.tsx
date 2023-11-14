@@ -76,7 +76,7 @@ const Verification = ({ selectedJurisdiction }: { selectedJurisdiction: string }
     const needPersonalDetails = true;
 
     const initialScreenId: keyof typeof screens = useMemo(() => {
-        const service = (poiStatus?.next?.service || 'manual') as keyof THooks.POI['services'];
+        const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
 
         if (poiStatus?.services) {
             const serviceStatus = poiStatus.services?.[service];
@@ -91,7 +91,7 @@ const Verification = ({ selectedJurisdiction }: { selectedJurisdiction: string }
             if (service === 'onfido') return 'onfidoScreen';
         }
         return 'manualScreen';
-    }, [hasAttemptedPOA, needPersonalDetails, poiStatus?.services, poiStatus?.next?.service, isSuccess]);
+    }, [hasAttemptedPOA, needPersonalDetails, poiStatus?.services, poiStatus?.current?.service, isSuccess]);
 
     const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {

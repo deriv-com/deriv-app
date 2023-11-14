@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { FlowProvider, TFlowProviderContext, useFlow } from '../../../../components/FlowProvider';
+import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { useModal } from '../../../../components/ModalProvider';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { Loader } from '../../../../components/Loader';
@@ -9,7 +9,7 @@ import { THooks } from '../../../../types';
 
 const Idv = () => {
     return (
-        <div style={{ fontSize: 60, width: 600, height: 400 }}>
+        <div style={{ fontSize: 60, height: 400, width: 600 }}>
             <h1>IDV screen</h1>
         </div>
     );
@@ -17,7 +17,7 @@ const Idv = () => {
 
 const Manual = () => {
     return (
-        <div style={{ fontSize: 60, width: 600, height: 400 }}>
+        <div style={{ fontSize: 60, height: 400, width: 600 }}>
             <h1>Manual screen</h1>
         </div>
     );
@@ -25,7 +25,7 @@ const Manual = () => {
 
 const Poa = () => {
     return (
-        <div style={{ fontSize: 60, width: 600, height: 400 }}>
+        <div style={{ fontSize: 60, height: 400, width: 600 }}>
             <h1>POA screen</h1>
         </div>
     );
@@ -33,7 +33,7 @@ const Poa = () => {
 
 const PersonalDetails = () => {
     return (
-        <div style={{ fontSize: 60, width: 600, height: 400 }}>
+        <div style={{ fontSize: 60, height: 400, width: 600 }}>
             <h1>Personal details screen</h1>
         </div>
     );
@@ -41,25 +41,25 @@ const PersonalDetails = () => {
 
 const Loading = () => {
     return (
-        <div style={{ fontSize: 60, width: 600, height: 400 }}>
+        <div style={{ fontSize: 60, height: 400, width: 600 }}>
             <Loader />
         </div>
     );
 };
 
 const Password = () => {
-    return <div style={{ fontSize: 60, width: 600, height: 400 }}>Password screen</div>;
+    return <div style={{ fontSize: 60, height: 400, width: 600 }}>Password screen</div>;
 };
 
 // TODO: Replace these mock components with the screens
 const screens = {
-    onfidoScreen: <Onfido />,
     idvScreen: <Idv />,
-    manualScreen: <Manual />,
-    poaScreen: <Poa />,
-    personalDetailsScreen: <PersonalDetails />,
     loadingScreen: <Loading />,
+    manualScreen: <Manual />,
+    onfidoScreen: <Onfido />,
     passwordScreen: <Password />,
+    personalDetailsScreen: <PersonalDetails />,
+    poaScreen: <Poa />,
 };
 
 const Verification = ({ selectedJurisdiction }: { selectedJurisdiction: string }) => {
@@ -91,7 +91,14 @@ const Verification = ({ selectedJurisdiction }: { selectedJurisdiction: string }
             if (service === 'onfido') return 'onfidoScreen';
         }
         return 'manualScreen';
-    }, [hasAttemptedPOA, needPersonalDetails, poiStatus?.services, poiStatus?.current?.service, isSuccess]);
+    }, [
+        hasAttemptedPOA,
+        needPersonalDetails,
+        authenticationData?.is_poa_needed,
+        poiStatus?.services,
+        poiStatus?.current?.service,
+        isSuccess,
+    ]);
 
     const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {

@@ -12,6 +12,7 @@ import {
     getDurationUnitText,
     getEndTime,
     TContractStore,
+    TContractInfo,
 } from '@deriv/shared';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
@@ -21,12 +22,12 @@ import { observer, useStore } from '@deriv/stores';
 
 type TContractDrawerCardProps = React.ComponentProps<typeof ContractDrawerCard>;
 type TContractDrawerProps = RouteComponentProps & {
+    contract_info?: TContractInfo;
     contract_update_history: TContractStore['contract_update_history'];
     is_dark_theme: boolean;
     toggleHistoryTab: (state_change?: boolean) => void;
 } & Pick<
         TContractDrawerCardProps,
-        | 'contract_info'
         | 'contract_update'
         | 'is_accumulator'
         | 'is_market_closed'
@@ -42,7 +43,7 @@ type TContractDrawerProps = RouteComponentProps & {
 
 const ContractDrawer = observer(
     ({
-        contract_info,
+        contract_info = {},
         contract_update,
         contract_update_history,
         is_accumulator,

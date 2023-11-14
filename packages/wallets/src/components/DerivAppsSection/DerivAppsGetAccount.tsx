@@ -27,7 +27,7 @@ const DerivAppsGetAccount: React.FC = () => {
                 shouldHideHeader={isDesktop}
             >
                 <CFDSuccess
-                    description={`Transfer funds from ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
+                    description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
                     displayBalance={activeWallet?.display_balance}
                     renderButton={() => <DerivAppsSuccessFooter />}
                     title={`Your Deriv Apps (${landingCompanyName}) account is ready`}

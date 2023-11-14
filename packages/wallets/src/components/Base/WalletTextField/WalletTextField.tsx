@@ -52,7 +52,9 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
                             {label}
                         </label>
                     )}
-                    {renderRightIcon && <div className='wallets-textfield__icon'>{renderRightIcon()}</div>}
+                    {typeof renderRightIcon === 'function' && (
+                        <div className='wallets-textfield__icon'>{renderRightIcon()}</div>
+                    )}
                 </div>
                 <div className='wallets-textfield__message-container'>
                     {showMessage && (

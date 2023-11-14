@@ -70,7 +70,6 @@
             width: 15rem;
             height: 2rem;
             background: var(--status-transfer);
-            color: var(--text-colored-background) !important;
             transform: translateX(17rem) translateY(-2rem) rotate(45deg);
             @include mobile {
                 transform: translateX(8rem) translateY(-2rem) rotate(45deg);

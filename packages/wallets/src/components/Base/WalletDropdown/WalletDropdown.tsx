@@ -69,7 +69,7 @@ const WalletDropdown: React.FC<TProps> = ({
     }, [list]);
 
     return (
-        <div className='wallets-dropdown' style={{ maxWidth: `${maxWidth}` }}>
+        <div className='wallets-dropdown' style={{ maxWidth }}>
             <div className='wallets-dropdown__content'>
                 {icon && <div className='wallets-dropdown__icon'>{icon}</div>}
                 <input

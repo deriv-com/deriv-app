@@ -35,7 +35,7 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
         };
 
         return (
-            <div className='wallets-textfield' style={{ maxWidth: `${maxWidth}` }}>
+            <div className='wallets-textfield' style={{ maxWidth }}>
                 <div className='wallets-textfield__box'>
                     <input
                         className='wallets-textfield__field'

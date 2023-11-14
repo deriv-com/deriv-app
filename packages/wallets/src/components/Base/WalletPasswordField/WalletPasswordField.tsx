@@ -9,10 +9,14 @@ import './WalletPasswordField.scss';
 
 interface WalletPasswordFieldProps extends WalletTextFieldProps, PasswordMeterProps {
     password: string;
-    showPasswordMeter?: boolean;
+    shouldDisablePasswordMeter?: boolean;
 }
 
-const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({ password, showPasswordMeter = true, ...rest }) => {
+const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
+    password,
+    shouldDisablePasswordMeter = false,
+    ...rest
+}) => {
     const [viewPassword, setViewPassword] = useState(false);
 
     const passwordScore = password ? zxcvbn(password).score : undefined;
@@ -35,7 +39,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({ password, sho
                 value={password}
                 {...rest}
             />
-            {showPasswordMeter && <PasswordMeter score={passwordScore} />}
+            {shouldDisablePasswordMeter && <PasswordMeter score={passwordScore} />}
         </div>
     );
 };

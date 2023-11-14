@@ -55,6 +55,26 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
         );
     }, [cancelTransaction, modal]);
 
+    const onMobileStatusClick = useCallback(
+        () =>
+            modal.show(
+                <WalletActionModal
+                    actionButtonsOptions={[
+                        {
+                            isPrimary: true,
+                            onClick: modal.hide,
+                            text: 'Ok',
+                        },
+                    ]}
+                    description={transaction.description}
+                    hideCloseButton
+                    title='Transaction details'
+                />,
+                { defaultRootId: 'wallets_modal_root' }
+            ),
+        [modal, transaction.description]
+    );
+
     return (
         <div className='wallets-transactions-pending-row'>
             <div className='wallets-transactions-pending-row__wallet-info'>
@@ -147,26 +167,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
             </div>
             <button
                 className='wallets-transactions-pending-row__transaction-status'
-                onClick={
-                    isMobile
-                        ? () =>
-                              modal.show(
-                                  <WalletActionModal
-                                      actionButtonsOptions={[
-                                          {
-                                              isPrimary: true,
-                                              onClick: modal.hide,
-                                              text: 'Ok',
-                                          },
-                                      ]}
-                                      description={transaction.description}
-                                      hideCloseButton
-                                      title='Transaction details'
-                                  />,
-                                  { defaultRootId: 'wallets_modal_root' }
-                              )
-                        : undefined
-                }
+                onClick={isMobile ? onMobileStatusClick : undefined}
                 ref={statusRef}
             >
                 <Tooltip alignment='left' isVisible={!isMobile && isStatusHovered} message={transaction.description}>

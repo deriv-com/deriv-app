@@ -16,13 +16,14 @@ const getPercentageBlocks = (fraction: number, blockCount: number, onClick: (val
         return (
             <div className='wallets-withdrawal-percentage-selector__block' key={value}>
                 <div className='wallets-withdrawal-percentage-selector__block-value'>{value * 100}%</div>
-                <button
+                <input
                     className={classNames('wallets-withdrawal-percentage-selector__block-bar', {
                         'wallets-withdrawal-percentage-selector__block-bar--active': value <= fraction,
                     })}
                     onClick={() => {
                         onClick(value);
                     }}
+                    type='button'
                 />
             </div>
         );

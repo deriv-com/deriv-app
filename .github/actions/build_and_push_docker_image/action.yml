@@ -25,9 +25,6 @@ inputs:
   CA_CRT:
     description: 'K8S CA_CRT'
     required: true
-  CA:
-    description: 'K8S CA'
-    required: true
   APP_VERSION:
     description: 'App version'
     required: true

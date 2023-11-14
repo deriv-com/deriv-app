@@ -688,13 +688,19 @@ export default class GeneralStore extends BaseStore {
     }
 
     setP2PConfig() {
-        const { floating_rate_store } = this.root_store;
+        const { floating_rate_store, my_ads_store } = this.root_store;
         requestWS({ website_status: 1 }).then(response => {
             if (!!response && response.error) {
                 floating_rate_store.setApiErrorMessage(response.error.message);
             } else {
-                const { fixed_rate_adverts, float_rate_adverts, float_rate_offset_limit, fixed_rate_adverts_end_date } =
-                    response.website_status.p2p_config;
+                const {
+                    fixed_rate_adverts,
+                    float_rate_adverts,
+                    float_rate_offset_limit,
+                    fixed_rate_adverts_end_date,
+                    maximum_order_amount,
+                } = response.website_status.p2p_config;
+                my_ads_store.setMaximumOrderAmount(maximum_order_amount);
                 floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
                 floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
                 floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);

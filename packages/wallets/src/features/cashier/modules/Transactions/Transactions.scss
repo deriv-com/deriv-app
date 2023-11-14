@@ -1,42 +1,31 @@
 .wallets-transactions {
-    $root: &;
-    width: 100vw;
-    height: 100%;
+    width: 100%;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 7.2rem; // accounting for the list header
 
-    // accounting for CashierContent padding
-    margin: -4.8rem -1.6rem 0;
+    // ignore CashierContent top padding
+    margin-top: -4.8rem;
     @include mobile {
-        margin: -2.4rem -1.6rem 0;
-    }
-
-    &--crypto-mobile {
-        @include mobile {
-            padding-top: 11.2rem; // accounting for the list header when it's a crypto wallet on mobile
-
-            #{$root}__header {
-                margin-top: -11.2rem; // make absolutely positioned header ignore parent's padding
-            }
-        }
+        margin-top: -2.4rem;
     }
 
     &__header {
-        position: absolute;
-        margin-top: -7.2rem; // make absolutely positioned header ignore parent's padding
+        position: sticky;
+        top: -4.8rem; // ignore CashierContent padding
         width: 100%;
         max-width: 80rem;
         padding: 2.4rem 0 0.8rem;
         display: flex;
         gap: 1.6rem;
         justify-content: flex-end;
-        z-index: 10;
+        z-index: 1;
         background-color: var(--system-light-8-primary-background, #fff);
 
         @include mobile {
-            padding: 1.6rem;
+            top: -2.4rem;
+            padding: 1.6rem 0;
             flex-direction: column;
         }
     }

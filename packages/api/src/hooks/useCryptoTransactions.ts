@@ -87,9 +87,7 @@ const getStatusDescription = (
             return 'Your withdrawal is successful.';
         // both:
         case 'ERROR':
-            return `Your ${
-                transaction_type === 'deposit' ? 'deposit' : 'withdrawal'
-            } is unsuccessful due to an error on the blockchain. Please contact ${
+            return `Your ${transaction_type} is unsuccessful due to an error on the blockchain. Please contact ${
                 transaction_type === 'deposit' ? 'your crypto wallet service provider' : 'us via live chat'
             } for more info.`;
         default:

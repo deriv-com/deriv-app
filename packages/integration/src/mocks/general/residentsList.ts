@@ -1,4 +1,4 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
 function mock_residents_list(context: Context) {
     if ('residence_list' in context.request) {

@@ -1,4 +1,4 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
 export default function mock_mt5_login_list(context: Context) {
     if ('mt5_login_list' in context.request && context.request.mt5_login_list === 1) {

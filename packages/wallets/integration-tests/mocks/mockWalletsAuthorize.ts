@@ -10,7 +10,7 @@ export const DEFAULT_WALLET_ACCOUNTS = [
 
     {
         id: 'CR90000256',
-        balance: 10.10,
+        balance: 10.1,
         currency: 'BTC',
         token: 'a1-x0000000000000000000000000002',
     },
@@ -197,7 +197,7 @@ export const ACCOUNTS_LIST = [
     },
 ];
 
-export default function mock_wallets_authorize(context: Context) {
+export default function mockWalletsAuthorize(context: Context) {
     if ('authorize' in context.request) {
         if (!context.response) {
             throw new Error('authorize has not been prepopulated');

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { DEFAULT_ACCOUNTS, mock_general, mock_loggedIn, setupMocks } from '@deriv/integration';
+import { DEFAULT_ACCOUNTS, mockGeneral, mockLoggedIn, setupMocks } from '@deriv/integration';
 
 test.describe('Personal Details - Menu', () => {
     test('the navigation menu works', async ({ page, baseURL }) => {
@@ -9,7 +9,7 @@ test.describe('Personal Details - Menu', () => {
                 accounts: DEFAULT_ACCOUNTS,
             },
             page,
-            mocks: [mock_general, mock_loggedIn],
+            mocks: [mockGeneral, mockLoggedIn],
         });
         await page.goto(`${baseURL}/account/personal-details`);
 

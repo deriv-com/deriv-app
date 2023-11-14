@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { DEFAULT_ACCOUNTS, mock_general, mock_loggedIn, setupMocks, assertField } from '@deriv/integration';
+import { DEFAULT_ACCOUNTS, mockGeneral, mockLoggedIn, setupMocks, assertField } from '@deriv/integration';
 import { Context } from '@deriv/integration/src/utils/mocks/mocks';
 
 const mock_set_settings = (context: Context) => {
@@ -28,7 +28,7 @@ test.describe('Personal Details', () => {
                 accounts: DEFAULT_ACCOUNTS,
             },
             page,
-            mocks: [mock_general, mock_loggedIn],
+            mocks: [mockGeneral, mockLoggedIn],
         });
         await page.goto(`${baseURL}/account/personal-details`);
 
@@ -57,7 +57,7 @@ test.describe('Personal Details', () => {
                 accounts: DEFAULT_ACCOUNTS,
             },
             page,
-            mocks: [mock_general, mock_loggedIn, mock_set_settings],
+            mocks: [mockGeneral, mockLoggedIn, mock_set_settings],
         });
         await page.goto(`${baseURL}/account/personal-details`);
 

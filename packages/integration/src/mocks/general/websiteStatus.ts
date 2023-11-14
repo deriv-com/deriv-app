@@ -1,12 +1,15 @@
-import { Context } from "@deriv/integration/src/utils/mocks/mocks";
+import { Context } from '../../utils/mocks/mocks';
 
-export function mock_proposal_open_contract(context: Context) {
-    if ('proposal_open_contract' in context.request) {
+export default function mock_website_status(context: Context) {
+    if ('website_status' in context.request && context.request.website_status === 1) {
         context.response = {
-            echo_req: context.request,
-            msg_type: 'proposal_open_contract',
+            echo_req: {
+                req_id: context.req_id,
+                website_status: 1,
+            },
+            msg_type: 'website_status',
             req_id: context.req_id,
-            subscription: {
+            website_status: {
                 api_call_limits: {
                     max_proposal_subscription: {
                         applies_to: 'subscribing to proposal concurrently',
@@ -28,8 +31,8 @@ export function mock_proposal_open_contract(context: Context) {
                         minutely: 80,
                     },
                 },
-                broker_codes: ['VRCH', 'CR', 'VRTC', 'MLT', 'CRW', 'CRA', 'VRW', 'MF', 'CH', 'MFW', 'MX'],
-                clients_country: 'gb',
+                broker_codes: ['CRW', 'MX', 'VRW', 'CH', 'MFW', 'VRTC', 'VRCH', 'MLT', 'MF', 'CRA', 'CR'],
+                clients_country: 'my',
                 currencies_config: {
                     AUD: {
                         fractional_digits: 2,
@@ -37,7 +40,7 @@ export function mock_proposal_open_contract(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Australian Dollar',
-                        stake_default: 16,
+                        stake_default: 15,
                         transfer_between_accounts: {
                             fees: {
                                 BTC: 2,
@@ -60,24 +63,24 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 7802.87,
-                                min: 1.56,
+                                max: 7402.03,
+                                min: 1.48,
                             },
                             limits_ctrader: {
-                                max: 23408.61,
-                                min: 0.02,
+                                max: 22206.1,
+                                min: 0.01,
                             },
                             limits_derivez: {
-                                max: 23408.61,
-                                min: 0.02,
+                                max: 22206.1,
+                                min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 3901.43,
-                                min: 0.02,
+                                max: 3701.02,
+                                min: 0.01,
                             },
                             limits_mt5: {
-                                max: 23408.61,
-                                min: 0.02,
+                                max: 22206.1,
+                                min: 0.01,
                             },
                         },
                         type: 'fiat',
@@ -88,7 +91,7 @@ export function mock_proposal_open_contract(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Bitcoin',
-                        stake_default: 0.0003,
+                        stake_default: 0.0004,
                         transfer_between_accounts: {
                             fees: {
                                 AUD: 2,
@@ -111,24 +114,24 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 0.13584133,
-                                min: 0.00002717,
+                                max: 0.17060625,
+                                min: 3.412e-5,
                             },
                             limits_ctrader: {
-                                max: 0.40752398,
-                                min: 2.7e-7,
+                                max: 0.51181875,
+                                min: 3.4e-7,
                             },
                             limits_derivez: {
-                                max: 0.40752398,
-                                min: 2.7e-7,
+                                max: 0.51181875,
+                                min: 3.4e-7,
                             },
                             limits_dxtrade: {
-                                max: 0.06792066,
-                                min: 2.7e-7,
+                                max: 0.08530312,
+                                min: 3.4e-7,
                             },
                             limits_mt5: {
-                                max: 0.40752398,
-                                min: 2.7e-7,
+                                max: 0.51181875,
+                                min: 3.4e-7,
                             },
                         },
                         type: 'crypto',
@@ -162,23 +165,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 5000,
+                                max: 5000.5,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 15000,
+                                max: 15001.5,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 15000,
+                                max: 15001.5,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2500,
+                                max: 2500.25,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 15000,
+                                max: 15001.5,
                                 min: 0.01,
                             },
                         },
@@ -264,24 +267,24 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 2.61036152,
-                                min: 0.00052207,
+                                max: 2.68833826,
+                                min: 0.00053767,
                             },
                             limits_ctrader: {
-                                max: 7.83108455,
-                                min: 0.00000522,
+                                max: 8.06501477,
+                                min: 5.38e-6,
                             },
                             limits_derivez: {
-                                max: 7.83108455,
-                                min: 0.00000522,
+                                max: 8.06501477,
+                                min: 5.38e-6,
                             },
                             limits_dxtrade: {
-                                max: 1.30518076,
-                                min: 0.00000522,
+                                max: 1.34416913,
+                                min: 5.38e-6,
                             },
                             limits_mt5: {
-                                max: 7.83108455,
-                                min: 0.00000522,
+                                max: 8.06501477,
+                                min: 5.38e-6,
                             },
                         },
                         type: 'crypto',
@@ -315,23 +318,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 4677.01,
-                                min: 0.94,
+                                max: 4513.78,
+                                min: 0.9,
                             },
                             limits_ctrader: {
-                                max: 14031.02,
+                                max: 13541.33,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 14031.02,
+                                max: 13541.33,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2338.5,
+                                max: 2256.89,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 14031.02,
+                                max: 13541.33,
                                 min: 0.01,
                             },
                         },
@@ -366,23 +369,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 5000,
-                                min: 1,
+                                max: 4262.39,
+                                min: 0.85,
                             },
                             limits_ctrader: {
-                                max: 15000,
+                                max: 12787.18,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 15000,
+                                max: 12787.18,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2500,
+                                max: 2131.2,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 15000,
+                                max: 12787.18,
                                 min: 0.01,
                             },
                         },
@@ -394,7 +397,7 @@ export function mock_proposal_open_contract(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Pound Sterling',
-                        stake_default: 10,
+                        stake_default: 8,
                         transfer_between_accounts: {
                             fees: {
                                 AUD: 0,
@@ -417,23 +420,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 4068.65,
-                                min: 0.81,
+                                max: 3867.16,
+                                min: 0.77,
                             },
                             limits_ctrader: {
-                                max: 12205.94,
+                                max: 11601.47,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 12205.94,
+                                max: 11601.47,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2034.32,
+                                max: 1933.58,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 12205.94,
+                                max: 11601.47,
                                 min: 0.01,
                             },
                         },
@@ -445,7 +448,7 @@ export function mock_proposal_open_contract(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'IDK',
-                        stake_default: 10,
+                        stake_default: 150,
                         transfer_between_accounts: {
                             fees: {
                                 AUD: 2,
@@ -468,23 +471,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 78225,
-                                min: 16,
+                                max: 75163,
+                                min: 15,
                             },
                             limits_ctrader: {
-                                max: 234676,
+                                max: 225488,
                                 min: 0,
                             },
                             limits_derivez: {
-                                max: 234676,
+                                max: 225488,
                                 min: 0,
                             },
                             limits_dxtrade: {
-                                max: 39113,
+                                max: 37581,
                                 min: 0,
                             },
                             limits_mt5: {
-                                max: 234676,
+                                max: 225488,
                                 min: 0,
                             },
                         },
@@ -519,24 +522,24 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 66.86726847,
-                                min: 0.01337345,
+                                max: 55.79111805,
+                                min: 0.01115822,
                             },
                             limits_ctrader: {
-                                max: 200.60180542,
-                                min: 0.00013373,
+                                max: 167.37335416,
+                                min: 0.00011158,
                             },
                             limits_derivez: {
-                                max: 200.60180542,
-                                min: 0.00013373,
+                                max: 167.37335416,
+                                min: 0.00011158,
                             },
                             limits_dxtrade: {
-                                max: 33.43363424,
-                                min: 0.00013373,
+                                max: 27.89555903,
+                                min: 0.00011158,
                             },
                             limits_mt5: {
-                                max: 200.60180542,
-                                min: 0.00013373,
+                                max: 167.37335416,
+                                min: 0.00011158,
                             },
                         },
                         type: 'crypto',
@@ -570,23 +573,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 5000,
+                                max: 5002.81,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 15000,
+                                max: 15008.43,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 15000,
+                                max: 15008.43,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2500,
+                                max: 2501.41,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 15000,
+                                max: 15008.43,
                                 min: 0.01,
                             },
                         },
@@ -621,23 +624,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 5000,
+                                max: 5004.58,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 15000,
+                                max: 15013.75,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 15000,
+                                max: 15013.75,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2500,
+                                max: 2502.29,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 15000,
+                                max: 15013.75,
                                 min: 0.01,
                             },
                         },
@@ -774,23 +777,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 5000.25,
-                                min: 1,
+                                max: 4940,
+                                min: 0.99,
                             },
                             limits_ctrader: {
-                                max: 15000.75,
+                                max: 14820.01,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 15000.75,
+                                max: 14820.01,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2500.13,
+                                max: 2470,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 15000.75,
+                                max: 14820.01,
                                 min: 0.01,
                             },
                         },
@@ -849,9 +852,9 @@ export function mock_proposal_open_contract(context: Context) {
                     },
                     UST: {
                         fractional_digits: 2,
-                        is_deposit_suspended: 1,
-                        is_suspended: 1,
-                        is_withdrawal_suspended: 1,
+                        is_deposit_suspended: 0,
+                        is_suspended: 0,
+                        is_withdrawal_suspended: 0,
                         name: 'Tether Omni',
                         stake_default: 10,
                         transfer_between_accounts: {
@@ -876,23 +879,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 4997.25,
+                                max: 4992.76,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 14991.75,
+                                max: 14978.28,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 14991.75,
+                                max: 14978.28,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2498.63,
+                                max: 2496.38,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 14991.75,
+                                max: 14978.28,
                                 min: 0.01,
                             },
                         },
@@ -927,23 +930,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 4997.25,
+                                max: 4992.76,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 14991.75,
+                                max: 14978.28,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 14991.75,
+                                max: 14978.28,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2498.63,
+                                max: 2496.38,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 14991.75,
+                                max: 14978.28,
                                 min: 0.01,
                             },
                         },
@@ -951,9 +954,9 @@ export function mock_proposal_open_contract(context: Context) {
                     },
                     tUSDT: {
                         fractional_digits: 2,
-                        is_deposit_suspended: 0,
-                        is_suspended: 0,
-                        is_withdrawal_suspended: 0,
+                        is_deposit_suspended: 1,
+                        is_suspended: 1,
+                        is_withdrawal_suspended: 1,
                         name: 'Tether TRC20',
                         stake_default: 10,
                         transfer_between_accounts: {
@@ -978,23 +981,23 @@ export function mock_proposal_open_contract(context: Context) {
                                 eUSDT: 2,
                             },
                             limits: {
-                                max: 4997.25,
+                                max: 4992.76,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 14991.75,
+                                max: 14978.28,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 14991.75,
+                                max: 14978.28,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2498.63,
+                                max: 2496.38,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 14991.75,
+                                max: 14978.28,
                                 min: 0.01,
                             },
                         },
@@ -1084,7 +1087,7 @@ export function mock_proposal_open_contract(context: Context) {
                     cancellation_block_duration: 24,
                     cancellation_count_period: 24,
                     cancellation_grace_period: 0,
-                    cancellation_limit: 300,
+                    cancellation_limit: 3,
                     cross_border_ads_enabled: 1,
                     disabled: 0,
                     feature_level: 2,
@@ -1100,7 +1103,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Afghan Afghani',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'AFN',
                         },
                         {
@@ -1125,7 +1128,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Argentine Peso',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'ARS',
                         },
                         {
@@ -1150,12 +1153,12 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Barbados Dollar',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'BBD',
                         },
                         {
                             display_name: 'Bangladeshi Taka',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'BDT',
                         },
                         {
@@ -1165,7 +1168,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Burundi Franc',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'BIF',
                         },
                         {
@@ -1180,12 +1183,12 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Boliviano',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'BOB',
                         },
                         {
                             display_name: 'Brazilian Real',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'BRL',
                         },
                         {
@@ -1200,7 +1203,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Botswana Pula',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'BWP',
                         },
                         {
@@ -1215,7 +1218,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Congolese Franc',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'CDF',
                         },
                         {
@@ -1225,22 +1228,22 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Chilean Peso',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'CLP',
                         },
                         {
                             display_name: 'Yuan Renminbi',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'CNY',
                         },
                         {
                             display_name: 'Colombian Peso',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'COP',
                         },
                         {
                             display_name: 'Costa Rican Colon',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'CRC',
                         },
                         {
@@ -1260,7 +1263,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Dominican Peso',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'DOP',
                         },
                         {
@@ -1320,7 +1323,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Ghana Cedi',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'GHS',
                         },
                         {
@@ -1335,7 +1338,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Guinean Franc',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'GNF',
                         },
                         {
@@ -1355,13 +1358,12 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Haitian Gourde',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'HTG',
                         },
                         {
                             display_name: 'Indonesian Rupiah',
                             has_adverts: 1,
-                            is_default: 1,
                             symbol: 'IDR',
                         },
                         {
@@ -1371,7 +1373,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Indian Rupee',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'INR',
                         },
                         {
@@ -1386,7 +1388,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Jamaican Dollar',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'JMD',
                         },
                         {
@@ -1401,7 +1403,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Kenyan Shilling',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'KES',
                         },
                         {
@@ -1446,12 +1448,12 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Sri Lanka Rupee',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'LKR',
                         },
                         {
                             display_name: 'Liberian Dollar',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'LRD',
                         },
                         {
@@ -1501,7 +1503,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Mauritius Rupee',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'MUR',
                         },
                         {
@@ -1511,12 +1513,12 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Malawi Kwacha',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'MWK',
                         },
                         {
                             display_name: 'Mexican Peso',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'MXN',
                         },
                         {
@@ -1526,17 +1528,17 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Mozambique Metical',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'MZN',
                         },
                         {
                             display_name: 'Namibia Dollar',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'NAD',
                         },
                         {
                             display_name: 'Cordoba Oro',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'NIO',
                         },
                         {
@@ -1556,17 +1558,17 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Omani Rial',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'OMR',
                         },
                         {
                             display_name: 'Panamanian Balboa',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'PAB',
                         },
                         {
                             display_name: 'Peruvian Sol',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'PEN',
                         },
                         {
@@ -1576,17 +1578,17 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Philippine Peso',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'PHP',
                         },
                         {
                             display_name: 'Pakistan Rupee',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'PKR',
                         },
                         {
                             display_name: 'Qatari Riyal',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'QAR',
                         },
                         {
@@ -1596,7 +1598,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Russian Ruble',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'RUB',
                         },
                         {
@@ -1636,7 +1638,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Somali Shilling',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'SOS',
                         },
                         {
@@ -1661,12 +1663,13 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Swazi Lilangeni',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'SZL',
                         },
                         {
                             display_name: 'Thai Baht',
                             has_adverts: 0,
+                            is_default: 1,
                             symbol: 'THB',
                         },
                         {
@@ -1691,7 +1694,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Turkish Lira',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'TRY',
                         },
                         {
@@ -1706,7 +1709,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Tanzanian Shilling',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'TZS',
                         },
                         {
@@ -1716,17 +1719,17 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Uganda Shilling',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'UGX',
                         },
                         {
                             display_name: 'US Dollar',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'USD',
                         },
                         {
                             display_name: 'Uruguayan Peso',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'UYU',
                         },
                         {
@@ -1746,7 +1749,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Venezuelan Bolívar Soberano',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'VES',
                         },
                         {
@@ -1761,7 +1764,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'CFA Franc BEAC',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'XAF',
                         },
                         {
@@ -1771,7 +1774,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'CFA Franc BCEAO',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'XOF',
                         },
                         {
@@ -1786,7 +1789,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'South African Rand',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'ZAR',
                         },
                         {
@@ -1796,7 +1799,7 @@ export function mock_proposal_open_contract(context: Context) {
                         },
                         {
                             display_name: 'Zambian Kwacha',
-                            has_adverts: 0,
+                            has_adverts: 1,
                             symbol: 'ZMW',
                         },
                         {

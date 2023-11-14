@@ -1,4 +1,4 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
 export default function mock_p2p_order_list(context: Context) {
     if ('p2p_order_list' in context.request && context.request.p2p_order_list === 1) {

@@ -1,4 +1,4 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
 export default function mock_trading_platform_accounts(context: Context) {
     if ('trading_platform_accounts' in context.request && context.request.trading_platform_accounts === 1) {

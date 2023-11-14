@@ -1,6 +1,6 @@
 import { Context } from '@deriv/integration/src/utils/mocks/mocks';
 
-export function mock_crypto_config(context: Context) {
+export function mockCryptoConfig(context: Context) {
     if ('crypto_config' in context.request) {
         context.response = {
             crypto_config: {

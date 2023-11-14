@@ -1,4 +1,4 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
 export default function mock_exchange_rates(context: Context) {
     if ('exchange_rates' in context.request && context.request.exchange_rates === 1) {

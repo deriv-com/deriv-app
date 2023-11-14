@@ -1,4 +1,4 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
 export default function mock_get_settings(context: Context) {
     if ('get_settings' in context.request && context.request.get_settings === 1) {

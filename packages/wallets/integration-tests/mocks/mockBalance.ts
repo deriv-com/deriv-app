@@ -83,7 +83,7 @@ const TEMP_DATA = {
     },
 };
 
-export function mock_balance(context: Context) {
+export function mockBalance(context: Context) {
     if (!('balance' in context.request)) {
         return;
     }

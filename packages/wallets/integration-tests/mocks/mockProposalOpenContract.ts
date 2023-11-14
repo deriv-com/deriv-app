@@ -1,15 +1,12 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '@deriv/integration/src/utils/mocks/mocks';
 
-export default function mock_website_status(context: Context) {
-    if ('website_status' in context.request && context.request.website_status === 1) {
+export function mockProposalOpenContract(context: Context) {
+    if ('proposal_open_contract' in context.request) {
         context.response = {
-            echo_req: {
-                req_id: context.req_id,
-                website_status: 1,
-            },
-            msg_type: 'website_status',
+            echo_req: context.request,
+            msg_type: 'proposal_open_contract',
             req_id: context.req_id,
-            website_status: {
+            subscription: {
                 api_call_limits: {
                     max_proposal_subscription: {
                         applies_to: 'subscribing to proposal concurrently',
@@ -31,8 +28,8 @@ export default function mock_website_status(context: Context) {
                         minutely: 80,
                     },
                 },
-                broker_codes: ['CRW', 'MX', 'VRW', 'CH', 'MFW', 'VRTC', 'VRCH', 'MLT', 'MF', 'CRA', 'CR'],
-                clients_country: 'my',
+                broker_codes: ['VRCH', 'CR', 'VRTC', 'MLT', 'CRW', 'CRA', 'VRW', 'MF', 'CH', 'MFW', 'MX'],
+                clients_country: 'gb',
                 currencies_config: {
                     AUD: {
                         fractional_digits: 2,
@@ -40,7 +37,7 @@ export default function mock_website_status(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Australian Dollar',
-                        stake_default: 15,
+                        stake_default: 16,
                         transfer_between_accounts: {
                             fees: {
                                 BTC: 2,
@@ -63,24 +60,24 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 7402.03,
-                                min: 1.48,
+                                max: 7802.87,
+                                min: 1.56,
                             },
                             limits_ctrader: {
-                                max: 22206.1,
-                                min: 0.01,
+                                max: 23408.61,
+                                min: 0.02,
                             },
                             limits_derivez: {
-                                max: 22206.1,
-                                min: 0.01,
+                                max: 23408.61,
+                                min: 0.02,
                             },
                             limits_dxtrade: {
-                                max: 3701.02,
-                                min: 0.01,
+                                max: 3901.43,
+                                min: 0.02,
                             },
                             limits_mt5: {
-                                max: 22206.1,
-                                min: 0.01,
+                                max: 23408.61,
+                                min: 0.02,
                             },
                         },
                         type: 'fiat',
@@ -91,7 +88,7 @@ export default function mock_website_status(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Bitcoin',
-                        stake_default: 0.0004,
+                        stake_default: 0.0003,
                         transfer_between_accounts: {
                             fees: {
                                 AUD: 2,
@@ -114,24 +111,24 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 0.17060625,
-                                min: 3.412e-5,
+                                max: 0.13584133,
+                                min: 0.00002717,
                             },
                             limits_ctrader: {
-                                max: 0.51181875,
-                                min: 3.4e-7,
+                                max: 0.40752398,
+                                min: 2.7e-7,
                             },
                             limits_derivez: {
-                                max: 0.51181875,
-                                min: 3.4e-7,
+                                max: 0.40752398,
+                                min: 2.7e-7,
                             },
                             limits_dxtrade: {
-                                max: 0.08530312,
-                                min: 3.4e-7,
+                                max: 0.06792066,
+                                min: 2.7e-7,
                             },
                             limits_mt5: {
-                                max: 0.51181875,
-                                min: 3.4e-7,
+                                max: 0.40752398,
+                                min: 2.7e-7,
                             },
                         },
                         type: 'crypto',
@@ -165,23 +162,23 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 5000.5,
+                                max: 5000,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 15001.5,
+                                max: 15000,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 15001.5,
+                                max: 15000,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2500.25,
+                                max: 2500,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 15001.5,
+                                max: 15000,
                                 min: 0.01,
                             },
                         },
@@ -267,24 +264,24 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 2.68833826,
-                                min: 0.00053767,
+                                max: 2.61036152,
+                                min: 0.00052207,
                             },
                             limits_ctrader: {
-                                max: 8.06501477,
-                                min: 5.38e-6,
+                                max: 7.83108455,
+                                min: 0.00000522,
                             },
                             limits_derivez: {
-                                max: 8.06501477,
-                                min: 5.38e-6,
+                                max: 7.83108455,
+                                min: 0.00000522,
                             },
                             limits_dxtrade: {
-                                max: 1.34416913,
-                                min: 5.38e-6,
+                                max: 1.30518076,
+                                min: 0.00000522,
                             },
                             limits_mt5: {
-                                max: 8.06501477,
-                                min: 5.38e-6,
+                                max: 7.83108455,
+                                min: 0.00000522,
                             },
                         },
                         type: 'crypto',
@@ -318,23 +315,23 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 4513.78,
-                                min: 0.9,
+                                max: 4677.01,
+                                min: 0.94,
                             },
                             limits_ctrader: {
-                                max: 13541.33,
+                                max: 14031.02,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 13541.33,
+                                max: 14031.02,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2256.89,
+                                max: 2338.5,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 13541.33,
+                                max: 14031.02,
                                 min: 0.01,
                             },
                         },
@@ -369,23 +366,23 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 4262.39,
-                                min: 0.85,
+                                max: 5000,
+                                min: 1,
                             },
                             limits_ctrader: {
-                                max: 12787.18,
+                                max: 15000,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 12787.18,
+                                max: 15000,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2131.2,
+                                max: 2500,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 12787.18,
+                                max: 15000,
                                 min: 0.01,
                             },
                         },
@@ -397,7 +394,7 @@ export default function mock_website_status(context: Context) {
                         is_suspended: 0,
                         is_withdrawal_suspended: 0,
                         name: 'Pound Sterling',
-                        stake_default: 8,
+                        stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
                                 AUD: 0,
@@ -420,23 +417,23 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 3867.16,
-                                min: 0.77,
+                                max: 4068.65,
+                                min: 0.81,
                             },
                             limits_ctrader: {
-                                max: 11601.47,
+                                max: 12205.94,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 11601.47,
+                                max: 12205.94,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 1933.58,
+                                max: 2034.32,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 11601.47,
+                                max: 12205.94,
                                 min: 0.01,
                             },
                         },
@@ -448,7 +445,7 @@ export default function mock_website_status(context: Context) {
                         is_suspended: 1,
                         is_withdrawal_suspended: 1,
                         name: 'IDK',
-                        stake_default: 150,
+                        stake_default: 10,
                         transfer_between_accounts: {
                             fees: {
                                 AUD: 2,
@@ -471,23 +468,23 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 75163,
-                                min: 15,
+                                max: 78225,
+                                min: 16,
                             },
                             limits_ctrader: {
-                                max: 225488,
+                                max: 234676,
                                 min: 0,
                             },
                             limits_derivez: {
-                                max: 225488,
+                                max: 234676,
                                 min: 0,
                             },
                             limits_dxtrade: {
-                                max: 37581,
+                                max: 39113,
                                 min: 0,
                             },
                             limits_mt5: {
-                                max: 225488,
+                                max: 234676,
                                 min: 0,
                             },
                         },
@@ -522,24 +519,24 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 55.79111805,
-                                min: 0.01115822,
+                                max: 66.86726847,
+                                min: 0.01337345,
                             },
                             limits_ctrader: {
-                                max: 167.37335416,
-                                min: 0.00011158,
+                                max: 200.60180542,
+                                min: 0.00013373,
                             },
                             limits_derivez: {
-                                max: 167.37335416,
-                                min: 0.00011158,
+                                max: 200.60180542,
+                                min: 0.00013373,
                             },
                             limits_dxtrade: {
-                                max: 27.89555903,
-                                min: 0.00011158,
+                                max: 33.43363424,
+                                min: 0.00013373,
                             },
                             limits_mt5: {
-                                max: 167.37335416,
-                                min: 0.00011158,
+                                max: 200.60180542,
+                                min: 0.00013373,
                             },
                         },
                         type: 'crypto',
@@ -573,23 +570,23 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 5002.81,
+                                max: 5000,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 15008.43,
+                                max: 15000,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 15008.43,
+                                max: 15000,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2501.41,
+                                max: 2500,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 15008.43,
+                                max: 15000,
                                 min: 0.01,
                             },
                         },
@@ -624,23 +621,23 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 5004.58,
+                                max: 5000,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 15013.75,
+                                max: 15000,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 15013.75,
+                                max: 15000,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2502.29,
+                                max: 2500,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 15013.75,
+                                max: 15000,
                                 min: 0.01,
                             },
                         },
@@ -777,23 +774,23 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 4940,
-                                min: 0.99,
+                                max: 5000.25,
+                                min: 1,
                             },
                             limits_ctrader: {
-                                max: 14820.01,
+                                max: 15000.75,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 14820.01,
+                                max: 15000.75,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2470,
+                                max: 2500.13,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 14820.01,
+                                max: 15000.75,
                                 min: 0.01,
                             },
                         },
@@ -852,9 +849,9 @@ export default function mock_website_status(context: Context) {
                     },
                     UST: {
                         fractional_digits: 2,
-                        is_deposit_suspended: 0,
-                        is_suspended: 0,
-                        is_withdrawal_suspended: 0,
+                        is_deposit_suspended: 1,
+                        is_suspended: 1,
+                        is_withdrawal_suspended: 1,
                         name: 'Tether Omni',
                         stake_default: 10,
                         transfer_between_accounts: {
@@ -879,23 +876,23 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 4992.76,
+                                max: 4997.25,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 14978.28,
+                                max: 14991.75,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 14978.28,
+                                max: 14991.75,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2496.38,
+                                max: 2498.63,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 14978.28,
+                                max: 14991.75,
                                 min: 0.01,
                             },
                         },
@@ -930,23 +927,23 @@ export default function mock_website_status(context: Context) {
                                 tUSDT: 2,
                             },
                             limits: {
-                                max: 4992.76,
+                                max: 4997.25,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 14978.28,
+                                max: 14991.75,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 14978.28,
+                                max: 14991.75,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2496.38,
+                                max: 2498.63,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 14978.28,
+                                max: 14991.75,
                                 min: 0.01,
                             },
                         },
@@ -954,9 +951,9 @@ export default function mock_website_status(context: Context) {
                     },
                     tUSDT: {
                         fractional_digits: 2,
-                        is_deposit_suspended: 1,
-                        is_suspended: 1,
-                        is_withdrawal_suspended: 1,
+                        is_deposit_suspended: 0,
+                        is_suspended: 0,
+                        is_withdrawal_suspended: 0,
                         name: 'Tether TRC20',
                         stake_default: 10,
                         transfer_between_accounts: {
@@ -981,23 +978,23 @@ export default function mock_website_status(context: Context) {
                                 eUSDT: 2,
                             },
                             limits: {
-                                max: 4992.76,
+                                max: 4997.25,
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 14978.28,
+                                max: 14991.75,
                                 min: 0.01,
                             },
                             limits_derivez: {
-                                max: 14978.28,
+                                max: 14991.75,
                                 min: 0.01,
                             },
                             limits_dxtrade: {
-                                max: 2496.38,
+                                max: 2498.63,
                                 min: 0.01,
                             },
                             limits_mt5: {
-                                max: 14978.28,
+                                max: 14991.75,
                                 min: 0.01,
                             },
                         },
@@ -1087,7 +1084,7 @@ export default function mock_website_status(context: Context) {
                     cancellation_block_duration: 24,
                     cancellation_count_period: 24,
                     cancellation_grace_period: 0,
-                    cancellation_limit: 3,
+                    cancellation_limit: 300,
                     cross_border_ads_enabled: 1,
                     disabled: 0,
                     feature_level: 2,
@@ -1103,7 +1100,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Afghan Afghani',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'AFN',
                         },
                         {
@@ -1128,7 +1125,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Argentine Peso',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'ARS',
                         },
                         {
@@ -1153,12 +1150,12 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Barbados Dollar',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'BBD',
                         },
                         {
                             display_name: 'Bangladeshi Taka',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'BDT',
                         },
                         {
@@ -1168,7 +1165,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Burundi Franc',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'BIF',
                         },
                         {
@@ -1183,12 +1180,12 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Boliviano',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'BOB',
                         },
                         {
                             display_name: 'Brazilian Real',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'BRL',
                         },
                         {
@@ -1203,7 +1200,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Botswana Pula',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'BWP',
                         },
                         {
@@ -1218,7 +1215,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Congolese Franc',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'CDF',
                         },
                         {
@@ -1228,22 +1225,22 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Chilean Peso',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'CLP',
                         },
                         {
                             display_name: 'Yuan Renminbi',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'CNY',
                         },
                         {
                             display_name: 'Colombian Peso',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'COP',
                         },
                         {
                             display_name: 'Costa Rican Colon',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'CRC',
                         },
                         {
@@ -1263,7 +1260,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Dominican Peso',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'DOP',
                         },
                         {
@@ -1323,7 +1320,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Ghana Cedi',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'GHS',
                         },
                         {
@@ -1338,7 +1335,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Guinean Franc',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'GNF',
                         },
                         {
@@ -1358,12 +1355,13 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Haitian Gourde',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'HTG',
                         },
                         {
                             display_name: 'Indonesian Rupiah',
                             has_adverts: 1,
+                            is_default: 1,
                             symbol: 'IDR',
                         },
                         {
@@ -1373,7 +1371,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Indian Rupee',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'INR',
                         },
                         {
@@ -1388,7 +1386,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Jamaican Dollar',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'JMD',
                         },
                         {
@@ -1403,7 +1401,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Kenyan Shilling',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'KES',
                         },
                         {
@@ -1448,12 +1446,12 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Sri Lanka Rupee',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'LKR',
                         },
                         {
                             display_name: 'Liberian Dollar',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'LRD',
                         },
                         {
@@ -1503,7 +1501,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Mauritius Rupee',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'MUR',
                         },
                         {
@@ -1513,12 +1511,12 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Malawi Kwacha',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'MWK',
                         },
                         {
                             display_name: 'Mexican Peso',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'MXN',
                         },
                         {
@@ -1528,17 +1526,17 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Mozambique Metical',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'MZN',
                         },
                         {
                             display_name: 'Namibia Dollar',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'NAD',
                         },
                         {
                             display_name: 'Cordoba Oro',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'NIO',
                         },
                         {
@@ -1558,17 +1556,17 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Omani Rial',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'OMR',
                         },
                         {
                             display_name: 'Panamanian Balboa',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'PAB',
                         },
                         {
                             display_name: 'Peruvian Sol',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'PEN',
                         },
                         {
@@ -1578,17 +1576,17 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Philippine Peso',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'PHP',
                         },
                         {
                             display_name: 'Pakistan Rupee',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'PKR',
                         },
                         {
                             display_name: 'Qatari Riyal',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'QAR',
                         },
                         {
@@ -1598,7 +1596,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Russian Ruble',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'RUB',
                         },
                         {
@@ -1638,7 +1636,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Somali Shilling',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'SOS',
                         },
                         {
@@ -1663,13 +1661,12 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Swazi Lilangeni',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'SZL',
                         },
                         {
                             display_name: 'Thai Baht',
                             has_adverts: 0,
-                            is_default: 1,
                             symbol: 'THB',
                         },
                         {
@@ -1694,7 +1691,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Turkish Lira',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'TRY',
                         },
                         {
@@ -1709,7 +1706,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Tanzanian Shilling',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'TZS',
                         },
                         {
@@ -1719,17 +1716,17 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Uganda Shilling',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'UGX',
                         },
                         {
                             display_name: 'US Dollar',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'USD',
                         },
                         {
                             display_name: 'Uruguayan Peso',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'UYU',
                         },
                         {
@@ -1749,7 +1746,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Venezuelan Bolívar Soberano',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'VES',
                         },
                         {
@@ -1764,7 +1761,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'CFA Franc BEAC',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'XAF',
                         },
                         {
@@ -1774,7 +1771,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'CFA Franc BCEAO',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'XOF',
                         },
                         {
@@ -1789,7 +1786,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'South African Rand',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'ZAR',
                         },
                         {
@@ -1799,7 +1796,7 @@ export default function mock_website_status(context: Context) {
                         },
                         {
                             display_name: 'Zambian Kwacha',
-                            has_adverts: 1,
+                            has_adverts: 0,
                             symbol: 'ZMW',
                         },
                         {

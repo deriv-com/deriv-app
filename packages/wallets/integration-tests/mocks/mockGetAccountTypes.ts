@@ -1,6 +1,6 @@
 import { Context } from '@deriv/integration/src/utils/mocks/mocks';
 
-export function mock_get_account_types(context: Context) {
+export function mockGetAccountTypes(context: Context) {
     if ('get_account_types' in context.request) {
         context.response = {
             echo_req: context.request,

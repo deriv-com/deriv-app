@@ -1,4 +1,4 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
 export default function mock_portfolio(context: Context) {
     if ('portfolio' in context.request && context.request.portfolio === 1) {

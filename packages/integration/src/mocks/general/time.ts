@@ -1,4 +1,4 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
 export default function mock_time(context: Context) {
     if ('time' in context.request && context.request.time === 1) {

@@ -1,4 +1,4 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
 export default function mock_blalance_one(context: Context) {
     if ('balance' in context.request && context.request.balance === 1 && context.request.account === 'CR5712715') {

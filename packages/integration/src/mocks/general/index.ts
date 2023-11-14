@@ -1,10 +1,10 @@
-import mock_exchange_rates from './exchange_rates';
-import mock_payout_currencies from './payout_currencies';
-import mock_residents_list from './residents_list';
-import mock_states_list from './states_list';
+import mock_exchange_rates from './exchangeRates';
+import mock_payout_currencies from './payoutCurrencies';
+import mock_residents_list from './residentsList';
+import mock_states_list from './statesList';
 import mock_time from './time';
-import mock_website_status from './website_status';
-import { Context } from 'Utils/mocks/mocks';
+import mock_website_status from './websiteStatus';
+import { Context } from '../../utils/mocks/mocks';
 
 const general = (context: Context) => {
     mock_exchange_rates(context);

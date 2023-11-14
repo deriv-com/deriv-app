@@ -1,4 +1,4 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
 export default function mock_get_self_exclusion(context: Context) {
     if ('get_self_exclusion' in context.request && context.request.get_self_exclusion === 1) {

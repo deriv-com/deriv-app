@@ -46,11 +46,7 @@ describe('<SwipeableContractDrawer />', () => {
         onSwipedUp: jest.fn(),
     };
     it('should render passed children', () => {
-        render(
-            <SwipeableContractDrawer {...default_mocked_props}>
-                <div>{mocked_children}</div>
-            </SwipeableContractDrawer>
-        );
+        render(<SwipeableContractDrawer {...default_mocked_props}>{mocked_children}</SwipeableContractDrawer>);
 
         expect(screen.getByText(mocked_children)).toBeInTheDocument();
     });

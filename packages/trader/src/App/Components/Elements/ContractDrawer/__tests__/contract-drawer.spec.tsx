@@ -3,7 +3,7 @@ import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { Router } from 'react-router';
-import { isMobile, isDesktop } from '@deriv/shared';
+import { isMobile, isDesktop, toMoment } from '@deriv/shared';
 import ContractDrawer from '../contract-drawer';
 import TraderProviders from '../../../../../trader-providers';
 import userEvent from '@testing-library/user-event';
@@ -40,7 +40,7 @@ const ContractDrawerComponent = withRouter(ContractDrawer);
 
 const default_mock_store = {
     common: {
-        server_time: 123254362145 as unknown as moment.Moment,
+        server_time: toMoment(),
     },
 };
 

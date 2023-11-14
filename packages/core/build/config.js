@@ -21,7 +21,7 @@ const copyConfig = base => {
         },
         {
             from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist'),
-            to: 'js/smartchartsbeta/',
+            to: 'js/smartcharts/',
         },
         {
             from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/chart/assets'),
@@ -179,7 +179,7 @@ const generateSWConfig = () => ({
         },
         {
             urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts|smartchartsbeta))).*$/);
+                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/);
             },
             handler: 'CacheFirst',
             options: {
@@ -191,7 +191,7 @@ const generateSWConfig = () => ({
         },
         {
             urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/(smartcharts|smartchartsbeta)\//);
+                return url.pathname.match(/^\/js\/(smartcharts)\//);
             },
             handler: 'CacheFirst',
             options: {

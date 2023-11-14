@@ -1,6 +1,6 @@
 import React from 'react';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from './v2';
+import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from './v1';
 
 type TToolbarWidgetsProps = {
     updateChartType: (chart_type: string) => void;

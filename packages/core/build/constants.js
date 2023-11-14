@@ -119,11 +119,6 @@ const MINIMIZERS = !IS_RELEASE
               exclude: /(smartcharts)/,
               parallel: 2,
           }),
-          new TerserPlugin({
-              test: /\.js$/,
-              exclude: /(smartchartsbeta)/,
-              parallel: 2,
-          }),
           new CssMinimizerPlugin(),
       ];
 

@@ -16,6 +16,7 @@ describe('useJurisdictionStatus', () => {
     test('for BVI/Labuan, should have a failed verification status if MT5 account status has failed and IDV status is rejected', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUsePOI.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 services: {
                     idv: {
@@ -28,6 +29,7 @@ describe('useJurisdictionStatus', () => {
             },
         });
         mockUseAuthentication.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 is_idv_revoked: false,
             },
@@ -47,6 +49,7 @@ describe('useJurisdictionStatus', () => {
     test('for BVI/Labuan, should have a pending verification status if MT5 account status is currently pending verification and IDV status is pending', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUsePOI.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties onl
             data: {
                 services: {
                     idv: {
@@ -59,6 +62,7 @@ describe('useJurisdictionStatus', () => {
             },
         });
         mockUseAuthentication.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 is_idv_revoked: false,
             },
@@ -80,11 +84,13 @@ describe('useJurisdictionStatus', () => {
     test('for BVI/Labuan, should have a pending verification status if IDV attempts failed and the next compatible service Onfido is pending', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUseAuthentication.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 is_idv_revoked: false,
             },
         });
         mockUsePOI.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 services: {
                     idv: {
@@ -116,6 +122,7 @@ describe('useJurisdictionStatus', () => {
     test('for BVI/Labuan, should have a failed verification status if IDV is revoked', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUsePOI.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 services: {
                     idv: {
@@ -128,6 +135,7 @@ describe('useJurisdictionStatus', () => {
             },
         });
         mockUseAuthentication.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 is_idv_revoked: true,
             },
@@ -149,6 +157,7 @@ describe('useJurisdictionStatus', () => {
     test('for Labuan, should have a failed verification status if is_authenticated_with_idv_photoid is present in account status', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUsePOI.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 services: {
                     idv: {
@@ -161,6 +170,7 @@ describe('useJurisdictionStatus', () => {
             },
         });
         mockUseAuthentication.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 is_authenticated_with_idv_photoid: true,
             },
@@ -174,6 +184,7 @@ describe('useJurisdictionStatus', () => {
     test('for SVG, status should not be applicable', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUsePOI.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 services: {
                     idv: {
@@ -186,6 +197,7 @@ describe('useJurisdictionStatus', () => {
             },
         });
         mockUseAuthentication.mockReturnValue({
+            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 is_idv_revoked: true,
             },

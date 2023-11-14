@@ -7,7 +7,7 @@ export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader' | 'derivez';
 
 export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
 
-export type TShortcode = DetailsOfEachMT5Loginid['landing_company_short'];
+export type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
 
 export type TCFDAccountCopy = {
     text: string | undefined;

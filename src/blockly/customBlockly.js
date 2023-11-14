@@ -1,6 +1,5 @@
 import { getLanguage } from '@storage';
 import { translate, translateLangToLang } from '@i18n';
-import GTM from '../utilities/integrations/gtm';
 import { save } from './utils';
 
 /* eslint-disable */
@@ -352,7 +351,8 @@ Blockly.Input.prototype.attachShadowBlock = function (value, name, shadowBlockTy
 Blockly.Toolbox.TreeNode.prototype.onClick_ = function (_e) {
     // eslint-disable-next-line no-underscore-dangle
     const blocklyCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
-    GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
+    // Keeping it for fututre reference
+    // GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
 
     // Expand icon.
     if (this.hasChildren() && this.isUserCollapsible_) {

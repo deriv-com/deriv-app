@@ -4,7 +4,6 @@ import { translate, xml as translateXml } from '@i18n';
 import { observer as globalObserver } from '@utilities/observer';
 import { trackJSTrack } from '@utilities/integrations/trackJSTrack';
 import config from '@currency-config';
-import GTM from '@utilities/integrations/gtm';
 import { TrackJSError } from '@utilities/logger';
 import './customBlockly';
 import blocks from './blocks';
@@ -304,30 +303,31 @@ export default class _Blockly {
                     },
                     trashcan: false,
                 });
-                workspace.addChangeListener(event => {
-                    if (event.type === Blockly.Events.BLOCK_CREATE) {
-                        event.ids.forEach(id => {
-                            const block = workspace.getBlockById(id);
-                            if (block) {
-                                GTM.pushDataLayer({
-                                    event: 'Block Event',
-                                    blockEvent: event.type,
-                                    blockType: block.type,
-                                });
-                            }
-                        });
-                    } else if (event.type === Blockly.Events.BLOCK_DELETE) {
-                        const dom = Blockly.Xml.textToDom(`<xml>${event.oldXml.outerHTML}</xml>`);
-                        const blockNodes = dom.getElementsByTagName('block');
-                        Array.from(blockNodes).forEach(blockNode => {
-                            GTM.pushDataLayer({
-                                event: 'Block Event',
-                                blockEvent: event.type,
-                                blockType: blockNode.getAttribute('type'),
-                            });
-                        });
-                    }
-                });
+                // Keeping it for fututre reference
+                // workspace.addChangeListener(event => {
+                //     if (event.type === Blockly.Events.BLOCK_CREATE) {
+                //         event.ids.forEach(id => {
+                //             const block = workspace.getBlockById(id);
+                //             if (block) {
+                //                 GTM.pushDataLayer({
+                //                     event: 'Block Event',
+                //                     blockEvent: event.type,
+                //                     blockType: block.type,
+                //                 });
+                //             }
+                //         });
+                //     } else if (event.type === Blockly.Events.BLOCK_DELETE) {
+                //         const dom = Blockly.Xml.textToDom(`<xml>${event.oldXml.outerHTML}</xml>`);
+                //         const blockNodes = dom.getElementsByTagName('block');
+                //         Array.from(blockNodes).forEach(blockNode => {
+                //             GTM.pushDataLayer({
+                //                 event: 'Block Event',
+                //                 blockEvent: event.type,
+                //                 blockType: blockNode.getAttribute('type'),
+                //             });
+                //         });
+                //     }
+                // });
 
                 const renderInstance = render(workspace);
                 window.addEventListener('resize', renderInstance, false);

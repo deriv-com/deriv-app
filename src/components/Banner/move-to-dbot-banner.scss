@@ -1,0 +1,44 @@
+@import '../../assets/css/mixins';
+@import '../../assets/css/variables';
+
+.modal {
+    &__container {
+        @include mobile {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    }
+}
+
+.mv-dbot-banner {
+    text-align: center;
+    padding: 32px 108px;
+    @include mobile {
+        padding: 28px;
+    }
+
+    &__title {
+        font-size: var(--font-size-l);
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+
+    &__content {
+        margin-top: 8px;
+        font-size: var(--font-size-s);
+        line-height: 20px;
+        text-align: left;
+        ol,
+        ul {
+            list-style: disc;
+            line-height: 20px;
+            padding: 0px 32px;
+        }
+    }
+    &__icon-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+    }
+}

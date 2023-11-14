@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig, useExchangeRate } from '@deriv/api';
-import { WalletButton, WalletTextField } from '../../../../../../components/Base';
-import { WithdrawalPercentageSelector } from '../WithdrawalPercentageSelector';
+import { WalletButton, WalletTextField, WalletsPercentageSelector } from '../../../../../../components';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import './WithdrawalCryptoForm.scss';
 
@@ -77,17 +76,15 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({ verificati
                                 )}
                             </Field>
                         </div>
-                        <WithdrawalPercentageSelector
-                            amount={values.cryptoAmount}
-                            message={`${
-                                !Number.isNaN(parseFloat(values.cryptoAmount)) && activeWallet?.balance
-                                    ? Math.round((parseFloat(values.cryptoAmount) * 100) / activeWallet?.balance)
-                                    : 0
-                            }% of available balance (${activeWallet?.balance.toFixed(FRACTIONAL_DIGITS_CRYPTO)} ${
-                                activeWallet?.currency
-                            })`}
-                            onPercentageChange={fraction => {
-                                setValues({
+                        <WalletsPercentageSelector
+                            amount={
+                                !Number.isNaN(parseFloat(values.cryptoAmount)) ? parseFloat(values.cryptoAmount) : 0
+                            }
+                            balance={activeWallet?.balance || 0}
+                            onChangePercentage={percentage => {
+                                const fraction = percentage / 100;
+
+                                return setValues({
                                     ...values,
                                     cryptoAmount:
                                         !!fraction && activeWallet?.balance

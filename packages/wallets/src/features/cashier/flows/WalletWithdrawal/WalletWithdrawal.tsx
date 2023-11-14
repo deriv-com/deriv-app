@@ -36,7 +36,7 @@ const WalletWithdrawal = () => {
                 getConfig(authorizeData.currency)?.type === 'fiat' ? (
                     <WithdrawalFiatModule verificationCode={verificationCode} />
                 ) : (
-                    <WithdrawalCryptoModule />
+                    <WithdrawalCryptoModule verificationCode={verificationCode} />
                 )
             ) : (
                 <WithdrawalVerificationModule />

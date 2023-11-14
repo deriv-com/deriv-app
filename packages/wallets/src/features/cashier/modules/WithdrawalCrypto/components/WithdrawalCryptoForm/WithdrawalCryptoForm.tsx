@@ -15,6 +15,10 @@ export type TForm = {
     fiatAmount: string;
 };
 
+type TWithdrawalCryptoFormProps = {
+    verificationCode?: string;
+};
+
 const validateCryptoAddress = (address: string) => {
     if (!address) return 'This field is required.';
 
@@ -25,7 +29,7 @@ const validateCryptoAddress = (address: string) => {
     return undefined;
 };
 
-const WithdrawalCryptoForm = () => {
+const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({ verificationCode }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { getConfig } = useCurrencyConfig();
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
@@ -54,7 +58,7 @@ const WithdrawalCryptoForm = () => {
                 mutate({
                     address: values.cryptoAddress,
                     amount: parseFloat(parseFloat(values.cryptoAmount).toFixed(FRACTIONAL_DIGITS_CRYPTO)),
-                    /* verification_code goes here */
+                    verification_code: verificationCode,
                 })
             }
         >

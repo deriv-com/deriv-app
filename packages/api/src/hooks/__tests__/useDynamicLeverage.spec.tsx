@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useQuery from '../../useQuery';
 import useDynamicLeverage from '../useDynamicLeverage';
 
-jest.mock('../useQuery');
+jest.mock('../../useQuery');
 
 describe('useDynamicLeverage', () => {
     it('should return modified data and rest properties', () => {

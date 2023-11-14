@@ -1,7 +1,18 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { ResidenceList } from '@deriv/api-types';
-import { service_code, submission_status_code } from '../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
+
+const submission_status_code = {
+    selecting: 'selecting',
+    submitting: 'submitting',
+    complete: 'complete',
+} as const;
+
+const service_code = {
+    idv: 'idv',
+    onfido: 'onfido',
+    manual: 'manual',
+} as const;
 
 type TSubmissionStatus = keyof typeof submission_status_code;
 type TSubmissionService = keyof typeof service_code;

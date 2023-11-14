@@ -3,6 +3,7 @@ import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import {
+    POIProvider,
     initFormErrorMessages,
     setSharedCFDText,
     setUrlLanguage,
@@ -93,9 +94,11 @@ const AppWithoutTranslation = ({ root_store }) => {
                 <Router basename={has_base ? `/${base}` : null}>
                     <MobxContentProvider store={root_store}>
                         <APIProvider>
-                            <StoreProvider store={root_store}>
-                                <AppContent passthrough={platform_passthrough} />
-                            </StoreProvider>
+                            <POIProvider>
+                                <StoreProvider store={root_store}>
+                                    <AppContent passthrough={platform_passthrough} />
+                                </StoreProvider>
+                            </POIProvider>
                         </APIProvider>
                     </MobxContentProvider>
                 </Router>

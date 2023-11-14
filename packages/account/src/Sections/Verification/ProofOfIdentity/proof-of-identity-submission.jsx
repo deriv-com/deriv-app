@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatIDVError, WS, idv_error_statuses } from '@deriv/shared';
+import { formatIDVError, WS, idv_error_statuses, POIContext } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import CountrySelector from '../../../Components/poi/poi-country-selector';
 import IdvDocumentSubmit from '../../../Components/poi/idv-document-submit';
@@ -9,7 +9,6 @@ import Unsupported from '../../../Components/poi/status/unsupported';
 import UploadComplete from '../../../Components/poi/status/upload-complete';
 import OnfidoSdkViewContainer from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
-import { POIContext } from '../../../Helpers/poi-context';
 
 const POISubmission = observer(
     ({

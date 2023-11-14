@@ -1,16 +1,29 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikErrors } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
-import { isEmptyObject, isMobile } from '@deriv/shared';
+import { isEmptyObject } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
+import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
+import TradingAssessmentDropdown from './trading-assessment-dropdown';
+import { getTradingAssessmentQuestions } from '../../Constants/trading-assessment-questions';
+import { TFormData, TQuestion } from 'Types';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
-import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
-import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
+import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
+
+type TradingAssessmentFormProps = {
+    class_name?: string;
+    disabled_items: string[];
+    form_value: TFormData;
+    onSubmit: (values?: TFormData, action?: React.ReactNode, should_override?: boolean) => void;
+    onCancel: (form_data: TFormData) => void;
+    should_move_to_next: boolean;
+    setSubSectionIndex: (index: number) => void;
+    is_independent_section: boolean;
+    is_mobile?: boolean;
+};
 
 const TradingAssessmentForm = ({
-    assessment_questions,
     class_name,
     disabled_items,
     form_value,
@@ -19,15 +32,16 @@ const TradingAssessmentForm = ({
     should_move_to_next,
     setSubSectionIndex,
     is_independent_section,
-}) => {
+    is_mobile,
+}: TradingAssessmentFormProps) => {
+    const assessment_questions = getTradingAssessmentQuestions();
+    const stored_items = parseInt(localStorage.getItem('current_question_index') || '0');
     const [is_section_filled, setIsSectionFilled] = React.useState(false);
     const [current_question_details, setCurrentQuestionDetails] = React.useState({
         current_question_index: 0,
-        current_question: {},
+        current_question: assessment_questions[stored_items],
     });
-    const [form_data, setFormData] = React.useState({});
-
-    const stored_items = parseInt(localStorage.getItem('current_question_index') || '0');
+    const [form_data, setFormData] = React.useState({ ...form_value });
     const last_question_index = assessment_questions.length - 1;
     const should_display_previous_button = is_independent_section
         ? current_question_details.current_question_index !== 0
@@ -63,7 +77,7 @@ const TradingAssessmentForm = ({
             if (next_question < assessment_questions.length) {
                 setCurrentQuestionDetails(prev_state_question => {
                     const next_state_question_index = prev_state_question.current_question_index + 1;
-                    localStorage.setItem('current_question_index', next_state_question_index);
+                    localStorage.setItem('current_question_index', String(next_state_question_index));
                     // Sub section form progress is not required when the section is independent
                     if (!is_independent_section) {
                         setSubSectionIndex(next_state_question_index);
@@ -82,7 +96,7 @@ const TradingAssessmentForm = ({
         if (prev_question >= 0) {
             setCurrentQuestionDetails(prev_state_question => {
                 const prev_state_question_index = prev_state_question.current_question_index - 1;
-                localStorage.setItem('current_question_index', prev_state_question_index);
+                localStorage.setItem('current_question_index', String(prev_state_question_index));
                 if (!is_independent_section) {
                     setSubSectionIndex(prev_state_question_index);
                 }
@@ -96,23 +110,29 @@ const TradingAssessmentForm = ({
         }
     };
 
-    const handleValueSelection = (e, form_control, callBackFn) => {
+    const handleValueSelection = (
+        e: React.ChangeEvent<HTMLSelectElement>,
+        form_control: keyof TFormData,
+        callBackFn: {
+            (form_control: keyof TFormData, value: string): void;
+        }
+    ) => {
         if (typeof e.persist === 'function') e.persist();
         callBackFn(form_control, e.target.value);
         setFormData(prev_form => ({ ...prev_form, [form_control]: e.target.value }));
     };
 
-    const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
+    const isAssessmentCompleted = (answers: TFormData) => Object.values(answers).every(answer => Boolean(answer));
 
-    const nextButtonHandler = values => {
+    const nextButtonHandler = (values: TFormData) => {
         if (is_section_filled) {
             if (isAssessmentCompleted(values) && stored_items === last_question_index) onSubmit(values);
             else displayNextPage();
         }
     };
 
-    const handleValidate = values => {
-        const errors = {};
+    const handleValidate = (values: TFormData) => {
+        const errors: FormikErrors<TFormData> = {};
 
         if (!values.risk_tolerance && current_question_details.current_question.section === 'risk_tolerance') {
             errors.risk_tolerance = 'error';
@@ -124,7 +144,7 @@ const TradingAssessmentForm = ({
             errors.source_of_experience = 'error';
         }
         if (current_question_details.current_question.section === 'trading_experience') {
-            const trading_experience_required_fields = [
+            const trading_experience_required_fields: (keyof TFormData)[] = [
                 'cfd_experience',
                 'cfd_frequency',
                 'trading_experience_financial_instruments',
@@ -137,7 +157,7 @@ const TradingAssessmentForm = ({
             });
         }
         if (current_question_details.current_question.section === 'trading_knowledge') {
-            const trading_knowledge_required_fields = [
+            const trading_knowledge_required_fields: (keyof TFormData)[] = [
                 'cfd_trading_definition',
                 'leverage_impact_trading',
                 'leverage_trading_high_risk_stop_loss',
@@ -158,7 +178,13 @@ const TradingAssessmentForm = ({
             <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                 <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
             </Text>
-            <Formik initialValues={{ ...form_value }} validate={handleValidate} onSubmit={nextButtonHandler}>
+            <Formik
+                initialValues={{ ...form_value }}
+                validate={handleValidate}
+                onSubmit={values => {
+                    nextButtonHandler(values);
+                }}
+            >
                 {({ errors, setFieldValue, values }) => {
                     const { question_text, form_control, answer_options, questions } =
                         current_question_details.current_question;
@@ -190,7 +216,7 @@ const TradingAssessmentForm = ({
                                     >
                                         {questions?.length ? (
                                             <TradingAssessmentDropdown
-                                                item_list={questions}
+                                                item_list={questions as TQuestion[]}
                                                 onChange={handleValueSelection}
                                                 values={values}
                                                 setFieldValue={setFieldValue}
@@ -202,10 +228,14 @@ const TradingAssessmentForm = ({
                                                 text={question_text}
                                                 list={answer_options ?? []}
                                                 onChange={e => {
-                                                    handleValueSelection(e, form_control, setFieldValue, values);
+                                                    handleValueSelection(
+                                                        e as any,
+                                                        form_control as keyof TFormData,
+                                                        setFieldValue
+                                                    );
                                                 }}
                                                 values={values}
-                                                form_control={form_control}
+                                                form_control={form_control as keyof TFormData}
                                                 setEnableNextSection={setIsSectionFilled}
                                                 disabled_items={disabled_items ?? []}
                                             />
@@ -213,7 +243,7 @@ const TradingAssessmentForm = ({
                                     </div>
                                     <Modal.Footer
                                         has_separator
-                                        is_bypassed={isMobile()}
+                                        is_bypassed={is_mobile}
                                         className='trading-assessment__existing_btn '
                                     >
                                         <Button.Group className='trading-assessment__btn-group'>

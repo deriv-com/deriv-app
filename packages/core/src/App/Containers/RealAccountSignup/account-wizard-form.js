@@ -2,7 +2,6 @@ import {
     FinancialDetails,
     PersonalDetails,
     TermsOfUse,
-    TradingAssessmentNewUser,
     addressDetailsConfig,
     currencySelectorConfig,
     financialDetailsConfig,
@@ -13,6 +12,7 @@ import {
 
 import AddressDetails from '@deriv/account/src/Components/address-details';
 import CurrencySelector from '@deriv/account/src/Components/currency-selector';
+import TradingAssessmentNewUser from '@deriv/account/src/Components/trading-assessment/trading-assessment-new-user';
 
 const isMaltaAccount = ({ real_account_signup_target }) => real_account_signup_target === 'maltainvest';
 

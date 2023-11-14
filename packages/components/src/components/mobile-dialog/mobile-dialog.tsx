@@ -15,7 +15,7 @@ type TMobileDialog = {
     has_full_height?: boolean;
     header_classname?: string;
     info_banner?: React.ReactNode;
-    onClose: React.MouseEventHandler;
+    onClose?: React.MouseEventHandler;
     portal_element_id: string;
     renderTitle?: () => string;
     title?: React.ReactNode;

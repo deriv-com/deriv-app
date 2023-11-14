@@ -390,6 +390,7 @@ type TClientStore = {
     is_low_risk: boolean;
     is_mt5_password_not_set: boolean;
     is_pending_proof_of_ownership: boolean;
+    is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
@@ -507,6 +508,8 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    setIsAlreadyAttempted: (value: boolean) => void;
+    is_already_attempted: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
     is_beta_chart: boolean;
@@ -558,12 +561,15 @@ type TCommonStore = {
 
 type TUiStore = {
     advanced_duration_unit: string;
+    advanced_expiry_type: string;
     addToast: (toast_config: TAddToastProps) => void;
     account_switcher_disabled_message: string;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
+    duration_t: number;
     enableApp: () => void;
+    getDurationFromUnit: (unit: string) => number;
     has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
@@ -620,6 +626,7 @@ type TUiStore = {
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
+    simple_duration_unit: string;
     sub_section_index: number;
     setPromptHandler: (
         condition: boolean,
@@ -657,6 +664,8 @@ type TUiStore = {
     closeSuccessTopUpModal: () => void;
     closeTopUpModal: () => void;
     is_cfd_reset_password_modal_enabled: boolean;
+    is_mt5_migration_modal_enabled: boolean;
+    is_mt5_migration_modal_open: boolean;
     setCFDPasswordResetModal: (value: boolean) => void;
     openAccountNeededModal: () => void;
     is_accounts_switcher_on: boolean;
@@ -669,6 +678,8 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
+    setMT5MigrationModalEnabled: (value: boolean) => void;
+    toggleMT5MigrationModal: () => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;

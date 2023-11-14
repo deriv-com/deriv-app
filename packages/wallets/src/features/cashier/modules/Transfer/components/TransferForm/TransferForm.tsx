@@ -1,6 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
-import { Loader } from '../../../../../../components';
+import { Loader, WalletButton } from '../../../../../../components';
+import useDevice from '../../../../../../hooks/useDevice';
 import { useTransfer } from '../../provider';
 import type { TInitialTransferFormValues } from '../../types';
 import { TransferFormDropdown } from '../TransferFormDropdown';
@@ -8,6 +9,7 @@ import { TransferFormInputField } from '../TransferFormInputField';
 import './TransferForm.scss';
 
 const TransferForm = () => {
+    const { isMobile } = useDevice();
     const { activeWallet, isLoading, mutate } = useTransfer();
     const mobileAccountsListRef = useRef<HTMLDivElement | null>(null);
 
@@ -37,8 +39,8 @@ const TransferForm = () => {
             <Formik initialValues={initialValues} onSubmit={onSubmit}>
                 {({ handleSubmit, values }) => (
                     <form className='wallets-transfer__form' onSubmit={handleSubmit}>
-                        <div className='wallets-transfer__form__fields'>
-                            <div className='wallets-transfer__form__fields-section'>
+                        <div className='wallets-transfer__fields'>
+                            <div className='wallets-transfer__fields-section'>
                                 <TransferFormInputField
                                     defaultValue={values.amountSend}
                                     fieldName='amountSend'
@@ -52,7 +54,7 @@ const TransferForm = () => {
                                 />
                             </div>
                             <div style={{ height: '20px' }} />
-                            <div className='wallets-transfer__form__fields-section'>
+                            <div className='wallets-transfer__fields-section'>
                                 <TransferFormInputField
                                     defaultValue={values.amountReceive}
                                     fieldName='amountReceive'
@@ -66,9 +68,7 @@ const TransferForm = () => {
                                 />
                             </div>
                         </div>
-                        <button className='wallets-transfer__form__submit-button' type='submit'>
-                            Transfer
-                        </button>
+                        <WalletButton size={isMobile ? 'md' : 'lg'} text='Transfer' variant='contained' />
                     </form>
                 )}
             </Formik>

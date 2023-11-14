@@ -8,6 +8,7 @@ export { default as useActiveTradingAccount } from './useActiveTradingAccount';
 export { default as useActiveWalletAccount } from './useActiveWalletAccount';
 export { default as useActiveWalletBalance } from './useActiveWalletBalance';
 export { default as useAllAvailableAccounts } from './useAllAvailableAccounts';
+export { default as useAllWalletAccounts } from './useAllWalletAccounts';
 export { default as useAuthentication } from './useAuthentication';
 export { default as useAuthorize } from './useAuthorize';
 export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';

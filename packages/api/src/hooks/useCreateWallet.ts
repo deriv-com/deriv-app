@@ -13,7 +13,10 @@ const useCreateWallet = () => {
         mutate: _mutate,
         ...rest
     } = useMutation('new_account_wallet', {
-        onSuccess: () => invalidate('authorize'),
+        onSuccess: () => {
+            invalidate('authorize');
+            invalidate('available_accounts');
+        },
     });
 
     const mutate = (params: Parameters<typeof _mutate>[0]['payload']) => {

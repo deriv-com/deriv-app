@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
-import { InlineMessage, WalletText } from '../../../../components/Base';
+import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList, useMT5AccountsList } from '@deriv/api';
 import { WalletListCardBadge } from '../../../../components';
-import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
-import ImportantIcon from '../../../../public/images/ic-important.svg';
+import { InlineMessage, WalletText } from '../../../../components/Base';
+import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
+import ImportantIcon from '../../../../public/images/ic-important.svg';
+import { THooks } from '../../../../types';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
+import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
-import { useModal } from '../../../../components/ModalProvider';
-import { MarketTypeDetails, PlatformDetails } from '../../constants';
-import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList, useMT5AccountsList } from '@deriv/api';
-import { THooks } from '../../../../types';
 
 const MT5TradeScreen = () => {
     const { isDesktop } = useDevice();
@@ -38,7 +38,12 @@ const MT5TradeScreen = () => {
     }, [platform, marketType, platformToAccountsListMapper]);
 
     const loginId = useMemo(() => {
-        return platform === 'mt5' ? (details as THooks.MT5AccountsList)?.loginid : details?.login;
+        if (platform === 'mt5') {
+            return (details as THooks.MT5AccountsList)?.loginid;
+        } else if (platform === 'dxtrade') {
+            return (details as THooks.DxtradeAccountsList)?.account_id;
+        }
+        return details?.login;
     }, [details, platform]);
 
     return (
@@ -55,7 +60,7 @@ const MT5TradeScreen = () => {
                                     {platform === 'mt5'
                                         ? MarketTypeDetails[marketType || 'all'].title
                                         : PlatformDetails[platform || 'dxtrade'].title}{' '}
-                                    {details?.landing_company_short?.toUpperCase()}
+                                    {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
                                 </WalletText>
                                 {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}
                             </div>
@@ -90,7 +95,7 @@ const MT5TradeScreen = () => {
                     )}
                     {getModalState('platform') === 'dxtrade' && (
                         <>
-                            <MT5TradeDetailsItem label='Username' value={loginId || '12345678'} />
+                            <MT5TradeDetailsItem label='Username' value={details?.login || '12345678'} />
                             <MT5TradeDetailsItem label='Password' value='********' variant='password' />
                         </>
                     )}

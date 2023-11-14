@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
-import { getDescriptionVideoId } from 'Modules/Trading/Helpers/contract-type';
+import { getDescriptionVideoId } from 'Modules/Trading/Helpers/video-config';
 import VideoStream from 'App/Components/Elements/VideoStream';
 
 type TContractTypeDescriptionVideo = {
@@ -35,7 +35,7 @@ const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: T
                     />                    
                 More: https://www.npmjs.com/package/@cloudflare/stream-react
                 API: https://developers.cloudflare.com/stream/viewing-videos/using-the-stream-player/using-the-player-api/
-                Please use getDescriptionDownloadUrl helper in order to add a Download feature. */}
+                Please use getVideoDownloadUrl helper in order to add a Download feature. */}
             <VideoStream
                 autoplay
                 controls

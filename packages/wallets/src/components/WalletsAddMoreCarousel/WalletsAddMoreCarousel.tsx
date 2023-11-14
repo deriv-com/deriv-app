@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useHover } from 'usehooks-ts';
-import { useAvailableWallets } from '@deriv/api';
+import { useAllWalletAccounts } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import { IconButton, WalletText } from '../Base';
 import { WalletsAddMoreLoader } from '../SkeletonLoader';
@@ -10,7 +10,7 @@ import './WalletsAddMoreCarousel.scss';
 
 const WalletsAddMoreCarousel: React.FC = () => {
     const { isDesktop, isMobile } = useDevice();
-    const { data: availableWallets, isLoading } = useAvailableWallets();
+    const { data: wallets, isLoading } = useAllWalletAccounts();
     const [walletsAddMoreEmblaRef, walletsAddMoreEmblaAPI] = useEmblaCarousel({
         align: 0,
         containScroll: 'trimSnaps',
@@ -37,7 +37,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
                         Array.from({ length: 8 }).map((_, idx) => (
                             <WalletsAddMoreLoader key={`wallets-add-more-loader-${idx}`} />
                         ))}
-                    {availableWallets?.map(wallet => (
+                    {wallets?.map(wallet => (
                         <WalletsAddMoreCard
                             currency={wallet.currency}
                             is_added={wallet.is_added}

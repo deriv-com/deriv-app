@@ -142,7 +142,7 @@ describe('<FinancialDetails />', () => {
     it('should show "Unemployed" in occupation list if employment status is not "Employed"', async () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
-        const new_mock_props = {
+        const new_mock_props: React.ComponentProps<typeof FinancialDetails> = {
             ...mock_props,
             employment_status: 'Pensioner',
         };
@@ -192,7 +192,7 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should not show Occupation field if employment status is "Unemployed"', async () => {
-        const new_mock_props = {
+        const new_mock_props: React.ComponentProps<typeof FinancialDetails> = {
             ...mock_props,
             employment_status: EMPLOYMENT_VALUES.UNEMPLOYED,
         };
@@ -202,7 +202,7 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should not show Occupation field if employment status is "Self employed"', async () => {
-        const new_mock_props = {
+        const new_mock_props: React.ComponentProps<typeof FinancialDetails> = {
             ...mock_props,
             employment_status: EMPLOYMENT_VALUES.SELF_EMPLOYED,
         };

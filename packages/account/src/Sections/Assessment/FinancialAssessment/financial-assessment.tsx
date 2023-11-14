@@ -14,18 +14,9 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import {
-    routes,
-    isMobile,
-    isDesktop,
-    platforms,
-    PlatformContext,
-    WS,
-    EMPLOYMENT_VALUES,
-    shouldHideOccupationField,
-} from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { routes, platforms, WS, EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { localize, Localize } from '@deriv/translations';
 import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
 import DemoMessage from 'Components/demo-message';
@@ -101,16 +92,19 @@ const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }: TConfirmationM
             <ConfirmationContent />
         </Modal.Body>
         <Modal.Footer>
-            <Button large text={localize('Decline')} onClick={() => toggleModal(false)} secondary />
+            <Button large onClick={() => toggleModal(false)} secondary>
+                <Localize i18n_default_text='Decline' />
+            </Button>
             <Button
                 large
-                text={localize('Accept')}
                 onClick={() => {
                     onSubmit();
                     toggleModal(false);
                 }}
                 primary
-            />
+            >
+                <Localize i18n_default_text='Accept' />
+            </Button>
         </Modal.Footer>
     </Modal>
 );
@@ -123,20 +117,23 @@ const ConfirmationPage = ({ toggleModal, onSubmit }: TConfirmationPage) => (
             styles={{ color: 'var(--brand-red-coral)' }}
             className='account__confirmation-page-title'
         >
-            {localize('Notice')}
+            <Localize i18n_default_text='Notice' />
         </Text>
         <ConfirmationContent className='account__confirmation-page-content' />
         <div className='account__confirmation-page-footer'>
-            <Button large text={localize('Back')} onClick={() => toggleModal(false)} secondary />
+            <Button large onClick={() => toggleModal(false)} secondary>
+                <Localize i18n_default_text='Back' />
+            </Button>
             <Button
                 large
-                text={localize('Accept')}
                 onClick={() => {
                     onSubmit();
                     toggleModal(false);
                 }}
                 primary
-            />
+            >
+                <Localize i18n_default_text='Accept' />
+            </Button>
         </div>
     </div>
 );
@@ -164,16 +161,12 @@ const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
                 icon={<Icon icon='IcSuccess' width={96} height={90} />}
             >
                 <div className='account-management-flex-wrapper account-management-submit-success'>
-                    <Button
-                        type='button'
-                        has_effect
-                        text={localize('Back to {{platform_name}}', {
-                            platform_name: platforms[platform].platform_name,
-                        })}
-                        onClick={onClickButton}
-                        primary
-                        large
-                    />
+                    <Button type='button' has_effect onClick={onClickButton} primary large>
+                        <Localize
+                            i18n_default_text='Back to {{platform_name}}'
+                            values={{ platform_name: platforms[platform].platform_name }}
+                        />
+                    </Button>
                 </div>
             </IconMessageContent>
         );
@@ -186,21 +179,16 @@ const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
             icon={<Icon icon='IcSuccess' width={96} height={90} />}
         >
             <div className='account-management-flex-wrapper account-management-submit-success'>
-                <Button
-                    type='button'
-                    has_effect
-                    text={localize('Continue')}
-                    onClick={() => redirectToPOA()}
-                    primary
-                    large
-                />
+                <Button type='button' has_effect onClick={() => redirectToPOA()} primary large>
+                    <Localize i18n_default_text='Continue' />
+                </Button>
             </div>
         </IconMessageContent>
     );
 };
 
 const FinancialAssessment = observer(() => {
-    const { client, common, notifications } = useStore();
+    const { client, common, notifications, ui } = useStore();
     const {
         landing_company_shortcode,
         is_virtual,
@@ -214,9 +202,11 @@ const FinancialAssessment = observer(() => {
     } = client;
     const { platform, routeBackInApp } = common;
     const { refreshNotifications } = notifications;
+    const { is_mobile, is_desktop } = ui;
     const is_mf = landing_company_shortcode === 'maltainvest';
+
     const history = useHistory();
-    const { is_appstore } = React.useContext(PlatformContext);
+
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_confirmation_visible, setIsConfirmationVisible] = React.useState(false);
     const [has_trading_experience, setHasTradingExperience] = React.useState(false);
@@ -310,7 +300,7 @@ const FinancialAssessment = observer(() => {
                 setIsSubmitSuccess(true);
                 setIsBtnLoading(false);
 
-                if (isDesktop()) {
+                if (is_desktop) {
                     setTimeout(() => setIsSubmitSuccess(false), 10000);
                 }
             });
@@ -337,7 +327,7 @@ const FinancialAssessment = observer(() => {
 
     const toggleConfirmationModal = (value: boolean) => {
         setIsConfirmationVisible(value);
-        if (isMobile()) {
+        if (is_mobile) {
             setIsFormVisible(!value);
         }
     };
@@ -354,9 +344,9 @@ const FinancialAssessment = observer(() => {
 
     const getScrollOffset = () => {
         if (is_mf) {
-            if (isMobile() && is_financial_information_incomplete) return '220px';
+            if (is_mobile && is_financial_information_incomplete) return '220px';
             return is_financial_information_incomplete && !is_submit_success ? '165px' : '160px';
-        } else if (isMobile()) return is_appstore ? '160px' : '200px';
+        } else if (is_mobile) return '200px';
         return '80px';
     };
 
@@ -367,8 +357,8 @@ const FinancialAssessment = observer(() => {
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
-    if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
-    if (isMobile() && is_authentication_needed && !is_mf && is_submit_success)
+    if (is_virtual) return <DemoMessage />;
+    if (is_mobile && is_authentication_needed && !is_mf && is_submit_success)
         return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
 
     const setInitialFormData = () => {
@@ -421,17 +411,17 @@ const FinancialAssessment = observer(() => {
                 setFieldValue,
             }) => (
                 <React.Fragment>
-                    {!is_appstore && isMobile() && is_confirmation_visible && (
+                    {is_mobile && is_confirmation_visible && (
                         <ConfirmationPage toggleModal={toggleConfirmationModal} onSubmit={handleSubmit} />
                     )}
-                    {(isDesktop() || is_appstore) && (
+                    {is_desktop && (
                         <ConfirmationModal
                             is_visible={is_confirmation_visible}
                             toggleModal={toggleConfirmationModal}
                             onSubmit={handleSubmit}
                         />
                     )}
-                    <LeaveConfirm onDirty={isMobile() ? showForm : () => undefined} />
+                    <LeaveConfirm onDirty={is_mobile ? showForm : () => undefined} />
                     {is_form_visible && (
                         <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
                             {is_mf && is_financial_information_incomplete && !is_submit_success && (
@@ -439,7 +429,7 @@ const FinancialAssessment = observer(() => {
                                     <div className='financial-banner__frame'>
                                         <div className='financial-banner__container'>
                                             <Icon icon='IcAlertWarning' />
-                                            {isMobile() ? (
+                                            {is_mobile ? (
                                                 <Text size='xxxs' line_height='s'>
                                                     <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
                                                 </Text>
@@ -458,7 +448,6 @@ const FinancialAssessment = observer(() => {
                                     subtitle={`(${localize('All fields are required')})`}
                                 />
                                 <FormBodySection
-                                    has_side_note={is_appstore}
                                     side_note={localize('We’re legally obliged to ask for your financial information.')}
                                 >
                                     <fieldset className='account-form__fieldset'>
@@ -750,10 +739,7 @@ const FinancialAssessment = observer(() => {
                                             title={localize('Trading experience')}
                                             subtitle={`(${localize('All fields are required')})`}
                                         />
-                                        <FormBodySection
-                                            has_side_note={is_appstore}
-                                            side_note={localize('Tell us about your trading experience.')}
-                                        >
+                                        <FormBodySection side_note={localize('Tell us about your trading experience.')}>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
                                                     <Dropdown
@@ -1047,13 +1033,13 @@ const FinancialAssessment = observer(() => {
                             </FormBody>
                             <FormFooter>
                                 {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                {isMobile() && !is_appstore && !is_mf && (
+                                {is_mobile && !is_mf && (
                                     <Text
                                         align='center'
                                         size='xxs'
                                         className='account-form__footer-all-fields-required'
                                     >
-                                        {localize('All fields are required')}
+                                        <Localize i18n_default_text='All fields are required' />
                                     </Text>
                                 )}
                                 <Button
@@ -1075,10 +1061,11 @@ const FinancialAssessment = observer(() => {
                                     has_effect
                                     is_loading={is_btn_loading}
                                     is_submit_success={is_submit_success}
-                                    text={is_appstore ? localize('Save') : localize('Submit')}
                                     large
                                     primary
-                                />
+                                >
+                                    <Localize i18n_default_text='Submit' />
+                                </Button>
                             </FormFooter>
                         </form>
                     )}

@@ -1,6 +1,6 @@
 import { Context } from '../../utils/mocks/mocks';
 
-export default function mock_website_status(context: Context) {
+export default function mockWebsiteStatus(context: Context) {
     if ('website_status' in context.request && context.request.website_status === 1) {
         context.response = {
             echo_req: {

@@ -39,7 +39,7 @@ export const DEFAULT_ACCOUNTS = [
     },
 ];
 
-export default function mock_authorize(context: Context) {
+export default function mockAuthorize(context: Context) {
     if ('authorize' in context.request) {
         context.response = {
             authorize: {

@@ -109,5 +109,5 @@ export const getValidationFunction = (rule: string) => {
         !!func(value, options, values);
 };
 
-export const shouldHideOccupationField = (employment_status: string | undefined) =>
+export const shouldHideOccupationField = (employment_status?: string) =>
     [EMPLOYMENT_VALUES.SELF_EMPLOYED, EMPLOYMENT_VALUES.UNEMPLOYED].some(status => status === employment_status);

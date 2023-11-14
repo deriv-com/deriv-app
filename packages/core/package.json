@@ -139,6 +139,7 @@
         "react-router-dom": "^5.2.0",
         "react-tiny-popover": "^7.0.1",
         "react-transition-group": "4.4.2",
-        "react-window": "^1.8.5"
+        "react-window": "^1.8.5",
+        "usehooks-ts": "^2.7.0"
     }
 }

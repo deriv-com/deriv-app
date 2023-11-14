@@ -2,16 +2,18 @@ import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { TTableRowItem } from '../types/common.types';
-import { TSource } from './data-table';
 import TableCell from './table-cell';
 import TableRowInfo from './table-row-info';
 
+export type TSource = {
+    [key: string]: unknown;
+};
 type TTableRow<T> = {
     className?: string;
     id?: string;
     is_footer: boolean;
     is_header?: boolean;
-    passthrough?: (item: TSource) => boolean;
+    passthrough?: { isTopUp: (item: TSource) => boolean };
     replace?: TTableRowItem;
     to?: string;
     show_preloader?: boolean;

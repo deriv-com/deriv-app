@@ -1,4 +1,4 @@
-import { cloneThorough } from '@deriv/shared';
+import { cloneThorough, isMultiplierContract } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
 import { createScope } from './cliTools';
 import Interface from '../Interface';
@@ -23,7 +23,7 @@ const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, errorName = '') => {
-    const stopErrors = ['SellNotAvailableCustom', 'ContractCreationFailure'];
+    const stopErrors = ['SellNotAvailableCustom', 'ContractCreationFailure', 'InvalidtoBuy'];
     if (stopErrors.includes(errorName) && botInitialized(bot)) {
         return true;
     }
@@ -158,37 +158,69 @@ const Interpreter = () => {
         js_interpreter.setProperty(scope, 'sleep', createAsync(js_interpreter, sleep));
     }
 
-    function stop() {
-        const global_timeouts = globalObserver.getState('global_timeouts') ?? [];
-        const is_timeouts_cancellable = Object.keys(global_timeouts).every(
-            timeout => global_timeouts[timeout].is_cancellable
-        );
+    async function stop() {
+        return new Promise((resolve, reject) => {
+            try {
+                const global_timeouts = globalObserver.getState('global_timeouts') ?? [];
+                const is_timeouts_cancellable = Object.keys(global_timeouts).every(
+                    timeout => global_timeouts[timeout].is_cancellable
+                );
 
-        if (!bot.tradeEngine.contractId && is_timeouts_cancellable) {
-            // When user is rate limited, allow them to stop the bot immediately
-            // granted there is no active contract.
-            global_timeouts.forEach(timeout => clearTimeout(global_timeouts[timeout]));
-            terminateSession();
-        } else if (bot.tradeEngine.isSold === false && !$scope.is_error_triggered) {
-            globalObserver.register('contract.status', contractStatus => {
-                if (contractStatus.id === 'contract.sold') {
-                    terminateSession();
+                if (!bot.tradeEngine.contractId && is_timeouts_cancellable) {
+                    // When user is rate limited, allow them to stop the bot immediately
+                    // granted there is no active contract.
+                    global_timeouts.forEach(timeout => clearTimeout(global_timeouts[timeout]));
+                    terminateSession().then(() => resolve());
+                } else if (
+                    bot.tradeEngine.isSold === false &&
+                    !$scope.is_error_triggered &&
+                    isMultiplierContract(bot?.tradeEngine?.data?.contract?.contract_type ?? '')
+                ) {
+                    globalObserver.register('contract.status', async contractStatus => {
+                        if (contractStatus.id === 'contract.sold') {
+                            terminateSession().then(() => resolve());
+                        }
+                    });
+                } else {
+                    terminateSession().then(() => resolve());
                 }
-            });
-        } else {
-            terminateSession();
-        }
+            } catch (e) {
+                reject(e);
+            }
+        });
     }
 
-    function terminateSession() {
-        $scope.stopped = true;
-        $scope.is_error_triggered = false;
-        globalObserver.emit('bot.stop');
+    async function terminateSession() {
+        return new Promise((resolve, reject) => {
+            try {
+                $scope.stopped = true;
+                $scope.is_error_triggered = false;
+                globalObserver.emit('bot.stop');
+                const { ticksService } = $scope;
+                // Unsubscribe previous ticks_history subscription
+                // Unsubscribe the subscriptions from Proposal, Balance and OpenContract
+                api_base.clearSubscriptions();
+
+                ticksService.unsubscribeFromTicksService().then(() => {
+                    resolve();
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    async function unsubscribeFromTicksService() {
         const { ticksService } = $scope;
-        // Unsubscribe previous ticks_history subscription
-        ticksService.unsubscribeFromTicksService();
-        // Unsubscribe the subscriptions from Proposal, Balance and OpenContract
-        api_base.clearSubscriptions();
+        return new Promise((resolve, reject) => {
+            try {
+                ticksService.unsubscribeFromTicksService().then(() => {
+                    resolve();
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
     }
 
     function run(code) {
@@ -233,7 +265,7 @@ const Interpreter = () => {
         });
     }
 
-    return { stop, run, terminateSession, bot };
+    return { stop, run, terminateSession, bot, unsubscribeFromTicksService };
 };
 export default Interpreter;
 

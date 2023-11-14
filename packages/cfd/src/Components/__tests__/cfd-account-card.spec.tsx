@@ -333,7 +333,8 @@ describe('CFDAccountCard', () => {
             />,
             renderOptions
         );
-        fireEvent.click(screen.getByText(/add real account/i));
+        const add_real_account_buttons = screen.getAllByRole('button', { name: /add real account/i });
+        fireEvent.click(add_real_account_buttons[0]);
         expect(props.onSelectAccount).toHaveBeenCalled();
     });
 
@@ -355,7 +356,8 @@ describe('CFDAccountCard', () => {
             />,
             renderOptions
         );
-        fireEvent.click(screen.getByText(/add demo account/i));
+        const add_demo_account_buttons = screen.getAllByRole('button', { name: /add demo account/i });
+        fireEvent.click(add_demo_account_buttons[0]);
         expect(props.onSelectAccount).toHaveBeenCalled();
     });
 
@@ -445,7 +447,7 @@ describe('CFDAccountCard', () => {
         expect(screen.getByText(/username/i)).toBeInTheDocument();
         expect(screen.getByText(/mtd20103240/i)).toBeInTheDocument();
         expect(screen.getByText(/password/i)).toBeInTheDocument();
-        expect(screen.getByText(/•••••••••••••••/i)).toBeInTheDocument();
+        expect(screen.getByText('***************')).toBeInTheDocument();
         expect(screen.getByText(/icedit/i)).toBeInTheDocument();
         expect(screen.getByText(/trade on web terminal/i)).toBeInTheDocument();
     });

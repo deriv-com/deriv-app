@@ -861,6 +861,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                     onBlur={handleBlur}
                                                     required
                                                     error={errors.phone}
+                                                    disabled={!isChangeableField('phone')}
                                                     data-testid='dt_phone'
                                                 />
                                             </fieldset>
@@ -1212,7 +1213,12 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                     has_side_note={is_appstore}
                                     side_note={localize('Check this box to receive updates via email.')}
                                 >
-                                    <fieldset className='account-form__fieldset'>
+                                    <fieldset
+                                        className={classNames(
+                                            'account-form__fieldset',
+                                            'account-form__fieldset--email-consent'
+                                        )}
+                                    >
                                         <Checkbox
                                             name='email_consent'
                                             value={values.email_consent}
@@ -1232,7 +1238,12 @@ export const PersonalDetailsForm = observer(({ history }) => {
                             <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 {!is_virtual && !(isSubmitting || is_submit_success || (status && status.msg)) && (
-                                    <Text className='account-form__footer-note' size='xxxs'>
+                                    <Text
+                                        className='account-form__footer-note'
+                                        size='xxs'
+                                        color='prominent'
+                                        align={isMobile() ? 'center' : 'right'}
+                                    >
                                         {localize(
                                             'Please make sure your information is correct or it may affect your trading experience.'
                                         )}

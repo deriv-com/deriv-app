@@ -1,19 +1,20 @@
 import { Formik, FormikHelpers } from 'formik';
 import React from 'react';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
-import { validLength, validPassword, getErrorMessages, CFD_PLATFORMS, WS, redirectToLogin } from '@deriv/shared';
+import { validLength, validPassword, getErrorMessages, WS, redirectToLogin } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
     const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
         reset_password_intent &&
-        /(real|demo)\.(financial_stp|financial|synthetic|synthetic_svg|synthetic_bvi|financial_svg|financial_bvi|financial_fx|financial_v)/.test(
+        /(real|demo)\.(financial|financial_demo|financial_stp|financial_svg|financial_bvi|financial_fx|financial_v|synthetic|synthetic_svg|synthetic_bvi|synthetic_v|all_svg|dxtrade|all)/.test(
             reset_password_intent
         );
 
@@ -21,7 +22,9 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
     if (has_intent && current_list) {
         [server, group, type] = reset_password_intent.split('.');
         login = current_list[`mt5.${group}.${type}@${server}`].login;
-        title = getMtCompanies(is_eu)[group as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].title;
+        title =
+            getMtCompanies(is_eu)[group as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']]?.title ??
+            '';
     } else if (current_list) {
         [server, group, type] = (Object.keys(current_list).pop() as string).split('.');
         login = current_list[`mt5.${group}.${type}@${server}`]?.login ?? '';
@@ -49,6 +52,13 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
     const { is_cfd_reset_password_modal_enabled, setCFDPasswordResetModal } = ui;
 
     const { current_list } = useCfdStore();
+
+    React.useEffect(() => {
+        if (!/reset-password/.test(location.hash)) {
+            return;
+        }
+        setCFDPasswordResetModal(true);
+    }, [setCFDPasswordResetModal]);
 
     const [state, setState] = React.useState<{
         error_code: string | number | undefined;

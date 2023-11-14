@@ -18,6 +18,7 @@ import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
 import ProfitLossCell from '../Components/profit_loss_cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
 import { useStore } from '@deriv/stores';
+import moment from 'moment';
 
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 
@@ -41,6 +42,7 @@ type TAccumulatorOpenPositionstemplateProps = Omit<
     TMultiplierOpenPositionstemplateProps,
     'onClickCancel' | 'server_time'
 >;
+
 type TMultiplierOpenPositionstemplateProps = Pick<
     TPortfolioStore,
     'getPositionById' | 'onClickCancel' | 'onClickSell'
@@ -565,4 +567,3 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
         },
     },
 ];
-/* eslint-enable react/display-name, react/prop-types */

@@ -27,7 +27,6 @@ describe('<ErrorComponent/>', () => {
         redirect_label: 'test_label',
         should_clear_error_on_click: true,
         should_show_refresh: true,
-        app_routing_history: [{ pathname: '/cashier' }],
         redirectOnClick: jest.fn(),
         setError: jest.fn(),
     };

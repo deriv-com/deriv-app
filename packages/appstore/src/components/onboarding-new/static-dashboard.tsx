@@ -102,7 +102,7 @@ const StaticDashboard = observer(
         const compare_accounts_title = eu_user ? localize('Account Information') : localize('Compare accounts');
 
         return (
-            <ThemedScrollbars height={'calc(100% - 20rem)'} is_bypassed={isMobile()}>
+            <ThemedScrollbars height={'calc(100% - 25rem)'} is_bypassed={isMobile()}>
                 <div
                     data-testid='dt_onboarding_dashboard'
                     className={classNames('static-dashboard', {
@@ -175,7 +175,7 @@ const StaticDashboard = observer(
                                                 />
                                             ) : (
                                                 <Localize
-                                                    i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
+                                                    i18n_default_text='Earn a range of payouts by correctly predicting market movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
                                                     components={[
                                                         <Text
                                                             key={0}
@@ -271,6 +271,7 @@ const StaticDashboard = observer(
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
                                         has_divider={!eu_user && !financial_restricted_countries}
+                                        is_animated={is_onboarding_animated.button}
                                     />
                                 </div>
 
@@ -284,6 +285,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                                 has_divider
                                             />
                                         </div>
@@ -295,6 +297,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                                 has_divider
                                             />
                                         </div>
@@ -306,6 +309,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                             />
                                         </div>
                                         <div className='static-dashboard-wrapper__body--apps-item'>
@@ -316,6 +320,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                             />
                                         </div>
                                     </React.Fragment>
@@ -520,6 +525,48 @@ const StaticDashboard = observer(
                                     />
                                 )}
                             </div>
+
+                            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
+                                <React.Fragment>
+                                    <Divider />
+                                    <div className='static-dashboard-wrapper__body--header'>
+                                        <Text
+                                            as='h2'
+                                            weight='bold'
+                                            size='xs'
+                                            color={
+                                                is_blurry.cfd_text || is_blurry.cfd_description
+                                                    ? 'less-prominent'
+                                                    : 'prominent'
+                                            }
+                                        >
+                                            {localize('Deriv cTrader')}
+                                        </Text>
+                                    </div>
+                                </React.Fragment>
+                            )}
+
+                            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
+                                <div className='static-dashboard-wrapper__body'>
+                                    <StaticCFDAccountManager
+                                        type='all'
+                                        platform='ctrader'
+                                        appname={localize('Deriv cTrader')}
+                                        description={localize(
+                                            'This account offers CFDs on a feature-rich trading platform.'
+                                        )}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_last_step={is_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_derivx_last_step={is_derivx_last_step}
+                                        is_financial_last_step={is_financial_last_step}
+                                        is_eu_user={is_eu_user}
+                                    />
+                                </div>
+                            )}
 
                             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                                 <React.Fragment>

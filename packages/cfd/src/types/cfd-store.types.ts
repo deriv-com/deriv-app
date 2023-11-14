@@ -4,13 +4,6 @@ import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
 import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { FormikHelpers } from 'formik';
 
-type TStoreProofOfAddressArgs = {
-    file_uploader_ref: HTMLDivElement | null;
-    values: {
-        [key: string]: string;
-    };
-};
-
 export type TCFDStore = {
     setMT5TradeAccount: <T>(arg: T) => void;
     toggleCFDVerificationModal: () => void;
@@ -21,6 +14,10 @@ export type TCFDStore = {
         real: string;
     };
     derivez_tokens: {
+        demo: string;
+        real: string;
+    };
+    ctrader_tokens: {
         demo: string;
         real: string;
     };
@@ -54,14 +51,18 @@ export type TCFDStore = {
     };
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
     account_title: string;
+    migrated_mt5_accounts: Record<string, string>[];
     disableCFDPasswordModal: () => void;
     error_message: string;
     error_type?: string;
     getAccountStatus: (platform: string) => void;
+    mt5_migration_error: string;
     has_cfd_error: boolean;
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     setCFDSuccessDialog: (value: boolean) => void;
+    setMT5MigrationError: (value: string) => void;
+    setMigratedMT5Accounts: (value: Record<string, string>[]) => void;
     setError: (state: boolean, obj?: Error) => void;
     submitMt5Password: (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
     submitCFDPassword: (
@@ -93,5 +94,4 @@ export type TCFDStore = {
         set_password?: number;
         platform?: string;
     }) => void;
-    storeProofOfAddress: TStoreProofOfAddressArgs;
 };

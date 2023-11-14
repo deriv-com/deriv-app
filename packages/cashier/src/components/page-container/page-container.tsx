@@ -23,7 +23,7 @@ const PageContainer: React.FC<React.PropsWithChildren<TProps>> = observer(
                 {!is_loading && (
                     <div className='page-container__content'>
                         {!is_mobile && left && <div className='page-container__sidebar--left'>{left}</div>}
-                        <ThemedScrollbars className='page-container__main'>
+                        <ThemedScrollbars className='page-container__main' height='calc(100svh - 8rem)'>
                             {!hide_breadcrumb && <CashierBreadcrumb />}
                             {is_mobile && left && <div className='page-container__sidebar--left'>{left}</div>}
                             {children}

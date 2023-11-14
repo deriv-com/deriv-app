@@ -109,7 +109,7 @@
         &:hover {
             background: 0 !important;
 
-            .dc-result__caption {
+            .dc-result__content {
                 opacity: 0;
             }
         }
@@ -392,6 +392,9 @@
         &__header {
             max-width: calc(100% - 2.4rem);
             line-height: 1.4;
+            @include mobile {
+                max-width: unset;
+            }
         }
         &__body {
             @include typeface(--small-left-bold-black);
@@ -565,7 +568,7 @@
         }
     }
     &__no-resale-msg {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     .contract-audit {
         &__wrapper {

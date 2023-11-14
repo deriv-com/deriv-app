@@ -72,6 +72,9 @@ const mock_ws = {
     activeSymbols: jest.fn(),
     send: jest.fn(),
 };
+jest.mock('@deriv/deriv-charts', () => ({
+    setSmartChartsPublicPath: jest.fn(),
+}));
 
 describe('TransactionDetailsMobile', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;

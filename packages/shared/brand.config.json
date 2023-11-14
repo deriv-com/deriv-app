@@ -23,6 +23,10 @@
             "name": "Deriv MT5",
             "icon": "IcRebrandingDmt5"
         },
+        "ctrader": {
+            "name": "Deriv cTrader",
+            "icon": "IcRebrandingCtrader"
+        },
         "dxtrade": {
             "name": "Deriv X",
             "icon": "IcRebrandingDxtrade"
@@ -69,6 +73,11 @@
             "name": "Deriv GO",
             "icon": "DerivGo",
             "availability": "Non-EU"
+        },
+        "ctrader": {
+            "name": "",
+            "icon": "",
+            "availability": ""
         }
     }
 }

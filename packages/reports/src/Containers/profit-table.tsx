@@ -1,57 +1,42 @@
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, usePrevious } from '@deriv/components';
 import {
     extractInfoFromShortcode,
-    isForwardStarting,
+    formatDate,
     getContractPath,
     getSupportedContracts,
     getUnsupportedContracts,
+    isForwardStarting,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { Analytics } from '@deriv/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
-import {
-    TInputDateRange,
-    TColIndex,
-    TColumnTemplateType,
-    TSupportedContractType,
-    TUnsupportedContractType,
-} from 'Types';
-
-import { connect } from 'Stores/connect';
+import { TSupportedContractType, TUnsupportedContractType } from 'Types';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import PlaceholderComponent from '../Components/placeholder-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
-import { TRootStore } from 'Stores/index';
-import moment from 'moment/moment';
+import { observer, useStore } from '@deriv/stores';
+import { useReportsStore } from 'Stores/useReportsStores';
 
 type TProfitTable = {
     component_icon: string;
-    currency: string;
-    data: Array<{ [key: string]: string }>;
-    date_from: number;
-    date_to: number;
-    error: string;
-    filtered_date_range: TInputDateRange;
-    is_empty: boolean;
-    is_loading: boolean;
-    is_switching: boolean;
-    handleDateChange: (values: { [key: string]: moment.Moment }) => void;
-    handleScroll: (ev: React.UIEvent<HTMLElement>) => void;
-    has_selected_date: boolean;
-    onMount: VoidFunction;
-    onUnmount: VoidFunction;
-    totals: React.ReactNode;
 };
 
-const getRowAction = (row_obj: { [key: string]: string }) => {
-    const contract_type = extractInfoFromShortcode(row_obj?.shortcode)?.category?.toString().toUpperCase();
+type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
+
+type TGetProfitTableColumnsTemplate = ReturnType<typeof getProfitTableColumnsTemplate>;
+
+const getRowAction = (row_obj: { [key: string]: unknown }) => {
+    const contract_type = extractInfoFromShortcode(row_obj?.shortcode as string)
+        ?.category?.toString()
+        .toUpperCase();
     return getSupportedContracts()[contract_type as TSupportedContractType] &&
-        !isForwardStarting(row_obj.shortcode, +row_obj.purchase_time_unix)
-        ? getContractPath(+row_obj.contract_id)
+        !isForwardStarting(row_obj.shortcode as string, Number(row_obj.purchase_time_unix))
+        ? getContractPath(Number(row_obj.contract_id))
         : {
               component: (
                   <Localize
@@ -64,61 +49,81 @@ const getRowAction = (row_obj: { [key: string]: string }) => {
           };
 };
 
-const ProfitTable = ({
-    component_icon,
-    currency,
-    data,
-    date_from,
-    date_to,
-    error,
-    filtered_date_range,
-    is_empty,
-    is_loading,
-    is_switching,
-    handleDateChange,
-    handleScroll,
-    has_selected_date,
-    onMount,
-    onUnmount,
-    totals,
-}: TProfitTable) => {
+const ProfitTable = observer(({ component_icon }: TProfitTable) => {
+    const { client } = useStore();
+    const { profit_table } = useReportsStore();
+    const { currency, is_switching } = client;
+    const {
+        data,
+        date_from,
+        date_to,
+        error,
+        is_empty,
+        is_loading,
+        handleDateChange,
+        handleScroll,
+        has_selected_date,
+        onMount,
+        onUnmount,
+        totals,
+    } = profit_table;
+    const prev_date_from = usePrevious(date_from);
+    const prev_date_to = usePrevious(date_to);
+
     React.useEffect(() => {
         onMount();
+        Analytics.trackEvent('ce_reports_form', {
+            action: 'choose_report_type',
+            form_name: 'default',
+            subform_name: 'trade_table_form',
+            start_date_filter: formatDate(date_from, 'DD/MM/YYYY', false),
+            end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
+        });
         return () => {
             onUnmount();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    React.useEffect(() => {
+        if (prev_date_from !== undefined && prev_date_to !== undefined) {
+            Analytics.trackEvent('ce_reports_form', {
+                action: 'filter_dates',
+                form_name: 'default',
+                subform_name: 'trade_table_form',
+                start_date_filter: formatDate(date_from, 'DD/MM/YYYY', false),
+                end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
+            });
+        }
+    }, [date_to, date_from]);
+
     if (error) return <p>{error}</p>;
 
-    const filter_component = (
-        <CompositeCalendar
-            input_date_range={filtered_date_range}
-            onChange={handleDateChange}
-            from={date_from}
-            to={date_to}
-        />
-    );
+    const filter_component = <CompositeCalendar onChange={handleDateChange} from={date_from} to={date_to} />;
 
-    const columns = getProfitTableColumnsTemplate(currency, data.length);
+    const columns: TGetProfitTableColumnsTemplate = getProfitTableColumnsTemplate(currency, data.length);
 
-    const columns_map = Object.fromEntries(columns.map(column => [column.col_index, column])) as {
-        [key in TColIndex]: TColumnTemplateType;
-    };
+    const columns_map = Object.fromEntries(columns.map(column => [column.col_index, column])) as Record<
+        TGetProfitTableColumnsTemplate[number]['col_index'],
+        TGetProfitTableColumnsTemplate[number]
+    >;
 
-    const mobileRowRenderer = ({ row, is_footer }: { row: any; is_footer?: boolean }) => {
-        const duration_type = /^(MULTUP|MULTDOWN)/.test(row.shortcode) ? '' : row.duration_type;
+    const mobileRowRenderer: React.ComponentProps<typeof DataList>['rowRenderer'] = ({ row, is_footer }) => {
+        const duration_type = /^(MULTUP|MULTDOWN)/.test(row?.shortcode) ? '' : row?.duration_type;
         const duration_classname = duration_type ? `duration-type__${duration_type.toLowerCase()}` : '';
 
         if (is_footer) {
             return (
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.action_type} is_footer={is_footer} />
+                    <DataList.Cell
+                        row={row}
+                        column={columns_map.action_type as TDataListCell['column']}
+                        is_footer={is_footer}
+                    />
                     <DataList.Cell
                         className='data-list__row-cell--amount'
                         row={row}
-                        column={columns_map.profit_loss}
+                        column={columns_map.profit_loss as TDataListCell['column']}
                         is_footer={is_footer}
                     />
                 </div>
@@ -128,26 +133,38 @@ const ProfitTable = ({
         return (
             <>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.action_type} />
+                    <DataList.Cell row={row} column={columns_map.action_type as TDataListCell['column']} />
                     <div className={classNames('duration-type', duration_classname)}>
                         <div className={classNames('duration-type__background', `${duration_classname}__background`)} />
                         <span className={`${duration_classname}__label`}>{localize(duration_type)}</span>
                     </div>
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.transaction_id} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.currency} />
+                    <DataList.Cell row={row} column={columns_map.transaction_id as TDataListCell['column']} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={columns_map.currency as TDataListCell['column']}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.purchase_time} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.buy_price} />
+                    <DataList.Cell row={row} column={columns_map.purchase_time as TDataListCell['column']} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={columns_map.buy_price as TDataListCell['column']}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.sell_time} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.sell_price} />
+                    <DataList.Cell row={row} column={columns_map.sell_time as TDataListCell['column']} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={columns_map.sell_price as TDataListCell['column']}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={columns_map.profit_loss} />
+                    <DataList.Cell row={row} column={columns_map.profit_loss as TDataListCell['column']} />
                 </div>
             </>
         );
@@ -181,7 +198,6 @@ const ProfitTable = ({
                                     columns={columns}
                                     onScroll={handleScroll}
                                     footer={totals}
-                                    is_empty={is_empty}
                                     getRowAction={getRowAction}
                                     getRowSize={() => 63}
                                     content_loader={ReportsTableRowLoader}
@@ -208,22 +224,6 @@ const ProfitTable = ({
             )}
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules, client }: TRootStore) => ({
-    currency: client.currency,
-    data: modules.profit_table.data,
-    date_from: modules.profit_table.date_from,
-    date_to: modules.profit_table.date_to,
-    error: modules.profit_table.error,
-    filtered_date_range: modules.profit_table.filtered_date_range,
-    is_empty: modules.profit_table.is_empty,
-    is_loading: modules.profit_table.is_loading,
-    is_switching: client.is_switching,
-    handleDateChange: modules.profit_table.handleDateChange,
-    handleScroll: modules.profit_table.handleScroll,
-    has_selected_date: modules.profit_table.has_selected_date,
-    onMount: modules.profit_table.onMount,
-    onUnmount: modules.profit_table.onUnmount,
-    totals: modules.profit_table.totals,
-}))(withRouter(ProfitTable));
+export default withRouter(ProfitTable);

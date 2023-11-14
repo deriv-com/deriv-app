@@ -48,7 +48,16 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = is_mobile ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
-    const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
+    const onClickGlossary = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        if (e) {
+            e.preventDefault();
+            if (e.type !== 'keydown' || (e.type === 'keydown' && (e as React.KeyboardEvent).key === 'Enter')) {
+                setSelectedTab(TABS.GLOSSARY);
+            }
+        } else {
+            setSelectedTab(TABS.GLOSSARY);
+        }
+    };
 
     React.useEffect(() => {
         return () => {

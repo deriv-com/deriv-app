@@ -7,7 +7,7 @@ const VanillaTradeDescription = ({
     onClick,
 }: {
     is_vanilla_fx?: boolean;
-    onClick: React.MouseEventHandler<HTMLSpanElement>;
+    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
 }) => {
     const content = [
         <Localize
@@ -18,7 +18,12 @@ const VanillaTradeDescription = ({
             i18n_default_text='If you select <0>"Call"</0>, you’ll earn a <1>payout</1> if the <1>final price</1> is above the <1>strike price</1> at <1>expiry</1>. Otherwise, you won’t receive a payout.'
             components={[
                 <strong key={0} />,
-                <button className='contract-type-info__content-definition' onClick={onClick} key={1} />,
+                <span
+                    className='contract-type-info__content-definition'
+                    onClick={onClick}
+                    onKeyDown={onClick}
+                    key={1}
+                />,
             ]}
             key='2'
         />,
@@ -32,7 +37,12 @@ const VanillaTradeDescription = ({
                 <Localize
                     i18n_default_text='Your payout is equal to the <0>payout per pip</0> multiplied by the difference, <1>in pips</1>, between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
                     components={[
-                        <button className='contract-type-info__content-definition' onClick={onClick} key={0} />,
+                        <span
+                            className='contract-type-info__content-definition'
+                            onClick={onClick}
+                            onKeyDown={onClick}
+                            key={0}
+                        />,
                         <strong key={0} />,
                     ]}
                     key='4'
@@ -41,7 +51,12 @@ const VanillaTradeDescription = ({
                 <Localize
                     i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
                     components={[
-                        <button className='contract-type-info__content-definition' onClick={onClick} key={0} />,
+                        <span
+                            className='contract-type-info__content-definition'
+                            onClick={onClick}
+                            onKeyDown={onClick}
+                            key={0}
+                        />,
                     ]}
                     key='4'
                 />
@@ -52,7 +67,12 @@ const VanillaTradeDescription = ({
                 <Localize
                     i18n_default_text='You may sell the contract up to 24 hours before expiry. If you do, we’ll pay you the <0>contract value</0>.'
                     components={[
-                        <button className='contract-type-info__content-definition' onClick={onClick} key={0} />,
+                        <span
+                            className='contract-type-info__content-definition'
+                            onClick={onClick}
+                            onKeyDown={onClick}
+                            key={0}
+                        />,
                     ]}
                     key='5'
                 />
@@ -60,7 +80,12 @@ const VanillaTradeDescription = ({
                 <Localize
                     i18n_default_text='You may sell the contract up until 60 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
                     components={[
-                        <button className='contract-type-info__content-definition' onClick={onClick} key={0} />,
+                        <span
+                            className='contract-type-info__content-definition'
+                            onClick={onClick}
+                            onKeyDown={onClick}
+                            key={0}
+                        />,
                     ]}
                     key='5'
                 />

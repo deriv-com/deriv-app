@@ -57,6 +57,9 @@ jobs:
         E2E_OAUTH_URL: ${{ secrets.E2E_OAUTH_URL }}
         E2E_CONFIG_APPID: ${{ secrets.E2E_CONFIG_APPID }}
         E2E_CONFIG_SERVER: ${{ secrets.E2E_CONFIG_SERVER }}
+        E2E_MT5_LOGIN: ${{ secrets.E2E_MT5_LOGIN }}
+        E2E_MT5_PASSWORD: ${{ secrets.E2E_MT5_PASSWORD }}
+        E2E_MT5_BASEURL: ${{ secrets.E2E_MT5_BASEURL }}
 
     - name: Set comments message
       id: set_msg 

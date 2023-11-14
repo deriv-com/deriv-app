@@ -1538,7 +1538,10 @@ type TPrivateSocketEndpoints = {
              * Must be `1`
              */
             notification_event: 1;
-            args: {
+            /**
+             * Event arguments.
+             */
+            args?: {
                 /**
                  * (Optional- for `poi_documents_uploaded` only) An array of onfido document ids intended to be included in the poi check.
                  */

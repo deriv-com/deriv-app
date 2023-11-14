@@ -121,7 +121,7 @@ jest.mock('@deriv/api', () => ({
                 data: {
                     accounts: [
                         {
-                            account_type: 'wallet',
+                            account_category: 'wallet',
                             balance: '100.00',
                             currency: 'USD',
                             demo_account: 0,
@@ -216,7 +216,7 @@ describe('useTransferBetweenAccounts', () => {
         } = renderHook(() => useTransferBetweenAccounts(), { wrapper });
 
         expect(active_wallet).toEqual({
-            account_type: 'wallet',
+            account_category: 'wallet',
             active_wallet_icon: 'IcWalletCurrencyUsd',
             balance: 100,
             currency: 'USD',

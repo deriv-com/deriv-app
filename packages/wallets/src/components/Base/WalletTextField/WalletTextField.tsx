@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import MessageContainer, { MessageContainerProps } from './HelperMessage';
 import './WalletTextField.scss';
 
-interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, MessageContainerProps {
+export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, MessageContainerProps {
     defaultValue?: string;
     inputClassName?: string;
     label?: string;

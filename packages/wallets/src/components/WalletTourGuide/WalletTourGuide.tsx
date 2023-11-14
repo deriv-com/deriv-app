@@ -1,31 +1,72 @@
-import React from 'react';
-import Joyride, { CallBackProps } from 'react-joyride';
-import { TooltipComponent, tourStepConfig } from './WalletTourGuideSettings';
+import React, { useEffect } from 'react';
+import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
+import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
+import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
+import useDevice from '../../hooks/useDevice';
+import {
+    TooltipComponent,
+    tourStepConfig,
+    walletsOnboardingLocalStorageKey as key,
+    walletsOnboardingStartValue as startValue,
+} from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
 
-type TProps = {
-    isStarted?: boolean;
-    setIsStarted?: (value: boolean) => void;
-};
+const WalletTourGuide = () => {
+    const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
+    const { isMobile } = useDevice();
 
-const WalletTourGuide: React.FC<TProps> = ({ isStarted, setIsStarted }) => {
+    const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
+    const { data: wallets } = useWalletAccountsList();
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { data: availableWallets } = useAvailableWallets();
+
+    const fiatWalletLoginId = wallets?.[0]?.loginid;
+    const activeWalletLoginId = activeWallet?.loginid;
+
     const callbackHandle = (data: CallBackProps) => {
-        if (data.action === 'reset') {
-            setIsStarted?.(false);
+        const { action } = data;
+
+        if (action === ACTIONS.RESET) {
+            setWalletsOnboarding('');
         }
     };
+
+    useEffect(() => {
+        const switchToFiatWallet = () => {
+            if (fiatWalletLoginId && fiatWalletLoginId !== activeWalletLoginId) {
+                switchAccount(fiatWalletLoginId);
+            }
+        };
+
+        const needToStart = walletsOnboarding === startValue;
+        if (needToStart) {
+            switchToFiatWallet();
+        }
+    }, [activeWalletLoginId, fiatWalletLoginId, switchAccount, walletsOnboarding]);
+
+    const isDemoWallet = Boolean(activeWallet?.is_virtual);
+    const hasMT5Account = Boolean(activeWallet?.linked_to?.some(account => account.platform === 'mt5'));
+    const hasDerivAppsTradingAccount = Boolean(activeWallet?.dtrade_loginid);
+    const isAllWalletsAlreadyAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));
+
+    if (isMobile) return null;
 
     return (
         <Joyride
             callback={callbackHandle}
             continuous
             disableCloseOnEsc
-            disableScrolling
-            floaterProps={{
-                disableAnimation: true,
-            }}
-            run={isStarted}
-            steps={tourStepConfig}
+            disableOverlayClose
+            floaterProps={{ disableAnimation: true }}
+            run={walletsOnboarding === startValue && !isLoading && !isFetching && isSuccess}
+            scrollOffset={150}
+            steps={tourStepConfig(
+                false,
+                isDemoWallet,
+                hasMT5Account,
+                hasDerivAppsTradingAccount,
+                isAllWalletsAlreadyAdded
+            )}
             tooltipComponent={TooltipComponent}
         />
     );

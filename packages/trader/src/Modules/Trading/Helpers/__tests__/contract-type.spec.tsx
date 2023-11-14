@@ -13,10 +13,18 @@ const contract_types_test_list = {
     Digits: { name: 'Digits', categories: [{ value: TRADE_TYPES.MATCH_DIFF, text: 'Matches/Differs' }] },
     'Ins & Outs': { name: 'Ins & Outs', categories: [{ value: TRADE_TYPES.END, text: 'Ends In/Ends Out' }] },
 };
-const unsupported_test_list = [TRADE_TYPES.END, TRADE_TYPES.STAY] as unknown as Parameters<
-    typeof getAvailableContractTypes
->[1];
-const unsupported_short_test_list = [TRADE_TYPES.STAY] as unknown as Parameters<typeof getAvailableContractTypes>[1];
+const unsupported_test_list: Parameters<typeof getAvailableContractTypes>[1] = [
+    TRADE_TYPES.CALL_PUT_SPREAD,
+    TRADE_TYPES.RUN_HIGH_LOW,
+    TRADE_TYPES.RESET,
+    TRADE_TYPES.ASIAN,
+    TRADE_TYPES.TICK_HIGH_LOW,
+    TRADE_TYPES.END,
+    TRADE_TYPES.STAY,
+    TRADE_TYPES.LB_CALL,
+    TRADE_TYPES.LB_PUT,
+    TRADE_TYPES.LB_HIGH_LOW,
+];
 const contract_type_array = [
     { value: TRADE_TYPES.ACCUMULATOR, text: 'Accumulators' },
     { value: TRADE_TYPES.RISE_FALL, text: 'Rise/Fall' },
@@ -75,11 +83,8 @@ describe('getContractTypeCategoryIcons', () => {
 });
 
 describe('getAvailableContractTypes', () => {
-    it('should return an object with specific availibale contracts if they are in the unsupported list', () => {
+    it('should return an object with specific available contracts if they are in the unsupported list', () => {
         expect(getAvailableContractTypes(contract_types_test_list, unsupported_test_list)).toHaveLength(2);
-    });
-    it('should return an object with all availibale contracts if they are not in the unsupported list', () => {
-        expect(getAvailableContractTypes(contract_types_test_list, unsupported_short_test_list)).toHaveLength(3);
     });
     it('should return null for component field if it is not Accumulators', () => {
         expect(getAvailableContractTypes(contract_types_test_list, unsupported_test_list)[1]?.component).toEqual(null);

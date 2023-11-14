@@ -26,9 +26,13 @@ const InfoBoxLongcode = observer(({ contract_info }: TInfoBoxLongcode) => {
     };
 
     return (
-        <div className='info-box-longcode' onClick={is_mobile ? handleToggle : undefined} onKeyDown={handleToggle}>
+        <div className='info-box-longcode'>
             <Icon icon='IcContractFlag' className='info-box-longcode-icon' size={24} />
-            <div className='info-box-longcode-wrapper'>
+            <div
+                className='info-box-longcode-wrapper'
+                onClick={is_mobile ? handleToggle : undefined}
+                onKeyDown={handleToggle}
+            >
                 <Text
                     size='xs'
                     className={classNames('info-box-longcode-text', {
@@ -47,25 +51,25 @@ const InfoBoxLongcode = observer(({ contract_info }: TInfoBoxLongcode) => {
                         )}
                     </Text>
                 )}
-                <Modal
-                    className='info-box-longcode--modal'
-                    is_open={is_mobile && !is_collapsed}
-                    title={<Localize i18n_default_text='Trade info' />}
-                    has_close_icon={false}
-                    should_close_on_click_outside
-                    small
-                    toggleModal={handleToggle}
-                >
-                    <Modal.Body>
-                        <Text size='xs'>{contract_info.longcode}</Text>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button className='info-box-longcode--modal-button' primary large onClick={handleToggle}>
-                            <Localize i18n_default_text='OK' />
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
             </div>
+            <Modal
+                className='info-box-longcode--modal'
+                is_open={is_mobile && !is_collapsed}
+                title={<Localize i18n_default_text='Trade info' />}
+                has_close_icon={false}
+                should_close_on_click_outside
+                small
+                toggleModal={handleToggle}
+            >
+                <Modal.Body>
+                    <Text size='xs'>{contract_info.longcode}</Text>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button className='info-box-longcode--modal-button' primary large onClick={handleToggle}>
+                        <Localize i18n_default_text='OK' />
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 });

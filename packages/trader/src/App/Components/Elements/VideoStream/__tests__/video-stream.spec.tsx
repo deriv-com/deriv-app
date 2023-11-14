@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import VideoStream from '../video-stream';
-import { getDescriptionVideoId } from 'Modules/Trading/Helpers/contract-type';
+import { getDescriptionVideoId } from 'Modules/Trading/Helpers/video-config';
 
 const video_stream_testid = 'dt_video_stream';
 

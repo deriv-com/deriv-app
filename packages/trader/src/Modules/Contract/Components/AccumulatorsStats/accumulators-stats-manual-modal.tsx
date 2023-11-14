@@ -3,7 +3,7 @@ import { Icon, Loading, Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
 import VideoStream from 'App/Components/Elements/VideoStream';
-import { getAccuManualVideoId } from 'Modules/Trading/Helpers/contract-type';
+import { getAccuManualVideoId } from 'Modules/Trading/Helpers/video-config';
 
 type TAccumulatorsStatsManualModal = {
     icon_classname: string;

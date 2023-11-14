@@ -43,4 +43,28 @@
             flex-direction: column;
         }
     }
+    .ReactVirtualized__List {
+        /* Firefox only */
+        scrollbar-color: var(--state-active) var(--general-main-1);
+        scrollbar-width: thin;
+
+        &::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+            background-color: transparent;
+            border-radius: 10px;
+        }
+        &::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: var(--state-active);
+        }
+        &:not(:hover) {
+            &::-webkit-scrollbar-thumb {
+                display: none;
+            }
+        }
+    }
 }

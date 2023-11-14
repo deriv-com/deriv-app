@@ -32,7 +32,7 @@ describe('<TestWarningModal />', () => {
             show_risk_modal: true,
             title: 'Appropriateness Test Warning',
             body_content: <div>body_content</div>,
-            footer_content: <div>fotter_content</div>,
+            footer_content: <div>footer_content</div>,
         };
         render(<TestWarningModal {...props} />);
 

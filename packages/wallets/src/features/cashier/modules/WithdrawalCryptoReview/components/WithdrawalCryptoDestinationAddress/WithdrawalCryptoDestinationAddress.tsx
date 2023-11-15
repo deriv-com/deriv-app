@@ -7,13 +7,22 @@ const WithdrawalCryptoDestinationAddress = () => {
     const { isMobile } = useDevice();
     return (
         <div className='wallets-withdrawal-crypto-destination-address'>
-            <WalletText weight='bold'>1FfmbHfnpaZjKFvyi1okTjJJusN455paPH</WalletText>
-            <WalletClipboard
-                infoMessage={isMobile ? undefined : 'copy'}
-                popoverAlignment={isMobile ? 'left' : 'bottom'}
-                successMessage='copied'
-                textCopy={''}
-            />
+            <div className='wallets-withdrawal-crypto-destination-address__title'>
+                <WalletText color='general' size='2xs'>
+                    Destination address
+                </WalletText>
+            </div>
+            <div className='wallets-withdrawal-crypto-destination-address__content'>
+                <WalletText lineHeight={isMobile ? 'sm' : 'xl'} size={isMobile ? 'sm' : 'lg'} weight='bold'>
+                    1FfmbHfnpaZjKFvyi1okTjJJusN455paPH
+                </WalletText>
+                <WalletClipboard
+                    infoMessage={isMobile ? undefined : 'copy'}
+                    popoverAlignment={isMobile ? 'left' : 'bottom'}
+                    successMessage='copied'
+                    textCopy={''}
+                />
+            </div>
         </div>
     );
 };

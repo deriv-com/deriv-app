@@ -36,7 +36,7 @@ const useJurisdictionStatus = (
     }, [isSuccessAuthenticationStatus, poiStatus?.next?.service]);
 
     const verification_status = useMemo(() => {
-        const isServiceStatus = (...statuses: TServiceStatus[]) => {
+        const isPOIServiceStatus = (...statuses: TServiceStatus[]) => {
             const next_service = poiStatus?.next?.service as keyof TServices;
             const service = poiStatus?.services?.[next_service];
             if (service?.status) {
@@ -52,25 +52,25 @@ const useJurisdictionStatus = (
         switch (jurisdiction) {
             case 'bvi':
                 if (
-                    isServiceStatus('expired', 'rejected', 'suspected') ||
+                    isPOIServiceStatus('expired', 'rejected', 'suspected') ||
                     authenticationStatus?.is_idv_revoked ||
                     mt5_account_status === 'proof_failed'
                 ) {
                     status.is_failed = true;
-                } else if (isServiceStatus('pending') || mt5_account_status === 'verification_pending') {
+                } else if (isPOIServiceStatus('pending') || mt5_account_status === 'verification_pending') {
                     status.is_pending = true;
                 }
                 break;
             case 'labuan':
                 if (
-                    isServiceStatus('expired', 'rejected', 'suspected') ||
-                    // NOTE: BE plans to rename this to `authenticated_with_idv`
+                    isPOIServiceStatus('expired', 'rejected', 'suspected') ||
                     authenticationStatus?.is_idv_revoked ||
+                    // NOTE: BE plans to rename this to `authenticated_with_idv`
                     authenticationStatus?.is_authenticated_with_idv_photoid ||
                     mt5_account_status === 'proof_failed'
                 ) {
                     status.is_failed = true;
-                } else if (isServiceStatus('pending') || mt5_account_status === 'verification_pending') {
+                } else if (isPOIServiceStatus('pending') || mt5_account_status === 'verification_pending') {
                     status.is_pending = true;
                 }
                 break;

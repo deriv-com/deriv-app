@@ -34,26 +34,27 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     }, [modal, mutate, transaction.id]);
 
     const onCancelButtonClick = useCallback(() => {
-        modal.show(
-            <WalletActionModal
-                actionButtonsOptions={[
-                    {
-                        onClick: modal.hide,
-                        text: "No, don't cancel",
-                    },
-                    {
-                        isPrimary: true,
-                        onClick: cancelTransaction,
-                        text: 'Yes, cancel',
-                    },
-                ]}
-                description='Are you sure you want to cancel this transaction?'
-                hideCloseButton
-                title='Cancel transaction'
-            />,
-            { defaultRootId: 'wallets_modal_root' }
-        );
-    }, [cancelTransaction, modal]);
+        if (isMobile)
+            modal.show(
+                <WalletActionModal
+                    actionButtonsOptions={[
+                        {
+                            onClick: modal.hide,
+                            text: "No, don't cancel",
+                        },
+                        {
+                            isPrimary: true,
+                            onClick: cancelTransaction,
+                            text: 'Yes, cancel',
+                        },
+                    ]}
+                    description='Are you sure you want to cancel this transaction?'
+                    hideCloseButton
+                    title='Cancel transaction'
+                />,
+                { defaultRootId: 'wallets_modal_root' }
+            );
+    }, [cancelTransaction, isMobile, modal]);
 
     const onMobileStatusClick = useCallback(
         () =>
@@ -167,7 +168,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
             </div>
             <button
                 className='wallets-transactions-pending-row__transaction-status'
-                onClick={isMobile ? onMobileStatusClick : undefined}
+                onClick={onMobileStatusClick}
                 ref={statusRef}
             >
                 <Tooltip alignment='left' isVisible={!isMobile && isStatusHovered} message={transaction.description}>

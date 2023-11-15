@@ -7,7 +7,6 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 describe('TradingAssessmentForm', () => {
     const mockOnSubmit = jest.fn();
     const displayPreviousPage = jest.fn();
-    const mockOnCancel = displayPreviousPage;
     const mockSetSubSectionIndex = jest.fn();
 
     const baseProps = {
@@ -80,9 +79,13 @@ describe('TradingAssessmentForm', () => {
         );
         userEvent.click(screen.getByText('Yes'));
         userEvent.click(screen.getByText('Next'));
-        await waitFor(() =>
-            expect(screen.getByText('How much knowledge and experience do you have in relation to online trading?'))
-        );
+
+        await waitFor(() => {
+            const text = screen.getByText(
+                'How much knowledge and experience do you have in relation to online trading?'
+            );
+            expect(text).toBeInTheDocument();
+        });
     });
 
     it('should call onCancel when displaying the first question and "Previous" is clicked', async () => {
@@ -98,13 +101,10 @@ describe('TradingAssessmentForm', () => {
         );
         const prevButton = screen.getByRole('button', { name: /Previous/i });
         userEvent.click(prevButton);
-
-        await waitFor(() =>
-            expect(
-                screen.getByText(
-                    'Do you understand that you could potentially lose 100% of the money you use to trade?'
-                )
-            )
+        const text = screen.getByText(
+            'Do you understand that you could potentially lose 100% of the money you use to trade?'
         );
+
+        await waitFor(() => expect(text).toBeInTheDocument());
     });
 });

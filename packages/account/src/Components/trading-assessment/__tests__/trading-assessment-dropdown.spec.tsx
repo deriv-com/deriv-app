@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import TradingAssessmentDropdown from '../trading-assessment-dropdown';
 import { TQuestion } from 'Types';

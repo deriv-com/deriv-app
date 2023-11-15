@@ -2,6 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { Icon } from '@deriv/components';
 import IconMessageContent from '../icon-message-content';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -18,8 +19,19 @@ describe('<IconMessageContent />', () => {
         text: 'sampleText',
     };
 
+    const mock_store = mockStore({
+        ui: {
+            is_desktop: true,
+        },
+    });
+
     it('should render the IconWithMessage component', () => {
-        render(<IconMessageContent {...props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <IconMessageContent {...props} />
+            </StoreProvider>
+        );
+
         expect(screen.getByTestId('mockedIcon')).toBeInTheDocument();
         expect(screen.getByText('sampleMessage')).toBeInTheDocument();
         expect(screen.getByText('sampleText')).toBeInTheDocument();
@@ -27,9 +39,11 @@ describe('<IconMessageContent />', () => {
 
     it('renders the children', () => {
         render(
-            <IconMessageContent {...props}>
-                <div>test</div>
-            </IconMessageContent>
+            <StoreProvider store={mock_store}>
+                <IconMessageContent {...props}>
+                    <div>test</div>
+                </IconMessageContent>
+            </StoreProvider>
         );
         expect(screen.getByText('test')).toBeInTheDocument();
     });

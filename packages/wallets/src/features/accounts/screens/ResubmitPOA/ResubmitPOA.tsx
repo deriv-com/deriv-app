@@ -22,19 +22,19 @@ const ResubmitPOA: React.FC = () => {
     return (
         <div className='wallets-resubmit-poa'>
             <div className='wallets-resubmit-poa__address'>
-                <div className='wallets-resubmit-poa__address__title'>
+                <div className='wallets-resubmit-poa__address--title'>
                     <WalletText weight='bold'>Address</WalletText>
-                    <div className='wallets-resubmit-poa__address__title--divider' />
+                    <div className='wallets-resubmit-poa__address--title-divider' />
                 </div>
-                <div className='wallets-resubmit-poa__address__inline'>
+                <div className='wallets-resubmit-poa__address--inline'>
                     <InlineMessage size='md' type='warning' variant='contained'>
-                        <div className='wallets-resubmit-poa__address__inline--message'>
+                        <div className='wallets-resubmit-poa__address--inline-message'>
                             For faster verification, input the same address here as in your proof of address document
                             (see section below)
                         </div>
                     </InlineMessage>
                 </div>
-                <div className='wallets-resubmit-poa__address__input'>
+                <div className='wallets-resubmit-poa__address--input'>
                     <WalletTextField label='First line of address*' maxWidth={deviceWidth} name='first-line' />
                     <WalletTextField label='Second line of address' maxWidth={deviceWidth} name='second-line' />
                     <WalletTextField label='Town/City*' maxWidth={deviceWidth} name='town-line' />

@@ -27,7 +27,7 @@
             width: 100%;
         }
 
-        &__title {
+        &--title {
             display: flex;
             height: 2.4rem;
             justify-content: center;
@@ -41,7 +41,7 @@
                 align-self: stretch;
             }
 
-            &--divider {
+            &-divider {
                 width: 76rem;
                 height: 0.12rem;
                 flex-shrink: 0;
@@ -54,12 +54,12 @@
             }
         }
 
-        &__inline {
+        &--inline {
             display: flex;
             align-items: flex-start;
             gap: 0.8rem;
 
-            &--message {
+            &-message {
                 width: 80rem;
 
                 @include mobile {
@@ -68,7 +68,7 @@
             }
         }
 
-        &__input {
+        &--input {
             display: flex;
             width: 84.2rem;
             flex-direction: column;

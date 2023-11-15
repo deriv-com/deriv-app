@@ -10,6 +10,7 @@ const ResubmitPOA: React.FC = () => {
 
     const [selectedState, setSelectedState] = useState('');
 
+    // Will replace this with formik values later
     const handleSelect = (value: string) => {
         setSelectedState(value);
     };

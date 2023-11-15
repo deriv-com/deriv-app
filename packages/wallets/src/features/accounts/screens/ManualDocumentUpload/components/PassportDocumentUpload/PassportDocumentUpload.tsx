@@ -2,33 +2,10 @@ import React from 'react';
 import { Dropzone } from '../../../../../../components';
 import { Divider, WalletText, WalletTextField } from '../../../../../../components/Base';
 import useDevice from '../../../../../../hooks/useDevice';
-import ClearPhoto from '../../../../../../public/images/accounts/clear-photo.svg';
-import ClockIcon from '../../../../../../public/images/accounts/clock-icon.svg';
-import ImageIcon from '../../../../../../public/images/accounts/image-icon.svg';
-import LessThanEightIcon from '../../../../../../public/images/accounts/less-than-eight-icon.svg';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import Calendar from '../../../../../../public/images/calendar.svg';
-import { DocumentRuleHint } from '../DocumentRuleHint';
+import { DocumentRuleHints } from '../DocumentRuleHints';
 import './PassportDocumentUpload.scss';
-
-const documentRules = [
-    {
-        description: 'A clear colour photo or scanned image',
-        icon: <ClearPhoto />,
-    },
-    {
-        description: 'JPEG, JPG, PNG, PDF, or GIF',
-        icon: <ImageIcon />,
-    },
-    {
-        description: 'Less than 8MB',
-        icon: <LessThanEightIcon />,
-    },
-    {
-        description: 'Must be valid for at least 6 months',
-        icon: <ClockIcon />,
-    },
-];
 
 const PassportDocumentUpload = () => {
     const { isDesktop } = useDevice();
@@ -37,8 +14,13 @@ const PassportDocumentUpload = () => {
         <div className='wallets-passport-document-upload' data-testid='dt_passport-document-upload'>
             <WalletText>First, enter your Passport number and the expiry date.</WalletText>
             <div className='wallets-passport-document-upload__input-group'>
-                <WalletTextField label='Passport number*' />
-                <WalletTextField label='Expiry date*' renderRightIcon={() => <Calendar />} type='date' />
+                <WalletTextField label='Passport number*' maxWidth='100%' />
+                <WalletTextField
+                    label='Expiry date*'
+                    maxWidth='100%'
+                    renderRightIcon={() => <Calendar />}
+                    type='date'
+                />
             </div>
             <Divider />
             <div className='wallets-passport-document-upload__document-section'>
@@ -51,12 +33,9 @@ const PassportDocumentUpload = () => {
                     icon={<PassportPlaceholder />}
                     maxSize={8388608}
                     minWidth={isDesktop ? '72.6rem' : '100%'}
+                    padding={isDesktop ? '2.8rem 15.2rem 3.5rem' : '2.4rem 2.5rem 0.4rem'}
                 />
-                <div className='wallets-passport-document-upload__rules'>
-                    {documentRules.map((rule, idx) => (
-                        <DocumentRuleHint key={`document-rule-hint-${idx}`} {...rule} />
-                    ))}
-                </div>
+                <DocumentRuleHints docType='passport' />
             </div>
         </div>
     );

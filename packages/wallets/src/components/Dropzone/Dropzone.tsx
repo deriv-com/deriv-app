@@ -23,6 +23,7 @@ type TProps = {
     maxSize?: NonNullable<Parameters<typeof useDropzone>[0]>['maxSize'];
     minHeight?: CSSProperties['minHeight'];
     minWidth?: CSSProperties['minWidth'];
+    padding?: CSSProperties['padding'];
     width?: CSSProperties['width'];
 };
 
@@ -36,6 +37,7 @@ const Dropzone: React.FC<TProps> = ({
     maxSize,
     minHeight,
     minWidth,
+    padding = '2rem',
     width,
 }) => {
     const [files, setFiles] = useState<
@@ -45,6 +47,7 @@ const Dropzone: React.FC<TProps> = ({
         }[]
     >([]);
     const [showHoverMessage, setShowHoverMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const { getInputProps, getRootProps, open, rootRef } = useDropzone({
         accept: fileFormats,
         maxSize,
@@ -54,7 +57,6 @@ const Dropzone: React.FC<TProps> = ({
         onDragLeave: () => setShowHoverMessage(false),
         onDrop: acceptedFiles => {
             setShowHoverMessage(false);
-
             setFiles(
                 acceptedFiles.map(file =>
                     Object.assign(file, {
@@ -62,6 +64,12 @@ const Dropzone: React.FC<TProps> = ({
                     })
                 )
             );
+        },
+        onDropAccepted() {
+            setErrorMessage(null);
+        },
+        onDropRejected(fileRejections) {
+            setErrorMessage(fileRejections?.[0]?.errors?.[0].message);
         },
     });
 
@@ -87,33 +95,47 @@ const Dropzone: React.FC<TProps> = ({
                     { 'wallets-dropzone--hover': showHoverMessage },
                     { 'wallets-dropzone--active': files.length > 0 }
                 )}
+                style={{ padding }}
             >
                 <div className='wallets-dropzone__content'>
                     {showHoverMessage && <WalletText size='sm'>{hoverMessage}</WalletText>}
                     {!showHoverMessage && !files.length && (
                         <div className='wallets-dropzone__placeholder'>
                             <div className='wallets-dropzone__placeholder-icon'>{icon}</div>
+                            <WalletText align='center' size='md'>
+                                {description}
+                            </WalletText>
                             <div className='wallets-dropzone__placeholder-text'>
                                 <WalletButton onClick={open} text={buttonText} variant='outlined' />
                             </div>
+                            {errorMessage && (
+                                <WalletText align='center' color='red' size='2xs'>
+                                    {errorMessage}
+                                </WalletText>
+                            )}
                         </div>
                     )}
                     {files.length > 0 &&
                         files.map(file => (
-                            <div
-                                className='wallets-dropzone__thumb'
-                                key={file.name}
-                                style={{ backgroundImage: `url(${file.preview})` }}
-                            >
-                                <IconButton
-                                    className='wallets-dropzone__remove-file'
-                                    icon={<CloseIcon width={12} />}
-                                    onClick={removeFile(file)}
-                                    size='sm'
-                                />
-                            </div>
+                            <React.Fragment key={file.name}>
+                                <div
+                                    className='wallets-dropzone__thumb'
+                                    style={{ backgroundImage: `url(${file.preview})` }}
+                                >
+                                    <IconButton
+                                        className='wallets-dropzone__remove-file'
+                                        icon={<CloseIcon width={12} />}
+                                        onClick={removeFile(file)}
+                                        size='sm'
+                                    />
+                                </div>
+                                {description && (
+                                    <WalletText align='center' size='md'>
+                                        {description}
+                                    </WalletText>
+                                )}
+                            </React.Fragment>
                         ))}
-                    {!showHoverMessage && description && <WalletText size='md'>{description}</WalletText>}
                 </div>
             </div>
         </div>

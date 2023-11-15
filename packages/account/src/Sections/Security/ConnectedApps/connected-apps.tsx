@@ -1,6 +1,6 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
-import { DataTable, Loading } from '@deriv/components';
+import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { WS } from '@deriv/shared';
 import ErrorComponent from 'Components/error-component';
@@ -12,8 +12,6 @@ import DataListTemplate from './data-list-template';
 import DataTableTemplate from './data-table-template';
 import ConnectedAppsRevokeModal from './connected-apps-revoke-modal';
 import './connected-apps.scss';
-
-type TSource = React.ComponentProps<typeof DataTable>['columns'];
 
 const ConnectedApps = observer(() => {
     const { ui } = useStore();
@@ -71,24 +69,9 @@ const ConnectedApps = observer(() => {
                     <div className='connected-apps__content--wrapper'>
                         <ConnectedAppsInfo />
                         {is_mobile ? (
-                            <div className='connected-apps__list--wrapper'>
-                                {connected_apps.map(connected_app => (
-                                    <DataListTemplate
-                                        key={connected_app.app_id}
-                                        data_source={connected_app}
-                                        handleToggleModal={handleToggleModal}
-                                    />
-                                ))}
-                            </div>
+                            <DataListTemplate connected_apps={connected_apps} handleToggleModal={handleToggleModal} />
                         ) : (
-                            <div className='connected-apps__tabular--wrapper'>
-                                <DataTable
-                                    className='connected-apps'
-                                    data_source={connected_apps as unknown as TSource}
-                                    columns={DataTableTemplate({ handleToggleModal })}
-                                    content_loader='span'
-                                />
-                            </div>
+                            <DataTableTemplate connected_apps={connected_apps} handleToggleModal={handleToggleModal} />
                         )}
                     </div>
                 ) : (

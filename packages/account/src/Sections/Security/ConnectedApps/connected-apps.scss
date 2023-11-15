@@ -121,37 +121,28 @@
     }
 
     // Styling for DataTable displayed in Desktop view
-    .table__body .table__row {
-        border-bottom: 1px solid var(--general-section-1);
-    }
-
     .table__head .table__row {
         font-weight: bold;
     }
 
+    .table__body .table__row {
+        border-bottom: 1px solid var(--general-section-1);
+    }
+
     &__table {
         height: 100%;
-        flex: 1;
     }
 
     &__row {
-        grid-template-columns: 16rem 20rem 8rem 10rem;
+        grid-template-columns: 16rem 20rem 8rem auto;
         padding: 0;
-        column-gap: 4.2rem;
+        column-gap: 2.4rem;
         text-align: left;
 
         .table__cell {
             min-height: 5.6rem;
             white-space: pre-wrap;
             padding: 0;
-
-            .name {
-                &__content {
-                    text-overflow: ellipsis;
-                    width: 100%;
-                    overflow: hidden;
-                }
-            }
         }
     }
 }

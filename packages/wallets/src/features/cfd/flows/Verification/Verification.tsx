@@ -7,6 +7,7 @@ import { Onfido } from '../../screens';
 import { useAuthentication, usePOA, usePOI } from '@deriv/api';
 import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
 import { THooks } from '../../../../types';
+import * as Yup from 'yup';
 
 const Idv = () => {
     return (
@@ -107,6 +108,15 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         isSuccessPOIStatus,
     ]);
 
+    const isNextDisabled = ({ formValues, currentScreenId }: TFlowProviderContext<typeof screens>) => {
+        switch (currentScreenId) {
+            case 'idvScreen':
+                return Boolean(formValues.firstName) && Boolean(formValues.lastName);
+            default:
+                return false;
+        }
+    };
+
     const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
             if (!hasAttemptedPOA) {
@@ -127,6 +137,12 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         }
     };
 
+    const validationSchema = Yup.object().shape({
+        documentNumber: Yup.string().min(1).max(69),
+        firstName: Yup.string().min(1, 'Too short').max(5).required(),
+        lastName: Yup.string().min(10).max(20),
+    });
+
     return (
         <FlowProvider
             initialScreenId={initialScreenId}
@@ -134,6 +150,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 selectedJurisdiction,
             }}
             screens={screens}
+            validationSchema={validationSchema}
         >
             {context => {
                 return (
@@ -141,6 +158,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         renderFooter={() => {
                             return (
                                 <WalletButton
+                                    disabled={isNextDisabled(context)}
                                     isLoading={isLoading}
                                     onClick={() => nextFlowHandler(context)}
                                     size='lg'

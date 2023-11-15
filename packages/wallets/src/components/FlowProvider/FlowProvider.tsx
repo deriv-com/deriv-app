@@ -10,6 +10,7 @@ import React, {
     useState,
 } from 'react';
 import { Formik, FormikErrors, FormikValues } from 'formik';
+import * as Yup from 'yup';
 
 export type TFlowProviderContext<T> = {
     WalletScreen?: ReactNode;
@@ -21,6 +22,7 @@ export type TFlowProviderContext<T> = {
         shouldValidate?: boolean | undefined
     ) => Promise<FormikErrors<unknown> | void>;
     switchScreen: (screenId: keyof T) => void;
+    errors: FormikErrors<FormikValues>;
 };
 
 type FlowChildren = ReactElement | ReactFragment | ReactPortal;
@@ -34,6 +36,7 @@ export type TFlowProviderProps<T> = {
     initialScreenId?: keyof T;
     initialValues: FormikValues;
     screens: T;
+    validationSchema: Yup.AnySchema;
 };
 
 const FlowProviderContext = createContext<TFlowProviderContext<TWalletScreens> | null>(null);
@@ -69,8 +72,8 @@ function FlowProvider<T extends TWalletScreens>({
     initialScreenId,
     initialValues,
     screens,
-}: // rules
-TFlowProviderProps<T>) {
+    validationSchema,
+}: TFlowProviderProps<T>) {
     const [currentScreenId, setCurrentScreenId] = useState<keyof T>(initialScreenId || Object.keys(screens)[0]);
     const switchScreen = (screenId: keyof T) => {
         setCurrentScreenId(screenId);
@@ -95,20 +98,22 @@ TFlowProviderProps<T>) {
     if (!currentScreenId) return null;
     return (
         // We let the logic of the onSubmit be handled by the flow component
-        <Formik initialValues={initialValues} onSubmit={() => undefined}>
-            {({ setFieldValue, values }) => {
+        <Formik initialValues={initialValues} onSubmit={() => undefined} validationSchema={validationSchema}>
+            {({ setFieldValue, values, errors }) => {
                 return (
                     <FlowProvider
                         value={{
                             ...context,
                             formValues: values,
                             setFormValues: setFieldValue,
+                            errors,
                         }}
                     >
                         {children({
                             ...context,
                             formValues: values,
                             setFormValues: setFieldValue,
+                            errors,
                         })}
                     </FlowProvider>
                 );

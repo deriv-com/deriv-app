@@ -4,6 +4,8 @@ import './WalletTextField.scss';
 
 export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, MessageContainerProps {
     defaultValue?: string;
+    errorMessage?: string;
+    isInvalid?: boolean;
     label?: string;
     maxWidth?: CSSProperties['maxWidth'];
     renderRightIcon?: () => React.ReactNode;
@@ -14,6 +16,7 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
     (
         {
             defaultValue = '',
+            errorMessage = '',
             helperMessage,
             label,
             maxLength,
@@ -22,6 +25,7 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
             onChange,
             renderRightIcon,
             showMessage = false,
+            isInvalid = false,
             ...rest
         },
         ref
@@ -57,8 +61,16 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
                     )}
                 </div>
                 <div className='wallets-textfield__message-container'>
-                    {showMessage && (
+                    {!isInvalid && showMessage && (
                         <MessageContainer helperMessage={helperMessage} inputValue={value} maxLength={maxLength} />
+                    )}
+                    {isInvalid && errorMessage && (
+                        <MessageContainer
+                            isError
+                            helperMessage={errorMessage}
+                            inputValue={value}
+                            maxLength={maxLength}
+                        />
                     )}
                 </div>
             </div>

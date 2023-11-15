@@ -10,8 +10,8 @@ type TWithdrawalCryptoProps = {
 
 const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ verificationCode }) => {
     return (
-        <div className='wallets-withdrawal-crypto-container'>
-            <div className='wallets-withdrawal-crypto'>
+        <div className='wallets-withdrawal-crypto'>
+            <div className='wallets-withdrawal-crypto__content'>
                 <WalletText weight='bold'>Withdraw Bitcoin (BTC) to your wallet</WalletText>
                 <WithdrawalDisclaimer />
                 <WithdrawalCryptoForm verificationCode={verificationCode} />

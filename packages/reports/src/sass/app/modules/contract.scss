@@ -64,8 +64,19 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                     -webkit-line-clamp: 2;
                 }
                 /* iPhone SE screen height fixes due to UI space restrictions */
-                @media only screen and (max-height: 480px) {
-                    font-size: 0.8rem !important;
+                @media only screen and (max-height: 667px) {
+                    &--collapsed {
+                        display: block;
+                        overflow: hidden;
+                        font-size: 1rem;
+                        line-height: 1.5rem;
+                        height: 2.8rem;
+
+                        &:after {
+                            content: '...';
+                            white-space: pre;
+                        }
+                    }
                 }
             }
         }
@@ -180,5 +191,18 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
     }
     @include mobile {
         left: 0;
+    }
+}
+
+.dc-modal__container_info-box-longcode--modal {
+    .dc-modal {
+        &-body {
+            padding: 0.8rem 1.6rem;
+        }
+        &-footer {
+            .dc-btn {
+                min-width: 5.2rem;
+            }
+        }
     }
 }

@@ -1,12 +1,4 @@
-import React, {
-    CSSProperties,
-    DetailedHTMLProps,
-    InputHTMLAttributes,
-    ReactNode,
-    RefObject,
-    useCallback,
-    useState,
-} from 'react';
+import React, { DetailedHTMLProps, InputHTMLAttributes, ReactNode, RefObject, useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
 import CloseIcon from '../../public/images/close-icon.svg';
@@ -17,28 +9,18 @@ type TProps = {
     buttonText?: ReactNode;
     description?: ReactNode;
     fileFormats?: NonNullable<Parameters<typeof useDropzone>[0]>['accept'];
-    height?: CSSProperties['height'];
     hoverMessage?: ReactNode;
     icon: ReactNode;
     maxSize?: NonNullable<Parameters<typeof useDropzone>[0]>['maxSize'];
-    minHeight?: CSSProperties['minHeight'];
-    minWidth?: CSSProperties['minWidth'];
-    padding?: CSSProperties['padding'];
-    width?: CSSProperties['width'];
 };
 
 const Dropzone: React.FC<TProps> = ({
     buttonText = 'Upload',
     description,
     fileFormats,
-    height,
     hoverMessage = 'Drop file here',
     icon,
     maxSize,
-    minHeight,
-    minWidth,
-    padding = '2rem',
-    width,
 }) => {
     const [files, setFiles] = useState<
         {
@@ -81,11 +63,7 @@ const Dropzone: React.FC<TProps> = ({
     );
 
     return (
-        <div
-            {...getRootProps()}
-            ref={rootRef as RefObject<HTMLDivElement>}
-            style={{ height, minHeight, minWidth, width }}
-        >
+        <div {...getRootProps()} className='wallets-dropzone__container' ref={rootRef as RefObject<HTMLDivElement>}>
             <input
                 {...(getInputProps() as DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>)}
             />
@@ -95,7 +73,6 @@ const Dropzone: React.FC<TProps> = ({
                     { 'wallets-dropzone--hover': showHoverMessage },
                     { 'wallets-dropzone--active': files.length > 0 }
                 )}
-                style={{ padding }}
             >
                 <div className='wallets-dropzone__content'>
                     {showHoverMessage && <WalletText size='sm'>{hoverMessage}</WalletText>}

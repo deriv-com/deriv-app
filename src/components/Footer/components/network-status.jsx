@@ -52,6 +52,7 @@ const NetworkStatus = () => {
             if (api_base.api.connection.readyState !== 1) {
                 setStatus(translate('connecting'));
             } else {
+                api_base.api_chart?.send({ ping: '1' });
                 api_base.api
                     .send({ ping: '1' })
                     .then(() => setStatus(translate('online')))

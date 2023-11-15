@@ -150,7 +150,7 @@ export default class TicksService {
         }
         Promise.all(
             subscription.map(id =>
-                doUntilDone(() => (is_chart ? api_base.api_chart.forget(id) : api_base.api.forget(id)))
+                doUntilDone(() => (is_chart ? api_base.api_chart?.forget(id) : api_base.api.forget(id)))
             )
         );
         this.subscriptions = new Map();

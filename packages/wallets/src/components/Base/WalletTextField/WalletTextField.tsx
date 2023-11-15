@@ -27,9 +27,7 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
         },
         ref
     ) => {
-        const [value, setValue] = useState<WalletTextFieldProps['defaultValue'] | WalletTextFieldProps['value']>(
-            defaultValue
-        );
+        const [value, setValue] = useState(defaultValue);
 
         const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target.value;

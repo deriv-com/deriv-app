@@ -312,6 +312,7 @@ import './common/ic-cat-all.svg';
 import './common/ic-cat-multiplier.svg';
 import './common/ic-cat-options.svg';
 import './common/ic-cat-turbos.svg';
+import './common/ic-chart-launch.svg';
 import './common/ic-chart.svg';
 import './common/ic-charts-tab-dbot.svg';
 import './common/ic-chat.svg';

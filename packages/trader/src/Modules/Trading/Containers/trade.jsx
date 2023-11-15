@@ -60,7 +60,7 @@ const Trade = observer(() => {
         should_show_multipliers_onboarding,
         is_dark_mode_on: is_dark_theme,
     } = ui;
-    const { is_eu } = client;
+    const { is_eu, is_logged_in } = client;
     const { network_status } = common;
 
     const [digits, setDigits] = React.useState([]);
@@ -70,6 +70,8 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
     const [swipe_index, setSwipeIndex] = React.useState(0);
+    const [openLaunchModal, setOpenLaunchModal] = React.useState(true);
+
     const charts_ref = React.useRef();
 
     const open_market = React.useMemo(() => {
@@ -129,6 +131,8 @@ const Trade = observer(() => {
         setSwipeIndex(index);
     };
 
+    const is_already_shown = JSON.parse(sessionStorage.getItem('launchModalShown') ?? 'false');
+
     const onTryOtherMarkets = async () => {
         if (!is_synthetics_available) {
             setTryOpenMarkets(true);
@@ -158,86 +162,103 @@ const Trade = observer(() => {
         return '259px';
     }, [is_turbos, is_accumulator]);
 
-    return (
-        <div
-            id='trade_container'
-            className={classNames('trade-container', {
-                [`trade-container--${is_accumulator ? 'accumulators' : 'turbos'}`]: is_accumulator || is_turbos,
-            })}
-        >
-            <DesktopWrapper>
-                <PositionsDrawer />
-            </DesktopWrapper>
-            {/* Div100vhContainer is workaround for browsers on devices
-                    with toolbars covering screen height,
-                    using css vh is not returning correct screen height */}
-            <Div100vhContainer
-                id='chart_container'
-                className='chart-container'
-                is_disabled={isDesktop()}
-                height_offset={chart_height_offset}
-            >
-                <NotificationMessages />
-                <React.Suspense
-                    fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || is_chart_loading} />}
-                >
-                    <DesktopWrapper>
-                        <div className={classNames('chart-container__wrapper', { 'vanilla-trade-chart': is_vanilla })}>
-                            <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                            <ChartTrade
-                                topWidgets={topWidgets}
-                                charts_ref={charts_ref}
-                                is_accumulator={is_accumulator}
-                            />
-                        </div>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                        <SwipeableWrapper
-                            onChange={onChangeSwipeableIndex}
-                            is_disabled={
-                                !show_digits_stats ||
-                                !is_trade_enabled ||
-                                form_components.length === 0 ||
-                                is_chart_loading ||
-                                should_show_active_symbols_loading
-                            }
-                            is_swipe_disabled={swipe_index === 1}
-                            className={classNames({ 'vanilla-trade-chart': is_vanilla })}
-                        >
-                            {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
-                            <ChartTrade
-                                topWidgets={topWidgets}
-                                charts_ref={charts_ref}
-                                bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
-                                is_accumulator={is_accumulator}
-                            />
-                        </SwipeableWrapper>
-                    </MobileWrapper>
-                </React.Suspense>
+    const handleLaunchModal = () => {
+        setOpenLaunchModal(!openLaunchModal);
+        sessionStorage.setItem('launchModalShown', JSON.stringify(true));
+    };
 
-                {/* Remove Test component for debugging below for production release */}
-                <Test />
-            </Div100vhContainer>
-            <div className={form_wrapper_class}>
-                {is_market_closed && !is_market_unavailable_visible && (
-                    <MarketIsClosedOverlay
-                        is_eu={is_eu}
-                        is_synthetics_trading_market_available={is_synthetics_trading_market_available}
-                        {...(is_eu && category)}
-                        onClick={onTryOtherMarkets}
-                        onMarketOpen={prepareTradeStore}
-                        symbol={symbol}
+    return (
+        <>
+            {openLaunchModal && is_logged_in && !is_already_shown && (
+                <LaunchModal handleChange={handleLaunchModal} open={openLaunchModal} />
+            )}
+
+            <div
+                id='trade_container'
+                className={classNames('trade-container', {
+                    [`trade-container--${is_accumulator ? 'accumulators' : 'turbos'}`]: is_accumulator || is_turbos,
+                })}
+            >
+                <DesktopWrapper>
+                    <PositionsDrawer />
+                </DesktopWrapper>
+                {/* Div100vhContainer is workaround for browsers on devices
+                with toolbars covering screen height,
+                using css vh is not returning correct screen height */}
+                <Div100vhContainer
+                    id='chart_container'
+                    className='chart-container'
+                    is_disabled={isDesktop()}
+                    height_offset={chart_height_offset}
+                >
+                    <NotificationMessages />
+                    <React.Suspense
+                        fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || is_chart_loading} />}
+                    >
+                        <DesktopWrapper>
+                            <div
+                                className={classNames('chart-container__wrapper', {
+                                    'vanilla-trade-chart': is_vanilla,
+                                })}
+                            >
+                                <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
+                                <ChartTrade
+                                    topWidgets={topWidgets}
+                                    charts_ref={charts_ref}
+                                    is_accumulator={is_accumulator}
+                                />
+                            </div>
+                        </DesktopWrapper>
+                        {!(openLaunchModal && is_logged_in && !is_already_shown) && (
+                            <MobileWrapper>
+                                <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
+                                <SwipeableWrapper
+                                    onChange={onChangeSwipeableIndex}
+                                    is_disabled={
+                                        !show_digits_stats ||
+                                        !is_trade_enabled ||
+                                        form_components.length === 0 ||
+                                        is_chart_loading ||
+                                        should_show_active_symbols_loading
+                                    }
+                                    is_swipe_disabled={swipe_index === 1}
+                                    className={classNames({ 'vanilla-trade-chart': is_vanilla })}
+                                >
+                                    {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
+                                    <ChartTrade
+                                        topWidgets={topWidgets}
+                                        charts_ref={charts_ref}
+                                        bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
+                                        is_accumulator={is_accumulator}
+                                    />
+                                </SwipeableWrapper>
+                            </MobileWrapper>
+                        )}
+                    </React.Suspense>
+
+                    {/* Remove Test component for debugging below for production release */}
+                    <Test />
+                </Div100vhContainer>
+                <div className={form_wrapper_class}>
+                    {is_market_closed && !is_market_unavailable_visible && (
+                        <MarketIsClosedOverlay
+                            is_eu={is_eu}
+                            is_synthetics_trading_market_available={is_synthetics_trading_market_available}
+                            {...(is_eu && category)}
+                            onClick={onTryOtherMarkets}
+                            onMarketOpen={prepareTradeStore}
+                            symbol={symbol}
+                        />
+                    )}
+                    <FormLayout
+                        is_market_closed={is_market_closed}
+                        is_trade_enabled={
+                            is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
+                        }
                     />
-                )}
-                <FormLayout
-                    is_market_closed={is_market_closed}
-                    is_trade_enabled={
-                        is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
-                    }
-                />
+                </div>
             </div>
-        </div>
+        </>
     );
 });
 
@@ -247,6 +268,7 @@ export default Trade;
 
 /* eslint-disable */
 import SmartChartSwitcher from './smart-chart-switcher.jsx';
+import LaunchModal from 'Modules/SmartChartBeta/Components/LaunchModal/launch-modal.tsx';
 
 const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChartSwitcher innerRef={ref} {...props} />);
 
@@ -350,80 +372,89 @@ const ChartTrade = observer(props => {
     if (!symbol || active_symbols.length === 0) return null;
 
     return (
-        <SmartChartWithRef
-            ref={charts_ref}
-            barriers={barriers}
-            contracts_array={markers_array}
-            bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
-            crosshair={isMobile() ? 0 : undefined}
-            crosshairTooltipLeftAllow={560}
-            showLastDigitStats={isDesktop() ? show_digits_stats : false}
-            chartControlsWidgets={null}
-            chartStatusListener={v => setChartStatus(!v)}
-            chartType={chart_type}
-            initialData={{
-                activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
-            }}
-            chartData={{
-                activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
-            }}
-            feedCall={{
-                activeSymbols: false,
-            }}
-            enabledNavigationWidget={isDesktop()}
-            enabledChartFooter={false}
-            id='trade'
-            isMobile={isMobile()}
-            maxTick={isMobile() ? max_ticks : undefined}
-            granularity={show_digits_stats || is_accumulator ? 0 : granularity}
-            requestAPI={wsSendRequest}
-            requestForget={wsForget}
-            requestForgetStream={wsForgetStream}
-            requestSubscribe={wsSubscribe}
-            settings={settings}
-            should_show_eu_content={should_show_eu_content}
-            allowTickChartTypeOnly={show_digits_stats || is_accumulator}
-            stateChangeListener={chartStateChange}
-            symbol={symbol}
-            topWidgets={is_trade_enabled ? topWidgets : null}
-            isConnectionOpened={is_socket_opened}
-            clearChart={false}
-            toolbarWidget={() => {
-                if (is_beta_chart) {
-                    return (
-                        <ToolbarWidgetsBeta updateChartType={updateChartType} updateGranularity={updateGranularity} />
-                    );
-                } else
-                    return <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />;
-            }}
-            importedLayout={chart_layout}
-            onExportLayout={exportLayout}
-            shouldFetchTradingTimes={!end_epoch}
-            hasAlternativeSource={has_alternative_source}
-            getMarketsOrder={getMarketsOrder}
-            should_zoom_out_on_yaxis={is_accumulator}
-            yAxisMargin={{
-                top: isMobile() ? 76 : 106,
-            }}
-            isLive={true}
-            leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
-            is_beta={is_beta_chart}
-        >
-            {!is_beta_chart && <ChartMarkers />}
-            {is_accumulator && (
-                <AccumulatorsChartElements
-                    all_positions={all_positions}
-                    current_spot={current_spot}
-                    current_spot_time={current_spot_time}
-                    has_crossed_accu_barriers={has_crossed_accu_barriers}
-                    should_show_profit_text={
-                        !!accumulator_contract_barriers_data.accumulators_high_barrier &&
-                        getDecimalPlaces(currency) <= 2
-                    }
-                    symbol={symbol}
-                    is_beta_chart={is_beta_chart}
-                />
-            )}
-        </SmartChartWithRef>
+        <>
+            <SmartChartWithRef
+                ref={charts_ref}
+                barriers={barriers}
+                contracts_array={markers_array}
+                bottomWidgets={
+                    (is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets
+                }
+                crosshair={isMobile() ? 0 : undefined}
+                crosshairTooltipLeftAllow={560}
+                showLastDigitStats={isDesktop() ? show_digits_stats : false}
+                chartControlsWidgets={null}
+                chartStatusListener={v => setChartStatus(!v)}
+                chartType={chart_type}
+                initialData={{
+                    activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
+                }}
+                chartData={{
+                    activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
+                }}
+                feedCall={{
+                    activeSymbols: false,
+                }}
+                enabledNavigationWidget={isDesktop()}
+                enabledChartFooter={false}
+                id='trade'
+                isMobile={isMobile()}
+                maxTick={isMobile() ? max_ticks : undefined}
+                granularity={show_digits_stats || is_accumulator ? 0 : granularity}
+                requestAPI={wsSendRequest}
+                requestForget={wsForget}
+                requestForgetStream={wsForgetStream}
+                requestSubscribe={wsSubscribe}
+                settings={settings}
+                should_show_eu_content={should_show_eu_content}
+                allowTickChartTypeOnly={show_digits_stats || is_accumulator}
+                stateChangeListener={chartStateChange}
+                symbol={symbol}
+                topWidgets={is_trade_enabled ? topWidgets : null}
+                isConnectionOpened={is_socket_opened}
+                clearChart={false}
+                toolbarWidget={() => {
+                    if (is_beta_chart) {
+                        return (
+                            <ToolbarWidgetsBeta
+                                updateChartType={updateChartType}
+                                updateGranularity={updateGranularity}
+                            />
+                        );
+                    } else
+                        return (
+                            <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                        );
+                }}
+                importedLayout={chart_layout}
+                onExportLayout={exportLayout}
+                shouldFetchTradingTimes={!end_epoch}
+                hasAlternativeSource={has_alternative_source}
+                getMarketsOrder={getMarketsOrder}
+                should_zoom_out_on_yaxis={is_accumulator}
+                yAxisMargin={{
+                    top: isMobile() ? 76 : 106,
+                }}
+                isLive={true}
+                leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
+                is_beta={is_beta_chart}
+            >
+                {!is_beta_chart && <ChartMarkers />}
+                {is_accumulator && (
+                    <AccumulatorsChartElements
+                        all_positions={all_positions}
+                        current_spot={current_spot}
+                        current_spot_time={current_spot_time}
+                        has_crossed_accu_barriers={has_crossed_accu_barriers}
+                        should_show_profit_text={
+                            !!accumulator_contract_barriers_data.accumulators_high_barrier &&
+                            getDecimalPlaces(currency) <= 2
+                        }
+                        symbol={symbol}
+                        is_beta_chart={is_beta_chart}
+                    />
+                )}
+            </SmartChartWithRef>
+        </>
     );
 });

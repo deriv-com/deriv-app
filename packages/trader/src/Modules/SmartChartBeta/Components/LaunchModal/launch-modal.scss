@@ -1,71 +1,48 @@
-// Common styles for web modal and mobile page overlay
-.launch-modal-styles {
+// For Web Modal
+.dc-modal__container_modal_root {
     text-align: center;
-    .modal-content {
-        @include mobile {
-            height: 100%;
-            justify-content: center;
-            display: flex;
-            flex-direction: column;
-        }
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 3rem;
-        }
-
-        p {
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 24px;
-            text-align: center;
-            color: var(--text-general);
-        }
-        img {
-            height: 176px;
-            @include mobile {
-                height: 180px;
-                width: 200px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
-    }
-
-    .dc-modal-footer {
-        border-top: 2px solid var(--general-section-5);
-        padding: 1.6rem 2.4rem;
-        @include mobile {
-            margin-bottom: 38px;
-            button {
-                height: 40px;
-                width: 100%;
-            }
-        }
-    }
-}
-
-// Web modal specific styles
-.dc-modal__container_launch_modal_root {
-    @extend .launch-modal-styles;
-    min-width: 432px !important;
-    .dc-modal-header {
-        border-bottom: 2px solid var(--general-section-5);
-        padding: 1.2rem 0;
-    }
     .dc-modal-body {
         justify-content: center;
         display: flex;
         height: 100%;
         flex-direction: column;
+        .chart-image {
+            margin-bottom: 2.4rem;
+            margin-right: 4rem;
+        }
+    }
+
+    .dc-modal-footer {
+        border-top: 0.2rem solid var(--general-section-5);
+        padding: 1.6rem 2.4rem;
     }
 }
 
-// Mobile page Overlay styles
-.dc-page-overlay__content {
-    @extend .launch-modal-styles;
-    min-width: 100%;
+// For Mobile
+.launch-page-mobile {
+    text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    height: 100%;
+
+    .modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .chart-image {
+            margin-right: 5rem;
+            margin-bottom: 2.4rem;
+        }
+    }
+
+    .dc-modal-footer {
+        border-top: 0.2rem solid var(--general-section-5);
+        padding: 1.6rem 2.4rem;
+        .continue-button {
+            height: 4rem;
+            width: 100%;
+        }
+    }
 }

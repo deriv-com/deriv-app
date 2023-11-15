@@ -13,23 +13,30 @@ import { useStores } from 'Stores/index';
 
 const useP2PAdvertiserAdverts = () => {
     const { advertiser_page_store, buy_sell_store, general_store } = useStores();
-    const { advertiser_details_id, counterparty_type } = advertiser_page_store;
-    const { counterparty_advertiser_id, is_advertiser_info_subscribed, list_item_limit } = general_store;
+    const { advertiser_details_id, counterparty_type, is_counterparty_advertiser_blocked } = advertiser_page_store;
+    const { advertiser_id, counterparty_advertiser_id, is_advertiser_info_subscribed, list_item_limit } = general_store;
     const { selected_local_currency } = buy_sell_store;
+    const is_my_advert = advertiser_details_id === advertiser_id;
+    const is_advertiser_blocked = !!is_counterparty_advertiser_blocked && !is_my_advert;
 
     const {
         data: adverts = [],
         loadMoreAdverts: loadMoreAdvertiserAdverts,
         ...rest
-    } = useP2PAdvertList({
-        counterparty_type,
-        limit: list_item_limit,
-        advertiser_id:
-            counterparty_advertiser_id && is_advertiser_info_subscribed
-                ? counterparty_advertiser_id
-                : advertiser_details_id,
-        ...(selected_local_currency ? { local_currency: selected_local_currency } : {}),
-    });
+    } = useP2PAdvertList(
+        {
+            counterparty_type,
+            limit: list_item_limit,
+            advertiser_id:
+                counterparty_advertiser_id && is_advertiser_info_subscribed
+                    ? counterparty_advertiser_id
+                    : advertiser_details_id,
+            ...(selected_local_currency ? { local_currency: selected_local_currency } : {}),
+        },
+        {
+            enabled: !is_advertiser_blocked, // Only fetch adverts if the advertiser is not blocked. This stops the page shift on window refocus when the overlay is shown and the buy/sell table gets a loader due to isFetching.
+        }
+    );
     const has_more_adverts_to_load = adverts.length >= list_item_limit;
 
     return {

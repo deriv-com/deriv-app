@@ -6,7 +6,8 @@ import useExchangeRate from './useExchangeRate';
  * This custom hook returns available adverts for use with 'p2p_order_create' by calling 'p2p_advert_list' endpoint
  */
 const useP2PAdvertList = (
-    payload?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_advert_list'>>[1]>['payload']
+    payload?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_advert_list'>>[1]>['payload'],
+    config?: { enabled?: boolean }
 ) => {
     const { getRate } = useExchangeRate();
 
@@ -18,6 +19,7 @@ const useP2PAdvertList = (
 
                 return pages.length;
             },
+            enabled: config?.enabled === undefined || config.enabled,
         },
     });
 

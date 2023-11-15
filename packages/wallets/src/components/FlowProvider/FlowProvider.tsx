@@ -69,7 +69,8 @@ function FlowProvider<T extends TWalletScreens>({
     initialScreenId,
     initialValues,
     screens,
-}: TFlowProviderProps<T>) {
+}: // rules
+TFlowProviderProps<T>) {
     const [currentScreenId, setCurrentScreenId] = useState<keyof T>(initialScreenId || Object.keys(screens)[0]);
     const switchScreen = (screenId: keyof T) => {
         setCurrentScreenId(screenId);

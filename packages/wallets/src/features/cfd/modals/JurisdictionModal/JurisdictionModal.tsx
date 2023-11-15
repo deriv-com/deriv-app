@@ -9,6 +9,7 @@ import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/Dynam
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
 import './JurisdictionModal.scss';
+import { Verification } from '../../flows/Verification';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
@@ -36,7 +37,13 @@ const JurisdictionModal = () => {
               <WalletButton
                   disabled={!selectedJurisdiction || !isCheckBoxChecked}
                   isFullWidth={isMobile}
-                  onClick={() => show(<MT5PasswordModal marketType={marketType} platform={platform} />)}
+                  onClick={() => {
+                      if (selectedJurisdiction !== 'svg') {
+                          show(<Verification selectedJurisdiction={selectedJurisdiction} />);
+                      } else {
+                          show(<MT5PasswordModal marketType={marketType} platform={platform} />);
+                      }
+                  }}
                   text='Next'
               />
           );

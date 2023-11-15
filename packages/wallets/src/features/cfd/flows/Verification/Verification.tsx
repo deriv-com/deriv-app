@@ -5,6 +5,7 @@ import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { Loader } from '../../../../components/Loader';
 import { Onfido } from '../../screens';
 import { useAuthentication, usePOA, usePOI } from '@deriv/api';
+import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
 import { THooks } from '../../../../types';
 
 const Idv = () => {
@@ -53,7 +54,7 @@ const Password = () => {
 
 // TODO: Replace these mock components with the screens
 const screens = {
-    idvScreen: <Idv />,
+    idvScreen: <IDVDocumentUpload />,
     loadingScreen: <Loading />,
     manualScreen: <Manual />,
     onfidoScreen: <Onfido />,
@@ -80,7 +81,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const needPersonalDetails = true;
 
     const initialScreenId: keyof typeof screens = useMemo(() => {
-        const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
+        // const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
+        const service = 'idv';
 
         if (poiStatus?.services) {
             const serviceStatus = poiStatus.services?.[service];

@@ -5,6 +5,7 @@ import React, {
     ReactNode,
     ReactPortal,
     useContext,
+    useEffect,
     useMemo,
     useState,
 } from 'react';
@@ -19,7 +20,6 @@ export type TFlowProviderContext<T> = {
         value: unknown,
         shouldValidate?: boolean | undefined
     ) => Promise<FormikErrors<unknown> | void>;
-    switchNextScreen: () => void;
     switchScreen: (screenId: keyof T) => void;
 };
 
@@ -31,9 +31,9 @@ export type TWalletScreens = {
 
 export type TFlowProviderProps<T> = {
     children: (context: TFlowProviderContext<T>) => FlowChildren;
+    initialScreenId?: keyof T;
     initialValues: FormikValues;
     screens: T;
-    screensOrder: (keyof T)[];
 };
 
 const FlowProviderContext = createContext<TFlowProviderContext<TWalletScreens> | null>(null);
@@ -66,39 +66,32 @@ export const useFlow = () => {
  */
 function FlowProvider<T extends TWalletScreens>({
     children,
+    initialScreenId,
     initialValues,
     screens,
-    screensOrder,
 }: TFlowProviderProps<T>) {
-    const [currentScreenId, setCurrentScreenId] = useState<keyof T>(screensOrder[0]);
+    const [currentScreenId, setCurrentScreenId] = useState<keyof T>(initialScreenId || Object.keys(screens)[0]);
     const switchScreen = (screenId: keyof T) => {
         setCurrentScreenId(screenId);
     };
 
     const FlowProvider = FlowProviderContext.Provider as React.Provider<TFlowProviderContext<T> | null>;
-    const currentScreenIndex = useMemo(() => screensOrder.indexOf(currentScreenId), [currentScreenId, screensOrder]);
-    const isFinalScreen = currentScreenIndex >= screensOrder.length - 1;
-
-    const switchNextScreen = () => {
-        if (!isFinalScreen) {
-            const nextScreenId = screensOrder[currentScreenIndex + 1];
-            switchScreen(nextScreenId);
-        }
-    };
 
     const currentScreen = useMemo(() => {
         return screens[currentScreenId];
     }, [currentScreenId, screens]);
 
-    if (!currentScreenId) return null;
-
     const context = {
         currentScreenId,
-        switchNextScreen,
         switchScreen,
         WalletScreen: currentScreen,
     };
 
+    useEffect(() => {
+        if (initialScreenId) setCurrentScreenId(initialScreenId);
+    }, [initialScreenId]);
+
+    if (!currentScreenId) return null;
     return (
         // We let the logic of the onSubmit be handled by the flow component
         <Formik initialValues={initialValues} onSubmit={() => undefined}>

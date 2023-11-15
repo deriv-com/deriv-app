@@ -66,21 +66,11 @@ const DurationWrapper = observer(() => {
         return duration_list.some(du => du.value === duration_type);
     };
 
-    const setDurationUnit = () => {
-        if (duration_units_list?.length > 0) {
-            const new_duration_unit = duration_units_list[0].value;
-            const new_duration_value = getDurationFromUnit(new_duration_unit);
-
-            onChangeUiStore({
-                name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`,
-                value: new_duration_unit,
-            });
-            onChangeMultiple({
-                duration_unit: new_duration_unit,
-                duration: +new_duration_value,
-            });
-        }
-    };
+    const current_duration_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
+    const has_missing_duration_unit = !hasDurationUnit(current_duration_unit, is_advanced_duration);
+    const simple_is_missing_duration_unit =
+        !is_advanced_duration && simple_duration_unit === 'd' && duration_units_list.length === 4;
+    const [min_value, max_value] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
 
     const handleEndTime = () => {
         const symbol_has_endtime = duration_units_list.length > 1 || is_advanced_duration;
@@ -117,34 +107,37 @@ const DurationWrapper = observer(() => {
     );
 
     React.useEffect(() => {
-        if (duration_unit === 'd') {
-            onChangeUiStore({
-                name: 'is_advanced_duration',
-                value: true,
-            });
-        }
-    }, [duration_unit, onChangeUiStore]);
-
-    React.useEffect(() => {
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
+        let unit = duration_unit;
+        let duration_value = duration;
 
-        if (duration_unit !== current_unit) {
-            onChangeUiStore({
-                name: `${is_advanced_duration ? 'advanced' : 'simple'}_duration_unit`,
-                value: duration_unit,
-            });
+        if (duration_units_list?.length > 0 && (has_missing_duration_unit || simple_is_missing_duration_unit)) {
+            unit = duration_units_list[0].value;
+            duration_value = getDurationFromUnit(unit);
+            onChangeMultiple({ duration_unit: unit, duration: +duration_value });
         }
 
-        if (+duration !== +current_duration) {
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: duration });
+        if (unit !== current_unit) {
+            onChangeUiStore({ name: 'advanced_duration_unit', value: unit });
+            onChangeUiStore({ name: 'simple_duration_unit', value: unit });
+        }
+
+        if (+duration_value !== +current_duration) {
+            onChangeUiStore({ name: `duration_${unit}`, value: duration_value });
         }
 
         if (expiry_type === 'endtime') handleEndTime();
 
         assertDurationIsWithinBoundary(current_duration);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [has_missing_duration_unit, simple_is_missing_duration_unit]);
+
+    React.useEffect(() => {
+        if (duration_unit === 'd') {
+            onChangeUiStore({ name: 'is_advanced_duration', value: true });
+        }
+    }, [duration_unit, onChangeUiStore]);
 
     React.useEffect(() => {
         if (is_advanced_duration && expiry_type !== advanced_expiry_type) {
@@ -177,16 +170,6 @@ const DurationWrapper = observer(() => {
         onChangeUiStore,
         getDurationFromUnit,
     ]);
-
-    const current_duration_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
-    const has_missing_duration_unit = !hasDurationUnit(current_duration_unit, is_advanced_duration);
-    const simple_is_missing_duration_unit =
-        !is_advanced_duration && simple_duration_unit === 'd' && duration_units_list.length === 4;
-    const [min_value, max_value] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
-
-    if (has_missing_duration_unit || simple_is_missing_duration_unit) {
-        setDurationUnit();
-    }
 
     return (
         <Duration hasDurationUnit={hasDurationUnit} max_value={max_value} min_value={min_value} {...duration_props} />

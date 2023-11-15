@@ -1,7 +1,6 @@
 .wallets-textfield {
     min-width: 12rem;
     width: 100%;
-    max-width: 33rem;
     position: relative;
 
     &__box {
@@ -20,6 +19,10 @@
     }
 
     &__box:has(&__field:focus) {
+        border: 1px solid var(--brand-blue, #85acb0);
+    }
+
+    &__box:has(&__field:valid) {
         border: 1px solid var(--brand-blue, #85acb0);
     }
 
@@ -86,6 +89,7 @@
 
         &--msg {
             float: left;
+            text-align: left;
         }
     }
 }

@@ -154,6 +154,20 @@ const MAX_STAKE: TConfigItem = {
     attached: true,
 };
 
+const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
+    type: 'label',
+    name: 'label_last_digit_prediction',
+    label: localize('Last Digit Prediction'),
+    description: localize('Last Digit Prediction'),
+    hide: ['tradetype', 'contract_type'],
+};
+
+const LAST_DIGIT_PREDICTION: TConfigItem = {
+    type: 'number',
+    name: 'last_digit_prediction',
+    validation: ['number', 'required', 'min', 'max', 'integer'],
+};
+
 export const STRATEGIES: TStrategies = {
     MARTINGALE: {
         name: 'martingale_max-stake',
@@ -163,7 +177,18 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_SIZE,
+                SIZE,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
+            ],
         ],
     },
     D_ALEMBERT: {
@@ -174,7 +199,18 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_DALEMBERT_UNIT, UNIT, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_DALEMBERT_UNIT,
+                UNIT,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
+            ],
         ],
     },
     OSCARS_GRIND: {
@@ -185,7 +221,16 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
+            ],
         ],
     },
 };

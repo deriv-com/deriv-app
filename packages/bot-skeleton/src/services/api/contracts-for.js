@@ -454,7 +454,8 @@ export default class ContractsFor {
         for (let j = 0; j < trade_types.length; j++) {
             const trade_type = trade_types[j];
             const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
-            const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction =
+                config.PREDICTION_TRADE_TYPES.includes(trade_type.value) && trade_type.value === 'highlowticks';
 
             if (has_barrier || has_prediction) {
                 hidden_categories++;
@@ -468,7 +469,8 @@ export default class ContractsFor {
         const trade_type_options = [];
         trade_types.forEach(trade_type => {
             const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
-            const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction =
+                config.PREDICTION_TRADE_TYPES.includes(trade_type.value) && trade_type.value === 'highlowticks';
             const is_muliplier = ['multiplier'].includes(trade_type.value);
 
             // TODO: Render extra inputs for barrier + prediction and multiplier types.
@@ -522,6 +524,7 @@ export default class ContractsFor {
         }
         return trade_type_options;
     }
+    s;
 
     async getTradeTypeCategories(market, submarket, symbol) {
         const { TRADE_TYPE_CATEGORY_NAMES, NOT_AVAILABLE_DROPDOWN_OPTIONS } = config;

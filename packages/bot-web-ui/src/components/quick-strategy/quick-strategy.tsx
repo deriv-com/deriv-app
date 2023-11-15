@@ -23,6 +23,10 @@ const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') =>
             MIN: localize('Minimum duration: {{ value }}', { value }),
             MAX: localize('Maximum duration: {{ value }}', { value }),
         },
+        LAST_DIGIT_PREDICTION: {
+            MIN: localize('Minimum duration: {{ value }}', { value }),
+            MAX: localize('Maximum duration: {{ value }}', { value }),
+        },
         DEFAULT: {
             MIN: localize('The value must be equal or greater than {{ value }}', { value }),
             MAX: localize('The value must be equal or less than {{ value }}', { value }),
@@ -50,6 +54,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         action: 'RUN',
         max_stake: 10,
         boolean_max_stake: false,
+        last_digit_prediction: 0,
     };
 
     React.useEffect(() => {
@@ -97,6 +102,13 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                             }
                             min_error = getErrorMessage('MIN', min);
                         }
+                        if (field.name === 'last_digit_prediction') {
+                            max = 9;
+                            if (isNaN(min)) {
+                                min = +initial_value.last_digit_prediction;
+                            }
+                            max_error = getErrorMessage('MAX', max);
+                        }
                         field.validation.forEach(validation => {
                             if (typeof validation === 'string') {
                                 switch (validation) {
@@ -114,6 +126,9 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                                         break;
                                     case 'floor':
                                         schema = schema.round('floor');
+                                        break;
+                                    case 'integer':
+                                        schema = schema.integer();
                                         break;
                                     default:
                                         break;

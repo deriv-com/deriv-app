@@ -56,6 +56,18 @@ const QuickStrategyForm = observer(() => {
                         ) {
                             return null;
                         }
+
+                        const excluded_fields: Array<string> = ['last_digit_prediction', 'label_last_digit_prediction'];
+                        const excluded_trade_types: Array<string> = ['matchesdiffers', 'overunder'];
+
+                        if (
+                            excluded_fields.includes(field.name as string) &&
+                            values.type !== 'DIGITMATCH' &&
+                            !excluded_trade_types.includes(values.tradetype as string)
+                        ) {
+                            return null;
+                        }
+
                         switch (field.type) {
                             // Generic or common fields
                             case 'number': {

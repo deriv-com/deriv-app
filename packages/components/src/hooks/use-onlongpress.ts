@@ -34,10 +34,7 @@ export const useLongPress = (
         },
         onMouseUp: () => setStartLongPress(false),
         onMouseLeave: () => setStartLongPress(false),
-        onTouchStart: (e: React.TouchEvent) => {
-            preventDefaults(e);
-            setStartLongPress(true);
-        },
+        onTouchStart: () => setStartLongPress(true),
         onTouchEnd: () => setStartLongPress(false),
     };
 };

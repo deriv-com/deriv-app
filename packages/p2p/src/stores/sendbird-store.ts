@@ -60,6 +60,7 @@ export default class SendbirdStore extends BaseStore {
             setChannelMessages: action.bound,
             setShouldShowChatModal: action.bound,
             setShouldShowChatOnOrders: action.bound,
+            unread_messages_count: computed,
         });
     }
 
@@ -69,6 +70,10 @@ export default class SendbirdStore extends BaseStore {
 
     get is_chat_frozen() {
         return this.active_chat_channel?.isFrozen;
+    }
+
+    get unread_messages_count() {
+        return this.active_chat_channel?.unreadMessageCount;
     }
 
     addChannelMessage(chat_message: ChatMessage) {
@@ -166,7 +171,9 @@ export default class SendbirdStore extends BaseStore {
         this.setHasChatError(false);
         this.setIsChatLoading(true);
         try {
-            const group_channel = await this.sendbird_api?.groupChannel.getChannel(this.chat_channel_url ?? '');
+            const group_channel = await this.sendbird_api?.groupChannel.getChannelWithoutCache(
+                this.chat_channel_url ?? ''
+            );
             if (!group_channel) {
                 this.setHasChatError(true);
             } else {

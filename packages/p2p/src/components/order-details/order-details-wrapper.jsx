@@ -1,8 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Icon, MobileFullPageModal, ThemedScrollbars } from '@deriv/components';
+import { Counter, Icon, MobileFullPageModal, ThemedScrollbars } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import PageReturn from 'Components/page-return';
 import { useStores } from 'Stores';
 import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
@@ -10,7 +11,9 @@ import OrderDetailsFooter from 'Components/order-details/order-details-footer.js
 const OrderDetailsWrapper = ({ children, page_title }) => {
     const { order_store, sendbird_store } = useStores();
     const history = useHistory();
+    const { setShouldShowChatModal } = sendbird_store;
 
+    const count = sendbird_store.active_chat_channel?.unreadMessageCount;
     const pageHeaderReturnHandler = () => {
         order_store.onPageReturn();
 
@@ -31,13 +34,16 @@ const OrderDetailsWrapper = ({ children, page_title }) => {
                 pageHeaderReturnFn={pageHeaderReturnHandler}
                 page_header_text={page_title}
                 renderPageHeaderTrailingIcon={() => (
-                    <Icon
-                        data_testid='testid'
-                        icon='IcChat'
-                        height={15}
-                        width={16}
-                        onClick={() => sendbird_store.setShouldShowChatModal(true)}
-                    />
+                    <div className='order-details__body-icon-wrapper'>
+                        <Icon
+                            data_testid='testid'
+                            icon='IcChat'
+                            height={15}
+                            width={16}
+                            onClick={() => setShouldShowChatModal(true)}
+                        />
+                        {!!count && <Counter count={count} className='order-details__body-icon-wrapper--count' />}
+                    </div>
                 )}
                 renderPageFooterChildren={
                     order_store.order_information.should_show_order_footer
@@ -61,4 +67,4 @@ OrderDetailsWrapper.propTypes = {
     page_title: PropTypes.string,
 };
 
-export default OrderDetailsWrapper;
+export default observer(OrderDetailsWrapper);

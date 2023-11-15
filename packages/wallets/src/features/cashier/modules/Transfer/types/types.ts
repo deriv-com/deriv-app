@@ -1,7 +1,7 @@
-import { useTransfer } from '../provider';
+import type { TTransferContext } from '../provider';
 
-export type TAccount = ReturnType<typeof useTransfer>['activeWallet'];
-export type TAccountList = ReturnType<typeof useTransfer>['accounts'];
+export type TAccount = TTransferContext['activeWallet'];
+export type TAccountsList = TTransferContext['accounts'];
 
 export type TInitialTransferFormValues = {
     amountReceive: number;

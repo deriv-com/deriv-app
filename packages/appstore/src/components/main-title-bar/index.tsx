@@ -10,6 +10,7 @@ import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
 import './main-title-bar.scss';
+import TradersHubBanner from 'Components/traders-hub-banner';
 
 const MainTitleBar = () => {
     const { traders_hub, client, notifications } = useStore();
@@ -40,6 +41,7 @@ const MainTitleBar = () => {
             {/* TODO: Uncomment once useWalletMigration hook is optimized for production release. */}
             {/* {is_wallet_enabled && <WalletsBanner />} */}
             <DesktopWrapper>
+                <TradersHubBanner />
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold' color='prominent'>
@@ -52,6 +54,7 @@ const MainTitleBar = () => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
+                <TradersHubBanner />
                 <Text weight='bold' className='main-title-bar__text' color='prominent'>
                     <Localize i18n_default_text="Trader's Hub" />
                 </Text>

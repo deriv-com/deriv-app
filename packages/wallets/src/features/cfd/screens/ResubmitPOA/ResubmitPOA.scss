@@ -14,20 +14,20 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 16px;
-        width: 842px;
+        gap: 1.6rem;
+        max-width: 85rem;
 
         &__label {
             display: flex;
-            height: 24px;
+            height: 2.4rem;
             justify-content: center;
             align-items: center;
-            gap: 11.659px;
+            gap: 1.1rem;
         }
 
         &__divider {
-            width: 760.341px;
-            height: 1.2px;
+            width: 76rem;
+            height: 0.12rem;
             flex-shrink: 0;
             background: var(--system-light-7-secondary-background, #f2f3f4);
         }
@@ -35,19 +35,19 @@
         &__inline {
             display: flex;
             align-items: flex-start;
-            gap: 8px;
+            gap: 0.8rem;
 
             &--message {
-                width: 79.5rem;
+                width: 80rem;
             }
         }
 
         &__input {
             display: flex;
-            width: 842px;
+            width: 84.2rem;
             flex-direction: column;
             align-items: flex-start;
-            gap: 16px;
+            gap: 1.6rem;
         }
     }
 }

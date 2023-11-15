@@ -6,7 +6,7 @@ import './ResubmitPOA.scss';
 const ResubmitPOA: React.FC = () => {
     const { data } = useSettings();
     const country = data?.country_code || '';
-    const { data: statesList, isSuccess } = useStatesList(country);
+    const { data: statesList } = useStatesList(country);
 
     const [selectedState, setSelectedState] = useState('');
 
@@ -30,16 +30,18 @@ const ResubmitPOA: React.FC = () => {
                     </InlineMessage>
                 </div>
                 <div className='wallets-resubmit-poa__address__input'>
-                    <WalletTextField label='First line of address*' />
-                    <WalletTextField label='Second line of address' />
-                    <WalletTextField label='Town/City*' />
+                    <WalletTextField label='First line of address*' maxWidth='84rem' />
+                    <WalletTextField label='Second line of address' maxWidth='84rem' />
+                    <WalletTextField label='Town/City*' maxWidth='84rem' />
                     <WalletDropdown
                         label='State/Province'
                         list={statesList}
+                        listHeight='sm'
+                        maxWidth='84rem'
                         onSelect={handleSelect}
                         value={selectedState}
                     />
-                    <WalletTextField label='Postal/ZIP Code' />
+                    <WalletTextField label='Postal/ZIP Code' maxWidth='84rem' />
                 </div>
             </div>
         </div>

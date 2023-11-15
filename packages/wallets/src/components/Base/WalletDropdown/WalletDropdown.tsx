@@ -22,7 +22,7 @@ type TProps = {
 };
 
 const WalletDropdown: React.FC<TProps> = ({
-    icon,
+    icon = false,
     label,
     list,
     listHeight = 'md',

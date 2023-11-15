@@ -33,6 +33,8 @@ export default function Draggable({
     xaxis = 0,
     yaxis = 0,
 }: PropsWithChildren<DraggableProps>) {
+    const element_bounds = document.querySelector(bounds as string)?.getBoundingClientRect();
+
     return is_visible ? (
         <Rnd
             bounds={bounds}
@@ -44,10 +46,18 @@ export default function Draggable({
                 width,
                 height,
             }}
+            style={{
+                left: xaxis,
+                top: yaxis,
+            }}
             dragHandleClassName={dragHandleClassName}
             enableResizing={enableResizing}
             minHeight={height}
             minWidth={minWidth}
+            onDrag={(e, data) => {
+                data.node.style.left = `${data.lastX + data.deltaX}px`;
+                data.node.style.top = `${data.lastY + data.deltaY}px`;
+            }}
             onDragStart={e => {
                 // on responsive devices touch event is not triggering the close button action
                 // need to handle it manually

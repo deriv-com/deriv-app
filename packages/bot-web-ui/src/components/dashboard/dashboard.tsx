@@ -170,6 +170,7 @@ const Dashboard = observer(() => {
                     <RunStrategy />
                     <RunPanel />
                 </div>
+                <ChartModal />
             </DesktopWrapper>
             <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog
@@ -187,7 +188,6 @@ const Dashboard = observer(() => {
             >
                 {message}
             </Dialog>
-            <ChartModal />
             <StrategyNotification />
         </React.Fragment>
     );

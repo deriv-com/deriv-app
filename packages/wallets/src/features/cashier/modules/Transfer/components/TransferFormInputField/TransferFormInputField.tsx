@@ -1,29 +1,93 @@
-import React, { useEffect } from 'react';
-import { useFormikContext } from 'formik';
+import React, { useEffect, useRef, useState } from 'react';
+import { WalletText } from '../../../../../../components/Base';
 import useInputATMFormatter from '../../../../../../hooks/useInputATMFormatter';
 import './TransferFormInputField.scss';
 
 type TProps = {
-    defaultValue?: number;
-    fieldName: string;
+    currency?: string;
+    disabled?: boolean;
     fractionDigits?: number;
     label: string;
+    onChange?: (value: number) => void;
+    value: number;
 };
 
-const WalletTransferFormInputField: React.FC<TProps> = ({ defaultValue, fieldName, fractionDigits = 2, label }) => {
-    const { setFieldValue } = useFormikContext();
-    const { onChange, value } = useInputATMFormatter(defaultValue, {
+const WalletTransferFormInputField: React.FC<TProps> = ({
+    currency,
+    disabled,
+    fractionDigits = 0,
+    label,
+    onChange,
+    value,
+}) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const input = inputRef.current;
+
+    const [isFocused, setIsFocused] = useState(false);
+    const [caret, setCaret] = useState<number>(0);
+
+    const { onChange: formatOnChange, value: formattedValue } = useInputATMFormatter(value, {
         fractionDigits,
     });
+    const [prevFormattedValue, setPrevFormattedValue] = useState<string>(formattedValue);
 
     useEffect(() => {
-        setFieldValue(fieldName, Number(value));
-    }, [fieldName, setFieldValue, value]);
+        setPrevFormattedValue(formattedValue);
+        onChange?.(Number(formattedValue));
+    }, [formattedValue, onChange]);
+
+    // keep the caret from jumping
+    useEffect(() => {
+        input?.setSelectionRange(formattedValue.length - 1 - caret, formattedValue.length - 1 - caret);
+    }, [caret, formattedValue, input]);
+
+    // override some editing behavior for better UX
+    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!input) return;
+        if (
+            input.value.length + 1 === prevFormattedValue.length &&
+            input.value.replaceAll(/[,.]/g, '') === prevFormattedValue.replaceAll(/[,.]/g, '')
+        )
+            return;
+
+        setCaret(input.value.length - 1 - (input.selectionStart || 0));
+        formatOnChange(e);
+    };
+
+    // override some keyboard behavior for better UX
+    const onKeyEvent: React.KeyboardEventHandler<HTMLInputElement> = e => {
+        // check if it's an arrow key and if selectionStart is to the immediate right of a point/comma
+        if (input?.selectionStart && e.key.startsWith('Arrow') && !/^\d$/.test(input.value[input.selectionStart - 1])) {
+            // if moving right, move one extra character, otherwise move left one character
+            const adjustedSelectionStart = e.key === 'ArrowRight' ? input.selectionStart + 1 : input.selectionStart - 1;
+            input.setSelectionRange(adjustedSelectionStart, adjustedSelectionStart);
+        }
+    };
 
     return (
         <div className='wallets-transfer-form-input-field'>
-            <label className='wallets-transfer-form-input-field__label'>{label}</label>
-            <input className='wallets-transfer-form-input-field__input' onChange={onChange} value={value} />
+            <WalletText size='sm'>{label}</WalletText>
+            <div className='wallets-transfer-form-input-field__input-container'>
+                <WalletText size='lg' weight='bold'>
+                    <input
+                        className='wallets-transfer-form-input-field__input'
+                        disabled={disabled || isFocused}
+                        value={`${formattedValue} ${currency || ''}`}
+                    />
+                    <input
+                        className='wallets-transfer-form-input-field__input'
+                        disabled={disabled}
+                        onBlur={() => setIsFocused(false)}
+                        onChange={onChangeHandler}
+                        onFocus={() => setIsFocused(true)}
+                        onKeyDown={onKeyEvent}
+                        onKeyUp={onKeyEvent}
+                        ref={inputRef}
+                        type='numeric'
+                        value={formattedValue}
+                    />
+                </WalletText>
+            </div>
         </div>
     );
 };

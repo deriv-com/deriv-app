@@ -88,7 +88,7 @@ const addBlocklyTranslation = () => {
     $.ajaxPrefilter(options => {
         options.async = true; // eslint-disable-line no-param-reassign
     });
-    let lang = getLanguage()?.toLowerCase();
+    let lang = getLanguage();
 
     if (lang === 'ach') {
         lang = 'en';

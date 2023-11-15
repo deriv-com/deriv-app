@@ -26,7 +26,7 @@ const WalletDropdown: React.FC<TProps> = ({
     label,
     list,
     listHeight = 'md',
-    maxWidth = '19.5rem',
+    maxWidth,
     onSelect,
     type = 'prompt',
     value,

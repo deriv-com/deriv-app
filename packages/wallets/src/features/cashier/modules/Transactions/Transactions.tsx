@@ -79,7 +79,6 @@ const Transactions = () => {
                     icon={<FilterIcon />}
                     label='Filter'
                     list={filterOptionsList}
-                    maxWidth={isMobile ? 'unset' : '19.5rem'}
                     onSelect={value => setFilterValue(value)}
                     value={filterValue}
                 />

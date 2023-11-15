@@ -97,18 +97,12 @@ const addBlocklyTranslation = () => {
     } else if (lang === 'zh_tw') {
         lang = 'zh-hant';
     }
-    return new Promise((resolve, reject) => {
-        const link = `blockly-translations/${lang}.js`;
-
-        $.getScript(link)
-            .done(() => {
-                console.log(`Script loaded for lang: ${lang}`);
-                resolve();
-            })
-            .fail((jqxhr, settings, exception) => {
-                console.error(`Failed to load script for lang: ${link}`, { lang, link, settings, jqxhr, exception });
-                reject(exception);
-            });
+    return new Promise(resolve => {
+        try {
+            $.getScript(`blockly-translations/${lang}.js`, resolve);
+        } catch (e) {
+            globalObserver.emit('Error', e);
+        }
     });
 };
 

@@ -6,7 +6,6 @@ import {
     getDxCompanies,
     getMtCompanies,
     getDerivezCompanies,
-    getFormattedJurisdictionCode,
     TMtCompanies,
     TDxCompanies,
     TDerivezCompanies,
@@ -16,6 +15,7 @@ import {
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
     getErrorMessages,
+    getFormattedJurisdictionCode,
     isDesktop,
     isMobile,
     routes,
@@ -270,7 +270,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const submitPassword: TOnSubmitPassword = async (values, actions) => {
         if (platform === CFD_PLATFORMS.MT5) {
             if (account_status_hook?.is_mt5_password_not_set) {
-                // console.log('gerer');
                 await tradingPlatformPasswordChange({
                     new_password: values.password,
                     platform: CFD_PLATFORMS.MT5,

@@ -10,8 +10,8 @@ type TProps = {
     icon?: React.ReactNode;
     label?: React.ReactNode;
     list: {
-        text: React.ReactNode;
-        value: string;
+        text?: React.ReactNode;
+        value?: string;
     }[];
     listHeight?: 'lg' | 'md' | 'sm';
     onSelect: (value: string) => void;
@@ -58,7 +58,7 @@ const WalletDropdown: React.FC<TProps> = ({
         onSelectedItemChange({ selectedItem }) {
             onSelect(selectedItem?.value ?? '');
         },
-        selectedItem: items.find(item => item.value === value),
+        selectedItem: items.find(item => item.value === value) ?? null,
     });
 
     useEffect(() => {

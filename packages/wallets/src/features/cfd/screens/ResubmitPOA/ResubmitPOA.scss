@@ -1,0 +1,53 @@
+.wallets-resubmit-poa {
+    width: 99.6rem;
+    height: 60rem;
+    display: flex;
+    padding: 1.6rem 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6rem;
+    flex: 1 0 0;
+    align-self: stretch;
+    background: var(--system-light-8-primary-background, #fff);
+
+    &__address {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        width: 842px;
+
+        &__label {
+            display: flex;
+            height: 24px;
+            justify-content: center;
+            align-items: center;
+            gap: 11.659px;
+        }
+
+        &__divider {
+            width: 760.341px;
+            height: 1.2px;
+            flex-shrink: 0;
+            background: var(--system-light-7-secondary-background, #f2f3f4);
+        }
+
+        &__inline {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+
+            &--message {
+                width: 79.5rem;
+            }
+        }
+
+        &__input {
+            display: flex;
+            width: 842px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+    }
+}

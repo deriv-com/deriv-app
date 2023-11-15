@@ -19,6 +19,7 @@ export default class NetworkMonitor {
     setStatus() {
         if (navigator.onLine) {
             this.parentElement.html('<span class=\'connecting\'></span>');
+            api_base.api_chart.send({ ping: '1' }).catch(e => globalObserver.emit('Error', e));
             api_base.api
                 .send({ ping: '1' })
                 .then(() => {

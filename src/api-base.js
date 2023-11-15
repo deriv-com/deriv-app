@@ -32,6 +32,15 @@ class APIBase {
                 connection: new WebSocket(socket_url),
             });
 
+            this.api_chart = new DerivAPIBasic({
+                connection: new WebSocket(socket_url),
+            });
+
+            this.api_chart.onOpen().subscribe(() => {
+                // eslint-disable-next-line no-console
+                console.log('Connection has been established for chart ws!', this.api_chart);
+            });
+
             this.api.onOpen().subscribe(() => {
                 // eslint-disable-next-line no-console
                 console.log('Connection has been established!', this.api);

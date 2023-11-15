@@ -81,6 +81,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                     <WalletTextField
                         {...field}
                         label={`Amount (${activeWallet?.currency})`}
+                        maxWidth='100%'
                         message={errors.cryptoAmount}
                         onChange={e => {
                             const value = parseFloat(e.target.value);
@@ -113,6 +114,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                     <WalletTextField
                         {...field}
                         label='Amount (USD)'
+                        maxWidth='100%'
                         message={errors.fiatAmount ?? 'Approximate value'}
                         onChange={e => {
                             const value = parseFloat(e.target.value);

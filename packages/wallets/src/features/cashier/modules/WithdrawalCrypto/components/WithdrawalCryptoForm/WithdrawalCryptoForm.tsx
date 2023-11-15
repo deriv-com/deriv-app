@@ -70,6 +70,7 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({ verificati
                                     <WalletTextField
                                         {...field}
                                         label='Your BTC Wallet address'
+                                        maxWidth='100%'
                                         message={errors.cryptoAddress}
                                         showMessage
                                     />

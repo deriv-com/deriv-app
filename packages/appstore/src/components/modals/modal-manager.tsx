@@ -14,6 +14,7 @@ import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-
 import CFDTopUpDemoModal from '@deriv/cfd/src/Containers/cfd-top-up-demo-modal';
 import MT5TradeModal from '@deriv/cfd/src/Containers/mt5-trade-modal';
 import CFDPasswordManagerModal from '@deriv/cfd/src/Containers/cfd-password-manager-modal';
+import MT5MigrationModal from '@deriv/cfd/src/Containers/mt5-migration-modal';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
@@ -142,6 +143,7 @@ const ModalManager = () => {
                 verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
             />
             <MT5AccountTypeModal />
+            <MT5MigrationModal />
             <RegulatorsCompareModal />
             <AccountTransferModal
                 is_modal_open={is_account_transfer_modal_open}

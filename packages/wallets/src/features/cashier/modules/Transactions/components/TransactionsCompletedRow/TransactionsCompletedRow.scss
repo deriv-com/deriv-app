@@ -11,6 +11,13 @@
         justify-content: center;
     }
 
+    &__wallet-name {
+        display: flex;
+        flex-direction: row;
+        gap: 0.4rem;
+        align-items: center;
+    }
+
     &__account-details {
         display: flex;
         width: max-content;

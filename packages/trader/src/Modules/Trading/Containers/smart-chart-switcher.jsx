@@ -4,11 +4,7 @@ import { SmartChartBeta } from 'Modules/SmartChartBeta';
 
 const SmartChartSwitcher = ({ is_beta, ...props }) => {
     const Chart = is_beta ? SmartChartBeta : SmartChart;
-    return (
-        <>
-            <Chart data-testid='SmartChart' {...props} />{' '}
-        </>
-    );
+    return <Chart data-testid='SmartChart' {...props} />;
 };
 
 export default SmartChartSwitcher;

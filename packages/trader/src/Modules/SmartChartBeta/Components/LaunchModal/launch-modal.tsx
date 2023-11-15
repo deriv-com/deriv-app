@@ -10,7 +10,7 @@ interface LaunchModalProps {
     open: boolean;
 }
 
-const ContinueButton: React.FC<{ handleOpen: () => void }> = ({ handleOpen }) => (
+const ContinueButton = ({ handleOpen }: { handleOpen: () => void }) => (
     <Modal.Footer>
         <Button className='continue-button' has_effect onClick={handleOpen} primary large>
             <Localize i18n_default_text='Continue' />
@@ -30,7 +30,7 @@ const InfoDisplay = () => (
     </div>
 );
 
-const LaunchModal: React.FC<LaunchModalProps> = ({ handleChange, open }) => (
+const LaunchModal = ({ handleChange, open }: LaunchModalProps) => (
     <React.Suspense fallback={<UILoader />}>
         <DesktopWrapper>
             <Modal

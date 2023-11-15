@@ -21,8 +21,9 @@ const QSCheckbox: React.FC<TQSCheckbox> = observer(
         const { values, setFieldValue, validateForm } = useFormikContext<TFormData>();
 
         const handleChange = () => {
-            setFieldValue(name, !values?.[name]);
-            validateForm();
+            setFieldValue(name, !values?.[name]).finally(() => {
+                validateForm();
+            });
         };
 
         return (
@@ -47,7 +48,7 @@ const QSCheckbox: React.FC<TQSCheckbox> = observer(
                                         <Popover
                                             message={description}
                                             zIndex='9999'
-                                            alignment={is_mobile ? 'bottom' : 'right'}
+                                            alignment={is_mobile ? 'top' : 'right'}
                                             icon='info'
                                         />
                                     </span>

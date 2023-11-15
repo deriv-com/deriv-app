@@ -149,10 +149,14 @@ const AdvertiserPage = () => {
         },
     });
 
-    const { error, isError, isLoading } = useP2PAdvertiserAdverts();
+    const { error, isError } = useP2PAdvertiserAdverts();
 
-    if (isLoading || advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
+    if (advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
         return <Loading is_fullscreen={false} />;
+    }
+
+    if (advertiser_page_store.error_message) {
+        return <div className='advertiser-page__error'>{advertiser_page_store.error_message}</div>;
     }
 
     if (isError) {
@@ -171,7 +175,6 @@ const AdvertiserPage = () => {
                     className='buy-sell__advertiser-page-return'
                     onClick={() => {
                         buy_sell_store.hideAdvertiserPage();
-                        general_store.setCounterpartyAdvertiserId(null);
                         if (general_store.active_index === general_store.path.my_profile)
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                         history.push(general_store.active_tab_route);

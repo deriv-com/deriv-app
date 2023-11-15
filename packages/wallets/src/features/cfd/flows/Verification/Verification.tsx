@@ -9,14 +9,6 @@ import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
 import { THooks } from '../../../../types';
 import * as Yup from 'yup';
 
-const Idv = () => {
-    return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
-            <h1>IDV screen</h1>
-        </div>
-    );
-};
-
 const Manual = () => {
     return (
         <div style={{ fontSize: 60, height: 400, width: 600 }}>
@@ -43,7 +35,7 @@ const PersonalDetails = () => {
 
 const Loading = () => {
     return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
+        <div style={{ height: 400, width: 600 }}>
             <Loader />
         </div>
     );
@@ -96,8 +88,9 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             }
             if (service === 'idv') return 'idvScreen';
             if (service === 'onfido') return 'onfidoScreen';
+            return 'manualScreen';
         }
-        return 'manualScreen';
+        return 'loadingScreen';
     }, [
         hasAttemptedPOA,
         needPersonalDetails,
@@ -108,10 +101,15 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         isSuccessPOIStatus,
     ]);
 
-    const isNextDisabled = ({ formValues, currentScreenId }: TFlowProviderContext<typeof screens>) => {
+    const isNextDisabled = ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
             case 'idvScreen':
-                return Boolean(formValues.firstName) && Boolean(formValues.lastName);
+                return (
+                    !formValues.documentNumber ||
+                    !formValues.firstName ||
+                    !formValues.lastName ||
+                    !formValues.dateOfBirth
+                );
             default:
                 return false;
         }
@@ -138,9 +136,10 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     };
 
     const validationSchema = Yup.object().shape({
-        documentNumber: Yup.string().min(1).max(69),
-        firstName: Yup.string().min(1, 'Too short').max(5).required(),
-        lastName: Yup.string().min(10).max(20),
+        documentNumber: Yup.string().min(1).required(),
+        firstName: Yup.string().min(1).max(5).required(),
+        lastName: Yup.string().min(1).max(20).required(),
+        dateOfBirth: Yup.date().required(),
     });
 
     return (

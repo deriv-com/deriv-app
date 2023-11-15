@@ -1,16 +1,9 @@
-import React, { useEffect } from 'react';
-import { InlineMessage, WalletText, WalletTextField } from '../../../../../../components';
+import React from 'react';
+import { FlowTextField, InlineMessage, WalletText, WalletTextField } from '../../../../../../components';
 import SideNote from '../../../../../../public/images/accounts/side-note-example-image.svg';
-import { useFlow } from '../../../../../../components/FlowProvider';
-import { Form, Field } from 'formik';
 import './IDVDocumentUploadDetails.scss';
 
 const IDVDocumentUploadDetails = () => {
-    const { setFormValues, errors } = useFlow();
-
-    useEffect(() => {
-        console.log('errors', errors);
-    }, [errors]);
     return (
         <div className='wallets-idv-document-details'>
             <InlineMessage>
@@ -19,55 +12,42 @@ const IDVDocumentUploadDetails = () => {
                     appears on your identity document.
                 </WalletText>
             </InlineMessage>
-            <Form>
-                <div className='wallets-idv-document-details__body'>
-                    <div className='wallets-idv-document-details__content'>
-                        {/* TODO: Update account details using implemented Formik */}
+            <div className='wallets-idv-document-details__body'>
+                <div className='wallets-idv-document-details__content'>
+                    {/* TODO: Update account details using implemented Formik */}
 
-                        <Field name='firstName'>
-                            {({ field }) => {
-                                return (
-                                    <WalletTextField
-                                        helperMessage={'Your first name as in your identity document'}
-                                        isInvalid={Boolean(errors.firstName)}
-                                        errorMessage={errors.firstName}
-                                        label='First name*'
-                                        maxWidth='35.9rem'
-                                        showMessage
-                                        {...field}
-                                    />
-                                );
-                            }}
-                        </Field>
+                    <FlowTextField
+                        helperMessage={'Your first name as in your identity document'}
+                        label='First name*'
+                        maxWidth='35.9rem'
+                        name='firstName'
+                        showMessage
+                    />
 
-                        <Field name='lastName'>
-                            {({ field }) => {
-                                <WalletTextField
-                                    helperMessage='Your last name as in your identity document'
-                                    label='Last name*'
-                                    maxWidth='35.9rem'
-                                    showMessage
-                                    {...field}
-                                />;
-                            }}
-                        </Field>
-                        {/* TODO: Replace with DatePicker component*/}
-                        <WalletTextField
-                            helperMessage='Your date of birth as in your identity document'
-                            label='Date of birth*'
-                            maxWidth='35.9rem'
-                            showMessage
-                            type='date'
-                        />
-                    </div>
-                    <div className='wallets-idv-document-details__sidenote'>
-                        <WalletText size='xs' weight='bold'>
-                            Example
-                        </WalletText>
-                        <SideNote />
-                    </div>
+                    <FlowTextField
+                        helperMessage='Your last name as in your identity document'
+                        label='Last name*'
+                        maxWidth='35.9rem'
+                        name='lastName'
+                        showMessage
+                    />
+                    {/* TODO: Replace with DatePicker component*/}
+                    <FlowTextField
+                        helperMessage='Your date of birth as in your identity document'
+                        label='Date of birth*'
+                        maxWidth='35.9rem'
+                        name='dateOfBirth'
+                        showMessage
+                        type='date'
+                    />
                 </div>
-            </Form>
+                <div className='wallets-idv-document-details__sidenote'>
+                    <WalletText size='xs' weight='bold'>
+                        Example
+                    </WalletText>
+                    <SideNote />
+                </div>
+            </div>
         </div>
     );
 };

@@ -9,12 +9,14 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import { Formik, FormikErrors, FormikValues } from 'formik';
+import { Formik, FormikErrors, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
 
 export type TFlowProviderContext<T> = {
     WalletScreen?: ReactNode;
     currentScreenId: keyof T;
+    dirty: FormikProps<FormikValues>['dirty'];
+    errors: FormikErrors<FormikValues>;
     formValues: FormikValues;
     setFormValues: (
         field: string,
@@ -22,7 +24,6 @@ export type TFlowProviderContext<T> = {
         shouldValidate?: boolean | undefined
     ) => Promise<FormikErrors<unknown> | void>;
     switchScreen: (screenId: keyof T) => void;
-    errors: FormikErrors<FormikValues>;
 };
 
 type FlowChildren = ReactElement | ReactFragment | ReactPortal;
@@ -98,8 +99,14 @@ function FlowProvider<T extends TWalletScreens>({
     if (!currentScreenId) return null;
     return (
         // We let the logic of the onSubmit be handled by the flow component
-        <Formik initialValues={initialValues} onSubmit={() => undefined} validationSchema={validationSchema}>
-            {({ setFieldValue, values, errors }) => {
+        <Formik
+            enableReinitialize
+            initialValues={initialValues}
+            onSubmit={() => undefined}
+            validateOnChange
+            validationSchema={validationSchema}
+        >
+            {({ dirty, errors, setFieldValue, values }) => {
                 return (
                     <FlowProvider
                         value={{
@@ -107,13 +114,15 @@ function FlowProvider<T extends TWalletScreens>({
                             formValues: values,
                             setFormValues: setFieldValue,
                             errors,
+                            dirty,
                         }}
                     >
                         {children({
                             ...context,
+                            errors,
                             formValues: values,
                             setFormValues: setFieldValue,
-                            errors,
+                            dirty,
                         })}
                     </FlowProvider>
                 );

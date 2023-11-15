@@ -1,10 +1,12 @@
 import React, { ChangeEvent, CSSProperties, forwardRef, InputHTMLAttributes, useState } from 'react';
 import MessageContainer, { MessageContainerProps } from './HelperMessage';
+import classNames from 'classnames';
 import './WalletTextField.scss';
+import { FormikErrors } from 'formik';
 
 export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, MessageContainerProps {
     defaultValue?: string;
-    errorMessage?: string;
+    errorMessage?: FormikErrors<any> | FormikErrors<any>[] | string[] | string;
     isInvalid?: boolean;
     label?: string;
     maxWidth?: CSSProperties['maxWidth'];
@@ -18,6 +20,7 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
             defaultValue = '',
             errorMessage = '',
             helperMessage,
+            isInvalid = false,
             label,
             maxLength,
             maxWidth = '33rem',
@@ -25,7 +28,6 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
             onChange,
             renderRightIcon,
             showMessage = false,
-            isInvalid = false,
             ...rest
         },
         ref
@@ -39,7 +41,12 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
         };
 
         return (
-            <div className='wallets-textfield' style={{ maxWidth }}>
+            <div
+                className={classNames('wallets-textfield', {
+                    'wallets-textfield--error': isInvalid,
+                })}
+                style={{ maxWidth }}
+            >
                 <div className='wallets-textfield__box'>
                     <input
                         className='wallets-textfield__field'
@@ -66,9 +73,9 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
                     )}
                     {isInvalid && errorMessage && (
                         <MessageContainer
-                            isError
-                            helperMessage={errorMessage}
+                            helperMessage={errorMessage as string}
                             inputValue={value}
+                            isError
                             maxLength={maxLength}
                         />
                     )}

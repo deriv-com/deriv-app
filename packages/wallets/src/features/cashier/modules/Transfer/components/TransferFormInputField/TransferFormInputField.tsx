@@ -8,6 +8,7 @@ type TProps = {
     disabled?: boolean;
     fractionDigits?: number;
     label: string;
+    maxDigits?: number;
     onChange?: (value: number) => void;
     value: number;
 };
@@ -17,6 +18,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     disabled,
     fractionDigits = 0,
     label,
+    maxDigits,
     onChange,
     value,
 }) => {
@@ -24,7 +26,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     const input = inputRef.current;
 
     const [isFocused, setIsFocused] = useState(false);
-    const [caret, setCaret] = useState<number>(0);
+    const [caret, setCaret] = useState<number>();
 
     const { onChange: formatOnChange, value: formattedValue } = useInputATMFormatter(value, {
         fractionDigits,
@@ -38,12 +40,13 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
 
     // keep the caret from jumping
     useEffect(() => {
-        input?.setSelectionRange(formattedValue.length - 1 - caret, formattedValue.length - 1 - caret);
+        if (caret) input?.setSelectionRange(formattedValue.length - 1 - caret, formattedValue.length - 1 - caret);
     }, [caret, formattedValue, input]);
 
     // override some editing behavior for better UX
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!input) return;
+        if (maxDigits && input.value.replace(/[.,]/g, '').length > maxDigits) return;
         if (
             input.value.length + 1 === prevFormattedValue.length &&
             input.value.replaceAll(/[,.]/g, '') === prevFormattedValue.replaceAll(/[,.]/g, '')

@@ -157,7 +157,7 @@ describe('<CFDCompareAccountsButton />', () => {
                     trading_platforms={{
                         platform: 'mt5',
                         shortcode: 'bvi',
-                        market_type: MARKET_TYPES.FINANCIAL,
+                        market_type: MARKET_TYPE.FINANCIAL,
                     }}
                 />
             </MemoryRouter>,
@@ -216,7 +216,7 @@ describe('<CFDCompareAccountsButton />', () => {
                     trading_platforms={{
                         platform: 'dxtrade',
                         shortcode: 'bvi',
-                        market_type: MARKET_TYPES.FINANCIAL,
+                        market_type: MARKET_TYPE.FINANCIAL,
                     }}
                 />
             </MemoryRouter>,

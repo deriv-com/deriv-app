@@ -87,7 +87,7 @@ const DisclaimerModal = ({ handleDisclaimerTimeout }: TDisclaimerModalProps) => 
                     }
                 />
             </Modal.Body>
-            <Modal.Footer className='disclaimer-modal__footer'>
+            <Modal.Footer>
                 <Button has_effect onClick={onClickConfirm} primary large disabled={!is_checked}>
                     <Localize i18n_default_text='Confirm' />
                 </Button>

@@ -100,28 +100,26 @@ export const CFDPasswordForm = ({
 
     if (error_type === 'PasswordReset') {
         return (
-            <React.Fragment>
-                <div className='cfd-password-reset'>
-                    <div className='cfd-password-modal__content cfd-password-modal__content--password-reset'>
-                        <Text as='p' line_height='24' size='xs'>
-                            <Localize i18n_default_text='Please try again in a minute.' />
-                        </Text>
-                    </div>
-                    <Formik onSubmit={closeModal} initialValues={{}}>
-                        {({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <FormSubmitButton
-                                    has_cancel={has_cancel_button}
-                                    cancel_label={cancel_button_label}
-                                    onCancel={handleCancel}
-                                    is_absolute={isMobile()}
-                                    label={button_label}
-                                />
-                            </form>
-                        )}
-                    </Formik>
+            <div className='cfd-password-reset'>
+                <div className='cfd-password-modal__content cfd-password-modal__content--password-reset'>
+                    <Text as='p' line_height='24' size='xs'>
+                        <Localize i18n_default_text='Please try again in a minute.' />
+                    </Text>
                 </div>
-            </React.Fragment>
+                <Formik onSubmit={closeModal} initialValues={{}}>
+                    {({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <FormSubmitButton
+                                has_cancel={has_cancel_button}
+                                cancel_label={cancel_button_label}
+                                onCancel={handleCancel}
+                                is_absolute={isMobile()}
+                                label={button_label}
+                            />
+                        </form>
+                    )}
+                </Formik>
+            </div>
         );
     }
 

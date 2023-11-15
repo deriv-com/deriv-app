@@ -55,6 +55,12 @@ type TCFDPasswordModalProps = {
     platform: string;
 };
 
+type TAccountType = 'all' | 'financial' | 'gaming' | 'demo';
+
+type TAccountCategory = 'real' | 'demo';
+
+type TCFDOtherPlatform = 'dxtrade' | 'derivez' | 'ctrader';
+
 const ReviewMessageForMT5 = ({
     is_selected_mt5_verified,
     jurisdiction_selected_shortcode,
@@ -267,65 +273,72 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         setIsSentEmailModalOpen(true);
     };
 
-    const submitPassword: TOnSubmitPassword = async (values, actions) => {
-        if (platform === CFD_PLATFORMS.MT5) {
-            if (account_status_hook?.is_mt5_password_not_set) {
-                await tradingPlatformPasswordChange({
-                    new_password: values.password,
-                    platform: CFD_PLATFORMS.MT5,
+    const submitPassword: TOnSubmitPassword = (values, actions) => {
+        (async () => {
+            if (platform === CFD_PLATFORMS.MT5) {
+                if (account_status_hook?.is_mt5_password_not_set) {
+                    await tradingPlatformPasswordChange({
+                        new_password: values.password,
+                        platform: CFD_PLATFORMS.MT5,
+                    });
+                }
+                createMT5Account({
+                    payload: {
+                        account_type:
+                            account_type.category === CATEGORY.DEMO
+                                ? CATEGORY.DEMO
+                                : (accountType as unknown as TAccountType),
+                        address: settings?.address_line_1 || '',
+                        city: settings?.address_city || '',
+                        company: 'svg',
+                        country: settings?.country_code || '',
+                        email: settings?.email || '',
+                        leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage || 500,
+                        mainPassword: values.password,
+                        ...(marketType === MARKET_TYPE.FINANCIAL && { mt5_account_type: MARKET_TYPE.FINANCIAL }),
+                        ...(marketType === MARKET_TYPE.ALL && { sub_account_category: 'swap_free' }),
+                        name: settings?.first_name || '',
+                        phone: settings?.phone || '',
+                        state: settings?.address_state || '',
+                        zipCode: settings?.address_postcode || '',
+                    },
                 });
-            }
-            createMT5Account({
-                payload: {
-                    account_type: account_type.category === CATEGORY.DEMO ? CATEGORY.DEMO : accountType,
-                    address: settings?.address_line_1 || '',
-                    city: settings?.address_city || '',
-                    company: 'svg',
-                    country: settings?.country_code || '',
-                    email: settings?.email || '',
-                    leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage || 500,
-                    mainPassword: values.password,
-                    ...(marketType === MARKET_TYPE.FINANCIAL && { mt5_account_type: MARKET_TYPE.FINANCIAL }),
-                    ...(marketType === MARKET_TYPE.ALL && { sub_account_category: 'swap_free' }),
-                    name: settings?.first_name || '',
-                    phone: settings?.phone || '',
-                    state: settings?.address_state || '',
-                    zipCode: settings?.address_postcode || '',
-                },
-            });
 
-            if (mt5_create_account_status === 'success') {
-                actions.setStatus({ success: true });
-                actions.setSubmitting(false);
-            } else if (mt5_create_account_status === 'error' && mt5_create_account_error) {
-                actions.resetForm({});
-                actions.setSubmitting(false);
-                actions.setStatus({ success: false });
-            }
-        } else {
-            if (CFD_PLATFORMS.DXTRADE && account_status_hook?.is_dxtrade_password_not_set) {
-                await tradingPlatformPasswordChange({
-                    new_password: values.password,
-                    platform: CFD_PLATFORMS.DXTRADE,
+                if (mt5_create_account_status === 'success') {
+                    actions.setStatus({ success: true });
+                    actions.setSubmitting(false);
+                } else if (mt5_create_account_status === 'error' && mt5_create_account_error) {
+                    actions.resetForm({});
+                    actions.setSubmitting(false);
+                    actions.setStatus({ success: false });
+                }
+            } else {
+                if (CFD_PLATFORMS.DXTRADE && account_status_hook?.is_dxtrade_password_not_set) {
+                    await tradingPlatformPasswordChange({
+                        new_password: values.password,
+                        platform: CFD_PLATFORMS.DXTRADE,
+                    });
+                }
+                createCFDAccount({
+                    payload: {
+                        account_type: account_type.category as unknown as TAccountCategory,
+                        market_type: MARKET_TYPE.ALL,
+                        password: values.password,
+                        platform: platform as unknown as TCFDOtherPlatform,
+                    },
                 });
+                if (cfd_create_account_status === 'success') {
+                    actions.setStatus({ success: true });
+                    actions.setSubmitting(false);
+                } else if (cfd_create_account_status === 'error' && cfd_create_account_error) {
+                    actions.resetForm({});
+                    actions.setSubmitting(false);
+                    actions.setStatus({ success: false });
+                }
             }
-            createCFDAccount({
-                payload: {
-                    account_type: account_type.category,
-                    market_type: MARKET_TYPE.ALL,
-                    password: values.password,
-                    platform,
-                },
-            });
-            if (cfd_create_account_status === 'success') {
-                actions.setStatus({ success: true });
-                actions.setSubmitting(false);
-            } else if (cfd_create_account_status === 'error' && cfd_create_account_error) {
-                actions.resetForm({});
-                actions.setSubmitting(false);
-                actions.setStatus({ success: false });
-            }
-        }
+        })().catch(error => {
+            setError(true, error);
+        });
     };
 
     const should_show_password =
@@ -398,28 +411,15 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const mt5_platform_label = jurisdiction_selected_shortcode !== JURISDICTION.MALTA_INVEST ? 'Deriv MT5' : '';
 
         const accountTypes = () => {
-            if (platform === 'dxtrade' && type_label === 'Derived') {
+            if (platform === CFD_PLATFORMS.DXTRADE && type_label === 'Derived') {
                 return 'Synthetic';
-            } else if (platform === 'derivez' || platform === 'ctrader') {
+            } else if (platform === CFD_PLATFORMS.DERIVEZ || platform === CFD_PLATFORMS.CTRADER) {
                 return 'CFDs';
             }
             return type_label;
         };
 
-        if (category === 'real') {
-            let platformName = '';
-            switch (platform) {
-                case CFD_PLATFORMS.MT5:
-                    platformName = mt5_platform_label;
-                    break;
-                case CFD_PLATFORMS.DERIVEZ:
-                    platformName = 'Deriv Ez';
-                    break;
-                default:
-                    platformName = 'Deriv X';
-                    break;
-            }
-
+        if (category === CATEGORY.REAL) {
             return (
                 <React.Fragment>
                     <Localize
@@ -548,8 +548,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 text_submit={success_modal_submit_label}
                 has_cancel={
                     platform === CFD_PLATFORMS.MT5
-                        ? is_selected_mt5_verified && account_type.category === 'real'
-                        : account_type.category === 'real'
+                        ? is_selected_mt5_verified && account_type.category === CATEGORY.REAL
+                        : account_type.category === CATEGORY.REAL
                 }
                 has_close_icon={false}
                 width={isMobile() ? '32.8rem' : 'auto'}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ModalStepWrapper, WalletText } from '../../../../components/Base';
 import MT5Password from './MT5Password';
 import './ChangePassword.scss';
@@ -6,12 +6,12 @@ import './ChangePassword.scss';
 const ChangePassword = () => {
     const tabs = [
         {
-            label: 'Deriv MT5 password',
             content: <MT5Password />,
+            label: 'Deriv MT5 password',
         },
         {
-            label: 'Investor password',
             content: <></>, // TODO: Add InvestorPassword component
+            label: 'Investor password',
         },
     ];
     const [activeTab, setActiveTab] = useState(0);
@@ -29,8 +29,8 @@ const ChangePassword = () => {
                             <button
                                 className={
                                     activeTab === index
-                                        ? 'wallets-change-password__tab--btn-active'
-                                        : 'wallets-change-password__tab--btn'
+                                        ? 'wallets-change-password__tab__btn--active'
+                                        : 'wallets-change-password__tab__btn'
                                 }
                                 key={index}
                                 onClick={() => handleTabClick(index)}

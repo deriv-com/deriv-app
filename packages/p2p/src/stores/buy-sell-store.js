@@ -278,10 +278,8 @@ export default class BuySellStore extends BaseStore {
         }
     };
 
-    handleSubmit = async (isMountedFn, values, { setSubmitting }) => {
-        if (isMountedFn()) {
-            setSubmitting(true);
-        }
+    handleSubmit = async (values, { setSubmitting }) => {
+        setSubmitting(true);
 
         this.form_props.setErrorMessage(null);
 
@@ -304,9 +302,7 @@ export default class BuySellStore extends BaseStore {
 
         this.create_order_subscription = subscribeWS({ ...payload }, [this.handleResponse]);
 
-        if (isMountedFn()) {
-            setSubmitting(false);
-        }
+        setSubmitting(false);
     };
 
     hideAdvertiserPage() {

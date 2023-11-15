@@ -8,7 +8,7 @@ type TBuySellModalErrorProps = {
 };
 
 const BuySellModalError = ({ error_message, show_low_balance_message }: TBuySellModalErrorProps) => {
-    if (error_message) {
+    if (error_message || show_low_balance_message) {
         return (
             <div className='buy-sell-modal-error'>
                 <HintBox

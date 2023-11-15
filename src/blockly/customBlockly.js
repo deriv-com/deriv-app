@@ -351,8 +351,7 @@ Blockly.Input.prototype.attachShadowBlock = function (value, name, shadowBlockTy
 Blockly.Toolbox.TreeNode.prototype.onClick_ = function (_e) {
     // eslint-disable-next-line no-underscore-dangle
     const blocklyCategoryName = translateLangToLang(_e.target.innerText, getLanguage(), 'en');
-    // Keeping it for fututre reference
-    // GTM.pushDataLayer({ event: 'Click Block Category', blocklyCategoryName });
+    // Check https://app.clickup.com/t/20696747/BOT-811 if previous GTM codes are requried
 
     // Expand icon.
     if (this.hasChildren() && this.isUserCollapsible_) {

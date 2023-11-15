@@ -6,17 +6,17 @@ import { getActiveLoginId } from '@storage';
 import DerivAppModal from '../common/deriv-app-modal';
 import './move-to-dbot-banner.scss';
 
-function updateLastPopupTime() {
+const updateLastPopupTime = () => {
     localStorage.setItem('last_deriv_redirect_popup_time', new Date().toString());
-}
+};
 
-function daysBetween(date1, date2) {
+const daysBetween = (date1, date2) => {
     const one_day = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
     const diff_days = Math.round(Math.abs((date1 - date2) / one_day));
     return diff_days;
-}
+};
 
-function shouldShowPopup() {
+const shouldShowPopup = () => {
     const last_deriv_redirect_popup_time = localStorage.getItem('last_deriv_redirect_popup_time');
 
     if (!last_deriv_redirect_popup_time) {
@@ -34,9 +34,9 @@ function shouldShowPopup() {
     }
 
     return false;
-}
+};
 
-export default function MoveToDbotBanner() {
+const MoveToDbotBanner = () => {
     const container_class = 'mv-dbot-banner';
     const [open_modal, setOpenModal] = useState(false);
 
@@ -110,4 +110,6 @@ export default function MoveToDbotBanner() {
             )}
         </div>
     );
-}
+};
+
+export default MoveToDbotBanner;

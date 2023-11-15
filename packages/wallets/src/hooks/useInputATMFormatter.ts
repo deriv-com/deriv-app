@@ -21,8 +21,8 @@ const useInputATMFormatter = (initial?: number, options?: TOptions) => {
         (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
             const newValue = e?.target?.value || '';
             const unformatted = unFormatLocaleString(newValue, locale);
-            const shifted = Number(Number(unformatted) * 10).toFixed(fractionDigits);
-            const unShifted = Number(Number(unformatted) / 10).toFixed(fractionDigits);
+            const shifted = (Number(unformatted) * 10).toFixed(fractionDigits);
+            const unShifted = (Number(unformatted) / 10).toFixed(fractionDigits);
             const unformattedFraction = unformatted.split('.')?.[1]?.length || fractionDigits;
 
             // If the user is pasting, we don't need to shift the decimal point,

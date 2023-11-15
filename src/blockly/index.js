@@ -88,7 +88,8 @@ const addBlocklyTranslation = () => {
     $.ajaxPrefilter(options => {
         options.async = true; // eslint-disable-line no-param-reassign
     });
-    let lang = getLanguage();
+    let lang = getLanguage()?.toLowerCase();
+
     if (lang === 'ach') {
         lang = 'en';
     } else if (lang === 'zh_cn') {
@@ -96,8 +97,18 @@ const addBlocklyTranslation = () => {
     } else if (lang === 'zh_tw') {
         lang = 'zh-hant';
     }
-    return new Promise(resolve => {
-        $.getScript(`blockly-translations/${lang}.js`, resolve);
+    return new Promise((resolve, reject) => {
+        const link = `blockly-translations/${lang}.js`;
+
+        $.getScript(link)
+            .done(() => {
+                console.log(`Script loaded for lang: ${lang}`);
+                resolve();
+            })
+            .fail((jqxhr, settings, exception) => {
+                console.error(`Failed to load script for lang: ${link}`, { lang, link, settings, jqxhr, exception });
+                reject(exception);
+            });
     });
 };
 

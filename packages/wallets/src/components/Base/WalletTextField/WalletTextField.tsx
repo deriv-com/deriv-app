@@ -1,10 +1,10 @@
-import React, { ChangeEvent, CSSProperties, forwardRef, InputHTMLAttributes, useState } from 'react';
-import MessageContainer, { MessageContainerProps } from './HelperMessage';
+import React, { ChangeEvent, ComponentProps, CSSProperties, FC, useState } from 'react';
+import HelperMessage, { HelperMessageProps } from './HelperMessage';
+import { FormikErrors } from 'formik';
 import classNames from 'classnames';
 import './WalletTextField.scss';
-import { FormikErrors } from 'formik';
 
-export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, MessageContainerProps {
+export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;
     errorMessage?: FormikErrors<any> | FormikErrors<any>[] | string[] | string;
     isInvalid?: boolean;
@@ -14,76 +14,59 @@ export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputEleme
     showMessage?: boolean;
 }
 
-const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
-    (
-        {
-            defaultValue = '',
-            errorMessage = '',
-            helperMessage,
-            isInvalid = false,
-            label,
-            maxLength,
-            maxWidth = '33rem',
-            name = 'wallet-textfield',
-            onChange,
-            renderRightIcon,
-            showMessage = false,
-            ...rest
-        },
-        ref
-    ) => {
-        const [value, setValue] = useState(defaultValue);
+const WalletTextField: FC<WalletTextFieldProps> = ({
+    defaultValue = '',
+    isInvalid = false,
+    label,
+    maxLength,
+    maxWidth = '33rem',
+    message,
+    name = 'wallet-textfield',
+    onChange,
+    renderRightIcon,
+    showMessage = false,
+    ...rest
+}) => {
+    const [value, setValue] = useState(defaultValue);
 
-        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-            const newValue = e.target.value;
-            setValue(newValue);
-            onChange?.(e);
-        };
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value;
+        setValue(newValue);
+        onChange?.(e);
+    };
 
-        return (
-            <div
-                className={classNames('wallets-textfield', {
-                    'wallets-textfield--error': isInvalid,
-                })}
-                style={{ maxWidth }}
-            >
-                <div className='wallets-textfield__box'>
-                    <input
-                        className='wallets-textfield__field'
-                        id={name}
-                        maxLength={maxLength}
-                        onChange={handleChange}
-                        placeholder={label}
-                        value={value}
-                        {...rest}
-                        ref={ref}
-                    />
-                    {label && (
-                        <label className='wallets-textfield__label' htmlFor={name}>
-                            {label}
-                        </label>
-                    )}
-                    {typeof renderRightIcon === 'function' && (
-                        <div className='wallets-textfield__icon'>{renderRightIcon()}</div>
-                    )}
-                </div>
-                <div className='wallets-textfield__message-container'>
-                    {!isInvalid && showMessage && (
-                        <MessageContainer helperMessage={helperMessage} inputValue={value} maxLength={maxLength} />
-                    )}
-                    {isInvalid && errorMessage && (
-                        <MessageContainer
-                            helperMessage={errorMessage as string}
-                            inputValue={value}
-                            isError
-                            maxLength={maxLength}
-                        />
-                    )}
-                </div>
+    return (
+        <div
+            className={classNames('wallets-textfield', {
+                'wallets-textfield--error': isInvalid,
+            })}
+            style={{ maxWidth }}
+        >
+            <div className='wallets-textfield__box'>
+                <input
+                    className='wallets-textfield__field'
+                    id={name}
+                    maxLength={maxLength}
+                    onChange={handleChange}
+                    placeholder={label}
+                    value={value}
+                    {...rest}
+                />
+                {label && (
+                    <label className='wallets-textfield__label' htmlFor={name}>
+                        {label}
+                    </label>
+                )}
+                {typeof renderRightIcon === 'function' && (
+                    <div className='wallets-textfield__icon'>{renderRightIcon()}</div>
+                )}
             </div>
-        );
-    }
-);
+            <div className='wallets-textfield__message-container'>
+                {showMessage && <HelperMessage inputValue={value} maxLength={maxLength} message={message} />}
+            </div>
+        </div>
+    );
+};
 
 WalletTextField.displayName = 'WalletTextField';
 export default WalletTextField;

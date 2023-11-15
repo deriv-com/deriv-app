@@ -74,8 +74,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const needPersonalDetails = true;
 
     const initialScreenId: keyof typeof screens = useMemo(() => {
-        // const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
-        const service = 'idv';
+        const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
 
         if (poiStatus?.services) {
             const serviceStatus = poiStatus.services?.[service];
@@ -92,6 +91,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         }
         return 'loadingScreen';
     }, [
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         hasAttemptedPOA,
         needPersonalDetails,
         authenticationData?.is_poa_needed,

@@ -10,7 +10,6 @@ import { Analytics } from '@deriv/analytics';
 const Redirect = ({
     history,
     currency,
-    loginid,
     setVerificationCode,
     verification_code,
     openRealAccountSignup,
@@ -129,9 +128,7 @@ const Redirect = ({
                 // though can't use "verification_code" as name param
                 // as there is general logic within client-store
                 // which removes anything which resembles code=XYZ
-                history.push(
-                    `${routes.wallets_withdrawal}?verification=${verification_code?.payment_withdraw}&walletid=${loginid}`
-                );
+                history.push(`${routes.wallets_withdrawal}?verification=${verification_code?.payment_withdraw}`);
             } else {
                 history.push(routes.cashier_withdrawal);
             }
@@ -226,7 +223,6 @@ export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
         is_eu: client.is_eu,
-        loginid: client.loginid,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,

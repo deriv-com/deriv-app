@@ -1,29 +1,9 @@
 import {
-    ACCU_MANUAL_VIDEO_ID,
     CF_STREAM_CUSTOMER_URL,
     DESCRIPTION_VIDEO_ID,
-    getAccuManualVideoId,
     getDescriptionVideoId,
     getVideoDownloadUrl,
 } from '../video-config';
-
-describe('getAccuManualVideoId', () => {
-    it('should return AccumulatorsStatsManualModal video id for desktop in light theme', () => {
-        expect(getAccuManualVideoId(false, false)).toEqual(ACCU_MANUAL_VIDEO_ID.desktop.light);
-    });
-    it('should return AccumulatorsStatsManualModal video id for desktop in dark theme', () => {
-        expect(getAccuManualVideoId(false, true)).toEqual(ACCU_MANUAL_VIDEO_ID.desktop.dark);
-    });
-    it('should return AccumulatorsStatsManualModal video id for mobile in dark theme', () => {
-        expect(getAccuManualVideoId(true, true)).toEqual(ACCU_MANUAL_VIDEO_ID.mobile.dark);
-    });
-    it('should return AccumulatorsStatsManualModal video id for mobile in light theme', () => {
-        expect(getAccuManualVideoId(true, false)).toEqual(ACCU_MANUAL_VIDEO_ID.mobile.light);
-    });
-    it('should return AccumulatorsStatsManualModal video id for desktop in light theme when arguments are empty', () => {
-        expect(getAccuManualVideoId()).toEqual(ACCU_MANUAL_VIDEO_ID.desktop.light);
-    });
-});
 
 describe('getDescriptionVideoId', () => {
     it('should return an id for Vanillas description video in light theme', () => {

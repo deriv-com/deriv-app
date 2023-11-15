@@ -1,4 +1,3 @@
-import { test } from '@jest/globals';
 import React from 'react';
 import { cleanup, render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { createBrowserHistory } from 'history';

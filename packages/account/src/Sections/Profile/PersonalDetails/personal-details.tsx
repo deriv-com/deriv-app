@@ -189,122 +189,120 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                             <FormBody scroll_offset={is_mobile ? '199px' : '80px'}>
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
-                                    <React.Fragment>
-                                        <FormBodySection
-                                            side_note={localize(
-                                                'We use the information you give us only for verification purposes. All information is kept confidential.'
-                                            )}
-                                        >
-                                            {'salutation' in values && (
-                                                <fieldset className='account-form__fieldset'>
-                                                    <FormSelectField
-                                                        label={localize('Title')}
-                                                        name='salutation'
-                                                        list_items={salutation_list}
-                                                        required
-                                                        disabled={isFieldDisabled('salutation')}
-                                                    />
-                                                </fieldset>
-                                            )}
-                                            <DesktopWrapper>
-                                                <InputGroup className='account-form__fieldset--2-cols'>
-                                                    <Input
-                                                        data-lpignore='true'
-                                                        type='text'
-                                                        name='first_name'
-                                                        label={localize('First name*')}
-                                                        value={values.first_name}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        required
-                                                        disabled={isFieldDisabled('first_name')}
-                                                        error={errors.first_name}
-                                                        id='first_name'
-                                                        data-testid='dt_first_name'
-                                                    />
-                                                    <Input
-                                                        id='last_name'
-                                                        data-lpignore='true'
-                                                        type='text'
-                                                        name='last_name'
-                                                        label={localize('Last name*')}
-                                                        value={values.last_name}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        required
-                                                        disabled={isFieldDisabled('last_name')}
-                                                        error={errors.last_name}
-                                                        data-testid='dt_last_name'
-                                                    />
-                                                </InputGroup>
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <Input
-                                                        data-lpignore='true'
-                                                        type='text'
-                                                        name='first_name'
-                                                        id='first_name_mobile'
-                                                        label={localize('First name*')}
-                                                        value={values.first_name}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        required
-                                                        disabled={isFieldDisabled('first_name')}
-                                                        error={errors.first_name}
-                                                        data-testid='dt_first_name'
-                                                    />
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <Input
-                                                        data-lpignore='true'
-                                                        type='text'
-                                                        name='last_name'
-                                                        id='last_name_mobile'
-                                                        label={localize('Last name*')}
-                                                        value={values.last_name}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        required
-                                                        disabled={isFieldDisabled('last_name')}
-                                                        error={errors.last_name}
-                                                        data-testid='dt_last_name'
-                                                    />
-                                                </fieldset>
-                                            </MobileWrapper>
-                                            {'place_of_birth' in values && (
-                                                <fieldset className='account-form__fieldset'>
-                                                    <FormSelectField
-                                                        label={localize('Place of birth')}
-                                                        name='place_of_birth'
-                                                        list_items={residence_list}
-                                                        disabled={isFieldDisabled('place_of_birth')}
-                                                    />
-                                                </fieldset>
-                                            )}
+                                    <FormBodySection
+                                        side_note={localize(
+                                            'We use the information you give us only for verification purposes. All information is kept confidential.'
+                                        )}
+                                    >
+                                        {'salutation' in values && (
                                             <fieldset className='account-form__fieldset'>
-                                                <DateOfBirthField
-                                                    name='date_of_birth'
-                                                    label={localize('Date of birth*')}
-                                                    id='birth_day'
-                                                    disabled={isFieldDisabled('date_of_birth')}
-                                                    portal_id=''
-                                                    // @ts-expect-error this type value needs to be check again in GetSettings
-                                                    value={values.date_of_birth}
+                                                <FormSelectField
+                                                    label={localize('Title')}
+                                                    name='salutation'
+                                                    list_items={salutation_list}
+                                                    required
+                                                    disabled={isFieldDisabled('salutation')}
                                                 />
                                             </fieldset>
-                                            {'citizen' in values && (
-                                                <fieldset className='account-form__fieldset'>
-                                                    <FormSelectField
-                                                        label={localize('Citizenship')}
-                                                        name='citizen'
-                                                        list_items={residence_list}
-                                                        disabled={isFieldDisabled('citizen')}
-                                                    />
-                                                </fieldset>
-                                            )}
-                                        </FormBodySection>
-                                    </React.Fragment>
+                                        )}
+                                        <DesktopWrapper>
+                                            <InputGroup className='account-form__fieldset--2-cols'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    name='first_name'
+                                                    label={localize('First name*')}
+                                                    value={values.first_name}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                    disabled={isFieldDisabled('first_name')}
+                                                    error={errors.first_name}
+                                                    id='first_name'
+                                                    data-testid='dt_first_name'
+                                                />
+                                                <Input
+                                                    id='last_name'
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    name='last_name'
+                                                    label={localize('Last name*')}
+                                                    value={values.last_name}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                    disabled={isFieldDisabled('last_name')}
+                                                    error={errors.last_name}
+                                                    data-testid='dt_last_name'
+                                                />
+                                            </InputGroup>
+                                        </DesktopWrapper>
+                                        <MobileWrapper>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    name='first_name'
+                                                    id='first_name_mobile'
+                                                    label={localize('First name*')}
+                                                    value={values.first_name}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                    disabled={isFieldDisabled('first_name')}
+                                                    error={errors.first_name}
+                                                    data-testid='dt_first_name'
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    name='last_name'
+                                                    id='last_name_mobile'
+                                                    label={localize('Last name*')}
+                                                    value={values.last_name}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                    disabled={isFieldDisabled('last_name')}
+                                                    error={errors.last_name}
+                                                    data-testid='dt_last_name'
+                                                />
+                                            </fieldset>
+                                        </MobileWrapper>
+                                        {'place_of_birth' in values && (
+                                            <fieldset className='account-form__fieldset'>
+                                                <FormSelectField
+                                                    label={localize('Place of birth')}
+                                                    name='place_of_birth'
+                                                    list_items={residence_list}
+                                                    disabled={isFieldDisabled('place_of_birth')}
+                                                />
+                                            </fieldset>
+                                        )}
+                                        <fieldset className='account-form__fieldset'>
+                                            <DateOfBirthField
+                                                name='date_of_birth'
+                                                label={localize('Date of birth*')}
+                                                id='birth_day'
+                                                disabled={isFieldDisabled('date_of_birth')}
+                                                portal_id=''
+                                                // @ts-expect-error this type value needs to be check again in GetSettings
+                                                value={values.date_of_birth}
+                                            />
+                                        </fieldset>
+                                        {'citizen' in values && (
+                                            <fieldset className='account-form__fieldset'>
+                                                <FormSelectField
+                                                    label={localize('Citizenship')}
+                                                    name='citizen'
+                                                    list_items={residence_list}
+                                                    disabled={isFieldDisabled('citizen')}
+                                                />
+                                            </fieldset>
+                                        )}
+                                    </FormBodySection>
                                 )}
                                 <FormBodySection>
                                     <fieldset className='account-form__fieldset'>
@@ -340,27 +338,25 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                     )}
                                 </FormBodySection>
                                 {!is_virtual && (
-                                    <React.Fragment>
-                                        <FormBodySection>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='phone'
-                                                    id={'phone'}
-                                                    label={localize('Phone number*')}
-                                                    //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
-                                                    value={values.phone}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    error={errors.phone}
-                                                    disabled={isFieldDisabled('phone')}
-                                                    data-testid='dt_phone'
-                                                />
-                                            </fieldset>
-                                        </FormBodySection>
-                                    </React.Fragment>
+                                    <FormBodySection>
+                                        <fieldset className='account-form__fieldset'>
+                                            <Input
+                                                data-lpignore='true'
+                                                type='text'
+                                                name='phone'
+                                                id={'phone'}
+                                                label={localize('Phone number*')}
+                                                //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
+                                                value={values.phone}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                required
+                                                error={errors.phone}
+                                                disabled={isFieldDisabled('phone')}
+                                                data-testid='dt_phone'
+                                            />
+                                        </fieldset>
+                                    </FormBodySection>
                                 )}
                                 <React.Fragment>
                                     {'tax_residence' in values && (
@@ -501,14 +497,12 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
                                                         {states_list.length ? (
-                                                            <React.Fragment>
-                                                                <FormSelectField
-                                                                    label={localize('State/Province (optional)')}
-                                                                    name='address_state'
-                                                                    list_items={states_list}
-                                                                    disabled={isFieldDisabled('address_state')}
-                                                                />
-                                                            </React.Fragment>
+                                                            <FormSelectField
+                                                                label={localize('State/Province (optional)')}
+                                                                name='address_state'
+                                                                list_items={states_list}
+                                                                disabled={isFieldDisabled('address_state')}
+                                                            />
                                                         ) : (
                                                             <Input
                                                                 data-lpignore='true'

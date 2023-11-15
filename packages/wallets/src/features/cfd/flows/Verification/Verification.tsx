@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { useModal } from '../../../../components/ModalProvider';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
@@ -62,15 +62,19 @@ const screens = {
     poaScreen: <Poa />,
 };
 
-const Verification = ({ selectedJurisdiction }: { selectedJurisdiction: string }) => {
-    const { data: poiStatus, isSuccess } = usePOI();
+type TVerificationProps = {
+    selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
+};
+
+const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
+    const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { data: authenticationData } = useAuthentication();
     const { hide } = useModal();
 
     const isLoading = useMemo(() => {
-        return !isSuccess || !isSuccessPOAStatus;
-    }, [isSuccess, isSuccessPOAStatus]);
+        return !isSuccessPOIStatus || !isSuccessPOAStatus;
+    }, [isSuccessPOIStatus, isSuccessPOAStatus]);
 
     const hasAttemptedPOA = poaStatus?.has_attempted_poa || true;
     const needPersonalDetails = true;
@@ -81,7 +85,7 @@ const Verification = ({ selectedJurisdiction }: { selectedJurisdiction: string }
         if (poiStatus?.services) {
             const serviceStatus = poiStatus.services?.[service];
 
-            if (!isSuccess) return 'loadingScreen';
+            if (!isSuccessPOIStatus) return 'loadingScreen';
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
                 if (authenticationData?.is_poa_needed && !hasAttemptedPOA) return 'poaScreen';
                 if (needPersonalDetails) return 'personalDetailsScreen';
@@ -95,9 +99,10 @@ const Verification = ({ selectedJurisdiction }: { selectedJurisdiction: string }
         hasAttemptedPOA,
         needPersonalDetails,
         authenticationData?.is_poa_needed,
+        poiStatus,
         poiStatus?.services,
         poiStatus?.current?.service,
-        isSuccess,
+        isSuccessPOIStatus,
     ]);
 
     const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {

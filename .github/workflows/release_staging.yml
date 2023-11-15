@@ -29,7 +29,7 @@ jobs:
         GD_API_KEY: ${{ secrets.GD_API_KEY }}
         GD_APP_ID: ${{ secrets.GD_APP_ID }}
         GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
-        RUDDERSTACK_STAGING_KEY: ${{ vars.RUDDERSTACK_STAGING_KEY }}
+        RUDDERSTACK_KEY: ${{ vars.RUDDERSTACK_KEY }}
         RUDDERSTACK_URL: ${{ vars.RUDDERSTACK_URL }}
         REF_NAME: ${{ github.ref_name }}
     - name: Run tests
@@ -39,3 +39,15 @@ jobs:
       with:       
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+    - name: Build Docker image and push to Docker hub and K8S
+      uses: "./.github/actions/build_and_push_docker_image"
+      with:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+        DOCKERHUB_ORGANISATION: ${{ secrets.DOCKERHUB_ORGANISATION }}
+        K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE }}
+        KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
+        SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
+        CA_CRT: ${{ secrets.CA_CRT }}
+        APP_VERSION: latest-staging

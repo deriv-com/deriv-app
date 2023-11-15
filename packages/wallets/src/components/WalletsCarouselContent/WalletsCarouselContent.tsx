@@ -26,8 +26,8 @@ const WalletsCarouselContent: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const activeWalletIndex = useMemo(
         () =>
-            walletAccountsList?.findIndex(wallet => wallet.loginid === activeWallet?.loginid) ||
-            walletsCarouselEmblaApi?.selectedScrollSnap() ||
+            walletAccountsList?.findIndex(wallet => wallet.loginid === activeWallet?.loginid) ??
+            walletsCarouselEmblaApi?.selectedScrollSnap() ??
             0,
         [activeWallet?.loginid, walletAccountsList, walletsCarouselEmblaApi]
     );

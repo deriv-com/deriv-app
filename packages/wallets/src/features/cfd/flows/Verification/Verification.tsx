@@ -101,6 +101,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         authenticationData?.is_poa_needed,
         poiStatus,
         poiStatus?.services,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         poiStatus?.current?.service,
         isSuccessPOIStatus,
     ]);

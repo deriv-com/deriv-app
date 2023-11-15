@@ -10,7 +10,7 @@ export const getJurisdictionSvgContents = ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Synthetics, Baskets and Derived FX'),
+            description: localize('Synthetic indices, basket indices, and derived FX'),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('40+'),
@@ -44,7 +44,9 @@ export const getJurisdictionSvgContents = ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies'),
+            description: localize(
+                'Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs'
+            ),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('170+'),
@@ -94,7 +96,9 @@ export const getJurisdictionSvgContents = ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Synthetics, Forex, Stocks, Stock Indices, Cryptocurrencies, and ETFs'),
+            description: localize(
+                'Forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices'
+            ),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('40+'),

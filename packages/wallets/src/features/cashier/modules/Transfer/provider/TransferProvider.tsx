@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect } from 'react';
 import { useTransferBetweenAccounts } from '@deriv/api';
-import { useModifyTransferAccounts, useSortTransferAccounts } from '../hooks';
+import { useExtendedTransferAccountProperties, useSortedTransferAccounts } from '../hooks';
 
 export type TTransferContext = {
-    accounts: ReturnType<typeof useModifyTransferAccounts>['accounts'];
-    activeWallet: ReturnType<typeof useModifyTransferAccounts>['activeWallet'];
+    accounts: ReturnType<typeof useExtendedTransferAccountProperties>['accounts'];
+    activeWallet: ReturnType<typeof useExtendedTransferAccountProperties>['activeWallet'];
     isLoading: boolean;
     mutate: ReturnType<typeof useTransferBetweenAccounts>['mutate'];
 };
@@ -21,8 +21,12 @@ export const useTransfer = () => {
 
 const TransferProvider = ({ children }: React.PropsWithChildren) => {
     const { data, isLoading: isTransferAccountsLoading, mutate } = useTransferBetweenAccounts();
-    const { accounts, activeWallet, isLoading: isModifiedAccountsLoading } = useModifyTransferAccounts(data?.accounts);
-    const sortedAccounts = useSortTransferAccounts(accounts);
+    const {
+        accounts,
+        activeWallet,
+        isLoading: isModifiedAccountsLoading,
+    } = useExtendedTransferAccountProperties(data?.accounts);
+    const sortedAccounts = useSortedTransferAccounts(accounts);
     const isLoading = isTransferAccountsLoading || isModifiedAccountsLoading || !data;
 
     useEffect(() => {

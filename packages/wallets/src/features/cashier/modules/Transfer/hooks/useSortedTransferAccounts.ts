@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { getMarketType } from '../helpers';
 import { TAccount, TAccountsList } from '../types';
 
-const useSortTransferAccounts = (accounts: TAccountsList) => {
+const useSortedTransferAccounts = (accounts: TAccountsList) => {
     return useMemo(
         () => ({
             tradingAccounts: accounts.tradingAccounts.sort(sortTradingAccounts),
@@ -12,7 +12,7 @@ const useSortTransferAccounts = (accounts: TAccountsList) => {
     );
 };
 
-export default useSortTransferAccounts;
+export default useSortedTransferAccounts;
 
 /** A custom hook that sort trading and wallet accounts to display on the screen. */
 const sortWalletsAccounts = (a: TAccount, b: TAccount) => {

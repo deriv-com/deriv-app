@@ -1,2 +1,2 @@
-export { default as useModifyTransferAccounts } from './useModifyTransferAccounts';
-export { default as useSortTransferAccounts } from './useSortTransferAccounts';
+export { default as useExtendedTransferAccountProperties } from './useExtendedTransferAccountProperties';
+export { default as useSortedTransferAccounts } from './useSortedTransferAccounts';

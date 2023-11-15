@@ -69,8 +69,8 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({ verificati
                                 {({ field }: FieldProps<string>) => (
                                     <WalletTextField
                                         {...field}
-                                        helperMessage={errors.cryptoAddress}
                                         label='Your BTC Wallet address'
+                                        message={errors.cryptoAddress}
                                         showMessage
                                     />
                                 )}

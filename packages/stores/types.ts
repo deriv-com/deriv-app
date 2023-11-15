@@ -584,6 +584,7 @@ type TUiStore = {
     is_chart_countdown_visible: boolean;
     is_closing_create_real_account_modal: boolean;
     is_from_signup_account: boolean;
+    is_from_success_deposit_modal: boolean;
     is_kyc_information_submitted_modal_open: boolean;
     is_dark_mode_on: boolean;
     is_loading: boolean;
@@ -630,6 +631,7 @@ type TUiStore = {
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setIsFromSignupAccount: (value: boolean) => void;
     setIsVerificationModalVisible: (value: boolean) => void;
+    setIsFromSuccessDepositModal: (value: boolean) => void;
     setIsVerificationSubmitted: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;

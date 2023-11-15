@@ -169,6 +169,7 @@ export default class UIStore extends BaseStore {
     should_show_one_time_deposit_modal = false;
     should_show_trade_assessment_form = false;
     should_trigger_tour_guide = false;
+    is_from_success_deposit_modal = false;
     is_trading_assessment_for_existing_user_enabled = false;
     is_trading_assessment_for_new_user_enabled = false;
     should_show_assessment_complete_modal = false;
@@ -319,6 +320,7 @@ export default class UIStore extends BaseStore {
             should_show_trade_assessment_form: observable,
             should_show_trading_assessment_modal: observable,
             should_trigger_tour_guide: observable,
+            is_from_success_deposit_modal: observable,
             show_positions_toggle: observable,
             simple_duration_unit: observable,
             toasts: observable.shallow,
@@ -402,6 +404,7 @@ export default class UIStore extends BaseStore {
             setShouldShowTradingAssessmentModal: action.bound,
             setShouldShowWarningModal: action.bound,
             setShouldTriggerTourGuide: action.bound,
+            setIsFromSuccessDepositModal: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
             setIsMFVericationPendingModal: action.bound,
@@ -981,6 +984,10 @@ export default class UIStore extends BaseStore {
 
     setShouldTriggerTourGuide(value) {
         this.should_trigger_tour_guide = value;
+    }
+
+    setIsFromSuccessDepositModal(value) {
+        this.is_from_success_deposit_modal = value;
     }
 
     setIsMFVericationPendingModal(value) {

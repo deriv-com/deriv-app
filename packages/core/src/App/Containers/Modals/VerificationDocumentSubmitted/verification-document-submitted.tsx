@@ -6,7 +6,13 @@ import './verification-document-submitted.scss';
 
 const VerificationDocumentSubmitted = observer(() => {
     const { ui, client } = useStore();
-    const { is_verification_submitted, setIsVerificationSubmitted } = ui;
+    const {
+        is_verification_submitted,
+        is_from_success_deposit_modal,
+        setIsVerificationSubmitted,
+        setShouldTriggerTourGuide,
+        setIsFromSuccessDepositModal,
+    } = ui;
     const { updateMT5Status } = client;
     const message = <Localize i18n_default_text='We’ve received your documents' />;
     const description = (
@@ -18,6 +24,10 @@ const VerificationDocumentSubmitted = observer(() => {
     }, [updateMT5Status]);
 
     const onClick = () => {
+        if (is_from_success_deposit_modal) {
+            setShouldTriggerTourGuide(true);
+            setIsFromSuccessDepositModal(false);
+        }
         setIsVerificationSubmitted(false);
     };
 

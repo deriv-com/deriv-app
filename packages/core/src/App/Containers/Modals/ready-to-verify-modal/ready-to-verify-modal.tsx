@@ -14,11 +14,15 @@ const ReadyToVerifyModal = observer(() => {
         disableApp,
         enableApp,
         setIsVerificationModalVisible,
+        setIsFromSuccessDepositModal,
         is_mobile,
     } = ui;
     const { has_mf_account_deposited } = useHasMFAccountDeposited();
 
     const onConfirmModal = () => {
+        if (has_mf_account_deposited) {
+            setIsFromSuccessDepositModal(true);
+        }
         toggleAccountSuccessModal();
         setIsVerificationModalVisible(true); // route to poi-poa modal
     };

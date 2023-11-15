@@ -6,7 +6,7 @@ import { HintBox, Input, Text } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods, useExchangeRate } from '@deriv/hooks';
 import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
-import { observer, Observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
@@ -280,77 +280,65 @@ const BuySellForm = props => {
                                         <Localize i18n_default_text="To place an order, add one of the advertiser's preferred payment methods:" />
                                     )}
                                 </Text>
-                                <Observer>
-                                    {() => (
-                                        <div
-                                            className={classNames('buy-sell-form--sell-payment-methods', {
-                                                'buy-sell-form--sell-payment-methods--disable': should_disable_field,
-                                            })}
-                                        >
-                                            {payment_method_names
-                                                ?.map((add_payment_method, key) => {
-                                                    const {
-                                                        setSelectedPaymentMethodDisplayName,
-                                                        setShouldShowAddPaymentMethodForm,
-                                                    } = my_profile_store;
-                                                    const matching_payment_methods =
-                                                        p2p_advertiser_payment_methods?.filter(
-                                                            advertiser_payment_method =>
-                                                                advertiser_payment_method.display_name ===
-                                                                add_payment_method
-                                                        );
+                                <div
+                                    className={classNames('buy-sell-form--sell-payment-methods', {
+                                        'buy-sell-form--sell-payment-methods--disable': should_disable_field,
+                                    })}
+                                >
+                                    {payment_method_names
+                                        ?.map((add_payment_method, key) => {
+                                            const {
+                                                setSelectedPaymentMethodDisplayName,
+                                                setShouldShowAddPaymentMethodForm,
+                                            } = my_profile_store;
+                                            const matching_payment_methods = p2p_advertiser_payment_methods?.filter(
+                                                advertiser_payment_method =>
+                                                    advertiser_payment_method.display_name === add_payment_method
+                                            );
 
-                                                    return matching_payment_methods?.length > 0 ? (
-                                                        matching_payment_methods.map(payment_method => (
-                                                            <PaymentMethodCard
-                                                                is_vertical_ellipsis_visible={false}
-                                                                key={key}
-                                                                medium
-                                                                onClick={async () => {
-                                                                    onClickPaymentMethodCard(payment_method);
-                                                                    await validateForm();
-                                                                }}
-                                                                payment_method={payment_method}
-                                                                style={
-                                                                    selected_methods.includes(payment_method.id)
-                                                                        ? style
-                                                                        : {}
-                                                                }
-                                                                disabled={should_disable_field}
-                                                            />
-                                                        ))
-                                                    ) : (
-                                                        <PaymentMethodCard
-                                                            add_payment_method={add_payment_method}
-                                                            is_add
-                                                            key={key}
-                                                            medium
-                                                            onClickAdd={() => {
-                                                                if (!should_disable_field) {
-                                                                    setSelectedPaymentMethodDisplayName(
-                                                                        add_payment_method
-                                                                    );
-                                                                    setShouldShowAddPaymentMethodForm(true);
-                                                                }
-                                                            }}
-                                                            disabled={should_disable_field}
-                                                            style={{
-                                                                cursor: should_disable_field
-                                                                    ? 'not-allowed'
-                                                                    : 'pointer',
-                                                            }}
-                                                        />
-                                                    );
-                                                })
-                                                .sort(payment_method_card_node =>
-                                                    Array.isArray(payment_method_card_node) &&
-                                                    !payment_method_card_node[0].props?.is_add
-                                                        ? -1
-                                                        : 1
-                                                )}
-                                        </div>
-                                    )}
-                                </Observer>
+                                            return matching_payment_methods?.length > 0 ? (
+                                                matching_payment_methods.map(payment_method => (
+                                                    <PaymentMethodCard
+                                                        is_vertical_ellipsis_visible={false}
+                                                        key={key}
+                                                        medium
+                                                        onClick={async () => {
+                                                            onClickPaymentMethodCard(payment_method);
+                                                            await validateForm();
+                                                        }}
+                                                        payment_method={payment_method}
+                                                        style={
+                                                            selected_methods.includes(payment_method.id) ? style : {}
+                                                        }
+                                                        disabled={should_disable_field}
+                                                    />
+                                                ))
+                                            ) : (
+                                                <PaymentMethodCard
+                                                    add_payment_method={add_payment_method}
+                                                    is_add
+                                                    key={key}
+                                                    medium
+                                                    onClickAdd={() => {
+                                                        if (!should_disable_field) {
+                                                            setSelectedPaymentMethodDisplayName(add_payment_method);
+                                                            setShouldShowAddPaymentMethodForm(true);
+                                                        }
+                                                    }}
+                                                    disabled={should_disable_field}
+                                                    style={{
+                                                        cursor: should_disable_field ? 'not-allowed' : 'pointer',
+                                                    }}
+                                                />
+                                            );
+                                        })
+                                        .sort(payment_method_card_node =>
+                                            Array.isArray(payment_method_card_node) &&
+                                            !payment_method_card_node[0].props?.is_add
+                                                ? -1
+                                                : 1
+                                        )}
+                                </div>
                             </div>
                             <div className='buy-sell-form-line' />
                         </React.Fragment>

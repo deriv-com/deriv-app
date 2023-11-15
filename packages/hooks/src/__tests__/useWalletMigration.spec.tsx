@@ -11,7 +11,6 @@ jest.mock('@deriv/api', () => ({
 }));
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'wallet_migration'>>;
-// @ts-expect-error need to come up with a way to mock the return type of useRequest
 const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'wallet_migration'>>;
 
 describe('useWalletMigration', () => {

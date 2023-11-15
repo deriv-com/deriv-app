@@ -1,12 +1,11 @@
-import React, { ChangeEvent, forwardRef, InputHTMLAttributes, useState } from 'react';
-import classNames from 'classnames';
+import React, { ChangeEvent, CSSProperties, forwardRef, InputHTMLAttributes, useState } from 'react';
 import MessageContainer, { MessageContainerProps } from './HelperMessage';
 import './WalletTextField.scss';
 
 export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, MessageContainerProps {
     defaultValue?: string;
-    inputClassName?: string;
     label?: string;
+    maxWidth?: CSSProperties['maxWidth'];
     renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
 }
@@ -16,9 +15,9 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
         {
             defaultValue = '',
             helperMessage,
-            inputClassName,
             label,
             maxLength,
+            maxWidth = '33rem',
             name = 'wallet-textfield',
             onChange,
             renderRightIcon,
@@ -36,8 +35,8 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
         };
 
         return (
-            <div className='wallets-textfield'>
-                <div className={classNames('wallets-textfield__box', inputClassName)}>
+            <div className='wallets-textfield' style={{ maxWidth }}>
+                <div className='wallets-textfield__box'>
                     <input
                         className='wallets-textfield__field'
                         id={name}
@@ -53,7 +52,9 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
                             {label}
                         </label>
                     )}
-                    <div className='wallets-textfield__icon'>{renderRightIcon?.()}</div>
+                    {typeof renderRightIcon === 'function' && (
+                        <div className='wallets-textfield__icon'>{renderRightIcon()}</div>
+                    )}
                 </div>
                 <div className='wallets-textfield__message-container'>
                     {showMessage && (

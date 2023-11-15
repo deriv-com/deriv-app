@@ -16,7 +16,6 @@ import {
     isMobile,
     isMultiplierContract,
     LocalStore,
-    platform_name,
     routes,
     unique,
 } from '@deriv/shared';
@@ -1105,7 +1104,6 @@ export default class NotificationStore extends BaseStore {
                 type: 'info',
                 is_persistent: true,
                 should_show_again: true,
-                platform: [platform_name.DTrader],
                 is_disposable: true,
                 action: {
                     text: localize('Reset balance'),

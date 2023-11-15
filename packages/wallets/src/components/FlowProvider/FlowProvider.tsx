@@ -15,7 +15,6 @@ import * as Yup from 'yup';
 export type TFlowProviderContext<T> = {
     WalletScreen?: ReactNode;
     currentScreenId: keyof T;
-    dirty: FormikProps<FormikValues>['dirty'];
     errors: FormikErrors<FormikValues>;
     formValues: FormikValues;
     setFormValues: (
@@ -37,7 +36,7 @@ export type TFlowProviderProps<T> = {
     initialScreenId?: keyof T;
     initialValues: FormikValues;
     screens: T;
-    validationSchema: Yup.AnySchema;
+    validationSchema: Yup.AnyObjectSchema;
 };
 
 const FlowProviderContext = createContext<TFlowProviderContext<TWalletScreens> | null>(null);
@@ -106,7 +105,7 @@ function FlowProvider<T extends TWalletScreens>({
             validateOnChange
             validationSchema={validationSchema}
         >
-            {({ dirty, errors, setFieldValue, values }) => {
+            {({ errors, setFieldValue, values }) => {
                 return (
                     <FlowProvider
                         value={{
@@ -114,7 +113,6 @@ function FlowProvider<T extends TWalletScreens>({
                             formValues: values,
                             setFormValues: setFieldValue,
                             errors,
-                            dirty,
                         }}
                     >
                         {children({
@@ -122,7 +120,6 @@ function FlowProvider<T extends TWalletScreens>({
                             errors,
                             formValues: values,
                             setFormValues: setFieldValue,
-                            dirty,
                         })}
                     </FlowProvider>
                 );

@@ -17,25 +17,25 @@ const IDVDocumentUploadDetails = () => {
                     {/* TODO: Update account details using implemented Formik */}
 
                     <FlowTextField
-                        helperMessage={'Your first name as in your identity document'}
                         label='First name*'
                         maxWidth='35.9rem'
+                        message='Your first name as in your identity document'
                         name='firstName'
                         showMessage
                     />
 
                     <FlowTextField
-                        helperMessage='Your last name as in your identity document'
                         label='Last name*'
                         maxWidth='35.9rem'
+                        message='Your last name as in your identity document'
                         name='lastName'
                         showMessage
                     />
                     {/* TODO: Replace with DatePicker component*/}
                     <FlowTextField
-                        helperMessage='Your date of birth as in your identity document'
                         label='Date of birth*'
                         maxWidth='35.9rem'
+                        message='Your date of birth as in your identity document'
                         name='dateOfBirth'
                         showMessage
                         type='date'

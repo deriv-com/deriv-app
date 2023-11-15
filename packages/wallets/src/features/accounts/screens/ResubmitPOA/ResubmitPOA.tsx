@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useSettings, useStatesList } from '@deriv/api';
 import { InlineMessage, WalletDropdown, WalletText, WalletTextField } from '../../../../components/Base';
+import useDevice from '../../../../hooks/useDevice';
 import './ResubmitPOA.scss';
 
 const ResubmitPOA: React.FC = () => {
     const { data } = useSettings();
+    const { isMobile } = useDevice();
     const country = data?.country_code || '';
     const { data: statesList } = useStatesList(country);
 
@@ -15,12 +17,14 @@ const ResubmitPOA: React.FC = () => {
         setSelectedState(value);
     };
 
+    const deviceWidth = isMobile ? '100%' : '84rem';
+
     return (
         <div className='wallets-resubmit-poa'>
             <div className='wallets-resubmit-poa__address'>
-                <div className='wallets-resubmit-poa__address__label'>
+                <div className='wallets-resubmit-poa__address__title'>
                     <WalletText weight='bold'>Address</WalletText>
-                    <div className='wallets-resubmit-poa__address__divider' />
+                    <div className='wallets-resubmit-poa__address__title--divider' />
                 </div>
                 <div className='wallets-resubmit-poa__address__inline'>
                     <InlineMessage size='md' type='warning' variant='contained'>
@@ -31,18 +35,18 @@ const ResubmitPOA: React.FC = () => {
                     </InlineMessage>
                 </div>
                 <div className='wallets-resubmit-poa__address__input'>
-                    <WalletTextField label='First line of address*' maxWidth='84rem' />
-                    <WalletTextField label='Second line of address' maxWidth='84rem' />
-                    <WalletTextField label='Town/City*' maxWidth='84rem' />
+                    <WalletTextField label='First line of address*' maxWidth={deviceWidth} name='first-line' />
+                    <WalletTextField label='Second line of address' maxWidth={deviceWidth} name='second-line' />
+                    <WalletTextField label='Town/City*' maxWidth={deviceWidth} name='town-line' />
                     <WalletDropdown
                         label='State/Province'
                         list={statesList}
                         listHeight='sm'
-                        maxWidth='84rem'
+                        maxWidth={deviceWidth}
                         onSelect={handleSelect}
                         value={selectedState}
                     />
-                    <WalletTextField label='Postal/ZIP Code' maxWidth='84rem' />
+                    <WalletTextField label='Postal/ZIP Code' maxWidth={deviceWidth} name='zip-line' />
                 </div>
             </div>
         </div>

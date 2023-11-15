@@ -5,7 +5,8 @@ import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowP
 import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
-import { Onfido, ResubmitPOA } from '../../screens';
+import { ResubmitPOA } from '../../../accounts/screens';
+import { Onfido } from '../../screens';
 
 const Idv = () => {
     return (
@@ -91,7 +92,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
     const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
-            if (!hasAttemptedPOA) {
+            if (hasAttemptedPOA) {
                 switchScreen('poaScreen');
             } else if (needPersonalDetails) {
                 switchScreen('personalDetailsScreen');

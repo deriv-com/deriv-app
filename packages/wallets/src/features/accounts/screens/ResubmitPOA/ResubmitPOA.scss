@@ -2,13 +2,19 @@
     width: 99.6rem;
     height: 60rem;
     display: flex;
-    padding: 1.6rem 0;
+    padding: 1.6rem;
     flex-direction: column;
     align-items: center;
     gap: 1.6rem;
     flex: 1 0 0;
     align-self: stretch;
     background: var(--system-light-8-primary-background, #fff);
+
+    @include mobile {
+        width: 100%;
+        height: 100%;
+        padding: 1.6rem;
+    }
 
     &__address {
         display: flex;
@@ -17,19 +23,35 @@
         gap: 1.6rem;
         max-width: 85rem;
 
-        &__label {
+        @include mobile {
+            width: 100%;
+        }
+
+        &__title {
             display: flex;
             height: 2.4rem;
             justify-content: center;
             align-items: center;
             gap: 1.1rem;
-        }
 
-        &__divider {
-            width: 76rem;
-            height: 0.12rem;
-            flex-shrink: 0;
-            background: var(--system-light-7-secondary-background, #f2f3f4);
+            @include mobile {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                align-self: stretch;
+            }
+
+            &--divider {
+                width: 76rem;
+                height: 0.12rem;
+                flex-shrink: 0;
+                background: var(--system-light-7-secondary-background, #f2f3f4);
+
+                @include mobile {
+                    height: 0.1rem;
+                    flex: 1 0 0;
+                }
+            }
         }
 
         &__inline {
@@ -39,6 +61,10 @@
 
             &--message {
                 width: 80rem;
+
+                @include mobile {
+                    width: 100%;
+                }
             }
         }
 
@@ -48,6 +74,10 @@
             flex-direction: column;
             align-items: flex-start;
             gap: 1.6rem;
+
+            @include mobile {
+                width: 100%;
+            }
         }
     }
 }

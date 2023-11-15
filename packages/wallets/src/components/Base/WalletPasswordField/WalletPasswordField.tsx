@@ -11,14 +11,21 @@ interface WalletPasswordFieldProps extends WalletTextFieldProps {
     shouldDisablePasswordMeter?: boolean;
 }
 
-const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({ password, shouldDisablePasswordMeter = false }) => {
+const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
+    label,
+    onChange,
+    password,
+    shouldDisablePasswordMeter = false,
+}) => {
     const [viewPassword, setViewPassword] = useState(false);
     const { message, score } = passwordChecker(password);
 
     return (
         <div className='wallets-password'>
             <WalletTextField
+                label={label}
                 message={message}
+                onChange={onChange}
                 pattern={passwordPattern}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />

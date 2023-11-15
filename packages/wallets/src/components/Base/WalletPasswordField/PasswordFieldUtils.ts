@@ -11,12 +11,7 @@ export const passwordChecker = (password: string) => {
         },
         {
             passwordFeedback: 'Password should have lower and uppercase English letters with numbers.',
-            pattern: /[A-Za-z]/,
-            strength: 1,
-        },
-        {
-            passwordFeedback: 'Password should have lower and uppercase English letters with numbers.',
-            pattern: /\d/,
+            pattern: /[A-Za-z0-9]/,
             strength: 1,
         },
         {

@@ -1520,6 +1520,9 @@
         text-align: left;
         margin: 0 2.4rem;
     }
+    &__acc_status_badge {
+        max-width: max-content;
+    }
 }
 
 .cfd-password-manager {

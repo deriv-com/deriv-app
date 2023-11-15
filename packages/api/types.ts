@@ -229,6 +229,68 @@ import type {
 import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    available_accounts: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            available_accounts: 1;
+            /**
+             * List of account categories that needs to received.
+             */
+            categories: 'wallet'[];
+            /**
+             * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
+             */
+            loginid?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            available_accounts?: {
+                /**
+                 * Wallet account types that are available to be created
+                 */
+                wallets: {
+                    /**
+                     * Account type of wallet
+                     */
+                    account_type: 'doughflow' | 'crypto' | 'paymentagent' | 'paymentagent_client' | 'p2p';
+                    /**
+                     * Currency of wallet
+                     */
+                    currency: string;
+                    /**
+                     * Landing Company of wallet.
+                     */
+                    landing_company: string;
+                }[];
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'available_accounts';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
     wallet_migration: {
         request: {
             /**
@@ -1547,7 +1609,10 @@ type TPrivateSocketEndpoints = {
              * Must be `1`
              */
             notification_event: 1;
-            args: {
+            /**
+             * Event arguments.
+             */
+            args?: {
                 /**
                  * (Optional- for `poi_documents_uploaded` only) An array of onfido document ids intended to be included in the poi check.
                  */

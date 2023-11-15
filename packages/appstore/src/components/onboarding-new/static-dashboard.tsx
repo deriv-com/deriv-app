@@ -102,7 +102,7 @@ const StaticDashboard = observer(
         const compare_accounts_title = eu_user ? localize('Account Information') : localize('Compare accounts');
 
         return (
-            <ThemedScrollbars height={'calc(100% - 20rem)'} is_bypassed={isMobile()}>
+            <ThemedScrollbars height={'calc(100% - 25rem)'} is_bypassed={isMobile()}>
                 <div
                     data-testid='dt_onboarding_dashboard'
                     className={classNames('static-dashboard', {
@@ -271,6 +271,7 @@ const StaticDashboard = observer(
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
                                         has_divider={!eu_user && !financial_restricted_countries}
+                                        is_animated={is_onboarding_animated.button}
                                     />
                                 </div>
 
@@ -284,6 +285,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                                 has_divider
                                             />
                                         </div>
@@ -295,6 +297,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                                 has_divider
                                             />
                                         </div>
@@ -306,6 +309,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                             />
                                         </div>
                                         <div className='static-dashboard-wrapper__body--apps-item'>
@@ -316,6 +320,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                             />
                                         </div>
                                     </React.Fragment>

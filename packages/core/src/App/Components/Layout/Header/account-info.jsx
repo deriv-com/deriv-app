@@ -27,11 +27,15 @@ const AccountInfoIcon = ({ is_virtual, currency }) => (
     />
 );
 
-const DisplayAccountType = ({ account_type, is_eu }) => {
+const DisplayAccountType = ({ account_type, country_standpoint, is_eu }) => {
     if (account_type === MARKET_TYPES.FINANCIAL) {
         return <Localize i18n_default_text='Multipliers' />;
     } else if (account_type === MARKET_TYPES.UNREGULATED) {
-        if (is_eu) {
+        if (country_standpoint.is_isle_of_man) return null;
+        if (country_standpoint.is_united_kingdom) {
+            return <Localize i18n_default_text='Gaming' />;
+        }
+        if (is_eu || country_standpoint.is_belgium) {
             return <Localize i18n_default_text='Options' />;
         }
         return <Localize i18n_default_text='Derived' />;
@@ -44,6 +48,7 @@ const AccountInfo = ({
     account_type,
     balance,
     currency,
+    country_standpoint,
     disableApp,
     enableApp,
     is_dialog_on,
@@ -93,7 +98,11 @@ const AccountInfo = ({
                                 )}
                             </p>
                             <Text size='xxxs' line_height='s'>
-                                <DisplayAccountType account_type={account_type} is_eu={is_eu} />
+                                <DisplayAccountType
+                                    account_type={account_type}
+                                    country_standpoint={country_standpoint}
+                                    is_eu={is_eu}
+                                />
                             </Text>
                         </div>
                     )}
@@ -141,6 +150,7 @@ AccountInfo.propTypes = {
     account_type: PropTypes.string,
     balance: PropTypes.string,
     currency: PropTypes.string,
+    country_standpoint: PropTypes.object,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     is_dialog_on: PropTypes.bool,

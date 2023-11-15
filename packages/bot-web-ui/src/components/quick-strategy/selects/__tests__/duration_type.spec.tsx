@@ -1,17 +1,14 @@
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
-
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { mock_ws } from 'Utils/mock';
-
 import DurationUnit from '../duration-type';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -65,6 +62,8 @@ describe('<DurationUnit />', () => {
         const mock_onSubmit = jest.fn();
         const initial_value = {
             durationtype: 1,
+            symbol: 'R_100',
+            tradetype: 'callput',
         };
 
         wrapper = ({ children }: { children: JSX.Element }) => (
@@ -85,7 +84,7 @@ describe('<DurationUnit />', () => {
     });
 
     it('should render DurationUnit', async () => {
-        const { container } = render(<DurationUnit data={{ symbol: 'R100', tradetype: 'callput' }} />, {
+        const { container } = render(<DurationUnit />, {
             wrapper,
         });
         await waitFor(() => {
@@ -94,10 +93,9 @@ describe('<DurationUnit />', () => {
     });
 
     it('should select item from list', async () => {
-        render(<DurationUnit data={{ symbol: 'R100', tradetype: 'callput' }} />, {
+        render(<DurationUnit />, {
             wrapper,
         });
-
         const autocomplete_element = screen.getByTestId('qs_autocomplete_durationtype');
         userEvent.click(autocomplete_element);
         await waitFor(() => {

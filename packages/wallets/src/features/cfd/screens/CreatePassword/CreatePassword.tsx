@@ -1,12 +1,11 @@
 import React from 'react';
-import { WalletButton } from '../../../../components/Base';
+import { WalletButton, WalletPasswordField } from '../../../../components/Base';
+import { passwordChecker } from '../../../../components/Base/WalletPasswordField/PasswordFieldUtils';
 import useDevice from '../../../../hooks/useDevice';
-import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import { TPlatforms } from '../../../../types';
-import { PlatformToTitleMapper } from '../../constants';
+import { PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
 
-// TODO: Refactor the unnecessary props out once FlowProvider is integrated
 type TProps = {
     icon: React.ReactNode;
     isLoading?: boolean;
@@ -26,7 +25,8 @@ const CreatePassword: React.FC<TProps> = ({
 }) => {
     const { isMobile } = useDevice();
 
-    const title = PlatformToTitleMapper[platform];
+    const title = PlatformDetails[platform].title;
+    const { score } = passwordChecker(password);
     return (
         <div className='wallets-create-password'>
             {!isMobile && icon}
@@ -34,13 +34,11 @@ const CreatePassword: React.FC<TProps> = ({
             <span className='wallets-create-password-subtitle'>
                 You can use this password for all your {title} accounts.
             </span>
-            <div className='wallets-create-password-input'>
-                <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
-                <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
-            </div>
+            <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
             {!isMobile && (
                 <WalletButton
-                    disabled={!password || isLoading}
+                    disabled={!password || isLoading || score <= 2}
+                    isLoading={isLoading}
                     onClick={onPrimaryClick}
                     size='lg'
                     text={`Create ${title} password`}

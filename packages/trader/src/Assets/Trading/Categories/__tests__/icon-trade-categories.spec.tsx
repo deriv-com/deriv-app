@@ -184,6 +184,15 @@ describe('<IconTradeCatgory />', () => {
             expect(icon).toHaveClass('category-wrapper');
         });
     });
+    it('Expect two MockedIcons to be rendered when category is turboslong', () => {
+        render(<IconTradeCategory category='turboslong' />);
+        const mocked_icons = screen.getAllByText(mocked_icon);
+        expect(mocked_icons).toHaveLength(2);
+        mocked_icons.forEach(icon => {
+            expect(icon).toBeInTheDocument();
+            expect(icon).toHaveClass('category-wrapper');
+        });
+    });
     it('Expect default case to be rendered when category is not valid', () => {
         render(<IconTradeCategory category='some_trade_type' />);
         const mocked_icon_text = screen.getByText(mocked_icon);

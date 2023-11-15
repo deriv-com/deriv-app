@@ -1,9 +1,10 @@
 import React from 'react';
+import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformToTitleMapper } from '../../constants';
+import { PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
 // TODO: Refactor the unnecessary props out once FlowProvider is integrated
@@ -27,13 +28,17 @@ const EnterPassword: React.FC<TProps> = ({
     platform,
 }) => {
     const { isDesktop } = useDevice();
-    const title = PlatformToTitleMapper[platform];
+    const title = PlatformDetails[platform].title;
+    const { data } = useActiveWalletAccount();
+    const accountType = data?.is_virtual ? 'Demo' : 'Real';
+    const marketTypeTitle = platform === 'dxtrade' ? accountType : marketType;
+
     return (
         <div className='wallets-enter-password'>
             <div className='wallets-enter-password--container'>
                 {isDesktop && <div className='wallets-enter-password-title'>Enter your {title} password</div>}
                 <span className='wallets-enter-password-subtitle'>
-                    Enter your {title} password to add a {title} {marketType} account.
+                    Enter your {title} password to add a {title} {marketTypeTitle} account.
                 </span>
                 <div className='wallets-enter-password-input'>
                     <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
@@ -45,6 +50,7 @@ const EnterPassword: React.FC<TProps> = ({
                     <WalletButton onClick={onSecondaryClick} size='lg' text='Forgot password?' variant='outlined' />
                     <WalletButton
                         disabled={!password || isLoading}
+                        isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'
                         text='Add account'

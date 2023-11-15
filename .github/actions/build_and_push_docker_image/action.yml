@@ -64,4 +64,4 @@ runs:
             cd devops-ci-scripts/k8s-build_tools
             echo $CA_CRT | base64 --decode > ca.crt
             ./release.sh ${APP_NAME} ${{ github.ref_name }}
-      shell: bash
+        shell: bash

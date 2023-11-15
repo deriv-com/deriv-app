@@ -23,7 +23,7 @@ describe('useJurisdictionStatus', () => {
                         status: 'rejected',
                     },
                 },
-                next: {
+                current: {
                     service: 'idv',
                 },
             },
@@ -56,7 +56,7 @@ describe('useJurisdictionStatus', () => {
                         status: 'pending',
                     },
                 },
-                next: {
+                current: {
                     service: 'idv',
                 },
             },
@@ -100,7 +100,7 @@ describe('useJurisdictionStatus', () => {
                         status: 'pending',
                     },
                 },
-                next: {
+                current: {
                     service: 'onfido',
                 },
             },
@@ -129,7 +129,7 @@ describe('useJurisdictionStatus', () => {
                         status: 'none',
                     },
                 },
-                next: {
+                current: {
                     service: 'idv',
                 },
             },
@@ -164,7 +164,7 @@ describe('useJurisdictionStatus', () => {
                         status: 'verified',
                     },
                 },
-                next: {
+                current: {
                     service: 'idv',
                 },
             },
@@ -191,7 +191,7 @@ describe('useJurisdictionStatus', () => {
                         status: 'none',
                     },
                 },
-                next: {
+                current: {
                     service: 'idv',
                 },
             },

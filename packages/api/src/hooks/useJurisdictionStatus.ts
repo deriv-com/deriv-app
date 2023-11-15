@@ -32,13 +32,13 @@ const useJurisdictionStatus = (
     const { data: poiStatus } = usePOI();
 
     const isSuccess = useMemo(() => {
-        return isSuccessAuthenticationStatus && poiStatus?.next?.service;
-    }, [isSuccessAuthenticationStatus, poiStatus?.next?.service]);
+        return isSuccessAuthenticationStatus && poiStatus?.current?.service;
+    }, [isSuccessAuthenticationStatus, poiStatus?.current?.service]);
 
     const verification_status = useMemo(() => {
         const isPOIServiceStatus = (...statuses: TServiceStatus[]) => {
-            const next_service = poiStatus?.next?.service as keyof TServices;
-            const service = poiStatus?.services?.[next_service];
+            const current_service = poiStatus?.current?.service as keyof TServices;
+            const service = poiStatus?.services?.[current_service];
             if (service?.status) {
                 return statuses.includes(service.status);
             }
@@ -90,7 +90,7 @@ const useJurisdictionStatus = (
     }, [
         authenticationStatus?.is_idv_revoked,
         poiStatus?.services,
-        poiStatus?.next?.service,
+        poiStatus?.current?.service,
         mt5_account_status,
         jurisdiction,
     ]);

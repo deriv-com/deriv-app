@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useCombobox } from 'downshift';
 import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
 import reactNodeToString from '../../../utils/reactNodeToString';
+import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
 import './WalletDropdown.scss';
 
@@ -14,7 +15,7 @@ type TProps = {
         text: React.ReactNode;
         value: string;
     }[];
-    listHeight?: 'lg' | 'md' | 'sm';
+    listHeight?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     maxWidth?: CSSProperties['maxWidth'];
     onSelect: (value: string) => void;
     showMessage?: boolean;

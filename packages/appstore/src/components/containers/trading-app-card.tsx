@@ -124,7 +124,7 @@ const TradingAppCard = ({
     const migration_status =
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION ||
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
-    const is_disabled = !!(mt5_acc_auth_status && !migration_status);
+    const is_disabled = !!(mt5_acc_auth_status && !migration_status) && !is_eu_user;
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
@@ -201,7 +201,7 @@ const TradingAppCard = ({
                         new_tab={new_tab}
                         is_buttons_disabled={
                             //For MF, we enable the button even if account is not authenticated. Rest of jurisdictions, disable the button for pending, failed and needs verification
-                            !is_eu_user && !!mt5_acc_auth_status
+                            is_disabled
                         }
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}

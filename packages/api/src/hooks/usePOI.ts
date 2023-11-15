@@ -43,9 +43,9 @@ const usePOI = () => {
     }, [previous_service, authentication_data?.identity?.services]);
 
     /**
-     * @description Get the next step based on a few check. Returns configuration for document validation as well
+     * @description Get the current step based on a few checks. Returns configuration for document validation as well.
      */
-    const next_poi = useMemo(() => {
+    const current_poi = useMemo(() => {
         const user_country_code = get_settings_data?.citizen || get_settings_data?.country_code;
         const matching_residence_data = residence_list_data?.find(r => r.value === user_country_code);
         const is_idv_supported = matching_residence_data?.identity?.services?.idv?.is_country_supported;
@@ -84,9 +84,9 @@ const usePOI = () => {
         return {
             ...authentication_data?.identity,
             previous: previous_poi,
-            next: next_poi,
+            current: current_poi,
         };
-    }, [authentication_data, next_poi, previous_poi]);
+    }, [authentication_data, current_poi, previous_poi]);
 
     return {
         data: modified_verification_data,

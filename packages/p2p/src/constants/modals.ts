@@ -170,6 +170,9 @@ export const Modals = {
     RecommendedModal: React.lazy(
         () => import(/* webpackChunkName: "recommended-modal" */ 'Components/modal-manager/modals/recommended-modal')
     ),
+    ShareMyAdsModal: React.lazy(
+        () => import(/* webpackChunkName: "share-my-ads-modal" */ 'Components/modal-manager/modals/share-my-ads-modal')
+    ),
 } as const;
 
 export type TModals = typeof Modals;

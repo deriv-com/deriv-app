@@ -8,31 +8,15 @@
     border-top: 0.1rem solid var(--system-light-3-border, #e5e5e5);
     padding-inline: 1.6rem;
 
-    &-details {
+    &__column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__details {
         display: flex;
         width: max-content;
         gap: 0.8rem;
-
-        &__wallet-name {
-            color: var(--system-light-1-prominent-text, #333);
-
-            /* desktop/small/S - bold */
-            font-size: 1.2rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1.8rem; /* 150% */
-        }
-    }
-
-    &__title {
-        color: var(--system-light-3-less-prominent-text, #999);
-
-        /* desktop/small/S - regular */
-        font-size: 1.2rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 1.8rem; /* 150% */
-        text-transform: capitalize;
     }
 
     &__transaction {
@@ -41,43 +25,62 @@
         }
 
         &-amount {
-            color: var(--status-light-danger, #ec3f3f);
-            text-align: right;
+            width: max-content;
+        }
 
-            /* desktop/paragraph/P2 - bold */
-            font-size: 1.4rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 2rem; /* 142.857% */
-
-            &__deposit {
-                color: var(--status-light-success, #4bb4b3);
-            }
+        &-confirmations {
+            width: 7.6rem;
         }
 
         &-hash {
-            width: 9.8rem;
+            width: 9.2rem;
         }
 
         &-status {
+            width: 10.3rem;
             display: flex;
             justify-content: flex-end;
+            align-items: center;
+
+            &-dot {
+                margin-right: 0.4rem;
+                width: 0.8rem;
+                height: 0.8rem;
+                border-radius: 0.4rem;
+
+                &--pending,
+                &--locked,
+                &--performing-blockchain-txn,
+                &--processing,
+                &--reverting,
+                &--verified {
+                    background: var(--status-warning, #ffad3a);
+                }
+
+                &--confirmed,
+                &--sent {
+                    background: var(--status-success, #4bb4b3);
+                }
+
+                &--error,
+                &--cancelled,
+                &--rejected,
+                &--reverted {
+                    background: var(--status-danger, #ec3f3f);
+                }
+            }
         }
 
-        &-value {
-            white-space: nowrap;
-            width: 100%;
-            color: var(--brand-coral, #ff444f);
+        &-time {
+            width: 6.5rem;
+        }
 
-            /* desktop/small/S - bold */
-            font-size: 1.2rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1.8rem; /* 150% */
-
-            &--center {
-                text-align: center;
-            }
+        &-cancel-button {
+            margin-left: 1rem;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+            background-color: transparent;
         }
     }
 }

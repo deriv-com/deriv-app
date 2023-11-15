@@ -153,6 +153,7 @@ export default class ClientStore extends BaseStore {
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
     external_url_params = {};
+    is_already_attempted = false;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -224,6 +225,7 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             p2p_advertiser_info: observable,
             prev_account_type: observable,
+            is_already_attempted: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -260,6 +262,7 @@ export default class ClientStore extends BaseStore {
             is_financial_assessment_needed: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
+            is_poa_expired: computed,
             real_account_creation_unlock_date: computed,
             is_tnc_needed: computed,
             is_social_signup: computed,
@@ -405,6 +408,7 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
+            setIsAlreadyAttempted: action.bound,
             is_beta_chart: observable,
             setIsBetaChart: action.bound,
         });
@@ -717,6 +721,10 @@ export default class ClientStore extends BaseStore {
 
     get is_financial_assessment_needed() {
         return this.account_status?.status?.includes('financial_assessment_notification');
+    }
+
+    get is_poa_expired() {
+        return this.account_status?.status?.includes('poa_expired');
     }
 
     get is_authentication_needed() {
@@ -1597,6 +1605,10 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
+        // delete walletsOnbaording key after page refresh
+        /** will be removed later when header for the wallets is created) */
+        localStorage.removeItem('walletsOnboarding');
+
         const search = SessionStore.get('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
@@ -2780,6 +2792,10 @@ export default class ClientStore extends BaseStore {
     setPrevAccountType = acc_type => {
         this.prev_account_type = acc_type;
     };
+
+    setIsAlreadyAttempted(status) {
+        this.is_already_attempted = status;
+    }
 
     /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
      *

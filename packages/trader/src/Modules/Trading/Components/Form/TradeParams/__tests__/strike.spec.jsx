@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { isMobile, isDesktop } from '@deriv/shared';
+import { isMobile, isDesktop, VANILLALONG } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import Strike from '../strike';
 
@@ -15,17 +15,20 @@ const default_mock_store = {
             validation_errors: {},
             expiry_type: 'endtime',
             expiry_date: null,
-            vanilla_trade_type: 'VANILLALONGCALL',
+            vanilla_trade_type: VANILLALONG.CALL,
         },
     },
 };
+const mocked_strike_param_modal = 'Mocked Strike Param Modal Component';
+const strike_price = 'Strike price';
+const spot = 'Spot';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn().mockReturnValue(true),
     isDesktop: jest.fn().mockReturnValue(false),
 }));
-jest.mock('Modules/Trading/Containers/strike-param-modal', () => jest.fn(() => <div>StrikeParamModal component</div>));
+jest.mock('Modules/Trading/Containers/strike-param-modal', () => jest.fn(() => <div>{mocked_strike_param_modal}</div>));
 
 describe('<Strike />', () => {
     const mockStrike = mocked_store => {
@@ -40,9 +43,9 @@ describe('<Strike />', () => {
         const mock_root_store = mockStore(default_mock_store);
         render(mockStrike(mock_root_store));
 
-        expect(screen.getByText(/Spot/i)).toBeInTheDocument();
-        expect(screen.getByText(/Strike price/i)).toBeInTheDocument();
-        expect(screen.getByText(/StrikeParamModal/i)).toBeInTheDocument();
+        expect(screen.getByText(spot)).toBeInTheDocument();
+        expect(screen.getByText(strike_price)).toBeInTheDocument();
+        expect(screen.getByText(mocked_strike_param_modal)).toBeInTheDocument();
     });
     it('should not render Spot components if it duration_unit is equal to "d" in mobile', () => {
         const new_mock_store = { ...default_mock_store };
@@ -55,22 +58,22 @@ describe('<Strike />', () => {
                 validation_errors: {},
                 expiry_type: 'endtime',
                 expiry_date: null,
-                vanilla_trade_type: 'VANILLALONGCALL',
+                vanilla_trade_type: VANILLALONG.CALL,
             },
         };
         const mock_root_store = mockStore(new_mock_store);
         render(mockStrike(mock_root_store));
 
-        expect(screen.queryByText(/Spot/i)).not.toBeInTheDocument();
-        expect(screen.getByText(/Strike price/i)).toBeInTheDocument();
-        expect(screen.getByText(/StrikeParamModal/i)).toBeInTheDocument();
+        expect(screen.queryByText(spot)).not.toBeInTheDocument();
+        expect(screen.getByText(strike_price)).toBeInTheDocument();
+        expect(screen.getByText(mocked_strike_param_modal)).toBeInTheDocument();
     });
-    it('should render a proper filedset if it is desktop', () => {
+    it('should render a proper fieldset if it is desktop', () => {
         isDesktop.mockReturnValueOnce(true);
         isMobile.mockReturnValueOnce(false);
         const mock_root_store = mockStore(default_mock_store);
         render(mockStrike(mock_root_store));
 
-        expect(screen.getByText(/Strike price/i)).toBeInTheDocument();
+        expect(screen.getByText(strike_price)).toBeInTheDocument();
     });
 });

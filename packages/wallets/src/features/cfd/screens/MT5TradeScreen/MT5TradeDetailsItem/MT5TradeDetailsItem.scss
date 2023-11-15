@@ -6,9 +6,22 @@
     background-color: #f2f3f4;
     padding: 0.5rem 0 0.5rem 0.8rem;
 
+    &--info {
+        padding: 0.4rem 0.8rem;
+        height: fit-content;
+        border-radius: 0.4rem;
+
+        @include mobile {
+            padding: 0.8rem;
+            height: 6rem;
+        }
+    }
+
     &__values {
         display: flex;
         align-items: center;
+        gap: 0.8rem;
+        padding-right: 0.8rem;
 
         & .wallets-text {
             font-family: 'Courier', serif;
@@ -21,7 +34,6 @@
     }
 
     &__edit {
-        margin: 0 0.5rem;
         cursor: pointer;
     }
 }

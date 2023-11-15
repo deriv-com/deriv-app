@@ -5,7 +5,11 @@ import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5'
 import { GetMoreMT5Accounts } from '../../screens';
 import './MT5PlatformsList.scss';
 
-const MT5PlatformsList: React.FC = () => {
+type TProps = {
+    onMT5PlatformListLoaded?: (value: boolean) => void;
+};
+
+const MT5PlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
     const { isFetching } = useAuthorize();
     const { data, isFetchedAfterMount } = useSortedMT5Accounts();
     const { data: activeWallet } = useActiveWalletAccount();
@@ -21,6 +25,11 @@ const MT5PlatformsList: React.FC = () => {
         }
     }, [invalidate, isFetching]);
 
+    useEffect(() => {
+        onMT5PlatformListLoaded?.(isFetchedAfterMount);
+        return () => onMT5PlatformListLoaded?.(false);
+    }, [isFetchedAfterMount, onMT5PlatformListLoaded]);
+
     return (
         <React.Fragment>
             <section className='wallets-mt5-list'>
@@ -28,8 +37,8 @@ const MT5PlatformsList: React.FC = () => {
                     <h1>Deriv MT5</h1>
                 </div>
             </section>
+            {!isFetchedAfterMount && <TradingAppCardLoader />}
             <div className='wallets-mt5-list__content'>
-                {!isFetchedAfterMount && <TradingAppCardLoader />}
                 {isFetchedAfterMount &&
                     data?.map((account, index) => {
                         if (account.is_added)

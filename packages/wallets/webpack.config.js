@@ -22,6 +22,7 @@ const svg_loaders = [
                     { removeTitle: false },
                     { removeUselessStrokeAndFill: false },
                     { removeUknownsAndDefaults: false },
+                    { removeViewBox: false },
                 ],
                 floatPrecision: 3,
             },

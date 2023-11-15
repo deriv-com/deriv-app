@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import './Divider.scss';
 
 type TProps = {
@@ -9,10 +8,7 @@ type TProps = {
 };
 
 const Divider: React.FC<TProps> = ({ color = '#f2f3f4', margin, variant = 'horizontal' }) => (
-    <div
-        className={classNames('wallets-divider', `wallets-divider__${variant}`)}
-        style={{ borderColor: color, margin }}
-    />
+    <div className={`wallets-divider wallets-divider--${variant}`} style={{ borderColor: color, margin }} />
 );
 
 export default Divider;

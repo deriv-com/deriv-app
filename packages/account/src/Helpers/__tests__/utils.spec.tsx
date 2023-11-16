@@ -30,15 +30,29 @@ describe('generatePlaceholderText', () => {
     it('should return the correct placeholder text for passport', () => {
         expect(generatePlaceholderText('passport')).toEqual('Enter your document number');
     });
+
+    it('should return the correct placeholder text for NIN for Uganda', () => {
+        expect(generatePlaceholderText('national_id_no_photo')).toEqual(
+            'Enter your National Identification Number (NIN)'
+        );
+    });
 });
 
 describe('documentAdditionalError', () => {
+    const config = {
+        format: /^[a-z]+$/,
+        display_name: 'additional doc number',
+    };
     it('should set the correct additional document error when format is incorrect', () => {
-        expect(documentAdditionalError('testdoc', '/[a-z]/')).toEqual('Please enter the correct format. ');
+        expect(documentAdditionalError('test1doc', config)).toEqual('Please enter the correct format. ');
     });
 
     it('should set the correct additional document error when value is not provided', () => {
-        expect(documentAdditionalError('', '/[a-z]+/')).toEqual('Please enter your document number. ');
+        expect(documentAdditionalError('', config)).toEqual('Please enter your additional doc number. ');
+    });
+
+    it('should return no error when input matches the config', () => {
+        expect(documentAdditionalError('testdoc', config)).toBeNull();
     });
 });
 

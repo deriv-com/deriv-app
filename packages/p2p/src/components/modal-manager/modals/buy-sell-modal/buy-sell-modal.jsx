@@ -205,7 +205,7 @@ const BuySellModal = () => {
                 my_profile_store.hideAddPaymentMethodForm();
             }
         } else {
-            hideModal();
+            hideModal({ should_hide_all_modals: true });
             buy_sell_store.fetchAdvertiserAdverts();
             buy_sell_store.unsubscribeAdvertInfo();
         }
@@ -242,6 +242,8 @@ const BuySellModal = () => {
         if (!is_modal_open) {
             setErrorMessage(null);
         }
+
+        if (general_store.counterparty_advert_id) general_store.setCounterpartyAdvertId('');
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_modal_open]);

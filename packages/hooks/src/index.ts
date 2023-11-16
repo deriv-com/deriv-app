@@ -41,6 +41,7 @@ export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessm
 export { default as useNeedPOI } from './useNeedPOI';
 export { default as useNeedTNC } from './useNeedTNC';
 export { default as useOnrampVisible } from './useOnrampVisible';
+export { default as useP2PAdvertInfo } from './useP2PAdvertInfo';
 export { default as useP2PAdvertiserPaymentMethods } from './useP2PAdvertiserPaymentMethods';
 export { default as useP2PAdvertList } from './useP2PAdvertList';
 export { default as useP2PNotificationCount } from './useP2PNotificationCount';
@@ -54,6 +55,7 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useVerifyEmail } from './useVerifyEmail';
+export { default as useMT5SVGEligibleToMigrate } from './useMT5SVGEligibleToMigrate';
 export { default as useWalletMigration } from './useWalletMigration';
 export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useWalletTransfer } from './useWalletTransfer';

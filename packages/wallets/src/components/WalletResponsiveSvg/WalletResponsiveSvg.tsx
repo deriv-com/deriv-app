@@ -16,6 +16,7 @@ import IcWalletTetherLight from '../../public/images/currencies/usdt.svg';
 import IcWalletTetherDark from '../../public/images/currencies/usdt-dark.svg';
 import IcWalletDerivEZ from '../../public/images/derivez.svg';
 import IcWalletDerivX from '../../public/images/derivx.svg';
+import IcWalletMt5CFDs from '../../public/images/mt5-cfds.svg';
 import IcWalletMt5Derived from '../../public/images/mt5-derived.svg';
 import IcWalletMt5Financial from '../../public/images/mt5-financial.svg';
 import IcWalletMt5All from '../../public/images/mt5-swap-free.svg';
@@ -50,6 +51,7 @@ const ICONS: IconTypes = {
     IcWalletLiteCoinDark,
     IcWalletLiteCoinLight,
     IcWalletMt5All,
+    IcWalletMt5CFDs,
     IcWalletMt5Derived,
     IcWalletMt5Financial,
     IcWalletOptionsDark,

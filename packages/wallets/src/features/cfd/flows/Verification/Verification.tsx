@@ -1,11 +1,12 @@
 import React, { FC, useMemo } from 'react';
-import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
-import { useModal } from '../../../../components/ModalProvider';
-import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
-import { Loader } from '../../../../components/Loader';
-import { Onfido } from '../../screens';
 import { useAuthentication, usePOA, usePOI } from '@deriv/api';
+import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
+import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
+import { Loader } from '../../../../components/Loader';
+import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
+import { ResubmitPOA } from '../../../accounts/screens';
+import { Onfido } from '../../screens';
 
 const Idv = () => {
     return (
@@ -19,14 +20,6 @@ const Manual = () => {
     return (
         <div style={{ fontSize: 60, height: 400, width: 600 }}>
             <h1>Manual screen</h1>
-        </div>
-    );
-};
-
-const Poa = () => {
-    return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
-            <h1>POA screen</h1>
         </div>
     );
 };
@@ -59,7 +52,7 @@ const screens = {
     onfidoScreen: <Onfido />,
     passwordScreen: <Password />,
     personalDetailsScreen: <PersonalDetails />,
-    poaScreen: <Poa />,
+    poaScreen: <ResubmitPOA />,
 };
 
 type TVerificationProps = {
@@ -95,20 +88,11 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             if (service === 'onfido') return 'onfidoScreen';
         }
         return 'manualScreen';
-    }, [
-        hasAttemptedPOA,
-        needPersonalDetails,
-        authenticationData?.is_poa_needed,
-        poiStatus,
-        poiStatus?.services,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        poiStatus?.current?.service,
-        isSuccessPOIStatus,
-    ]);
+    }, [hasAttemptedPOA, needPersonalDetails, authenticationData?.is_poa_needed, poiStatus, isSuccessPOIStatus]);
 
     const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
-            if (!hasAttemptedPOA) {
+            if (hasAttemptedPOA) {
                 switchScreen('poaScreen');
             } else if (needPersonalDetails) {
                 switchScreen('personalDetailsScreen');

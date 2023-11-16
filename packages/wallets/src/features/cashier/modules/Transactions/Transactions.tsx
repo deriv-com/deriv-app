@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletDropdown, WalletText } from '../../../../components';
+import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import FilterIcon from '../../../../public/images/filter.svg';
 import { TransactionsCompleted, TransactionsPending } from './components';
@@ -71,16 +71,7 @@ const Transactions = () => {
                 {wallet?.currency_config?.is_crypto && (
                     <div className='wallets-transactions__toggle'>
                         <WalletText size='sm'>Pending Transactions</WalletText>
-                        <input
-                            checked={isPendingActive}
-                            className='wallets-transactions__toggle-switch'
-                            id='toggle-pending'
-                            onChange={() => setIsPendingActive(!isPendingActive)}
-                            type='checkbox'
-                        />
-                        <label className='wallets-transactions__toggle-switch__label' htmlFor='toggle-pending'>
-                            <span className='wallets-transactions__toggle-switch__button' />
-                        </label>
+                        <ToggleSwitch onChange={() => setIsPendingActive(!isPendingActive)} value={isPendingActive} />
                     </div>
                 )}
                 <WalletDropdown

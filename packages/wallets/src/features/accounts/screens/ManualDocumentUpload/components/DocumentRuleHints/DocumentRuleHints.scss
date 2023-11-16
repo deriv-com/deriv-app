@@ -1,0 +1,12 @@
+.wallets-document-rule-hints {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    @include mobile {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 2.4rem;
+        row-gap: 0.8rem;
+    }
+}

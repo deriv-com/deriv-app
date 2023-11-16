@@ -49,12 +49,12 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
 
     return (
         <ModalStepWrapper
-            closeOnEscape
             renderFooter={() => {
                 return (
                     <div className='wallets-modal-trade-wrapper__footer'>
                         <WalletText align='center' size='sm' weight='bold'>
-                            Download Deriv MT5 on your phone to trade with the Deriv MT5 account
+                            Download {PlatformDetails[platform].title} on your phone to trade with the{' '}
+                            {PlatformDetails[platform].title} account
                         </WalletText>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
@@ -68,7 +68,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                 <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
                                     <QRCode size={80} value={PlatformDetails[platform].link} />
                                     <WalletText align='center' size='xs'>
-                                        Scan the QR code to download Deriv {PlatformDetails[platform].title}
+                                        Scan the QR code to download {PlatformDetails[platform].title}
                                     </WalletText>
                                 </div>
                             )}

@@ -42,7 +42,7 @@ const InfoDisplay = () => {
 const LaunchModal = ({ handleChange, open }: LaunchModalProps) => (
     <React.Suspense fallback={<UILoader />}>
         <DesktopWrapper>
-            <Modal has_close_icon={false} is_open={open} className='modal_root' height='440' width='440'>
+            <Modal has_close_icon={false} is_open={open} className='modal_root' height='440px' width='440px'>
                 <Modal.Body>
                     <InfoDisplay />
                 </Modal.Body>

@@ -12,6 +12,11 @@
         padding: 1.6rem 0;
     }
 
+    & .wallets-dropdown,
+    & .wallets-textfield {
+        max-width: 68rem;
+    }
+
     &__buttons {
         display: flex;
         gap: 0.8rem;

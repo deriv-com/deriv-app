@@ -86,6 +86,13 @@
             @include mobile {
                 width: 100%;
             }
+
+            & .wallets-dropdown,
+            & .wallets-textfield {
+                @include desktop {
+                    max-width: 84rem;
+                }
+            }
         }
     }
 }

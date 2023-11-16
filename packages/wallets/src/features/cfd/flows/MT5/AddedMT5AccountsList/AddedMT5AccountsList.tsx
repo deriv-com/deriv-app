@@ -1,15 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuthorize, usePOA } from '@deriv/api';
+import { useAuthorize, useJurisdictionStatus } from '@deriv/api';
 import { InlineMessage, WalletButton, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
+import { MT5TradeModal, VerificationFailedModal } from '../../../modals';
 import './AddedMT5AccountsList.scss';
-import { getJurisdictionContents } from '../../../screens/Jurisdiction/jurisdiction-contents/jurisdiction-contents';
-import { VerificationFailedModal, MT5TradeModal } from '../../../modals';
 
 type TProps = {
     account: THooks.MT5AccountsList;
@@ -36,25 +35,9 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
-    const { data: poaStatus } = usePOA();
+    const { data: jurisdictionStatus } = useJurisdictionStatus(account.landing_company_short || 'svg', account.status);
     const { title } = MarketTypeDetails[account.market_type || 'all'];
     const { show } = useModal();
-
-    const verificationDocs = getJurisdictionContents()[account?.landing_company_short || 'svg']?.verificationDocs;
-    const shouldRequireNameAndAddress =
-        verificationDocs && account?.market_type !== 'all'
-            ? verificationDocs?.[account.market_type || 'financial']?.some(doc => doc === 'nameAndAddress')
-            : false;
-
-    const isFailedAuthentication = () => {
-        if (shouldRequireNameAndAddress) return poaStatus?.is_need_submission;
-        return false;
-    };
-
-    const isPendingAuthentication = () => {
-        if (shouldRequireNameAndAddress) return poaStatus?.is_pending;
-        return false;
-    };
 
     return (
         <TradingAccountCard
@@ -62,7 +45,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             trailing={() => (
                 <div className='wallets-added-mt5__actions'>
                     <WalletButton
-                        disabled={isFailedAuthentication() || isPendingAuthentication()}
+                        disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
                             history.push('/wallets/cashier/transfer');
                         }}
@@ -70,7 +53,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         variant='outlined'
                     />
                     <WalletButton
-                        disabled={isFailedAuthentication() || isPendingAuthentication()}
+                        disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => show(<MT5TradeModal marketType={account.market_type || 'all'} platform='mt5' />)}
                         text='Open'
                     />
@@ -79,7 +62,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         >
             <div className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
-                    <p className='wallets-added-mt5__details-title-text'>{title}</p>
+                    <WalletText size='2xs'>{title}</WalletText>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
                             <WalletText size='2xs' weight='bold'>
@@ -88,7 +71,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         </div>
                     )}
                 </div>
-                {!(isPendingAuthentication() || isFailedAuthentication()) && (
+                {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
                     <WalletText size='sm' weight='bold'>
                         {account.display_balance}
                     </WalletText>
@@ -96,7 +79,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 <WalletText as='p' color='primary' size='xs' weight='bold'>
                     {account.display_login}
                 </WalletText>
-                {isPendingAuthentication() && (
+                {jurisdictionStatus.is_pending && (
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='warning' variant='outlined'>
                             <WalletText color='warning' size='2xs' weight='bold'>
@@ -105,7 +88,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         </InlineMessage>
                     </div>
                 )}
-                {isFailedAuthentication() && (
+                {jurisdictionStatus.is_failed && (
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='error' variant='outlined'>
                             <WalletText color='error' size='2xs' weight='bold'>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlowTextField, InlineMessage, WalletText, WalletTextField } from '../../../../../../components';
+import { FlowTextField, InlineMessage, WalletText } from '../../../../../../components';
 import SideNote from '../../../../../../public/images/accounts/side-note-example-image.svg';
 import './IDVDocumentUploadDetails.scss';
 

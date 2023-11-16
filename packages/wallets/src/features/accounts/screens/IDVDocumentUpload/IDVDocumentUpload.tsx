@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlowTextField, WalletDropdown, WalletText, WalletTextField } from '../../../../components';
+import { FlowTextField, WalletDropdown, WalletText } from '../../../../components';
 import { IDVDocumentUploadDetails } from './components';
 import './IDVDocumentUpload.scss';
 
@@ -16,7 +16,7 @@ const IDVDocumentUpload = () => {
                         label='Choose the document type'
                         list={[]}
                         maxWidth='68rem'
-                        onSelect={e => null}
+                        onSelect={() => null}
                         value={undefined}
                     />
                 </div>

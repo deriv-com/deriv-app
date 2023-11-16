@@ -34,7 +34,7 @@
         position: absolute;
         inset: 0;
         min-width: 0; /* this is required to reset input's default width */
-        padding-left: 4rem;
+        padding-left: 2rem;
         display: flex;
         flex-grow: 1;
         font-family: inherit;
@@ -45,6 +45,10 @@
         transition: border-color 0.2s;
         cursor: unset;
         user-select: none;
+
+        &--with-icon {
+            padding-left: 4rem;
+        }
 
         &::selection {
             background-color: transparent;

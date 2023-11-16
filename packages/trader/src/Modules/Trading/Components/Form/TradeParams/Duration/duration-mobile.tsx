@@ -185,7 +185,7 @@ const Numbers = observer(
                     }}
                 />
             );
-            if (parseInt(value as string) < Number(min) || Math.floor(selected_duration) > Number(max)) {
+            if (parseInt(value as string) < Number(min) || Math.trunc(selected_duration) > Number(max)) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setDurationError(true);
                 setHasError(true);

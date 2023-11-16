@@ -46,7 +46,11 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     // keep the caret from jumping
     useEffect(() => {
         if (caret && caretNeedsRepositioning) {
-            input?.setSelectionRange(formattedValue.length - caret, formattedValue.length - caret);
+            // if next to a comma or period, prefer positioning the caret left to it
+            const newCaretPosition = /[,.]/g.test(formattedValue[formattedValue.length - 1 - caret])
+                ? formattedValue.length - caret - 1
+                : formattedValue.length - caret;
+            input?.setSelectionRange(newCaretPosition, newCaretPosition);
             setCaretNeedsRepositioning(false);
         }
     }, [caret, formattedValue, caretNeedsRepositioning, input]);
@@ -54,7 +58,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     // override some editing behavior for better UX
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!input) return;
-        setCaret(input.value.length - (input.selectionStart || 0));
+        setCaret(input.value.length - (input.selectionStart ?? 0));
         setCaretNeedsRepositioning(true);
         if (maxDigits && input.value.replace(/[.,]/g, '').length > maxDigits) return;
         if (

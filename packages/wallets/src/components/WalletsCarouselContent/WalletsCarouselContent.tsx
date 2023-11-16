@@ -72,7 +72,6 @@ const WalletsCarouselContent: React.FC = () => {
                         isDemo={account.is_virtual}
                         key={`wallet-card-${account.loginid}`}
                         landingCompanyName={account.landing_company_name}
-                        width='45vw'
                     />
                 ))}
             </div>

@@ -11,6 +11,10 @@
         align-items: center;
         justify-content: flex-start;
         gap: 2.4rem;
+
+        & > .wallets-card__details {
+            width: 45vw;
+        }
     }
 
     &__progress-bar {

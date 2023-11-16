@@ -11,11 +11,9 @@ type TProps = {
     currency: string;
     isDemo?: boolean;
     landingCompanyName?: string;
-    padding?: React.CSSProperties['padding'];
-    width?: React.CSSProperties['width'];
 };
 
-const WalletCard: React.FC<TProps> = ({ balance, currency, isDemo, landingCompanyName, padding = '0.8rem', width }) => {
+const WalletCard: React.FC<TProps> = ({ balance, currency, isDemo, landingCompanyName }) => {
     const { isLoading } = useBalance();
 
     return (
@@ -27,7 +25,7 @@ const WalletCard: React.FC<TProps> = ({ balance, currency, isDemo, landingCompan
                 isDemo={isDemo}
                 type='card'
             >
-                <div className='wallets-card__details' style={{ padding, width }}>
+                <div className='wallets-card__details'>
                     <div className='wallets-card__details__top'>
                         <WalletCardIcon type={isDemo ? 'Demo' : currency} />
                         <div className='wallets-card__details-landing_company'>

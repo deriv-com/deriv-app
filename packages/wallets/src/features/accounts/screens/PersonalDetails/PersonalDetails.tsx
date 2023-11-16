@@ -24,9 +24,10 @@ const PersonalDetails = () => {
                         text: residence.text as ReactNode,
                         value: residence.value ?? '',
                     }))}
+                    name='wallets-personal-details__dropdown-citizenship'
                     onSelect={() => null}
-                    type='comboBox'
                     value={undefined}
+                    variant='comboBox'
                 />
                 <WalletDropdown
                     label='Place of birth*'
@@ -34,9 +35,10 @@ const PersonalDetails = () => {
                         text: residence.text as ReactNode,
                         value: residence.value ?? '',
                     }))}
+                    name='wallets-personal-details__dropdown-pob'
                     onSelect={() => null}
-                    type='comboBox'
                     value={undefined}
+                    variant='comboBox'
                 />
                 <WalletDropdown
                     label='Tax residence*'
@@ -44,17 +46,19 @@ const PersonalDetails = () => {
                         text: residence.text as ReactNode,
                         value: residence.value ?? '',
                     }))}
+                    name='wallets-personal-details__dropdown-tax-residence'
                     onSelect={() => null}
-                    type='comboBox'
                     value={undefined}
+                    variant='comboBox'
                 />
                 <WalletTextField label='Tax identification number*' onChange={() => null} value={undefined} />
                 <WalletDropdown
                     label='Account opening reason*'
                     list={accountOpeningReasonList}
+                    name='wallets-personal-details__dropdown-opening-reason'
                     onSelect={() => null}
-                    type='comboBox'
                     value={undefined}
+                    variant='comboBox'
                 />
             </div>
         </div>

@@ -9,23 +9,26 @@ import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import './WalletDropdown.scss';
 
-type TProps = Pick<WalletTextFieldProps, 'id' | 'label' | 'value'> & {
+type TProps = {
     icon?: React.ReactNode;
+    label?: WalletTextFieldProps['label'];
     list: {
         text?: React.ReactNode;
         value?: string;
     }[];
     listHeight?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
+    name: WalletTextFieldProps['name'];
     onSelect: (value: string) => void;
+    value?: WalletTextFieldProps['value'];
     variant?: 'comboBox' | 'prompt';
 };
 
 const WalletDropdown: React.FC<TProps> = ({
     icon = false,
-    id = 'dropdown-text',
     label,
     list,
     listHeight = 'md',
+    name,
     onSelect,
     value,
     variant = 'prompt',
@@ -37,6 +40,7 @@ const WalletDropdown: React.FC<TProps> = ({
         setItems(list);
     }, [list]);
     const { getInputProps, getItemProps, getLabelProps, getMenuProps, getToggleButtonProps, isOpen } = useCombobox({
+        defaultSelectedItem: items.find(item => item.value === value) ?? null,
         items,
         itemToString(item) {
             return item ? reactNodeToString(item.text) : '';
@@ -60,7 +64,6 @@ const WalletDropdown: React.FC<TProps> = ({
         onSelectedItemChange({ selectedItem }) {
             onSelect(selectedItem?.value ?? '');
         },
-        selectedItem: items.find(item => item.value === value) ?? null,
     });
 
     useEffect(() => {
@@ -68,10 +71,10 @@ const WalletDropdown: React.FC<TProps> = ({
     }, [list]);
 
     return (
-        <div className='wallets-dropdown'>
+        <div className='wallets-dropdown' {...getToggleButtonProps()}>
             <div className='wallets-dropdown__content'>
                 <WalletTextField
-                    id={id}
+                    name={name}
                     onKeyUp={() => setShouldFilterList(true)}
                     placeholder={reactNodeToString(label)}
                     readOnly={variant !== 'comboBox'}
@@ -81,7 +84,6 @@ const WalletDropdown: React.FC<TProps> = ({
                             className={classNames('wallets-dropdown__button', {
                                 'wallets-dropdown__button--active': isOpen,
                             })}
-                            {...getToggleButtonProps()}
                         >
                             <ArrowIcon />
                         </button>
@@ -94,7 +96,7 @@ const WalletDropdown: React.FC<TProps> = ({
                     className={classNames('wallets-dropdown__label', {
                         'wallets-dropdown__label--with-icon': !!icon,
                     })}
-                    htmlFor={id}
+                    htmlFor={name}
                     {...getLabelProps()}
                 >
                     {label}

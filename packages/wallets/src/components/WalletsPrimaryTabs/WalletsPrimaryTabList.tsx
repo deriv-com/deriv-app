@@ -1,12 +1,12 @@
 import React from 'react';
-import { useTabs } from './Tabs';
-import './TabList.scss';
+import { useTabs } from './WalletsPrimaryTabs';
+import './WalletsPrimaryTabList.scss';
 
 type TTabListProps = {
     list: string[];
 };
 
-export const TabList = ({ list }: TTabListProps) => {
+const WalletsPrimaryTabList = ({ list }: TTabListProps) => {
     const { activeTabIndex, setActiveTabIndex } = useTabs();
 
     return (
@@ -25,3 +25,5 @@ export const TabList = ({ list }: TTabListProps) => {
         </div>
     );
 };
+
+export default WalletsPrimaryTabList;

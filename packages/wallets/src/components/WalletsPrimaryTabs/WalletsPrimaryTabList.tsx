@@ -2,11 +2,11 @@ import React from 'react';
 import { useTabs } from './WalletsPrimaryTabs';
 import './WalletsPrimaryTabList.scss';
 
-type TTabListProps = {
+type WalletPrimaryTabListProps = {
     list: string[];
 };
 
-const WalletsPrimaryTabList = ({ list }: TTabListProps) => {
+const WalletsPrimaryTabList = ({ list }: WalletPrimaryTabListProps) => {
     const { activeTabIndex, setActiveTabIndex } = useTabs();
 
     return (

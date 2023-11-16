@@ -1,5 +1,12 @@
 import { localize } from '@deriv/translations';
-import { isHighLow, getContractTypesConfig, isCallPut, isVanillaContract, TContractInfo } from '@deriv/shared';
+import {
+    isHighLow,
+    formatMoney,
+    getContractTypesConfig,
+    isCallPut,
+    isVanillaContract,
+    TContractInfo,
+} from '@deriv/shared';
 
 export const addCommaToNumber = (
     num: number | null | undefined,
@@ -27,7 +34,9 @@ export const getBarrierValue = (contract_info: TContractInfo) => {
     if (isDigitType(contract_info.contract_type)) {
         return digitTypeMap(contract_info)[contract_info.contract_type as keyof ReturnType<typeof digitTypeMap>];
     }
-    return addCommaToNumber(Number(contract_info.barrier));
+    return contract_info.barrier
+        ? formatMoney(contract_info.currency ?? 'USD', contract_info.barrier, true, 0, 0)
+        : null;
 };
 
 export const isDigitType = (contract_type: TContractInfo['contract_type']) =>

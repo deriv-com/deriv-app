@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: flex-start;
     border-radius: 0.8rem;
-    background: var(--system-light-8-primary-background, #fff);
+    background: var(--system-light-8-primary-background, $color_white);
     /* Shadows/xxxl */
     box-shadow: 0rem 3.2rem 6.4rem 0rem rgba(14, 14, 14, 0.14);
     max-height: 52.8rem;
@@ -44,7 +44,7 @@
         gap: 0.8rem;
 
         &--divider {
-            border-bottom: 4px solid var(--system-light-7-secondary-background, #f2f3f4);
+            border-bottom: 4px solid var(--system-light-7-secondary-background, $color_grey_2);
         }
 
         @include mobile {
@@ -64,7 +64,7 @@
         }
 
         &--selected {
-            background: var(--system-light-5-active-background, #d6dadb);
+            background: var(--system-light-5-active-background, $color_grey_5);
         }
 
         &:hover:not(&--selected) {
@@ -80,14 +80,14 @@
         align-items: center;
         gap: 1.6rem;
         align-self: stretch;
-        border-bottom: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
+        border-bottom: 2px solid var(--system-light-7-secondary-background, $color_grey_2);
 
         @include mobile {
             position: fixed;
             left: 0;
             right: 0;
             border: none;
-            background: var(--system-dark-1-prominent-text, #fff);
+            background: var(--system-dark-1-prominent-text, $color_white);
             padding-inline: 2.4rem;
             padding-block: 1.6rem;
             height: auto;
@@ -116,7 +116,7 @@
 
     &__title-line {
         flex-grow: 1;
-        border-bottom: 1px solid var(--general-section-1, #f2f3f4);
+        border-bottom: 1px solid var(--general-section-1, $color_grey_2);
         margin-block: 0.9rem;
         margin-left: 1rem;
     }

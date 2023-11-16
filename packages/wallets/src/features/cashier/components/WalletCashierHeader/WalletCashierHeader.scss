@@ -82,7 +82,7 @@
 
         &--white {
             path {
-                fill: var(--light-8-primary-background, #fff);
+                fill: var(--light-8-primary-background, $color_white);
             }
         }
     }
@@ -123,14 +123,14 @@
 
         &--active {
             border-radius: 1.6rem 1.6rem 0rem 0rem;
-            background: var(--light-8-primary-background, #fff);
+            background: var(--light-8-primary-background, $color_white);
         }
     }
 
     &__tab-icon {
         &--system-dark-2-general-text {
             path {
-                fill: var(--system-dark-2-general-text, #c2c2c2);
+                fill: var(--system-dark-2-general-text, $color_grey);
             }
         }
     }

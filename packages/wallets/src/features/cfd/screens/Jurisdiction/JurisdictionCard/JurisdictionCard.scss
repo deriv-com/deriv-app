@@ -1,7 +1,7 @@
 .wallets-jurisdiction-card {
     align-items: center;
     border-radius: 1.6rem;
-    border: 0.2rem solid #f2f3f4;
+    border: 0.2rem solid $color_grey_2;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -29,7 +29,7 @@
     }
 
     &__link {
-        color: #ff444f;
+        color: $color_red;
     }
 
     &:hover {
@@ -37,7 +37,7 @@
     }
 
     &--selected {
-        border: 0.2rem solid #85acb0;
+        border: 0.2rem solid $color_green;
         box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
     }
 
@@ -74,9 +74,9 @@
         }
 
         &__tag {
-            background-color: #661b20;
+            background-color: $color_red_8;
             border-radius: 0.4rem;
-            color: #ffffff;
+            color: $color_white;
             font-weight: 700;
             padding: 0.5rem 1rem;
 
@@ -86,25 +86,25 @@
             }
 
             &--red-darker {
-                background: #661b20;
+                background: $color_red_8;
             }
             &--red-dark {
-                background: #b33037;
+                background: $color_red_9;
             }
             &--red-light {
-                background: #ff444f;
+                background: $color_red;
             }
             &--yellow-dark {
-                background: #b3760d;
+                background: $color_yellow_1;
             }
             &--yellow-light {
-                background: #ffa912;
+                background: $color_yellow_2;
             }
             &--violet-dark {
-                background: #4a3871;
+                background: $color_violet;
             }
             &--brown-dark {
-                background: #664407;
+                background: $color_brown;
             }
         }
     }

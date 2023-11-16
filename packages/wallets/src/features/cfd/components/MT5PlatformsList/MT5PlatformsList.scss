@@ -1,6 +1,6 @@
 .wallets-mt5-list {
     &__title {
-        color: #333;
+        color: $color_black_1;
         font-size: 1.6rem;
         font-style: normal;
         font-weight: 700;
@@ -42,7 +42,7 @@
 .wallets-mt5-loader {
     width: 4.8rem;
     height: 4.8rem;
-    border: 0.5rem solid #fff;
+    border: 0.5rem solid $color_white;
     border-bottom-color: #ff3d00;
     border-radius: 50%;
     display: inline-block;

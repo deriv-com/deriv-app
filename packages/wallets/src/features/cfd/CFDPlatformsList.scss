@@ -3,7 +3,7 @@
     height: 100%;
 
     @include desktop {
-        border-top: 0.2rem solid var(--system-light-7-secondary-background, #f2f3f4);
+        border-top: 0.2rem solid var(--system-light-7-secondary-background, $color_grey_2);
     }
     &__cfd-empty-state {
         display: flex;
@@ -15,7 +15,7 @@
         align-self: stretch;
 
         &__description {
-            color: #333;
+            color: $color_black_1;
             text-align: center;
             font-size: 1.6rem;
             font-style: normal;
@@ -33,7 +33,7 @@
             align-items: center;
             border-radius: 0.4rem;
             background: var(--button-primary-light-default, rgba(255, 68, 79, 0.16));
-            color: var(--brand-coral, #ff444f);
+            color: var(--brand-coral, $color_red);
             text-align: center;
 
             /* desktop/paragraph/P2 - bold */
@@ -58,7 +58,7 @@
             line-height: 2.4rem;
 
             &__link {
-                color: var(--brand-coral, #ff444f);
+                color: var(--brand-coral, $color_red);
             }
         }
     }

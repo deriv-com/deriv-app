@@ -15,9 +15,9 @@
 
         &__fields {
             &-section {
-                border: 1px solid var(--light-5-active-background, #d6dadb);
+                border: 1px solid var(--light-5-active-background, $color_grey_5);
                 border-radius: 4px;
-                color: var(--system-light-2-general-text, #333);
+                color: var(--system-light-2-general-text, $color_black_1);
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 padding: 8px;
@@ -37,8 +37,8 @@
             justify-content: center;
             align-items: center;
             border-radius: 4px;
-            background: var(--button-primary-default, #ff444f);
-            color: var(--system-dark-1-prominent-text, #fff);
+            background: var(--button-primary-default, $color_red);
+            color: var(--system-dark-1-prominent-text, $color_white);
             text-align: center;
 
             /* desktop/paragraph/P2 - bold */

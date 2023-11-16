@@ -9,7 +9,7 @@
 
     &--border {
         @include desktop {
-            border-top: 0.2rem solid var(--system-light-7-secondary-background, #f2f3f4);
+            border-top: 0.2rem solid var(--system-light-7-secondary-background, $color_grey_2);
         }
     }
 
@@ -39,7 +39,7 @@
             line-height: 2.4rem;
 
             &__link {
-                color: var(--brand-coral, #ff444f);
+                color: var(--brand-coral, $color_red);
             }
         }
     }

@@ -5,7 +5,7 @@
         align-items: flex-start;
         align-self: stretch;
         border-radius: 0.8rem;
-        background: var(--system-light-8-primary-background, #fff);
+        background: var(--system-light-8-primary-background, $color_white);
         width: 28rem;
 
         /* Shadows/xxxl */
@@ -22,10 +22,10 @@
         justify-content: space-between;
 
         border-radius: 0.8rem 0.8rem 0rem 0rem;
-        background: var(--system-light-8-primary-background, #fff);
+        background: var(--system-light-8-primary-background, $color_white);
 
         /* divider/light/bottom/1px */
-        box-shadow: 0rem -0.1rem 0rem 0rem #f2f3f4 inset;
+        box-shadow: 0rem -0.1rem 0rem 0rem $color_grey_2 inset;
     }
 
     &__close-icon {

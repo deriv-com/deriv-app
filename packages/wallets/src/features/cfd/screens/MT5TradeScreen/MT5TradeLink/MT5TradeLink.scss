@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 0.2rem solid #f2f3f4;
+    border-top: 0.2rem solid $color_grey_2;
     padding: 1.6rem 2.4rem;
 
     &--left {
@@ -19,7 +19,7 @@
     &__platform {
         border: none;
         cursor: pointer;
-        background-color: #000000;
+        background-color: $color_black_7;
         display: flex;
         padding: 0.8rem;
         align-items: center;

@@ -13,7 +13,7 @@
         flex-grow: 1;
 
         &-loginid {
-            color: var(--system-light-3-less-prominent-text, #999);
+            color: var(--system-light-3-less-prominent-text, $color_grey_1);
 
             /* desktop/small/S - bold */
             font-size: 1.2rem;
@@ -23,7 +23,7 @@
         }
 
         &-title {
-            color: var(--system-light-2-general-text, #333);
+            color: var(--system-light-2-general-text, $color_black_1);
 
             /* desktop/paragraph/P2 - bold */
             font-size: 1.4rem;
@@ -33,7 +33,7 @@
         }
 
         &-balance {
-            color: var(--system-light-1-prominent-text, #333);
+            color: var(--system-light-1-prominent-text, $color_black_1);
 
             /* desktop/paragraph/P2 - bold */
             font-size: 1.4rem;

@@ -7,7 +7,7 @@
     width: 39.2rem;
     border-radius: 1rem;
     text-align: center;
-    background: var(--system-light-8-primary-background, #fff);
+    background: var(--system-light-8-primary-background, $color_white);
 
     @include mobile {
         width: 100%;

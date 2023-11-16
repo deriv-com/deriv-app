@@ -19,7 +19,7 @@
             align-self: stretch;
 
             &-text {
-                color: var(--system-light-2-general-text, #333);
+                color: var(--system-light-2-general-text, $color_black_1);
 
                 /* desktop/paragraph/P2 - regular */
                 font-size: 1.4rem;
@@ -35,11 +35,11 @@
                 align-items: center;
                 gap: 0.4rem;
                 border-radius: 0.4rem;
-                background: var(--system-light-7-secondary-background, #f2f3f4);
+                background: var(--system-light-7-secondary-background, $color_grey_2);
             }
 
             &-landing-company-text {
-                color: var(--system-light-1-prominent-text, #333);
+                color: var(--system-light-1-prominent-text, $color_black_1);
 
                 /* desktop/extra small/XS - bold */
                 font-size: 1rem;
@@ -51,7 +51,7 @@
         }
 
         &-loginid {
-            color: var(--system-light-3-less-prominent-text, #999);
+            color: var(--system-light-3-less-prominent-text, $color_grey_1);
 
             /* desktop/small/S - bold */
             font-size: 1.2rem;
@@ -61,7 +61,7 @@
         }
 
         &-balance {
-            color: var(--system-light-1-prominent-text, #333);
+            color: var(--system-light-1-prominent-text, $color_black_1);
 
             /* desktop/paragraph/P2 - bold */
             font-size: 1.4rem;

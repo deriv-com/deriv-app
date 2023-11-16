@@ -20,7 +20,7 @@
             justify-content: space-between;
         }
         &-button {
-            background-color: #ffffff;
+            background-color: $color_white;
             border: none;
             border-radius: 0.5rem;
             cursor: pointer;
@@ -46,7 +46,7 @@
         }
         &-landing-company {
             align-self: flex-start;
-            border: 0.1rem solid #000;
+            border: 0.1rem solid $color_black_7;
             border-radius: 0.2rem;
             padding: 0 0.4rem;
             text-transform: uppercase;

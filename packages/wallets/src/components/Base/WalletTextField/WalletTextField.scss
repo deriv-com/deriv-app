@@ -9,29 +9,29 @@
         width: 100%;
         border-radius: 0.4rem;
         padding: 1rem 1.6rem;
-        border: 1px solid var(--system-light-5-active-background, #d6dadb);
+        border: 1px solid var(--system-light-5-active-background, $color_grey_5);
         display: inline-flex;
         align-items: center;
         transition: border-color 0.2s;
 
         &:hover {
-            border-color: var(--system-light-3-less-prominent-text, #999);
+            border-color: var(--system-light-3-less-prominent-text, $color_grey_1);
         }
     }
 
     &__box:has(&__field:focus) {
-        border: 1px solid var(--brand-blue, #85acb0);
+        border: 1px solid var(--brand-blue, $color_green);
     }
 
     &__box:has(&__field:invalid) {
-        border: 1px solid var(--status-light-danger, #ec3f3f);
+        border: 1px solid var(--status-light-danger, $color_red_1);
     }
 
     &__field {
         font-family: inherit;
         outline: 0;
         font-size: 1.4rem;
-        color: var(--system-light-2-general-text, #333);
+        color: var(--system-light-2-general-text, $color_black_1);
         transition: border-color 0.2s;
         flex: 1;
     }
@@ -54,8 +54,8 @@
         display: block;
         transition: 0.2s;
         font-size: 1rem;
-        color: var(--system-light-3-less-prominent-text, #999);
-        background: var(--system-light-8-primary-background, #fff);
+        color: var(--system-light-3-less-prominent-text, $color_grey_1);
+        background: var(--system-light-8-primary-background, $color_white);
         padding-inline: 0.4rem;
         left: 1.6rem;
         -webkit-user-select: none;
@@ -64,11 +64,11 @@
     }
 
     &__field:focus ~ &__label {
-        color: var(--brand-blue, #85acb0);
+        color: var(--brand-blue, $color_green);
     }
 
     &__field:invalid ~ &__label {
-        color: var(--status-light-danger, #ec3f3f);
+        color: var(--status-light-danger, $color_red_1);
     }
 
     &__icon {

@@ -1,5 +1,5 @@
 .wallets-modal-step-wrapper {
-    background-color: #ffffff;
+    background-color: $color_white;
     border-radius: 0.8rem;
 
     @include mobile {
@@ -25,7 +25,7 @@
 
     &__header {
         padding: 2rem;
-        border-bottom: 0.2rem solid #f2f3f4;
+        border-bottom: 0.2rem solid $color_grey_2;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -37,7 +37,7 @@
         @include mobile {
             display: grid;
             grid-template-columns: auto 2rem;
-            background-color: #ffffff;
+            background-color: $color_white;
             position: relative;
             z-index: 99;
             width: 100%;
@@ -56,13 +56,13 @@
         height: 10%;
         width: 100%;
         bottom: 0;
-        border-top: 0.2rem solid #f2f3f4;
+        border-top: 0.2rem solid $color_grey_2;
         display: flex;
         justify-content: flex-end;
         align-items: center;
 
         @include mobile {
-            background-color: #ffffff;
+            background-color: $color_white;
             position: relative;
             z-index: 99;
             height: auto;

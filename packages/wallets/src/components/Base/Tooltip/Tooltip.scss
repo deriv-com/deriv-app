@@ -32,7 +32,7 @@
     }
 
     &__arrow {
-        background: var(--system-light-5-active-background, #d6dadb);
+        background: var(--system-light-5-active-background, $color_grey_5);
 
         &--right {
             width: 0.4rem;
@@ -65,6 +65,6 @@
         border-radius: 4px;
         font-size: 1.2rem;
 
-        background: var(--system-light-5-active-background, #d6dadb);
+        background: var(--system-light-5-active-background, $color_grey_5);
     }
 }

@@ -64,6 +64,17 @@ const colors = {
     '#ffa912': '$color_yellow_2',
 };
 
+function expandHexColor(shortHex) {
+    const isShortHex = /^#[0-9A-F]{3}$/i.test(shortHex);
+
+    if (!isShortHex) {
+        return shortHex;
+    }
+
+    const expandedHex = shortHex.replace(/[0-9A-F]/gi, char => char + char);
+    return expandedHex;
+}
+
 const plugin = () => {
     return {
         postcssPlugin: 'postcss-constants-mapper',
@@ -74,10 +85,14 @@ const plugin = () => {
                         const hashIndex = decl.value.indexOf('#');
                         const hashEndIndex = hashIndex + 6 <= decl.value.length ? hashIndex + 6 : hashIndex + 3;
                         const hashValue = decl.value.slice(hashIndex, hashEndIndex + 1);
-                        decl.value =
-                            decl.value.slice(0, hashIndex) +
-                            colors[hashValue] +
-                            decl.value.slice(hashEndIndex + 1, decl.value.length);
+
+                        const shortenHex = hashValue.length === 4 ? expandHexColor(hashValue) : hashValue;
+                        if (colors[shortenHex]) {
+                            decl.value =
+                                decl.value.slice(0, hashIndex) +
+                                colors[shortenHex] +
+                                decl.value.slice(hashEndIndex + 1, decl.value.length);
+                        }
                     }
                 });
             });
@@ -94,11 +109,11 @@ const transform = async () => {
     const files = glob.sync('./packages/wallets/src/**/*.scss');
 
     const filePromises = files.map(async file => {
-        if (!/Base/.test(file)) {
-            const contents = fs.readFileSync(file).toString();
-            const result = await processor.process(contents, { from: undefined });
-            fs.writeFileSync(file, result.css);
-        }
+        // if (!/\/Base\//.test(file)) {
+        const contents = fs.readFileSync(file).toString();
+        const result = await processor.process(contents, { from: undefined });
+        fs.writeFileSync(file, result.css);
+        // }
     });
 
     await Promise.all(filePromises);

@@ -6,7 +6,7 @@
     &-active {
         width: 2.5rem;
         height: 0.8rem;
-        background-color: #ff444f;
+        background-color: $color_red;
         border-radius: 1rem;
     }
 
@@ -15,7 +15,7 @@
         height: 0.8rem;
         margin: 0 0.4rem;
         border-radius: 50%;
-        background-color: #c2c2c2;
+        background-color: $color_grey;
     }
 
     &-transition {

@@ -11,7 +11,7 @@
         flex: 1 0 0;
         align-self: stretch;
         border-radius: 0.8rem;
-        border: 0.1rem dashed var(--system-light-5-active-background, #d6dadb);
+        border: 0.1rem dashed var(--system-light-5-active-background, $color_grey_5);
 
         &-icon {
             width: 3.2rem;
@@ -26,7 +26,7 @@
 
             &-title {
                 align-self: stretch;
-                color: var(--system-light-2-general-text, #333);
+                color: var(--system-light-2-general-text, $color_black_1);
 
                 /* desktop/paragraph/P2 - bold */
                 font-size: 1.4rem;
@@ -37,7 +37,7 @@
 
             &-description {
                 align-self: stretch;
-                color: var(--system-light-2-general-text, #333);
+                color: var(--system-light-2-general-text, $color_black_1);
 
                 /* desktop/extra small/XS - regular */
                 font-size: 1rem;

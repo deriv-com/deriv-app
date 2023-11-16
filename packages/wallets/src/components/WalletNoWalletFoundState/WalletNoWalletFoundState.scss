@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    background: var(--system-light-8-primary-background, #fff);
+    background: var(--system-light-8-primary-background, $color_white);
 
     @include mobile {
         height: calc(100vh - 44px);
@@ -35,6 +35,6 @@
     }
 
     &__emphasized-text {
-        color: var(--brand-coral, #ff444f);
+        color: var(--brand-coral, $color_red);
     }
 }

@@ -4,7 +4,7 @@
     align-items: center;
     cursor: pointer;
     padding-left: 0.8rem;
-    border-left: 0.1rem solid var(--light-5-active-background, #d6dadb);
+    border-left: 0.1rem solid var(--light-5-active-background, $color_grey_5);
 
     @include mobile {
         flex-direction: column;

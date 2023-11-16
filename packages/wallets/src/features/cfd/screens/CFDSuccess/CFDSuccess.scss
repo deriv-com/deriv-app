@@ -19,16 +19,16 @@
         border-radius: 0 1rem 0rem;
         display: grid;
         place-items: center;
-        color: #ffffff;
+        color: $color_white;
         height: 2.5rem;
         width: 5rem;
 
         &--demo {
-            background-color: #377cfc;
+            background-color: $color_blue;
         }
 
         &--real {
-            background-color: #ff444f;
+            background-color: $color_red;
         }
     }
 

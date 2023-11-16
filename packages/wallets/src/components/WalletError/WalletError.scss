@@ -2,7 +2,7 @@
     width: 47.6rem;
     padding: 2.4rem;
     border-radius: 0.4rem;
-    background: #fff;
+    background: $color_white;
 
     @include mobile {
         display: flex;

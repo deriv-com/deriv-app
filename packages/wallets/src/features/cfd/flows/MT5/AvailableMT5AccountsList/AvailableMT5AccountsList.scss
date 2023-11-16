@@ -4,7 +4,7 @@
     }
 
     &__text {
-        color: var(--brand-coral, #ff444f);
+        color: var(--brand-coral, $color_red);
         text-align: center;
 
         /* desktop/paragraph/P2 - bold */

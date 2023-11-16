@@ -21,10 +21,10 @@
 
     &__button {
         align-items: center;
-        background: #ff444f;
+        background: $color_red;
         border-radius: 0.4rem;
         border: none;
-        color: #ffffff;
+        color: $color_white;
         cursor: pointer;
         display: flex;
         font-weight: 700;

@@ -13,8 +13,8 @@
             padding: 2.4rem;
             align-self: stretch;
             border-radius: 1.6rem;
-            border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
-            background: var(--system-light-8-primary-background, #fff);
+            border: 0.1rem solid var(--system-light-5-active-background, $color_grey_5);
+            background: var(--system-light-8-primary-background, $color_white);
 
             &-details {
                 display: flex;
@@ -34,7 +34,7 @@
 
                 &-title {
                     flex: 1 0 0;
-                    color: var(--system-light-1-prominent-text, #333);
+                    color: var(--system-light-1-prominent-text, $color_black_1);
                     text-align: center;
                     align-items: center;
                     display: flex;
@@ -48,7 +48,7 @@
 
                 &-description {
                     align-self: stretch;
-                    color: var(--system-light-2-general-text, #333);
+                    color: var(--system-light-2-general-text, $color_black_1);
                     text-align: center;
 
                     /* desktop/paragraph/P2 - regular */
@@ -62,8 +62,8 @@
     }
     &-selected {
         border-radius: 1.6rem;
-        border: 0.2rem solid var(--brand-blue, #85acb0);
-        background: var(--system-light-8-primary-background, #fff);
+        border: 0.2rem solid var(--brand-blue, $color_green);
+        background: var(--system-light-8-primary-background, $color_white);
 
         /* Shadows/xxl */
         box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);

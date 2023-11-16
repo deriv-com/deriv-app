@@ -6,7 +6,7 @@
     align-items: center;
     align-self: stretch;
     border-radius: 0.4rem;
-    border: 0.1rem solid var(--system-light-3-less-prominent-text, #999);
+    border: 0.1rem solid var(--system-light-3-less-prominent-text, $color_grey_1);
     cursor: pointer;
 
     &:hover {

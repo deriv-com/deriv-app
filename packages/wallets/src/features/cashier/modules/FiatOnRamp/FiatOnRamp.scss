@@ -42,7 +42,7 @@
 
         @include mobile {
             padding: 1.6rem;
-            box-shadow: 0 0.2rem 0 0 #f2f3f4 inset;
+            box-shadow: 0 0.2rem 0 0 $color_grey_2 inset;
         }
     }
 }

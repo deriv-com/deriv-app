@@ -12,7 +12,7 @@
         mix-blend-mode: overlay;
         opacity: 0.16;
         border-top-right-radius: 0.8rem;
-        background-color: #fff;
+        background-color: $color_white;
     }
 
     &__palette {
@@ -42,7 +42,7 @@
                             rgba(244, 67, 54, 0.24) 0%,
                             rgba(40, 57, 145, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -54,7 +54,7 @@
                             rgba(244, 67, 54, 0.16) 50.52%,
                             rgba(40, 57, 145, 0.56) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -75,7 +75,7 @@
                             rgba(244, 67, 54, 0.4) 50.52%,
                             rgba(40, 57, 145, 0.56) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -85,7 +85,7 @@
                             rgba(244, 67, 54, 0.16) 50.52%,
                             rgba(40, 57, 145, 0.56) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -97,7 +97,7 @@
                             rgba(244, 67, 54, 0.16) 50.52%,
                             rgba(40, 57, 145, 0.56) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -118,7 +118,7 @@
                             rgba(13, 180, 61, 0.24) 0%,
                             rgba(255, 205, 0, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -127,7 +127,7 @@
                             rgba(13, 180, 61, 0.24) 0%,
                             rgba(255, 205, 0, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -140,7 +140,7 @@
                             rgba(13, 180, 61, 0.16) 50.52%,
                             rgba(255, 205, 0, 0.56) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -149,7 +149,7 @@
                             rgba(13, 180, 61, 0.16) 50.52%,
                             rgba(255, 205, 0, 0.56) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -162,7 +162,7 @@
                             rgba(13, 180, 61, 0.4) 50.52%,
                             rgba(255, 205, 0, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -171,7 +171,7 @@
                             rgba(13, 180, 61, 0.24) 0%,
                             rgba(255, 205, 0, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -184,7 +184,7 @@
                             rgba(13, 180, 61, 0.16) 50.52%,
                             rgba(255, 205, 0, 0.56) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -193,7 +193,7 @@
                             rgba(13, 180, 61, 0.16) 50.52%,
                             rgba(255, 205, 0, 0.56) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -207,7 +207,7 @@
                             rgba(40, 57, 145, 0.24) 0%,
                             rgba(248, 209, 46, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -216,7 +216,7 @@
                             rgba(40, 57, 145, 0.24) 0%,
                             rgba(248, 209, 46, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -229,7 +229,7 @@
                             rgba(40, 57, 145, 0.16) 50.52%,
                             rgba(248, 209, 46, 0.56) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -238,7 +238,7 @@
                             rgba(40, 57, 145, 0.16) 50.52%,
                             rgba(248, 209, 46, 0.56) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -251,7 +251,7 @@
                             rgba(40, 57, 145, 0.4) 50.52%,
                             rgba(248, 209, 46, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -260,7 +260,7 @@
                             rgba(40, 57, 145, 0.24) 0%,
                             rgba(248, 209, 46, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -273,7 +273,7 @@
                             rgba(40, 57, 145, 0.16) 50.52%,
                             rgba(248, 209, 46, 0.56) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -282,7 +282,7 @@
                             rgba(40, 57, 145, 0.16) 50.52%,
                             rgba(248, 209, 46, 0.56) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -297,7 +297,7 @@
                             rgba(40, 57, 145, 0.24) 0.01%,
                             rgba(244, 67, 54, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -307,7 +307,7 @@
                             rgba(40, 57, 145, 0.24) 0.01%,
                             rgba(244, 67, 54, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -320,7 +320,7 @@
                             rgba(40, 57, 145, 0.16) 50.52%,
                             rgba(244, 67, 54, 0.56) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -329,7 +329,7 @@
                             rgba(40, 57, 145, 0.16) 50.52%,
                             rgba(244, 67, 54, 0.56) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -342,7 +342,7 @@
                             rgba(40, 57, 145, 0.4) 50.52%,
                             rgba(244, 67, 54, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -352,7 +352,7 @@
                             rgba(40, 57, 145, 0.24) 0.01%,
                             rgba(244, 67, 54, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -365,7 +365,7 @@
                             rgba(40, 57, 145, 0.16) 50.52%,
                             rgba(244, 67, 54, 0.56) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -374,7 +374,7 @@
                             rgba(40, 57, 145, 0.16) 50.52%,
                             rgba(244, 67, 54, 0.56) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -388,7 +388,7 @@
                             rgba(247, 147, 27, 0.24) 0%,
                             rgba(247, 199, 27, 0.477) 99.99%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -398,7 +398,7 @@
                             rgba(247, 199, 27, 0.477) 99.99%,
                             rgba(255, 100, 68, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -411,7 +411,7 @@
                             rgba(247, 147, 27, 0.16) 50.52%,
                             rgba(247, 199, 27, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -420,7 +420,7 @@
                             rgba(247, 147, 27, 0.16) 50.52%,
                             rgba(247, 199, 27, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -433,7 +433,7 @@
                             rgba(247, 147, 27, 0.4) 50.52%,
                             rgba(247, 199, 27, 0.477) 99.99%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -443,7 +443,7 @@
                             rgba(247, 199, 27, 0.477) 99.99%,
                             rgba(255, 100, 68, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -456,7 +456,7 @@
                             rgba(247, 147, 27, 0.16) 50.52%,
                             rgba(247, 199, 27, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -465,7 +465,7 @@
                             rgba(247, 147, 27, 0.16) 50.52%,
                             rgba(247, 199, 27, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -479,7 +479,7 @@
                             rgba(82, 86, 127, 0.24) 0%,
                             rgba(130, 140, 173, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -488,7 +488,7 @@
                             rgba(82, 86, 127, 0.24) 0%,
                             rgba(130, 140, 173, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -501,7 +501,7 @@
                             rgba(82, 86, 127, 0.16) 50.52%,
                             rgba(130, 140, 173, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -510,7 +510,7 @@
                             rgba(82, 86, 127, 0.16) 50.52%,
                             rgba(130, 140, 173, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -523,7 +523,7 @@
                             rgba(82, 86, 127, 0.5) 50.52%,
                             rgba(130, 140, 173, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -532,7 +532,7 @@
                             rgba(82, 86, 127, 0.24) 0%,
                             rgba(130, 140, 173, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -544,7 +544,7 @@
                             rgba(82, 86, 127, 0.24) 0%,
                             rgba(130, 140, 173, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -552,7 +552,7 @@
                             rgba(82, 86, 127, 0.24) 0%,
                             rgba(130, 140, 173, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -566,7 +566,7 @@
                             rgba(165, 168, 169, 0.24) 0%,
                             rgba(193, 204, 207, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -576,7 +576,7 @@
                             rgba(165, 168, 169, 0.16) 50.52%,
                             rgba(193, 204, 207, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -589,7 +589,7 @@
                             rgba(165, 168, 169, 0.16) 50.52%,
                             rgba(193, 204, 207, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -598,7 +598,7 @@
                             rgba(165, 168, 169, 0.16) 50.52%,
                             rgba(193, 204, 207, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -611,7 +611,7 @@
                             rgba(165, 168, 169, 0.4) 50.52%,
                             rgba(193, 204, 207, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -620,7 +620,7 @@
                             rgba(165, 168, 169, 0.24) 0%,
                             rgba(193, 204, 207, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -633,7 +633,7 @@
                             rgba(165, 168, 169, 0.16) 50.52%,
                             rgba(193, 204, 207, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -642,7 +642,7 @@
                             rgba(165, 168, 169, 0.16) 50.52%,
                             rgba(193, 204, 207, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -656,7 +656,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -665,7 +665,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -678,7 +678,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -687,7 +687,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -700,7 +700,7 @@
                             rgba(0, 147, 147, 0.5) 50.52%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -709,7 +709,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -722,7 +722,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -731,7 +731,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -745,7 +745,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -754,7 +754,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -767,7 +767,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -776,7 +776,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -789,7 +789,7 @@
                             rgba(0, 147, 147, 0.5) 50.52%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -797,7 +797,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
 
@@ -809,7 +809,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -819,7 +819,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -834,7 +834,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -843,7 +843,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -856,7 +856,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -865,7 +865,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -878,7 +878,7 @@
                             rgba(0, 147, 147, 0.5) 50.52%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -887,7 +887,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -900,7 +900,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -909,7 +909,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -923,7 +923,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -932,7 +932,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -945,7 +945,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -954,7 +954,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -967,7 +967,7 @@
                             rgba(0, 147, 147, 0.5) 50.52%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -976,7 +976,7 @@
                             rgba(0, 147, 147, 0.24) 0%,
                             rgba(0, 147, 147, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -989,7 +989,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -998,7 +998,7 @@
                             rgba(0, 147, 147, 0.16) 50.52%,
                             rgba(4, 217, 217, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -1012,7 +1012,7 @@
                             rgba(39, 117, 202, 0.24) 0%,
                             rgba(34, 76, 225, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -1021,7 +1021,7 @@
                             rgba(39, 117, 202, 0.24) 0%,
                             rgba(34, 76, 225, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -1034,7 +1034,7 @@
                             rgba(39, 117, 202, 0.16) 50.52%,
                             rgba(34, 76, 225, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -1043,7 +1043,7 @@
                             rgba(39, 117, 202, 0.16) 50.52%,
                             rgba(34, 76, 225, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }
@@ -1056,7 +1056,7 @@
                             rgba(39, 117, 202, 0.5) 50.52%,
                             rgba(34, 76, 225, 0.48) 100%
                         )
-                        #ffffff;
+                        $color_white;
                     border-radius: 0.8rem;
                 }
                 &-dark {
@@ -1065,7 +1065,7 @@
                             rgba(39, 117, 202, 0.24) 0%,
                             rgba(34, 76, 225, 0.48) 100%
                         )
-                        #151717;
+                        $color_black_3;
                     border-radius: 0.8rem;
                 }
             }
@@ -1078,7 +1078,7 @@
                             rgba(39, 117, 202, 0.16) 50.52%,
                             rgba(34, 76, 225, 0.4) 100%
                         )
-                        #ffffff;
+                        $color_white;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -1087,7 +1087,7 @@
                             rgba(39, 117, 202, 0.16) 50.52%,
                             rgba(34, 76, 225, 0.4) 100%
                         )
-                        #151717;
+                        $color_black_3;
                 }
             }
         }

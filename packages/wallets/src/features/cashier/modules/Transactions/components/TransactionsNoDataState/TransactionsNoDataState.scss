@@ -7,7 +7,7 @@
     gap: 2.4rem;
 
     &__title {
-        color: var(--system-light-1-prominent-text, #333);
+        color: var(--system-light-1-prominent-text, $color_black_1);
         text-align: center;
 
         /* desktop/paragraph/P1 - bold */
@@ -18,7 +18,7 @@
     }
 
     &__description {
-        color: var(--system-light-3-less-prominent-text, #999);
+        color: var(--system-light-3-less-prominent-text, $color_grey_1);
         text-align: center;
 
         /* desktop/paragraph/P2 - regular */
@@ -37,9 +37,9 @@
             all: unset;
             cursor: pointer;
             border-radius: 0.4rem;
-            border: 0.2rem solid var(--system-light-3-less-prominent-text, #999);
+            border: 0.2rem solid var(--system-light-3-less-prominent-text, $color_grey_1);
             padding: 1rem 1.6rem;
-            color: var(--system-light-1-prominent-text, #333);
+            color: var(--system-light-1-prominent-text, $color_black_1);
             text-align: center;
 
             /* desktop/paragraph/P2 - bold */
@@ -53,10 +53,10 @@
             all: unset;
             cursor: pointer;
             border-radius: 0.4rem;
-            border: 0.2rem solid var(--button-primary-default, #ff444f);
-            background: var(--button-primary-default, #ff444f);
+            border: 0.2rem solid var(--button-primary-default, $color_red);
+            background: var(--button-primary-default, $color_red);
             padding: 1rem 1.6rem;
-            color: var(--system-dark-1-prominent-text, #fff);
+            color: var(--system-dark-1-prominent-text, $color_white);
             text-align: center;
 
             /* desktop/paragraph/P2 - bold */

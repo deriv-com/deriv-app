@@ -9,7 +9,7 @@
     gap: 1.6rem;
 
     border-radius: 0.8rem;
-    border: 0.1rem solid var(--system-light-7-secondary-background, #f2f3f4);
+    border: 0.1rem solid var(--system-light-7-secondary-background, $color_grey_2);
 
     &__title-and-badge {
         display: flex;

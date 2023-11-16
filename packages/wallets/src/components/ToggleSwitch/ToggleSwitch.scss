@@ -17,7 +17,7 @@
         position: absolute;
         inset: 0;
         cursor: pointer;
-        background-color: var(--light-4-disabled-text, #d6d6d6);
+        background-color: var(--light-4-disabled-text, $color_grey_6);
         transition: 0.4s;
         border-radius: 1.6rem;
 
@@ -28,7 +28,7 @@
             width: 1.8rem;
             left: 0.3rem;
             bottom: 0.3rem;
-            background-color: var(--system-dark-1-prominent-text, #fff);
+            background-color: var(--system-dark-1-prominent-text, $color_white);
             transition: 0.4s;
             border-radius: 50%;
 
@@ -40,7 +40,7 @@
 }
 
 .wallets-toggle-switch input:checked + .wallets-toggle-switch__slider {
-    background-color: var(--light-status-success, #4bb4b3);
+    background-color: var(--light-status-success, $color_green_1);
 }
 
 .wallets-toggle-switch input:checked + .wallets-toggle-switch__slider:before {

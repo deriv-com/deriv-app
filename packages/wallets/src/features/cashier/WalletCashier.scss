@@ -15,7 +15,7 @@
     gap: 2.4rem;
     flex: 1;
     padding: 4.8rem 1.6rem 0;
-    background-color: #ffffff;
+    background-color: $color_white;
     overflow: scroll;
 
     @include mobile {

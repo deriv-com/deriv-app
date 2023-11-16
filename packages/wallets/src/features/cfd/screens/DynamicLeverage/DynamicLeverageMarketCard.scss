@@ -1,9 +1,9 @@
 .wallets-dynamic-leverage-modal {
     &__market {
-        border: 0.1rem solid var(--border-hover, #999999);
+        border: 0.1rem solid var(--border-hover, $color_grey_1);
         border-radius: 0.8rem;
         overflow: hidden;
-        background-color: var(--general-hover, #e6e9e9);
+        background-color: var(--general-hover, $color_grey_4);
         height: 24.8rem;
 
         &-description {
@@ -25,7 +25,7 @@
                     justify-items: center;
                     border-bottom: 0;
                     padding: 0.4rem 0;
-                    background-color: var(--general-hover, #e6e9e9);
+                    background-color: var(--general-hover, $color_grey_4);
                 }
             }
 
@@ -37,11 +37,11 @@
                 padding: 0.4rem 0;
 
                 &:nth-child(even) {
-                    background-color: var(--general-hover, #e6e9e9);
+                    background-color: var(--general-hover, $color_grey_4);
                 }
 
                 &:nth-child(odd) {
-                    background-color: var(--general-section-1, #f2f3f4);
+                    background-color: var(--general-section-1, $color_grey_2);
                 }
             }
         }
@@ -51,7 +51,7 @@
             flex-direction: column;
             height: 7rem;
             padding-top: 1rem;
-            background-color: var(--general-section-1, #f2f3f4);
+            background-color: var(--general-section-1, $color_grey_2);
         }
     }
 }

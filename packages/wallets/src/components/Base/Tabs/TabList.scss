@@ -3,7 +3,7 @@
         display: grid;
         grid-auto-columns: 1fr;
         position: relative;
-        background-color: #f2f3f4;
+        background-color: $color_grey_2;
         height: 5rem;
         margin-top: 1rem;
         border-radius: 0.7rem;
@@ -18,13 +18,13 @@
 
             &--active {
                 font-weight: bold;
-                background-color: #ffffff;
+                background-color: $color_white;
                 margin: 0.6rem;
                 border-radius: 0.5rem;
             }
 
             &--disabled {
-                color: #999999;
+                color: $color_grey_1;
             }
         }
     }

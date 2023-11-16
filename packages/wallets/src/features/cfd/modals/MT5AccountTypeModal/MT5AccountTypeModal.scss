@@ -6,7 +6,7 @@
         justify-content: center;
         align-items: center;
         border-radius: 0.4rem;
-        background: #ff444f;
+        background: $color_red;
         border: unset;
         cursor: pointer;
 
@@ -33,7 +33,7 @@
     }
 
     &-text {
-        color: var(--system-dark-1-prominent-text, #fff);
+        color: var(--system-dark-1-prominent-text, $color_white);
         text-align: center;
 
         /* desktop/paragraph/P2 - bold */

@@ -1,6 +1,6 @@
 .wallets-fiat-onramp-provider {
     align-items: center;
-    background: var(--system-light-8-primary-background, #fff);
+    background: var(--system-light-8-primary-background, $color_white);
     border-radius: 0.8rem;
     box-shadow: 0 1.6rem 2rem 0 rgba(0, 0, 0, 0.05), 0 0 2rem 0 rgba(0, 0, 0, 0.05);
     display: flex;

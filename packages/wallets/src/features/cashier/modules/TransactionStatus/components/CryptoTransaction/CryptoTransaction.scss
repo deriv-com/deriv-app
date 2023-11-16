@@ -36,19 +36,19 @@
             &--processing,
             &--reverting,
             &--verified {
-                background: var(--status-warning, #ffad3a);
+                background: var(--status-warning, $color_yellow);
             }
 
             &--confirmed,
             &--sent {
-                background: var(--status-success, #4bb4b3);
+                background: var(--status-success, $color_green_1);
             }
 
             &--error,
             &--cancelled,
             &--rejected,
             &--reverted {
-                background: var(--status-danger, #ec3f3f);
+                background: var(--status-danger, $color_red_1);
             }
         }
     }
@@ -61,7 +61,7 @@
     }
 
     &__red-text {
-        color: var(--brand-coral, #ff444f);
+        color: var(--brand-coral, $color_red);
         text-decoration: none;
     }
 }

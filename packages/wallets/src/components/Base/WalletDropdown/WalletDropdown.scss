@@ -23,15 +23,15 @@
         width: 100%;
         border-radius: 0.4rem;
         padding: 1rem 1.6rem;
-        border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
-        background: var(--system-light-8-primary-background, #fff);
+        border: 0.1rem solid var(--system-light-5-active-background, $color_grey_5);
+        background: var(--system-light-8-primary-background, $color_white);
         display: flex;
         gap: 0.8rem;
         align-items: center;
     }
 
     &__content:has(&__field:focus) {
-        border: 0.1rem solid var(--brand-blue, #85acb0);
+        border: 0.1rem solid var(--brand-blue, $color_green);
     }
 
     &__field {
@@ -41,7 +41,7 @@
         font-family: inherit;
         outline: 0;
         font-size: 1.4rem;
-        color: var(--system-light-2-general-text, #333);
+        color: var(--system-light-2-general-text, $color_black_1);
         transition: border-color 0.2s;
         cursor: pointer;
     }
@@ -68,14 +68,14 @@
         display: block;
         transition: 0.2s;
         font-size: 1rem;
-        color: var(--system-light-3-less-prominent-text, #999);
-        background: var(--system-light-8-primary-background, #fff);
+        color: var(--system-light-3-less-prominent-text, $color_grey_1);
+        background: var(--system-light-8-primary-background, $color_white);
         padding-inline: 0.4rem;
         left: 1.6rem;
     }
 
     &__field:focus ~ &__label {
-        color: var(--brand-blue, #85acb0);
+        color: var(--brand-blue, $color_green);
     }
 
     &__items {
@@ -88,7 +88,7 @@
         z-index: 2;
         margin-top: 0.4rem;
         border-radius: 0.4rem;
-        background: var(--system-light-8-primary-background, #fff);
+        background: var(--system-light-8-primary-background, $color_white);
         box-shadow: 0 3.2rem 6.4rem 0 rgba(14, 14, 14, 0.14);
         overflow-y: auto;
 
@@ -126,11 +126,11 @@
 
         &:hover:not(&--active) {
             cursor: pointer;
-            background: var(--system-light-6-hover-background, #e6e9e9);
+            background: var(--system-light-6-hover-background, $color_grey_4);
         }
 
         &--active {
-            background: var(--system-light-5-active-background, #d6dadb);
+            background: var(--system-light-5-active-background, $color_grey_5);
         }
     }
 }

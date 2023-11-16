@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { isCryptocurrency, getLimitOrderAmount, isValidToSell, addComma } from '@deriv/shared';
+import { addComma, getLimitOrderAmount, isCryptocurrency, isValidToSell } from '@deriv/shared';
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
 import Icon from '../../icon';
@@ -71,7 +71,7 @@ const TurbosCardBody = ({
                     is_crypto={isCryptocurrency(currency)}
                     className='dc-contract-card__entry-spot'
                 >
-                    <Money amount={`${entry_spot_display_value}`} />
+                    {addComma(entry_spot_display_value)}
                 </ContractCardItem>
 
                 <div className='dc-contract-card__limit-order-info'>
@@ -89,7 +89,7 @@ const TurbosCardBody = ({
                     </ContractCardItem>
                 </div>
                 <ContractCardItem header={BARRIER} className='dc-contract-card__barrier-level'>
-                    <Money amount={addComma(barrier)} currency={currency} should_format={false} />
+                    {addComma(barrier)}
                 </ContractCardItem>
                 <MobileWrapper>
                     <div className='dc-contract-card__status'>

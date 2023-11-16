@@ -16,8 +16,8 @@ const default_mock_props = {
         currency: 'USD',
         buy_price: 2671,
         bid_price: 2517,
-        entry_spot: 2666,
-        barrier: '2650',
+        entry_spot: '2666.000',
+        barrier: '2650.000',
         is_sold: 0,
         date_start: 123532989,
         date_expiry: 626512765,
@@ -121,9 +121,9 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/Contract value:/i)).toBeInTheDocument();
         expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Entry spot:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,666.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/2,666.000/i)).toBeInTheDocument();
         expect(screen.getByText(/Strike:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,650.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/2,650.000/i)).toBeInTheDocument();
         expect(screen.getByText('ProgressSliderMobile')).toBeInTheDocument();
         expect(screen.getByText(/Total profit\/loss:/i)).toBeInTheDocument();
         expect(screen.getByText(/35.68/i)).toBeInTheDocument();
@@ -145,7 +145,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/Take profit:/i)).toBeInTheDocument();
         expect(screen.getByText(/-/i)).toBeInTheDocument();
         expect(screen.getByText(/Barrier:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,650/i)).toBeInTheDocument();
+        expect(screen.getByText(/2,650.000/i)).toBeInTheDocument();
     });
     it('should render contract card for Rise/Fall', () => {
         default_mock_props.contract_info.contract_type = 'rise_fall';

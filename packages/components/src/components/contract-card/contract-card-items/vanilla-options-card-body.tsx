@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { getDisplayStatus, isCryptocurrency } from '@deriv/shared';
+import { addComma, getDisplayStatus, isCryptocurrency } from '@deriv/shared';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
@@ -45,10 +45,10 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                     </ContractCardItem>
 
                     <ContractCardItem header={ENTRY_SPOT}>
-                        {entry_spot_display_value && <Money amount={entry_spot_display_value} />}
+                        {entry_spot_display_value && addComma(entry_spot_display_value)}
                     </ContractCardItem>
 
-                    <ContractCardItem header={STRIKE}>{barrier && <Money amount={barrier} />}</ContractCardItem>
+                    <ContractCardItem header={STRIKE}>{barrier && addComma(barrier)}</ContractCardItem>
                 </div>
                 <ContractCardItem
                     className='dc-contract-card-item__total-profit-loss'
@@ -77,9 +77,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                         </ContractCardItem>
 
                         <ContractCardItem header={ENTRY_SPOT}>
-                            {entry_spot_display_value && (
-                                <Money amount={entry_spot_display_value} currency={currency} />
-                            )}
+                            {entry_spot_display_value && addComma(entry_spot_display_value)}
                         </ContractCardItem>
                     </div>
 
@@ -88,9 +86,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                             <Money amount={contract_value} currency={currency} />
                         </ContractCardItem>
 
-                        <ContractCardItem header={STRIKE}>
-                            {barrier && <Money amount={barrier} currency={currency} />}
-                        </ContractCardItem>
+                        <ContractCardItem header={STRIKE}>{barrier && addComma(barrier)}</ContractCardItem>
                     </div>
 
                     {is_sold ? (

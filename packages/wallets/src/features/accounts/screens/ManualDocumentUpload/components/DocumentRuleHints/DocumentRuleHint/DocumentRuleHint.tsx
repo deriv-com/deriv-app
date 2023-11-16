@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { WalletText } from '../../../../../../components/Base';
+import { WalletText } from '../../../../../../../components/Base';
 import './DocumentRuleHint.scss';
 
 type TProps = {

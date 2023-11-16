@@ -8,7 +8,7 @@ type TProps = {
 };
 
 const Divider: React.FC<TProps> = ({ color = '#f2f3f4', margin, variant = 'horizontal' }) => (
-    <div className={`wallets-divider__${variant}`} style={{ borderColor: color, margin }} />
+    <div className={`wallets-divider wallets-divider--${variant}`} style={{ borderColor: color, margin }} />
 );
 
 export default Divider;

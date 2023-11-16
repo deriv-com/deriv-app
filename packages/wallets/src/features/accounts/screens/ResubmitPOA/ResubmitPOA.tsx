@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useSettings, useStatesList } from '@deriv/api';
 import { InlineMessage, WalletDropdown, WalletText, WalletTextField } from '../../../../components/Base';
-import useDevice from '../../../../hooks/useDevice';
 import './ResubmitPOA.scss';
 
 const ResubmitPOA: React.FC = () => {
     const { data } = useSettings();
-    const { isMobile } = useDevice();
     const country = data?.country_code || '';
     const { data: statesList } = useStatesList(country);
 
@@ -16,8 +14,6 @@ const ResubmitPOA: React.FC = () => {
     const handleSelect = (value: string) => {
         setSelectedState(value);
     };
-
-    const deviceWidth = isMobile ? '100%' : '84rem';
 
     return (
         <div className='wallets-resubmit-poa'>
@@ -35,18 +31,17 @@ const ResubmitPOA: React.FC = () => {
                     </InlineMessage>
                 </div>
                 <div className='wallets-resubmit-poa__address--input'>
-                    <WalletTextField label='First line of address*' maxWidth={deviceWidth} name='first-line' />
-                    <WalletTextField label='Second line of address' maxWidth={deviceWidth} name='second-line' />
-                    <WalletTextField label='Town/City*' maxWidth={deviceWidth} name='town-line' />
+                    <WalletTextField label='First line of address*' name='first-line' />
+                    <WalletTextField label='Second line of address' name='second-line' />
+                    <WalletTextField label='Town/City*' name='town-line' />
                     <WalletDropdown
                         label='State/Province'
                         list={statesList}
                         listHeight='sm'
-                        maxWidth={deviceWidth}
                         onSelect={handleSelect}
                         value={selectedState}
                     />
-                    <WalletTextField label='Postal/ZIP Code' maxWidth={deviceWidth} name='zip-line' />
+                    <WalletTextField label='Postal/ZIP Code' name='zip-line' />
                 </div>
             </div>
         </div>

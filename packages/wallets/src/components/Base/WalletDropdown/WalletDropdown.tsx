@@ -6,20 +6,18 @@ import reactNodeToString from '../../../utils/reactNodeToString';
 import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
 import { WalletTextField } from '../WalletTextField';
+import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import './WalletDropdown.scss';
 
-type TProps = {
+type TProps = Pick<WalletTextFieldProps, 'id' | 'label' | 'value'> & {
     icon?: React.ReactNode;
-    id?: string;
-    label?: React.ReactNode;
     list: {
         text?: React.ReactNode;
         value?: string;
     }[];
     listHeight?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     onSelect: (value: string) => void;
-    type?: 'comboBox' | 'prompt';
-    value: string | undefined;
+    variant?: 'comboBox' | 'prompt';
 };
 
 const WalletDropdown: React.FC<TProps> = ({
@@ -29,8 +27,8 @@ const WalletDropdown: React.FC<TProps> = ({
     list,
     listHeight = 'md',
     onSelect,
-    type = 'prompt',
     value,
+    variant = 'prompt',
 }) => {
     const [items, setItems] = useState(list);
     const [shouldFilterList, setShouldFilterList] = useState(false);
@@ -76,7 +74,7 @@ const WalletDropdown: React.FC<TProps> = ({
                     id={id}
                     onKeyUp={() => setShouldFilterList(true)}
                     placeholder={reactNodeToString(label)}
-                    readOnly={type !== 'comboBox'}
+                    readOnly={variant !== 'comboBox'}
                     renderLeftIcon={() => icon}
                     renderRightIcon={() => (
                         <button

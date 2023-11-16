@@ -13,7 +13,7 @@ import ReactDOM from 'react-dom';
 const default_mocked_store = mockStore({
     client: { is_logged_in: true },
     common: { network_status: { class: 'online' } },
-    ui: { is_mobile: false, is_dark_mode_on: false, notification_messages_ui: 'address' },
+    ui: { notification_messages_ui: 'address' },
     modules: {
         trade: {
             basis: 'stake',

@@ -135,7 +135,7 @@ const Trade = observer(() => {
         setSwipeIndex(index);
     };
 
-    const is_already_shown = JSON.parse(LocalStore.get('launchModalShown') ?? 'false');
+    const is_already_shown = LocalStore.get('launchModalShown') || false;
 
     const onTryOtherMarkets = async () => {
         if (!is_synthetics_available) {
@@ -167,12 +167,12 @@ const Trade = observer(() => {
 
     const handleLaunchModal = () => {
         setOpenLaunchModal(!open_launch_modal);
-        LocalStore.set('launchModalShown', JSON.stringify(true));
+        LocalStore.set('launchModalShown', true);
     };
     return (
         <React.Fragment>
             {open_launch_modal && is_logged_in && !is_already_shown && (
-                <LaunchModal handleChange={handleLaunchModal} open={open_launch_modal} />
+                <LaunchModal isdarkMode={is_dark_theme} handleChange={handleLaunchModal} open={open_launch_modal} />
             )}
             <div
                 id='trade_container'

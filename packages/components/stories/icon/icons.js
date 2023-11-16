@@ -320,7 +320,6 @@ export const icons =
         'IcCatMultiplier',
         'IcCatOptions',
         'IcCatTurbos',
-        'IcChartLaunch',
         'IcChart',
         'IcChartsTabDbot',
         'IcChat',

@@ -4,12 +4,12 @@ import { WalletText } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
 import CloseIcon from '../../../../../../public/images/close-icon.svg';
-import type { TAccount, TAccountList } from '../../types';
+import type { TAccount, TAccountsList } from '../../types';
 import { TransferFormAccountCard } from '../TransferFormAccountCard';
 import './TransferFormAccountSelection.scss';
 
 type TProps = {
-    accountsList: TAccountList;
+    accountsList: TAccountsList;
     activeWallet: TAccount;
     fromAccount?: TAccount;
     label: 'Transfer from' | 'Transfer to';

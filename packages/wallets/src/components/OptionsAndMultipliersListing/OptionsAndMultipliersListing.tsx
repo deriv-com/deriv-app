@@ -93,8 +93,8 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
                             Options & Multipliers
                         </WalletText>
                     )}
-                    <div className='wallets-options-and-multipliers-listing__header-subtitle'>
-                        <h1>
+                    <div>
+                        <WalletText size={isMobile ? 'sm' : 'md'}>
                             Earn a range of payouts by correctly predicting market price movements with{' '}
                             <a
                                 className='wallets-options-and-multipliers-listing__header-subtitle__link'
@@ -116,7 +116,7 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
                                 multipliers
                             </a>
                             .
-                        </h1>
+                        </WalletText>
                     </div>
                 </div>
                 <DerivAppsSection />

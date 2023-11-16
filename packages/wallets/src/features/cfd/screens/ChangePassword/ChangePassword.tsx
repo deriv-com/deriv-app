@@ -21,7 +21,7 @@ const ChangePassword = () => {
     };
 
     return (
-        <ModalStepWrapper closeOnEscape title='Manage Deriv MT5 password'>
+        <ModalStepWrapper title='Manage Deriv MT5 password'>
             <div className='wallets-change-password__modal-wrapper'>
                 <div className='wallets-change-password__container'>
                     <div className='wallets-change-password__tab'>

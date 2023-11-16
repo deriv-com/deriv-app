@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
-import { ContentFlag, routes } from '@deriv/shared';
+import { ContentFlag, WS, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 import { connect } from 'Stores/connect';
@@ -87,7 +87,6 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
 
 const RealAccountSignup = ({
     available_crypto_currencies,
-    account_status,
     closeRealAccountSignup,
     content_flag,
     country_standpoint,
@@ -498,11 +497,17 @@ const RealAccountSignup = ({
         try {
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
             setShouldShowAppropriatenessWarningModal(false);
-            if (real_account_signup_target === 'maltainvest') {
-                account_status.status.includes('cashier_locked')
-                    ? showStatusDialog(response.new_account_maltainvest.currency.toLowerCase())
-                    : closeModalthenOpenDepositModal();
-            }
+            WS.authorized.getAccountStatus().then(status => {
+                const { get_account_status } = status;
+                if (
+                    real_account_signup_target === 'maltainvest' &&
+                    !get_account_status?.status?.includes('cashier_locked')
+                ) {
+                    closeModalthenOpenDepositModal();
+                } else {
+                    showStatusDialog(response?.new_account_maltainvest?.currency.toLowerCase());
+                }
+            });
         } catch (sign_up_error) {
             // TODO: Handle Error
         } finally {

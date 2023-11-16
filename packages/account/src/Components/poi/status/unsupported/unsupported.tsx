@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Button, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import { identity_status_codes } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
@@ -103,7 +102,7 @@ const Unsupported = ({
             <Documents documents={documents} toggleDetail={toggleDetail} />
             <FormFooter className={classNames('proof-of-identity__footer')}>
                 <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
-                    <BackButtonIcon className='back-btn-icon' /> {localize('Back')}
+                    <Localize i18n_default_text='Back' />
                 </Button>
             </FormFooter>
         </div>

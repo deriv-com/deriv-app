@@ -13,7 +13,6 @@ import {
     getIDVNotApplicableOption,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';
@@ -221,7 +220,7 @@ const IdvDocumentSubmit = observer(
                                     large
                                     secondary
                                 >
-                                    <BackButtonIcon className='back-btn-icon' /> {localize('Go Back')}
+                                    <Localize i18n_default_text='Back' />
                                 </Button>
                             )}
                             <Button

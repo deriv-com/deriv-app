@@ -4,7 +4,7 @@ import { getContractTypeFeatureFlag, getUnsupportedContracts, STATUS_CODES } fro
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 import { TContractInfo } from '../contract';
-import { IDV_ERROR_STATUS, ONFIDO_ERROR_STATUS } from '../constants/poi-failure-codes';
+import { IDV_ERROR_STATUS, ONFIDO_ERROR_STATUS } from '../constants';
 import { LocalStore } from '../storage';
 import { extractInfoFromShortcode, isHighLow } from '../shortcode';
 

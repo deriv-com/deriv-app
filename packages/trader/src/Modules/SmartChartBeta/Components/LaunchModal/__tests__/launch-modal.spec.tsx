@@ -12,7 +12,7 @@ const renderLaunchModal = () => {
     });
 
     const handleMockLaunchModal = () => {
-        sessionStorage.setItem('mockLaunch', JSON.stringify(true));
+        LocalStore.set('mockLaunch', JSON.stringify(true));
     };
 
     render(
@@ -60,17 +60,17 @@ describe('Launch Modal', () => {
         expect(screen.queryByTestId('launch-modal')).not.toBeInTheDocument();
     });
 
-    it('should set the sessionStorage key launchModalShown to true on clicking the continue button', async () => {
+    it('should set the localStorage key launchModalShown to true on clicking the continue button', async () => {
         renderLaunchModal();
         const continue_btn = screen.getByRole('button', { name: 'Continue' });
 
         userEvent.click(continue_btn);
-        const value = JSON.parse(sessionStorage.getItem('mockLaunch') || 'false');
+        const value = JSON.parse(LocalStore.get('mockLaunch') ?? 'false');
         expect(value).toBe(true);
     });
 
-    it('should not show the launch modal once sessionStorage launchModalShown is set', async () => {
-        sessionStorage.setItem('launchModalShown', JSON.stringify(true));
+    it('should not show the launch modal once localStorage launchModalShown is set', async () => {
+        LocalStore.set('launchModalShown', JSON.stringify(true));
         renderTradeComponent();
         await waitFor(() => {
             expect(screen.queryByTestId('launch-modal')).not.toBeInTheDocument();

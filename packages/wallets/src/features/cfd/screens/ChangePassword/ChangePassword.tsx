@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { ModalStepWrapper, WalletText } from '../../../../components/Base';
-import MT5Password from './MT5Password';
+import MT5ChangePasswordScreens from './MT5ChangePasswordScreens';
 import './ChangePassword.scss';
 
 const ChangePassword = () => {
     const tabs = [
         {
-            content: <MT5Password />,
+            content: <MT5ChangePasswordScreens />,
             label: 'Deriv MT5 password',
         },
         {

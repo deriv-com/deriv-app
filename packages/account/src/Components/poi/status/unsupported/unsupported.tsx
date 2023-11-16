@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Button, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { identity_status_codes } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';

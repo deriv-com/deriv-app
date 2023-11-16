@@ -2,8 +2,9 @@ import { Button, DesktopWrapper, MobileWrapper, Modal, Text, UILoader } from '@d
 import { Localize } from '@deriv/translations';
 import React from 'react';
 import './launch-modal.scss';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import LaunchModalChartImage from 'Assets/SvgComponents/launch/ic-chart-launch.svg';
+import LaunchModalChartImageDark from 'Assets/SvgComponents/launch/ic-chart-launch-dark.svg';
 
 type LaunchModalProps = {
     handleChange: () => void;
@@ -18,22 +19,30 @@ const ContinueButton = ({ handleOpen }: { handleOpen: () => void }) => (
     </Modal.Footer>
 );
 
-const InfoDisplay = () => (
-    <div className='modal-content' data-testid='launch-modal'>
-        <LaunchModalChartImage className='chart-image' />
-        <Text as='h1' weight='bold' align='center' size='sm'>
-            <Localize i18n_default_text='Deriv Trader Chart v2.0.' />
-        </Text>
-        <Text as='p' align='center'>
-            <Localize i18n_default_text='Smoother charts. Smarter insights.' />
-        </Text>
-    </div>
-);
+const InfoDisplay = () => {
+    const { ui } = useStore();
+    const { is_dark_mode_on } = ui;
+    return (
+        <div className='modal-content' data-testid='launch-modal'>
+            {is_dark_mode_on ? (
+                <LaunchModalChartImageDark className='chart-image' />
+            ) : (
+                <LaunchModalChartImage className='chart-image' />
+            )}
+            <Text as='h1' weight='bold' align='center' size='sm'>
+                <Localize i18n_default_text='Deriv Trader Chart v2.0.' />
+            </Text>
+            <Text as='p' align='center'>
+                <Localize i18n_default_text='Smoother charts. Smarter insights.' />
+            </Text>
+        </div>
+    );
+};
 
 const LaunchModal = ({ handleChange, open }: LaunchModalProps) => (
     <React.Suspense fallback={<UILoader />}>
         <DesktopWrapper>
-            <Modal has_close_icon={false} is_open={open} className='modal_root' height='440px' width='440px'>
+            <Modal has_close_icon={false} is_open={open} className='modal_root' height='440' width='440'>
                 <Modal.Body>
                     <InfoDisplay />
                 </Modal.Body>

@@ -4,7 +4,6 @@ import { ExchangeRatesContext } from '@deriv/stores';
 
 export const useExchangeRate2 = () => {
     const context = useContext(ExchangeRatesContext);
-    console.log('testing');
 
     if (!context) {
         throw new Error('useExchangeRate2 must be used within a ExchangeRatesProvider');

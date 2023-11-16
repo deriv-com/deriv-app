@@ -39,7 +39,11 @@ const QSInput: React.FC<TQSInput> = observer(
                                 'no-border-top': attached,
                             })}
                         >
-                            <div onMouseEnter={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
+                            <div
+                                data-testid='qs-input-container'
+                                onMouseEnter={() => setFocus(true)}
+                                onMouseLeave={() => setFocus(false)}
+                            >
                                 <Popover
                                     alignment='bottom'
                                     message={error}
@@ -64,7 +68,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                                 >
                                                     -
                                                 </button>
-                                            ) : null
+                                            ) : undefined
                                         }
                                         trailing_icon={
                                             is_number ? (

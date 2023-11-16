@@ -123,6 +123,6 @@ describe('<SymbolSelect />', () => {
         const autocomplete_element = screen.getByTestId('qs_autocomplete_symbol');
         userEvent.hover(autocomplete_element);
 
-        expect((autocomplete_element as HTMLInputElement).value).toBe('');
+        expect((autocomplete_element as HTMLInputElement).value).toBe('AUD Basket');
     });
 });

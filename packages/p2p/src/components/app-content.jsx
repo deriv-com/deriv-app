@@ -36,7 +36,7 @@ const AppContent = ({ order_id }) => {
     React.useEffect(() => {
         if (!general_store.should_show_dp2p_blocked) {
             const time_lapsed = getHoursDifference(localStorage.getItem(`p2p_${loginid}_disclaimer_shown`));
-            if (time_lapsed === undefined || time_lapsed > 24) {
+            if (time_lapsed === undefined || time_lapsed > 1) {
                 showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
             } else {
                 handleDisclaimerTimeout(time_lapsed);

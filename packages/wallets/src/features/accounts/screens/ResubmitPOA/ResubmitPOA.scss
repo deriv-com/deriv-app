@@ -78,6 +78,15 @@
             @include mobile {
                 width: 100%;
             }
+
+            & .wallets-dropdown,
+            & .wallets-textfield {
+                max-width: 84rem;
+
+                @include mobile {
+                    max-width: 100%;
+                }
+            }
         }
     }
 }

@@ -31,7 +31,9 @@
 
         & .wallets-dropdown,
         & .wallets-textfield {
-            max-width: 40rem;
+            @include desktop {
+                max-width: 40rem;
+            }
         }
     }
 }

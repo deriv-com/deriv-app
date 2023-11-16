@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import unFormatLocaleString from '../../../../../../../../utils/src/unFormatLocaleString';
 import { WalletText } from '../../../../../../components/Base';
 import useInputATMFormatter from '../../../../../../hooks/useInputATMFormatter';
 import './TransferFormInputField.scss';
@@ -8,6 +9,7 @@ type TProps = {
     disabled?: boolean;
     fractionDigits?: number;
     label: string;
+    locale?: Intl.LocalesArgument;
     maxDigits?: number;
     onChange?: (value: number) => void;
     value: number;
@@ -18,6 +20,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     disabled,
     fractionDigits = 0,
     label,
+    locale,
     maxDigits,
     onChange,
     value,
@@ -35,13 +38,14 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
         value: formattedValue,
     } = useInputATMFormatter(value, {
         fractionDigits,
+        locale,
     });
     const [prevFormattedValue, setPrevFormattedValue] = useState<string>(formattedValue);
 
     useEffect(() => {
         setPrevFormattedValue(formattedValue);
-        onChange?.(Number(formattedValue.replace));
-    }, [caretNeedsRepositioning, formattedValue, onChange]);
+        onChange?.(Number(unFormatLocaleString(formattedValue, locale)));
+    }, [caretNeedsRepositioning, formattedValue, locale, onChange]);
 
     // keep the caret from jumping
     useEffect(() => {

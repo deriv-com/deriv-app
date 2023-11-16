@@ -1,9 +1,13 @@
 import React, { ChangeEvent, ComponentProps, CSSProperties, FC, useState } from 'react';
+import classNames from 'classnames';
+import { FormikErrors } from 'formik';
 import HelperMessage, { HelperMessageProps } from './HelperMessage';
 import './WalletTextField.scss';
 
 export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;
+    errorMessage?: FormikErrors<unknown> | FormikErrors<unknown>[] | string[] | string;
+    isInvalid?: boolean;
     label?: string;
     maxWidth?: CSSProperties['maxWidth'];
     renderRightIcon?: () => React.ReactNode;
@@ -12,6 +16,7 @@ export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMes
 
 const WalletTextField: FC<WalletTextFieldProps> = ({
     defaultValue = '',
+    isInvalid = false,
     label,
     maxLength,
     maxWidth = '33rem',
@@ -31,7 +36,12 @@ const WalletTextField: FC<WalletTextFieldProps> = ({
     };
 
     return (
-        <div className='wallets-textfield' style={{ maxWidth }}>
+        <div
+            className={classNames('wallets-textfield', {
+                'wallets-textfield--error': isInvalid,
+            })}
+            style={{ maxWidth }}
+        >
             <div className='wallets-textfield__box'>
                 <input
                     className='wallets-textfield__field'

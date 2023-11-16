@@ -24,7 +24,6 @@ const PersonalDetails = () => {
                         text: residence.text as ReactNode,
                         value: residence.value ?? '',
                     }))}
-                    maxWidth={'40rem'}
                     onSelect={() => null}
                     type='comboBox'
                     value={undefined}
@@ -35,7 +34,6 @@ const PersonalDetails = () => {
                         text: residence.text as ReactNode,
                         value: residence.value ?? '',
                     }))}
-                    maxWidth='40rem'
                     onSelect={() => null}
                     type='comboBox'
                     value={undefined}
@@ -46,21 +44,14 @@ const PersonalDetails = () => {
                         text: residence.text as ReactNode,
                         value: residence.value ?? '',
                     }))}
-                    maxWidth='40rem'
                     onSelect={() => null}
                     type='comboBox'
                     value={undefined}
                 />
-                <WalletTextField
-                    label='Tax identification number*'
-                    maxWidth='40rem'
-                    onChange={() => null}
-                    value={undefined}
-                />
+                <WalletTextField label='Tax identification number*' onChange={() => null} value={undefined} />
                 <WalletDropdown
                     label='Account opening reason*'
                     list={accountOpeningReasonList}
-                    maxWidth='40rem'
                     onSelect={() => null}
                     type='comboBox'
                     value={undefined}

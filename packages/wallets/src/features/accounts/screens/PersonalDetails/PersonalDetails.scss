@@ -28,5 +28,10 @@
         flex-direction: column;
         align-items: center;
         gap: 1.6rem;
+
+        & .wallets-dropdown,
+        & .wallets-textfield {
+            max-width: 40rem;
+        }
     }
 }

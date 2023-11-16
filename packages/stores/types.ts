@@ -126,6 +126,9 @@ type AvailableAccount = {
     availability: TRegionAvailability;
     short_code_and_region?: string;
     login?: string;
+    currency?: string;
+    display_balance?: string;
+    display_login?: string;
 };
 
 type BrandConfig = {
@@ -234,7 +237,7 @@ type TTradingPlatformAvailableAccount = {
 type TAvailableCFDAccounts = {
     availability: 'Non-EU' | 'EU' | 'All';
     description: string;
-    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree' | 'Ctrader';
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree' | 'CTrader';
     market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
     name: string;
     platform: 'mt5' | 'dxtrade' | 'ctrader';
@@ -391,6 +394,7 @@ type TClientStore = {
     is_low_risk: boolean;
     is_mt5_password_not_set: boolean;
     is_pending_proof_of_ownership: boolean;
+    is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
@@ -550,7 +554,7 @@ type TCommonStore = {
     is_language_changing: boolean;
     services_error: TCommonStoreServicesError;
     is_socket_opened: boolean;
-    setAppstorePlatform: (value: string) => void;
+    setAppstorePlatform: (value?: string) => void;
     setError?: (has_error: boolean, error: TCommonStoreError) => void;
     setSelectedContractType: (contract_type: string) => void;
     setServicesError: (error: TCommonStoreServicesError) => void;
@@ -562,12 +566,15 @@ type TCommonStore = {
 
 type TUiStore = {
     advanced_duration_unit: string;
+    advanced_expiry_type: string;
     addToast: (toast_config: TAddToastProps) => void;
     account_switcher_disabled_message: string;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
+    duration_t: number;
     enableApp: () => void;
+    getDurationFromUnit: (unit: string) => number;
     has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
@@ -624,6 +631,7 @@ type TUiStore = {
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
+    simple_duration_unit: string;
     sub_section_index: number;
     setPromptHandler: (
         condition: boolean,
@@ -661,6 +669,8 @@ type TUiStore = {
     closeSuccessTopUpModal: () => void;
     closeTopUpModal: () => void;
     is_cfd_reset_password_modal_enabled: boolean;
+    is_mt5_migration_modal_enabled: boolean;
+    is_mt5_migration_modal_open: boolean;
     setCFDPasswordResetModal: (value: boolean) => void;
     openAccountNeededModal: () => void;
     is_accounts_switcher_on: boolean;
@@ -673,6 +683,8 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
+    setMT5MigrationModalEnabled: (value: boolean) => void;
+    toggleMT5MigrationModal: () => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;
@@ -859,6 +871,8 @@ type TModalData = {
     data: Record<string, unknown>;
 };
 
+type TPlatform = 'mt5' | 'dxtrade' | 'ctrader';
+
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
@@ -873,7 +887,8 @@ type TTradersHubStore = {
             key: string;
             name: string;
             landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
-            platform?: string;
+            platform?: TPlatform;
+            availability?: TRegionAvailability;
             description?: string;
             market_type?: 'all' | 'financial' | 'synthetic';
         }[];
@@ -929,9 +944,9 @@ type TTradersHubStore = {
     setMT5NotificationModal: (value: boolean) => void;
     available_derivez_accounts: DetailsOfEachMT5Loginid[];
     has_any_real_account: boolean;
-    startTrade: () => void;
+    startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;
     getAccount: () => void;
-    showTopUpModal: () => void;
+    showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
 };
 
 type TContractReplay = {

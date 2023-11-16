@@ -34,7 +34,7 @@ const JurisdictionModal = () => {
         ? undefined
         : () => (
               <WalletButton
-                  disabled={!selectedJurisdiction || !isCheckBoxChecked}
+                  disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
                   isFullWidth={isMobile}
                   onClick={() => show(<MT5PasswordModal marketType={marketType} platform={platform} />)}
                   text='Next'

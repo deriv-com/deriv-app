@@ -1,14 +1,12 @@
 .wallets-dropdown {
-    width: 19.5rem;
+    width: 100%;
     position: relative;
-
-    @include mobile {
-        width: 100%;
-    }
+    cursor: pointer;
 
     &__button {
         all: unset;
-        margin: auto;
+        position: absolute;
+        right: 1.6rem;
         transform: rotate(0);
         transform-origin: 50% 45%;
         transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -22,11 +20,9 @@
         height: 4rem;
         width: 100%;
         border-radius: 0.4rem;
-        padding: 1rem 1.6rem;
         border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
         background: var(--system-light-8-primary-background, #fff);
         display: flex;
-        gap: 0.8rem;
         align-items: center;
     }
 
@@ -35,19 +31,32 @@
     }
 
     &__field {
+        position: absolute;
+        inset: 0;
         min-width: 0; /* this is required to reset input's default width */
+        padding-left: 2rem;
         display: flex;
         flex-grow: 1;
         font-family: inherit;
         outline: 0;
         font-size: 1.4rem;
+        background-color: transparent;
         color: var(--system-light-2-general-text, #333);
         transition: border-color 0.2s;
-        cursor: pointer;
-    }
+        cursor: unset;
+        user-select: none;
 
-    &__field::placeholder {
-        color: transparent;
+        &--with-icon {
+            padding-left: 4rem;
+        }
+
+        &::selection {
+            background-color: transparent;
+        }
+
+        &::placeholder {
+            color: transparent;
+        }
     }
 
     &__field:placeholder-shown ~ &__label {
@@ -114,9 +123,10 @@
     }
 
     &__icon {
+        position: absolute;
+        left: 1.6rem;
         width: 1.6rem;
         height: 1.6rem;
-        margin-left: 0.4rem;
     }
 
     &__item {

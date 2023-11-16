@@ -1,7 +1,7 @@
 import React from 'react';
-import { WalletButton } from '../../../../components/Base';
+import { useActiveWalletAccount } from '@deriv/api';
+import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
-import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
@@ -28,20 +28,23 @@ const EnterPassword: React.FC<TProps> = ({
 }) => {
     const { isDesktop } = useDevice();
     const title = PlatformDetails[platform].title;
+    const { data } = useActiveWalletAccount();
+    const accountType = data?.is_virtual ? 'Demo' : 'Real';
+    const marketTypeTitle = platform === 'dxtrade' ? accountType : marketType;
+
     return (
         <div className='wallets-enter-password'>
-            <div className='wallets-enter-password--container'>
-                {isDesktop && <div className='wallets-enter-password-title'>Enter your {title} password</div>}
-                <span className='wallets-enter-password-subtitle'>
-                    Enter your {title} password to add a {title} {marketType} account.
-                </span>
-                <div className='wallets-enter-password-input'>
-                    <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
-                    <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
-                </div>
+            <div className='wallets-enter-password__container'>
+                <WalletText lineHeight='xl' weight='bold'>
+                    Enter your {title} password
+                </WalletText>
+                <WalletText size='sm'>
+                    Enter your {title} password to add a {title} {marketTypeTitle} account.
+                </WalletText>
+                <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
             </div>
             {isDesktop && (
-                <div className='wallets-enter-password-buttons'>
+                <div className='wallets-enter-password__buttons'>
                     <WalletButton onClick={onSecondaryClick} size='lg' text='Forgot password?' variant='outlined' />
                     <WalletButton
                         disabled={!password || isLoading}

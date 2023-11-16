@@ -1,1 +1,1 @@
-export { default as WalletResetBalance } from './WalletsActionScreen';
+export { default as WalletsActionScreen } from './WalletsActionScreen';

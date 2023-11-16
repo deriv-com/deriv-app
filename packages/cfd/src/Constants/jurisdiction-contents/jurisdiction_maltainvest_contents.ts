@@ -51,7 +51,7 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies'),
+            description: localize('Forex, stocks, stock indices, commodities, cryptocurrencies and synthetic indices.'),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('140+'),

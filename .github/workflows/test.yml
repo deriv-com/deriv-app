@@ -41,3 +41,7 @@ jobs:
       run: bash ./scripts/check-tests.sh packages/utils/src
     - name: Run tests
       run: npm run test:ci
+    - name: Upload Artifacts
+      uses: "./.github/actions/upload_artifacts"
+      with:
+        path: packages/*/dist

@@ -13,9 +13,9 @@ type TErrorDialogProps = {
 
 type TSetDetails = {
     title: string;
-    cancel_button_text: undefined | string;
+    cancel_button_text?: string;
     confirm_button_text: undefined | string;
-    onConfirm: undefined | (() => void);
+    onConfirm?: () => void;
     message: undefined | string | TReactElement;
     has_close_icon?: boolean;
 };
@@ -106,6 +106,13 @@ const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
                     confirm_button_text: localize('OK'),
                     onConfirm: undefined,
                     message: error_message,
+                });
+            } else if (error_code === 'ShareMyAdsError') {
+                setDetails({
+                    title: localize('Deriv P2P unavailable'),
+                    confirm_button_text: localize('OK'),
+                    message: error_message,
+                    has_close_icon: true,
                 });
             } else {
                 setDetails({

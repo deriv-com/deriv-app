@@ -13,7 +13,7 @@ import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 import { WalletError } from '../WalletError';
 import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
 
-type TProps = THooks.AvailableWallets;
+type TProps = THooks.AllWalletAccounts;
 
 const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     currency,

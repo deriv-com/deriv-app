@@ -1,14 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv/shared';
-import IncrementButtons from './increment-buttons';
-import Input from './input';
+import IncrementButtons, { TButtonType } from './increment-buttons';
+import Input, { TInputMode } from './input';
 import Tooltip from '../tooltip';
 import Text from '../text';
 
 export type TChangeEvent = { target: { name: string; value: number | string } };
-export type TInputMode = 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';
-export type TButtonType = 'button' | 'submit' | 'reset';
 
 // ToDo: Refactor input_field
 // supports more than two different types of 'value' as a prop.
@@ -41,7 +39,7 @@ type TInputField = {
     is_autocomplete_disabled?: boolean;
     is_disabled?: boolean;
     is_error_tooltip_hidden?: boolean;
-    is_float: boolean;
+    is_float?: boolean;
     is_hj_whitelisted?: boolean;
     is_incrementable_on_long_press?: boolean;
     is_incrementable?: boolean;
@@ -53,16 +51,16 @@ type TInputField = {
     max_length?: number;
     max_value?: number;
     min_value?: number;
-    name: string;
+    name?: string;
     onBlur?: React.FocusEventHandler<HTMLInputElement>;
-    onChange: (e: TChangeEvent) => void;
+    onChange?: (e: TChangeEvent) => void;
     onClick?: React.MouseEventHandler<HTMLInputElement>;
     onClickInputWrapper?: React.MouseEventHandler<HTMLDivElement>;
     placeholder?: string;
     prefix?: string;
     required?: boolean;
-    setCurrentFocus: (name: string | null) => void;
-    type: string;
+    setCurrentFocus?: (name: string | null) => void;
+    type?: string;
     unit?: string;
     value: number | string;
 };
@@ -105,7 +103,7 @@ const InputField = ({
     max_length,
     max_value,
     min_value,
-    name,
+    name = '',
     format,
     onBlur,
     onChange,
@@ -115,7 +113,7 @@ const InputField = ({
     prefix,
     required,
     setCurrentFocus,
-    type,
+    type = '',
     unit,
     value,
     data_testid,
@@ -170,7 +168,7 @@ const InputField = ({
             }
         }
 
-        onChange(e);
+        onChange?.(e);
         if (callback) {
             callback(e);
         }
@@ -269,7 +267,7 @@ const InputField = ({
             if (is_signed && /^\d+/.test(formatted_value) && +formatted_value > 0) {
                 formatted_value = `+${formatted_value}`;
             }
-            onChange({ target: { value: formatted_value, name } });
+            onChange?.({ target: { value: formatted_value, name } });
         }
     };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import IdvFailed from '../idv-failed';
 import { idv_error_statuses } from '@deriv/shared';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -42,8 +43,17 @@ describe('<IdvFailed/>', () => {
         latest_status: {},
     };
 
+    const store_config = mockStore({});
+
+    const renderComponent = ({ props = mock_props, store = store_config }) =>
+        render(
+            <StoreProvider store={store}>
+                <IdvFailed {...props} />
+            </StoreProvider>
+        );
+
     it('should render IDVfailed component with name mismatch message', async () => {
-        render(<IdvFailed {...mock_props} />);
+        renderComponent({});
 
         await waitFor(() => {
             expect(screen.getByTestId(idv_error_statuses.poi_name_mismatch)).toBeInTheDocument();
@@ -53,7 +63,7 @@ describe('<IdvFailed/>', () => {
 
     it('should render IDVfailed component with dob mismatch message', async () => {
         const new_props = { ...mock_props, mismatch_status: idv_error_statuses.poi_dob_mismatch };
-        render(<IdvFailed {...new_props} />);
+        renderComponent({ props: new_props });
 
         await waitFor(() => {
             expect(screen.getByTestId(idv_error_statuses.poi_dob_mismatch)).toBeInTheDocument();
@@ -63,7 +73,7 @@ describe('<IdvFailed/>', () => {
 
     it('should render IDVfailed component with name & DOB mismatch message', async () => {
         const new_props = { ...mock_props, mismatch_status: idv_error_statuses.poi_name_dob_mismatch };
-        render(<IdvFailed {...new_props} />);
+        renderComponent({ props: new_props });
 
         await waitFor(() => {
             expect(screen.getByTestId(idv_error_statuses.poi_name_dob_mismatch)).toBeInTheDocument();
@@ -73,7 +83,7 @@ describe('<IdvFailed/>', () => {
 
     it('should render IDVfailed component with expired message', async () => {
         const new_props = { ...mock_props, mismatch_status: idv_error_statuses.poi_expired };
-        render(<IdvFailed {...new_props} />);
+        renderComponent({ props: new_props });
 
         await waitFor(() => {
             expect(screen.getByTestId(idv_error_statuses.poi_expired)).toBeInTheDocument();
@@ -84,7 +94,7 @@ describe('<IdvFailed/>', () => {
 
     it('should render IDVfailed component with verification failed message', async () => {
         const new_props = { ...mock_props, mismatch_status: idv_error_statuses.poi_failed };
-        render(<IdvFailed {...new_props} />);
+        renderComponent({ props: new_props });
 
         await waitFor(() => {
             expect(screen.getByTestId(idv_error_statuses.poi_failed)).toBeInTheDocument();

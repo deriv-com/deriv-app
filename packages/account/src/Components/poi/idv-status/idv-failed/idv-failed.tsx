@@ -1,17 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
-import {
-    GetAccountStatus,
-    GetSettings,
-    IdentityVerificationAddDocumentResponse,
-    ResidenceList,
-} from '@deriv/api-types';
+import { Form, Formik, FormikHelpers, FormikState, FormikValues } from 'formik';
+import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button, DesktopWrapper, HintBox, Loading, Text } from '@deriv/components';
 import {
     filterObjProperties,
     getIDVNotApplicableOption,
-    getPropertyValue,
     idv_error_statuses,
     isEmptyObject,
     isMobile,
@@ -39,10 +33,15 @@ import {
     validate,
     validateName,
 } from '../../../../Helpers/utils';
-import { GENERIC_ERROR_MESSAGE, DUPLICATE_ACCOUNT_ERROR_MESSAGE } from '../../../../Configs/poi-error-config';
+import {
+    GENERIC_ERROR_MESSAGE,
+    DUPLICATE_ACCOUNT_ERROR_MESSAGE,
+    CLAIMED_DOCUMENT_ERROR_MESSAGE,
+} from '../../../../Configs/poi-error-config';
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
 import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
 import LoadErrorMessage from '../../../load-error-message';
+import { useStore } from '@deriv/stores';
 
 type TRestState = {
     api_error: string;
@@ -81,6 +80,10 @@ const IdvFailed = ({
     latest_status,
     selected_country,
 }: TIdvFailed) => {
+    const {
+        client: { setIsAlreadyAttempted },
+    } = useStore();
+
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
         side_note_image: <PoiNameDobExample />,
@@ -106,17 +109,17 @@ const IdvFailed = ({
      */
     const chosen_country = React.useMemo(
         () =>
-            is_document_upload_required
+            is_document_upload_required && !is_from_external
                 ? selected_country ?? {}
                 : residence_list.find(residence_data => residence_data.value === latest_status?.country_code) ?? {},
-        [selected_country, is_document_upload_required, latest_status?.country_code, residence_list]
+        [selected_country, is_document_upload_required, latest_status?.country_code, residence_list, is_from_external]
     );
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
     const generateIDVError = React.useCallback(() => {
         const document_name = is_document_upload_required
-            ? getPropertyValue(chosen_country, ['identity', 'services', 'idv', 'documents_supported'])
+            ? 'identity document'
             : getIDVDocumentType(latest_status, chosen_country);
         switch (mismatch_status) {
             case idv_error_statuses.poi_name_dob_mismatch:
@@ -206,6 +209,8 @@ const IdvFailed = ({
             if (form_data.date_of_birth) {
                 form_data.date_of_birth = toMoment(form_data.date_of_birth).format('YYYY-MM-DD');
             }
+            // Remove the checkbox value as it is used only for moving cursor to the error field
+            form_data.confirmation_checkbox = false;
             let initial_form_values = form_data;
             if (is_document_upload_required) {
                 initial_form_values = {
@@ -228,6 +233,8 @@ const IdvFailed = ({
             setIsLoading(false);
         };
 
+        setIsAlreadyAttempted(true);
+
         const error_config = generateIDVError();
         setIdvFailure(error_config);
         initializeFormValues(error_config?.required_fields ?? []).catch(e => {
@@ -237,11 +244,22 @@ const IdvFailed = ({
                 api_error: e?.error?.message,
             });
         });
-    }, [mismatch_status, account_settings, is_document_upload_required, getChangeableFields, generateIDVError]);
+    }, [
+        mismatch_status,
+        account_settings,
+        is_document_upload_required,
+        getChangeableFields,
+        generateIDVError,
+        setIsAlreadyAttempted,
+    ]);
 
-    const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {
+    const onSubmit = async (
+        values: TIdvFailedForm,
+        { setStatus, setSubmitting, status }: FormikHelpers<TIdvFailedForm> & FormikState<TIdvDocumentSubmitForm>
+    ) => {
+        delete values.confirmation_checkbox;
         setSubmitting(true);
-        setStatus({ error_msg: null });
+        setStatus({ ...status, error_msg: null });
         const { document_number, document_type } = values;
         const request = makeSettingsRequest(
             values,
@@ -254,7 +272,7 @@ const IdvFailed = ({
                 data.error?.code === API_ERROR_CODES.DUPLICATE_ACCOUNT
                     ? DUPLICATE_ACCOUNT_ERROR_MESSAGE
                     : GENERIC_ERROR_MESSAGE;
-            setStatus({ error_msg: response_error });
+            setStatus({ ...status, error_msg: response_error });
             setSubmitting(false);
         } else {
             const response = await WS.authorized.storage.getSettings();
@@ -275,13 +293,18 @@ const IdvFailed = ({
                 handleSubmit();
                 return;
             }
-            WS.send(submit_data).then((resp: IdentityVerificationAddDocumentResponse) => {
+            const idv_update_response = await WS.send(submit_data);
+            if (idv_update_response?.error) {
+                const response_error =
+                    idv_update_response.error?.code === API_ERROR_CODES.CLAIMED_DOCUMENT
+                        ? CLAIMED_DOCUMENT_ERROR_MESSAGE
+                        : idv_update_response?.error?.message ?? GENERIC_ERROR_MESSAGE;
+                setStatus({ ...status, error_msg: response_error });
                 setSubmitting(false);
-                if (resp.error) {
-                    return;
-                }
-                handleSubmit();
-            });
+                return;
+            }
+            setSubmitting(false);
+            handleSubmit();
         }
     };
 
@@ -310,10 +333,15 @@ const IdvFailed = ({
             errors.last_name = validateName(values.last_name);
         }
 
+        if (!values.confirmation_checkbox) {
+            errors.confirmation_checkbox = 'error';
+        }
+
         setRestState(prev_state => ({
             ...prev_state,
             errors: !isEmptyObject(removeEmptyPropertiesFromObject(errors)),
         }));
+
         return removeEmptyPropertiesFromObject(errors);
     };
 
@@ -323,21 +351,30 @@ const IdvFailed = ({
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
+    const setScrollOffset = () => {
+        if (isMobile()) {
+            if (is_from_external) {
+                return '140px';
+            }
+            return '180px';
+        }
+        return '80px';
+    };
+
     return (
         <Formik
             initialValues={rest_state?.form_initial_values ?? {}}
-            enableReinitialize
             onSubmit={onSubmit}
             validate={validateFields}
             className='proof-of-identity__container'
         >
-            {({ isSubmitting, isValid, dirty, status }) => (
+            {({ isSubmitting, isValid, dirty, status, values, errors }) => (
                 <Form
                     className={classNames('proof-of-identity__mismatch-container', {
                         'upload-layout': is_document_upload_required,
                     })}
                 >
-                    <FormBody className='form-body' scroll_offset={isMobile() ? '200px' : '80px'}>
+                    <FormBody className='form-body' scroll_offset={setScrollOffset()}>
                         <Text size={isMobile() ? 'xs' : 's'} weight='bold' align='center'>
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>
@@ -365,10 +402,11 @@ const IdvFailed = ({
                         )}
                         <PersonalDetailsForm
                             class_name='account-form__poi-confirm-example_container'
-                            editable_fields={rest_state?.changeable_fields}
+                            editable_fields={values.confirmation_checkbox ? [] : rest_state?.changeable_fields}
                             is_rendered_for_idv
                             side_note={idv_failure?.side_note_image}
                             inline_note_text={idv_failure?.inline_note_text}
+                            mismatch_status={mismatch_status}
                         />
                         <DesktopWrapper>
                             {!is_from_external && (
@@ -387,7 +425,6 @@ const IdvFailed = ({
                     {(is_from_external || isMobile()) && (
                         <FormFooter>
                             <Button
-                                className='proof-of-identity__submit-button'
                                 type='submit'
                                 has_effect
                                 is_disabled={!dirty || isSubmitting || !isValid}

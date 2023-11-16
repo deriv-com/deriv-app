@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
-import classNames from 'classnames';
 import { Localize, localize } from '@deriv/translations';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
@@ -11,12 +10,12 @@ import IDVForm from '../../../forms/idv-form';
 import PersonalDetailsForm from '../../../forms/personal-details-form.jsx';
 import FormFooter from '../../../form-footer';
 import {
-    validate,
-    validateName,
-    isDocumentTypeValid,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
+    isDocumentTypeValid,
     shouldHideHelperImage,
+    validate,
+    validateName,
 } from '../../../../Helpers/utils';
 
 type TIdvDocSubmitOnSignup = {
@@ -60,6 +59,10 @@ export const IdvDocSubmitOnSignup = ({
             errors.last_name = validateName(values.last_name);
         }
 
+        if (!values.confirmation_checkbox) {
+            errors.confirmation_checkbox = 'error';
+        }
+
         return removeEmptyPropertiesFromObject(errors);
     };
 
@@ -78,8 +81,8 @@ export const IdvDocSubmitOnSignup = ({
             text: '',
             value: '',
             example_format: '',
-            sample_image: '',
         },
+        confirmation_checkbox: false,
         document_number: '',
         ...form_initial_values,
     };
@@ -94,9 +97,6 @@ export const IdvDocSubmitOnSignup = ({
             validateOnMount
             validateOnChange
             validateOnBlur
-            initialStatus={{
-                is_confirmed: false,
-            }}
         >
             {({ isSubmitting, isValid, dirty, values }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
@@ -105,14 +105,9 @@ export const IdvDocSubmitOnSignup = ({
                         <IDVForm hide_hint={false} selected_country={citizen_data} class_name='idv-layout' />
                         <FormSubHeader title={localize('Identity verification')} />
                         <PersonalDetailsForm
-                            class_name={classNames({
-                                'account-form__poi-confirm-example_container': !shouldHideHelperImage(
-                                    values?.document_type?.id
-                                ),
-                            })}
+                            class_name='account-form__poi-confirm-example_container'
                             is_rendered_for_idv
-                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={changeable_fields}
+                            editable_fields={values.confirmation_checkbox ? [] : changeable_fields}
                             side_note={side_note_image}
                             inline_note_text={
                                 <Localize
@@ -128,7 +123,7 @@ export const IdvDocSubmitOnSignup = ({
                             className='proof-of-identity__submit-button'
                             type='submit'
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
+                            is_disabled={!dirty || isSubmitting || !isValid}
                             text={localize('Next')}
                             large
                             primary

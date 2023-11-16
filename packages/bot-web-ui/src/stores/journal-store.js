@@ -1,8 +1,10 @@
 import { action, computed, makeObservable, observable, reaction, when } from 'mobx';
+
 import { log_types, message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { formatDate } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
 import { isCustomJournalMessage } from '../utils/journal-notifications';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 import { getSetting, storeSetting } from '../utils/settings';

@@ -1,8 +1,9 @@
+import React from 'react';
+import classNames from 'classnames';
+
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import classNames from 'classnames';
-import React from 'react';
 
 export type TFormBodySection = {
     /**
@@ -59,7 +60,7 @@ const FormBodySection = ({
                     ) : (
                         <React.Fragment>
                             <Text as='p' size={isMobile() ? 'xxs' : 'xs'} weight='bold'>
-                                <Localize i18n_default_text='Example' />
+                                <Localize i18n_default_text='Example :' />
                             </Text>
                             <div className='account-form__section-side-note__example-image'>{side_note}</div>
                         </React.Fragment>

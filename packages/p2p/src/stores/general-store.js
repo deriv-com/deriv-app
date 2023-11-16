@@ -1,15 +1,18 @@
 import React from 'react';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { get, init, timePromise } from '../utils/server_time';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+
 import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
+
+import { Localize, localize } from 'Components/i18next';
+import { api_error_codes } from 'Constants/api-error-codes';
+import { buy_sell } from 'Constants/buy-sell';
+import { order_list } from 'Constants/order-list';
 import BaseStore from 'Stores/base_store';
-import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-import { order_list } from 'Constants/order-list';
-import { buy_sell } from 'Constants/buy-sell';
-import { api_error_codes } from 'Constants/api-error-codes';
+
+import { get, init, timePromise } from '../utils/server_time';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;
@@ -23,6 +26,7 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
+    counterparty_advert_id = '';
     counterparty_advertiser_id = null;
     error_code = '';
     external_stores = {};
@@ -87,6 +91,7 @@ export default class GeneralStore extends BaseStore {
             advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
             block_unblock_user_error: observable,
             balance: observable,
+            counterparty_advert_id: observable,
             counterparty_advertiser_id: observable,
             external_stores: observable,
             feature_level: observable,
@@ -143,6 +148,7 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
             setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
+            setCounterpartyAdvertId: action.bound,
             setErrorCode: action.bound,
             setExternalStores: action.bound,
             setFeatureLevel: action.bound,
@@ -276,6 +282,7 @@ export default class GeneralStore extends BaseStore {
                 this.setNicknameError(undefined);
                 sendbird_store.handleP2pAdvertiserInfo(response);
                 this.toggleNicknamePopup();
+                this.hideModal();
             }
         });
     }
@@ -597,6 +604,10 @@ export default class GeneralStore extends BaseStore {
         this.contact_info = contact_info;
     }
 
+    setCounterpartyAdvertId(counterparty_advert_id) {
+        this.counterparty_advert_id = counterparty_advert_id;
+    }
+
     setCounterpartyAdvertiserId(counterparty_advertiser_id) {
         this.counterparty_advertiser_id = counterparty_advertiser_id;
     }
@@ -692,13 +703,19 @@ export default class GeneralStore extends BaseStore {
     }
 
     setP2PConfig() {
-        const { floating_rate_store } = this.root_store;
+        const { floating_rate_store, my_ads_store } = this.root_store;
         requestWS({ website_status: 1 }).then(response => {
             if (!!response && response.error) {
                 floating_rate_store.setApiErrorMessage(response.error.message);
             } else {
-                const { fixed_rate_adverts, float_rate_adverts, float_rate_offset_limit, fixed_rate_adverts_end_date } =
-                    response.website_status.p2p_config;
+                const {
+                    fixed_rate_adverts,
+                    float_rate_adverts,
+                    float_rate_offset_limit,
+                    fixed_rate_adverts_end_date,
+                    maximum_order_amount,
+                } = response.website_status.p2p_config;
+                my_ads_store.setMaximumOrderAmount(maximum_order_amount);
                 floating_rate_store.setFixedRateAdvertStatus(fixed_rate_adverts);
                 floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
                 floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);

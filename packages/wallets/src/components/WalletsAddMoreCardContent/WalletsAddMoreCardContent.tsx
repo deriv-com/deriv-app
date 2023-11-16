@@ -1,7 +1,13 @@
 import React from 'react';
+import { THooks } from '../../types';
+import { WalletText } from '../Base';
 
 type TWalletDescriptionMapper = {
     [key: string]: string;
+};
+
+type TProps = {
+    currency: Exclude<THooks.AllWalletAccounts['currency'], undefined>;
 };
 
 const walletDescriptionMapper: TWalletDescriptionMapper = {
@@ -18,11 +24,14 @@ const walletDescriptionMapper: TWalletDescriptionMapper = {
     UST: 'Deposit and withdraw Tether Omni, hosted on the Bitcoin blockchain.',
 };
 
-const WalletsAddMoreCardContent = ({ currency }: { currency: string }) => {
+const WalletsAddMoreCardContent: React.FC<TProps> = ({ currency }) => {
     return (
         <div className='wallets-add-more__content'>
-            <h3 className='wallets-add-more__content-header'>{currency} Wallet</h3>
-            <div className='wallets-add-more__content-body'>{walletDescriptionMapper[currency]}</div>
+            <WalletText size='md' weight='bold'>
+                {currency} Wallet
+            </WalletText>
+
+            <WalletText size='sm'>{walletDescriptionMapper[currency]}</WalletText>
         </div>
     );
 };

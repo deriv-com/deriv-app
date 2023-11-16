@@ -98,6 +98,7 @@ const POISubmissionForMT5 = observer(
                 handlePOIComplete();
             });
         };
+
         if (submission_status === submission_status_code.submitting) {
             switch (submission_service) {
                 case service_code.idv:

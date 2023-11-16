@@ -1,7 +1,6 @@
 import React from 'react';
-import classNames from 'classnames';
-import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
-import { ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { Form, Formik, FormikErrors, FormikHelpers, FormikState } from 'formik';
+import { ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
@@ -30,8 +29,13 @@ import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
 } from 'Helpers/utils';
-import { DUPLICATE_ACCOUNT_ERROR_MESSAGE, GENERIC_ERROR_MESSAGE } from 'Configs/poi-error-config';
+import {
+    CLAIMED_DOCUMENT_ERROR_MESSAGE,
+    DUPLICATE_ACCOUNT_ERROR_MESSAGE,
+    GENERIC_ERROR_MESSAGE,
+} from 'Configs/poi-error-config';
 import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
+import { API_ERROR_CODES } from 'Constants/api-error-codes';
 
 type TIDVDocumentSubmitProps = {
     handleBack: React.MouseEventHandler;
@@ -41,7 +45,7 @@ type TIDVDocumentSubmitProps = {
     getChangeableFields: () => Array<string>;
 };
 
-type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm;
+type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm & { confirmation_checkbox: boolean };
 
 const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_country }: TIDVDocumentSubmitProps) => {
     const {
@@ -67,9 +71,9 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
             text: '',
             value: '',
             example_format: '',
-            sample_image: '',
         },
         document_number: '',
+        confirmation_checkbox: false,
         ...form_initial_values,
     };
 
@@ -96,12 +100,20 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
             errors.last_name = validateName(values.last_name);
         }
 
+        if (!values.confirmation_checkbox) {
+            errors.confirmation_checkbox = 'error';
+        }
+
         return removeEmptyPropertiesFromObject(errors);
     };
 
     const submitHandler = async (
         values: TIdvDocumentSubmitForm,
-        { setSubmitting, setStatus }: FormikHelpers<TIdvDocumentSubmitForm>
+        {
+            setSubmitting,
+            setStatus,
+            status,
+        }: FormikHelpers<TIdvDocumentSubmitForm> & FormikState<TIdvDocumentSubmitForm>
     ) => {
         setSubmitting(true);
 
@@ -111,14 +123,16 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
 
         if (data?.error) {
             const response_error =
-                data.error?.code === 'DuplicateAccount' ? DUPLICATE_ACCOUNT_ERROR_MESSAGE : GENERIC_ERROR_MESSAGE;
-            setStatus({ error_message: response_error });
+                data.error?.code === API_ERROR_CODES.DUPLICATE_ACCOUNT
+                    ? DUPLICATE_ACCOUNT_ERROR_MESSAGE
+                    : GENERIC_ERROR_MESSAGE;
+            setStatus({ ...status, error_message: response_error });
             setSubmitting(false);
             return;
         }
         const get_settings = await WS.authorized.storage.getSettings();
         if (get_settings?.error) {
-            setStatus({ error_message: get_settings?.error?.message ?? GENERIC_ERROR_MESSAGE });
+            setStatus({ ...status, error_message: get_settings?.error?.message ?? GENERIC_ERROR_MESSAGE });
             setSubmitting(false);
             return;
         }
@@ -128,27 +142,22 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
             ...formatIDVFormValues(values, selected_country.value),
         };
 
-        WS.send(submit_data).then(
-            (response: IdentityVerificationAddDocumentResponse & { error: { message: string } }) => {
-                setSubmitting(false);
-                if (response.error) {
-                    setStatus({ error_message: response?.error?.message ?? GENERIC_ERROR_MESSAGE });
-                    return;
-                }
-                handleViewComplete();
-            }
-        );
+        const idv_update_response = await WS.send(submit_data);
+        if (idv_update_response?.error) {
+            const response_error =
+                idv_update_response.error?.code === API_ERROR_CODES.CLAIMED_DOCUMENT
+                    ? CLAIMED_DOCUMENT_ERROR_MESSAGE
+                    : idv_update_response.error?.message ?? GENERIC_ERROR_MESSAGE;
+            setStatus({ error_msg: response_error });
+            setSubmitting(false);
+            return;
+        }
+        setSubmitting(false);
+        handleViewComplete();
     };
 
     return (
-        <Formik
-            initialValues={{ ...initial_values }}
-            validate={validateFields}
-            initialStatus={{
-                is_confirmed: false,
-            }}
-            onSubmit={submitHandler}
-        >
+        <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
             {({ dirty, isSubmitting, isValid, values, status }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset'>
                     {status?.error_message && (
@@ -171,14 +180,9 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
 
                         <FormSubHeader title={localize('Details')} />
                         <PersonalDetailsForm
-                            class_name={classNames({
-                                'account-form__poi-confirm-example_container': !shouldHideHelperImage(
-                                    values?.document_type?.id
-                                ),
-                            })}
+                            class_name='account-form__poi-confirm-example_container'
                             is_rendered_for_idv
-                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                            editable_fields={status?.is_confirmed ? [] : changeable_fields}
+                            editable_fields={values.confirmation_checkbox ? [] : changeable_fields}
                             side_note={side_note_image}
                             inline_note_text={
                                 <Localize
@@ -198,7 +202,7 @@ const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_c
                             className='proof-of-identity__submit-button'
                             type='submit'
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid || !status?.is_confirmed}
+                            is_disabled={!dirty || isSubmitting || !isValid}
                             text={localize('Verify')}
                             large
                             primary

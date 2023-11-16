@@ -1,0 +1,17 @@
+.wallets-available-derivx {
+    &__icon {
+        cursor: pointer;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+}

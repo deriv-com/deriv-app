@@ -1,5 +1,4 @@
 import { localize } from '@deriv/translations';
-import { Jurisdiction } from '@deriv/shared';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
@@ -302,28 +301,4 @@ export const getDerivezCompanies = () => {
             },
         },
     };
-};
-
-export const getFormattedJurisdictionCode = (jurisdiction_code: string) => {
-    let formatted_label = '';
-
-    switch (jurisdiction_code) {
-        case Jurisdiction.SVG:
-            formatted_label = localize('SVG');
-            break;
-        case Jurisdiction.BVI:
-            formatted_label = localize('BVI');
-            break;
-        case Jurisdiction.LABUAN:
-            formatted_label = localize('Labuan');
-            break;
-        case Jurisdiction.VANUATU:
-            formatted_label = localize('Vanuatu');
-            break;
-        default:
-            formatted_label = jurisdiction_code?.toUpperCase();
-            break;
-    }
-
-    return formatted_label;
 };

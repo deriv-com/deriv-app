@@ -4,6 +4,10 @@
     align-items: center;
     gap: 1.6rem;
 
+    &__hidden {
+        display: none;
+    }
+
     &-view_wrapper {
         position: relative;
         min-width: 32.8rem;
@@ -22,8 +26,18 @@
     @include mobile {
         padding: 1.6rem;
 
-        .onfido-sdk-ui-PageTitle-titleSpan {
-            font-size: 2rem;
+        & .onfido-sdk-ui-PageTitle {
+            &-titleWrapper {
+                margin: 2.4rem 0 0;
+            }
+
+            &-title {
+                font-size: 2rem;
+                text-align: center;
+            }
+            &-titleSpan {
+                font-size: 2rem;
+            }
         }
     }
 
@@ -39,12 +53,19 @@
 
     &__info-message {
         position: absolute;
-        top: 2.4rem;
-        left: 25%;
+        top: 1.6rem;
+        left: 50%;
         z-index: 1;
+        transform: translate(-50%);
+        max-width: max-content;
+        width: 100% !important;
+
         @include mobile {
-            top: 1.6rem;
-            left: 3.1rem;
+            margin-top: 1.6rem;
+        }
+
+        .dc-hint-box {
+            margin-inline: 0.8rem;
         }
     }
 
@@ -74,6 +95,22 @@
 
 .account {
     &-form {
+        &__fieldset {
+            .dc-autocomplete,
+            .dc-select-native {
+                margin-bottom: 3.2rem;
+            }
+            @include mobile {
+                &--email-consent {
+                    margin-bottom: 1.6rem;
+                }
+            }
+        }
+
+        &__poi-inline-message {
+            margin-bottom: 1.6rem;
+        }
+
         &__poi-confirm-example {
             display: flex;
             flex-direction: column;
@@ -101,6 +138,7 @@
 
                 @include mobile {
                     padding: 1.6rem 1.6rem 0;
+                    margin-bottom: 2.4rem;
                 }
             }
 
@@ -132,9 +170,14 @@
             }
 
             .account {
-                &__scrollbars_container--grid-layout {
-                    grid-gap: 0;
+                &__scrollbars_container {
+                    padding: 0;
+
+                    &--grid-layout {
+                        grid-gap: 0;
+                    }
                 }
+
                 &-form {
                     &__section-side-note {
                         @include mobile {
@@ -143,17 +186,24 @@
                             display: flex;
                         }
                     }
-                    &__section-content {
-                        .account-form__fieldset {
-                            margin-bottom: 0;
 
-                            .dc-input {
-                                margin-bottom: 1rem;
-                            }
+                    &__section {
+                        @include desktop {
+                            margin-top: 1.6rem;
+                        }
 
-                            .dc-input--error,
-                            .dc-input.dc-input--hint {
-                                margin-bottom: 3.8rem;
+                        &-content {
+                            .account-form__fieldset {
+                                margin-bottom: 0;
+
+                                .dc-input {
+                                    margin-bottom: 1rem;
+                                }
+
+                                .dc-input--error,
+                                .dc-input.dc-input--hint {
+                                    margin-bottom: 3.8rem;
+                                }
                             }
                         }
                     }
@@ -199,15 +249,15 @@
                     width: 100%;
                     margin-bottom: 0.8rem;
                 }
-                                 &__example {
-                                     @include mobile {
-                                         flex-direction: column;
-                                     }
-                
-                                     &-image {
-                                         align-self: center;
-                                     }
-                                 }
+                &__example {
+                    @include mobile {
+                        flex-direction: column;
+                    }
+
+                    &-image {
+                        align-self: center;
+                    }
+                }
             }
 
             &-content {
@@ -217,16 +267,16 @@
                     width: 100%;
                 }
             }
-                        @include desktop {
-                            &--reversed {
-                                grid-template-areas: 'section-content section-side-note';
-                                grid-template-columns: 1fr auto;
-                            }
-                        }
+            @include desktop {
+                &--reversed {
+                    grid-template-areas: 'section-content section-side-note';
+                    grid-template-columns: 1fr auto;
+                }
+            }
         }
 
         &__footer {
-            height: 8.0rem;
+            height: 8rem;
             position: absolute;
             bottom: 0;
             left: 0;
@@ -241,10 +291,10 @@
             background-color: var(--general-main-1);
 
             &--reset {
-                    padding: 2.4rem 0;
-                    position: relative;
-                    margin-top: 2rem;
-                }
+                padding: 2.4rem 0;
+                position: relative;
+                margin-top: 2rem;
+            }
 
             .back-btn {
                 margin-right: 8px;
@@ -282,7 +332,6 @@
 
             &-btn {
                 height: 4rem;
-                margin: 0 0 0 1.6rem;
 
                 &-wrapper {
                     align-items: normal;
@@ -314,8 +363,6 @@
                 }
 
                 @include mobile {
-                    margin: 0 2.4rem;
-
                     &--has-bottom-margin {
                         margin-bottom: 1.6rem;
                     }
@@ -422,31 +469,34 @@
 
             &__fieldset {
                 margin-bottom: 2rem;
+                @include mobile {
+                    margin-bottom: 1.6rem;
+                }
                 &-input {
                     @include desktop {
                         margin-bottom: unset;
                     }
                 }
-            }
-        }
-    }
-    .proof-of-identity__inner-container {
-        @include desktop {
-            &--incl-image {
-                display: grid;
-                align-items: center;
-                column-gap: 1.5rem;
-                grid-template-columns: auto 0.5fr;
+                &-container {
+                    display: flex;
+                    flex-direction: column;
+                }
             }
         }
     }
 
     .additional-field {
-        margin-top: 1.6rem;
-        margin-bottom: 2rem;
-
+        margin-top: 0.8rem;
+        margin-bottom: 2rem !important;
         @include mobile {
-            margin-top: 1rem;
+            margin-top: 1.6rem;
+        }
+
+        .dc-input {
+            margin-bottom: unset;
+            &__bottom-label {
+                margin-bottom: -2rem;
+            }
         }
     }
 }
@@ -475,7 +525,6 @@
                 margin-top: 1.6rem;
                 display: flex;
                 flex-direction: column;
-                gap: 3.2rem;
             }
         }
 
@@ -623,6 +672,12 @@
             overflow-y: scroll;
             justify-content: center;
             padding: 0 1.6rem;
+
+            &--status {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+            }
         }
 
         &--reset {
@@ -636,6 +691,7 @@
                 @include mobile {
                     margin: unset;
                     width: 100%;
+                    margin-inline: 1.6rem;
                 }
             }
 
@@ -653,13 +709,15 @@
         .icon {
             width: 128px;
             height: 128px;
-            margin-top: 5.2rem;
             margin-bottom: 2.6rem;
+
+            @include desktop {
+                margin-top: 5.2rem;
+            }
 
             @include mobile {
                 width: 72px;
                 height: 72px;
-                margin-top: 2.6rem;
             }
         }
 
@@ -693,7 +751,6 @@
 
     &__text {
         @include mobile {
-            width: 94%;
             text-align: center;
         }
     }
@@ -745,12 +802,6 @@
 
     &__footer-alert {
         margin-right: auto;
-    }
-
-    &__submit-button {
-        @include mobile {
-            margin-right: 1.2rem;
-        }
     }
 
     &__fieldset {
@@ -833,12 +884,15 @@
         &-message {
             margin: 1.6rem auto 3.2rem;
             border-radius: $BORDER_RADIUS * 2;
+            width: 100%;
         }
     }
 
     &__mismatch-container {
         .idv-form {
-            margin-bottom: 1.6rem;
+            @include desktop {
+                margin-bottom: 1.6rem;
+            }
         }
 
         .proof-of-identity__submit-button {
@@ -862,6 +916,10 @@
             @include mobile {
                 margin-top: 2.4rem;
             }
+        }
+
+        .account-form__header.details {
+            margin-top: unset;
         }
     }
 }

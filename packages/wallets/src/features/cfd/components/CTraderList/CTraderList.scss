@@ -1,0 +1,14 @@
+.wallets-ctrader {
+    padding-bottom: 2.4rem;
+
+    &__content {
+        display: grid;
+        gap: 1.6rem 4.8rem;
+        grid-template-columns: repeat(3, 1fr);
+
+        @include mobile {
+            grid-template-rows: 1fr;
+            grid-template-columns: auto;
+        }
+    }
+}

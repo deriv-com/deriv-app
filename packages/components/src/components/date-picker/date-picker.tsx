@@ -6,20 +6,26 @@ import Native from './date-picker-native';
 import MobileWrapper from '../mobile-wrapper';
 import DesktopWrapper from '../desktop-wrapper';
 import { useOnClickOutside } from '../../hooks/use-onclickoutside';
-import { MomentInput } from 'moment';
+import moment, { MomentInput } from 'moment';
 import { TDatePickerOnChangeEvent } from '../types';
 
 type TDatePicker = Omit<
     React.ComponentProps<typeof Native> & React.ComponentProps<typeof Input> & React.ComponentProps<typeof Calendar>,
-    'value' | 'onSelect' | 'is_datepicker_visible' | 'placement' | 'style' | 'calendar_el_ref' | 'parent_ref'
+    | 'date_format'
+    | 'onSelect'
+    | 'is_datepicker_visible'
+    | 'is_placeholder_visible'
+    | 'placement'
+    | 'style'
+    | 'calendar_el_ref'
+    | 'parent_ref'
+    | 'onChange'
+    | 'onChangeInput'
 > & {
-    mode: string;
-    start_date: moment.Moment;
+    mode?: string;
     value: moment.Moment | string;
     onChange: (e: TDatePickerOnChangeEvent) => void;
-    footer: React.ReactElement;
-    date_format: string;
-    has_range_selection: boolean;
+    date_format?: string;
 };
 
 type TCalendarRef = {
@@ -38,14 +44,16 @@ const DatePicker = React.memo((props: TDatePicker) => {
         id,
         label,
         has_range_selection,
+        has_today_btn,
         mode = 'date',
         max_date,
         min_date,
         start_date,
-        name,
+        name = '',
         onBlur,
         onChange,
         onFocus,
+        onChangeCalendarMonth,
         portal_id,
         placeholder,
         required,
@@ -198,7 +206,6 @@ const DatePicker = React.memo((props: TDatePicker) => {
         display_format,
         error,
         footer,
-        has_range_selection,
         label,
         mode,
         max_date,
@@ -250,10 +257,13 @@ const DatePicker = React.memo((props: TDatePicker) => {
                             is_datepicker_visible={is_datepicker_visible}
                             onHover={has_range_selection ? onHover : undefined}
                             onSelect={onSelectCalendar}
+                            onChangeCalendarMonth={onChangeCalendarMonth}
+                            has_today_btn={has_today_btn}
                             placement={placement}
                             style={style}
                             value={getCalendarValue(date) || ''} // Calendar accepts date format yyyy-mm-dd
                             start_date=''
+                            has_range_selection={has_range_selection}
                             {...common_props}
                         />
                     </div>

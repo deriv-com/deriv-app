@@ -39,6 +39,7 @@ export const getUnitMap = () => {
         h: { name_plural: localize('hours'), name_singular: localize('hour') },
         m: { name_plural: localize('minutes'), name_singular: localize('minute') },
         s: { name: localize('seconds') },
+        t: { name_plural: localize('ticks'), name_singular: localize('tick') },
     };
 };
 

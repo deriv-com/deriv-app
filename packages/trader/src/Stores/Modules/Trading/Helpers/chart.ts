@@ -4,7 +4,9 @@ export type TPayload = {
     data: Omit<
         Partial<TEvents['ce_chart_types_form'] & TEvents['ce_market_types_form'] & TEvents['ce_indicators_types_form']>,
         'action'
-    > & { action: string };
+    > & {
+        action: string;
+    };
     event_type: 'ce_chart_types_form' | 'ce_market_types_form' | 'ce_indicators_types_form';
 };
 
@@ -59,6 +61,7 @@ export const STATE_TYPES = {
     MARKETS_LIST_TOGGLE: 'MARKETS_LIST_TOGGLE',
     READY: 'READY',
     SCROLL_TO_LEFT: 'SCROLL_TO_LEFT',
+    SET_CHART_MODE: 'SET_CHART_MODE',
     SYMBOL_CHANGE: 'SYMBOL_CHANGE',
 } as const;
 

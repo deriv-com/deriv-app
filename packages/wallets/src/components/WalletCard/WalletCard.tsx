@@ -1,39 +1,49 @@
 import React from 'react';
-import { useWalletAccountsList } from '@deriv/api';
+import { useBalance } from '@deriv/api';
+import { WalletText } from '../Base';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import './WalletCard.scss';
 
 type TProps = {
-    account: NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
+    balance: string;
+    currency: string;
+    isDemo?: boolean;
+    landingCompanyName?: string;
+    width?: React.CSSProperties['width'];
 };
 
-const WalletCard: React.FC<TProps> = ({ account }) => {
+const WalletCard: React.FC<TProps> = ({ balance, currency, isDemo, landingCompanyName, width }) => {
+    const { isLoading } = useBalance();
+
     return (
         <div className='wallets-card'>
             <WalletGradientBackground
-                currency={account?.wallet_currency_type || 'USD'}
+                currency={isDemo ? 'Demo' : currency}
                 device='mobile'
                 hasShine
-                isDemo={account?.is_virtual}
+                isDemo={isDemo}
                 type='card'
             >
-                <div className='wallets-card__details'>
+                <div className='wallets-card__details' style={{ width }}>
                     <div className='wallets-card__details__top'>
-                        <WalletCardIcon type={account?.wallet_currency_type} />
+                        <WalletCardIcon type={isDemo ? 'Demo' : currency} />
                         <div className='wallets-card__details-landing_company'>
-                            {account?.landing_company_name && (
-                                <WalletListCardBadge
-                                    isDemo={account?.is_virtual}
-                                    label={account?.landing_company_name}
-                                />
-                            )}
+                            {landingCompanyName && <WalletListCardBadge isDemo={isDemo} label={landingCompanyName} />}
                         </div>
                     </div>
-                    <div className={`wallets-card__details__bottom${account?.is_virtual ? '--virtual' : ''}`}>
-                        <p className='wallets-card__details__bottom__currency'>{account?.currency} Wallet</p>
-                        <p className='wallets-card__details__bottom__balance'>{account?.display_balance}</p>
+                    <div className='wallets-card__details__bottom'>
+                        <WalletText color={isDemo ? 'white' : 'black'} size='2xs'>
+                            {currency} Wallet
+                        </WalletText>
+                        {isLoading ? (
+                            <div className='wallets-skeleton wallets-card--balance-loader' />
+                        ) : (
+                            <WalletText color={isDemo ? 'white' : 'black'} size='sm' weight='bold'>
+                                {balance}
+                            </WalletText>
+                        )}
                     </div>
                 </div>
             </WalletGradientBackground>

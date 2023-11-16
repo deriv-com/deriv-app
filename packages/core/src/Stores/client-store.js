@@ -24,8 +24,9 @@ import {
     SessionStore,
     toMoment,
     urlForLanguage,
+    getAppId,
 } from '@deriv/shared';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
@@ -53,7 +54,6 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
-    ctrader_available_accounts = [];
     derivez_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
@@ -84,6 +84,7 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
+    is_beta_chart = false;
 
     // All possible landing companies of user between all
     standpoint = {
@@ -152,6 +153,7 @@ export default class ClientStore extends BaseStore {
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
     external_url_params = {};
+    is_already_attempted = false;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -167,7 +169,6 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
-            ctrader_available_accounts: observable,
             derivez_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
@@ -224,6 +225,7 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             p2p_advertiser_info: observable,
             prev_account_type: observable,
+            is_already_attempted: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -260,6 +262,7 @@ export default class ClientStore extends BaseStore {
             is_financial_assessment_needed: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
+            is_poa_expired: computed,
             real_account_creation_unlock_date: computed,
             is_tnc_needed: computed,
             is_social_signup: computed,
@@ -384,7 +387,6 @@ export default class ClientStore extends BaseStore {
             responseTradingPlatformAvailableAccounts: action.bound,
             responseDerivezAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
-            responseCTraderAvailableAccounts: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
             syncWithLegacyPlatforms: action.bound,
@@ -406,6 +408,9 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
+            setIsAlreadyAttempted: action.bound,
+            is_beta_chart: observable,
+            setIsBetaChart: action.bound,
         });
 
         reaction(
@@ -439,6 +444,8 @@ export default class ClientStore extends BaseStore {
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
             () => this.root_store.ui.closeRealAccountSignup()
         );
+
+        this.setIsBetaChart();
     }
 
     get balance() {
@@ -716,6 +723,10 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.includes('financial_assessment_notification');
     }
 
+    get is_poa_expired() {
+        return this.account_status?.status?.includes('poa_expired');
+    }
+
     get is_authentication_needed() {
         return !this.is_fully_authenticated && !!this.account_status?.authentication?.needs_verification?.length;
     }
@@ -867,7 +878,7 @@ export default class ClientStore extends BaseStore {
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
         const is_current_mf = this.landing_company_shortcode === 'maltainvest';
         return (
-            is_current_mf || //is_currently logged in mf account via trdaershub
+            is_current_mf || //is_currently logged in mf account via tradershub
             (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
                 ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
                   eu_shortcode_regex.test(gaming_shortcode)
@@ -1321,6 +1332,25 @@ export default class ClientStore extends BaseStore {
         this.website_status = response.website_status;
         this.responseWebsiteStatus(response);
         setCurrencies(this.website_status);
+
+        // TODO: remove the below lines after full smartcharts v2 launch.
+        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+            ? deriv_urls.DERIV_HOST_NAME
+            : window.location.hostname;
+        const { clients_country } = this.website_status;
+
+        const options = {
+            domain,
+            expires: 7,
+        };
+
+        try {
+            const cookie = Cookies.get('website_status') ? JSON.parse(Cookies.get('website_status')) : {};
+            cookie.clients_country = clients_country;
+            Cookies.set('website_status', cookie, options);
+        } catch (e) {
+            Cookies.set('website_status', { clients_country }, options);
+        }
     }
 
     async accountRealReaction(response) {
@@ -1575,6 +1605,10 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
+        // delete walletsOnbaording key after page refresh
+        /** will be removed later when header for the wallets is created) */
+        localStorage.removeItem('walletsOnboarding');
+
         const search = SessionStore.get('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
@@ -1596,6 +1630,8 @@ export default class ClientStore extends BaseStore {
             'phone',
             '_filteredParams',
         ];
+
+        const { tracking } = Analytics.getInstances();
 
         const authorize_response = await this.setUserLogin(login_new_user);
 
@@ -1647,11 +1683,14 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                RudderStack.identifyEvent(user_id, {
+                Analytics.setAttributes({
+                    app_id: getAppId(),
+                });
+                tracking?.identifyEvent(user_id, {
                     language: getLanguage().toLowerCase(),
                 });
                 const current_page = window.location.hostname + window.location.pathname;
-                RudderStack.pageView(current_page);
+                Analytics?.pageView(current_page);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1709,7 +1748,6 @@ export default class ClientStore extends BaseStore {
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
-            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER).then(this.responseCTraderAvailableAccounts);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseDerivezAvailableAccounts);
@@ -1724,9 +1762,9 @@ export default class ClientStore extends BaseStore {
             }
 
             if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
-            this.loginid !== 'null' && RudderStack.setAccountType(this.loginid.substring(0, 2));
+            this.loginid !== 'null' && Analytics.setAttributes({ account_type: this.loginid.substring(0, 2) });
             if (this.user_id) {
-                RudderStack.identifyEvent(this.user_id, {
+                tracking?.identifyEvent(this.user_id, {
                     language: getLanguage().toLowerCase(),
                 });
             }
@@ -1949,7 +1987,7 @@ export default class ClientStore extends BaseStore {
         // if real to virtual --> switch to blue
         // if virtual to real --> switch to green
         // else keep the existing connection
-        const should_switch_socket_connection = this.is_virtual || /VRTC/.test(from_login_id);
+        const should_switch_socket_connection = this.is_virtual || /VRTC|VRW/.test(from_login_id);
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection();
@@ -2128,7 +2166,7 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             this.cleanUp();
 
-            RudderStack.reset();
+            Analytics.reset();
             this.setLogout(true);
         }
 
@@ -2206,6 +2244,8 @@ export default class ClientStore extends BaseStore {
         let obj_params = {};
         const search = window.location.search;
 
+        let is_social_signup_provider = false;
+
         if (search) {
             let search_params = new URLSearchParams(window.location.search);
 
@@ -2217,6 +2257,7 @@ export default class ClientStore extends BaseStore {
 
                 if (is_account_param) {
                     obj_params[key] = value;
+                    is_social_signup_provider = true;
                 }
             });
 
@@ -2247,6 +2288,18 @@ export default class ClientStore extends BaseStore {
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
             const authorize_response = await BinarySocket.authorize(is_client_logging_in);
+
+            if (is_social_signup_provider) {
+                const { get_account_status } = await WS.authorized.getAccountStatus();
+
+                Analytics.trackEvent('ce_virtual_signup_form', {
+                    action: 'signup_continued',
+                    signup_provider: get_account_status?.social_identity_provider,
+                    form_name: this.root_store?.ui?.is_mobile
+                        ? 'virtual_signup_web_mobile_default'
+                        : 'virtual_signup_web_desktop_default',
+                });
+            }
 
             if (login_new_user) {
                 // overwrite obj_params if login is for new virtual account
@@ -2539,12 +2592,6 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    responseCTraderAvailableAccounts(response) {
-        if (!response.error) {
-            this.ctrader_available_accounts = response.trading_platform_available_accounts;
-        }
-    }
-
     responseDerivezAvailableAccounts(response) {
         if (!response.error) {
             this.derivez_available_accounts = response.trading_platform_accounts;
@@ -2591,13 +2638,11 @@ export default class ClientStore extends BaseStore {
     }
 
     getChangeableFields() {
-        const get_settings =
-            Object.keys(this.account_settings).length === 0
-                ? WS.authorized.storage.getSettings()
-                : this.account_settings;
-
-        const readonly_fields = [...get_settings.immutable_fields, ...['immutable_fields', 'email', 'password']];
-        return Object.keys(get_settings).filter(field => !readonly_fields.includes(field));
+        const readonly_fields = [
+            ...(this.account_settings.immutable_fields || []),
+            ...['immutable_fields', 'email', 'password'],
+        ];
+        return Object.keys(this.account_settings).filter(field => !readonly_fields.includes(field));
     }
 
     syncWithLegacyPlatforms(active_loginid, client_accounts) {
@@ -2748,6 +2793,10 @@ export default class ClientStore extends BaseStore {
         this.prev_account_type = acc_type;
     };
 
+    setIsAlreadyAttempted(status) {
+        this.is_already_attempted = status;
+    }
+
     /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
      *
      * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
@@ -2765,5 +2814,22 @@ export default class ClientStore extends BaseStore {
 
         return is_p2p_visible;
     }
+
+    setIsBetaChart = () => {
+        const website_status = Cookies.get('website_status');
+        if (!website_status) return;
+
+        try {
+            const cookie_value = JSON.parse(website_status);
+
+            if (cookie_value && cookie_value.clients_country) {
+                const client_country = cookie_value.clients_country;
+                /// Show beta chart only for these countries
+                this.is_beta_chart = ['ke', 'in', 'pk'].includes(client_country);
+            }
+        } catch {
+            this.is_beta_chart = false;
+        }
+    };
 }
 /* eslint-enable */

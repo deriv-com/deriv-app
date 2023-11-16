@@ -1,7 +1,7 @@
 /** Add types that are shared between components */
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { Authorize, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { Redirect } from 'react-router-dom';
 import { Platforms } from '@deriv/shared';
 
 export type TToken = {
@@ -125,6 +125,7 @@ export type TPersonalDetailsForm = {
     first_name: string;
     last_name: string;
     date_of_birth: string;
+    confirmation_checkbox?: boolean;
 };
 
 export type TInputFieldValues = Record<string, string>;
@@ -135,7 +136,6 @@ export type TDocument = {
     id: string;
     text: string;
     value?: string;
-    sample_image?: string;
     example_format?: string;
     additional?: {
         display_name?: string;

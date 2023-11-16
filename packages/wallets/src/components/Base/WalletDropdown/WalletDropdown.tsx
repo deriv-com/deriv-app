@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { CSSProperties, useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useCombobox } from 'downshift';
 import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
 import reactNodeToString from '../../../utils/reactNodeToString';
+import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
 import './WalletDropdown.scss';
 
@@ -10,20 +11,22 @@ type TProps = {
     icon?: React.ReactNode;
     label?: React.ReactNode;
     list: {
-        text: React.ReactNode;
-        value: string;
+        text?: React.ReactNode;
+        value?: string;
     }[];
-    listHeight?: 'lg' | 'md' | 'sm';
+    listHeight?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
+    maxWidth?: CSSProperties['maxWidth'];
     onSelect: (value: string) => void;
     type?: 'comboBox' | 'prompt';
     value: string | undefined;
 };
 
 const WalletDropdown: React.FC<TProps> = ({
-    icon,
+    icon = false,
     label,
     list,
     listHeight = 'md',
+    maxWidth = '19.5rem',
     onSelect,
     type = 'prompt',
     value,
@@ -58,7 +61,7 @@ const WalletDropdown: React.FC<TProps> = ({
         onSelectedItemChange({ selectedItem }) {
             onSelect(selectedItem?.value ?? '');
         },
-        selectedItem: items.find(item => item.value === value),
+        selectedItem: items.find(item => item.value === value) ?? null,
     });
 
     useEffect(() => {
@@ -66,7 +69,7 @@ const WalletDropdown: React.FC<TProps> = ({
     }, [list]);
 
     return (
-        <div className='wallets-dropdown'>
+        <div className='wallets-dropdown' style={{ maxWidth }}>
             <div className='wallets-dropdown__content'>
                 {icon && <div className='wallets-dropdown__icon'>{icon}</div>}
                 <input

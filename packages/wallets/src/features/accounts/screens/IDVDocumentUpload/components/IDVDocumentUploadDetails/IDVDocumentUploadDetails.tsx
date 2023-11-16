@@ -17,20 +17,17 @@ const IDVDocumentUploadDetails = () => {
                     {/* TODO: Update account details using implemented Formik */}
                     <WalletTextField
                         label='First name*'
-                        maxWidth='35.9rem'
                         message='Your first name as in your identity document'
                         showMessage
                     />
                     <WalletTextField
                         label='Last name*'
-                        maxWidth='35.9rem'
                         message='Your last name as in your identity document'
                         showMessage
                     />
                     {/* TODO: Replace with DatePicker component*/}
                     <WalletTextField
                         label='Date of birth*'
-                        maxWidth='35.9rem'
                         message='Your date of birth as in your identity document'
                         showMessage
                         type='date'

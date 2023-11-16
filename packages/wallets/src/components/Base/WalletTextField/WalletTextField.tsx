@@ -1,11 +1,11 @@
-import React, { ChangeEvent, ComponentProps, CSSProperties, FC, useState } from 'react';
+import React, { ChangeEvent, ComponentProps, FC, useState } from 'react';
 import HelperMessage, { HelperMessageProps } from './HelperMessage';
 import './WalletTextField.scss';
 
 export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;
     label?: string;
-    maxWidth?: CSSProperties['maxWidth'];
+    renderLeftIcon?: () => React.ReactNode;
     renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
 }
@@ -14,10 +14,10 @@ const WalletTextField: FC<WalletTextFieldProps> = ({
     defaultValue = '',
     label,
     maxLength,
-    maxWidth = '33rem',
     message,
     name = 'wallet-textfield',
     onChange,
+    renderLeftIcon,
     renderRightIcon,
     showMessage = false,
     ...rest
@@ -31,8 +31,11 @@ const WalletTextField: FC<WalletTextFieldProps> = ({
     };
 
     return (
-        <div className='wallets-textfield' style={{ maxWidth }}>
+        <div className='wallets-textfield'>
             <div className='wallets-textfield__box'>
+                {typeof renderLeftIcon === 'function' && (
+                    <div className='wallets-textfield__icon-left'>{renderLeftIcon()}</div>
+                )}
                 <input
                     className='wallets-textfield__field'
                     id={name}
@@ -48,7 +51,7 @@ const WalletTextField: FC<WalletTextFieldProps> = ({
                     </label>
                 )}
                 {typeof renderRightIcon === 'function' && (
-                    <div className='wallets-textfield__icon'>{renderRightIcon()}</div>
+                    <div className='wallets-textfield__icon-right'>{renderRightIcon()}</div>
                 )}
             </div>
             <div className='wallets-textfield__message-container'>

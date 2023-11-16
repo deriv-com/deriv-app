@@ -8,22 +8,22 @@ import ContinueButton from './launch-modal-continue-button';
 type LaunchModalProps = {
     handleChange: () => void;
     open: boolean;
-    isDarkMode: boolean;
+    is_dark_mode: boolean;
 };
 
-const LaunchModal = ({ handleChange, open, isDarkMode }: LaunchModalProps) => (
+const LaunchModal = ({ handleChange, open, is_dark_mode }: LaunchModalProps) => (
     <React.Suspense fallback={<UILoader />}>
         <DesktopWrapper>
             <Modal has_close_icon={false} is_open={open} className='modal_root' height='440px' width='440px'>
                 <Modal.Body>
-                    <LaunchModalInfo isDarkMode={isDarkMode} />
+                    <LaunchModalInfo is_dark_mode={is_dark_mode} />
                 </Modal.Body>
                 <ContinueButton handleOpen={handleChange} />
             </Modal>
         </DesktopWrapper>
         <MobileWrapper>
             <div className='launch-page-mobile'>
-                <LaunchModalInfo isDarkMode={isDarkMode} />
+                <LaunchModalInfo is_dark_mode={is_dark_mode} />
                 <ContinueButton handleOpen={handleChange} />
             </div>
         </MobileWrapper>

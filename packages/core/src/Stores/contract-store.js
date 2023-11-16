@@ -36,6 +36,7 @@ export default class ContractStore extends BaseStore {
         makeObservable(this, {
             accu_high_barrier: observable,
             accu_low_barrier: observable,
+            accumulator_previous_spot_time: observable,
             cached_barriers_data: observable,
             digits_info: observable,
             sell_info: observable,
@@ -89,6 +90,7 @@ export default class ContractStore extends BaseStore {
     // Accumulator contract
     accu_high_barrier = null;
     accu_low_barrier = null;
+    accumulator_previous_spot_time = null;
     cached_barriers_data = {};
 
     // Multiplier contract update config
@@ -182,6 +184,7 @@ export default class ContractStore extends BaseStore {
             high_barrier,
             low_barrier,
             status,
+            current_spot_time,
             underlying,
         } = contract_info || {};
         const main_barrier = this.barriers_array?.[0];
@@ -219,6 +222,8 @@ export default class ContractStore extends BaseStore {
                             }
                             // this.markers_array contains tick markers & start/end vertical lines in C.Details page
                             this.markers_array = createChartMarkers(contract_info, true);
+                            // this observable controls the update of DelayedAccuBarriersMarker in C.Details page
+                            this.accumulator_previous_spot_time = current_spot_time;
                         }
                     }),
                 isOpen(contract_info) ? getAccuBarriersDefaultTimeout(underlying) : 0

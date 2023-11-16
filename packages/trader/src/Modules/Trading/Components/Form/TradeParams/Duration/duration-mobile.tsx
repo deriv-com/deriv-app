@@ -8,7 +8,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import moment from 'moment';
 import ExpiryText from './expiry-text';
 import DurationRangeText from './duration-range-text';
-import type { TTradeParamsMobile } from '../../../../Containers/trade-params-mobile';
+import type { TTradeParamsMobile } from 'Modules/Trading/Containers/trade-params-mobile';
 
 type TDuration = Pick<
     TTradeParamsMobile,
@@ -49,6 +49,8 @@ type TNumber = Pick<
 };
 
 type TTicks = Omit<TNumber, 'expiry_epoch' | 'contract_expiry' | 'duration_unit_option' | 'show_expiry'>;
+
+type TDurationUnit = 't' | 's' | 'm' | 'h' | 'd';
 
 const submit_label = localize('OK');
 
@@ -183,15 +185,12 @@ const Numbers = observer(
                     }}
                 />
             );
-            if (
-                parseInt(value as unknown as string) < Number(min) ||
-                parseInt(selected_duration as unknown as string) > Number(max)
-            ) {
+            if (parseInt(value as string) < Number(min) || Math.floor(selected_duration) > Number(max)) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setDurationError(true);
                 setHasError(true);
                 return 'error';
-            } else if (parseInt(value as unknown as string) > Number(max)) {
+            } else if (parseInt(value as string) > Number(max)) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setHasError(true);
                 return 'error';
@@ -326,7 +325,7 @@ const Duration = observer(
         const onTabChange = (index: number) => {
             setDurationTabIdx(index);
             const { value: unit } = duration_units_list[index];
-            setSelectedDuration(unit, duration_values[`${unit as 't' | 's' | 'm' | 'h' | 'd'}_duration`]);
+            setSelectedDuration(unit, duration_values[`${unit as TDurationUnit}_duration`]);
         };
 
         return (

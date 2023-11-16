@@ -55,7 +55,6 @@ export const ChartTopWidgets = observer(({ open_market, open }: TChartTopWidgets
     const { is_beta_chart } = client;
     const { is_dark_mode_on, is_mobile } = ui;
     const theme = is_dark_mode_on ? 'dark' : 'light';
-    let yAxiswidth;
     return (
         <TopWidgets
             open_market={open_market}
@@ -64,7 +63,6 @@ export const ChartTopWidgets = observer(({ open_market, open }: TChartTopWidgets
             is_digits_widget_active={is_digits_widget_active}
             onSymbolChange={symbolChange(onSymbolChange)}
             theme={theme}
-            y_axis_width={yAxiswidth}
             is_beta_chart={is_beta_chart}
         />
     );

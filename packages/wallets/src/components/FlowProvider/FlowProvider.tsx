@@ -9,7 +9,7 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import { Formik, FormikErrors, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikErrors, FormikValues } from 'formik';
 import * as Yup from 'yup';
 
 export type TFlowProviderContext<T> = {
@@ -110,9 +110,9 @@ function FlowProvider<T extends TWalletScreens>({
                     <FlowProvider
                         value={{
                             ...context,
+                            errors,
                             formValues: values,
                             setFormValues: setFieldValue,
-                            errors,
                         }}
                     >
                         {children({

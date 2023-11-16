@@ -1,4 +1,5 @@
 import React, { FC, useMemo } from 'react';
+import * as Yup from 'yup';
 import { useAuthentication, usePOA, usePOI } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
@@ -8,7 +9,6 @@ import { THooks } from '../../../../types';
 import { ResubmitPOA } from '../../../accounts/screens';
 import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
 import { Onfido } from '../../screens';
-import * as Yup from 'yup';
 
 const Manual = () => {
     return (
@@ -83,8 +83,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             return 'manualScreen';
         }
         return 'loadingScreen';
-    }, [
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
         hasAttemptedPOA,
         needPersonalDetails,
         authenticationData?.is_poa_needed,
@@ -128,11 +128,12 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         }
     };
 
+    // NOTE: These are test validations, add the correct validators here for different screens
     const validationSchema = Yup.object().shape({
-        documentNumber: Yup.string().min(1).required(),
+        dateOfBirth: Yup.date().required(),
+        documentNumber: Yup.string().min(12, 'document number should have minimum 12 characters').required(),
         firstName: Yup.string().min(1).max(5).required(),
         lastName: Yup.string().min(1).max(20).required(),
-        dateOfBirth: Yup.date().required(),
     });
 
     return (

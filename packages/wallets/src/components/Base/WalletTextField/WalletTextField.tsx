@@ -1,12 +1,12 @@
 import React, { ChangeEvent, ComponentProps, CSSProperties, FC, useState } from 'react';
-import HelperMessage, { HelperMessageProps } from './HelperMessage';
-import { FormikErrors } from 'formik';
 import classNames from 'classnames';
+import { FormikErrors } from 'formik';
+import HelperMessage, { HelperMessageProps } from './HelperMessage';
 import './WalletTextField.scss';
 
 export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;
-    errorMessage?: FormikErrors<any> | FormikErrors<any>[] | string[] | string;
+    errorMessage?: FormikErrors<unknown> | FormikErrors<unknown>[] | string[] | string;
     isInvalid?: boolean;
     label?: string;
     maxWidth?: CSSProperties['maxWidth'];

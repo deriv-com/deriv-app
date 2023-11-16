@@ -11,8 +11,8 @@ type TProps = {
     icon?: React.ReactNode;
     label?: React.ReactNode;
     list: {
-        text: React.ReactNode;
-        value: string;
+        text?: React.ReactNode;
+        value?: string;
     }[];
     listHeight?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     maxWidth?: CSSProperties['maxWidth'];
@@ -22,7 +22,7 @@ type TProps = {
 };
 
 const WalletDropdown: React.FC<TProps> = ({
-    icon,
+    icon = false,
     label,
     list,
     listHeight = 'md',
@@ -61,7 +61,7 @@ const WalletDropdown: React.FC<TProps> = ({
         onSelectedItemChange({ selectedItem }) {
             onSelect(selectedItem?.value ?? '');
         },
-        selectedItem: items.find(item => item.value === value),
+        selectedItem: items.find(item => item.value === value) ?? null,
     });
 
     useEffect(() => {

@@ -2,8 +2,11 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    types: [opened, synchronize, edited]    
+      
+  workflow_run:
+    workflows: ['Deriv App PR Test Workflow']
+    types:
+        - completed 
 name: Coveralls
 jobs:
   build:
@@ -16,8 +19,13 @@ jobs:
         uses: './.github/actions/setup_node'
       - name: Install dependencies
         uses: "./.github/actions/npm_install_from_cache"
-      - name: Build
-        uses: "./.github/actions/build"
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow_conclusion: success
+          run_id: ${{ github.event.workflow_run.id }}
+          name: 'artifacts-${{ github.event.workflow_run.id }}'
       - name: Test
         run: JEST_MAX_WORKERS=95% npm run test:jest -- --collectCoverage
       - name: Coveralls

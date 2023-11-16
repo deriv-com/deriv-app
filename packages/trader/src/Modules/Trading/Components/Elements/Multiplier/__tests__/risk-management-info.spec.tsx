@@ -39,10 +39,6 @@ jest.mock('Modules/Trading/Containers/Multiplier/risk-management-dialog', () =>
         ) : null
     )
 );
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: () => true,
-}));
 
 describe('<RiskManagementInfo />', () => {
     const mockRiskManagementInfo = (mocked_store: TCoreStores) => {

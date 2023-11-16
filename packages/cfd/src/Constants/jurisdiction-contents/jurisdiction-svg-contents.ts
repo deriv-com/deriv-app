@@ -128,6 +128,6 @@ export const getJurisdictionSvgContents = ({
             description: localize('Deriv (SVG) LLC (company no. 273 LLC 2020)'),
         },
     ],
-    synthetic_verification_docs: ['not_applicable'],
-    financial_verification_docs: ['not_applicable'],
+    synthetic_verification_docs: [],
+    financial_verification_docs: [],
 });

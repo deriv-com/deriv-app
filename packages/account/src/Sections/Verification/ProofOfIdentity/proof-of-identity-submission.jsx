@@ -170,6 +170,7 @@ const POISubmission = observer(
                                 handleSubmit={handleViewComplete}
                                 latest_status={identity_last_attempt}
                                 selected_country={selected_country}
+                                handleSelectionNext={handleSelectionNext}
                             />
                         ) : (
                             <IdvDocumentSubmit
@@ -203,6 +204,7 @@ const POISubmission = observer(
                                 allow_poi_resubmission={allow_poi_resubmission}
                                 handleViewComplete={handleViewComplete}
                                 onfido={onfido}
+                                handleBack={handleBack}
                             />
                         );
                     default:

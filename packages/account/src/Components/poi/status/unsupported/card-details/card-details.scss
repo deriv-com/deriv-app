@@ -185,6 +185,10 @@
         justify-content: flex-end;
         padding-bottom: 8rem;
 
+        .account-form__footer {
+            max-width: 68rem;
+        }
+
         .dc-btn:not(:last-of-type) {
             margin-right: 0.8rem;
         }
@@ -192,6 +196,13 @@
             height: auto;
             padding-bottom: unset;
             padding-top: 2rem;
+
+            .dc-btn {
+                width: 50%;
+            }
+            .account-form__footer {
+                flex-direction: row;
+            }
         }
     }
 }

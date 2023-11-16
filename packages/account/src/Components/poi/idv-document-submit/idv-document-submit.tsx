@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Form, Formik, FormikErrors, FormikHelpers, FormikState } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Text } from '@deriv/components';
@@ -52,7 +53,6 @@ const IdvDocumentSubmit = observer(
         const { account_settings, getChangeableFields } = client;
         const { is_mobile, is_desktop } = ui;
 
-        const [is_idv_skipping, setIsIdvSkipping] = React.useState(false);
         const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
         const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
         const side_note_image = <PoiNameDobExample />;
@@ -84,10 +84,8 @@ const IdvDocumentSubmit = observer(
             const { document_type, document_number, document_additional } = values;
 
             if (document_type.id === IDV_NOT_APPLICABLE_OPTION.id) {
-                setIsIdvSkipping(true);
                 return errors;
             }
-            setIsIdvSkipping(false);
 
             const needs_additional_document = !!document_type.additional;
 
@@ -124,8 +122,8 @@ const IdvDocumentSubmit = observer(
                 status,
             }: FormikHelpers<TIdvDocumentSubmitForm> & FormikState<TIdvDocumentSubmitForm>
         ) => {
-            if (is_idv_skipping) {
-                handleSelectionNext(true);
+            if (values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id) {
+                handleSelectionNext?.(true);
                 return;
             }
 
@@ -173,7 +171,11 @@ const IdvDocumentSubmit = observer(
         return (
             <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
                 {({ dirty, isSubmitting, isValid, values, status }) => (
-                    <Form className='proof-of-identity__container proof-of-identity__container--reset'>
+                    <Form
+                        className={classNames('proof-of-identity__container proof-of-identity__container--reset', {
+                            'min-height': values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id,
+                        })}
+                    >
                         {status?.error_message && (
                             <div className='account-form__poi-confirm-example--generic-error-msg'>
                                 <HintBox
@@ -191,7 +193,7 @@ const IdvDocumentSubmit = observer(
                         <FormBody className='form-body' scroll_offset={is_mobile ? '180px' : '80px'}>
                             <FormSubHeader title={localize('Identity verification')} />
                             <IDVForm selected_country={selected_country} class_name='idv-layout' />
-                            {!is_idv_skipping && (
+                            {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && (
                                 <React.Fragment>
                                     <FormSubHeader title={localize('Details')} />
                                     <PersonalDetailsForm
@@ -227,7 +229,11 @@ const IdvDocumentSubmit = observer(
                                 type='submit'
                                 has_effect
                                 is_disabled={!dirty || isSubmitting || !isValid}
-                                text={is_idv_skipping ? localize('Next') : localize('Verify')}
+                                text={
+                                    values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
+                                        ? localize('Next')
+                                        : localize('Verify')
+                                }
                                 large
                                 primary
                             />

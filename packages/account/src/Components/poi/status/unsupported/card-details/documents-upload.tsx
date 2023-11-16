@@ -8,6 +8,7 @@ import InputField from './input-field';
 import Uploader from './uploader';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, date_field, getDocumentIndex } from '../constants';
+import FormFooter from '../../../../form-footer';
 
 const icons = [
     {
@@ -120,20 +121,22 @@ const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, on
                                 </div>
                             </div>
                             <div className={`${ROOT_CLASS}__btns`}>
-                                <Button
-                                    onClick={goToCards}
-                                    secondary
-                                    large
-                                    text={localize('Go back')}
-                                    icon={<Icon icon={'IcButtonBack'} size={16} />}
-                                />
-                                <Button
-                                    type='submit'
-                                    primary
-                                    large
-                                    is_disabled={!isValid || (!is_form_touched && is_form_empty)}
-                                    text={localize('Next')}
-                                />
+                                <FormFooter>
+                                    <Button
+                                        onClick={goToCards}
+                                        secondary
+                                        large
+                                        text={localize('Back')}
+                                        icon={<Icon icon={'IcButtonBack'} size={16} />}
+                                    />
+                                    <Button
+                                        type='submit'
+                                        primary
+                                        large
+                                        is_disabled={!isValid || (!is_form_touched && is_form_empty)}
+                                        text={localize('Next')}
+                                    />
+                                </FormFooter>
                             </div>
                         </Form>
                     );

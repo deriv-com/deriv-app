@@ -74,7 +74,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
             }) => (
                 <React.Fragment>
                     <div
-                        className={classNames('proof-of-identity__container', {
+                        className={classNames('proof-of-identity__container proof-of-identity__country-container', {
                             'min-height': !is_from_external,
                         })}
                     >

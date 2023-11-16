@@ -40,7 +40,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const { setValue } = quick_strategy;
     const [active_symbols, setActiveSymbols] = React.useState([]);
     const [is_input_started, setIsInputStarted] = useState(false);
-    const [input_value, setInputValue] = useState('');
+    const [input_value, setInputValue] = useState({ text: '', value: '' });
     const { setFieldValue, values } = useFormikContext<TFormData>();
 
     useEffect(() => {
@@ -71,19 +71,19 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     useEffect(() => {
         const selected_symbol = symbols.find(symbol => symbol.value === values.symbol);
         if (selected_symbol) {
-            setInputValue(selected_symbol.text);
+            setInputValue({ text: selected_symbol.text, value: selected_symbol.value });
         }
     }, [symbols, values.symbol, setInputValue]);
 
     const handleFocus = () => {
         if (is_desktop && !is_input_started) {
             setIsInputStarted(true);
-            setInputValue('');
+            setInputValue({ text: '', value: '' });
         }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value);
+        setInputValue({ ...input_value, text: e.target.value });
     };
 
     const handleItemSelection = (item: TItem) => {
@@ -98,8 +98,8 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const handleHideDropdownList = () => {
         if (is_desktop) {
             const selectedSymbol = symbols.find(symbol => symbol.value === values.symbol);
-            if (selectedSymbol && selectedSymbol.text !== input_value) {
-                setInputValue(selectedSymbol.text);
+            if (selectedSymbol && selectedSymbol.text !== input_value.text) {
+                setInputValue({ text: selectedSymbol.text, value: selectedSymbol.value });
                 setIsInputStarted(false);
             }
         }
@@ -117,13 +117,13 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
                             data-testid='qs_autocomplete_symbol'
                             autoComplete='off'
                             className='qs__autocomplete'
-                            value={input_value}
+                            value={input_value.text}
                             list_items={symbols}
                             onItemSelection={handleItemSelection}
                             onChange={handleInputChange}
                             onFocus={handleFocus}
                             onHideDropdownList={handleHideDropdownList}
-                            leading_icon={<Icon icon={`IcUnderlying${value}`} size={24} />}
+                            leading_icon={<Icon icon={`IcUnderlying${input_value.value}`} size={24} />}
                         />
                     </>
                 )}

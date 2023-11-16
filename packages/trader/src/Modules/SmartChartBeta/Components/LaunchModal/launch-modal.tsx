@@ -5,10 +5,10 @@ import './launch-modal.scss';
 import { observer } from '@deriv/stores';
 import LaunchModalChartImage from 'Assets/SvgComponents/launch/ic-chart-launch.svg';
 
-interface LaunchModalProps {
+type LaunchModalProps = {
     handleChange: () => void;
     open: boolean;
-}
+};
 
 const ContinueButton = ({ handleOpen }: { handleOpen: () => void }) => (
     <Modal.Footer>
@@ -33,14 +33,7 @@ const InfoDisplay = () => (
 const LaunchModal = ({ handleChange, open }: LaunchModalProps) => (
     <React.Suspense fallback={<UILoader />}>
         <DesktopWrapper>
-            <Modal
-                has_close_icon={false}
-                is_open={open}
-                className='modal_root'
-                height='440px'
-                width='440px'
-                portalId='modal_root'
-            >
+            <Modal has_close_icon={false} is_open={open} className='modal_root' height='440px' width='440px'>
                 <Modal.Body>
                     <InfoDisplay />
                 </Modal.Body>

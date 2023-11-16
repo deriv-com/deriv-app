@@ -1,4 +1,4 @@
-import { removeCookies } from '@deriv/shared';
+import { LocalStore, removeCookies } from '@deriv/shared';
 import SocketCache from '_common/base/socket_cache';
 import WS from './ws-methods';
 
@@ -13,6 +13,7 @@ const doLogout = response => {
     removeCookies('affiliate_token', 'affiliate_tracking', 'onfido_token');
     SocketCache.clear();
     sessionStorage.clear();
+    LocalStore.remove('launchModalShown');
     endChat();
     return response;
 };

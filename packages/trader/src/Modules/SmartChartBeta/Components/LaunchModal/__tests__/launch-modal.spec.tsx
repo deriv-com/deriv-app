@@ -4,10 +4,11 @@ import LaunchModal from '../launch-modal';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TraderProviders from '../../../../../trader-providers';
+import { LocalStore } from '@deriv/shared';
 
-const renderLaunchModal = (is_logged_in = true) => {
+const renderLaunchModal = () => {
     const mocked_store = mockStore({
-        client: { is_logged_in },
+        client: { is_logged_in: true },
     });
 
     const handleMockLaunchModal = () => {
@@ -16,25 +17,21 @@ const renderLaunchModal = (is_logged_in = true) => {
 
     render(
         <StoreProvider store={mocked_store}>
-            <LaunchModal open={true} handleChange={handleMockLaunchModal} />
+            <LaunchModal open handleChange={handleMockLaunchModal} />
         </StoreProvider>
     );
 };
 
-const renderTradeComponent = (storeProps = {}) => {
+const renderTradeComponent = () => {
     const mocked_store = mockStore({});
     render(
         <StoreProvider store={mocked_store}>
-            <TraderProviders store={mockStore(storeProps)} />
+            <TraderProviders store={mocked_store} />
         </StoreProvider>
     );
 };
 
-jest.mock('Assets/SvgComponents/launch/ic-chart-launch.svg', () => {
-    const LaunchModalChartImage = () => <div>Chart Svg</div>;
-
-    return LaunchModalChartImage;
-});
+jest.mock('Assets/SvgComponents/launch/ic-chart-launch.svg', () => jest.fn(() => <div>Chart Svg</div>));
 
 describe('Launch Modal', () => {
     let modal_root_el: HTMLDivElement;
@@ -45,8 +42,12 @@ describe('Launch Modal', () => {
         document.body.appendChild(modal_root_el);
     });
 
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
+
     beforeEach(() => {
-        sessionStorage.clear();
+        LocalStore.remove('launchModalShown');
     });
 
     it('should display launch modal for a logged in user', async () => {

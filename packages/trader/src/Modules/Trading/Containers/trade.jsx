@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { getDecimalPlaces, isDesktop } from '@deriv/shared';
+import { LocalStore, getDecimalPlaces, isDesktop } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
@@ -71,7 +71,7 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
     const [swipe_index, setSwipeIndex] = React.useState(0);
-    const [openLaunchModal, setOpenLaunchModal] = React.useState(true);
+    const [open_launch_modal, setOpenLaunchModal] = React.useState(true);
 
     const charts_ref = React.useRef();
 
@@ -132,7 +132,7 @@ const Trade = observer(() => {
         setSwipeIndex(index);
     };
 
-    const is_already_shown = JSON.parse(sessionStorage.getItem('launchModalShown') ?? 'false');
+    const is_already_shown = JSON.parse(LocalStore.get('launchModalShown') ?? 'false');
 
     const onTryOtherMarkets = async () => {
         if (!is_synthetics_available) {
@@ -164,14 +164,13 @@ const Trade = observer(() => {
     }, [is_turbos, is_accumulator]);
 
     const handleLaunchModal = () => {
-        setOpenLaunchModal(!openLaunchModal);
-        sessionStorage.setItem('launchModalShown', JSON.stringify(true));
+        setOpenLaunchModal(!open_launch_modal);
+        LocalStore.set('launchModalShown', JSON.stringify(true));
     };
-
     return (
-        <>
-            {openLaunchModal && is_logged_in && !is_already_shown && (
-                <LaunchModal handleChange={handleLaunchModal} open={openLaunchModal} />
+        <React.Fragment>
+            {open_launch_modal && is_logged_in && !is_already_shown && (
+                <LaunchModal handleChange={handleLaunchModal} open={open_launch_modal} />
             )}
 
             <div
@@ -210,7 +209,7 @@ const Trade = observer(() => {
                                 />
                             </div>
                         </DesktopWrapper>
-                        {!(openLaunchModal && is_logged_in && !is_already_shown) && (
+                        {!(open_launch_modal && is_logged_in && !is_already_shown) && (
                             <MobileWrapper>
                                 <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
                                 <SwipeableWrapper
@@ -218,7 +217,7 @@ const Trade = observer(() => {
                                     is_disabled={
                                         !show_digits_stats ||
                                         !is_trade_enabled ||
-                                        form_components.length === 0 ||
+                                        form_components.length ||
                                         is_chart_loading ||
                                         should_show_active_symbols_loading
                                     }
@@ -259,7 +258,7 @@ const Trade = observer(() => {
                     />
                 </div>
             </div>
-        </>
+        </React.Fragment>
     );
 });
 

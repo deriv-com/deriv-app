@@ -37,7 +37,7 @@
             width: 100%;
 
             & > .wallets-dropzone__container {
-                min-width: 33.5rem;
+                width: 33.5rem;
             }
 
             & > .wallets-dropzone {
@@ -49,7 +49,7 @@
             width: 100%;
 
             & > .wallets-dropzone__container {
-                min-width: 31rem;
+                width: 31rem;
             }
 
             & > .wallets-dropzone {
@@ -61,7 +61,7 @@
             height: 25rem;
 
             @include mobile {
-                min-width: 100%;
+                width: 100%;
             }
         }
 

@@ -19,7 +19,6 @@ const WalletTextField: FC<WalletTextFieldProps> = ({
     isInvalid = false,
     label,
     maxLength,
-    maxWidth = '33rem',
     message,
     name = 'wallet-textfield',
     onChange,
@@ -40,7 +39,6 @@ const WalletTextField: FC<WalletTextFieldProps> = ({
             className={classNames('wallets-textfield', {
                 'wallets-textfield--error': isInvalid,
             })}
-            style={{ maxWidth }}
         >
             <div className='wallets-textfield__box'>
                 <input

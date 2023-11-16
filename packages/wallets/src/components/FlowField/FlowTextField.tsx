@@ -8,7 +8,7 @@ export interface TFlowFieldProps extends WalletTextFieldProps {
 }
 
 /**
- * This component is just a wrapper to the Field Formik compoennt and WalletTextField
+ * This component is just a wrapper to the Field Formik component and WalletTextField
  * Use this component when you are using the FlowProvider with a form and several inputs,
  * and you want those input values to be tracked and validated
  */

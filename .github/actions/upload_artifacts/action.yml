@@ -1,0 +1,22 @@
+name: Upload Artifacts
+description: 'Upload artifacts to the PR'
+inputs:
+  path:
+    description: 'Path to the artifacts'
+    required: false
+runs: 
+  using: composite
+  steps:
+  - name: Retrieve PR information
+    run: |
+        mkdir -p ./pr
+        echo ${{ github.event.number }} > ./pr/NR
+        echo ${{ github.event.pull_request.user.login }} > ./pr/USERNAME
+    shell: bash
+  - name: Upload artifacts
+    uses: actions/upload-artifact@v3
+    with:
+      name: 'pr-${{github.run_id}}'
+      path: | 
+        ./pr
+        ${{ inputs.path }}

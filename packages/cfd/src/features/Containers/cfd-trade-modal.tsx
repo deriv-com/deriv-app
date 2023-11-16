@@ -7,7 +7,7 @@ import DMT5TradeModal from './dmt5-trade-modal';
 import { TCFDPasswordReset } from '../../Containers/props.types';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
-type TMT5TradeModalProps = {
+type TCFDTradeModalProps = {
     is_eu_user: boolean;
     is_open: boolean;
     onPasswordManager: (
@@ -21,8 +21,8 @@ type TMT5TradeModalProps = {
     is_demo: string;
 };
 
-const MT5TradeModal = observer(
-    ({ is_eu_user, is_open, onPasswordManager, toggleModal, is_demo }: TMT5TradeModalProps) => {
+const CFDTradeModal = observer(
+    ({ is_eu_user, is_open, onPasswordManager, toggleModal, is_demo }: TCFDTradeModalProps) => {
         const { traders_hub, common, ui } = useStore();
 
         const { show_eu_related_content } = traders_hub;
@@ -90,4 +90,4 @@ const MT5TradeModal = observer(
     }
 );
 
-export default MT5TradeModal;
+export default CFDTradeModal;

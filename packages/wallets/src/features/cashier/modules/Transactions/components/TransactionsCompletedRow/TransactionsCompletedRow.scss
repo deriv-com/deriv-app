@@ -5,10 +5,21 @@
     align-items: center;
     border-top: 0.1rem solid var(--system-light-3-border, #e5e5e5);
 
+    @include mobile {
+        padding: 1.6rem 0;
+    }
+
     &__type-and-wallet-name {
         display: flex;
         flex-direction: column;
         justify-content: center;
+    }
+
+    &__wallet-name {
+        display: flex;
+        flex-direction: row;
+        gap: 0.4rem;
+        align-items: center;
     }
 
     &__account-details {

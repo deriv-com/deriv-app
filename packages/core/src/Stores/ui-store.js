@@ -133,6 +133,7 @@ export default class UIStore extends BaseStore {
 
     // MT5 account needed modal
     is_account_needed_modal_on = false;
+    is_mt5_migration_modal_open = false;
     account_needed_modal_props = {
         target: '',
         target_label: '',
@@ -167,6 +168,7 @@ export default class UIStore extends BaseStore {
     is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
+    is_mt5_migration_modal_enabled = false;
     sub_section_index = 0;
 
     is_additional_kyc_info_modal_open = false;
@@ -276,6 +278,8 @@ export default class UIStore extends BaseStore {
             is_trading_assessment_for_existing_user_enabled: observable,
             is_trading_assessment_for_new_user_enabled: observable,
             is_welcome_modal_visible: observable,
+            is_mt5_migration_modal_open: observable,
+            is_mt5_migration_modal_enabled: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
             notification_messages_ui: observable,
@@ -377,6 +381,7 @@ export default class UIStore extends BaseStore {
             setShouldShowWarningModal: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
+            setMT5MigrationModalEnabled: action.bound,
             setMobileLanguageMenuOpen: action.bound,
             toggleAccountsDialog: action.bound,
             toggleAccountSettings: action.bound,
@@ -399,6 +404,7 @@ export default class UIStore extends BaseStore {
             toggleUpdateEmailModal: action.bound,
             toggleAdditionalKycInfoModal: action.bound,
             toggleKycInformationSubmittedModal: action.bound,
+            toggleMT5MigrationModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -934,5 +940,13 @@ export default class UIStore extends BaseStore {
 
     toggleKycInformationSubmittedModal() {
         this.is_kyc_information_submitted_modal_open = !this.is_kyc_information_submitted_modal_open;
+    }
+
+    setMT5MigrationModalEnabled(value) {
+        this.is_mt5_migration_modal_enabled = value;
+    }
+
+    toggleMT5MigrationModal() {
+        this.is_mt5_migration_modal_open = !this.is_mt5_migration_modal_open;
     }
 }

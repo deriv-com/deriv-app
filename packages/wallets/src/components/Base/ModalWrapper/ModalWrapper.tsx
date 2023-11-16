@@ -5,19 +5,19 @@ import { useModal } from '../../ModalProvider';
 import './ModalWrapper.scss';
 
 type TProps = {
-    closeOnEscape?: boolean;
+    disableOnEscapeClick?: boolean;
     hideCloseButton?: boolean;
 };
 
 const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
     children,
-    closeOnEscape = false,
+    disableOnEscapeClick = false,
     hideCloseButton = false,
 }) => {
     const { hide } = useModal();
 
     useEventListener('keydown', (event: KeyboardEvent) => {
-        if (closeOnEscape && event.key === 'Escape') {
+        if (!disableOnEscapeClick && event.key === 'Escape') {
             hide();
         }
     });

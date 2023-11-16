@@ -111,7 +111,7 @@ const TradingAssessmentForm = ({
     };
 
     const handleValueSelection = (
-        e: React.ChangeEvent<HTMLSelectElement>,
+        e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>,
         form_control: keyof TFormData,
         callBackFn: {
             (form_control: keyof TFormData, value: string): void;
@@ -229,7 +229,7 @@ const TradingAssessmentForm = ({
                                                 list={answer_options ?? []}
                                                 onChange={e => {
                                                     handleValueSelection(
-                                                        e as any,
+                                                        e as React.ChangeEvent<HTMLInputElement>,
                                                         form_control as keyof TFormData,
                                                         setFieldValue
                                                     );

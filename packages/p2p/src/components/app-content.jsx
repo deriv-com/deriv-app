@@ -30,11 +30,11 @@ const AppContent = ({ order_id }) => {
         timeout = setTimeout(() => {
             showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
             // Display the disclaimer modal again after 24 hours
-        }, (24 - time_lapsed) * 3600000);
+        }, (1 - time_lapsed) * 3600000);
     };
 
     React.useEffect(() => {
-        if(!general_store.should_show_dp2p_blocked){
+        if (!general_store.should_show_dp2p_blocked) {
             const time_lapsed = getHoursDifference(localStorage.getItem(`p2p_${loginid}_disclaimer_shown`));
             if (time_lapsed === undefined || time_lapsed > 24) {
                 showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });

@@ -21,6 +21,7 @@ const WalletActionModal: React.FC<TWalletActionModal> = ({
     title,
 }) => {
     const { isMobile } = useDevice();
+
     return (
         <ModalWrapper hideCloseButton={hideCloseButton}>
             <div className='wallets-action-modal'>

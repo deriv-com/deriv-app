@@ -6,6 +6,13 @@
     height: $height;
     justify-content: center;
     width: $width;
+
+    @include desktop {
+        &:hover {
+            background-color: var(--general-hover);
+            border-radius: 0.5rem;
+        }
+    }
 }
 
 .my-ads-table {
@@ -104,12 +111,6 @@
         &--activate {
             @include popoverIcons(none, 3.2rem, 3.2rem);
 
-            @include desktop {
-                &:hover {
-                    background-color: var(--general-hover);
-                }
-            }
-
             @include mobile {
                 @include popoverIcons(var(--status-warning), 100%, 6rem);
             }
@@ -117,12 +118,6 @@
 
         &--deactivate {
             @include popoverIcons(none, 3.2rem, 3.2rem);
-
-            @include desktop {
-                &:hover {
-                    background-color: var(--general-hover);
-                }
-            }
 
             @include mobile {
                 @include popoverIcons(#85acb0, 100%, 6rem);
@@ -132,12 +127,6 @@
         &-delete {
             @include popoverIcons(none, 3.2rem, 3.2rem);
 
-            @include desktop {
-                &:hover {
-                    background-color: var(--general-hover);
-                }
-            }
-
             @include mobile {
                 @include popoverIcons(var(--brand-red-coral), 100%, 6rem);
             }
@@ -146,14 +135,16 @@
         &-edit {
             @include popoverIcons(none, 3.2rem, 3.2rem);
 
-            @include desktop {
-                &:hover {
-                    background-color: var(--general-hover);
-                }
-            }
-
             @include mobile {
                 @include popoverIcons(var(--status-info), 100%, 6rem);
+            }
+        }
+
+        &-share {
+            @include popoverIcons(none, 3.2rem, 3.2rem);
+
+            @include mobile {
+                @include popoverIcons($color-green-1, 100%, 6rem);
             }
         }
     }

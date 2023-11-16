@@ -58,6 +58,43 @@ const getStatusName = (status_code: TModifiedTransaction['status_code']) => {
     }
 };
 
+const getStatusDescription = (
+    transaction_type: TModifiedTransaction['transaction_type'],
+    status_code: TModifiedTransaction['status_code']
+) => {
+    switch (status_code) {
+        // deposit-specific:
+        case 'CONFIRMED':
+            return 'Your deposit is successful.';
+        case 'PENDING':
+            return "We've received your request and are waiting for more blockchain confirmations.";
+        // withdrawal-specific:
+        case 'CANCELLED':
+            return "You've cancelled your withdrawal request.";
+        case 'LOCKED':
+            return "We're reviewing your withdrawal request. You may still cancel this transaction if you wish.\nOnce we start processing, you won't be able to cancel.";
+        case 'PERFORMING_BLOCKCHAIN_TXN':
+            return "We're sending your request to the blockchain.";
+        case 'PROCESSING':
+            return "We're awaiting confirmation from the blockchain.";
+        case 'REJECTED':
+        case 'REVERTED':
+            return "Your withdrawal is unsuccessful. We've sent you an email with more information.";
+        case 'REVERTING':
+        case 'VERIFIED':
+            return "We're processing your withdrawal.";
+        case 'SENT':
+            return 'Your withdrawal is successful.';
+        // both:
+        case 'ERROR':
+            return `Your ${transaction_type} is unsuccessful due to an error on the blockchain. Please contact ${
+                transaction_type === 'deposit' ? 'your crypto wallet service provider' : 'us via live chat'
+            } for more info.`;
+        default:
+            return '';
+    }
+};
+
 /** A custom hook that returns the list of pending crypto transactions for the current user. */
 const useCryptoTransactions = () => {
     const { subscribe, data, ...rest } = useSubscription('cashier_payments');
@@ -109,6 +146,8 @@ const useCryptoTransactions = () => {
 
         return transactions.map(transaction => ({
             ...transaction,
+            /** Description of a transaction status */
+            description: getStatusDescription(transaction.transaction_type, transaction.status_code),
             /** Formatted amount */
             formatted_amount: displayMoney(transaction.amount || 0, display_code, {
                 fractional_digits,

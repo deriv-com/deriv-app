@@ -27,9 +27,9 @@ describe('getBarrierValue', () => {
     it('should return barrier value with correct rounding', () => {
         const contract_info = {
             contract_type: 'CALL',
-            barrier: '2031.00',
+            barrier: '2031.0000',
         };
-        expect(PositionsHelper.getBarrierValue(contract_info)).toEqual('2,031.00');
+        expect(PositionsHelper.getBarrierValue(contract_info)).toEqual('2,031.0000');
     });
     it('should return null if there is no barrier value or it is equal to null', () => {
         const contract_info = {

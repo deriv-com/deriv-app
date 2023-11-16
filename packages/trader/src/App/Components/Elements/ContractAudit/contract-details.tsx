@@ -2,8 +2,8 @@ import React from 'react';
 import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
+    addComma,
     epochToMoment,
-    formatMoney,
     getCancellationPrice,
     getCurrencyDisplayCode,
     getLocalizedBasis,
@@ -193,11 +193,7 @@ const ContractDetails = ({
                         id='dt_entry_spot_label'
                         icon={<Icon icon='IcContractEntrySpot' size={24} />}
                         label={localize('Entry spot')}
-                        value={
-                            entry_spot_display_value
-                                ? formatMoney(currency ?? 'USD', entry_spot_display_value, true, 0, 0)
-                                : ' - '
-                        }
+                        value={entry_spot_display_value ? addComma(entry_spot_display_value) : ' - '}
                         value2={toGMTFormat(epochToMoment(Number(entry_tick_time))) || ' - '}
                     />
                 )}
@@ -206,7 +202,7 @@ const ContractDetails = ({
                         id='dt_exit_spot_label'
                         icon={<Icon icon='IcContractExitSpot' size={24} />}
                         label={localize('Exit spot')}
-                        value={exit_spot ? formatMoney(currency ?? 'USD', exit_spot, true, 0, 0) : ' - '}
+                        value={exit_spot ? addComma(exit_spot) : ' - '}
                         value2={toGMTFormat(epochToMoment(Number(exit_tick_time))) || ' - '}
                     />
                 )}

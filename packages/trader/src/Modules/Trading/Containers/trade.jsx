@@ -7,13 +7,16 @@ import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets';
-import FormLayout from '../Components/Form/form-layout';
+import FormLayout from 'Modules/Trading/Components/Form/form-layout';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets';
 import ToolbarWidgetsBeta from '../../SmartChartBeta/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
+
+import LaunchModal from 'Modules/SmartChartBeta/Components/LaunchModal/launch-modal.tsx';
+import SmartChartSwitcher from 'Modules/Trading/Containers/smart-chart-switcher.jsx';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
@@ -155,7 +158,6 @@ const Trade = observer(() => {
         ),
         [open_market, try_synthetic_indices, try_open_markets]
     );
-
     const form_wrapper_class = is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
     const chart_height_offset = React.useMemo(() => {
         if (is_accumulator) return '295px';
@@ -172,7 +174,6 @@ const Trade = observer(() => {
             {open_launch_modal && is_logged_in && !is_already_shown && (
                 <LaunchModal handleChange={handleLaunchModal} open={open_launch_modal} />
             )}
-
             <div
                 id='trade_container'
                 className={classNames('trade-container', {
@@ -267,8 +268,6 @@ export default Trade;
 // CHART (ChartTrade)--------------------------------------------------------
 
 /* eslint-disable */
-import SmartChartSwitcher from './smart-chart-switcher.jsx';
-import LaunchModal from 'Modules/SmartChartBeta/Components/LaunchModal/launch-modal.tsx';
 
 const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChartSwitcher innerRef={ref} {...props} />);
 

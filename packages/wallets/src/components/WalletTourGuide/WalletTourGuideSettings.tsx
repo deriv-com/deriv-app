@@ -28,6 +28,7 @@ export const TooltipComponent = ({
     index,
     isLastStep,
     primaryProps,
+    skipProps,
     step,
     tooltipProps,
 }: TooltipRenderProps) => {
@@ -37,7 +38,7 @@ export const TooltipComponent = ({
                 {step?.title as React.ReactNode}
                 <CloseIcon
                     className='wallets-tour-guide__close-icon'
-                    onClick={closeProps.onClick as unknown as React.MouseEventHandler<SVGElement>}
+                    onClick={skipProps.onClick as unknown as React.MouseEventHandler<SVGElement>}
                 />
             </div>
             {<div className='wallets-tour-guide__content'>{step.content as React.ReactNode}</div>}

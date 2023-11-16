@@ -16,7 +16,12 @@ const CFDPOA = ({ index, onSave, onSubmit }: TCFDPOA) => {
 
     return (
         <div className='cfd-proof-of-address'>
-            <ProofOfAddressForm step_index={index} is_for_cfd_modal onSubmitForCFDModal={onSubmitForCFDModal} />
+            <ProofOfAddressForm
+                step_index={index}
+                is_for_cfd_modal
+                onSubmitForCFDModal={onSubmitForCFDModal}
+                className='cfd-proof-of-address__form'
+            />
         </div>
     );
 };

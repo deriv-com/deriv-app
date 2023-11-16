@@ -6,6 +6,7 @@ export * from './Dropzone';
 export * from './FadedAnimatedList';
 export * from './Loader';
 export * from './OptionsAndMultipliersListing';
+export * from './SentEmailContent';
 export * from './SkeletonLoader';
 export * from './ToggleSwitch';
 export * from './TradingAccountCard';

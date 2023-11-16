@@ -43,8 +43,6 @@ test.describe('Personal Details', () => {
         await assertField(page, 'Citizenship', 'Thailand');
         await assertField(page, 'Country of residence', 'Thailand');
         await assertField(page, 'Phone number*', '+66111111111');
-        await fillField(page, 'Tax residence*', 'Indonesia');
-        await fillField(page, 'Tax identification number*', '123123123123123');
         await assertField(page, 'First line of address*', 'test');
         await assertField(page, 'Second line of address', '');
         await assertField(page, 'Town/City*', 'test');
@@ -68,8 +66,6 @@ test.describe('Personal Details', () => {
         await fillField(page, 'Last name*', 'Doe');
         await fillField(page, 'Citizenship', 'Malaysia');
         await fillField(page, 'Phone number*', '+66222222222');
-        await fillField(page, 'Tax residence*', 'Indonesia');
-        await fillField(page, 'Tax identification number*', '123123123123123');
         await fillField(page, 'First line of address*', '123 Main Street');
         await fillField(page, 'Second line of address', 'Suite 100');
         await fillField(page, 'Town/City*', 'Kuala Lumpur');

@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Popover, Text } from '@deriv/components';
-import { useStore, observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
 type TQSInputLabel = {
     children?: React.ReactNode;

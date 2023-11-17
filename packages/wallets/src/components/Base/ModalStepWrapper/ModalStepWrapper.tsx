@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
+import { useEventListener } from 'usehooks-ts';
 import CloseIcon from '../../../public/images/close-icon.svg';
 import { useModal } from '../../ModalProvider';
 import { WalletText } from '../WalletText';
@@ -9,6 +10,7 @@ type TModalStepWrapperProps = {
     renderFooter?: () => ReactNode;
     shouldFixedFooter?: boolean;
     shouldHideHeader?: boolean;
+    shouldPreventCloseOnEscape?: boolean;
     title?: string;
 };
 
@@ -17,11 +19,18 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     renderFooter,
     shouldFixedFooter = true,
     shouldHideHeader = false,
+    shouldPreventCloseOnEscape = false,
     title,
 }) => {
     const { hide } = useModal();
     const hasRenderFooter = typeof renderFooter === 'function';
     const fixedFooter = shouldFixedFooter && hasRenderFooter;
+
+    useEventListener('keydown', (event: KeyboardEvent) => {
+        if (!shouldPreventCloseOnEscape && event.key === 'Escape') {
+            hide();
+        }
+    });
 
     return (
         <div

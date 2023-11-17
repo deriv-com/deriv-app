@@ -2,7 +2,11 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
-const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => {
+const TurbosTradeDescription = ({
+    onClick,
+}: {
+    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
+}) => {
     const content = [
         {
             text: (
@@ -13,7 +17,14 @@ const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => {
             text: (
                 <Localize
                     i18n_default_text='You receive a <0>payout</0> at <0>expiry</0> if the spot price never touches or breaches the <0>barrier</0> during the contract period. If it does, your contract will be terminated early.'
-                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+                    components={[
+                        <span
+                            className='contract-type-info__content-definition'
+                            onClick={onClick}
+                            onKeyDown={onClick}
+                            key={0}
+                        />,
+                    ]}
                 />
             ),
         },
@@ -29,7 +40,14 @@ const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => {
             text: (
                 <Localize
                     i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the <0>final price</0> and the barrier. You will only earn a profit if your payout is higher than your initial stake.'
-                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+                    components={[
+                        <span
+                            className='contract-type-info__content-definition'
+                            onClick={onClick}
+                            onKeyDown={onClick}
+                            key={0}
+                        />,
+                    ]}
                 />
             ),
         },
@@ -37,7 +55,14 @@ const TurbosTradeDescription = ({ onClick }: { onClick: () => void }) => {
             text: (
                 <Localize
                     i18n_default_text='You may sell the contract up to 15 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
-                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+                    components={[
+                        <span
+                            className='contract-type-info__content-definition'
+                            onClick={onClick}
+                            onKeyDown={onClick}
+                            key={0}
+                        />,
+                    ]}
                 />
             ),
         },

@@ -74,4 +74,5 @@ export const routes = {
 
     // Wallets
     wallets: '/wallets',
+    wallets_withdrawal: '/wallets/cashier/withdraw',
 };

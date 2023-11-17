@@ -2,14 +2,17 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDxtradeAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../../components';
-import { WalletButton } from '../../../../../../components/Base';
+import { WalletButton, WalletText } from '../../../../../../components/Base';
+import { useModal } from '../../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/derivx.svg';
+import { MT5TradeModal } from '../../../../modals';
 import './AddedDxtradeAccountsList.scss';
 
 const AddedDxtradeAccountsList: React.FC = () => {
     const history = useHistory();
     const { data } = useDxtradeAccountsList();
+    const { show } = useModal();
 
     return (
         <TradingAccountCard
@@ -32,16 +35,20 @@ const AddedDxtradeAccountsList: React.FC = () => {
                         text='Transfer'
                         variant='outlined'
                     />
-                    <WalletButton text='Open' />
+                    <WalletButton onClick={() => show(<MT5TradeModal platform='dxtrade' />)} text='Open' />
                 </div>
             )}
         >
             <div className='wallets-available-derivx__details'>
                 {data?.map(account => (
                     <React.Fragment key={account?.account_id}>
-                        <p className='wallets-available-derivx__details-title'>Deriv X</p>
-                        <p className='wallets-available-derivx__details-balance'>{account?.display_balance}</p>
-                        <p className='wallets-available-derivx__details-loginid'>{account.login}</p>
+                        <WalletText size='sm'>Deriv X</WalletText>
+                        <WalletText size='sm' weight='bold'>
+                            {account?.display_balance}
+                        </WalletText>
+                        <WalletText color='primary' size='xs' weight='bold'>
+                            {account?.login}
+                        </WalletText>
                     </React.Fragment>
                 ))}
             </div>

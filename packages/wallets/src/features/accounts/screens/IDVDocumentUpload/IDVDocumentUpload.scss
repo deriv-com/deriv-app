@@ -25,10 +25,10 @@
     }
 
     &__dropdown {
-        padding-bottom: 2.8rem;
+        padding-bottom: 0.8rem;
 
         @include mobile {
-            padding-bottom: 3.6rem;
+            padding-bottom: 1.6rem;
         }
     }
 

@@ -11,7 +11,7 @@ type TWithdrawalCryptoProps = {
 
 const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ verificationCode }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { getConfig, isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
+    const { getConfig } = useCurrencyConfig();
 
     return (
         <div className='wallets-withdrawal-crypto'>

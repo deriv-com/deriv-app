@@ -12,7 +12,7 @@ const WalletsPrimaryTabList = ({ list }: WalletPrimaryTabListProps) => {
     return (
         <div className='wallets-tabs-list' data-list-count={list.length}>
             {list.map((tab, i) => (
-                <div
+                <button
                     className={`wallets-tabs-list-item wallets-tabs-list-item--${
                         i === activeTabIndex ? 'active' : 'disabled'
                     }`}
@@ -20,7 +20,7 @@ const WalletsPrimaryTabList = ({ list }: WalletPrimaryTabListProps) => {
                     onClick={() => setActiveTabIndex(i)}
                 >
                     {tab}
-                </div>
+                </button>
             ))}
         </div>
     );

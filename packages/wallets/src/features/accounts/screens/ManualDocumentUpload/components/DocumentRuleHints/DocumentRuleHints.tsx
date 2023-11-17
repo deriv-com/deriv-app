@@ -7,7 +7,7 @@ import { DocumentRuleHint } from './DocumentRuleHint';
 import './DocumentRuleHints.scss';
 
 type TProps = {
-    docType: 'driverLicense' | 'identityCard' | 'nimcSlip' | 'passport';
+    docType: 'drivingLicense' | 'identityCard' | 'nimcSlip' | 'passport';
 };
 
 const DocumentRuleHints: React.FC<TProps> = ({ docType }) => (

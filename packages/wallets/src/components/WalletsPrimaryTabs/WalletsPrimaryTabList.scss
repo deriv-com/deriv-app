@@ -9,6 +9,8 @@
         border-radius: 0.7rem;
 
         &-item {
+            background: inherit;
+            border: none;
             grid-row: 1;
             display: flex;
             justify-content: center;

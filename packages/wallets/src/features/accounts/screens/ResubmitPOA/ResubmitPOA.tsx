@@ -35,9 +35,9 @@ const ResubmitPOA: React.FC = () => {
                     </InlineMessage>
                 </div>
                 <div className='wallets-poa__address__input'>
-                    <FlowTextField label='First line of address*' name='FirstLine' />
-                    <FlowTextField label='Second line of address' name='SecondLine' />
-                    <FlowTextField label='Town/City*' name='TownCityLine' />
+                    <FlowTextField label='First line of address*' name='firstLine' />
+                    <FlowTextField label='Second line of address' name='secondLine' />
+                    <FlowTextField label='Town/City*' name='townCityLine' />
                     <WalletDropdown
                         label='State/Province'
                         list={statesList}
@@ -46,7 +46,7 @@ const ResubmitPOA: React.FC = () => {
                         onSelect={handleSelect}
                         value={selectedState}
                     />
-                    <FlowTextField label='Postal/ZIP Code' name='ZipCodeLine' />
+                    <FlowTextField label='Postal/ZIP Code' name='zipCodeLine' />
                 </div>
             </div>
 

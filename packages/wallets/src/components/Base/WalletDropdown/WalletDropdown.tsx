@@ -5,8 +5,7 @@ import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
 import reactNodeToString from '../../../utils/reactNodeToString';
 import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
-import { WalletTextField } from '../WalletTextField';
-import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
+import WalletTextField, { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import './WalletDropdown.scss';
 
 type TProps = {

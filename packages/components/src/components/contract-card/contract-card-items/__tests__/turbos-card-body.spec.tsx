@@ -38,7 +38,7 @@ describe('TurbosCardBody', () => {
         currency: 'USD',
         current_focus: null,
         error_message_alignment: 'left',
-        getCardLabels: mockCardLabels,
+        getCardLabels: mockCardLabels as React.ComponentProps<typeof TurbosCardBody>['getCardLabels'],
         getContractById: jest.fn(),
         is_sold: false,
         onMouseLeave: jest.fn(),
@@ -79,5 +79,13 @@ describe('TurbosCardBody', () => {
         expect(total_profit_loss_header).toBeInTheDocument();
         const total_profit_loss_amount = screen.getByText('50.00');
         expect(total_profit_loss_amount).toBeInTheDocument();
+    });
+    it('should render Total profit/loss even if profit === 0', () => {
+        const new_mocked_props = { ...mock_props };
+        new_mocked_props.contract_info.profit = 0;
+        render(<TurbosCardBody {...new_mocked_props} />);
+
+        expect(screen.getByText(mockCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText('0.00')).toBeInTheDocument();
     });
 });

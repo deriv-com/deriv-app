@@ -228,7 +228,12 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
         title: localize('Indicative profit/loss'),
         col_index: 'profit',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
-            if (!row_obj.profit_loss && (!row_obj.contract_info || !row_obj.contract_info.profit)) return;
+            if (
+                !row_obj.profit_loss &&
+                row_obj.profit_loss !== 0 &&
+                (!row_obj.contract_info || !row_obj.contract_info.profit)
+            )
+                return;
             const profit = row_obj.profit_loss || row_obj.contract_info.profit;
             // eslint-disable-next-line consistent-return
             return (

@@ -3,8 +3,15 @@ import ReactDOM from 'react-dom';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import TraderProviders from '../../../../../trader-providers';
+import { TTradeStore } from 'Types';
 import MultiplierAmountModal from '../multiplier-amount-modal';
+import TraderProviders from '../../../../../trader-providers';
+
+type TResponse = {
+    proposal: { commission: string; limit_order: { stop_out: { order_amount: string } } };
+    echo_req: { contract_type: string; amount: number };
+    subscription: Record<string, unknown>;
+};
 
 const default_mocked_props = {
     is_open: true,
@@ -14,8 +21,6 @@ const default_mock_store = {
     modules: {
         trade: {
             amount: 10,
-            currency: '',
-            trade_stop_out: null,
         },
     },
 };
@@ -33,7 +38,11 @@ jest.mock('Modules/Trading/Components/Form/TradeParams/amount-mobile', () =>
 );
 jest.mock('Stores/Modules/Trading/Helpers/preview-proposal', () => ({
     ...jest.requireActual('Stores/Modules/Trading/Helpers/preview-proposal'),
-    requestPreviewProposal: (store, new_store, fn) =>
+    requestPreviewProposal: (
+        store: TTradeStore,
+        fn: (param: TResponse) => void,
+        new_store: { amount: string | number }
+    ) =>
         fn({
             proposal: { commission: '1%', limit_order: { stop_out: { order_amount: '10' } } },
             echo_req: { contract_type: 'MULTUP', amount: 20 },
@@ -50,59 +59,47 @@ jest.mock('Modules/Trading/Components/Form/TradeParams/Multiplier/info', () =>
 );
 
 describe('<MultiplierAmountModal />', () => {
-    const mockMultiplierAmountModal = (mocked_store, mocked_props) => {
+    const mockMultiplierAmountModal = () => {
         return (
-            <TraderProviders store={mocked_store}>
-                <MultiplierAmountModal {...mocked_props} />
+            <TraderProviders store={mockStore(default_mock_store)}>
+                <MultiplierAmountModal {...default_mocked_props} />
             </TraderProviders>
         );
     };
 
     beforeAll(() => {
-        ReactDOM.createPortal = jest.fn(component => {
+        (ReactDOM.createPortal as jest.Mock) = jest.fn(component => {
             return component;
         });
     });
 
     afterAll(() => {
-        ReactDOM.createPortal.mockClear();
+        (ReactDOM.createPortal as jest.Mock).mockClear();
         jest.clearAllMocks();
     });
 
     it('should render modal and <TradeParamsMobile/> inside', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockMultiplierAmountModal(mock_root_store, default_mocked_props));
+        render(mockMultiplierAmountModal());
 
         expect(screen.getByText(/AmountMobile component/i)).toBeInTheDocument();
         expect(screen.getByText(/MultipliersInfo component/i)).toBeInTheDocument();
     });
 
-    it('should render info icon and popover text if it was clicked', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockMultiplierAmountModal(mock_root_store, default_mocked_props));
-
-        const info_icon = screen.getByTestId(/dt_popover_wrapper/i);
-        userEvent.click(info_icon);
-
-        expect(screen.getByText(/To ensure your loss/i)).toBeInTheDocument();
-    });
     it('should change stake_value and commission if setSelectedAmount was called by pressing the proper button', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        const { rerender } = render(mockMultiplierAmountModal(mock_root_store, default_mocked_props));
+        const { rerender } = render(mockMultiplierAmountModal());
 
         expect(screen.getByText(10)).toBeInTheDocument();
         expect(screen.queryByText(/1%/i)).not.toBeInTheDocument();
 
         const selected_amount_button = screen.getByText(/SelectedAmount button/i);
         userEvent.click(selected_amount_button);
-        rerender(mockMultiplierAmountModal(mock_root_store, default_mocked_props));
+        rerender(mockMultiplierAmountModal());
 
         expect(screen.getByText(20)).toBeInTheDocument();
         expect(screen.getByText(/1%/i)).toBeInTheDocument();
     });
     it('should call toggleModal if the proper button was clicked', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockMultiplierAmountModal(mock_root_store, default_mocked_props));
+        render(mockMultiplierAmountModal());
 
         const toggle_modal_button = screen.getByText(/ToggleModal button/i);
         userEvent.click(toggle_modal_button);

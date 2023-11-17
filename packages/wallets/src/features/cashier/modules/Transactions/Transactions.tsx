@@ -15,8 +15,9 @@ const filtersMapper: Record<string, Record<string, TFilterValue>> = {
     completed: {
         all: undefined,
         deposit: 'deposit',
-        transfer: 'transfer',
         withdrawal: 'withdrawal',
+        // eslint-disable-next-line sort-keys
+        transfer: 'transfer',
     },
     pending: {
         all: 'all',
@@ -78,6 +79,7 @@ const Transactions = () => {
                     icon={<FilterIcon />}
                     label='Filter'
                     list={filterOptionsList}
+                    name='wallets-transactions__dropdown'
                     onSelect={value => setFilterValue(value)}
                     value={filterValue}
                 />

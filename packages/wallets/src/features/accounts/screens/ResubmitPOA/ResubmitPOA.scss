@@ -16,6 +16,14 @@
         padding: 1.6rem;
     }
 
+    .wallets-textfield {
+        max-width: 84rem;
+
+        @include mobile {
+            max-width: 100%;
+        }
+    }
+
     &__address {
         display: flex;
         flex-direction: column;
@@ -77,6 +85,13 @@
 
             @include mobile {
                 width: 100%;
+            }
+
+            & .wallets-dropdown,
+            & .wallets-textfield {
+                @include desktop {
+                    max-width: 84rem;
+                }
             }
         }
     }

@@ -5,7 +5,6 @@
 
     &__button {
         all: unset;
-        position: absolute;
         right: 1.6rem;
         transform: rotate(0);
         transform-origin: 50% 45%;
@@ -17,17 +16,14 @@
     }
 
     &__content {
-        height: 4rem;
         width: 100%;
-        border-radius: 0.4rem;
-        border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
         background: var(--system-light-8-primary-background, #fff);
         display: flex;
         align-items: center;
-    }
 
-    &__content:has(&__field:focus) {
-        border: 0.1rem solid var(--brand-blue, #85acb0);
+        .wallets-textfield__field {
+            cursor: pointer;
+        }
     }
 
     &__field {
@@ -45,7 +41,6 @@
         transition: border-color 0.2s;
         cursor: unset;
         user-select: none;
-
         &::selection {
             background-color: transparent;
         }
@@ -69,7 +64,7 @@
     label,
     &__field:focus ~ &__label {
         position: absolute;
-        top: -10%;
+        bottom: 5.5rem;
         display: block;
         transition: 0.2s;
         font-size: 1rem;
@@ -91,7 +86,7 @@
         flex-direction: column;
         align-items: flex-start;
         z-index: 2;
-        margin-top: 0.4rem;
+        margin-top: -1.2rem;
         border-radius: 0.4rem;
         background: var(--system-light-8-primary-background, #fff);
         box-shadow: 0 3.2rem 6.4rem 0 rgba(14, 14, 14, 0.14);

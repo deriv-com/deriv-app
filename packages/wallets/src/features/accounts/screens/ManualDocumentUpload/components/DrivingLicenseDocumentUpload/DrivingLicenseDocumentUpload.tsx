@@ -11,13 +11,8 @@ const DrivingLicenseDocumentUpload = () => {
         <div className='wallets-driving-license-document-upload' data-testid='dt_driving-license-document-upload'>
             <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
             <div className='wallets-driving-license-document-upload__input-group'>
-                <WalletTextField label='Driving licence number*' maxWidth='100%' />
-                <WalletTextField
-                    label='Expiry date*'
-                    maxWidth='100%'
-                    renderRightIcon={() => <Calendar />}
-                    type='date'
-                />
+                <WalletTextField label='Driving licence number*' />
+                <WalletTextField label='Expiry date*' renderRightIcon={() => <Calendar />} type='date' />
             </div>
             <Divider />
             <div className='wallets-driving-license-document-upload__document-section'>

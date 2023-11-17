@@ -3,6 +3,8 @@ import { useSettings, useStatesList } from '@deriv/api';
 import { Dropzone, FlowTextField } from '../../../../components';
 import { InlineMessage, WalletDropdown, WalletText } from '../../../../components/Base';
 import Upload from '../../../../public/images/accounts/upload.svg';
+import { getExampleImagesConfig } from '../../constants';
+import { CommonMistakesExamples } from '../CommonMistakesExamples';
 import './ResubmitPOA.scss';
 
 const ResubmitPOA: React.FC = () => {
@@ -89,12 +91,28 @@ const ResubmitPOA: React.FC = () => {
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             hoverMessage='Upload your file here'
                             icon={<Upload />}
+                            maxSize={8388608}
                             title='Drag and drop a file or click to browse your files.'
                             titleType='bold'
                         />
                         <div className='wallets-poa__document__container__upload__requirements'>
                             <WalletText size='sm'>Supported formats : JPEG, JPG, PNG, PDF, and GIF only</WalletText>
                             <WalletText size='sm'>Maximum size : 8MB</WalletText>
+                        </div>
+                    </div>
+                    <div className='wallets-poa__document__container__common-mistakes'>
+                        <WalletText size='sm' weight='bold'>
+                            Common Mistakes
+                        </WalletText>
+
+                        <div className='wallets-common-mistakes__content'>
+                            {getExampleImagesConfig().map(config => (
+                                <CommonMistakesExamples
+                                    description={config.description}
+                                    image={<config.image />}
+                                    key={`common-mistake-${config.description}`}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>

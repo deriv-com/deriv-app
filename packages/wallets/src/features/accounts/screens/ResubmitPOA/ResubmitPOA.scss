@@ -140,6 +140,11 @@
             border-radius: 0.8rem;
             border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
 
+            @include mobile {
+                border: none;
+                padding: 0;
+            }
+
             &__disclaimer {
                 display: flex;
                 flex-direction: column;
@@ -187,6 +192,14 @@
                     align-items: flex-start;
                     align-self: stretch;
                 }
+            }
+
+            &__common-mistakes {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.6rem;
+                align-self: stretch;
             }
         }
     }

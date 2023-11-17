@@ -16,7 +16,6 @@ export { default as useCurrentCurrencyConfig } from './useCurrentCurrencyConfig'
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDepositLocked } from './useDepositLocked';
-export { default as useExchangeRate } from './useExchangeRate';
 export { default as useExchangeRate2 } from './useExchangeRate2';
 export { default as useExistingCFDAccounts } from './useExistingCFDAccounts';
 export { default as useFeatureFlags } from './useFeatureFlags';
@@ -54,7 +53,6 @@ export { default as usePlatformAccounts } from './usePlatformAccounts';
 export { default as usePlatformDemoAccount } from './usePlatformDemoAccount';
 export { default as usePlatformRealAccounts } from './usePlatformRealAccounts';
 export { default as useRealSTPAccount } from './useRealSTPAccount';
-export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useTotalAccountBalance2 } from './useTotalAccountBalance2';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useVerifyEmail } from './useVerifyEmail';

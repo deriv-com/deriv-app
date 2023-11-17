@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { mockStore, StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useExchangeRate from '../useExchangeRate2';
+import useExchangeRate2 from '../useExchangeRate2';
 
-describe('useExchangeRate', () => {
+describe('useExchangeRate2', () => {
     test('should return undefined if currency is not found', async () => {
         const mockedRates = {
             USD: {
@@ -20,7 +20,7 @@ describe('useExchangeRate', () => {
                 <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
             </StoreProvider>
         );
-        const { result } = renderHook(() => useExchangeRate(), { wrapper });
+        const { result } = renderHook(() => useExchangeRate2(), { wrapper });
         const jyp_rate = result.current.exchange_rates.USD.JYP;
         expect(jyp_rate).toBe(undefined);
     });
@@ -41,7 +41,7 @@ describe('useExchangeRate', () => {
                 <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
             </StoreProvider>
         );
-        const { result } = renderHook(() => useExchangeRate(), { wrapper });
+        const { result } = renderHook(() => useExchangeRate2(), { wrapper });
         const gbp_rate = result.current.exchange_rates.USD.GBP;
         expect(gbp_rate).toBe(1.4);
     });

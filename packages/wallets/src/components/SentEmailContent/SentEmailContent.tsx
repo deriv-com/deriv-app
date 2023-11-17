@@ -18,8 +18,8 @@ const SentEmailContent: React.FC<TProps> = ({ platform }) => {
     return (
         <div className='wallets-sent-email-content'>
             <WalletsActionScreen
-                desciptionSize={deviceSize}
                 description={`Please click on the link in the email to change your ${title} password.`}
+                descriptionSize={deviceSize}
                 icon={<ChangePassword />}
                 renderButtons={() => (
                     <WalletButton size={deviceSize} text="Didn't receive the email?" variant='ghost' />

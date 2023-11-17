@@ -7,7 +7,7 @@ const ManualDocumentUpload = () => {
     const [selectedDocument, setSelectedDocument] = useState('');
 
     if (selectedDocument === 'passport') {
-        return <PassportDocumentUpload setSelectedDocument={setSelectedDocument} />;
+        return <PassportDocumentUpload />;
     } //... other document types
 
     return <DocumentSelection setSelectedDocument={setSelectedDocument} />;

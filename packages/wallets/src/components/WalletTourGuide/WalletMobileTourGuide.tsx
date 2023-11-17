@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import { useActiveWalletAccount, useAuthorize, useAvailableWallets, useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api';
 import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS } from '@deriv/react-joyride';
 import useDevice from '../../hooks/useDevice';
 import { useTabs } from '../WalletsPrimaryTabs/WalletsPrimaryTabs';
@@ -27,7 +27,7 @@ const WalletMobileTourGuide = ({ isMT5PlatformListLoaded = true, isOptionsAndMul
     const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: availableWallets } = useAvailableWallets();
+    const { data: availableWallets } = useAllWalletAccounts();
 
     const fiatWalletLoginId = wallets?.[0]?.loginid;
     const activeWalletLoginId = activeWallet?.loginid;

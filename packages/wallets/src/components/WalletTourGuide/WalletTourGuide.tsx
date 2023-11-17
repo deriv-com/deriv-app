@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import { useActiveWalletAccount, useAuthorize, useAllWalletAccounts, useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api';
 import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
 import useDevice from '../../hooks/useDevice';
 import {

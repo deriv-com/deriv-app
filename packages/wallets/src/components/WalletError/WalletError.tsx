@@ -3,7 +3,7 @@ import useDevice from '../../hooks/useDevice';
 import ErrorIcon from '../../public/images/error-icon.svg';
 import { ModalStepWrapper } from '../Base';
 import WalletButton from '../Base/WalletButton/WalletButton';
-import WalletsActionScreen from '../WalletsActionScreen/WalletsActionScreen';
+import { WalletsActionScreen } from '../WalletsActionScreen';
 import './WalletError.scss';
 
 type TProps = {

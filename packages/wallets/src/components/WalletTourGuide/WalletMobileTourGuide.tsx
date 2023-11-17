@@ -3,7 +3,7 @@ import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api';
 import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS } from '@deriv/react-joyride';
 import useDevice from '../../hooks/useDevice';
-import { useTabs } from '../Base/Tabs/Tabs';
+import { useTabs } from '../WalletsPrimaryTabs/WalletsPrimaryTabs';
 import {
     TooltipComponent,
     tourStepConfig,

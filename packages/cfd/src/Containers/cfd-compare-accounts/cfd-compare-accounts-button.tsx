@@ -19,7 +19,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
     const history = useHistory();
 
     const market_type = getMarketType(trading_platforms);
-    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
+    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
     const {
         modules: { cfd },
         common,

@@ -75,7 +75,6 @@ const usePOI = () => {
         residence_list_data,
         authentication_data?.identity?.services,
         authentication_data?.is_idv_disallowed,
-        account_status_data?.is_idv_revoked,
     ]);
 
     const modified_verification_data = useMemo(() => {

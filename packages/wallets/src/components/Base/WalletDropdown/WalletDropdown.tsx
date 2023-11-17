@@ -39,7 +39,16 @@ const WalletDropdown: React.FC<TProps> = ({
         setShouldFilterList(false);
         setItems(list);
     }, [list]);
-    const { getInputProps, getItemProps, getLabelProps, getMenuProps, getToggleButtonProps, isOpen } = useCombobox({
+    const {
+        closeMenu,
+        getInputProps,
+        getItemProps,
+        getLabelProps,
+        getMenuProps,
+        getToggleButtonProps,
+        isOpen,
+        openMenu,
+    } = useCombobox({
         defaultSelectedItem: items.find(item => item.value === value) ?? null,
         items,
         itemToString(item) {
@@ -63,8 +72,18 @@ const WalletDropdown: React.FC<TProps> = ({
         },
         onSelectedItemChange({ selectedItem }) {
             onSelect(selectedItem?.value ?? '');
+            closeMenu();
         },
     });
+
+    const handleInputClick = () => {
+        setShouldFilterList(true);
+        if (isOpen) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    };
 
     useEffect(() => {
         setItems(list);
@@ -75,6 +94,7 @@ const WalletDropdown: React.FC<TProps> = ({
             <div className='wallets-dropdown__content'>
                 <WalletTextField
                     name={name}
+                    onClickCapture={handleInputClick}
                     onKeyUp={() => setShouldFilterList(true)}
                     placeholder={reactNodeToString(label)}
                     readOnly={variant !== 'comboBox'}

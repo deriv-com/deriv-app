@@ -41,11 +41,6 @@
         transition: border-color 0.2s;
         cursor: unset;
         user-select: none;
-
-        &--with-icon {
-            padding-left: 4rem;
-        }
-
         &::selection {
             background-color: transparent;
         }

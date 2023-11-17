@@ -17,13 +17,13 @@ const AssetSummary = observer(() => {
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
 
     const platform_real_balance2 = useTotalAccountBalance2(platform_real_accounts);
-    const cfd_real_balance2 = useTotalAccountBalance2(cfd_real_accounts);
-    const cfd_demo_balance2 = useTotalAccountBalance2(cfd_demo_accounts);
+    const cfd_real_balance = useTotalAccountBalance2(cfd_real_accounts);
+    const cfd_demo_balance = useTotalAccountBalance2(cfd_demo_accounts);
 
     const is_real = selected_account_type === 'real';
 
-    const real_total_balance2 = platform_real_balance2.balance + cfd_real_balance2.balance;
-    const demo_total_balance2 = (platform_demo_account?.balance || 0) + cfd_demo_balance2.balance;
+    const real_total_balance = platform_real_balance2.balance + cfd_real_balance.balance;
+    const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance;
 
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
     const eu_account = is_eu_user && !no_MF_account;
@@ -61,7 +61,7 @@ const AssetSummary = observer(() => {
                                     ? platform_real_balance2.currency || ''
                                     : platform_demo_account?.currency || default_currency
                             }
-                            balance={is_real ? real_total_balance2 : demo_total_balance2}
+                            balance={is_real ? real_total_balance : demo_total_balance}
                             underline_style='dotted'
                         />
                     </Popover>

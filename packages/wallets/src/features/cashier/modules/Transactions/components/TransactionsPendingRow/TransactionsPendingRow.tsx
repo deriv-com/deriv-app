@@ -51,8 +51,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     description='Are you sure you want to cancel this transaction?'
                     hideCloseButton
                     title='Cancel transaction'
-                />,
-                { defaultRootId: 'wallets_modal_root' }
+                />
             );
     }, [cancelTransaction, isMobile, modal]);
 
@@ -70,8 +69,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     description={transaction.description}
                     hideCloseButton
                     title='Transaction details'
-                />,
-                { defaultRootId: 'wallets_modal_root' }
+                />
             ),
         [modal, transaction.description]
     );

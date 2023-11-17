@@ -39,8 +39,7 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
                           ]}
                           description={hint.text}
                           title='Transaction details'
-                      />,
-                      { defaultRootId: 'wallets_modal_root' }
+                      />
                   )
                 : window.open(hint?.link);
     }, [hint, isMobile, show]);

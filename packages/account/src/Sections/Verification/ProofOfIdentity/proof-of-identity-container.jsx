@@ -142,7 +142,7 @@ const ProofOfIdentityContainer = observer(
 
         const onUpdatingPOIVerificationModal = status => {
             if (onStateChange) {
-                return onStateChange();
+                return onStateChange;
             }
             setPOIState(status);
             onSave(index, { poi_state: status });

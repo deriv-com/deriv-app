@@ -1,7 +1,10 @@
 import React, { ComponentProps } from 'react';
+import useDevice from '../../hooks/useDevice';
 import ErrorIcon from '../../public/images/error-icon.svg';
+import { ModalStepWrapper } from '../Base';
 import WalletButton from '../Base/WalletButton/WalletButton';
-import WalletsActionScreen from '../WalletsActionScreen/WalletsActionScreen';
+import { WalletsActionScreen } from '../WalletsActionScreen';
+import './WalletError.scss';
 
 type TProps = {
     buttonText?: string;
@@ -9,7 +12,6 @@ type TProps = {
     errorMessage: string;
     onClick?: () => void;
     title?: string;
-    type?: 'modal' | 'page';
 };
 
 const WalletError: React.FC<TProps> = ({
@@ -18,18 +20,28 @@ const WalletError: React.FC<TProps> = ({
     errorMessage,
     onClick,
     title,
-    type = 'page',
 }) => {
+    const { isDesktop, isMobile } = useDevice();
+
     return (
-        <WalletsActionScreen
-            actionText={buttonText}
-            actionVariant={buttonVariant}
-            description={errorMessage}
-            icon={<ErrorIcon />}
-            onAction={onClick}
-            title={title}
-            type={type}
-        />
+        <ModalStepWrapper shouldHideHeader={isDesktop}>
+            <div className='wallets-error'>
+                <WalletsActionScreen
+                    description={errorMessage}
+                    icon={<ErrorIcon />}
+                    renderButtons={() => (
+                        <WalletButton
+                            isFullWidth={isMobile}
+                            onClick={onClick}
+                            size='lg'
+                            text={buttonText}
+                            variant={buttonVariant}
+                        />
+                    )}
+                    title={title}
+                />
+            </div>
+        </ModalStepWrapper>
     );
 };
 

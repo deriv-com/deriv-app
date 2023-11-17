@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useActiveWalletAccount, useCreateNewRealAccount, useSettings } from '@deriv/api';
 import { toMoment } from '../../../../shared/src/utils/date';
-import { Success } from '../../features/cfd/screens/Success';
+import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';
 import DerivApps from '../../public/images/deriv-apps.svg';
 import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
@@ -25,8 +25,8 @@ const DerivAppsGetAccount: React.FC = () => {
                 renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
                 shouldHideHeader={isDesktop}
             >
-                <Success
-                    description={`Transfer funds from ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
+                <CFDSuccess
+                    description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
                     displayBalance={activeWallet?.display_balance}
                     renderButton={() => <DerivAppsSuccessFooter />}
                     title={`Your Deriv Apps (${landingCompanyName}) account is ready`}
@@ -60,7 +60,7 @@ const DerivAppsGetAccount: React.FC = () => {
                 <WalletText size='sm' weight='bold'>
                     Deriv Apps
                 </WalletText>
-                <WalletText lineHeight='2xs' size='2xs'>
+                <WalletText lineHeight='2xs' size='xs'>
                     {activeWallet?.is_malta_wallet
                         ? 'Get a Deriv Apps trading account regulated by MFSA to trade multipliers on Deriv Trader.'
                         : 'Get a Deriv Apps trading account to trade options and multipliers on these apps.'}

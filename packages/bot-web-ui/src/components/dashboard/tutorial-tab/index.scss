@@ -394,7 +394,7 @@
                 margin-right: 17px;
                 transition: all 0.3s;
             }
-            .dc-select-native__picker option[value='Search'] {
+            .dc-select-native__picker option:last-child {
                 display: none;
             }
             &--show-search {

@@ -68,12 +68,26 @@ const useInputATMFormatter = (initial?: number, options?: TOptions) => {
     );
 
     const onPaste: React.ClipboardEventHandler<HTMLInputElement> = useCallback(
-        e => (isPasting.current = e.type === 'paste'),
-        []
+        e => {
+            isPasting.current = e.type === 'paste';
+            if (Number(unFormatLocaleString(formattedValue, locale)) === 0) {
+                const pasted = (e.clipboardData || window.clipboardData).getData('Text');
+                const pastedValue = Number(unFormatLocaleString(pasted, locale));
+                if (!isNaN(pastedValue) && isFinite(pastedValue))
+                    onChange({
+                        target: {
+                            value: `${pastedValue.toLocaleString(locale, {
+                                minimumFractionDigits: fractionDigits,
+                            })}`,
+                        },
+                    });
+            }
+        },
+        [formattedValue, fractionDigits, locale, onChange]
     );
 
     useEffect(() => {
-        if (initial) {
+        if (typeof initial === 'number') {
             isPasting.current = true;
             onChange({
                 target: {

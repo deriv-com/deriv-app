@@ -11,7 +11,11 @@ import {
 import { WalletMobileTourGuide } from '../WalletTourGuide';
 import './AccountsList.scss';
 
-const AccountsList = () => {
+type TProps = {
+    isWalletSettled?: boolean;
+};
+
+const AccountsList = ({ isWalletSettled }: TProps) => {
     const { isMobile } = useDevice();
     const [isMT5PlatformListLoaded, setIsMT5PlatformListLoaded] = useState(false);
     const [isOptionsAndMultipliersLoaded, setIsOptionsAndMultipliersLoaded] = useState(false);
@@ -34,6 +38,7 @@ const AccountsList = () => {
                 <WalletMobileTourGuide
                     isMT5PlatformListLoaded={isMT5PlatformListLoaded}
                     isOptionsAndMultipliersLoaded={isOptionsAndMultipliersLoaded}
+                    isWalletSettled={isWalletSettled}
                 />
             </WalletsPrimaryTabs>
         );

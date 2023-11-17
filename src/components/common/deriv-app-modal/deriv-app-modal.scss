@@ -13,6 +13,9 @@
     justify-content: center;
     overflow: scroll;
     background: #0000009f;
+    @include mobile {
+        background: var(--general-main-1);
+    }
 
     &__container {
         border: 1px solid #ddd;
@@ -20,11 +23,12 @@
         color: var(--text-prominent);
         padding: 0;
         border-radius: 8px;
+        box-shadow: 0 0 50px 8px rgba(0, 0, 0, 0.2);
         @include mobile {
-            border-radius: 0px;
+            border: none;
+            box-shadow: none;
         }
         z-index: 100;
-        box-shadow: 0 0 50px 8px rgba(0, 0, 0, 0.2);
         width: auto;
         height: auto;
         display: flex;

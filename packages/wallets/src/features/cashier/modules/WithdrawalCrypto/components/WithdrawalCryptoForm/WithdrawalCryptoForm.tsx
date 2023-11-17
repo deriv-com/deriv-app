@@ -15,6 +15,8 @@ export type TForm = {
 };
 
 type TWithdrawalCryptoFormProps = {
+    activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
+    getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
     verificationCode?: string;
 };
 
@@ -28,13 +30,17 @@ const validateCryptoAddress = (address: string) => {
     return undefined;
 };
 
-const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({ verificationCode }) => {
-    const { data: activeWallet } = useActiveWalletAccount();
-    const { getConfig } = useCurrencyConfig();
+const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
+    activeWallet,
+    getCurrencyConfig,
+    verificationCode,
+}) => {
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
     const { mutate } = useCryptoWithdrawal();
-    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency ? getConfig(activeWallet?.currency)?.fractional_digits : 2;
-    const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
+    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency
+        ? getCurrencyConfig(activeWallet?.currency)?.fractional_digits
+        : 2;
+    const FRACTIONAL_DIGITS_FIAT = getCurrencyConfig('USD')?.fractional_digits;
 
     useEffect(() => {
         if (activeWallet?.currency)
@@ -69,7 +75,11 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({ verificati
                                 {({ field }: FieldProps<string>) => (
                                     <WalletTextField
                                         {...field}
-                                        label='Your BTC Wallet address'
+                                        label={`Your ${
+                                            activeWallet?.currency
+                                                ? getCurrencyConfig(activeWallet?.currency)?.name
+                                                : ''
+                                        } cryptocurrency wallet address`}
                                         maxWidth='100%'
                                         message={errors.cryptoAddress}
                                         showMessage
@@ -107,7 +117,7 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({ verificati
                         <WithdrawalCryptoAmountConverter
                             activeWallet={activeWallet}
                             exchangeRate={exchangeRate}
-                            getCurrencyConfig={getConfig}
+                            getCurrencyConfig={getCurrencyConfig}
                         />
                         <div className='wallets-withdrawal-crypto-form__submit'>
                             <WalletButton

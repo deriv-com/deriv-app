@@ -1,4 +1,5 @@
 import React from 'react';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { TransactionStatus } from '../TransactionStatus';
 import { WithdrawalCryptoForm, WithdrawalDisclaimer } from './components';
@@ -9,12 +10,22 @@ type TWithdrawalCryptoProps = {
 };
 
 const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ verificationCode }) => {
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { getConfig, isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
+
     return (
         <div className='wallets-withdrawal-crypto'>
             <div className='wallets-withdrawal-crypto__content'>
-                <WalletText weight='bold'>Withdraw Bitcoin (BTC) to your wallet</WalletText>
+                <WalletText weight='bold'>
+                    Withdraw {activeWallet?.currency ? getConfig(activeWallet?.currency)?.name : ''} (
+                    {activeWallet?.currency}) to your wallet
+                </WalletText>
                 <WithdrawalDisclaimer />
-                <WithdrawalCryptoForm verificationCode={verificationCode} />
+                <WithdrawalCryptoForm
+                    activeWallet={activeWallet}
+                    getCurrencyConfig={getConfig}
+                    verificationCode={verificationCode}
+                />
             </div>
             <TransactionStatus transactionType='withdrawal' />
         </div>

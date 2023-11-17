@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 
-export const getApiTokenCardDetails = () => [
+export const API_TOKEN_CARD_DETAILS = [
     {
         name: 'read',
         display_name: <Localize i18n_default_text='Read' />,

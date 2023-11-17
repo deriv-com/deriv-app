@@ -11,7 +11,7 @@ type TApiTokenDeleteButton = {
 };
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {
-    const { deleteToken, isSuccess } = React.useContext<TApiContext>(ApiTokenContext);
+    const { deleteToken } = React.useContext<TApiContext>(ApiTokenContext);
     const [is_deleting, setIsDeleting] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
@@ -30,12 +30,12 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
         if (!is_deleting && isDesktop()) setIsPopoverOpen(false);
     };
 
-    const handleNo = () => setIsDeleting(false);
+    const onCancel = () => setIsDeleting(false);
 
-    const handleYes = () => {
+    const onSubmit = async () => {
         setIsLoading(true);
-        deleteToken(token.token);
-        if (isMounted() && isSuccess) {
+        await deleteToken(token.token);
+        if (isMounted()) {
             setIsLoading(false);
             setIsDeleting(false);
         }
@@ -53,13 +53,13 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
                     </Text>
                 </Modal.Body>
                 <Modal.Footer className='da-api-token__modal-footer'>
-                    <Button className='dc-dialog__button' has_effect onClick={handleNo} secondary large>
+                    <Button className='dc-dialog__button' has_effect onClick={onCancel} secondary large>
                         <Localize i18n_default_text='Cancel' />
                     </Button>
                     <Button
                         className='dc-dialog__button'
                         has_effect
-                        onClick={handleYes}
+                        onClick={onSubmit}
                         primary
                         large
                         is_loading={is_loading}

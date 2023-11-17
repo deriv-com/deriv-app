@@ -3,17 +3,25 @@ import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ApiTokenClipboard from '../api-token-clipboard';
 
-const modal_root_el = document.createElement('div');
-modal_root_el.setAttribute('id', 'modal_root');
-document.body.appendChild(modal_root_el);
-
 describe('ApiTokenClipboard', () => {
-    const mock_props = {
+    let modal_root_el: HTMLElement;
+
+    const mock_props: React.ComponentProps<typeof ApiTokenClipboard> = {
         scopes: ['read', 'trade', 'Admin'],
         text_copy: 'Text Copy',
         info_message: 'Copy this token',
         success_message: 'Success Message',
     };
+
+    beforeAll(() => {
+        modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
 
     it('should render ApiTokenClipboard with the copy icon', () => {
         render(<ApiTokenClipboard {...mock_props} />);

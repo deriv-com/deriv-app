@@ -229,6 +229,68 @@ import type {
 import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    available_accounts: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            available_accounts: 1;
+            /**
+             * List of account categories that needs to received.
+             */
+            categories: 'wallet'[];
+            /**
+             * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
+             */
+            loginid?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            available_accounts?: {
+                /**
+                 * Wallet account types that are available to be created
+                 */
+                wallets: {
+                    /**
+                     * Account type of wallet
+                     */
+                    account_type: 'doughflow' | 'crypto' | 'paymentagent' | 'paymentagent_client' | 'p2p';
+                    /**
+                     * Currency of wallet
+                     */
+                    currency: string;
+                    /**
+                     * Landing Company of wallet.
+                     */
+                    landing_company: string;
+                }[];
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'available_accounts';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
     wallet_migration: {
         request: {
             /**
@@ -502,6 +564,319 @@ type TPrivateSocketEndpoints = {
              * Action name of the request made.
              */
             msg_type: 'get_account_types';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+    new_account_wallet: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            new_account_wallet: 1;
+            /**
+             * Show whether client has accepted risk disclaimer.
+             */
+            accept_risk?: 0 | 1;
+            /**
+             * [Optional] Purpose and reason for requesting the account opening.
+             */
+            account_opening_reason?: 'Speculative' | 'Income Earning' | 'Hedging';
+            /**
+             * To set the wallets type - only doughflow and crptyo wallets are allowed for initial phase, other types will be added later
+             */
+            account_type: 'doughflow' | 'crypto';
+            /**
+             * [Optional] Within 35 characters.
+             */
+            address_city?: string;
+            /**
+             * [Optional] Mailing address.
+             */
+            address_line_1?: string;
+            /**
+             * [Optional] Within 70 characters.
+             */
+            address_line_2?: string;
+            /**
+             * [Optional] Within 20 characters and may not contain '+'.
+             */
+            address_postcode?: string;
+            /**
+             * [Optional] Possible value receive from `states_list` call.
+             */
+            address_state?: string;
+            /**
+             * [Optional] Country of legal citizenship, 2-letter country code. Possible value receive from `residence_list` call.
+             */
+            citizen?: string;
+            /**
+             * [Optional] Indicates whether this is for a client requesting an account with professional status.
+             */
+            client_type?: 'professional' | 'retail';
+            /**
+             * To set currency of the account. List of supported currencies can be acquired with `payout_currencies` call.
+             */
+            currency: string;
+            /**
+             * [Optional] Date of birth format: `yyyy-mm-dd`.
+             */
+            date_of_birth?: string;
+            /**
+             * Required for maltainvest
+             */
+            financial_assessment?: {
+                /**
+                 * The anticipated account turnover.
+                 */
+                account_turnover?:
+                    | 'Less than $25,000'
+                    | '$25,000 - $50,000'
+                    | '$50,001 - $100,000'
+                    | '$100,001 - $500,000'
+                    | 'Over $500,000';
+                /**
+                 * How much experience do you have in CFD trading?
+                 */
+                cfd_experience?: 'No experience' | 'Less than a year' | '1 - 2 years' | 'Over 3 years';
+                /**
+                 * How many CFD trades have you placed in the past 12 months?
+                 */
+                cfd_frequency?:
+                    | 'No transactions in the past 12 months'
+                    | '1 - 5 transactions in the past 12 months'
+                    | '6 - 10 transactions in the past 12 months'
+                    | '11 - 39 transactions in the past 12 months'
+                    | '40 transactions or more in the past 12 months';
+                /**
+                 * In your understanding, CFD trading allows you to:
+                 */
+                cfd_trading_definition?:
+                    | 'Purchase shares of a company or physical commodities.'
+                    | 'Place a bet on the price movement.'
+                    | 'Speculate on the price movement.'
+                    | 'Make a long-term investment.';
+                /**
+                 * Level of Education.
+                 */
+                education_level?: 'Primary' | 'Secondary' | 'Tertiary';
+                /**
+                 * Industry of Employment.
+                 */
+                employment_industry?:
+                    | 'Construction'
+                    | 'Education'
+                    | 'Finance'
+                    | 'Health'
+                    | 'Tourism'
+                    | 'Information & Communications Technology'
+                    | 'Science & Engineering'
+                    | 'Legal'
+                    | 'Social & Cultural'
+                    | 'Agriculture'
+                    | 'Real Estate'
+                    | 'Food Services'
+                    | 'Manufacturing'
+                    | 'Unemployed';
+                /**
+                 * Employment Status.
+                 */
+                employment_status?: 'Employed' | 'Pensioner' | 'Self-Employed' | 'Student' | 'Unemployed';
+                /**
+                 * Estimated Net Worth.
+                 */
+                estimated_worth?:
+                    | 'Less than $100,000'
+                    | '$100,000 - $250,000'
+                    | '$250,001 - $500,000'
+                    | '$500,001 - $1,000,000'
+                    | 'Over $1,000,000';
+                /**
+                 * Income Source.
+                 */
+                income_source?:
+                    | 'Salaried Employee'
+                    | 'Self-Employed'
+                    | 'Investments & Dividends'
+                    | 'Pension'
+                    | 'State Benefits'
+                    | 'Savings & Inheritance';
+                /**
+                 * How does leverage affect CFD trading?
+                 */
+                leverage_impact_trading?:
+                    | 'Leverage is a risk mitigation technique.'
+                    | 'Leverage prevents you from opening large positions.'
+                    | 'Leverage guarantees profits.'
+                    | "Leverage lets you open larger positions for a fraction of the trade's value.";
+                /**
+                 * Leverage trading is high-risk, so it's a good idea to use risk management features such as stop loss. Stop loss allows you to
+                 */
+                leverage_trading_high_risk_stop_loss?:
+                    | 'Cancel your trade at any time within a chosen timeframe.'
+                    | 'Close your trade automatically when the loss is more than or equal to a specific amount.'
+                    | 'Close your trade automatically when the profit is more than or equal to a specific amount.'
+                    | 'Make a guaranteed profit on your trade.';
+                /**
+                 * Net Annual Income.
+                 */
+                net_income?:
+                    | 'Less than $25,000'
+                    | '$25,000 - $50,000'
+                    | '$50,001 - $100,000'
+                    | '$100,001 - $500,000'
+                    | 'Over $500,000';
+                /**
+                 * Occupation.
+                 */
+                occupation?:
+                    | 'Chief Executives, Senior Officials and Legislators'
+                    | 'Managers'
+                    | 'Professionals'
+                    | 'Clerks'
+                    | 'Personal Care, Sales and Service Workers'
+                    | 'Agricultural, Forestry and Fishery Workers'
+                    | 'Craft, Metal, Electrical and Electronics Workers'
+                    | 'Plant and Machine Operators and Assemblers'
+                    | 'Cleaners and Helpers'
+                    | 'Mining, Construction, Manufacturing and Transport Workers'
+                    | 'Armed Forces'
+                    | 'Government Officers'
+                    | 'Students'
+                    | 'Unemployed';
+                /**
+                 * When would you be required to pay an initial margin?
+                 */
+                required_initial_margin?:
+                    | 'When opening a Leveraged CFD trade.'
+                    | 'When trading Multipliers.'
+                    | 'When buying shares of a company.'
+                    | 'All of the above.';
+                /**
+                 * Do you understand that you could potentially lose 100% of the money you use to trade?
+                 */
+                risk_tolerance?: 'Yes' | 'No';
+                /**
+                 * How much knowledge and experience do you have in relation to online trading?
+                 */
+                source_of_experience?:
+                    | 'I have an academic degree, professional certification, and/or work experience.'
+                    | 'I trade forex CFDs and other complex financial instruments.'
+                    | 'I have attended seminars, training, and/or workshops.'
+                    | 'I have little experience.'
+                    | 'I have no knowledge.';
+                /**
+                 * [Optional] Source of wealth.
+                 */
+                source_of_wealth?:
+                    | 'Accumulation of Income/Savings'
+                    | 'Cash Business'
+                    | 'Company Ownership'
+                    | 'Divorce Settlement'
+                    | 'Inheritance'
+                    | 'Investment Income'
+                    | 'Sale of Property';
+                /**
+                 * How much experience do you have with other financial instruments?
+                 */
+                trading_experience_financial_instruments?:
+                    | 'No experience'
+                    | 'Less than a year'
+                    | '1 - 2 years'
+                    | 'Over 3 years';
+                /**
+                 * How many trades have you placed with other financial instruments in the past 12 months?
+                 */
+                trading_frequency_financial_instruments?:
+                    | 'No transactions in the past 12 months'
+                    | '1 - 5 transactions in the past 12 months'
+                    | '6 - 10 transactions in the past 12 months'
+                    | '11 - 39 transactions in the past 12 months'
+                    | '40 transactions or more in the past 12 months';
+            };
+            /**
+             * [Optional] Within 2-50 characters, use only letters, spaces, hyphens, full-stops or apostrophes.
+             */
+            first_name?: string;
+            /**
+             * [Optional] Set the landing company of the wallet. Default value is 'svg' if company not provided
+             */
+            landing_company_short?: 'maltainvest' | 'svg';
+            /**
+             * [Optional] Within 2-50 characters, use only letters, spaces, hyphens, full-stops or apostrophes.
+             */
+            last_name?: string;
+            /**
+             * [Optional] Indicates client's self-declaration of not being a PEP/RCA (Politically Exposed Person/Relatives and Close Associates).
+             */
+            non_pep_declaration?: number;
+            /**
+             * [Optional] Starting with `+` followed by 8-35 digits, allowing hyphens or space.
+             */
+            phone?: string;
+            /**
+             * Accept any value in enum list.
+             */
+            salutation?: 'Mr' | 'Ms' | 'Miss' | 'Mrs';
+            /**
+             * Tax identification number. Only applicable for real money account. Required for `maltainvest` landing company.
+             */
+            tax_identification_number?: string;
+            /**
+             * Residence for tax purpose. Comma separated iso country code if multiple jurisdictions. Only applicable for real money account. Required for `maltainvest` landing company.
+             */
+            tax_residence?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            new_account_wallet?: {
+                /**
+                 * Client ID of new real money account
+                 */
+                client_id: string;
+                /**
+                 * Currency of an account
+                 */
+                currency?: string;
+                /**
+                 * Landing company full name
+                 */
+                landing_company: string;
+                /**
+                 * Landing company shortcode
+                 */
+                landing_company_short?: string;
+                /**
+                 * Landing company shortcode
+                 */
+                landing_company_shortcode?: string;
+                /**
+                 * OAuth token for client's login session
+                 */
+                oauth_token: string;
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'new_account_wallet';
             /**
              * Optional field sent in request to map to response, present only when request contains `req_id`.
              */
@@ -1271,20 +1646,29 @@ type TPrivateSocketEndpoints = {
         req_id?: number;
         [k: string]: unknown;
     };
-    account_security: {
+    notification_event: {
         request: {
             /**
              * Must be `1`
              */
-            account_security: 1;
+            notification_event: 1;
             /**
-             * [Optional] OTP (one-time passcode) generated by a 2FA application like Authy, Google Authenticator or Yubikey.
+             * Event arguments.
              */
-            otp?: string;
+            args?: {
+                /**
+                 * (Optional- for `poi_documents_uploaded` only) An array of onfido document ids intended to be included in the poi check.
+                 */
+                documents?: string[];
+            };
             /**
-             * [Optional] Action to be taken for managing TOTP (time-based one-time password, RFC6238). Generate will create a secret key which is then returned in the secret_key response field, you can then enable by using that code in a 2FA application.
+             * The category or nature of the event.
              */
-            totp_action?: 'status' | 'enable' | 'disable' | 'generate';
+            category: 'authentication';
+            /**
+             * The name of the event.
+             */
+            event: 'poi_documents_uploaded';
             /**
              * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
              */
@@ -1295,23 +1679,13 @@ type TPrivateSocketEndpoints = {
              * [Optional] Used to map request to response.
              */
             req_id?: number;
+            [k: string]: unknown;
         };
         response: {
-            account_security?: {
-                /**
-                 * TOTP information.
-                 */
-                totp?: {
-                    /**
-                     * Determines whether the 2-Factor authentication is enabled.
-                     */
-                    is_enabled?: 0 | 1;
-                    /**
-                     * The secret key for the 2-Factor authentication.
-                     */
-                    secret_key?: string;
-                };
-            };
+            /**
+             * `1`: all actions finished successfully, `0`: at least one or more actions failed.
+             */
+            notification_event: 0 | 1;
             /**
              * Echo of the request made.
              */
@@ -1321,12 +1695,11 @@ type TPrivateSocketEndpoints = {
             /**
              * Action name of the request made.
              */
-            msg_type: 'account_security';
+            msg_type: 'notification_event';
             /**
-             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             * [Optional] Used to map request to response.
              */
             req_id?: number;
-            [k: string]: unknown;
         };
     };
 };

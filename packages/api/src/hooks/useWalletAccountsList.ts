@@ -24,9 +24,11 @@ const useWalletAccountsList = () => {
                 /** Landing company shortcode the account belongs to. */
                 landing_company_name: wallet.landing_company_name?.replace('maltainvest', 'malta'),
                 /** Indicating whether the wallet is a maltainvest wallet. */
-                is_malta_wallet: wallet.landing_company_name === 'malta',
+                is_malta_wallet: wallet.landing_company_name === 'maltainvest',
                 /** The DTrade account ID of this wallet */
                 dtrade_loginid,
+                /** Returns if the wallet is a crypto wallet. */
+                is_crypto: wallet.currency_config?.is_crypto,
             } as const;
         });
     }, [filtered_accounts]);

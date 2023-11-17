@@ -1,38 +1,26 @@
-import React, { ChangeEvent, ComponentProps, ReactElement, useState } from 'react';
-import { WalletButton } from '../WalletButton';
-import WalletText from '../WalletText/WalletText';
+import React, { ChangeEvent, ComponentProps, CSSProperties, FC, useState } from 'react';
+import HelperMessage, { HelperMessageProps } from './HelperMessage';
 import './WalletTextField.scss';
 
-interface WalletTextFieldProps {
+export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;
-    helperMessage?: string;
-    icon?: ReactElement;
-    id?: ComponentProps<'input'>['id'];
     label?: string;
-    leftIcon?: React.ReactNode;
-    maxLength?: ComponentProps<'input'>['maxLength'];
-    onChange?: ComponentProps<'input'>['onChange'];
-    onClickIcon?: ComponentProps<'button'>['onClick'];
+    maxWidth?: CSSProperties['maxWidth'];
+    renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
-    type?: ComponentProps<'input'>['type'];
 }
 
-type MessageContainerProps = {
-    helperMessage?: WalletTextFieldProps['helperMessage'];
-    maxLength?: WalletTextFieldProps['maxLength'];
-};
-
-const WalletTextField: React.FC<WalletTextFieldProps> = ({
+const WalletTextField: FC<WalletTextFieldProps> = ({
     defaultValue = '',
-    helperMessage,
-    icon,
-    id = 'wallet-textfield',
     label,
     maxLength,
+    maxWidth = '33rem',
+    message,
+    name = 'wallet-textfield',
     onChange,
-    onClickIcon,
+    renderRightIcon,
     showMessage = false,
-    type = 'text',
+    ...rest
 }) => {
     const [value, setValue] = useState(defaultValue);
 
@@ -42,49 +30,33 @@ const WalletTextField: React.FC<WalletTextFieldProps> = ({
         onChange?.(e);
     };
 
-    const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, maxLength }) => (
-        <>
-            {helperMessage && (
-                <div className='wallets-textfield__message-container--msg'>
-                    <WalletText color='less-prominent' size='xs'>
-                        {helperMessage}
-                    </WalletText>
-                </div>
-            )}
-            {maxLength && (
-                <div className='wallets-textfield__message-container--maxchar'>
-                    <WalletText align='right' color='less-prominent' size='xs'>
-                        {value.length} / {maxLength}
-                    </WalletText>
-                </div>
-            )}
-        </>
-    );
-
     return (
-        <div className='wallets-textfield'>
-            <div className='wallets-textfield__content'>
+        <div className='wallets-textfield' style={{ maxWidth }}>
+            <div className='wallets-textfield__box'>
                 <input
                     className='wallets-textfield__field'
-                    id={id}
+                    id={name}
                     maxLength={maxLength}
                     onChange={handleChange}
                     placeholder={label}
-                    type={type}
                     value={value}
+                    {...rest}
                 />
                 {label && (
-                    <label className='wallets-textfield__label' htmlFor={id}>
+                    <label className='wallets-textfield__label' htmlFor={name}>
                         {label}
                     </label>
                 )}
-                {icon && <WalletButton icon={icon} onClick={onClickIcon} rounded='md' size='sm' variant='ghost' />}
+                {typeof renderRightIcon === 'function' && (
+                    <div className='wallets-textfield__icon'>{renderRightIcon()}</div>
+                )}
             </div>
             <div className='wallets-textfield__message-container'>
-                {showMessage && <MessageContainer helperMessage={helperMessage} maxLength={maxLength} />}
+                {showMessage && <HelperMessage inputValue={value} maxLength={maxLength} message={message} />}
             </div>
         </div>
     );
 };
 
+WalletTextField.displayName = 'WalletTextField';
 export default WalletTextField;

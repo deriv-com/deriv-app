@@ -2,28 +2,9 @@ import React from 'react';
 import { FormikValues } from 'formik';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider, useApiToken } from '@deriv/api';
-import { APITokenResponse } from '@deriv/api-types';
-import { isMobile, getPropertyValue } from '@deriv/shared';
+import { getPropertyValue, WS } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import ApiToken from '../api-token';
-
-const mock_token = 'ABCDefgh1234567890';
-const mockSend = jest.fn();
-
-const api_data: Partial<APITokenResponse> = {
-    api_token: {
-        tokens: [
-            {
-                display_name: 'Created by script',
-                last_used: '',
-                scopes: ['read', 'trade', 'payments', 'admin'],
-                token: mock_token,
-                valid_for_ip: '',
-            },
-        ],
-    },
-};
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -33,30 +14,36 @@ jest.mock('@deriv/components', () => ({
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getPropertyValue: jest.fn(() => []),
-    isMobile: jest.fn(() => false),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useApiToken: jest.fn(),
+jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+    __esModule: true, // this property makes it work,
+    default: 'mockedDefaultExport',
+    WS: {
+        apiToken: jest.fn(() =>
+            Promise.resolve({
+                api_token: {
+                    tokens: [],
+                },
+            })
+        ),
+        authorized: {
+            apiToken: jest.fn(() =>
+                Promise.resolve({
+                    api_token: {
+                        tokens: [],
+                    },
+                })
+            ),
+        },
+    },
+    useWS: () => undefined,
 }));
 
 const modal_root_el = document.createElement('div');
 beforeAll(() => {
     modal_root_el.setAttribute('id', 'modal_root');
     document.body.appendChild(modal_root_el);
-});
-
-beforeEach(() => {
-    useApiToken.mockReturnValue({
-        api_token_data: { ...api_data },
-        isSuccess: true,
-        isError: false,
-        isLoading: false,
-        getApiToken: mockSend,
-        createApiToken: mockSend,
-        deleteApiToken: mockSend,
-    });
 });
 
 afterAll(() => {
@@ -87,21 +74,19 @@ describe('<ApiToken/>', () => {
             is_switching: false,
         },
         ui: {
-            is_desktop: false,
-            is_mobile: true,
+            is_desktop: true,
+            is_mobile: false,
         },
     });
 
     const renderComponent = ({ store = mock_store }) =>
         render(
             <StoreProvider store={store}>
-                <APIProvider>
-                    <ApiToken />
-                </APIProvider>
+                <ApiToken />
             </StoreProvider>
         );
 
-    it('should render ApiToken component without app_settings and footer', async () => {
+    it('should render ApiToken component', async () => {
         renderComponent({});
 
         expect(await screen.findByText(admin_scope_description)).toBeInTheDocument();
@@ -115,13 +100,18 @@ describe('<ApiToken/>', () => {
         expect(await screen.findByText(read_scope_description)).toBeInTheDocument();
         expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
 
-        expect(mockSend).toHaveBeenCalledTimes(1);
+        expect(WS.authorized.apiToken).toHaveBeenCalled();
     });
 
-    it('should render ApiToken component without app_settings and footer for mobile', async () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(true);
+    it('should render ApiToken component for mobile', async () => {
+        const mock_store = mockStore({
+            ui: {
+                is_desktop: false,
+                is_mobile: true,
+            },
+        });
 
-        renderComponent({});
+        renderComponent({ store: mock_store });
 
         expect(await screen.findByText(admin_scope_description)).toBeInTheDocument();
         expect(await screen.findByText(admin_scope_note)).toBeInTheDocument();
@@ -133,7 +123,6 @@ describe('<ApiToken/>', () => {
         expect(await screen.findByText(trading_info_description)).toBeInTheDocument();
         expect(await screen.findByText(read_scope_description)).toBeInTheDocument();
         expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
-        expect(useApiToken().isSuccess).toBeTruthy();
     });
 
     it('should not render ApiToken component if data is still loading', async () => {
@@ -205,7 +194,8 @@ describe('<ApiToken/>', () => {
         const updated_token_name_input = (await screen.findByLabelText('Token name')) as HTMLInputElement;
         expect(updated_token_name_input.value).toBe('');
 
-        expect(mockSend).toHaveBeenCalled();
+        const createToken = WS.apiToken;
+        expect(createToken).toHaveBeenCalledTimes(1);
     });
 
     it('should render created tokens and trigger delete', async () => {
@@ -255,7 +245,8 @@ describe('<ApiToken/>', () => {
         expect(yes_btn_1).toBeInTheDocument();
 
         userEvent.click(yes_btn_1);
-        expect(mockSend).toHaveBeenCalled();
+        const deleteToken = WS.authorized.apiToken;
+        expect(deleteToken).toHaveBeenCalled();
         await waitFor(() => {
             expect(yes_btn_1).not.toBeInTheDocument();
         });
@@ -315,7 +306,12 @@ describe('<ApiToken/>', () => {
     });
 
     it('should render created tokens for mobile', async () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
+        const new_store = mockStore({
+            ui: {
+                is_desktop: false,
+                is_mobile: true,
+            },
+        });
         (getPropertyValue as jest.Mock).mockReturnValue([
             {
                 display_name: 'First test token',
@@ -340,7 +336,7 @@ describe('<ApiToken/>', () => {
             },
         ]);
 
-        renderComponent({});
+        renderComponent({ store: new_store });
 
         expect(await screen.findAllByText('Name')).toHaveLength(3);
         expect(await screen.findAllByText('Last Used')).toHaveLength(3);
@@ -355,15 +351,12 @@ describe('<ApiToken/>', () => {
     });
 
     it('should show token error if exists', async () => {
-        useApiToken.mockReturnValue({
-            isSuccess: false,
-            isError: true,
-            isLoading: false,
-            error: { message: 'New test error' },
-            getApiToken: mockSend,
-            createApiToken: mockSend,
-            deleteApiToken: mockSend,
-        });
+        WS.authorized.apiToken = jest.fn(() =>
+            Promise.resolve({
+                api_token: { tokens: [] },
+                error: { message: 'New test error' },
+            })
+        );
 
         (getPropertyValue as jest.Mock).mockReturnValue('New test error');
 

@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import ApiTokenTableRow from '../api-token-table-row';
 
 describe('ApiTokenTableRow', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof ApiTokenTableRow> = {
         token: {
             display_name: 'Api Token',
             last_used: '31/12/2022',

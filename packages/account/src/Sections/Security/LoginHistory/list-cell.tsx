@@ -9,7 +9,7 @@ type TListCell = {
     align?: 'left' | 'right';
 };
 
-const ListCell = ({ title, text, className, align }: TListCell) => (
+const ListCell = ({ title, text, className, align = 'left' }: TListCell) => (
     <React.Fragment>
         <Text as='h3' align={align} weight='bold' className='login-history__list__row__cell--title'>
             {title}

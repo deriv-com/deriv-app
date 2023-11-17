@@ -1,15 +1,14 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { TApiContext, TToken } from 'Types';
 import ApiTokenContext from '../api-token-context';
 import ApiTokenDeleteButton from '../api-token-delete-button';
 
-const modal_root_el = document.createElement('div');
-modal_root_el.setAttribute('id', 'modal_root');
-document.body.appendChild(modal_root_el);
-
 describe('ApiTokenDeleteButton', () => {
-    const mock_props = {
+    let modal_root_el: HTMLElement;
+
+    const mock_props: TApiContext = {
         api_tokens: [
             {
                 display_name: '',
@@ -19,11 +18,9 @@ describe('ApiTokenDeleteButton', () => {
             },
         ],
         deleteToken: jest.fn(() => Promise.resolve()),
-        footer_ref: document.createElement('div'),
-        overlay_ref: document.createElement('div'),
-        toggleOverlay: jest.fn(),
     };
-    const mock_token = {
+
+    const mock_token: { token: TToken } = {
         token: {
             display_name: 'Token 1',
             last_used: '12/31/2022',
@@ -39,6 +36,16 @@ describe('ApiTokenDeleteButton', () => {
             </ApiTokenContext.Provider>
         );
     };
+
+    beforeAll(() => {
+        modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
 
     it('should render ApiTokenDeleteButton', () => {
         renderAPIDeleteButton();

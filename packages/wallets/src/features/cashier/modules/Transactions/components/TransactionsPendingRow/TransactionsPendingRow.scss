@@ -1,38 +1,49 @@
 .wallets-transactions-pending-row {
+    $root: &;
     width: 100%;
     height: 7.8rem;
-    display: grid;
-    grid-template-columns: 1.8fr repeat(4, 1fr) repeat(2, 2fr);
+    display: flex;
     gap: 1.6rem;
-    align-items: center;
+    align-items: flex-start;
     border-top: 0.1rem solid var(--system-light-3-border, #e5e5e5);
-    padding-inline: 1.6rem;
+    padding: 1.6rem;
 
-    &-details {
-        display: flex;
-        width: max-content;
-        gap: 0.8rem;
-
-        &__wallet-name {
-            color: var(--system-light-1-prominent-text, #333);
-
-            /* desktop/small/S - bold */
-            font-size: 1.2rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1.8rem; /* 150% */
-        }
+    @include mobile {
+        height: unset;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        padding: 1.6rem 0;
     }
 
-    &__title {
-        color: var(--system-light-3-less-prominent-text, #999);
+    &__column {
+        display: flex;
+        flex-direction: column;
+    }
 
-        /* desktop/small/S - regular */
-        font-size: 1.2rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 1.8rem; /* 150% */
-        text-transform: capitalize;
+    &__wallet-info {
+        display: flex;
+        order: -2;
+        align-items: center;
+        width: max-content;
+        gap: 0.8rem;
+    }
+
+    &__fields-container {
+        height: 100%;
+        display: flex;
+        flex-grow: 1;
+        gap: 1.6rem;
+        align-items: flex-start;
+
+        @include mobile {
+            order: 0;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+
+            #{$root}__column {
+                gap: 0.4rem;
+            }
+        }
     }
 
     &__transaction {
@@ -41,43 +52,77 @@
         }
 
         &-amount {
-            color: var(--status-light-danger, #ec3f3f);
-            text-align: right;
+            width: max-content;
+            align-self: center;
+        }
 
-            /* desktop/paragraph/P2 - bold */
-            font-size: 1.4rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 2rem; /* 142.857% */
-
-            &__deposit {
-                color: var(--status-light-success, #4bb4b3);
-            }
+        &-confirmations {
+            width: 7.6rem;
         }
 
         &-hash {
-            width: 9.8rem;
+            width: 9.2rem;
         }
 
         &-status {
+            width: 10.3rem;
             display: flex;
+            flex-grow: 1;
             justify-content: flex-end;
+            align-items: center;
+            align-self: center;
+            justify-self: flex-end;
+
+            // unset default button style
+            border: unset;
+            padding: unset;
+            background-color: unset;
+            text-align: unset;
+
+            @include mobile {
+                align-self: flex-start;
+                order: -1;
+            }
+
+            &-dot {
+                margin-right: 0.4rem;
+                width: 0.8rem;
+                height: 0.8rem;
+                border-radius: 0.4rem;
+
+                &--pending,
+                &--locked,
+                &--performing-blockchain-txn,
+                &--processing,
+                &--reverting,
+                &--verified {
+                    background: var(--status-warning, #ffad3a);
+                }
+
+                &--confirmed,
+                &--sent {
+                    background: var(--status-success, #4bb4b3);
+                }
+
+                &--error,
+                &--cancelled,
+                &--rejected,
+                &--reverted {
+                    background: var(--status-danger, #ec3f3f);
+                }
+            }
         }
 
-        &-value {
-            white-space: nowrap;
-            width: 100%;
-            color: var(--brand-coral, #ff444f);
+        &-time {
+            width: 6.5rem;
+        }
 
-            /* desktop/small/S - bold */
-            font-size: 1.2rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1.8rem; /* 150% */
-
-            &--center {
-                text-align: center;
-            }
+        &-cancel-button {
+            margin-left: 1rem;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+            background-color: transparent;
         }
     }
 }

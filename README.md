@@ -133,15 +133,6 @@ You can find the names of packages by first navigating to the `packages` folder.
 
 ### Usage
 
-### Configuring Hosts file
-
-In order to run our solution for the first time, you need to configure your `hosts` file:
-
-1. Open terminal.
-2. Open `hosts` file in your preferred text editor, f.e `sudo vim /etc/hosts`.
-3. Add a new entry pointing to `127.0.0.1 localhost.binary.sx`.
-4. Save the file and proceed to the next step.
-
 ### Starting a Development Server
 
 If you wish to work on Core, simply run `npm run serve core`.

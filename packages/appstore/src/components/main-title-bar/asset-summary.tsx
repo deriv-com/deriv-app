@@ -6,7 +6,7 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import { useTotalAccountBalance, useTotalAccountBalance2, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
+import { useTotalAccountBalance2, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
     const { traders_hub, client, common } = useStore();
@@ -16,17 +16,11 @@ const AssetSummary = observer(() => {
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
 
-    const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
-    const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
-    const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
-
     const platform_real_balance2 = useTotalAccountBalance2(platform_real_accounts);
     const cfd_real_balance2 = useTotalAccountBalance2(cfd_real_accounts);
     const cfd_demo_balance2 = useTotalAccountBalance2(cfd_demo_accounts);
 
     const is_real = selected_account_type === 'real';
-    const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance;
-    const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance;
 
     const real_total_balance2 = platform_real_balance2.balance + cfd_real_balance2.balance;
     const demo_total_balance2 = (platform_demo_account?.balance || 0) + cfd_demo_balance2.balance;
@@ -61,8 +55,6 @@ const AssetSummary = observer(() => {
                         zIndex={9999}
                         is_bubble_hover_enabled
                     >
-                        {/* TODO: remove this temp component after the QA team os done with the test. also remove all instances of old useExchangeRates()  */}
-                        <h1>new</h1>
                         <BalanceText
                             currency={
                                 is_real
@@ -70,16 +62,6 @@ const AssetSummary = observer(() => {
                                     : platform_demo_account?.currency || default_currency
                             }
                             balance={is_real ? real_total_balance2 : demo_total_balance2}
-                            underline_style='dotted'
-                        />
-                        <h1>old</h1>
-                        <BalanceText
-                            currency={
-                                is_real
-                                    ? platform_real_balance.currency || ''
-                                    : platform_demo_account?.currency || default_currency
-                            }
-                            balance={is_real ? real_total_balance : demo_total_balance}
                             underline_style='dotted'
                         />
                     </Popover>

@@ -124,7 +124,7 @@ const Dropzone: React.FC<TProps> = ({
                                     />
                                 </div>
                                 {description && (
-                                    <WalletText align='center' color={descriptionColor} size='md'>
+                                    <WalletText align='center' color={descriptionColor}>
                                         {description}
                                     </WalletText>
                                 )}

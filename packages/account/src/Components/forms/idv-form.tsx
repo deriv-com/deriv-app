@@ -42,7 +42,7 @@ const IDVForm = ({
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(
         () => getIDVNotApplicableOption(is_for_real_account_signup_modal),
-        []
+        [is_for_real_account_signup_modal]
     );
 
     React.useEffect(() => {

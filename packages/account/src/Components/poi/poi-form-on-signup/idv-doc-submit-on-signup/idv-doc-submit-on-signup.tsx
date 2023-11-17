@@ -103,7 +103,6 @@ export const IdvDocSubmitOnSignup = ({
                     <section className='mt5-layout__container'>
                         <FormSubHeader title={localize('Identity verification')} />
                         <IDVForm
-                            hide_hint={false}
                             selected_country={citizen_data}
                             class_name='idv-layout'
                             is_for_real_account_signup_modal

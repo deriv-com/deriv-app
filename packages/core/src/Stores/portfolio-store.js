@@ -21,6 +21,7 @@ import {
     getEndTime,
     removeBarrier,
     TURBOS,
+    routes,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
 import { Analytics } from '@deriv/analytics';
@@ -306,7 +307,7 @@ export default class PortfolioStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     });
-                } else {
+                } else if (window.location.pathname !== routes.trade) {
                     this.root_store.notifications.addNotificationMessage(contractCancelled());
                 }
             });
@@ -343,9 +344,11 @@ export default class PortfolioStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.notifications.addNotificationMessage(
-                contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
-            );
+            if (window.location.pathname !== routes.trade) {
+                this.root_store.notifications.addNotificationMessage(
+                    contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
+                );
+            }
 
             Analytics.trackEvent('ce_reports_form', {
                 action: 'close_contract',

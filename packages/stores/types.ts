@@ -24,6 +24,7 @@ import type {
 } from '@deriv/api-types';
 
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+import { TContractInfo } from '../shared/src/utils/contract';
 
 type TRoutes =
     | '/404'
@@ -836,6 +837,7 @@ type TContractStore = {
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
+    addTradeNotification: (contract_info: TContractInfo) => void;
     client_notifications: object;
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;

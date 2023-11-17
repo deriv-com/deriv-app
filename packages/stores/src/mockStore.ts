@@ -503,6 +503,7 @@ const mock = (): TStores & { is_mock: boolean } => {
         notifications: {
             addNotificationMessage: jest.fn(),
             addNotificationMessageByKey: jest.fn(),
+            addTradeNotification: jest.fn(),
             client_notifications: {},
             is_notifications_empty: true,
             is_notifications_visible: false,

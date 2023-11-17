@@ -5,14 +5,19 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { StaticUrl } from '@deriv/components';
 import {
     daysSince,
+    extractInfoFromShortcode,
     formatDate,
     formatMoney,
+    getContractTypeDisplay,
+    getMarketName,
     getPathname,
     getPlatformSettings,
     getStaticUrl,
+    getTotalProfit,
     getUrlBase,
     isCryptocurrency,
     isEmptyObject,
+    isHighLow,
     isMobile,
     isMultiplierContract,
     LocalStore,
@@ -43,6 +48,7 @@ export default class NotificationStore extends BaseStore {
     push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
+    trade_notifications = [];
     p2p_order_props = {};
     p2p_redirect_to = {};
     p2p_completed_orders = null;
@@ -54,6 +60,7 @@ export default class NotificationStore extends BaseStore {
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
+            addTradeNotification: action.bound,
             addVerificationNotifications: action.bound,
             client_notifications: observable,
             filterNotificationMessages: action.bound,
@@ -83,6 +90,7 @@ export default class NotificationStore extends BaseStore {
             should_show_popups: observable,
             showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
+            trade_notifications: observable.shallow,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
         });
@@ -178,6 +186,23 @@ export default class NotificationStore extends BaseStore {
 
     addNotificationMessageByKey(key) {
         if (key) this.addNotificationMessage(this.client_notifications[key]);
+    }
+
+    addTradeNotification(contract_info = {}) {
+        const { buy_price, contract_id, currency, shortcode, status } = contract_info;
+        if (this.trade_notifications.some(item => item.contract_id === contract_id)) return;
+        this.trade_notifications.push({
+            buy_price,
+            contract_id,
+            contract_type: getContractTypeDisplay(
+                extractInfoFromShortcode(shortcode).category.toUpperCase(),
+                isHighLow({ shortcode })
+            ),
+            currency,
+            profit: getTotalProfit(contract_info),
+            status,
+            symbol: getMarketName(extractInfoFromShortcode(shortcode).underlying),
+        });
     }
 
     addVerificationNotifications(identity, document, has_restricted_mt5_account, has_mt5_account_with_rejected_poa) {

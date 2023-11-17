@@ -1680,18 +1680,13 @@ export default class TradeStore extends BaseStore {
     }
 
     setContractPurchaseToastbox(response: Buy) {
-        const list = getAvailableContractTypes(
-            this.contract_types_list,
-            unsupported_contract_types_list
-        ) as Array<TToastBoxListItem>;
-
-        this.contract_purchase_toast_box = {
-            key: true,
-            buy_price: formatMoney(this.root_store.client.currency, response.buy_price, true, 0, 0),
-            contract_type: this.contract_type,
+        this.root_store.notifications.addTradeNotification({
+            contract_id: response.contract_id,
+            shortcode: response.shortcode,
+            status: 'open',
+            buy_price: response.buy_price,
             currency: getCurrencyDisplayCode(this.root_store.client.currency),
-            list,
-        };
+        });
     }
 
     clearContractPurchaseToastBox() {

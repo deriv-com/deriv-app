@@ -5,7 +5,6 @@ import { localize } from '@deriv/translations';
 import { isEnded, isAccumulatorContract, isDigitContract } from '@deriv/shared';
 import { ChartTitle } from 'Modules/SmartChart';
 import { ChartTitleBeta } from 'Modules/SmartChartBeta';
-import BuyToastNotification from './buy-toast-notification';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -83,7 +82,6 @@ const TopWidgets = ({
                     width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
                 }}
             >
-                {is_mobile && <BuyToastNotification />}
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}
             </div>

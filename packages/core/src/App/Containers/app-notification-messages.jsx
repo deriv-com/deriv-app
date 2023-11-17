@@ -16,11 +16,18 @@ import {
     priority_toast_messages,
     maintenance_notifications,
 } from '../../Stores/Helpers/client-notifications';
+import TradeNotifications from './trade-notifications.jsx';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
 
-const NotificationsContent = ({ is_notification_loaded, style, notifications, removeNotificationMessage }) => {
+const NotificationsContent = ({
+    is_notification_loaded,
+    style,
+    notifications,
+    removeNotificationMessage,
+    trade_notifications,
+}) => {
     const { pathname } = useLocation();
 
     return (
@@ -48,6 +55,7 @@ const NotificationsContent = ({ is_notification_loaded, style, notifications, re
                         <Notification data={notification} removeNotificationMessage={removeNotificationMessage} />
                     </CSSTransition>
                 ))}
+                <TradeNotifications notifications={trade_notifications} />
             </TransitionGroup>
         </div>
     );
@@ -62,6 +70,7 @@ const AppNotificationMessages = ({
     stopNotificationLoading,
     markNotificationMessage,
     should_show_popups,
+    trade_notifications,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
@@ -160,10 +169,13 @@ const AppNotificationMessages = ({
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                     markNotificationMessage={markNotificationMessage}
+                    trade_notifications={trade_notifications}
                 />
             </Portal>
         </div>
-    ) : null;
+    ) : (
+        <TradeNotifications notifications={trade_notifications} />
+    );
 };
 
 AppNotificationMessages.propTypes = {
@@ -185,6 +197,7 @@ AppNotificationMessages.propTypes = {
     removeNotificationMessage: PropTypes.func,
     should_show_popups: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
+    trade_notifications: PropTypes.object,
 };
 
 export default connect(({ notifications }) => ({
@@ -193,4 +206,5 @@ export default connect(({ notifications }) => ({
     removeNotificationMessage: notifications.removeNotificationMessage,
     markNotificationMessage: notifications.markNotificationMessage,
     should_show_popups: notifications.should_show_popups,
+    trade_notifications: notifications.trade_notifications,
 }))(AppNotificationMessages);

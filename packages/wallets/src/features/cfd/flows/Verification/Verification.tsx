@@ -96,7 +96,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
     const isNextDisabled = ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
-            case 'idvScreen':
+            case 'poaScreen':
                 return (
                     !formValues.documentNumber ||
                     !formValues.firstName ||

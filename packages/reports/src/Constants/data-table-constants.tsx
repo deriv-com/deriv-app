@@ -234,7 +234,7 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
                 (!row_obj.contract_info || !row_obj.contract_info.profit)
             )
                 return;
-            const profit = row_obj.profit_loss || row_obj.contract_info.profit;
+            const profit = row_obj.profit_loss ?? row_obj.contract_info.profit;
             // eslint-disable-next-line consistent-return
             return (
                 <div

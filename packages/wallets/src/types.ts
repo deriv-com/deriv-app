@@ -74,3 +74,6 @@ export namespace TDisplayBalance {
 }
 
 export type TGenericSizes = '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
+
+export type TWalletLandingCompanyName = Extract<THooks.MT5AccountsList['landing_company_short'], 'malta' | 'svg'>;
+export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_short'];

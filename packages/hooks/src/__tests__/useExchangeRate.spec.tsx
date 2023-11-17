@@ -1,48 +1,48 @@
 import * as React from 'react';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useExchangeRate from '../useExchangeRate';
 
 describe('useExchangeRate', () => {
-    test('should return 1 if currency is not found', async () => {
-        const mock = mockStore({
-            exchange_rates: {
-                data: {
-                    base_currency: 'USD',
-                    rates: {
-                        EUR: 1.3,
-                        GBP: 1.4,
-                        ETH: 0.0001,
-                    },
-                },
+    test('should return undefined if currency is not found', async () => {
+        const mockedRates = {
+            USD: {
+                EUR: 1.3,
+                GBP: 1.4,
+                ETH: 0.0001,
             },
-        });
+        };
+        window.localStorage.setItem('exchange_rates', JSON.stringify(mockedRates));
+        const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <StoreProvider store={mock}>
+                <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+            </StoreProvider>
         );
         const { result } = renderHook(() => useExchangeRate(), { wrapper });
-        const rate = result.current.getRate('JPY');
-        expect(rate).toBe(1);
+        const jyp_rate = result.current.exchange_rates.USD.JYP;
+        expect(jyp_rate).toBe(undefined);
     });
 
     test('should return correct rate for the given currency other than USD', async () => {
-        const mock = mockStore({
-            exchange_rates: {
-                data: {
-                    rates: {
-                        EUR: 1.3,
-                        GBP: 1.5,
-                    },
-                },
+        const mockedRates = {
+            USD: {
+                EUR: 1.3,
+                GBP: 1.4,
+                ETH: 0.0001,
             },
-        });
+        };
+        window.localStorage.setItem('exchange_rates', JSON.stringify(mockedRates));
+        const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <StoreProvider store={mock}>
+                <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+            </StoreProvider>
         );
         const { result } = renderHook(() => useExchangeRate(), { wrapper });
-        const rate = result.current.getRate('EUR');
-        expect(rate).toBe(1.3);
+        const gbp_rate = result.current.exchange_rates.USD.GBP;
+        expect(gbp_rate).toBe(1.4);
     });
 });

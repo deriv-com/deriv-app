@@ -231,7 +231,7 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
             if (
                 !row_obj.profit_loss &&
                 row_obj.profit_loss !== 0 &&
-                (!row_obj.contract_info || !row_obj.contract_info.profit)
+                (!row_obj.contract_info || (!row_obj.contract_info.profit && row_obj.contract_info.profit !== 0))
             )
                 return;
             const profit = row_obj.profit_loss ?? row_obj.contract_info.profit;

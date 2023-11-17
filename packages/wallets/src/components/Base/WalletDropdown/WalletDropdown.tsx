@@ -76,13 +76,14 @@ const WalletDropdown: React.FC<TProps> = ({
     });
 
     const handleInputClick = useCallback(() => {
-        setShouldFilterList(true);
+        variant === 'comboBox' && setShouldFilterList(true);
+
         if (isOpen) {
             closeMenu();
         } else {
             openMenu();
         }
-    }, [closeMenu, isOpen, openMenu]);
+    }, [closeMenu, isOpen, openMenu, variant]);
 
     useEffect(() => {
         setItems(list);

@@ -81,7 +81,6 @@ const Transactions = () => {
                     name='wallets-transactions__dropdown'
                     onSelect={value => setFilterValue(value)}
                     value={filterValue}
-                    variant='comboBox'
                 />
             </div>
             {isPendingActive ? (

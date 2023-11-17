@@ -59,7 +59,7 @@ const CFDsListing = observer(() => {
         is_landing_company_loaded,
         real_account_creation_unlock_date,
         account_status,
-        is_mt5_account_list_updated,
+        is_populating_mt5_account_list,
     } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
@@ -189,7 +189,7 @@ const CFDsListing = observer(() => {
                 </Text>
             </div>
 
-            {is_landing_company_loaded && is_mt5_account_list_updated ? (
+            {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;

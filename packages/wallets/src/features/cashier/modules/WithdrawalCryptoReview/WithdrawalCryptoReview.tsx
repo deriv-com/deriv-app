@@ -4,9 +4,15 @@ import { WalletButton, WalletCard, WalletText } from '../../../../components';
 import { WithdrawalCryptoDestinationAddress } from './components';
 import './WithdrawalCryptoReview.scss';
 import useDevice from '../../../../hooks/useDevice';
+import { useHistory } from 'react-router-dom';
 
-const WithdrawalCryptoReview = () => {
+type TProps = {
+    onClose: () => void;
+};
+
+const WithdrawalCryptoReview: React.FC<TProps> = ({ onClose }) => {
     const { isMobile } = useDevice();
+    const history = useHistory();
 
     return (
         <div className='wallets-withdrawal-crypto-review'>
@@ -30,8 +36,13 @@ const WithdrawalCryptoReview = () => {
                 </WalletText>
             </div>
             <div className='wallets-withdrawal-crypto-review__actions'>
-                <WalletButton color='white' text='View Transactions' variant='outlined' />
-                <WalletButton text='Close' />
+                <WalletButton
+                    color='white'
+                    onClick={() => history.push('/wallets/cashier/transactions')}
+                    text='View Transactions'
+                    variant='outlined'
+                />
+                <WalletButton onClick={onClose} text='Close' />
             </div>
         </div>
     );

@@ -1,10 +1,12 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
+import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
-import { daysSince, isMobile } from '@deriv/shared';
+import { useP2PAdvertInfo } from '@deriv/hooks';
+import { daysSince, isDesktop, isMobile, routes } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
@@ -17,16 +19,25 @@ import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 
-import BlockUserOverlay from './block-user/block-user-overlay';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
+import BlockUserOverlay from './block-user/block-user-overlay';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
+    const {
+        advertiser_id,
+        advertiser_info,
+        counterparty_advert_id,
+        counterparty_advertiser_id,
+        is_advertiser,
+        is_barred,
+        setCounterpartyAdvertId,
+        setCounterpartyAdvertiserId,
+    } = general_store;
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
     const { advertiser_details_name, advertiser_details_id, counterparty_advertiser_info } = advertiser_page_store;
-    const { advertiser_id, advertiser_info, counterparty_advertiser_id } = general_store;
 
     const is_my_advert = advertiser_details_id === advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
@@ -66,6 +77,63 @@ const AdvertiserPage = () => {
                   name: nickname,
               });
     };
+    const {
+        data: p2p_advert_info,
+        isFetching,
+        isSuccess: has_p2p_advert_info,
+    } = useP2PAdvertInfo(counterparty_advert_id, {
+        enabled: !!counterparty_advert_id,
+    });
+
+    const showErrorModal = () => {
+        setCounterpartyAdvertId('');
+        showModal({
+            key: 'ErrorModal',
+            props: {
+                error_message: "It's either deleted or no longer active.",
+                error_modal_button_text: 'OK',
+                error_modal_title: 'This ad is unavailable',
+                onClose: () => {
+                    hideModal({ should_hide_all_modals: true });
+                },
+                width: isMobile() ? '90vw' : '',
+            },
+        });
+    };
+
+    const setShowAdvertInfo = React.useCallback(
+        () => {
+            const { is_active, is_buy, is_visible } = p2p_advert_info || {};
+            if (has_p2p_advert_info) {
+                const advert_type = is_buy ? 1 : 0;
+
+                if (is_active && is_visible) {
+                    advertiser_page_store.setActiveIndex(advert_type);
+                    advertiser_page_store.handleTabItemClick(advert_type);
+                    buy_sell_store.setSelectedAdState(p2p_advert_info);
+                    advertiser_page_store.loadMoreAdvertiserAdverts({ startIndex: 0 });
+                    showModal({ key: 'BuySellModal' });
+                } else {
+                    showErrorModal();
+                }
+            } else {
+                showErrorModal();
+            }
+        },
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [has_p2p_advert_info, p2p_advert_info]
+    );
+
+    React.useEffect(() => {
+        if (is_advertiser && !is_barred) {
+            if (isFetching && isDesktop()) {
+                showModal({ key: 'LoadingModal' });
+            } else if (counterparty_advert_id) {
+                setShowAdvertInfo();
+            }
+        }
+    }, [counterparty_advert_id, isFetching, setShowAdvertInfo]);
 
     React.useEffect(() => {
         if (location.search || counterparty_advertiser_id) {
@@ -80,8 +148,20 @@ const AdvertiserPage = () => {
         const disposeCounterpartyAdvertiserIdReaction = reaction(
             () => [general_store.counterparty_advertiser_id, general_store.is_advertiser_info_subscribed],
             () => {
-                // DO NOT REMOVE. This fixes reload on advertiser page routing issue
-                advertiser_page_store.onAdvertiserIdUpdate();
+                if (counterparty_advertiser_id) {
+                    // DO NOT REMOVE. This fixes reloading issue when user navigates to advertiser page via URL
+                    advertiser_page_store.onAdvertiserIdUpdate();
+
+                    if (is_barred) {
+                        history.push(routes.p2p_buy_sell);
+                    } else if (!is_advertiser) {
+                        history.push(routes.p2p_my_ads);
+                    }
+
+                    // Need to set active index to 0 when users navigate to advertiser page via url,
+                    // and when user clicks the back button, it will navigate back to the buy/sell tab
+                    general_store.setActiveIndex(0);
+                }
             },
             { fireImmediately: true }
         );
@@ -172,6 +252,7 @@ const AdvertiserPage = () => {
                         if (general_store.active_index === general_store.path.my_profile)
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                         history.push(general_store.active_tab_route);
+                        setCounterpartyAdvertiserId(null);
                     }}
                     page_title={localize("Advertiser's page")}
                 />

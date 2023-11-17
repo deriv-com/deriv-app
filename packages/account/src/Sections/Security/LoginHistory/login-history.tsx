@@ -1,29 +1,50 @@
 import React from 'react';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { useLoginHistory } from '@deriv/api';
+import { WS } from '@deriv/shared';
 import LoadErrorMessage from 'Components/load-error-message';
 import LoginHistoryContent from './login-history-content';
-import { isServerError } from 'Helpers/utils';
+import { getLoginHistoryFormattedData } from '../../../../../utils/src/getLoginHistoryFormattedData';
+
+type TData = { id: number; date: string; action: string; browser: string; ip: string; status: string }[];
 
 const LoginHistory = observer(() => {
-    const {
-        client,
-        ui: { is_mobile },
-    } = useStore();
+    const { client, ui } = useStore();
     const { is_switching } = client;
+    const { is_mobile } = ui;
+    const [is_loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState('');
+    const [data, setData] = React.useState<TData>([]);
 
-    const { data, isError, isLoading, error } = useLoginHistory({ limit: 50 });
+    React.useEffect(() => {
+        let is_cancelled = false;
+        const fetchData = async () => {
+            if (is_cancelled) return;
 
-    const login_history = data?.formatted_data;
+            const api_res = await WS.authorized.fetchLoginHistory(50);
+            setLoading(false);
+            if (api_res.error) {
+                setError(api_res.error.message);
+            } else {
+                const formatted_data = getLoginHistoryFormattedData(api_res.login_history);
+                setData(formatted_data);
+            }
+        };
+
+        fetchData();
+
+        return () => {
+            is_cancelled = true;
+        };
+    }, []);
 
     if (is_switching) return <Loading />;
-    if (isLoading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (isError) return <LoadErrorMessage error_message={isServerError(error) ? error.message : undefined} />;
+    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (error) return <LoadErrorMessage error_message={error} />;
 
     return (
         <ThemedScrollbars is_bypassed={is_mobile} className='login-history'>
-            <LoginHistoryContent data={login_history} />
+            {data.length > 0 ? <LoginHistoryContent data={data} /> : null}
         </ThemedScrollbars>
     );
 });

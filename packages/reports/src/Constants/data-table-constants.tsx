@@ -228,11 +228,11 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
         title: localize('Indicative profit/loss'),
         col_index: 'profit',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
+            const { profit_loss, contract_info } = row_obj ?? {};
             if (
-                !row_obj.profit_loss &&
-                row_obj.profit_loss !== 0 &&
-                !row_obj.contract_info?.profit &&
-                row_obj.contract_info?.profit !== 0
+                !profit_loss &&
+                profit_loss !== 0 &&
+                (!contract_info || (!contract_info?.profit && contract_info?.profit !== 0))
             )
                 return;
             const profit = row_obj.profit_loss ?? row_obj.contract_info.profit;

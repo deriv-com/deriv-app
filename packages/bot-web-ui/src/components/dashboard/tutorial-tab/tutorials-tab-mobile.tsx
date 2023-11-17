@@ -12,7 +12,7 @@ type TTutorialsTabMobile = {
 
 const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: TTutorialsTabMobile) => {
     const { dashboard } = useDBotStore();
-    const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue, active_tab } = dashboard;
+    const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
 
     const search = faq_search_value?.toLowerCase();
     const initialSelectedTab = { label: '', content: '' };
@@ -63,7 +63,11 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
                     className='arrow-left-bold'
                     icon='IcArrowLeftBold'
                 />
-                <SearchInput faq_value={faq_search_value} setFaqSearchContent={setFAQSearchValue} />
+                <SearchInput
+                    faq_value={faq_search_value}
+                    setFaqSearchContent={setFAQSearchValue}
+                    prev_active_tutorials={prev_active_tutorials}
+                />
                 {search && (
                     <Icon
                         data_testid='id-close-icon'

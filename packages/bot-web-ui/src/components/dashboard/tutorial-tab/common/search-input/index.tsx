@@ -3,32 +3,42 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import React from 'react';
 
-const SearchInput = observer(({ input_ref, faq_value, setFaqSearchContent }) => {
+const SearchInput = observer(({ ref, faq_value, setFaqSearchContent, prev_active_tutorials }) => {
     const { dashboard } = useDBotStore();
-    const { setActiveTabTutorial, active_tab_tutorials, setFAQSearchValue, faq_search_value } = dashboard;
+    const { setActiveTabTutorial, active_tab_tutorials } = dashboard;
 
     const onSearch = event => {
+        if (faq_value !== '') {
+            onFocusSearch();
+        }
         setFaqSearchContent(event.target.value);
     };
 
     const onFocusSearch = () => {
-        setActiveTabTutorial(2);
-        input_ref?.current?.focus();
+        if (faq_value !== '') {
+            setActiveTabTutorial(2);
+            ref?.current?.focus();
+        }
     };
 
     React.useEffect(() => {
-        input_ref?.current?.focus();
-    }, [active_tab_tutorials]);
+        if (faq_value !== '') {
+            ref?.current?.focus();
+            setActiveTabTutorial(2);
+        } else {
+            setActiveTabTutorial(prev_active_tutorials);
+        }
+    }, [faq_value]);
 
     return (
         <>
             <input
-                ref={input_ref}
+                ref={ref}
                 data-testid='id-test-input-search'
                 type='text'
                 placeholder={localize('Search')}
                 className='dc-tabs__wrapper__group__search-input'
-                onChange={onSearch}
+                onChange={event => onSearch(event)}
                 onFocus={onFocusSearch}
                 value={faq_value}
             />

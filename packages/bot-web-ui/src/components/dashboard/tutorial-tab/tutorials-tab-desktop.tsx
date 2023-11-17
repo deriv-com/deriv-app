@@ -24,7 +24,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
     };
 
     React.useEffect(() => {
-        if (faq_search_value) {
+        if (faq_search_value !== '') {
             setActiveTabTutorial(2);
             input_ref?.current?.focus();
         }
@@ -40,7 +40,12 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                     height='1.6rem'
                     icon='IcSearch'
                 />
-                <SearchInput ref={input_ref} faq_value={faq_search_value} setFaqSearchContent={setFAQSearchValue} />
+                <SearchInput
+                    ref={input_ref}
+                    faq_value={faq_search_value}
+                    setFaqSearchContent={setFAQSearchValue}
+                    prev_active_tutorials={prev_active_tutorials}
+                />
                 {search && (
                     <Icon
                         className='close-icon'

@@ -2,9 +2,12 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import TraderProviders from '../../../../../../trader-providers';
+import { TCoreStores } from '@deriv/stores/types';
+import { useTraderStore } from 'Stores/useTraderStores';
 import CancelDeal from '../cancel-deal-mobile';
+import { Dialog } from '@deriv/components';
 import * as multiplier_functions from 'Stores/Modules/Trading/Helpers/multiplier';
+import TraderProviders from '../../../../../../trader-providers';
 
 const default_mocked_props = {
     has_cancellation: false,
@@ -16,26 +19,30 @@ const default_mocked_props = {
 const default_mock_store = {
     modules: {
         trade: {
-            cancellation_range_list: [],
+            cancellation_range_list: [] as ReturnType<typeof useTraderStore>['cancellation_range_list'],
         },
     },
 };
 
 const mockOnToggleCancellation = jest.spyOn(multiplier_functions, 'onToggleCancellation');
+const deal_cancellation = 'Deal cancellation';
+const check_box_text = "Don't show this again";
+const dialog_text = /Take profit and\/or stop loss are not available/i;
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    Dialog: ({ children, ...props }) => (
-        <div style={{ display: props.is_visible ? 'block' : 'none' }}>
-            {children}
-            <button onClick={props.onCancel}>Cancell button</button>
-            <button onClick={props.onConfirm}>Confirm button</button>
-        </div>
-    ),
+    Dialog: ({ children, ...props }: React.PropsWithChildren<Partial<React.ComponentProps<typeof Dialog>>>) =>
+        props.is_visible ? (
+            <div>
+                {children}
+                <button onClick={props.onCancel}>Cancel button</button>
+                <button onClick={props.onConfirm}>Confirm button</button>
+            </div>
+        ) : null,
 }));
 
 describe('<CancelDeal />', () => {
-    const mockCancelDeal = (mocked_store, mocked_props) => {
+    const mockCancelDeal = (mocked_store: TCoreStores, mocked_props: React.ComponentProps<typeof CancelDeal>) => {
         return (
             <TraderProviders store={mocked_store}>
                 <CancelDeal {...mocked_props} />
@@ -50,27 +57,27 @@ describe('<CancelDeal />', () => {
         const info_icon = screen.getByTestId(/dt_popover_wrapper/i);
         userEvent.hover(info_icon);
 
-        expect(screen.getByText('Deal cancellation')).toBeInTheDocument();
-        expect(screen.queryByText(/Cancel your trade/i)).toBeInTheDocument();
+        expect(screen.getByText(deal_cancellation)).toBeInTheDocument();
+        expect(screen.getByText(/Cancel your trade/i)).toBeInTheDocument();
     });
     it('should render <RadioGroup /> if has_cancellation === true and cancellation_range_list contains proper info', () => {
         const new_mocked_props = { ...default_mocked_props, has_cancellation: true };
         const new_mock_store = { ...default_mock_store };
         new_mock_store.modules = {
             trade: {
-                cancellation_range_list: [{ value: '60m', text: 'test text' }],
+                cancellation_range_list: [{ value: '60m', text: 'mocked text' }],
             },
         };
         const mock_root_store = mockStore(new_mock_store);
         render(mockCancelDeal(mock_root_store, new_mocked_props));
 
-        expect(screen.getByText('test text')).toBeInTheDocument();
+        expect(screen.getByText('mocked text')).toBeInTheDocument();
     });
     it('should call onToggleCancellation if user clicked on Deal cancellation checkbox and anToggleDealCancel returned true', () => {
         const mock_root_store = mockStore(default_mock_store);
         render(mockCancelDeal(mock_root_store, default_mocked_props));
 
-        const checkbox_with_cancellation = screen.getByText('Deal cancellation');
+        const checkbox_with_cancellation = screen.getByText(deal_cancellation);
         userEvent.click(checkbox_with_cancellation);
 
         expect(mockOnToggleCancellation).toBeCalled();
@@ -81,16 +88,16 @@ describe('<CancelDeal />', () => {
         const mock_root_store = mockStore(new_mock_store);
         render(mockCancelDeal(mock_root_store, new_mocked_props));
 
-        expect(screen.getByText(/Take profit and\/or stop loss are not available/i)).not.toBeVisible();
-        expect(screen.getByText(/Don't show this again/i)).not.toBeVisible();
+        expect(screen.queryByText(dialog_text)).not.toBeInTheDocument();
+        expect(screen.queryByText(check_box_text)).not.toBeInTheDocument();
 
-        const checkbox_with_cancellation = screen.getByText('Deal cancellation');
+        const checkbox_with_cancellation = screen.getByText(deal_cancellation);
         userEvent.click(checkbox_with_cancellation);
 
-        expect(screen.getByText(/Take profit and\/or stop loss are not available/i)).toBeVisible();
-        expect(screen.getByText(/Don't show this again/i)).toBeVisible();
+        expect(screen.getByText(dialog_text)).toBeInTheDocument();
+        expect(screen.getByText(check_box_text)).toBeInTheDocument();
     });
-    it('should call toggleCancellationWarning function if cansellation warning checkbox inside of <DealCancellationWarningDialog /> was clicked', () => {
+    it('should call toggleCancellationWarning function if cancellation warning checkbox inside of <DealCancellationWarningDialog /> was clicked', () => {
         const new_mocked_props = { ...default_mocked_props, has_take_profit: true };
         const new_mock_store = {
             ...default_mock_store,
@@ -99,26 +106,26 @@ describe('<CancelDeal />', () => {
         const mock_root_store = mockStore(new_mock_store);
         render(mockCancelDeal(mock_root_store, new_mocked_props));
 
-        const checkbox_with_cancellation = screen.getByText('Deal cancellation');
+        const checkbox_with_cancellation = screen.getByText(deal_cancellation);
         userEvent.click(checkbox_with_cancellation);
-        const checkbox_with_show = screen.getByText(/Don't show this again/i);
+        const checkbox_with_show = screen.getByText(check_box_text);
         userEvent.click(checkbox_with_show);
 
         expect(new_mock_store.ui.toggleCancellationWarning).toBeCalled();
     });
-    it('<DealCancellationWarningDialog /> should not be visible if Cansell button was clicked', () => {
+    it('<DealCancellationWarningDialog /> should not be visible if Cancel button was clicked', () => {
         const new_mocked_props = { ...default_mocked_props, has_stop_loss: true };
         const new_mock_store = { ...default_mock_store, ui: { should_show_cancellation_warning: true } };
         const mock_root_store = mockStore(new_mock_store);
         render(mockCancelDeal(mock_root_store, new_mocked_props));
 
-        const checkbox_with_cancellation = screen.getByText('Deal cancellation');
+        const checkbox_with_cancellation = screen.getByText(deal_cancellation);
         userEvent.click(checkbox_with_cancellation);
-        const cansell_button = screen.getByText('Cancell button');
-        userEvent.click(cansell_button);
+        const cancel_button = screen.getByText('Cancel button');
+        userEvent.click(cancel_button);
 
-        expect(screen.getByText(/Take profit and\/or stop loss are not available/i)).not.toBeVisible();
-        expect(screen.getByText(/Don't show this again/i)).not.toBeVisible();
+        expect(screen.queryByText(dialog_text)).not.toBeInTheDocument();
+        expect(screen.queryByText(check_box_text)).not.toBeInTheDocument();
     });
     it('<DealCancellationWarningDialog /> should not be visible if Confirm button was clicked', () => {
         const new_mocked_props = { ...default_mocked_props, has_stop_loss: true };
@@ -126,12 +133,12 @@ describe('<CancelDeal />', () => {
         const mock_root_store = mockStore(new_mock_store);
         render(mockCancelDeal(mock_root_store, new_mocked_props));
 
-        const checkbox_with_cancellation = screen.getByText('Deal cancellation');
+        const checkbox_with_cancellation = screen.getByText(deal_cancellation);
         userEvent.click(checkbox_with_cancellation);
-        const cansell_button = screen.getByText('Confirm button');
-        userEvent.click(cansell_button);
+        const cancel_button = screen.getByText('Confirm button');
+        userEvent.click(cancel_button);
 
-        expect(screen.getByText(/Take profit and\/or stop loss are not available/i)).not.toBeVisible();
-        expect(screen.getByText(/Don't show this again/i)).not.toBeVisible();
+        expect(screen.queryByText(dialog_text)).not.toBeInTheDocument();
+        expect(screen.queryByText(check_box_text)).not.toBeInTheDocument();
     });
 });

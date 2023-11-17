@@ -46,12 +46,6 @@ runs:
     - name: Build docker image 🐳
       run: docker build -t ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${APP_VERSION} -t ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }} .
       shell: bash
-    - name: Verify nginx image
-      run: |
-        set -e
-        docker run --rm ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }} nginx -t
-        echo "docker image validated successfully"
-      shell: bash
     - name: Pushing Image to docker hub 🐳
       run: |
         echo ${{ inputs.DOCKERHUB_PASSWORD }}| docker login -u ${{ inputs.DOCKERHUB_USERNAME }} --password-stdin

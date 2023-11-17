@@ -7,7 +7,7 @@ const MultiplierTradeDescription = ({
     onClick,
 }: {
     is_multiplier_fx?: boolean;
-    onClick: React.MouseEventHandler<HTMLSpanElement>;
+    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
 }) => {
     const content = [
         <Localize
@@ -26,27 +26,55 @@ const MultiplierTradeDescription = ({
         />,
         <Localize
             i18n_default_text='Your contract will be closed when the <0>stop out</0> level is reached.'
-            components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+            components={[
+                <span
+                    className='contract-type-info__content-definition'
+                    onClick={onClick}
+                    onKeyDown={onClick}
+                    key={0}
+                />,
+            ]}
             key='4'
         />,
         {
             content: is_multiplier_fx ? (
                 <Localize
                     i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>” and “<0>Stop loss</0>” allow you to adjust your level of risk aversion.'
-                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+                    components={[
+                        <span
+                            className='contract-type-info__content-definition'
+                            onClick={onClick}
+                            onKeyDown={onClick}
+                            key={0}
+                        />,
+                    ]}
                     key='5'
                 />
             ) : (
                 <Localize
                     i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>”, “<0>Stop loss</0>” and “<0>Deal cancellation</0>” allow you to adjust your level of risk aversion.'
-                    components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+                    components={[
+                        <span
+                            className='contract-type-info__content-definition'
+                            onClick={onClick}
+                            onKeyDown={onClick}
+                            key={0}
+                        />,
+                    ]}
                     key='5'
                 />
             ),
         },
         <Localize
             i18n_default_text='You can close your trade anytime. However, be aware of <0>slippage risk</0>.'
-            components={[<span className='contract-type-info__content-definition' onClick={onClick} key={0} />]}
+            components={[
+                <span
+                    className='contract-type-info__content-definition'
+                    onClick={onClick}
+                    onKeyDown={onClick}
+                    key={0}
+                />,
+            ]}
             key='6'
         />,
     ] as Array<JSX.Element & { content: JSX.Element }>;

@@ -43,6 +43,7 @@ const ResubmitPOA: React.FC = () => {
                             label='State/Province'
                             list={statesList}
                             listHeight='sm'
+                            name='wallets-poa__address__dropdown-state'
                             onSelect={handleSelect}
                             value={selectedState}
                         />

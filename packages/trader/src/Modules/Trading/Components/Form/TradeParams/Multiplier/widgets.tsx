@@ -42,7 +42,7 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }: TA
     return (
         <React.Fragment>
             <MultiplierAmountModal is_open={is_open} toggleModal={toggleModal} />
-            <div className='mobile-widget mobile-widget__multiplier' onClick={toggleModal}>
+            <button className='mobile-widget mobile-widget__multiplier' onClick={toggleModal}>
                 <div className='mobile-widget__multiplier-amount'>
                     <div className='mobile-widget__item'>
                         <Text weight='bold' size='xxs'>
@@ -55,9 +55,9 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }: TA
                     commission_text_size='xxxxs'
                     stop_out_text_size='xxxxs'
                 />
-            </div>
+            </button>
             {is_crypto_multiplier && (
-                <div className='mobile-widget' onClick={expiration ? toggleExpirationModal : undefined}>
+                <button className='mobile-widget' onClick={expiration ? toggleExpirationModal : undefined}>
                     <div className='mobile-widget__multiplier-expiration'>
                         <Text size='xxs'>
                             <Localize i18n_default_text='Expires on' />
@@ -68,7 +68,7 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }: TA
                         is_open={is_expiration_modal_open}
                         toggleModal={toggleExpirationModal}
                     />
-                </div>
+                </button>
             )}
         </React.Fragment>
     );
@@ -102,7 +102,7 @@ const RadioGroupOptionsWidget = ({
     return (
         <React.Fragment>
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
-            <div
+            <button
                 className={classNames('mobile-widget mobile-widget__multiplier-options', {
                     'mobile-widget__label': should_show_new_label,
                 })}
@@ -116,7 +116,11 @@ const RadioGroupOptionsWidget = ({
                     <span className='mobile-widget__item-value'>{displayed_trade_param}</span>
                 </div>
                 {!!tooltip_message && (
-                    <span className='mobile-widget__item-tooltip' onClick={e => e.stopPropagation()}>
+                    <span
+                        className='mobile-widget__item-tooltip'
+                        onClick={e => e.stopPropagation()}
+                        onKeyDown={e => e.stopPropagation()}
+                    >
                         <Popover
                             alignment='left'
                             classNameBubble='mobile-widget__item-popover'
@@ -138,7 +142,7 @@ const RadioGroupOptionsWidget = ({
                         <Localize i18n_default_text='NEW!' />
                     </Text>
                 )}
-            </div>
+            </button>
         </React.Fragment>
     );
 };

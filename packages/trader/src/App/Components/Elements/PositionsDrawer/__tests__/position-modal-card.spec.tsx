@@ -141,9 +141,8 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/Contract value:/i)).toBeInTheDocument();
         expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Entry spot:/i)).toBeInTheDocument();
-        expect(screen.getByText(/0.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Take profit:/i)).toBeInTheDocument();
-        expect(screen.getByText(/-/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/0.00/i)).toHaveLength(2);
         expect(screen.getByText(/Barrier:/i)).toBeInTheDocument();
         expect(screen.getByText(/2,650/i)).toBeInTheDocument();
     });

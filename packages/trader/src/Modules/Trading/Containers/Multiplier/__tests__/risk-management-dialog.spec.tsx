@@ -36,7 +36,8 @@ jest.mock('@deriv/components', () => ({
         children,
         ...props
     }: React.PropsWithChildren<Partial<React.ComponentProps<typeof MobileDialog>>>) => (
-        <div onClick={props.onClose} data-testid='dialog'>
+        <div>
+            <button onClick={props.onClose}>Dialog button</button>
             {children}
         </div>
     ),
@@ -116,7 +117,7 @@ describe('<RiskManagementDialog />', () => {
         const mock_root_store = mockStore(default_mock_store);
         render(mockRiskManagementDialog(mock_root_store));
 
-        userEvent.click(screen.getByTestId(/dialog/i));
+        userEvent.click(screen.getByText(/dialog/i));
 
         expect(default_mocked_props.onClose).toBeCalled();
     });

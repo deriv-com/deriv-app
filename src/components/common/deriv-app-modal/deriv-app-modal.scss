@@ -20,6 +20,9 @@
         color: var(--text-prominent);
         padding: 0;
         border-radius: 8px;
+        @include mobile {
+            border-radius: 0px;
+        }
         z-index: 100;
         box-shadow: 0 0 50px 8px rgba(0, 0, 0, 0.2);
         width: auto;

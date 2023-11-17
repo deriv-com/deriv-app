@@ -4,6 +4,10 @@
     align-items: center;
     gap: 1.6rem;
 
+    &__hidden {
+        display: none;
+    }
+
     &-view_wrapper {
         position: relative;
         min-width: 32.8rem;
@@ -22,8 +26,18 @@
     @include mobile {
         padding: 1.6rem;
 
-        .onfido-sdk-ui-PageTitle-titleSpan {
-            font-size: 2rem;
+        & .onfido-sdk-ui-PageTitle {
+            &-titleWrapper {
+                margin: 2.4rem 0 0;
+            }
+
+            &-title {
+                font-size: 2rem;
+                text-align: center;
+            }
+            &-titleSpan {
+                font-size: 2rem;
+            }
         }
     }
 
@@ -39,12 +53,19 @@
 
     &__info-message {
         position: absolute;
-        top: 2.4rem;
-        left: 25%;
+        top: 1.6rem;
+        left: 50%;
         z-index: 1;
+        transform: translate(-50%);
+        max-width: max-content;
+        width: 100% !important;
+
         @include mobile {
-            top: 1.6rem;
-            left: 3.1rem;
+            margin-top: 1.6rem;
+        }
+
+        .dc-hint-box {
+            margin-inline: 0.8rem;
         }
     }
 
@@ -456,13 +477,27 @@
                         margin-bottom: unset;
                     }
                 }
+                &-container {
+                    display: flex;
+                    flex-direction: column;
+                }
             }
         }
     }
 
     .additional-field {
         margin-top: 0.8rem;
-        margin-bottom: 2rem;
+        margin-bottom: 2rem !important;
+        @include mobile {
+            margin-top: 1.6rem;
+        }
+
+        .dc-input {
+            margin-bottom: unset;
+            &__bottom-label {
+                margin-bottom: -2rem;
+            }
+        }
     }
 }
 

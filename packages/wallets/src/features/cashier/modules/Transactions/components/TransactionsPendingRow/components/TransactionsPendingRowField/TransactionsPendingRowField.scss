@@ -1,0 +1,24 @@
+.wallets-transactions-pending-row-field {
+    display: flex;
+    flex-direction: column;
+
+    @include mobile {
+        flex: 1 1 34%; // basis width for columns on mobile is "more than a third of parent's". This way we get 2 columns
+    }
+
+    &__button {
+        // unset default button style
+        border: unset;
+        padding: unset;
+        color: unset;
+        background-color: unset;
+        font-family: unset;
+        font-size: unset;
+        font-weight: unset;
+    }
+
+    &__link {
+        color: var(--brand-coral, #ff444f);
+        text-decoration: none;
+    }
+}

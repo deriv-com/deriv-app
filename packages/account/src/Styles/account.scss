@@ -200,7 +200,6 @@ $MIN_HEIGHT_FLOATING: calc(
         overflow: hidden;
     }
 
-
     &-form {
         overflow: hidden;
         height: 100%;
@@ -1449,29 +1448,6 @@ $MIN_HEIGHT_FLOATING: calc(
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-
-/** @define onfido-container; weak */
-.onfido-container {
-    &__hidden {
-        display: none;
-    }
-
-    @include mobile {
-        .onfido-sdk-ui-PageTitle {
-            &-titleWrapper {
-                margin: 0 1.5em 0.4em;
-            }
-
-            &-title {
-                text-align: left;
-            }
-
-            &-subTitle {
-                text-align: left;
-            }
-        }
     }
 }
 

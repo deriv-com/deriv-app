@@ -5,8 +5,10 @@ import { NavLink } from 'react-router-dom';
 import Icon from '../../icon';
 import { TGetCardLables, TGetContractPath } from '../../types';
 import Text from '../../text';
+import Money from '../../money';
 
 type TResultOverlayProps = {
+    currency?: string;
     contract_id?: number;
     getCardLabels: TGetCardLables;
     getContractPath?: TGetContractPath;
@@ -16,7 +18,7 @@ type TResultOverlayProps = {
     is_visible: boolean;
     onClick: () => void;
     onClickRemove?: (contract_id?: number) => void;
-    payout_info: string;
+    payout_info: number;
     result: string;
 };
 
@@ -38,6 +40,7 @@ export const ResultStatusIcon = ({ getCardLabels, is_contract_won }: TResultStat
 );
 
 const ResultOverlay = ({
+    currency,
     contract_id,
     getCardLabels,
     getContractPath,
@@ -105,7 +108,7 @@ const ResultOverlay = ({
                             size='s'
                             line_height='xxl'
                         >
-                            {payout_info}
+                            <Money amount={payout_info} currency={currency} has_sign show_currency />
                         </Text>
                     </div>
                 </div>

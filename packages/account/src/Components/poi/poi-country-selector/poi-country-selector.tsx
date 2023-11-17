@@ -5,27 +5,18 @@ import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, Sel
 import { idv_error_statuses, isMobile, TIDVErrorStatus } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from 'Components/form-footer';
-
-type TCountry = Record<string, string>;
+import { POIContext } from '../../../Helpers/poi-context';
+import { useResidenceList } from '@deriv/api';
 
 type TCountrySelector = {
     handleSelectionNext: () => void;
     is_from_external: boolean;
     mismatch_status?: TIDVErrorStatus;
-    residence_list: TCountry[];
-    selected_country: string;
-    setSelectedCountry: (value: TCountry) => void;
 };
 
-const CountrySelector = ({
-    handleSelectionNext,
-    is_from_external,
-    mismatch_status,
-    residence_list,
-    selected_country,
-    setSelectedCountry,
-}: TCountrySelector) => {
-    const [country_list, setCountryList] = React.useState<TCountry[]>([]);
+const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_status }: TCountrySelector) => {
+    const { setSelectedCountry } = React.useContext(POIContext);
+    const { data: country_list, isLoading } = useResidenceList();
 
     const initial_form_values: FormikValues = {
         country_input: '',
@@ -45,7 +36,7 @@ const CountrySelector = ({
     };
 
     const updateSelectedCountry = (country_name: string) => {
-        const matching_country: TCountry | undefined = country_list.find((c: FormikValues) => c.text === country_name);
+        const matching_country = country_list?.find((c: FormikValues) => c.text === country_name);
         if (matching_country) {
             setSelectedCountry?.(matching_country);
         }
@@ -56,10 +47,6 @@ const CountrySelector = ({
         setSubmitting(false);
         handleSelectionNext?.();
     };
-
-    React.useEffect(() => {
-        setCountryList(residence_list);
-    }, [residence_list]);
 
     let failed_message: JSX.Element | null = null;
     if (mismatch_status === idv_error_statuses.poi_expired) {
@@ -187,7 +174,7 @@ const CountrySelector = ({
                             type='submit'
                             onClick={() => handleSubmit()}
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid || !selected_country}
+                            is_disabled={!dirty || isSubmitting || !isValid || isLoading}
                             is_loading={false}
                             text={localize('Next')}
                             large

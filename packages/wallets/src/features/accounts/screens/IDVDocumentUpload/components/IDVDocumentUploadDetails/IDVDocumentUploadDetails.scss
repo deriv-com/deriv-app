@@ -1,0 +1,42 @@
+.wallets-idv-document-details {
+    border-radius: 0.8rem;
+    border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
+    padding: 1.6rem;
+
+    &__body {
+        display: flex;
+        flex-direction: row;
+        padding-top: 1.6rem;
+
+        @include mobile {
+            flex-direction: column-reverse;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 1.6rem;
+
+        & > .wallets-textfield {
+            max-width: 35.9rem;
+        }
+    }
+
+    &__sidenote {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        padding-left: 1.6rem;
+
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+
+        @include mobile {
+            padding: 0 0 1.6rem;
+        }
+    }
+}

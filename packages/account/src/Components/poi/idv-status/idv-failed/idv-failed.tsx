@@ -117,6 +117,7 @@ const IdvFailed = ({
     );
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+    const shouldSkipIdv = (document_id?: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
 
     const generateIDVError = React.useCallback(() => {
         const document_name = is_document_upload_required
@@ -258,7 +259,7 @@ const IdvFailed = ({
         values: TIdvFailedForm,
         { setStatus, setSubmitting, status }: FormikHelpers<TIdvFailedForm> & FormikState<TIdvDocumentSubmitForm>
     ) => {
-        if (values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id) {
+        if (shouldSkipIdv(values?.document_type?.id)) {
             handleSelectionNext?.(true);
             return;
         }
@@ -294,7 +295,7 @@ const IdvFailed = ({
                 issuing_country: chosen_country.value,
             };
 
-            if (!submit_data.document_type || submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
+            if (!submit_data.document_type || shouldSkipIdv(submit_data.document_type)) {
                 setSubmitting(false);
                 handleSubmit();
                 return;
@@ -319,7 +320,7 @@ const IdvFailed = ({
         if (is_document_upload_required) {
             const { document_type, document_number, document_additional } = values;
 
-            if (document_type?.id === IDV_NOT_APPLICABLE_OPTION.id) {
+            if (shouldSkipIdv(document_type?.id)) {
                 return errors;
             }
 
@@ -372,12 +373,11 @@ const IdvFailed = ({
         return '80px';
     };
 
-    const buttonText = (is_idv_skipping: boolean) =>
-        is_idv_skipping
-            ? localize('Next')
-            : is_document_upload_required
-            ? localize('Verify')
-            : localize('Update profile');
+    const buttonText = (is_idv_skipping: boolean) => {
+        if (is_idv_skipping) return localize('Next');
+        if (is_document_upload_required) localize('Verify');
+        return localize('Update profile');
+    };
 
     return (
         <Formik
@@ -390,7 +390,7 @@ const IdvFailed = ({
                 <Form
                     className={classNames('proof-of-identity__mismatch-container', {
                         'upload-layout': is_document_upload_required,
-                        'min-height': values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id,
+                        'min-height': shouldSkipIdv(values?.document_type?.id),
                     })}
                 >
                     <FormBody className='form-body' scroll_offset={setScrollOffset()}>
@@ -416,12 +416,12 @@ const IdvFailed = ({
                                 </Text>
                                 <FormSubHeader title={localize('Identity verification')} />
                                 <IDVForm selected_country={chosen_country} class_name='idv-layout idv-resubmit' />
-                                {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && (
+                                {!shouldSkipIdv(values?.document_type?.id) && (
                                     <FormSubHeader title={localize('Details')} />
                                 )}
                             </div>
                         )}
-                        {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && (
+                        {!shouldSkipIdv(values?.document_type?.id) && (
                             <PersonalDetailsForm
                                 class_name='account-form__poi-confirm-example_container'
                                 editable_fields={values.confirmation_checkbox ? [] : rest_state?.changeable_fields}
@@ -438,7 +438,7 @@ const IdvFailed = ({
                             type='submit'
                             has_effect
                             is_disabled={!dirty || isSubmitting || !isValid}
-                            text={buttonText(values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id)}
+                            text={buttonText(shouldSkipIdv(values?.document_type?.id))}
                             large
                             primary
                         />

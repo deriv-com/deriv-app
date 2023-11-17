@@ -176,7 +176,7 @@ const PersonalDetails = ({
                                                 <IDVForm
                                                     selected_country={selected_country}
                                                     hide_hint
-                                                    is_for_new_real_account
+                                                    is_for_real_account_signup_modal
                                                 />
                                             </React.Fragment>
                                         )}

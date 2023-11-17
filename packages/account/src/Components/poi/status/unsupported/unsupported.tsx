@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { identity_status_codes } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
@@ -100,7 +99,7 @@ const Unsupported = ({
                 <Localize i18n_default_text='Please upload one of the following documents:' />
             </Text>
             <Documents documents={documents} toggleDetail={toggleDetail} />
-            <FormFooter className={classNames('proof-of-identity__footer')}>
+            <FormFooter className='proof-of-identity__footer'>
                 <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
                     <Localize i18n_default_text='Back' />
                 </Button>

@@ -17,10 +17,15 @@ type TIDVFormProps = {
     selected_country: ResidenceList[0];
     hide_hint?: boolean;
     class_name?: string;
-    is_for_new_real_account?: boolean;
+    is_for_real_account_signup_modal?: boolean;
 };
 
-const IDVForm = ({ class_name, selected_country, hide_hint, is_for_new_real_account = false }: TIDVFormProps) => {
+const IDVForm = ({
+    class_name,
+    selected_country,
+    hide_hint,
+    is_for_real_account_signup_modal = false,
+}: TIDVFormProps) => {
     const [document_list, setDocumentList] = React.useState<Array<TDocument>>([]);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
@@ -35,7 +40,10 @@ const IDVForm = ({ class_name, selected_country, hide_hint, is_for_new_real_acco
         example_format: '',
     };
 
-    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(is_for_new_real_account), []);
+    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(
+        () => getIDVNotApplicableOption(is_for_real_account_signup_modal),
+        []
+    );
 
     React.useEffect(() => {
         if (document_data && selected_country && selected_country.value) {

@@ -53,6 +53,7 @@ const IdvDocumentSubmit = observer(
         const { is_mobile, is_desktop } = ui;
 
         const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+        const shouldSkipIdv = (document_id?: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
         const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
         const side_note_image = <PoiNameDobExample />;
 
@@ -82,7 +83,7 @@ const IdvDocumentSubmit = observer(
             const errors: FormikErrors<Record<keyof TIdvDocumentSubmitForm, string>> = {};
             const { document_type, document_number, document_additional } = values;
 
-            if (document_type.id === IDV_NOT_APPLICABLE_OPTION.id) {
+            if (shouldSkipIdv(document_type.id)) {
                 return errors;
             }
 
@@ -121,7 +122,7 @@ const IdvDocumentSubmit = observer(
                 status,
             }: FormikHelpers<TIdvDocumentSubmitForm> & FormikState<TIdvDocumentSubmitForm>
         ) => {
-            if (values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id) {
+            if (shouldSkipIdv(values?.document_type?.id)) {
                 handleSelectionNext?.(true);
                 return;
             }
@@ -172,7 +173,7 @@ const IdvDocumentSubmit = observer(
                 {({ dirty, isSubmitting, isValid, values, status }) => (
                     <Form
                         className={classNames('proof-of-identity__container proof-of-identity__container--reset', {
-                            'min-height': values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id,
+                            'min-height': shouldSkipIdv(values?.document_type?.id),
                         })}
                     >
                         {status?.error_message && (
@@ -192,7 +193,7 @@ const IdvDocumentSubmit = observer(
                         <FormBody className='form-body' scroll_offset={is_mobile ? '180px' : '80px'}>
                             <FormSubHeader title={localize('Identity verification')} />
                             <IDVForm selected_country={selected_country} class_name='idv-layout' />
-                            {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && (
+                            {!shouldSkipIdv(values?.document_type?.id) && (
                                 <React.Fragment>
                                     <FormSubHeader title={localize('Details')} />
                                     <PersonalDetailsForm
@@ -228,11 +229,7 @@ const IdvDocumentSubmit = observer(
                                 type='submit'
                                 has_effect
                                 is_disabled={!dirty || isSubmitting || !isValid}
-                                text={
-                                    values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
-                                        ? localize('Next')
-                                        : localize('Verify')
-                                }
+                                text={shouldSkipIdv(values?.document_type?.id) ? localize('Next') : localize('Verify')}
                                 large
                                 primary
                             />

@@ -110,7 +110,7 @@ describe('<IdvDocumentSubmit/>', () => {
             </StoreProvider>
         );
 
-        const backBtn = screen.getByRole('button', { name: /go back/i });
+        const backBtn = screen.getByRole('button', { name: /back/i });
         userEvent.click(backBtn);
         expect(mock_props.handleBack).toHaveBeenCalledTimes(1);
 

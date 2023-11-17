@@ -106,7 +106,7 @@ export const IdvDocSubmitOnSignup = ({
                             hide_hint={false}
                             selected_country={citizen_data}
                             class_name='idv-layout'
-                            is_for_new_real_account
+                            is_for_real_account_signup_modal
                         />
                         <FormSubHeader title={localize('Identity verification')} />
                         <PersonalDetailsForm

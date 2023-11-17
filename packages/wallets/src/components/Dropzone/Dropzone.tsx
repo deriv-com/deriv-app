@@ -18,22 +18,30 @@ type TProps = {
     buttonText?: ReactNode;
     description?: ReactNode;
     descriptionColor?: ComponentProps<typeof WalletText>['color'];
+    descriptionSize?: ComponentProps<typeof WalletText>['size'];
     fileFormats?: NonNullable<Parameters<typeof useDropzone>[0]>['accept'];
     hasFrame?: boolean;
     hoverMessage?: ReactNode;
     icon: ReactNode;
     maxSize?: NonNullable<Parameters<typeof useDropzone>[0]>['maxSize'];
+    noClick?: NonNullable<Parameters<typeof useDropzone>[0]>['noClick'];
+    title?: ReactNode;
+    titleType?: ComponentProps<typeof WalletText>['weight'];
 };
 
 const Dropzone: React.FC<TProps> = ({
-    buttonText = 'Upload',
+    buttonText,
     description,
-    descriptionColor,
+    descriptionColor = 'general',
+    descriptionSize = 'md',
     fileFormats,
     hasFrame = false,
     hoverMessage = 'Drop file here',
     icon,
     maxSize,
+    noClick = false,
+    title = false,
+    titleType = 'normal',
 }) => {
     const [files, setFiles] = useState<
         {
@@ -47,7 +55,7 @@ const Dropzone: React.FC<TProps> = ({
         accept: fileFormats,
         maxSize,
         multiple: false,
-        noClick: true,
+        noClick,
         onDragEnter: () => setShowHoverMessage(true),
         onDragLeave: () => setShowHoverMessage(false),
         onDrop: acceptedFiles => {
@@ -92,12 +100,19 @@ const Dropzone: React.FC<TProps> = ({
                     {!showHoverMessage && !files.length && (
                         <div className='wallets-dropzone__placeholder'>
                             <div className='wallets-dropzone__placeholder-icon'>{icon}</div>
-                            <WalletText align='center' size='md'>
+                            {title && (
+                                <WalletText align='center' color='primary' size='md' weight={titleType}>
+                                    {title}
+                                </WalletText>
+                            )}
+                            <WalletText align='center' color={descriptionColor} size={descriptionSize}>
                                 {description}
                             </WalletText>
-                            <div className='wallets-dropzone__placeholder-text'>
-                                <WalletButton onClick={open} text={buttonText} variant='outlined' />
-                            </div>
+                            {buttonText && (
+                                <div className='wallets-dropzone__placeholder-text'>
+                                    <WalletButton onClick={open} text={buttonText} variant='outlined' />
+                                </div>
+                            )}
                             {errorMessage && (
                                 <WalletText align='center' color='red' size='2xs'>
                                     {errorMessage}

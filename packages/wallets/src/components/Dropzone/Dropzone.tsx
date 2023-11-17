@@ -10,6 +10,7 @@ import React, {
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
 import CloseIcon from '../../public/images/close-icon.svg';
+import DropzoneFrame from '../../public/images/dropzone-frame.svg';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './Dropzone.scss';
 
@@ -19,6 +20,7 @@ type TProps = {
     descriptionColor?: ComponentProps<typeof WalletText>['color'];
     descriptionSize?: ComponentProps<typeof WalletText>['size'];
     fileFormats?: NonNullable<Parameters<typeof useDropzone>[0]>['accept'];
+    hasFrame?: boolean;
     hoverMessage?: ReactNode;
     icon: ReactNode;
     maxSize?: NonNullable<Parameters<typeof useDropzone>[0]>['maxSize'];
@@ -33,6 +35,7 @@ const Dropzone: React.FC<TProps> = ({
     descriptionColor = 'general',
     descriptionSize = 'md',
     fileFormats,
+    hasFrame = false,
     hoverMessage = 'Drop file here',
     icon,
     maxSize,
@@ -117,13 +120,17 @@ const Dropzone: React.FC<TProps> = ({
                             )}
                         </div>
                     )}
-                    {files.length > 0 &&
+                    {!showHoverMessage &&
+                        files.length > 0 &&
                         files.map(file => (
                             <React.Fragment key={file.name}>
                                 <div
-                                    className='wallets-dropzone__thumb'
+                                    className={classNames('wallets-dropzone__thumb', {
+                                        'wallets-dropzone__thumb--has-frame': hasFrame,
+                                    })}
                                     style={{ backgroundImage: `url(${file.preview})` }}
                                 >
+                                    {hasFrame && <DropzoneFrame />}
                                     <IconButton
                                         className='wallets-dropzone__remove-file'
                                         icon={<CloseIcon width={12} />}
@@ -132,7 +139,7 @@ const Dropzone: React.FC<TProps> = ({
                                     />
                                 </div>
                                 {description && (
-                                    <WalletText align='center' size='md'>
+                                    <WalletText align='center' color={descriptionColor}>
                                         {description}
                                     </WalletText>
                                 )}

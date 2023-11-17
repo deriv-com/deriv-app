@@ -9,7 +9,7 @@ const NIMCSlipDocumentUpload = () => {
     return (
         <div className='wallets-nimc-slip-document-upload' data-testid='dt_driving-license-document-upload'>
             <WalletText>First, enter your NIMC slip number.</WalletText>
-            <WalletTextField label='NIMC slip number*' maxWidth='100%' />
+            <WalletTextField label='NIMC slip number*' />
             <Divider />
             <div className='wallets-nimc-slip-document-upload__document-section'>
                 <WalletText>Next, upload both of the following documents.</WalletText>

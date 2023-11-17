@@ -20,7 +20,7 @@ const MockComponent = ({ prevStep, nextStep }) => (
 jest.mock('../../Components/proof-of-address', () =>
     jest.fn(({ onCancel, onSubmit }) => (
         <div>
-            CFDPOA
+            ProofOfAddress
             <MockComponent prevStep={onCancel} nextStep={onSubmit} />
         </div>
     ))
@@ -29,7 +29,7 @@ jest.mock('../../Components/proof-of-address', () =>
 jest.mock('../../Components/proof-of-identity', () =>
     jest.fn(({ onCancel, onSubmit }) => (
         <div>
-            CFDPOI
+            ProofOfIdentity
             <MockComponent prevStep={onCancel} nextStep={onSubmit} />
         </div>
     ))
@@ -60,10 +60,10 @@ const testAllStepsFn = (steps, step_no) => {
 
 const steps = [
     {
-        body: 'CFDPOI',
+        body: 'ProofOfIdentity',
     },
     {
-        body: 'CFDPOA',
+        body: 'ProofOfAddress',
     },
 ];
 

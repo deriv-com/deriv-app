@@ -24,7 +24,7 @@ export type TProofOfIdentity = {
     jurisdiction_selected_shortcode: string;
 };
 
-const CFDPOI = observer(({ index, onSave, onSubmit, ...props }: TProofOfIdentity) => {
+const ProofOfIdentity = observer(({ index, onSave, onSubmit, ...props }: TProofOfIdentity) => {
     const { client } = useStore();
     const { account_settings, residence_list } = client;
 
@@ -46,4 +46,4 @@ const CFDPOI = observer(({ index, onSave, onSubmit, ...props }: TProofOfIdentity
     );
 });
 
-export default CFDPOI;
+export default ProofOfIdentity;

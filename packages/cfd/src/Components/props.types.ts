@@ -7,7 +7,7 @@ export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader' | 'derivez';
 
 export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
 
-export type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
+export type TShortcode = DetailsOfEachMT5Loginid['landing_company_short'];
 
 export type TCFDAccountCopy = {
     text: string | undefined;
@@ -89,7 +89,7 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: TShortcode;
+    shortcode?: TShortcode;
     sub_account_type: string;
     account_type?: 'real' | 'demo';
     landing_company_short?: TShortcode;
@@ -237,7 +237,7 @@ export type TTradingPlatformAccounts = {
     /**
      * Landing company shortcode of the DXTrade account.
      */
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu';
+    landing_company_short?: DetailsOfEachMT5Loginid['landing_company_short'];
     /**
      * Login of DXTrade account.
      */

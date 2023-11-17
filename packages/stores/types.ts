@@ -226,7 +226,7 @@ type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
+    shortcode?: DetailsOfEachMT5Loginid['landing_company_short'];
     sub_account_type: string;
 };
 
@@ -879,7 +879,7 @@ type TTradersHubStore = {
             action_type: 'get' | 'none' | 'trade' | 'dxtrade' | 'multi-action';
             key: string;
             name: string;
-            landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
+            landing_company_short?: DetailsOfEachMT5Loginid['landing_company_short'];
             platform?: string;
             description?: string;
             market_type?: 'all' | 'financial' | 'synthetic';

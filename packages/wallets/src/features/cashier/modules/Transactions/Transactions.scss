@@ -11,6 +11,14 @@
         margin-top: -2.4rem;
     }
 
+    // adjust filter dropdown width
+    .wallets-dropdown {
+        max-width: 19.5rem;
+        @include mobile {
+            max-width: unset;
+        }
+    }
+
     &__header {
         position: sticky;
         top: -4.8rem; // ignore CashierContent padding

@@ -8,16 +8,11 @@ import './IdentityCardDocumentUpload.scss';
 
 const IdentityCardDocumentUpload = () => {
     return (
-        <div className='wallets-identity-card-document-upload' data-testid='dt_passport-document-upload'>
+        <div className='wallets-identity-card-document-upload' data-testid='dt_identity-card-document-upload'>
             <WalletText>First, enter your Identity card number and the expiry date.</WalletText>
             <div className='wallets-identity-card-document-upload__input-group'>
-                <WalletTextField label='Identity card number*' maxWidth='100%' />
-                <WalletTextField
-                    label='Expiry date*'
-                    maxWidth='100%'
-                    renderRightIcon={() => <Calendar />}
-                    type='date'
-                />
+                <WalletTextField label='Identity card number*' />
+                <WalletTextField label='Expiry date*' renderRightIcon={() => <Calendar />} type='date' />
             </div>
             <Divider />
             <div className='wallets-identity-card-document-upload__document-section'>

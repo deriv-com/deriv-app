@@ -1,18 +1,18 @@
 import React from 'react';
-import { useTabs } from './Tabs';
-import './TabList.scss';
+import { useTabs } from './WalletsPrimaryTabs';
+import './WalletsPrimaryTabList.scss';
 
-type TTabListProps = {
+type WalletPrimaryTabListProps = {
     list: string[];
 };
 
-export const TabList = ({ list }: TTabListProps) => {
+const WalletsPrimaryTabList = ({ list }: WalletPrimaryTabListProps) => {
     const { activeTabIndex, setActiveTabIndex } = useTabs();
 
     return (
         <div className='wallets-tabs-list' data-list-count={list.length}>
             {list.map((tab, i) => (
-                <div
+                <button
                     className={`wallets-tabs-list-item wallets-tabs-list-item--${
                         i === activeTabIndex ? 'active' : 'disabled'
                     }`}
@@ -20,8 +20,10 @@ export const TabList = ({ list }: TTabListProps) => {
                     onClick={() => setActiveTabIndex(i)}
                 >
                     {tab}
-                </div>
+                </button>
             ))}
         </div>
     );
 };
+
+export default WalletsPrimaryTabList;

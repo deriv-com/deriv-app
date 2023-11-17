@@ -11,16 +11,14 @@ const IDVDocumentUpload = () => {
                     <WalletText weight='bold'>Identity verification</WalletText>
                 </div>
                 {/* TODO: Update dropdown after Formik is implemented */}
-                <div className='wallets-idv-document-upload__dropdown'>
-                    <WalletDropdown
-                        label='Choose the document type'
-                        list={[]}
-                        maxWidth='68rem'
-                        onSelect={() => null}
-                        value={undefined}
-                    />
-                </div>
-                <FlowTextField label='Enter your document number' maxWidth='68rem' name='documentNumber' />
+                <WalletDropdown
+                    label='Choose the document type'
+                    list={[]}
+                    name='wallets-idv-document-upload__dropdown'
+                    onSelect={() => null}
+                    value={undefined}
+                />
+                <FlowTextField label='Enter your document number' name='documentNumber' />
                 <div className='wallets-idv-document-upload__title'>
                     <WalletText weight='bold'>Details</WalletText>
                 </div>

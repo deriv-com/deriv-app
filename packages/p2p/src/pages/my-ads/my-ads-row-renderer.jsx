@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { HorizontalSwipe, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
-import { useExchangeRate } from '@deriv/hooks';
+import { useP2PExchangeRate } from '@deriv/hooks';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -45,14 +45,14 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
     const advert_type = is_buy_advert ? <Localize i18n_default_text='Buy' /> : <Localize i18n_default_text='Sell' />;
-    const { getRate } = useExchangeRate();
+    const exchange_rate = useP2PExchangeRate(local_currency);
 
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,
         rate_type,
         rate: rate_display,
         local_currency,
-        exchange_rate: getRate(local_currency),
+        exchange_rate,
         market_rate: effective_rate,
     });
 

@@ -16,8 +16,7 @@ const AdvertiserPageAdverts = () => {
     } = useStore();
 
     const { advertiser_page_store } = useStores();
-    const { adverts, has_more_adverts_to_load, isFetching, isLoading, loadMoreAdvertiserAdverts } =
-        useP2PAdvertiserAdverts();
+    const { adverts, has_more_adverts_to_load, isLoading, loadMoreAdvertiserAdverts } = useP2PAdvertiserAdverts();
 
     const AdvertiserPageRowRenderer = row_props => (
         <AdvertiserPageRow {...row_props} showAdPopup={advertiser_page_store.showAdPopup} />
@@ -36,7 +35,7 @@ const AdvertiserPageAdverts = () => {
                 <div label={localize('Buy')} />
                 <div label={localize('Sell')} />
             </Tabs>
-            {isLoading || isFetching ? (
+            {isLoading ? (
                 <div className='advertiser-page-adverts__table'>
                     <Loading is_fullscreen={false} />
                 </div>

@@ -15,6 +15,8 @@ type TProps = {
     value: number;
 };
 
+const separatorRegex = /[,.]/g;
+
 const WalletTransferFormInputField: React.FC<TProps> = ({
     currency,
     disabled,
@@ -49,12 +51,15 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
 
     // keep the caret from jumping
     useEffect(() => {
-        if (caret && caretNeedsRepositioning) {
-            // if next to a comma or period, prefer positioning the caret left to it
-            const newCaretPosition = /[,.]/g.test(formattedValue[formattedValue.length - 1 - caret])
-                ? formattedValue.length - caret - 1
-                : formattedValue.length - caret;
-            input?.setSelectionRange(newCaretPosition, newCaretPosition);
+        if (caret && caretNeedsRepositioning && input) {
+            const indexBeforeCaret = formattedValue.length - 1 - caret;
+
+            // if before a comma or period, prefer positioning the caret to the left of it
+            const newCaretPosition = separatorRegex.test(formattedValue[indexBeforeCaret])
+                ? indexBeforeCaret - 1
+                : indexBeforeCaret;
+
+            input.setSelectionRange(newCaretPosition, newCaretPosition);
             setCaretNeedsRepositioning(false);
         }
     }, [caret, formattedValue, caretNeedsRepositioning, input]);
@@ -62,14 +67,17 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     // override some editing behavior for better UX
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!input) return;
-        setCaret(input.value.length - (input.selectionStart ?? 0));
+
+        const newCaretPosition = input.value.length - (input.selectionStart ?? 0);
+        setCaret(newCaretPosition);
         setCaretNeedsRepositioning(true);
-        if (maxDigits && input.value.replace(/[.,]/g, '').length > maxDigits) return;
-        if (
+
+        if (maxDigits && input.value.replace(separatorRegex, '').length > maxDigits) return;
+
+        const hasNoChangeInDigits =
             input.value.length + 1 === prevFormattedValue.length &&
-            input.value.replaceAll(/[,.]/g, '') === prevFormattedValue.replaceAll(/[,.]/g, '')
-        )
-            return;
+            input.value.replaceAll(separatorRegex, '') === prevFormattedValue.replaceAll(separatorRegex, '');
+        if (hasNoChangeInDigits) return;
         formatOnChange(e);
     };
 

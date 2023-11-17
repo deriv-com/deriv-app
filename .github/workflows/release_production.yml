@@ -61,7 +61,7 @@ jobs:
 
   send_slack_notification:
       name: Send Slack notification
-      runs-on: Runner_16cores_Deriv-app
+      runs-on: Runner_8cores_Deriv-app
       environment: Production
       if: always()
       needs: [build_test_and_publish]

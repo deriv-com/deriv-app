@@ -91,9 +91,9 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                 disabled={isAdded}
                 icon={
                     isAdded ? (
-                        <CheckIcon className='wallets-add-more__banner-button-icon' />
+                        <CheckIcon className='wallets-add-more__banner-button-icon' width={16} />
                     ) : (
-                        <PlusIcon className='wallets-add-more__banner-button-icon' />
+                        <PlusIcon className='wallets-add-more__banner-button-icon' width={16} />
                     )
                 }
                 onClick={e => {

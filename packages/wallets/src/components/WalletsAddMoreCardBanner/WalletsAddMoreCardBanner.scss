@@ -55,9 +55,13 @@
     }
 
     &__success-card {
-        & > .wallets-card__details {
+        & .wallets-card__details {
             padding: 1.6rem;
             width: 24rem;
+
+            @include mobile {
+                width: 21.6rem;
+            }
         }
     }
 }

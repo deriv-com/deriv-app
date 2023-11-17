@@ -1,5 +1,5 @@
 import React, { ComponentProps, ReactNode } from 'react';
-import WalletsActionScreen from '../WalletsActionScreen/WalletsActionScreen';
+import { WalletsActionScreen } from '../WalletsActionScreen';
 import './WalletSuccess.scss';
 
 type TSuccessProps = {

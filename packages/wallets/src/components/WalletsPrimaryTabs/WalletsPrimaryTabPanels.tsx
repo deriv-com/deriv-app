@@ -1,7 +1,7 @@
 import React, { Children } from 'react';
-import { useTabs } from './Tabs';
+import { useTabs } from './WalletsPrimaryTabs';
 
-const TabPanels = ({ children }: React.PropsWithChildren<unknown>) => {
+const WalletsPrimaryTabPanels = ({ children }: React.PropsWithChildren<unknown>) => {
     const { activeTabIndex } = useTabs();
 
     return (
@@ -15,4 +15,4 @@ const TabPanels = ({ children }: React.PropsWithChildren<unknown>) => {
     );
 };
 
-export default TabPanels;
+export default WalletsPrimaryTabPanels;

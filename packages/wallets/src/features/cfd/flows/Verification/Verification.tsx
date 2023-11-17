@@ -1,4 +1,5 @@
 import React, { FC, useMemo } from 'react';
+import * as Yup from 'yup';
 import { useAuthentication, usePOA, usePOI } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
@@ -6,15 +7,8 @@ import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import { ResubmitPOA } from '../../../accounts/screens';
+import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
 import { Onfido } from '../../screens';
-
-const Idv = () => {
-    return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
-            <h1>IDV screen</h1>
-        </div>
-    );
-};
 
 const Manual = () => {
     return (
@@ -34,7 +28,7 @@ const PersonalDetails = () => {
 
 const Loading = () => {
     return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
+        <div style={{ height: 400, width: 600 }}>
             <Loader />
         </div>
     );
@@ -46,7 +40,7 @@ const Password = () => {
 
 // TODO: Replace these mock components with the screens
 const screens = {
-    idvScreen: <Idv />,
+    idvScreen: <IDVDocumentUpload />,
     loadingScreen: <Loading />,
     manualScreen: <Manual />,
     onfidoScreen: <Onfido />,
@@ -86,9 +80,33 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             }
             if (service === 'idv') return 'idvScreen';
             if (service === 'onfido') return 'onfidoScreen';
+            return 'manualScreen';
         }
-        return 'manualScreen';
-    }, [hasAttemptedPOA, needPersonalDetails, authenticationData?.is_poa_needed, poiStatus, isSuccessPOIStatus]);
+        return 'loadingScreen';
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        hasAttemptedPOA,
+        needPersonalDetails,
+        authenticationData?.is_poa_needed,
+        poiStatus,
+        poiStatus?.services,
+        poiStatus?.current?.service,
+        isSuccessPOIStatus,
+    ]);
+
+    const isNextDisabled = ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
+        switch (currentScreenId) {
+            case 'idvScreen':
+                return (
+                    !formValues.documentNumber ||
+                    !formValues.firstName ||
+                    !formValues.lastName ||
+                    !formValues.dateOfBirth
+                );
+            default:
+                return false;
+        }
+    };
 
     const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
@@ -110,6 +128,14 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         }
     };
 
+    // NOTE: These are test validations, add the correct validators here for different screens
+    const validationSchema = Yup.object().shape({
+        dateOfBirth: Yup.date().required(),
+        documentNumber: Yup.string().min(12, 'document number should have minimum 12 characters').required(),
+        firstName: Yup.string().min(1).max(5).required(),
+        lastName: Yup.string().min(1).max(20).required(),
+    });
+
     return (
         <FlowProvider
             initialScreenId={initialScreenId}
@@ -117,6 +143,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 selectedJurisdiction,
             }}
             screens={screens}
+            validationSchema={validationSchema}
         >
             {context => {
                 return (
@@ -124,6 +151,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         renderFooter={() => {
                             return (
                                 <WalletButton
+                                    disabled={isNextDisabled(context)}
                                     isLoading={isLoading}
                                     onClick={() => nextFlowHandler(context)}
                                     size='lg'

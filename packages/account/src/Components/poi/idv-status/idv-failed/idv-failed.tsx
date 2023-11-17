@@ -375,7 +375,7 @@ const IdvFailed = ({
 
     const buttonText = (is_idv_skipping: boolean) => {
         if (is_idv_skipping) return localize('Next');
-        if (is_document_upload_required) localize('Verify');
+        if (is_document_upload_required) return localize('Verify');
         return localize('Update profile');
     };
 

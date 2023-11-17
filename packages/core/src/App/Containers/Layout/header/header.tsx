@@ -13,6 +13,7 @@ const Header = observer(() => {
     const traders_hub_routes =
         pathname === routes.traders_hub ||
         pathname === routes.wallets ||
+        pathname.startsWith(routes.cashier) ||
         pathname.startsWith(routes.account) ||
         pathname.startsWith(routes.compare_cfds);
 

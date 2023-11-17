@@ -2,7 +2,9 @@
     &__content {
         display: grid;
         row-gap: 1.6rem;
-        width: 100%;
+
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4.5rem;
 
         @include mobile {
             display: flex;
@@ -11,10 +13,6 @@
             justify-content: center;
         }
 
-        @include desktop {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4.5rem;
-        }
         &-layout {
             background: rgba(255, 68, 79, 0.08);
             gap: 1.6rem;

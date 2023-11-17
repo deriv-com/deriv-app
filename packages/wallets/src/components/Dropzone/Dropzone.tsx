@@ -28,7 +28,7 @@ type TProps = {
 };
 
 const Dropzone: React.FC<TProps> = ({
-    buttonText = false,
+    buttonText,
     description,
     descriptionColor = 'general',
     descriptionSize = 'md',

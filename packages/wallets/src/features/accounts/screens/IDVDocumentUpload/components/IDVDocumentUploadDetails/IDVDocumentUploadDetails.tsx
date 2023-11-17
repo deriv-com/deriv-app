@@ -18,7 +18,6 @@ const IDVDocumentUploadDetails = () => {
 
                     <FlowTextField
                         label='First name*'
-                        maxWidth='35.9rem'
                         message='Your first name as in your identity document'
                         name='firstName'
                         showMessage
@@ -26,7 +25,6 @@ const IDVDocumentUploadDetails = () => {
 
                     <FlowTextField
                         label='Last name*'
-                        maxWidth='35.9rem'
                         message='Your last name as in your identity document'
                         name='lastName'
                         showMessage
@@ -34,7 +32,6 @@ const IDVDocumentUploadDetails = () => {
                     {/* TODO: Replace with DatePicker component*/}
                     <FlowTextField
                         label='Date of birth*'
-                        maxWidth='35.9rem'
                         message='Your date of birth as in your identity document'
                         name='dateOfBirth'
                         showMessage

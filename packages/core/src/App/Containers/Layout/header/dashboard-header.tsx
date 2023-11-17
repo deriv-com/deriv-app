@@ -13,7 +13,6 @@ import DerivLogoLightMobile from 'Assets/SvgComponents/header/deriv-logo-light-m
 import DerivLogoText from 'Assets/SvgComponents/header/deriv-logo-text.svg';
 import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
-import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
 import DashboardHeaderPreloader from './dashboard-header-preloader.js';
 
 const LoggedInHeader = ({ is_dark_mode }) => {

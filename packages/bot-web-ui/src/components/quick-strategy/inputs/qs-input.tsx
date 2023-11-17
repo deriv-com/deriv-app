@@ -29,7 +29,7 @@ const QSInput: React.FC<TQSInput> = observer(
         return (
             <Field name={name} key={name} id={name}>
                 {({ field, meta }: FieldProps) => {
-                    const { error, touched } = meta;
+                    const { error } = meta;
                     const has_error = error;
                     return (
                         <div
@@ -47,7 +47,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                 <Popover
                                     alignment='bottom'
                                     message={error}
-                                    is_open={!!(error && touched && has_focus)}
+                                    is_open={!!(error && has_focus)}
                                     zIndex='9999'
                                     classNameBubble='qs__warning-bubble'
                                     has_error

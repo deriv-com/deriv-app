@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
 import { ApiHelpers, config as qs_config } from '@deriv/bot-skeleton';
@@ -36,6 +36,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const [duration, setDuration] = React.useState<TDurationItemRaw | null>(null);
     const { selected_strategy, form_data, onSubmit, setValue } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
+    const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
 
     const initial_value: TFormData = {
         symbol: qs_config.QUICK_STRATEGY.DEFAULT.symbol,
@@ -72,7 +73,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form_data.symbol, form_data.tradetype, form_data.durationtype]);
 
-    const getErrors = () => {
+    const getErrors = (formikData: TFormData) => {
         const sub_schema: Record<string, any> = {};
         config.forEach(group => {
             if (!group?.length) return null;
@@ -90,49 +91,56 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                             min_error = getErrorMessage('MIN', min, 'DURATION');
                             max_error = getErrorMessage('MAX', max, 'DURATION');
                         }
-                        if (field.name === 'max_stake') {
+                        const should_validate = field.should_have
+                            ? field.should_have?.every(item => {
+                                  return formikData?.[item.key] === item.value;
+                              })
+                            : true;
+                        if (should_validate && field.name === 'max_stake') {
                             min = +form_data?.stake;
                             if (isNaN(min)) {
                                 min = +initial_value.stake;
                             }
                             min_error = getErrorMessage('MIN', min);
                         }
-                        field.validation.forEach(validation => {
-                            if (typeof validation === 'string') {
-                                switch (validation) {
-                                    case 'required':
-                                        schema = schema.required(localize('Field cannot be empty'));
-                                        break;
-                                    case 'min':
-                                        schema = schema.min(min, min_error);
-                                        break;
-                                    case 'max':
-                                        schema = schema.max(max, max_error);
-                                        break;
-                                    case 'ceil':
-                                        schema = schema.round('ceil');
-                                        break;
-                                    case 'floor':
-                                        schema = schema.round('floor');
-                                        break;
-                                    default:
-                                        break;
+                        if (should_validate) {
+                            field.validation.forEach(validation => {
+                                if (typeof validation === 'string') {
+                                    switch (validation) {
+                                        case 'required':
+                                            schema = schema.required(localize('Field cannot be empty'));
+                                            break;
+                                        case 'min':
+                                            schema = schema.min(min, min_error);
+                                            break;
+                                        case 'max':
+                                            schema = schema.max(max, max_error);
+                                            break;
+                                        case 'ceil':
+                                            schema = schema.round('ceil');
+                                            break;
+                                        case 'floor':
+                                            schema = schema.round('floor');
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                } else if (typeof validation === 'object') {
+                                    if (validation?.type) {
+                                        schema = schema[validation.type](
+                                            validation.value,
+                                            localize(validation.getMessage(validation.value))
+                                        );
+                                    }
                                 }
-                            } else if (typeof validation === 'object') {
-                                if (validation?.type) {
-                                    schema = schema[validation.type](
-                                        validation.value,
-                                        localize(validation.getMessage(validation.value))
-                                    );
-                                }
-                            }
-                        });
+                            });
+                        }
                         sub_schema[field.name] = schema;
                     }
                 }
             });
         });
-        return Yup.object().shape(sub_schema);
+        setDynamicSchema(Yup.object().shape(sub_schema));
     };
 
     const handleSubmit = (form_data: TFormData) => {
@@ -143,8 +151,9 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     return (
         <Formik
             initialValues={initial_value}
-            validationSchema={getErrors()}
+            validationSchema={dynamic_schema}
             onSubmit={handleSubmit}
+            validate={values => getErrors(values)}
             validateOnBlur
             validateOnChange
             validateOnMount

@@ -14,6 +14,7 @@ import DerivLogoText from 'Assets/SvgComponents/header/deriv-logo-text.svg';
 import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
+import DashboardHeaderPreloader from './dashboard-header-preloader.js';
 
 const LoggedInHeader = ({ is_dark_mode }) => {
     const history = useHistory();
@@ -102,15 +103,9 @@ const LoggedOutHeader = () => {
     );
 };
 
-const HeaderPreloader = () => (
-    <div className={'dashboard-header__preloader'}>
-        <HeaderItemsLoader speed={3} />
-    </div>
-);
-
 const DashboardHeader = ({ is_dark_mode, is_logged_in, is_logging_in }) => {
     if (is_logging_in) {
-        return <HeaderPreloader />;
+        return <DashboardHeaderPreloader />;
     }
 
     if (is_logged_in) {

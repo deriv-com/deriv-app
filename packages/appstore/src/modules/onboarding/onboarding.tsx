@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { localize } from '@deriv/translations';
 import { isDesktop, routes, ContentFlag } from '@deriv/shared';
-import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
+import { Button, Text, Icon, ProgressBarTracker, useTradersHubTracking } from '@deriv/components';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
@@ -27,18 +27,28 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const history = useHistory();
     const steps_list = Object.keys(contents);
     const { traders_hub, client, ui } = useStore();
-    const { is_eu_country, is_landing_company_loaded, is_logged_in, prev_account_type, setPrevAccountType } = client;
+    const { is_eu_country, is_landing_company_loaded, is_logged_in, prev_account_type, setPrevAccountType, loginid } =
+        client;
     const { is_mobile } = ui;
-    const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
+    const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen, is_first_time_visit } = traders_hub;
     const [step, setStep] = React.useState<number>(1);
 
+    const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose } = useTradersHubTracking();
+
     const prevStep = () => {
-        if (step > 1) setStep(step - 1);
+        if (step > 1) {
+            trackStepBack(step);
+            setStep(step - 1);
+        }
     };
 
     const nextStep = () => {
-        if (step < steps_list.length) setStep(step + 1);
+        if (step < steps_list.length) {
+            setStep(step + 1);
+            trackStepForward(step);
+        }
         if (step === steps_list.length) {
+            trackStepForward(step);
             toggleIsTourOpen(true);
             history.push(routes.traders_hub);
             if (is_demo_low_risk) {
@@ -49,6 +59,8 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     };
 
     const handleCloseButton = async () => {
+        trackOnboardingClose(step);
+
         toggleIsTourOpen(false);
         history.push(routes.traders_hub);
         await selectAccountType(prev_account_type);
@@ -71,6 +83,12 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
 
     const footer_description = is_eu_user ? eu_footer_text : footer_text;
+
+    useEffect(() => {
+        if (is_logged_in && is_landing_company_loaded) {
+            trackOnboardingOpen();
+        }
+    }, [is_logged_in, is_landing_company_loaded, is_first_time_visit, loginid, trackOnboardingOpen]);
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;

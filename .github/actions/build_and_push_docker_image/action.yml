@@ -31,8 +31,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Checkout 🛎️
-      uses: actions/checkout@v4
     - name: Setup Environment variables
       run: |
         echo "NAMESPACE=${{ inputs.K8S_NAMESPACE }}" >> "$GITHUB_ENV"
@@ -45,6 +43,12 @@ runs:
       shell: bash
     - name: Build docker image 🐳
       run: docker build -t ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${APP_VERSION} -t ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }} .
+      shell: bash
+    - name: Verify nginx image
+      run: |
+        set -e
+        docker run --rm ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }} nginx -t
+        echo "docker image validated successfully"
       shell: bash
     - name: Pushing Image to docker hub 🐳
       run: |

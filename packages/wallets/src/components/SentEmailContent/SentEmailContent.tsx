@@ -85,7 +85,10 @@ const SentEmailContent: React.FC<TProps> = ({ platform }) => {
                         onClick={() => {
                             if (data?.email) {
                                 verifyEmail({
-                                    type: 'account_opening',
+                                    type:
+                                        platform === 'mt5'
+                                            ? 'trading_platform_mt5_password_reset'
+                                            : 'trading_platform_dxtrade_password_reset',
                                     verify_email: data?.email,
                                 });
                                 resetCountdown();

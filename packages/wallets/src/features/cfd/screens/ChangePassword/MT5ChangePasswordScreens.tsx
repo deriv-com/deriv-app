@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
+import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import EmailIcon from '../../../../public/images/change-password-email.svg';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 
 const MT5ChangePasswordScreens = () => {
@@ -35,18 +34,19 @@ const MT5ChangePasswordScreens = () => {
             headingText: 'Confirm to change your Deriv MT5 password',
             icon: <MT5PasswordIcon />,
         },
-        {
-            bodyText: 'Please click on the link in the email to change your Deriv MT5 password.',
-            button: <WalletButton onClick={() => hide()} size='lg' text='Didn’t receive the email?' variant='ghost' />, // TODO: Add logic send email password reset
-            headingText: 'We’ve sent you an email',
-            icon: <EmailIcon />,
-        },
     ];
+
+    if (activeScreen === 2)
+        return (
+            <div className='wallets-change-password__sent-email-wrapper'>
+                <SentEmailContent />
+            </div>
+        );
 
     return (
         <WalletsActionScreen
-            desciptionSize='sm'
             description={ChangePasswordScreens[activeScreen].bodyText}
+            descriptionSize='sm'
             icon={ChangePasswordScreens[activeScreen].icon}
             renderButtons={() => ChangePasswordScreens[activeScreen].button}
             title={ChangePasswordScreens[activeScreen].headingText}

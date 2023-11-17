@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig, useExchangeRate } from '@deriv/api';
-import { WalletButton, WalletTextField, WalletsPercentageSelector } from '../../../../../../components';
+import { WalletButton, WalletText, WalletTextField, WalletsPercentageSelector } from '../../../../../../components';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import './WithdrawalCryptoForm.scss';
 
@@ -87,35 +87,44 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                                 )}
                             </Field>
                         </div>
-                        <WalletsPercentageSelector
-                            amount={
-                                !Number.isNaN(parseFloat(values.cryptoAmount)) && exchangeRate?.rates
-                                    ? parseFloat(values.cryptoAmount)
-                                    : 0
-                            }
-                            balance={activeWallet?.balance || 0}
-                            onChangePercentage={percentage => {
-                                const fraction = percentage / 100;
+                        <div className='wallets-withdrawal-crypto-form__percentage'>
+                            <WalletsPercentageSelector
+                                amount={
+                                    !Number.isNaN(parseFloat(values.cryptoAmount)) && exchangeRate?.rates
+                                        ? parseFloat(values.cryptoAmount)
+                                        : 0
+                                }
+                                balance={activeWallet?.balance || 0}
+                                onChangePercentage={percentage => {
+                                    const fraction = percentage / 100;
 
-                                return setValues({
-                                    ...values,
-                                    cryptoAmount:
-                                        !!fraction && activeWallet?.balance
-                                            ? (fraction * activeWallet?.balance).toFixed(FRACTIONAL_DIGITS_CRYPTO)
-                                            : '',
-                                    fiatAmount:
-                                        !!fraction &&
-                                        activeWallet?.balance &&
-                                        activeWallet?.currency &&
-                                        exchangeRate?.rates
-                                            ? (
-                                                  (fraction * activeWallet?.balance) /
-                                                  exchangeRate?.rates[activeWallet.currency]
-                                              ).toFixed(FRACTIONAL_DIGITS_FIAT)
-                                            : '',
-                                });
-                            }}
-                        />
+                                    return setValues({
+                                        ...values,
+                                        cryptoAmount:
+                                            !!fraction && activeWallet?.balance
+                                                ? (fraction * activeWallet?.balance).toFixed(FRACTIONAL_DIGITS_CRYPTO)
+                                                : '',
+                                        fiatAmount:
+                                            !!fraction &&
+                                            activeWallet?.balance &&
+                                            activeWallet?.currency &&
+                                            exchangeRate?.rates
+                                                ? (
+                                                      (fraction * activeWallet?.balance) /
+                                                      exchangeRate?.rates[activeWallet.currency]
+                                                  ).toFixed(FRACTIONAL_DIGITS_FIAT)
+                                                : '',
+                                    });
+                                }}
+                            />
+                            <WalletText color='less-prominent' size='xs'>
+                                {!Number.isNaN(parseFloat(values.cryptoAmount)) && activeWallet?.balance
+                                    ? Math.round(parseFloat(values.cryptoAmount) / activeWallet?.balance)
+                                    : '0'}
+                                % of available balance ({activeWallet?.balance.toFixed(FRACTIONAL_DIGITS_CRYPTO)}{' '}
+                                {activeWallet?.currency})
+                            </WalletText>
+                        </div>
                         <WithdrawalCryptoAmountConverter
                             activeWallet={activeWallet}
                             exchangeRate={exchangeRate}

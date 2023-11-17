@@ -20,7 +20,7 @@ const LoggedOutHeader = observer(() => {
     return (
         <header className='dashboard-header dashboard-header--logged-out'>
             <div className='dashboard-header__left'>
-                <div onKeyDown={handleClick} onClick={handleClick}>
+                <div onClick={handleClick} onKeyDown={handleClick}>
                     {isDesktop() ? (
                         <React.Fragment>
                             <DerivLogo className='dashboard-header__left--desktop-logo' />

@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { useSubscription } from '@deriv/api';
-import ExchangeRatesContext from '../ExchangeRatesContext';
+import ExchangeRatesContext from '../stores/ExchangeRatesContext';
 
 type TExchangeRatesProvider = {
     children: ReactNode;

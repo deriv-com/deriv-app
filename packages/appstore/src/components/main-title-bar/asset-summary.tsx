@@ -6,7 +6,7 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import { useTotalAccountBalance2, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
+import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
     const { traders_hub, client, common } = useStore();
@@ -16,9 +16,9 @@ const AssetSummary = observer(() => {
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
 
-    const platform_real_balance2 = useTotalAccountBalance2(platform_real_accounts);
-    const cfd_real_balance = useTotalAccountBalance2(cfd_real_accounts);
-    const cfd_demo_balance = useTotalAccountBalance2(cfd_demo_accounts);
+    const platform_real_balance2 = useTotalAccountBalance(platform_real_accounts);
+    const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
+    const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
 
     const is_real = selected_account_type === 'real';
 

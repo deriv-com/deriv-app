@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { TReactChangeEvent } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { useExchangeRate2 } from '@deriv/hooks';
+import { useExchangeRate } from '@deriv/hooks';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
@@ -82,7 +82,7 @@ const CryptoFiatConverter = observer(
         validateToAmount,
     }: TCryptoFiatConverterProps) => {
         const { crypto_fiat_converter } = useCashierStore();
-        const { exchange_rates } = useExchangeRate2();
+        const { exchange_rates } = useExchangeRate();
 
         const { converter_from_amount, converter_from_error, converter_to_error, converter_to_amount } =
             crypto_fiat_converter;

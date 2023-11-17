@@ -3,7 +3,7 @@ import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TReactMouseEvent } from '../../types';
-import { useExchangeRate2 } from '@deriv/hooks';
+import { useExchangeRate } from '@deriv/hooks';
 
 type TPercentageSelectorProps = {
     amount: number;
@@ -29,7 +29,7 @@ const PercentageSelector = ({
     to_currency,
 }: TPercentageSelectorProps) => {
     const [selected_percentage, setSelectedPercentage] = React.useState<number | string>('0');
-    const { exchange_rates } = useExchangeRate2();
+    const { exchange_rates } = useExchangeRate();
     React.useEffect(() => {
         if (should_percentage_reset) {
             for (let i = 1; i <= 4; i++) {

@@ -24,7 +24,7 @@ import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './account-transfer-form.scss';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
-import { useExchangeRate2 } from '@deriv/hooks';
+import { useExchangeRate } from '@deriv/hooks';
 
 type TAccountTransferFormProps = {
     error?: TError;
@@ -92,7 +92,7 @@ const AccountTransferForm = observer(
         const { is_mobile } = ui;
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
-        const { handleSubscription } = useExchangeRate2();
+        const { handleSubscription } = useExchangeRate();
 
         const {
             account_transfer_amount,

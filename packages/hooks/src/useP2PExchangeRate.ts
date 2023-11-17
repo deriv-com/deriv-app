@@ -1,8 +1,8 @@
 import React from 'react';
-import useExchangeRate2 from './useExchangeRate2';
+import useExchangeRate from './useExchangeRate';
 
 const useP2PExchangeRate = (local_currency: string) => {
-    const { handleSubscription, exchange_rates } = useExchangeRate2();
+    const { handleSubscription, exchange_rates } = useExchangeRate();
 
     React.useEffect(() => {
         handleSubscription('USD', local_currency);

@@ -1,15 +1,15 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PExchangeRate from '../useP2PExchangeRate';
-import useExchangeRate2 from '../useExchangeRate2';
+import useExchangeRate from '../useExchangeRate';
 
-jest.mock('../useExchangeRate2');
+jest.mock('../useExchangeRate');
 
-const mockUseExchangeRate2 = useExchangeRate2 as jest.MockedFunction<typeof useExchangeRate2>;
+const mockUseExchangeRate = useExchangeRate as jest.MockedFunction<typeof useExchangeRate>;
 
 describe('useP2PExchangeRate hook', () => {
     it('Should return the exchange rate for the specified local currency', () => {
         // @ts-expect-error need to come up with a way to mock the return type of usePaginatedFetch
-        mockUseExchangeRate2.mockReturnValue({
+        mockUseExchangeRate.mockReturnValue({
             handleSubscription: jest.fn(),
             exchange_rates: {
                 USD: {
@@ -26,7 +26,7 @@ describe('useP2PExchangeRate hook', () => {
     it('Should subscribe to the exchange rate when the local currency changes', () => {
         const mockHandleSubscription = jest.fn();
         // @ts-expect-error need to come up with a way to mock the return type of usePaginatedFetch
-        mockUseExchangeRate2.mockReturnValue({
+        mockUseExchangeRate.mockReturnValue({
             handleSubscription: mockHandleSubscription,
             exchange_rates: {
                 USD: {

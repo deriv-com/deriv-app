@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
-import { useCurrentAccountDetails, useExchangeRate2 } from '@deriv/hooks';
+import { useCurrentAccountDetails, useExchangeRate } from '@deriv/hooks';
 import { CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -77,7 +77,7 @@ const WithdrawalCryptoForm = observer(() => {
     } = crypto_fiat_converter;
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
     const account_details = useCurrentAccountDetails();
-    const { handleSubscription } = useExchangeRate2();
+    const { handleSubscription } = useExchangeRate();
 
     React.useEffect(() => {
         if (current_fiat_currency && crypto_currency) {

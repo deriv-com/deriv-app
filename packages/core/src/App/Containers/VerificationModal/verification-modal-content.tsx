@@ -81,6 +81,11 @@ const VerificationModalContent = observer((props: TVerificationModalContent) => 
         return key ? items[state_index][key] : items[state_index];
     };
 
+    const onStateChange = () => {
+        saveFormData();
+        nextStep();
+    };
+
     const BodyComponent = getCurrent('body');
 
     return (
@@ -94,6 +99,7 @@ const VerificationModalContent = observer((props: TVerificationModalContent) => 
                 <BodyComponent
                     index={state_index}
                     onSubmit={nextStep}
+                    onStateChange={onStateChange}
                     height='auto'
                     onCancel={prevStep}
                     onSave={saveFormData}

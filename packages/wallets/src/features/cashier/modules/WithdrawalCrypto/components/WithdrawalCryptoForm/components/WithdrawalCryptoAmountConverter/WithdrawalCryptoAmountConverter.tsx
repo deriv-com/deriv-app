@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { useActiveWalletAccount, useCurrencyConfig, useExchangeRate } from '@deriv/api';
@@ -32,6 +32,25 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
     const MINIMUM_WITHDRAWAL_AMOUNT = activeWallet?.currency
         ? getCurrencyConfig(activeWallet?.currency)?.minimum_withdrawal
         : 0;
+
+    useEffect(() => {
+        // update the amount when the exchangeRate is updated.
+        const value = parseFloat(values.cryptoAmount);
+        if (!Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency) {
+            if (isCryptoInputActive)
+                setValues({
+                    ...values,
+                    fiatAmount: (value / exchangeRate?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_FIAT),
+                });
+            else
+                setValues({
+                    ...values,
+                    cryptoAmount: (value * exchangeRate?.rates[activeWallet?.currency]).toFixed(
+                        FRACTIONAL_DIGITS_CRYPTO
+                    ),
+                });
+        }
+    }, [exchangeRate?.rates]);
 
     const validateCryptoInput = (value: string) => {
         if (!value.length) return undefined;

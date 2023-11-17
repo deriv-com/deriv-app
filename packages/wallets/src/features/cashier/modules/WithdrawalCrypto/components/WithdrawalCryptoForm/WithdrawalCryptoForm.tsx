@@ -89,7 +89,9 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                         </div>
                         <WalletsPercentageSelector
                             amount={
-                                !Number.isNaN(parseFloat(values.cryptoAmount)) ? parseFloat(values.cryptoAmount) : 0
+                                !Number.isNaN(parseFloat(values.cryptoAmount)) && exchangeRate?.rates
+                                    ? parseFloat(values.cryptoAmount)
+                                    : 0
                             }
                             balance={activeWallet?.balance || 0}
                             onChangePercentage={percentage => {

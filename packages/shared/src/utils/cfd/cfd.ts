@@ -357,11 +357,11 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         manual: { status: manual_status } = {},
     } = services;
 
-    /** Check if User was authenticated by IDV process */
     // TODO: [account-status] Remove `authenticated_with_idv_photoid` check once we have the correct status from API
-    const is_authenticated_with_idv = account_status?.status?.some(status =>
-        ['authenticated_with_idv', 'authenticated_with_idv_photoid'].includes(status)
-    );
+    const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
+    /** Check if User was authenticated by IDV process */
+    const is_authenticated_with_idv = account_status?.status?.includes('authenticated_with_idv_photoid');
+
     const is_idv_revoked = account_status?.status?.includes('idv_revoked');
 
     const acknowledged_status: string[] = ['pending', 'verified'];
@@ -431,7 +431,8 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         !poi_verified_for_bvi_labuan_vanuatu;
 
     const poi_poa_verified_for_bvi_labuan_vanuatu: boolean = poi_verified_for_bvi_labuan_vanuatu && poa_verified;
-    const poa_resubmit_for_labuan = is_authenticated_with_idv;
+    // TODO: [account-status] Remove `is_authenticated_with_idv_photoid` check once we have the correct status from API
+    const poa_resubmit_for_labuan = !is_authenticated_with_idv || is_authenticated_with_idv_photoid;
 
     return {
         poa_status,

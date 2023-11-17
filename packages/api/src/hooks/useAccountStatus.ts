@@ -93,9 +93,9 @@ const useAccountStatus = () => {
             /** the DF deposit will be blocked until the client gets age verified. */
             is_df_deposit_requires_poi: status.has('df_deposit_requires_poi'),
             /** the client has been fully authenticated by IDV. */
+            is_authenticated_with_idv: status.has('authenticated_with_idv'),
             // TODO: [account-status] Remove `authenticated_with_idv_photoid` check once we have the correct status from API
-            is_authenticated_with_idv:
-                status.has('authenticated_with_idv') || status.has('authenticated_with_idv_photoid'),
+            is_authenticated_with_idv_photo_id: status.has('authenticated_with_idv_photoid'),
             /** the client used to be fully authenticated by IDV but it was taken away due to compliance criteria. */
             is_idv_revoked: status.has('idv_revoked'),
         };

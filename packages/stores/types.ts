@@ -369,6 +369,7 @@ type TClientStore = {
     has_restricted_mt5_account: boolean;
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
+    is_bot_allowed: boolean;
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu_country: boolean;
@@ -574,6 +575,7 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
     is_account_settings_visible: boolean;
+    is_account_switcher_disabled: boolean;
     is_additional_kyc_info_modal_open: boolean;
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;

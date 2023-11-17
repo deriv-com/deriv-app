@@ -360,7 +360,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
     // TODO: [account-status] Remove `authenticated_with_idv_photoid` check once we have the correct status from API
     const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
     /** Check if User was authenticated by IDV process */
-    const is_authenticated_with_idv = account_status?.status?.includes('authenticated_with_idv_photoid');
+    const is_authenticated_with_idv = account_status?.status?.includes('authenticated_with_idv');
 
     const is_idv_revoked = account_status?.status?.includes('idv_revoked');
 

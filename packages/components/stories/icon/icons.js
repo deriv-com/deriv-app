@@ -615,6 +615,7 @@ export const icons =
         'IcVerification',
         'IcVisaDark',
         'IcVisaLight',
+        'IcWarning',
         'IcWebMoneyDark',
         'IcWebMoneyLight',
         'IcWebTerminal',

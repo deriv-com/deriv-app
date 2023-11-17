@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { HorizontalSwipe, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
-import { useExchangeRate } from '@deriv/hooks';
+import { useP2PExchangeRate } from '@deriv/hooks';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdStatus from 'Pages/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdType from './ad-type.jsx';
 
 const MyAdsRowRenderer = observer(({ row: advert }) => {
@@ -45,14 +45,14 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
     const advert_type = is_buy_advert ? <Localize i18n_default_text='Buy' /> : <Localize i18n_default_text='Sell' />;
-    const { getRate } = useExchangeRate();
+    const exchange_rate = useP2PExchangeRate(local_currency);
 
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,
         rate_type,
         rate: rate_display,
         local_currency,
-        exchange_rate: getRate(local_currency),
+        exchange_rate,
         market_rate: effective_rate,
     });
 
@@ -76,6 +76,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id, rate_type);
+    const onClickShare = () => showModal({ key: 'ShareMyAdsModal', props: { advert } });
     const onClickSwitchAd = () => {
         if (!general_store.is_barred) {
             general_store.showModal({ key: 'MyAdsFloatingRateSwitchModal', props: {} });
@@ -140,12 +141,14 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         >
                             <Icon
                                 icon={`${is_advert_active && !general_store.is_barred ? 'IcArchive' : 'IcUnarchive'}`}
-                                custom_color={'var(--general-main-1)'}
+                                custom_color='var(--general-main-1)'
                             />
                         </div>
-
                         <div className='my-ads-table__popovers-delete'>
                             <Icon icon='IcDelete' custom_color='var(--general-main-1)' onClick={onClickDelete} />
+                        </div>
+                        <div className='my-ads-table__popovers-share'>
+                            <Icon icon='IcShare' custom_color='var(--general-main-1)' onClick={onClickShare} />
                         </div>
                     </React.Fragment>
                 }
@@ -376,6 +379,18 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                         'disabled'
                                     }
                                 />
+                            </Popover>
+                        </div>
+                        <div onClick={onClickShare}>
+                            <Popover
+                                alignment='bottom'
+                                className={classNames('my-ads-table__popovers-share', {
+                                    'my-ads-table__popovers--disable':
+                                        general_store.is_barred || is_activate_ad_disabled,
+                                })}
+                                message={localize('Share')}
+                            >
+                                <Icon icon='IcShare' color={general_store.is_barred && 'disabled'} />
                             </Popover>
                         </div>
                     </div>

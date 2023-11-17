@@ -50,8 +50,8 @@ jobs:
     - name: Build Docker image and push to Docker hub and K8S
       uses: "./.github/actions/build_and_push_docker_image"
       with:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKERHUB_ORGANISATION: ${{ secrets.DOCKERHUB_ORGANISATION }}
         K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE }}
         KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
@@ -61,7 +61,7 @@ jobs:
 
   send_slack_notification:
       name: Send Slack notification
-      runs-on: Runner_16cores_Deriv-app
+      runs-on: Runner_8cores_Deriv-app
       environment: Production
       if: always()
       needs: [build_test_and_publish]

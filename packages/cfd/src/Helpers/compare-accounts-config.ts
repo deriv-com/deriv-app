@@ -13,7 +13,7 @@ const getHighlightedIconLabel = (
     is_demo?: boolean
 ): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
-    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
+    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
     // Forex for these: MT5 Financial Vanuatu, MT5 Financial Labuan
     const forex_label =
         market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN ||

@@ -229,12 +229,7 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
         col_index: 'profit',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
             const { profit_loss, contract_info } = row_obj ?? {};
-            if (
-                !profit_loss &&
-                profit_loss !== 0 &&
-                (!contract_info || (!contract_info?.profit && contract_info?.profit !== 0))
-            )
-                return;
+            if (!profit_loss && profit_loss !== 0 && !contract_info?.profit && contract_info?.profit !== 0) return;
             const profit = profit_loss ?? contract_info.profit;
             // eslint-disable-next-line consistent-return
             return (

@@ -1,12 +1,11 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import { Score } from './PasswordFieldUtils';
 
 export interface PasswordMeterProps {
-    maxWidth?: CSSProperties['maxWidth'];
     score: Score;
 }
 
-const PasswordMeter: React.FC<PasswordMeterProps> = ({ maxWidth, score }) => {
+const PasswordMeter: React.FC<PasswordMeterProps> = ({ score }) => {
     const strengthColors = {
         0: 'wallets-password__meter--initial',
         1: 'wallets-password__meter--weak',
@@ -16,7 +15,7 @@ const PasswordMeter: React.FC<PasswordMeterProps> = ({ maxWidth, score }) => {
     };
 
     return (
-        <div className='wallets-password__meter' style={{ maxWidth }}>
+        <div className='wallets-password__meter'>
             <div className={strengthColors[score ?? 0]} />
         </div>
     );

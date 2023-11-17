@@ -46,6 +46,10 @@
         cursor: unset;
         user-select: none;
 
+        &--with-icon {
+            padding-left: 4rem;
+        }
+
         &::selection {
             background-color: transparent;
         }

@@ -22,6 +22,7 @@ const ProofOfIdentityContainer = observer(
     ({
         height,
         is_from_external,
+        onStateChange,
         index = 0,
         setIsCfdPoiCompleted,
         onSubmit,
@@ -139,7 +140,10 @@ const ProofOfIdentityContainer = observer(
             }
         };
 
-        const onStateChange = status => {
+        const onUpdatingPOIVerificationModal = status => {
+            if (onStateChange) {
+                return onStateChange();
+            }
             setPOIState(status);
             onSave(index, { poi_state: status });
             onSubmit(index, { poi_state });
@@ -179,7 +183,7 @@ const ProofOfIdentityContainer = observer(
                     manual={manual}
                     needs_poa={needs_poa}
                     onfido={onfido}
-                    onStateChange={status => onStateChange(status)}
+                    onStateChange={status => onUpdatingPOIVerificationModal(status)}
                     redirect_button={redirect_button}
                     refreshNotifications={refreshNotifications}
                     residence_list={residence_list}

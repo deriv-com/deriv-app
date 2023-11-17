@@ -39,7 +39,7 @@ const ChangePassword = () => {
                             </button>
                         ))}
                     </div>
-                    <div className='wallets-change-password__content'>{tabs[activeTab].content}</div>
+                    <>{tabs[activeTab].content}</>
                 </div>
             </div>
         </ModalStepWrapper>

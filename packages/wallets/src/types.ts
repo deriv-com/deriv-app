@@ -13,6 +13,7 @@ import type {
     useDxtradeAccountsList,
     useDynamicLeverage,
     useMT5AccountsList,
+    usePOI,
     useSortedMT5Accounts,
     useTransactions,
     useTransferBetweenAccounts,
@@ -35,6 +36,7 @@ export namespace THooks {
     export type AllWalletAccounts = NonNullable<ReturnType<typeof useAllWalletAccounts>['data']>[number];
     export type DynamicLeverage = NonNullable<ReturnType<typeof useDynamicLeverage>['data']>[number];
     export type CryptoTransactions = NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
+    export type POI = NonNullable<ReturnType<typeof usePOI>['data']>;
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];
     export type Transactions = NonNullable<ReturnType<typeof useTransactions>['data']>[number];
     export type TransferAccount = NonNullable<
@@ -72,3 +74,6 @@ export namespace TDisplayBalance {
 }
 
 export type TGenericSizes = '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
+
+export type TWalletLandingCompanyName = Extract<THooks.MT5AccountsList['landing_company_short'], 'malta' | 'svg'>;
+export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_short'];

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import QRCode from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import {
     Timeline,
     DesktopWrapper,
@@ -140,7 +140,7 @@ const TwoFactorAuthentication = observer(() => {
                                     <React.Fragment>
                                         {qr_secret_key && (
                                             <div className='two-factor__qr--wrapper'>
-                                                <QRCode value={qr_secret_key} />
+                                                <QRCodeSVG value={qr_secret_key} />
                                             </div>
                                         )}
 

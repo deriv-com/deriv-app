@@ -24,7 +24,7 @@ export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
-type CFD_Platform = 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
+export type CFD_Platform = 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;
@@ -227,7 +227,7 @@ export type TJurisdictionCheckBoxProps = {
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
 };
-type TOpenAccountTransferMeta = {
+export type TOpenAccountTransferMeta = {
     category: string;
     type?: string;
 };

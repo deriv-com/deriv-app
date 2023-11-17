@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
 import { TError } from '../../../../types';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
@@ -69,7 +69,14 @@ describe('<AccountTransferForm />', () => {
                             is_dxtrade: false,
                             balance: 0,
                         },
-                        selected_to: { currency: 'USD', is_mt: false, is_crypto: false, is_dxtrade: false, balance: 0 },
+                        selected_to: {
+                            currency: 'USD',
+                            is_mt: false,
+                            is_crypto: false,
+                            is_dxtrade: false,
+                            balance: 0,
+                            status: '',
+                        },
                         transfer_fee: 2,
                         transfer_limit: {
                             min: 0,
@@ -115,7 +122,11 @@ describe('<AccountTransferForm />', () => {
 
     const renderAccountTransferForm = () => {
         render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore}>
+                    <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+                </CashierProviders>
+            ),
         });
     };
 
@@ -277,6 +288,22 @@ describe('<AccountTransferForm />', () => {
         renderAccountTransferForm();
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
+    });
+
+    it('should display "no new positions can be opened" when transferring amount to a migrated svg account with position', () => {
+        mockRootStore.modules.cashier.account_transfer.selected_to.status = 'migrated_with_position';
+        renderAccountTransferForm();
+
+        expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
+        expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
+    });
+
+    it('should display "no new positions can be opened" when transferring amount to a migrated svg account without position', () => {
+        mockRootStore.modules.cashier.account_transfer.selected_to.status = 'migrated_without_position';
+        renderAccountTransferForm();
+
+        expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
+        expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
     });
 
     describe('<Dropdown />', () => {

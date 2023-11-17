@@ -9,6 +9,7 @@ import {
     getCurrencyName,
     getPlatformSettings,
     validNumber,
+    MT5_ACCOUNT_STATUS,
     routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -23,6 +24,7 @@ import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './account-transfer-form.scss';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
+import { useExchangeRate } from '@deriv/hooks';
 
 type TAccountTransferFormProps = {
     error?: TError;
@@ -90,6 +92,7 @@ const AccountTransferForm = observer(
         const { is_mobile } = ui;
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
+        const { handleSubscription } = useExchangeRate();
 
         const {
             account_transfer_amount,
@@ -120,9 +123,13 @@ const AccountTransferForm = observer(
             resetConverter,
         } = crypto_fiat_converter;
 
+        const is_migration_status_present =
+            selected_to.status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION ||
+            selected_to.status === MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
+
         const [from_accounts, setFromAccounts] = React.useState({});
         const [to_accounts, setToAccounts] = React.useState({});
-        const [transfer_to_hint, setTransferToHint] = React.useState<string>();
+        const [transfer_to_hint, setTransferToHint] = React.useState<JSX.Element>();
 
         const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
@@ -182,6 +189,13 @@ const AccountTransferForm = observer(
             return [];
         };
 
+        React.useEffect(() => {
+            if (selected_from?.currency && selected_to?.currency) {
+                const base_currency = selected_from.currency;
+                const target_currency = selected_to.currency;
+                handleSubscription(base_currency, target_currency);
+            }
+        }, [selected_from, selected_to]);
         React.useEffect(() => {
             onMount();
         }, [onMount]);
@@ -340,16 +354,24 @@ const AccountTransferForm = observer(
                 return internal_remaining_transfers?.available;
             };
 
-            remaining_transfers = getRemainingTransfers();
-            has_reached_maximum_daily_transfers = !Number(remaining_transfers);
+            remaining_transfers = Number(getRemainingTransfers() ?? 0);
+            has_reached_maximum_daily_transfers = !remaining_transfers;
 
-            const hint =
-                remaining_transfers && Number(remaining_transfers) === 1
-                    ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
-                    : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
-            setTransferToHint(hint);
+            let hint_text;
+            if (is_migration_status_present) {
+                hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
+            } else {
+                const transfer_text = remaining_transfers > 1 ? 'transfers' : 'transfer';
+                hint_text = (
+                    <Localize
+                        i18n_default_text='You have {{remaining_transfers}} {{transfer_text}} remaining for today.'
+                        values={{ remaining_transfers, transfer_text }}
+                    />
+                );
+            }
+            setTransferToHint(hint_text);
             resetConverter();
-        }, [selected_to, selected_from, account_limits]); // eslint-disable-line react-hooks/exhaustive-deps
+        }, [account_limits, is_migration_status_present, selected_from, selected_to]); // eslint-disable-line react-hooks/exhaustive-deps
 
         const is_mt5_restricted =
             selected_from?.is_mt &&

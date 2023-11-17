@@ -9,7 +9,7 @@ import {
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
@@ -59,10 +59,7 @@ const AppWithoutTranslation = ({ root_store }) => {
             Analytics.initialise({
                 growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
                 growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
-                rudderstackKey:
-                    process.env.NODE_ENV === 'production'
-                        ? process.env.RUDDERSTACK_PRODUCTION_KEY
-                        : process.env.RUDDERSTACK_STAGING_KEY,
+                rudderstackKey: process.env.RUDDERSTACK_KEY,
                 enableDevMode: process.env.NODE_ENV !== 'production',
             });
         }
@@ -94,7 +91,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                     <MobxContentProvider store={root_store}>
                         <APIProvider>
                             <StoreProvider store={root_store}>
-                                <AppContent passthrough={platform_passthrough} />
+                                <ExchangeRatesProvider>
+                                    <AppContent passthrough={platform_passthrough} />
+                                </ExchangeRatesProvider>
                             </StoreProvider>
                         </APIProvider>
                     </MobxContentProvider>

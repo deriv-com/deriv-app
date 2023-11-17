@@ -3,7 +3,7 @@ import { Button, Clipboard, InlineMessage, Loading, Text } from '@deriv/componen
 import { useDepositCryptoAddress } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import QRCode from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import { DepositCryptoDisclaimers } from '../deposit-crypto-disclaimers';
 import './deposit-crypto-wallet-address.scss';
 
@@ -30,7 +30,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
 
     return (
         <>
-            <QRCode
+            <QRCodeSVG
                 value={deposit_crypto_address || ''}
                 size={is_mobile ? 128 : 160}
                 className='deposit-crypto-wallet-address__qrcode-container'

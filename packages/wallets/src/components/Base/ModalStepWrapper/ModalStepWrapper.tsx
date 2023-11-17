@@ -7,19 +7,19 @@ import { WalletText } from '../WalletText';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
-    closeOnEscape?: boolean;
     renderFooter?: () => ReactNode;
     shouldFixedFooter?: boolean;
     shouldHideHeader?: boolean;
+    shouldPreventCloseOnEscape?: boolean;
     title?: string;
 };
 
 const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     children,
-    closeOnEscape = false,
     renderFooter,
     shouldFixedFooter = true,
     shouldHideHeader = false,
+    shouldPreventCloseOnEscape = false,
     title,
 }) => {
     const { hide } = useModal();
@@ -27,7 +27,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     const fixedFooter = shouldFixedFooter && hasRenderFooter;
 
     useEventListener('keydown', (event: KeyboardEvent) => {
-        if (closeOnEscape && event.key === 'Escape') {
+        if (!shouldPreventCloseOnEscape && event.key === 'Escape') {
             hide();
         }
     });

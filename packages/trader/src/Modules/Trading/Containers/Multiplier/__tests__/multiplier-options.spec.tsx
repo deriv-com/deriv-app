@@ -1,8 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import TraderProviders from '../../../../../trader-providers';
+import { TTradeStore } from 'Types';
+import { TCoreStores } from '@deriv/stores/types';
 import MultiplierOptions from '../multiplier-options';
+import TraderProviders from '../../../../../trader-providers';
+
+type TResponse = {
+    proposal: { commission: string; limit_order: { stop_out: { order_amount: string } } };
+    echo_req: { contract_type: string; amount: number };
+    subscription: Record<string, unknown>;
+};
 
 const default_mocked_props = {
     toggleModal: jest.fn(),
@@ -27,19 +35,19 @@ jest.mock('Modules/Trading/Components/Form/TradeParams/Multiplier/info', () =>
     ))
 );
 jest.mock('Modules/Trading/Components/Form/RadioGroupWithInfoMobile', () =>
-    jest.fn(() => (
-        <div>
-            <span>RadioGroupWithInfoMobile component</span>
-        </div>
-    ))
+    jest.fn(() => <div>RadioGroupWithInfoMobile component</div>)
 );
 jest.mock('Stores/Modules/Trading/Helpers/preview-proposal', () => ({
     ...jest.requireActual('Stores/Modules/Trading/Helpers/preview-proposal'),
-    requestPreviewProposal: (store, new_store, fn) =>
+    requestPreviewProposal: (
+        store: TTradeStore,
+        fn: (param: TResponse) => void,
+        new_store: { amount: string | number }
+    ) =>
         fn({
             proposal: { commission: '1%', limit_order: { stop_out: { order_amount: '10' } } },
             echo_req: { contract_type: 'MULTUP', amount: 20 },
-            subscription: { id: '123' },
+            subscription: {},
         }),
 }));
 jest.mock('@deriv/shared', () => ({
@@ -50,16 +58,16 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<MultiplierOptions />', () => {
-    const mockMultiplierOptions = (mocked_store, mocked_props) => {
+    const mockMultiplierOptions = (mocked_store: TCoreStores) => {
         return (
             <TraderProviders store={mocked_store}>
-                <MultiplierOptions {...mocked_props} />
+                <MultiplierOptions {...default_mocked_props} />
             </TraderProviders>
         );
     };
     it('should render child components', () => {
         const mock_root_store = mockStore(default_mock_store);
-        render(mockMultiplierOptions(mock_root_store, default_mocked_props));
+        render(mockMultiplierOptions(mock_root_store));
 
         expect(screen.getByText(/MultipliersInfo component/i)).toBeInTheDocument();
         expect(screen.getByText(/0/i)).toBeInTheDocument();
@@ -76,15 +84,15 @@ describe('<MultiplierOptions />', () => {
             },
         };
         const mock_root_store = mockStore(new_mocked_store);
-        const { rerender } = render(mockMultiplierOptions(mock_root_store, default_mocked_props));
+        const { rerender } = render(mockMultiplierOptions(mock_root_store));
 
         expect(screen.getByText(/0/i)).toBeInTheDocument();
 
-        rerender(mockMultiplierOptions(mock_root_store, default_mocked_props));
+        rerender(mockMultiplierOptions(mock_root_store));
 
         expect(screen.getByText(/20/i)).toBeInTheDocument();
     });
-    it('should not change the amount after rerendering if echo_req.amount !== amount and amount is falsy', () => {
+    it('should not change the amount after rerendering if echo_req.amount !== amount', () => {
         const new_mocked_store = { ...default_mock_store };
         new_mocked_store.modules = {
             trade: {
@@ -95,9 +103,7 @@ describe('<MultiplierOptions />', () => {
             },
         };
         const mock_root_store = mockStore(new_mocked_store);
-        const { rerender } = render(mockMultiplierOptions(mock_root_store, default_mocked_props));
-
-        rerender(mockMultiplierOptions(mock_root_store, default_mocked_props));
+        render(mockMultiplierOptions(mock_root_store));
 
         expect(screen.queryByText(/20/i)).not.toBeInTheDocument();
     });

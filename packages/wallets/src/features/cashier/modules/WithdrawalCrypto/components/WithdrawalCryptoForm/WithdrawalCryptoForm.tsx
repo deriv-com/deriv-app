@@ -80,7 +80,6 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                                                 ? getCurrencyConfig(activeWallet?.currency)?.name
                                                 : ''
                                         } cryptocurrency wallet address`}
-                                        maxWidth='100%'
                                         message={errors.cryptoAddress}
                                         showMessage
                                     />

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useRef, useState 
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 import useDevice from '../../hooks/useDevice';
-import { TPlatforms, TMarketTypes } from '../../types';
+import { TMarketTypes, TPlatforms } from '../../types';
 
 type TModalState = {
     marketType?: TMarketTypes.All;

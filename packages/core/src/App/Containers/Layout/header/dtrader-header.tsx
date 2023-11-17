@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, platforms } from '@deriv/shared';
+import { useHistory } from 'react-router-dom';
+import { routes, getDecimalPlaces, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 // import { useWalletMigration } from '@deriv/hooks';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
@@ -39,7 +39,8 @@ const DTraderHeader = observer(() => {
         is_account_switcher_disabled,
         is_accounts_switcher_on,
         is_app_disabled,
-        is_dark_mode_on,
+        is_desktop,
+        is_mobile,
         is_route_modal_on,
         openRealAccountSignup,
         toggleAccountsDialog,
@@ -54,6 +55,8 @@ const DTraderHeader = observer(() => {
         toggleNotificationsModal,
     } = notifications;
     const { setTogglePlatformType } = traders_hub;
+
+    const history = useHistory();
 
     const addUpdateNotification = () => addNotificationMessage(client_notifications?.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -106,37 +109,36 @@ const DTraderHeader = observer(() => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    <DesktopWrapper>
+                    {is_desktop && (
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
                             setTogglePlatformType={setTogglePlatformType}
                             current_language={current_language}
                         />
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
-
-                        {header_extension && is_logged_in && (
-                            <div className='header__menu-left-extensions'>{header_extension}</div>
-                        )}
-                    </MobileWrapper>
-                    <DesktopWrapper>
-                        <TradersHubHomeButton is_dark_mode={is_dark_mode_on} />
-                    </DesktopWrapper>
+                    )}
+                    {is_mobile && (
+                        <React.Fragment>
+                            <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+                            {header_extension && is_logged_in && (
+                                <div className='header__menu-left-extensions'>{header_extension}</div>
+                            )}
+                        </React.Fragment>
+                    )}
+                    {is_desktop && <TradersHubHomeButton />}
                     <MenuLinks />
                 </div>
 
                 <div
                     className={classNames('header__menu-right', {
-                        'header__menu-right--hidden': isMobile() && is_logging_in,
+                        'header__menu-right--hidden': is_mobile && is_logging_in,
                     })}
                 >
-                    <DesktopWrapper>
+                    {is_desktop && (
                         <div className='header__menu--dtrader--separator--account'>
                             <div className='header__menu--dtrader--separator' />
                         </div>
-                    </DesktopWrapper>
+                    )}
                     {(is_logging_in || is_switching) && (
                         <div
                             id='dt_core_header_acc-info-preloader'
@@ -145,7 +147,7 @@ const DTraderHeader = observer(() => {
                                 'acc-info__preloader__dtrader--is-crypto': getDecimalPlaces(currency) > 2,
                             })}
                         >
-                            <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />
+                            <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />
                         </div>
                     )}
                     <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>

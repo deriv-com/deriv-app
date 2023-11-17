@@ -98,7 +98,7 @@ export default class DataCollectionStore {
                 {
                     ...(this.should_post_xml ? getPayload() : {}),
                     method: 'POST',
-                    mode: 'cors',
+                    mode: 'no-cors',
                 }
             )
                 .then(() => {

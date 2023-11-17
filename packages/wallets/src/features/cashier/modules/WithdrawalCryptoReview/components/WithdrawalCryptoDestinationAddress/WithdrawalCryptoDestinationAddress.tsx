@@ -13,7 +13,7 @@ const WithdrawalCryptoDestinationAddress = () => {
                 </WalletText>
             </div>
             <div className='wallets-withdrawal-crypto-destination-address__content'>
-                <WalletText lineHeight={isMobile ? 'sm' : 'xl'} size={isMobile ? 'sm' : 'lg'} weight='bold'>
+                <WalletText size='sm' weight='bold'>
                     1FfmbHfnpaZjKFvyi1okTjJJusN455paPH
                 </WalletText>
                 <WalletClipboard

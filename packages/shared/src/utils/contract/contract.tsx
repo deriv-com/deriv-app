@@ -257,3 +257,17 @@ export const getLocalizedTurbosSubtype = (contract_type = '') => {
         <Localize i18n_default_text='Short' />
     );
 };
+
+export const clickAndKeyEventHandler = (
+    callback: () => void,
+    e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
+) => {
+    if (e) {
+        e.preventDefault();
+        if (e.type !== 'keydown' || (e.type === 'keydown' && (e as React.KeyboardEvent).key === 'Enter')) {
+            callback();
+        }
+    } else {
+        callback();
+    }
+};

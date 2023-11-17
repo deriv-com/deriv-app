@@ -19,19 +19,8 @@ import Verified from '../../../Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = observer(
-    ({
-        height,
-        is_from_external,
-        onStateChange,
-        index = 0,
-        setIsCfdPoiCompleted,
-        onSubmit,
-        onSave,
-        getChangeableFields,
-        updateAccountStatus,
-    }) => {
+    ({ height, is_from_external, onStateChange, setIsCfdPoiCompleted, getChangeableFields, updateAccountStatus }) => {
         const history = useHistory();
-        const [poi_state, setPOIState] = React.useState(identity_status_codes.none);
         const [api_error, setAPIError] = React.useState();
         const [has_require_submission, setHasRequireSubmission] = React.useState(false);
         const [residence_list, setResidenceList] = React.useState([]);
@@ -67,8 +56,6 @@ const ProofOfIdentityContainer = observer(
         };
 
         const loadResidenceList = React.useCallback(() => {
-            setAPIError(null);
-            setStatusLoading(true);
             fetchResidenceList().then(response_residence_list => {
                 if (response_residence_list.error) {
                     setAPIError(response_residence_list.error);
@@ -76,7 +63,6 @@ const ProofOfIdentityContainer = observer(
                     setResidenceList(response_residence_list.residence_list);
                 }
             });
-            setStatusLoading(false);
         }, [fetchResidenceList]);
 
         React.useEffect(() => {
@@ -96,6 +82,7 @@ const ProofOfIdentityContainer = observer(
                         return;
                     }
                     loadResidenceList();
+                    setStatusLoading(false);
                 });
             }
         }, [loadResidenceList, is_switching]);
@@ -140,15 +127,6 @@ const ProofOfIdentityContainer = observer(
             }
         };
 
-        const onUpdatingPOIVerificationModal = status => {
-            if (onStateChange) {
-                return onStateChange;
-            }
-            setPOIState(status);
-            onSave(index, { poi_state: status });
-            onSubmit(index, { poi_state });
-        };
-
         const redirect_button = should_show_redirect_btn && (
             <Button primary className='proof-of-identity__redirect' onClick={onClickRedirectButton}>
                 <Localize
@@ -183,7 +161,7 @@ const ProofOfIdentityContainer = observer(
                     manual={manual}
                     needs_poa={needs_poa}
                     onfido={onfido}
-                    onStateChange={status => onUpdatingPOIVerificationModal(status)}
+                    onStateChange={onStateChange}
                     redirect_button={redirect_button}
                     refreshNotifications={refreshNotifications}
                     residence_list={residence_list}

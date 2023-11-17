@@ -31,8 +31,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Checkout 🛎️
-      uses: actions/checkout@v4
     - name: Setup Environment variables
       run: |
         echo "NAMESPACE=${{ inputs.K8S_NAMESPACE }}" >> "$GITHUB_ENV"
@@ -63,5 +61,6 @@ runs:
         git clone https://github.com/binary-com/devops-ci-scripts
         cd devops-ci-scripts/k8s-build_tools
         echo $CA_CRT | base64 --decode > ca.crt
+        export CA="ca.crt"
         ./release.sh ${APP_NAME} ${{ github.ref_name }}
       shell: bash

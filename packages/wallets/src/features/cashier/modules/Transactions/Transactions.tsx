@@ -79,6 +79,7 @@ const Transactions = () => {
                     icon={<FilterIcon />}
                     label='Filter'
                     list={filterOptionsList}
+                    name='wallets-transactions__dropdown'
                     onSelect={value => setFilterValue(value)}
                     value={filterValue}
                 />

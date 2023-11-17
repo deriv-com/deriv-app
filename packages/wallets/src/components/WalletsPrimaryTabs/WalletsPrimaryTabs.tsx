@@ -11,7 +11,7 @@ export const useTabs = () => {
     const context = useContext(TabsContext);
 
     if (!context) {
-        throw new Error('Seems you forgot to wrap the components in "<Tabs />"');
+        throw new Error('Seems you forgot to wrap the components in "<WalletsPrimaryTabs />"');
     }
 
     return context;
@@ -21,7 +21,7 @@ type TTabsProps = {
     className?: string;
 };
 
-export const Tabs = ({ children, className }: React.PropsWithChildren<TTabsProps>) => {
+export const WalletsPrimaryTabs = ({ children, className }: React.PropsWithChildren<TTabsProps>) => {
     const [activeTabIndex, setActiveTabIndex] = useState(0);
 
     return (
@@ -31,4 +31,4 @@ export const Tabs = ({ children, className }: React.PropsWithChildren<TTabsProps
     );
 };
 
-export default Tabs;
+export default WalletsPrimaryTabs;

@@ -48,6 +48,7 @@ const TradersHubHeader = observer(() => {
         toggleNeedRealAccountForCashierModal,
         toggleReadyToDepositModal,
     } = ui;
+
     const history = useHistory();
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);

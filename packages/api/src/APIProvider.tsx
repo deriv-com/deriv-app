@@ -1,10 +1,13 @@
-import React, { PropsWithChildren, useEffect, useRef } from 'react';
+import React, { PropsWithChildren, createContext, useContext, useEffect, useRef } from 'react';
 // @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import APIContext from './APIContext';
+
+// Don't need to type `deriv_api` here, We will be using these methods inside
+// the `useQuery`, `useMutation` and `useSubscription` hook to make it type-safe.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const APIContext = createContext<Record<string, any> | null>(null);
 
 declare global {
     interface Window {
@@ -37,7 +40,7 @@ const handleReconnection = (wss_url: string) => {
     if (currentWebsocket instanceof WebSocket && [2, 3].includes(currentWebsocket.readyState)) {
         clearTimeout(timer_id);
         timer_id = setTimeout(() => {
-            initializeDerivWS();
+            initializeDerivAPI();
         }, 500);
     }
 };
@@ -47,15 +50,20 @@ const initializeWebSocket = (wss_url: string) => {
         window.WSConnections = {};
     }
 
-    window.WSConnections[wss_url] = new WebSocket(wss_url);
-    window.WSConnections[wss_url].addEventListener('close', () => handleReconnection(wss_url));
+    if (!window.WSConnections[wss_url] || !(window.WSConnections[wss_url] instanceof WebSocket)) {
+        window.WSConnections[wss_url] = new WebSocket(wss_url);
+        window.WSConnections[wss_url].addEventListener('close', () => handleReconnection(wss_url));
+    }
 
     return window.WSConnections[wss_url];
 };
 
-// This is a temporary workaround to share a single `DerivAPIBasic` instance for every unique URL.
-// Later once we have each package separated we won't need this anymore and can remove this.
-const initializeDerivWS = (): DerivAPIBasic => {
+/**
+ * Initializes a DerivAPI instance for the global window. This enables a standalone connection
+ * without causing race conditions with deriv-app core stores.
+ * @returns {DerivAPIBasic} The initialized DerivAPI instance.
+ */
+const initializeDerivAPI = (): DerivAPIBasic => {
     if (!window.DerivAPI) {
         window.DerivAPI = {};
     }
@@ -83,7 +91,7 @@ type TAPIProviderProps = {
 
 const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
     const WS = useWS();
-    const standaloneDerivAPI = useRef(standalone ? initializeDerivWS() : null);
+    const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI() : null);
 
     useEffect(() => {
         let interval_id: NodeJS.Timer;
@@ -96,13 +104,21 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     }, [standalone]);
 
     return (
-        <APIContext.Provider value={standalone ? standaloneDerivAPI.current : WS}>
+        <APIContext.Provider value={{ derivAPI: standalone ? standaloneDerivAPI.current : WS }}>
             <QueryClientProvider client={queryClient}>
                 {children}
                 {/* <ReactQueryDevtools /> */}
             </QueryClientProvider>
         </APIContext.Provider>
     );
+};
+
+export const useAPIContext = () => {
+    const context = useContext(APIContext);
+    if (!context) {
+        throw new Error('useAPIContext must be used within APIProvider');
+    }
+    return context;
 };
 
 export default APIProvider;

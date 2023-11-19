@@ -45,12 +45,13 @@ const handleReconnection = (wss_url: string) => {
     }
 };
 
-const initializeWebSocket = (wss_url: string) => {
+const getWebsocketInstance = (wss_url: string) => {
     if (!window.WSConnections) {
         window.WSConnections = {};
     }
 
-    if (!window.WSConnections[wss_url] || !(window.WSConnections[wss_url] instanceof WebSocket)) {
+    const existingWebsocketInstance = window.WSConnections[wss_url];
+    if (!existingWebsocketInstance || !(existingWebsocketInstance instanceof WebSocket)) {
         window.WSConnections[wss_url] = new WebSocket(wss_url);
         window.WSConnections[wss_url].addEventListener('close', () => handleReconnection(wss_url));
     }
@@ -73,7 +74,7 @@ const initializeDerivAPI = (): DerivAPIBasic => {
     const language = localStorage.getItem('i18n_language');
     const brand = 'deriv';
     const wss_url = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
-    const websocketConnection = initializeWebSocket(wss_url);
+    const websocketConnection = getWebsocketInstance(wss_url);
 
     if (!window.DerivAPI?.[wss_url]) {
         window.DerivAPI[wss_url] = new DerivAPIBasic({ connection: websocketConnection });

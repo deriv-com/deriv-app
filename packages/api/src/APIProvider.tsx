@@ -36,12 +36,16 @@ let timer_id: NodeJS.Timer;
  */
 const handleReconnection = (wss_url: string) => {
     if (!window.WSConnections) return;
-    const currentWebsocket = window.WSConnections[wss_url];
-    if (currentWebsocket instanceof WebSocket && [2, 3].includes(currentWebsocket.readyState)) {
+    const existingWebsocketInstance = window.WSConnections[wss_url];
+    if (
+        !existingWebsocketInstance ||
+        !(existingWebsocketInstance instanceof WebSocket) ||
+        [2, 3].includes(existingWebsocketInstance.readyState)
+    ) {
         clearTimeout(timer_id);
         timer_id = setTimeout(() => {
             initializeDerivAPI();
-        }, 500);
+        }, 1000);
     }
 };
 
@@ -51,7 +55,11 @@ const getWebsocketInstance = (wss_url: string) => {
     }
 
     const existingWebsocketInstance = window.WSConnections[wss_url];
-    if (!existingWebsocketInstance || !(existingWebsocketInstance instanceof WebSocket)) {
+    if (
+        !existingWebsocketInstance ||
+        !(existingWebsocketInstance instanceof WebSocket) ||
+        [2, 3].includes(existingWebsocketInstance.readyState)
+    ) {
         window.WSConnections[wss_url] = new WebSocket(wss_url);
         window.WSConnections[wss_url].addEventListener('close', () => handleReconnection(wss_url));
     }

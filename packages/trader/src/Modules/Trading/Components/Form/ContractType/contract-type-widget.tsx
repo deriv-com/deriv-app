@@ -43,7 +43,7 @@ const ContractTypeWidget = observer(
 
         React.useEffect(() => {
             if (!is_dialog_open) return;
-            const endpoint = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/stream`;
+            const endpoint = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/stream?search=description`;
 
             fetch(endpoint, {
                 headers: {

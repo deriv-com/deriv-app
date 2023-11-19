@@ -13,7 +13,6 @@ interface WalletPasswordFieldProps extends WalletTextFieldProps {
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     label,
-    maxWidth = '33rem',
     onChange,
     password,
     shouldDisablePasswordMeter = false,
@@ -25,7 +24,6 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
         <div className='wallets-password'>
             <WalletTextField
                 label={label}
-                maxWidth={maxWidth}
                 message={message}
                 onChange={onChange}
                 pattern={passwordPattern}
@@ -36,7 +34,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 type={viewPassword ? 'text' : 'password'}
                 value={password}
             />
-            {!shouldDisablePasswordMeter && <PasswordMeter maxWidth={maxWidth} score={score as Score} />}
+            {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
         </div>
     );
 };

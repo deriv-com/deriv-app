@@ -10,7 +10,7 @@ import { getContractTypes, isMajorPairsSymbol } from '../../../../Helpers/contra
 import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { TContractType, TList } from '../types';
+import { TContractType, TList, TVideo } from '../types';
 
 type TInfo = {
     handleSelect: (
@@ -19,7 +19,7 @@ type TInfo = {
     ) => void;
     item: TContractType;
     list: TList[];
-    videos: object[];
+    videos: TVideo[];
 };
 
 const TABS = {

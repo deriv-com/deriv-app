@@ -17,11 +17,12 @@ import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-h
 import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
 import ContractTypeDescriptionVideo from './contract-type-description-video';
 import { VANILLALONG, TURBOS } from '@deriv/shared';
+import { TVideo } from 'Modules/Trading/Components/Form/ContractType/types';
 
 type TTradeCategoriesGIFProps = {
     category?: string;
     selected_contract_type?: string;
-    videos?: object[];
+    videos?: TVideo[];
 };
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs

@@ -1,11 +1,13 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
 import VideoStream from 'App/Components/Elements/VideoStream';
+import { getDescriptionVideoId } from 'Modules/Trading/Helpers/video-config';
+import { TVideo } from 'Modules/Trading/Components/Form/ContractType/types';
 
 type TContractTypeDescriptionVideo = {
     data_testid?: string;
     selected_contract_type?: string;
-    videos?: object[];
+    videos?: TVideo[];
 };
 
 const ContractTypeDescriptionVideo = ({
@@ -14,13 +16,8 @@ const ContractTypeDescriptionVideo = ({
     videos,
 }: TContractTypeDescriptionVideo) => {
     const { ui } = useStore();
-    const { is_dark_mode_on, is_mobile } = ui;
-    const video = videos?.find(
-        (video: any) =>
-            video.meta.name ===
-            `dtrader_${selected_contract_type}_description_${is_dark_mode_on ? 'dark' : 'light'}.mp4`
-    );
-    const video_id = (video as any)?.uid;
+    const { is_mobile } = ui;
+    const video_id = getDescriptionVideoId(videos, selected_contract_type);
     if (!selected_contract_type) {
         return null;
     }

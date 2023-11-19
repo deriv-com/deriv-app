@@ -1,14 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import VideoStream from '../video-stream';
-import { getDescriptionVideoId } from 'Modules/Trading/Helpers/video-config';
 
 const video_stream_testid = 'dt_video_stream';
 
 const mocked_props = {
     height: 270,
     preload: 'auto',
-    src: getDescriptionVideoId('vanilla', false),
+    src: 'test_video_id',
     test_id: video_stream_testid,
 };
 

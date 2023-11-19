@@ -1,29 +1,21 @@
-import {
-    CF_STREAM_CUSTOMER_URL,
-    DESCRIPTION_VIDEO_ID,
-    getDescriptionVideoId,
-    getVideoDownloadUrl,
-} from '../video-config';
+import { TVideo } from 'Modules/Trading/Components/Form/ContractType/types';
+import { getDescriptionVideoId } from '../video-config';
+
+const vanilla_id = 'test_vanilla_video_id';
+const turbos_id = 'test_turbos_video_id';
+const videos = [
+    { meta: { name: 'dtrader_vanilla_description_light.mp4' }, uid: vanilla_id },
+    { meta: { name: 'dtrader_turbos_description_light.mp4' }, uid: turbos_id },
+] as TVideo[];
 
 describe('getDescriptionVideoId', () => {
-    it('should return an id for Vanillas description video in light theme', () => {
-        expect(getDescriptionVideoId('vanilla', false)).toEqual(DESCRIPTION_VIDEO_ID.vanilla.light);
+    it('should return an id for Vanillas description video', () => {
+        expect(getDescriptionVideoId(videos, 'vanilla')).toEqual(vanilla_id);
     });
-    it('should return an id for Turbos description video in dark theme', () => {
-        expect(getDescriptionVideoId('turbos', true)).toEqual(DESCRIPTION_VIDEO_ID.turbos.dark);
+    it('should return an id for Turbos description video', () => {
+        expect(getDescriptionVideoId(videos, 'turbos')).toEqual(turbos_id);
     });
-    it('should return undefined when called with empty arguments', () => {
-        expect(getDescriptionVideoId()).toEqual(undefined);
-    });
-});
-
-describe('getVideoDownloadUrl', () => {
-    it('should return a download URL for Vanillas description video in light theme', () => {
-        expect(getVideoDownloadUrl('vanilla', false)).toEqual(
-            `${CF_STREAM_CUSTOMER_URL}${DESCRIPTION_VIDEO_ID.vanilla.light}/downloads/default.mp4`
-        );
-    });
-    it('should return an empty string if called with empty arguments', () => {
-        expect(getVideoDownloadUrl()).toEqual('');
+    it('should return empty string when called with empty arguments', () => {
+        expect(getDescriptionVideoId()).toEqual('');
     });
 });

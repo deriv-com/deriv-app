@@ -9,8 +9,9 @@ import {
     getContractTypeCategoryIcons,
     getCategoriesSortedByKey,
 } from '../../../Helpers/contract-type';
-import { TContractCategory, TContractType, TList } from './types';
+import { TContractCategory, TContractType, TList, TVideo } from './types';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { getDescriptionVideos } from 'Modules/Trading/Helpers/video-config';
 
 type TContractTypeWidget = {
     name: string;
@@ -30,7 +31,7 @@ const ContractTypeWidget = observer(
     ({ name, value, list, onChange, languageChanged, unavailable_trade_types_list = [] }: TContractTypeWidget) => {
         const {
             active_symbols: { active_symbols },
-            ui: { is_mobile },
+            ui: { is_dark_mode_on, is_mobile },
         } = useStore();
         const { symbol } = useTraderStore();
         const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
@@ -39,21 +40,13 @@ const ContractTypeWidget = observer(
         const [selected_category, setSelectedCategory] = React.useState<TList['key']>('All');
         const [search_query, setSearchQuery] = React.useState('');
         const [item, setItem] = React.useState<TContractType | null>(null);
-        const [videos, setVideos] = React.useState<object[]>([]);
+        const [videos, setVideos] = React.useState<TVideo[]>([]);
 
         React.useEffect(() => {
-            if (!is_dialog_open) return;
-            const endpoint = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/stream?search=description`;
-
-            fetch(endpoint, {
-                headers: {
-                    Authorization: `bearer ${process.env.CLOUDFLARE_STREAM_API_TOKEN}`,
-                },
-            })
-                .then(response => response.json())
-                .then(response => setVideos(response.result))
-                .catch(() => setVideos([]));
-        }, [is_dialog_open]);
+            if (is_dialog_open) {
+                getDescriptionVideos(is_dark_mode_on).then(setVideos);
+            }
+        }, [is_dialog_open, is_dark_mode_on]);
 
         const handleClickOutside = React.useCallback(
             (event: MouseEvent) => {

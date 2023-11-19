@@ -262,6 +262,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
             key: 'Options',
         },
     ],
+    videos: [],
 };
 
 const default_mock_store = {

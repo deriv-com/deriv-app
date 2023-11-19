@@ -1,5 +1,7 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+const { DefinePlugin } = require('webpack');
 // const CopyPlugin = require('copy-webpack-plugin');
 // const HtmlWebPackPlugin = require('html-webpack-plugin');
 // const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
@@ -125,6 +127,11 @@ const MINIMIZERS = !IS_RELEASE
       ];
 
 const plugins = (base, is_test_env) => [
+    new Dotenv({}),
+    new DefinePlugin({
+        'process.env.CLOUDFLARE_ACCOUNT_ID': JSON.stringify(process.env.CLOUDFLARE_ACCOUNT_ID),
+        'process.env.CLOUDFLARE_STREAM_API_TOKEN': JSON.stringify(process.env.CLOUDFLARE_STREAM_API_TOKEN),
+    }),
     new CleanWebpackPlugin(),
     // new HtmlWebPackPlugin(htmlOutputConfig()),
     // new HtmlWebpackTagsPlugin(htmlInjectConfig()),

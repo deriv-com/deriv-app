@@ -1,16 +1,26 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
-import { getDescriptionVideoId } from 'Modules/Trading/Helpers/video-config';
 import VideoStream from 'App/Components/Elements/VideoStream';
 
 type TContractTypeDescriptionVideo = {
     data_testid?: string;
     selected_contract_type?: string;
+    videos?: object[];
 };
 
-const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: TContractTypeDescriptionVideo) => {
+const ContractTypeDescriptionVideo = ({
+    data_testid,
+    selected_contract_type,
+    videos,
+}: TContractTypeDescriptionVideo) => {
     const { ui } = useStore();
-    const { is_dark_mode_on: is_dark_theme, is_mobile } = ui;
+    const { is_dark_mode_on, is_mobile } = ui;
+    const video = videos?.find(
+        (video: any) =>
+            video.meta.name ===
+            `dtrader_${selected_contract_type}_description_${is_dark_mode_on ? 'dark' : 'light'}.mp4`
+    );
+    const video_id = (video as any)?.uid;
     if (!selected_contract_type) {
         return null;
     }
@@ -36,15 +46,17 @@ const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: T
                 More: https://www.npmjs.com/package/@cloudflare/stream-react
                 API: https://developers.cloudflare.com/stream/viewing-videos/using-the-stream-player/using-the-player-api/
                 Please use getVideoDownloadUrl helper in order to add a Download feature. */}
-            <VideoStream
-                autoplay
-                controls
-                disable_picture_in_picture
-                height={is_mobile ? 184.5 : 270}
-                loop
-                src={getDescriptionVideoId(selected_contract_type, is_dark_theme)}
-                test_id={data_testid}
-            />
+            {!!video_id && (
+                <VideoStream
+                    autoplay
+                    controls
+                    disable_picture_in_picture
+                    height={is_mobile ? 184.5 : 270}
+                    loop
+                    src={video_id}
+                    test_id={data_testid}
+                />
+            )}
         </div>
     );
 };

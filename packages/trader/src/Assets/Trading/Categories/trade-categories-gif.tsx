@@ -18,14 +18,14 @@ import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
 import ContractTypeDescriptionVideo from './contract-type-description-video';
 import { VANILLALONG, TURBOS } from '@deriv/shared';
 
-// TODO: Replace static image svgs with themed GIFs or animated SVGs
-const TradeCategoriesGIF = ({
-    category,
-    selected_contract_type,
-}: {
+type TTradeCategoriesGIFProps = {
     category?: string;
     selected_contract_type?: string;
-}) => {
+    videos?: object[];
+};
+
+// TODO: Replace static image svgs with themed GIFs or animated SVGs
+const TradeCategoriesGIF = ({ category, selected_contract_type, videos }: TTradeCategoriesGIFProps) => {
     if (category !== selected_contract_type) return null;
     switch (category) {
         case 'asian':
@@ -59,17 +59,17 @@ const TradeCategoriesGIF = ({
         case 'run_high_low':
             return <ImageRunHighLow />;
         case 'accumulator':
-            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
+            return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} videos={videos} />;
         case 'tick_high_low':
             return <ImageTickHighLow />;
         case 'touch':
             return <ImageTouch />;
         case TURBOS.LONG:
         case TURBOS.SHORT:
-            return <ContractTypeDescriptionVideo selected_contract_type='turbos' />;
+            return <ContractTypeDescriptionVideo selected_contract_type='turbos' videos={videos} />;
         case VANILLALONG.CALL:
         case VANILLALONG.PUT:
-            return <ContractTypeDescriptionVideo selected_contract_type='vanilla' />;
+            return <ContractTypeDescriptionVideo selected_contract_type='vanilla' videos={videos} />;
         default:
             return null;
     }

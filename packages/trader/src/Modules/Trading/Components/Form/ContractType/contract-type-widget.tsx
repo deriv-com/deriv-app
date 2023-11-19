@@ -39,6 +39,21 @@ const ContractTypeWidget = observer(
         const [selected_category, setSelectedCategory] = React.useState<TList['key']>('All');
         const [search_query, setSearchQuery] = React.useState('');
         const [item, setItem] = React.useState<TContractType | null>(null);
+        const [videos, setVideos] = React.useState<object[]>([]);
+
+        React.useEffect(() => {
+            if (!is_dialog_open) return;
+            const endpoint = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/stream`;
+
+            fetch(endpoint, {
+                headers: {
+                    Authorization: `bearer ${process.env.CLOUDFLARE_STREAM_API_TOKEN}`,
+                },
+            })
+                .then(response => response.json())
+                .then(response => setVideos(response.result))
+                .catch(() => setVideos([]));
+        }, [is_dialog_open]);
 
         const handleClickOutside = React.useCallback(
             (event: MouseEvent) => {
@@ -292,6 +307,7 @@ const ContractTypeWidget = observer(
                             handleSelect={handleSelect}
                             item={item || { value }}
                             list={list_with_category()}
+                            videos={videos}
                         />
                     ) : (
                         <ContractType.List

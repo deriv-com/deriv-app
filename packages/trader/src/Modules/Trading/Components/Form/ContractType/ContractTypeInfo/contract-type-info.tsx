@@ -19,6 +19,7 @@ type TInfo = {
     ) => void;
     item: TContractType;
     list: TList[];
+    videos: object[];
 };
 
 const TABS = {
@@ -28,7 +29,7 @@ const TABS = {
 
 type TSelectedTab = 'description' | 'glossary';
 
-const Info = observer(({ handleSelect, item, list }: TInfo) => {
+const Info = observer(({ handleSelect, item, list, videos }: TInfo) => {
     const { cached_multiplier_cancellation_list, symbol } = useTraderStore();
     const {
         active_symbols: { active_symbols },
@@ -96,7 +97,11 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                     >
                         {is_description_tab_selected ? (
                             <React.Fragment>
-                                <TradeCategoriesGIF category={type.value} selected_contract_type={item?.value} />
+                                <TradeCategoriesGIF
+                                    category={type.value}
+                                    selected_contract_type={item?.value}
+                                    videos={videos}
+                                />
                                 <TradeCategories
                                     category={type.value}
                                     onClick={onClickGlossary}

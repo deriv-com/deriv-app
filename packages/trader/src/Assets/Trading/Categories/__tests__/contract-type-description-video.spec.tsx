@@ -4,10 +4,15 @@ import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../trader-providers';
 import ContractTypeDescriptionVideo from '../contract-type-description-video';
 import { TCoreStores } from '@deriv/stores/types';
+import { TVideo } from 'Modules/Trading/Components/Form/ContractType/types';
 
 const default_mocked_props = {
-    selected_contract_type: 'vanillalongcall',
+    selected_contract_type: 'vanilla',
     data_testid: 'dt_description_video',
+    videos: [
+        { meta: { name: 'dtrader_vanilla_description_light.mp4' }, uid: 'test_vanilla_video_id' },
+        { meta: { name: 'dtrader_turbos_description_light.mp4' }, uid: 'test_turbos_video_id' },
+    ] as TVideo[],
 };
 
 describe('<ContractTypeDescriptionVideo />', () => {

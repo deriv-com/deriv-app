@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
-import createContractInfo from 'Utils/Helpers/contract-info';
+import { createContractInfo } from '@deriv/shared';
 import ContractDetails from '../contract-details';
 
 const contract_types = {

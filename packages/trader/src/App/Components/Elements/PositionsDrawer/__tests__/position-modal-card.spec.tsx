@@ -1,10 +1,10 @@
 import React from 'react';
+import moment from 'moment';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { VANILLALONG, TURBOS } from '@deriv/shared';
+import { createContractInfo, VANILLALONG, TURBOS } from '@deriv/shared';
 import { ActiveSymbols } from '@deriv/api-types';
-import createContractInfo from 'Utils/Helpers/contract-info';
 import PositionsModalCard from '../positions-modal-card';
 import TraderProviders from '../../../../../trader-providers';
 
@@ -55,7 +55,7 @@ const default_mock_store = {
         toggleCancellationWarning: jest.fn(),
     },
     common: {
-        server_time: 123254362145 as unknown as moment.Moment,
+        server_time: moment(new Date()).utc(),
     },
     contract_trade: {
         getContractById: jest.fn(),

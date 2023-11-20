@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
-import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
-import { getCardLabels } from '@deriv/shared';
+import { createContractInfo, getCardLabels } from '@deriv/shared';
 import TurbosCardBody from '../turbos-card-body';
 
-const contract_info: TContractInfo = {
+const contract_info = createContractInfo({
     contract_id: 1,
     bid_price: 1044.02,
     buy_price: 1044.0,
@@ -13,7 +12,7 @@ const contract_info: TContractInfo = {
     barrier: '10904.80',
     entry_spot_display_value: '1046.80',
     sell_price: 1046.8,
-};
+});
 
 describe('TurbosCardBody', () => {
     const mock_props = {

@@ -3,8 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, useStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { VANILLALONG, TURBOS } from '@deriv/shared';
-import createContractInfo from 'Utils/Helpers/contract-info';
+import { createContractInfo, VANILLALONG, TURBOS } from '@deriv/shared';
 import PositionsDrawer from '../positions-drawer';
 import TraderProviders from '../../../../../trader-providers';
 

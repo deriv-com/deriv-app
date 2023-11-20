@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import createContractInfo from 'Utils/Helpers/contract-info';
+import { createContractInfo } from '@deriv/shared';
 import InfoBox from '../info-box';
 
 const test_longcode = 'test longcode';

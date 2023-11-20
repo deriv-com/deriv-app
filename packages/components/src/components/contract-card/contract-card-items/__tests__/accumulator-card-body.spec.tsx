@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { getCardLabels } from '@deriv/shared';
+import { createContractInfo, getCardLabels } from '@deriv/shared';
 import AccumulatorCardBody from '../accumulator-card-body';
 
 type TAccumulatorCardBody = React.ComponentProps<typeof AccumulatorCardBody>;
@@ -8,7 +8,7 @@ type TAccumulatorCardBody = React.ComponentProps<typeof AccumulatorCardBody>;
 describe('<AccumulatorCardBody />', () => {
     const mock_props: TAccumulatorCardBody = {
         addToast: jest.fn(),
-        contract_info: {
+        contract_info: createContractInfo({
             buy_price: 123,
             sell_price: 234,
             profit: 111,
@@ -17,7 +17,7 @@ describe('<AccumulatorCardBody />', () => {
             status: 'sold',
             is_settleable: 1,
             is_expired: 1,
-        },
+        }),
         contract_update: {
             take_profit: {
                 order_amount: 300,

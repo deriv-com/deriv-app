@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import createContractInfo from 'Utils/Helpers/contract-info';
+import { createContractInfo } from '@deriv/shared';
 import TogglePositionsMobile from '../toggle-positions-mobile';
 import TraderProviders from '../../../../../trader-providers';
 

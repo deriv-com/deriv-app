@@ -2,8 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AccumulatorsSellButton from '../accumulators-sell-button';
 import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
-import createContractInfo from 'Utils/Helpers/contract-info';
+import { createContractInfo } from '@deriv/shared';
 import TraderProviders from '../../../../../../../trader-providers';
 
 const mock_default_props = {
@@ -20,7 +19,7 @@ const mock_default_props = {
 describe('AccumulatorsSellButton', () => {
     const mockAccumulatorsSellButton = (mocked_props: React.ComponentProps<typeof AccumulatorsSellButton>) => {
         return (
-            <TraderProviders store={mockStore({}) as TCoreStores}>
+            <TraderProviders store={mockStore({})}>
                 <AccumulatorsSellButton {...mocked_props} />
             </TraderProviders>
         );

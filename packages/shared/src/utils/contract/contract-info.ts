@@ -1,6 +1,6 @@
-import { TContractInfo } from '@deriv/shared';
+import { TContractInfo } from './contract-types';
 
-const createContractInfo = (obj: Partial<TContractInfo> = {}): TContractInfo => {
+export const createContractInfo = (obj: Partial<TContractInfo> = {}): TContractInfo => {
     return {
         account_id: 84780920,
         // audit_details: {
@@ -149,5 +149,3 @@ const createContractInfo = (obj: Partial<TContractInfo> = {}): TContractInfo => 
         ...obj,
     };
 };
-
-export default createContractInfo;

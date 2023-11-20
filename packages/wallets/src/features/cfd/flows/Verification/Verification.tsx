@@ -54,7 +54,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
 
         if (poiStatus?.services && isSuccessPOIStatus) {
-            const serviceStatus = poiStatus.current.status;
+            const serviceStatus = poiStatus.status;
 
             if (!isSuccessPOIStatus) return 'loadingScreen';
 
@@ -87,6 +87,16 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.lastName ||
                     !formValues.dateOfBirth
                 );
+            case 'personalDetailsScreen':
+                return (
+                    !formValues.citizenship ||
+                    !formValues.placeOfBirth ||
+                    !formValues.taxResidence ||
+                    !formValues.accountOpeningReason ||
+                    !formValues.taxIdentificationNumber
+                );
+            case 'poaScreen':
+                return !formValues.townCityLine || !formValues.firstLine;
             default:
                 return false;
         }
@@ -118,7 +128,6 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         documentNumber: Yup.string().min(12, 'document number should have minimum 12 characters').required(),
         firstName: Yup.string().min(1).max(5).required(),
         lastName: Yup.string().min(1).max(20).required(),
-        townCityLine: Yup.string().min(5).max(20).required(),
     });
 
     return (

@@ -35,6 +35,8 @@ import { CFD_PLATFORMS, QUERY_STATUS, PASSWORD_TYPE } from '../../Helpers/cfd-co
 // Temporary type because of build failing. Confirm with Accounts team
 type TSendVerifyEmail = () => Promise<VerifyEmailResponse>;
 
+type TStatus = typeof QUERY_STATUS[keyof typeof QUERY_STATUS];
+
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);
 
@@ -203,23 +205,25 @@ const CFDPasswordManagerTabContent = ({
         setIsSubmitSuccessInvestor(true);
     };
 
-    React.useEffect(() => {
-        if (change_password_status === QUERY_STATUS.ERROR && change_password_error) {
-            showError((change_password_error as unknown as Error)?.message);
+    const handlePasswordErrorMessages = React.useCallback((status: TStatus, error: Error) => {
+        if (status === QUERY_STATUS.ERROR && error) {
+            showError((error as unknown as Error)?.message);
         }
-        if (change_password_status === QUERY_STATUS.SUCCESS) {
+        if (status === QUERY_STATUS.SUCCESS) {
             hideError();
         }
-    }, [change_password_error, change_password_status]);
+    }, []);
 
     React.useEffect(() => {
-        if (change_investor_password_status === QUERY_STATUS.ERROR && change_investor_password_error) {
-            showError((change_investor_password_error as unknown as Error)?.message);
-        }
-        if (change_investor_password_status === QUERY_STATUS.SUCCESS) {
-            hideError();
-        }
-    }, [change_investor_password_error, change_investor_password_status]);
+        handlePasswordErrorMessages(change_password_status, change_password_error as unknown as Error);
+    }, [change_password_error, change_password_status, handlePasswordErrorMessages]);
+
+    React.useEffect(() => {
+        handlePasswordErrorMessages(
+            change_investor_password_status,
+            change_investor_password_error as unknown as Error
+        );
+    }, [change_investor_password_error, change_investor_password_status, handlePasswordErrorMessages]);
 
     const onSubmit = React.useCallback(
         async (values: TPasswordManagerModalFormValues) => {

@@ -62,6 +62,7 @@ export const QUERY_STATUS = {
     SUCCESS: 'success',
     ERROR: 'error',
     IDLE: 'idle',
+    LOADING: 'loading',
 } as const;
 
 export const PASSWORD_TYPE = {

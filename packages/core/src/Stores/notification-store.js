@@ -48,7 +48,7 @@ export default class NotificationStore extends BaseStore {
     push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
-    trade_notifications = [];
+    trade_notifications = observable.array([]);
     p2p_order_props = {};
     p2p_redirect_to = {};
     p2p_completed_orders = null;
@@ -90,7 +90,7 @@ export default class NotificationStore extends BaseStore {
             should_show_popups: observable,
             showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
-            trade_notifications: observable.shallow,
+            trade_notifications: observable.ref,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
         });
@@ -202,6 +202,7 @@ export default class NotificationStore extends BaseStore {
             profit: getTotalProfit(contract_info),
             status,
             symbol: getMarketName(extractInfoFromShortcode(shortcode).underlying),
+            timestamp: Date.now(),
         });
     }
 

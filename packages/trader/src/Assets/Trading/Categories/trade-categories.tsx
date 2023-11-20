@@ -30,7 +30,7 @@ const TradeCategories = ({
     is_multiplier_fx = false,
 }: {
     category?: string;
-    onClick: React.MouseEventHandler<HTMLSpanElement>;
+    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
     is_vanilla_fx?: boolean;
     is_multiplier_fx?: boolean;
 }) => {

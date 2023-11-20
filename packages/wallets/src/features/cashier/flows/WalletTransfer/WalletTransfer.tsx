@@ -1,8 +1,6 @@
 import React from 'react';
 import { TransferModule } from '../../modules';
 
-const WalletTransfer = () => {
-    return <TransferModule />;
-};
+const WalletTransfer = () => <TransferModule />;
 
 export default WalletTransfer;

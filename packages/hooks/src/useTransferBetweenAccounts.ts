@@ -1,10 +1,14 @@
 import { useMemo } from 'react';
 import { useStore } from '@deriv/stores';
-import { useFetch } from '@deriv/api';
+import { useFetch, useQuery } from '@deriv/api';
 import useActiveWallet from './useActiveWallet';
 import useCurrencyConfig from './useCurrencyConfig';
 import useExistingCFDAccounts from './useExistingCFDAccounts';
 import useWalletsList from './useWalletsList';
+
+type TAccount = NonNullable<
+    NonNullable<ReturnType<typeof useQuery<'transfer_between_accounts'>>['data']>['accounts']
+>[number] & { account_category: 'wallet' | 'trading' };
 
 const useTransferBetweenAccounts = () => {
     const { ui } = useStore();
@@ -19,7 +23,7 @@ const useTransferBetweenAccounts = () => {
     const trading_apps_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
 
     const {
-        data: { derivez_accounts, dxtrade_accounts, mt5_accounts },
+        data: { dxtrade_accounts, mt5_accounts },
         isSuccess: is_cfd_accounts_loaded,
     } = useExistingCFDAccounts();
 
@@ -29,14 +33,14 @@ const useTransferBetweenAccounts = () => {
     });
 
     const modified_transfer_accounts = useMemo(() => {
-        const all_linked_cfd_accounts = [...derivez_accounts, ...dxtrade_accounts, ...mt5_accounts];
+        const all_linked_cfd_accounts = [...dxtrade_accounts, ...mt5_accounts];
 
         const getAccountType = (is_demo?: number, currency?: string): 'fiat' | 'crypto' | 'demo' => {
             if (is_demo) return 'demo';
             return getConfig(currency || '')?.is_crypto ? 'crypto' : 'fiat';
         };
 
-        const accounts = data?.accounts?.map(account => {
+        const accounts = (data?.accounts as TAccount[])?.map(account => {
             return {
                 ...account,
                 active_wallet_icon: active_wallet?.icon,
@@ -54,7 +58,7 @@ const useTransferBetweenAccounts = () => {
             trading_accounts:
                 accounts?.reduce(
                     (trading_accounts, account) => {
-                        if (account.account_type === 'wallet') return trading_accounts;
+                        if (account.account_category === 'wallet') return trading_accounts;
                         if (!account.loginid) return trading_accounts;
 
                         const cfd_icon = all_linked_cfd_accounts.find(
@@ -64,7 +68,7 @@ const useTransferBetweenAccounts = () => {
                         trading_accounts[account.loginid] = {
                             ...account,
                             gradient_class: active_wallet?.gradient_card_class,
-                            icon: account.account_type === 'trading' ? trading_apps_icon : cfd_icon,
+                            icon: account.account_category === 'trading' ? trading_apps_icon : cfd_icon,
                             ...(account.account_type === 'mt5' && {
                                 mt5_market_type: mt5_accounts?.find(
                                     mt5_account => account.loginid && mt5_account.loginid?.includes(account.loginid)
@@ -88,7 +92,7 @@ const useTransferBetweenAccounts = () => {
             wallet_accounts:
                 accounts?.reduce(
                     (wallet_accounts, wallet) => {
-                        if (wallet.account_type !== 'wallet') return wallet_accounts;
+                        if (wallet.account_category !== 'wallet') return wallet_accounts;
                         if (!wallet.loginid) return wallet_accounts;
 
                         const available_wallet = wallets?.find(acc => acc.loginid === wallet.loginid);
@@ -117,7 +121,6 @@ const useTransferBetweenAccounts = () => {
         active_wallet?.icon,
         active_wallet?.landing_company_name,
         data?.accounts,
-        derivez_accounts,
         dxtrade_accounts,
         getConfig,
         mt5_accounts,

@@ -1,39 +1,86 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from '../contract-replay-widget';
+import { InfoBoxWidget, ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from '../contract-replay-widget';
+import TraderProviders from '../../../../trader-providers';
+import { mockStore } from '@deriv/stores';
 
-jest.mock('../contract-replay-widget.tsx', () => ({
-    ...jest.requireActual('../contract-replay-widget.tsx'),
-    DigitsWidget: () => <div>MockedDigitsWidget</div>,
-    InfoBoxWidget: () => <div>MockedInfoBoxWidget</div>,
-    ChartTopWidgets: () => <div>MockedChartTopWidgets</div>,
-    ChartBottomWidgets: () => <div>MockedChartBottomWidgets</div>,
-}));
+jest.mock('../../Components/Digits/digits.tsx', () => jest.fn(() => <div>mockedDigits</div>));
+jest.mock('../../Components/InfoBox/info-box.tsx', () => jest.fn(() => <div>mockedInfoBox</div>));
+jest.mock('../../../SmartChart/Components/top-widgets.tsx', () => jest.fn(() => <div>mockedTopWidgets</div>));
+jest.mock('../../../SmartChart/Components/bottom-widgets.tsx', () => jest.fn(() => <div>mockedBottomWidget</div>));
 
 describe('<DigitsWidget />', () => {
-    it('Should render mocked digits widget', () => {
-        render(<DigitsWidget />);
-        expect(screen.getByText(/mockeddigitswidget/i)).toBeInTheDocument();
+    const mocked_store_props = {
+        contract_replay: {
+            contract_store: {
+                contract_info: {},
+                digits_info: {},
+                display_status: '',
+                is_digit_contract: true,
+                is_ended: false,
+            },
+        },
+    };
+
+    const store = mockStore(mocked_store_props);
+
+    const mockMobileWidget = () => (
+        <TraderProviders store={store}>
+            <DigitsWidget />
+        </TraderProviders>
+    );
+    it('Should render mocked digits', () => {
+        render(mockMobileWidget());
+        expect(screen.getByText(/mockeddigits/i)).toBeInTheDocument();
     });
 });
 
 describe('<InfoBoxWidget />', () => {
-    it('Should render mocked info box widget', () => {
-        render(<InfoBoxWidget />);
-        expect(screen.getByText(/mockedinfoboxwidget/i)).toBeInTheDocument();
+    const mocked_store_props = {
+        contract_replay: {
+            contract_store: {
+                contract_info: {},
+            },
+            removeErrorMessage: jest.fn(),
+            error_message: '',
+        },
+    };
+
+    const store = mockStore(mocked_store_props);
+
+    const mockInfoBoxWidget = () => (
+        <TraderProviders store={store}>
+            <InfoBoxWidget />
+        </TraderProviders>
+    );
+    it('Should render mocked digits', () => {
+        render(mockInfoBoxWidget());
+        expect(screen.getByText(/mockedInfoBox/i)).toBeInTheDocument();
     });
 });
 
 describe('<ChartTopWidgets>', () => {
+    const mocked_store_props = {
+        client: {
+            is_beta_chart: true,
+        },
+    };
+    const store = mockStore(mocked_store_props);
+
+    const mockChartTopWidget = () => (
+        <TraderProviders store={store}>
+            <ChartTopWidgets />
+        </TraderProviders>
+    );
     it('Should render mocked ChartTopWidget', () => {
-        render(<ChartTopWidgets />);
-        expect(screen.getByText(/mockedcharttopwidgets/i)).toBeInTheDocument();
+        render(mockChartTopWidget());
+        expect(screen.getByText(/mockedtopwidgets/i)).toBeInTheDocument();
     });
 });
 
 describe('<ChartBottomWidgets>', () => {
     it('Should render mocked ChartBottomWidgets', () => {
         render(<ChartBottomWidgets />);
-        expect(screen.getByText(/mockedchartbottomwidgets/i)).toBeInTheDocument();
+        expect(screen.getByText(/mockedbottomwidget/i)).toBeInTheDocument();
     });
 });

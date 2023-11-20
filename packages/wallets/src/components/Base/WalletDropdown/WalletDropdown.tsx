@@ -38,42 +38,34 @@ const WalletDropdown: React.FC<TProps> = ({
         setShouldFilterList(false);
         setItems(list);
     }, [list]);
-    const {
-        closeMenu,
-        getInputProps,
-        getItemProps,
-        getLabelProps,
-        getMenuProps,
-        getToggleButtonProps,
-        isOpen,
-        openMenu,
-    } = useCombobox({
-        defaultSelectedItem: items.find(item => item.value === value) ?? null,
-        items,
-        itemToString(item) {
-            return item ? reactNodeToString(item.text) : '';
-        },
-        onInputValueChange({ inputValue }) {
-            if (shouldFilterList) {
-                setItems(
-                    list.filter(item =>
-                        reactNodeToString(item.text)
-                            .toLowerCase()
-                            .includes(inputValue?.toLowerCase() ?? '')
-                    )
-                );
-            }
-        },
-        onIsOpenChange({ isOpen }) {
-            if (!isOpen) {
-                clearFilter();
-            }
-        },
-        onSelectedItemChange({ selectedItem }) {
-            onSelect(selectedItem?.value ?? '');
-            closeMenu();
-        },
-    });
+    const { closeMenu, getInputProps, getItemProps, getMenuProps, getToggleButtonProps, isOpen, openMenu } =
+        useCombobox({
+            defaultSelectedItem: items.find(item => item.value === value) ?? null,
+            items,
+            itemToString(item) {
+                return item ? reactNodeToString(item.text) : '';
+            },
+            onInputValueChange({ inputValue }) {
+                if (shouldFilterList) {
+                    setItems(
+                        list.filter(item =>
+                            reactNodeToString(item.text)
+                                .toLowerCase()
+                                .includes(inputValue?.toLowerCase() ?? '')
+                        )
+                    );
+                }
+            },
+            onIsOpenChange({ isOpen }) {
+                if (!isOpen) {
+                    clearFilter();
+                }
+            },
+            onSelectedItemChange({ selectedItem }) {
+                onSelect(selectedItem?.value ?? '');
+                closeMenu();
+            },
+        });
 
     const handleInputClick = useCallback(() => {
         variant === 'comboBox' && setShouldFilterList(true);
@@ -93,6 +85,7 @@ const WalletDropdown: React.FC<TProps> = ({
         <div className='wallets-dropdown' {...getToggleButtonProps()}>
             <div className='wallets-dropdown__content'>
                 <WalletTextField
+                    label={label}
                     name={name}
                     onClickCapture={handleInputClick}
                     onKeyUp={() => setShouldFilterList(true)}
@@ -112,15 +105,6 @@ const WalletDropdown: React.FC<TProps> = ({
                     value={value}
                     {...getInputProps()}
                 />
-                <label
-                    className={classNames('wallets-dropdown__label', {
-                        'wallets-dropdown__label--with-icon': !!icon,
-                    })}
-                    htmlFor={name}
-                    {...getLabelProps()}
-                >
-                    {label}
-                </label>
             </div>
             <ul className={`wallets-dropdown__items wallets-dropdown__items--${listHeight}`} {...getMenuProps()}>
                 {isOpen &&

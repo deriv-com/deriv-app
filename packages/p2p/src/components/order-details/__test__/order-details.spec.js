@@ -72,7 +72,7 @@ const mock_buy_sell_store = {
     unsubscribeCreateOrder: jest.fn(),
 };
 
-const mockGeneral_store = {
+const mock_general_store = {
     redirectToOrderDetails: jest.fn(),
 };
 
@@ -83,7 +83,7 @@ jest.mock('Stores', () => ({
         sendbird_store: { ...mock_sendbird_store },
         my_profile_store: { ...mock_my_profile_store },
         buy_sell_store: { ...mock_buy_sell_store },
-        general_store: { ...mockGeneral_store },
+        general_store: { ...mock_general_store },
     })),
 }));
 
@@ -124,7 +124,7 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
             my_profile_store: { ...mock_my_profile_store },
             buy_sell_store: { ...mock_buy_sell_store },
-            general_store: { ...mockGeneral_store },
+            general_store: { ...mock_general_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -142,7 +142,7 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
             my_profile_store: { ...mock_my_profile_store },
             buy_sell_store: { ...mock_buy_sell_store },
-            general_store: { ...mockGeneral_store },
+            general_store: { ...mock_general_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -158,7 +158,7 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
             my_profile_store: { ...mock_my_profile_store },
             buy_sell_store: { ...mock_buy_sell_store },
-            general_store: { ...mockGeneral_store },
+            general_store: { ...mock_general_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -174,7 +174,7 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
             my_profile_store: { ...mock_my_profile_store },
             buy_sell_store: { ...mock_buy_sell_store },
-            general_store: { ...mockGeneral_store },
+            general_store: { ...mock_general_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -191,7 +191,7 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
             my_profile_store: { ...mock_my_profile_store },
             buy_sell_store: { ...mock_buy_sell_store },
-            general_store: { ...mockGeneral_store },
+            general_store: { ...mock_general_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -206,7 +206,7 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store, should_show_chat_on_orders: true },
             my_profile_store: { ...mock_my_profile_store },
             buy_sell_store: { ...mock_buy_sell_store },
-            general_store: { ...mockGeneral_store },
+            general_store: { ...mock_general_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -222,7 +222,7 @@ describe('<OrderDetails/>', () => {
             sendbird_store: { ...mock_sendbird_store },
             my_profile_store: { ...mock_my_profile_store },
             buy_sell_store: { ...mock_buy_sell_store },
-            general_store: { ...mockGeneral_store },
+            general_store: { ...mock_general_store },
         });
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,

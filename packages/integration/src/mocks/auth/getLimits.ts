@@ -29,10 +29,6 @@ export default function mockGetLimits(context: Context) {
                         allowed: 10,
                         available: 10,
                     },
-                    derivez: {
-                        allowed: 10,
-                        available: 10,
-                    },
                     dxtrade: {
                         allowed: 10,
                         available: 10,

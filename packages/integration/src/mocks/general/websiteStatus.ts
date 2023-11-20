@@ -70,10 +70,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 max: 22206.1,
                                 min: 0.01,
                             },
-                            limits_derivez: {
-                                max: 22206.1,
-                                min: 0.01,
-                            },
                             limits_dxtrade: {
                                 max: 3701.02,
                                 min: 0.01,
@@ -118,10 +114,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 min: 3.412e-5,
                             },
                             limits_ctrader: {
-                                max: 0.51181875,
-                                min: 3.4e-7,
-                            },
-                            limits_derivez: {
                                 max: 0.51181875,
                                 min: 3.4e-7,
                             },
@@ -172,10 +164,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 max: 15001.5,
                                 min: 0.01,
                             },
-                            limits_derivez: {
-                                max: 15001.5,
-                                min: 0.01,
-                            },
                             limits_dxtrade: {
                                 max: 2500.25,
                                 min: 0.01,
@@ -220,10 +208,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 15000,
-                                min: 0.01,
-                            },
-                            limits_derivez: {
                                 max: 15000,
                                 min: 0.01,
                             },
@@ -274,10 +258,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 max: 8.06501477,
                                 min: 5.38e-6,
                             },
-                            limits_derivez: {
-                                max: 8.06501477,
-                                min: 5.38e-6,
-                            },
                             limits_dxtrade: {
                                 max: 1.34416913,
                                 min: 5.38e-6,
@@ -322,10 +302,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 min: 0.9,
                             },
                             limits_ctrader: {
-                                max: 13541.33,
-                                min: 0.01,
-                            },
-                            limits_derivez: {
                                 max: 13541.33,
                                 min: 0.01,
                             },
@@ -376,10 +352,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 max: 12787.18,
                                 min: 0.01,
                             },
-                            limits_derivez: {
-                                max: 12787.18,
-                                min: 0.01,
-                            },
                             limits_dxtrade: {
                                 max: 2131.2,
                                 min: 0.01,
@@ -424,10 +396,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 min: 0.77,
                             },
                             limits_ctrader: {
-                                max: 11601.47,
-                                min: 0.01,
-                            },
-                            limits_derivez: {
                                 max: 11601.47,
                                 min: 0.01,
                             },
@@ -478,10 +446,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 max: 225488,
                                 min: 0,
                             },
-                            limits_derivez: {
-                                max: 225488,
-                                min: 0,
-                            },
                             limits_dxtrade: {
                                 max: 37581,
                                 min: 0,
@@ -526,10 +490,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 min: 0.01115822,
                             },
                             limits_ctrader: {
-                                max: 167.37335416,
-                                min: 0.00011158,
-                            },
-                            limits_derivez: {
                                 max: 167.37335416,
                                 min: 0.00011158,
                             },
@@ -580,10 +540,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 max: 15008.43,
                                 min: 0.01,
                             },
-                            limits_derivez: {
-                                max: 15008.43,
-                                min: 0.01,
-                            },
                             limits_dxtrade: {
                                 max: 2501.41,
                                 min: 0.01,
@@ -628,10 +584,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 15013.75,
-                                min: 0.01,
-                            },
-                            limits_derivez: {
                                 max: 15013.75,
                                 min: 0.01,
                             },
@@ -682,10 +634,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 max: 15000,
                                 min: 0.01,
                             },
-                            limits_derivez: {
-                                max: 15000,
-                                min: 0.01,
-                            },
                             limits_dxtrade: {
                                 max: 2500,
                                 min: 0.01,
@@ -730,10 +678,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 15000,
-                                min: 0.01,
-                            },
-                            limits_derivez: {
                                 max: 15000,
                                 min: 0.01,
                             },
@@ -784,10 +728,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 max: 14820.01,
                                 min: 0.01,
                             },
-                            limits_derivez: {
-                                max: 14820.01,
-                                min: 0.01,
-                            },
                             limits_dxtrade: {
                                 max: 2470,
                                 min: 0.01,
@@ -832,10 +772,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 15000,
-                                min: 0.01,
-                            },
-                            limits_derivez: {
                                 max: 15000,
                                 min: 0.01,
                             },
@@ -886,10 +822,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 max: 14978.28,
                                 min: 0.01,
                             },
-                            limits_derivez: {
-                                max: 14978.28,
-                                min: 0.01,
-                            },
                             limits_dxtrade: {
                                 max: 2496.38,
                                 min: 0.01,
@@ -937,10 +869,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 max: 14978.28,
                                 min: 0.01,
                             },
-                            limits_derivez: {
-                                max: 14978.28,
-                                min: 0.01,
-                            },
                             limits_dxtrade: {
                                 max: 2496.38,
                                 min: 0.01,
@@ -985,10 +913,6 @@ export default function mockWebsiteStatus(context: Context) {
                                 min: 1,
                             },
                             limits_ctrader: {
-                                max: 14978.28,
-                                min: 0.01,
-                            },
-                            limits_derivez: {
                                 max: 14978.28,
                                 min: 0.01,
                             },

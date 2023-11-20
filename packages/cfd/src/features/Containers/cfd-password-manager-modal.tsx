@@ -16,8 +16,9 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { VerifyEmailResponse } from '@deriv/api-types';
 import { isMobile, validLength, validPassword, getErrorMessages, getCFDPlatformLabel } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { useTradingPlatformInvestorPasswordChange, useTradingPlatformPasswordChange, useVerifyEmail } from '@deriv/api';
 import { FormikErrors } from 'formik';
-import CFDStore from '../../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from '../../Containers/trading-password-manager';
 import InvestorPasswordManager from '../../Containers/investor-password-manager';
 import {
@@ -29,12 +30,12 @@ import {
     TFormValues,
     TPasswordManagerModalFormValues,
 } from '../../Containers/props.types';
-import { observer, useStore } from '@deriv/stores';
-import { useVerifyEmail } from '@deriv/api';
-import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
+import { CFD_PLATFORMS, QUERY_STATUS, PASSWORD_TYPE } from '../../Helpers/cfd-config';
 
 // Temporary type because of build failing. Confirm with Accounts team
 type TSendVerifyEmail = () => Promise<VerifyEmailResponse>;
+
+type TStatus = typeof QUERY_STATUS[keyof typeof QUERY_STATUS];
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);
@@ -154,6 +155,16 @@ const CFDPasswordManagerTabContent = ({
     onChangeActiveTabIndex,
     account_group,
 }: TCFDPasswordManagerTabContent) => {
+    const {
+        mutateAsync: changePassword,
+        status: change_password_status,
+        error: change_password_error,
+    } = useTradingPlatformPasswordChange();
+    const {
+        mutateAsync: changeInvestorPassword,
+        status: change_investor_password_status,
+        error: change_investor_password_error,
+    } = useTradingPlatformInvestorPasswordChange();
     const [active_tab_index, setActiveTabIndex] = React.useState<number>(0);
     const [error_message_investor, setErrorMessageInvestor] = React.useState<string>('');
     const [is_submit_success_investor, setIsSubmitSuccessInvestor] = React.useState<boolean>(false);
@@ -194,20 +205,48 @@ const CFDPasswordManagerTabContent = ({
         setIsSubmitSuccessInvestor(true);
     };
 
+    const handlePasswordErrorMessages = React.useCallback((status: TStatus, error: Error) => {
+        if (status === QUERY_STATUS.ERROR && error) {
+            showError((error as unknown as Error)?.message);
+        }
+        if (status === QUERY_STATUS.SUCCESS) {
+            hideError();
+        }
+    }, []);
+
+    React.useEffect(() => {
+        handlePasswordErrorMessages(change_password_status, change_password_error as unknown as Error);
+    }, [change_password_error, change_password_status, handlePasswordErrorMessages]);
+
+    React.useEffect(() => {
+        handlePasswordErrorMessages(
+            change_investor_password_status,
+            change_investor_password_error as unknown as Error
+        );
+    }, [change_investor_password_error, change_investor_password_status, handlePasswordErrorMessages]);
+
     const onSubmit = React.useCallback(
         async (values: TPasswordManagerModalFormValues) => {
             if (!selected_login) {
                 return;
             }
 
-            const error = await CFDStore.changePassword({ login: selected_login, ...values });
-            if (error) {
-                showError(error);
+            if (values.password_type === PASSWORD_TYPE.INVESTOR) {
+                await changeInvestorPassword({
+                    account_id: selected_login,
+                    old_password: values.old_password,
+                    new_password: values.new_password,
+                    platform: CFD_PLATFORMS.MT5,
+                });
             } else {
-                hideError();
+                await changePassword({
+                    old_password: values.old_password,
+                    new_password: values.new_password,
+                    platform: CFD_PLATFORMS.MT5,
+                });
             }
         },
-        [selected_login]
+        [changeInvestorPassword, changePassword, selected_login]
     );
 
     const updateAccountTabIndex = (index: number) => {

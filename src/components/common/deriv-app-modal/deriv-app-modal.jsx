@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './deriv-app-modal.scss';
 
+const base_class = 'deriv-app-modal';
+
 const Modal = ({
     children,
     title,
@@ -33,27 +35,33 @@ const Modal = ({
     }, []);
 
     return (
-        <div className={classNames('modal', class_name && `modal-${class_name}`)}>
-            <div className='modal__container' ref={modal_container_ref}>
-                <div className='modal__header'>
-                    <div className='modal__header-title'>{title}</div>
-                    <div className='modal__header-right'>
-                        <div className='modal__header-right-action'>{action}</div>
-                        <button className='modal__header-right-close' onClick={onClose} />
+        <div className={classNames(base_class, class_name && `${base_class}-${class_name}`)}>
+            <div className={`${base_class}__container`} ref={modal_container_ref}>
+                <div className={`${base_class}__header`}>
+                    <div className={`${base_class}__header-title`}>{title}</div>
+                    <div className={`${base_class}__header-right`}>
+                        <div className={`${base_class}__header-right-action`}>{action}</div>
+                        <button className={`${base_class}__header-right-close`} onClick={onClose} />
                     </div>
                 </div>
 
-                <div className='modal__content'>{children}</div>
+                <div className={`${base_class}__content`}>{children}</div>
                 {(primary_button || secondary_button) && (
-                    <div className='modal__footer'>
-                        <div className='modal__footer__btn-container'>
+                    <div className={`${base_class}__footer`}>
+                        <div className={`${base_class}__footer__btn-container`}>
                             {secondary_button && (
-                                <button className='modal__footer-secondary-btn' onClick={secondary_button.onClick}>
+                                <button
+                                    className={`${base_class}__footer-secondary-btn`}
+                                    onClick={secondary_button.onClick}
+                                >
                                     {secondary_button.title}
                                 </button>
                             )}
                             {primary_button && (
-                                <button className='modal__footer-primary-btn' onClick={primary_button.onClick}>
+                                <button
+                                    className={`${base_class}__footer-primary-btn`}
+                                    onClick={primary_button.onClick}
+                                >
                                     {primary_button.title}
                                 </button>
                             )}

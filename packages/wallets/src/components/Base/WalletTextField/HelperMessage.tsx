@@ -1,18 +1,19 @@
 import React, { InputHTMLAttributes } from 'react';
 import WalletText from '../WalletText/WalletText';
 
-export type MessageContainerProps = {
-    helperMessage?: string;
+export type HelperMessageProps = {
     inputValue?: InputHTMLAttributes<HTMLInputElement>['value'];
+    isError?: boolean;
     maxLength?: InputHTMLAttributes<HTMLInputElement>['maxLength'];
+    message?: string;
 };
 
-const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, inputValue, maxLength }) => (
+const HelperMessage: React.FC<HelperMessageProps> = ({ inputValue, isError, maxLength, message }) => (
     <React.Fragment>
-        {helperMessage && (
+        {message && (
             <div className='wallets-textfield__message-container--msg'>
-                <WalletText color='less-prominent' size='xs'>
-                    {helperMessage}
+                <WalletText color={isError ? 'error' : 'less-prominent'} size='xs'>
+                    {message}
                 </WalletText>
             </div>
         )}
@@ -26,4 +27,4 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, inpu
     </React.Fragment>
 );
 
-export default MessageContainer;
+export default HelperMessage;

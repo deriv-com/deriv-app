@@ -1,0 +1,35 @@
+.wallets-selfie-document-upload {
+    width: fit-content;
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    background: var(--light-8-primary-background, #fff);
+
+    @include mobile {
+        width: 100%;
+    }
+
+    & > .wallets-dropzone__container {
+        min-width: 67.2rem;
+        min-height: 25.8rem;
+
+        @include mobile {
+            min-width: 100%;
+            min-height: 20.2rem;
+        }
+    }
+    & .wallets-dropzone {
+        min-height: 25.8rem;
+
+        @include mobile {
+            min-height: 20.2rem;
+        }
+    }
+
+    & .wallets-dropzone__content {
+        @include desktop {
+            gap: 0.8rem;
+        }
+    }
+}

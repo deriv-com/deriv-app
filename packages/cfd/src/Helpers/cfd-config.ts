@@ -1,7 +1,6 @@
 export const CFD_PLATFORMS = {
     MT5: 'mt5',
     DXTRADE: 'dxtrade',
-    DERIVEZ: 'derivez',
     CTRADER: 'ctrader',
     CFD: 'cfd',
     CFDS: 'CFDs',
@@ -56,4 +55,15 @@ export const MARKET_TYPE_SHORTCODE = {
     FINANCIAL_MALTA_INVEST: 'financial_maltainvest',
     ALL_SVG: 'all_svg',
     ALL_DXTRADE: 'all_',
+} as const;
+
+export const QUERY_STATUS = {
+    SUCCESS: 'success',
+    ERROR: 'error',
+    IDLE: 'idle',
+    LOADING: 'loading',
+} as const;
+
+export const PASSWORD_TYPE = {
+    INVESTOR: 'investor',
 } as const;

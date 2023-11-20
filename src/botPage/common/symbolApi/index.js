@@ -75,7 +75,7 @@ export default class _Symbol {
                 const urlObject = new URL(url);
                 const queryParams = urlObject.searchParams;
                 const tokens_from_url = Array.from(queryParams.values());
-                const token_exist = new URLSearchParams(window.ocation.search).get('token');
+                const token_exist = new URLSearchParams(window.location.search).get('token');
 
                 if (token_exist) {
                     // Used when we have a token in the query param

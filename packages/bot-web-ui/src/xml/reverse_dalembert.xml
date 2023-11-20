@@ -3,7 +3,7 @@
     <variable type="" id="LbJ%gBkQn8lHX-LuY;OE" islocal="false" iscloud="false">rdalembert:profitThreshold</variable>
     <variable type="" id="p:YOw{BN8)4wTUEgW?f;" islocal="false" iscloud="false">rdalembert:lossThreshold</variable>
     <variable type="" id="u]E%rdqSO!DWc9s^8K]F" islocal="false" iscloud="false">rdalembert:initialStake</variable>
-    <variable type="" id="Xv=?/_{i5i7(YfFJqUM2" islocal="false" iscloud="false">rdalembert:unit</variable>
+    <variable type="" id="Xv=?/_{i5i7(YfFJqUM2" islocal="false" iscloud="false">rdalembert:totalUnits</variable>
     <variable type="" id="4f|w2F((L4rk#3M-J;*A" islocal="false" iscloud="false">rdalembert:totalProfit</variable>
     <variable type="" id="*=}*J);IF41.[{MJiCAp" islocal="false" iscloud="false">item</variable>
     <variable type="" id="M2a6~ns#)Z8]U2O_/=Fv" islocal="false" iscloud="false">rdalembert:resultIsWin</variable>
@@ -175,7 +175,7 @@
                 </value>
                 <statement name="DO0">
                   <block type="variables_set" id="vx8@hV*T_0mxJLSD;QVG">
-                    <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:unit</field>
+                    <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:totalUnits</field>
                     <value name="VALUE">
                       <block type="math_arithmetic" id="P;iBVC+gO#n5aq,1d%Ha">
                         <field name="OP">ADD</field>
@@ -184,7 +184,7 @@
                             <field name="NUM">1</field>
                           </shadow>
                           <block type="variables_get" id="7t)C%Qt3yTJO*/Qa.=o*">
-                            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:unit</field>
+                            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:totalUnits</field>
                           </block>
                         </value>
                         <value name="B">
@@ -227,7 +227,7 @@
                         </value>
                         <statement name="DO0">
                           <block type="variables_set" id="a=SZD.HxD6oYf9JT8cEp">
-                            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:unit</field>
+                            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:totalUnits</field>
                             <value name="VALUE">
                               <block type="math_number" id=".QX]_02a=qU2w?wnTTu*">
                                 <field name="NUM">1</field>
@@ -252,7 +252,7 @@
                 </statement>
                 <statement name="ELSE">
                   <block type="variables_set" id="*LMk..l::;hO,]0XF0O1">
-                    <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:unit</field>
+                    <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:totalUnits</field>
                     <value name="VALUE">
                       <block type="math_arithmetic" id="Y?)JVZf6OXttPIY{h;qf">
                         <field name="OP">MINUS</field>
@@ -261,7 +261,7 @@
                             <field name="NUM">1</field>
                           </shadow>
                           <block type="variables_get" id="a-y,HW*U?8}b_MH-,ZMa">
-                            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:unit</field>
+                            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:totalUnits</field>
                           </block>
                         </value>
                         <value name="B">
@@ -281,7 +281,7 @@
                             <field name="OP">LT</field>
                             <value name="A">
                               <block type="variables_get" id="!{:rLKX/YP`K9kpiMy_H">
-                                <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:unit</field>
+                                <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:totalUnits</field>
                               </block>
                             </value>
                             <value name="B">
@@ -293,7 +293,7 @@
                         </value>
                         <statement name="DO0">
                           <block type="variables_set" id="S@SVN;pkz`i@sq%$D+|,">
-                            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:unit</field>
+                            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:totalUnits</field>
                             <value name="VALUE">
                               <block type="math_number" id="1[RPFKC~vu)B9l;^B0.i">
                                 <field name="NUM">1</field>
@@ -414,7 +414,7 @@
                     <statement name="DO0">
                       <block type="variables_set" id="%Zt*u!]KSr~G6^jY)L^J">
                         <field name="VAR" id="Q(1ip|EGmQ1J@hSU(!DC" variabletype="">rdalembert:changeInUnit</field>
-                        <value name="VALUE">
+                        <value name="VALUE" strategy_value="dalembert_unit">
                           <block type="math_number" id="]2#fkK(JjP)SFm,_,WCs">
                             <field name="NUM">1</field>
                           </block>
@@ -428,7 +428,7 @@
                             <field name="OP">EQ</field>
                             <value name="A">
                               <block type="variables_get" id="5uXMk):nkRB`e@[vR^MU">
-                                <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:unit</field>
+                                <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:totalUnits</field>
                               </block>
                             </value>
                             <value name="B">
@@ -438,8 +438,8 @@
                         </value>
                         <statement name="DO0">
                           <block type="variables_set" id="KfzolhEa4be[WC/cujS2">
-                            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:unit</field>
-                            <value name="VALUE" strategy_value="dalembert_unit">
+                            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:totalUnits</field>
+                            <value name="VALUE">
                               <block type="math_number" id="I,lR9n;:Y@y4TDYsvILR">
                                 <field name="NUM">1</field>
                               </block>
@@ -499,7 +499,7 @@
             <field name="NUM">1</field>
           </shadow>
           <block type="variables_get" id="k[mRUqP,RdGS%LV.E1Ow">
-            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:unit</field>
+            <field name="VAR" id="Xv=?/_{i5i7(YfFJqUM2" variabletype="">rdalembert:totalUnits</field>
           </block>
         </value>
       </block>

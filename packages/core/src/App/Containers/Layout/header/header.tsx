@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import DefaultHeader from './default-header.jsx';
+import DefaultHeader from './default-header';
 import DTraderHeader from './dtrader-header';
 import TradersHubHeader from './traders-hub-header';
 

@@ -12,8 +12,7 @@ const getHighlightedIconLabel = (
     selected_region?: string
 ): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
-    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
-
+    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
     const getForexLabel = () => {
         if (selected_region === REGION.EU) {
             return localize('Forex');

@@ -19,6 +19,7 @@ type TModalContext = {
 };
 
 type TModalOptions = {
+    defaultRootId?: 'wallets_modal_root' | 'wallets_modal_show_header_root';
     rootRef?: React.RefObject<HTMLElement>;
     shouldHideDerivAppHeader?: boolean;
 };
@@ -72,11 +73,15 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     useOnClickOutside(modalRef, isDesktop ? hide : () => undefined);
 
     const modalRootRef = useMemo(() => {
+        // if they specify their own root, prioritize this first
         if (modalOptions?.rootRef?.current) return modalOptions?.rootRef;
-        if (modalOptions?.shouldHideDerivAppHeader) return rootRef;
-        if (!isDesktop) return rootHeaderRef;
+        // if user specifically specify they want to show on root or hide the Deriv.app header
+        if (modalOptions?.shouldHideDerivAppHeader || modalOptions?.defaultRootId === 'wallets_modal_root')
+            return rootRef;
+        // otherwise do the default behaviour, show Deriv.app header if on responsive
+        if (modalOptions?.defaultRootId === 'wallets_modal_show_header_root' || !isDesktop) return rootHeaderRef;
         return rootRef;
-    }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader]);
+    }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader, modalOptions?.defaultRootId, isDesktop]);
 
     return (
         <ModalContext.Provider

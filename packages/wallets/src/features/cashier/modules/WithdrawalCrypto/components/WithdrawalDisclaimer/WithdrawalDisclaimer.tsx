@@ -1,5 +1,5 @@
 import React from 'react';
-import { InlineMessage } from '../../../../../../components/Base/InlineMessage';
+import { InlineMessage } from '../../../../../../components';
 import './WithdrawalDisclaimer.scss';
 
 const WithdrawalDisclaimer = () => (

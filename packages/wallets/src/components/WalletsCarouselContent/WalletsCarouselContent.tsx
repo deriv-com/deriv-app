@@ -7,7 +7,11 @@ import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
 
-const WalletsCarouselContent: React.FC = () => {
+type TProps = {
+    onWalletSettled?: (value: boolean) => void;
+};
+
+const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     const { isLoading: isAuthorizeLoading, switchAccount } = useAuthorize();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
     const { data: walletAccountsList } = useWalletAccountsList();
@@ -48,13 +52,15 @@ const WalletsCarouselContent: React.FC = () => {
             if (activeWallet?.loginid !== loginid) {
                 switchAccount(loginid || '');
             }
+            onWalletSettled?.(true);
         });
 
         walletsCarouselEmblaApi?.on('select', () => {
             const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
             setProgressBarActiveIndex(scrollSnapIndex + 1);
+            onWalletSettled?.(false);
         });
-    }, [walletsCarouselEmblaApi, switchAccount, walletAccountsList, activeWallet?.loginid]);
+    }, [walletsCarouselEmblaApi, switchAccount, walletAccountsList, activeWallet?.loginid, onWalletSettled]);
 
     const amountOfSteps = useMemo(() => walletAccountsList?.map(wallet => wallet.loginid), [walletAccountsList]);
 

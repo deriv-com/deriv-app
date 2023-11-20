@@ -4,6 +4,8 @@ import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAc
 import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
 import useDevice from '../../hooks/useDevice';
 import {
+    getFiatWalletLoginId,
+    getWalletIndexForTarget,
     TooltipComponent,
     tourStepConfig,
     walletsOnboardingLocalStorageKey as key,
@@ -20,7 +22,8 @@ const WalletTourGuide = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAllWalletAccounts();
 
-    const fiatWalletLoginId = wallets?.[0]?.loginid;
+    const fiatWalletLoginId = getFiatWalletLoginId(wallets);
+    const walletIndex = getWalletIndexForTarget(fiatWalletLoginId, wallets);
     const activeWalletLoginId = activeWallet?.loginid;
 
     const callbackHandle = (data: CallBackProps) => {
@@ -65,7 +68,8 @@ const WalletTourGuide = () => {
                 isDemoWallet,
                 hasMT5Account,
                 hasDerivAppsTradingAccount,
-                isAllWalletsAlreadyAdded
+                isAllWalletsAlreadyAdded,
+                walletIndex
             )}
             tooltipComponent={TooltipComponent}
         />

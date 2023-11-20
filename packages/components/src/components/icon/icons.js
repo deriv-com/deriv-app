@@ -612,6 +612,7 @@ import './common/ic-verification-success.svg';
 import './common/ic-verification.svg';
 import './common/ic-visa-dark.svg';
 import './common/ic-visa-light.svg';
+import './common/ic-warning.svg';
 import './common/ic-web-money-dark.svg';
 import './common/ic-web-money-light.svg';
 import './common/ic-web-terminal.svg';

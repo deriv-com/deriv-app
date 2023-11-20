@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ThemedScrollbars, Icon } from '@deriv/components';
 import { formatMilliseconds } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import ChatMessageReceipt from 'Pages/orders/chat/chat-message-receipt.jsx';
 import ChatMessageText from 'Pages/orders/chat/chat-message-text.jsx';
@@ -21,7 +21,11 @@ const AdminMessage = () => (
 );
 const ChatMessages = observer(() => {
     const { sendbird_store } = useStores();
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const scroll_ref = React.useRef(null);
+    let disposeListeners = () => {};
 
     const onImageLoad = event => {
         // Height of element changes after the image is loaded. Accommodate
@@ -30,6 +34,16 @@ const ChatMessages = observer(() => {
             scroll_ref.current.scrollTop += event.target.parentNode.clientHeight;
         }
     };
+
+    React.useEffect(() => {
+        if (is_mobile) {
+            disposeListeners = sendbird_store.registerEventListeners();
+        }
+
+        return () => {
+            disposeListeners();
+        };
+    }, []);
 
     React.useEffect(() => {
         sendbird_store.setMessagesRef(scroll_ref);

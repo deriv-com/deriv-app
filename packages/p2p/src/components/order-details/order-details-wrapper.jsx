@@ -11,9 +11,8 @@ import OrderDetailsFooter from 'Components/order-details/order-details-footer.js
 const OrderDetailsWrapper = ({ children, page_title }) => {
     const { order_store, sendbird_store } = useStores();
     const history = useHistory();
-    const { setShouldShowChatModal } = sendbird_store;
+    const { setShouldShowChatModal, unread_messages_count } = sendbird_store;
 
-    const count = sendbird_store.active_chat_channel?.unreadMessageCount;
     const pageHeaderReturnHandler = () => {
         order_store.onPageReturn();
 
@@ -42,7 +41,12 @@ const OrderDetailsWrapper = ({ children, page_title }) => {
                             width={16}
                             onClick={() => setShouldShowChatModal(true)}
                         />
-                        {!!count && <Counter count={count} className='order-details__body-icon-wrapper--count' />}
+                        {!!unread_messages_count && (
+                            <Counter
+                                count={unread_messages_count}
+                                className='order-details__body-icon-wrapper--count'
+                            />
+                        )}
                     </div>
                 )}
                 renderPageFooterChildren={

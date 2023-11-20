@@ -31,6 +31,7 @@ export default class SendbirdStore extends BaseStore {
     disposeOrderIdReaction?: IReactionDisposer;
     disposeChannelUrlReaction?: IReactionDisposer;
     disposeActiveChatChannelReaction?: IReactionDisposer;
+    unread_messages_count = 0;
 
     constructor(root_store: TCoreStores) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
@@ -46,12 +47,14 @@ export default class SendbirdStore extends BaseStore {
             scroll_debounce: observable.ref,
             should_show_chat_modal: observable,
             should_show_chat_on_orders: observable,
+            unread_messages_count: observable,
             has_chat_info: computed,
             is_chat_frozen: computed,
             addChannelMessage: action.bound,
             createChatForNewOrder: action.bound,
             onMessagesScroll: action.bound,
             replaceChannelMessage: action.bound,
+            sendMessage: action.bound,
             setActiveChatChannel: action.bound,
             setChatChannelUrl: action.bound,
             setChatInfo: action.bound,
@@ -60,7 +63,7 @@ export default class SendbirdStore extends BaseStore {
             setChannelMessages: action.bound,
             setShouldShowChatModal: action.bound,
             setShouldShowChatOnOrders: action.bound,
-            unread_messages_count: computed,
+            setUnreadMessageCount: action.bound,
         });
     }
 
@@ -70,10 +73,6 @@ export default class SendbirdStore extends BaseStore {
 
     get is_chat_frozen() {
         return this.active_chat_channel?.isFrozen;
-    }
-
-    get unread_messages_count() {
-        return this.active_chat_channel?.unreadMessageCount;
     }
 
     addChannelMessage(chat_message: ChatMessage) {
@@ -188,6 +187,7 @@ export default class SendbirdStore extends BaseStore {
     }
 
     async initialiseOrderMessages() {
+        this.setUnreadMessageCount(this.active_chat_channel?.unreadMessageCount ?? 0);
         this.setHasChatError(false);
         this.setIsChatLoading(true);
         try {
@@ -271,16 +271,18 @@ export default class SendbirdStore extends BaseStore {
     async markMessagesAsRead(should_check_scroll: boolean) {
         if (!this.active_chat_channel) return;
         try {
-            if (document.hasFocus() && this.messages_ref?.current) {
+            if (document.hasFocus()) {
                 if (should_check_scroll && this.messages_ref?.current) {
                     const { scrollHeight, scrollTop, clientHeight } = this.messages_ref.current;
                     const is_at_bottom = scrollHeight - scrollTop === clientHeight;
 
                     if (is_at_bottom) {
                         await this.active_chat_channel.markAsRead();
+                        this.setUnreadMessageCount(0);
                     }
                 } else {
                     await this.active_chat_channel.markAsRead();
+                    this.setUnreadMessageCount(0);
                 }
             }
         } catch (error) {
@@ -290,6 +292,7 @@ export default class SendbirdStore extends BaseStore {
     }
 
     onMessageReceived(channel: BaseChannel, channel_message: BaseMessage) {
+        this.setUnreadMessageCount(this.active_chat_channel?.unreadMessageCount ?? 0);
         if (
             channel_message.channelUrl === this.chat_channel_url &&
             (channel_message.isUserMessage() || channel_message.isFileMessage())
@@ -339,15 +342,17 @@ export default class SendbirdStore extends BaseStore {
 
     registerEventListeners() {
         const markMessagesAsReadCheckScroll = () => {
-            if (this.scroll_debounce) {
-                return null;
-            }
+            // if (this.scroll_debounce) {
+            //     return null;
+            // }
 
             (async () => {
                 await this.markMessagesAsRead(true);
             })();
         };
+        markMessagesAsReadCheckScroll();
         window.addEventListener('focus', markMessagesAsReadCheckScroll);
+        // window.addEventListener('focusin', markMessagesAsReadCheckScroll);
         return () => window.removeEventListener('focus', markMessagesAsReadCheckScroll);
     }
 
@@ -409,6 +414,10 @@ export default class SendbirdStore extends BaseStore {
 
     setFileUploadProperties(file_upload_properties: FileMessage | null) {
         this.file_upload_properties = file_upload_properties;
+    }
+
+    setUnreadMessageCount(unread_messages_count: number) {
+        this.unread_messages_count = unread_messages_count;
     }
 
     sendFile(file: File) {

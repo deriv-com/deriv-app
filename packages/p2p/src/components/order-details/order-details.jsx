@@ -24,10 +24,12 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
+    let disposeListeners = () => {};
     const { buy_sell_store, general_store, my_profile_store, order_store, sendbird_store, order_details_store } =
         useStores();
     const {
         notifications: { removeNotificationByKey, removeNotificationMessage, setP2POrderProps },
+        ui: { is_desktop },
     } = useStore();
     const { hideModal, isCurrentModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
@@ -88,7 +90,9 @@ const OrderDetails = observer(() => {
     };
 
     React.useEffect(() => {
-        const disposeListeners = sendbird_store.registerEventListeners();
+        if (is_desktop) {
+            disposeListeners = sendbird_store.registerEventListeners();
+        }
         const disposeReactions = sendbird_store.registerMobXReactions();
 
         order_store.getSettings();

@@ -1,8 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletButton } from '../../../../components/Base';
+import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
-import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
@@ -35,18 +34,17 @@ const EnterPassword: React.FC<TProps> = ({
 
     return (
         <div className='wallets-enter-password'>
-            <div className='wallets-enter-password--container'>
-                {isDesktop && <div className='wallets-enter-password-title'>Enter your {title} password</div>}
-                <span className='wallets-enter-password-subtitle'>
+            <div className='wallets-enter-password__container'>
+                <WalletText lineHeight='xl' weight='bold'>
+                    Enter your {title} password
+                </WalletText>
+                <WalletText size='sm'>
                     Enter your {title} password to add a {title} {marketTypeTitle} account.
-                </span>
-                <div className='wallets-enter-password-input'>
-                    <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
-                    <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
-                </div>
+                </WalletText>
+                <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
             </div>
             {isDesktop && (
-                <div className='wallets-enter-password-buttons'>
+                <div className='wallets-enter-password__buttons'>
                     <WalletButton onClick={onSecondaryClick} size='lg' text='Forgot password?' variant='outlined' />
                     <WalletButton
                         disabled={!password || isLoading}

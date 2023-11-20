@@ -1,5 +1,5 @@
 import React from 'react';
-import { InlineMessage, WalletText, WalletTextField } from '../../../../../../components';
+import { FlowTextField, InlineMessage, WalletText } from '../../../../../../components';
 import SideNote from '../../../../../../public/images/accounts/side-note-example-image.svg';
 import './IDVDocumentUploadDetails.scss';
 
@@ -15,23 +15,25 @@ const IDVDocumentUploadDetails = () => {
             <div className='wallets-idv-document-details__body'>
                 <div className='wallets-idv-document-details__content'>
                     {/* TODO: Update account details using implemented Formik */}
-                    <WalletTextField
+
+                    <FlowTextField
                         label='First name*'
-                        maxWidth='35.9rem'
                         message='Your first name as in your identity document'
+                        name='firstName'
                         showMessage
                     />
-                    <WalletTextField
+
+                    <FlowTextField
                         label='Last name*'
-                        maxWidth='35.9rem'
                         message='Your last name as in your identity document'
+                        name='lastName'
                         showMessage
                     />
                     {/* TODO: Replace with DatePicker component*/}
-                    <WalletTextField
+                    <FlowTextField
                         label='Date of birth*'
-                        maxWidth='35.9rem'
                         message='Your date of birth as in your identity document'
+                        name='dateOfBirth'
                         showMessage
                         type='date'
                     />

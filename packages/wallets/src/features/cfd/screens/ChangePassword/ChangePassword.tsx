@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { ModalStepWrapper, WalletText } from '../../../../components/Base';
-import MT5Password from './MT5Password';
+import MT5ChangePasswordScreens from './MT5ChangePasswordScreens';
 import './ChangePassword.scss';
 
 const ChangePassword = () => {
     const tabs = [
         {
-            content: <MT5Password />,
+            content: <MT5ChangePasswordScreens />,
             label: 'Deriv MT5 password',
         },
         {
@@ -21,7 +21,7 @@ const ChangePassword = () => {
     };
 
     return (
-        <ModalStepWrapper closeOnEscape title='Manage Deriv MT5 password'>
+        <ModalStepWrapper title='Manage Deriv MT5 password'>
             <div className='wallets-change-password__modal-wrapper'>
                 <div className='wallets-change-password__container'>
                     <div className='wallets-change-password__tab'>
@@ -39,7 +39,7 @@ const ChangePassword = () => {
                             </button>
                         ))}
                     </div>
-                    <div className='wallets-change-password__content'>{tabs[activeTab].content}</div>
+                    <>{tabs[activeTab].content}</>
                 </div>
             </div>
         </ModalStepWrapper>

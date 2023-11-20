@@ -27,8 +27,6 @@ export { default as useCtraderAccountsList } from './useCtraderAccountsList';
 export { default as useCtraderServiceToken } from './useCtraderServiceToken';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
-export { default as useDerivezAccountsList } from './useDerivezAccountsList';
-export { default as useDerivezServiceToken } from './useDerivezServiceToken';
 export { default as useDxtradeAccountsList } from './useDxtradeAccountsList';
 export { default as useDxtradeServiceToken } from './useDxtradeServiceToken';
 export { default as useDynamicLeverage } from './useDynamicLeverage';

@@ -1,16 +1,12 @@
 .wallets-dropzone {
     display: flex;
-    padding: 2.8rem 15.2rem 3.5rem;
     justify-content: center;
     align-items: center;
     border-radius: 0.8rem;
     height: 100%;
     width: 100%;
     border: 0.1rem dashed var(--system-light-5-active-background, #d6dadb);
-
-    @include mobile {
-        padding: 2.4rem 2.5rem 0.4rem;
-    }
+    padding: 2rem;
 
     &--hover,
     &--active {
@@ -52,6 +48,9 @@
 
         &--has-frame {
             background-size: contain;
+            height: 100%;
+            margin-bottom: 0;
+            border: 0.5rem solid transparent;
         }
     }
 

@@ -14,7 +14,6 @@ import IcWalletUsdCoinLight from '../../public/images/currencies/usdc.svg';
 import IcWalletUsdCoinDark from '../../public/images/currencies/usdc-dark.svg';
 import IcWalletTetherLight from '../../public/images/currencies/usdt.svg';
 import IcWalletTetherDark from '../../public/images/currencies/usdt-dark.svg';
-import IcWalletDerivEZ from '../../public/images/derivez.svg';
 import IcWalletDerivX from '../../public/images/derivx.svg';
 import IcWalletMt5CFDs from '../../public/images/mt5-cfds.svg';
 import IcWalletMt5Derived from '../../public/images/mt5-derived.svg';
@@ -42,7 +41,6 @@ const ICONS: IconTypes = {
     IcWalletCurrencyUsd,
     IcWalletDerivDemoDark,
     IcWalletDerivDemoLight,
-    IcWalletDerivEZ,
     IcWalletDerivP2PDark,
     IcWalletDerivP2PLight,
     IcWalletDerivX,

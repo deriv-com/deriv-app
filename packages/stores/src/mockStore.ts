@@ -448,6 +448,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setSelectedAccount: jest.fn(),
             is_low_risk_cr_eu_real: false,
             is_real_wallets_upgrade_on: false,
+            is_tour_open: false,
             toggleWalletsUpgrade: jest.fn(),
             show_eu_related_content: false,
             platform_real_balance: {

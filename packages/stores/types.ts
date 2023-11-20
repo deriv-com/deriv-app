@@ -899,6 +899,7 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_demo: boolean;
     is_real: boolean;
+    is_tour_open: boolean;
     selectRegion: (region: string) => void;
     closeAccountTransferModal: () => void;
     toggleRegulatorsCompareModal: () => void;

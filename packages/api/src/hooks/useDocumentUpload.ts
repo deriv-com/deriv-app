@@ -20,7 +20,7 @@ const useDocumentUpload = () => {
             const id = numToUint8Array(data?.document_upload?.upload_id || 0);
             const type = numToUint8Array(data?.document_upload?.call_type || 0);
 
-            chunks.map(chunk => {
+            chunks.forEach(chunk => {
                 const size = numToUint8Array(chunk.length);
                 let payload = new Uint8Array([]);
 

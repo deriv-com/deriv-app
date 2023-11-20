@@ -1,15 +1,14 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
+import { isMobile } from '@deriv/shared';
 
 type TMobileWrapper = {
     children: React.ReactNode;
 };
 
-const MobileWrapper = observer(({ children }: TMobileWrapper) => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+const MobileWrapper = ({ children }: TMobileWrapper) => {
+    if (!isMobile()) return null;
 
-    return is_mobile ? <React.Fragment>{children}</React.Fragment> : null;
-});
+    return <React.Fragment>{children}</React.Fragment>;
+};
 
 export default MobileWrapper;

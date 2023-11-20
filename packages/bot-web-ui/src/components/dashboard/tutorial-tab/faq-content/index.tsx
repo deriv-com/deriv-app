@@ -4,6 +4,7 @@ import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { TDescription } from '../config';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 type TFAQContent = {
     faq_list: TFAQList[];
@@ -41,6 +42,9 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
 };
 
 const FAQContent = observer(({ faq_list }: TFAQContent) => {
+    const { dashboard } = useDBotStore();
+    const { active_tab_tutorials } = dashboard;
+
     const faq_wrapper_element = React.useRef<HTMLDivElement>(null);
     const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -94,9 +98,11 @@ const FAQContent = observer(({ faq_list }: TFAQContent) => {
             <div className='faq__wrapper' ref={faq_wrapper_element}>
                 {faq_list?.length > 0 && (
                     <>
-                        <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                            <Localize i18n_default_text='FAQ' />
-                        </Text>
+                        {active_tab_tutorials === 2 && (
+                            <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
+                                <Localize i18n_default_text='FAQ' />
+                            </Text>
+                        )}
                         <div
                             data-testid='id-accordion-test'
                             onClick={handleAccordionClick}

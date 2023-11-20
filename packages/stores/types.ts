@@ -598,6 +598,7 @@ type TUiStore = {
     is_mobile_language_menu_open: boolean;
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
+    is_trading_assessment_for_existing_user_enabled: boolean;
     is_unsupported_contract_modal_visible: boolean;
     openPositionsDrawer: () => void;
     openRealAccountSignup: (

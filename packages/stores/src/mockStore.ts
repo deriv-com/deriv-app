@@ -341,6 +341,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_reports_visible: false,
             is_route_modal_on: false,
             is_services_error_visible: false,
+            is_trading_assessment_for_existing_user_enabled: false,
             is_unsupported_contract_modal_visible: false,
             disableApp: jest.fn(),
             enableApp: jest.fn(),

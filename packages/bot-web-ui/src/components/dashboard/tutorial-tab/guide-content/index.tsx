@@ -34,7 +34,23 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
         showVideoDialog,
         setActiveTour,
         setShowMobileTourDialog,
+        faq_search_value,
     } = dashboard;
+
+    const [video_guide, setVideoGuide] = React.useState(true);
+    const [tour_guides, setTourGuides] = React.useState(true);
+
+    const getLengthOfArrayForTabs = React.useCallback(() => {
+        const hasVideoGuide = guide_list.some(({ type }) => type !== 'Tour');
+        const hasTourGuide = guide_list.some(({ type }) => type === 'Tour');
+
+        setVideoGuide(hasVideoGuide);
+        setTourGuides(hasTourGuide);
+    }, [guide_list, video_guide, tour_guides]);
+
+    React.useEffect(() => {
+        getLengthOfArrayForTabs();
+    }, [getLengthOfArrayForTabs, faq_search_value]);
 
     const triggerTour = (type: string) => {
         if (type === 'OnBoard') {
@@ -57,7 +73,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
     return React.useMemo(
         () => (
             <div className='tutorials-wrap'>
-                {guide_list?.length > 0 && (
+                {tour_guides && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
                         <Localize i18n_default_text='Step-by-step guides' />
                     </Text>
@@ -93,7 +109,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                         );
                     })}
                 </div>
-                {guide_list?.length > 0 && (
+                {video_guide && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
                         <Localize i18n_default_text='Videos on Deriv Bot' />
                     </Text>
@@ -155,7 +171,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                 </Dialog>
             </div>
         ),
-        [guide_list, is_dialog_open]
+        [guide_list, is_dialog_open, video_guide, tour_guides]
     );
 });
 

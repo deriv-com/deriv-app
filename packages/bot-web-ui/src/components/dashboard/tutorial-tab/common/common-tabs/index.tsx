@@ -6,13 +6,13 @@ import NoSearchResult from '../no-search-result-found';
 
 export const GuideTab = ({ guideList }) => <GuideContent guide_list={guideList} />;
 
-export const FAQTab = ({ faqList, isMobile }) => <FAQContent faq_list={faqList} hide_header={isMobile} />;
+export const FAQTab = ({ faqList }) => <FAQContent faq_list={faqList} />;
 
-export const SearchTab = ({ filteredList, guideList, faqList, isMobile, search }) =>
+export const SearchTab = ({ filteredList, guideList, faqList }) =>
     filteredList.length > 0 ? (
         <>
             {guideList.length > 0 && <GuideTab guideList={guideList} />}
-            {faqList.length > 0 && <FAQTab faqList={faqList} isMobile={isMobile} />}
+            {faqList.length > 0 && <FAQTab faqList={faqList} />}
         </>
     ) : (
         <NoSearchResult />

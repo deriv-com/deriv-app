@@ -7,7 +7,6 @@ import { TDescription } from '../config';
 
 type TFAQContent = {
     faq_list: TFAQList[];
-    hide_header?: boolean;
 };
 
 type TFAQList = {
@@ -41,7 +40,7 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
     }
 };
 
-const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => {
+const FAQContent = observer(({ faq_list }: TFAQContent) => {
     const faq_wrapper_element = React.useRef<HTMLDivElement>(null);
     const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -95,11 +94,9 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
             <div className='faq__wrapper' ref={faq_wrapper_element}>
                 {faq_list?.length > 0 && (
                     <>
-                        {!hide_header && (
-                            <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                                <Localize i18n_default_text='FAQ' />
-                            </Text>
-                        )}
+                        <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
+                            <Localize i18n_default_text='FAQ' />
+                        </Text>
                         <div
                             data-testid='id-accordion-test'
                             onClick={handleAccordionClick}

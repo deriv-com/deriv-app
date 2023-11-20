@@ -157,6 +157,9 @@
             &__item {
                 border: unset;
                 border-bottom: 0.1rem solid var(--general-section-1);
+                &:last-child {
+                    margin-bottom: 2rem;
+                }
                 &-header {
                     @include position-center;
                     justify-content: space-between;
@@ -443,11 +446,14 @@
     &__faq,
     &__search {
         @include mobile {
-            height: calc(100vh - 28.1rem);
+            height: calc(100vh - 30.1rem);
             overflow: auto;
             .tutorials-wrap,
             .faq__wrapper {
                 overflow: unset;
+            }
+            .tutorials-wrap {
+                margin-bottom: 2rem;
             }
         }
     }

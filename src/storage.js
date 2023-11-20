@@ -195,10 +195,11 @@ export const getLanguage = () => {
     const parsed_url = parseQueryString().lang || parseQueryString().l;
     const supported_storage_lang = getLang() in supported_languages ? getLang() : null;
     const get_cookie_lang = Cookies.get('user_language');
+
     const getUserLang = () => {
         if (parsed_url) return parsed_url;
-        if (supported_storage_lang) return supported_storage_lang;
         if (get_cookie_lang) return get_cookie_lang;
+        if (supported_storage_lang) return supported_storage_lang;
         return 'en';
     };
     const query_lang = getUserLang();

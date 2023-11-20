@@ -71,18 +71,15 @@ export default class _Symbol {
             if (loginid && accounts && accounts?.[loginid]?.token) {
                 initialize();
             } else {
-                const url = window.location.href;
-                const urlObject = new URL(url);
-                const queryParams = urlObject.searchParams;
-                const tokens_from_url = Array.from(queryParams.values());
+                const first_token = new URLSearchParams(window.location.search).get('token1');
 
-                if (tokens_from_url.length === 0) {
+                if (first_token) {
+                    // Used when we have a token in the query param
+                    initialize(first_token);
+                } else {
                     // Used when the user logs out
                     api_base.getActiveSymbols();
                     getActiveSymbolsLogic();
-                } else {
-                    // Used when we have a token in the query param
-                    initialize(tokens_from_url[1]);
                 }
             }
         });

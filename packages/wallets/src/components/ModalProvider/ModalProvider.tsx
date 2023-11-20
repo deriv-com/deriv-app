@@ -20,6 +20,7 @@ type TModalContext = {
 
 type TModalOptions = {
     rootRef?: React.RefObject<HTMLElement>;
+    shouldHideDerivAppHeader?: boolean;
 };
 
 const ModalContext = createContext<TModalContext | null>(null);
@@ -40,7 +41,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const { isDesktop } = useDevice();
 
     const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
-    const rootResponsiveRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_responsive_root'));
+    const rootHeaderRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_show_header_root'));
 
     const getModalState = <T extends keyof TModalState>(key: T): TModalState[T] => {
         return modalState.get(key) as TModalState[T];
@@ -59,8 +60,8 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     };
 
     useEffect(() => {
-        if (!rootResponsiveRef.current) {
-            rootResponsiveRef.current = document.getElementById('wallets_modal_responsive_root');
+        if (!rootHeaderRef.current) {
+            rootHeaderRef.current = document.getElementById('wallets_modal_show_header_root');
         }
     }, []);
 
@@ -72,8 +73,10 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     const modalRootRef = useMemo(() => {
         if (modalOptions?.rootRef?.current) return modalOptions?.rootRef;
+        if (modalOptions?.shouldHideDerivAppHeader) return rootRef;
+        if (!isDesktop) return rootHeaderRef;
         return rootRef;
-    }, [modalOptions?.rootRef]);
+    }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader]);
 
     return (
         <ModalContext.Provider

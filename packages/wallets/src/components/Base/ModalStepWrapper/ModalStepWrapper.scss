@@ -10,6 +10,10 @@
         display: grid;
         grid-template-rows: 6rem auto;
 
+        &--show-deriv-app-header {
+            height: calc(100vh - 4rem);
+        }
+
         &--fixed-footer {
             grid-template-rows: 6rem auto 7rem;
         }

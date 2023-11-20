@@ -74,8 +74,8 @@ const SentEmailContent: React.FC<TProps> = ({ platform }) => {
             />
             {shouldShowResendEmailReasons && (
                 <div className='wallets-sent-email-content__reasons'>
-                    {REASONS.map((reason, index) => (
-                        <div className='wallets-sent-email-content__reasons-item' key={index}>
+                    {REASONS.map(reason => (
+                        <div className='wallets-sent-email-content__reasons-item' key={`reason-${reason.text}`}>
                             <reason.icon />
                             <WalletText size='xs'>{reason.text}</WalletText>
                         </div>

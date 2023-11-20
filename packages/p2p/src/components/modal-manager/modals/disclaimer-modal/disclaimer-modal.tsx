@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Icon, Modal, Text } from '@deriv/components';
+import { Button, Checkbox, Icon, Modal, Text, useSafeState } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -44,7 +44,7 @@ type TDisclaimerModalProps = {
 };
 
 const DisclaimerModal = ({ handleDisclaimerTimeout }: TDisclaimerModalProps) => {
-    const [is_checked, setIsChecked] = React.useState(false);
+    const [is_checked, setIsChecked] = useSafeState(false);
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { client, ui } = useStore();
     const { loginid } = client;

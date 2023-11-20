@@ -80,7 +80,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
     const isNextDisabled = ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
-            case 'manualScreen':
+            case 'idvScreen':
                 return (
                     !formValues.documentNumber ||
                     !formValues.firstName ||

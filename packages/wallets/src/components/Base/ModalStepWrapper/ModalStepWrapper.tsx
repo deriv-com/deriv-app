@@ -9,9 +9,9 @@ import './ModalStepWrapper.scss';
 type TModalStepWrapperProps = {
     renderFooter?: () => ReactNode;
     shouldFixedFooter?: boolean;
+    shouldHideDerivAppHeader?: boolean;
     shouldHideHeader?: boolean;
     shouldPreventCloseOnEscape?: boolean;
-    shouldShowDerivAppHeader?: boolean;
     title?: string;
 };
 
@@ -19,9 +19,9 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     children,
     renderFooter,
     shouldFixedFooter = true,
+    shouldHideDerivAppHeader = false,
     shouldHideHeader = false,
     shouldPreventCloseOnEscape = false,
-    shouldShowDerivAppHeader = true,
     title,
 }) => {
     const { hide } = useModal();
@@ -38,9 +38,9 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         <div
             className={classNames('wallets-modal-step-wrapper', {
                 'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
+                'wallets-modal-step-wrapper--hide-deriv-app-header': shouldHideDerivAppHeader,
                 'wallets-modal-step-wrapper--no-header': shouldHideHeader && !fixedFooter,
                 'wallets-modal-step-wrapper--no-header--fixed-footer': shouldHideHeader && fixedFooter,
-                'wallets-modal-step-wrapper--show-deriv-app-header': shouldShowDerivAppHeader,
             })}
         >
             {!shouldHideHeader && (

@@ -9,9 +9,9 @@ jest.mock('react-router-dom', () => ({
     useLocation: jest.fn().mockReturnValue({ pathname: '' }),
 }));
 // eslint-disable-next-line react/display-name
-jest.mock('../default-header.jsx', () => () => <div data-testid='dt_default_header'>MockedDefaultHeader</div>);
+jest.mock('../default-header', () => () => <div data-testid='dt_default_header'>MockedDefaultHeader</div>);
 // eslint-disable-next-line react/display-name
-jest.mock('../dtrader-header.jsx', () => () => <div data-testid='dt_dtrader_header'>MockedDTraderHeader</div>);
+jest.mock('../dtrader-header', () => () => <div data-testid='dt_dtrader_header'>MockedDTraderHeader</div>);
 // eslint-disable-next-line react/display-name
 jest.mock('../traders-hub-header', () => () => <div data-testid='dt_traders_hub_header'>MockedTradersHubHeader</div>);
 

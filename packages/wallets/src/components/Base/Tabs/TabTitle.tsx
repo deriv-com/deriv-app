@@ -22,7 +22,7 @@ const TabTitle: FC<TabTitleProps> = ({ icon, index, isActive, setSelectedTab, ti
             })}
             onClick={handleOnClick}
         >
-            {icon && icon}
+            {icon}
             <WalletText weight={isActive ? 'bold' : 'normal'}>{title}</WalletText>
         </button>
     );

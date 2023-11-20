@@ -2,7 +2,6 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Dialog } from '@deriv/components';
 import * as multiplier_functions from 'Stores/Modules/Trading/Helpers/multiplier';
@@ -42,7 +41,7 @@ jest.mock('@deriv/components', () => ({
 }));
 
 describe('<CancelDeal />', () => {
-    const mockCancelDeal = (mocked_store: TCoreStores, mocked_props: React.ComponentProps<typeof CancelDeal>) => {
+    const mockCancelDeal = (mocked_store = mockStore(default_mock_store), mocked_props = default_mocked_props) => {
         return (
             <TraderProviders store={mocked_store}>
                 <CancelDeal {...mocked_props} />
@@ -51,8 +50,7 @@ describe('<CancelDeal />', () => {
     };
 
     it('should render the component with checkbox and popover', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockCancelDeal(mock_root_store, default_mocked_props));
+        render(mockCancelDeal());
 
         const info_icon = screen.getByTestId(/dt_popover_wrapper/i);
         userEvent.hover(info_icon);
@@ -73,8 +71,7 @@ describe('<CancelDeal />', () => {
         expect(screen.getByText('mocked text')).toBeInTheDocument();
     });
     it('should call onToggleCancellation if user clicked on Deal cancellation checkbox and onToggleDealCancel returned true', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockCancelDeal(mock_root_store, default_mocked_props));
+        render(mockCancelDeal());
 
         const checkbox_with_cancellation = screen.getByText(deal_cancellation);
         userEvent.click(checkbox_with_cancellation);

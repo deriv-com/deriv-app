@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TTradeStore } from 'Types';
-import { TCoreStores } from '@deriv/stores/types';
 import MultiplierOptions from '../multiplier-options';
 import TraderProviders from '../../../../../trader-providers';
 
@@ -58,7 +57,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<MultiplierOptions />', () => {
-    const mockMultiplierOptions = (mocked_store: TCoreStores) => {
+    const mockMultiplierOptions = (mocked_store = mockStore(default_mock_store)) => {
         return (
             <TraderProviders store={mocked_store}>
                 <MultiplierOptions {...default_mocked_props} />
@@ -66,8 +65,7 @@ describe('<MultiplierOptions />', () => {
         );
     };
     it('should render children components', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockMultiplierOptions(mock_root_store));
+        render(mockMultiplierOptions());
 
         expect(screen.getByText(/MultipliersInfo component/i)).toBeInTheDocument();
         expect(screen.getByText(/0/i)).toBeInTheDocument();

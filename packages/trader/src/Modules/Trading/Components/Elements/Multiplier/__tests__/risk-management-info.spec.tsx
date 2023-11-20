@@ -2,7 +2,6 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
 import { useTraderStore } from 'Stores/useTraderStores';
 import RiskManagementInfo from '../risk-management-info';
 import TraderProviders from '../../../../../../trader-providers';
@@ -41,7 +40,7 @@ jest.mock('Modules/Trading/Containers/Multiplier/risk-management-dialog', () =>
 );
 
 describe('<RiskManagementInfo />', () => {
-    const mockRiskManagementInfo = (mocked_store: TCoreStores) => {
+    const mockRiskManagementInfo = (mocked_store = mockStore(default_mock_store)) => {
         return (
             <TraderProviders store={mocked_store}>
                 <RiskManagementInfo />
@@ -50,8 +49,7 @@ describe('<RiskManagementInfo />', () => {
     };
 
     it('should render only risk management block if has_take_profit, has_stop_loss, has_cancellation are equal to false', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockRiskManagementInfo(mock_root_store));
+        render(mockRiskManagementInfo());
 
         expect(screen.getByText(risk_management)).toBeInTheDocument();
         expect(screen.queryByText(take_profit)).not.toBeInTheDocument();
@@ -72,8 +70,7 @@ describe('<RiskManagementInfo />', () => {
                 has_cancellation: true,
             },
         };
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockRiskManagementInfo(mock_root_store));
+        render(mockRiskManagementInfo());
 
         expect(screen.getByText(take_profit)).toBeInTheDocument();
         expect(screen.getByText(/30.00 usd/i)).toBeInTheDocument();
@@ -84,8 +81,7 @@ describe('<RiskManagementInfo />', () => {
         expect(screen.queryByText(risk_management)).not.toBeInTheDocument();
     });
     it('should render <RiskManagementDialog /> if user clicked on one of the risk management blocks', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockRiskManagementInfo(mock_root_store));
+        render(mockRiskManagementInfo());
 
         const risk_management_block = screen.getByText(take_profit);
         userEvent.click(risk_management_block);
@@ -93,8 +89,7 @@ describe('<RiskManagementInfo />', () => {
         expect(screen.getByText(risk_management_dialog)).toBeInTheDocument();
     });
     it('should close <RiskManagementDialog /> if user clicked on close button', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockRiskManagementInfo(mock_root_store));
+        render(mockRiskManagementInfo());
 
         const risk_management_block = screen.getByText(take_profit);
         userEvent.click(risk_management_block);
@@ -104,8 +99,7 @@ describe('<RiskManagementInfo />', () => {
         expect(screen.queryByText(risk_management_dialog)).not.toBeInTheDocument();
     });
     it('should close <RiskManagementDialog /> if user clicked on toggle button', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockRiskManagementInfo(mock_root_store));
+        render(mockRiskManagementInfo());
 
         const risk_management_block = screen.getByText(take_profit);
         userEvent.click(risk_management_block);

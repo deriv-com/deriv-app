@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
 import { MobileDialog } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
 import RiskManagementDialog from '../risk-management-dialog';
@@ -65,7 +64,7 @@ jest.mock('react', () => ({
 const setState = jest.fn();
 
 describe('<RiskManagementDialog />', () => {
-    const mockRiskManagementDialog = (mocked_store: TCoreStores) => {
+    const mockRiskManagementDialog = (mocked_store = mockStore(default_mock_store)) => {
         return (
             <TraderProviders store={mocked_store}>
                 <RiskManagementDialog {...default_mocked_props} />
@@ -86,8 +85,7 @@ describe('<RiskManagementDialog />', () => {
     });
 
     it('should render children components', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockRiskManagementDialog(mock_root_store));
+        render(mockRiskManagementDialog());
 
         expect(screen.getByText(/StopLoss/i)).toBeInTheDocument();
         expect(screen.getByText(/TakeProfit/i)).toBeInTheDocument();
@@ -113,32 +111,28 @@ describe('<RiskManagementDialog />', () => {
         expect(screen.getByText(/CancelDeal/i)).toBeInTheDocument();
     });
     it('should call onClose function if MobileDialog was closed', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockRiskManagementDialog(mock_root_store));
+        render(mockRiskManagementDialog());
 
         userEvent.click(screen.getByText(/dialog/i));
 
         expect(default_mocked_props.onClose).toBeCalled();
     });
     it('should call toggleDialog function if Apply button was clicked', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockRiskManagementDialog(mock_root_store));
+        render(mockRiskManagementDialog());
 
         userEvent.click(screen.getByText(/Apply/i));
 
         expect(default_mocked_props.toggleDialog).toBeCalled();
     });
     it('should change state object with setState function if onChangeMultiple was called', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockRiskManagementDialog(mock_root_store));
+        render(mockRiskManagementDialog());
 
         userEvent.click(screen.getByText('ChangeMultiple'));
 
         expect(setState).toBeCalled();
     });
     it('should change state object with setState function if onChange was called', () => {
-        const mock_root_store = mockStore(default_mock_store);
-        render(mockRiskManagementDialog(mock_root_store));
+        render(mockRiskManagementDialog());
 
         userEvent.click(screen.getByText('Change'));
 

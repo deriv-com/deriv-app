@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import ChatMessage from 'Utils/chat-message';
 import ChatMessages from '../chat-messages';
 
@@ -35,8 +36,14 @@ jest.mock('Stores', () => ({
 }));
 
 describe('<ChatMessages />', () => {
+    const renderComponent = () =>
+        render(
+            <StoreProvider store={mockStore({})}>
+                <ChatMessages />
+            </StoreProvider>
+        );
     it('should render the bot message with appropriate styles', () => {
-        render(<ChatMessages />);
+        renderComponent();
         const bot_message = screen.getByText(
             /Hello! This is where you can chat with the counterparty to confirm the order details. Note: In case of a dispute, we'll use this chat as a reference./
         );

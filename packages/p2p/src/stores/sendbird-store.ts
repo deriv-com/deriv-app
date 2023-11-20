@@ -342,9 +342,9 @@ export default class SendbirdStore extends BaseStore {
 
     registerEventListeners() {
         const markMessagesAsReadCheckScroll = () => {
-            // if (this.scroll_debounce) {
-            //     return null;
-            // }
+            if (this.scroll_debounce) {
+                return null;
+            }
 
             (async () => {
                 await this.markMessagesAsRead(true);
@@ -352,7 +352,6 @@ export default class SendbirdStore extends BaseStore {
         };
         markMessagesAsReadCheckScroll();
         window.addEventListener('focus', markMessagesAsReadCheckScroll);
-        // window.addEventListener('focusin', markMessagesAsReadCheckScroll);
         return () => window.removeEventListener('focus', markMessagesAsReadCheckScroll);
     }
 

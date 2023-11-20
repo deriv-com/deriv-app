@@ -133,7 +133,6 @@ const DefaultHeader = observer(() => {
                             <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />
                         </div>
                     )}
-
                     <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
                         <AccountActions
                             acc_switcher_disabled_message={account_switcher_disabled_message}

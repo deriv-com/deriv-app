@@ -28,10 +28,9 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const history = useHistory();
     const steps_list = Object.keys(contents);
     const { traders_hub, client, ui } = useStore();
-    const { is_eu_country, is_landing_company_loaded, is_logged_in, prev_account_type, setPrevAccountType, loginid } =
-        client;
+    const { is_eu_country, is_landing_company_loaded, is_logged_in, prev_account_type, setPrevAccountType } = client;
     const { is_mobile } = ui;
-    const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen, is_first_time_visit } = traders_hub;
+    const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
     const [step, setStep] = React.useState<number>(1);
 
     const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
@@ -95,7 +94,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         if (is_logged_in && is_landing_company_loaded) {
             trackOnboardingOpen();
         }
-    }, [is_logged_in, is_landing_company_loaded, is_first_time_visit, loginid, trackOnboardingOpen]);
+    }, [is_logged_in, is_landing_company_loaded, trackOnboardingOpen]);
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;

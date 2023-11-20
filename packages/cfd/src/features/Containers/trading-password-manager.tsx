@@ -15,7 +15,7 @@ const ChangePassword = ({ platform, onConfirm }: TChangePassword) => (
             width='122'
             height='108'
         />
-        <Text as='p' align='center' size='s' weight='bold'>
+        <Text as='p' align='center' weight='bold'>
             <Localize
                 i18n_default_text='{{platform}} password'
                 values={{
@@ -75,9 +75,14 @@ const PasswordReset = ({ email, platform, account_group }: TPasswordResetAndTrad
     return (
         <SendEmailTemplate
             title={localize("We've sent you an email")}
-            subtitle={localize('Please click on the link in the email to change your {{platform}} password.', {
-                platform: getCFDPlatformLabel(platform),
-            })}
+            subtitle={
+                <Localize
+                    i18n_default_text='Please click on the link in the email to change your {{platform}} password.'
+                    values={{
+                        platform: getCFDPlatformLabel(platform),
+                    }}
+                />
+            }
             lbl_no_receive={localize("Didn't receive the email?")}
             txt_resend={localize('Resend email')}
             txt_resend_in={localize('Resend email in')}

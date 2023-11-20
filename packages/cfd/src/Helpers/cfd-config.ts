@@ -57,3 +57,13 @@ export const MARKET_TYPE_SHORTCODE = {
     ALL_SVG: 'all_svg',
     ALL_DXTRADE: 'all_',
 } as const;
+
+export const QUERY_STATUS = {
+    SUCCESS: 'success',
+    ERROR: 'error',
+    IDLE: 'idle',
+} as const;
+
+export const PASSWORD_TYPE = {
+    INVESTOR: 'investor',
+} as const;

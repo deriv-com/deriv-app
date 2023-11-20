@@ -30,7 +30,7 @@ import {
     TFormValues,
     TPasswordManagerModalFormValues,
 } from '../../Containers/props.types';
-import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
+import { CFD_PLATFORMS, QUERY_STATUS, PASSWORD_TYPE } from '../../Helpers/cfd-config';
 
 // Temporary type because of build failing. Confirm with Accounts team
 type TSendVerifyEmail = () => Promise<VerifyEmailResponse>;
@@ -204,19 +204,19 @@ const CFDPasswordManagerTabContent = ({
     };
 
     React.useEffect(() => {
-        if (change_password_status === 'error' && change_password_error) {
+        if (change_password_status === QUERY_STATUS.ERROR && change_password_error) {
             showError((change_password_error as unknown as Error)?.message);
         }
-        if (change_password_status === 'success') {
+        if (change_password_status === QUERY_STATUS.SUCCESS) {
             hideError();
         }
     }, [change_password_error, change_password_status]);
 
     React.useEffect(() => {
-        if (change_investor_password_status === 'error' && change_investor_password_error) {
+        if (change_investor_password_status === QUERY_STATUS.ERROR && change_investor_password_error) {
             showError((change_investor_password_error as unknown as Error)?.message);
         }
-        if (change_investor_password_status === 'success') {
+        if (change_investor_password_status === QUERY_STATUS.SUCCESS) {
             hideError();
         }
     }, [change_investor_password_error, change_investor_password_status]);
@@ -227,7 +227,7 @@ const CFDPasswordManagerTabContent = ({
                 return;
             }
 
-            if (values.password_type === 'investor') {
+            if (values.password_type === PASSWORD_TYPE.INVESTOR) {
                 await changeInvestorPassword({
                     account_id: selected_login,
                     old_password: values.old_password,

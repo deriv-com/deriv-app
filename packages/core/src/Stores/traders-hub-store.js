@@ -384,7 +384,7 @@ export default class TradersHubStore extends BaseStore {
         };
         const getSwapFreeAccountDesc = () => {
             return localize(
-                'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices.'
+                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
             );
         };
 

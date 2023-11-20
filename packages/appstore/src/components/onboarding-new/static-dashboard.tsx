@@ -476,9 +476,7 @@ const StaticDashboard = observer(
                                             type='financial'
                                             platform='mt5'
                                             appname={localize('Financial')}
-                                            description={localize(
-                                                'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
-                                            )}
+                                            description={localize('This account offers CFDs on financial instruments.')}
                                             financial_amount={financial_amount}
                                             derived_amount={derived_amount}
                                             loginid={loginid}
@@ -497,7 +495,7 @@ const StaticDashboard = observer(
                                                 platform='mt5'
                                                 appname={localize('Swap-Free')}
                                                 description={localize(
-                                                    'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices.'
+                                                    'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
                                                 )}
                                                 financial_amount={financial_amount}
                                                 derived_amount={derived_amount}

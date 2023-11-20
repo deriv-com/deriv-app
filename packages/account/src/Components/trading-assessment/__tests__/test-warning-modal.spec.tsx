@@ -26,7 +26,7 @@ describe('<TestWarningModal />', () => {
         jest.clearAllMocks();
     });
 
-    it('shoukd render modal correctly on desktop', () => {
+    it('should render modal correctly on desktop', () => {
         (isDesktop as jest.Mock).mockReturnValue(true);
         const props = {
             show_risk_modal: true,
@@ -41,7 +41,7 @@ describe('<TestWarningModal />', () => {
         expect(text).toBeInTheDocument();
     });
 
-    it('shoukd render modal correctly on mobile', () => {
+    it('should render modal correctly on mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
         const props = {

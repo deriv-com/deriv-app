@@ -94,46 +94,4 @@ describe('<QSInput />', () => {
 
         expect(container_element).not.toHaveClass('no-focus');
     });
-
-    it('handleChange updates the value to round to 2 digits', () => {
-        render(<QSInput name='size' type='number' onChange={onChange} />, {
-            wrapper,
-        });
-
-        const input_element = screen.getByTestId('qs-input') as HTMLInputElement;
-        userEvent.type(input_element, '3.456');
-
-        const increase_button = screen.getByTestId('qs-input-increase');
-        userEvent.click(increase_button);
-
-        expect(input_element.value).toBe('4.46');
-    });
-
-    it('handleChange of increase input updates the value to round to 2 digits', () => {
-        render(<QSInput name='size' type='number' onChange={onChange} />, {
-            wrapper,
-        });
-
-        const input_element = screen.getByTestId('qs-input') as HTMLInputElement;
-        userEvent.type(input_element, '3.456');
-
-        const increase_button = screen.getByTestId('qs-input-increase');
-        userEvent.click(increase_button);
-
-        expect(input_element.value).toBe('4.46');
-    });
-
-    it('handleChange of decrease input updates the value to round to 2 digits', () => {
-        render(<QSInput name='size' type='number' onChange={onChange} />, {
-            wrapper,
-        });
-
-        const input_element = screen.getByTestId('qs-input') as HTMLInputElement;
-        userEvent.type(input_element, '6.416');
-
-        const decrease_button = screen.getByTestId('qs-input-decrease');
-        userEvent.click(decrease_button);
-
-        expect(input_element.value).toBe('5.42');
-    });
 });

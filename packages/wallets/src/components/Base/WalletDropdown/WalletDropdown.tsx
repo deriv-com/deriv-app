@@ -99,19 +99,15 @@ const WalletDropdown: React.FC<TProps> = ({
                     placeholder={reactNodeToString(label)}
                     readOnly={variant !== 'comboBox'}
                     renderLeftIcon={icon ? () => icon : undefined}
-                    renderRightIcon={
-                        icon
-                            ? () => (
-                                  <button
-                                      className={classNames('wallets-dropdown__button', {
-                                          'wallets-dropdown__button--active': isOpen,
-                                      })}
-                                  >
-                                      <ArrowIcon />
-                                  </button>
-                              )
-                            : undefined
-                    }
+                    renderRightIcon={() => (
+                        <button
+                            className={classNames('wallets-dropdown__button', {
+                                'wallets-dropdown__button--active': isOpen,
+                            })}
+                        >
+                            <ArrowIcon />
+                        </button>
+                    )}
                     type='text'
                     value={value}
                     {...getInputProps()}

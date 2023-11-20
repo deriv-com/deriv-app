@@ -72,6 +72,15 @@ const getWebsocketInstance = (wss_url: string) => {
     return window.WSConnections[wss_url];
 };
 
+export const getWebsocket = () => {
+    const endpoint = getSocketURL();
+    const app_id = getAppId();
+    const language = localStorage.getItem('i18n_language');
+    const brand = 'deriv';
+    const wss_url = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
+    return window?.WSConnections?.[wss_url];
+};
+
 /**
  * Initializes a DerivAPI instance for the global window. This enables a standalone connection
  * without causing race conditions with deriv-app core stores.

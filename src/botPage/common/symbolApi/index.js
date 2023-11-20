@@ -75,14 +75,15 @@ export default class _Symbol {
                 const urlObject = new URL(url);
                 const queryParams = urlObject.searchParams;
                 const tokens_from_url = Array.from(queryParams.values());
+                const token_exist = new URLSearchParams(window.ocation.search).get('token');
 
-                if (tokens_from_url.length === 0) {
+                if (token_exist) {
+                    // Used when we have a token in the query param
+                    initialize(tokens_from_url[1]);
+                } else {
                     // Used when the user logs out
                     api_base.getActiveSymbols();
                     getActiveSymbolsLogic();
-                } else {
-                    // Used when we have a token in the query param
-                    initialize(tokens_from_url[1]);
                 }
             }
         });

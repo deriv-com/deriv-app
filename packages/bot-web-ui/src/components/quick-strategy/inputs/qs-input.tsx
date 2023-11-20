@@ -15,13 +15,14 @@ type TQSInput = {
 };
 
 const QSInput: React.FC<TQSInput> = observer(
-    ({ name, type = 'text', fullwidth = false, attached = false, disabled = false }) => {
+    ({ name, onChange, type = 'text', fullwidth = false, attached = false, disabled = false }) => {
         const [has_focus, setFocus] = React.useState(false);
         const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number';
 
         const handleChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
+            onChange(name, value);
             setFieldTouched(name, true, true);
             setFieldValue(name, value);
         };
@@ -85,6 +86,10 @@ const QSInput: React.FC<TQSInput> = observer(
                                         }
                                         {...field}
                                         disabled={disabled}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            const value = is_number ? Number(e.target.value) : e.target.value;
+                                            onChange(name, value);
+                                        }}
                                     />
                                 </Popover>
                             </div>

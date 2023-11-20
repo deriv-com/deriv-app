@@ -519,7 +519,7 @@ type TPrivateSocketEndpoints = {
                      * Details for trading account types
                      *
                      * This interface was referenced by `undefined`'s JSON-Schema definition
-                     * via the `patternProperty` "^(binary|dxtrade|mt5|standard|derivez)$".
+                     * via the `patternProperty` "^(binary|dxtrade|mt5|standard)$".
                      */
                     [k: string]: {
                         /**
@@ -899,15 +899,15 @@ type TPrivateSocketEndpoints = {
              */
             referrer?: string;
             /**
-             * Server (dxtrade and derivez).
+             * Server (dxtrade).
              */
             server?: 'demo' | 'real';
             /**
              * The service(s) to retrieve token(s) for.
              */
             service:
-                | ('onfido' | 'sendbird' | 'banxa' | 'wyre' | 'dxtrade' | 'pandats' | 'ctrader')
-                | ('onfido' | 'sendbird' | 'banxa' | 'wyre' | 'pandats')[];
+                | ('onfido' | 'sendbird' | 'banxa' | 'wyre' | 'dxtrade' | 'ctrader')
+                | ('onfido' | 'sendbird' | 'banxa' | 'wyre')[];
             /**
              * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
              */
@@ -965,15 +965,6 @@ type TPrivateSocketEndpoints = {
                 onfido?: {
                     /**
                      * Onfido token.
-                     */
-                    token?: string;
-                };
-                /**
-                 * Deriv EZ data.
-                 */
-                pandats?: {
-                    /**
-                     * Deriv EZ SSO token
                      */
                     token?: string;
                 };
@@ -1136,7 +1127,7 @@ type TPrivateSocketEndpoints = {
              */
             account_type: 'demo' | 'real';
             /**
-             * [Optional] Name of the client's company (For DerivEZ only)
+             * [Optional]
              */
             company?: string;
             /**
@@ -1158,7 +1149,7 @@ type TPrivateSocketEndpoints = {
             /**
              * Name of trading platform.
              */
-            platform: 'dxtrade' | 'derivez' | 'ctrader';
+            platform: 'dxtrade' | 'ctrader';
             /**
              * [Optional] Sub account type.
              */
@@ -1218,7 +1209,7 @@ type TPrivateSocketEndpoints = {
             /**
              * Name of trading platform.
              */
-            platform?: 'dxtrade' | 'derivez' | 'ctrader';
+            platform?: 'dxtrade' | 'ctrader';
             /**
              * Sub account type.
              */
@@ -1350,7 +1341,7 @@ type TPrivateSocketEndpoints = {
             /**
              * Trading platform name
              */
-            platform: 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
+            platform: 'dxtrade' | 'mt5' | 'ctrader';
             /**
              * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
              */

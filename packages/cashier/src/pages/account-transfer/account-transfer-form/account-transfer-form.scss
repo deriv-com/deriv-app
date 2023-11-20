@@ -63,7 +63,7 @@
         min-height: 4rem;
         line-height: 1.43;
         text-align: left;
-        margin: 0 auto 5.1rem;
+        margin: 0 auto 3.3rem;
 
         @include desktop {
             max-width: 40rem;
@@ -106,6 +106,10 @@
 
         @include desktop {
             margin-top: 0.8rem;
+        }
+
+        .account-transfer-form__notes-children {
+            padding-top: 1.6rem;
         }
 
         .account-transfer-form__notes-header {

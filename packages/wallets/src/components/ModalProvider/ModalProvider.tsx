@@ -19,6 +19,7 @@ type TModalContext = {
 };
 
 type TModalOptions = {
+    defaultRootId?: 'wallets_modal_responsive_root' | 'wallets_modal_root';
     rootRef?: React.RefObject<HTMLElement>;
 };
 
@@ -72,8 +73,9 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     const modalRootRef = useMemo(() => {
         if (modalOptions?.rootRef?.current) return modalOptions?.rootRef;
-        return rootRef;
-    }, [modalOptions?.rootRef]);
+        if (isDesktop || modalOptions?.defaultRootId === 'wallets_modal_root') return rootRef;
+        return rootResponsiveRef;
+    }, [isDesktop, modalOptions]);
 
     return (
         <ModalContext.Provider

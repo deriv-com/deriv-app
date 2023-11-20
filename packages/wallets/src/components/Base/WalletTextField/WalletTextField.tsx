@@ -66,7 +66,7 @@ const WalletTextField = forwardRef(
                         </label>
                     )}
                     {typeof renderRightIcon === 'function' && (
-                        <div className='wallets-textfield__icon'>{renderRightIcon()}</div>
+                        <div className='wallets-textfield__icon-right'>{renderRightIcon()}</div>
                     )}
                 </div>
                 <div className='wallets-textfield__message-container'>

@@ -32,7 +32,6 @@ jest.mock('Modules/Trading/Components/Form/TradeParams/amount-mobile', () =>
             <span> {props.stake_value}</span>
             <button onClick={() => props.setSelectedAmount(0, 20)}>SelectedAmount button</button>
             <button onClick={props.toggleModal}>ToggleModal button</button>
-            <button onClick={props.setAmountError}>AmountError button</button>
         </div>
     ))
 );
@@ -103,8 +102,6 @@ describe('<MultiplierAmountModal />', () => {
 
         const toggle_modal_button = screen.getByText(/ToggleModal button/i);
         userEvent.click(toggle_modal_button);
-        const amount_error_button = screen.getByText(/AmountError button/i);
-        userEvent.click(amount_error_button);
 
         expect(default_mocked_props.toggleModal).toBeCalled();
     });

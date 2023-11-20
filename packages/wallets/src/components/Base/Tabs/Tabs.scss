@@ -10,14 +10,14 @@
         justify-content: center;
         width: 50%;
         border: none;
-        border-bottom: 2px solid var(--light-7-secondary-background, #f2f3f4);
+        border-bottom: 0.2rem solid var(--light-7-secondary-background, #f2f3f4);
         background: none;
         padding: 1rem 0;
         cursor: pointer;
         &--active {
             width: 50%;
             border: none;
-            border-bottom: 2px solid var(--brand-coral, #ff444f);
+            border-bottom: 0.2rem solid var(--brand-coral, #ff444f);
             background: none;
             padding: 1rem 0;
         }

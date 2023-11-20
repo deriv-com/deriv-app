@@ -1,6 +1,5 @@
 import { api_base } from '@api-base';
 import { translate } from '@i18n';
-import GTM from '@utilities/integrations/gtm';
 import { getUUID, recoverFromError, doUntilDone } from '../tools';
 import { contractStatus, info, notify } from '../broadcast';
 import { purchaseSuccessful } from './state/actions';
@@ -21,7 +20,8 @@ export default Engine =>
             const onSuccess = ({ buy, echo_req }) => {
                 // Don't unnecessarily send a forget request for a purchased contract.
                 this.data.proposals = this.data.proposals.filter(p => p.id !== echo_req.buy);
-                GTM.pushDataLayer({ event: 'bot_purchase', buy_price: proposal.ask_price });
+
+                // Check https://app.clickup.com/t/20696747/BOT-811 if previous GTM codes are requried
 
                 contractStatus({
                     id: 'contract.purchase_recieved',

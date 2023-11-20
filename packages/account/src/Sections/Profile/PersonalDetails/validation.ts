@@ -43,7 +43,7 @@ const BaseSchema = Yup.object().shape({
     address_city: Yup.string()
         .required(localize('Town/City is required.'))
         .matches(
-            /^[A-Za-z]+(?:[a-zA-Z.' -]*[a-zA-Z.' -]+)?$/,
+            /^[A-Za-z]+(?:[a-zA-Z.' -]+)*$/,
             localize('Only letters, space, hyphen, period, and apostrophe are allowed.')
         ),
 });

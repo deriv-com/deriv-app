@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Localize } from '@deriv/translations';
 import { GetLimits } from '@deriv/api-types';
 import { Text } from '@deriv/components';
-import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
 type TAccountTransferNoteProps = {
@@ -29,17 +29,15 @@ const AccountTransferBullet = ({ children }: React.PropsWithChildren) => (
 const AccountTransferNote = ({
     allowed_transfers_amount,
     currency,
+    is_ctrader_transfer,
     is_derivez_transfer,
-    is_dxtrade_allowed,
+    is_dxtrade_transfer,
     is_from_derivgo,
+    is_mt_transfer,
     minimum_fee,
 }: TAccountTransferNoteProps) => {
     const { general_store } = useCashierStore();
     const { is_crypto } = general_store;
-    const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
-    const platform_name_mt5 = getPlatformSettings('mt5').name;
-    const platform_name_derivez = getPlatformSettings('derivez').name;
-    const platform_name_ctrader = getPlatformSettings('ctrader').name;
 
     //TODO: to refactor derivez notes once this account is used in deriv app and not only from derivgo
 
@@ -58,7 +56,7 @@ const AccountTransferNote = ({
     const getNoTransferFeeNote = useCallback(() => {
         return (
             <Localize
-                i18n_default_text='No fees for transfer between {{ currency }} account to Deriv MT5, and Deriv X account(s), vice versa.'
+                i18n_default_text='No fees for transfer between USD account to Deriv MT5, and Deriv X account(s), vice versa.'
                 values={{
                     currency: is_crypto ? 'USD' : getCurrencyDisplayCode(currency),
                 }}
@@ -75,9 +73,6 @@ const AccountTransferNote = ({
                             i18n_default_text='Each day you can transfer up to {{ allowed_derivez }} USD. The daily limit will be reset at 00:00 GMT.'
                             values={{
                                 allowed_derivez: allowed_transfers_amount?.derivez,
-                                platform_name_dxtrade,
-                                platform_name_mt5,
-                                platform_name_derivez,
                             }}
                         />
                     </AccountTransferBullet>
@@ -86,17 +81,10 @@ const AccountTransferNote = ({
         }
 
         return null;
-    }, [
-        allowed_transfers_amount?.derivez,
-        is_derivez_transfer,
-        is_from_derivgo,
-        platform_name_derivez,
-        platform_name_dxtrade,
-        platform_name_mt5,
-    ]);
+    }, [allowed_transfers_amount?.derivez, is_derivez_transfer, is_from_derivgo]);
 
-    const getDxtradeAllowedNotes = useCallback(() => {
-        if (is_dxtrade_allowed) {
+    const getPlatformsAllowedNotes = useCallback(() => {
+        if (is_ctrader_transfer || is_dxtrade_transfer) {
             return (
                 <React.Fragment>
                     <AccountTransferBullet>
@@ -104,9 +92,19 @@ const AccountTransferNote = ({
                             i18n_default_text='Each day you can transfer up to {{ allowed_dxtrade }} USD. The daily limit will be reset at 00:00 GMT.'
                             values={{
                                 allowed_dxtrade: allowed_transfers_amount?.dxtrade,
-                                platform_name_dxtrade,
-                                platform_name_mt5,
-                                platform_name_ctrader,
+                            }}
+                        />
+                    </AccountTransferBullet>
+                </React.Fragment>
+            );
+        } else if (is_mt_transfer) {
+            return (
+                <React.Fragment>
+                    <AccountTransferBullet>
+                        <Localize
+                            i18n_default_text='Each day you can transfer up to {{ allowed_mt5 }} USD. The daily limit will be reset at 00:00 GMT.'
+                            values={{
+                                allowed_mt5: allowed_transfers_amount?.mt5,
                             }}
                         />
                     </AccountTransferBullet>
@@ -117,10 +115,9 @@ const AccountTransferNote = ({
             <React.Fragment>
                 <AccountTransferBullet>
                     <Localize
-                        i18n_default_text='Each day you can transfer up to {{ allowed_mt5 }} USD. The daily limit will be reset at 00:00 GMT.'
+                        i18n_default_text='Each day you can transfer up to {{ allowed_internal }} USD. The daily limit will be reset at 00:00 GMT.'
                         values={{
-                            allowed_mt5: allowed_transfers_amount?.mt5,
-                            platform_name_mt5,
+                            allowed_internal: allowed_transfers_amount?.internal,
                         }}
                     />
                 </AccountTransferBullet>
@@ -128,17 +125,17 @@ const AccountTransferNote = ({
         );
     }, [
         allowed_transfers_amount?.dxtrade,
+        allowed_transfers_amount?.internal,
         allowed_transfers_amount?.mt5,
-        is_dxtrade_allowed,
-        platform_name_dxtrade,
-        platform_name_mt5,
-        platform_name_ctrader,
+        is_ctrader_transfer,
+        is_dxtrade_transfer,
+        is_mt_transfer,
     ]);
 
     return (
         <div className='account-transfer-form__notes'>
             {getDerivGoNotes()}
-            {getDxtradeAllowedNotes()}
+            {getPlatformsAllowedNotes()}
             <AccountTransferBullet>
                 <Localize i18n_default_text='Fees:' />
                 <div className='account-transfer-form__notes-children'>

@@ -40,11 +40,7 @@ const WalletTextField: FC<WalletTextFieldProps> = ({
                 'wallets-textfield--error': isInvalid,
             })}
         >
-            <div
-                className={classNames('wallets-textfield__box', {
-                    'wallets-textfield__box--error': isInvalid,
-                })}
-            >
+            <div className='wallets-textfield__box'>
                 <input
                     className='wallets-textfield__field'
                     id={name}

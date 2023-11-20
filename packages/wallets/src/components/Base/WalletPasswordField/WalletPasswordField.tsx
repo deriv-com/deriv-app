@@ -23,10 +23,10 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     return (
         <div className='wallets-password'>
             <WalletTextField
+                errorMessage={message}
+                isInvalid={Boolean(password.length && !new RegExp(passwordPattern).test(password))}
                 label={label}
-                message={message}
                 onChange={onChange}
-                pattern={passwordPattern}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />
                 )}

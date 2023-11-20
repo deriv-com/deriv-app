@@ -31,5 +31,9 @@
         text-align: center;
         display: flex;
         justify-content: center;
+
+        @include mobile {
+            justify-content: unset;
+        }
     }
 }

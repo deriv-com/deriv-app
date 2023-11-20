@@ -1,14 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text, ButtonToggle, ThemedScrollbars, Button } from '@deriv/components';
-import { isMobile, isDesktop, ContentFlag } from '@deriv/shared';
+
+import { Button, ButtonToggle, Text, ThemedScrollbars } from '@deriv/components';
+import { ContentFlag, isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
-import StaticGetMoreAccounts from './static-get-more-accounts';
-import StaticCFDAccountManager from './static-cfd-account-manager';
-import StaticTradingAppCard from './static-trading-app-card';
-import StaticCurrencySwitcherContainer from './static-currency-switcher-container';
+import { Localize, localize } from '@deriv/translations';
+
 import BalanceText from 'Components/elements/text/balance-text';
+
+import StaticCFDAccountManager from './static-cfd-account-manager';
+import StaticCurrencySwitcherContainer from './static-currency-switcher-container';
+import StaticGetMoreAccounts from './static-get-more-accounts';
+import StaticTradingAppCard from './static-trading-app-card';
 
 import './static-dashboard.scss';
 
@@ -271,6 +274,7 @@ const StaticDashboard = observer(
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
                                         has_divider={!eu_user && !financial_restricted_countries}
+                                        is_animated={is_onboarding_animated.button}
                                     />
                                 </div>
 
@@ -284,6 +288,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                                 has_divider
                                             />
                                         </div>
@@ -295,6 +300,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                                 has_divider
                                             />
                                         </div>
@@ -306,6 +312,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                             />
                                         </div>
                                         <div className='static-dashboard-wrapper__body--apps-item'>
@@ -316,6 +323,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                             />
                                         </div>
                                     </React.Fragment>
@@ -601,23 +609,6 @@ const StaticDashboard = observer(
                                         is_financial_last_step={is_financial_last_step}
                                         is_eu_user={is_eu_user}
                                     />
-                                    {/* <StaticCFDAccountManager
-                                    type='Financial'
-                                    platform='derivez'
-                                    appname={localize('Deriv EZ')}
-                                    description={localize(
-                                        'Trade CFDs on an easy-to-get-started platform with all your favourite assets.'
-                                    )}
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    derived_amount={derived_amount}
-                                    financial_amount={financial_amount}
-                                    is_derivx_last_step={is_derivx_last_step}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_eu_user={is_eu_user}
-                                /> */}
                                 </div>
                             )}
                         </div>

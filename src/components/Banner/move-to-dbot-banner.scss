@@ -1,7 +1,7 @@
 @import '../../assets/css/mixins';
 @import '../../assets/css/variables';
 
-.modal {
+.deriv-app-modal {
     &__container {
         @include mobile {
             width: 100% !important;

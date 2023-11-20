@@ -43,18 +43,8 @@ const AccountTransferNote = ({
 
     //TODO: to refactor derivez notes once this account is used in deriv app and not only from derivgo
 
-    const getTransferFeeNote = useCallback(() => {
-        if (transfer_fee === 2) {
-            return (
-                <Localize
-                    i18n_default_text='We charge 2% or {{minimum_fee}} {{currency}} (whichever is higher) for all cryptocurrency transfers.'
-                    values={{
-                        minimum_fee,
-                        currency: getCurrencyDisplayCode(currency),
-                    }}
-                />
-            );
-        } else if (transfer_fee === 1) {
+    const getFirstTransferFeeNote = useCallback(() => {
+        if (transfer_fee === 1) {
             return (
                 <Localize
                     i18n_default_text='We charge 1% or {{minimum_fee}} {{currency}} (whichever is higher) for all cryptocurrency transfers.'
@@ -67,13 +57,20 @@ const AccountTransferNote = ({
         }
         return (
             <Localize
-                i18n_default_text='No fees for transfer between {{ currency }} account to Deriv MT5, and Deriv X account(s), vice versa.'
+                i18n_default_text='We charge 2% or {{minimum_fee}} {{currency}} (whichever is higher) for all cryptocurrency transfers.'
                 values={{
+                    minimum_fee,
                     currency: getCurrencyDisplayCode(currency),
                 }}
             />
         );
     }, [currency, minimum_fee, transfer_fee]);
+
+    const getSecondTransferFeeNote = () => {
+        return (
+            <Localize i18n_default_text='No fees for transfer between fiat account (with the same currency) to Deriv MT5, and Deriv X account(s), vice versa.' />
+        );
+    };
 
     const getDerivGoNotes = useCallback(() => {
         if (is_from_derivgo && is_derivez_transfer) {
@@ -156,7 +153,8 @@ const AccountTransferNote = ({
             <AccountTransferBullet>
                 <Localize i18n_default_text='Fees:' />
                 <div className='account-transfer-form__notes-children'>
-                    <AccountTransferBullet>{getTransferFeeNote()}</AccountTransferBullet>
+                    <AccountTransferBullet>{getFirstTransferFeeNote()}</AccountTransferBullet>
+                    <AccountTransferBullet>{getSecondTransferFeeNote()}</AccountTransferBullet>
                 </div>
             </AccountTransferBullet>
             <AccountTransferBullet>

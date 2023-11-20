@@ -41,8 +41,18 @@ const AccountTransferNote = ({
         handleSubscription('USD', account_currency);
     }, [account_currency, exchange_rate, handleSubscription]);
 
-    const getFirstTransferFeeNote = useCallback(() => {
-        if (transfer_fee === 1) {
+    const getTransferFeeNote = useCallback(() => {
+        if (transfer_fee === 2) {
+            return (
+                <Localize
+                    i18n_default_text='We charge 2% or {{minimum_fee}} {{currency}} (whichever is higher) for all cryptocurrency transfers.'
+                    values={{
+                        minimum_fee,
+                        currency: getCurrencyDisplayCode(currency),
+                    }}
+                />
+            );
+        } else if (transfer_fee === 1) {
             return (
                 <Localize
                     i18n_default_text='We charge 1% or {{minimum_fee}} {{currency}} (whichever is higher) for all cryptocurrency transfers.'
@@ -54,21 +64,9 @@ const AccountTransferNote = ({
             );
         }
         return (
-            <Localize
-                i18n_default_text='We charge 2% or {{minimum_fee}} {{currency}} (whichever is higher) for all cryptocurrency transfers.'
-                values={{
-                    minimum_fee,
-                    currency: getCurrencyDisplayCode(currency),
-                }}
-            />
-        );
-    }, [currency, minimum_fee, transfer_fee]);
-
-    const getSecondTransferFeeNote = () => {
-        return (
             <Localize i18n_default_text='No fees for transfer between fiat account (with the same currency) to Deriv MT5, and Deriv X account(s), vice versa.' />
         );
-    };
+    }, [currency, minimum_fee, transfer_fee]);
 
     const getPlatformsAllowedNotes = useCallback(() => {
         if (is_ctrader_transfer || is_dxtrade_transfer) {
@@ -127,13 +125,7 @@ const AccountTransferNote = ({
     return (
         <div className='account-transfer-form__notes'>
             {getPlatformsAllowedNotes()}
-            <AccountTransferBullet>
-                <Localize i18n_default_text='Fees:' />
-                <div className='account-transfer-form__notes-children'>
-                    <AccountTransferBullet>{getFirstTransferFeeNote()}</AccountTransferBullet>
-                    <AccountTransferBullet>{getSecondTransferFeeNote()}</AccountTransferBullet>
-                </div>
-            </AccountTransferBullet>
+            <AccountTransferBullet>{getTransferFeeNote()}</AccountTransferBullet>
             <AccountTransferBullet>
                 <Localize i18n_default_text='Transfers may be unavailable when the exchange market is closed or too volatile.' />
             </AccountTransferBullet>

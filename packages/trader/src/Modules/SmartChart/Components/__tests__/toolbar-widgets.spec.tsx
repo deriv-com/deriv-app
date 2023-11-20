@@ -31,6 +31,10 @@ describe('<ToolBarWidgets />', () => {
     it('Should render only mocked chart mode when isDestop is false', () => {
         render(<ToolbarWidgets {...mocked_props} />);
         expect(screen.getByText(/mockedchartmode/i)).toBeInTheDocument();
+        expect(screen.queryByText(/mockeddrawtools/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/mockedshare/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/mockedstudylegend/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/mockedviews/i)).not.toBeInTheDocument();
     });
     it('Should render all mocked widgets when isDestop is true', () => {
         (isDesktop as jest.Mock).mockReturnValue(true);

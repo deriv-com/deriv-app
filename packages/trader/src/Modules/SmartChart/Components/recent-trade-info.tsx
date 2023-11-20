@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { isAccumulatorContract, isDigitContract, isEnded } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
 const RecentTradeInfo = observer(() => {
@@ -24,7 +24,13 @@ const RecentTradeInfo = observer(() => {
 
     return (
         <Text weight='bold' className='recent-trade-info'>
-            {localize('Tick')} {current_tick}/{tick_count}
+            <Localize
+                i18n_default_text={`Tick {{current_tick}}/{{tick_count}}`}
+                values={{
+                    current_tick,
+                    tick_count,
+                }}
+            />
         </Text>
     );
 });

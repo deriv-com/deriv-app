@@ -119,7 +119,6 @@ describe('<RecentTradeInfo />', () => {
         expect(screen.getByText('Tick 5/6')).toBeInTheDocument();
     });
     it('Should render "Tick 4/7" contract type is digit contract', () => {
-        mocked_store_props.contract_trade.filtered_contracts[0].contract_info.contract_type = 'digitmatch';
         renderComponent({ mocked_store_props });
         expect(screen.getByText('Tick 4/7')).toBeInTheDocument();
     });

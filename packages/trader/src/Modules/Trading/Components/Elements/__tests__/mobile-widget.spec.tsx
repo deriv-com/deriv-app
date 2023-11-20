@@ -11,7 +11,6 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 jest.mock('../../../Containers/trade-params-mobile.tsx', () => jest.fn(() => 'mockedTradeParamsMobile'));
-// jest.mock('../../Form/TradeParams/Multiplier/widgets.tsx', () => jest.fn(() => 'new'));
 
 jest.mock('Modules/Trading/Components/Form/TradeParams/Multiplier/widgets', () => ({
     ...jest.requireActual('Modules/Trading/Components/Form/TradeParams/Multiplier/widgets'),
@@ -54,9 +53,6 @@ describe('<MobileWidget />', () => {
                     onChange: jest.fn(),
                 },
             },
-            ui: {
-                onChangeUiStore: jest.fn(),
-            },
         });
     });
 
@@ -65,7 +61,7 @@ describe('<MobileWidget />', () => {
         expect(screen.getByText(/mockedmultiplieramountwidgets/i)).toBeInTheDocument();
         expect(screen.getByText(/mockedtradeparamsmobile/i)).toBeInTheDocument();
     });
-    it('should render general widgets if is_multiplier is flase', () => {
+    it('should render general widgets if is_multiplier is false', () => {
         mocked_store_props.modules.trade.is_multiplier = false;
         render(mockMobileWidget({ mocked_store_props }));
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();

@@ -13,22 +13,17 @@ jest.mock('Modules/SmartChart', () => ({
 }));
 
 describe('<ControlWidgets />', () => {
-    const store_config = mockStore({});
-    const renderComponent = ({ mocked_store_props = store_config }) =>
-        render(
-            <StoreProvider store={mocked_store_props}>
+    const store = mockStore({});
+    const mockedControlWidgets = () => {
+        return (
+            <StoreProvider store={store}>
                 <ControlWidgets />
             </StoreProvider>
         );
-    const mocked_store_props = mockStore({
-        contract_trade: {
-            updateChartType: jest.fn(),
-            updateGranularity: jest.fn(),
-        },
-    });
+    };
 
     it('Should render all mocked widgets', () => {
-        renderComponent({ mocked_store_props });
+        render(mockedControlWidgets());
         expect(screen.getByText(/mockedchartmode/i)).toBeInTheDocument();
         expect(screen.getByText(/mockeddrawtools/i)).toBeInTheDocument();
         expect(screen.getByText(/mockedshare/i)).toBeInTheDocument();

@@ -5,6 +5,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
 import { MarketTypeDetails } from '../../constants';
+import { Verification, Verification } from '../../flows/Verification';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
@@ -36,7 +37,19 @@ const JurisdictionModal = () => {
               <WalletButton
                   disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
                   isFullWidth={isMobile}
-                  onClick={() => show(<MT5PasswordModal marketType={marketType} platform={platform} />)}
+                  onClick={() => {
+                      if (selectedJurisdiction === 'svg') {
+                          show(<MT5PasswordModal marketType={marketType} platform={platform} />);
+                      } else {
+                          show(
+                              <Verification
+                                  marketType={marketType}
+                                  platform={platform}
+                                  selectedJurisdiction={selectedJurisdiction}
+                              />
+                          );
+                      }
+                  }}
                   text='Next'
               />
           );

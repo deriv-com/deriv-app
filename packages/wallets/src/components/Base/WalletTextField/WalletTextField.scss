@@ -4,6 +4,8 @@
     position: relative;
 
     &--error {
+        color: #ec3f3f;
+
         .wallets-textfield__box,
         .wallets-textfield__box:hover {
             border: 1px solid var(--status-light-danger, #ec3f3f);
@@ -13,7 +15,14 @@
             border: 1px solid var(--brand-blue, #ec3f3f);
         }
 
+        .wallets-textfield__box:has(.wallets-textfield__field:valid) {
+            border: 1px solid ec3f3f;
+        }
+
         .wallets-textfield__label {
+            color: #ec3f3f;
+        }
+        .wallets-textfield__field:focus ~ .wallets-textfield__label {
             color: #ec3f3f;
         }
     }
@@ -27,6 +36,10 @@
         display: inline-flex;
         align-items: center;
         transition: border-color 0.2s;
+
+        &--error {
+            border: 1px solid var(--status-light-danger, #ec3f3f);
+        }
 
         &:hover {
             border-color: var(--system-light-3-less-prominent-text, #999);
@@ -61,7 +74,7 @@
     &__field:placeholder-shown ~ &__label {
         font-size: 1.4rem;
         cursor: text;
-        top: 1.3rem;
+        top: 20%;
         padding: 0;
     }
 
@@ -90,13 +103,7 @@
     }
 
     &__icon {
-        &-left {
-            margin-right: 0.8rem;
-        }
-
-        &-right {
-            margin-left: 1.6rem;
-        }
+        margin-left: 1.6rem;
     }
 
     &__message-container {

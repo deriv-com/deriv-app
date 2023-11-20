@@ -8,7 +8,7 @@ import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from '../../Cont
 import { observer, useStore } from '@deriv/stores';
 import { useTradingPlatformInvestorPasswordReset } from '@deriv/api';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
-import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
+import { CFD_PLATFORMS, QUERY_STATUS } from '../../Helpers/cfd-config';
 
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
@@ -82,10 +82,10 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
     };
 
     React.useEffect(() => {
-        if (status === 'error' && error) {
+        if (status === QUERY_STATUS.ERROR && error) {
             renderErrorBox(error as unknown as TError);
         }
-        if (status === 'success') {
+        if (status === QUERY_STATUS.SUCCESS) {
             setState({
                 ...state,
                 is_finished: true,

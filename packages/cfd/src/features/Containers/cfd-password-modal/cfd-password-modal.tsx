@@ -150,7 +150,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
 
     const marketType = account_type.type;
-    const accountType = marketType === MARKET_TYPE.SYNTHETIC ? MARKET_TYPE.GAMING : marketType;
+    const accountType = marketType === MARKET_TYPE.SYNTHETIC ? MARKET_TYPE.UNREGULATED : marketType;
 
     const getVerificationStatus = () => {
         switch (jurisdiction_selected_shortcode) {

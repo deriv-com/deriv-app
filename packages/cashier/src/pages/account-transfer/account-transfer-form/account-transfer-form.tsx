@@ -2,8 +2,7 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, FieldProps, Form, Formik } from 'formik';
-
-import { Button, Dropdown, InlineMessage, Input, Loading, Money, Text } from '@deriv/components';
+import { Button, Dropdown, Input, Loading, Money, Text } from '@deriv/components';
 import {
     getCurrencyDisplayCode,
     getCurrencyName,
@@ -15,7 +14,6 @@ import {
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import ErrorDialog from '../../../components/error-dialog';
@@ -25,7 +23,6 @@ import { useCashierStore } from '../../../stores/useCashierStores';
 import { TAccount, TAccountsList, TError, TReactChangeEvent } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
 import { useExchangeRate } from '@deriv/hooks';
-
 import AccountTransferNote from './account-transfer-form-side-note';
 
 import './account-transfer-form.scss';
@@ -130,11 +127,12 @@ const AccountTransferForm = observer(
 
         const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
-        const { daily_transfers } = account_limits;
-        const mt5_remaining_transfers = daily_transfers?.mt5;
-        const ctrader_remaining_transfers = daily_transfers?.ctrader;
-        const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
-        const internal_remaining_transfers = daily_transfers?.internal;
+        const { daily_cumulative_amount_transfers } = account_limits;
+        const mt5_remaining_cumulative_transfers = daily_cumulative_amount_transfers?.mt5;
+        const ctrader_remaining_cumulative_transfers = daily_cumulative_amount_transfers?.ctrader;
+        const dxtrade_remaining_cumulative_transfers = daily_cumulative_amount_transfers?.dxtrade;
+        const derivez_remaining_cumulative_transfers = daily_cumulative_amount_transfers?.derivez;
+        const internal_remaining_cumulative_transfers = daily_cumulative_amount_transfers?.internal;
 
         const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
         const is_ctrader_transfer = selected_to.is_ctrader || selected_from.is_ctrader;
@@ -188,7 +186,7 @@ const AccountTransferForm = observer(
                 const target_currency = selected_to.currency;
                 handleSubscription(base_currency, target_currency);
             }
-        }, [selected_from, selected_to]);
+        }, [handleSubscription, selected_from, selected_to]);
         React.useEffect(() => {
             onMount();
         }, [onMount]);
@@ -277,11 +275,12 @@ const AccountTransferForm = observer(
                 const side_notes = [];
                 side_notes.push(
                     <AccountTransferNote
-                        allowed_transfers_count={{
-                            internal: internal_remaining_transfers?.allowed,
-                            mt5: mt5_remaining_transfers?.allowed,
-                            ctrader: ctrader_remaining_transfers?.allowed,
-                            dxtrade: dxtrade_remaining_transfers?.allowed,
+                        allowed_transfers_amount={{
+                            internal: internal_remaining_cumulative_transfers?.allowed,
+                            mt5: mt5_remaining_cumulative_transfers?.allowed,
+                            ctrader: ctrader_remaining_cumulative_transfers?.allowed,
+                            dxtrade: dxtrade_remaining_cumulative_transfers?.allowed,
+                            derivez: derivez_remaining_cumulative_transfers?.allowed,
                         }}
                         transfer_fee={transfer_fee}
                         currency={selected_from.currency || ''}
@@ -314,13 +313,9 @@ const AccountTransferForm = observer(
             is_dxtrade_allowed,
             setSideNotes,
             is_crypto,
-            internal_remaining_transfers?.allowed,
-            mt5_remaining_transfers?.allowed,
-            dxtrade_remaining_transfers?.allowed,
             is_dxtrade_transfer,
             is_mt_transfer,
             is_from_derivgo,
-            ctrader_remaining_transfers?.allowed,
             is_ctrader_transfer,
             internal_remaining_cumulative_transfers?.allowed,
             mt5_remaining_cumulative_transfers?.allowed,
@@ -328,37 +323,6 @@ const AccountTransferForm = observer(
             dxtrade_remaining_cumulative_transfers?.allowed,
             derivez_remaining_cumulative_transfers?.allowed,
         ]);
-
-        React.useEffect(() => {
-            const getRemainingTransfers = () => {
-                if (is_mt_transfer) {
-                    return mt5_remaining_transfers?.available;
-                } else if (is_ctrader_transfer) {
-                    return ctrader_remaining_transfers?.available;
-                } else if (is_dxtrade_transfer) {
-                    return dxtrade_remaining_transfers?.available;
-                }
-                return internal_remaining_transfers?.available;
-            };
-
-            remaining_transfers = Number(getRemainingTransfers() ?? 0);
-            has_reached_maximum_daily_transfers = !remaining_transfers;
-
-            let hint_text;
-            if (is_migration_status_present) {
-                hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
-            } else {
-                const transfer_text = remaining_transfers > 1 ? 'transfers' : 'transfer';
-                hint_text = (
-                    <Localize
-                        i18n_default_text='You have {{remaining_transfers}} {{transfer_text}} remaining for today.'
-                        values={{ remaining_transfers, transfer_text }}
-                    />
-                );
-            }
-            setTransferToHint(hint_text);
-            resetConverter();
-        }, [account_limits, is_migration_status_present, selected_from, selected_to]); // eslint-disable-line react-hooks/exhaustive-deps
 
         const is_mt5_restricted =
             selected_from?.is_mt &&
@@ -655,11 +619,12 @@ const AccountTransferForm = observer(
                                         {!is_from_outside_cashier && (
                                             <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
                                                 <AccountTransferNote
-                                                    allowed_transfers_count={{
-                                                        internal: internal_remaining_transfers?.allowed,
-                                                        mt5: mt5_remaining_transfers?.allowed,
-                                                        ctrader: ctrader_remaining_transfers?.allowed,
-                                                        dxtrade: dxtrade_remaining_transfers?.allowed,
+                                                    allowed_transfers_amount={{
+                                                        internal: internal_remaining_cumulative_transfers?.allowed,
+                                                        mt5: mt5_remaining_cumulative_transfers?.allowed,
+                                                        ctrader: ctrader_remaining_cumulative_transfers?.allowed,
+                                                        dxtrade: dxtrade_remaining_cumulative_transfers?.allowed,
+                                                        derivez: derivez_remaining_cumulative_transfers?.allowed,
                                                     }}
                                                     transfer_fee={transfer_fee}
                                                     currency={selected_from.currency || ''}

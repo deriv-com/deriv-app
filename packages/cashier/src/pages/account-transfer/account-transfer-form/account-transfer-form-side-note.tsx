@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
-
+import React, { useCallback, useEffect } from 'react';
 import { GetLimits } from '@deriv/api-types';
 import { Text } from '@deriv/components';
-import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
+import { useExchangeRate } from '@deriv/hooks';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 type TAccountTransferNoteProps = {
@@ -27,75 +27,25 @@ const AccountTransferBullet = ({ children }: React.PropsWithChildren) => (
 const AccountTransferNote = ({
     allowed_transfers_amount,
     currency,
-    is_crypto_to_crypto_transfer,
-    is_dxtrade_allowed,
+    is_ctrader_transfer,
     is_dxtrade_transfer,
     is_mt_transfer,
     minimum_fee,
     transfer_fee,
 }: TAccountTransferNoteProps) => {
-    const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
-    const platform_name_mt5 = getPlatformSettings('mt5').name;
-    const platform_name_ctrader = getPlatformSettings('ctrader').name;
+    const { handleSubscription, exchange_rates } = useExchangeRate();
+    const account_currency = getCurrencyDisplayCode(currency);
+    const exchange_rate = exchange_rates?.USD?.[account_currency] || 1;
 
-    const getTransferFeeNote = useCallback(() => {
-        if (transfer_fee === 0) {
-            return is_dxtrade_allowed ? (
-                <Localize
-                    i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts, between your Deriv fiat and {{platform_name_ctrader}} accounts, and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
-                    values={{ platform_name_dxtrade, platform_name_mt5, platform_name_ctrader }}
-                />
-            ) : (
-                <Localize
-                    i18n_default_text='You’ll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts.'
-                    values={{ platform_name_mt5 }}
-                />
-            );
-        } else if (transfer_fee === 1) {
-            return is_dxtrade_allowed ? (
-                <Localize
-                    i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
-                    values={{ platform_name_dxtrade, platform_name_mt5 }}
-                />
-            ) : (
-                <Localize
-                    i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts.'
-                    values={{ platform_name_mt5 }}
-                />
-            );
-        } else if (transfer_fee === 2 && is_crypto_to_crypto_transfer) {
+    useEffect(() => {
+        handleSubscription('USD', account_currency);
+    }, [account_currency, exchange_rate, handleSubscription]);
+
+    const getFirstTransferFeeNote = useCallback(() => {
+        if (transfer_fee === 1) {
             return (
                 <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency accounts.'
-                    values={{
-                        minimum_fee,
-                        currency: getCurrencyDisplayCode(currency),
-                    }}
-                />
-            );
-        } else if (transfer_fee === 2 && (is_mt_transfer || is_dxtrade_transfer)) {
-            return is_dxtrade_allowed ? (
-                <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts and between your Deriv cryptocurrency and {{platform_name_dxtrade}} accounts.'
-                    values={{
-                        minimum_fee,
-                        currency: getCurrencyDisplayCode(currency),
-                        platform_name_dxtrade,
-                    }}
-                />
-            ) : (
-                <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts.'
-                    values={{
-                        minimum_fee,
-                        currency: getCurrencyDisplayCode(currency),
-                    }}
-                />
-            );
-        } else if (transfer_fee === 2 && !is_mt_transfer && !is_dxtrade_transfer) {
-            return (
-                <Localize
-                    i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv fiat and Deriv cryptocurrency accounts.'
+                    i18n_default_text='We charge 1% or {{minimum_fee}} {{currency}} (whichever is higher) for all cryptocurrency transfers.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),
@@ -103,22 +53,25 @@ const AccountTransferNote = ({
                 />
             );
         }
-        return null;
-    }, [
-        currency,
-        is_crypto_to_crypto_transfer,
-        is_dxtrade_allowed,
-        is_dxtrade_transfer,
-        is_mt_transfer,
-        minimum_fee,
-        platform_name_dxtrade,
-        platform_name_mt5,
-        platform_name_ctrader,
-        transfer_fee,
-    ]);
+        return (
+            <Localize
+                i18n_default_text='We charge 2% or {{minimum_fee}} {{currency}} (whichever is higher) for all cryptocurrency transfers.'
+                values={{
+                    minimum_fee,
+                    currency: getCurrencyDisplayCode(currency),
+                }}
+            />
+        );
+    }, [currency, minimum_fee, transfer_fee]);
 
-    const getDxtradeAllowedNotes = useCallback(() => {
-        if (is_dxtrade_allowed) {
+    const getSecondTransferFeeNote = () => {
+        return (
+            <Localize i18n_default_text='No fees for transfer between fiat account (with the same currency) to Deriv MT5, and Deriv X account(s), vice versa.' />
+        );
+    };
+
+    const getPlatformsAllowedNotes = useCallback(() => {
+        if (is_ctrader_transfer || is_dxtrade_transfer) {
             return (
                 <React.Fragment>
                     <AccountTransferBullet>
@@ -173,7 +126,7 @@ const AccountTransferNote = ({
 
     return (
         <div className='account-transfer-form__notes'>
-            {getDxtradeAllowedNotes()}
+            {getPlatformsAllowedNotes()}
             <AccountTransferBullet>
                 <Localize i18n_default_text='Fees:' />
                 <div className='account-transfer-form__notes-children'>

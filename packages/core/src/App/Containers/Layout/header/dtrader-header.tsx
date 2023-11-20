@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { routes, getDecimalPlaces, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 // import { useWalletMigration } from '@deriv/hooks';
-import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
+import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
@@ -12,18 +12,15 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TradersHubHomeButton from './traders-hub-home-button';
+import HeaderAccountActions from './header-account-actions';
 
 const DTraderHeader = observer(() => {
     const { client, common, ui, notifications, traders_hub } = useStore();
     const {
-        account_type,
-        balance,
         currency,
-        country_standpoint,
         has_any_real_account,
         is_bot_allowed,
         is_dxtrade_allowed,
-        is_eu,
         is_logged_in,
         is_logging_in,
         is_mt5_allowed,
@@ -31,29 +28,9 @@ const DTraderHeader = observer(() => {
         is_switching,
     } = client;
     const { app_routing_history, platform, current_language } = common;
-    const {
-        account_switcher_disabled_message,
-        disableApp,
-        enableApp,
-        header_extension,
-        is_account_switcher_disabled,
-        is_accounts_switcher_on,
-        is_app_disabled,
-        is_desktop,
-        is_mobile,
-        is_route_modal_on,
-        openRealAccountSignup,
-        toggleAccountsDialog,
-        toggleReadyToDepositModal,
-    } = ui;
-    const {
-        addNotificationMessage,
-        client_notifications,
-        is_notifications_visible,
-        notifications: notifications_array,
-        removeNotificationMessage,
-        toggleNotificationsModal,
-    } = notifications;
+    const { header_extension, is_app_disabled, is_desktop, is_mobile, is_route_modal_on, toggleReadyToDepositModal } =
+        ui;
+    const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;
     const { setTogglePlatformType } = traders_hub;
 
     const history = useHistory();
@@ -150,28 +127,7 @@ const DTraderHeader = observer(() => {
                             <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />
                         </div>
                     )}
-                    <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
-                        <AccountActions
-                            acc_switcher_disabled_message={account_switcher_disabled_message}
-                            account_type={account_type}
-                            balance={balance}
-                            currency={currency}
-                            country_standpoint={country_standpoint}
-                            disableApp={disableApp}
-                            enableApp={enableApp}
-                            is_acc_switcher_on={is_accounts_switcher_on}
-                            is_acc_switcher_disabled={is_account_switcher_disabled}
-                            is_eu={is_eu}
-                            is_notifications_visible={is_notifications_visible}
-                            is_logged_in={is_logged_in}
-                            is_virtual={is_virtual}
-                            onClickDeposit={handleClickCashier}
-                            notifications_count={notifications_array.length}
-                            toggleAccountsDialog={toggleAccountsDialog}
-                            toggleNotifications={toggleNotificationsModal}
-                            openRealAccountSignup={openRealAccountSignup}
-                        />
-                    </div>
+                    <HeaderAccountActions onClickDeposit={handleClickCashier} />
                 </div>
             </div>
             <RealAccountSignup />

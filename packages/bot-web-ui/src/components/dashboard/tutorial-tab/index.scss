@@ -450,10 +450,6 @@
         @include mobile {
             height: calc(100vh - 28.1rem);
             overflow: auto;
-            .tutorials-wrap,
-            .faq__wrapper {
-                overflow: unset;
-            }
             .tutorials-wrap {
                 margin-bottom: 2rem;
             }

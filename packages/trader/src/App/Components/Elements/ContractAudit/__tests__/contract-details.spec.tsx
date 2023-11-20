@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { TContractInfo } from '@deriv/shared';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
+import createContractInfo from 'Utils/Helpers/contract-info';
 import ContractDetails from '../contract-details';
 
 const contract_types = {
@@ -11,7 +11,7 @@ const contract_types = {
     digit: 'digit',
     expiry: 'expiry',
 };
-const contract_info = {
+const contract_info = createContractInfo({
     barrier: '1460.00',
     cancellation: { ask_price: 122223 },
     contract_type: contract_types.test_contract_type,
@@ -38,7 +38,7 @@ const contract_info = {
     profit: -0.1,
     status: 'open',
     transaction_ids: { buy: 420381262708 },
-} as TContractInfo;
+});
 
 const mock_default_props = {
     contract_end_time: 123,

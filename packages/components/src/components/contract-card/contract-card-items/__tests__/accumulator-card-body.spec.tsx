@@ -1,11 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { getCardLabels } from '@deriv/shared';
 import AccumulatorCardBody from '../accumulator-card-body';
 
 type TAccumulatorCardBody = React.ComponentProps<typeof AccumulatorCardBody>;
 
 describe('<AccumulatorCardBody />', () => {
     const mock_props: TAccumulatorCardBody = {
+        addToast: jest.fn(),
         contract_info: {
             buy_price: 123,
             sell_price: 234,
@@ -21,15 +23,13 @@ describe('<AccumulatorCardBody />', () => {
                 order_amount: 300,
             },
         },
-        getCardLabels: () => ({
-            CURRENT_STAKE: 'Current stake:',
-            INITIAL_STAKE: 'Initial stake:',
-            TAKE_PROFIT: 'Take profit:',
-            TOTAL_PROFIT_LOSS: 'Total profit/loss:',
-        }),
-        is_sold: 1,
+        getCardLabels: () => getCardLabels(),
+        getContractById: jest.fn(),
+        is_sold: true,
+        setCurrentFocus: jest.fn(),
         status: 'profit',
         currency: 'USD',
+        removeToast: jest.fn(),
     };
     it('should display all contract card items, label, and values', () => {
         render(<AccumulatorCardBody {...mock_props} />);

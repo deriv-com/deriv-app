@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import createContractInfo from 'Utils/Helpers/contract-info';
 import DelayedAccuBarriersMarker from '../delayed-accu-barriers-marker';
 
 describe('DelayedAccuBarriersMarker', () => {
@@ -7,7 +8,7 @@ describe('DelayedAccuBarriersMarker', () => {
         `MockedMarkerComponent with price_array: ${JSON.stringify(price_array)}`;
     const mocked_props = {
         epoch_array: [1111111111, 2222222222],
-        contract_info: { high_barrier: '4444.44', low_barrier: '2222.22' },
+        contract_info: createContractInfo({ high_barrier: '4444.44', low_barrier: '2222.22' }),
         granularity: 0,
         is_dark_theme: false,
         is_in_contract_details: true,

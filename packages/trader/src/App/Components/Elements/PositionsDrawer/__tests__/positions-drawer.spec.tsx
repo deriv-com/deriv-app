@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { mockStore, useStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { VANILLALONG, TURBOS } from '@deriv/shared';
+import createContractInfo from 'Utils/Helpers/contract-info';
 import PositionsDrawer from '../positions-drawer';
 import TraderProviders from '../../../../../trader-providers';
 
@@ -61,11 +62,11 @@ describe('<PositionsDrawer />', () => {
         mocked_store.portfolio.error = 'Some error';
         mocked_store.portfolio.all_positions = [
             {
-                contract_info: {
+                contract_info: createContractInfo({
                     underlying: '1HZ100V',
                     contract_type: 'CALL',
                     shortcode: 'CALL_1HZ100V_10.00_1699697112_1699697772_S0P_2.33136_1699697111',
-                },
+                }),
             },
         ] as TAllPositions;
         render(mockPositionsDrawer(mockStore(mocked_store)));
@@ -85,18 +86,18 @@ describe('<PositionsDrawer />', () => {
         mocked_store.modules.trade.contract_type = TURBOS.LONG;
         mocked_store.portfolio.all_positions = [
             {
-                contract_info: {
+                contract_info: createContractInfo({
                     underlying: '1HZ100V',
                     contract_type: TURBOS.LONG.toUpperCase(),
                     shortcode: 'TURBOSLONG_1HZ100V_10.00_1699697112_1699697772_S0P_2.33136_1699697111',
-                },
+                }),
             },
             {
-                contract_info: {
+                contract_info: createContractInfo({
                     underlying: '1HZ100V',
                     contract_type: TURBOS.SHORT.toUpperCase(),
                     shortcode: 'TURBOSSHORT_1HZ100V_10.00_1699697112_1699697772_S0P_2.33136_1699697111',
-                },
+                }),
             },
         ] as TAllPositions;
         render(mockPositionsDrawer(mockStore(mocked_store)));
@@ -107,18 +108,18 @@ describe('<PositionsDrawer />', () => {
         mocked_store.modules.trade.contract_type = VANILLALONG.CALL;
         mocked_store.portfolio.all_positions = [
             {
-                contract_info: {
+                contract_info: createContractInfo({
                     underlying: '1HZ100V',
                     contract_type: VANILLALONG.CALL.toUpperCase(),
                     shortcode: 'VANILLALONGCALL_1HZ100V_10.00_1699697112_1699697772_S0P_2.33136_1699697111',
-                },
+                }),
             },
             {
-                contract_info: {
+                contract_info: createContractInfo({
                     underlying: '1HZ100V',
                     contract_type: VANILLALONG.PUT.toUpperCase(),
                     shortcode: 'VANILLALONGPUT_1HZ100V_10.00_1699697112_1699697772_S0P_2.33136_1699697111',
-                },
+                }),
             },
         ] as TAllPositions;
         render(mockPositionsDrawer(mockStore(mocked_store)));

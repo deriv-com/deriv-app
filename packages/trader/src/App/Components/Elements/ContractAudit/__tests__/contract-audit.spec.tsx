@@ -1,12 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import createContractInfo from 'Utils/Helpers/contract-info';
 import ContractAudit from '../contract-audit';
 
 const ContractDetails = 'ContractDetails';
 const ContractHistory = 'ContractHistory';
 const mocked_default_props = {
-    contract_info: { contract_id: 'test_id', currency: 'test_currency' },
+    contract_info: createContractInfo(),
     contract_update_history: [{ order_date: '20' }, { order_date: '10' }],
     has_result: true,
     is_multiplier: true,

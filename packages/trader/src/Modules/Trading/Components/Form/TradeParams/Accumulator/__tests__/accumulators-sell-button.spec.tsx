@@ -3,21 +3,22 @@ import { render, screen } from '@testing-library/react';
 import AccumulatorsSellButton from '../accumulators-sell-button';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
+import createContractInfo from 'Utils/Helpers/contract-info';
 import TraderProviders from '../../../../../../../trader-providers';
 
-const mock_default_props: React.ComponentProps<typeof AccumulatorsSellButton> = {
+const mock_default_props = {
     is_disabled: false,
     onClick: jest.fn(),
-    contract_info: {
+    contract_info: createContractInfo({
         is_valid_to_sell: 1,
         status: 'open',
-    },
+    }),
     current_stake: 10,
     currency: 'USD',
 };
 
 describe('AccumulatorsSellButton', () => {
-    const mockAccumulatorsSellButton = (mocked_props: typeof mock_default_props) => {
+    const mockAccumulatorsSellButton = (mocked_props: React.ComponentProps<typeof AccumulatorsSellButton>) => {
         return (
             <TraderProviders store={mockStore({}) as TCoreStores}>
                 <AccumulatorsSellButton {...mocked_props} />

@@ -1,11 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import createContractInfo from 'Utils/Helpers/contract-info';
 import InfoBox from '../info-box';
 
 const test_longcode = 'test longcode';
 const test_contract_type = 'test contract type';
 const mocked_props = {
-    contract_info: { longcode: '', contract_type: '' },
+    contract_info: createContractInfo({ longcode: '', contract_type: '' }),
     error_message: 'some error',
     removeError: jest.fn(),
 };

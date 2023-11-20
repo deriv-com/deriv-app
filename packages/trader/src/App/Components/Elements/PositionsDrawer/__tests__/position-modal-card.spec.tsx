@@ -4,12 +4,13 @@ import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { VANILLALONG, TURBOS } from '@deriv/shared';
 import { ActiveSymbols } from '@deriv/api-types';
+import createContractInfo from 'Utils/Helpers/contract-info';
 import PositionsModalCard from '../positions-modal-card';
 import TraderProviders from '../../../../../trader-providers';
 
-const default_mock_props = {
+const default_mock_props: React.ComponentProps<typeof PositionsModalCard> = {
     className: 'test_className',
-    contract_info: {
+    contract_info: createContractInfo({
         contract_type: VANILLALONG.CALL,
         underlying: '',
         contract_id: 123386875,
@@ -22,11 +23,12 @@ const default_mock_props = {
         date_start: 123532989,
         date_expiry: 626512765,
         tick_count: 15,
-    },
+    }),
     contract_update: {},
     currency: 'USD',
     current_tick: 6,
     id: 123386875,
+    indicative: 23.45,
     is_loading: false,
     is_sell_requested: false,
     is_unsupported: true,
@@ -35,7 +37,7 @@ const default_mock_props = {
     onClickCancel: jest.fn(),
     togglePositions: jest.fn(),
     toggleUnsupportedContractModal: jest.fn(),
-} as unknown as React.ComponentProps<typeof PositionsModalCard>;
+};
 
 const default_mock_store = {
     modules: {

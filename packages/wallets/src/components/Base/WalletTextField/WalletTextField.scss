@@ -61,7 +61,7 @@
     &__field:placeholder-shown ~ &__label {
         font-size: 1.4rem;
         cursor: text;
-        top: 20%;
+        top: 1.3rem;
         padding: 0;
     }
 
@@ -90,7 +90,13 @@
     }
 
     &__icon {
-        margin-left: 1.6rem;
+        &-left {
+            margin-right: 0.8rem;
+        }
+
+        &-right {
+            margin-left: 1.6rem;
+        }
     }
 
     &__message-container {

@@ -12,4 +12,17 @@
     @include mobile {
         width: 100%;
     }
+
+    &__reasons {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+
+        &-item {
+            display: grid;
+            grid-template-columns: 3.2rem auto;
+            grid-gap: 0.8rem;
+        }
+    }
 }

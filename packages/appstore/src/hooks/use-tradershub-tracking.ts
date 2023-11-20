@@ -39,7 +39,7 @@ export const useTradersHubTracking = () => {
     );
 
     const trackLastStep = useCallback(() => {
-        Analytics.trackEvent('ce_tradershub_onboarding_form', {
+        Analytics.trackEvent(event_name, {
             action: 'close',
             form_source,
             step_num: 7,
@@ -49,7 +49,7 @@ export const useTradersHubTracking = () => {
 
     const trackStepBack = useCallback(
         (new_step: number) => {
-            Analytics.trackEvent('ce_tradershub_onboarding_form', {
+            Analytics.trackEvent(event_name, {
                 action: 'step_back',
                 form_source,
                 step_num: new_step,
@@ -61,7 +61,7 @@ export const useTradersHubTracking = () => {
 
     const trackStepForward = useCallback(
         (new_step: number) => {
-            Analytics.trackEvent('ce_tradershub_onboarding_form', {
+            Analytics.trackEvent(event_name, {
                 action: 'step_passed',
                 form_source,
                 step_num: new_step,
@@ -73,7 +73,7 @@ export const useTradersHubTracking = () => {
 
     const trackOnboardingClose = useCallback(
         (current_step: number) => {
-            Analytics.trackEvent('ce_tradershub_onboarding_form', {
+            Analytics.trackEvent(event_name, {
                 action: 'close',
                 form_source,
                 step_num: current_step,
@@ -84,7 +84,7 @@ export const useTradersHubTracking = () => {
     );
 
     const trackOnboardingRestart = useCallback(() => {
-        Analytics.trackEvent('ce_tradershub_onboarding_form', {
+        Analytics.trackEvent(event_name, {
             action: 'open',
             form_source: 'repeat_tour',
             step_num: 7,
@@ -93,7 +93,7 @@ export const useTradersHubTracking = () => {
     }, []);
 
     const trackOnboardingOpen = useCallback(() => {
-        Analytics.trackEvent('ce_tradershub_onboarding_form', {
+        Analytics.trackEvent(event_name, {
             action: 'open',
             form_source,
             step_num: 1,

@@ -12,10 +12,10 @@
         &:disabled {
             color: var(--system-light-4-disabled-text, #d6d6d6);
         }
+    }
 
-        &-container {
-            position: relative;
-            flex-grow: 1;
-        }
+    &__input-container {
+        position: relative;
+        flex-grow: 1;
     }
 }

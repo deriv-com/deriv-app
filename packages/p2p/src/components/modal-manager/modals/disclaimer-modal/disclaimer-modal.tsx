@@ -77,7 +77,7 @@ const DisclaimerModal = ({ handleDisclaimerTimeout }: TDisclaimerModalProps) => 
                     ))}
                 </ul>
                 <Checkbox
-                    onChange={() => setIsChecked(prev_state => !prev_state)}
+                    onChange={() => setIsChecked(!is_checked)}
                     name='disclaimer-checkbox'
                     value={is_checked}
                     label={

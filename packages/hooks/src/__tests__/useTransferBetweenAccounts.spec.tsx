@@ -186,7 +186,7 @@ describe('useTransferBetweenAccounts', () => {
             },
         } = renderHook(() => useTransferBetweenAccounts(), { wrapper });
 
-        expect(Object.keys(trading_accounts)).toHaveLength(4);
+        expect(Object.keys(trading_accounts)).toHaveLength(3);
         expect(Object.keys(wallet_accounts)).toHaveLength(1);
     });
 

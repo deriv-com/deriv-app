@@ -445,7 +445,7 @@
     &__faq,
     &__search {
         @include mobile {
-            height: calc(100vh - 28.1rem);
+            height: calc(var(--vh) - 280px);
             overflow: auto;
             .tutorials-wrap {
                 margin-bottom: 2rem;

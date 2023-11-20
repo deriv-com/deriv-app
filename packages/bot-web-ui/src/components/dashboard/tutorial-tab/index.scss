@@ -399,9 +399,6 @@
                 margin-right: 17px;
                 transition: all 0.3s;
             }
-            .dc-select-native__picker option:last-child {
-                display: none;
-            }
             &--show-search {
                 .dc-select-native {
                     width: 0;
@@ -452,6 +449,15 @@
             overflow: auto;
             .tutorials-wrap {
                 margin-bottom: 2rem;
+            }
+        }
+    }
+
+    &__search {
+        @include mobile {
+            .tutorials-wrap,
+            .faq__wrapper {
+                overflow: unset;
             }
         }
     }

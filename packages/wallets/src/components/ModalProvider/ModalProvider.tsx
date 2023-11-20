@@ -14,6 +14,7 @@ type TModalContext = {
     hide: () => void;
     isOpen: boolean;
     modalState?: Map<keyof TModalState, TModalState[keyof TModalState]>;
+    setModalOptions: React.Dispatch<React.SetStateAction<TModalOptions>>;
     setModalState: <T extends keyof TModalState>(key: T, value: TModalState[T]) => void;
     show: (ModalContent: React.ReactNode, options?: TModalOptions) => void;
 };
@@ -85,7 +86,15 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     return (
         <ModalContext.Provider
-            value={{ getModalState, hide, isOpen: content !== null, modalState, setModalState: updateModalState, show }}
+            value={{
+                getModalState,
+                hide,
+                isOpen: content !== null,
+                modalState,
+                setModalOptions,
+                setModalState: updateModalState,
+                show,
+            }}
         >
             {children}
             {modalRootRef?.current &&

@@ -1,4 +1,5 @@
-import React, { FC, PropsWithChildren, ReactNode } from 'react';
+import React, { FC, PropsWithChildren, ReactNode, useEffect } from 'react';
+import { flushSync } from 'react-dom';
 import classNames from 'classnames';
 import { useEventListener } from 'usehooks-ts';
 import CloseIcon from '../../../public/images/close-icon.svg';
@@ -24,7 +25,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     shouldPreventCloseOnEscape = false,
     title,
 }) => {
-    const { hide } = useModal();
+    const { hide, setModalOptions } = useModal();
     const hasRenderFooter = typeof renderFooter === 'function';
     const fixedFooter = shouldFixedFooter && hasRenderFooter;
 
@@ -33,6 +34,12 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
             hide();
         }
     });
+
+    useEffect(() => {
+        setModalOptions({
+            shouldHideDerivAppHeader,
+        });
+    }, [shouldHideDerivAppHeader, setModalOptions]);
 
     return (
         <div

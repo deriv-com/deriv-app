@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import unFormatLocaleString from '../../../../../../../../utils/src/unFormatLocaleString';
-import { WalletText } from '../../../../../../components/Base';
+import { WalletText } from '../../../../../../components';
 import useInputATMFormatter from '../../../../../../hooks/useInputATMFormatter';
 import './TransferFormInputField.scss';
 

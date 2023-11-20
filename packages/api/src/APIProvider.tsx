@@ -4,10 +4,11 @@ import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-// Don't need to type `deriv_api` here, We will be using these methods inside
-// the `useQuery`, `useMutation` and `useSubscription` hook to make it type-safe.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const APIContext = createContext<Record<string, any> | null>(null);
+type APIContextData = {
+    derivAPI: DerivAPIBasic | null;
+};
+
+const APIContext = createContext<APIContextData | null>(null);
 
 declare global {
     interface Window {
@@ -18,7 +19,6 @@ declare global {
 }
 
 // This is a temporary workaround to share a single `QueryClient` instance between all the packages.
-// Later once we have each package separated we won't need this anymore and can remove this.
 const getSharedQueryClientContext = (): QueryClient => {
     if (!window.ReactQueryClient) {
         window.ReactQueryClient = new QueryClient();
@@ -49,6 +49,11 @@ const handleReconnection = (wss_url: string) => {
     }
 };
 
+/**
+ * Retrieves or initializes a WebSocket instance based on the provided URL.
+ * @param {string} wss_url - The WebSocket URL.
+ * @returns {WebSocket} The WebSocket instance associated with the provided URL.
+ */
 const getWebsocketInstance = (wss_url: string) => {
     if (!window.WSConnections) {
         window.WSConnections = {};

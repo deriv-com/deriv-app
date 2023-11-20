@@ -15,11 +15,6 @@ export default function mock_landing_company(context: Context) {
                         standard: 'svg',
                     },
                 },
-                derivez: {
-                    all: {
-                        standard: 'svg',
-                    },
-                },
                 dxtrade_all_company: {
                     standard: {
                         address: null,

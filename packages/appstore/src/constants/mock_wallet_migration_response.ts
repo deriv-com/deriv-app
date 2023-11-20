@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+
 import { getWalletCurrencyIcon } from './utils';
 
 const getMockWalletMigrationResponse = () => {
@@ -101,13 +102,6 @@ const getMockWalletMigrationResponse = () => {
                             account_name: 'Deriv X',
                             icon: 'IcRebrandingDerivx',
                             platform: 'derivx',
-                        },
-                        {
-                            balance: 100,
-                            currency: 'USD',
-                            account_name: 'Deriv EZ',
-                            icon: 'IcDerivez',
-                            platform: 'derivez',
                         },
                     ],
                 },

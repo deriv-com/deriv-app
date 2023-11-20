@@ -1,8 +1,7 @@
 import React from 'react';
-import CFD from '../Containers';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-
+import CFDCompareAccounts from 'Containers/cfd-compare-accounts';
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
 
@@ -10,17 +9,9 @@ const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Module
 const initRoutesConfig = () => {
     return [
         {
-            path: routes.dxtrade,
-            // eslint-disable-next-line react/display-name
-            component: props => <CFD {...props} platform='dxtrade' />,
-            getTitle: () => localize('Deriv X'),
-            is_authenticated: false,
-        },
-        {
-            path: routes.mt5,
-            // eslint-disable-next-line react/display-name
-            component: props => <CFD {...props} platform='mt5' />,
-            getTitle: () => localize('MT5'),
+            path: routes.compare_cfds,
+            component: props => <CFDCompareAccounts {...props} />,
+            getTitle: () => localize('Compare CFD accounts'),
             is_authenticated: false,
         },
     ];

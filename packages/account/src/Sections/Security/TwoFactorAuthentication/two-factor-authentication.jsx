@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
-import QRCode from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import {
     Timeline,
     DesktopWrapper,
@@ -14,20 +13,16 @@ import {
 } from '@deriv/components';
 import { getPropertyValue, isMobile, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
 import DigitForm from './digit-form.jsx';
 import TwoFactorAuthenticationArticle from './two-factor-authentication-article.jsx';
+import { observer, useStore } from '@deriv/stores';
 
-const TwoFactorAuthentication = ({
-    email_address,
-    is_switching,
-    setTwoFAStatus,
-    getTwoFAStatus,
-    has_enabled_two_fa,
-    Notifications,
-    setTwoFAChangedStatus,
-}) => {
+const TwoFactorAuthentication = observer(() => {
+    const { client, common } = useStore();
+    const { email_address, getTwoFAStatus, has_enabled_two_fa, is_switching, setTwoFAStatus, setTwoFAChangedStatus } =
+        client;
+    const { is_language_changing } = common;
     const [is_loading, setLoading] = React.useState(true);
     const [is_qr_loading, setQrLoading] = React.useState(false);
     const [error_message, setErrorMessage] = React.useState('');
@@ -93,6 +88,7 @@ const TwoFactorAuthentication = ({
                     is_enabled={has_enabled_two_fa}
                     setTwoFAStatus={setTwoFAStatus}
                     setTwoFAChangedStatus={setTwoFAChangedStatus}
+                    is_language_changing={is_language_changing}
                 />
             </div>
         </ThemedScrollbars>
@@ -144,7 +140,7 @@ const TwoFactorAuthentication = ({
                                     <React.Fragment>
                                         {qr_secret_key && (
                                             <div className='two-factor__qr--wrapper'>
-                                                <QRCode value={qr_secret_key} />
+                                                <QRCodeSVG value={qr_secret_key} />
                                             </div>
                                         )}
 
@@ -182,6 +178,7 @@ const TwoFactorAuthentication = ({
                                 is_enabled={has_enabled_two_fa}
                                 setTwoFAStatus={setTwoFAStatus}
                                 setTwoFAChangedStatus={setTwoFAChangedStatus}
+                                is_language_changing={is_language_changing}
                             />
                         </Timeline.Item>
                     </Timeline>
@@ -200,29 +197,10 @@ const TwoFactorAuthentication = ({
                     'two-factor__wrapper-dashboard': is_appstore,
                 })}
             >
-                {Notifications && <Notifications />}
                 {has_enabled_two_fa ? TwoFactorEnabled : TwoFactorDisabled}
             </div>
         </section>
     );
-};
+});
 
-TwoFactorAuthentication.propTypes = {
-    email_address: PropTypes.string,
-    is_switching: PropTypes.bool,
-    setTwoFAStatus: PropTypes.func,
-    getTwoFAStatus: PropTypes.func,
-    has_enabled_two_fa: PropTypes.bool,
-    Notifications: PropTypes.node,
-    setTwoFAChangedStatus: PropTypes.func,
-};
-
-export default connect(({ client, ui }) => ({
-    email_address: client.email_address,
-    is_switching: client.is_switching,
-    setTwoFAStatus: client.setTwoFAStatus,
-    getTwoFAStatus: client.getTwoFAStatus,
-    has_enabled_two_fa: client.has_enabled_two_fa,
-    Notifications: ui.notification_messages_ui,
-    setTwoFAChangedStatus: client.setTwoFAChangedStatus,
-}))(TwoFactorAuthentication);
+export default TwoFactorAuthentication;

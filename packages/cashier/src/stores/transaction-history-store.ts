@@ -1,103 +1,40 @@
 import { action, observable, makeObservable } from 'mobx';
-import { isCryptocurrency } from '@deriv/shared';
-import { TWebSocket, TRootStore, TTransactionItem } from '../types';
+import type { TWebSocket, TRootStore } from '../types';
 
 export default class TransactionHistoryStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
-            crypto_transactions: observable,
-            is_crypto_transactions_cancel_modal_visible: observable,
-            is_crypto_transactions_status_modal_visible: observable,
-            is_crypto_transactions_visible: observable,
-            is_loading: observable,
+            is_transactions_crypto_cancel_modal_visible: observable,
+            is_transactions_crypto_status_modal_visible: observable,
+            is_transactions_crypto_visible: observable,
             selected_crypto_transaction_id: observable,
             selected_crypto_status: observable,
             selected_crypto_status_description: observable,
-            onMount: action.bound,
-            unsubscribeCryptoTransactions: action.bound,
-            getCryptoTransactions: action.bound,
-            setCryptoTransactionsHistory: action.bound,
-            updateCryptoTransactions: action.bound,
-            sortCryptoTransactions: action.bound,
             cancelCryptoTransaction: action.bound,
             setSelectedCryptoTransactionId: action.bound,
-            setIsCryptoTransactionsCancelModalVisible: action.bound,
-            showCryptoTransactionsCancelModal: action.bound,
-            hideCryptoTransactionsCancelModal: action.bound,
+            setIsTransactionsCryptoCancelModalVisible: action.bound,
+            showTransactionsCryptoCancelModal: action.bound,
+            hideTransactionsCryptoCancelModal: action.bound,
             setSelectedCryptoStatus: action.bound,
             setSelectedCryptoStatusDescription: action.bound,
-            setIsCryptoTransactionsStatusModalVisible: action.bound,
-            showCryptoTransactionsStatusModal: action.bound,
-            hideCryptoTransactionsStatusModal: action.bound,
-            setLoading: action.bound,
-            setIsCryptoTransactionsVisible: action.bound,
+            setIsTransactionsCryptoStatusModalVisible: action.bound,
+            showTransactionsCryptoStatusModal: action.bound,
+            hideTransactionsCryptoStatusModal: action.bound,
+            setIsTransactionsCryptoVisible: action.bound,
         });
     }
-    crypto_transactions: TTransactionItem[] = [];
-    is_crypto_transactions_cancel_modal_visible = false;
-    is_crypto_transactions_status_modal_visible = false;
-    is_crypto_transactions_visible = false;
-    is_loading = false;
+    is_transactions_crypto_cancel_modal_visible = false;
+    is_transactions_crypto_status_modal_visible = false;
+    is_transactions_crypto_visible = false;
     selected_crypto_transaction_id = '';
     selected_crypto_status = '';
     selected_crypto_status_description: JSX.Element | string = '';
-
-    async onMount() {
-        const { currency, switched } = this.root_store.client;
-        const is_crypto = !!currency && isCryptocurrency(currency);
-
-        if (is_crypto && !switched) {
-            this.setLoading(true);
-            await this.unsubscribeCryptoTransactions();
-            await this.getCryptoTransactions();
-            this.setLoading(false);
-        }
-    }
-
-    async unsubscribeCryptoTransactions() {
-        await this.WS.authorized.cashierPayments?.({ provider: 'crypto', transaction_type: 'all' }).then(response => {
-            if (!response.error) {
-                const { crypto } = response.cashier_payments;
-                this.setCryptoTransactionsHistory(crypto);
-            }
-        });
-    }
-
-    async getCryptoTransactions() {
-        await this.WS.subscribeCashierPayments?.(response => {
-            if (!response.error) {
-                const { crypto } = response.cashier_payments;
-                this.updateCryptoTransactions(crypto);
-            }
-        });
-    }
-
-    setCryptoTransactionsHistory(transactions: TTransactionItem[]): void {
-        this.crypto_transactions = transactions;
-        this.sortCryptoTransactions();
-    }
-
-    updateCryptoTransactions(transactions: TTransactionItem[]): void {
-        transactions.forEach(transaction => {
-            const index = this.crypto_transactions.findIndex(crypto => crypto.id === transaction.id);
-            if (index === -1) {
-                this.crypto_transactions.push(transaction);
-            } else {
-                Object.assign(this.crypto_transactions[index], transaction);
-            }
-        });
-        this.sortCryptoTransactions();
-    }
-
-    sortCryptoTransactions() {
-        this.crypto_transactions.sort((a, b) => Number(b.submit_date) - Number(a.submit_date));
-    }
 
     async cancelCryptoTransaction(transaction_id: string) {
         await this.WS.cancelCryptoTransaction?.(transaction_id).then(response => {
             if (!response.error) {
                 this.setSelectedCryptoTransactionId('');
-                this.setIsCryptoTransactionsCancelModalVisible(false);
+                this.setIsTransactionsCryptoCancelModalVisible(false);
                 return Promise.resolve(response);
             }
             return Promise.reject(response.error);
@@ -108,18 +45,18 @@ export default class TransactionHistoryStore {
         this.selected_crypto_transaction_id = id;
     }
 
-    setIsCryptoTransactionsCancelModalVisible(is_visible: boolean): void {
-        this.is_crypto_transactions_cancel_modal_visible = is_visible;
+    setIsTransactionsCryptoCancelModalVisible(is_visible: boolean): void {
+        this.is_transactions_crypto_cancel_modal_visible = is_visible;
     }
 
-    showCryptoTransactionsCancelModal(id: string): void {
+    showTransactionsCryptoCancelModal(id: string): void {
         this.setSelectedCryptoTransactionId(id);
-        this.setIsCryptoTransactionsCancelModalVisible(true);
+        this.setIsTransactionsCryptoCancelModalVisible(true);
     }
 
-    hideCryptoTransactionsCancelModal(): void {
+    hideTransactionsCryptoCancelModal(): void {
         this.setSelectedCryptoTransactionId('');
-        this.setIsCryptoTransactionsCancelModalVisible(false);
+        this.setIsTransactionsCryptoCancelModalVisible(false);
     }
 
     setSelectedCryptoStatus(status: string): void {
@@ -130,25 +67,21 @@ export default class TransactionHistoryStore {
         this.selected_crypto_status_description = description;
     }
 
-    setIsCryptoTransactionsStatusModalVisible(is_visible: boolean): void {
-        this.is_crypto_transactions_status_modal_visible = is_visible;
+    setIsTransactionsCryptoStatusModalVisible(is_visible: boolean): void {
+        this.is_transactions_crypto_status_modal_visible = is_visible;
     }
 
-    showCryptoTransactionsStatusModal(description: JSX.Element | string, name: string): void {
+    showTransactionsCryptoStatusModal(description: JSX.Element | string, name: string): void {
         this.setSelectedCryptoStatusDescription(description);
         this.setSelectedCryptoStatus(name);
-        this.setIsCryptoTransactionsStatusModalVisible(true);
+        this.setIsTransactionsCryptoStatusModalVisible(true);
     }
 
-    hideCryptoTransactionsStatusModal() {
-        this.setIsCryptoTransactionsStatusModalVisible(false);
+    hideTransactionsCryptoStatusModal() {
+        this.setIsTransactionsCryptoStatusModalVisible(false);
     }
 
-    setLoading(is_loading: boolean): void {
-        this.is_loading = is_loading;
-    }
-
-    setIsCryptoTransactionsVisible(is_visible: boolean): void {
-        this.is_crypto_transactions_visible = is_visible;
+    setIsTransactionsCryptoVisible(is_visible: boolean): void {
+        this.is_transactions_crypto_visible = is_visible;
     }
 }

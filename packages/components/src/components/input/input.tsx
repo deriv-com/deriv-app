@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import Field from '../field';
 import Text from '../text/text';
 
@@ -18,6 +18,7 @@ export type TInputProps = {
     hint?: React.ReactNode;
     id?: string;
     initial_character_count?: number;
+    inputMode?: React.HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>['inputMode'];
     input_id?: string;
     is_relative_hint?: boolean;
     label_className?: string;
@@ -26,19 +27,35 @@ export type TInputProps = {
     max_characters?: number;
     maxLength?: number;
     name?: string;
-    onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseDown?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseUp?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onPaste?: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onKeyUp?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onKeyDown?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-    onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onPaste?: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onInput?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onClick?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseEnter?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseLeave?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     placeholder?: string;
+    ref?: React.RefObject<
+        React.ComponentType extends 'textarea'
+            ? HTMLTextAreaElement
+            : React.ComponentType extends 'input'
+            ? HTMLInputElement
+            : never
+    >;
     required?: boolean;
     trailing_icon?: React.ReactElement | null;
-    type: string;
-    value?: string;
+    type?: string;
+    value?: string | number;
     warn?: string;
-};
+    readOnly?: boolean;
+    is_autocomplete_disabled?: string;
+    is_hj_whitelisted?: string;
+} & Omit<React.ComponentProps<'input'>, 'ref'>;
 
 type TInputWrapper = {
     has_footer: boolean;
@@ -71,6 +88,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
             warn,
             data_testId,
             maxLength,
+            placeholder,
             ...props
         },
         ref?
@@ -83,7 +101,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
             }
         }, [initial_character_count]);
 
-        const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        const changeHandler: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> = e => {
             let input_value = e.target.value;
             if (max_characters && input_value.length >= max_characters) {
                 input_value = input_value.slice(0, max_characters);
@@ -94,6 +112,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
         };
 
         const has_footer = !!has_character_counter || (!!hint && !!is_relative_hint);
+        const field_placeholder = label ? '' : placeholder;
 
         return (
             <InputWrapper has_footer={has_footer}>
@@ -119,14 +138,15 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                             <textarea
                                 ref={ref}
                                 data-testid={data_testId}
-                                {...props}
+                                {...(props as React.ComponentProps<'textarea'>)}
                                 className={classNames('dc-input__field dc-input__textarea', {
-                                    'dc-input__field--placeholder-visible': !label && props.placeholder,
+                                    'dc-input__field--placeholder-visible': !label && placeholder,
                                 })}
                                 onChange={changeHandler}
                                 disabled={disabled}
                                 id={input_id}
                                 maxLength={maxLength}
+                                placeholder={field_placeholder}
                             />
                         ) : (
                             <input
@@ -134,17 +154,21 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 data-testid={data_testId}
                                 {...props}
                                 className={classNames('dc-input__field', field_className, {
-                                    'dc-input__field--placeholder-visible': !label && props.placeholder,
+                                    'dc-input__field--placeholder-visible': !label && placeholder,
                                 })}
                                 onFocus={props.onFocus}
                                 onBlur={props.onBlur}
                                 onChange={props.onChange}
+                                onKeyDown={props.onKeyDown}
+                                onMouseDown={props.onMouseDown}
+                                onMouseUp={props.onMouseUp}
                                 onPaste={props.onPaste}
                                 disabled={disabled}
                                 data-lpignore={props.type === 'password' ? undefined : true}
                                 id={input_id}
                                 aria-label={label as string}
                                 maxLength={maxLength}
+                                placeholder={field_placeholder}
                             />
                         )}
                         {trailing_icon &&

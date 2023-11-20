@@ -12,3 +12,20 @@ export type TItem = {
     id: string;
     value: Array<TItem> | string;
 };
+
+export type TTableRowItem =
+    | {
+          message?: string;
+          component?: React.ReactElement;
+      }
+    | string;
+
+export type TRow = { [key: string]: any };
+
+export type TPassThrough = { isTopUp: (item: TRow) => boolean };
+
+export type TDatePickerOnChangeEvent = {
+    date?: string;
+    duration?: number | null | string;
+    target?: { name?: string; value?: number | string | moment.Moment | null };
+};

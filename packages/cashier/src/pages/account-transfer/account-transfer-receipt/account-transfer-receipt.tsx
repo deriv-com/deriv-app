@@ -1,12 +1,15 @@
 import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
 import classNames from 'classnames';
-import AccountPlatformIcon from '../../../components/account-platform-icon';
-import { withRouter, RouteComponentProps } from 'react-router';
-import { Button, Modal, Icon, Text } from '@deriv/components';
+
+import { Button, Icon, Modal, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+
+import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { useCashierStore } from '../../../stores/useCashierStores';
+
 import './account-transfer-receipt.scss';
 
 type TSwitch = {
@@ -15,14 +18,15 @@ type TSwitch = {
 };
 
 type TAccountTransferReceipt = RouteComponentProps & {
-    onClose?: () => void;
+    onClose: () => void;
 };
 
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
-    const { common, client } = useStore();
+    const { common, client, traders_hub } = useStore();
     const { account_transfer } = useCashierStore();
     const { is_from_derivgo } = common;
     const { loginid, switchAccount } = client;
+    const { closeAccountTransferModal } = traders_hub;
     const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
 
     const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
@@ -33,6 +37,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     React.useEffect(() => {
         return () => {
             resetAccountTransfer();
+            closeAccountTransferModal();
         };
     }, [resetAccountTransfer]);
 
@@ -56,19 +61,16 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
         // the account transferred to is a Deriv MT5 account that can't be switched to and from account is your logged in account
         if (
             selected_to.value === loginid ||
-            ((selected_to.is_mt || selected_to.is_dxtrade) && selected_from.value === loginid)
+            ((selected_to.is_mt || selected_to.is_dxtrade || selected_to.is_ctrader) && selected_from.value === loginid)
         ) {
             openStatement();
         } else {
             // if the account transferred to is a Deriv MT5 account that can't be switched to, switch to from account instead
             // otherwise switch to the account transferred to
-            setShouldSwitchAccount();
+            setShouldSwitchAccount(true);
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }
-        // close modal only when the user try to transfer money from traders-hub, not from cashier
-        // because in cashier this component is not a modal
-        if (is_from_outside_cashier) onClose?.();
     };
 
     return (
@@ -100,7 +102,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                             <Localize i18n_default_text={selected_from.text} />
                         </Text>
                     </div>
-                    {!(is_from_derivgo && selected_from.is_derivez) && (
+                    {!is_from_derivgo && (
                         <Text as='p' size='s' color='less-prominent' align='center'>
                             {selected_from.value}
                         </Text>
@@ -114,7 +116,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                             <Localize i18n_default_text={selected_to.text} />
                         </Text>
                     </div>
-                    {!(is_from_derivgo && selected_to.is_derivez) && (
+                    {!is_from_derivgo && (
                         <Text as='p' size='s' color='less-prominent' align='center'>
                             {selected_to.value}
                         </Text>
@@ -156,7 +158,16 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button has_effect text={localize('Cancel')} onClick={toggleSwitchAlert} secondary large />
+                    <Button
+                        has_effect
+                        text={localize('Cancel')}
+                        onClick={() => {
+                            setShouldSwitchAccount(false);
+                            toggleSwitchAlert();
+                        }}
+                        secondary
+                        large
+                    />
                     <Button
                         has_effect
                         text={localize(`Switch to ${switch_to.currency} account`)}

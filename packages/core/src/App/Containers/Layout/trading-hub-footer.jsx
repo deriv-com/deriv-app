@@ -17,10 +17,11 @@ import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
 import { routes } from '@deriv/shared';
+import { observer,useStore } from '@deriv/stores';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 import { Popover } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 
@@ -99,7 +100,7 @@ const TradingHubFooter = observer(() => {
                     />
                 )}
                 <div className='footer__links--dark-mode'>
-                    <Popover alignment='top' message='Change theme' zIndex={9999}>
+                    <Popover alignment='top' message={localize('Change theme')} zIndex={9999}>
                         {is_dark_mode ? (
                             <LightModeToggleIcon onClick={changeTheme} />
                         ) : (

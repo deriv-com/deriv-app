@@ -7,7 +7,8 @@ const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
-const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const IS_RELEASE =
+    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 const output = {
     path: path.resolve(__dirname, 'dist'),
@@ -119,6 +120,16 @@ module.exports = function (env) {
                 'process.env.GD_CLIENT_ID': JSON.stringify(process.env.GD_CLIENT_ID),
                 'process.env.GD_API_KEY': JSON.stringify(process.env.GD_API_KEY),
                 'process.env.GD_APP_ID': JSON.stringify(process.env.GD_APP_ID),
+                'process.env.DATADOG_APPLICATION_ID': JSON.stringify(process.env.DATADOG_APPLICATION_ID),
+                'process.env.DATADOG_CLIENT_TOKEN_LOGS': JSON.stringify(process.env.DATADOG_CLIENT_TOKEN_LOGS),
+                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                'process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE': JSON.stringify(
+                    process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE
+                ),
+                'process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS': JSON.stringify(
+                    process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS
+                ),
+                'process.env.REF_NAME': JSON.stringify(process.env.REF_NAME),
             }),
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({

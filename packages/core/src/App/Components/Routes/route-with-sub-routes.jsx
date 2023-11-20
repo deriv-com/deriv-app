@@ -17,8 +17,13 @@ const RouteWithSubRoutes = observer(route => {
     const { common } = useStore();
     const { checkAppId } = common;
     const validateRoute = pathname => {
-        if (pathname.startsWith('/cashier')) {
-            return route.path === pathname || !!(route.routes && route.routes.find(r => pathname === r.path));
+        if (pathname.startsWith('/cashier') && !pathname.startsWith('/cashier/p2p/') && !!route.routes) {
+            return route.path === pathname || !!route?.routes.find(r => pathname === r.path);
+        } else if (pathname.startsWith('/cashier/p2p/') && !!route.routes) {
+            const cashier_subroutes = route?.routes.find(r => r.path === '/cashier/p2p');
+            const p2p_subroutes = cashier_subroutes?.routes.find(r => pathname === r.path);
+
+            return route.path === pathname || !!p2p_subroutes;
         }
         return true;
     };

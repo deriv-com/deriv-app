@@ -38,6 +38,7 @@ describe('JurisdictionCard', () => {
         account_type: 'financial' | 'synthetic';
         disabled: boolean;
         is_non_idv_design: boolean;
+        toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
         jurisdiction_selected_shortcode: string;
         setJurisdictionSelectedShortcode: jest.Mock;
         type_of_card: 'svg' | 'bvi' | 'labuan' | 'maltainvest' | 'vanuatu';
@@ -75,6 +76,7 @@ describe('JurisdictionCard', () => {
             account_type: 'financial',
             disabled: false,
             is_non_idv_design: false,
+            toggleDynamicLeverage: jest.fn(),
             jurisdiction_selected_shortcode: '',
             setJurisdictionSelectedShortcode: jest.fn(),
             swapfree_available_accounts: [],
@@ -87,7 +89,9 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('170+')).toBeInTheDocument();
-        expect(screen.getByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toBeInTheDocument();
+        expect(
+            screen.getByText('Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs')
+        ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
@@ -105,8 +109,10 @@ describe('JurisdictionCard', () => {
         render(<JurisdictionCard {...mock_props} />);
         expect(screen.getByText('Vanuatu')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
-        expect(screen.getByText('90+')).toBeInTheDocument();
-        expect(screen.getByText('Forex, Stock indices, Commodities and Cryptocurrencies')).toBeInTheDocument();
+        expect(screen.getByText('170+')).toBeInTheDocument();
+        expect(
+            screen.getByText('Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs')
+        ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
@@ -125,7 +131,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('140+')).toBeInTheDocument();
         expect(
-            screen.getByText('Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')
+            screen.getByText('Forex, stocks, stock indices, commodities, cryptocurrencies and synthetic indices.')
         ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:30')).toBeInTheDocument();
@@ -146,7 +152,9 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('British Virgin Islands')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('170+')).toBeInTheDocument();
-        expect(screen.getByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toBeInTheDocument();
+        expect(
+            screen.getByText('Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs')
+        ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
@@ -167,7 +175,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('Labuan')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('80+')).toBeInTheDocument();
-        expect(screen.getByText('Forex and Cryptocurrencies')).toBeInTheDocument();
+        expect(screen.getByText('Forex (standard/exotic) and cryptocurrencies')).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:100')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
@@ -185,7 +193,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('40+')).toBeInTheDocument();
-        expect(screen.getByText('Synthetics, Basket indices and Derived FX')).toBeInTheDocument();
+        expect(screen.getByText('Synthetic indices, basket indices, and derived FX')).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();

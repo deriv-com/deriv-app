@@ -1,13 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { StoreProvider } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import CFDServerErrorDialog from '../cfd-server-error-dialog';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import CFDProviders from '../../cfd-providers';
 
 describe('<CFDServerErrorDialog /> ', () => {
     beforeAll(() => {
@@ -40,7 +35,7 @@ describe('<CFDServerErrorDialog /> ', () => {
 
     it('should render the component properly', () => {
         const { container } = render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
         expect(container.firstChild).toHaveClass('dc-dialog__wrapper dc-dialog__wrapper--enter');
@@ -48,7 +43,7 @@ describe('<CFDServerErrorDialog /> ', () => {
 
     it('should render the proper text and error message', () => {
         render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
         expect(screen.getByText(/This is a sample error message/i)).toBeInTheDocument();
@@ -69,7 +64,7 @@ describe('<CFDServerErrorDialog /> ', () => {
             },
         };
         render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={new_mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore(new_mockRootStore)}>{children}</CFDProviders>,
         });
 
         expect(screen.queryByText(/This is a sample error message/i)).not.toBeInTheDocument();
@@ -89,7 +84,7 @@ describe('<CFDServerErrorDialog /> ', () => {
         };
 
         render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={new_mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore(new_mockRootStore)}>{children}</CFDProviders>,
         });
 
         expect(screen.queryByText(/This is a sample error message/i)).not.toBeInTheDocument();
@@ -97,7 +92,7 @@ describe('<CFDServerErrorDialog /> ', () => {
 
     it('should clear the component if OK is clicked', () => {
         render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
         const ok_btn = screen.getByRole('button', { name: /OK/i });

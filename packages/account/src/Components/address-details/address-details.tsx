@@ -1,67 +1,54 @@
-import { Formik, Field, FormikProps, FormikValues } from 'formik';
 import React from 'react';
+import classNames from 'classnames';
+import { Formik, Field, FormikValues, FormikHelpers, FormikHandlers, FormikState } from 'formik';
+import { StatesList } from '@deriv/api-types';
 import {
-    Modal,
     Autocomplete,
     AutoHeightWrapper,
     DesktopWrapper,
     Div100vhContainer,
     FormSubmitButton,
-    Input,
     Loading,
     MobileWrapper,
-    ThemedScrollbars,
+    Modal,
     SelectNative,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import {
-    isDesktop,
-    isMobile,
-    getLocation,
-    makeCancellablePromise,
-    PlatformContext,
-    TLocationList,
-} from '@deriv/shared';
-import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import { useStatesList } from '@deriv/hooks';
+import { getLocation } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { localize, Localize } from '@deriv/translations';
+import { FormInputField } from '../forms/form-fields';
+import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+
+export type TAddressDetailFormProps = {
+    address_line_1: string;
+    address_line_2?: string;
+    address_city: string;
+    address_state?: string;
+    address_postcode?: string;
+};
 
 type TAddressDetails = {
-    states_list: TLocationList[];
+    disabled_items: string[];
+    states_list: StatesList;
     getCurrentStep?: () => number;
-    onSave: (current_step: number, values: FormikValues) => void;
+    onSave: (current_step: number, values: TAddressDetailFormProps) => void;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
     goToNextStep: () => void;
     goToPreviousStep: () => void;
-    validate: (values: FormikValues) => FormikValues;
+    validate: (values: TAddressDetailFormProps) => TAddressDetailFormProps;
     onSubmit: (
         current_step: number | null,
-        values: FormikValues,
+        values: TAddressDetailFormProps,
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    is_svg: boolean;
-    is_mf?: boolean;
     is_gb_residence: boolean | string;
-    onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
-    selected_step_ref?: React.RefObject<FormikProps<FormikValues>>;
-    fetchStatesList: () => Promise<unknown>;
-    value: FormikValues;
-};
-
-type TFormValidation = {
-    warnings: { [key: string]: string };
-    errors: { [key: string]: string };
-};
-
-type TInputField = {
-    name: string;
-    required?: boolean | string;
-    label: string;
-    maxLength?: number | string;
-    placeholder: string;
-    onChange?: (e: any) => void;
-    disabled?: string;
+    value: TAddressDetailFormProps;
+    has_real_account: boolean;
 };
 
 type TAutoComplete = {
@@ -69,25 +56,23 @@ type TAutoComplete = {
     text: string;
 };
 
-const InputField = (props: TInputField) => {
-    return (
-        <Field name={props.name}>
-            {({ field, form: { errors, touched } }: FormikValues) => (
-                <React.Fragment>
-                    <Input
-                        type='text'
-                        autoComplete='off'
-                        maxLength={props.maxLength || 30}
-                        error={touched[field.name] && errors[field.name]}
-                        {...field}
-                        {...props}
-                    />
-                </React.Fragment>
-            )}
-        </Field>
-    );
-};
-
+/**
+ * Component to display address details form
+ * @name AddressDetails
+ * @param getCurrentStep - function to get current step
+ * @param states_list - array of states for the selected residence country
+ * @param onSave - function to save form values
+ * @param onCancel - function to cancel form values
+ * @param goToNextStep - function to go to next step
+ * @param goToPreviousStep - function to go to previous step
+ * @param validate - function to validate form values
+ * @param onSubmit - function to submit form values
+ * @param is_gb_residence - is residence Great Britan
+ * @param value - form values
+ * @param disabled_items - array of disabled fields
+ * @param has_real_account - has real account
+ * @returns react node
+ */
 const AddressDetails = observer(
     ({
         getCurrentStep,
@@ -97,80 +82,52 @@ const AddressDetails = observer(
         goToPreviousStep,
         validate,
         onSubmit,
-        is_svg,
-        is_mf,
-        onSubmitEnabledChange,
-        selected_step_ref,
+        is_gb_residence,
         disabled_items,
         has_real_account,
         ...props
     }: TAddressDetails) => {
-        const { client } = useStore();
-        const { residence, states_list, fetchStatesList } = client;
-        const is_gb_residence = residence === 'gb';
-        const { is_appstore } = React.useContext(PlatformContext);
-        const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
-        React.useEffect(() => {
-            const { cancel, promise } = makeCancellablePromise(fetchStatesList());
-            promise.then(() => {
-                setHasFetchedStatesList(true);
-                if (props.value.address_state) {
-                    setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
-                }
-            });
-            return () => {
-                setHasFetchedStatesList(false);
-                cancel();
-            };
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, []);
+        const {
+            ui,
+            client: { residence },
+        } = useStore();
 
-        const is_submit_disabled_ref = React.useRef<boolean | undefined>(true);
+        const { is_desktop, is_mobile } = ui;
+        const { data: states_list, isFetched } = useStatesList(residence);
 
-        const isSubmitDisabled = (errors?: { [key: string]: string } | FormikValues) => {
-            return selected_step_ref?.current?.isSubmitting || (errors && Object.keys(errors).length > 0);
-        };
-
-        const checkSubmitStatus = (errors?: { [key: string]: string }) => {
-            const is_submit_disabled = isSubmitDisabled(errors);
-
-            if (is_submit_disabled_ref.current !== is_submit_disabled) {
-                is_submit_disabled_ref.current = is_submit_disabled;
-                onSubmitEnabledChange?.(!is_submit_disabled);
-            }
-        };
-
-        const handleCancel = (values: FormikValues) => {
+        const handleCancel = (values: TAddressDetailFormProps) => {
             const current_step = (getCurrentStep?.() || 1) - 1;
             onSave(current_step, values);
             onCancel(current_step, goToPreviousStep);
         };
 
-        const handleValidate = (values: FormikValues) => {
-            const { errors }: Partial<TFormValidation> = splitValidationResultTypes(validate(values));
-            checkSubmitStatus(errors);
+        const handleValidate = (values: TAddressDetailFormProps) => {
+            const { errors } = splitValidationResultTypes(validate(values));
             return errors;
         };
 
+        const handleSubmitData = (values: TAddressDetailFormProps, actions: FormikHelpers<TAddressDetailFormProps>) => {
+            if (values.address_state && states_list.length) {
+                values.address_state = address_state_to_display
+                    ? getLocation(states_list, address_state_to_display, 'value')
+                    : getLocation(states_list, values.address_state, 'value');
+            }
+            onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
+        };
+
         return (
-            <Formik
-                innerRef={selected_step_ref}
-                initialValues={props.value}
-                validate={handleValidate}
-                validateOnMount
-                onSubmit={(values, actions) => {
-                    if (values.address_state && states_list.length) {
-                        values.address_state = address_state_to_display
-                            ? getLocation(states_list, address_state_to_display, 'value')
-                            : getLocation(states_list, values.address_state, 'value');
-                    }
-                    onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
-                }}
-            >
-                {({ handleSubmit, errors, values, setFieldValue, handleChange, setFieldTouched }: FormikValues) => (
-                    <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
+            <Formik initialValues={props.value} validate={handleValidate} validateOnMount onSubmit={handleSubmitData}>
+                {({
+                    handleSubmit,
+                    isSubmitting,
+                    values,
+                    setFieldValue,
+                    handleChange,
+                    setFieldTouched,
+                }: FormikHandlers & FormikHelpers<TAddressDetailFormProps> & FormikState<TAddressDetailFormProps>) => (
+                    <AutoHeightWrapper default_height={350} height_offset={is_desktop ? 80 : null}>
                         {({
                             setRef,
                             height,
@@ -178,85 +135,61 @@ const AddressDetails = observer(
                             setRef: (instance: HTMLFormElement) => void;
                             height: number | string;
                         }) => (
-                            <form ref={setRef} onSubmit={handleSubmit}>
+                            //noValidate here is for skipping default browser validation
+                            <form ref={setRef} onSubmit={handleSubmit} noValidate>
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset={is_appstore ? '222px' : '90px'}
-                                    is_disabled={isDesktop()}
+                                    height_offset='90px'
+                                    is_disabled={is_desktop}
                                 >
-                                    {!is_appstore && (
-                                        <Text
-                                            as='p'
-                                            align='left'
-                                            size='xxs'
-                                            line_height='l'
-                                            className='details-form__description'
-                                        >
-                                            <strong>
-                                                <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
-                                            </strong>
-                                            <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
-                                        </Text>
-                                    )}
+                                    <ScrollToFieldWithError />
+                                    <Text
+                                        as='p'
+                                        align='left'
+                                        size='xxs'
+                                        line_height='l'
+                                        className='details-form__description'
+                                    >
+                                        <strong>
+                                            <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
+                                        </strong>
+                                        <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
+                                    </Text>
+
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
-                                        {is_appstore && (
-                                            <div className='details-form__sub-header'>
-                                                <Text
-                                                    size={isMobile() ? 'xs' : 'xxs'}
-                                                    align={isMobile() ? 'center' : ''}
-                                                >
-                                                    {localize(
-                                                        'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
-                                                    )}
-                                                </Text>
-                                            </div>
-                                        )}
                                         <div className={classNames('details-form__elements', 'address-details-form ')}>
-                                            <InputField
+                                            <FormInputField
                                                 name='address_line_1'
-                                                required={is_svg || is_appstore || is_mf}
-                                                label={
-                                                    is_svg || is_appstore || is_mf
-                                                        ? localize('First line of address*')
-                                                        : localize('First line of address')
-                                                }
+                                                required
+                                                label={localize('First line of address*')}
                                                 maxLength={255}
                                                 placeholder={localize('First line of address')}
                                                 disabled={
                                                     disabled_items.includes('address_line_1') ||
-                                                    (props.value?.address_line_1 && has_real_account)
+                                                    (!!props.value?.address_line_1 && has_real_account)
                                                 }
                                             />
-                                            <InputField
+                                            <FormInputField
                                                 name='address_line_2'
-                                                required={is_appstore}
-                                                label={
-                                                    is_appstore
-                                                        ? localize('Second line of address*')
-                                                        : localize('Second line of address')
-                                                }
+                                                label={localize('Second line of address')}
                                                 maxLength={255}
                                                 placeholder={localize('Second line of address')}
                                                 disabled={
                                                     disabled_items.includes('address_line_2') ||
-                                                    (props.value?.address_line_2 && has_real_account)
+                                                    (!!props.value?.address_line_2 && has_real_account)
                                                 }
                                             />
-                                            <InputField
+                                            <FormInputField
                                                 name='address_city'
-                                                required={is_svg || is_appstore || is_mf}
-                                                label={
-                                                    is_svg || is_appstore || is_mf
-                                                        ? localize('Town/City*')
-                                                        : localize('Town/City')
-                                                }
+                                                required
+                                                label={localize('Town/City*')}
                                                 placeholder={localize('Town/City')}
                                                 disabled={
                                                     disabled_items.includes('address_city') ||
-                                                    (props.value?.address_city && has_real_account)
+                                                    (!!props.value?.address_city && has_real_account)
                                                 }
                                             />
-                                            {!has_fetched_states_list && (
+                                            {!isFetched && (
                                                 <div className='details-form__loader'>
                                                     <Loading is_fullscreen={false} />
                                                 </div>
@@ -264,7 +197,7 @@ const AddressDetails = observer(
                                             {states_list?.length > 0 ? (
                                                 <Field name='address_state'>
                                                     {({ field }: FormikValues) => (
-                                                        <>
+                                                        <React.Fragment>
                                                             <DesktopWrapper>
                                                                 <Autocomplete
                                                                     {...field}
@@ -287,7 +220,7 @@ const AddressDetails = observer(
                                                                         );
                                                                         setAddressStateToDisplay('');
                                                                     }}
-                                                                    list_portal_id={is_appstore ? '' : 'modal_root'}
+                                                                    list_portal_id='modal_root'
                                                                     disabled={
                                                                         disabled_items.includes('address_state') ||
                                                                         (props.value?.address_state && has_real_account)
@@ -313,33 +246,30 @@ const AddressDetails = observer(
                                                                     }}
                                                                     disabled={
                                                                         disabled_items.includes('address_state') ||
-                                                                        (props.value?.address_state && has_real_account)
+                                                                        (!!props.value?.address_state &&
+                                                                            has_real_account)
                                                                     }
                                                                 />
                                                             </MobileWrapper>
-                                                        </>
+                                                        </React.Fragment>
                                                     )}
                                                 </Field>
                                             ) : (
                                                 // Fallback to input field when states list is empty / unavailable for country
-                                                <InputField
+                                                <FormInputField
                                                     name='address_state'
                                                     label={localize('State/Province')}
                                                     placeholder={localize('State/Province')}
                                                     disabled={
                                                         disabled_items.includes('address_state') ||
-                                                        (props.value?.address_state && has_real_account)
+                                                        (!!props.value?.address_state && has_real_account)
                                                     }
                                                 />
                                             )}
-                                            <InputField
+                                            <FormInputField
                                                 name='address_postcode'
-                                                required={is_gb_residence || is_appstore}
-                                                label={
-                                                    is_appstore
-                                                        ? localize('Postal/ZIP Code*')
-                                                        : localize('Postal/ZIP Code')
-                                                }
+                                                required={!!is_gb_residence}
+                                                label={localize('Postal/ZIP Code')}
                                                 placeholder={localize('Postal/ZIP Code')}
                                                 onChange={e => {
                                                     setFieldTouched('address_postcode', true);
@@ -347,17 +277,17 @@ const AddressDetails = observer(
                                                 }}
                                                 disabled={
                                                     disabled_items.includes('address_postcode') ||
-                                                    (props.value?.address_postcode && has_real_account)
+                                                    (!!props.value?.address_postcode && has_real_account)
                                                 }
                                             />
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                <Modal.Footer has_separator is_bypassed={is_mobile}>
                                     <FormSubmitButton
-                                        is_disabled={isSubmitDisabled(errors)}
+                                        is_disabled={isSubmitting}
                                         label={localize('Next')}
-                                        is_absolute={isMobile()}
+                                        is_absolute={is_mobile}
                                         has_cancel
                                         cancel_label={localize('Previous')}
                                         onCancel={() => handleCancel(values)}

@@ -16,7 +16,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            z-index: 99;
+            z-index: var(--zindex-drawer);
 
             &-closed {
                 position: unset;
@@ -51,9 +51,6 @@
         @include mobile {
             margin: 0;
             position: fixed;
-        }
-        &--tour-active {
-            display: none;
         }
         &--info {
             display: flex;
@@ -167,7 +164,6 @@
         height: 6rem;
         display: flex;
         width: inherit;
-        padding-right: 8px;
     }
     &__stop-button,
     &__run-button {

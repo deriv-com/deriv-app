@@ -1,0 +1,14 @@
+.wallets-modal-wrapper {
+    position: relative;
+
+    @include mobile {
+        width: calc(100vw - 3.2rem);
+    }
+
+    &__close-icon {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        cursor: pointer;
+    }
+}

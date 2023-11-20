@@ -4,17 +4,17 @@ import { Breadcrumb } from '@deriv/ui';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './cashier-breadcrumb.scss';
 
-const CashierBreadcrumb = ({ is_crypto_deposit = false }: { is_crypto_deposit?: boolean }) => {
-    const {
-        general_store: { setIsDeposit },
-    } = useCashierStore();
+const CashierBreadcrumb = () => {
+    const { general_store } = useCashierStore();
+    const { is_crypto, is_deposit, setIsDeposit } = general_store;
+    const is_deposit_crypto = is_deposit && is_crypto;
 
-    const crypto_deposit_crumbs: React.ComponentProps<typeof Breadcrumb>['items'] = [
+    const deposit_crypto_crumbs: React.ComponentProps<typeof Breadcrumb>['items'] = [
         { value: 0, text: localize('Cashier') },
         { value: 1, text: localize('Deposit cryptocurrencies') },
     ];
 
-    const fiat_deposit_crumbs: React.ComponentProps<typeof Breadcrumb>['items'] = [
+    const deposit_fiat_crumbs: React.ComponentProps<typeof Breadcrumb>['items'] = [
         { value: 0, text: localize('Cashier') },
         { value: 1, text: localize('Deposit via bank wire, credit card, and e-wallet') },
     ];
@@ -32,7 +32,7 @@ const CashierBreadcrumb = ({ is_crypto_deposit = false }: { is_crypto_deposit?: 
     return (
         <div className='cashier-breadcrumb'>
             <Breadcrumb
-                items={is_crypto_deposit ? crypto_deposit_crumbs : fiat_deposit_crumbs}
+                items={is_deposit_crypto ? deposit_crypto_crumbs : deposit_fiat_crumbs}
                 handleOnClick={onBreadcrumbHandler}
             />
         </div>

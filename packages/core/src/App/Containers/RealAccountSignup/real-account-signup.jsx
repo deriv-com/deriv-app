@@ -1,21 +1,23 @@
 /* eslint-disable react/display-name */
-import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import classNames from 'classnames';
+
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
-import { localize, Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
+import { routes } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
+import { observer,useStore } from '@deriv/stores';
 import AccountWizard from './account-wizard.jsx';
 import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import ChooseCurrency from './choose-currency.jsx';
-import SetCurrency from './set-currency.jsx';
 import FinishedAddCurrency from './finished-add-currency.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
+import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
+
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
@@ -214,7 +216,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                         local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
                     }
                     code={local_props.state_value.error_code}
-                    onConfirm={onErrorConfirm}
+                    onConfirm={() => onErrorConfirm(local_props.state_value.error_code)}
                 />
             ),
             title: () => localize('Add a real account'),
@@ -422,10 +424,10 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         redirectToLegacyPlatform();
     };
 
-    const onErrorConfirm = () => {
+    const onErrorConfirm = err_code => {
         setParams({
             active_modal_index:
-                current_action === 'multi'
+                current_action === 'multi' || err_code === 'CurrencyTypeNotAllowed'
                     ? modal_pages_indices.add_or_manage_account
                     : modal_pages_indices.account_wizard,
         });
@@ -480,8 +482,8 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     const handleOnAccept = async () => {
         setLoading(true);
         try {
-            setShouldShowAppropriatenessWarningModal(false);
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
+            setShouldShowAppropriatenessWarningModal(false);
             if (real_account_signup_target === 'maltainvest') {
                 showStatusDialog(response.new_account_maltainvest.currency.toLowerCase());
             }
@@ -566,7 +568,14 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                 footer_content={
                     <React.Fragment>
                         <Button type='button' large text={localize('Decline')} secondary onClick={handleOnDecline} />
-                        <Button type='button' large text={localize('Accept')} primary onClick={handleOnAccept} />
+                        <Button
+                            type='button'
+                            large
+                            text={localize('Accept')}
+                            primary
+                            onClick={handleOnAccept}
+                            is_loading={is_loading}
+                        />
                     </React.Fragment>
                 }
             />

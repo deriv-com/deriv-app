@@ -1,4 +1,7 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { useAvailableWallets, useWalletsList } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
+
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -12,7 +15,8 @@ export type RequiredAndNotNull<T> = {
 
 export type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 export type TAccountCategory = 'real' | 'demo';
-export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go';
+export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go' | 'ctrader';
+
 export type TBrandData = {
     name: string;
     icon?: string;
@@ -53,16 +57,17 @@ export type TJurisdictionData = Record<
 >;
 
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+    account_id?: string;
     display_login?: string;
-    landing_company_short?: string;
     short_code_and_region?: string;
     mt5_acc_auth_status?: string | null;
     selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
         TJurisdictionData & {
             platform?: string;
         };
-
+    platform?: TPlatform;
     openFailedVerificationModal?: (from_account: string) => void;
+    market_type: NonNullable<TTradingPlatformAvailableAccount['market_type']> | TMarketType;
 };
 
 export type TTradingPlatformAvailableAccount = {
@@ -120,7 +125,6 @@ export type TIconTypes =
     | 'SmartTrader'
     | 'SmartTraderBlue'
     | 'CFDs';
-
 export interface AvailableAccount {
     name: string;
     is_item_blurry?: boolean;
@@ -129,10 +133,12 @@ export interface AvailableAccount {
     description?: string;
     is_visible?: boolean;
     is_disabled?: boolean;
-    platform?: string;
+    platform?: TPlatform;
     market_type?: 'all' | 'financial' | 'synthetic';
     icon: keyof typeof PlatformIcons;
     availability: RegionAvailability;
+    short_code_and_region?: string;
+    login?: string;
 }
 
 export type Currency =
@@ -166,3 +172,73 @@ export interface AccountListDetail {
     loginid: string;
     title: string;
 }
+
+export type TAccountStatus = 'pending' | 'failed' | 'need_verification' | '';
+export type TWalletCurrency =
+    | Extract<Currency, 'USD' | 'EUR' | 'AUD' | 'BTC' | 'ETH' | 'LTC' | 'USDC'>
+    | 'USDT'
+    | 'eUSDT'
+    | 'tUSDT';
+export type TWalletShortcode = Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
+export type TLinkedTo = {
+    loginid?: string;
+    platform?: string;
+    balance?: string;
+    currency?: string;
+};
+
+export type TWalletAccount = NonNullable<ReturnType<typeof useWalletsList>['data']>[number];
+export type TWalletInfo = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[number];
+
+export type TTransferAccount = {
+    active_wallet_icon: string | undefined;
+    account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'binary' | 'ctrader';
+    balance: number;
+    currency?: string;
+    display_currency_code: string | undefined;
+    gradient_class?: `wallet-card__${string}`;
+    icon?: string;
+    is_demo: boolean;
+    loginid?: string;
+    mt5_market_type?: 'all' | 'financial' | 'synthetic';
+    shortcode: string | undefined;
+    type: 'fiat' | 'crypto' | 'demo';
+};
+
+export type TMessageItem =
+    | {
+          variant: 'base';
+          key: string;
+          type: 'info' | 'error' | 'success';
+          message: string | JSX.Element;
+      }
+    | {
+          variant: 'with-action-button';
+          onClickHandler: VoidFunction;
+          button_label: string;
+          key: string;
+          type: 'info' | 'error' | 'success';
+          message: string | JSX.Element;
+      };
+
+export type TWalletButton = {
+    name: Parameters<ReturnType<typeof useStore>['traders_hub']['setWalletModalActiveTab']>[0];
+    text: string;
+    icon: string;
+    action: () => void;
+};
+
+export type TWalletSteps = {
+    handleBack: () => void;
+    handleClose: () => void;
+    handleNext: () => void;
+    is_disabled: boolean;
+    toggleCheckbox: () => void;
+    upgradeToWallets: (value: boolean) => void;
+};
+
+export type TRealWalletsUpgradeSteps = {
+    wallet_upgrade_steps: TWalletSteps & {
+        current_step: number;
+    };
+};

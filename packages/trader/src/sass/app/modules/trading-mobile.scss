@@ -107,6 +107,9 @@
                     transform: scale(1.4);
                     stroke: var(--text-general);
 
+                    &--disabled {
+                        stroke: var(--text-disabled);
+                    }
                     &:hover,
                     &:active {
                         background: none;
@@ -200,6 +203,9 @@
                     margin: 0.4rem 0.4rem 0.2rem;
                 }
             }
+            &--title-bar {
+                height: 4.8rem;
+            }
         }
     }
     /** @define dc-tabs; weak */
@@ -242,7 +248,7 @@
                 }
             }
         }
-        &__strike {
+        &__stake-container {
             display: flex;
             flex-direction: column;
             .trade-container__stake-field {
@@ -256,11 +262,11 @@
         &__amount {
             &-keypad {
                 width: 100%;
-                padding: 1.6rem;
+                padding: 2.4rem 1.6rem 1.6rem;
                 height: auto;
-                margin-top: 0.8rem;
                 margin-bottom: 0.8rem;
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
 
@@ -355,6 +361,9 @@
                     }
                 }
             }
+            &-keypad:has(.range-text-container) {
+                padding: 0.4rem 1.6rem 1.6rem;
+            }
         }
         &__header {
             @include mobile {
@@ -379,10 +388,13 @@
 
             .contract-type-widget {
                 flex: 1;
+                display: flex;
+                align-items: center;
             }
         }
+        &__accumulator,
         &__multiplier,
-        &__accumulator {
+        &__vanilla {
             &-radio-group {
                 flex-direction: column;
                 align-items: flex-start;
@@ -467,7 +479,7 @@
                 display: flex;
                 justify-content: flex-start;
                 position: absolute;
-                top: 0.6rem;
+                top: 1.2rem;
                 left: 0.2rem;
                 z-index: 2;
 
@@ -511,7 +523,7 @@
             left: 2.4rem !important;
 
             &__content {
-                max-width: 32.8rem;
+                max-width: calc(min(32.8rem, 85vw));
                 left: 2.5rem;
                 &--vanilla {
                     top: -0.9rem;
@@ -533,8 +545,13 @@
 }
 
 .dc-modal__container_trade-params {
-    .trade-params__multiplier-ic-info-wrapper {
-        margin-left: 1.4rem;
+    .trade-params {
+        &__multiplier,
+        &__vanilla {
+            &-ic-info-wrapper {
+                margin-left: 1.4rem;
+            }
+        }
     }
     .dc-modal-header__close {
         margin-right: 1rem;

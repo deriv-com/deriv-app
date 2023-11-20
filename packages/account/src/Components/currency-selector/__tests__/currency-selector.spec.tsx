@@ -1,14 +1,8 @@
 import React from 'react';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
-import CurrencySelector, { TCurrencySelector } from '../currency-selector';
 import { StoreProvider, mockStore } from '@deriv/stores';
-
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isDesktop: jest.fn().mockReturnValue(false),
-    isMobile: jest.fn().mockReturnValue(false),
-}));
+import CurrencySelector from '../currency-selector';
+import { TStores } from '@deriv/stores/types';
 
 jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     splitValidationResultTypes: jest.fn(() => ({
@@ -18,8 +12,56 @@ jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
 }));
 
 describe('<CurrencySelector/>', () => {
-    let store = mockStore();
-    const mock = {
+    const mock_props: React.ComponentProps<typeof CurrencySelector> = {
+        value: {
+            currency: '',
+        },
+        validate: jest.fn(),
+        is_virtual: true,
+        getCurrentStep: jest.fn(() => 1),
+        onSave: jest.fn(),
+        onCancel: jest.fn(),
+        goToNextStep: jest.fn(),
+        goToStep: jest.fn(),
+        onSubmit: jest.fn(),
+        goToPreviousStep: jest.fn(),
+        has_cancel: false,
+        has_wallet_account: false,
+        set_currency: false,
+    };
+
+    const fiat_msg =
+        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.';
+    const dxtrade_eu_msg =
+        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs or Deriv X account.';
+    const dxtrade_non_eu_msg =
+        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 or Deriv X account.';
+    const mt5_eu =
+        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs account.';
+    const mt5_non_eu =
+        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 account.';
+
+    const runCommonTests = (msg: string) => {
+        expect(screen.getByRole('heading', { name: /fiat currencies/i })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /us dollar \(usd\)/i })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /euro \(eur\)/i })).toBeInTheDocument();
+
+        expect(screen.getByRole('heading', { name: /cryptocurrencies/i })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /tether erc20 \(eusdt\)/i })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /usd coin \(usdc\)/i })).toBeInTheDocument();
+
+        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
+
+        const usd = screen.getByRole('radio', { name: /us dollar \(usd\)/i }) as HTMLInputElement;
+        expect(usd.checked).toEqual(false);
+        fireEvent.click(usd);
+        expect(usd.checked).toEqual(true);
+
+        expect(screen.getByText(msg)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+    };
+    const store = mockStore({
         client: {
             accounts: {
                 VRTC90000010: {
@@ -29,10 +71,9 @@ describe('<CurrencySelector/>', () => {
                     is_virtual: 1,
                     landing_company_shortcode: 'virtual',
                     trading: {},
-                    token: 'a1-sLGGrhfYPkeEprxEop2T591cLKbuN',
-                    email: 'test+qw@deriv.com',
+                    token: '',
+                    email: '',
                     session_start: 1651059038,
-                    excluded_until: '',
                     landing_company_name: 'virtual',
                     residence: 'es',
                     balance: 10000,
@@ -56,6 +97,14 @@ describe('<CurrencySelector/>', () => {
                             max: 4717.96,
                             min: 0.94,
                         },
+                        limits_dxtrade: {
+                            max: 2358.45,
+                            min: 0.01,
+                        },
+                        limits_mt5: {
+                            max: 14150.68,
+                            min: 0.01,
+                        },
                     },
                     type: 'fiat',
                 },
@@ -74,6 +123,14 @@ describe('<CurrencySelector/>', () => {
                         limits: {
                             max: 5000,
                             min: 1,
+                        },
+                        limits_dxtrade: {
+                            max: 2500,
+                            min: 0.01,
+                        },
+                        limits_mt5: {
+                            max: 15000,
+                            min: 0.01,
                         },
                     },
                     type: 'fiat',
@@ -94,6 +151,14 @@ describe('<CurrencySelector/>', () => {
                             max: 5001.52,
                             min: 1,
                         },
+                        limits_dxtrade: {
+                            max: 2500.76,
+                            min: 0.01,
+                        },
+                        limits_mt5: {
+                            max: 15004.55,
+                            min: 0.01,
+                        },
                     },
                     type: 'crypto',
                 },
@@ -113,16 +178,18 @@ describe('<CurrencySelector/>', () => {
                             max: 5001.78,
                             min: 1,
                         },
+                        limits_dxtrade: {
+                            max: 2500.89,
+                            min: 0.01,
+                        },
+                        limits_mt5: {
+                            max: 15005.33,
+                            min: 0.01,
+                        },
                     },
                     type: 'crypto',
                 },
             ],
-            is_virtual: true,
-            has_fiat: true,
-            is_dxtrade_allowed: false,
-            is_eu: false,
-            is_mt5_allowed: false,
-            has_active_real_account: false,
             available_crypto_currencies: [
                 {
                     value: 'eUSDT',
@@ -140,6 +207,14 @@ describe('<CurrencySelector/>', () => {
                             max: 5001.78,
                             min: 1,
                         },
+                        limits_dxtrade: {
+                            max: 2500.89,
+                            min: 0.01,
+                        },
+                        limits_mt5: {
+                            max: 15005.33,
+                            min: 0.01,
+                        },
                     },
                     type: 'crypto',
                 },
@@ -152,351 +227,136 @@ describe('<CurrencySelector/>', () => {
                 current_currency: '',
                 success_message: '',
                 error_message: '',
-            },
-            resetRealAccountSignupParams: jest.fn(),
-            real_account_signup_target: '',
-        },
-    };
-    store = mockStore(mock);
-    const props: TCurrencySelector = {
-        accounts: {
-            VRTC90000010: {
-                account_type: 'trading',
-                currency: 'USD',
-                is_disabled: 0,
-                is_virtual: 1,
-                landing_company_shortcode: 'virtual',
-                trading: {},
-                token: '',
-                email: '',
-                session_start: 1651059038,
-                excluded_until: '',
-                landing_company_name: 'virtual',
-                residence: 'es',
-                balance: 10000,
-                accepted_bch: 0,
+                error_code: '2',
             },
         },
-        legal_allowed_currencies: [
-            {
-                value: 'EUR',
-                fractional_digits: 2,
-                is_deposit_suspended: 0,
-                is_suspended: 0,
-                is_withdrawal_suspended: 0,
-                name: 'Euro',
-                stake_default: 10,
-                transfer_between_accounts: {
-                    fees: {
-                        AUD: 0,
-                    },
-                    limits: {
-                        max: 4717.96,
-                        min: 0.94,
-                    },
-                    limits_dxtrade: {
-                        max: 2358.45,
-                        min: 0.01,
-                    },
-                    limits_mt5: {
-                        max: 14150.68,
-                        min: 0.01,
-                    },
-                },
-                type: 'fiat',
-            },
-            {
-                value: 'USD',
-                fractional_digits: 2,
-                is_deposit_suspended: 0,
-                is_suspended: 0,
-                is_withdrawal_suspended: 0,
-                name: 'US Dollar',
-                stake_default: 10,
-                transfer_between_accounts: {
-                    fees: {
-                        AUD: 0,
-                    },
-                    limits: {
-                        max: 5000,
-                        min: 1,
-                    },
-                    limits_dxtrade: {
-                        max: 2500,
-                        min: 0.01,
-                    },
-                    limits_mt5: {
-                        max: 15000,
-                        min: 0.01,
-                    },
-                },
-                type: 'fiat',
-            },
-            {
-                value: 'USDC',
-                fractional_digits: 2,
-                is_deposit_suspended: 0,
-                is_suspended: 0,
-                is_withdrawal_suspended: 0,
-                name: 'USD Coin',
-                stake_default: 10,
-                transfer_between_accounts: {
-                    fees: {
-                        AUD: 2,
-                    },
-                    limits: {
-                        max: 5001.52,
-                        min: 1,
-                    },
-                    limits_dxtrade: {
-                        max: 2500.76,
-                        min: 0.01,
-                    },
-                    limits_mt5: {
-                        max: 15004.55,
-                        min: 0.01,
-                    },
-                },
-                type: 'crypto',
-            },
-            {
-                value: 'eUSDT',
-                fractional_digits: 2,
-                is_deposit_suspended: 0,
-                is_suspended: 0,
-                is_withdrawal_suspended: 0,
-                name: 'Tether ERC20',
-                stake_default: 10,
-                transfer_between_accounts: {
-                    fees: {
-                        AUD: 2,
-                    },
-                    limits: {
-                        max: 5001.78,
-                        min: 1,
-                    },
-                    limits_dxtrade: {
-                        max: 2500.89,
-                        min: 0.01,
-                    },
-                    limits_mt5: {
-                        max: 15005.33,
-                        min: 0.01,
-                    },
-                },
-                type: 'crypto',
-            },
-        ],
-        has_fiat: true,
-        value: {
-            currency: '',
-        },
-        validate: jest.fn(),
-        is_virtual: true,
-        available_crypto_currencies: [
-            {
-                value: 'eUSDT',
-                fractional_digits: 2,
-                is_deposit_suspended: 0,
-                is_suspended: 0,
-                is_withdrawal_suspended: 0,
-                name: 'Tether ERC20',
-                stake_default: 10,
-                transfer_between_accounts: {
-                    fees: {
-                        AUD: 2,
-                    },
-                    limits: {
-                        max: 5001.78,
-                        min: 1,
-                    },
-                    limits_dxtrade: {
-                        max: 2500.89,
-                        min: 0.01,
-                    },
-                    limits_mt5: {
-                        max: 15005.33,
-                        min: 0.01,
-                    },
-                },
-                type: 'crypto',
-            },
-        ],
-        getCurrentStep: jest.fn(() => 1),
-        onSave: jest.fn(),
-        onCancel: jest.fn(),
-        real_account_signup: {
-            active_modal_index: -1,
-            previous_currency: '',
-            current_currency: '',
-            success_message: '',
-            error_message: '',
-        },
-        goToNextStep: jest.fn(),
-        resetRealAccountSignupParams: jest.fn(),
-        onSubmit: jest.fn(),
-        goToPreviousStep: jest.fn(),
-        has_cancel: false,
-        has_currency: false,
-        has_real_account: false,
-        has_wallet_account: false,
-        is_appstore: false,
-        is_dxtrade_allowed: false,
-        is_eu: false,
-        is_mt5_allowed: false,
-        set_currency: false,
-        onSubmitEnabledChange: jest.fn(),
-        real_account_signup_target: '',
-    };
+    });
 
-    const fiat_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.';
-    const dxtrade_eu_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs or Deriv X account.';
-    const dxtrade_non_eu_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 or Deriv X account.';
-    const mt5_eu =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs account.';
-    const mt5_non_eu =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 account.';
-
-    const runCommonTests = msg => {
-        expect(screen.getByRole('heading', { name: /fiat currencies/i })).toBeInTheDocument();
-        expect(screen.getByRole('radio', { name: /us dollar \(usd\)/i })).toBeInTheDocument();
-        expect(screen.getByRole('radio', { name: /euro \(eur\)/i })).toBeInTheDocument();
-
-        expect(screen.getByRole('heading', { name: /cryptocurrencies/i })).toBeInTheDocument();
-        expect(screen.getByRole('radio', { name: /tether erc20 \(eusdt\)/i })).toBeInTheDocument();
-        expect(screen.getByRole('radio', { name: /usd coin \(usdc\)/i })).toBeInTheDocument();
-
-        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
-
-        const usd = screen.getByRole('radio', { name: /us dollar \(usd\)/i }) as HTMLInputElement;
-        expect(usd.checked).toEqual(false);
-        fireEvent.click(usd);
-        expect(usd.checked).toEqual(true);
-
-        expect(screen.getByText(msg)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
-    };
-
-    // it('should render currencyselector', () => {
-    //     render(<StoreProvider store={store}>
-    //         <CurrencySelector {...props} />
-    //     </StoreProvider>);
-    //     expect(screen.getByTestId('currency_selector_form')).toBeInTheDocument();
-    // });
-
-    // it('should render Fiat currencies and submit the form', async () => {
-    //     render(<StoreProvider store={store}>
-    //         <CurrencySelector {...props} />
-    //     </StoreProvider>);
-    //     runCommonTests(fiat_msg);
-    //     fireEvent.click(screen.getByRole('button', { name: /next/i }));
-    //     await waitFor(() => {
-    //         expect(props.onSubmit).toHaveBeenCalled();
-    //         expect(props.onSubmit).toHaveBeenCalledWith(
-    //             0,
-    //             { currency: 'USD' },
-    //             expect.any(Function),
-    //             props.goToNextStep
-    //         );
-    //     });
-    // });
-
-    // it('should disable fiat if user already have a fiat ', () => {
-    //     store = mockStore({
-    //         client: {
-    //             accounts: {
-    //                 VRTC90000010: {
-    //                     account_type: 'trading',
-    //                     currency: 'USD',
-    //                     is_disabled: 0,
-    //                     is_virtual: 1,
-    //                     landing_company_shortcode: 'svg',
-    //                     trading: {},
-    //                     token: 'a1-sLGGrhfYPkeEprxEop2T591cLKbuN',
-    //                     email: 'test+qw@deriv.com',
-    //                     session_start: 1651059038,
-    //                     excluded_until: '',
-    //                     landing_company_name: 'svg',
-    //                     residence: 'es',
-    //                     balance: 10000,
-    //                     accepted_bch: 0,
-    //                 },
-    //             },
-    //             has_active_real_account: true,
-    //         },
-    //         ui: {
-    //             real_account_signup_target: 'svg',
-    //         }
-    //     })
-
-    //     render(<StoreProvider store={store}>
-    //         <CurrencySelector {...props} />
-    //     </StoreProvider>);
-    //     expect(screen.getByRole('radio', { name: /us dollar \(usd\)/i })).toBeDisabled();
-    //     expect(screen.getByRole('radio', { name: /euro \(eur\)/i })).toBeDisabled();
-    // });
-    // it('should render Fiat currencies when is_dxtrade_allowed and is_mt5_allowed are true', () => {
-    //     store = mockStore({
-    //         client: {
-    //             is_dxtrade_allowed: true,
-    //             is_mt5_allowed: true
-    //         }
-    //     })
-    //     render(<StoreProvider store={store}>
-    //         <CurrencySelector {...props} />
-    //     </StoreProvider>);
-    //     runCommonTests(dxtrade_non_eu_msg);
-    // });
-
-    // it('should render Fiat currencies when is_dxtrade_allowed,is_eu and is_mt5_allowed are true', () => {
-    //     store = mockStore({
-    //         client: {
-    //             is_dxtrade_allowed: true,
-    //             is_mt5_allowed: true,
-    //             is_eu: true,
-    //         }
-    //     })
-    //     render(<StoreProvider store={store}>
-    //         <CurrencySelector {...props} />
-    //     </StoreProvider>);
-    //     runCommonTests(dxtrade_eu_msg);
-    // });
-
-    // it('should render Fiat currencies when is_mt5_allowed and is_eu are true', () => {
-    //     store = mockStore({
-    //         client: {
-    //             is_eu: true,
-    //             is_mt5_allowed: true
-    //         }
-    //     })
-    //     render(<StoreProvider store={store}>
-    //         <CurrencySelector {...props} />
-    //     </StoreProvider>);
-    //     runCommonTests(mt5_eu);
-    // });
-
-    // it('should render Fiat currencies when is_mt5_allowed is true', () => {
-    //     store = mockStore({
-    //         client: {
-    //             is_mt5_allowed: true
-    //         }
-    //     })
-    //     render(<StoreProvider store={store}>
-    //         <CurrencySelector {...props} />
-    //     </StoreProvider>);
-    //     runCommonTests(mt5_non_eu);
-    // });
-
-    it('should render Cryptocurrencies and submit the form ', async () => {
-        render(
-            <StoreProvider store={store}>
-                <CurrencySelector {...props} set_currency />
+    const renderComponent = ({ props = mock_props, store_config = store }) => {
+        return render(
+            <StoreProvider store={store_config}>
+                <CurrencySelector {...props} />
             </StoreProvider>
         );
+    };
+
+    it('should render Currency selector', () => {
+        renderComponent({});
+
+        expect(screen.getByTestId('currency_selector_form')).toBeInTheDocument();
+    });
+
+    it('should render Fiat currencies and submit the form', async () => {
+        renderComponent({});
+
+        runCommonTests(fiat_msg);
+        fireEvent.click(screen.getByRole('button', { name: /next/i }));
+        await waitFor(() => {
+            expect(mock_props.onSubmit).toHaveBeenCalled();
+            expect(mock_props.onSubmit).toHaveBeenCalledWith(
+                0,
+                { currency: 'USD' },
+                expect.any(Function),
+                mock_props.goToNextStep
+            );
+        });
+    });
+
+    it('should disable fiat if user already have a fiat ', () => {
+        const new_store: TStores = {
+            ...store,
+            client: {
+                ...store.client,
+                accounts: {
+                    VRTC90000010: {
+                        account_type: 'trading',
+                        currency: 'USD',
+                        is_disabled: 0,
+                        is_virtual: 1,
+                        landing_company_shortcode: 'svg',
+                        trading: {},
+                        token: '',
+                        email: '',
+                        session_start: 1651059038,
+                        excluded_until: '',
+                        landing_company_name: 'svg',
+                        residence: 'es',
+                        balance: 10000,
+                        accepted_bch: 0,
+                    },
+                },
+                has_active_real_account: true,
+                has_fiat: true,
+            },
+            ui: {
+                ...store.ui,
+                real_account_signup_target: 'svg',
+            },
+        };
+
+        renderComponent({ store_config: new_store });
+        expect(screen.getByRole('radio', { name: /us dollar \(usd\)/i })).toBeDisabled();
+        expect(screen.getByRole('radio', { name: /euro \(eur\)/i })).toBeDisabled();
+    });
+
+    it('should render Fiat currencies when is_dxtrade_allowed and is_mt5_allowed are true', () => {
+        const new_store = {
+            ...store,
+            client: {
+                ...store.client,
+                is_dxtrade_allowed: true,
+                is_mt5_allowed: true,
+            },
+        };
+        renderComponent({ store_config: new_store });
+        runCommonTests(dxtrade_non_eu_msg);
+    });
+
+    it('should render Fiat currencies when is_dxtrade_allowed,is_eu and is_mt5_allowed are true', () => {
+        const new_store: TStores = {
+            ...store,
+            client: {
+                ...store.client,
+                is_dxtrade_allowed: true,
+                is_mt5_allowed: true,
+                is_eu: true,
+            },
+        };
+        renderComponent({ store_config: new_store });
+        runCommonTests(dxtrade_eu_msg);
+    });
+
+    it('should render Fiat currencies when is_mt5_allowed and is_eu are true', () => {
+        const new_store: TStores = {
+            ...store,
+            client: {
+                ...store.client,
+                is_mt5_allowed: true,
+                is_eu: true,
+            },
+        };
+        renderComponent({ store_config: new_store });
+        runCommonTests(mt5_eu);
+    });
+
+    it('should render Fiat currencies when is_mt5_allowed is true', () => {
+        const new_store: TStores = {
+            ...store,
+            client: {
+                ...store.client,
+                is_mt5_allowed: true,
+            },
+        };
+        renderComponent({ store_config: new_store });
+        runCommonTests(mt5_non_eu);
+    });
+
+    it('should render Cryptocurrencies and submit the form ', async () => {
+        const new_props: React.ComponentProps<typeof CurrencySelector> = {
+            ...mock_props,
+            set_currency: true,
+        };
+        renderComponent({ props: new_props });
         expect(screen.getByRole('heading', { name: /cryptocurrencies/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /tether erc20 \(eusdt\)/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /usd coin \(usdc\)/i })).toBeInTheDocument();
@@ -516,73 +376,54 @@ describe('<CurrencySelector/>', () => {
 
         fireEvent.click(set_currency_btn);
         await waitFor(() => {
-            expect(props.onSubmit).toHaveBeenCalledWith(
+            expect(mock_props.onSubmit).toHaveBeenCalledWith(
                 0,
                 { currency: 'eUSDT' },
                 expect.any(Function),
-                props.goToNextStep
+                mock_props.goToNextStep
             );
         });
     });
 
     it('should submit the form when getCurrentStep is not passed ', async () => {
-        render(
-            <StoreProvider store={store}>
-                <CurrencySelector {...props} />
-            </StoreProvider>
-        );
+        renderComponent({});
         runCommonTests(fiat_msg);
         fireEvent.click(screen.getByRole('button', { name: /next/i }));
         await waitFor(() => {
-            expect(props.onSubmit).toHaveBeenCalled();
+            expect(mock_props.onSubmit).toHaveBeenCalled();
         });
     });
 
-    it('should render the selector__container with proper div height when appstore is true', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+    it('should render the selector__container with proper div height', () => {
         Object.defineProperty(window, 'innerHeight', {
             writable: true,
             configurable: true,
             value: 150,
         });
-        render(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
-                <StoreProvider store={store}>
-                    <CurrencySelector {...props} />
-                </StoreProvider>
-            </PlatformContext.Provider>
-        );
-
-        expect(screen.getByTestId('currency_selector_form').childNodes[0]).toHaveStyle('height: calc(150px - 222px);');
-    });
-
-    // it('should render the selector__container with proper div height', () => {
-    //     (isMobile as jest.Mock).mockReturnValue(true);
-    //     (isDesktop as jest.Mock).mockReturnValue(false);
-    //     Object.defineProperty(window, 'innerHeight', {
-    //         writable: true,
-    //         configurable: true,
-    //         value: 150,
-    //     });
-    //     store = mockStore({
-    //         client: {
-    //             has_active_real_account: true
-    //         }
-    //     })
-    //     render(<StoreProvider store={store}>
-    //         <CurrencySelector {...props} />
-    //     </StoreProvider>);
+        const new_store = {
+            ...store,
+            client: {
+                ...store.client,
+                has_active_real_account: true,
+            },
+            ui: {
+                ...store.ui,
+                is_desktop: false,
+                is_mobile: true,
+            },
+        };
+        renderComponent({ store_config: new_store });
 
     //     expect(screen.getByTestId('currency_selector_form').childNodes[0]).toHaveStyle('height: calc(150px - 89px);');
     // });
 
     it('should call handleCancel when previous button is called', () => {
-        render(
-            <StoreProvider store={store}>
-                <CurrencySelector {...props} has_wallet_account has_cancel />
-            </StoreProvider>
-        );
+        const new_props: React.ComponentProps<typeof CurrencySelector> = {
+            ...mock_props,
+            has_wallet_account: true,
+            has_cancel: true,
+        };
+        renderComponent({ props: new_props });
 
         const usdc: HTMLInputElement = screen.getByRole('radio', { name: /usd coin \(usdc\)/i });
         expect(usdc.checked).toEqual(false);
@@ -593,23 +434,39 @@ describe('<CurrencySelector/>', () => {
         const prev_btn = screen.getByRole('button', { name: /previous/i });
         expect(prev_btn).toBeInTheDocument();
         fireEvent.click(prev_btn);
-        expect(props.onSave).toHaveBeenCalledWith(0, { currency: 'USDC' });
+        expect(mock_props.onSave).toHaveBeenCalledWith(0, { currency: 'USDC' });
     });
 
-    // it('should bypass to next step in case of form error', () => {
-    //     const real_account_signup = {
-    //         ...props.real_account_signup,
-    //         error_code: "sample error message",
-    //     };
-    //     store = mockStore({
-    //         ui: {
-    //             real_account_signup: real_account_signup
-    //         }
-    //     })
-    //     render(<StoreProvider store={store}>
-    //         <CurrencySelector {...props} has_wallet_account has_cancel />
-    //     </StoreProvider>);
-    //     expect(props.goToNextStep).toHaveBeenCalled();
-    //     expect(props.resetRealAccountSignupParams).toHaveBeenCalled();
-    // });
+    it('should bypass to next step in case of personal details form error', () => {
+        const new_store: TStores = {
+            ...store,
+            ui: {
+                ...store.ui,
+                real_account_signup: {
+                    ...store.ui.real_account_signup,
+                    error_details: { first_name: 'numbers not allowed' },
+                },
+            },
+        };
+        renderComponent({ store_config: new_store });
+
+        expect(mock_props.goToNextStep).toHaveBeenCalled();
+        expect(store.ui.resetRealAccountSignupParams).toHaveBeenCalled();
+    });
+
+    it('should bypass to address step in case of address details form error', () => {
+        const new_store: TStores = {
+            ...store,
+            ui: {
+                ...store.ui,
+                real_account_signup: {
+                    ...store.ui.real_account_signup,
+                    error_details: { address_line_1: 'po box is not allowed' },
+                },
+            },
+        };
+        renderComponent({ store_config: new_store });
+        expect(mock_props.goToStep).toHaveBeenCalledWith(3);
+        expect(store.ui.resetRealAccountSignupParams).toHaveBeenCalled();
+    });
 });

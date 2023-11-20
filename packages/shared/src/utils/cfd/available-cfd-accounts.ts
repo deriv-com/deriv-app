@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+
 import { CFD_PLATFORMS } from '../platform';
 
 export interface AvailableAccount {
@@ -28,6 +29,14 @@ export const getCFDAvailableAccount = () => [
         platform: CFD_PLATFORMS.DXTRADE,
         market_type: 'all',
         icon: 'DerivX',
+        availability: 'Non-EU',
+    },
+    {
+        name: 'Deriv cTrader',
+        description: localize('This account offers CFDs on a feature-rich trading platform.'),
+        platform: CFD_PLATFORMS.CTRADER,
+        market_type: 'all',
+        icon: 'CTrader',
         availability: 'Non-EU',
     },
 ];

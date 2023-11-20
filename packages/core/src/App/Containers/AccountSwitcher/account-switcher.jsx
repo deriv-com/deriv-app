@@ -13,59 +13,60 @@ import {
     ThemedScrollbars,
     Text,
     useOnClickOutside,
+    Loading,
 } from '@deriv/components';
-import { routes, formatMoney, ContentFlag } from '@deriv/shared';
+import { connect } from 'Stores/connect';
+import { routes, formatMoney, ContentFlag, getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 import { BinaryLink } from 'App/Components/Routes';
-import { observer, useStore } from '@deriv/stores';
 import { useHasSetCurrency } from '@deriv/hooks';
+import { Analytics } from '@deriv/analytics';
 
-const AccountSwitcher = observer(({ is_visible }) => {
-    const { client, common, ui, traders_hub } = useStore();
-    const {
-        available_crypto_currencies,
-        loginid: account_loginid,
-        accounts,
-        account_type,
-        account_list,
-        residence: client_residence,
-        country_standpoint,
-        is_eu,
-        is_low_risk,
-        is_high_risk,
-        is_logged_in,
-        is_virtual,
-        has_fiat,
-        landing_company_shortcode,
-        mt5_login_list,
-        obj_total_balance,
-        switchAccount,
-        resetVirtualBalance,
-        has_active_real_account,
-        logout: logoutClient,
-        upgradeable_landing_companies,
-        has_any_real_account,
-        virtual_account_loginid,
-        real_account_creation_unlock_date,
-    } = client;
-    const {
-        is_dark_mode_on,
-        is_positions_drawer_on,
-        openRealAccountSignup,
-        toggleAccountsDialog,
-        togglePositionsDrawer,
-        toggleSetCurrencyModal,
-        should_show_real_accounts_list,
-        setShouldShowCooldownModal,
-        is_mobile,
-        is_landing_company_loaded,
-    } = ui;
-    const { show_eu_related_content, content_flag, setTogglePlatformType } = traders_hub;
-    const { routeBackInApp } = common;
+const AccountSwitcher = ({
+    available_crypto_currencies,
+    account_list,
+    account_loginid,
+    accounts,
+    account_type,
+    client_residence,
+    country_standpoint,
+    has_active_real_account,
+    has_any_real_account,
+    has_fiat,
+    history,
+    is_dark_mode_on,
+    is_eu,
+    is_landing_company_loaded,
+    is_low_risk,
+    is_high_risk,
+    is_logged_in,
+    is_mobile,
+    is_positions_drawer_on,
+    is_virtual,
+    is_visible,
+    landing_company_shortcode,
+    logoutClient,
+    mt5_login_list,
+    obj_total_balance,
+    openRealAccountSignup,
+    should_show_real_accounts_list,
+    show_eu_related_content,
+    switchAccount,
+    resetVirtualBalance,
+    toggleAccountsDialog,
+    togglePositionsDrawer,
+    toggleSetCurrencyModal,
+    upgradeable_landing_companies,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
+    content_flag,
+    virtual_account_loginid,
+    setTogglePlatformType,
+}) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
@@ -100,8 +101,8 @@ const AccountSwitcher = observer(({ is_visible }) => {
         if (is_positions_drawer_on) {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        routeBackInApp(history);
-        await logoutClient();
+        history.push(routes.index);
+        await logoutClient().then(() => (window.location.href = getStaticUrl('/')));
     };
 
     const closeAccountsDialog = () => {
@@ -121,6 +122,7 @@ const AccountSwitcher = observer(({ is_visible }) => {
         closeAccountsDialog();
         if (account_loginid === loginid) return;
         await switchAccount(loginid);
+        Analytics.setAttributes({ account_type: loginid.substring(0, 2) });
     };
 
     const resetBalance = async () => {
@@ -186,7 +188,7 @@ const AccountSwitcher = observer(({ is_visible }) => {
 
     const canResetBalance = account => {
         const account_init_balance = 10000;
-        return account.is_virtual && account.balance !== account_init_balance;
+        return account?.is_virtual && account?.balance !== account_init_balance;
     };
 
     const checkMultipleSvgAcc = () => {
@@ -445,94 +447,168 @@ const AccountSwitcher = observer(({ is_visible }) => {
     };
 
     return (
-        <div className='acc-switcher__list' ref={wrapper_ref}>
-            <Tabs
-                active_index={active_tab_index}
-                className='acc-switcher__list-tabs'
-                onTabItemClick={index => setActiveTabIndex(index)}
-                top
-            >
-                {/* TODO: De-couple and refactor demo and real accounts groups
-                        into a single reusable AccountListItem component */}
-                <div label={localize('Real')} id='real_account_tab'>
-                    <DesktopWrapper>
-                        <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='234px'>
-                            {real_accounts}
-                        </Div100vhContainer>
-                    </MobileWrapper>
-                </div>
-                <div label={localize('Demo')} id='dt_core_account-switcher_demo-tab'>
-                    <DesktopWrapper>
-                        <ThemedScrollbars height='354px'>{demo_account}</ThemedScrollbars>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='234px'>
-                            {demo_account}
-                        </Div100vhContainer>
-                    </MobileWrapper>
-                </div>
-            </Tabs>
-            <div
-                className={classNames('acc-switcher__separator', {
-                    'acc-switcher__separator--auto-margin': is_mobile,
-                })}
-            />
-            <div className='acc-switcher__total'>
-                <Text line_height='s' size='xs' weight='bold' color='prominent'>
-                    <Localize i18n_default_text='Total assets' />
-                </Text>
-                <Text size='xs' color='prominent' className='acc-switcher__balance'>
-                    <Money
-                        currency={isRealAccountTab ? account_total_balance_currency : vrtc_currency}
-                        amount={formatMoney(
-                            isRealAccountTab ? account_total_balance_currency : vrtc_currency,
-                            isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
-                            true
-                        )}
-                        show_currency
-                        should_format={false}
-                    />
-                </Text>
-            </div>
-            <Text color='less-prominent' line_height='xs' size='xxxs' className='acc-switcher__total-subtitle'>
-                {localize('Total assets in your Deriv accounts.')}
-            </Text>
-            <div className='acc-switcher__separator' />
-
-            <TradersHubRedirect />
-
-            <div className='acc-switcher__footer'>
-                {isRealAccountTab && has_active_real_account && !is_virtual && (
-                    <Button
-                        className='acc-switcher__btn--traders_hub'
-                        secondary
-                        onClick={
-                            has_any_real_account && !hasSetCurrency
-                                ? setAccountCurrency
-                                : () => openRealAccountSignup('manage')
-                        }
+        <div className='acc-switcher__list' ref={wrapper_ref} data-testid='acc-switcher'>
+            {is_landing_company_loaded ? (
+                <React.Fragment>
+                    <Tabs
+                        active_index={active_tab_index}
+                        className='acc-switcher__list-tabs'
+                        onTabItemClick={index => setActiveTabIndex(index)}
+                        top
                     >
-                        {localize('Manage accounts')}
-                    </Button>
-                )}
-                <div id='dt_logout_button' className='acc-switcher__logout' onClick={handleLogout}>
-                    <Text color='prominent' size='xs' align='left' className='acc-switcher__logout-text'>
-                        {localize('Log out')}
+                        {/* TODO: De-couple and refactor demo and real accounts groups
+                        into a single reusable AccountListItem component */}
+                        <div label={localize('Real')} id='real_account_tab'>
+                            <DesktopWrapper>
+                                <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                <Div100vhContainer
+                                    className='acc-switcher__list-container'
+                                    max_autoheight_offset='234px'
+                                >
+                                    {real_accounts}
+                                </Div100vhContainer>
+                            </MobileWrapper>
+                        </div>
+                        <div label={localize('Demo')} id='dt_core_account-switcher_demo-tab'>
+                            <DesktopWrapper>
+                                <ThemedScrollbars height='354px'>{demo_account}</ThemedScrollbars>
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                <Div100vhContainer
+                                    className='acc-switcher__list-container'
+                                    max_autoheight_offset='234px'
+                                >
+                                    {demo_account}
+                                </Div100vhContainer>
+                            </MobileWrapper>
+                        </div>
+                    </Tabs>
+                    <div
+                        className={classNames('acc-switcher__separator', {
+                            'acc-switcher__separator--auto-margin': is_mobile,
+                        })}
+                    />
+                    <div className='acc-switcher__total'>
+                        <Text line_height='s' size='xs' weight='bold' color='prominent'>
+                            <Localize i18n_default_text='Total assets' />
+                        </Text>
+                        <Text size='xs' color='prominent' className='acc-switcher__balance'>
+                            <Money
+                                currency={isRealAccountTab ? account_total_balance_currency : vrtc_currency}
+                                amount={formatMoney(
+                                    isRealAccountTab ? account_total_balance_currency : vrtc_currency,
+                                    isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
+                                    true
+                                )}
+                                show_currency
+                                should_format={false}
+                            />
+                        </Text>
+                    </div>
+                    <Text color='less-prominent' line_height='xs' size='xxxs' className='acc-switcher__total-subtitle'>
+                        {localize('Total assets in your Deriv accounts.')}
                     </Text>
-                    <Icon icon='IcLogout' className='acc-switcher__logout-icon drawer__icon' onClick={handleLogout} />
-                </div>
-            </div>
+                    <div className='acc-switcher__separator' />
+
+                    <TradersHubRedirect />
+
+                    <div className='acc-switcher__footer'>
+                        {isRealAccountTab && has_active_real_account && !is_virtual && (
+                            <Button
+                                className='acc-switcher__btn--traders_hub'
+                                secondary
+                                onClick={
+                                    has_any_real_account && !hasSetCurrency
+                                        ? setAccountCurrency
+                                        : () => openRealAccountSignup('manage')
+                                }
+                            >
+                                {localize('Manage accounts')}
+                            </Button>
+                        )}
+                        <div id='dt_logout_button' className='acc-switcher__logout' onClick={handleLogout}>
+                            <Text color='prominent' size='xs' align='left' className='acc-switcher__logout-text'>
+                                {localize('Log out')}
+                            </Text>
+                            <Icon
+                                icon='IcLogout'
+                                className='acc-switcher__logout-icon drawer__icon'
+                                onClick={handleLogout}
+                            />
+                        </div>
+                    </div>
+                </React.Fragment>
+            ) : (
+                <Loading is_fullscreen={false} />
+            )}
         </div>
     );
-});
+};
 
 AccountSwitcher.propTypes = {
     is_visible: PropTypes.bool,
+    landing_company_shortcode: PropTypes.string,
+    logoutClient: PropTypes.func,
+    mt5_login_list: PropTypes.array,
+    obj_total_balance: PropTypes.object,
+    openAccountNeededModal: PropTypes.func,
+    openRealAccountSignup: PropTypes.func,
+    should_show_real_accounts_list: PropTypes.bool,
+    show_eu_related_content: PropTypes.bool,
+    switchAccount: PropTypes.func,
+    resetVirtualBalance: PropTypes.func,
+    toggleAccountsDialog: PropTypes.func,
+    togglePositionsDrawer: PropTypes.func,
+    toggleSetCurrencyModal: PropTypes.func,
+    upgradeable_landing_companies: PropTypes.array,
+    real_account_creation_unlock_date: PropTypes.number,
+    setShouldShowCooldownModal: PropTypes.func,
+    content_flag: PropTypes.string,
+    virtual_account_loginid: PropTypes.string,
+    setTogglePlatformType: PropTypes.func,
 };
 
-const account_switcher = withRouter(AccountSwitcher);
+const account_switcher = withRouter(
+    connect(({ client, ui, traders_hub }) => ({
+        available_crypto_currencies: client.available_crypto_currencies,
+        account_loginid: client.loginid,
+        accounts: client.accounts,
+        account_type: client.account_type,
+        account_list: client.account_list,
+        client_residence: client.residence,
+        country_standpoint: client.country_standpoint,
+        is_dark_mode_on: ui.is_dark_mode_on,
+        is_eu: client.is_eu,
+        is_landing_company_loaded: client.is_landing_company_loaded,
+        is_low_risk: client.is_low_risk,
+        is_high_risk: client.is_high_risk,
+        is_logged_in: client.is_logged_in,
+        is_virtual: client.is_virtual,
+        has_fiat: client.has_fiat,
+        landing_company_shortcode: client.landing_company_shortcode,
+        mt5_login_list: client.mt5_login_list,
+        obj_total_balance: client.obj_total_balance,
+        switchAccount: client.switchAccount,
+        resetVirtualBalance: client.resetVirtualBalance,
+        has_active_real_account: client.has_active_real_account,
+        logoutClient: client.logout,
+        upgradeable_landing_companies: client.upgradeable_landing_companies,
+        is_positions_drawer_on: ui.is_positions_drawer_on,
+        openRealAccountSignup: ui.openRealAccountSignup,
+        toggleAccountsDialog: ui.toggleAccountsDialog,
+        togglePositionsDrawer: ui.togglePositionsDrawer,
+        toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
+        should_show_real_accounts_list: ui.should_show_real_accounts_list,
+        real_account_creation_unlock_date: client.real_account_creation_unlock_date,
+        setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
+        show_eu_related_content: traders_hub.show_eu_related_content,
+        content_flag: traders_hub.content_flag,
+        has_any_real_account: client.has_any_real_account,
+        virtual_account_loginid: client.virtual_account_loginid,
+        setTogglePlatformType: traders_hub.setTogglePlatformType,
+    }))(AccountSwitcher)
+);
 
 export { account_switcher as AccountSwitcher };

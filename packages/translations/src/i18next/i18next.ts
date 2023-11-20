@@ -10,25 +10,34 @@ const ALL_LANGUAGES = Object.freeze({
     ACH: 'Translations',
     EN: 'English',
     ES: 'Español',
+    DE: 'Deutsch',
     FR: 'Français',
     ID: 'Indonesian',
     IT: 'Italiano',
+    KO: '한국어',
     PL: 'Polish',
-    PT: 'Português',
     RU: 'Русский',
+    TR: 'Türkçe',
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
+    TH: 'ไทย',
 });
 
 export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
-        PT: 'Português',
         ES: 'Español',
+        DE: 'Deutsch',
+        KO: '한국어',
         RU: 'Русский',
         FR: 'Français',
+        IT: 'Italiano',
+        TH: 'ไทย',
+        TR: 'Türkçe',
         VI: 'Tiếng Việt',
+        ZH_CN: '简体中文',
+        ZH_TW: '繁體中文',
     };
     const exclude_languages = ['ACH'];
     // TODO Change language_list to const when languages are available in prod.
@@ -50,7 +59,7 @@ const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname
 
 const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
 
-export const isLanguageAvailable = (lang: string) => {
+const isLanguageAvailable = (lang: string) => {
     if (!lang) return false;
 
     const selected_language = lang.toUpperCase();
@@ -59,6 +68,12 @@ export const isLanguageAvailable = (lang: string) => {
     if (is_ach) return isStaging() || isLocal();
 
     return Object.keys(getAllowedLanguages()).includes(selected_language);
+};
+
+export const getRedirectionLanguage = (preferred_language: string) => {
+    const language_query = new URLSearchParams(window.location.search).get('lang');
+    const is_language_query_valid = language_query && isLanguageAvailable(language_query);
+    return is_language_query_valid ? language_query : preferred_language ?? DEFAULT_LANGUAGE;
 };
 
 export const getAllLanguages = () => ALL_LANGUAGES;
@@ -135,7 +150,7 @@ export const changeLanguage = async (lang: string, cb: (arg0: string) => void) =
 // <Localize /> component wrapped with i18n
 export const Localize = withI18n(i18n);
 
-export const localize = <T extends object>(string: string, values?: T) => {
+export const localize = (string: string, values?: Record<string, unknown>) => {
     if (!string) return '';
 
     return i18n.t(crc32(string).toString(), { defaultValue: string, ...values });

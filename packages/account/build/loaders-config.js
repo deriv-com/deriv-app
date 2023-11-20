@@ -1,6 +1,8 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const { IS_RELEASE } = require('./constants');
+
+const IS_RELEASE =
+    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 const js_loaders = [
     {
@@ -107,4 +109,5 @@ module.exports = {
     svg_loaders,
     svg_file_loaders,
     css_loaders,
+    IS_RELEASE,
 };

@@ -1,38 +1,64 @@
-import * as React from 'react';
-import { isMobile } from '@deriv/shared';
-import { Loading, Tabs } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
-import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
-import BuySell from './buy-sell/buy-sell.jsx';
-import Dp2pBlocked from './dp2p-blocked';
-import { localize } from './i18next';
-import MyAds from './my-ads/my-ads.jsx';
-import MyProfile from './my-profile';
-import NicknameForm from './nickname-form';
-import Orders from './orders/orders.jsx';
-import TemporarilyBarredHint from './temporarily-barred-hint';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+
+import { Loading, Tabs } from '@deriv/components';
 import { useP2PNotificationCount } from '@deriv/hooks';
+import { isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
+import { buy_sell } from 'Constants/buy-sell';
+import { useStores } from 'Stores';
+import { getHoursDifference } from 'Utils/date-time';
+import { localize } from './i18next';
+
+const INTERVAL_DURATION = 24; // 24 hours
 
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
     const { showModal, hideModal } = useModalManagerContext();
+    let timeout;
     const {
         notifications: { setP2POrderProps },
+        client: { loginid },
     } = useStore();
     const notification_count = useP2PNotificationCount();
+    const history = useHistory();
+
+    const handleDisclaimerTimeout = time_lapsed => {
+        timeout = setTimeout(() => {
+            showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
+            // Display the disclaimer modal again after 24 hours
+        }, (INTERVAL_DURATION - time_lapsed) * 3600000);
+    };
 
     React.useEffect(() => {
+        if (!general_store.should_show_dp2p_blocked) {
+            const time_lapsed = getHoursDifference(localStorage.getItem(`p2p_${loginid}_disclaimer_shown`));
+            if (time_lapsed === undefined || time_lapsed > INTERVAL_DURATION) {
+                showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
+            } else {
+                handleDisclaimerTimeout(time_lapsed);
+            }
+        }
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, []);
+
+    React.useEffect(() => {
+        buy_sell_store.setTableType(buy_sell.BUY);
         return reaction(
             () => setP2POrderProps,
             () => {
                 if (isAction(setP2POrderProps)) {
                     setP2POrderProps({
                         order_id,
-                        redirectToOrderDetails: general_store.redirectToOrderDetails,
+                        setP2POrderTab: general_store.setP2POrderTab,
                         setIsRatingModalOpen: is_open => {
                             if (is_open) {
                                 showModal({ key: 'RatingModal' });
@@ -51,45 +77,37 @@ const AppContent = ({ order_id }) => {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (general_store.should_show_dp2p_blocked) {
-        return <Dp2pBlocked />;
-    }
-
-    if (general_store.should_show_popup) {
-        return <NicknameForm />;
-    }
-
-    if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
-        return <AdvertiserPage />;
+    // return empty or else the tabs will be shown above when displaying the advertiser page
+    if (
+        (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) ||
+        general_store.should_show_dp2p_blocked
+    ) {
+        return <></>;
     }
 
     return (
         <Tabs
             active_index={general_store.active_index}
-            className='p2p-cashier__tabs'
             header_fit_content={!isMobile()}
             is_100vw={isMobile()}
             is_scrollable
             is_overflow_hidden
-            onTabItemClick={general_store.handleTabClick}
+            onTabItemClick={active_tab_index => {
+                general_store.handleTabClick(active_tab_index);
+                history.push({
+                    pathname: general_store.active_tab_route,
+                });
+            }}
             top
         >
             <div label={localize('Buy / Sell')}>
                 <TemporarilyBarredHint />
-                <BuySell />
             </div>
-            <div data-count={notification_count} label={localize('Orders')}>
-                <Orders />
-            </div>
+            <div data-count={notification_count} label={localize('Orders')} />
             <div label={localize('My ads')}>
                 <TemporarilyBarredHint />
-                <MyAds />
             </div>
-            {general_store.is_advertiser && (
-                <div label={localize('My profile')} data-testid='my_profile'>
-                    <MyProfile />
-                </div>
-            )}
+            <div label={localize('My profile')} />
         </Tabs>
     );
 };

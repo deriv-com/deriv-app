@@ -1,13 +1,12 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { WS } from 'Services';
-import UnlinkPasswordModal from '../UnlinkPasswordModal';
+import { connect } from 'Stores/connect';
+import LinkExpiredModal from '../LinkExpiredModal';
 import ResetPasswordModal from '../ResetPasswordModal';
-import { observer, useStore } from '@deriv/stores';
+import UnlinkPasswordModal from '../UnlinkPasswordModal';
 
-const ResetOrUnlinkPasswordModal = observer(() => {
-    const { client } = useStore();
-    const { is_logged_in } = client;
+const ResetOrUnlinkPasswordModal = ({ is_link_expired_modal_visible, is_logged_in }) => {
     const [state, dispatch] = React.useReducer(
         (old_state, updated_state) => {
             return {
@@ -44,9 +43,13 @@ const ResetOrUnlinkPasswordModal = observer(() => {
 
     if (state.is_unlinking) {
         return <UnlinkPasswordModal />;
+    } else if (is_link_expired_modal_visible) {
+        return <LinkExpiredModal />;
     }
-
     return <ResetPasswordModal />;
-});
+};
 
-export default ResetOrUnlinkPasswordModal;
+export default connect(({ client, ui }) => ({
+    is_link_expired_modal_visible: ui.is_link_expired_modal_visible,
+    is_logged_in: client.is_logged_in,
+}))(ResetOrUnlinkPasswordModal);

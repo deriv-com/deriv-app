@@ -1,48 +1,57 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext } from '@deriv/shared';
+import { loginUrl, routes, SessionStore, PlatformContext } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
-import { observer, useStore } from '@deriv/stores';
+import { connect } from 'Stores/connect';
+import { Analytics } from '@deriv/analytics';
 
-const Redirect = observer(({ history }) => {
-    const { client, ui } = useStore();
-    const { currency, setVerificationCode, verification_code, hasAnyRealAccount, setNewEmail } = client;
-    const {
-        openRealAccountSignup,
-        setResetTradingPasswordModalOpen,
-        toggleAccountSignupModal,
-        toggleResetPasswordModal,
-        toggleResetEmailModal,
-        toggleUpdateEmailModal,
-    } = ui;
+const Redirect = ({
+    history,
+    currency,
+    setVerificationCode,
+    verification_code,
+    openRealAccountSignup,
+    setResetTradingPasswordModalOpen,
+    toggleAccountSignupModal,
+    toggleResetPasswordModal,
+    setNewEmail,
+    toggleResetEmailModal,
+    toggleUpdateEmailModal,
+    is_mobile,
+}) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
-    const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
+    const ext_platform_url = url_params.get('ext_platform_url');
+    const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
+    const { is_appstore } = React.useContext(PlatformContext);
 
+    const redirectToExternalPlatform = url => {
+        history.push(`${routes.root}?ext_platform_url=${url}`);
+        redirected_to_route = true;
+    };
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
 
     switch (action_param) {
         case 'signup': {
-            if (is_appstore) {
-                // TODO: redirect
-                // history.push({
-                //     pathname: routes.dashboard,
-                //     search: url_query_string,
-                // });
-                // redirected_to_route = true;
-            } else {
-                history.push({
-                    pathname: routes.onboarding,
-                    search: url_query_string,
+            if (!is_appstore) {
+                Analytics.trackEvent('ce_virtual_signup_form', {
+                    action: 'email_confirmed',
+                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    email: url_params.get('email'),
                 });
             }
-            sessionStorage.removeItem('redirect_url');
+            SessionStore.set('signup_query_param', url_query_string);
+            history.push({
+                pathname: routes.onboarding,
+                search: url_query_string,
+            });
+            SessionStore.remove('redirect_url');
             redirected_to_route = true;
             toggleAccountSignupModal(true);
             break;
@@ -72,25 +81,25 @@ const Redirect = observer(({ history }) => {
                 let hash = '';
                 switch (redirect_to) {
                     case '1':
-                        pathname = routes.mt5;
+                        pathname = routes.traders_hub;
                         break;
                     case '10':
-                        pathname = routes.mt5;
+                        pathname = routes.traders_hub;
                         hash = 'real';
                         break;
                     case '11':
-                        pathname = routes.mt5;
+                        pathname = routes.traders_hub;
                         hash = 'demo';
                         break;
                     case '2':
-                        pathname = routes.dxtrade;
+                        pathname = routes.traders_hub;
                         break;
                     case '20':
-                        pathname = routes.dxtrade;
+                        pathname = routes.traders_hub;
                         hash = 'real';
                         break;
                     case '21':
-                        pathname = routes.dxtrade;
+                        pathname = routes.traders_hub;
                         hash = 'demo';
                         break;
                     case '3':
@@ -114,7 +123,15 @@ const Redirect = observer(({ history }) => {
             break;
         }
         case 'payment_withdraw': {
-            history.push(routes.cashier_withdrawal);
+            if (is_next_wallet) {
+                // passes verification_code through query param as we do not want to use localstorage/session storage
+                // though can't use "verification_code" as name param
+                // as there is general logic within client-store
+                // which removes anything which resembles code=XYZ
+                history.push(`${routes.wallets_withdrawal}?verification=${verification_code?.payment_withdraw}`);
+            } else {
+                history.push(routes.cashier_withdrawal);
+            }
             redirected_to_route = true;
             break;
         }
@@ -126,14 +143,9 @@ const Redirect = observer(({ history }) => {
         case 'add_account': {
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
-                if (hasAnyRealAccount()) return openRealAccountSignup('manage');
                 return openRealAccountSignup('svg');
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'add_account_multiplier': {
@@ -141,16 +153,19 @@ const Redirect = observer(({ history }) => {
                 if (!currency) return openRealAccountSignup('set_currency');
                 return openRealAccountSignup('maltainvest');
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
+            break;
+        }
+        case 'manage_account': {
+            WS.wait('get_account_status').then(() => {
+                return openRealAccountSignup('manage');
+            });
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'verification': {
             // Removing this will break mobile DP2P app. Do not remove.
-            sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
+            sessionStorage.setItem('redirect_url', routes.p2p_verification);
             const new_href = loginUrl({
                 language: getLanguage(),
             });
@@ -160,7 +175,7 @@ const Redirect = observer(({ history }) => {
         case 'trading_platform_investor_password_reset': {
             localStorage.setItem('cfd_reset_password_code', code_param);
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
-            history.push(`${routes.mt5}#${is_demo ? 'demo' : 'real'}#reset-password`);
+            history.push(`${routes.traders_hub}#${is_demo ? 'demo' : 'real'}#reset-password`);
             redirected_to_route = true;
             break;
         }
@@ -177,7 +192,7 @@ const Redirect = observer(({ history }) => {
             break;
     }
 
-    if (!redirected_to_route) {
+    if (!redirected_to_route && history.location.pathname !== routes.root) {
         history.push({
             pathname: routes.root,
             search: url_query_string,
@@ -185,10 +200,39 @@ const Redirect = observer(({ history }) => {
     }
 
     return null;
-});
-
-Redirect.propTypes = {
-    history: PropTypes.object,
 };
 
-export default withRouter(Redirect);
+Redirect.propTypes = {
+    currency: PropTypes.string,
+    loginid: PropTypes.string,
+    getServerTime: PropTypes.object,
+    history: PropTypes.object,
+    openRealAccountSignup: PropTypes.func,
+    setResetTradingPasswordModalOpen: PropTypes.func,
+    setVerificationCode: PropTypes.func,
+    setNewEmail: PropTypes.func,
+    toggleAccountSignupModal: PropTypes.func,
+    toggleResetPasswordModal: PropTypes.func,
+    toggleResetEmailModal: PropTypes.func,
+    toggleUpdateEmailModal: PropTypes.func,
+    verification_code: PropTypes.object,
+    is_mobile: PropTypes.bool,
+};
+
+export default withRouter(
+    connect(({ client, ui }) => ({
+        currency: client.currency,
+        is_eu: client.is_eu,
+        setVerificationCode: client.setVerificationCode,
+        verification_code: client.verification_code,
+        fetchResidenceList: client.fetchResidenceList,
+        openRealAccountSignup: ui.openRealAccountSignup,
+        setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
+        toggleAccountSignupModal: ui.toggleAccountSignupModal,
+        toggleResetPasswordModal: ui.toggleResetPasswordModal,
+        setNewEmail: client.setNewEmail,
+        toggleResetEmailModal: ui.toggleResetEmailModal,
+        toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
+        is_mobile: ui.is_mobile,
+    }))(Redirect)
+);

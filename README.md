@@ -6,7 +6,7 @@ This repository contains the various platforms of the Deriv application.
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 ![Sonar Tech Debt](https://img.shields.io/sonar/tech_debt/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)
 ![Sonar Violations (short format)](https://img.shields.io/sonar/violations/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)
-[![codecov](https://codecov.io/gh/binary-com/deriv-app/branch/dev/graph/badge.svg?token=LClg2rlZ4z)](https://codecov.io/gh/binary-com/deriv-app)
+[![Coverage Status](https://coveralls.io/repos/github/binary-com/deriv-app/badge.svg?branch=master)](https://coveralls.io/github/binary-com/deriv-app?branch=master)
 
 **In this document**:
 
@@ -42,8 +42,6 @@ Before running or contribute to this project, you need to have the setup of the 
 -   node >=16.16.0
 -   npm >=7.21.0
 -   git (for `contribution`)
-
-**Note**: `node -v` and `sudo node -v` should be the same version.
 
 ## Quick start
 
@@ -134,15 +132,6 @@ Each package is named with the `@deriv/` prefix, however for the scripts above, 
 You can find the names of packages by first navigating to the `packages` folder. Each sub-folder is a package and contains a `package.json` file. The value of the `name` key in `package.json` is the package name.
 
 ### Usage
-
-### Configuring Hosts file
-
-In order to run our solution for the first time, you need to configure your `hosts` file:
-
-1. Open terminal.
-2. Open `hosts` file in your preferred text editor, f.e `sudo vim /etc/hosts`.
-3. Add a new entry pointing to `127.0.0.1 localhost.binary.sx`.
-4. Save the file and proceed to the next step.
 
 ### Starting a Development Server
 
@@ -267,20 +256,14 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
 
     **A.** Just as installing, except the `npm` command you'd run would be `npm uninstall` (shortened to `npm un`). e.g.: `lerna exec --scope=@deriv/translations -- npm un i18next`.
 
-3. How do I run `npm ci` or equivalent (to add dependencies based on `package-lock.json`?
+3. How do I run `npm ci` or equivalent to add dependencies based on `package-lock.json`?
 
     **A.** You have two options:
 
     1. use `lerna exec` with the `--scope` argument as the package you want to run the command on, as such `lerna exec --scope=trader -- npm ci`.
     2. `cd` into `packages/PACKAGE-NAME` and run `npm ci`, as such `cd packages/trader && npm ci`
 
-4. Why do I need to run commands with `sudo`?
-
-    **A.** You shouldn't need to. The only command that needs privilege is `serve` and `start` and that's because it's on port 443 **however, that script prompts you by itself, you do not need to place `sudo`**.
-
-    If you face this issue, simply run `sudo chown -R $(whoami) .` from the root of the project.
-
-5. My build(s) fail and I can see it related to Node Sass (`node-sass`), what do I do?
+4. My build(s) fail and I can see it related to Node Sass (`node-sass`), what do I do?
 
     **A.** This issue happens when your `node-sass` has its `binding.node` set to a version of node different from the current projects' one. Please try the following in order:
 
@@ -288,7 +271,7 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
     2. If that doesn't work, try `npm cache clean --force`, followed by `npm run clean`, and then `npm run bootstrap`.
     3. And finally, if that doesn't work then you can read deeper into this [StackOverflow post](https://stackoverflow.com/questions/37986800).
 
-6. How can I regenerate `package-lock.json` file?
+5. How can I regenerate `package-lock.json` file?
 
     We have added `bootstrap:dev` to scripts. If you are updating or adding a package and you want to regenerate `package-lock.json` file, you should run this command
     `npm run bootstrap:dev`

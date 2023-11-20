@@ -1,43 +1,64 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router';
-import WS from 'Services/ws-methods';
+import { useLocation, withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes } from '@deriv/shared';
+import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes, WS } from '@deriv/shared';
+import { Analytics } from '@deriv/analytics';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
-import { observer, useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
+import { getLanguage } from '@deriv/translations';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 
 const AppContents = observer(({ children }) => {
-    const { client, common, gtm, rudderstack, ui } = useStore();
-    const { is_eu_country, is_logged_in, is_logging_in } = client;
-    const { platform } = common;
-    const { pushDataLayer } = gtm;
-    const { identifyEvent, pageView } = rudderstack;
+    const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
+    const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
+    const { is_appstore } = React.useContext(PlatformContext);
+    const {
+        client,
+        common: { platform },
+        gtm: { pushDataLayer },
+        ui,
+    } = useStore();
+
+    const { is_eu_country, is_logged_in, is_logging_in, loginid, user_id } = client;
     const {
         is_app_disabled,
         is_cashier_visible,
-        is_dark_mode_on: is_dark_mode,
         is_cfd_page,
         is_positions_drawer_on,
         is_route_modal_on,
         notifyAppInstall,
         setAppContentsScrollRef,
+        is_dark_mode_on: is_dark_mode,
     } = ui;
-    const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
-    const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
-    const { is_appstore } = React.useContext(PlatformContext);
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 
     const scroll_ref = React.useRef(null);
+    const child_ref = React.useRef(null);
+
+    const location = useLocation();
+
+    const current_page = window.location.hostname + window.location.pathname;
 
     React.useEffect(() => {
+        if (is_logged_in && user_id) {
+            const { tracking } = Analytics?.getInstances();
+            Analytics?.setAttributes({
+                account_type: loginid.substring(0, 2),
+            });
+            tracking?.identifyEvent(user_id, {
+                language: getLanguage().toLowerCase() || 'en',
+            });
+            Analytics?.pageView(current_page);
+        }
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    Analytics?.pageView(current_page);
 
     React.useEffect(() => {
         const allow_tracking = !is_eu_country || tracking_status === 'accepted';
@@ -55,9 +76,12 @@ const AppContents = observer(({ children }) => {
         }
     }, [tracking_status, is_logged_in, is_eu_country, is_logging_in]);
 
-    // rudderstack page view trigger
-    identifyEvent();
-    pageView();
+    React.useEffect(() => {
+        // Gets the reference of the child element and scrolls it to the top
+        if (child_ref.current) {
+            child_ref.current.scrollTop = 0;
+        }
+    }, [location?.pathname]);
 
     React.useEffect(() => {
         const handleInstallPrompt = e => {
@@ -104,9 +128,11 @@ const AppContents = observer(({ children }) => {
             <DesktopWrapper>
                 {/* Calculate height of user screen and offset height of header and footer */}
                 {window.location.pathname === routes.onboarding ? (
-                    <ThemedScrollbars style={{ maxHeight: '', height: '100%' }}>{children}</ThemedScrollbars>
+                    <ThemedScrollbars style={{ maxHeight: '', height: '100%' }} refSetter={child_ref}>
+                        {children}
+                    </ThemedScrollbars>
                 ) : (
-                    <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal>
+                    <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal refSetter={child_ref}>
                         {children}
                     </ThemedScrollbars>
                 )}

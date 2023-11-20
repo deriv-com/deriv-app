@@ -1,8 +1,9 @@
-import { localize } from '@deriv/translations';
 import { Jurisdiction } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
+export type TCTraderCompanies = ReturnType<typeof getCTraderCompanies>;
 
 export const getDxCompanies = () => {
     const all_config = {
@@ -70,8 +71,33 @@ export const getDxCompanies = () => {
     };
 };
 
+export const getCTraderCompanies = () => {
+    const all_config = {
+        account_type: '',
+        leverage: 500,
+        short_title: localize('All'),
+    };
+    return {
+        demo: {
+            all: {
+                ctrader_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Demo'),
+                short_title: all_config.short_title,
+            },
+        },
+        real: {
+            all: {
+                dxtrade_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('All'),
+                short_title: all_config.short_title,
+            },
+        },
+    };
+};
+
 export const getMtCompanies = (is_eu: boolean) => {
-    // TODO: Move this to the getDxCompanies for real release and when separating MT5 and DerivX components.
     const all_config = {
         account_type: '',
         leverage: 100,
@@ -92,7 +118,6 @@ export const getMtCompanies = (is_eu: boolean) => {
         leverage: 100,
         short_title: localize('Financial STP'),
     };
-
     return {
         demo: {
             all: {
@@ -105,7 +130,13 @@ export const getMtCompanies = (is_eu: boolean) => {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Demo Swap-Free SVG'),
-                short_title: all_config.short_title,
+                short_title: localize('Swap-Free SVG'),
+            },
+            ctrader: {
+                mt5_account_type: all_config.account_type,
+                leverage: '500',
+                title: localize('Demo'),
+                short_title: localize('cTrader'),
             },
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
@@ -114,6 +145,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 short_title: synthetic_config.short_title,
             },
             financial: {
+                mt5_account_type: financial_config.account_type,
+                leverage: financial_config.leverage,
+                title: is_eu ? localize('Demo CFDs') : localize('Demo Financial'),
+                short_title: financial_config.short_title,
+            },
+            financial_demo: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
                 title: is_eu ? localize('Demo CFDs') : localize('Demo Financial'),
@@ -130,7 +167,7 @@ export const getMtCompanies = (is_eu: boolean) => {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
                 title: is_eu ? localize('Demo CFDs') : localize('Demo Financial SVG'),
-                short_title: financial_config.short_title,
+                short_title: is_eu ? localize('CFDs') : localize('Financial SVG'),
             },
             financial_stp: {
                 mt5_account_type: financial_stp_config.account_type,
@@ -151,6 +188,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 leverage: all_config.leverage,
                 title: localize('Swap-Free SVG'),
                 short_title: all_config.short_title,
+            },
+            ctrader: {
+                mt5_account_type: all_config.account_type,
+                leverage: '500',
+                title: localize('Real'),
+                short_title: localize('cTrader'),
             },
             dxtrade: {
                 mt5_account_type: all_config.account_type,
@@ -174,6 +217,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
                 title: localize('Derived BVI'),
+                short_title: synthetic_config.short_title,
+            },
+            synthetic_v: {
+                mt5_account_type: synthetic_config.account_type,
+                leverage: synthetic_config.leverage,
+                title: localize('Derived Vanuatu'),
                 short_title: synthetic_config.short_title,
             },
             financial: {

@@ -1,12 +1,15 @@
 import React from 'react';
-import { formatDuration, getDiffDuration } from '@deriv/shared';
 import moment from 'moment';
+
+import { formatDuration, getDiffDuration } from '@deriv/shared';
+
+import { TGetCardLables } from '../types';
 
 type TRemainingTimeProps = {
     end_time?: number;
     start_time: moment.Moment;
     format?: string;
-    getCardLabels: () => { [key: string]: string }; // TODO Use the one from common after contract-card migration
+    getCardLabels: TGetCardLables;
 };
 
 const RemainingTime = ({ end_time, format, getCardLabels, start_time }: TRemainingTimeProps) => {

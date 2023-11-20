@@ -38,7 +38,7 @@ const DerivRealAccountRequiredModal = observer(() => {
             is_closed_on_confirm
             is_visible={is_open}
         >
-            {localize('A Deriv account will allow you to fund (and withdraw from) your MT5 account(s).')}
+            {localize('A Deriv account will allow you to fund (and withdraw from) your CFDs account(s).')}
         </Dialog>
     );
 });

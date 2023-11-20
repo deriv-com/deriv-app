@@ -56,14 +56,20 @@
             width: 16px;
             height: 16px;
         }
-        &--accumulator {
-            &-small {
+        &--accumulator,
+        &--smarttrader-contract {
+            &-middle,
+            &-middle--preexit {
                 width: 6px;
                 height: 6px;
                 top: -3px;
                 margin-left: -4px;
                 background-color: var(--text-less-prominent);
 
+                &--preexit {
+                    background-color: var(--status-info);
+                    border: 2px solid var(--status-info);
+                }
                 @include mobile {
                     width: 4px;
                     height: 4px;
@@ -71,10 +77,29 @@
                     margin-left: -3px;
                 }
             }
-            &-bold {
-                border-width: 0.3rem;
+            &-exit {
+                width: 2rem;
+                height: 2rem;
+                margin-left: -1.05rem;
+                top: -0.95rem;
+                background-color: var(--general-main-4);
+                &:after {
+                    content: '';
+                    width: 0.6rem;
+                    height: 0.6rem;
+                    border-radius: 50%;
+                    background-color: var(--border-active);
+                    @include mobile {
+                        width: 0.4rem;
+                        height: 0.4rem;
+                    }
+                }
                 @include mobile {
-                    border-width: 0.2rem;
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    margin-left: -0.85rem;
+                    top: -0.85rem;
+                    border-width: 0.1rem;
                 }
             }
         }
@@ -214,6 +239,22 @@
     }
 }
 
+.ciq-chart > .cq-inchart-subholder {
+    .chart-marker-line {
+        &__icon {
+            position: absolute;
+            bottom: 0;
+            left: -11px;
+            white-space: nowrap;
+            background-color: var(--general-main-1);
+
+            @include mobile {
+                left: -7px;
+            }
+        }
+    }
+}
+
 /** @define chart-marker-line */
 .chart-marker-line {
     height: 94.5%;
@@ -238,6 +279,7 @@
             width: 3px;
         }
     }
+
     &__icon {
         position: absolute;
         bottom: -23px;
@@ -317,6 +359,10 @@
         display: flex;
         align-items: center;
 
+        @include mobile {
+            padding-left: 2.3rem;
+        }
+
         &.won div {
             color: var(--text-profit-success);
         }
@@ -360,8 +406,11 @@
             animation: 0.1s cubic-bezier(0.49, -0.4, 0.11, 0.65) 3 both slide-decimal;
         }
         &__currency {
-            padding-left: 0.3rem;
-            transform: translateY(-92%);
+            padding-left: 0.2rem;
+            transform: translateY(-83%);
+            @include mobile {
+                transform: translateY(-78%);
+            }
         }
         &:before {
             content: '';
@@ -371,6 +420,10 @@
             top: -4%;
             z-index: -2;
             background-color: var(--general-main-1);
+
+            @include mobile {
+                width: calc(100% - 2.3rem);
+            }
         }
         &:after {
             content: '';
@@ -382,6 +435,10 @@
             background-color: rgba(0, 167, 158, 0.1);
             box-shadow: 0 -8px 11px 0 rgba(0, 167, 158, 0.08), 0 8px 11px 0 rgba(0, 167, 158, 0.08),
                 0 0 11px -5px rgba(0, 167, 158, 0.08), 0 0 11px -5px rgba(0, 167, 158, 0.08);
+
+            @include mobile {
+                width: calc(100% - 2.3rem);
+            }
         }
     }
     &-tooltip {
@@ -438,7 +495,7 @@
         }
         &__content {
             position: absolute;
-            width: 16.4rem;
+            min-width: 10.5rem;
             height: 5.8rem;
             border-radius: $BORDER_RADIUS;
             display: flex;
@@ -448,6 +505,10 @@
             opacity: 0.72;
             transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.1, 0.25);
 
+            @include mobile {
+                min-width: 7.5rem;
+                height: 4.6rem;
+            }
             &-enter,
             &-exit {
                 opacity: 0;
@@ -525,7 +586,7 @@
         height: 3.2rem;
         transform: translateX(-50%) translateY(-50%);
         border-radius: 50%;
-        animation: 0.2s blue-emphasizer 0.8s;
+        animation: 0.5s spot-emphasizer 0.2s;
     }
 }
 

@@ -9,7 +9,7 @@ type TTooltip = {
     classNameIcon?: string;
     has_error?: boolean;
     icon?: string;
-    message?: string;
+    message?: string | null;
 };
 
 const Tooltip = ({
@@ -21,7 +21,7 @@ const Tooltip = ({
     icon, // only question, info and dot accepted
     message,
 }: React.PropsWithChildren<TTooltip>) => {
-    const [hover_ref, show_tooltip_balloon_icon_on_hover] = useHover();
+    const [hover_ref, show_tooltip_balloon_icon_on_hover] = useHover<SVGSVGElement>();
 
     const icon_class = classNames(classNameIcon, icon);
 

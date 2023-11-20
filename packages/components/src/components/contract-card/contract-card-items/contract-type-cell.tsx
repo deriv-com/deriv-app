@@ -1,14 +1,15 @@
 import React from 'react';
+import classNames from 'classnames';
 import { TGetContractTypeDisplay } from '../../types';
 import IconTradeTypes from '../../icon-trade-types';
-import { isVanillaContract } from '@deriv/shared';
+import { isVanillaContract, isSmartTraderContract } from '@deriv/shared';
 
 export type TContractTypeCellProps = {
     getContractTypeDisplay: TGetContractTypeDisplay;
     is_high_low: boolean;
     multiplier?: number;
     type?: string;
-    displayed_trade_param?: string;
+    displayed_trade_param?: React.ReactNode;
 };
 
 const ContractTypeCell = ({
@@ -25,7 +26,11 @@ const ContractTypeCell = ({
                 size={24}
             />
         </div>
-        <div className='dc-contract-type__type-label'>
+        <div
+            className={classNames('dc-contract-type__type-label', {
+                'dc-contract-type__type-label--smarttrader-contract': isSmartTraderContract(type),
+            })}
+        >
             <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
             {displayed_trade_param && (
                 <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>

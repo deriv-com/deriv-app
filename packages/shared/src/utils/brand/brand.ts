@@ -22,17 +22,18 @@ type TPlatformAppstore = {
 };
 
 type TPlatforms = {
+    ctrader: TPlatform;
     trader: TPlatform;
     dbot: TPlatform;
     mt5: TPlatform;
     dxtrade: TPlatform;
-    derivez: TPlatform;
     smarttrader: TPlatform;
     bbot: TPlatform;
     go: TPlatform;
 };
 
 type TPlatformsAppstore = {
+    ctrader: TPlatformAppstore;
     trader: TPlatformAppstore;
     dbot: TPlatformAppstore;
     smarttrader: TPlatformAppstore;
@@ -42,8 +43,8 @@ type TPlatformsAppstore = {
 
 const isDomainAllowed = (domain_name: string) => {
     // This regex will match any official deriv production and testing domain names.
-    // Allowed deriv domains: binary.sx, binary.com, deriv.com, deriv.be, deriv.me and their subdomains.
-    return /^(((.*)\.)?(binary\.(sx|com)|deriv.(com|me|be)))$/.test(domain_name);
+    // Allowed deriv domains: localhost, binary.sx, binary.com, deriv.com, deriv.be, deriv.me and their subdomains.
+    return /^(((.*)\.)?(localhost:8443|binary\.(sx|com)|deriv.(com|me|be)))$/.test(domain_name);
 };
 
 export const getLegalEntityName = (landing_company: keyof TLandingCompany) => {

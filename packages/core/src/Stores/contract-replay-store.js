@@ -1,6 +1,7 @@
 import { action, observable, makeObservable, override } from 'mobx';
 import { routes, isEmptyObject, isForwardStarting, WS, contractCancelled, contractSold } from '@deriv/shared';
 import { Money } from '@deriv/components';
+import { Analytics } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
@@ -102,7 +103,6 @@ export default class ContractReplayStore extends BaseStore {
             this.contract_id = contract_id;
             this.contract_store = new ContractStore(this.root_store, { contract_id });
             this.subscribeProposalOpenContract();
-            WS.storage.activeSymbols('brief');
             WS.setOnReconnect(() => {
                 if (!this.root_store.client.is_switching) {
                     this.subscribeProposalOpenContract();
@@ -255,7 +255,7 @@ export default class ContractReplayStore extends BaseStore {
 
     onClickSell(contract_id) {
         const { bid_price } = this.contract_info;
-        if (contract_id && bid_price) {
+        if (contract_id && (bid_price || bid_price === 0)) {
             this.is_sell_requested = true;
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
@@ -279,6 +279,12 @@ export default class ContractReplayStore extends BaseStore {
             this.root_store.notifications.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );
+
+            Analytics.trackEvent('ce_reports_form', {
+                action: 'close_contract',
+                form_name: 'default',
+                subform_name: 'contract_details_form',
+            });
         }
     }
 

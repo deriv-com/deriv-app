@@ -4,63 +4,67 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes, isMobile, getDecimalPlaces, platforms } from '@deriv/shared';
+// import { useWalletMigration } from '@deriv/hooks';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
-import platform_config from 'App/Constants/platform-config';
+import { connect } from 'Stores/connect';
+import platform_config from 'App/Constants/platform-config.ts';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import { TradersHubHomeButton } from './trading-hub-header';
-import { observer, useStore } from '@deriv/stores';
+import TradersHubHomeButton from './traders-hub-home-button';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
 
-const DTraderHeader = observer(({ history }) => {
-    const { client, common, ui, notifications, traders_hub } = useStore();
-    const {
-        has_any_real_account,
-        is_switching,
-        is_virtual,
-        is_logged_in,
-        is_logging_in,
-        is_mt5_allowed,
-        is_dxtrade_allowed,
-        is_bot_allowed,
-        is_eu,
-        currency,
-        country_standpoint,
-        balance,
-        account_type,
-    } = client;
-    const { app_routing_history, platform, current_language } = common;
-    const {
-        addNotificationMessage,
-        client_notifications,
-        is_notifications_visible,
-        removeNotificationMessage,
-        toggleNotificationsModal: toggleNotifications,
-    } = notifications;
-    const { setTogglePlatformType } = traders_hub;
-    const notifications_count = notifications.notifications.length;
-    const {
-        account_switcher_disabled_message: acc_switcher_disabled_message,
-        disableApp,
-        enableApp,
-        header_extension,
-        is_account_switcher_disabled: is_acc_switcher_disabled,
-        is_accounts_switcher_on: is_acc_switcher_on,
-        is_app_disabled,
-        is_route_modal_on,
-        openRealAccountSignup,
-        toggleAccountsDialog,
-        toggleReadyToDepositModal,
-    } = ui;
+const DTraderHeader = ({
+    acc_switcher_disabled_message,
+    account_type,
+    addNotificationMessage,
+    app_routing_history,
+    balance,
+    client_notifications,
+    currency,
+    country_standpoint,
+    current_language,
+    disableApp,
+    enableApp,
+    header_extension,
+    history,
+    is_acc_switcher_disabled,
+    is_acc_switcher_on,
+    is_app_disabled,
+    is_dark_mode,
+    is_bot_allowed,
+    is_dxtrade_allowed,
+    is_eu,
+    is_logged_in,
+    is_logging_in,
+    is_mt5_allowed,
+    is_notifications_visible,
+    is_route_modal_on,
+    is_virtual,
+    notifications_count,
+    openRealAccountSignup,
+    platform,
+    removeNotificationMessage,
+    toggleAccountsDialog,
+    toggleNotifications,
+    is_switching,
+    toggleReadyToDepositModal,
+    has_any_real_account,
+    setTogglePlatformType,
+}) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
         () => removeNotificationMessage({ key: 'new_version_available' }),
         [removeNotificationMessage]
     );
+
+    //TODO: Uncomment once useWalletMigration hook is optimized for production release.
+    // const { is_migrated, is_failed } = useWalletMigration();
+    // if (is_migrated) addNotificationMessage(client_notifications.wallets_migrated);
+    // if (is_failed) addNotificationMessage(client_notifications.wallets_failed);
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
@@ -118,7 +122,7 @@ const DTraderHeader = observer(({ history }) => {
                         )}
                     </MobileWrapper>
                     <DesktopWrapper>
-                        <TradersHubHomeButton />
+                        <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                     </DesktopWrapper>
                     <MenuLinks />
                 </div>
@@ -173,10 +177,79 @@ const DTraderHeader = observer(({ history }) => {
             <NewVersionNotification onUpdate={addUpdateNotification} />
         </header>
     );
-});
+};
 
 DTraderHeader.propTypes = {
+    acc_switcher_disabled_message: PropTypes.string,
+    account_type: PropTypes.string,
+    addNotificationMessage: PropTypes.func,
+    app_routing_history: PropTypes.array,
+    balance: PropTypes.string,
+    client_notifications: PropTypes.object,
+    current_language: PropTypes.string,
+    currency: PropTypes.string,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
+    header_extension: PropTypes.any,
+    is_acc_switcher_disabled: PropTypes.bool,
+    is_acc_switcher_on: PropTypes.bool,
+    is_app_disabled: PropTypes.bool,
+    is_dark_mode: PropTypes.bool,
+    is_bot_allowed: PropTypes.bool,
+    is_eu: PropTypes.bool,
+    is_loading: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
+    is_mt5_allowed: PropTypes.bool,
+    is_dxtrade_allowed: PropTypes.bool,
+    is_notifications_visible: PropTypes.bool,
+    is_route_modal_on: PropTypes.bool,
+    is_virtual: PropTypes.bool,
+    notifications_count: PropTypes.number,
+    openRealAccountSignup: PropTypes.func,
+    platform: PropTypes.string,
+    removeNotificationMessage: PropTypes.func,
+    toggleAccountsDialog: PropTypes.func,
+    toggleNotifications: PropTypes.func,
+    country_standpoint: PropTypes.object,
     history: PropTypes.object,
 };
 
-export default withRouter(DTraderHeader);
+export default connect(({ client, common, ui, notifications, traders_hub }) => ({
+    acc_switcher_disabled_message: ui.account_switcher_disabled_message,
+    account_type: client.account_type,
+    addNotificationMessage: notifications.addNotificationMessage,
+    app_routing_history: common.app_routing_history,
+    balance: client.balance,
+    client_notifications: notifications.client_notifications,
+    currency: client.currency,
+    country_standpoint: client.country_standpoint,
+    disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
+    header_extension: ui.header_extension,
+    is_acc_switcher_disabled: ui.is_account_switcher_disabled,
+    is_acc_switcher_on: !!ui.is_accounts_switcher_on,
+    is_app_disabled: ui.is_app_disabled,
+    is_dark_mode: ui.is_dark_mode_on,
+    is_bot_allowed: client.is_bot_allowed,
+    is_eu: client.is_eu,
+    is_loading: ui.is_loading,
+    is_logged_in: client.is_logged_in,
+    is_logging_in: client.is_logging_in,
+    is_mt5_allowed: client.is_mt5_allowed,
+    is_dxtrade_allowed: client.is_dxtrade_allowed,
+    is_notifications_visible: notifications.is_notifications_visible,
+    is_route_modal_on: ui.is_route_modal_on,
+    is_virtual: client.is_virtual,
+    notifications_count: notifications.notifications.length,
+    openRealAccountSignup: ui.openRealAccountSignup,
+    platform: common.platform,
+    removeNotificationMessage: notifications.removeNotificationMessage,
+    toggleAccountsDialog: ui.toggleAccountsDialog,
+    toggleNotifications: notifications.toggleNotificationsModal,
+    is_switching: client.is_switching,
+    toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
+    has_any_real_account: client.has_any_real_account,
+    setTogglePlatformType: traders_hub.setTogglePlatformType,
+    current_language: common.current_language,
+}))(withRouter(DTraderHeader));

@@ -7,24 +7,29 @@ import { RouterChildContext, useHistory } from 'react-router';
 const useUnsafeCashierRouteHandler = () => {
     const history: RouterChildContext['router']['history'] = useHistory();
     const { transaction_history, general_store } = useCashierStore();
-    const { setIsCryptoTransactionsVisible } = transaction_history;
+    const { setIsTransactionsCryptoVisible } = transaction_history;
     const { setIsCashierOnboarding, setIsDeposit } = general_store;
 
     useEffect(() => {
         const destination_hash = history.location.hash;
         const is_current_route_deposit = history.location.pathname === routes.cashier_deposit;
-        const is_hash_cashier_onboarding = destination_hash === '#cashier_onboarding';
         const is_hash_deposit = destination_hash === '#deposit';
-        const is_hash_crypto_transactions_visible = destination_hash === '#crypto_transactions';
+        const is_hash_transactions_crypto_visible = destination_hash === '#transactions_crypto';
+        const is_hash_cashier_onboarding =
+            destination_hash === '#cashier_onboarding' || (!is_hash_deposit && !is_hash_transactions_crypto_visible);
 
         if (is_current_route_deposit) {
             setIsCashierOnboarding(is_hash_cashier_onboarding);
             setIsDeposit(is_hash_deposit);
-            setIsCryptoTransactionsVisible(is_hash_crypto_transactions_visible);
+            setIsTransactionsCryptoVisible(is_hash_transactions_crypto_visible);
 
             history.replace({ pathname: history.location.pathname, hash: '' });
+        } else {
+            setIsCashierOnboarding(false);
+            setIsDeposit(false);
+            setIsTransactionsCryptoVisible(false);
         }
-    }, [history, setIsCashierOnboarding, setIsCryptoTransactionsVisible, setIsDeposit]);
+    }, [history, setIsCashierOnboarding, setIsTransactionsCryptoVisible, setIsDeposit]);
 };
 
 export default useUnsafeCashierRouteHandler;

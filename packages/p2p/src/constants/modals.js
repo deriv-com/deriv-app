@@ -45,10 +45,18 @@ export const modals = {
             /* webpackChunkName: "create-ad-add-payment-method-modal" */ 'Components/modal-manager/modals/create-ad-add-payment-method-modal'
         )
     ),
+    DeletePaymentMethodConfirmationModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "delete-payment-method-confirmation-modal" */ 'Components/modal-manager/modals/delete-payment-method-confirmation-modal'
+        )
+    ),
     DeletePaymentMethodErrorModal: React.lazy(() =>
         import(
             /* webpackChunkName: "delete-payment-method-error-modal" */ 'Components/modal-manager/modals/delete-payment-method-error-modal'
         )
+    ),
+    DisclaimerModal: React.lazy(() =>
+        import(/* webpackChunkName: "disclaimer-modal" */ 'Components/modal-manager/modals/disclaimer-modal')
     ),
     EditAdCancelModal: React.lazy(() =>
         import(/* webpackChunkName: "edit-ad-cancel-modal" */ 'Components/modal-manager/modals/edit-ad-cancel-modal')
@@ -84,6 +92,9 @@ export const modals = {
             /* webpackChunkName: "invalid-verification-link-modal" */ 'Components/modal-manager/modals/invalid-verification-link-modal'
         )
     ),
+    LeavePageModal: React.lazy(() =>
+        import(/* webpackChunkName: "leave-page-modal" */ 'Components/modal-manager/modals/leave-page-modal')
+    ),
     LoadingModal: React.lazy(() =>
         import(/* webpackChunkName: "loading-modal" */ 'Components/modal-manager/modals/loading-modal')
     ),
@@ -104,6 +115,9 @@ export const modals = {
         import(
             /* webpackChunkName: "my-ads-floating-rate-switch-modal" */ 'Components/modal-manager/modals/my-ads-floating-rate-switch-modal'
         )
+    ),
+    NicknameModal: React.lazy(() =>
+        import(/* webpackChunkName: "nickname-modal" */ 'Components/modal-manager/modals/nickname-modal')
     ),
     OrderDetailsCancelModal: React.lazy(() =>
         import(
@@ -126,5 +140,8 @@ export const modals = {
     ),
     RecommendedModal: React.lazy(() =>
         import(/* webpackChunkName: "recommended-modal" */ 'Components/modal-manager/modals/recommended-modal')
+    ),
+    ShareMyAdsModal: React.lazy(() =>
+        import(/* webpackChunkName: "share-my-ads-modal" */ 'Components/modal-manager/modals/share-my-ads-modal')
     ),
 };

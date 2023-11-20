@@ -10,30 +10,27 @@ import {
     type AutoSizerProps,
     ListProps,
     ListRowProps,
+    IndexRange,
 } from 'react-virtualized';
 import { isMobile, isDesktop } from '@deriv/shared';
 import DataListCell from './data-list-cell';
-import DataListRow from './data-list-row';
+import DataListRow, { TRowRenderer } from './data-list-row';
 import ThemedScrollbars from '../themed-scrollbars';
 import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
+import { TTableRowItem, TPassThrough, TRow } from '../types/common.types';
 
 const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
-export type TRowRenderer = (params: { row: any; is_footer?: boolean; measure?: () => void }) => React.ReactNode;
-export type TPassThrough = { isTopUp: (item: TRow) => boolean };
-export type TRow = {
-    [key: string]: string;
-};
 
-type TDataList = {
+export type TDataList = {
     className?: string;
     data_source: TRow[];
-    footer?: React.ReactNode;
-    getRowAction?: (row: TRow) => string;
+    footer?: TRow;
+    getRowAction?: (row: TRow) => TTableRowItem;
     getRowSize?: (params: { index: number }) => number;
     keyMapper?: (row: TRow) => number | string;
-    onRowsRendered?: () => void;
+    onRowsRendered?: (params: IndexRange) => void;
     onScroll?: React.UIEventHandler<HTMLDivElement>;
     passthrough?: TPassThrough;
     row_gap?: number;
@@ -113,6 +110,7 @@ const DataList = React.memo(
 
             const getContent = ({ measure }: GetContentType = {}) => (
                 <DataListRow
+                    //@ts-expect-error needs refactor
                     action_desc={action_desc}
                     destination_link={destination_link}
                     is_new_row={!items_transition_map_ref.current[row_key]}
@@ -138,7 +136,7 @@ const DataList = React.memo(
             );
         };
 
-        const handleScroll: React.UIEventHandler<HTMLDivElement> = ev => {
+        const handleScroll = (ev: Partial<React.UIEvent<HTMLDivElement>>) => {
             let timeout;
 
             clearTimeout(timeout);
@@ -153,7 +151,7 @@ const DataList = React.memo(
 
             setScrollTop((ev.target as HTMLElement).scrollTop);
             if (typeof onScroll === 'function') {
-                onScroll(ev);
+                onScroll(ev as React.UIEvent<HTMLDivElement>);
             }
         };
 
@@ -197,7 +195,12 @@ const DataList = React.memo(
                                             width={width}
                                             {...(isDesktop()
                                                 ? { scrollTop: scroll_top, autoHeight: true }
-                                                : { onScroll: target => handleScroll({ target } as any) })}
+                                                : {
+                                                      onScroll: target =>
+                                                          handleScroll({ target } as unknown as Partial<
+                                                              React.UIEvent<HTMLDivElement>
+                                                          >),
+                                                  })}
                                         />
                                     </ThemedScrollbars>
                                 </TransitionGroup>
@@ -218,9 +221,9 @@ const DataList = React.memo(
             </div>
         );
     }
-);
+) as React.MemoExoticComponent<(props: TDataList) => JSX.Element> & { Cell: typeof DataListCell };
 
 DataList.displayName = 'DataList';
-(DataList as any).Cell = DataListCell;
+DataList.Cell = DataListCell;
 
 export default DataList;

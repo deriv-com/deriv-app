@@ -10,6 +10,7 @@ export default class RoutePromptDialogStore {
             onConfirm: action.bound,
             onCancel: action.bound,
             continueRoute: action.bound,
+            setShoudShow: action.bound,
         });
 
         this.root_store = root_store;
@@ -23,11 +24,15 @@ export default class RoutePromptDialogStore {
     shouldNavigateAfterPrompt(next_location) {
         if (!this.is_confirmed) {
             this.last_location = next_location;
-            this.should_show = true;
+            if (next_location.pathname !== '/bot') this.should_show = true;
             return false;
         }
 
         return true;
+    }
+
+    setShoudShow(should_show) {
+        this.should_show = should_show;
     }
 
     onConfirm() {

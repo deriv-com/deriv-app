@@ -2,26 +2,28 @@ import React from 'react';
 import classnames from 'classnames';
 import { ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { observer } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 import SummaryCard from './summary-card';
-import { TContractInfo } from './summary-card.types';
 
 type TSummary = {
     is_drawer_open: boolean;
-    is_contract_loading: boolean;
-    contract_info?: TContractInfo;
 };
 
-const Summary = ({ is_drawer_open, is_contract_loading, contract_info }: TSummary) => {
+const Summary = observer(({ is_drawer_open }: TSummary) => {
+    const { dashboard, summary_card } = useDBotStore();
+    const { is_contract_loading, contract_info } = summary_card;
+    const { active_tour } = dashboard;
+
     const is_mobile = isMobile();
     return (
         <div
             className={classnames({
                 'run-panel-tab__content': !is_mobile,
                 'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
-                'run-panel-tab__content--summary-tab': !is_mobile && is_drawer_open,
+                'run-panel-tab__content--summary-tab': (!is_mobile && is_drawer_open) || active_tour,
             })}
+            data-testid='mock-summary'
         >
             <ThemedScrollbars
                 className={classnames({
@@ -34,9 +36,6 @@ const Summary = ({ is_drawer_open, is_contract_loading, contract_info }: TSummar
             </ThemedScrollbars>
         </div>
     );
-};
+});
 
-export default connect(({ summary_card }: RootStore) => ({
-    is_contract_loading: summary_card.is_contract_loading,
-    contract_info: summary_card.contract_info,
-}))(Summary);
+export default Summary;

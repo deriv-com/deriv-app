@@ -5,7 +5,8 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
-const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const is_release =
+    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 const is_publishing = process.env.NPM_PUBLISHING_MODE === '1';
 
 module.exports = function (env) {
@@ -13,7 +14,7 @@ module.exports = function (env) {
 
     return {
         entry: {
-            index: path.resolve(__dirname, 'src/components', 'app.jsx'),
+            index: path.resolve(__dirname, 'src/pages', 'app.jsx'),
         },
         mode: is_release ? 'production' : 'development',
         output: {
@@ -30,9 +31,11 @@ module.exports = function (env) {
                 Assets: path.resolve(__dirname, 'src/assets'),
                 Components: path.resolve(__dirname, 'src/components'),
                 Constants: path.resolve(__dirname, 'src/constants'),
+                Pages: path.resolve(__dirname, 'src/pages'),
                 Translations: path.resolve(__dirname, 'src/translations'),
                 Utils: path.resolve(__dirname, 'src/utils'),
                 Stores: path.resolve(__dirname, 'src/stores'),
+                Types: path.resolve(__dirname, 'src/types'),
                 ...publisher_utils.getLocalDerivPackageAliases(__dirname, is_publishing),
             },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -130,6 +133,27 @@ module.exports = function (env) {
                 : []),
         ],
         optimization: {
+            splitChunks: {
+                chunks: 'async',
+                minSize: 20000,
+                minRemainingSize: 0,
+                minChunks: 1,
+                maxAsyncRequests: 30,
+                maxInitialRequests: 30,
+                maxSize: 2500000,
+                cacheGroups: {
+                    defaultVendors: {
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10,
+                        reuseExistingChunk: true,
+                    },
+                    default: {
+                        minChunks: 2,
+                        priority: -20,
+                        reuseExistingChunk: true,
+                    },
+                },
+            },
             minimize: is_release,
             minimizer: is_release
                 ? [
@@ -146,6 +170,7 @@ module.exports = function (env) {
             {
                 react: 'react',
                 'react-dom': 'react-dom',
+                'react-router': 'react-router',
                 'react-router-dom': 'react-router-dom',
                 'prop-types': 'prop-types',
                 ...(is_publishing ? {} : { 'lodash.debounce': 'lodash.debounce', formik: 'formik' }),

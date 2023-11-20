@@ -6,6 +6,7 @@ import {
     getLimitOrderAmount,
     isCryptocurrency,
     isDeepEqual,
+    isMultiplierContract,
     pick,
     getTotalProfit,
 } from '@deriv/shared';
@@ -14,22 +15,53 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
+import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TToastConfig } from '../../types';
-import { TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 
-export type TContractUpdateFormProps = {
+export type TGeneralContractCardBodyProps = {
     addToast: (toast_config: TToastConfig) => void;
-    contract: TContractStore;
-    current_focus?: string;
-    error_message_alignment: string;
+    contract_info: TContractInfo;
+    contract_update: TContractInfo['contract_update'];
+    connectWithContractUpdate?: (contract_update_form: React.ElementType) => React.ElementType;
+    currency: string;
+    current_focus?: string | null;
+    error_message_alignment?: string;
     getCardLabels: TGetCardLables;
-    onMouseLeave: () => void;
+    getContractById: (contract_id: number) => TContractStore;
+    should_show_cancellation_warning: boolean;
+    has_progress_slider: boolean;
+    is_mobile: boolean;
+    is_sold: boolean;
+    onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string) => void;
+    status?: string;
+    toggleCancellationWarning: (state_change?: boolean) => void;
+    progress_slider?: React.ReactNode;
+    is_positions?: boolean;
+};
+export type TContractUpdateFormProps = Pick<
+    TGeneralContractCardBodyProps,
+    | 'addToast'
+    | 'current_focus'
+    | 'error_message_alignment'
+    | 'getCardLabels'
+    | 'onMouseLeave'
+    | 'removeToast'
+    | 'setCurrentFocus'
+    | 'status'
+> & {
+    contract: TContractStore;
+    error_message_alignment?: string;
+    getCardLabels: TGetCardLables;
+    onMouseLeave?: () => void;
+    removeToast: (toast_id: string) => void;
+    setCurrentFocus: (name: string | null) => void;
     status: string;
-    toggleDialog: (e: any) => void; // This function accomodates events for various HTML elements, which have no overlap, so typing it to any
+    toggleDialog: (e: React.MouseEvent<HTMLButtonElement>) => void;
     getContractById: (contract_id: number) => TContractStore;
     is_accumulator?: boolean;
+    is_turbos?: boolean;
 };
 
 const ContractUpdateForm = (props: TContractUpdateFormProps) => {
@@ -39,6 +71,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         current_focus,
         error_message_alignment,
         getCardLabels,
+        is_turbos,
         is_accumulator,
         onMouseLeave,
         removeToast,
@@ -78,15 +111,15 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
 
     const isValid = (val?: number | null) => !(val === undefined || val === null);
 
+    const is_multiplier = isMultiplierContract(contract_info.contract_type || '');
     const is_take_profit_valid = has_contract_update_take_profit
-        ? Number(contract_update_take_profit) > 0
-        : isValid(stop_loss);
-    const is_stop_loss_valid = has_contract_update_stop_loss
-        ? Number(contract_update_stop_loss) > 0
-        : isValid(take_profit);
-    const is_valid_accu_contract_update = is_accumulator && !!is_take_profit_valid;
-    const is_valid_contract_update =
-        is_valid_accu_contract_update || (is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid));
+        ? +contract_update_take_profit > 0
+        : isValid(is_multiplier ? stop_loss : take_profit);
+    const is_stop_loss_valid = has_contract_update_stop_loss ? +contract_update_stop_loss > 0 : isValid(take_profit);
+    const is_valid_multiplier_contract_update = is_valid_to_cancel
+        ? false
+        : !!(is_take_profit_valid || is_stop_loss_valid);
+    const is_valid_contract_update = is_multiplier ? is_valid_multiplier_contract_update : !!is_take_profit_valid;
 
     const getStateToCompare = (
         _state: Partial<ReturnType<typeof getContractUpdateConfig> & TContractUpdateFormProps>
@@ -105,7 +138,9 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         return isDeepEqual(getStateToCompare(getContractUpdateConfig(contract_info)), getStateToCompare(props));
     };
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: boolean } }) => {
+    const onChange = (
+        e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: number | string | boolean } }
+    ) => {
         const { name, value } = e.target;
         setContractProfitOrLoss({
             ...contract_profit_or_loss,
@@ -140,7 +175,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             onChange={onChange}
             error_message_alignment={error_message_alignment || 'right'}
             value={contract_profit_or_loss.contract_update_take_profit}
-            is_disabled={!is_accumulator && !!is_valid_to_cancel}
+            is_disabled={is_multiplier && !!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
         />
     );
@@ -199,11 +234,11 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             </MobileWrapper>
             <div
                 className={classNames('dc-contract-card-dialog__form', {
-                    'dc-contract-card-dialog__form-accumulator': is_accumulator,
+                    'dc-contract-card-dialog__form--no-stop-loss': is_accumulator || is_turbos,
                 })}
             >
                 <div className='dc-contract-card-dialog__input'>{take_profit_input}</div>
-                {!is_accumulator && <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>}
+                {is_multiplier && <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>}
                 <div className='dc-contract-card-dialog__button'>
                     <Button
                         text={getCardLabels().APPLY}

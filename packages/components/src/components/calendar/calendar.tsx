@@ -7,30 +7,30 @@ import { getDate } from './helpers/constants';
 
 type TCalendarProps = {
     date_format?: string;
-    footer: string;
-    has_today_btn: boolean;
-    holidays: Array<{
+    footer?: string;
+    has_today_btn?: boolean;
+    holidays?: Array<{
         dates: string[];
         descrip: string;
     }>;
     max_date?: string;
     min_date?: string;
-    onChangeCalendarMonth: (start_of_month: string) => void;
+    onChangeCalendarMonth?: (start_of_month: string) => void;
     onSelect: (formatted_date: string, keep_open: boolean) => void;
-    start_date: string;
+    start_date?: string;
     value: string;
-    disable_days: number[];
-    calendar_view: string;
+    disable_days?: number[];
+    calendar_view?: string;
     calendar_el_ref: React.RefObject<HTMLDivElement>;
-    disabled_days: number[];
-    events: Array<{
+    disabled_days?: number[];
+    events?: Array<{
         dates: string[];
         descrip: string;
     }>;
-    has_range_selection: boolean;
-    keep_open: boolean;
-    onHover: (selected_date: moment.MomentInput | null) => void;
-    should_show_today: boolean;
+    has_range_selection?: boolean;
+    keep_open?: boolean;
+    onHover?: (selected_date: moment.MomentInput | null) => void;
+    should_show_today?: boolean;
 };
 
 type TCalendarRef = {
@@ -52,7 +52,7 @@ const Calendar: React.MemoExoticComponent<
                 date_format = 'YYYY-MM-DD',
                 disabled_days,
                 events,
-                footer,
+                footer = '',
                 has_today_btn,
                 has_range_selection,
                 keep_open,
@@ -61,7 +61,7 @@ const Calendar: React.MemoExoticComponent<
                 onChangeCalendarMonth,
                 onHover,
                 onSelect,
-                start_date,
+                start_date = '',
                 value,
                 should_show_today,
             },
@@ -137,7 +137,7 @@ const Calendar: React.MemoExoticComponent<
                 setSelectedDate(formatted_date);
 
                 if (onSelect) {
-                    onSelect(formatted_date, keep_open);
+                    onSelect(formatted_date, !!keep_open);
                 }
             };
 
@@ -211,7 +211,7 @@ const Calendar: React.MemoExoticComponent<
                         hovered_date={hovered_date}
                         onMouseOver={onMouseOver}
                         onMouseLeave={onMouseLeave}
-                        should_show_today={should_show_today}
+                        should_show_today={!!should_show_today}
                     />
                     <Footer footer={footer} has_today_btn={has_today_btn} onClick={setToday} />
                 </div>

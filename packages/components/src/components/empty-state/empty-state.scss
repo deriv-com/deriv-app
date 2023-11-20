@@ -1,0 +1,19 @@
+.empty-state {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.4rem;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    &__action .dc-btn__text {
+        @include mobile {
+            font-size: var(--text-size-xxs);
+        }
+    }
+}

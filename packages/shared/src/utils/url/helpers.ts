@@ -51,6 +51,7 @@ export const getPlatformFromUrl = (domain = window.location.hostname) => {
     return {
         ...resolutions,
         is_staging: resolutions.is_staging_deriv_app,
+        is_test_link: resolutions.is_test_link,
     };
 };
 
@@ -59,6 +60,3 @@ export const isStaging = (domain = window.location.hostname) => {
 
     return is_staging_deriv_app;
 };
-
-export const getCurrentdomain = () =>
-    /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : deriv_urls.DERIV_TEST_LINK_DOMAIN;

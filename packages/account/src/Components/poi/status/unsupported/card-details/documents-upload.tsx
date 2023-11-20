@@ -127,7 +127,7 @@ const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, on
                                         secondary
                                         large
                                         text={localize('Back')}
-                                        icon={<Icon icon={'IcButtonBack'} />}
+                                        icon={<Icon icon='IcButtonBack' />}
                                     />
                                     <Button
                                         type='submit'

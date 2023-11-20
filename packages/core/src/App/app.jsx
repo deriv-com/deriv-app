@@ -9,7 +9,7 @@ import {
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
@@ -91,7 +91,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                     <MobxContentProvider store={root_store}>
                         <APIProvider>
                             <StoreProvider store={root_store}>
-                                <AppContent passthrough={platform_passthrough} />
+                                <ExchangeRatesProvider>
+                                    <AppContent passthrough={platform_passthrough} />
+                                </ExchangeRatesProvider>
                             </StoreProvider>
                         </APIProvider>
                     </MobxContentProvider>

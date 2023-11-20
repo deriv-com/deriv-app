@@ -22,7 +22,6 @@ const DerivAppsGetAccount: React.FC = () => {
     const openSuccessModal = useCallback(() => {
         show(
             <ModalStepWrapper
-                closeOnEscape
                 renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
                 shouldHideHeader={isDesktop}
             >
@@ -61,7 +60,7 @@ const DerivAppsGetAccount: React.FC = () => {
                 <WalletText size='sm' weight='bold'>
                     Deriv Apps
                 </WalletText>
-                <WalletText lineHeight='2xs' size='2xs'>
+                <WalletText lineHeight='2xs' size='xs'>
                     {activeWallet?.is_malta_wallet
                         ? 'Get a Deriv Apps trading account regulated by MFSA to trade multipliers on Deriv Trader.'
                         : 'Get a Deriv Apps trading account to trade options and multipliers on these apps.'}

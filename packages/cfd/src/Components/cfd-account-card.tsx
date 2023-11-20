@@ -11,7 +11,6 @@ import { Localize, localize } from '@deriv/translations';
 
 import {
     getCTraderWebTerminalLink,
-    getDerivEzWebTerminalLink,
     getDXTradeWebTerminalLink,
     getPlatformDXTradeDownloadLink,
 } from '../Helpers/constants';
@@ -174,7 +173,6 @@ const CFDAccountCardComponent = observer(
 
         const {
             dxtrade_tokens,
-            derivez_tokens,
             ctrader_tokens,
             setAccountType,
             setJurisdictionSelectedShortcode,
@@ -729,23 +727,6 @@ const CFDAccountCardComponent = observer(
                                     setShouldShowCooldownModal={setShouldShowCooldownModal}
                                 />
                             )}
-                            {existing_data &&
-                                is_logged_in &&
-                                !is_web_terminal_unsupported &&
-                                platform === CFD_PLATFORMS.DERIVEZ && (
-                                    <a
-                                        className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                                        type='button'
-                                        href={getDerivEzWebTerminalLink(
-                                            type.category,
-                                            derivez_tokens[type.category as TAccountCategory]
-                                        )}
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                    >
-                                        <Localize i18n_default_text='Trade on web terminal' />
-                                    </a>
-                                )}
                             {!existing_data && is_logged_in && (
                                 <CFDAccountCardAction
                                     button_label={button_label}

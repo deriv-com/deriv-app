@@ -1,11 +1,12 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+
 import { TCFDPasswordReset } from '../Containers/props.types';
 
 export type TMobilePlatforms = 'ios' | 'android' | 'huawei';
 
-export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader' | 'derivez';
+export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 
-export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
+export type TCFDsPlatformType = 'dxtrade' | 'mt5' | 'ctrader' | '';
 
 export type TShortcode = DetailsOfEachMT5Loginid['landing_company_short'];
 
@@ -46,10 +47,6 @@ export type TCFDDashboardContainer = {
         real: string;
     };
     ctrader_tokens: {
-        demo: string;
-        real: string;
-    };
-    derivez_tokens: {
         demo: string;
         real: string;
     };

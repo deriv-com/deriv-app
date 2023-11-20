@@ -5,7 +5,7 @@ import './AppContent.scss';
 const AppContent: React.FC = () => {
     return (
         <div className='wallets-app'>
-            <div className='wallets-modal-responsive-root' id='wallets_modal_responsive_root' />
+            <div className='wallets-modal-show-header-root' id='wallets_modal_show_header_root' />
             <Router />
         </div>
     );

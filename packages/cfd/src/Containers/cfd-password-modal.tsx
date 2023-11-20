@@ -1,31 +1,23 @@
 import React from 'react';
-import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
+import { Formik, FormikErrors, FormikHelpers } from 'formik';
+
 import { SentEmailModal } from '@deriv/account';
-import {
-    getDxCompanies,
-    getMtCompanies,
-    getDerivezCompanies,
-    TMtCompanies,
-    TDxCompanies,
-    TDerivezCompanies,
-} from '../Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
     Icon,
     MobileDialog,
     Modal,
+    MultiStep,
     PasswordInput,
     PasswordMeter,
     Text,
-    MultiStep,
 } from '@deriv/components';
 import {
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
     getMT5AccountTitle,
     getErrorMessages,
-    getFormattedJurisdictionCode,
     getLegalEntityName,
     isDesktop,
     routes,
@@ -33,15 +25,25 @@ import {
     validPassword,
     WS,
 } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from '../Components/success-dialog.jsx';
-import '../sass/cfd.scss';
-import ChangePasswordConfirmation from './cfd-change-password-confirmation';
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import SuccessDialog from '../Components/success-dialog.jsx';
+import {
+    getDxCompanies,
+    getFormattedJurisdictionCode,
+    getMtCompanies,
+    TDxCompanies,
+    TMtCompanies,
+} from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import CFDPasswordModalTitle from './cfd-password-modal-title';
 import { CFD_PLATFORMS, JURISDICTION, CATEGORY } from '../Helpers/cfd-config';
+
+import ChangePasswordConfirmation from './cfd-change-password-confirmation';
+
+import '../sass/cfd.scss';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -186,8 +188,6 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
     const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
         return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
-    } else if (platform === CFD_PLATFORMS.DERIVEZ) {
-        return <Icon icon='IcBrandDerivEz' size={128} />;
     } else if (traders_hub) {
         if (platform === CFD_PLATFORMS.CTRADER) {
             return <TradingPlatformIcon icon='CTrader' size={128} />;
@@ -793,12 +793,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']]
                         .short_title;
                 break;
-            case CFD_PLATFORMS.DERIVEZ:
-                type_label =
-                    getDerivezCompanies()[category as keyof TDerivezCompanies][
-                        type as keyof TDerivezCompanies['demo' | 'real']
-                    ].short_title;
-                break;
             default:
                 type_label = '';
                 break;
@@ -811,7 +805,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const accountTypes = () => {
             if (platform === 'dxtrade' && type_label === 'Derived') {
                 return 'Synthetic';
-            } else if (platform === 'derivez' || platform === 'ctrader') {
+            } else if (platform === 'ctrader') {
                 return 'CFDs';
             }
             return type_label;
@@ -822,9 +816,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             switch (platform) {
                 case CFD_PLATFORMS.MT5:
                     platformName = mt5_platform_label;
-                    break;
-                case CFD_PLATFORMS.DERIVEZ:
-                    platformName = 'Deriv Ez';
                     break;
                 default:
                     platformName = 'Deriv X';

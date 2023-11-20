@@ -8,7 +8,6 @@ type TCompressImageOption = {
 };
 
 type TBase64Image = {
-    buffer?: string | ArrayBuffer | null;
     filename: string;
     src: string;
 };

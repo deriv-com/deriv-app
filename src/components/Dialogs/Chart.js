@@ -31,7 +31,7 @@ const ChartContent = () => {
         symbol: globalObserver.getState('symbol'),
         should_barrier_display: false,
     });
-    const ticksService = new ChartTicksService(api_base.api);
+    const ticksService = new ChartTicksService(api_base.api_chart);
     const listeners = [];
 
     React.useEffect(() => {
@@ -113,11 +113,13 @@ const ChartContent = () => {
                 symbol,
                 granularity,
                 key: listeners[requested_key],
+                is_chart: true,
             });
         } else {
             ticksService.stopMonitor({
                 symbol,
                 key: listeners[requested_key],
+                is_chart: true,
             });
         }
         delete listeners[requested_key];

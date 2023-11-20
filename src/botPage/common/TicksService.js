@@ -58,12 +58,10 @@ export default class TicksService {
 
         if (!this.active_symbols_promise) {
             this.active_symbols_promise = new Promise(resolve => {
-                api_base.api.expectResponse('authorize').then(() => {
-                    this.pipSizes = api_base.active_symbols
-                        ?.reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
-                        .toObject();
-                    resolve(this.pipSizes);
-                });
+                this.pipSizes = api_base.active_symbols
+                    ?.reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
+                    .toObject();
+                resolve(this.pipSizes);
             });
         }
         return this.active_symbols_promise;
@@ -114,7 +112,7 @@ export default class TicksService {
         this.unsubscribeIfEmptyListeners(options);
     }
     unsubscribeIfEmptyListeners(options) {
-        const { symbol, granularity } = options;
+        const { symbol, granularity, is_chart } = options;
         let needToUnsubscribe = false;
         const tickListener = this.tickListeners.get(symbol);
         const ohlcListener = this.ohlcListeners.getIn([symbol, Number(granularity)]);
@@ -132,10 +130,10 @@ export default class TicksService {
         }
 
         if (needToUnsubscribe) {
-            this.unsubscribeAllAndSubscribeListeners(symbol);
+            this.unsubscribeAllAndSubscribeListeners(symbol, is_chart);
         }
     }
-    unsubscribeAllAndSubscribeListeners(symbol) {
+    unsubscribeAllAndSubscribeListeners(symbol, is_chart) {
         const ohlcSubscriptions = this.subscriptions.getIn(['ohlc', symbol]);
         const tickSubscription = this.subscriptions.getIn(['tick', symbol]);
         const subscription = [];
@@ -148,7 +146,11 @@ export default class TicksService {
         if (tickSubscription) {
             subscription.push(tickSubscription);
         }
-        Promise.all(subscription.map(id => doUntilDone(() => api_base.api.forget(id))));
+        Promise.all(
+            subscription.map(id =>
+                doUntilDone(() => (is_chart ? api_base.api_chart?.forget(id) : api_base.api.forget(id)))
+            )
+        );
         this.subscriptions = new Map();
     }
     updateTicksAndCallListeners(symbol, ticks) {

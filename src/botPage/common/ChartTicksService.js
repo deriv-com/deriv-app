@@ -5,7 +5,7 @@ import TicksService from './TicksService';
 
 export default class ChartTicksService extends TicksService {
     observe() {
-        api_base.api.onMessage().subscribe(({ data }) => {
+        api_base.api_chart?.onMessage().subscribe(({ data }) => {
             if (data?.error?.code) {
                 return;
             }
@@ -45,7 +45,7 @@ export default class ChartTicksService extends TicksService {
         };
 
         return new Promise(resolve => {
-            doUntilDone(() => api_base.api.send(request_object))
+            doUntilDone(() => api_base.api_chart?.send(request_object))
                 .then(r => {
                     if (style === 'ticks') {
                         this.updateTicksAndCallListeners(symbol, r);

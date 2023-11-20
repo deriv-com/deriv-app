@@ -1,11 +1,23 @@
-import React, { ReactNode } from 'react';
-import { useResidenceList } from '@deriv/api';
-import { WalletDropdown, WalletText, WalletTextField } from '../../../../components';
+import React, { ReactNode, useEffect } from 'react';
+import { useResidenceList, useSettings } from '@deriv/api';
+import { FlowTextField, useFlow, WalletDropdown, WalletText } from '../../../../components';
 import { accountOpeningReasonList } from './constants';
 import './PersonalDetails.scss';
 
 const PersonalDetails = () => {
     const { data: residenceList } = useResidenceList();
+    const { setFormValues } = useFlow();
+    const { data: getSettings } = useSettings();
+
+    useEffect(() => {
+        if (getSettings) {
+            setFormValues('citizenship', getSettings.citizen);
+            setFormValues('placeOfBirth', getSettings.place_of_birth);
+            setFormValues('taxResidence', getSettings.tax_residence);
+            setFormValues('taxIdentificationNumber', getSettings.tax_identification_number);
+            setFormValues('accountOpeningReason', getSettings.account_opening_reason);
+        }
+    }, [getSettings, setFormValues]);
 
     return (
         <div className='wallets-personal-details'>
@@ -24,9 +36,10 @@ const PersonalDetails = () => {
                         text: residence.text as ReactNode,
                         value: residence.value ?? '',
                     }))}
-                    onSelect={() => null}
-                    type='comboBox'
-                    value={undefined}
+                    name='wallets-personal-details__dropdown-citizenship'
+                    onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
+                    value={getSettings?.citizen ?? ''}
+                    variant='comboBox'
                 />
                 <WalletDropdown
                     label='Place of birth*'
@@ -34,9 +47,10 @@ const PersonalDetails = () => {
                         text: residence.text as ReactNode,
                         value: residence.value ?? '',
                     }))}
-                    onSelect={() => null}
-                    type='comboBox'
-                    value={undefined}
+                    name='wallets-personal-details__dropdown-pob'
+                    onSelect={selectedItem => setFormValues('placeOfBirth', selectedItem)}
+                    value={getSettings?.place_of_birth ?? ''}
+                    variant='comboBox'
                 />
                 <WalletDropdown
                     label='Tax residence*'
@@ -44,17 +58,19 @@ const PersonalDetails = () => {
                         text: residence.text as ReactNode,
                         value: residence.value ?? '',
                     }))}
-                    onSelect={() => null}
-                    type='comboBox'
-                    value={undefined}
+                    name='wallets-personal-details__dropdown-tax-residence'
+                    onSelect={selectedItem => setFormValues('taxResidence', selectedItem)}
+                    value={getSettings?.tax_residence ?? ''}
+                    variant='comboBox'
                 />
-                <WalletTextField label='Tax identification number*' onChange={() => null} value={undefined} />
+                <FlowTextField label='Tax identification number*' name='taxIdentificationNumber' />
                 <WalletDropdown
                     label='Account opening reason*'
                     list={accountOpeningReasonList}
-                    onSelect={() => null}
-                    type='comboBox'
-                    value={undefined}
+                    name='wallets-personal-details__dropdown-opening-reason'
+                    onSelect={selectedItem => setFormValues('accountOpeningReason', selectedItem)}
+                    value={getSettings?.account_opening_reason ?? ''}
+                    variant='comboBox'
                 />
             </div>
         </div>

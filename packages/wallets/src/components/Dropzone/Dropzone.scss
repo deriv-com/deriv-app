@@ -48,6 +48,9 @@
 
         &--has-frame {
             background-size: contain;
+            height: 100%;
+            margin-bottom: 0;
+            border: 0.5rem solid transparent;
         }
     }
 

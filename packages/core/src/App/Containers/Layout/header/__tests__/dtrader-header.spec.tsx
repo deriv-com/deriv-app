@@ -15,8 +15,8 @@ jest.mock('../header-account-actions', () => jest.fn(() => <div>Mocked Header Ac
 jest.mock('../traders-hub-home-button', () => jest.fn(() => <div>Mocked Traders Home Button</div>));
 
 describe('DTraderHeader', () => {
-    const store = mockStore({ ui: { is_desktop: true } });
-    const renderComponent = (modified_store = store) =>
+    const mock_store = mockStore({ ui: { is_desktop: true } });
+    const renderComponent = (modified_store = mock_store) =>
         render(
             <StoreProvider store={modified_store}>
                 <DTraderHeader />

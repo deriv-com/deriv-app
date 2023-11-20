@@ -14,8 +14,8 @@ jest.mock('App/Components/Layout/Header/toggle-menu-drawer.jsx', () =>
 jest.mock('../header-account-actions', () => jest.fn(() => <div>Mocked Header Account Action</div>));
 
 describe('DefaultHeader', () => {
-    const store = mockStore({ ui: { is_desktop: true } });
-    const renderComponent = (modified_store = store) =>
+    const mock_store = mockStore({ ui: { is_desktop: true } });
+    const renderComponent = (modified_store = mock_store) =>
         render(
             <StoreProvider store={modified_store}>
                 <DefaultHeader />

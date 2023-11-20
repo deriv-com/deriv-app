@@ -1,9 +1,9 @@
 import React from 'react';
-import CTraderIcon from '../../public/images/ctrader.svg';
-import DerivXIcon from '../../public/images/derivx.svg';
 import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
 import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
+import DerivXIcon from '../../public/images/derivx.svg';
+import CTraderIcon from '../../public/images/ctrader.svg';
 
 export const MarketTypeDetails = {
     all: {

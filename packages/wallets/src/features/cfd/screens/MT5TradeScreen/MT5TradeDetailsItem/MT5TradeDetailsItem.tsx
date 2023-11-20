@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import classNames from 'classnames';
 import { WalletClipboard, WalletText } from '../../../../../components/Base';
-import useDevice from '../../../../../hooks/useDevice';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
 import './MT5TradeDetailsItem.scss';
+import classNames from 'classnames';
+import useDevice from '../../../../../hooks/useDevice';
 
 type TMT5TradeDetailsItemProps = {
     label?: string;

@@ -1,7 +1,7 @@
 import React from 'react';
+import { Onfido } from '../../screens';
 import { ModalStepWrapper, WalletButton } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
-import { Onfido } from '../../screens';
 
 const OnfidoModal = () => {
     const { isMobile } = useDevice();

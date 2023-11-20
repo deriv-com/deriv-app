@@ -1,12 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDxtradeAccountsList } from '@deriv/api';
+import { MT5TradeModal } from '../../../../modals';
 import { TradingAccountCard } from '../../../../../../components';
-import { WalletButton } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
+import { WalletButton } from '../../../../../../components/Base';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/derivx.svg';
-import { MT5TradeModal } from '../../../../modals';
 import './AddedDxtradeAccountsList.scss';
 
 const AddedDxtradeAccountsList: React.FC = () => {

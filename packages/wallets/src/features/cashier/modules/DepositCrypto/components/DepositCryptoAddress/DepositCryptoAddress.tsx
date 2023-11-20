@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { useAuthorize, useDepositCryptoAddress } from '@deriv/api';
-import { WalletsDepositCryptoAddressLoader } from '../../../../../../components';
 import { WalletClipboard, WalletText } from '../../../../../../components/Base';
+import { WalletsDepositCryptoAddressLoader } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import './DepositCryptoAddress.scss';
 

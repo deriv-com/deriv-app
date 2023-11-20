@@ -2,13 +2,13 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuthorize } from '@deriv/api';
 import { WalletButton } from '../../../../../components/Base';
-import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
-import { MT5TradeModal } from '../../../modals';
 import './AddedMT5AccountsList.scss';
+import { useModal } from '../../../../../components/ModalProvider';
+import { MT5TradeModal } from '../../../modals';
 
 type TProps = {
     account: THooks.MT5AccountsList;

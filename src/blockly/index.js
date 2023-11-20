@@ -89,6 +89,7 @@ const addBlocklyTranslation = () => {
         options.async = true; // eslint-disable-line no-param-reassign
     });
     let lang = getLanguage();
+
     if (lang === 'ach') {
         lang = 'en';
     } else if (lang === 'zh_cn') {
@@ -97,7 +98,11 @@ const addBlocklyTranslation = () => {
         lang = 'zh-hant';
     }
     return new Promise(resolve => {
-        $.getScript(`blockly-translations/${lang}.js`, resolve);
+        try {
+            $.getScript(`blockly-translations/${lang}.js`, resolve);
+        } catch (e) {
+            globalObserver.emit('Error', e);
+        }
     });
 };
 

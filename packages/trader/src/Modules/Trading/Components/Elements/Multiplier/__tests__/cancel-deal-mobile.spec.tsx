@@ -4,9 +4,9 @@ import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { useTraderStore } from 'Stores/useTraderStores';
-import CancelDeal from '../cancel-deal-mobile';
 import { Dialog } from '@deriv/components';
 import * as multiplier_functions from 'Stores/Modules/Trading/Helpers/multiplier';
+import CancelDeal from '../cancel-deal-mobile';
 import TraderProviders from '../../../../../../trader-providers';
 
 const default_mocked_props = {
@@ -62,18 +62,17 @@ describe('<CancelDeal />', () => {
     });
     it('should render <RadioGroup /> if has_cancellation === true and cancellation_range_list contains proper info', () => {
         const new_mocked_props = { ...default_mocked_props, has_cancellation: true };
-        const new_mock_store = { ...default_mock_store };
-        new_mock_store.modules = {
+        default_mock_store.modules = {
             trade: {
                 cancellation_range_list: [{ value: '60m', text: 'mocked text' }],
             },
         };
-        const mock_root_store = mockStore(new_mock_store);
+        const mock_root_store = mockStore(default_mock_store);
         render(mockCancelDeal(mock_root_store, new_mocked_props));
 
         expect(screen.getByText('mocked text')).toBeInTheDocument();
     });
-    it('should call onToggleCancellation if user clicked on Deal cancellation checkbox and anToggleDealCancel returned true', () => {
+    it('should call onToggleCancellation if user clicked on Deal cancellation checkbox and onToggleDealCancel returned true', () => {
         const mock_root_store = mockStore(default_mock_store);
         render(mockCancelDeal(mock_root_store, default_mocked_props));
 

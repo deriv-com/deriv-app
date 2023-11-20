@@ -65,7 +65,7 @@ describe('<MultiplierOptions />', () => {
             </TraderProviders>
         );
     };
-    it('should render child components', () => {
+    it('should render children components', () => {
         const mock_root_store = mockStore(default_mock_store);
         render(mockMultiplierOptions(mock_root_store));
 

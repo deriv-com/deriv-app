@@ -85,7 +85,7 @@ describe('<MultiplierAmountModal />', () => {
         expect(screen.getByText(/MultipliersInfo component/i)).toBeInTheDocument();
     });
 
-    it('should change stake_value and commission if setSelectedAmount was called by pressing the proper button', () => {
+    it('should change stake_value and commission if setSelectedAmount was called by pressing on the proper button', () => {
         const { rerender } = render(mockMultiplierAmountModal());
 
         expect(screen.getByText(10)).toBeInTheDocument();

@@ -95,8 +95,7 @@ describe('<RiskManagementDialog />', () => {
         expect(screen.getByText(/Apply/i)).toBeInTheDocument();
     });
     it('should render CancelDeal component if cancellation_range_list?.length > 0', () => {
-        const new_mocked_store = { ...default_mock_store };
-        new_mocked_store.modules = {
+        default_mock_store.modules = {
             trade: {
                 take_profit: '10',
                 has_take_profit: true,
@@ -108,7 +107,7 @@ describe('<RiskManagementDialog />', () => {
                 onChangeMultiple: jest.fn(),
             },
         };
-        const mock_root_store = mockStore(new_mocked_store);
+        const mock_root_store = mockStore(default_mock_store);
         render(mockRiskManagementDialog(mock_root_store));
 
         expect(screen.getByText(/CancelDeal/i)).toBeInTheDocument();

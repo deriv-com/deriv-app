@@ -83,7 +83,7 @@ describe('<RiskManagementInfo />', () => {
         expect(screen.getByText(/mocked text/i)).toBeInTheDocument();
         expect(screen.queryByText(risk_management)).not.toBeInTheDocument();
     });
-    it('should render <RiskManagementDialog /> if user clicked on one of risk management blocks', () => {
+    it('should render <RiskManagementDialog /> if user clicked on one of the risk management blocks', () => {
         const mock_root_store = mockStore(default_mock_store);
         render(mockRiskManagementInfo(mock_root_store));
 

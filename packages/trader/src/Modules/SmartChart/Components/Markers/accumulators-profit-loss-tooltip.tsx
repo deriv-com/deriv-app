@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 import { FastMarker } from 'Modules/SmartChart';
 import { FastMarkerBeta } from 'Modules/SmartChartBeta';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
+import { getDecimalPlaces } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
 type TContractInfo = ReturnType<typeof useStore>['portfolio']['all_positions'][number]['contract_info'];
@@ -33,6 +34,7 @@ const AccumulatorsProfitLossTooltip = ({
     high_barrier,
     is_sold,
     profit,
+    profit_percentage,
     should_show_profit_text,
     is_beta_chart,
     is_mobile,
@@ -40,6 +42,7 @@ const AccumulatorsProfitLossTooltip = ({
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = Number(profit) >= 0;
     const tooltip_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+    const should_show_profit_percentage = getDecimalPlaces(currency) > 2 && !!profit_percentage;
 
     React.useEffect(() => {
         return () => {
@@ -93,8 +96,9 @@ const AccumulatorsProfitLossTooltip = ({
                 currency={currency}
                 current_spot={current_spot}
                 current_spot_time={current_spot_time}
-                profit={profit}
                 is_beta_chart={is_beta_chart}
+                profit_value={should_show_profit_percentage ? profit_percentage : profit}
+                should_show_profit_percentage={should_show_profit_percentage}
             />
         );
 

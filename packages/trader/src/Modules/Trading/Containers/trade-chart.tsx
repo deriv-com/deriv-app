@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActiveSymbols } from '@deriv/api-types';
-import { getDecimalPlaces, isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets } from './chart-widgets';
@@ -186,10 +186,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
                     has_crossed_accu_barriers={has_crossed_accu_barriers}
                     is_beta_chart={is_beta_chart}
                     is_mobile={is_mobile}
-                    should_show_profit_text={
-                        !!accumulator_contract_barriers_data.accumulators_high_barrier &&
-                        getDecimalPlaces(currency) <= 2
-                    }
+                    should_show_profit_text={!!accumulator_contract_barriers_data.accumulators_high_barrier}
                     symbol={symbol}
                 />
             )}

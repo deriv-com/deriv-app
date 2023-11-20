@@ -46,7 +46,6 @@ const BaseSchema = Yup.object().shape({
             /^[A-Za-z]+(?:[a-zA-Z.' -]*[a-zA-Z.' -]+)?$/,
             localize('Only letters, space, hyphen, period, and apostrophe are allowed.')
         ),
-    citizen: Yup.string().required(localize('Citizen is required.')),
 });
 
 export const getPersonalDetailsInitialValues = (

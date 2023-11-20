@@ -16,7 +16,6 @@ import mock_platform_dxtrade from './platform_dxtrade';
 import mock_platform_mt5 from './platform_mt5';
 import mock_portfolio from './portfolio';
 import mock_statement from './statement';
-import mock_trading_platform_accounts from './trading_platform_accounts';
 import mock_trading_platform_available_accounts from './trading_platform_available_accounts';
 import mock_transaction from './transaction';
 import { Context } from 'Utils/mocks/mocks';
@@ -40,7 +39,6 @@ const loggedIn = async (context: Context) => {
     mock_platform_mt5(context);
     mock_portfolio(context);
     mock_statement(context);
-    mock_trading_platform_accounts(context);
     mock_trading_platform_available_accounts(context);
     mock_transaction(context);
 };

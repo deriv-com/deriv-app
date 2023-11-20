@@ -12,7 +12,7 @@ import { WalletAddedSuccess } from '../WalletAddedSuccess';
 import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 import { WalletError } from '../WalletError';
 
-type TProps = THooks.AvailableWallets;
+type TProps = THooks.AllWalletAccounts;
 
 const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     currency,

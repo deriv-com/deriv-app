@@ -4,7 +4,7 @@ import { WalletGradientBackground } from '../WalletGradientBackground';
 import WalletsAddMoreCardBanner from '../WalletsAddMoreCardBanner';
 import WalletsAddMoreCardContent from '../WalletsAddMoreCardContent';
 
-type TProps = THooks.AvailableWallets;
+type TProps = THooks.AllWalletAccounts;
 
 const WalletsAddMoreCard: React.FC<TProps> = ({
     currency,

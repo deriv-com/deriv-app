@@ -35,6 +35,7 @@ module.exports = function (env) {
                 Translations: path.resolve(__dirname, 'src/translations'),
                 Utils: path.resolve(__dirname, 'src/utils'),
                 Stores: path.resolve(__dirname, 'src/stores'),
+                Types: path.resolve(__dirname, 'src/types'),
                 ...publisher_utils.getLocalDerivPackageAliases(__dirname, is_publishing),
             },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],

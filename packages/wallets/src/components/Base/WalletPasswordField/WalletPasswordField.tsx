@@ -1,40 +1,40 @@
-import React, { useMemo, useState } from 'react';
-import { zxcvbn } from '@zxcvbn-ts/core';
+import React, { useState } from 'react';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
-import PasswordMeter, { PasswordMeterProps } from './PasswordMeter';
+import { passwordChecker, passwordPattern, Score } from './PasswordFieldUtils';
+import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-type StrengthMessage = Record<1 | 2 | 3 | 4, string>;
-
-interface WalletPasswordFieldProps extends WalletTextFieldProps, PasswordMeterProps {
-    messageObj?: StrengthMessage;
-    showPasswordMeter?: boolean;
+interface WalletPasswordFieldProps extends WalletTextFieldProps {
+    password: string;
+    shouldDisablePasswordMeter?: boolean;
 }
 
-const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({ messageObj, showPasswordMeter = true }) => {
-    const [password, setPassword] = useState('');
+const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
+    label,
+    onChange,
+    password,
+    shouldDisablePasswordMeter = false,
+}) => {
     const [viewPassword, setViewPassword] = useState(false);
-    const hasMessage = !!messageObj;
-
-    const passwordStrength = zxcvbn(password).score;
-    const progressText = useMemo(() => {
-        return messageObj ? messageObj[passwordStrength as keyof StrengthMessage] : '';
-    }, [messageObj, passwordStrength]);
+    const { message, score } = passwordChecker(password);
 
     return (
         <div className='wallets-password'>
             <WalletTextField
-                helperMessage={progressText}
-                onChange={e => setPassword(e.target.value)}
+                label={label}
+                message={message}
+                onChange={onChange}
+                pattern={passwordPattern}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />
                 )}
-                showMessage={hasMessage}
+                showMessage
                 type={viewPassword ? 'text' : 'password'}
+                value={password}
             />
-            {showPasswordMeter && <PasswordMeter strength={passwordStrength} />}
+            {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
         </div>
     );
 };

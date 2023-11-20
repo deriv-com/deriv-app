@@ -1,5 +1,6 @@
 .dc-contract-card {
     box-sizing: border-box;
+    border-radius: $BORDER_RADIUS;
     display: flex;
     flex-direction: column;
     text-decoration: none;
@@ -12,6 +13,7 @@
     &:before {
         content: '';
         position: absolute;
+        border-radius: $BORDER_RADIUS;
         height: 52px;
         width: 100%;
         left: 0;

@@ -1,28 +1,30 @@
 import React from 'react';
 import useDevice from '../../hooks/useDevice';
-import Bitcoin from '../../public/images/bitcoin.svg';
-import Demo from '../../public/images/demo.svg';
-import ETH from '../../public/images/eth.svg';
-import EUR from '../../public/images/eur.svg';
-import Tether from '../../public/images/eusdt.svg';
-import GBP from '../../public/images/gbp.svg';
-import LTC from '../../public/images/ltc.svg';
-import USD from '../../public/images/usd.svg';
-import USDC from '../../public/images/usdc.svg';
 import { TGenericSizes } from '../../types';
+import {
+    PaymentMethodBitcoinBrandLightIcon,
+    SubBrandDerivDemoBrandDarkIcon,
+    PaymentMethodEthereumBrandDarkIcon,
+    CurrencyEurIcon,
+    PaymentMethodTetherUsdtBrandDarkIcon,
+    CurrencyGbpIcon,
+    PaymentMethodLitecoinBrandDarkIcon,
+    CurrencyUsdIcon,
+    PaymentMethodUsdCoinBrandDarkIcon,
+} from '@deriv/quill-icons';
 
 const typeToIconMapper = {
-    BTC: Bitcoin,
-    Demo,
-    ETH,
-    EUR,
-    eUSDT: Tether,
-    GBP,
-    LTC,
-    tUSDT: Tether,
-    USD,
-    USDC,
-    UST: Tether,
+    BTC: PaymentMethodBitcoinBrandLightIcon,
+    Demo: SubBrandDerivDemoBrandDarkIcon,
+    ETH: PaymentMethodEthereumBrandDarkIcon,
+    EUR: CurrencyEurIcon,
+    eUSDT: PaymentMethodTetherUsdtBrandDarkIcon,
+    GBP: CurrencyGbpIcon,
+    LTC: PaymentMethodLitecoinBrandDarkIcon,
+    tUSDT: PaymentMethodTetherUsdtBrandDarkIcon,
+    USD: CurrencyUsdIcon,
+    USDC: PaymentMethodUsdCoinBrandDarkIcon,
+    UST: PaymentMethodTetherUsdtBrandDarkIcon,
 };
 
 const typeToWidthMapper = {

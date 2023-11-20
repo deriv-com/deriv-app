@@ -48,6 +48,15 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
         setActiveTabTutorial(2);
     };
 
+    React.useEffect(() => {
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const selectElement = document.getElementById('dt_components_select-native_select-tag');
+
+        if (isSafari && selectElement) {
+            selectElement.removeChild(selectElement?.options[2]);
+        }
+    }, []);
+
     return (
         <div className='tutorials-mobile' data-testid='test-tutorials-mobile'>
             <div

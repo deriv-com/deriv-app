@@ -1,5 +1,4 @@
 import React, { FC, PropsWithChildren, ReactNode, useEffect } from 'react';
-import { flushSync } from 'react-dom';
 import classNames from 'classnames';
 import { useEventListener } from 'usehooks-ts';
 import CloseIcon from '../../../public/images/close-icon.svg';

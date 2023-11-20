@@ -12,7 +12,8 @@ import {
 } from 'Constants/tour-steps-config';
 import { useStores } from 'Stores/index';
 import { routes, ContentFlag } from '@deriv/shared';
-import { SpanButton, useTradersHubTracking } from '@deriv/components';
+import { SpanButton } from '@deriv/components';
+import { useTradersHubTracking } from 'Hooks/index';
 
 const TourGuide = () => {
     const { traders_hub, ui, client } = useStores();

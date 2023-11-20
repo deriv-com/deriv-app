@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { localize } from '@deriv/translations';
 import { isDesktop, routes, ContentFlag } from '@deriv/shared';
-import { Button, Text, Icon, ProgressBarTracker, useTradersHubTracking } from '@deriv/components';
+import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
 import EmptyOnboarding from './empty-onboarding';
 import { useStore, observer } from '@deriv/stores';
+import { useTradersHubTracking } from 'Hooks/index';
 
 type TOnboardingProps = {
     contents: Record<
@@ -33,7 +34,8 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen, is_first_time_visit } = traders_hub;
     const [step, setStep] = React.useState<number>(1);
 
-    const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose } = useTradersHubTracking();
+    const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
+        useTradersHubTracking();
 
     const prevStep = () => {
         if (step > 1) {
@@ -64,6 +66,11 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         toggleIsTourOpen(false);
         history.push(routes.traders_hub);
         await selectAccountType(prev_account_type);
+    };
+
+    const handleOnboardingStepChange = (step_num: number) => {
+        setStep(step_num);
+        trackDotNavigation(step_num);
     };
 
     const eu_user =
@@ -136,7 +143,11 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
                             <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>
                                 {localize('Back')}
                             </Button>
-                            <ProgressBarTracker step={step} steps_list={steps_list} setStep={setStep} />
+                            <ProgressBarTracker
+                                step={step}
+                                steps_list={steps_list}
+                                onStepChange={handleOnboardingStepChange}
+                            />
                             <Button primary onClick={nextStep} className='onboarding-footer-buttons--full-size'>
                                 {contents[onboarding_step]?.has_next_content
                                     ? contents[onboarding_step]?.next_content
@@ -147,7 +158,11 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
                     {is_mobile && (
                         <React.Fragment>
                             <div className='onboarding-footer__progress-bar'>
-                                <ProgressBarTracker step={step} steps_list={steps_list} setStep={setStep} />
+                                <ProgressBarTracker
+                                    step={step}
+                                    steps_list={steps_list}
+                                    onStepChange={handleOnboardingStepChange}
+                                />
                             </div>
                             <div
                                 className='onboarding-footer-buttons'

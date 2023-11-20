@@ -9,7 +9,7 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { isDesktop, isMobile, EMPLOYMENT_VALUES } from '@deriv/shared';
+import { isDesktop, isMobile, EMPLOYMENT_VALUES, TEmploymentStatus } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { TFinancialInformationForm } from 'Types';
 import FinancialInformation from './financial-details-partials';
@@ -30,7 +30,7 @@ type TFinancialDetails = {
     onCancel: (current_step: number, props: () => void) => void;
     validate: (values: TFinancialInformationForm) => object;
     value: TFinancialInformationForm;
-    employment_status: string;
+    employment_status: TEmploymentStatus;
 };
 
 /**

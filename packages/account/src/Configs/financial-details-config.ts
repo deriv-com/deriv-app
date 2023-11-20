@@ -6,6 +6,7 @@ import {
     TSchema,
     EMPLOYMENT_VALUES,
     shouldHideOccupationField,
+    TEmploymentStatus,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
@@ -56,7 +57,7 @@ const financial_details_config: (props: { financial_assessment: GetFinancialAsse
                     (
                         value: string,
                         options: Record<string, unknown>,
-                        { employment_status }: { employment_status: string }
+                        { employment_status }: { employment_status: TEmploymentStatus }
                     ) => {
                         /**
                          * Check for the value of employment_status to determine if occupation field should be required.
@@ -334,7 +335,7 @@ export const getIncomeSourceList = () => [
     },
 ];
 
-export const getFormattedOccupationList = (employment_status?: string) =>
+export const getFormattedOccupationList = (employment_status?: TEmploymentStatus) =>
     employment_status && employment_status === EMPLOYMENT_VALUES.EMPLOYED
         ? getOccupationList().filter(item => item.value !== EMPLOYMENT_VALUES.UNEMPLOYED)
         : getOccupationList();

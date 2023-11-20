@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, FormikValues, useFormikContext } from 'formik';
 import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
-import { EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv/shared';
+import { EMPLOYMENT_VALUES, TEmploymentStatus, shouldHideOccupationField } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     getAccountTurnoverList,
@@ -19,11 +19,11 @@ type TFinancialDetailsDropdownFieldProps = {
     field_key: string;
     placeholder?: string;
     label: string;
-    employment_status?: string;
+    employment_status?: TEmploymentStatus;
 };
 
 type TFinancialInformationProps = {
-    employment_status?: string;
+    employment_status?: TEmploymentStatus;
 };
 
 /**

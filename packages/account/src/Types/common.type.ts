@@ -149,15 +149,4 @@ export type TServerError = {
     fields?: string[];
 };
 
-export type TFinancialInformationForm = Pick<
-    SetFinancialAssessmentRequest,
-    | 'employment_status'
-    | 'income_source'
-    | 'employment_industry'
-    | 'occupation'
-    | 'source_of_wealth'
-    | 'education_level'
-    | 'net_income'
-    | 'estimated_worth'
-    | 'account_turnover'
->;
+export type TFinancialInformationForm = Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'>;

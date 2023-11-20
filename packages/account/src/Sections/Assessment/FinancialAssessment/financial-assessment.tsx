@@ -64,19 +64,17 @@ type TSubmittedPage = {
 
 const ConfirmationContent = ({ className }: { className?: string }) => {
     return (
-        <React.Fragment>
-            <Text as='p' size='xs' className={className}>
-                <Localize
-                    i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
-                    components={[<br key={0} />, <br key={1} />]}
-                />
-                <Localize
-                    i18n_default_text='On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><1/>'
-                    components={[<br key={0} />, <br key={1} />]}
-                />
-                <Localize i18n_default_text='By clicking Accept below and proceeding with the Account Opening you should note that you may be exposing yourself to risks (which may be significant, including the risk of loss of the entire sum invested) that you may not have the knowledge and experience to properly assess or mitigate.' />
-            </Text>
-        </React.Fragment>
+        <Text as='p' size='xs' className={className}>
+            <Localize
+                i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
+                components={[<br key={0} />, <br key={1} />]}
+            />
+            <Localize
+                i18n_default_text='On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><1/>'
+                components={[<br key={0} />, <br key={1} />]}
+            />
+            <Localize i18n_default_text='By clicking Accept below and proceeding with the Account Opening you should note that you may be exposing yourself to risks (which may be significant, including the risk of loss of the entire sum invested) that you may not have the knowledge and experience to properly assess or mitigate.' />
+        </Text>
     );
 };
 
@@ -273,7 +271,7 @@ const FinancialAssessment = observer(() => {
         setStatus({ msg: '' });
         setIsBtnLoading(true);
 
-        if (shouldHideOccupationField(values.employment_status || employment_status)) {
+        if (shouldHideOccupationField(values?.employment_status || employment_status)) {
             delete values?.occupation;
         }
 
@@ -344,13 +342,13 @@ const FinancialAssessment = observer(() => {
 
     const getScrollOffset = () => {
         if (is_mf) {
-            if (is_mobile && is_financial_information_incomplete) return '220px';
-            return is_financial_information_incomplete && !is_submit_success ? '165px' : '160px';
-        } else if (is_mobile) return '200px';
-        return '80px';
+            if (is_mobile && is_financial_information_incomplete) return '22rem';
+            return is_financial_information_incomplete && !is_submit_success ? '16.5rem' : '16rem';
+        } else if (is_mobile) return '20rem';
+        return '8rem';
     };
 
-    const getFormattedOccupationValues = values =>
+    const getFormattedOccupationValues = (values: TFinancialInformationForm) =>
         values?.employment_status === EMPLOYMENT_VALUES.EMPLOYED && values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
             ? ''
             : values?.occupation;

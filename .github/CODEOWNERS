@@ -1,169 +1,230 @@
 # ==================================================================================
+
 # ==================================================================================
-#                                Deriv CODEOWNERS
+
+# Deriv CODEOWNERS
+
 # ==================================================================================
+
 # ==================================================================================
-#
-#  Configuration of code ownership and review approvals for the binary-com/deriv-app repo.
-#
-#  More info: https://help.github.com/articles/about-codeowners/
+
 #
 
+# Configuration of code ownership and review approvals for the binary-com/deriv-app repo.
 
-# ================================================
-#  General rules / philosophy
-# ================================================
 #
-#  - we trust that people do the right thing and not approve changes they don't feel confident reviewing
-#  - we use github teams so that we funnel code reviews to the most appropriate reviewer, this is why the team structure is fine-grained
-#  - we enforce that only approved PRs get merged to ensure that unreviewed code doesn't get accidentally merged
-#  - we delegate approval rights as much as possible so that we can scale better
-#  - each group must have at least one person, but several people are preferable to avoid a single point of failure issues
-#
-#  Configuration nuances:
-#
-#  - This configuration works in conjunction with the protected branch settings that require all changes to be made via pull requests with at least one approval.
-#  - This approval can come from an appropriate codeowner, or any repo collaborator (person with write access) if the PR is authored by a codeowner.
-#  - Each codeowners team must have write access to the repo, otherwise their reviews won't count.
-#
-#  In the case of emergency, the repo administrators can bypass this requirement.
 
+# More info: https://help.github.com/articles/about-codeowners/
 
+#
 
 # ================================================
-#  GitHub username registry
-#  (just to make this file easier to understand)
+
+# General rules / philosophy
+
 # ================================================
 
-#  ali-hosseini-deriv
-#  amina-deriv
-#  balakrishna-deriv
-#  farrah-deriv
-#  hirad-deriv
-#  mahdiyeh-deriv
-#  maryia-deriv
-#  matin-deriv
-#  nijil-deriv
-#  prince-deriv
-#  sandeep-deriv
-#  yashim-deriv
+#
+
+# - we trust that people do the right thing and not approve changes they don't feel confident reviewing
+
+# - we use github teams so that we funnel code reviews to the most appropriate reviewer, this is why the team structure is fine-grained
+
+# - we enforce that only approved PRs get merged to ensure that unreviewed code doesn't get accidentally merged
+
+# - we delegate approval rights as much as possible so that we can scale better
+
+# - each group must have at least one person, but several people are preferable to avoid a single point of failure issues
+
+#
+
+# Configuration nuances:
+
+#
+
+# - This configuration works in conjunction with the protected branch settings that require all changes to be made via pull requests with at least one approval.
+
+# - This approval can come from an appropriate codeowner, or any repo collaborator (person with write access) if the PR is authored by a codeowner.
+
+# - Each codeowners team must have write access to the repo, otherwise their reviews won't count.
+
+#
+
+# In the case of emergency, the repo administrators can bypass this requirement.
+
+# ================================================
+
+# GitHub username registry
+
+# (just to make this file easier to understand)
+
+# ================================================
+
+# ali-hosseini-deriv
+
+# amina-deriv
+
+# balakrishna-deriv
+
+# farrah-deriv
+
+# hirad-deriv
+
+# mahdiyeh-deriv
+
+# maryia-deriv
+
+# matin-deriv
+
+# nijil-deriv
+
+# prince-deriv
+
+# sandeep-deriv
+
+# yashim-deriv
 
 ######################################################################################################
+
 #
+
 # CODEOWNERS rules
+
 # -----------------
+
 #
+
 # All the following rules are applied in the order specified in this file.
+
 # The last rule that matches wins!
+
 #
+
 # See https://git-scm.com/docs/gitignore#_pattern_format for pattern syntax docs.
+
 #
+
 ######################################################################################################
 
-
 # ==============================================================
-#  Default Owners
+
+# Default Owners
+
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
-# ==============================================================
-
-*                                                               @balakrishna-deriv @yashim-deriv
-
 
 # ==============================================================
-#  deriv-app/account
-# ==============================================================
 
-/packages/account/**/*                                          @matin-deriv @amina-deriv @maryia-deriv
-
+-                                                                 @balakrishna-deriv @yashim-deriv
 
 # ==============================================================
-#  deriv-app/analytics
-# ==============================================================
 
-/packages/analytics/**/*                                        @ali-hosseini-deriv
-
+# deriv-app/account
 
 # ==============================================================
-#  deriv-app/appstore
-# ==============================================================
 
-/packages/appstore/**/*                                         @matin-deriv @mahdiyeh-deriv @nijil-deriv
-
+/packages/account/\*_/_ @matin-deriv @amina-deriv @maryia-deriv
 
 # ==============================================================
-#  deriv-app/bot
-# ==============================================================
 
-/packages/bot-skeleton/**/*                                     @prince-deriv @sandeep-deriv @vinu-deriv
-/packages/bot-web-ui/**/*                                       @prince-deriv @sandeep-deriv @vinu-deriv
-/packages/indicators/**/*                                       @prince-deriv @sandeep-deriv @vinu-deriv
-
+# deriv-app/analytics
 
 # ==============================================================
-#  deriv-app/cashier
-# ==============================================================
 
-/packages/cashier/**/*                                          @farrah-deriv @nijil-deriv @wojciech-deriv
-
+/packages/analytics/\*_/_ @ali-hosseini-deriv
 
 # ==============================================================
-#  deriv-app/cfd
-# ==============================================================
 
-/packages/cfd/**/*                                              @hirad-deriv @matin-deriv
-
+# deriv-app/appstore
 
 # ==============================================================
-#  deriv-app/core
-# ==============================================================
 
-/packages/api/**/*                                              @ali-hosseini-deriv @matin-deriv
-/packages/core/**/*                                             @ali-hosseini-deriv @matin-deriv @maryia-deriv
-/packages/shared/**/*                                           @ali-hosseini-deriv @matin-deriv @maryia-deriv
-/packages/components/**/*                                       @ali-hosseini-deriv @matin-deriv @maryia-deriv
-/packages/translations/**/*                                     @ali-hosseini-deriv @matin-deriv @maryia-deriv
-/packages/utils/**/*                                            @ali-hosseini-deriv @matin-deriv @maryia-deriv
-/packages/hooks/**/*                                            @ali-hosseini-deriv @matin-deriv
-/packages/stores/**/*                                           @ali-hosseini-deriv @matin-deriv @maryia-deriv
-
+/packages/appstore/\*_/_ @matin-deriv @mahdiyeh-deriv @nijil-deriv
 
 # ==============================================================
-#  deriv-app/p2p
-# ==============================================================
 
-/packages/p2p/**/*                                              @farrah-deriv @nijil-deriv
-
+# deriv-app/bot
 
 # ==============================================================
-#  deriv-app/publisher
-# ==============================================================
 
-/packages/publisher/**/*                                        @nijil-deriv
-
-
-# ==============================================================
-#  deriv-app/reports
-# ==============================================================
-
-/packages/reports/**/*                                          @mahdiyeh-deriv @matin-deriv @maryia-deriv
-
+/packages/bot-skeleton/**/\* @prince-deriv @sandeep-deriv @vinu-deriv
+/packages/bot-web-ui/**/_ @prince-deriv @sandeep-deriv @vinu-deriv
+/packages/indicators/\*\*/_ @prince-deriv @sandeep-deriv @vinu-deriv
 
 # ==============================================================
-#  deriv-app/trader
-# ==============================================================
 
-/packages/trader/**/*                                           @matin-deriv @maryia-deriv
-
+# deriv-app/cashier
 
 # ==============================================================
-#  deriv-app/wallets
-# ==============================================================
 
-/packages/wallets/**/*                                          @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv @aizad-deriv
-
+/packages/cashier/\*_/_ @farrah-deriv @nijil-deriv @wojciech-deriv
 
 # ==============================================================
-#  deriv-app/api
+
+# deriv-app/cfd
+
 # ==============================================================
 
-/packages/api/**/*                                              @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv
+/packages/cfd/\*_/_ @hirad-deriv @matin-deriv
+
+# ==============================================================
+
+# deriv-app/core
+
+# ==============================================================
+
+/packages/api/**/\* @ali-hosseini-deriv @matin-deriv
+/packages/core/**/_ @ali-hosseini-deriv @matin-deriv @maryia-deriv
+/packages/shared/\*\*/_ @ali-hosseini-deriv @matin-deriv @maryia-deriv
+/packages/components/**/\* @ali-hosseini-deriv @matin-deriv @maryia-deriv
+/packages/translations/**/_ @ali-hosseini-deriv @matin-deriv @maryia-deriv
+/packages/utils/\*\*/_ @ali-hosseini-deriv @matin-deriv @maryia-deriv
+/packages/hooks/**/\* @ali-hosseini-deriv @matin-deriv
+/packages/stores/**/\* @ali-hosseini-deriv @matin-deriv @maryia-deriv
+
+# ==============================================================
+
+# deriv-app/p2p
+
+# ==============================================================
+
+/packages/p2p/\*_/_ @farrah-deriv @nijil-deriv
+
+# ==============================================================
+
+# deriv-app/publisher
+
+# ==============================================================
+
+/packages/publisher/\*_/_ @nijil-deriv
+
+# ==============================================================
+
+# deriv-app/reports
+
+# ==============================================================
+
+/packages/reports/\*_/_ @mahdiyeh-deriv @matin-deriv @maryia-deriv
+
+# ==============================================================
+
+# deriv-app/trader
+
+# ==============================================================
+
+/packages/trader/\*_/_ @matin-deriv @maryia-deriv
+
+# ==============================================================
+
+# deriv-app/wallets
+
+# ==============================================================
+
+/packages/wallets/\*_/_ @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv @aizad-deriv @heorhi-deriv
+
+# ==============================================================
+
+# deriv-app/api
+
+# ==============================================================
+
+/packages/api/\*_/_ @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv

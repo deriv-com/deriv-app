@@ -108,26 +108,5 @@
         ></iframe>
         <div class="notifyjs-corner" style="bottom: 0px; right: 0px"></div>
         <div class="notifyjs-corner" style="bottom: 0px; left: 0px"></div>
-        <!-- Start of Survicate (www.survicate.com) code -->
-        <script type="text/javascript">
-            const initServicate = w => {
-                const script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.async = true;
-                script.src = 'https://survey.survicate.com/workspaces/83b651f6b3eca1ab4551d95760fe5deb/web_surveys.js';
-                const firstScript = document.getElementsByTagName('script')[0];
-                firstScript.parentNode.insertBefore(script, firstScript);
-            };
-
-            if (
-                window &&
-                window.location &&
-                window.location.hostname &&
-                window.location.hostname.includes('deriv.com')
-            ) {
-                initServicate(window);
-            }
-        </script>
-        <!-- End of Survicate code -->
     </body>
 </html>

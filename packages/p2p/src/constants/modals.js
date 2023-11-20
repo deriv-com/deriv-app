@@ -55,6 +55,9 @@ export const modals = {
             /* webpackChunkName: "delete-payment-method-error-modal" */ 'Components/modal-manager/modals/delete-payment-method-error-modal'
         )
     ),
+    DisclaimerModal: React.lazy(() =>
+        import(/* webpackChunkName: "disclaimer-modal" */ 'Components/modal-manager/modals/disclaimer-modal')
+    ),
     EditAdCancelModal: React.lazy(() =>
         import(/* webpackChunkName: "edit-ad-cancel-modal" */ 'Components/modal-manager/modals/edit-ad-cancel-modal')
     ),

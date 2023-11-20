@@ -1,11 +1,14 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+
 import { TCFDPasswordReset } from '../Containers/props.types';
 
 export type TMobilePlatforms = 'ios' | 'android' | 'huawei';
 
-export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader' | 'derivez';
+export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 
-export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
+export type TCFDsPlatformType = 'dxtrade' | 'mt5' | 'ctrader' | '';
+
+export type TShortcode = DetailsOfEachMT5Loginid['landing_company_short'];
 
 export type TCFDAccountCopy = {
     text: string | undefined;
@@ -47,10 +50,6 @@ export type TCFDDashboardContainer = {
         demo: string;
         real: string;
     };
-    derivez_tokens: {
-        demo: string;
-        real: string;
-    };
 };
 
 type TOpenAccountTransferMeta = {
@@ -87,10 +86,10 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'maltainvest' | 'svg' | 'vanuatu';
+    shortcode?: TShortcode;
     sub_account_type: string;
     account_type?: 'real' | 'demo';
-    landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    landing_company_short?: TShortcode;
 };
 
 export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
@@ -235,7 +234,7 @@ export type TTradingPlatformAccounts = {
     /**
      * Landing company shortcode of the DXTrade account.
      */
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu';
+    landing_company_short?: DetailsOfEachMT5Loginid['landing_company_short'];
     /**
      * Login of DXTrade account.
      */
@@ -279,7 +278,7 @@ export type TJurisdictionData = {
 
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     display_login?: string;
-    landing_company_short?: string;
+    landing_company_short?: TShortcode;
     short_code_and_region?: string;
     mt5_acc_auth_status?: string | null;
     selected_mt5_jurisdiction?: TOpenAccountTransferMeta &

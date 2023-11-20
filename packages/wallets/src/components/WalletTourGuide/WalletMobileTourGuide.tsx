@@ -5,6 +5,8 @@ import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS } from '@deriv/react-jo
 import useDevice from '../../hooks/useDevice';
 import { useTabs } from '../WalletsPrimaryTabs/WalletsPrimaryTabs';
 import {
+    getFiatWalletLoginId,
+    getWalletIndexForTarget,
     TooltipComponent,
     tourStepConfig,
     walletsOnboardingLocalStorageKey as key,
@@ -15,9 +17,14 @@ import './WalletTourGuide.scss';
 type TProps = {
     isMT5PlatformListLoaded?: boolean;
     isOptionsAndMultipliersLoaded?: boolean;
+    isWalletSettled?: boolean;
 };
 
-const WalletMobileTourGuide = ({ isMT5PlatformListLoaded = true, isOptionsAndMultipliersLoaded = true }: TProps) => {
+const WalletMobileTourGuide = ({
+    isMT5PlatformListLoaded = true,
+    isOptionsAndMultipliersLoaded = true,
+    isWalletSettled = true,
+}: TProps) => {
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
     const { isMobile } = useDevice();
     const { activeTabIndex, setActiveTabIndex } = useTabs();
@@ -29,7 +36,8 @@ const WalletMobileTourGuide = ({ isMT5PlatformListLoaded = true, isOptionsAndMul
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAllWalletAccounts();
 
-    const fiatWalletLoginId = wallets?.[0]?.loginid;
+    const fiatWalletLoginId = getFiatWalletLoginId(wallets);
+    const walletIndex = getWalletIndexForTarget(fiatWalletLoginId, wallets);
     const activeWalletLoginId = activeWallet?.loginid;
 
     const callbackHandle = (data: CallBackProps) => {
@@ -49,9 +57,9 @@ const WalletMobileTourGuide = ({ isMT5PlatformListLoaded = true, isOptionsAndMul
         if (index >= 4) switchTab(1);
         else switchTab(0);
 
-        // wait for isMT5PlatformListLoaded
+        // wait for isWalletSettled
         if (index === 0) {
-            setRun(walletsOnboarding === startValue && isMT5PlatformListLoaded);
+            setRun(walletsOnboarding === startValue && isWalletSettled);
         }
 
         // pause if target was not found
@@ -87,9 +95,13 @@ const WalletMobileTourGuide = ({ isMT5PlatformListLoaded = true, isOptionsAndMul
 
     // for isMT5PlatformListLoaded
     useEffect(() => {
-        if ((onboardingStep === 0 || onboardingStep === 3) && !run)
-            setRun(walletsOnboarding === startValue && isMT5PlatformListLoaded);
+        if (onboardingStep === 3 && !run) setRun(walletsOnboarding === startValue && isMT5PlatformListLoaded);
     }, [isMT5PlatformListLoaded, onboardingStep, run, walletsOnboarding]);
+
+    // for isWalletSettled
+    useEffect(() => {
+        if (onboardingStep === 0 && !run) setRun(walletsOnboarding === startValue && isWalletSettled);
+    }, [isWalletSettled, onboardingStep, run, walletsOnboarding]);
 
     // for isOptionsAndMultipliersLoaded
     useEffect(() => {
@@ -118,7 +130,8 @@ const WalletMobileTourGuide = ({ isMT5PlatformListLoaded = true, isOptionsAndMul
                 isDemoWallet,
                 hasMT5Account,
                 hasDerivAppsTradingAccount,
-                isAllWalletsAlreadyAdded
+                isAllWalletsAlreadyAdded,
+                walletIndex
             )}
             tooltipComponent={TooltipComponent}
         />

@@ -93,28 +93,43 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
         return undefined;
     };
 
+    const onChangeCryptoInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseFloat(e.target.value);
+        const convertedValue =
+            !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
+                ? (value / exchangeRate?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_FIAT)
+                : '';
+        setValues({
+            ...values,
+            cryptoAmount: e.target.value,
+            fiatAmount: convertedValue,
+        });
+    };
+
+    const onChangeFiatInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseFloat(e.target.value);
+        const convertedValue =
+            !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
+                ? (value * exchangeRate?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_CRYPTO)
+                : '';
+
+        setValues({
+            ...values,
+            cryptoAmount: convertedValue,
+            fiatAmount: e.target.value,
+        });
+    };
+
     return (
         <div className='wallets-withdrawal-crypto-amount-converter'>
             <Field name='cryptoAmount' validate={validateCryptoInput}>
                 {({ field }: FieldProps<string>) => (
                     <WalletTextField
                         {...field}
+                        errorMessage={errors.cryptoAmount}
+                        isInvalid={Object.keys(errors).includes('cryptoAmount') && errors.cryptoAmount !== ''}
                         label={`Amount (${activeWallet?.currency})`}
-                        message={errors.cryptoAmount}
-                        onChange={e => {
-                            const value = parseFloat(e.target.value);
-                            const convertedValue =
-                                !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
-                                    ? (value / exchangeRate?.rates[activeWallet?.currency]).toFixed(
-                                          FRACTIONAL_DIGITS_FIAT
-                                      )
-                                    : '';
-                            setValues({
-                                ...values,
-                                cryptoAmount: e.target.value,
-                                fiatAmount: convertedValue,
-                            });
-                        }}
+                        onChange={onChangeCryptoInput}
                         onFocus={() => setIsCryptoInputActive(true)}
                         showMessage
                     />
@@ -131,23 +146,11 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                 {({ field }: FieldProps<string>) => (
                     <WalletTextField
                         {...field}
+                        errorMessage={errors.fiatAmount}
+                        isInvalid={Object.keys(errors).includes('fiatAmount') && errors.fiatAmount !== ''}
                         label='Amount (USD)'
-                        message={errors.fiatAmount ?? 'Approximate value'}
-                        onChange={e => {
-                            const value = parseFloat(e.target.value);
-                            const convertedValue =
-                                !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
-                                    ? (value * exchangeRate?.rates[activeWallet?.currency]).toFixed(
-                                          FRACTIONAL_DIGITS_CRYPTO
-                                      )
-                                    : '';
-
-                            setValues({
-                                ...values,
-                                cryptoAmount: convertedValue,
-                                fiatAmount: e.target.value,
-                            });
-                        }}
+                        message='Approximate value'
+                        onChange={onChangeFiatInput}
                         onFocus={() => setIsCryptoInputActive(false)}
                         showMessage
                     />

@@ -6,7 +6,7 @@ import { WithdrawalCryptoForm, WithdrawalDisclaimer } from './components';
 import './WithdrawalCrypto.scss';
 
 type TWithdrawalCryptoProps = {
-    verificationCode?: string;
+    verificationCode: string;
 };
 
 const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ verificationCode }) => {

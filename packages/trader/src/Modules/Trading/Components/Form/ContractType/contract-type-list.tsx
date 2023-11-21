@@ -64,7 +64,6 @@ const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, va
                 </div>
             );
         })}
-        ;
     </React.Fragment>
 );
 

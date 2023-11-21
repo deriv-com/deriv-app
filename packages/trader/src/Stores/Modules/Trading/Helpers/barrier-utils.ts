@@ -7,6 +7,6 @@ export const getHoveredColor = (type: string): string => {
         case CONTRACT_TYPES.TURBOS.LONG:
             return BARRIER_COLORS.GREEN;
         default:
-            return BARRIER_COLORS.GRAY;
+            return BARRIER_COLORS.BLUE;
     }
 };

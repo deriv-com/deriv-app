@@ -229,6 +229,68 @@ import type {
 import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 type TPrivateSocketEndpoints = {
+    available_accounts: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            available_accounts: 1;
+            /**
+             * List of account categories that needs to received.
+             */
+            categories: 'wallet'[];
+            /**
+             * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
+             */
+            loginid?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            available_accounts?: {
+                /**
+                 * Wallet account types that are available to be created
+                 */
+                wallets: {
+                    /**
+                     * Account type of wallet
+                     */
+                    account_type: 'doughflow' | 'crypto' | 'paymentagent' | 'paymentagent_client' | 'p2p';
+                    /**
+                     * Currency of wallet
+                     */
+                    currency: string;
+                    /**
+                     * Landing Company of wallet.
+                     */
+                    landing_company: string;
+                }[];
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'available_accounts';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
     wallet_migration: {
         request: {
             /**
@@ -457,7 +519,7 @@ type TPrivateSocketEndpoints = {
                      * Details for trading account types
                      *
                      * This interface was referenced by `undefined`'s JSON-Schema definition
-                     * via the `patternProperty` "^(binary|dxtrade|mt5|standard|derivez)$".
+                     * via the `patternProperty` "^(binary|dxtrade|mt5|standard)$".
                      */
                     [k: string]: {
                         /**
@@ -837,15 +899,15 @@ type TPrivateSocketEndpoints = {
              */
             referrer?: string;
             /**
-             * Server (dxtrade and derivez).
+             * Server (dxtrade).
              */
             server?: 'demo' | 'real';
             /**
              * The service(s) to retrieve token(s) for.
              */
             service:
-                | ('onfido' | 'sendbird' | 'banxa' | 'wyre' | 'dxtrade' | 'pandats' | 'ctrader')
-                | ('onfido' | 'sendbird' | 'banxa' | 'wyre' | 'pandats')[];
+                | ('onfido' | 'sendbird' | 'banxa' | 'wyre' | 'dxtrade' | 'ctrader')
+                | ('onfido' | 'sendbird' | 'banxa' | 'wyre')[];
             /**
              * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
              */
@@ -903,15 +965,6 @@ type TPrivateSocketEndpoints = {
                 onfido?: {
                     /**
                      * Onfido token.
-                     */
-                    token?: string;
-                };
-                /**
-                 * Deriv EZ data.
-                 */
-                pandats?: {
-                    /**
-                     * Deriv EZ SSO token
                      */
                     token?: string;
                 };
@@ -1015,6 +1068,66 @@ type TPrivateSocketEndpoints = {
         req_id?: number;
         [k: string]: unknown;
     };
+    trading_platform_leverage: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_leverage: 1;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'mt5' | 'dxtrade' | 'ctrader';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * dynamic leverage data.
+             */
+            trading_platform_leverage: {
+                leverage: {
+                    [x in 'stock_indices' | 'forex' | 'metals' | 'cryptocurrencies']: {
+                        display_name: string;
+                        instruments: string[];
+                        min: number;
+                        max: number;
+                        volume: {
+                            unit: string;
+                            data: {
+                                from: number;
+                                to: number;
+                                leverage: number;
+                            }[];
+                        };
+                    };
+                };
+            };
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_leverage';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
     trading_platform_password_change: {
         request: {
             /**
@@ -1074,7 +1187,7 @@ type TPrivateSocketEndpoints = {
              */
             account_type: 'demo' | 'real';
             /**
-             * [Optional] Name of the client's company (For DerivEZ only)
+             * [Optional]
              */
             company?: string;
             /**
@@ -1096,7 +1209,7 @@ type TPrivateSocketEndpoints = {
             /**
              * Name of trading platform.
              */
-            platform: 'dxtrade' | 'derivez' | 'ctrader';
+            platform: 'dxtrade' | 'ctrader';
             /**
              * [Optional] Sub account type.
              */
@@ -1156,7 +1269,7 @@ type TPrivateSocketEndpoints = {
             /**
              * Name of trading platform.
              */
-            platform?: 'dxtrade' | 'derivez' | 'ctrader';
+            platform?: 'dxtrade' | 'ctrader';
             /**
              * Sub account type.
              */
@@ -1288,7 +1401,7 @@ type TPrivateSocketEndpoints = {
             /**
              * Trading platform name
              */
-            platform: 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
+            platform: 'dxtrade' | 'mt5' | 'ctrader';
             /**
              * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
              */

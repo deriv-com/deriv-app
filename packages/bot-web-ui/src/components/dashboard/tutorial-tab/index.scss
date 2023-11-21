@@ -135,7 +135,6 @@
 .faq {
     &__wrapper {
         overflow: auto;
-        height: calc(100vh - 180px);
         padding-bottom: 18px;
 
         @include mobile {

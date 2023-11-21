@@ -31,17 +31,9 @@ const HorizontalSwipe = ({
     const onSwipeLeft = () => {
         if (!is_left_swipe_disabled) {
             if (
-                (is_left_swipe && !is_right_swipe && should_show_right_hidden_component) ||
-                (is_right_swipe && !is_left_swipe && !should_show_left_hidden_component)
+                (is_left_swipe && should_show_right_hidden_component) ||
+                (is_right_swipe && !should_show_left_hidden_component)
             ) {
-                return;
-            }
-            if (is_left_swipe && is_right_swipe) {
-                if (should_show_left_hidden_component) {
-                    setShouldShowLeftHiddenComponent(false);
-                } else if (!should_show_right_hidden_component) {
-                    setShouldShowRightHiddenComponent(true);
-                }
                 return;
             }
             if (is_left_swipe && !should_show_right_hidden_component) {
@@ -56,22 +48,15 @@ const HorizontalSwipe = ({
     const onSwipeRight = () => {
         if (!is_right_swipe_disabled) {
             if (
-                (is_left_swipe && !is_right_swipe && !should_show_right_hidden_component) ||
-                (is_right_swipe && !is_left_swipe && should_show_left_hidden_component)
+                (is_left_swipe && !should_show_right_hidden_component) ||
+                (is_right_swipe && should_show_left_hidden_component)
             ) {
-                return;
-            }
-            if (is_left_swipe && is_right_swipe) {
-                if (should_show_right_hidden_component) {
-                    setShouldShowRightHiddenComponent(false);
-                } else if (!should_show_left_hidden_component) {
-                    setShouldShowLeftHiddenComponent(true);
-                }
                 return;
             }
             if (is_left_swipe && should_show_right_hidden_component) {
                 setShouldShowRightHiddenComponent(false);
             }
+
             if (is_right_swipe && !should_show_left_hidden_component) {
                 setShouldShowLeftHiddenComponent(true);
             }

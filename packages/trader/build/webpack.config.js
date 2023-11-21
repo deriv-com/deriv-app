@@ -39,7 +39,6 @@ module.exports = function (env) {
                 'react-dom': 'react-dom',
                 'react-router-dom': 'react-router-dom',
                 'react-router': 'react-router',
-                'react-swipeable': 'react-swipeable',
                 mobx: 'mobx',
                 'mobx-react': 'mobx-react',
                 '@deriv/shared': '@deriv/shared',

@@ -16,7 +16,7 @@ import {
     priority_toast_messages,
     maintenance_notifications,
 } from '../../Stores/Helpers/client-notifications';
-import TradeNotifications from './trade-notifications.jsx';
+import TradeNotifications from './trade-notifications';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;

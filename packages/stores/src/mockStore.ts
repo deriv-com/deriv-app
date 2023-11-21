@@ -519,6 +519,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             showAccountSwitchToRealNotification: jest.fn(),
             setShouldShowPopups: jest.fn(),
             toggleNotificationsModal: jest.fn(),
+            trade_notifications: [],
         },
         portfolio: {
             active_positions: [],

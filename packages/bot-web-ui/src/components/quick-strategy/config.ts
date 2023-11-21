@@ -188,6 +188,7 @@ export const STRATEGIES: TStrategies = {
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },
+
     REVERSE_MARINGALE: {
         name: 'reverse_martingale',
         label: localize('Reverse Martingale'),
@@ -197,6 +198,18 @@ export const STRATEGIES: TStrategies = {
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
+        ],
+    },
+
+    '1_3_2_6': {
+        name: '1_3_2_6',
+        label: localize('1-3-2-6'),
+        description: localize(
+            'The 1-3-2-6 strategy aims to maximise profits with four consecutive wins. One unit is equal to the amount of the initial stake. The stake will adjust from 1 unit to 3 units after the first successful trade, then to 2 units after your second successful trade, and to 6 units after the third successful trade. The stake for the next trade will reset to the initial stake if there is a losing trade or a completion of the trade cycle.'
+        ),
+        fields: [
+            [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
+            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS],
         ],
     },
 };

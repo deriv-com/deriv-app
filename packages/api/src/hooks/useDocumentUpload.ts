@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import useMutation from '../useMutation';
 import { compressImageFile, generateChunks, numToUint8Array, readFile } from '../utils';
 import md5 from 'md5';
-import { getWebsocket } from '../APIProvider';
+import { getActiveWebsocket } from '../APIProvider';
 
 type TDocumentUploadPayload = Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload'];
 type TUploadPayload = Omit<TDocumentUploadPayload, 'expected_checksum' | 'file_size'> & {
@@ -21,7 +21,7 @@ const useDocumentUpload = () => {
     } = useMutation('document_upload');
     const [tempChunks, setTempChunks] = useState<Uint8Array[]>([]);
     const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
-    const activeWebSocket = getWebsocket();
+    const activeWebSocket = getActiveWebsocket();
 
     const isLoading = useMemo(() => _isLoading || !isDocumentUploaded, [_isLoading, isDocumentUploaded]);
     const isSuccess = useMemo(() => _isSuccess && isDocumentUploaded, [_isSuccess, isDocumentUploaded]);

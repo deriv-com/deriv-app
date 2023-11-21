@@ -50,6 +50,20 @@ const handleReconnection = (wss_url: string) => {
 };
 
 /**
+ * Retrieves the WebSocket URL based on the current environment.
+ * @returns {string} The WebSocket URL.
+ */
+const getWebSocketURL = () => {
+    const endpoint = getSocketURL();
+    const app_id = getAppId();
+    const language = localStorage.getItem('i18n_language');
+    const brand = 'deriv';
+    const wss_url = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
+
+    return wss_url;
+};
+
+/**
  * Retrieves or initializes a WebSocket instance based on the provided URL.
  * @param {string} wss_url - The WebSocket URL.
  * @returns {WebSocket} The WebSocket instance associated with the provided URL.
@@ -72,12 +86,13 @@ const getWebsocketInstance = (wss_url: string) => {
     return window.WSConnections[wss_url];
 };
 
-export const getWebsocket = () => {
-    const endpoint = getSocketURL();
-    const app_id = getAppId();
-    const language = localStorage.getItem('i18n_language');
-    const brand = 'deriv';
-    const wss_url = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
+/**
+ * Retrieves the active WebSocket instance.
+ * @returns {WebSocket} The WebSocket instance associated with the provided URL.
+ */
+export const getActiveWebsocket = () => {
+    const wss_url = getWebSocketURL();
+
     return window?.WSConnections?.[wss_url];
 };
 
@@ -91,11 +106,7 @@ const initializeDerivAPI = (): DerivAPIBasic => {
         window.DerivAPI = {};
     }
 
-    const endpoint = getSocketURL();
-    const app_id = getAppId();
-    const language = localStorage.getItem('i18n_language');
-    const brand = 'deriv';
-    const wss_url = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
+    const wss_url = getWebSocketURL();
     const websocketConnection = getWebsocketInstance(wss_url);
 
     if (!window.DerivAPI?.[wss_url]) {

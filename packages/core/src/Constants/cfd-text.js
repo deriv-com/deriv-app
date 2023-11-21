@@ -17,7 +17,6 @@ export const CFD_TEXT = {
     financial_fx: () => localize('Financial Labuan'),
     financial_v: () => localize('Financial Vanuatu'),
     financial_svg: () => localize('Financial SVG'),
-    derivez: () => localize('Deriv EZ'),
     all: () => localize('Swap-Free'),
     all_demo: () => localize('Swap-Free Demo'),
     all_svg: () => localize('Swap-Free SVG'),

@@ -9,7 +9,6 @@ export const Jurisdiction = Object.freeze({
 export const Platforms = Object.freeze({
     DXTRADE: 'dxtrade',
     MT5: 'mt5',
-    DERIVEZ: 'derivez',
 });
 
 export const DBVI_COMPANY_NAMES = {

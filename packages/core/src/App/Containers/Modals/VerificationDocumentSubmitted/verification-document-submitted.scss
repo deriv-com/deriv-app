@@ -20,6 +20,9 @@
             align-items: center;
             flex-direction: column;
 
+            @include mobile {
+                height: 90%;
+            }
             .dc-btn {
                 height: 4rem;
                 margin-top: 3.2rem;

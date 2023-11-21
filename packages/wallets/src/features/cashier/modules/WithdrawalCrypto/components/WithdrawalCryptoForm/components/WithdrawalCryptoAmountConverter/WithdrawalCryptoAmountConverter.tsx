@@ -127,7 +127,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                     <WalletTextField
                         {...field}
                         errorMessage={errors.cryptoAmount}
-                        isInvalid={Object.keys(errors).includes('cryptoAmount') && errors.cryptoAmount !== ''}
+                        isInvalid={Object.keys(errors).includes('cryptoAmount')}
                         label={`Amount (${activeWallet?.currency})`}
                         onChange={onChangeCryptoInput}
                         onFocus={() => setIsCryptoInputActive(true)}
@@ -147,7 +147,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                     <WalletTextField
                         {...field}
                         errorMessage={errors.fiatAmount}
-                        isInvalid={Object.keys(errors).includes('fiatAmount') && errors.fiatAmount !== ''}
+                        isInvalid={Object.keys(errors).includes('fiatAmount')}
                         label='Amount (USD)'
                         message='Approximate value'
                         onChange={onChangeFiatInput}

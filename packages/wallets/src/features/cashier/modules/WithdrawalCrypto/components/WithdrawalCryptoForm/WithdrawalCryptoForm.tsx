@@ -75,12 +75,13 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                                 {({ field }: FieldProps<string>) => (
                                     <WalletTextField
                                         {...field}
+                                        errorMessage={errors.cryptoAddress}
+                                        isInvalid={Object.keys(errors).includes('cryptoAddress')}
                                         label={`Your ${
                                             activeWallet?.currency
                                                 ? getCurrencyConfig(activeWallet?.currency)?.name
                                                 : ''
                                         } cryptocurrency wallet address`}
-                                        message={errors.cryptoAddress}
                                         showMessage
                                     />
                                 )}

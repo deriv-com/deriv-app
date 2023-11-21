@@ -4,8 +4,9 @@ export type TAccount = TTransferContext['activeWallet'];
 export type TAccountsList = TTransferContext['accounts'];
 
 export type TInitialTransferFormValues = {
-    amountReceive: number;
-    amountSend: number;
+    activeAmountFieldName?: 'fromAmount' | 'toAmount';
     fromAccount?: TAccount;
+    fromAmount: number;
     toAccount?: TAccount;
+    toAmount: number;
 };

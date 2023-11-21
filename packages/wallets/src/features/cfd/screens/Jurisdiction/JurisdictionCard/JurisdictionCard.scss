@@ -39,8 +39,13 @@
         color: #ff444f;
     }
 
-    &:hover {
+    &:hover:not(.wallets-jurisdiction-card--added) {
         box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
+    }
+
+    &--added {
+        user-select: none;
+        cursor: not-allowed;
     }
 
     &--selected {

@@ -4,6 +4,7 @@ import type {
     useActiveTradingAccount,
     useActiveWalletAccount,
     useAllWalletAccounts,
+    useAuthentication,
     useAvailableMT5Accounts,
     useCreateOtherCFDAccount,
     useCreateWallet,
@@ -23,6 +24,7 @@ import type {
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
+    export type Authentication = NonNullable<ReturnType<typeof useAuthentication>['data']>;
     export type AvailableMT5Accounts = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number];
     export type CreateWallet = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];

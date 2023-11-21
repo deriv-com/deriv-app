@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
-import { useAvailableMT5Accounts } from '@deriv/api';
+import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
 import { WalletText } from '../../../../components/Base/WalletText';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
@@ -25,11 +25,16 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
 }) => {
     const { getModalState } = useModal();
     const { data, isLoading } = useAvailableMT5Accounts();
+    const { data: mt5AccountsList } = useMT5AccountsList();
     const marketType = getModalState('marketType') as keyof typeof MarketTypeDetails;
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
     const jurisdictions = useMemo(
         () => data?.filter(account => account.market_type === marketType).map(account => account.shortcode) || [],
         [data, marketType]
+    );
+    const addedJurisdictions = useMemo(
+        () => mt5AccountsList?.map(account => account.landing_company_short) || [],
+        [mt5AccountsList]
     );
 
     useEffect(() => {
@@ -47,6 +52,7 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
             <div className='wallets-jurisdiction-screen__cards'>
                 {jurisdictions.map(jurisdiction => (
                     <JurisdictionCard
+                        isAdded={addedJurisdictions.includes(jurisdiction as typeof addedJurisdictions[number])}
                         isSelected={selectedJurisdiction === jurisdiction}
                         jurisdiction={jurisdiction || 'bvi'}
                         key={jurisdiction}

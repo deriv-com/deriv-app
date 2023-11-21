@@ -1,8 +1,8 @@
 import React from 'react';
 import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
-import usePasswordValidation from '../../../../hooks/usePasswordValidation';
 import { TPlatforms } from '../../../../types';
+import { validPassword } from '../../../../utils/passwordUtils';
 import { PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
 
@@ -24,7 +24,6 @@ const CreatePassword: React.FC<TProps> = ({
     platform,
 }) => {
     const { isMobile } = useDevice();
-    const { isValidPassword } = usePasswordValidation(password);
 
     const title = PlatformDetails[platform].title;
     return (
@@ -40,7 +39,7 @@ const CreatePassword: React.FC<TProps> = ({
             <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
             {!isMobile && (
                 <WalletButton
-                    disabled={!password || isLoading || !isValidPassword}
+                    disabled={!password || isLoading || !validPassword(password)}
                     isLoading={isLoading}
                     onClick={onPrimaryClick}
                     size='lg'

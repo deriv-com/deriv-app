@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import usePasswordValidation from '../../../hooks/usePasswordValidation';
+import { Score, validPassword } from '../../../utils/passwordUtils';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-export type Score = 0 | 1 | 2 | 3 | 4;
 interface WalletPasswordFieldProps extends WalletTextFieldProps {
     password: string;
     shouldDisablePasswordMeter?: boolean;
@@ -21,7 +21,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
 
-    const { errorMessage, isValidPassword, score } = usePasswordValidation(password);
+    const { errorMessage, score } = usePasswordValidation(password);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +35,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
         <div className='wallets-password'>
             <WalletTextField
                 errorMessage={errorMessage}
-                isInvalid={isTouched && !isValidPassword}
+                isInvalid={!validPassword(password) && isTouched}
                 label={label}
                 message={isTouched ? errorMessage : ''}
                 messageVariant='warning'

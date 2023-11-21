@@ -367,6 +367,7 @@ type TClientStore = {
     has_any_real_account: boolean;
     getLimits: () => Promise<{ get_limits?: GetLimits }>;
     has_active_real_account: boolean;
+    has_cookie_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
     has_restricted_mt5_account: boolean;

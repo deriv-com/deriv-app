@@ -12,12 +12,11 @@ import './TransferFormDropdown.scss';
 
 type TProps = {
     fieldName: keyof TInitialTransferFormValues;
-    label: 'Transfer from' | 'Transfer to';
     mobileAccountsListRef: RefObject<HTMLElement>;
 };
 
-const TransferFormDropdown: React.FC<TProps> = ({ fieldName, label, mobileAccountsListRef }) => {
-    const { setFieldValue, values } = useFormikContext<TInitialTransferFormValues>();
+const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListRef }) => {
+    const { setValues, values } = useFormikContext<TInitialTransferFormValues>();
     const { accounts, activeWallet } = useTransfer();
     const { fromAccount, toAccount } = values;
     const { isMobile } = useDevice();
@@ -36,18 +35,27 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, label, mobileAccoun
 
     const selectedAccount = fieldName === 'fromAccount' ? fromAccount : toAccount;
     const accountsList = fieldName === 'fromAccount' ? accounts : toAccountList;
+    const label = fieldName === 'fromAccount' ? 'Transfer from' : 'Transfer to';
 
     const handleSelect = useCallback(
         (account: TInitialTransferFormValues['fromAccount']) => {
             if (account?.loginid === selectedAccount?.loginid) return;
-            if (fieldName === 'fromAccount') {
-                account?.loginid !== activeWallet?.loginid
-                    ? setFieldValue('toAccount', activeWallet)
-                    : setFieldValue('toAccount', undefined);
-            }
-            setFieldValue(fieldName, account);
+
+            setValues(prev => {
+                const fromAccount = fieldName === 'fromAccount' ? account : prev.fromAccount;
+                const computedToAccount = account?.loginid !== activeWallet?.loginid ? activeWallet : undefined;
+                const toAccount = fieldName === 'toAccount' ? account : computedToAccount;
+                return {
+                    ...prev,
+                    activeAmountFieldName: undefined,
+                    fromAccount,
+                    fromAmount: 0,
+                    toAccount,
+                    toAmount: 0,
+                };
+            });
         },
-        [activeWallet, fieldName, selectedAccount?.loginid, setFieldValue]
+        [activeWallet, fieldName, selectedAccount?.loginid, setValues]
     );
 
     return (

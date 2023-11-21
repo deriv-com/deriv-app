@@ -35,24 +35,25 @@ const Trade = observer(() => {
     const {
         form_components,
         getFirstOpenMarket,
-        should_show_active_symbols_loading,
+        has_barrier,
+        is_accumulator,
         is_chart_loading,
         is_market_closed,
+        is_synthetics_available,
+        is_synthetics_trading_market_available,
         is_trade_enabled,
+        is_turbos,
+        is_vanilla,
         onChange,
         onMount,
         onUnmount,
         prepareTradeStore,
         setContractTypes,
-        setMobileDigitView,
         setIsDigitsWidgetActive,
+        setMobileDigitView,
+        should_show_active_symbols_loading,
         show_digits_stats,
-        is_accumulator,
         symbol,
-        is_synthetics_available,
-        is_synthetics_trading_market_available,
-        is_turbos,
-        is_vanilla,
     } = useTraderStore();
     const {
         notification_messages_ui: NotificationMessages,
@@ -212,6 +213,7 @@ const Trade = observer(() => {
                                 charts_ref={charts_ref}
                                 bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
                                 is_accumulator={is_accumulator}
+                                has_barrier={has_barrier}
                             />
                         </SwipeableWrapper>
                     </MobileWrapper>
@@ -273,7 +275,7 @@ const ChartMarkers = observer(config => {
 });
 
 const ChartTrade = observer(props => {
-    const { is_accumulator, end_epoch, topWidgets, charts_ref } = props;
+    const { is_accumulator, has_barrier, end_epoch, topWidgets, charts_ref } = props;
     const { client, ui, common, contract_trade, portfolio } = useStore();
     const {
         accumulator_barriers_data,
@@ -316,6 +318,7 @@ const ChartTrade = observer(props => {
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
         ...(is_accumulator ? { whitespace: 190, minimumLeftBars: is_mobile ? 3 : undefined } : {}),
+        ...(has_barrier ? { whitespace: 110 } : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};

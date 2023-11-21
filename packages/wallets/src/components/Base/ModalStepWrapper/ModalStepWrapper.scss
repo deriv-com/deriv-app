@@ -10,6 +10,10 @@
         display: grid;
         grid-template-rows: 6rem auto;
 
+        &--hide-deriv-app-header {
+            height: 100svh;
+        }
+
         &--fixed-footer {
             grid-template-rows: 6rem auto 7rem;
         }

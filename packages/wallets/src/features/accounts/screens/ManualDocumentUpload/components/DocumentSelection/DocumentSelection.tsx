@@ -14,22 +14,24 @@ const DocumentSelection: React.FC<TProps> = ({ setSelectedDocument }) => {
 
     return (
         <div className='wallets-document-selection'>
-            <WalletText>Please upload one of the following documents:</WalletText>
-            {documentTypes.map(({ countries, description, icon, title, value }) => {
-                if (countries && !countries.includes(data?.country_code ?? '')) {
-                    return null;
-                }
-                return (
-                    <DocumentSelectionCard
-                        description={description}
-                        icon={icon}
-                        key={`document-card-${value}`}
-                        onClick={setSelectedDocument}
-                        title={title}
-                        value={value}
-                    />
-                );
-            })}
+            <div className='wallets-document-selection__content'>
+                <WalletText>Please upload one of the following documents:</WalletText>
+                {documentTypes.map(({ countries, description, icon, title, value }) => {
+                    if (countries && !countries.includes(data?.country_code ?? '')) {
+                        return null;
+                    }
+                    return (
+                        <DocumentSelectionCard
+                            description={description}
+                            icon={icon}
+                            key={`document-card-${value}`}
+                            onClick={setSelectedDocument}
+                            title={title}
+                            value={value}
+                        />
+                    );
+                })}
+            </div>
         </div>
     );
 };

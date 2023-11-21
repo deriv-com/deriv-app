@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
-import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig, useExchangeRate } from '@deriv/api';
+import { useCryptoWithdrawal, useExchangeRate } from '@deriv/api';
 import { WalletButton, WalletText, WalletTextField, WalletsPercentageSelector } from '../../../../../../components';
+import type { THooks } from '../../../../../../types';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import './WithdrawalCryptoForm.scss';
 
@@ -15,8 +16,8 @@ export type TForm = {
 };
 
 type TWithdrawalCryptoFormProps = {
-    activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
-    getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
+    activeWallet?: THooks.ActiveWalletAccount;
+    getCurrencyConfig: THooks.GetCurrencyConfig;
     verificationCode?: string;
 };
 
@@ -36,10 +37,8 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
     verificationCode,
 }) => {
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
-    const { mutate } = useCryptoWithdrawal();
-    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency
-        ? getCurrencyConfig(activeWallet?.currency)?.fractional_digits
-        : 2;
+    const { mutate: requestCryptoWithdrawal } = useCryptoWithdrawal();
+    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;
     const FRACTIONAL_DIGITS_FIAT = getCurrencyConfig('USD')?.fractional_digits;
 
     useEffect(() => {
@@ -60,7 +59,7 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                 fiatAmount: '',
             }}
             onSubmit={values =>
-                mutate({
+                requestCryptoWithdrawal({
                     address: values.cryptoAddress,
                     amount: parseFloat(parseFloat(values.cryptoAmount).toFixed(FRACTIONAL_DIGITS_CRYPTO)),
                     verification_code: verificationCode,
@@ -76,12 +75,8 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                                     <WalletTextField
                                         {...field}
                                         errorMessage={errors.cryptoAddress}
-                                        isInvalid={Object.keys(errors).includes('cryptoAddress')}
-                                        label={`Your ${
-                                            activeWallet?.currency
-                                                ? getCurrencyConfig(activeWallet?.currency)?.name
-                                                : ''
-                                        } cryptocurrency wallet address`}
+                                        isInvalid={Boolean(errors?.cryptoAddress)}
+                                        label={`Your ${activeWallet?.currency_config?.name} cryptocurrency wallet address`}
                                         showMessage
                                     />
                                 )}
@@ -98,22 +93,26 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                                 onChangePercentage={percentage => {
                                     const fraction = percentage / 100;
 
+                                    const cryptoAmount =
+                                        !!fraction && activeWallet?.balance
+                                            ? (fraction * activeWallet?.balance).toFixed(FRACTIONAL_DIGITS_CRYPTO)
+                                            : '';
+
+                                    const fiatAmount =
+                                        !!fraction &&
+                                        activeWallet?.balance &&
+                                        activeWallet?.currency &&
+                                        exchangeRate?.rates
+                                            ? (
+                                                  (fraction * activeWallet?.balance) /
+                                                  exchangeRate?.rates[activeWallet.currency]
+                                              ).toFixed(FRACTIONAL_DIGITS_FIAT)
+                                            : '';
+
                                     return setValues({
                                         ...values,
-                                        cryptoAmount:
-                                            !!fraction && activeWallet?.balance
-                                                ? (fraction * activeWallet?.balance).toFixed(FRACTIONAL_DIGITS_CRYPTO)
-                                                : '',
-                                        fiatAmount:
-                                            !!fraction &&
-                                            activeWallet?.balance &&
-                                            activeWallet?.currency &&
-                                            exchangeRate?.rates
-                                                ? (
-                                                      (fraction * activeWallet?.balance) /
-                                                      exchangeRate?.rates[activeWallet.currency]
-                                                  ).toFixed(FRACTIONAL_DIGITS_FIAT)
-                                                : '',
+                                        cryptoAmount,
+                                        fiatAmount,
                                     });
                                 }}
                             />
@@ -121,8 +120,7 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                                 {!Number.isNaN(parseFloat(values.cryptoAmount)) && activeWallet?.balance
                                     ? Math.round(parseFloat(values.cryptoAmount) / activeWallet?.balance)
                                     : '0'}
-                                % of available balance ({activeWallet?.balance.toFixed(FRACTIONAL_DIGITS_CRYPTO)}{' '}
-                                {activeWallet?.currency})
+                                % of available balance ({activeWallet?.display_balance})
                             </WalletText>
                         </div>
                         <WithdrawalCryptoAmountConverter

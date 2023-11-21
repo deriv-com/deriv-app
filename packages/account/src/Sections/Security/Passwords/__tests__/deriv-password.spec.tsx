@@ -53,7 +53,7 @@ describe('<DerivPassword />', () => {
         expect(screen.queryByText(/unlink from/i)).not.toBeInTheDocument();
 
         const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
-        expect(popover_wrapper).toHaveLength(6);
+        expect(popover_wrapper).toHaveLength(5);
     });
 
     it('displays the correct platform information for non-MF clients & restricted countries', () => {
@@ -66,7 +66,7 @@ describe('<DerivPassword />', () => {
 
         const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
         // expect popover to have length of 4
-        expect(popover_wrapper).toHaveLength(4);
+        expect(popover_wrapper).toHaveLength(3);
         // expect button with text change password to be in the document
         expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
     });

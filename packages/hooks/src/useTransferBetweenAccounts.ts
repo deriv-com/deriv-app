@@ -23,7 +23,7 @@ const useTransferBetweenAccounts = () => {
     const trading_apps_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
 
     const {
-        data: { derivez_accounts, dxtrade_accounts, mt5_accounts },
+        data: { dxtrade_accounts, mt5_accounts },
         isSuccess: is_cfd_accounts_loaded,
     } = useExistingCFDAccounts();
 
@@ -33,7 +33,7 @@ const useTransferBetweenAccounts = () => {
     });
 
     const modified_transfer_accounts = useMemo(() => {
-        const all_linked_cfd_accounts = [...derivez_accounts, ...dxtrade_accounts, ...mt5_accounts];
+        const all_linked_cfd_accounts = [...dxtrade_accounts, ...mt5_accounts];
 
         const getAccountType = (is_demo?: number, currency?: string): 'fiat' | 'crypto' | 'demo' => {
             if (is_demo) return 'demo';
@@ -121,7 +121,6 @@ const useTransferBetweenAccounts = () => {
         active_wallet?.icon,
         active_wallet?.landing_company_name,
         data?.accounts,
-        derivez_accounts,
         dxtrade_accounts,
         getConfig,
         mt5_accounts,

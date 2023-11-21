@@ -21,7 +21,7 @@ const HeaderAccountActions = observer(({ onClickDeposit }: THeaderAccountActions
     const { is_notifications_visible, notifications: notifications_array, toggleNotificationsModal } = notifications;
 
     return (
-        <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
+        <div id='dt_core_header_acc-info-container' className='acc-info__container'>
             <AccountActions
                 acc_switcher_disabled_message={account_switcher_disabled_message}
                 account_type={account_type}

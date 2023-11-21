@@ -61,7 +61,6 @@ describe('<GeneralStore /> onMount()', () => {
 
     afterEach(() => {
         general_store.disposeUserBarredReaction();
-        general_store.disposeLocalCurrencyReaction();
     });
 
     it('should pass initial if check when get_account_status is not empty', async () => {
@@ -144,7 +143,7 @@ describe('<GeneralStore /> onMount()', () => {
         spyAuthorized.mockRestore();
     });
 
-    it('should set is_blocked to true if user is high risk, not authenticated and financial assessment has been complete', async () => {
+    it('should set should_show_poa to true if user is high risk, not authenticated and financial assessment has been complete', async () => {
         const spySend = jest.spyOn(WS, 'send').mockImplementation(() => ({
             website_status,
             error: null,
@@ -161,7 +160,7 @@ describe('<GeneralStore /> onMount()', () => {
 
         await general_store.onMount();
 
-        await waitFor(() => expect(general_store.is_blocked).toBe(true));
+        await waitFor(() => expect(general_store.should_show_poa).toBe(true));
 
         spySend.mockRestore();
         spyAuthorized.mockRestore();

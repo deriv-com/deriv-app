@@ -7,7 +7,7 @@ describe('getHoveredColor', () => {
     it('should return green color (#4bb4b3) if passed value is TURBOSLONG', () => {
         expect(getHoveredColor('TURBOSLONG')).toEqual('#4bb4b3');
     });
-    it('should return gray color (#999999) if passed value not TURBOSLONG or TURBOSSHORT', () => {
-        expect(getHoveredColor('TESTTYPE')).toEqual('#999999');
+    it('should return blue color (#377cfc) if passed value not TURBOSLONG or TURBOSSHORT', () => {
+        expect(getHoveredColor('TESTTYPE')).toEqual('#377cfc');
     });
 });

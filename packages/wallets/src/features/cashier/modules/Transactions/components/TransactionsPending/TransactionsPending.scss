@@ -1,16 +1,13 @@
 .wallets-transactions-pending {
     position: relative;
+    width: 100%;
+    max-width: 80rem;
 
     &__group-title {
-        width: 7.4rem;
-        height: 1.4rem;
-        color: var(--system-light-3-less-prominent-text, #999);
-        text-align: right;
+        margin: 0 0 0.8rem 1.6rem;
 
-        /* desktop/extra small/XS - regular */
-        font-size: 1rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 1.4rem; /* 140% */
+        @include mobile {
+            margin-left: 0;
+        }
     }
 }

@@ -34,7 +34,7 @@ export namespace THooks {
     export type ActiveTradingAccount = NonNullable<ReturnType<typeof useActiveTradingAccount>['data']>;
     export type ActiveAccount = NonNullable<ReturnType<typeof useActiveAccount>['data']>;
     export type AllWalletAccounts = NonNullable<ReturnType<typeof useAllWalletAccounts>['data']>[number];
-    export type DynamicLeverage = NonNullable<ReturnType<typeof useDynamicLeverage>['data']>[number];
+    export type DynamicLeverage = NonNullable<ReturnType<typeof useDynamicLeverage>['data']>;
     export type CryptoTransactions = NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
     export type POI = NonNullable<ReturnType<typeof usePOI>['data']>;
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];

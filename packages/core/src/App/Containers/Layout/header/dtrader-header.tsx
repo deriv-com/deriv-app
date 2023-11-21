@@ -3,7 +3,6 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { routes, getDecimalPlaces, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-// import { useWalletMigration } from '@deriv/hooks';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -40,11 +39,6 @@ const DTraderHeader = observer(() => {
         () => removeNotificationMessage({ key: 'new_version_available' }),
         [removeNotificationMessage]
     );
-
-    //TODO: Uncomment once useWalletMigration hook is optimized for production release.
-    // const { is_migrated, is_failed } = useWalletMigration();
-    // if (is_migrated) addNotificationMessage(client_notifications.wallets_migrated);
-    // if (is_failed) addNotificationMessage(client_notifications.wallets_failed);
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);

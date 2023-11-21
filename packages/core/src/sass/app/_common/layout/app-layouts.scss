@@ -83,6 +83,32 @@
                 &-timestamp {
                     align-self: flex-end;
                 }
+                &-enter {
+                    transform: translateX(-100%);
+                }
+                &-enter-active {
+                    visibility: hidden;
+                }
+                &-enter-done {
+                    visibility: visible;
+                    transform: translateX(0);
+                    transition: transform 300ms;
+                }
+                &-exit {
+                    transform: translateX(0);
+                }
+                &-exit-active,
+                &-exit-active-left,
+                &-exit-active-right {
+                    visibility: hidden;
+                    transition: all 300ms;
+                    &-left {
+                        transform: translateX(-100%);
+                    }
+                    &-right {
+                        transform: translateX(100vw);
+                    }
+                }
             }
         }
         .notification-messages {

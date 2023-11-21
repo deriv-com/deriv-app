@@ -24,9 +24,7 @@ import {
     resetEndTimeOnVolatilityIndices,
     showDigitalOptionsUnavailableError,
     showUnavailableLocationError,
-    formatMoney,
     getCurrencyDisplayCode,
-    unsupported_contract_types_list,
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
     hasBarrier,
@@ -39,7 +37,6 @@ import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
-import { getAvailableContractTypes } from 'Modules/Trading/Helpers/contract-type';
 import { getUpdatedTicksHistoryStats } from './Helpers/accumulator';
 import { processTradeParams } from './Helpers/process';
 import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';

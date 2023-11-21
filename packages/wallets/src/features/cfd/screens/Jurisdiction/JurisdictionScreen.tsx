@@ -33,8 +33,11 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
         [data, marketType]
     );
     const addedJurisdictions = useMemo(
-        () => mt5AccountsList?.map(account => account.landing_company_short) || [],
-        [mt5AccountsList]
+        () =>
+            mt5AccountsList
+                ?.filter(account => account.market_type === marketType)
+                .map(account => account.landing_company_short) || [],
+        [marketType, mt5AccountsList]
     );
 
     useEffect(() => {

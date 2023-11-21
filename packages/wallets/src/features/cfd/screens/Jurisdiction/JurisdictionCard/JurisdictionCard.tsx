@@ -92,11 +92,12 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
     return (
         <div
             className={classNames('wallets-jurisdiction-card', {
+                'wallets-jurisdiction-card--added': isAdded,
                 'wallets-jurisdiction-card--flip': isFlipped,
                 'wallets-jurisdiction-card--selected': isSelected,
             })}
             onClick={() => {
-                onSelect(jurisdiction);
+                !isAdded && onSelect(jurisdiction);
             }}
         >
             <React.Fragment>

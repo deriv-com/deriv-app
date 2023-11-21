@@ -4,26 +4,24 @@ import { FlowTextField, WalletDropdown, WalletText } from '../../../../component
 import { InlineMessage } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
+import { statusCodes } from '../../constants';
 import { IDVDocumentUploadDetails } from './components';
 import './IDVDocumentUpload.scss';
 
-type TErrorMessageProps = THooks.POI['current']['status'];
+type TErrorMessageProps = Exclude<THooks.POI['current']['status'], undefined>;
 
-const statusMessage = {
+const statusMessage: Partial<Record<TErrorMessageProps, string>> = {
     expired: 'Your identity document has expired.',
     rejected: 'We were unable to verify the identity document with the details provided.',
-} as const;
+};
 
 const ErrorMessage: React.FC<{ status: TErrorMessageProps }> = ({ status }) => {
     const { isMobile } = useDevice();
+
     return (
         <div className='wallets-idv-document-upload__error'>
             <WalletText weight='bold'>Your identity verification failed because:</WalletText>
-            <InlineMessage
-                message={statusMessage[status as keyof typeof statusMessage]}
-                size={isMobile ? 'md' : 'sm'}
-                type='error'
-            />
+            <InlineMessage message={statusMessage[status]} size={isMobile ? 'md' : 'sm'} type='error' />
             <WalletText size='sm'>
                 Let&apos;s try again. Choose another document and enter the corresponding details.
             </WalletText>
@@ -36,7 +34,7 @@ const IDVDocumentUpload = () => {
 
     const status = poiStatus?.current.status;
 
-    const negativeStatuses = status === 'expired' || status === 'rejected';
+    const negativeStatuses = status === statusCodes.expired || status === statusCodes.rejected;
 
     return (
         <div className='wallets-idv-document-upload'>

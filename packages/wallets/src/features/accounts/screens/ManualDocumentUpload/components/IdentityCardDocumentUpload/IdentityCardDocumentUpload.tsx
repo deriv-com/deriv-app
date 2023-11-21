@@ -8,7 +8,7 @@ import './IdentityCardDocumentUpload.scss';
 
 const IdentityCardDocumentUpload = () => {
     return (
-        <div className='wallets-identity-card-document-upload' data-testid='dt_passport-document-upload'>
+        <div className='wallets-identity-card-document-upload' data-testid='dt_identity-card-document-upload'>
             <WalletText>First, enter your Identity card number and the expiry date.</WalletText>
             <div className='wallets-identity-card-document-upload__input-group'>
                 <WalletTextField label='Identity card number*' />

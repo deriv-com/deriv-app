@@ -1,23 +1,26 @@
-import { action, computed, observable, makeObservable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
+
+import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
 import {
+    CFD_PLATFORMS,
     formatMoney,
-    isEmptyObject,
-    isCryptocurrency,
+    getCFDAccount,
+    getCFDAccountDisplay,
     getCurrencies,
     getCurrencyDisplayCode,
     getDecimalPlaces,
-    getCFDAccountDisplay,
-    getCFDAccount,
     getPropertyValue,
-    validNumber,
-    CFD_PLATFORMS,
+    isCryptocurrency,
+    isEmptyObject,
     routes,
+    validNumber,
 } from '@deriv/shared';
-import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
+
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
+import type { TAccount, TPlatformIcon, TRootStore, TTransferAccount, TWebSocket } from '../types';
+
 import ErrorStore from './error-store';
-import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
 
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
@@ -157,9 +160,7 @@ export default class AccountTransferStore {
             }
 
             if (!is_from_derivgo) {
-                transfer_between_accounts.accounts = transfer_between_accounts.accounts?.filter(
-                    account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-                );
+                transfer_between_accounts.accounts = transfer_between_accounts.accounts || [];
             }
 
             if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
@@ -238,7 +239,6 @@ export default class AccountTransferStore {
             { limits: 'limits_mt5', is_transfer: this.selected_from.is_mt || this.selected_to.is_mt },
             { limits: 'limits_dxtrade', is_transfer: this.selected_from.is_dxtrade || this.selected_to.is_dxtrade },
             { limits: 'limits_ctrader', is_transfer: this.selected_from.is_ctrader || this.selected_to.is_ctrader },
-            { limits: 'limits_derivez', is_transfer: this.selected_from.is_derivez || this.selected_to.is_derivez },
         ];
 
         const limits_key = transfer_limits.find(option => option.is_transfer)?.limits || 'limits';
@@ -274,9 +274,7 @@ export default class AccountTransferStore {
         }
 
         if (!is_from_derivgo && transfer_between_accounts && Array.isArray(transfer_between_accounts.accounts)) {
-            transfer_between_accounts.accounts = transfer_between_accounts.accounts.filter(
-                account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-            );
+            transfer_between_accounts.accounts = transfer_between_accounts.accounts || [];
         }
 
         const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;
@@ -285,9 +283,6 @@ export default class AccountTransferStore {
             ?.trading_platform_accounts;
 
         const ctrader_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER))
-            ?.trading_platform_accounts;
-
-        const derivez_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ))
             ?.trading_platform_accounts;
 
         // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
@@ -327,17 +322,6 @@ export default class AccountTransferStore {
 
                 return { ...account, ...found_account, account_type: CFD_PLATFORMS.DXTRADE };
             }
-            if (
-                account.account_type === CFD_PLATFORMS.DERIVEZ &&
-                Array.isArray(derivez_accounts_list) &&
-                derivez_accounts_list.length
-            ) {
-                const found_account = derivez_accounts_list.find(acc => acc.login === account.loginid);
-
-                if (found_account === undefined) return account;
-
-                return { ...account, ...found_account, account_type: CFD_PLATFORMS.DERIVEZ };
-            }
             return account;
         });
         // sort accounts as follows:
@@ -348,8 +332,6 @@ export default class AccountTransferStore {
             accounts?.sort((a, b) => {
                 const a_is_mt = a.account_type === CFD_PLATFORMS.MT5;
                 const b_is_mt = b.account_type === CFD_PLATFORMS.MT5;
-                const a_is_derivez = a.account_type === CFD_PLATFORMS.DERIVEZ;
-                const b_is_derivez = b.account_type === CFD_PLATFORMS.DERIVEZ;
                 const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency || '');
                 const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency || '');
                 const a_is_fiat = !a_is_mt && !a_is_crypto;
@@ -363,8 +345,6 @@ export default class AccountTransferStore {
                         return b.market_type === 'synthetic' ? 1 : -1;
                     }
                     return 1;
-                } else if ((a_is_crypto && b_is_derivez) || (a_is_fiat && b_is_derivez) || (a_is_derivez && b_is_mt)) {
-                    return -1;
                 } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
                     return a.currency && b.currency && a.currency < b.currency ? -1 : 1;
                 } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
@@ -383,7 +363,6 @@ export default class AccountTransferStore {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
                 ctrader: { name: 'Deriv cTrader', icon: 'IcBrand' },
                 dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
-                derivez: { name: 'Deriv EZ', icon: 'IcRebranding' },
             };
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const is_cfd = Object.keys(cfd_platforms).includes(account.account_type!);
@@ -451,7 +430,6 @@ export default class AccountTransferStore {
                 is_mt: account.account_type === CFD_PLATFORMS.MT5,
                 is_ctrader: account.account_type === CFD_PLATFORMS.CTRADER,
                 is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
-                is_derivez: account.account_type === CFD_PLATFORMS.DERIVEZ,
                 ...(is_cfd && {
                     platform_icon:
                         account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
@@ -610,9 +588,7 @@ export default class AccountTransferStore {
         );
 
         if (!is_from_derivgo && transfer_between_accounts && Array.isArray(transfer_between_accounts.accounts)) {
-            transfer_between_accounts.accounts = transfer_between_accounts.accounts.filter(
-                account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-            );
+            transfer_between_accounts.accounts = transfer_between_accounts.accounts || [];
         }
 
         if (is_mt_transfer) this.setIsMT5TransferInProgress(false);

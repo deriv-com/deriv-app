@@ -4,12 +4,21 @@
     align-items: center;
     width: 95.6rem;
 
+    @include mobile {
+        width: 100%;
+        padding: 1.6rem;
+    }
+
     &__body {
         display: flex;
         flex-direction: column;
         max-width: 64.2rem;
         height: max-content;
         padding: 1.6rem 0;
+
+        @include mobile {
+            padding: 0;
+        }
     }
 
     & .wallets-dropdown,
@@ -25,10 +34,10 @@
     }
 
     &__dropdown {
-        padding-bottom: 2.8rem;
+        padding-bottom: 0.8rem;
 
         @include mobile {
-            padding-bottom: 3.6rem;
+            padding-bottom: 1.6rem;
         }
     }
 
@@ -49,5 +58,12 @@
                 margin-top: 1rem;
             }
         }
+    }
+
+    &__error {
+        gap: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 1.5rem;
     }
 }

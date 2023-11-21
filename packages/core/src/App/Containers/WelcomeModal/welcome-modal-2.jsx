@@ -126,23 +126,6 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed }) => {
         setColumnWidth(carouselRef.current.offsetWidth);
     }, [carouselRef]);
 
-    const getLeftPlatforms = () => {
-        const platforms = [
-            {
-                icon: getPlatformSettings('mt5').icon,
-                title: localize('Deriv MT5'),
-                description: localize(
-                    'Trade on Deriv MT5 ({{platform_name_dmt5}}), the all-in-one FX and CFD trading platform.',
-                    { platform_name_dmt5: getPlatformSettings('dmt5').name }
-                ),
-                onButtonClick: () => switchPlatform(routes.mt5),
-                button_text: localize('Trade on MT5'),
-            },
-        ];
-
-        return platforms;
-    };
-
     const Cards = [
         <WelcomeColumn
             key={0}
@@ -150,7 +133,6 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed }) => {
             description={localize('Trade with leverage and low spreads for better returns on successful trades.')}
             icons={['IcPercentSolid']}
             is_hovered={hovered === 'left'}
-            platforms={getLeftPlatforms()}
             title={localize('CFDs')}
             onMouseEnter={() => {
                 setHovered('left');
@@ -259,6 +241,5 @@ export default withRouter(
     connect(({ ui, client }) => ({
         toggleWelcomeModal: ui.toggleWelcomeModal,
         is_bot_allowed: client.is_bot_allowed,
-        is_dxtrade_allowed: client.is_dxtrade_allowed,
     }))(WelcomeModal)
 );

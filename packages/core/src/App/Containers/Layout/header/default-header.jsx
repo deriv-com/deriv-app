@@ -34,7 +34,6 @@ const DefaultHeader = ({
     is_eu,
     is_logged_in,
     is_logging_in,
-    is_mt5_allowed,
     is_notifications_visible,
     is_route_modal_on,
     is_trading_assessment_for_existing_user_enabled,
@@ -64,9 +63,6 @@ const DefaultHeader = ({
 
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
-            if (config.link_to === routes.mt5) {
-                return !is_logged_in || is_mt5_allowed;
-            }
             if (
                 config.link_to === routes.bot ||
                 config.href === routes.binarybot ||
@@ -175,8 +171,6 @@ DefaultHeader.propTypes = {
     is_eu: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
-    is_mt5_allowed: PropTypes.bool,
-    is_dxtrade_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -213,8 +207,6 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-    is_mt5_allowed: client.is_mt5_allowed,
-    is_dxtrade_allowed: client.is_dxtrade_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,

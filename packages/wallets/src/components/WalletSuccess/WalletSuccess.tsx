@@ -13,8 +13,8 @@ const WalletSuccess: React.FC<TSuccessProps> = ({ description, renderButtons, re
     return (
         <div className='wallets-success'>
             <WalletsActionScreen
-                desciptionSize='sm'
                 description={description}
+                descriptionSize='sm'
                 icon={renderIcon()}
                 renderButtons={renderButtons}
                 title={title}

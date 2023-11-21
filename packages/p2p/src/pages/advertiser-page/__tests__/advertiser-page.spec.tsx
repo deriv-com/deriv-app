@@ -93,6 +93,13 @@ jest.mock('react-router-dom', () => ({
     })),
 }));
 
+jest.mock('Hooks', () => ({
+    ...jest.requireActual('Hooks'),
+    useP2PAdvertiserAdverts: jest.fn(() => ({
+        isLoading: false,
+    })),
+}));
+
 describe('<Advertiserpage />', () => {
     it('should render advertiser page', () => {
         render(<AdvertiserPage />);

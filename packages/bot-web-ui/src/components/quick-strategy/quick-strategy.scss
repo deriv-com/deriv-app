@@ -230,6 +230,7 @@
             width: 50%;
             display: inline-block;
             vertical-align: middle;
+
             &.full-width {
                 width: 100%;
             }
@@ -254,15 +255,18 @@
                         border-bottom-right-radius: 0;
                     }
                 }
+
                 &.no-border-bottom-radius {
                     .qs__checkbox {
                         border-bottom-left-radius: 0;
                         border-bottom-right-radius: 0;
                     }
                 }
+
                 &.no-bottom-spacing {
                     padding-bottom: 0;
                 }
+
                 &.no-bottom-border-radius {
                     .dc-input__container {
                         border-bottom-left-radius: 0;
@@ -270,10 +274,12 @@
                     }
                 }
             }
+
             &__list {
                 margin: 0;
                 padding: 0;
                 display: flex;
+
                 &__item {
                     flex: 1;
                     height: var(--input-height);
@@ -281,18 +287,22 @@
                     line-height: var(--input-height);
                     text-align: center;
                     font-size: 12px;
+
                     &:first-child {
                         border-bottom-left-radius: 4px;
                     }
+
                     &:last-child {
                         border-bottom-right-radius: 4px;
                     }
+
                     &--active {
                         font-weight: bold;
                         background: var(--general-active);
                     }
                 }
             }
+
             .contract-type {
                 .dc-input__field {
                     font-weight: normal;
@@ -303,6 +313,7 @@
 
     &__autocomplete {
         caret-color: transparent;
+
         .dc-input {
             &__container {
                 border: none;
@@ -336,6 +347,10 @@
                 color: var(--text-general);
             }
 
+            &__field[name='symbol'] {
+                caret-color: auto;
+            }
+
             &__trailing-icon {
                 margin-right: 2.4rem;
             }
@@ -344,6 +359,7 @@
 
     &__select {
         caret-color: transparent;
+
         .dc-input {
             &__container {
                 border: none;
@@ -445,6 +461,7 @@
                 &:hover {
                     background-color: var(--state-hover);
                 }
+
                 &:disabled {
                     opacity: 0.32;
                     pointer-events: none;
@@ -463,6 +480,7 @@
                 &:hover {
                     background-color: var(--state-hover);
                 }
+
                 &:disabled {
                     opacity: 0.32;
                     pointer-events: none;
@@ -503,17 +521,20 @@
             justify-content: center;
         }
     }
+
     &__checkbox {
         height: var(--input-height);
         background: var(--general-main-1);
         border-radius: 0.4rem;
         @extend .x-center;
+
         &__container {
             @extend .x-center;
             justify-content: space-between;
             height: calc(var(--input-height) - 0.5rem);
             width: 100%;
             padding: 0 2.4rem 0 1.6rem;
+
             .dc-checkbox {
                 .dc-text {
                     font-weight: bold;

@@ -26,7 +26,7 @@ const NotificationsContent = ({
     style,
     notifications,
     removeNotificationMessage,
-    trade_notifications,
+    show_trade_notifications,
 }) => {
     const { pathname } = useLocation();
 
@@ -55,7 +55,7 @@ const NotificationsContent = ({
                         <Notification data={notification} removeNotificationMessage={removeNotificationMessage} />
                     </CSSTransition>
                 ))}
-                <TradeNotifications notifications={trade_notifications} />
+                <TradeNotifications show_trade_notifications={show_trade_notifications} />
             </TransitionGroup>
         </div>
     );
@@ -70,7 +70,7 @@ const AppNotificationMessages = ({
     stopNotificationLoading,
     markNotificationMessage,
     should_show_popups,
-    trade_notifications,
+    show_trade_notifications,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
@@ -169,12 +169,12 @@ const AppNotificationMessages = ({
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                     markNotificationMessage={markNotificationMessage}
-                    trade_notifications={trade_notifications}
+                    show_trade_notifications={show_trade_notifications}
                 />
             </Portal>
         </div>
     ) : (
-        <TradeNotifications notifications={trade_notifications} />
+        <TradeNotifications show_trade_notifications={show_trade_notifications} />
     );
 };
 
@@ -197,7 +197,7 @@ AppNotificationMessages.propTypes = {
     removeNotificationMessage: PropTypes.func,
     should_show_popups: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
-    trade_notifications: PropTypes.object,
+    show_trade_notifications: PropTypes.bool,
 };
 
 export default connect(({ notifications }) => ({
@@ -206,5 +206,4 @@ export default connect(({ notifications }) => ({
     removeNotificationMessage: notifications.removeNotificationMessage,
     markNotificationMessage: notifications.markNotificationMessage,
     should_show_popups: notifications.should_show_popups,
-    trade_notifications: notifications.trade_notifications,
 }))(AppNotificationMessages);

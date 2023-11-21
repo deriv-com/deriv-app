@@ -1,26 +1,31 @@
 import React from 'react';
 import classNames from 'classnames';
+import { NavLink } from 'react-router-dom';
+import { observer } from 'mobx-react';
 import { MobileWrapper, Text, Money } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { getCardLabels } from '@deriv/shared';
+import { getCardLabels, getContractPath } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 
-const TradeNotifications = ({ notifications = [] }) => {
-    if (!notifications.length) return null;
+const TradeNotifications = observer(({ show_trade_notifications }) => {
+    const { notifications: { trade_notifications } = {} } = useStore();
+    if (!show_trade_notifications || !trade_notifications.length) return null;
 
     return (
         <MobileWrapper>
             <div className='swipeable-notifications'>
-                {notifications.map(notification => {
+                {trade_notifications.map(notification => {
                     const { buy_price, contract_id, currency, contract_type, profit, status, symbol, timestamp } =
                         notification;
                     const seconds = Math.floor(Math.abs(Date.now() - timestamp) / 1000);
                     return (
-                        <div
+                        <NavLink
                             className={classNames('swipeable-notifications__item', {
                                 'swipeable-notifications__item--lost': status !== 'open' && profit < 0,
                                 'swipeable-notifications__item--won': status !== 'open' && profit >= 0,
                             })}
                             key={contract_id}
+                            to={getContractPath(contract_id)}
                         >
                             <div className='swipeable-notifications__item-content'>
                                 <Text as='p' size='xxxs' line_height='s'>
@@ -60,12 +65,12 @@ const TradeNotifications = ({ notifications = [] }) => {
                                     <Localize i18n_default_text='{{seconds}}s ago' values={{ seconds }} />
                                 )}
                             </Text>
-                        </div>
+                        </NavLink>
                     );
                 })}
             </div>
         </MobileWrapper>
     );
-};
+});
 
 export default TradeNotifications;

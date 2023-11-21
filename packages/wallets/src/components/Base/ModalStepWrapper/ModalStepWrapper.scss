@@ -3,12 +3,16 @@
     border-radius: 0.8rem;
 
     @include mobile {
-        height: calc(100vh - 4rem);
+        height: calc(100svh - 4rem);
         width: 100vw;
         margin: 0;
         border-radius: 0;
         display: grid;
         grid-template-rows: 6rem auto;
+
+        &--hide-deriv-app-header {
+            height: 100svh;
+        }
 
         &--fixed-footer {
             grid-template-rows: 6rem auto 7rem;

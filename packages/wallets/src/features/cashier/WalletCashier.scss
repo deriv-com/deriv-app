@@ -10,6 +10,7 @@
 
 .wallets-cashier-content {
     display: flex;
+    position: relative;
     justify-content: center;
     gap: 2.4rem;
     flex: 1;
@@ -18,7 +19,7 @@
     overflow: scroll;
 
     @include mobile {
-        padding: 2.4rem 1.6rem 0;
+        padding: 2.4rem 1.6rem;
     }
 
     &::-webkit-scrollbar {

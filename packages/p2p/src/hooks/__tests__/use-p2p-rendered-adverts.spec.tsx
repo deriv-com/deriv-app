@@ -45,7 +45,7 @@ const renderHookWithConfig = (config: Record<string, object>, mock?: TCoreStores
     const wrapper = ({ children }: { children: JSX.Element }) => (
         <StoreProvider store={mock_store}>{children}</StoreProvider>
     );
-    const { result } = renderHook(() => useP2PRenderedAdverts(), { wrapper });
+    const { result } = renderHook(() => useP2PRenderedAdverts({ limit: 10 }), { wrapper });
     return result.current.rendered_adverts;
 };
 

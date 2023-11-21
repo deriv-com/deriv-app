@@ -61,6 +61,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                 className={classNames('tutorials', {
                     'tutorials-guide': prev_active_tutorials === 0,
                     'tutorials-faq': prev_active_tutorials === 1,
+                    'tutorials-search': active_tab_tutorials === 2,
                 })}
                 active_index={active_tab_tutorials}
                 onTabItemClick={setActiveTabTutorial}

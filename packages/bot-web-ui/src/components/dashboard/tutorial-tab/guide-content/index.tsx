@@ -78,83 +78,88 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                         <Localize i18n_default_text='Step-by-step guides' />
                     </Text>
                 )}
-                <div className='tutorials-wrap__group'>
-                    {guide_list?.map(({ id, content, src, type, subtype }) => {
-                        return (
-                            type === 'Tour' && (
-                                <div
-                                    className='tutorials-wrap__group__cards tutorials-wrap--tour'
-                                    key={id}
-                                    onClick={() => triggerTour(subtype)}
-                                    onKeyDown={handleKeyboardEvent}
-                                >
+                {tour_guides && (
+                    <div className='tutorials-wrap__group'>
+                        {guide_list?.map(({ id, content, src, type, subtype }) => {
+                            return (
+                                type === 'Tour' && (
                                     <div
-                                        className={classNames('tutorials-wrap__placeholder__tours', {
-                                            'tutorials-wrap__placeholder--disabled': !src,
-                                        })}
-                                        style={{
-                                            backgroundImage: `url(${src})`,
-                                        }}
-                                    />
-                                    <Text
-                                        align='center'
-                                        color='prominent'
-                                        line_height='s'
-                                        size={is_mobile ? 'xxs' : 's'}
+                                        className='tutorials-wrap__group__cards tutorials-wrap--tour'
+                                        key={id}
+                                        onClick={() => triggerTour(subtype)}
+                                        onKeyDown={handleKeyboardEvent}
                                     >
-                                        {content}
-                                    </Text>
-                                </div>
-                            )
-                        );
-                    })}
-                </div>
+                                        <div
+                                            className={classNames('tutorials-wrap__placeholder__tours', {
+                                                'tutorials-wrap__placeholder--disabled': !src,
+                                            })}
+                                            style={{
+                                                backgroundImage: `url(${src})`,
+                                            }}
+                                        />
+                                        <Text
+                                            align='center'
+                                            color='prominent'
+                                            line_height='s'
+                                            size={is_mobile ? 'xxs' : 's'}
+                                        >
+                                            {content}
+                                        </Text>
+                                    </div>
+                                )
+                            );
+                        })}
+                    </div>
+                )}
+
                 {video_guide && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
                         <Localize i18n_default_text='Videos on Deriv Bot' />
                     </Text>
                 )}
-                <div className='tutorials-wrap__group'>
-                    {guide_list?.map(({ id, content, url, type, src }) => {
-                        return (
-                            type !== 'Tour' && (
-                                <div className='tutorials-wrap__group__cards tutorials-wrap--placeholder' key={id}>
-                                    <div
-                                        className={classNames('tutorials-wrap__placeholder', {
-                                            'tutorials-wrap__placeholder--disabled': !url,
-                                        })}
-                                        style={{
-                                            backgroundImage: `url(${src})`,
-                                        }}
-                                    >
-                                        <div className='tutorials-wrap__placeholder__button-group'>
-                                            <Icon
-                                                className='tutorials-wrap__placeholder__button-group--play'
-                                                width='4rem'
-                                                height='4rem'
-                                                icon={'IcPlayOutline'}
-                                                onClick={() =>
-                                                    showVideoDialog({
-                                                        type: 'url',
-                                                        url,
-                                                    })
-                                                }
-                                            />
+                {video_guide && (
+                    <div className='tutorials-wrap__group'>
+                        {guide_list?.map(({ id, content, url, type, src }) => {
+                            return (
+                                type !== 'Tour' && (
+                                    <div className='tutorials-wrap__group__cards tutorials-wrap--placeholder' key={id}>
+                                        <div
+                                            className={classNames('tutorials-wrap__placeholder', {
+                                                'tutorials-wrap__placeholder--disabled': !url,
+                                            })}
+                                            style={{
+                                                backgroundImage: `url(${src})`,
+                                            }}
+                                        >
+                                            <div className='tutorials-wrap__placeholder__button-group'>
+                                                <Icon
+                                                    className='tutorials-wrap__placeholder__button-group--play'
+                                                    width='4rem'
+                                                    height='4rem'
+                                                    icon={'IcPlayOutline'}
+                                                    onClick={() =>
+                                                        showVideoDialog({
+                                                            type: 'url',
+                                                            url,
+                                                        })
+                                                    }
+                                                />
+                                            </div>
                                         </div>
+                                        <Text
+                                            align='center'
+                                            color='prominent'
+                                            line_height='s'
+                                            size={is_mobile ? 'xxs' : 's'}
+                                        >
+                                            {content}
+                                        </Text>
                                     </div>
-                                    <Text
-                                        align='center'
-                                        color='prominent'
-                                        line_height='s'
-                                        size={is_mobile ? 'xxs' : 's'}
-                                    >
-                                        {content}
-                                    </Text>
-                                </div>
-                            )
-                        );
-                    })}
-                </div>
+                                )
+                            );
+                        })}
+                    </div>
+                )}
                 <Dialog
                     title={dialog_options.title}
                     is_visible={is_dialog_open}

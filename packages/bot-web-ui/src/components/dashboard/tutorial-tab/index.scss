@@ -295,6 +295,11 @@
             }
 
             .dc-tabs {
+                .tutorials-search {
+                    .faq__wrapper {
+                        height: unset;
+                    }
+                }
                 &__content {
                     margin: -6.5rem 2.4rem;
                     width: 100%;

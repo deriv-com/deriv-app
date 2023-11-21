@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { Button, Icon, Table, Text } from '@deriv/components';
-import { useExchangeRate } from '@deriv/hooks';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useP2PExchangeRate } from '@deriv/hooks';
 
 import { Localize, localize } from 'Components/i18next';
 import { OnlineStatusAvatar } from 'Components/online-status';
@@ -20,6 +20,20 @@ import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert, row_index, index }) => {
     const [should_highlight, setShouldHighlight] = React.useState(index - 1 === row_index);
+    const {
+        account_currency,
+        advertiser_details,
+        counterparty_type,
+        effective_rate,
+        local_currency,
+        max_order_amount_limit_display,
+        min_order_amount_limit_display,
+        payment_method_names,
+        price_display,
+        rate_type,
+        rate,
+    } = advert;
+
     const { buy_sell_store, general_store } = useStores();
     let timeout;
     const {
@@ -27,7 +41,8 @@ const BuySellRow = ({ row: advert, row_index, index }) => {
         ui: { is_dark_mode_on },
     } = useStore();
     const history = useHistory();
-    const { getRate } = useExchangeRate();
+    const exchange_rate = useP2PExchangeRate(local_currency);
+
     if (should_highlight) {
         timeout = setTimeout(() => {
             setShouldHighlight(false);
@@ -58,20 +73,6 @@ const BuySellRow = ({ row: advert, row_index, index }) => {
         );
     }
 
-    const {
-        account_currency,
-        advertiser_details,
-        counterparty_type,
-        effective_rate,
-        local_currency,
-        max_order_amount_limit_display,
-        min_order_amount_limit_display,
-        payment_method_names,
-        price_display,
-        rate_type,
-        rate,
-    } = advert;
-
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name, rating_average, rating_count } = advert.advertiser_details;
@@ -81,7 +82,7 @@ const BuySellRow = ({ row: advert, row_index, index }) => {
         rate_type,
         rate,
         local_currency,
-        exchange_rate: getRate(local_currency),
+        exchange_rate,
         market_rate: effective_rate,
     });
     const onClickRow = () => {

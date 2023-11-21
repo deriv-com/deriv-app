@@ -1,17 +1,16 @@
 import React from 'react';
 import SuccessDialog from '../Components/success-dialog.jsx';
+import { getTopUpConfig } from '../Helpers/constants';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import {
+    getCTraderCompanies,
+    TCTraderCompanies,
     TDxCompanies,
     TMtCompanies,
-    TDerivezCompanies,
-    TCTraderCompanies,
-    getCTraderCompanies,
 } from '../Stores/Modules/CFD/Helpers/cfd-config';
-import { getTopUpConfig } from '../Helpers/constants';
-import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 
@@ -30,25 +29,19 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
         closeSuccessTopUpModal,
     } = ui;
 
-    const { current_account, dxtrade_companies, derivez_companies, mt5_companies, topUpVirtual } = useCfdStore();
+    const { current_account, dxtrade_companies, mt5_companies, topUpVirtual } = useCfdStore();
 
     const ctrader_companies = getCTraderCompanies();
 
     const getAccountTitle = React.useCallback(() => {
         let title = '';
-        if ((!mt5_companies && !dxtrade_companies && !derivez_companies) || !current_account) return '';
+        if ((!mt5_companies && !dxtrade_companies) || !current_account) return '';
 
         switch (platform) {
             case CFD_PLATFORMS.MT5:
                 title =
                     mt5_companies[current_account.category as keyof TMtCompanies][
                         current_account.type as keyof TMtCompanies['demo' | 'real']
-                    ].title;
-                break;
-            case CFD_PLATFORMS.DERIVEZ:
-                title =
-                    derivez_companies[current_account.category as keyof TDerivezCompanies][
-                        current_account.type as keyof TDerivezCompanies['demo' | 'real']
                     ].title;
                 break;
             case CFD_PLATFORMS.CTRADER:
@@ -68,7 +61,7 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
         }
 
         return title;
-    }, [mt5_companies, dxtrade_companies, derivez_companies, current_account, platform, ctrader_companies]);
+    }, [mt5_companies, dxtrade_companies, current_account, ctrader_companies, platform]);
 
     const onCloseSuccess = () => {
         closeSuccessTopUpModal();
@@ -78,8 +71,7 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
 
     const platform_title = getCFDPlatformLabel(platform, has_sub_title);
 
-    if ((!mt5_companies && !dxtrade_companies && !derivez_companies && !getCTraderCompanies()) || !current_account)
-        return null;
+    if ((!mt5_companies && !dxtrade_companies && !getCTraderCompanies()) || !current_account) return null;
     const { minimum_amount, additional_amount } = getTopUpConfig();
 
     return (

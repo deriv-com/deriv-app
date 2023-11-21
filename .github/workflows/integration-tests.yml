@@ -9,7 +9,7 @@ on:
 jobs:
   integration_tests:
     name: Run Integration Tests
-    runs-on: Runner_16cores_Deriv-app
+    runs-on: Runner_8cores_Deriv-app
     environment: Preview
     steps:
     - name: Checkout

@@ -127,7 +127,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             market,
             submarket,
             tradetypecat: trade_type_cat,
-            alembert_unit: unit,
+            dalembert_unit: unit,
             oscar_unit: unit,
             ...rest_data,
         };

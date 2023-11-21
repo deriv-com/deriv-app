@@ -188,7 +188,6 @@ export const STRATEGIES: TStrategies = {
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },
-
     REVERSE_MARINGALE: {
         name: 'reverse_martingale',
         label: localize('Reverse Martingale'),
@@ -200,7 +199,17 @@ export const STRATEGIES: TStrategies = {
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },
-
+    REVERSE_D_ALEMBERT: {
+        name: 'reverse_dalembert',
+        label: localize('Reverse D’Alembert'),
+        description: localize(
+            "The Reverse D'Alembert strategy increases the stake after a successful trade and reduces the stake after a losing trade by the number of units that traders decide. One unit is equal to the amount of the initial stake. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
+        ),
+        fields: [
+            [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
+            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_DALEMBERT_UNIT, UNIT, CHECKBOX_MAX_STAKE, MAX_STAKE],
+        ],
+    },
     '1_3_2_6': {
         name: '1_3_2_6',
         label: localize('1-3-2-6'),

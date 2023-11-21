@@ -19,12 +19,6 @@ describe('Notification component', () => {
         expect(element).toBeInTheDocument();
     });
 
-    it('should render the NotificationCloseMxMlt component when "data.type" is "close_mx_mlt"', () => {
-        render(<Notification data={{ type: 'close_mx_mlt' }} />);
-        const element = screen.getByTestId('dt_notification_close_mx_mlt');
-        expect(element).toBeInTheDocument();
-    });
-
     it('should render the NotificationPromo component when "data.type" is "promotions"', () => {
         render(<Notification data={{ type: 'promotions' }} />);
         const element = screen.getByTestId('dt_notification_promo');

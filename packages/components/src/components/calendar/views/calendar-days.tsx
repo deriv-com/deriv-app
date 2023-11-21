@@ -17,7 +17,7 @@ import Text from '../../text';
 
 type TDaysProps = CommonPropTypes & {
     date_format: string;
-    has_range_selection: boolean;
+    has_range_selection?: boolean;
     events?: Array<{
         dates: string[];
         descrip: string;

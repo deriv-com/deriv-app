@@ -6,6 +6,49 @@
     justify-content: center;
 }
 
+.bot-stopped-dialog {
+    @include mobile {
+        padding: 2rem;
+    }
+
+    .dc-dialog {
+        position: relative;
+
+        &__header-wrapper {
+            margin: 0 0 2.4rem;
+        }
+
+        &__content {
+            &__header {
+                display: flex;
+                justify-content: space-between;
+                margin: 0 0 2.4rem;
+
+                .dc-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        @include mobile {
+            &__footer {
+                flex-wrap: unset;
+
+                .dc-dialog__button {
+                    &:first-child {
+                        margin-right: 1rem;
+                    }
+
+                    padding: 0;
+                    width: 40%;
+                    min-width: unset;
+                    flex-basis: unset;
+                }
+            }
+        }
+    }
+}
+
 .dashboard {
     &__main {
         width: 100%;
@@ -261,13 +304,16 @@
 
     .injectionDiv {
         height: calc(100vh - 20rem);
+
         .blocklyTrash {
             transition: all 0.4s;
+
             @include mobile {
                 display: none;
             }
         }
     }
+
     &--tour-active {
         .blocklyTrash {
             display: none;
@@ -290,6 +336,12 @@
     }
 }
 
+#react-joyride-step-6 {
+    .onboard__label {
+        margin-bottom: 1.6rem;
+    }
+}
+
 .onboard {
     &__header {
         display: flex;
@@ -299,6 +351,13 @@
 
         &--close {
             cursor: pointer;
+        }
+    }
+
+    &__steps {
+        @media (max-height: 730px) {
+            max-height: 40vh;
+            overflow-y: auto;
         }
     }
 
@@ -327,6 +386,10 @@
     &__content {
         text-align: left;
 
+        p {
+            font-size: 1.4rem;
+        }
+
         &__block {
             &:first-child {
                 margin-bottom: 2.4rem;
@@ -336,6 +399,13 @@
 }
 
 .joyride-content {
+    font-size: 1.4rem;
+
+    @media (max-height: 790px) {
+        max-height: 46vh;
+        overflow-y: auto;
+    }
+
     &__left {
         text-align: left;
 
@@ -358,7 +428,7 @@
         }
     }
 
-    img {
+    video {
         width: 100%;
         margin-top: 1rem;
     }
@@ -391,17 +461,19 @@
     flex-direction: column;
     align-items: center;
     position: fixed;
+
     left: 0;
     bottom: 0;
-    z-index: 1000;
-    background-color: var(--general-section-1);
     width: 100%;
-    border-top: solid 1px var(--border-normal);
     height: 100vh;
     padding: 1.6rem;
+    border-top: solid 1px var(--border-normal);
+    z-index: 1000;
+    background-color: var(--general-main-1);
 
     &--tour-position {
         top: 0;
+
         .progress-bar-circle:first-child {
             display: none;
         }
@@ -409,6 +481,7 @@
 
     &--active {
         height: auto;
+        min-height: 17rem;
     }
 
     &__navbar {
@@ -433,17 +506,22 @@
         }
     }
 
-    &__image {
+    &__image,
+    &__media {
         background: var(--general-section-1);
         text-align: center;
-        padding: 0.8rem;
         width: 100%;
-        margin-bottom: 0.8rem;
-        height: 50%;
+        height: 55%;
+        margin-bottom: 1.6rem;
     }
 
     img {
         height: 100%;
+    }
+
+    video {
+        height: 100%;
+        width: 65%;
     }
 
     &__progress-bar {
@@ -452,7 +530,8 @@
 
     &__status {
         width: 100%;
-        margin-bottom: 1.6rem;
+        position: fixed;
+        bottom: 1.6rem;
     }
 
     &__button-group {
@@ -486,7 +565,7 @@
     }
 
     &__bot-builder-tour {
-        height: unset;
+        height: 17rem;
         background: var(--general-section-1);
 
         .dbot-slider {
@@ -518,12 +597,7 @@
                 }
             }
 
-            &__content {
-                color: $color-white;
-            }
-
             &__status {
-                height: 5rem;
                 display: flex;
                 @extend .position-center;
                 justify-content: flex-start;
@@ -535,6 +609,7 @@
                 @extend .position-center;
                 align-items: center;
                 justify-content: flex-start;
+                margin-left: 1rem;
 
                 .progress-bar-circle {
                     opacity: 0.16;
@@ -594,7 +669,6 @@
         opacity: 0;
         color: var(--text-prominent);
         padding: 1rem 0;
-        font-size: 1.2rem;
 
         &--open {
             opacity: 1;
@@ -652,6 +726,7 @@
 
     .dc-toast {
         width: 100%;
+
         &__message {
             background: var(--text-prominent);
             color: var(--general-main-1);

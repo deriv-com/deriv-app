@@ -1,0 +1,80 @@
+.gradient-background {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    &__container {
+        position: relative;
+        width: 100%;
+        max-width: 128rem;
+        display: flex;
+        align-items: center;
+    }
+
+    &__primary {
+        position: absolute;
+        aspect-ratio: 1;
+        width: 45.8%;
+        right: -1.9%;
+        opacity: 1;
+        filter: blur(400px);
+
+        @include mobile {
+            width: 111%;
+            right: -30%;
+            top: 30%;
+            opacity: 0.8;
+            filter: blur(200px);
+        }
+    }
+
+    &__secondary {
+        position: absolute;
+        aspect-ratio: 1;
+        transform: translateY(-48%);
+        width: 23%;
+        right: -11%;
+        top: 0;
+        opacity: 1;
+        filter: blur(140px);
+
+        @include mobile {
+            width: 62%;
+            right: -33%;
+            top: -10%;
+            opacity: 0.8;
+            filter: blur(100px);
+        }
+    }
+
+    &__tertiary {
+        position: absolute;
+        transform: translateY(-54%);
+        aspect-ratio: 1;
+        width: 28%;
+        left: -15%;
+        top: 0;
+        opacity: 1;
+        filter: blur(240px);
+
+        @include mobile {
+            width: 71%;
+            left: -35%;
+            top: 10%;
+            opacity: 0.8;
+            filter: blur(200px);
+        }
+    }
+
+    &__children {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

@@ -1,0 +1,56 @@
+.wallets-toggle-switch {
+    position: relative;
+    display: inline-flex;
+    width: 4.4rem;
+    height: 2.4rem;
+
+    @include mobile {
+        width: 3.8rem;
+    }
+
+    & > input {
+        width: 0;
+        height: 0;
+    }
+
+    &__slider {
+        position: absolute;
+        inset: 0;
+        cursor: pointer;
+        background-color: var(--light-4-disabled-text, #d6d6d6);
+        transition: 0.4s;
+        border-radius: 1.6rem;
+
+        &:before {
+            position: absolute;
+            content: '';
+            height: 1.8rem;
+            width: 1.8rem;
+            left: 0.3rem;
+            bottom: 0.3rem;
+            background-color: var(--system-dark-1-prominent-text, #fff);
+            transition: 0.4s;
+            border-radius: 50%;
+
+            @include mobile {
+                left: 0.4rem;
+            }
+        }
+    }
+}
+
+.wallets-toggle-switch input:checked + .wallets-toggle-switch__slider {
+    background-color: var(--light-status-success, #4bb4b3);
+}
+
+.wallets-toggle-switch input:checked + .wallets-toggle-switch__slider:before {
+    -webkit-transform: translateX(2rem);
+    -ms-transform: translateX(2rem);
+    transform: translateX(2rem);
+
+    @include mobile {
+        -webkit-transform: translateX(1.2rem);
+        -ms-transform: translateX(1.2rem);
+        transform: translateX(1.2rem);
+    }
+}

@@ -7,7 +7,7 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
-import { TGeneralContractCardBodyProps } from './contract-card-body';
+import { TGeneralContractCardBodyProps } from './contract-update-form';
 
 type TTurbosCardBody = Pick<
     TGeneralContractCardBodyProps,
@@ -101,25 +101,24 @@ const TurbosCardBody = ({
                     </div>
                 </MobileWrapper>
             </div>
-            {!!profit && (
-                <ContractCardItem
-                    className='dc-contract-card-item__total-profit-loss'
-                    header={TOTAL_PROFIT_LOSS}
-                    is_crypto={isCryptocurrency(currency)}
-                    is_loss={profit < 0}
-                    is_won={profit > 0}
+
+            <ContractCardItem
+                className='dc-contract-card-item__total-profit-loss'
+                header={TOTAL_PROFIT_LOSS}
+                is_crypto={isCryptocurrency(currency)}
+                is_loss={Number(profit) < 0}
+                is_won={Number(profit) > 0}
+            >
+                <Money amount={profit} currency={currency} />
+                <div
+                    className={classNames('dc-contract-card__indicative--movement', {
+                        'dc-contract-card__indicative--movement-complete': is_sold,
+                    })}
                 >
-                    <Money amount={profit} currency={currency} />
-                    <div
-                        className={classNames('dc-contract-card__indicative--movement', {
-                            'dc-contract-card__indicative--movement-complete': is_sold,
-                        })}
-                    >
-                        {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss' && <Icon icon='IcLoss' />}
-                    </div>
-                </ContractCardItem>
-            )}
+                    {status === 'profit' && <Icon icon='IcProfit' />}
+                    {status === 'loss' && <Icon icon='IcLoss' />}
+                </div>
+            </ContractCardItem>
         </React.Fragment>
     );
 };

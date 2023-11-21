@@ -1,6 +1,7 @@
 /** @define mobile-widget */
 .mobile-widget {
-    border-radius: 4px;
+    border-radius: $BORDER_RADIUS;
+    border-width: 0;
     padding: 1rem 0.8rem;
     height: 4rem;
     background-color: var(--general-main-1);
@@ -9,7 +10,24 @@
     align-items: center;
     margin: 0 0 0.8rem;
     flex: 1;
+    position: relative;
 
+    &__button {
+        background: none;
+        border: none;
+        padding: 0;
+    }
+    &__digit {
+        border-radius: $BORDER_RADIUS;
+        padding: 1rem 0.8rem;
+        margin-left: 0.8rem;
+        height: 4rem;
+        background-color: var(--general-main-1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 8.8rem;
+    }
     &__amount {
         @include typeface(--paragraph-center-bold-black);
         color: var(--text-prominent);
@@ -26,9 +44,23 @@
         color: var(--text-prominent);
         line-height: 1.4rem;
 
+        &-disabled {
+            color: var(--text-disabled);
+        }
+
         &-value {
             font-weight: bold;
             font-size: 1.2rem;
+        }
+        &-tooltip {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 4rem;
+            width: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
     &__multiplier {
@@ -62,6 +94,9 @@
             margin-left: 0.8rem;
             justify-content: center;
             min-width: 8.8rem;
+            &:has(.mobile-widget__item-tooltip) {
+                min-width: 9.9rem;
+            }
 
             .mobile-widget__item-label {
                 color: var(--text-general);
@@ -119,6 +154,9 @@
             }
         }
     }
+    &__label {
+        align-items: center;
+    }
     &__wrapper {
         display: flex;
 
@@ -162,5 +200,25 @@
     &__basis {
         font-weight: bold;
         color: var(--text-prominent);
+    }
+}
+
+.duration_amount_selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .mobile-widget {
+        &__duration {
+            flex: 1 1 auto;
+            text-align: left;
+        }
+        &__amount {
+            flex: 1 1 auto;
+        }
+        &__type {
+            flex: 1 1 auto;
+            text-align: right;
+        }
     }
 }

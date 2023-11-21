@@ -26,8 +26,8 @@ const Toolbox = observer(() => {
         toolbox_dom,
     } = toolbox;
 
-    const { setVisibility } = flyout;
-    const { loadDataStrategy } = quick_strategy;
+    const { setFormVisibility } = quick_strategy;
+    const { setVisibility, selected_category } = flyout;
 
     const toolbox_ref = React.useRef(ToolboxItems);
     const [is_open, setOpen] = React.useState(true);
@@ -37,6 +37,10 @@ const Toolbox = observer(() => {
         return () => onUnmount();
     }, []);
 
+    const handleQuickStrategyOpen = () => {
+        setFormVisibility(true);
+    };
+
     if (!isMobile()) {
         return (
             <div className='dashboard__toolbox' data-testid='dashboard__toolbox'>
@@ -44,7 +48,7 @@ const Toolbox = observer(() => {
                     popover_message={localize('Click here to start building your Deriv Bot.')}
                     button_id='db-toolbar__get-started-button'
                     button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
-                    buttonOnClick={loadDataStrategy}
+                    buttonOnClick={handleQuickStrategyOpen}
                     button_text={localize('Quick strategy')}
                 />
                 <div id='gtm-toolbox' className='db-toolbox__content'>
@@ -80,14 +84,17 @@ const Toolbox = observer(() => {
                         />
                         <div className='db-toolbox__category-menu'>
                             {toolbox_dom &&
-                                (Array.from(toolbox_dom.childNodes) as HTMLElement[]).map((category, index) => {
+                                Array.from(toolbox_dom.childNodes as HTMLElement[]).map((category, index) => {
                                     if (category.tagName.toUpperCase() === 'CATEGORY') {
                                         const has_sub_category = hasSubCategory(category.children);
                                         const is_sub_category_open = sub_category_index.includes(index);
                                         return (
                                             <div
                                                 key={`db-toolbox__row--${category.getAttribute('id')}`}
-                                                className='db-toolbox__row'
+                                                className={classNames('db-toolbox__row', {
+                                                    'db-toolbox__row--active':
+                                                        selected_category?.getAttribute('id') === category?.id,
+                                                })}
                                             >
                                                 <div
                                                     className='db-toolbox__item'
@@ -123,7 +130,15 @@ const Toolbox = observer(() => {
                                                                     key={`db-toolbox__sub-category-row--${subCategory.getAttribute(
                                                                         'id'
                                                                     )}`}
-                                                                    className='db-toolbox__sub-category-row'
+                                                                    className={classNames(
+                                                                        'db-toolbox__sub-category-row',
+                                                                        {
+                                                                            'db-toolbox__sub-category-row--active':
+                                                                                selected_category?.getAttribute(
+                                                                                    'id'
+                                                                                ) === subCategory?.id,
+                                                                        }
+                                                                    )}
                                                                     onClick={() => {
                                                                         onToolboxItemClick(subCategory);
                                                                     }}

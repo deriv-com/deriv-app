@@ -7,8 +7,6 @@ const dispatchIfScopeIs = ({ dispatch, getState, data, scope }) => {
     }
 };
 
-const dispatchIfScopeIsBeforePurchase = args => dispatchIfScopeIs({ ...args, scope: constants.BEFORE_PURCHASE });
-
 export const start = () => (dispatch, getState) =>
     dispatchIfScopeIs({ dispatch, getState, data: { type: constants.START }, scope: constants.STOP });
 
@@ -16,13 +14,19 @@ export const proposalsReady = () => ({ type: constants.PROPOSALS_READY });
 
 export const clearProposals = () => ({ type: constants.CLEAR_PROPOSALS });
 
+const dispatchIfScopeIsBeforePurchase = args => dispatchIfScopeIs({ ...args, scope: constants.BEFORE_PURCHASE });
+
 const dispatchIfBeforePurchaseReady = args => {
     const { getState } = args;
     const { proposalsReady: beforePurchaseReady } = getState();
+
     if (beforePurchaseReady) {
         dispatchIfScopeIsBeforePurchase(args);
     }
+
+    dispatchIfScopeIs({ ...args, scope: constants.BEFORE_PURCHASE });
 };
+
 export const purchaseSuccessful = () => (dispatch, getState) =>
     dispatchIfBeforePurchaseReady({ dispatch, getState, data: { type: constants.PURCHASE_SUCCESSFUL } });
 

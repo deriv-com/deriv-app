@@ -1,6 +1,6 @@
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
 import {
     Button,
     DesktopWrapper,
@@ -20,17 +20,17 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import BuySellForm from 'Components/buy-sell/buy-sell-form.jsx';
-import BuySellFormReceiveAmount from 'Components/buy-sell/buy-sell-form-receive-amount.jsx';
+import BuySellForm from 'Pages/buy-sell/buy-sell-form.jsx';
+import BuySellFormReceiveAmount from 'Pages/buy-sell/buy-sell-form-receive-amount.jsx';
 import NicknameForm from 'Components/nickname-form';
-import AddPaymentMethodForm from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
+import AddPaymentMethodForm from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const LowBalanceMessage = () => (
-    <div className='buy-sell__modal--error-message'>
+    <div className='buy-sell-modal--error-message'>
         <HintBox
-            className='buy-sell__modal-danger'
+            className='buy-sell-modal--danger'
             icon='IcAlertDanger'
             message={
                 <Text as='p' size='xxxs' color='prominent' line_height='s'>
@@ -49,7 +49,7 @@ const BuySellModalFooter = ({ onCancel, is_submit_disabled, onSubmit }) => {
             className={
                 my_profile_store.should_show_add_payment_method_form
                     ? 'add-payment-method__footer'
-                    : 'buy-sell__modal-footer'
+                    : 'buy-sell-modal__footer'
             }
         >
             <Button.Group>
@@ -70,14 +70,11 @@ BuySellModalFooter.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
 
-const BuySellModalTitle = () => {
-    const { general_store, buy_sell_store, advertiser_page_store, my_profile_store } = useStores();
+const BuySellModalTitle = ({ table_type }) => {
+    const { general_store, buy_sell_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
 
     const { account_currency } = buy_sell_store.selected_ad_state;
-    const table_type = buy_sell_store.show_advertiser_page
-        ? advertiser_page_store.counterparty_type
-        : buy_sell_store.table_type;
 
     if (my_profile_store.should_show_add_payment_method_form) {
         if (isDesktop()) {
@@ -94,7 +91,7 @@ const BuySellModalTitle = () => {
                                 my_profile_store.setShouldShowAddPaymentMethodForm(false);
                             }
                         }}
-                        className='buy-sell__modal-icon'
+                        className='buy-sell-modal__icon'
                     />
                     {localize('Add payment method')}
                 </React.Fragment>
@@ -108,17 +105,24 @@ const BuySellModalTitle = () => {
     return localize('Sell {{ currency }}', { currency: account_currency });
 };
 
+BuySellModalTitle.propTypes = {
+    table_type: PropTypes.string.isRequired,
+};
+
 const BuySellModal = () => {
-    const { buy_sell_store, floating_rate_store, general_store, my_profile_store, order_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, general_store, my_profile_store, order_store } = useStores();
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
-    const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 2000;
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const history = useHistory();
     const location = useLocation();
+
+    const table_type = buy_sell_store.show_advertiser_page
+        ? advertiser_page_store.counterparty_type
+        : buy_sell_store.table_type;
 
     React.useEffect(() => {
         const disposeHasRateChangedReaction = reaction(
@@ -130,9 +134,6 @@ const BuySellModal = () => {
                 const is_the_same_advert = previous_advert?.id === new_advert.id;
                 if (rate_has_changed && is_the_same_advert) {
                     setHasRateChangedRecently(true);
-                    setTimeout(() => {
-                        setHasRateChangedRecently(false);
-                    }, MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY);
                 }
             }
         );
@@ -167,14 +168,15 @@ const BuySellModal = () => {
         } else {
             showModal({ key: 'MarketRateChangeErrorModal' });
         }
+        setHasRateChangedRecently(false);
     };
 
     const BuySellFormError = () => {
         if (!!error_message && buy_sell_store.form_error_code !== api_error_codes.ORDER_CREATE_FAIL_RATE_CHANGED) {
             return (
-                <div className='buy-sell__modal--error-message'>
+                <div className='buy-sell-modal--error-message'>
                     <HintBox
-                        className='buy-sell__modal-danger'
+                        className='buy-sell-modal--danger'
                         icon='IcAlertDanger'
                         message={
                             <Text as='p' size='xxxs' color='prominent' line_height='s'>
@@ -203,10 +205,10 @@ const BuySellModal = () => {
                 my_profile_store.hideAddPaymentMethodForm();
             }
         } else {
-            hideModal();
+            hideModal({ should_hide_all_modals: true });
             buy_sell_store.fetchAdvertiserAdverts();
+            buy_sell_store.unsubscribeAdvertInfo();
         }
-        floating_rate_store.setIsMarketRateChanged(false);
     };
 
     const onConfirmClick = order_info => {
@@ -241,6 +243,8 @@ const BuySellModal = () => {
             setErrorMessage(null);
         }
 
+        if (general_store.counterparty_advert_id) general_store.setCounterpartyAdvertId('');
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_modal_open]);
 
@@ -250,16 +254,16 @@ const BuySellModal = () => {
         <React.Fragment>
             <MobileWrapper>
                 <MobileFullPageModal
-                    body_className='buy-sell__modal-body'
-                    className='buy-sell__modal'
+                    body_className='buy-sell-modal__body'
+                    className='buy-sell-modal'
                     height_offset='80px'
                     is_flex
                     is_modal_open={is_modal_open}
-                    page_header_className='buy-sell__modal-header'
-                    page_header_text={<BuySellModalTitle />}
+                    page_header_className='buy-sell-modal__header'
+                    page_header_text={<BuySellModalTitle table_type={table_type} />}
                     pageHeaderReturnFn={onCancel}
                 >
-                    {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
+                    {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                     {!!error_message && <BuySellFormError />}
                     {my_profile_store.should_show_add_payment_method_form ? (
                         <AddPaymentMethodForm should_show_separated_footer />
@@ -281,7 +285,7 @@ const BuySellModal = () => {
                             <BuySellModalFooter
                                 is_submit_disabled={is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={submitForm.current}
+                                onSubmit={onSubmit}
                             />
                         </React.Fragment>
                     )}
@@ -289,24 +293,20 @@ const BuySellModal = () => {
             </MobileWrapper>
             <DesktopWrapper>
                 <Modal
-                    className={classNames('buy-sell__modal', {
-                        'buy-sell__modal-form': my_profile_store.should_show_add_payment_method_form,
+                    className={classNames('buy-sell-modal', {
+                        'buy-sell-modal__form': my_profile_store.should_show_add_payment_method_form,
                     })}
-                    height={buy_sell_store.table_type === buy_sell.BUY ? 'auto' : '649px'}
+                    height={table_type === buy_sell.BUY ? 'auto' : '649px'}
                     width='456px'
                     is_open={is_modal_open}
-                    title={<BuySellModalTitle />}
+                    title={<BuySellModalTitle table_type={table_type} />}
                     portalId='modal_root'
                     toggleModal={onCancel}
                 >
                     {/* Parent height - Modal.Header height - Modal.Footer height */}
-                    <ThemedScrollbars
-                        height={buy_sell_store.table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}
-                    >
-                        <Modal.Body className='buy-sell__modal--layout'>
-                            {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && (
-                                <LowBalanceMessage />
-                            )}
+                    <ThemedScrollbars height={table_type === buy_sell.BUY ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
+                        <Modal.Body className='buy-sell-modal__layout'>
+                            {table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
                             <BuySellFormError />
                             {my_profile_store.should_show_add_payment_method_form ? (
                                 <AddPaymentMethodForm should_show_separated_footer />

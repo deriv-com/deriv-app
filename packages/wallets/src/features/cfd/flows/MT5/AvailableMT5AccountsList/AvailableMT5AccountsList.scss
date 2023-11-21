@@ -1,0 +1,36 @@
+.wallets-available-mt5 {
+    &__icon {
+        cursor: pointer;
+    }
+
+    &__text {
+        color: var(--brand-coral, #ff444f);
+        text-align: center;
+
+        /* desktop/paragraph/P2 - bold */
+        font-size: 1.4rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 2rem; /* 142.857% */
+    }
+
+    &__details {
+        flex-grow: 1;
+        user-select: none;
+        &-title {
+            font-weight: bold;
+            font-size: 1.4rem;
+            line-height: 2rem;
+        }
+
+        &-description {
+            font-size: 1.2rem;
+            line-height: 1.4rem;
+
+            @include mobile {
+                font-size: 1.4rem;
+                line-height: 2rem;
+            }
+        }
+    }
+}

@@ -73,8 +73,7 @@
                 margin-bottom: 1.6rem;
             }
             /* postcss-bem-linter: ignore */
-            h6,
-            span {
+            h6 {
                 @include typeface(--small-left-bold-black, none);
             }
             p,
@@ -90,14 +89,12 @@
         }
     }
     &__gif {
-        width: 100%;
         height: 16.4rem;
         border-radius: 4px;
         text-align: center;
         margin-top: 1.6rem;
 
         @include mobile {
-            width: 32.8rem;
             height: 16.4rem;
             background-color: var(--general-section-1);
             svg {
@@ -137,6 +134,7 @@
     &__scrollbars {
         position: relative;
         height: 100%;
+        padding-right: 1rem;
         &-description--active {
             transition: transform 0.3s linear;
         }
@@ -195,6 +193,16 @@
                     color: var(--text-prominent) !important;
                 }
             }
+        }
+    }
+    &__video {
+        width: 100%;
+        height: 27rem;
+        padding: 0 1.5rem;
+
+        @include mobile {
+            padding: 0;
+            height: 18.45rem;
         }
     }
 }

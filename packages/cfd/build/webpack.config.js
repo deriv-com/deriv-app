@@ -10,7 +10,6 @@ module.exports = function (env) {
         entry: {
             cfd: path.resolve(__dirname, '../src', 'index.tsx'),
             CFDStore: 'Stores/Modules/CFD/cfd-store',
-            CompareAccountsModal: 'Containers/compare-accounts-modal.tsx',
             JurisdictionModal: 'Containers/jurisdiction-modal/jurisdiction-modal.tsx',
             CFDPasswordModal: 'Containers/cfd-password-modal.tsx',
             CFDDbviOnBoarding: 'Containers/cfd-dbvi-onboarding.tsx',
@@ -19,10 +18,11 @@ module.exports = function (env) {
             CFDTopUpDemoModal: 'Containers/cfd-top-up-demo-modal.tsx',
             MT5TradeModal: 'Containers/mt5-trade-modal.tsx',
             TradeModal: 'Containers/trade-modal.tsx',
+            MT5MigrationModal: 'Containers/mt5-migration-modal',
             CFDPasswordManagerModal: 'Containers/cfd-password-manager-modal.tsx',
             CFDFinancialStpRealAccountSignup: 'Containers/cfd-financial-stp-real-account-signup.tsx',
             getDXTradeWebTerminalLink: 'Helpers/constants.ts',
-            getDerivEzWebTerminalLink: 'Helpers/constants.ts',
+            getCTraderWebTerminalLink: 'Helpers/constants.ts',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
@@ -58,7 +58,6 @@ module.exports = function (env) {
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/components': '@deriv/components',
                 '@deriv/translations': '@deriv/translations',
-                '@deriv/deriv-charts': '@deriv/deriv-charts',
                 '@deriv/account': '@deriv/account',
             },
             /^@deriv\/shared\/.+$/,

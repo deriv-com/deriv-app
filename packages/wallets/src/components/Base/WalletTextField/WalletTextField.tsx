@@ -18,10 +18,12 @@ const WalletTextField = forwardRef(
     (
         {
             defaultValue = '',
-            isInvalid = false,
+            errorMessage,
+            isInvalid,
             label,
             maxLength,
             message,
+            messageVariant = 'general',
             name = 'wallet-textfield',
             onChange,
             renderLeftIcon,
@@ -69,7 +71,22 @@ const WalletTextField = forwardRef(
                     )}
                 </div>
                 <div className='wallets-textfield__message-container'>
-                    {showMessage && <HelperMessage inputValue={value} maxLength={maxLength} message={message} />}
+                    {showMessage && !isInvalid && (
+                        <HelperMessage
+                            inputValue={value}
+                            maxLength={maxLength}
+                            message={message}
+                            messageVariant={messageVariant}
+                        />
+                    )}
+                    {errorMessage && isInvalid && (
+                        <HelperMessage
+                            inputValue={value}
+                            isError
+                            maxLength={maxLength}
+                            message={errorMessage as string}
+                        />
+                    )}
                 </div>
             </div>
         );

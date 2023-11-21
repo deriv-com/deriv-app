@@ -28,12 +28,14 @@
         "react-router-dom": "^5.2.0",
         "react-transition-group": "4.4.2",
         "usehooks-ts": "^2.7.0",
-        "yup": "^0.32.11"
+        "yup": "^0.32.11",
+        "zxcvbn": "^4.4.2"
     },
     "devDependencies": {
         "@testing-library/react": "^12.0.0",
         "@types/css-modules": "^1.0.2",
         "@types/react-dom": "^18.0.0",
+        "@types/zxcvbn": "^4.4.4",
         "@typescript-eslint/eslint-plugin": "5.45.0",
         "@typescript-eslint/parser": "5.45.0",
         "eslint-plugin-local-rules": "2.0.0",

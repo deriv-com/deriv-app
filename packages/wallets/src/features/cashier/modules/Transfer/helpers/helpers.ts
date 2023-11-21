@@ -67,8 +67,6 @@ export const getAccountName = ({
                     return 'Deriv X';
                 case 'ctrader':
                     return 'Deriv cTrader';
-                case 'derivez':
-                    return 'Deriv EZ';
                 case 'mt5': {
                     switch (mt5MarketType) {
                         case 'financial':

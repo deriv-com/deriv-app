@@ -5,8 +5,6 @@ const usePasswordValidation = (password: string) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [score, setScore] = useState(0);
 
-    const isValidPassword = (password: string) => /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])[!-~]{8,25}$/.test(password);
-
     useEffect(() => {
         const { feedback } = zxcvbn(password);
 
@@ -47,7 +45,9 @@ const usePasswordValidation = (password: string) => {
         }
     }, [password]);
 
-    return { errorMessage, isValidPassword, score };
+    const isValidPassword = (value: string) => /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])[!-~]{8,25}$/.test(value);
+
+    return { errorMessage, isValidPassword: isValidPassword(password), score };
 };
 
 export default usePasswordValidation;

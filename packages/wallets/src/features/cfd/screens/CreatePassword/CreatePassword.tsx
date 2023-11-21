@@ -40,7 +40,7 @@ const CreatePassword: React.FC<TProps> = ({
             <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
             {!isMobile && (
                 <WalletButton
-                    disabled={!password || isLoading || !isValidPassword(password)}
+                    disabled={!password || isLoading || !isValidPassword}
                     isLoading={isLoading}
                     onClick={onPrimaryClick}
                     size='lg'

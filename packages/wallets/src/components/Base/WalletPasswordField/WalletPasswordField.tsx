@@ -32,7 +32,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
         <div className='wallets-password'>
             <WalletTextField
                 errorMessage={errorMessage}
-                isInvalid={!isValidPassword(password)}
+                isInvalid={!isValidPassword}
                 label={label}
                 message={errorMessage}
                 messageVariant='warning'

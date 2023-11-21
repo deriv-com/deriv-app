@@ -7,7 +7,7 @@ import { mockProposalOpenContract } from './mocks/mockProposalOpenContract';
 import mockWalletsAuthorize, { DEFAULT_WALLET_ACCOUNTS } from './mocks/mockWalletsAuthorize';
 
 test.describe('Wallets - Traders Hub', () => {
-    test('render header', async ({ baseURL, page }) => {
+    test('render USD wallet balance', async ({ baseURL, page }) => {
         await setupMocks({
             baseURL,
             mocks: [
@@ -26,7 +26,6 @@ test.describe('Wallets - Traders Hub', () => {
         });
         await page.goto(`${baseURL}/wallets`);
 
-        await expect(page.getByText(`Trader's Hub`)).toBeVisible();
-        await expect(page.getByText(`Cashier`)).toBeVisible();
+        await expect(page.getByText(`10,000.00 USD`)).toBeVisible();
     });
 });

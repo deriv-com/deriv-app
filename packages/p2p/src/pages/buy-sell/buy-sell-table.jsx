@@ -47,7 +47,7 @@ const BuySellTable = ({ clearScroll, onScroll, retain_scroll_position, scroll_to
     );
 
     const { error, has_more_items_to_load, isError, isLoading, loadMoreAdverts, rendered_adverts } =
-        useP2PRenderedAdverts();
+        useP2PRenderedAdverts({});
 
     if (isLoading) {
         return <Loading is_fullscreen={false} />;

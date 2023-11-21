@@ -123,7 +123,7 @@
       </block>
     </statement>
   </block>
-  <block type="procedures_defnoreturn" id="y?vDuuwfiR,*DqC],*C:" x="873" y="516">
+  <block type="procedures_defnoreturn" id="y?vDuuwfiR,*DqC],*C:" x="873" y="516" collapsed="true">
     <mutation>
       <arg name="rdalembert:resultIsWin" varid="M2a6~ns#)Z8]U2O_/=Fv"></arg>
     </mutation>
@@ -319,7 +319,7 @@
       </block>
     </statement>
   </block>
-  <block type="procedures_defreturn" id="CI@IiTlr,.O=:m#QLq`M" x="49" y="822">
+  <block type="procedures_defreturn" id="CI@IiTlr,.O=:m#QLq`M" x="49" y="822" collapsed="true">
     <field name="NAME">Reverse D'Alembert Trade Amount</field>
     <statement name="STACK">
       <block type="controls_if" id="UWcPhV8Xr`MF]`,ySDA-">
@@ -505,7 +505,7 @@
       </block>
     </value>
   </block>
-  <block type="procedures_defreturn" id="-9(QN`Sc2$IvQPr6M9QP" x="60" y="1877">
+  <block type="procedures_defreturn" id="-9(QN`Sc2$IvQPr6M9QP" x="60" y="1877" collapsed="true">
     <mutation>
       <arg name="rdalembert:profit" varid="j0[Hkhp,O~7]V~x(ah?j"></arg>
       <arg name="rdalembert:resultIsWin" varid="M2a6~ns#)Z8]U2O_/=Fv"></arg>

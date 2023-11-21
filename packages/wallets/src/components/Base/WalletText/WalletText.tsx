@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { TGenericSizes } from '../types';
 import './WalletText.scss';
 
-interface WalletTextProps {
+export interface WalletTextProps {
     align?: CSSProperties['textAlign'];
     as?: ElementType;
     children: ReactNode;

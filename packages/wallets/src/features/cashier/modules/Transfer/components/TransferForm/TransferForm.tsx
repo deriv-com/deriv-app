@@ -1,5 +1,6 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Formik } from 'formik';
+import { useAuthorize } from '@deriv/api';
 import { Loader, WalletButton } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import { useTransfer } from '../../provider';
@@ -10,6 +11,9 @@ import './TransferForm.scss';
 
 const TransferForm = () => {
     const { isMobile } = useDevice();
+    const {
+        data: { preferred_language: preferredLanguage },
+    } = useAuthorize();
     const { activeWallet, isLoading, mutate } = useTransfer();
     const mobileAccountsListRef = useRef<HTMLDivElement | null>(null);
 
@@ -32,6 +36,8 @@ const TransferForm = () => {
         [mutate]
     );
 
+    const [amount, setAmount] = useState<number>(0);
+
     if (isLoading) return <Loader />;
 
     return (
@@ -42,10 +48,12 @@ const TransferForm = () => {
                         <div className='wallets-transfer__fields'>
                             <div className='wallets-transfer__fields-section'>
                                 <TransferFormInputField
-                                    defaultValue={values.amountSend}
-                                    fieldName='amountSend'
+                                    currency={values.fromAccount?.currencyConfig?.display_code}
                                     fractionDigits={values.fromAccount?.currencyConfig?.fractional_digits}
                                     label='Amount you send'
+                                    locale={preferredLanguage ?? undefined}
+                                    onChange={value => setAmount(value)}
+                                    value={amount}
                                 />
                                 <TransferFormDropdown
                                     fieldName='fromAccount'
@@ -56,10 +64,12 @@ const TransferForm = () => {
                             <div style={{ height: '20px' }} />
                             <div className='wallets-transfer__fields-section'>
                                 <TransferFormInputField
-                                    defaultValue={values.amountReceive}
-                                    fieldName='amountReceive'
+                                    currency={values.toAccount?.currencyConfig?.display_code}
+                                    disabled={!values.toAccount}
                                     fractionDigits={values.toAccount?.currencyConfig?.fractional_digits}
                                     label='Estimated amount'
+                                    locale={preferredLanguage ?? undefined}
+                                    value={amount}
                                 />
                                 <TransferFormDropdown
                                     fieldName='toAccount'

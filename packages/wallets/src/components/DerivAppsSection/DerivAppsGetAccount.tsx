@@ -23,6 +23,7 @@ const DerivAppsGetAccount: React.FC = () => {
         show(
             <ModalStepWrapper
                 renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
+                shouldHideDerivAppHeader
                 shouldHideHeader={isDesktop}
             >
                 <CFDSuccess
@@ -31,7 +32,10 @@ const DerivAppsGetAccount: React.FC = () => {
                     renderButton={() => <DerivAppsSuccessFooter />}
                     title={`Your Deriv Apps (${landingCompanyName}) account is ready`}
                 />
-            </ModalStepWrapper>
+            </ModalStepWrapper>,
+            {
+                defaultRootId: 'wallets_modal_root',
+            }
         );
     }, [activeWallet?.display_balance, activeWallet?.wallet_currency_type, isDesktop, landingCompanyName, show]);
 

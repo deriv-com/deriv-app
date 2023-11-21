@@ -19,6 +19,16 @@
         }
     }
 
+    // don't need details/error message
+    .wallets-textfield__message-container {
+        display: none;
+    }
+
+    // don't show text selection
+    .wallets-textfield__field::selection {
+        background: none;
+    }
+
     &__header {
         position: sticky;
         top: -4.8rem; // ignore CashierContent padding

@@ -71,4 +71,12 @@ describe('TurbosCardBody', () => {
         const total_profit_loss_amount = screen.getByText('50.00');
         expect(total_profit_loss_amount).toBeInTheDocument();
     });
+    it('should render Total profit/loss even if profit === 0', () => {
+        const new_mocked_props = { ...mock_props };
+        new_mocked_props.contract_info.profit = 0;
+        render(<TurbosCardBody {...new_mocked_props} />);
+
+        expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText('0.00')).toBeInTheDocument();
+    });
 });

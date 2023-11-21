@@ -25,7 +25,7 @@ const RecentTradeInfo = observer(() => {
     return (
         <Text weight='bold' className='recent-trade-info'>
             <Localize
-                i18n_default_text={'Tick {{current_tick}}/{{tick_count}}'}
+                i18n_default_text='Tick {{current_tick}}/{{tick_count}}'
                 values={{
                     current_tick,
                     tick_count,

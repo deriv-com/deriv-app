@@ -770,7 +770,6 @@ type TBarriers = Array<{
     hideOffscreenBarrier?: boolean;
     isSingleBarrier?: boolean;
     onBarrierChange: (barriers: TOnChangeParams) => void;
-    updateBarrierColor: (is_dark_mode: boolean) => void;
     updateBarriers: (high: string | number, low?: string | number, isFromChart?: boolean) => void;
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;

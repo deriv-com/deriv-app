@@ -41,13 +41,14 @@ const Trade = observer(() => {
     const {
         form_components,
         getFirstOpenMarket,
+        has_barrier,
         is_accumulator,
         is_chart_loading,
         is_market_closed,
-        is_trade_enabled,
-        is_turbos,
         is_synthetics_available,
         is_synthetics_trading_market_available,
+        is_trade_enabled,
+        is_turbos,
         is_vanilla,
         onChange,
         onMount,
@@ -203,8 +204,9 @@ const Trade = observer(() => {
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
                             <TradeChart
-                                is_accumulator={is_accumulator}
                                 bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
+                                has_barrier={has_barrier}
+                                is_accumulator={is_accumulator}
                                 topWidgets={topWidgets}
                             />
                         </SwipeableWrapper>

@@ -13,12 +13,13 @@ import type { TBottomWidgetsParams } from './trade';
 
 type TTradeChartProps = {
     bottomWidgets?: (props: TBottomWidgetsParams) => React.ReactElement;
+    has_barrier?: boolean;
     is_accumulator: boolean;
     topWidgets: () => React.ReactElement;
 };
 
 const TradeChart = observer((props: TTradeChartProps) => {
-    const { is_accumulator, topWidgets } = props;
+    const { has_barrier, is_accumulator, topWidgets } = props;
     const { client, ui, common, contract_trade, portfolio } = useStore();
     const {
         accumulator_barriers_data,
@@ -60,6 +61,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
         ...(is_accumulator ? { whitespace: 190, minimumLeftBars: is_mobile ? 3 : undefined } : {}),
+        ...(has_barrier ? { whitespace: 110 } : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};

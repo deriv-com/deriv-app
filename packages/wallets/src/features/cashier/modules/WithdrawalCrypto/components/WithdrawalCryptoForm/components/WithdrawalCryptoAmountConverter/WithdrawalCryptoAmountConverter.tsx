@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { useActiveWalletAccount, useCurrencyConfig, useExchangeRate } from '@deriv/api';
-import ArrowBold from '../../../../../../../../public/images/arrow-bold.svg';
+import ArrowBold from '../../../../../../../../public/images/ic-back-arrow.svg';
 import { WalletTextField } from '../../../../../../../../components';
 import type { TForm } from '../../WithdrawalCryptoForm';
 import './WithdrawalCryptoAmountConverter.scss';

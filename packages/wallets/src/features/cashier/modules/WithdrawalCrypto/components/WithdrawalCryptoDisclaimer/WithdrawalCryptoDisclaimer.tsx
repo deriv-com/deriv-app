@@ -1,6 +1,6 @@
 import React from 'react';
 import { InlineMessage } from '../../../../../../components';
-import './WithdrawalDisclaimer.scss';
+import './WithdrawalCryptoDisclaimer.scss';
 
 const WithdrawalDisclaimer = () => (
     <div className='wallets-withdrawal-crypto-disclaimer'>

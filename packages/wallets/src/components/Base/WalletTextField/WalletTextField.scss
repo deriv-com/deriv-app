@@ -25,6 +25,24 @@
         }
     }
 
+    &--disabled {
+        pointer-events: none;
+        .wallets-textfield__box,
+        .wallets-textfield__box:hover {
+            border: 1px solid var(--system-light-5-active-background, #eaeced);
+        }
+        .wallets-textfield__box:has(.wallets-textfield__field:focus) {
+            border: 1px solid var(--system-light-5-active-background, #eaeced);
+        }
+        .wallets-textfield__field {
+            background: inherit;
+        }
+
+        .wallets-textfield__label {
+            color: #eaeced;
+        }
+    }
+
     &__box {
         height: 4rem;
         width: 100%;

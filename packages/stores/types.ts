@@ -847,7 +847,7 @@ type TNotificationStore = {
     removeNotificationByKey: ({ key }: { key: string }) => void;
     removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
     removeNotificationMessageByKey: ({ key }: { key: string }) => void;
-    removeTradeNotifications: () => void;
+    removeTradeNotifications: (id?: string) => void;
     setP2POrderProps: () => void;
     setP2PRedirectTo: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
@@ -858,6 +858,7 @@ type TNotificationStore = {
         contract_id: number;
         currency: string;
         contract_type: string;
+        id: string;
         profit: number;
         status: string;
         symbol: string;

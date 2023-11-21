@@ -193,6 +193,7 @@ export default class NotificationStore extends BaseStore {
         const { buy_price, contract_id, currency, shortcode, status } = contract_info;
         if (this.trade_notifications.some(item => item.contract_id === contract_id)) return;
         this.trade_notifications.push({
+            id: `${contract_id}_${status}`,
             buy_price,
             contract_id,
             contract_type: getContractTypeDisplay(
@@ -648,8 +649,12 @@ export default class NotificationStore extends BaseStore {
             : [...this.notifications.filter(notifs => notifs.is_persistent)];
     }
 
-    removeTradeNotifications() {
-        this.trade_notifications = [];
+    removeTradeNotifications(id) {
+        if (id) {
+            this.trade_notifications = this.trade_notifications.filter(n => n.id !== id);
+        } else {
+            this.trade_notifications = [];
+        }
     }
 
     removeNotificationByKey({ key }) {

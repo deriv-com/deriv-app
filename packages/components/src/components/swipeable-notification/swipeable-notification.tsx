@@ -1,4 +1,5 @@
 import React from 'react';
+import debounce from 'lodash.debounce';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -12,6 +13,7 @@ type TSwipeableNotificationProps = {
     is_failure?: boolean;
     is_success?: boolean;
     is_visible?: boolean;
+    onSwipeEnd: (should_remove_notification?: boolean) => void;
     redirect_to?: string;
 };
 
@@ -22,11 +24,23 @@ const SwipeableNotification = ({
     is_failure,
     is_success,
     is_visible,
+    onSwipeEnd,
     redirect_to = '',
 }: TSwipeableNotificationProps) => {
     const [is_swipe_right, setSwipeRight] = React.useState(false);
-    const onSwipeLeft = () => setSwipeRight(false);
-    const onSwipeRight = () => setSwipeRight(true);
+    const [is_shown, setIsShown] = React.useState(is_visible);
+    const hideNotification = () => {
+        setIsShown(false);
+        debounce(() => onSwipeEnd(true), 300)();
+    };
+    const onSwipeLeft = () => {
+        setSwipeRight(false);
+        hideNotification();
+    };
+    const onSwipeRight = () => {
+        setSwipeRight(true);
+        hideNotification();
+    };
 
     const swipe_handlers = useSwipeable({
         onSwipedLeft: onSwipeLeft,
@@ -36,7 +50,7 @@ const SwipeableNotification = ({
     return (
         <CSSTransition
             appear
-            in={is_visible}
+            in={is_visible && is_shown}
             timeout={300}
             classNames={{
                 appear: `${classname}-appear`,

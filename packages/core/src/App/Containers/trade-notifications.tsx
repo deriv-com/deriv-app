@@ -7,7 +7,7 @@ import { Localize, localize } from '@deriv/translations';
 
 const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_notifications?: boolean }) => {
     const {
-        notifications: { trade_notifications },
+        notifications: { removeTradeNotifications, trade_notifications },
     } = useStore();
     if (!show_trade_notifications || !trade_notifications.length) return null;
 
@@ -15,13 +15,13 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
         <MobileWrapper>
             <div className='trade-notifications'>
                 {trade_notifications.map(notification => {
-                    const { buy_price, contract_id, currency, contract_type, profit, status, symbol, timestamp } =
+                    const { buy_price, contract_id, currency, contract_type, id, profit, status, symbol, timestamp } =
                         notification;
                     const seconds = Math.floor(Math.abs(Date.now() - timestamp) / 1000);
 
                     return (
                         <SwipeableNotification
-                            key={contract_id}
+                            key={id}
                             content={
                                 <React.Fragment>
                                     <Text as='p' size='xxxs' line_height='s'>
@@ -59,8 +59,13 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
                             }
                             is_failure={status !== 'open' && profit < 0}
                             is_success={status !== 'open' && profit >= 0}
-                            is_visible={seconds < 20}
-                            redirect_to={getContractPath(notification.contract_id)}
+                            is_visible={seconds < 3}
+                            onSwipeEnd={(should_remove_notification?: boolean) => {
+                                if (should_remove_notification) {
+                                    removeTradeNotifications(id);
+                                }
+                            }}
+                            redirect_to={getContractPath(contract_id)}
                         />
                     );
                 })}

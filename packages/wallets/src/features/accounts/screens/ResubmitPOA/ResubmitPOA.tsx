@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSettings, useStatesList } from '@deriv/api';
 import { Dropzone, FlowTextField, useFlow } from '../../../../components';
 import { InlineMessage, WalletDropdown, WalletText } from '../../../../components/Base';
 import Upload from '../../../../public/images/accounts/upload.svg';
 import { getExampleImagesConfig } from '../../constants';
+import { letterRequiredValidator, requiredValidator } from '../../validations';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
 import './ResubmitPOA.scss';
 
@@ -19,16 +20,6 @@ const ResubmitPOA: React.FC = () => {
     const { data: getSettings } = useSettings();
     const country = data?.country_code || '';
     const { data: statesList } = useStatesList(country);
-
-    useEffect(() => {
-        if (getSettings) {
-            setFormValues('firstLine', getSettings.address_line_1);
-            setFormValues('secondLine', getSettings.address_line_2);
-            setFormValues('townCityLine', getSettings.address_city);
-            setFormValues('zipCodeLine', getSettings.address_postcode);
-            setFormValues('stateProvinceDropdownLine', getSettings.address_state);
-        }
-    }, [getSettings, setFormValues]);
 
     return (
         <div className='wallets-poa'>
@@ -50,13 +41,19 @@ const ResubmitPOA: React.FC = () => {
                         defaultValue={getSettings?.address_line_1 ?? ''}
                         label='First line of address*'
                         name='firstLine'
+                        validationSchema={requiredValidator}
                     />
                     <FlowTextField
                         defaultValue={getSettings?.address_line_2 ?? ''}
                         label='Second line of address'
                         name='secondLine'
                     />
-                    <FlowTextField label='Town/City*' name='townCityLine' value={getSettings?.address_city ?? ''} />
+                    <FlowTextField
+                        defaultValue={getSettings?.address_city ?? ''}
+                        label='Town/City*'
+                        name='townCityLine'
+                        validationSchema={letterRequiredValidator}
+                    />
                     <WalletDropdown
                         label='State/Province'
                         list={statesList}

@@ -1,30 +1,69 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { unFormatLocaleString } from '@deriv/utils';
 import useInputDecimalFormatter from './useInputDecimalFormatter';
 
 type TOptions = {
     fractionDigits?: number;
     locale?: Intl.LocalesArgument;
+    maxDigits?: number;
 };
 
-const useInputATMFormatter = (initial?: number, options?: TOptions) => {
+const separatorRegex = /[,.]/g; // locale-agnostic
+
+const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initial?: number, options?: TOptions) => {
+    const input = inputRef.current;
+
     const isPasting = useRef(false);
     const { onChange: onChangeDecimal, value } = useInputDecimalFormatter(undefined, options);
-    const { fractionDigits = 2, locale } = options || {};
+    const { fractionDigits = 2, locale, maxDigits = 14 } = options || {};
 
     const formattedValue = useMemo(
         () => `${Number(value).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`,
         [fractionDigits, locale, value]
     );
 
+    // maintain the input state to compare new values to it on every change
+    const [prevFormattedValue, setPrevFormattedValue] = useState<string>(formattedValue);
+    useEffect(() => {
+        setPrevFormattedValue(formattedValue);
+    }, [formattedValue]);
+
+    // keep the caret from jumping
+    const [caretNeedsRepositioning, setCaretNeedsRepositioning] = useState<boolean>(false);
+    const [caret, setCaret] = useState<number>();
+    useEffect(() => {
+        if (caret && caretNeedsRepositioning && input) {
+            const indexBeforeCaret = formattedValue.length - 1 - caret;
+
+            // if before a comma or period, prefer positioning the caret to the left of it
+            const newCaretPosition = separatorRegex.test(formattedValue[indexBeforeCaret])
+                ? indexBeforeCaret
+                : indexBeforeCaret + 1;
+
+            input.setSelectionRange(newCaretPosition, newCaretPosition);
+            setCaretNeedsRepositioning(false);
+        }
+    }, [caret, formattedValue, caretNeedsRepositioning, input]);
+
     const onChange = useCallback(
         (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
+            if (!input) return;
+
+            const newCaretPosition = input.value.length - (input.selectionStart ?? 0);
+            setCaret(newCaretPosition);
+            setCaretNeedsRepositioning(true);
+
+            if (maxDigits && input.value.replace(separatorRegex, '').length > maxDigits) return;
+
+            const hasNoChangeInDigits =
+                input.value.length + 1 === prevFormattedValue.length &&
+                input.value.replaceAll(separatorRegex, '') === prevFormattedValue.replaceAll(separatorRegex, '');
+            if (hasNoChangeInDigits) return;
+
             const newValue = e?.target?.value || '';
             const unformatted = unFormatLocaleString(newValue, locale);
-            // @ts-expect-error shouldn't cast to number because we will lose the trailing zeros.
-            const shifted = Math.fround(unformatted * 10).toFixed(fractionDigits);
-            // @ts-expect-error shouldn't cast to number because we will lose the trailing zeros.
-            const unShifted = Math.fround(unformatted / 10).toFixed(fractionDigits);
+            const shifted = (Number(unformatted) * 10).toFixed(fractionDigits);
+            const unShifted = (Number(unformatted) / 10).toFixed(fractionDigits);
             const unformattedFraction = unformatted.split('.')?.[1]?.length || fractionDigits;
 
             // If the user is pasting, we don't need to shift the decimal point,
@@ -66,16 +105,30 @@ const useInputATMFormatter = (initial?: number, options?: TOptions) => {
 
             return onChangeDecimal({ target: { value: unformatted } });
         },
-        [locale, fractionDigits, onChangeDecimal]
+        [input, maxDigits, prevFormattedValue, locale, fractionDigits, onChangeDecimal]
     );
 
     const onPaste: React.ClipboardEventHandler<HTMLInputElement> = useCallback(
-        e => (isPasting.current = e.type === 'paste'),
-        []
+        e => {
+            isPasting.current = e.type === 'paste';
+            if (Number(unFormatLocaleString(formattedValue, locale)) === 0) {
+                const pasted = (e.clipboardData || window.clipboardData).getData('Text');
+                const pastedValue = Number(unFormatLocaleString(pasted, locale));
+                if (!isNaN(pastedValue) && isFinite(pastedValue))
+                    onChange({
+                        target: {
+                            value: `${pastedValue.toLocaleString(locale, {
+                                minimumFractionDigits: fractionDigits,
+                            })}`,
+                        },
+                    });
+            }
+        },
+        [formattedValue, fractionDigits, locale, onChange]
     );
 
     useEffect(() => {
-        if (initial) {
+        if (typeof initial === 'number') {
             isPasting.current = true;
             onChange({
                 target: {

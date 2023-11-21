@@ -13,9 +13,15 @@ const LiveChat = observer(({ is_mobile_drawer }: TLiveChatProps) => {
 
     if (!liveChat.isReady) return null;
 
+    const liveChatClickHandler = () => liveChat.widget?.call('maximize');
+
     if (is_mobile_drawer)
         return (
-            <div className='livechat gtm-deriv-livechat' onClick={() => liveChat.widget?.call('maximize')}>
+            <div
+                className='livechat gtm-deriv-livechat'
+                onKeyDown={liveChatClickHandler}
+                onClick={liveChatClickHandler}
+            >
                 <div className='livechat__icon-wrapper'>
                     <Icon icon='IcLiveChat' className='livechat__icon' />
                 </div>
@@ -26,7 +32,7 @@ const LiveChat = observer(({ is_mobile_drawer }: TLiveChatProps) => {
         );
 
     return (
-        <div onClick={() => liveChat.widget?.call('maximize')}>
+        <div onKeyDown={liveChatClickHandler} onClick={liveChatClickHandler}>
             <Popover
                 className='footer__link'
                 classNameBubble='help-centre__tooltip'

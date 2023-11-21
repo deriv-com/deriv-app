@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { liveChatInitialization } from './live-chat';
+import { liveChatInitialization } from './live-chat-initializer';
 import Cookies from 'js-cookie';
 import { deriv_urls } from '@deriv/shared';
 

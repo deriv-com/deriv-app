@@ -62,7 +62,7 @@ const TradersHub = observer(() => {
     };
     if (!is_logged_in) return null;
 
-    const OrderedPlatformSections = (is_cfd_visible = true, is_options_and_multipliers_visible = true) => {
+    const OrderedPlatformSections = ({ is_cfd_visible = true, is_options_and_multipliers_visible = true }) => {
         return (
             <div
                 data-testid='dt_traders_hub'

@@ -13,7 +13,6 @@ import {
     WS,
     getContractUpdateConfig,
     getContractValidationRules,
-    BARRIER_COLORS,
     BARRIER_LINE_STYLES,
     DEFAULT_SHADES,
     isBarrierSupported,
@@ -273,7 +272,6 @@ export default class ContractStore extends BaseStore {
                 !isResetContract(contract_info.contract_type)
             ) {
                 main_barrier?.updateBarriers(barrier || high_barrier, low_barrier);
-                main_barrier?.updateBarrierColor(is_dark_mode);
             }
             if (
                 contract_info.contract_id &&
@@ -289,7 +287,7 @@ export default class ContractStore extends BaseStore {
         }
     }
 
-    createBarriersArray = (contract_info, is_dark_mode) => {
+    createBarriersArray = contract_info => {
         let barriers = [];
         if (contract_info) {
             const {
@@ -303,7 +301,6 @@ export default class ContractStore extends BaseStore {
             } = contract_info;
             const high_barrier = this.accu_high_barrier || barrier || high;
             const common_props = {
-                color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
                 not_draggable: true,
                 shade: DEFAULT_SHADES['2'],
             };

@@ -1,10 +1,13 @@
 import { useMemo } from 'react';
+
 import { useFetch } from '@deriv/api';
-import useActiveWallet from './useActiveWallet';
 import { useStore } from '@deriv/stores';
 
+import useActiveWallet from './useActiveWallet';
+
 type TAccount = {
-    cfd_type?: 'mt5' | 'derivez' | 'dxtrade';
+    cfd_type?: 'mt5' | 'dxtrade';
+
     market_type?: 'financial' | 'synthetic' | 'all';
 };
 
@@ -22,8 +25,6 @@ const getAccountIcon = ({ cfd_type, market_type }: TAccount) => {
                     return 'IcRebrandingDmt5Dashboard';
             }
         }
-        case 'derivez':
-            return 'IcRebrandingDerivEz';
         case 'dxtrade':
             return 'IcRebrandingDerivX';
         default:
@@ -39,9 +40,6 @@ const useExistingCFDAccounts = () => {
     const { combined_cfd_mt5_accounts } = traders_hub;
     const wallet = useActiveWallet();
     const { data: mt5, ...mt5_rest } = useFetch('mt5_login_list');
-    const { data: derivez, ...derivez_rest } = useFetch('trading_platform_accounts', {
-        payload: { platform: 'derivez' },
-    });
     const { data: dxtrade, ...dxtrade_rest } = useFetch('trading_platform_accounts', {
         payload: { platform: 'dxtrade' },
     });
@@ -70,15 +68,6 @@ const useExistingCFDAccounts = () => {
         }));
     }, [mt5?.mt5_login_list, wallet?.linked_to, combined_cfd_mt5_accounts]);
 
-    const modified_derivez_accounts = useMemo(
-        () =>
-            derivez?.trading_platform_accounts?.map(account => ({
-                ...account,
-                loginid: account.login,
-                transfer_icon: getAccountIcon({ cfd_type: 'derivez' }),
-            })),
-        [derivez?.trading_platform_accounts]
-    );
     const modified_dxtrade_accounts = useMemo(
         () =>
             dxtrade?.trading_platform_accounts?.map(account => ({
@@ -92,14 +81,13 @@ const useExistingCFDAccounts = () => {
         () => ({
             mt5_accounts: modified_mt5_accounts || [],
             dxtrade_accounts: modified_dxtrade_accounts || [],
-            derivez_accounts: modified_derivez_accounts || [],
         }),
-        [modified_mt5_accounts, modified_dxtrade_accounts, modified_derivez_accounts]
+        [modified_mt5_accounts, modified_dxtrade_accounts]
     );
 
     return {
         data,
-        isSuccess: [mt5_rest.isSuccess, dxtrade_rest.isSuccess, derivez_rest.isSuccess].every(Boolean),
+        isSuccess: [mt5_rest.isSuccess, dxtrade_rest.isSuccess].every(Boolean),
     };
 };
 

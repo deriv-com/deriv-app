@@ -4,6 +4,11 @@
     align-items: center;
     width: 95.6rem;
 
+    @include mobile {
+        width: 100%;
+        padding: 1.6rem;
+    }
+
     &__body {
         display: flex;
         flex-direction: column;
@@ -25,10 +30,10 @@
     }
 
     &__dropdown {
-        padding-bottom: 2.8rem;
+        padding-bottom: 0.8rem;
 
         @include mobile {
-            padding-bottom: 3.6rem;
+            padding-bottom: 1.6rem;
         }
     }
 

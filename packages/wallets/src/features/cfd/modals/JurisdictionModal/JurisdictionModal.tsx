@@ -5,6 +5,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
 import { MarketTypeDetails } from '../../constants';
+import { Verification } from '../../flows/Verification';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
@@ -30,13 +31,21 @@ const JurisdictionModal = () => {
 
     const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
 
+    const JurisdictionFlow = () => {
+        if (selectedJurisdiction === 'svg') {
+            return <MT5PasswordModal marketType={marketType} platform={platform} />;
+        }
+
+        return <Verification selectedJurisdiction={selectedJurisdiction} />;
+    };
+
     const modalFooter = isDynamicLeverageVisible
         ? undefined
         : () => (
               <WalletButton
                   disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
                   isFullWidth={isMobile}
-                  onClick={() => show(<MT5PasswordModal marketType={marketType} platform={platform} />)}
+                  onClick={() => show(<JurisdictionFlow />)}
                   text='Next'
               />
           );

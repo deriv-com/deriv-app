@@ -5,10 +5,10 @@ import { Text, StatusBadge } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
-    getAppstorePlatforms,
-    getMFAppstorePlatforms,
     BrandConfig,
     DERIV_PLATFORM_NAMES,
+    getAppstorePlatforms,
+    getMFAppstorePlatforms,
 } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
@@ -113,7 +113,6 @@ const TradingAppCard = ({
             window.open(getStaticUrl(`/dmt5`, {}, false, true));
         else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
         else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
-        else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
         else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
         else;
     };

@@ -18,7 +18,7 @@ export type TTransferContext = {
     activeWallet: ReturnType<typeof useExtendedTransferAccountProperties>['activeWallet'];
     isLoading: boolean;
     receipt?: TReceipt;
-    requestTransferBetweenAccounts: (values: TInitialTransferFormValues) => Promise<void>;
+    requestTransferBetweenAccounts: (values: TInitialTransferFormValues) => void;
 };
 
 const TransferContext = createContext<TTransferContext | null>(null);
@@ -57,10 +57,10 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
                 amount: fromAmount,
                 currency: fromAccount?.currency,
             }).then(() => {
-                const isEqualCurrencies = fromAccount?.currency === toAccount?.currency;
+                const isSameCurrency = fromAccount?.currency === toAccount?.currency;
                 let feePercentage, feeAmount;
 
-                if (!isEqualCurrencies) {
+                if (!isSameCurrency) {
                     feePercentage =
                         fromAccount?.currencyConfig?.transfer_between_accounts.fees[toAccount?.currency || ''] || 0;
                     feeAmount = Number(

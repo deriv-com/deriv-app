@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { defineViewportVh } from './utils/utils';
+import { defineViewportHeight } from './utils/utils';
 import { Router } from './routes';
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
     useEffect(() => {
-        defineViewportVh();
-        window.addEventListener('resize', defineViewportVh);
-        return () => window.removeEventListener('resize', defineViewportVh);
+        defineViewportHeight();
+        window.addEventListener('resize', defineViewportHeight);
+        return () => window.removeEventListener('resize', defineViewportHeight);
     }, []);
 
     return (

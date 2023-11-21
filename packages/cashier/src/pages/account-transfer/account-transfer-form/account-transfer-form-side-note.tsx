@@ -76,7 +76,9 @@ const AccountTransferNote = ({
                         <Localize
                             i18n_default_text='Each day you can transfer up to {{ allowed_dxtrade }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
                             values={{
-                                allowed_dxtrade: (exchange_rate * Number(allowed_transfers_amount?.dxtrade)).toFixed(2),
+                                allowed_dxtrade: (
+                                    exchange_rate * (Number(allowed_transfers_amount?.dxtrade) || 50000)
+                                ).toFixed(2),
                                 currency: getCurrencyDisplayCode(currency),
                             }}
                         />
@@ -90,7 +92,9 @@ const AccountTransferNote = ({
                         <Localize
                             i18n_default_text='Each day you can transfer up to {{ allowed_mt5 }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
                             values={{
-                                allowed_mt5: (exchange_rate * Number(allowed_transfers_amount?.mt5)).toFixed(2),
+                                allowed_mt5: (
+                                    exchange_rate * (Number(allowed_transfers_amount?.mt5) || 200000)
+                                ).toFixed(2),
                                 currency: getCurrencyDisplayCode(currency),
                             }}
                         />
@@ -104,7 +108,9 @@ const AccountTransferNote = ({
                     <Localize
                         i18n_default_text='Each day you can transfer up to {{ allowed_internal }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
                         values={{
-                            allowed_internal: (exchange_rate * Number(allowed_transfers_amount?.internal)).toFixed(2),
+                            allowed_internal: (
+                                exchange_rate * (Number(allowed_transfers_amount?.internal) || 100000)
+                            ).toFixed(2),
                             currency: getCurrencyDisplayCode(currency),
                         }}
                     />

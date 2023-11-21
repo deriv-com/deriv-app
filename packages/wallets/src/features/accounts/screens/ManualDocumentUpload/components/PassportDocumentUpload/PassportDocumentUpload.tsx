@@ -7,6 +7,8 @@ import Calendar from '../../../../../../public/images/calendar.svg';
 import { DocumentRuleHints } from '../DocumentRuleHints';
 import './PassportDocumentUpload.scss';
 
+type TDocumentUploadPayload = Parameters<ReturnType<typeof useDocumentUpload>['upload']>[0];
+
 const PassportDocumentUpload = () => {
     const [file, setFile] = useState<File | undefined>(undefined);
     const [passportNumber, setPassportNumber] = useState('');
@@ -19,8 +21,9 @@ const PassportDocumentUpload = () => {
     const handleUpload = useCallback(() => {
         if (file) {
             upload({
-                // @ts-expect-error type mismatch
-                document_format: file.type.split('/')[1].toLocaleUpperCase(),
+                document_format: file.type
+                    .split('/')[1]
+                    .toLocaleUpperCase() as TDocumentUploadPayload['document_format'],
                 document_id: passportNumber,
                 document_issuing_country: data?.country_code ?? undefined,
                 document_type: 'passport',

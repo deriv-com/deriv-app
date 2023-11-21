@@ -1,19 +1,30 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import useMutation from '../useMutation';
-import { compressImageFile, generateChunks, numToUint8Array, combineBuffer, readFile } from '../utils';
+import { compressImageFile, generateChunks, numToUint8Array, readFile } from '../utils';
 import md5 from 'md5';
 import { getWebsocket } from '../APIProvider';
 
 type TDocumentUploadPayload = Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload'];
-type TMutatePayload = TDocumentUploadPayload & {
+type TUploadPayload = Omit<TDocumentUploadPayload, 'expected_checksum' | 'file_size'> & {
     file?: File;
 };
 
 /** A custom hook to handle document file uploads to our backend. */
 const useDocumentUpload = () => {
-    const { data, mutate, ...rest } = useMutation('document_upload');
+    const {
+        data,
+        isLoading: _isLoading,
+        isSuccess: _isSuccess,
+        mutate,
+        status,
+        ...rest
+    } = useMutation('document_upload');
     const [tempChunks, setTempChunks] = useState<Uint8Array[]>([]);
-    const derivAPI = getWebsocket();
+    const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
+    const activeWebSocket = getWebsocket();
+
+    const isLoading = useMemo(() => _isLoading || !isDocumentUploaded, [_isLoading, isDocumentUploaded]);
+    const isSuccess = useMemo(() => _isSuccess && isDocumentUploaded, [_isSuccess, isDocumentUploaded]);
 
     const sendChunks = useCallback(
         (chunks: Uint8Array[]) => {
@@ -22,21 +33,18 @@ const useDocumentUpload = () => {
 
             chunks.forEach(chunk => {
                 const size = numToUint8Array(chunk.length);
-                let payload = new Uint8Array([]);
-
-                payload = combineBuffer(payload, type);
-                payload = combineBuffer(payload, id);
-                payload = combineBuffer(payload, size);
-                payload = combineBuffer(payload, chunk);
-                derivAPI?.send(payload);
+                const payload = new Uint8Array([...type, ...id, ...size, ...chunk]);
+                activeWebSocket?.send(payload);
             });
+            setIsDocumentUploaded(true);
         },
-        [data, derivAPI]
+        [data, activeWebSocket]
     );
 
     const upload = useCallback(
-        async (payload: TMutatePayload) => {
+        async (payload: TUploadPayload) => {
             if (!payload?.file) return Promise.reject(new Error('No file selected'));
+            setIsDocumentUploaded(false);
             const file = payload.file;
             delete payload.file;
             const fileBlob = await compressImageFile(file);
@@ -61,11 +69,11 @@ const useDocumentUpload = () => {
     );
 
     useEffect(() => {
-        if (rest.status === 'success' && tempChunks.length && data) {
+        if (status === 'success' && tempChunks.length && data) {
             sendChunks(tempChunks);
             setTempChunks([]);
         }
-    }, [data, rest.status, sendChunks, tempChunks]);
+    }, [data, status, sendChunks, tempChunks]);
 
     const modified_response = useMemo(() => ({ ...data?.document_upload }), [data?.document_upload]);
 
@@ -74,6 +82,12 @@ const useDocumentUpload = () => {
         data: modified_response,
         /** Function to upload the document */
         upload,
+        /** Mutation status */
+        status,
+        /** Whether the mutation is loading */
+        isLoading,
+        /** Whether the mutation is successful */
+        isSuccess,
         ...rest,
     };
 };

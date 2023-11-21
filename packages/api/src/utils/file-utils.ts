@@ -153,27 +153,6 @@ export const generateChunks = (binary: Uint8Array, { chunkSize = 16384 /* 16KB *
 };
 
 /**
- * Combine two Uint8Arrays
- *
- * @param {src} Uint8Array - Source Uint8Array.
- * @param {dst} Uint8Array - Destination Uint8Array.
- * @returns {Uint8Array} Combined Uint8Array
- */
-export function combineBuffer(src: Uint8Array, dst: Uint8Array) {
-    const output = new Uint8Array(src.length + dst.length);
-
-    for (let i = 0; i < src.length; i++) {
-        output[i] = src[i];
-    }
-
-    for (let i = 0; i < dst.length; i++) {
-        output[i + src.length] = dst[i];
-    }
-
-    return output;
-}
-
-/**
  * Read a file and return it as modified object with a buffer of the file contents.
  * @param {Blob} file - The file to read.
  * @returns {Promise<TFileObject>} A Promise that resolves with the file as a TFileObject.

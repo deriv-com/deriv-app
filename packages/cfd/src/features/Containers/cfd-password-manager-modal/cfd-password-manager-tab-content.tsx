@@ -4,14 +4,10 @@ import { localize } from '@deriv/translations';
 import { isMobile, validLength, validPassword, getErrorMessages, getCFDPlatformLabel } from '@deriv/shared';
 import { useTradingPlatformInvestorPasswordChange, useTradingPlatformPasswordChange } from '@deriv/api';
 import { FormikErrors } from 'formik';
-import TradingPasswordManager from '../../../Containers/trading-password-manager';
-import InvestorPasswordManager from '../../../Containers/investor-password-manager';
-import {
-    TCFDPasswordManagerTabContent,
-    TFormValues,
-    TPasswordManagerModalFormValues,
-} from '../../../Containers/props.types';
-import { CFD_PLATFORMS, QUERY_STATUS, PASSWORD_TYPE } from '../../../Helpers/cfd-config';
+import TradingPasswordManager from 'Containers/trading-password-manager';
+import InvestorPasswordManager from 'Containers/investor-password-manager';
+import { TCFDPasswordManagerTabContent, TFormValues, TPasswordManagerModalFormValues } from 'Containers/props.types';
+import { CFD_PLATFORMS, QUERY_STATUS, PASSWORD_TYPE } from 'Helpers/cfd-config';
 import { TStatus } from './cfd-password-manager-modal';
 
 export const CFDPasswordManagerTabContent = ({

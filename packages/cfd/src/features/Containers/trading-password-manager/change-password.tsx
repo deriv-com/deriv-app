@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, Button, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getCFDPlatformLabel } from '@deriv/shared';
-import { TChangePassword } from '../../../Containers/props.types';
-import { CFD_PLATFORMS } from '../../../Helpers/cfd-config';
+import { TChangePassword } from 'Containers/props.types';
+import { CFD_PLATFORMS } from 'Helpers/cfd-config';
 
 export const ChangePassword = ({ platform, onConfirm }: TChangePassword) => (
     <div className='cfd-change-password'>

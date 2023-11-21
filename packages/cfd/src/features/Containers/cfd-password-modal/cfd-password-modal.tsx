@@ -24,22 +24,17 @@ import {
     useTradingPlatformPasswordChange,
     useVerifyEmail,
 } from '@deriv/api';
-import {
-    getDxCompanies,
-    getMtCompanies,
-    TMtCompanies,
-    TDxCompanies,
-} from '../../../Stores/Modules/CFD/Helpers/cfd-config';
-import SuccessDialog from '../../../Components/success-dialog.jsx';
-import '../../../sass/cfd.scss';
+import { getDxCompanies, getMtCompanies, TMtCompanies, TDxCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import SuccessDialog from 'Components/success-dialog.jsx';
+import 'sass/cfd.scss';
 import './cfd-password-modal.scss';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from '../../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 import { PasswordModalHeader } from './password-modal-header';
 import { CFDPasswordForm } from './cfd-password-form';
 import { IconType } from './icon-type';
 import { TCFDPasswordFormValues, TOnSubmitPassword } from './types';
-import { CFD_PLATFORMS, CATEGORY, JURISDICTION, MARKET_TYPE, QUERY_STATUS } from '../../../Helpers/cfd-config';
+import { CFD_PLATFORMS, CATEGORY, JURISDICTION, MARKET_TYPE, QUERY_STATUS } from 'Helpers/cfd-config';
 
 type TReviewMsgForMT5 = {
     is_selected_mt5_verified: boolean;

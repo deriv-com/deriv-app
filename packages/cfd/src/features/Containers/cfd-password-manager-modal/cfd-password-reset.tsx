@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TCFDPasswordReset } from '../../../Containers/props.types';
+import { TCFDPasswordReset } from 'Containers/props.types';
 import { CountdownComponent } from './countdown-component';
 
 export const CFDPasswordReset = ({
@@ -39,13 +39,12 @@ export const CFDPasswordReset = ({
             <Text as='p' size='xs' align='center'>
                 <Localize i18n_default_text='Please click on the link in the email to reset your password.' />
             </Text>
-            {!is_resend_verification_requested && (
+            {!is_resend_verification_requested ? (
                 <Button className='cfd-verification-email-sent__resend-button' primary onClick={onClickVerification}>
                     <Localize i18n_default_text="Didn't receive the email?" />
                 </Button>
-            )}
-            {is_resend_verification_requested && (
-                <>
+            ) : (
+                <React.Fragment>
                     <Text
                         as='p'
                         size='xs'
@@ -79,7 +78,7 @@ export const CFDPasswordReset = ({
                             />
                         )}
                     </Button>
-                </>
+                </React.Fragment>
             )}
         </div>
     );

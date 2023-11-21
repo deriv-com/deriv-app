@@ -3,8 +3,8 @@ import { SendEmailTemplate } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCFDPlatformLabel } from '@deriv/shared';
 import { useVerifyEmail } from '@deriv/api';
-import { TPasswordResetAndTradingPasswordManager } from '../../../Containers/props.types';
-import { CATEGORY, CFD_PLATFORMS } from '../../../Helpers/cfd-config';
+import { TPasswordResetAndTradingPasswordManager } from 'Containers/props.types';
+import { CATEGORY, CFD_PLATFORMS } from 'Helpers/cfd-config';
 
 export const PasswordReset = ({ email, platform, account_group }: TPasswordResetAndTradingPasswordManager) => {
     const { mutate: verifyEmail } = useVerifyEmail();

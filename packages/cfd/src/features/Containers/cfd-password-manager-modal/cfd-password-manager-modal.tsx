@@ -5,8 +5,8 @@ import { VerifyEmailResponse } from '@deriv/api-types';
 import { getCFDPlatformLabel } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useVerifyEmail } from '@deriv/api';
-import { TCFDPasswordManagerTabContentWrapper, TCFDPasswordManagerModal } from '../../../Containers/props.types';
-import { QUERY_STATUS } from '../../../Helpers/cfd-config';
+import { TCFDPasswordManagerTabContentWrapper, TCFDPasswordManagerModal } from 'Containers/props.types';
+import { QUERY_STATUS } from 'Helpers/cfd-config';
 import { CFDPasswordReset } from './cfd-password-reset';
 import { CFDPasswordManagerTabContent } from './cfd-password-manager-tab-content';
 

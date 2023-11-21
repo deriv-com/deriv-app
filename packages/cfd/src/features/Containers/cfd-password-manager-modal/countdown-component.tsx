@@ -1,5 +1,5 @@
 import React from 'react';
-import { TCountdownComponent } from '../../../Containers/props.types';
+import { TCountdownComponent } from 'Containers/props.types';
 
 export const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);

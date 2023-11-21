@@ -1,8 +1,8 @@
 import React from 'react';
 import { MultiStep } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import ChangePasswordConfirmation from '../../../Containers/cfd-change-password-confirmation';
-import { TPasswordResetAndTradingPasswordManager } from '../../../Containers/props.types';
+import ChangePasswordConfirmation from 'Containers/cfd-change-password-confirmation';
+import { TPasswordResetAndTradingPasswordManager } from 'Containers/props.types';
 import { ChangePassword } from './change-password';
 import { PasswordReset } from './password-reset';
 

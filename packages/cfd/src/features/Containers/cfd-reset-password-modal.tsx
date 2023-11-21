@@ -3,12 +3,12 @@ import React from 'react';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
 import { validLength, validPassword, getErrorMessages, redirectToLogin } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
-import { getMtCompanies, TMtCompanies } from '../../Stores/Modules/CFD/Helpers/cfd-config';
-import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from '../../Containers/props.types';
 import { observer, useStore } from '@deriv/stores';
 import { useTradingPlatformInvestorPasswordReset } from '@deriv/api';
-import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
-import { CFD_PLATFORMS, QUERY_STATUS } from '../../Helpers/cfd-config';
+import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from 'Containers/props.types';
+import { CFD_PLATFORMS, QUERY_STATUS } from 'Helpers/cfd-config';
 
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');

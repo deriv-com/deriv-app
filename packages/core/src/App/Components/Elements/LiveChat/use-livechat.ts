@@ -111,9 +111,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
 
     useEffect(() => {
         history.listen(onHistoryChange);
-
         window.LiveChatWidget?.on('ready', () => setIsReady(true));
-        return () => setIsReady(false);
     }, [history, onHistoryChange]);
 
     useEffect(() => {

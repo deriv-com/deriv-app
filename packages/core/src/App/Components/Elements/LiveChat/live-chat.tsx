@@ -1,10 +1,14 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { Popover, Icon, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 
-const LiveChat = ({ is_mobile_drawer, has_cookie_account, loginid }) => {
+type TLiveChatProps = { is_mobile_drawer?: boolean };
+
+const LiveChat = observer(({ is_mobile_drawer }: TLiveChatProps) => {
+    const { client } = useStore();
+    const { has_cookie_account, loginid } = client;
     const liveChat = useLiveChat(has_cookie_account, loginid);
 
     if (!liveChat.isReady) return null;
@@ -15,7 +19,9 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account, loginid }) => {
                 <div className='livechat__icon-wrapper'>
                     <Icon icon='IcLiveChat' className='livechat__icon' />
                 </div>
-                <Text size='xs'>{localize('Live chat')}</Text>
+                <Text size='xs'>
+                    <Localize i18n_default_text='Live chat' />
+                </Text>
             </div>
         );
 
@@ -25,16 +31,13 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account, loginid }) => {
                 className='footer__link'
                 classNameBubble='help-centre__tooltip'
                 alignment='top'
-                message={localize('Live chat')}
-                zIndex={9999}
+                message={<Localize i18n_default_text='Live chat' />}
+                zIndex='9999'
             >
                 <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
             </Popover>
         </div>
     );
-};
+});
 
-export default connect(({ client }) => ({
-    has_cookie_account: client.has_cookie_account,
-    loginid: client.loginid,
-}))(LiveChat);
+export default LiveChat;

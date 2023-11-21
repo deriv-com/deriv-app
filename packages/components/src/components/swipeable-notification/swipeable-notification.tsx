@@ -35,9 +35,13 @@ const SwipeableNotification = ({
 
     return (
         <CSSTransition
+            appear
             in={is_visible}
             timeout={300}
             classNames={{
+                appear: `${classname}-appear`,
+                appearActive: `${classname}-appear-active`,
+                appearDone: `${classname}-appear-done`,
                 enter: `${classname}-enter`,
                 enterActive: `${classname}-enter-active`,
                 enterDone: `${classname}-enter-done`,

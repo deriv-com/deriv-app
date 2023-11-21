@@ -48,7 +48,7 @@ export default class NotificationStore extends BaseStore {
     push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
-    trade_notifications = observable.array([]);
+    trade_notifications = [];
     p2p_order_props = {};
     p2p_redirect_to = {};
     p2p_completed_orders = null;
@@ -82,6 +82,7 @@ export default class NotificationStore extends BaseStore {
             removeNotificationMessage: action.bound,
             removeNotificationMessageByKey: action.bound,
             removeNotifications: action.bound,
+            removeTradeNotifications: action.bound,
             resetVirtualBalanceNotification: action.bound,
             setClientNotifications: action.bound,
             setP2POrderProps: action.bound,
@@ -90,7 +91,7 @@ export default class NotificationStore extends BaseStore {
             should_show_popups: observable,
             showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
-            trade_notifications: observable.ref,
+            trade_notifications: observable,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
         });
@@ -645,6 +646,10 @@ export default class NotificationStore extends BaseStore {
         this.notifications = should_close_persistent
             ? []
             : [...this.notifications.filter(notifs => notifs.is_persistent)];
+    }
+
+    removeTradeNotifications() {
+        this.trade_notifications = [];
     }
 
     removeNotificationByKey({ key }) {

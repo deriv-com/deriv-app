@@ -20,30 +20,33 @@
     &-time {
         align-self: flex-end;
     }
+    &-appear,
     &-enter {
-        transform: translateX(-100%);
-    }
-    &-enter-active {
-        visibility: hidden;
-    }
-    &-enter-done {
-        visibility: visible;
-        transform: translateX(0);
-        transition: transform 300ms;
+        transform: translateX(-100vw);
+
+        &-active {
+            visibility: hidden;
+        }
+        &-done {
+            visibility: visible;
+            transform: translateX(0);
+            transition: transform 300ms;
+        }
     }
     &-exit {
         transform: translateX(0);
-    }
-    &-exit-active,
-    &-exit-active-left,
-    &-exit-active-right {
-        visibility: hidden;
-        transition: all 300ms;
-        &-left {
-            transform: translateX(-100%);
-        }
-        &-right {
-            transform: translateX(100vw);
+
+        &-active,
+        &-active-left,
+        &-active-right {
+            visibility: hidden;
+            transition: all 300ms;
+            &-left {
+                transform: translateX(-100vw);
+            }
+            &-right {
+                transform: translateX(100vw);
+            }
         }
     }
 }

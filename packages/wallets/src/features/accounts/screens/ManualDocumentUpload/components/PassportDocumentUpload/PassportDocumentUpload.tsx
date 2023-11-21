@@ -11,13 +11,8 @@ const PassportDocumentUpload = () => {
         <div className='wallets-passport-document-upload' data-testid='dt_passport-document-upload'>
             <WalletText>First, enter your Passport number and the expiry date.</WalletText>
             <div className='wallets-passport-document-upload__input-group'>
-                <WalletTextField label='Passport number*' maxWidth='100%' />
-                <WalletTextField
-                    label='Expiry date*'
-                    maxWidth='100%'
-                    renderRightIcon={() => <Calendar />}
-                    type='date'
-                />
+                <WalletTextField label='Passport number*' />
+                <WalletTextField label='Expiry date*' renderRightIcon={() => <Calendar />} type='date' />
             </div>
             <Divider />
             <div className='wallets-passport-document-upload__document-section'>

@@ -4,6 +4,7 @@ import { InfiniteDataList, Loading, Table, Tabs } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
+import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useStores } from 'Stores';
 import P2pEmpty from 'Components/p2p-empty';
 import AdvertiserPageRow from './advertiser-page-row.jsx';
@@ -15,6 +16,7 @@ const AdvertiserPageAdverts = () => {
     } = useStore();
 
     const { advertiser_page_store } = useStores();
+    const { adverts, has_more_adverts_to_load, isLoading, loadMoreAdvertiserAdverts } = useP2PAdvertiserAdverts();
 
     const AdvertiserPageRowRenderer = row_props => (
         <AdvertiserPageRow {...row_props} showAdPopup={advertiser_page_store.showAdPopup} />
@@ -33,13 +35,13 @@ const AdvertiserPageAdverts = () => {
                 <div label={localize('Buy')} />
                 <div label={localize('Sell')} />
             </Tabs>
-            {advertiser_page_store.is_loading_adverts ? (
+            {isLoading ? (
                 <div className='advertiser-page-adverts__table'>
                     <Loading is_fullscreen={false} />
                 </div>
             ) : (
                 <React.Fragment>
-                    {advertiser_page_store.adverts.length ? (
+                    {adverts.length ? (
                         <Table className='advertiser-page-adverts__table'>
                             {isDesktop() && (
                                 <Table.Header>
@@ -60,11 +62,11 @@ const AdvertiserPageAdverts = () => {
                             <Table.Body className='advertiser-page-adverts__table-body'>
                                 <InfiniteDataList
                                     data_list_className='advertiser-page__data-list'
-                                    items={advertiser_page_store.adverts}
+                                    items={adverts}
                                     keyMapperFn={item => item.id}
                                     rowRenderer={AdvertiserPageRowRenderer}
-                                    loadMoreRowsFn={advertiser_page_store.loadMoreAdvertiserAdverts}
-                                    has_more_items_to_load={advertiser_page_store.has_more_adverts_to_load}
+                                    loadMoreRowsFn={loadMoreAdvertiserAdverts}
+                                    has_more_items_to_load={has_more_adverts_to_load}
                                 />
                             </Table.Body>
                         </Table>

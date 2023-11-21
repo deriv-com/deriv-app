@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useEffect } from 'react';
 import { useTransferBetweenAccounts } from '@deriv/api';
+import type { THooks } from '../../../../../types';
 import { useExtendedTransferAccountProperties, useSortedTransferAccounts } from '../hooks';
 
 export type TTransferContext = {
@@ -19,19 +20,25 @@ export const useTransfer = () => {
     return context;
 };
 
-const TransferProvider = ({ children }: React.PropsWithChildren) => {
+type TProps = {
+    accounts?: THooks.TransferAccount[];
+};
+
+const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts: transferAccounts, children }) => {
     const { data, isLoading: isTransferAccountsLoading, mutate } = useTransferBetweenAccounts();
     const {
         accounts,
         activeWallet,
         isLoading: isModifiedAccountsLoading,
-    } = useExtendedTransferAccountProperties(data?.accounts);
+    } = useExtendedTransferAccountProperties(transferAccounts || data?.accounts);
     const sortedAccounts = useSortedTransferAccounts(accounts);
-    const isLoading = isTransferAccountsLoading || isModifiedAccountsLoading || !data;
+    const isLoading = (!data && !transferAccounts) || isTransferAccountsLoading || isModifiedAccountsLoading;
+
+    const requestTransferAccounts = useCallback(() => mutate({ accounts: 'all' }), [mutate]);
 
     useEffect(() => {
-        if (!data) mutate({ accounts: 'all' });
-    }, [data, mutate]);
+        if (!transferAccounts) requestTransferAccounts();
+    }, [requestTransferAccounts, transferAccounts]);
 
     return (
         <TransferContext.Provider value={{ accounts: sortedAccounts, activeWallet, isLoading, mutate }}>

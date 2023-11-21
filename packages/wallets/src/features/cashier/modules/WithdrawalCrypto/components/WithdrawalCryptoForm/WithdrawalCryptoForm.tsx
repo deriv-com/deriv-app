@@ -49,7 +49,7 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                 target_currency: activeWallet.currency,
             });
         return () => unsubscribe();
-    }, []);
+    }, [activeWallet?.currency, activeWallet?.loginid, subscribe, unsubscribe]);
 
     return (
         <Formik

@@ -46,7 +46,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                     ),
                 });
         }
-    }, [exchangeRate?.rates]);
+    }, [activeWallet?.currency, exchangeRate?.rates]);
 
     const validateCryptoInput = (value: string) => {
         if (!value.length) return;

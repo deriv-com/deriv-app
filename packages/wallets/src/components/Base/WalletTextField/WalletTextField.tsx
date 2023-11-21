@@ -73,21 +73,23 @@ const WalletTextField = forwardRef(
                         <div className='wallets-textfield__icon-right'>{renderRightIcon()}</div>
                     )}
                 </div>
-                {!disabled && (
-                    <div className='wallets-textfield__message-container'>
-                        {showMessage && !isInvalid && (
-                            <HelperMessage inputValue={value} maxLength={maxLength} message={message} />
-                        )}
-                        {errorMessage && isInvalid && (
-                            <HelperMessage
-                                inputValue={value}
-                                isError
-                                maxLength={maxLength}
-                                message={errorMessage as string}
-                            />
-                        )}
-                    </div>
-                )}
+                <div className='wallets-textfield__message-container'>
+                    {!disabled && (
+                        <>
+                            {showMessage && !isInvalid && (
+                                <HelperMessage inputValue={value} maxLength={maxLength} message={message} />
+                            )}
+                            {errorMessage && isInvalid && (
+                                <HelperMessage
+                                    inputValue={value}
+                                    isError
+                                    maxLength={maxLength}
+                                    message={errorMessage as string}
+                                />
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
         );
     }

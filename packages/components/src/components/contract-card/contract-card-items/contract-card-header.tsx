@@ -5,9 +5,12 @@ import {
     isHighLow,
     getCurrentTick,
     getGrowthRatePercentage,
-    isBot,
     isAccumulatorContract,
+    isSmartTraderContract,
+    isBot,
     isMobile,
+    isTurbosContract,
+    getLocalizedTurbosSubtype,
 } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell';
 import Button from '../../button';
@@ -62,30 +65,42 @@ const ContractCardHeader = ({
     } = contract_info;
     const { is_pathname_bot } = isBot();
     const is_sold = !!contract_info.is_sold || is_contract_sold;
-    const is_accumulator = isAccumulatorContract(contract_type || '');
+    const is_accumulator = isAccumulatorContract(contract_type);
+    const is_smarttrader_contract = isSmartTraderContract(contract_type);
     const is_mobile = isMobile();
-    const contract_type_list_info = [
-        {
-            is_param_displayed: multiplier,
-            displayed_param: `x${multiplier}`,
-        },
-        {
-            is_param_displayed: is_accumulator,
-            displayed_param: `${getGrowthRatePercentage(growth_rate || 0)}%`,
-        },
-    ];
+    const is_turbos = isTurbosContract(contract_type);
+
+    const contract_type_list_info = React.useMemo(
+        () => [
+            {
+                is_param_displayed: multiplier,
+                displayed_param: `x${multiplier}`,
+            },
+            {
+                is_param_displayed: is_accumulator,
+                displayed_param: `${getGrowthRatePercentage(growth_rate || 0)}%`,
+            },
+            {
+                is_param_displayed: is_turbos,
+                displayed_param: getLocalizedTurbosSubtype(contract_type),
+            },
+        ],
+        [multiplier, growth_rate, is_accumulator, is_turbos, contract_type]
+    );
+
     const displayed_trade_param =
         contract_type_list_info.find(contract_type_item_info => contract_type_item_info.is_param_displayed)
             ?.displayed_param || '';
 
     return (
-        <>
+        <React.Fragment>
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
-                    'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier && !is_accumulator,
                     'dc-contract-card__grid-underlying-trade--trader': !is_pathname_bot,
                     'dc-contract-card__grid-underlying-trade--trader--accumulator': !is_mobile && is_accumulator,
-                    'dc-contract-card__grid-underlying-trade--trader--accumulator-sold': is_accumulator && is_sold,
+                    [`dc-contract-card__grid-underlying-trade--trader--${
+                        is_accumulator ? 'accumulator' : 'turbos'
+                    }-sold`]: (is_accumulator || is_turbos) && is_sold,
                 })}
             >
                 <div
@@ -99,7 +114,13 @@ const ContractCardHeader = ({
                         width={is_accumulator ? 46 : 40}
                         size={32}
                     />
-                    <Text size='xxs' className='dc-contract-card__symbol' weight='bold'>
+                    <Text
+                        size='xxs'
+                        className={classNames('dc-contract-card__symbol', {
+                            'dc-contract-card__symbol--smarttrader-contract': is_smarttrader_contract,
+                        })}
+                        weight='bold'
+                    >
                         {display_name || contract_info.display_name}
                     </Text>
                 </div>
@@ -168,7 +189,7 @@ const ContractCardHeader = ({
                     />
                 )}
             </DesktopWrapper>
-        </>
+        </React.Fragment>
     );
 };
 

@@ -42,6 +42,11 @@
         label {
             color: var(--brand-red-coral) !important;
         }
+
+        & ::placeholder {
+            color: var(--text-loss-danger) !important;
+            opacity: 1 !important;
+        }
     }
     &__container {
         display: flex;
@@ -91,7 +96,6 @@
         }
         /* Not empty fields */
         &:focus,
-        &:disabled,
         &:not(:focus):not([value='']) {
             outline: none;
 
@@ -106,7 +110,7 @@
             color: var(--text-less-prominent);
 
             & ~ label {
-                color: var(--text-general) !important;
+                color: var(--text-less-prominent) !important;
             }
             & ~ svg {
                 .color1-fill {
@@ -240,7 +244,9 @@
         max-width: calc(100% - 1.4rem);
     }
     &:not(&--no-placeholder) {
-        &__label {
+        $parent: &;
+
+        #{$parent}__label {
             color: var(--text-general);
             transition: 0.25s ease all;
             transform: translateZ(0);

@@ -29,9 +29,9 @@ lerna exec --scope @deriv/[Package] -- npm update [package]
 
 2. update the version in `package.json` for the package
 
-For Example if you want update web-push-notifications in core package:
+For Example if you want update moment in core package:
 
-1. `lerna exec --scope @deriv/core -- npm update web-push-notifications`
+1. `lerna exec --scope @deriv/core -- npm update moment`
 2. upate the `package.json`
 
 ### Remove

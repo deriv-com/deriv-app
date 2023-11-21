@@ -1,10 +1,9 @@
 import BaseStore from './BaseStore';
 
 const FLAGS = {
-    foo: false,
-    bar: false,
-    baz: false,
-    // Add your flag here 🚀
+    wallet: false,
+    next_wallet: false,
+    sharkfin: false,
 } satisfies Record<string, boolean>;
 
 export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FLAGS]: boolean }> {
@@ -27,5 +26,7 @@ export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FL
                 });
             }
         });
+
+        this.data = FLAGS;
     }
 }

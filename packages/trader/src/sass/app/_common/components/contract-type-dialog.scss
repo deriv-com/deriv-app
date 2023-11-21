@@ -14,8 +14,8 @@
         position: absolute;
         right: calc(100% + 10px);
         top: -66px;
-        display: grid;
-        grid-auto-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         z-index: 2;
         border-radius: 4px;
         background: var(--general-main-1);
@@ -87,6 +87,9 @@
         .contract-type-info__wrapper {
             height: calc(100% - 2.4rem - 18px);
         }
+        .inline-message__information {
+            margin: 1.6rem 0.8rem;
+        }
     }
     &--enter,
     &--exit {
@@ -105,5 +108,8 @@
 
 .contract-type-widget__header ~ .dc-mobile-dialog__content {
     height: 100%;
+}
+
+.dc-mobile-dialog__contracts-modal-info {
     overflow-y: hidden;
 }

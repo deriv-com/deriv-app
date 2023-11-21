@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -9,10 +9,8 @@ import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { removeTrailingZeros } from 'Utils/format-value';
 import BaseStore from 'Stores/base_store';
-import { api_error_codes } from '../constants/api-error-codes';
 
 export default class BuySellStore extends BaseStore {
-    api_error_message = '';
     create_sell_ad_from_no_ads = false;
     error_message = '';
     form_error_code = '';
@@ -22,7 +20,6 @@ export default class BuySellStore extends BaseStore {
     is_loading = true;
     is_sort_dropdown_open = false;
     is_submit_disabled = true;
-    items = [];
     local_currencies = [];
     local_currency = null;
     receive_amount = 0;
@@ -34,11 +31,10 @@ export default class BuySellStore extends BaseStore {
     selected_payment_method_text = [];
     selected_value = 'rate';
     should_show_verification = false;
-    should_use_client_limits = false;
+    should_use_client_limits = true;
     show_advertiser_page = false;
     show_filter_payment_methods = false;
     sort_by = 'rate';
-    submitForm = () => {};
     table_type = buy_sell.BUY;
     form_props = {};
     is_create_order_subscribed = false;
@@ -48,7 +44,6 @@ export default class BuySellStore extends BaseStore {
         // For sell orders we require extra information.
         ...(this.is_sell_advert ? { contact_info: this.root_store.general_store.contact_info } : {}),
     };
-    filter_payment_methods = [];
     payment_method_ids = [];
 
     constructor(root_store) {
@@ -56,7 +51,6 @@ export default class BuySellStore extends BaseStore {
         super(root_store);
 
         makeObservable(this, {
-            api_error_message: observable,
             create_sell_ad_from_no_ads: observable,
             error_message: observable,
             form_error_code: observable,
@@ -66,7 +60,6 @@ export default class BuySellStore extends BaseStore {
             is_loading: observable,
             is_sort_dropdown_open: observable,
             is_submit_disabled: observable,
-            items: observable,
             local_currencies: observable,
             local_currency: observable,
             receive_amount: observable,
@@ -82,7 +75,6 @@ export default class BuySellStore extends BaseStore {
             show_advertiser_page: observable,
             show_filter_payment_methods: observable,
             sort_by: observable,
-            submitForm: observable,
             table_type: observable,
             form_props: observable,
             is_create_order_subscribed: observable,
@@ -93,20 +85,16 @@ export default class BuySellStore extends BaseStore {
             is_buy_advert: computed,
             is_sell_advert: computed,
             modal_title: computed,
-            rendered_items: computed,
             should_filter_by_payment_method: computed,
             getWebsiteStatus: action.bound,
+            handleAdvertInfoResponse: action.bound,
             handleChange: action.bound,
             handleSubmit: action.bound,
             hideAdvertiserPage: action.bound,
             hideVerification: action.bound,
-            loadMoreItems: action.bound,
             onChangeTableType: action.bound,
             onClickApply: action.bound,
-            onClickReset: action.bound,
-            onConfirmClick: action.bound,
             onLocalCurrencySelect: action.bound,
-            setApiErrorMessage: action.bound,
             setCreateSellAdFromNoAds: action.bound,
             setErrorMessage: action.bound,
             setFormErrorCode: action.bound,
@@ -117,7 +105,6 @@ export default class BuySellStore extends BaseStore {
             setIsLoading: action.bound,
             setIsSortDropdownOpen: action.bound,
             setIsSubmitDisabled: action.bound,
-            setItems: action.bound,
             setLocalCurrency: action.bound,
             setLocalCurrencies: action.bound,
             setInitialReceiveAmount: action.bound,
@@ -136,7 +123,6 @@ export default class BuySellStore extends BaseStore {
             setSortBy: action.bound,
             setTableType: action.bound,
             setSelectedAdvert: action.bound,
-            setSubmitFormFn: action.bound,
             showAdvertiserPage: action.bound,
             showVerification: action.bound,
             validatePopup: action.bound,
@@ -144,9 +130,11 @@ export default class BuySellStore extends BaseStore {
             fetchAdvertiserAdverts: action.bound,
             handleResponse: action.bound,
             setIsCreateOrderSubscribed: action.bound,
+            unsubscribeAdvertInfo: action.bound,
         });
     }
 
+    advert_info_subscription = {};
     create_order_subscription = {};
 
     get account_currency() {
@@ -181,34 +169,6 @@ export default class BuySellStore extends BaseStore {
         return localize('Sell {{ account_currency }}', { account_currency: this.account_currency });
     }
 
-    get rendered_items() {
-        const filtered_items = this.items.filter(item =>
-            this.table_type === buy_sell.BUY ? item.type === buy_sell.SELL : item.type === buy_sell.BUY
-        );
-
-        if (isMobile()) {
-            if (this.search_term) {
-                if (this.search_results.length) {
-                    return [{ id: 'WATCH_THIS_SPACE' }, ...this.search_results];
-                }
-                return [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
-            }
-            // This allows for the sliding animation on the Buy/Sell toggle as it pushes
-            // an empty item with an item that holds the same height of the toggle container.
-            // Also see: buy-sell-row.jsx
-            return [{ id: 'WATCH_THIS_SPACE' }, ...filtered_items];
-        }
-
-        if (this.search_term) {
-            if (this.search_results.length) {
-                return this.search_results;
-            }
-            return [{ id: 'NO_MATCH_ROW' }];
-        }
-
-        return filtered_items;
-    }
-
     get should_filter_by_payment_method() {
         const { my_profile_store } = this.root_store;
         return my_profile_store.payment_methods_list_values !== this.selected_payment_method_value;
@@ -223,9 +183,6 @@ export default class BuySellStore extends BaseStore {
     }
 
     fetchAdvertiserAdverts() {
-        this.setItems([]);
-        this.setIsLoading(true);
-        this.loadMoreItems({ startIndex: 0 });
         if (!this.is_buy) {
             this.root_store.my_profile_store.getAdvertiserPaymentMethods();
         }
@@ -245,36 +202,37 @@ export default class BuySellStore extends BaseStore {
     handleChange(e) {
         this.setIsLoading(true);
         this.setSelectedValue(e.target.value);
-        this.setItems([]);
         this.setSortBy(e.target.value);
-        this.loadMoreItems({ startIndex: 0 });
         this.setIsSortDropdownOpen(false);
     }
 
     handleResponse = async order => {
-        const { sendbird_store, order_store, general_store, floating_rate_store } = this.root_store;
+        const { sendbird_store, order_store, general_store } = this.root_store;
         const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
-        if (order.error) {
-            setErrorMessage(order.error.message);
-            this.setFormErrorCode(order.error.code);
+        const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
+
+        if (error) {
+            setErrorMessage(error.message);
+            this.setFormErrorCode(error.code);
         } else {
-            if (order?.subscription?.id && !this.is_create_order_subscribed) {
+            if (subscription?.id && !this.is_create_order_subscribed) {
                 this.setIsCreateOrderSubscribed(true);
             }
             setErrorMessage(null);
             general_store.hideModal();
-            floating_rate_store.setIsMarketRateChanged(false);
-            sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
-            if (order?.p2p_order_create?.id) {
-                const response = await requestWS({ p2p_order_info: 1, id: order?.p2p_order_create?.id });
+
+            if (p2p_order_create?.id) {
+                const response = await requestWS({ p2p_order_info: 1, id: p2p_order_create.id });
                 handleConfirm(response?.p2p_order_info);
             }
+
+            if (p2p_order_info?.id && p2p_order_info?.chat_channel_url) {
+                sendbird_store.setChatChannelUrl(p2p_order_info.chat_channel_url);
+                order_store.setOrderDetails(order);
+            }
+
             handleClose();
             this.payment_method_ids = [];
-        }
-        if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
-            sendbird_store.setChatChannelUrl(order?.p2p_order_info?.chat_channel_url ?? '');
-            order_store.setOrderDetails(order);
         }
     };
 
@@ -317,80 +275,6 @@ export default class BuySellStore extends BaseStore {
         this.setShouldShowVerification(false);
     }
 
-    loadMoreItems({ startIndex }) {
-        const { general_store } = this.root_store;
-        const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
-        this.setApiErrorMessage('');
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advert_list: 1,
-                counterparty_type,
-                offset: startIndex,
-                limit: general_store.list_item_limit,
-                sort_by: this.sort_by,
-                use_client_limits: this.should_use_client_limits ? 1 : 0,
-                ...(this.selected_payment_method_value.length > 0
-                    ? { payment_method: this.selected_payment_method_value }
-                    : {}),
-                ...(this.selected_local_currency ? { local_currency: this.selected_local_currency } : {}),
-            }).then(response => {
-                if (response) {
-                    if (!response.error) {
-                        // Ignore any responses that don't match our request. This can happen
-                        // due to quickly switching between Buy/Sell tabs.
-                        if (response.echo_req.counterparty_type === counterparty_type) {
-                            const { list } = response.p2p_advert_list;
-
-                            this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
-
-                            const old_items = [...this.items];
-                            const new_items = [];
-
-                            list?.forEach(new_item => {
-                                const old_item_idx = old_items.findIndex(old_item => old_item.id === new_item.id);
-
-                                if (old_item_idx > -1) {
-                                    old_items[old_item_idx] = new_item;
-                                } else {
-                                    new_items.push(new_item);
-                                }
-                            });
-
-                            this.setItems([...old_items, ...new_items]);
-
-                            const search_results = [];
-
-                            if (this.search_term) {
-                                this.items.forEach(item => {
-                                    if (
-                                        item.advertiser_details.name
-                                            .toLowerCase()
-                                            .includes(this.search_term.toLowerCase().trim())
-                                    ) {
-                                        search_results.push(item);
-                                    }
-                                });
-                            }
-
-                            if (search_results.length) {
-                                this.setSearchResults(search_results);
-                            } else {
-                                this.setSearchResults([]);
-                            }
-                        }
-                        // Added a check to prevent console errors
-                    } else if (response && response.error.code === api_error_codes.PERMISSION_DENIED) {
-                        this.root_store.general_store.setIsBlocked(true);
-                    } else {
-                        this.setApiErrorMessage(response?.error.message);
-                    }
-                }
-                this.setIsLoading(false);
-                resolve();
-            });
-        });
-    }
-
     onChangeTableType(event) {
         this.setTableType(event.target.value);
     }
@@ -398,50 +282,11 @@ export default class BuySellStore extends BaseStore {
     onClickApply(payment_method_value, payment_method_text) {
         this.setSelectedPaymentMethodValue(payment_method_value);
         this.setSelectedPaymentMethodText(payment_method_text);
-        this.setItems([]);
-        this.setIsLoading(true);
-        this.loadMoreItems({ startIndex: 0 });
-    }
-
-    onClickReset() {
-        this.setShouldUseClientLimits(false);
-    }
-
-    onConfirmClick(order_info) {
-        const { general_store, order_store } = this.root_store;
-
-        order_store.props.setOrderId(order_info.id);
-        general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
     }
 
     onLocalCurrencySelect(local_currency) {
-        const { floating_rate_store } = this.root_store;
         this.setSelectedLocalCurrency(local_currency);
         this.setLocalCurrency(local_currency);
-        this.setItems([]);
-        this.setIsLoading(true);
-        this.loadMoreItems({ startIndex: 0 });
-        floating_rate_store.previous_exchange_rate = null;
-        floating_rate_store.setIsMarketRateChanged(false);
-    }
-
-    registerIsListedReaction() {
-        const { general_store } = this.root_store;
-        const disposeIsListedReaction = reaction(
-            () => general_store.is_listed,
-            () => {
-                this.setItems([]);
-                this.loadMoreItems({ startIndex: 0 });
-            }
-        );
-
-        return () => {
-            disposeIsListedReaction();
-        };
-    }
-
-    setApiErrorMessage(api_error_message) {
-        this.api_error_message = api_error_message;
     }
 
     setCreateSellAdFromNoAds(create_sell_ad_from_no_ads) {
@@ -482,10 +327,6 @@ export default class BuySellStore extends BaseStore {
 
     setIsSubmitDisabled(is_submit_disabled) {
         this.is_submit_disabled = is_submit_disabled;
-    }
-
-    setItems(items) {
-        this.items = items;
     }
 
     setLocalCurrency(local_currency) {
@@ -600,10 +441,6 @@ export default class BuySellStore extends BaseStore {
         }
     }
 
-    setSubmitFormFn(submitFormFn) {
-        this.submitForm = submitFormFn;
-    }
-
     setIsCreateOrderSubscribed(is_create_order_subscribed) {
         this.is_create_order_subscribed = is_create_order_subscribed;
     }
@@ -694,34 +531,47 @@ export default class BuySellStore extends BaseStore {
         return errors;
     }
 
+    handleAdvertInfoResponse(response) {
+        //TODO: error handling for response
+        if (response?.error) return;
+        const { p2p_advert_info } = response ?? {};
+        if (this.selected_ad_state?.id === p2p_advert_info.id) {
+            this.setSelectedAdState(p2p_advert_info);
+        }
+    }
+
+    subscribeAdvertInfo() {
+        this.advert_info_subscription = subscribeWS(
+            {
+                p2p_advert_info: 1,
+                id: this.selected_ad_state.id,
+                use_client_limits: 1,
+                subscribe: 1,
+            },
+            [this.handleAdvertInfoResponse]
+        );
+    }
+
     registerAdvertIntervalReaction() {
         const disposeAdvertIntervalReaction = reaction(
-            () => this.selected_ad_state,
+            () => this.selected_ad_state.id,
             () => {
-                clearInterval(this.limits_interval);
-
-                if (this.selected_ad_state) {
-                    const updateAdvert = () => {
-                        requestWS({ p2p_advert_info: 1, id: this.selected_ad_state.id, use_client_limits: 1 }).then(
-                            response => {
-                                // Added a check to prevent console errors
-                                if (response?.error) return;
-                                const { p2p_advert_info } = response;
-
-                                if (this.selected_ad_state?.id === p2p_advert_info.id) {
-                                    this.setSelectedAdState(p2p_advert_info);
-                                }
-                            }
-                        );
-                    };
-
-                    this.limits_interval = setInterval(updateAdvert, 10000);
+                if (this.selected_ad_state.id) {
+                    this.subscribeAdvertInfo();
                 }
-            }
+            },
+            { fireImmediately: true }
         );
 
         return () => disposeAdvertIntervalReaction();
     }
+
+    unsubscribeAdvertInfo = () => {
+        if (this.advert_info_subscription.unsubscribe) {
+            this.advert_info_subscription.unsubscribe();
+            this.setSelectedAdState({});
+        }
+    };
 
     unsubscribeCreateOrder = () => {
         if (this.create_order_subscription.unsubscribe) {

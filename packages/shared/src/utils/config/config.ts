@@ -23,6 +23,7 @@ export const domain_app_ids = {
     'app.deriv.be': 30767,
     'staging-app.deriv.be': 31186,
     'binary.com': 1,
+    'test-app.deriv.com': 51072,
 };
 
 export const platform_app_ids = {
@@ -67,7 +68,7 @@ export const getAppId = () => {
                 ? 19112
                 : domain_app_ids[current_domain as keyof typeof domain_app_ids]) || 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
-        app_id = 17044;
+        app_id = 36300;
     } else {
         window.localStorage.removeItem('config.default_app_id');
         app_id =
@@ -91,10 +92,10 @@ export const getSocketURL = () => {
     }
 
     const loginid = window.localStorage.getItem('active_loginid') || active_loginid_from_url;
-    const is_real = loginid && !/^VRT/.test(loginid);
+    const is_real = loginid && !/^(VRT|VRW)/.test(loginid);
 
     const server = is_real ? 'green' : 'blue';
-    const server_url = `${server}.binaryws.com`;
+    const server_url = `${server}.derivws.com`;
 
     return server_url;
 };
@@ -110,12 +111,7 @@ export const checkAndSetEndpointFromUrl = () => {
             url_params.delete('qa_server');
             url_params.delete('app_id');
 
-            if (
-                /^((www\.)?binaryqa[0-9]{1,2}\.com|^(www\.)?qa[0-9]{1,2}\.deriv.dev|(.*)\.binaryws\.com)$/.test(
-                    qa_server
-                ) &&
-                /^[0-9]+$/.test(app_id)
-            ) {
+            if (/^(^(www\.)?qa[0-9]{1,4}\.deriv.dev|(.*)\.derivws\.com)$/.test(qa_server) && /^[0-9]+$/.test(app_id)) {
                 localStorage.setItem('config.app_id', app_id);
                 localStorage.setItem('config.server_url', qa_server);
             }

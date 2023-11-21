@@ -1,10 +1,11 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+
 import { isMobile } from '@deriv/shared';
-import AccountTransferForm from '../account-transfer-form';
+import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
 import { TError } from '../../../../types';
+import AccountTransferForm from '../account-transfer-form';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
@@ -69,7 +70,14 @@ describe('<AccountTransferForm />', () => {
                             is_dxtrade: false,
                             balance: 0,
                         },
-                        selected_to: { currency: 'USD', is_mt: false, is_crypto: false, is_dxtrade: false, balance: 0 },
+                        selected_to: {
+                            currency: 'USD',
+                            is_mt: false,
+                            is_crypto: false,
+                            is_dxtrade: false,
+                            balance: 0,
+                            status: '',
+                        },
                         transfer_fee: 2,
                         transfer_limit: {
                             min: 0,
@@ -83,9 +91,6 @@ describe('<AccountTransferForm />', () => {
                     },
                     crypto_fiat_converter: {
                         resetConverter: jest.fn(),
-                    },
-                    transaction_history: {
-                        onMount: jest.fn(),
                     },
                 },
             },
@@ -118,7 +123,11 @@ describe('<AccountTransferForm />', () => {
 
     const renderAccountTransferForm = () => {
         render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore}>
+                    <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+                </CashierProviders>
+            ),
         });
     };
 
@@ -282,13 +291,28 @@ describe('<AccountTransferForm />', () => {
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
 
+    it('should display "no new positions can be opened" when transferring amount to a migrated svg account with position', () => {
+        mockRootStore.modules.cashier.account_transfer.selected_to.status = 'migrated_with_position';
+        renderAccountTransferForm();
+
+        expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
+        expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
+    });
+
+    it('should display "no new positions can be opened" when transferring amount to a migrated svg account without position', () => {
+        mockRootStore.modules.cashier.account_transfer.selected_to.status = 'migrated_without_position';
+        renderAccountTransferForm();
+
+        expect(screen.getByText(/You can no longer open new positions with this account./i)).toBeInTheDocument();
+        expect(screen.queryByText(/You have 0 transfer remaining for today./i)).not.toBeInTheDocument();
+    });
+
     describe('<Dropdown />', () => {
         const accountsList = [
             {
                 currency: 'BTC',
                 is_mt: false,
                 is_dxtrade: false,
-                is_derivez: false,
                 is_crypto: true,
                 text: 'BTC',
                 value: 'CR90000249',
@@ -297,28 +321,16 @@ describe('<AccountTransferForm />', () => {
                 currency: 'USD',
                 is_mt: false,
                 is_dxtrade: false,
-                is_derivez: false,
                 is_crypto: false,
                 text: 'USD',
                 value: 'CR90000212',
             },
             {
                 currency: 'USD',
-                platform_icon: 'IcDerivez',
-                is_mt: false,
-                is_dxtrade: false,
-                is_derivez: true,
-                is_crypto: false,
-                text: 'Deriv EZ',
-                value: 'EZR80000469',
-            },
-            {
-                currency: 'USD',
                 is_mt: false,
                 is_dxtrade: true,
-                is_derivez: false,
                 is_crypto: false,
-                platform_icon: 'IcDeriv X',
+                platform_icon: 'IcRebrandingDeriv X',
                 text: 'Deriv X',
                 value: 'DXR1029',
             },
@@ -330,25 +342,13 @@ describe('<AccountTransferForm />', () => {
                 is_crypto: false,
                 is_mt: true,
                 is_dxtrade: false,
-                is_derivez: false,
             },
         ];
-
-        const derivez_account = {
-            currency: 'USD',
-            is_mt: false,
-            is_dxtrade: false,
-            is_derivez: true,
-            is_crypto: false,
-            text: 'Deriv EZ',
-            value: 'EZR80000469',
-        };
 
         const derivx_account = {
             currency: 'USD',
             is_mt: false,
             is_dxtrade: true,
-            is_derivez: false,
             is_crypto: false,
             platform_icon: 'IcDxtradeDeriv X',
             text: 'Deriv X',
@@ -363,7 +363,6 @@ describe('<AccountTransferForm />', () => {
             is_crypto: false,
             is_mt: false,
             is_dxtrade: false,
-            is_derivez: false,
         };
 
         const currency_btc_account = {
@@ -373,7 +372,6 @@ describe('<AccountTransferForm />', () => {
             is_crypto: true,
             is_mt: false,
             is_dxtrade: false,
-            is_derivez: false,
         };
 
         const mt5_account = {
@@ -383,7 +381,6 @@ describe('<AccountTransferForm />', () => {
             is_crypto: false,
             is_mt: true,
             is_dxtrade: false,
-            is_derivez: false,
         };
 
         describe('from_dropdown', () => {
@@ -409,17 +406,6 @@ describe('<AccountTransferForm />', () => {
                 expect(screen.getByTestId('dt_account_platform_icon_currency_btc')).toBeInTheDocument();
             });
 
-            it('should check for derivez icon when derivez is selected in from_dropdown', () => {
-                mockRootStore.modules.cashier.account_transfer.accounts_list = accountsList;
-                mockRootStore.modules.cashier.account_transfer.selected_from = derivez_account;
-                mockRootStore.modules.cashier.account_transfer.setTransferPercentageSelectorResult = jest
-                    .fn()
-                    .mockReturnValue(100.0);
-
-                renderAccountTransferForm();
-                expect(screen.getByTestId('dt_account_platform_icon_IcDerivez')).toBeInTheDocument();
-            });
-
             it('should check for MT5 icon when MT5 is selected in from_dropdown', () => {
                 mockRootStore.modules.cashier.account_transfer.accounts_list = accountsList;
                 mockRootStore.modules.cashier.account_transfer.selected_from = mt5_account;
@@ -439,7 +425,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt_account_platform_icon_IcDeriv X')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_account_platform_icon_IcRebrandingDeriv X')).toBeInTheDocument();
             });
         });
     });

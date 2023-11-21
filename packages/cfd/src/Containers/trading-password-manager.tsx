@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCFDPlatformLabel, CFD_PLATFORMS, WS } from '@deriv/shared';
+import { getCFDPlatformLabel, WS } from '@deriv/shared';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import { TChangePassword, TPasswordResetAndTradingPasswordManager } from './props.types';
+import { CATEGORY, CFD_PLATFORMS } from '../Helpers/cfd-config';
 
 const ChangePassword = ({ platform, onConfirm }: TChangePassword) => (
     <div className='cfd-change-password'>
@@ -45,9 +46,9 @@ const PasswordReset = ({ email, platform, account_group }: TPasswordResetAndTrad
 
         // if account type is real convert redirect_to from 1 or 2 to 10 or 20
         // and if account type is demo convert redirect_to from 1 or 2 to 11 or 21
-        if (account_group === 'real') {
+        if (account_group === CATEGORY.REAL) {
             redirect_to = Number(`${redirect_to}0`);
-        } else if (account_group === 'demo') {
+        } else if (account_group === CATEGORY.DEMO) {
             redirect_to = Number(`${redirect_to}1`);
         }
 

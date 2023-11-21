@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import QRCode from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import {
     Timeline,
     DesktopWrapper,
@@ -19,11 +19,10 @@ import TwoFactorAuthenticationArticle from './two-factor-authentication-article.
 import { observer, useStore } from '@deriv/stores';
 
 const TwoFactorAuthentication = observer(() => {
-    const { client, ui, common } = useStore();
+    const { client, common } = useStore();
     const { email_address, getTwoFAStatus, has_enabled_two_fa, is_switching, setTwoFAStatus, setTwoFAChangedStatus } =
         client;
     const { is_language_changing } = common;
-    const { notification_messages_ui: Notifications } = ui;
     const [is_loading, setLoading] = React.useState(true);
     const [is_qr_loading, setQrLoading] = React.useState(false);
     const [error_message, setErrorMessage] = React.useState('');
@@ -141,7 +140,7 @@ const TwoFactorAuthentication = observer(() => {
                                     <React.Fragment>
                                         {qr_secret_key && (
                                             <div className='two-factor__qr--wrapper'>
-                                                <QRCode value={qr_secret_key} />
+                                                <QRCodeSVG value={qr_secret_key} />
                                             </div>
                                         )}
 
@@ -198,7 +197,6 @@ const TwoFactorAuthentication = observer(() => {
                     'two-factor__wrapper-dashboard': is_appstore,
                 })}
             >
-                {Notifications && <Notifications />}
                 {has_enabled_two_fa ? TwoFactorEnabled : TwoFactorDisabled}
             </div>
         </section>

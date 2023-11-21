@@ -1,0 +1,15 @@
+.wallets-deposit-crypto-try-fiat-onramp {
+    background-color: var(--general-section-1, #f2f3f4);
+    border-radius: 0.8rem;
+    margin: 0 9.3rem;
+    padding: 1.6rem 2.4rem;
+    text-align: center;
+
+    &__link {
+        font-weight: 400;
+    }
+
+    @include mobile {
+        margin: 0;
+    }
+}

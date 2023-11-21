@@ -1,14 +1,16 @@
 import { localize } from '@deriv/translations';
-import { TJurisdictionCardItems } from 'Components/props.types';
+import { TJurisdictionCardItems, TJurisdictionCardParams } from 'Components/props.types';
 
-export const getJurisdictionBviContents = (): TJurisdictionCardItems => ({
+export const getJurisdictionBviContents = ({
+    toggleDynamicLeverage,
+}: TJurisdictionCardParams): TJurisdictionCardItems => ({
     is_over_header_available: false,
     header: localize('British Virgin Islands'),
     synthetic_contents: [
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Synthetics, Baskets and Derived FX'),
+            description: localize('Synthetic indices, basket indices, and derived FX'),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('40+'),
@@ -43,7 +45,9 @@ export const getJurisdictionBviContents = (): TJurisdictionCardItems => ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies'),
+            description: localize(
+                'Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs'
+            ),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('170+'),
@@ -58,6 +62,13 @@ export const getJurisdictionBviContents = (): TJurisdictionCardItems => ({
                 display_text: localize('1:1000'),
                 display_text_skin_color: 'yellow-light',
             },
+            clickable_description: [
+                {
+                    type: 'link',
+                    text: localize('Dynamic Leverage'),
+                    onClick: toggleDynamicLeverage,
+                },
+            ],
         },
         {
             key: 'spreadsFrom',

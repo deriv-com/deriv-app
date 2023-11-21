@@ -48,7 +48,7 @@ export const routes = {
     cashier_withdrawal: '/cashier/withdrawal',
     cashier_pa: '/cashier/payment-agent',
     cashier_acc_transfer: '/cashier/account-transfer',
-    cashier_crypto_transactions: '/cashier/crypto-transactions',
+    cashier_transactions_crypto: '/cashier/crypto-transactions',
     // cashier_offramp: '/cashier/off-ramp',
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
@@ -71,4 +71,9 @@ export const routes = {
     appstore: '/appstore',
     traders_hub: '/appstore/traders-hub',
     onboarding: '/appstore/onboarding',
+    compare_cfds: '/appstore/cfd-compare-acccounts',
+
+    // Wallets
+    wallets: '/wallets',
+    wallets_withdrawal: '/wallets/cashier/withdraw',
 };

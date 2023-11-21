@@ -33,7 +33,7 @@ export const filterByLandingCompany = (landing_company: string, schema: TSchema 
  * @return {function(*=): {}}
  */
 export const generateValidationFunction = (landing_company: string, schema: TSchema) => {
-    const rules_schema = filterByLandingCompany(landing_company, schema);
+    const rules_schema = landing_company ? filterByLandingCompany(landing_company, schema) : schema;
     const rules: { [key: string]: TConfig['rules'] } = {};
     Object.entries(rules_schema).forEach(([key, opts]) => {
         rules[key] = opts.rules;

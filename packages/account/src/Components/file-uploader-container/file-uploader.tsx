@@ -1,52 +1,61 @@
 import React from 'react';
 import classNames from 'classnames';
-import DocumentUploader from '@binary-com/binary-document-uploader';
-import { FileDropzone, Icon, useStateCallback } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import {
-    isMobile,
-    compressImageFiles,
-    readFiles,
-    getSupportedFiles,
-    max_document_size,
-    supported_filetypes,
-} from '@deriv/shared';
-import { TFile } from 'Types';
+import { FileDropzone, Icon, Text } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
+import { getSupportedFiles, max_document_size, supported_filetypes } from '@deriv/shared';
+import { DropzoneOptions } from 'react-dropzone';
+import { observer, useStore } from '@deriv/stores';
 
-type TFileObject = {
-    file: TFile;
+type THandleRejectedFiles = DropzoneOptions['onDropRejected'];
+
+type TFileUploaderProps = {
+    onFileDrop: (files: File[]) => void;
+    onError?: (error_message: string) => void;
 };
 
-const UploadMessage = () => {
+const UploadMessage = observer(() => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
     return (
         <React.Fragment>
-            <Icon icon='IcCloudUpload' className='dc-file-dropzone__message-icon' size={50} />
+            <Icon icon='IcUpload' className='dc-file-dropzone__message-icon' size={30} />
             <div className='dc-file-dropzone__message-subtitle'>
-                {isMobile() ? localize('Click here to upload') : localize('Drop file or click here to upload')}
+                <Text size='xxs' align='center' weight='bold' color='less-prominent'>
+                    {is_mobile ? (
+                        <Localize i18n_default_text='Click here to upload.' />
+                    ) : (
+                        <Localize i18n_default_text='Drag and drop a file or click to browse your files.' />
+                    )}
+                </Text>
+                <Text size={is_mobile ? 'xxxxs' : 'xxxs'} align='center' color='less-prominent'>
+                    <Localize i18n_default_text='Remember, selfies, pictures of houses, or non-related images will be rejected.' />
+                </Text>
             </div>
         </React.Fragment>
     );
-};
+});
 
-const fileReadErrorMessage = (filename: string) => {
-    return localize('Unable to read file {{name}}', { name: filename });
-};
+const FileUploader = ({ onFileDrop, onError }: TFileUploaderProps) => {
+    const [document_files, setDocumentFiles] = React.useState<File[]>([]);
+    const [file_error, setFileError] = React.useState<string | null>(null);
 
-const FileUploader = React.forwardRef<
-    HTMLElement,
-    { onFileDrop: (file: TFile | undefined) => void; getSocket: () => WebSocket }
->(({ onFileDrop, getSocket }, ref) => {
-    const [document_file, setDocumentFile] = useStateCallback({ files: [], error_message: null });
+    React.useEffect(() => {
+        if (document_files) {
+            onFileDrop(document_files);
+            onError?.('');
+        }
+    }, [document_files, onFileDrop, onError]);
 
-    const handleAcceptedFiles = (files: TFileObject[]) => {
+    const handleAcceptedFiles = (files: File[]) => {
         if (files.length > 0) {
-            setDocumentFile({ files, error_message: null }, (file: TFile) => {
-                onFileDrop(file);
-            });
+            setDocumentFiles(files);
+            setFileError(null);
+            onError?.('');
         }
     };
 
-    const handleRejectedFiles = (files: TFileObject[]) => {
+    const handleRejectedFiles: THandleRejectedFiles = files => {
         const is_file_too_large = files.length > 0 && files[0].file.size > max_document_size;
         const supported_files = files.filter(each_file => getSupportedFiles(each_file.file.name));
         const error_message =
@@ -54,55 +63,16 @@ const FileUploader = React.forwardRef<
                 ? localize('File size should be 8MB or less')
                 : localize('File uploaded is not supported');
 
-        setDocumentFile({ files, error_message }, (file: TFile) => onFileDrop(file));
+        setDocumentFiles([]);
+        onError?.(error_message);
+        setFileError(error_message);
     };
 
     const removeFile = () => {
-        setDocumentFile({ files: [], error_message: null }, (file: TFile) => onFileDrop(file));
+        setDocumentFiles([]);
+        setFileError(null);
+        onError?.('');
     };
-
-    const upload = () => {
-        if (!!document_file.error_message || document_file.files.length < 1) return 0;
-
-        // File uploader instance connected to binary_socket
-        const uploader = new DocumentUploader({ connection: getSocket() });
-
-        let is_any_file_error = false;
-
-        return new Promise((resolve, reject) => {
-            compressImageFiles(document_file.files)
-                .then(files_to_process => {
-                    readFiles(files_to_process, fileReadErrorMessage)
-                        .then(processed_files => {
-                            processed_files.forEach(file => {
-                                if (file.message) {
-                                    is_any_file_error = true;
-                                    reject(file);
-                                }
-                            });
-                            const total_to_upload = processed_files.length;
-                            if (is_any_file_error || !total_to_upload) {
-                                onFileDrop(undefined);
-                                return; // don't start submitting files until all front-end validation checks pass
-                            }
-
-                            // send files
-                            const uploader_promise = uploader
-                                .upload(processed_files[0])
-                                .then((api_response: unknown) => api_response);
-                            resolve(uploader_promise);
-                        })
-                        /* eslint-disable no-console */
-                        .catch(error => console.error('error: ', error));
-                })
-                /* eslint-disable no-console */
-                .catch(error => console.error('error: ', error));
-        });
-    };
-
-    React.useImperativeHandle(ref, () => ({
-        upload,
-    }));
 
     return (
         <React.Fragment>
@@ -116,15 +86,15 @@ const FileUploader = React.forwardRef<
                 multiple={false}
                 onDropAccepted={handleAcceptedFiles}
                 onDropRejected={handleRejectedFiles}
-                validation_error_message={document_file.error_message}
-                value={document_file.files}
+                validation_error_message={file_error}
+                value={document_files}
             />
-            {(document_file.files.length > 0 || !!document_file.error_message) && (
-                <div className='account-poa__upload-remove-btn-container'>
+            {((document_files && document_files?.length > 0) || file_error) && (
+                <div className='file-uploader__remove-btn-container'>
                     <Icon
                         icon='IcCloseCircle'
-                        className={classNames('account-poa__upload-remove-btn', {
-                            'account-poa__upload-remove-btn--error': !!document_file.error_message,
+                        className={classNames('file-uploader__remove-btn', {
+                            'file-uploader__remove-btn--error': file_error,
                         })}
                         onClick={removeFile}
                         color='secondary'
@@ -134,8 +104,6 @@ const FileUploader = React.forwardRef<
             )}
         </React.Fragment>
     );
-});
-
-FileUploader.displayName = 'FileUploader';
+};
 
 export default FileUploader;

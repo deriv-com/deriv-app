@@ -3,12 +3,12 @@ import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
 import { UploadComplete } from '../upload-complete/upload-complete';
-import PoiUnsupportedFailed from 'Components/poi-unsupported-failed';
-import uploadFile from 'Components/file-uploader-container/upload-file';
-import OnfidoUpload from 'Sections/Verification/ProofOfIdentity/onfido-sdk-view-container';
+import PoiUnsupportedFailed from '../../../poi-unsupported-failed';
+import uploadFile from '../../../file-uploader-container/upload-file';
+import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfido-sdk-view-container';
 
 import CardDetails from './card-details';
-import { SELFIE_DOCUMENT } from './constants';
+import { SELFIE_DOCUMENT, getDocumentIndex } from './constants';
 import { FormikValues } from 'formik';
 
 const STATUS = {
@@ -18,24 +18,7 @@ const STATUS = {
 };
 
 type TDetailComponent = {
-    document: {
-        onfido_name?: string;
-        card: {
-            title: string;
-            description: string;
-            icon: string;
-        };
-        details: {
-            fields: {
-                name: string;
-                label: string;
-                type: string;
-                required: boolean;
-            }[];
-            documents_title: string;
-            documents: object[];
-        };
-    };
+    document: ReturnType<typeof getDocumentIndex>[number];
     onClickBack: () => void;
     root_class: string;
     country_code_key?: string;
@@ -80,11 +63,12 @@ const DetailComponent = ({
                 const expiration_date =
                     typeof data.expiry_date?.format === 'function' ? data.expiry_date.format('YYYY-MM-DD') : undefined;
                 uploadFile(file, WS.getSocket, {
-                    documentType: document_type,
-                    pageType,
-                    expirationDate: expiration_date,
-                    documentId: data.document_id || '',
-                    lifetimeValid: +(lifetime_valid && !expiration_date),
+                    document_type,
+                    page_type: pageType,
+                    expiration_date,
+                    document_id: data.document_id || '',
+                    lifetime_valid: +(lifetime_valid && !expiration_date),
+                    document_issuing_country: country_code_key,
                 })
                     .then(response => {
                         file_to_upload_index += 1;
@@ -159,6 +143,8 @@ const DetailComponent = ({
                                 documents_supported={[document.onfido_name]}
                                 height={height ?? null}
                                 handleComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
+                                is_default_enabled
+                                handleViewComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 {...props}
                             />
                         </React.Fragment>

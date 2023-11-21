@@ -11,7 +11,7 @@ import SpecBox from '../../Components/specbox';
 import PasswordBox from '../../Components/passwordbox';
 import { TCFDPasswordReset } from '../../Containers/props.types';
 
-type TNonMT5TradeModalProps = {
+type TOtherCFDsTradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
     is_eu_user: boolean;
     onPasswordManager: (
@@ -63,7 +63,7 @@ const PlatformIconsAndDescriptions = (
     );
 };
 
-const NonMT5TradeModal = ({
+const OtherCFDsTradeModal = ({
     mt5_trade_account,
     is_eu_user,
     onPasswordManager,
@@ -73,7 +73,7 @@ const NonMT5TradeModal = ({
     is_demo,
     platform,
     is_mobile,
-}: TNonMT5TradeModalProps) => {
+}: TOtherCFDsTradeModalProps) => {
     const CTraderDescription = () => {
         const platform_name = 'cTrader';
 
@@ -321,4 +321,4 @@ const NonMT5TradeModal = ({
     );
 };
 
-export default NonMT5TradeModal;
+export default OtherCFDsTradeModal;

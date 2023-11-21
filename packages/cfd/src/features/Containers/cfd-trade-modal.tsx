@@ -2,7 +2,7 @@ import React from 'react';
 import { DesktopWrapper, Div100vhContainer, Modal, MobileWrapper, PageOverlay, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import NonMT5TradeModal from './non-mt5-trade-modal';
+import OtherCFDsTradeModal from './other-cfds-trade-modal';
 import MT5TradeModal from './mt5-trade-modal';
 import { TCFDPasswordReset } from '../../Containers/props.types';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
@@ -43,7 +43,7 @@ const CFDTradeModal = observer(
                 );
             }
             return (
-                <NonMT5TradeModal
+                <OtherCFDsTradeModal
                     mt5_trade_account={mt5_trade_account}
                     is_eu_user={is_eu_user}
                     onPasswordManager={onPasswordManager}

@@ -63,7 +63,7 @@ describe('<ChartTopWidgets>', () => {
 
     const mockChartTopWidget = () => (
         <TraderProviders store={store}>
-            <ChartTopWidgets open_market={{ category: '', subcategory: '' }} open={true} />
+            <ChartTopWidgets open_market={{ category: '', subcategory: '' }} open />
         </TraderProviders>
     );
     it('Should render mocked ChartTopWidget', () => {

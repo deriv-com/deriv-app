@@ -2,14 +2,13 @@ import React from 'react';
 import { Button, Div100vhContainer, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import Expiration from './expiration';
-import { observer } from '@deriv/stores';
 
 type TMultipliersExpirationModalProps = {
     is_open: boolean;
     toggleModal: () => void;
 };
 
-const MultipliersExpirationModal = observer(({ is_open, toggleModal }: TMultipliersExpirationModalProps) => (
+const MultipliersExpirationModal = ({ is_open, toggleModal }: TMultipliersExpirationModalProps) => (
     <Modal
         is_open={is_open}
         toggleModal={toggleModal}
@@ -40,6 +39,6 @@ const MultipliersExpirationModal = observer(({ is_open, toggleModal }: TMultipli
             </Modal.Footer>
         </Div100vhContainer>
     </Modal>
-));
+);
 
 export default MultipliersExpirationModal;

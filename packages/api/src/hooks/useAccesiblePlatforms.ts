@@ -1,7 +1,7 @@
 import useLandingCompany from './useLandingCompany';
 
 /**
- * A custom hook that returns a flag indicating whether ctrader and dxtrade are accessible for the current country of residence
+ * A custom hook that provides flags to determine the accessibility status of cTrader and Dxtrade based on the current country of residence.
  */
 const useAccesiblePlatforms = () => {
     const { data: landing_company } = useLandingCompany();

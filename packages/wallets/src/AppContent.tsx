@@ -6,8 +6,6 @@ import './AppContent.scss';
 const AppContent: React.FC = () => {
     useEffect(() => {
         defineViewportHeight();
-        window.addEventListener('resize', defineViewportHeight);
-        return () => window.removeEventListener('resize', defineViewportHeight);
     }, []);
 
     return (

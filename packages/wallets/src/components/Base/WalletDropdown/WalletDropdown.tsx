@@ -10,7 +10,9 @@ import './WalletDropdown.scss';
 
 type TProps = {
     disabled?: boolean;
+    errorMessage?: WalletTextFieldProps['errorMessage'];
     icon?: React.ReactNode;
+    isRequired?: boolean;
     label?: WalletTextFieldProps['label'];
     list: {
         text?: React.ReactNode;
@@ -18,6 +20,7 @@ type TProps = {
     }[];
     listHeight?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     name: WalletTextFieldProps['name'];
+    onChange?: (inputValue: string) => void;
     onSelect: (value: string) => void;
     value?: WalletTextFieldProps['value'];
     variant?: 'comboBox' | 'prompt';
@@ -25,16 +28,20 @@ type TProps = {
 
 const WalletDropdown: React.FC<TProps> = ({
     disabled,
+    errorMessage,
     icon = false,
+    isRequired = false,
     label,
     list,
     listHeight = 'md',
     name,
+    onChange,
     onSelect,
     value,
     variant = 'prompt',
 }) => {
     const [items, setItems] = useState(list);
+    const [hasSelected, setHasSelected] = useState(false);
     const [shouldFilterList, setShouldFilterList] = useState(false);
     const clearFilter = useCallback(() => {
         setShouldFilterList(false);
@@ -48,6 +55,7 @@ const WalletDropdown: React.FC<TProps> = ({
                 return item ? reactNodeToString(item.text) : '';
             },
             onInputValueChange({ inputValue }) {
+                onChange?.(inputValue ?? '');
                 if (shouldFilterList) {
                     setItems(
                         list.filter(item =>
@@ -93,9 +101,12 @@ const WalletDropdown: React.FC<TProps> = ({
             <div className='wallets-dropdown__content'>
                 <WalletTextField
                     disabled={disabled}
+                    errorMessage={errorMessage}
+                    isInvalid={hasSelected && !value && isRequired}
                     label={label}
                     name={name}
                     onClickCapture={handleInputClick}
+                    onFocus={() => setHasSelected(true)}
                     onKeyUp={() => setShouldFilterList(true)}
                     placeholder={reactNodeToString(label)}
                     readOnly={variant !== 'comboBox'}

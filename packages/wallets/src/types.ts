@@ -4,6 +4,7 @@ import type {
     useActiveTradingAccount,
     useActiveWalletAccount,
     useAllWalletAccounts,
+    useAuthentication,
     useAvailableMT5Accounts,
     useCreateOtherCFDAccount,
     useCreateWallet,
@@ -13,6 +14,7 @@ import type {
     useDxtradeAccountsList,
     useDynamicLeverage,
     useMT5AccountsList,
+    usePOA,
     usePOI,
     useSortedMT5Accounts,
     useTransactions,
@@ -22,6 +24,7 @@ import type {
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
+    export type Authentication = NonNullable<ReturnType<typeof useAuthentication>['data']>;
     export type AvailableMT5Accounts = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number];
     export type CreateWallet = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
@@ -36,6 +39,7 @@ export namespace THooks {
     export type AllWalletAccounts = NonNullable<ReturnType<typeof useAllWalletAccounts>['data']>[number];
     export type DynamicLeverage = NonNullable<ReturnType<typeof useDynamicLeverage>['data']>;
     export type CryptoTransactions = NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
+    export type POA = NonNullable<ReturnType<typeof usePOA>['data']>;
     export type POI = NonNullable<ReturnType<typeof usePOI>['data']>;
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];
     export type Transactions = NonNullable<ReturnType<typeof useTransactions>['data']>[number];

@@ -5,6 +5,7 @@ import { formatDate, routes } from '@deriv/shared';
 
 type TProps = {
     cashier_validation: string[] | undefined;
+    closeAccountTransferModal: () => void;
     excluded_until: number | undefined;
     history: History;
     is_crypto: boolean;
@@ -19,6 +20,7 @@ type TProps = {
 
 const getMessage = ({
     cashier_validation,
+    closeAccountTransferModal,
     excluded_until,
     history,
     is_crypto,
@@ -182,6 +184,7 @@ const getMessage = ({
                     action: {
                         onClick: () => {
                             history.push(routes.proof_of_identity);
+                            closeAccountTransferModal();
                         },
                         label: localize('Verify now'),
                     },

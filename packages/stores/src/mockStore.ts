@@ -514,6 +514,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             removeNotificationByKey: jest.fn(),
             removeNotificationMessage: jest.fn(),
             removeNotificationMessageByKey: jest.fn(),
+            removeTradeNotifications: jest.fn(),
             setP2POrderProps: jest.fn(),
             setP2PRedirectTo: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),

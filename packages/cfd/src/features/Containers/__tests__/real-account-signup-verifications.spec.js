@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import FinancialStpRealAccountSignup from '../financial-stp-real-account-signup';
+import RealAccountSignupVerifications from '../real-account-signup-verifications';
 import CFDProviders from '../../../cfd-providers';
 import { mockStore } from '@deriv/stores';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
@@ -67,7 +67,7 @@ const steps = [
     },
 ];
 
-describe('<FinancialStpRealAccountSignup />', () => {
+describe('<RealAccountSignupVerifications />', () => {
     let modal_root_el;
 
     beforeAll(() => {
@@ -187,8 +187,8 @@ describe('<FinancialStpRealAccountSignup />', () => {
         jurisdiction_selected_shortcode: 'svg',
     };
 
-    it('should render FinancialStpRealAccountSignup component', () => {
-        render(<FinancialStpRealAccountSignup />, {
+    it('should render RealAccountSignupVerifications component', () => {
+        render(<RealAccountSignupVerifications />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
@@ -197,7 +197,7 @@ describe('<FinancialStpRealAccountSignup />', () => {
 
     it('should render properly for the first step content', () => {
         getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan_vanuatu: true });
-        render(<FinancialStpRealAccountSignup />, {
+        render(<RealAccountSignupVerifications />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
@@ -206,7 +206,7 @@ describe('<FinancialStpRealAccountSignup />', () => {
 
     it('should render properly for the second step content', () => {
         getAuthenticationStatusInfo.mockReturnValueOnce({ poa_resubmit_for_labuan: true });
-        const { getByTestId } = render(<FinancialStpRealAccountSignup />, {
+        const { getByTestId } = render(<RealAccountSignupVerifications />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
@@ -227,7 +227,7 @@ describe('<FinancialStpRealAccountSignup />', () => {
 
         getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan_vanuatu: true });
 
-        render(<FinancialStpRealAccountSignup />, {
+        render(<RealAccountSignupVerifications />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(new_mock_store)}>{children}</CFDProviders>,
         });
         testAllStepsFn(steps, 0);
@@ -247,7 +247,7 @@ describe('<FinancialStpRealAccountSignup />', () => {
 
         getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_maltainvest: true });
 
-        render(<FinancialStpRealAccountSignup />, {
+        render(<RealAccountSignupVerifications />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(new_mock_store)}>{children}</CFDProviders>,
         });
         testAllStepsFn(steps, 1);

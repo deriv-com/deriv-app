@@ -1,5 +1,5 @@
 import React from 'react';
-import { Score } from './PasswordFieldUtils';
+import { Score } from './WalletPasswordField';
 
 export interface PasswordMeterProps {
     score: Score;

@@ -6,6 +6,7 @@ import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
+export type Score = 0 | 1 | 2 | 3 | 4;
 interface WalletPasswordFieldProps extends WalletTextFieldProps {
     password: string;
     shouldDisablePasswordMeter?: boolean;
@@ -18,12 +19,14 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     shouldDisablePasswordMeter = false,
 }) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isTouched, setIsTouched] = useState(false);
 
     const { errorMessage, isValidPassword, score } = usePasswordValidation(password);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             onChange?.(e);
+            setIsTouched(true);
         },
         [onChange]
     );
@@ -32,9 +35,9 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
         <div className='wallets-password'>
             <WalletTextField
                 errorMessage={errorMessage}
-                isInvalid={!isValidPassword}
+                isInvalid={isTouched && !isValidPassword}
                 label={label}
-                message={errorMessage}
+                message={isTouched ? errorMessage : ''}
                 messageVariant='warning'
                 onChange={handleChange}
                 renderRightIcon={() => (
@@ -44,7 +47,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 type={isPasswordVisible ? 'text' : 'password'}
                 value={password}
             />
-            {!shouldDisablePasswordMeter && <PasswordMeter score={score} />}
+            {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
         </div>
     );
 };

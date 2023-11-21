@@ -15,6 +15,10 @@
         max-width: 64.2rem;
         height: max-content;
         padding: 1.6rem 0;
+
+        @include mobile {
+            padding: 0;
+        }
     }
 
     & .wallets-dropdown,
@@ -54,5 +58,12 @@
                 margin-top: 1rem;
             }
         }
+    }
+
+    &__error {
+        gap: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 1.5rem;
     }
 }

@@ -49,7 +49,7 @@ describe('<Strike />', () => {
     it('should not allow to change strike manually', () => {
         render(mockStrike(mocked_store));
 
-        const inputField = screen.getByTestId('dt_strike_input');
+        const inputField: HTMLInputElement = screen.getByTestId('dt_strike_input');
         expect(inputField.value).toBe('1');
 
         fireEvent.change(inputField, { target: { value: '2400.00' } });

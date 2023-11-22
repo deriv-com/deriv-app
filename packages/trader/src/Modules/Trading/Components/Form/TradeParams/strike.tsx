@@ -122,7 +122,7 @@ const Strike = observer(() => {
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='mobile-widget__wrapper'>
-                    <div className='strike-widget' onClick={toggleWidget}>
+                    <div className='strike-widget' onClick={toggleWidget} onKeyDown={toggleWidget}>
                         {should_show_spot && (
                             <div className='mobile-widget__spot'>{<Text size='xs'>{localize('Spot')}</Text>}</div>
                         )}

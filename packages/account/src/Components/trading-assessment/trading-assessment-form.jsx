@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
-import { isEmptyObject, isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
@@ -169,7 +169,7 @@ const TradingAssessmentForm = ({
                     const has_long_question = questions?.some(
                         question => question.question_text.length > MAX_QUESTION_TEXT_LENGTH
                     );
-
+                    const is_section_required = Object.keys(values).some(field => !!errors[field] && !!touched[field]);
                     return (
                         <React.Fragment>
                             <Text weight='bold' size='xs' className='trading-assessment__question-counter'>
@@ -181,9 +181,7 @@ const TradingAssessmentForm = ({
                                     }}
                                 />
                                 <Text color='loss-danger' size='xxs'>
-                                    {!isEmptyObject(errors) && !isEmptyObject(touched) && (
-                                        <Localize i18n_default_text={'* This is required'} />
-                                    )}
+                                    {is_section_required && <Localize i18n_default_text={'* This is required'} />}
                                 </Text>
                             </Text>
                             <section className={'trading-assessment__form'}>

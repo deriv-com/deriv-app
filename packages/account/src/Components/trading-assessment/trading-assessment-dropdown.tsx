@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { TFormData, TQuestion } from 'Types';
+import { TTradingAssessmentForm, TQuestion } from 'Types';
 import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 
 type TradingAssessmentDropdownProps = {
@@ -11,10 +11,10 @@ type TradingAssessmentDropdownProps = {
     item_list: TQuestion[];
     onChange: (
         e: React.ChangeEvent<HTMLSelectElement>,
-        form_control: keyof TFormData,
+        form_control: keyof TTradingAssessmentForm,
         setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void
     ) => void;
-    values: TFormData;
+    values: TTradingAssessmentForm;
     setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void;
     setEnableNextSection: (enable: boolean) => void;
 };

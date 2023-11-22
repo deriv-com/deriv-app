@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { usePOI } from '@deriv/api';
 import { FlowTextField, useFlow, WalletDropdown, WalletText } from '../../../../components';
 import { InlineMessage } from '../../../../components/Base';
@@ -16,6 +16,13 @@ const statusMessage: Partial<Record<TErrorMessageProps, string>> = {
     rejected: 'We were unable to verify the identity document with the details provided.',
 };
 
+// Temporary list of document types till we get the API
+const documentTypeList = [
+    { text: 'Drivers License', value: 'driverLicense' },
+    { text: 'Passport', value: 'passport' },
+    { text: 'Social Security and National Insurance Trust (SSNIT)', value: 'ssnit' },
+];
+
 const ErrorMessage: React.FC<{ status: TErrorMessageProps }> = ({ status }) => {
     const { isMobile } = useDevice();
 
@@ -32,12 +39,17 @@ const ErrorMessage: React.FC<{ status: TErrorMessageProps }> = ({ status }) => {
 
 const IDVDocumentUpload = () => {
     const { data: poiStatus } = usePOI();
-    const { setFormValues } = useFlow();
+    const { formValues, setFormValues } = useFlow();
 
-    const [selectedDocument, setSelectedDocument] = useState('documentNumber');
+    const textToValueMapper = documentTypeList.reduce((acc, curr) => {
+        acc[curr.text] = curr.value;
+        return acc;
+    }, {} as Record<string, string>);
 
     const validationSchema = useMemo(() => {
-        switch (selectedDocument) {
+        const documentType = textToValueMapper[formValues?.documentType];
+
+        switch (documentType) {
             case 'driverLicense':
                 return drivingLicenseValidator;
             case 'passport':
@@ -47,7 +59,7 @@ const IDVDocumentUpload = () => {
             default:
                 return requiredValidator;
         }
-    }, [selectedDocument]);
+    }, [formValues?.documentType, textToValueMapper]);
 
     const status = poiStatus?.current.status;
 
@@ -61,20 +73,22 @@ const IDVDocumentUpload = () => {
                     <WalletText weight='bold'>Identity verification</WalletText>
                 </div>
                 <WalletDropdown
+                    errorMessage={'Document type is required'}
+                    isRequired
                     label='Choose the document type'
-                    list={[
-                        { text: 'Drivers License', value: 'driverLicense' },
-                        { text: 'Passport', value: 'passport' },
-                        { text: 'Social Security and National Insurance Trust (SSNIT)', value: 'ssnit' },
-                    ]}
+                    list={documentTypeList}
                     name='documentType'
+                    onChange={inputValue => {
+                        setFormValues('documentType', inputValue);
+                    }}
                     onSelect={selectedItem => {
-                        setSelectedDocument(selectedItem);
                         setFormValues('documentType', selectedItem);
                     }}
-                    value={undefined}
+                    value={formValues?.documentType}
+                    variant='comboBox'
                 />
                 <FlowTextField
+                    disabled={!formValues.documentType}
                     label='Enter your document number'
                     name='documentNumber'
                     validationSchema={validationSchema}

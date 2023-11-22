@@ -41,6 +41,7 @@ const PersonalDetails = () => {
                     variant='comboBox'
                 />
                 <WalletDropdown
+                    disabled={getSettings?.place_of_birth !== ''}
                     label='Place of birth*'
                     list={residenceList.map(residence => ({
                         text: residence.text as ReactNode,
@@ -69,7 +70,7 @@ const PersonalDetails = () => {
                 />
                 <FlowTextField
                     errorMessage={'Please fill in tax residence'}
-                    isInvalid={!formValues.taxResidence}
+                    isInvalid={!formValues.taxResidence || !formValues.taxIdentificationNumber}
                     label='Tax identification number*'
                     name='taxIdentificationNumber'
                 />

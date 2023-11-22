@@ -112,9 +112,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
         } else if (currentScreenId === 'poaScreen') {
-            if (!getSettings?.has_submitted_personal_details) {
-                switchScreen('personalDetailsScreen');
-            }
+            switchScreen('personalDetailsScreen');
         } else if (currentScreenId === 'personalDetailsScreen') {
             show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
         } else {

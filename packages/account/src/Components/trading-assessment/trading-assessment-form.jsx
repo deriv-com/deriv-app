@@ -163,7 +163,7 @@ const TradingAssessmentForm = ({
                 <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
             </Text>
             <Formik initialValues={{ ...form_value }} validate={handleValidate} onSubmit={nextButtonHandler}>
-                {({ errors, setFieldValue, values, setErrors }) => {
+                {({ errors, setFieldValue, values, setErrors, touched }) => {
                     const { question_text, form_control, answer_options, questions } =
                         current_question_details.current_question;
                     const has_long_question = questions?.some(
@@ -181,7 +181,9 @@ const TradingAssessmentForm = ({
                                     }}
                                 />
                                 <Text color='loss-danger' size='xxs'>
-                                    * {!isEmptyObject(errors) && <Localize i18n_default_text={'This is required'} />}
+                                    {!isEmptyObject(errors) && !isEmptyObject(touched) && (
+                                        <Localize i18n_default_text={'* This is required'} />
+                                    )}
                                 </Text>
                             </Text>
                             <section className={'trading-assessment__form'}>

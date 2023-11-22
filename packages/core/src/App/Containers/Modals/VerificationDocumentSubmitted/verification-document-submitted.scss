@@ -21,7 +21,7 @@
             flex-direction: column;
 
             @include mobile {
-                height: 90%;
+                height: calc(100% - 15%);
             }
             .dc-btn {
                 height: 4rem;

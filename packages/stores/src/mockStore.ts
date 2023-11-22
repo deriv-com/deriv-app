@@ -584,6 +584,11 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setMigratedMT5Accounts: jest.fn(),
             },
         },
+        exchange_rates: {
+            data: undefined,
+            update: jest.fn(),
+            unmount: jest.fn(),
+        },
         feature_flags: {
             data: undefined,
             update: jest.fn(),

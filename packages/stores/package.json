@@ -9,8 +9,7 @@
         "mobx": "^6.6.1",
         "mobx-persist-store": "1.1.2",
         "mobx-react-lite": "^3.4.0",
-        "react": "^17.0.2",
-        "usehooks-ts": "^2.7.0"
+        "react": "^17.0.2"
     },
     "devDependencies": {
         "@deriv/api-types": "^1.0.118",

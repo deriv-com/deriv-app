@@ -62,7 +62,7 @@ describe('<StopLoss />', () => {
 
         expect(default_mocked_props.onChange).toBeCalled();
     });
-    it('should should render functioning Stop Loss input with checkbox if props were not passed (backup should work)', () => {
+    it('should render functioning Stop Loss input with checkbox if props were not passed (backup should work)', () => {
         default_mocked_props = {};
         render(mockStopLoss());
 

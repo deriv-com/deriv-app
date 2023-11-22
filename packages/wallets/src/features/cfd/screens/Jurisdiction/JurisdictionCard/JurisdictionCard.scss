@@ -24,16 +24,28 @@
         width: 100%;
     }
 
-    @include mobile {
-        max-width: 100%;
+    &__added-status {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        padding: 0.8rem;
+        text-align: center;
+        border-radius: 0 0 1.3rem 1.3rem;
+        background: var(--brand-blue, #85acb0);
     }
 
     &__link {
         color: #ff444f;
     }
 
-    &:hover {
+    &:hover:not(.wallets-jurisdiction-card--added) {
         box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
+    }
+
+    &--added {
+        user-select: none;
+        cursor: not-allowed;
     }
 
     &--selected {
@@ -49,7 +61,7 @@
         height: 100%;
         width: 100%;
         justify-content: center;
-        padding: 2rem 1.6rem;
+        padding: 2rem 1.6rem 3.6rem;
 
         @include mobile {
             width: 100%;

@@ -4,8 +4,8 @@ import { TAccount } from '../types';
 type TGetAccountNameProps = {
     accountCategory: THooks.TransferAccount['account_category'];
     accountType: THooks.TransferAccount['account_type'];
+    activeWalletLandingCompanyName: TWalletLandingCompanyName;
     displayCurrencyCode?: THooks.CurrencyConfig['display_code'];
-    landingCompanyName: TWalletLandingCompanyName;
     mt5MarketType: TMarketTypes.SortedMT5Accounts;
 };
 
@@ -51,8 +51,8 @@ export const getTradingAppIcon = (account: TAccount, activeWalletLandingCompanyN
 export const getAccountName = ({
     accountCategory,
     accountType,
+    activeWalletLandingCompanyName,
     displayCurrencyCode,
-    landingCompanyName,
     mt5MarketType,
 }: TGetAccountNameProps) => {
     switch (accountCategory) {
@@ -70,7 +70,7 @@ export const getAccountName = ({
                 case 'mt5': {
                     switch (mt5MarketType) {
                         case 'financial':
-                            return landingCompanyName === 'svg' ? 'MT5 Financial' : 'MT5 CFDs';
+                            return activeWalletLandingCompanyName === 'svg' ? 'MT5 Financial' : 'MT5 CFDs';
                         case 'synthetic':
                             return 'MT5 Derived';
                         case 'all':

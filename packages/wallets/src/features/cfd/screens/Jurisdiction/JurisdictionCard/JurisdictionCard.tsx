@@ -12,25 +12,45 @@ import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdictio
 import JurisdictionCardBack from './JurisdictionCardBack';
 import JurisdictionCardRow from './JurisdictionCardRow';
 import JurisdictionCardTag from './JurisdictionCardTag';
+import JurisdictionCardVerificationTag from './JurisdictionCardVerificationTag';
 import './JurisdictionCard.scss';
 
 type TJurisdictionCardProps = {
+    isAdded: boolean;
     isSelected: boolean;
     jurisdiction: string;
     onSelect: (clickedJurisdiction: string) => void;
     tag?: string;
 };
 
-const verificationIconsMapper: Record<string, JSX.Element> = {
-    documentNumber: <IdCardIcon />,
-    nameAndAddress: <DocumentsIcon />,
-    notApplicable: <NotApplicableIcon />,
-    selfie: <SelfieIcon />,
+type TVerificationDocumentsMapper = {
+    [key: string]: {
+        category: 'poa' | 'poi' | null;
+        icon: JSX.Element;
+    };
 };
 
-const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisdiction, onSelect }) => {
-    const [isFlipped, setIsFlipped] = useState(false);
+const verificationDocumentsMapper: TVerificationDocumentsMapper = {
+    documentNumber: {
+        category: 'poi',
+        icon: <IdCardIcon />,
+    },
+    nameAndAddress: {
+        category: 'poa',
+        icon: <DocumentsIcon />,
+    },
+    notApplicable: {
+        category: null,
+        icon: <NotApplicableIcon />,
+    },
+    selfie: {
+        category: 'poi',
+        icon: <SelfieIcon />,
+    },
+};
 
+const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelected, jurisdiction, onSelect }) => {
+    const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getModalState } = useModal();
 
@@ -72,11 +92,12 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
     return (
         <div
             className={classNames('wallets-jurisdiction-card', {
+                'wallets-jurisdiction-card--added': isAdded,
                 'wallets-jurisdiction-card--flip': isFlipped,
                 'wallets-jurisdiction-card--selected': isSelected,
             })}
             onClick={() => {
-                onSelect(jurisdiction);
+                !isAdded && onSelect(jurisdiction);
             }}
         >
             <React.Fragment>
@@ -104,14 +125,14 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                                         return (
                                             <div className='wallets-jurisdiction-card-front__tag-icons'>
                                                 {!(marketType in verificationDocs)
-                                                    ? verificationIconsMapper.notApplicable
-                                                    : verificationDocs[marketType]?.map(doc => {
-                                                          return (
-                                                              <div key={`verification-doc-${doc}`}>
-                                                                  {verificationIconsMapper[doc]}
-                                                              </div>
-                                                          );
-                                                      })}
+                                                    ? verificationDocumentsMapper.notApplicable.icon
+                                                    : verificationDocs[marketType]?.map(doc => (
+                                                          <JurisdictionCardVerificationTag
+                                                              category={verificationDocumentsMapper[doc].category}
+                                                              icon={verificationDocumentsMapper[doc].icon}
+                                                              key={`verification-doc-${doc}`}
+                                                          />
+                                                      ))}
                                             </div>
                                         );
                                     }
@@ -134,6 +155,13 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isSelected, jurisd
                             />
                         );
                     })}
+                    {isAdded && (
+                        <div className='wallets-jurisdiction-card__added-status'>
+                            <WalletText align='center' color='white' lineHeight='3xs' size='xs' weight='bold'>
+                                Added
+                            </WalletText>
+                        </div>
+                    )}
                 </div>
                 {marketType && marketType !== 'all' && verificationDocs && (
                     <JurisdictionCardBack setIsFlipped={setIsFlipped} verificationDocs={verificationDocs[marketType]} />

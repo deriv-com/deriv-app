@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 
 const AccountTransferNoAccount = observer(() => {
     const {
+        common: { is_from_derivgo },
         traders_hub: { closeModal },
     } = useStore();
 
@@ -27,16 +28,18 @@ const AccountTransferNoAccount = observer(() => {
             <Text as='p' size='xs' line_height='s' align='center'>
                 <Localize i18n_default_text='Transferring funds will require you to create a second account.' />
             </Text>
-            <Button
-                className='account-transfer-no-account__button'
-                primary
-                large
-                onClick={() => {
-                    history.push(routes.traders_hub);
-                }}
-            >
-                <Localize i18n_default_text="Back to Trader's Hub" />
-            </Button>
+            {!is_from_derivgo && (
+                <Button
+                    className='account-transfer-no-account__button'
+                    primary
+                    large
+                    onClick={() => {
+                        history.push(routes.traders_hub);
+                    }}
+                >
+                    <Localize i18n_default_text="Back to Trader's Hub" />
+                </Button>
+            )}
         </div>
     );
 });

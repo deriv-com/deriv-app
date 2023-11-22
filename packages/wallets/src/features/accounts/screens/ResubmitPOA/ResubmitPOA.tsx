@@ -1,23 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSettings, useStatesList } from '@deriv/api';
-import { Dropzone, FlowTextField } from '../../../../components';
+import { Dropzone, FlowTextField, useFlow } from '../../../../components';
 import { InlineMessage, WalletDropdown, WalletText } from '../../../../components/Base';
 import Upload from '../../../../public/images/accounts/upload.svg';
 import { getExampleImagesConfig } from '../../constants';
+import { letterRequiredValidator, requiredValidator } from '../../validations';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
 import './ResubmitPOA.scss';
 
+const ListItems = [
+    'Utility bill: electricity, water, gas, or landline phone bill.',
+    'Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.',
+    'Home rental agreement: valid and current agreement.',
+];
+
 const ResubmitPOA: React.FC = () => {
     const { data } = useSettings();
+    const { setFormValues } = useFlow();
+    const { data: getSettings } = useSettings();
     const country = data?.country_code || '';
     const { data: statesList } = useStatesList(country);
-
-    const [selectedState, setSelectedState] = useState('');
-
-    // Will replace this with formik values later
-    const handleSelect = (value: string) => {
-        setSelectedState(value);
-    };
 
     return (
         <div className='wallets-poa'>
@@ -35,18 +37,36 @@ const ResubmitPOA: React.FC = () => {
                     </InlineMessage>
                 </div>
                 <div className='wallets-poa__address__input'>
-                    <FlowTextField label='First line of address*' name='firstLine' />
-                    <FlowTextField label='Second line of address' name='secondLine' />
-                    <FlowTextField label='Town/City*' name='townCityLine' />
+                    <FlowTextField
+                        defaultValue={getSettings?.address_line_1 ?? ''}
+                        label='First line of address*'
+                        name='firstLine'
+                        validationSchema={requiredValidator}
+                    />
+                    <FlowTextField
+                        defaultValue={getSettings?.address_line_2 ?? ''}
+                        label='Second line of address'
+                        name='secondLine'
+                    />
+                    <FlowTextField
+                        defaultValue={getSettings?.address_city ?? ''}
+                        label='Town/City*'
+                        name='townCityLine'
+                        validationSchema={letterRequiredValidator}
+                    />
                     <WalletDropdown
                         label='State/Province'
                         list={statesList}
                         listHeight='sm'
-                        name='StateProvinceDropdownLine'
-                        onSelect={handleSelect}
-                        value={selectedState}
+                        name='stateProvinceDropdownLine'
+                        onSelect={selectedItem => setFormValues('stateProvinceDropdownLine', selectedItem)}
+                        value={getSettings?.address_state ?? ''}
                     />
-                    <FlowTextField label='Postal/ZIP Code' name='zipCodeLine' />
+                    <FlowTextField
+                        defaultValue={getSettings?.address_postcode ?? ''}
+                        label='Postal/ZIP Code'
+                        name='zipCodeLine'
+                    />
                 </div>
             </div>
 
@@ -63,20 +83,11 @@ const ResubmitPOA: React.FC = () => {
                         </WalletText>
 
                         <ul className='wallets-poa__document__container__disclaimer__list'>
-                            <li>
-                                <WalletText size='sm'>
-                                    Utility bill: electricity, water, gas, or landline phone bill.
-                                </WalletText>
-                            </li>
-                            <li>
-                                <WalletText size='sm'>
-                                    Financial, legal, or government document: recent bank statement, affidavit, or
-                                    government-issued letter.
-                                </WalletText>
-                            </li>
-                            <li>
-                                <WalletText size='sm'>Home rental agreement: valid and current agreement.</WalletText>
-                            </li>
+                            {ListItems.map(item => (
+                                <li key={`list-item-${item}`}>
+                                    <WalletText size='sm'>{item}</WalletText>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                     <div className='wallets-poa__document__container__upload'>

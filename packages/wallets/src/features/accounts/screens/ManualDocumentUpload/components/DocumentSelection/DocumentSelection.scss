@@ -1,13 +1,28 @@
 .wallets-document-selection {
     display: flex;
-    padding-top: 3.2rem;
+    width: 99.6rem;
+    height: 50rem;
     flex-direction: column;
-    align-items: self-start;
-    justify-content: center;
-    gap: 1.9rem;
-    width: 67.5rem;
+    align-items: center;
+    flex-shrink: 0;
 
     @include mobile {
-        width: 32.8rem;
+        width: 100%;
+        height: auto;
+        padding: 1.6rem;
+    }
+
+    &__content {
+        display: flex;
+        padding-top: 3.2rem;
+        flex-direction: column;
+        align-items: self-start;
+        justify-content: center;
+        gap: 1.9rem;
+        width: 67.5rem;
+
+        @include mobile {
+            width: 32.8rem;
+        }
     }
 }

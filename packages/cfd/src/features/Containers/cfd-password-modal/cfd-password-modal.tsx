@@ -5,10 +5,8 @@ import { SentEmailModal } from '@deriv/account';
 import {
     getDxCompanies,
     getMtCompanies,
-    getDerivezCompanies,
     TMtCompanies,
     TDxCompanies,
-    TDerivezCompanies,
 } from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import { MobileDialog, Modal } from '@deriv/components';
 import {
@@ -59,7 +57,7 @@ type TAccountType = 'all' | 'financial' | 'gaming' | 'demo';
 
 type TAccountCategory = 'real' | 'demo';
 
-type TCFDOtherPlatform = 'dxtrade' | 'derivez' | 'ctrader';
+type TCFDOtherPlatform = 'dxtrade' | 'ctrader';
 
 const ReviewMessageForMT5 = ({
     is_selected_mt5_verified,
@@ -395,12 +393,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']]
                         .short_title;
                 break;
-            case CFD_PLATFORMS.DERIVEZ:
-                type_label =
-                    getDerivezCompanies()[category as keyof TDerivezCompanies][
-                        type as keyof TDerivezCompanies['demo' | 'real']
-                    ].short_title;
-                break;
             default:
                 type_label = '';
                 break;
@@ -413,7 +405,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const accountTypes = () => {
             if (platform === CFD_PLATFORMS.DXTRADE && type_label === 'Derived') {
                 return 'Synthetic';
-            } else if (platform === CFD_PLATFORMS.DERIVEZ || platform === CFD_PLATFORMS.CTRADER) {
+            } else if (platform === CFD_PLATFORMS.CTRADER) {
                 return 'CFDs';
             }
             return type_label;

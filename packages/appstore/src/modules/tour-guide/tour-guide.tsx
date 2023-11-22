@@ -13,6 +13,7 @@ import {
 import { useStores } from 'Stores/index';
 import { routes, ContentFlag } from '@deriv/shared';
 import { SpanButton } from '@deriv/components';
+import { useTradersHubTracking } from 'Hooks/index';
 
 const TourGuide = () => {
     const { traders_hub, ui, client } = useStores();
@@ -23,6 +24,7 @@ const TourGuide = () => {
         content_flag,
         is_onboarding_visited,
         selectAccountType,
+        setIsFirstTimeVisit,
     } = traders_hub;
     const { is_dark_mode_on } = ui;
     const { prev_account_type } = client;
@@ -32,9 +34,12 @@ const TourGuide = () => {
     const tour_step_locale = getTourStepLocale();
     const high_risk_tour_step_locale = getTourStepLocale();
 
+    const { trackLastStep, trackStepForward, trackOnboardingRestart } = useTradersHubTracking();
+
     tour_step_locale.last = (
         <div
             onClick={() => {
+                trackLastStep();
                 setIsOnboardingVisited(true);
                 toggleIsTourOpen(false);
                 selectAccountType(prev_account_type);
@@ -47,6 +52,7 @@ const TourGuide = () => {
     high_risk_tour_step_locale.last = (
         <div
             onClick={() => {
+                trackLastStep();
                 setIsOnboardingVisited(true);
                 toggleIsTourOpen(false);
             }}
@@ -57,13 +63,21 @@ const TourGuide = () => {
 
     if (joyride_index === 0) {
         tour_step_locale.next = (
-            <div>
+            <div
+                onClick={() => {
+                    trackStepForward(7);
+                }}
+            >
                 <Localize i18n_default_text='Next' />
             </div>
         );
 
         high_risk_tour_step_locale.next = (
-            <div>
+            <div
+                onClick={() => {
+                    trackStepForward(7);
+                }}
+            >
                 <Localize i18n_default_text='Next' />
             </div>
         );
@@ -77,6 +91,8 @@ const TourGuide = () => {
                 secondary
                 medium
                 onClick={() => {
+                    trackOnboardingRestart();
+                    setIsFirstTimeVisit(false);
                     history.push(routes.onboarding);
                     toggleIsTourOpen(true);
                 }}
@@ -91,6 +107,8 @@ const TourGuide = () => {
             secondary
             medium
             onClick={() => {
+                trackOnboardingRestart();
+                setIsFirstTimeVisit(false);
                 history.push(routes.onboarding);
                 toggleIsTourOpen(true);
             }}

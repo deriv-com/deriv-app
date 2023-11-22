@@ -43,13 +43,15 @@ const MT5ChangePasswordScreens = () => {
         );
 
     return (
-        <WalletsActionScreen
-            description={ChangePasswordScreens[activeScreen].bodyText}
-            descriptionSize='sm'
-            icon={ChangePasswordScreens[activeScreen].icon}
-            renderButtons={() => ChangePasswordScreens[activeScreen].button}
-            title={ChangePasswordScreens[activeScreen].headingText}
-        />
+        <div className='wallets-change-password__content'>
+            <WalletsActionScreen
+                description={ChangePasswordScreens[activeScreen].bodyText}
+                descriptionSize='sm'
+                icon={ChangePasswordScreens[activeScreen].icon}
+                renderButtons={() => ChangePasswordScreens[activeScreen].button}
+                title={ChangePasswordScreens[activeScreen].headingText}
+            />
+        </div>
     );
 };
 

@@ -1,11 +1,11 @@
-import React, { FC, useMemo } from 'react';
-import { useAuthentication, usePOA, usePOI, useSettings } from '@deriv/api';
-import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
+import React, { FC, useCallback, useMemo } from 'react';
+import { useAuthentication, useDocumentUpload, usePOA, usePOI, useSettings } from '@deriv/api';
+import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
-import { ManualDocumentUpload, ResubmitPOA } from '../../../accounts/screens';
+import { ManualDocumentUpload, ResubmitPOA, SelfieDocumentUpload } from '../../../accounts/screens';
 import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
 import { PersonalDetails } from '../../../accounts/screens/PersonalDetails';
 import { MT5PasswordModal } from '../../modals';
@@ -27,6 +27,7 @@ const screens = {
     onfidoScreen: <Onfido />,
     personalDetailsScreen: <PersonalDetails />,
     poaScreen: <ResubmitPOA />,
+    selfieScreen: <SelfieDocumentUpload />,
 };
 
 type TVerificationProps = {
@@ -37,7 +38,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { data: authenticationData } = useAuthentication();
-    const { data: getSettings } = useSettings();
+    const { isLoading: isUploadLoading, upload } = useDocumentUpload();
+    const { data: settings } = useSettings();
     const { getModalState, hide, show } = useModal();
 
     const selectedMarketType = getModalState('marketType') || 'all';
@@ -59,11 +61,12 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
                 if (authenticationData?.is_poa_needed && !hasAttemptedPOA) return 'poaScreen';
-                if (!getSettings?.has_submitted_personal_details) return 'personalDetailsScreen';
+                if (!settings?.has_submitted_personal_details) return 'personalDetailsScreen';
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
             if (service === 'idv') return 'idvScreen';
             if (service === 'onfido') return 'onfidoScreen';
+            if (service === 'manual') return 'manualScreen';
         }
         return 'loadingScreen';
     }, [
@@ -71,7 +74,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         isSuccessPOIStatus,
         authenticationData?.is_poa_needed,
         hasAttemptedPOA,
-        getSettings?.has_submitted_personal_details,
+        settings?.has_submitted_personal_details,
         show,
         selectedMarketType,
         platform,
@@ -87,6 +90,31 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.dateOfBirth ||
                     !!errors.documentNumber
                 );
+            case 'manualScreen':
+                if (formValues.selectedManualDocument) {
+                    if (formValues.selectedManualDocument === 'driving-license') {
+                        return (
+                            !formValues.drivingLicenceNumber ||
+                            !formValues.drivingLicenseExpiryDate ||
+                            !formValues.drivingLicenseCardFront ||
+                            !formValues.drivingLicenseCardBack
+                        );
+                    } else if (formValues.selectedManualDocument === 'passport') {
+                        return !formValues.passportNumber || !formValues.passportExpiryDate || !formValues.passportCard;
+                    } else if (formValues.selectedManualDocument === 'identity-card') {
+                        return (
+                            !formValues.identityCardNumber ||
+                            !formValues.identityCardExpiryDate ||
+                            !formValues.identityCardFront ||
+                            !formValues.identityCardBack
+                        );
+                    } else if (formValues.selectedManualDocument === 'nimc-slip') {
+                        return !formValues.nimcNumber || !formValues.nimcCardFront || !formValues.nimcCardBack;
+                    }
+                }
+                return !formValues.selectedManualDocument;
+            case 'selfieScreen':
+                return !formValues.selfie;
             case 'personalDetailsScreen':
                 return (
                     !formValues.citizenship ||
@@ -102,25 +130,117 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         }
     };
 
-    const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
-        if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
-            if (hasAttemptedPOA) {
-                switchScreen('poaScreen');
-            } else if (!getSettings?.has_submitted_personal_details) {
-                switchScreen('personalDetailsScreen');
-            } else {
+    const isNextLoading = useCallback(
+        ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
+            if (['manualScreen', 'selfieScreen'].includes(currentScreenId) && formValues.selectedManualDocument)
+                return isUploadLoading || isLoading;
+            return isLoading;
+        },
+        [isLoading, isUploadLoading]
+    );
+
+    const nextFlowHandler = useCallback(
+        async ({ currentScreenId, formValues, setFormValues, switchScreen }: TFlowProviderContext<typeof screens>) => {
+            if (['idvScreen', 'onfidoScreen', 'selfieScreen'].includes(currentScreenId)) {
+                // API call for selfie screen
+                if (currentScreenId === 'selfieScreen') {
+                    await upload({
+                        document_issuing_country: settings?.country_code ?? undefined,
+                        document_type: 'selfie_with_id',
+                        file: formValues.selfie,
+                    });
+                }
+
+                // Switching screen
+                if (hasAttemptedPOA) {
+                    switchScreen('poaScreen');
+                } else if (!settings?.has_submitted_personal_details) {
+                    switchScreen('personalDetailsScreen');
+                } else {
+                    show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+                }
+            } else if (currentScreenId === 'manualScreen') {
+                if (formValues.selectedManualDocument === 'passport') {
+                    await upload({
+                        document_id: formValues.passportNumber,
+                        document_issuing_country: settings?.country_code ?? undefined,
+                        document_type: 'passport',
+                        expiration_date: formValues.passportExpiryDate,
+                        file: formValues.passportCard,
+                    });
+                } else if (formValues.selectedManualDocument === 'identity-card') {
+                    await upload({
+                        document_id: formValues.identityCardNumber,
+                        document_issuing_country: settings?.country_code ?? undefined,
+                        document_type: 'national_identity_card',
+                        expiration_date: formValues.identityCardExpiryDate,
+                        file: formValues.identityCardFront,
+                        page_type: 'front',
+                    });
+                    await upload({
+                        document_id: formValues.identityCardNumber,
+                        document_issuing_country: settings?.country_code ?? undefined,
+                        document_type: 'national_identity_card',
+                        expiration_date: formValues.identityCardExpiryDate,
+                        file: formValues.identityCardBack,
+                        page_type: 'back',
+                    });
+                } else if (formValues.selectedManualDocument === 'driving-license') {
+                    await upload({
+                        document_id: formValues.drivingLicenceNumber,
+                        document_issuing_country: settings?.country_code ?? undefined,
+                        document_type: 'driving_licence',
+                        expiration_date: formValues.drivingLicenseExpiryDate,
+                        file: formValues.drivingLicenseCardFront,
+                        page_type: 'front',
+                    });
+                    await upload({
+                        document_id: formValues.drivingLicenceNumber,
+                        document_issuing_country: settings?.country_code ?? undefined,
+                        document_type: 'driving_licence',
+                        expiration_date: formValues.drivingLicenseExpiryDate,
+                        file: formValues.drivingLicenseCardBack,
+                        page_type: 'back',
+                    });
+                } else if (formValues.selectedManualDocument === 'nimc-slip') {
+                    await upload({
+                        document_id: formValues.nimcNumber,
+                        document_issuing_country: settings?.country_code ?? undefined,
+                        document_type: 'nimc_slip',
+                        file: formValues.nimcCardFront,
+                        page_type: 'front',
+                    });
+                    await upload({
+                        document_id: formValues.nimcNumber,
+                        document_issuing_country: settings?.country_code ?? undefined,
+                        document_type: 'nimc_slip',
+                        file: formValues.nimcCardBack,
+                        page_type: 'back',
+                    });
+                }
+                setFormValues('selectedManualDocument', '');
+                switchScreen('selfieScreen');
+            } else if (currentScreenId === 'poaScreen') {
+                if (!settings?.has_submitted_personal_details) {
+                    switchScreen('personalDetailsScreen');
+                }
+            } else if (currentScreenId === 'personalDetailsScreen') {
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+            } else {
+                hide();
             }
-        } else if (currentScreenId === 'poaScreen') {
-            if (!getSettings?.has_submitted_personal_details) {
-                switchScreen('personalDetailsScreen');
-            }
-        } else if (currentScreenId === 'personalDetailsScreen') {
-            show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
-        } else {
-            hide();
-        }
-    };
+        },
+        [
+            hasAttemptedPOA,
+            hide,
+            platform,
+            selectedMarketType,
+            settings?.country_code,
+            settings?.has_submitted_personal_details,
+            show,
+            upload,
+        ]
+    );
 
     return (
         <FlowProvider
@@ -134,10 +254,26 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 return (
                     <ModalStepWrapper
                         renderFooter={() => {
-                            return (
+                            return context.formValues.selectedManualDocument ? (
+                                <WalletButtonGroup isFlex>
+                                    <WalletButton
+                                        onClick={() => context.setFormValues('selectedManualDocument', '')}
+                                        size='lg'
+                                        text='Back'
+                                        variant='outlined'
+                                    />
+                                    <WalletButton
+                                        disabled={isNextDisabled(context)}
+                                        isLoading={isNextLoading(context)}
+                                        onClick={() => nextFlowHandler(context)}
+                                        size='lg'
+                                        text='Next'
+                                    />
+                                </WalletButtonGroup>
+                            ) : (
                                 <WalletButton
                                     disabled={isNextDisabled(context)}
-                                    isLoading={isLoading}
+                                    isLoading={isNextLoading(context)}
                                     onClick={() => nextFlowHandler(context)}
                                     size='lg'
                                     text='Next'

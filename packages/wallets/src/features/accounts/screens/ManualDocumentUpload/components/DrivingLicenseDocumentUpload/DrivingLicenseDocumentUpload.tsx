@@ -1,18 +1,19 @@
 import React from 'react';
-import { Divider, Dropzone, WalletText, WalletTextField } from '../../../../../../components';
+import { Divider, Dropzone, FlowTextField, useFlow, WalletText } from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
-import Calendar from '../../../../../../public/images/calendar.svg';
 import { DocumentRuleHints } from '../DocumentRuleHints';
 import './DrivingLicenseDocumentUpload.scss';
 
 const DrivingLicenseDocumentUpload = () => {
+    const { setFormValues } = useFlow();
+
     return (
         <div className='wallets-driving-license-document-upload' data-testid='dt_driving-license-document-upload'>
             <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
             <div className='wallets-driving-license-document-upload__input-group'>
-                <WalletTextField label='Driving licence number*' />
-                <WalletTextField label='Expiry date*' renderRightIcon={() => <Calendar />} type='date' />
+                <FlowTextField label='Driving licence number*' name='drivingLicenceNumber' />
+                <FlowTextField label='Expiry date*' name='drivingLicenseExpiryDate' type='date' />
             </div>
             <Divider />
             <div className='wallets-driving-license-document-upload__document-section'>
@@ -25,6 +26,7 @@ const DrivingLicenseDocumentUpload = () => {
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={<DrivingLicenseCardFront />}
                             maxSize={8388608}
+                            onFileChange={(file: File) => setFormValues('drivingLicenseCardFront', file)}
                         />
                     </div>
                     <div className='wallets-driving-license-document-upload__dropzones--right'>
@@ -34,6 +36,7 @@ const DrivingLicenseDocumentUpload = () => {
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={<DrivingLicenseCardBack />}
                             maxSize={8388608}
+                            onFileChange={(file: File) => setFormValues('drivingLicenseCardBack', file)}
                         />
                     </div>
                 </div>

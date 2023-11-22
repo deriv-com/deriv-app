@@ -37,7 +37,7 @@ const getHighlightedIconLabel = (
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
                 { icon: 'Forex', text: forex_label, highlighted: false },
                 { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: false },
-                { icon: 'ETF', text: localize('ETF'), highlighted: false },
+                { icon: 'ETF', text: localize('ETFs'), highlighted: false },
             ];
         case MARKET_TYPE.FINANCIAL:
             switch (trading_platforms.shortcode) {
@@ -60,7 +60,7 @@ const getHighlightedIconLabel = (
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
                         { icon: 'Forex', text: forex_label, highlighted: true },
                         { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                        { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                        { icon: 'ETF', text: localize('ETFs'), highlighted: true },
                     ];
                 default:
                     return [
@@ -72,7 +72,7 @@ const getHighlightedIconLabel = (
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
                         { icon: 'Forex', text: forex_label, highlighted: true },
                         { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                        { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                        { icon: 'ETF', text: localize('ETFs'), highlighted: true },
                     ];
             }
         case MARKET_TYPE.ALL:
@@ -87,7 +87,7 @@ const getHighlightedIconLabel = (
                     { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
                     { icon: 'Forex', text: forex_label, highlighted: true },
                     { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                    { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                    { icon: 'ETF', text: localize('ETFs'), highlighted: true },
                 ];
             }
             if (trading_platforms.platform === CFD_PLATFORMS.CTRADER) {
@@ -97,7 +97,7 @@ const getHighlightedIconLabel = (
                     { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                     { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
                     { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                    { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                    { icon: 'ETF', text: localize('ETFs'), highlighted: true },
                     { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
                     { icon: 'Baskets', text: localize('Basket indices'), highlighted: true },
                     { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
@@ -112,7 +112,7 @@ const getHighlightedIconLabel = (
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
                 { icon: 'Forex', text: forex_label, highlighted: true },
                 { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                { icon: 'ETF', text: localize('ETFs'), highlighted: true },
             ];
     }
 };
@@ -139,7 +139,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case CFD_PLATFORMS.DXTRADE:
             return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
         case CFD_PLATFORMS.CTRADER:
-            return is_demo ? localize('cTrader Demo') : localize('cTrader');
+            return is_demo ? localize('Deriv cTrader Demo') : localize('Deriv cTrader');
         default:
             return is_demo ? localize('CFDs Demo') : localize('CFDs');
     }

@@ -1,17 +1,31 @@
 import React from 'react';
+import { usePOA, usePOI } from '@deriv/api';
 import { WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import './VerificationFailed.scss';
 
+const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
+    if (isPOIFailed && isPOAFailed) return 'proof of identity and proof of address';
+    if (isPOIFailed) return 'proof of identity';
+    return 'proof of address';
+};
+
 const VerificationFailed = () => {
     const { hide } = useModal();
+    const { data: poiStatus } = usePOI();
+    const { data: poaStatus } = usePOA();
+
+    const isPOIFailed = poiStatus?.is_rejected || poiStatus?.is_expired || poiStatus?.is_suspected;
+    const isPOAFailed = poaStatus?.is_rejected || poaStatus?.is_expired || poaStatus?.is_suspected;
+
     return (
         <div className='wallets-verification-failed'>
             <WalletText size='sm' weight='bold'>
                 Why did my verification fail?
             </WalletText>
             <WalletText size='sm'>
-                Your [dynamic document] did not pass our verification checks. This could be due to reasons such as:
+                Your {getDocumentTitle(isPOIFailed, isPOAFailed)} did not pass our verification checks. This could be
+                due to reasons such as:
             </WalletText>
             <ul>
                 <li>

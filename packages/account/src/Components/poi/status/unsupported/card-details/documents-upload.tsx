@@ -120,24 +120,22 @@ const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, on
                                     )}
                                 </div>
                             </div>
-                            <div className={`${ROOT_CLASS}__btns`}>
-                                <FormFooter>
-                                    <Button
-                                        onClick={goToCards}
-                                        secondary
-                                        large
-                                        text={localize('Back')}
-                                        icon={<Icon icon='IcButtonBack' />}
-                                    />
-                                    <Button
-                                        type='submit'
-                                        primary
-                                        large
-                                        is_disabled={!isValid || (!is_form_touched && is_form_empty)}
-                                        text={localize('Next')}
-                                    />
-                                </FormFooter>
-                            </div>
+                            <FormFooter className={`${ROOT_CLASS}__btns`}>
+                                <Button
+                                    onClick={goToCards}
+                                    secondary
+                                    large
+                                    text={localize('Back')}
+                                    icon={<Icon icon='IcButtonBack' />}
+                                />
+                                <Button
+                                    type='submit'
+                                    primary
+                                    large
+                                    is_disabled={!isValid || (!is_form_touched && is_form_empty)}
+                                    text={localize('Next')}
+                                />
+                            </FormFooter>
                         </Form>
                     );
                 }}

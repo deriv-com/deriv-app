@@ -18,7 +18,7 @@ type TWithdrawalReceipt = {
 
 const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificationCode }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isError: isWithdrawalError, isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
+    const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
     const { getConfig } = useCurrencyConfig();
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({ address: '', amount: '' });
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { WalletButton, WalletCard, WalletText } from '../../../../../../components';
-import useDevice from '../../../../../../hooks/useDevice';
 import ArrowDown from '../../../../../../public/images/ic-back-arrow.svg';
 import { WithdrawalCryptoDestinationAddress } from './components';
 import './WithdrawalCryptoReceipt.scss';
@@ -16,7 +15,6 @@ type TProps = {
 };
 
 const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt }) => {
-    const { isMobile } = useDevice();
     const history = useHistory();
     const { address, amount, currency } = withdrawalReceipt;
 

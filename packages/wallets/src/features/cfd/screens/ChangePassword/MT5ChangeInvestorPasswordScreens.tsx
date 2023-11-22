@@ -1,34 +1,28 @@
 import React, { useState } from 'react';
-import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
+import {
+    SentEmailContent,
+    WalletButton,
+    WalletPasswordField,
+    WalletsActionScreen,
+    WalletText,
+} from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
+import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordUpdatedIcon from '../../../../public/images/ic-mt5-password-updated.svg';
 
-const MT5ChangeInvestorPasswordScreens = () => {
-    type TChangeInvestorPasswordScreenIndex = 'confirmationScreen' | 'emailVerification' | 'introScreen';
+type TChangeInvestorPasswordScreenIndex = 'emailVerification' | 'introScreen' | 'savedScreen';
 
-    // const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
-    const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('emailVerification');
+const MT5ChangeInvestorPasswordScreens = () => {
+    const [currentInvestorPassword, setCurrentInvestorPassword] = useState('');
+    const [newInvestorPassword, setNewInvestorPassword] = useState('');
+
+    const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangeInvestorPasswordScreenIndex) => setActiveScreen(nextScreen);
 
+    const { isMobile } = useDevice();
     const { hide } = useModal();
 
     const ChangeInvestorPasswordScreens = {
-        confirmationScreen: {
-            bodyText: (
-                <WalletText align='center' color='error' size='sm'>
-                    This will change the password to all of your Deriv MT5 accounts.
-                </WalletText>
-            ),
-            button: (
-                <div className='wallets-change-password__btn'>
-                    <WalletButton onClick={() => hide()} size='lg' text='Cancel' variant='outlined' />
-                    <WalletButton onClick={() => handleClick('emailVerification')} size='lg' text='Confirm' />
-                </div>
-            ),
-            headingText: 'Confirm to change your Deriv MT5 password',
-            icon: <MT5PasswordIcon />,
-        },
         introScreen: {
             bodyText: (
                 <>
@@ -42,8 +36,49 @@ const MT5ChangeInvestorPasswordScreens = () => {
                     </WalletText>
                 </>
             ),
-            button: <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg' text='Change password' />,
-            headingText: '',
+            button: (
+                <div className='wallets-change-password__investor-password'>
+                    <div className='wallets-change-password__investor-password-fields'>
+                        <WalletPasswordField
+                            key='current_password'
+                            label={`Current investor password`}
+                            onChange={e => setCurrentInvestorPassword(e.target.value)}
+                            password={currentInvestorPassword}
+                        />
+                        <WalletPasswordField
+                            key='new_password'
+                            label={`New investor password`}
+                            onChange={e => setNewInvestorPassword(e.target.value)}
+                            password={newInvestorPassword}
+                        />
+                    </div>
+                    <div className='wallets-change-password__investor-password-buttons'>
+                        <WalletButton
+                            disabled={currentInvestorPassword.length < 8 || newInvestorPassword.length < 8}
+                            onClick={() => handleClick('savedScreen')}
+                            size={isMobile ? 'lg' : 'md'}
+                            text='Change investor password'
+                        />
+                        <WalletButton
+                            onClick={() => handleClick('emailVerification')}
+                            size={isMobile ? 'lg' : 'md'}
+                            text='Create or reset investor password'
+                            variant='ghost'
+                        />
+                    </div>
+                </div>
+            ),
+            headingText: undefined,
+            icon: undefined,
+        },
+        savedScreen: {
+            bodyText: (
+                <WalletText align='center' size='sm'>
+                    Your investor password has been changed.
+                </WalletText>
+            ),
+            button: <WalletButton onClick={() => hide()} size='lg' text='Okay' />,
+            headingText: 'Password saved',
             icon: <MT5PasswordUpdatedIcon />,
         },
     };

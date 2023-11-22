@@ -9,7 +9,7 @@
     display: inline-flex;
     border: 0;
     height: 3.2rem;
-    border-radius: 4px;
+    border-radius: 0.4rem;
     transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
     outline: 0;
     position: relative;
@@ -22,7 +22,7 @@
      * text-transform is declared in .dc-btn instead of .dc-btn__text
      * to ensure consistency (even for children) as per styleguide
      */
-    text-transform: none !important;
+    text-transform: none;
 
     &__text {
         display: flex;
@@ -32,7 +32,7 @@
         background: transparent;
     }
     &__rounded {
-        border-radius: 24px;
+        border-radius: 2.4rem;
     }
     &--primary {
         background: var(--button-primary-default);
@@ -47,7 +47,7 @@
         &:disabled,
         &[disabled] {
             opacity: 0.32;
-            cursor: not-allowed !important;
+            cursor: not-allowed;
         }
         .dc-btn__text,
         .dc-btn__icon {
@@ -66,7 +66,7 @@
             &:disabled,
             &[disabled] {
                 opacity: 0.32;
-                cursor: not-allowed !important;
+                cursor: not-allowed;
             }
             .dc-btn__text,
             .dc-btn__icon {
@@ -87,7 +87,7 @@
         &:disabled,
         &[disabled] {
             opacity: 0.32;
-            cursor: not-allowed !important;
+            cursor: not-allowed;
         }
         .dc-btn__text,
         .dc-btn__icon {
@@ -97,7 +97,7 @@
     &__small {
         height: 2.4rem;
         min-width: 4.8rem;
-        border-width: 1px;
+        border-width: 0.1rem;
 
         .dc-btn__text {
             font-size: 1.2rem;
@@ -106,7 +106,7 @@
     &__medium {
         height: 3.2rem;
         min-width: 5.6rem;
-        border-width: 1px;
+        border-width: 0.1rem;
 
         .dc-btn__text {
             font-size: 1.4rem;
@@ -139,11 +139,11 @@
         white-space: nowrap;
 
         .dc-btn + .dc-btn {
-            margin-left: 8px;
+            margin-left: 0.8rem;
         }
     }
     &__button-group {
-        border-radius: 0 4px 4px 0;
+        border-radius: 0 0.4rem 0.4rem 0;
     }
     /* TODO: confirm this button with designer are we still using this? */
     /* postcss-bem-linter: ignore */
@@ -156,7 +156,7 @@
         }
         /* postcss-bem-linter: ignore */
         .barspinner {
-            margin: 0.6rem 4px 0 -4px;
+            margin: 0.6rem 0.4rem 0 -0.4rem;
 
             /* postcss-bem-linter: ignore */
             &__rect {
@@ -173,6 +173,6 @@
         left: -0.6em;
         bottom: -0.6em;
         right: -0.6em;
-        border-width: 6px;
+        border-width: 0.6rem;
     }
 }

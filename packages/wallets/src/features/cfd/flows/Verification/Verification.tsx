@@ -87,6 +87,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.dateOfBirth ||
                     !!errors.documentNumber
                 );
+            case 'onfidoScreen':
+                return !formValues.hasSubmittedOnfido;
             case 'personalDetailsScreen':
                 return (
                     !formValues.citizenship ||
@@ -126,6 +128,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         <FlowProvider
             initialScreenId={initialScreenId}
             initialValues={{
+                hasSubmittedOnfido: false,
                 selectedJurisdiction,
             }}
             screens={screens}

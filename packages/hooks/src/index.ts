@@ -41,10 +41,12 @@ export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessm
 export { default as useNeedPOI } from './useNeedPOI';
 export { default as useNeedTNC } from './useNeedTNC';
 export { default as useOnrampVisible } from './useOnrampVisible';
+export { default as useP2PAdvertInfo } from './useP2PAdvertInfo';
 export { default as useP2PAdvertiserPaymentMethods } from './useP2PAdvertiserPaymentMethods';
 export { default as useP2PAdvertList } from './useP2PAdvertList';
 export { default as useP2PNotificationCount } from './useP2PNotificationCount';
 export { default as useP2PPaymentMethods } from './useP2PPaymentMethods';
+export { default as useP2PExchangeRate } from './useP2PExchangeRate';
 export { default as usePaymentAgentList } from './usePaymentAgentList';
 export { default as usePaymentAgentTransferVisible } from './usePaymentAgentTransferVisible';
 export { default as usePlatformAccounts } from './usePlatformAccounts';

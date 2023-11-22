@@ -7,7 +7,8 @@ import MT5PasswordUpdatedIcon from '../../../../public/images/ic-mt5-password-up
 const MT5ChangeInvestorPasswordScreens = () => {
     type TChangeInvestorPasswordScreenIndex = 'confirmationScreen' | 'emailVerification' | 'introScreen';
 
-    const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
+    // const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
+    const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('emailVerification');
     const handleClick = (nextScreen: TChangeInvestorPasswordScreenIndex) => setActiveScreen(nextScreen);
 
     const { hide } = useModal();
@@ -50,7 +51,7 @@ const MT5ChangeInvestorPasswordScreens = () => {
     if (activeScreen === 'emailVerification')
         return (
             <div className='wallets-change-password__sent-email-wrapper'>
-                <SentEmailContent />
+                <SentEmailContent description='Please click on the link in the email to reset your password.' />
             </div>
         );
 

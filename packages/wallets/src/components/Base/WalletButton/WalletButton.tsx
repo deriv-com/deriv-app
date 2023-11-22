@@ -16,7 +16,7 @@ interface WalletButtonProps {
     isLoading?: boolean;
     onClick?: ComponentProps<'button'>['onClick'];
     rounded?: Extract<TGenericSizes, 'md' | 'sm'>;
-    size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
+    size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm' | 'xl'>;
     text?: React.ReactNode;
     type?: ComponentProps<'button'>['type'];
     variant?: TVariant;
@@ -84,6 +84,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
         lg: 'sm',
         md: 'sm',
         sm: 'xs',
+        xl: 'md',
     } as const;
 
     return (

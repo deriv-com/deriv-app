@@ -8,7 +8,10 @@ import './cashier-locked.scss';
 import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 
 const CashierLocked = observer(() => {
-    const { client } = useStore();
+    const {
+        client,
+        traders_hub: { closeAccountTransferModal },
+    } = useStore();
     const {
         account_status,
         accounts,
@@ -26,6 +29,7 @@ const CashierLocked = observer(() => {
 
     const state = getMessage({
         cashier_validation: account_status.cashier_validation,
+        closeAccountTransferModal,
         excluded_until: loginid ? accounts[loginid]?.excluded_until : undefined,
         history,
         is_crypto: current_currency_type === 'crypto',

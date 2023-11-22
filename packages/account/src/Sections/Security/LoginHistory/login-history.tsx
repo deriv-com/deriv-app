@@ -6,7 +6,7 @@ import LoadErrorMessage from 'Components/load-error-message';
 import LoginHistoryContent from './login-history-content';
 import { getLoginHistoryFormattedData } from '../../../../../utils/src/getLoginHistoryFormattedData';
 
-type TData = { id: number; date: string; action: string; browser: string; ip: string; status: string }[];
+type TLoginData = { id: number; date: string; action: string; browser: string; ip: string; status: string }[];
 
 const LoginHistory = observer(() => {
     const { client, ui } = useStore();
@@ -14,7 +14,7 @@ const LoginHistory = observer(() => {
     const { is_mobile } = ui;
     const [is_loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState('');
-    const [data, setData] = React.useState<TData>([]);
+    const [data, setData] = React.useState<TLoginData>([]);
 
     React.useEffect(() => {
         let is_cancelled = false;

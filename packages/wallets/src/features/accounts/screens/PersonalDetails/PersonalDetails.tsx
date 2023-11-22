@@ -6,7 +6,7 @@ import './PersonalDetails.scss';
 
 const PersonalDetails = () => {
     const { data: residenceList } = useResidenceList();
-    const { setFormValues } = useFlow();
+    const { formValues, setFormValues } = useFlow();
     const { data: getSettings } = useSettings();
 
     useEffect(() => {
@@ -14,7 +14,6 @@ const PersonalDetails = () => {
             setFormValues('citizenship', getSettings.citizen);
             setFormValues('placeOfBirth', getSettings.place_of_birth);
             setFormValues('taxResidence', getSettings.tax_residence);
-            setFormValues('taxIdentificationNumber', getSettings.tax_identification_number);
             setFormValues('accountOpeningReason', getSettings.account_opening_reason);
         }
     }, [getSettings, setFormValues]);
@@ -38,10 +37,11 @@ const PersonalDetails = () => {
                     }))}
                     name='wallets-personal-details__dropdown-citizenship'
                     onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
-                    value={getSettings?.citizen ?? ''}
+                    value={getSettings?.citizen ?? formValues?.citizenship}
                     variant='comboBox'
                 />
                 <WalletDropdown
+                    disabled={getSettings?.place_of_birth !== ''}
                     label='Place of birth*'
                     list={residenceList.map(residence => ({
                         text: residence.text as ReactNode,
@@ -53,23 +53,33 @@ const PersonalDetails = () => {
                     variant='comboBox'
                 />
                 <WalletDropdown
+                    errorMessage={'Tax residence is required'}
+                    isRequired
                     label='Tax residence*'
                     list={residenceList.map(residence => ({
                         text: residence.text as ReactNode,
                         value: residence.value ?? '',
                     }))}
                     name='wallets-personal-details__dropdown-tax-residence'
+                    onChange={inputValue => {
+                        setFormValues('taxResidence', inputValue);
+                    }}
                     onSelect={selectedItem => setFormValues('taxResidence', selectedItem)}
-                    value={getSettings?.tax_residence ?? ''}
+                    value={getSettings?.tax_residence ?? formValues?.taxResidence}
                     variant='comboBox'
                 />
-                <FlowTextField label='Tax identification number*' name='taxIdentificationNumber' />
+                <FlowTextField
+                    errorMessage={'Please fill in tax residence'}
+                    isInvalid={!formValues.taxResidence || !formValues.taxIdentificationNumber}
+                    label='Tax identification number*'
+                    name='taxIdentificationNumber'
+                />
                 <WalletDropdown
                     label='Account opening reason*'
                     list={accountOpeningReasonList}
                     name='wallets-personal-details__dropdown-opening-reason'
                     onSelect={selectedItem => setFormValues('accountOpeningReason', selectedItem)}
-                    value={getSettings?.account_opening_reason ?? ''}
+                    value={getSettings?.account_opening_reason ?? formValues?.accountOpeningReason}
                     variant='comboBox'
                 />
             </div>

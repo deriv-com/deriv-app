@@ -135,7 +135,7 @@ const OnboardingTourMobile = observer(() => {
                     <ProgressBarTracker
                         step={tour_step}
                         steps_list={DBOT_ONBOARDING_MOBILE.map(v => v.tour_step_key.toString())}
-                        setStep={setStep}
+                        onStepChange={setStep}
                     />
                 </div>
                 <div className='dbot-slider__button-group'>

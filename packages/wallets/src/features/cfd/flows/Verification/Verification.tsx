@@ -273,33 +273,41 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             {context => {
                 return (
                     <ModalStepWrapper
-                        renderFooter={() => {
-                            return context.formValues.selectedManualDocument ? (
-                                <WalletButtonGroup isFlex>
-                                    <WalletButton
-                                        onClick={() => context.setFormValues('selectedManualDocument', '')}
-                                        size='lg'
-                                        text='Back'
-                                        variant='outlined'
-                                    />
-                                    <WalletButton
-                                        disabled={isNextDisabled(context)}
-                                        isLoading={isNextLoading(context)}
-                                        onClick={() => nextFlowHandler(context)}
-                                        size='lg'
-                                        text='Next'
-                                    />
-                                </WalletButtonGroup>
-                            ) : (
-                                <WalletButton
-                                    disabled={isNextDisabled(context)}
-                                    isLoading={isNextLoading(context)}
-                                    onClick={() => nextFlowHandler(context)}
-                                    size='lg'
-                                    text='Next'
-                                />
-                            );
-                        }}
+                        renderFooter={
+                            context.currentScreenId === 'manualScreen' && !context.formValues.selectedManualDocument
+                                ? undefined
+                                : () => {
+                                      if (context.currentScreenId === 'manualScreen')
+                                          return (
+                                              <WalletButtonGroup isFlex>
+                                                  <WalletButton
+                                                      onClick={() =>
+                                                          context.setFormValues('selectedManualDocument', '')
+                                                      }
+                                                      size='lg'
+                                                      text='Back'
+                                                      variant='outlined'
+                                                  />
+                                                  <WalletButton
+                                                      disabled={isNextDisabled(context)}
+                                                      isLoading={isNextLoading(context)}
+                                                      onClick={() => nextFlowHandler(context)}
+                                                      size='lg'
+                                                      text='Next'
+                                                  />
+                                              </WalletButtonGroup>
+                                          );
+                                      return (
+                                          <WalletButton
+                                              disabled={isNextDisabled(context)}
+                                              isLoading={isNextLoading(context)}
+                                              onClick={() => nextFlowHandler(context)}
+                                              size='lg'
+                                              text='Next'
+                                          />
+                                      );
+                                  }
+                        }
                         title='Add a real MT5 account'
                     >
                         {context.WalletScreen}

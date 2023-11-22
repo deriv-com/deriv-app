@@ -14,6 +14,7 @@ import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
+import { formatTime } from 'Utils/orders';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodIcon from 'Components/payment-method-icon';
@@ -45,6 +46,7 @@ const BuySellForm = props => {
 
     const exchange_rate = useP2PExchangeRate(local_currency);
     const order_completion_time = order_expiry_period / 60;
+
     const [previous_rate, setPreviousRate] = React.useState(exchange_rate);
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
@@ -257,14 +259,7 @@ const BuySellForm = props => {
                                             <Localize i18n_default_text='Order Completion time' />
                                         </Text>
                                         <Text as='p' color='general' size='xs'>
-                                            {order_completion_time === 60 ? (
-                                                <Localize i18n_default_text='1 hour' />
-                                            ) : (
-                                                <Localize
-                                                    i18n_default_text='{{minutes}} minutes'
-                                                    values={{ minutes: order_completion_time }}
-                                                />
-                                            )}
+                                            {formatTime(order_completion_time)}
                                         </Text>
                                     </div>
                                 </div>

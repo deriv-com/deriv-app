@@ -5,6 +5,7 @@ export const order_list = {
     INACTIVE: 'inactive',
 };
 
+//TODO: below section to be removed once we start receiving the list from BE
 export const order_completion_time_list = [
     {
         text: localize('1 hour'),

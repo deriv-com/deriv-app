@@ -151,7 +151,8 @@ const EditAdForm = () => {
                             max_transaction: max_order_amount_display,
                             min_transaction: min_order_amount_display,
                             offer_amount: amount_display,
-                            order_completion_time: order_expiry_period,
+                            // set a max of 1 hour if expiry period is more than 1 hour
+                            order_completion_time: order_expiry_period > 3600 ? 3600 : order_expiry_period,
                             rate_type: setInitialAdRate(),
                             type,
                             is_active:

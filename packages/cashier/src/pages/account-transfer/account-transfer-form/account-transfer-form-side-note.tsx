@@ -79,10 +79,7 @@ const AccountTransferNote = ({
                                 allowed_dxtrade: (
                                     exchange_rate *
                                     (Number(allowed_transfers_amount?.dxtrade) || ALLOWED_TRANSFER_AMOUNTS.DXTRADE)
-                                )
-                                    .toFixed(2)
-                                    .toString()
-                                    .replace(/\B(?:\d{3})+(?!\d)/g, ','),
+                                ).toFixed(2),
                                 currency: account_currency,
                             }}
                         />
@@ -99,10 +96,7 @@ const AccountTransferNote = ({
                                 allowed_mt5: (
                                     exchange_rate *
                                     (Number(allowed_transfers_amount?.mt5) || ALLOWED_TRANSFER_AMOUNTS.MT5)
-                                )
-                                    .toFixed(2)
-                                    .toString()
-                                    .replace(/\B(?:\d{3})+(?!\d)/g, ','),
+                                ).toFixed(2),
                                 currency: account_currency,
                             }}
                         />
@@ -119,10 +113,7 @@ const AccountTransferNote = ({
                             allowed_internal: (
                                 exchange_rate *
                                 (Number(allowed_transfers_amount?.internal) || ALLOWED_TRANSFER_AMOUNTS.INTERNAL)
-                            )
-                                .toFixed(2)
-                                .toString()
-                                .replace(/\B(?:\d{3})+(?!\d)/g, ','),
+                            ).toFixed(2),
                             currency: account_currency,
                         }}
                     />

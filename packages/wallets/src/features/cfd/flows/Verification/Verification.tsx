@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react';
-import * as Yup from 'yup';
 import { useAuthentication, usePOA, usePOI, useSettings } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
@@ -78,14 +77,15 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         platform,
     ]);
 
-    const isNextDisabled = ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
+    const isNextDisabled = ({ currentScreenId, errors, formValues }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
             case 'idvScreen':
                 return (
                     !formValues.documentNumber ||
                     !formValues.firstName ||
                     !formValues.lastName ||
-                    !formValues.dateOfBirth
+                    !formValues.dateOfBirth ||
+                    !!errors.documentNumber
                 );
             case 'personalDetailsScreen':
                 return (
@@ -122,14 +122,6 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         }
     };
 
-    // NOTE: These are test validations, add the correct validators here for different screens
-    const validationSchema = Yup.object().shape({
-        dateOfBirth: Yup.date().required(),
-        documentNumber: Yup.string().min(12, 'document number should have minimum 12 characters').required(),
-        firstName: Yup.string().min(1).max(5).required(),
-        lastName: Yup.string().min(1).max(20).required(),
-    });
-
     return (
         <FlowProvider
             initialScreenId={initialScreenId}
@@ -137,7 +129,6 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 selectedJurisdiction,
             }}
             screens={screens}
-            validationSchema={validationSchema}
         >
             {context => {
                 return (

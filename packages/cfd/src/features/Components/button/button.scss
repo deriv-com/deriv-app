@@ -1,0 +1,178 @@
+.dc-btn {
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0 1.6rem;
+    display: inline-flex;
+    border: 0;
+    height: 3.2rem;
+    border-radius: 4px;
+    transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
+    outline: 0;
+    position: relative;
+    text-decoration: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    /*
+     * Text will be transformed to sentence case in JS
+     * text-transform is declared in .dc-btn instead of .dc-btn__text
+     * to ensure consistency (even for children) as per styleguide
+     */
+    text-transform: none !important;
+
+    &__text {
+        display: flex;
+        pointer-events: none;
+    }
+    &--transparent {
+        background: transparent;
+    }
+    &__rounded {
+        border-radius: 24px;
+    }
+    &--primary {
+        background: var(--button-primary-default);
+        color: var(--text-colored-background);
+
+        &:hover:not([disabled]) {
+            background: var(--button-primary-hover);
+        }
+        &:active:not([disabled]) {
+            background: var(--button-primary-default);
+        }
+        &:disabled,
+        &[disabled] {
+            opacity: 0.32;
+            cursor: not-allowed !important;
+        }
+        .dc-btn__text,
+        .dc-btn__icon {
+            color: var(--text-colored-background);
+        }
+
+        &__light {
+            background: var(--button-primary-light-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-primary-light-hover);
+            }
+            &:active:not([disabled]) {
+                background: var(--button-primary-light-default);
+            }
+            &:disabled,
+            &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
+            }
+            .dc-btn__text,
+            .dc-btn__icon {
+                color: var(--brand-red-coral);
+            }
+        }
+    }
+    &--secondary {
+        background: transparent;
+        border: 1px solid var(--button-secondary-default);
+
+        &:hover:not([disabled]) {
+            background: var(--button-secondary-hover);
+        }
+        &:active:not([disabled]) {
+            border: 1px solid var(--button-secondary-default);
+        }
+        &:disabled,
+        &[disabled] {
+            opacity: 0.32;
+            cursor: not-allowed !important;
+        }
+        .dc-btn__text,
+        .dc-btn__icon {
+            color: var(--text-prominent);
+        }
+    }
+    &__small {
+        height: 2.4rem;
+        min-width: 4.8rem;
+        border-width: 1px;
+
+        .dc-btn__text {
+            font-size: 1.2rem;
+        }
+    }
+    &__medium {
+        height: 3.2rem;
+        min-width: 5.6rem;
+        border-width: 1px;
+
+        .dc-btn__text {
+            font-size: 1.4rem;
+        }
+    }
+    &__large {
+        height: 4rem;
+        min-width: 6.4rem;
+        border-width: 2px;
+
+        .dc-btn__text {
+            font-size: 1.4rem;
+        }
+    }
+    &__effect:focus:not(:active):after {
+        content: '';
+        position: absolute;
+        top: -0.1em;
+        left: -0.1em;
+        bottom: -0.1em;
+        right: -0.1em;
+        border-radius: inherit;
+        border: 0 solid var(--brand-secondary);
+        opacity: 0.4;
+        animation: buttonEffect 0.4s;
+        animation-fill-mode: forwards;
+        display: block;
+    }
+    &__group {
+        white-space: nowrap;
+
+        .dc-btn + .dc-btn {
+            margin-left: 8px;
+        }
+    }
+    &__button-group {
+        border-radius: 0 4px 4px 0;
+    }
+    /* TODO: confirm this button with designer are we still using this? */
+    /* postcss-bem-linter: ignore */
+    .initial-loader--btn {
+        background-color: unset;
+
+        /* postcss-bem-linter: ignore */
+        .initial-loader__barspinner--rect {
+            background-color: var(--text-colored-background);
+        }
+        /* postcss-bem-linter: ignore */
+        .barspinner {
+            margin: 0.6rem 4px 0 -4px;
+
+            /* postcss-bem-linter: ignore */
+            &__rect {
+                height: 35%;
+            }
+        }
+    }
+}
+
+@keyframes buttonEffect {
+    to {
+        opacity: 0;
+        top: -0.6em;
+        left: -0.6em;
+        bottom: -0.6em;
+        right: -0.6em;
+        border-width: 6px;
+    }
+}

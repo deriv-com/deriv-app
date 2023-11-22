@@ -1,6 +1,6 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
-function mock_residents_list(context: Context) {
+export default function mockResidentsList(context: Context) {
     if ('residence_list' in context.request) {
         context.response = {
             echo_req: {
@@ -6968,5 +6968,3 @@ function mock_residents_list(context: Context) {
         };
     }
 }
-
-export default mock_residents_list;

@@ -1,6 +1,6 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
-export default function mock_p2p_advertiser_info(context: Context) {
+export default function mockP2pAdvertiserInfo(context: Context) {
     if ('p2p_advertiser_info' in context.request && context.request.p2p_advertiser_info === 1) {
         context.response = {
             echo_req: context.request,

@@ -1,6 +1,6 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
-export default function mock_landing_company(context: Context) {
+export default function mockLandingCompany(context: Context) {
     if ('landing_company' in context.request) {
         context.response = {
             echo_req: {

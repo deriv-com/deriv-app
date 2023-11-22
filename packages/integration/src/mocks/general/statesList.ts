@@ -1,6 +1,6 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
-function mock_states_list(context: Context) {
+export default function mockStatesList(context: Context) {
     if ('states_list' in context.request) {
         context.response = {
             echo_req: {
@@ -322,5 +322,3 @@ function mock_states_list(context: Context) {
         };
     }
 }
-
-export default mock_states_list;

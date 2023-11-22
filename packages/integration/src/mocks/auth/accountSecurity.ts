@@ -1,6 +1,6 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
-export default function mock_account_security(context: Context) {
+export default function mockAccountSecurity(context: Context) {
     if ('account_security' in context.request && context.request.account_security === 1) {
         context.response = {
             echo_req: context.request,

@@ -1,0 +1,33 @@
+.wallets-jurisdiction-tnc {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    justify-content: center;
+    margin-top: 3rem;
+
+    @include mobile {
+        position: sticky;
+        bottom: 0;
+        background: var(--system-light-8-primary-background, #fff);
+        justify-content: center;
+        padding: 1.5rem 2rem 1rem;
+        width: 100vw;
+    }
+
+    &-checkbox {
+        align-items: center;
+        display: flex;
+        gap: 0.8rem;
+        justify-content: center;
+
+        &__link {
+            color: var(--brand-coral, #ff444f);
+        }
+
+        &__link,
+        &-input,
+        &-label {
+            cursor: pointer;
+        }
+    }
+}

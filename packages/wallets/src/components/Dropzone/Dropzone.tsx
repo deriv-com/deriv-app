@@ -5,6 +5,7 @@ import React, {
     ReactNode,
     RefObject,
     useCallback,
+    useEffect,
     useState,
 } from 'react';
 import classNames from 'classnames';
@@ -25,6 +26,7 @@ type TProps = {
     icon: ReactNode;
     maxSize?: NonNullable<Parameters<typeof useDropzone>[0]>['maxSize'];
     noClick?: NonNullable<Parameters<typeof useDropzone>[0]>['noClick'];
+    onFileChange?: (file: File) => void;
     title?: ReactNode;
     titleType?: ComponentProps<typeof WalletText>['weight'];
 };
@@ -40,11 +42,13 @@ const Dropzone: React.FC<TProps> = ({
     icon,
     maxSize,
     noClick = false,
+    onFileChange,
     title = false,
     titleType = 'normal',
 }) => {
     const [files, setFiles] = useState<
         {
+            file: File;
             name: string;
             preview: string;
         }[]
@@ -63,6 +67,7 @@ const Dropzone: React.FC<TProps> = ({
             setFiles(
                 acceptedFiles.map(file =>
                     Object.assign(file, {
+                        file,
                         preview: URL.createObjectURL(file),
                     })
                 )
@@ -75,6 +80,12 @@ const Dropzone: React.FC<TProps> = ({
             setErrorMessage(fileRejections?.[0]?.errors?.[0].message);
         },
     });
+
+    useEffect(() => {
+        if (files.length > 0 && onFileChange) {
+            onFileChange(files[0].file);
+        }
+    }, [files, onFileChange]);
 
     const removeFile = useCallback(
         (file: { name: string; preview: string }) => () => {

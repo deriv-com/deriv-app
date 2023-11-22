@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { HintBox, Input, Text } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods, useP2PExchangeRate } from '@deriv/hooks';
+import { useP2PAdvertiserPaymentMethods, useExchangeRate } from '@deriv/hooks';
 import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
@@ -42,7 +42,9 @@ const BuySellForm = props => {
         rate_type,
     } = buy_sell_store?.advert || {};
 
-    const exchange_rate = useP2PExchangeRate(local_currency);
+    const { getRate } = useExchangeRate();
+    const exchange_rate = getRate(local_currency);
+
     const [previous_rate, setPreviousRate] = React.useState(exchange_rate);
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
 
